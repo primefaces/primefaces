@@ -165,6 +165,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", value, null);
 
+        if(radio.getTabindex() != null) writer.writeAttribute("tabindex", radio.getTabindex(), null);
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(radio.getOnchange() != null) writer.writeAttribute("onchange", radio.getOnchange(), null);

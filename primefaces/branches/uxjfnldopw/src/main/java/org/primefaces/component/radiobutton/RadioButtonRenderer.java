@@ -74,6 +74,10 @@ public class RadioButtonRenderer extends InputRenderer {
     
     protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name, boolean checked, boolean disabled, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String tabindex = button.getTabindex();
+        if(tabindex == null) {
+            tabindex = radio.getTabindex();
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -84,6 +88,7 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", value, null);
 
+        if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         
