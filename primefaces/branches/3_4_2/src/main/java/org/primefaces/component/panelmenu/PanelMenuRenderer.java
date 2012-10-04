@@ -71,6 +71,16 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeRootSubmenu(FacesContext context, PanelMenu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String style = submenu.getStyle();
+        String styleClass = submenu.getStyleClass();
+        styleClass = styleClass == null ? PanelMenu.PANEL_CLASS : PanelMenu.PANEL_CLASS + " " + styleClass;
+        
+        //wrapper
+        writer.startElement("div", null);
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
         
         //header
         writer.startElement("h3", null);
@@ -116,15 +126,23 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
 		writer.endElement("ul");
 
-        writer.endElement("div");
+        writer.endElement("div");   //content
+        
+        writer.endElement("div");   //wrapper
     }
 
     protected void encodeDescendantSubmenu(FacesContext context, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getIcon();
+        String style = submenu.getStyle();
+        String styleClass = submenu.getStyleClass();
+        styleClass = styleClass == null ? PanelMenu.DESCENDANT_SUBMENU_CLASS : PanelMenu.DESCENDANT_SUBMENU_CLASS + " " + styleClass;
         
         writer.startElement("li", null);
-        writer.writeAttribute("class", PanelMenu.DESCENDANT_SUBMENU_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
         writer.writeAttribute("role", "menuitem", null);
         
         writer.startElement("a", null);
