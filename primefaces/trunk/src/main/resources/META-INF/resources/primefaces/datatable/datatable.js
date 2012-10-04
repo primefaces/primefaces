@@ -446,7 +446,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             this.shouldLiveScroll = true;       
         }
 
-        //scroll handler
+        this.scrollHeader.scroll(function() {
+            _self.scrollBody.scrollLeft(_self.scrollHeader.scrollLeft());
+            _self.scrollFooter.scrollLeft(_self.scrollHeader.scrollLeft());
+        });
+        
         this.scrollBody.scroll(function() {
             _self.scrollHeader.scrollLeft(_self.scrollBody.scrollLeft());
             _self.scrollFooter.scrollLeft(_self.scrollBody.scrollLeft());
