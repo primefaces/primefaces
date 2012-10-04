@@ -25,6 +25,7 @@ import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -419,5 +420,12 @@ public abstract class CoreRenderer extends Renderer {
         }
         
         return sb.length() == 0 ? null : sb.toString();
+    }
+    
+    protected boolean shouldWriteId(UIComponent component) {
+        String id = component.getId();
+        
+        return (null != id) && (!id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX) || ((component instanceof ClientBehaviorHolder) &&
+                          ! ((ClientBehaviorHolder) component).getClientBehaviors().isEmpty()));
     }
 }

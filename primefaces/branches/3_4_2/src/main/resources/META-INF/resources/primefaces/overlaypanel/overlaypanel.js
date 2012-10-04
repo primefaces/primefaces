@@ -184,6 +184,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
+        
+        this.applyFocus();
     },
     
     postHide: function() {
@@ -258,6 +260,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     
     isVisible: function() {
         return this.jq.hasClass('ui-overlay-visible');
+    },
+    
+    applyFocus: function() {
+        this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').focus();
     }
 
 });
