@@ -1,0 +1,57 @@
+.ui-picklist .ui-picklist-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow:auto;
+    height:200px;
+    width:200px;
+}
+
+.ui-picklist .ui-picklist-list li {
+    margin: 1px;
+    padding: 2px;
+}
+
+.ui-picklist .ui-button {
+    display:block;
+    margin-bottom:0.3em;
+}
+
+.ui-picklist .ui-picklist-item {
+    cursor:pointer;
+    border:0px none;
+    font-weight: inherit;
+}
+
+.ui-picklist .ui-picklist-caption {
+    text-align: center;
+    padding:4px 10px 4px 10px;
+    border-bottom:0px none;
+}
+
+.ui-picklist table {
+    width:100%;
+    border-collapse:collapse;
+}
+
+.ui-picklist > tbody{
+    /*IE7 hack*/
+    *position: relative;
+}
+
+.ui-picklist .ui-picklist-filter {
+    padding-right: 15px;
+    width: 90%;
+}
+
+.ui-picklist .ui-picklist-filter-container {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.ui-picklist .ui-picklist-filter-container .ui-icon {
+    position: absolute;
+    top: 5px;
+    right: 2px;
+}

@@ -1,0 +1,91 @@
+.ui-messages-info, .ui-messages-warn, .ui-messages-error, .ui-messages-fatal {
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:10px 10px 10px 10px;
+}
+
+.ui-message-info, .ui-message-error, .ui-message-warn, .ui-message-fatal {
+    border: 1px solid;;
+    margin: 0px 5px;
+    padding:2px 5px;
+}
+
+.ui-messages-info-icon, .ui-messages-warn-icon, .ui-messages-error-icon, .ui-messages-fatal-icon,
+.ui-message-info-icon, .ui-message-warn-icon, .ui-message-error-icon, .ui-message-fatal-icon {
+    background: url("#{resource['primefaces:messages/messages.png']}") no-repeat;
+    display:block;
+    float:left;
+    margin:0;
+    padding:0;
+    position: relative;
+}
+
+.ui-messages-info-icon, .ui-messages-warn-icon, .ui-messages-error-icon, .ui-messages-fatal-icon {
+    height:24px;
+    width:24px;
+    margin-top:-4px;
+}
+
+.ui-message-info-icon, .ui-message-warn-icon, .ui-message-error-icon, .ui-message-fatal-icon {
+    height:16px;
+    width:16px;
+}
+
+.ui-messages-info-summary, .ui-messages-warn-summary, .ui-messages-error-summary, .ui-messages-fatal-summary, 
+.ui-message-info-summary, .ui-message-warn-summary, .ui-message-error-summary, .ui-message-fatal-summary {
+    margin-left:10px;
+    font-weight:bold;
+}
+
+.ui-messages-info-detail, .ui-messages-warn-detail, .ui-messages-error-detail, .ui-messages-fatal-detail,
+.ui-message-info-detail, .ui-message-warn-detail, .ui-message-error-detail, .ui-message-fatal-detail {
+    margin-left:5px;
+}
+
+.ui-messages-info, .ui-message-info {
+    color: #3a87ad;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.ui-messages-warn, .ui-message-warn {
+    color: #c09853;
+    background-color: #fcf8e3;
+    border-color: #fbeed5;
+}
+
+.ui-messages-error, .ui-message-error {
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
+}
+
+.ui-messages-fatal, .ui-message-fatal {
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
+}
+
+.ui-messages ul {
+    margin: 0 25px;
+    padding:0;list-style-type:none;
+}
+
+.ui-message-icon-only {
+    width:16px;
+    height:16px
+}
+
+.ui-messages-info-icon {background-position: 0px -316px;}
+.ui-messages-warn-icon {background-position: 0px -448px;}
+.ui-messages-error-icon {background-position: 0px -52px;}
+.ui-messages-fatal-icon {background-position: 0px -184px;}
+.ui-message-info-icon {background-position: 0px -360px;}
+.ui-message-warn-icon {background-position: 0px -492px;}
+.ui-message-error-icon {background-position: 0px -96px;}
+.ui-message-fatal-icon {background-position: 0px -228px;}
+
+.ui-messages .ui-messages-close {
+    float:right;
+    cursor: pointer;
+}

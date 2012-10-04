@@ -1,0 +1,192 @@
+.ui-datatable table {
+	border-collapse:collapse;
+    width: 100%;
+}
+
+.ui-datatable .ui-datatable-header,
+.ui-datatable .ui-datatable-footer {
+    text-align:center;
+    padding:4px 10px;
+}
+
+.ui-datatable .ui-datatable-header {
+    border-bottom: 0px none;
+}
+
+.ui-datatable .ui-datatable-footer {
+    border-top: 0px none;
+}
+
+.ui-datatable th, .ui-datatable tfoot td {
+    text-align:center;
+    white-space:nowrap;
+    padding:0px;
+    margin:0px;
+    overflow: hidden;
+}
+
+.ui-datatable-data, .ui-datatable-data-empty {}
+
+.ui-datatable .ui-datatable-data td,
+.ui-datatable .ui-datatable-data-empty td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding:0px;
+    margin:0px;
+    overflow: hidden;
+}
+
+.ui-datatable .ui-sortable-column {
+    cursor: pointer;
+}
+
+.ui-datatable div.ui-dt-c {
+    position: relative;
+}
+
+.ui-datatable .ui-sortable-column-icon {
+    position: absolute;
+    left:0;
+    margin-left: -2px;
+}
+
+.ui-datatable .ui-column-filter {
+    display: block;
+    width:100px;
+    margin:auto;
+}
+
+.ui-datatable .ui-expanded-row {
+    border-bottom:0px none;
+}
+
+.ui-datatable .ui-expanded-row-content {
+    border-top:0px none;
+}
+
+.ui-datatable .ui-row-toggler {
+    cursor: pointer;
+}
+
+.ui-datatable .ui-cell-editor-input {
+    display:none;
+}
+
+.ui-datatable .ui-row-editor-column {
+
+}
+
+.ui-datatable .ui-row-editor {
+    
+}
+
+.ui-datatable .ui-row-editor span {
+    cursor:pointer;
+    float:left;
+}
+
+.ui-datatable tr.ui-state-highlight {
+    cursor: pointer;
+}
+
+.ui-datatable .ui-selection-column {
+    width: 44px;
+}
+
+.ui-datatable .ui-selection-column .ui-chkbox-all {
+    display: block;
+    margin: 0px auto;
+    width: 16px;
+    height: 16px;
+}
+
+.ui-datatable-scrollable {}
+
+.ui-datatable-scrollable-body {
+    overflow:auto;
+    *position: relative;
+}
+.ui-datatable-scrollable-header,
+.ui-datatable-scrollable-footer {
+    overflow: hidden;
+    border:0px none;
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-body table,
+.ui-datatable-scrollable .ui-datatable-scrollable-header table,
+.ui-datatable-scrollable .ui-datatable-scrollable-footer table {
+    width:auto;
+}
+.ui-datatable-scrollable .ui-datatable-scrollable-header,
+.ui-datatable-scrollable .ui-datatable-scrollable-footer {
+    position: relative;
+} 
+            
+.ui-datatable-scrollable .ui-datatable-scrollable-header-box,
+.ui-datatable-scrollable .ui-datatable-scrollable-footer-box {
+    float:left;
+    padding-right: 40px;
+}
+
+.ui-datatable .ui-column-resizer {
+    position:absolute;
+    right:0;
+    width:8px;
+    height:20px;
+    padding:0px;
+    cursor:col-resize;
+    background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
+    margin: -4px 0px;
+    *margin-left: 2px;
+}
+
+.ui-datatable .ui-filter-column .ui-column-resizer {
+    height:45px;
+}
+
+.ui-datatable .ui-column-resizer-helper {
+    width: 1px;
+    position: absolute;
+    z-index: 10;
+    display: none;
+}
+
+.ui-datatable-resizable {
+    padding-bottom:1px;     /*fix for webkit overlow*/
+    overflow:auto;
+}
+
+.ui-datatable.ui-datatable-resizable table {
+    width: auto;
+}
+
+.ui-datatable th div.ui-dt-c,
+.ui-datatable .ui-datatable-data td div.ui-dt-c,
+.ui-datatable .ui-datatable-data-empty td div.ui-dt-c,
+.ui-datatable tfoot td div.ui-dt-c {
+    padding: 4px 10px;
+    overflow: hidden;
+}
+
+.ui-datatable .ui-datatable-data tr.ui-state-hover {
+    border-color: inherit;
+    font-weight: inherit;
+    cursor: pointer;
+    *font-weight: normal; /*IE7 hack*/
+}
+
+.ui-datatable .ui-paginator,
+.ui-datatable .ui-paginator {
+    padding:2px;
+}
+
+.ui-column-dnd-top, ui-column-dnd-bottom {
+    display: none;
+    position: absolute;
+}
+
+.ui-column-dnd-top .ui-icon, ui-column-dnd-bottom .ui-icon{
+    position: absolute;
+    top: -4px;
+}
