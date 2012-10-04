@@ -1,5 +1,5 @@
 .ui-menu {
-    width:150px;
+    width: 12.5em;
     padding:0.3em;
     position:relative;
 }
@@ -78,7 +78,7 @@
 
 .ui-menu .ui-menu-parent .ui-menu-child {
     display:none;
-    width:150px;
+    width:12.5em;
     padding:0.3em;
     position:absolute;
     margin:0; 
@@ -181,7 +181,7 @@
 }
 
 .ui-menu.ui-megamenu .ui-menu-child .ui-menu-list {
-    width: 150px;
+    width: 12.5em;
 }
 
 /** Breadcrumb **/
