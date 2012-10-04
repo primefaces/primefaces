@@ -697,14 +697,12 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         var nodeContentSelector = this.jqTargetId + ' .ui-tree-selectable',
         event = this.cfg.nodeType ? this.cfg.event + '.tree.' + this.cfg.nodeType : this.cfg.event + '.tree',
         _self = this;
-        
-        this.cfg.nodeType = this.cfg.nodeType||'default';
-        
+                
         $(document).off(event, nodeContentSelector)
                     .on(event, nodeContentSelector, null, function(e) {
                         var nodeContent = $(this);
                         
-                        if(nodeContent.parent().data('nodetype') === _self.cfg.nodeType) {
+                        if(_self.cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === _self.cfg.nodeType) {
                             window[_self.cfg.targetWidgetVar].nodeClick(e, nodeContent);
                             _self.show(e);
                             e.preventDefault();
