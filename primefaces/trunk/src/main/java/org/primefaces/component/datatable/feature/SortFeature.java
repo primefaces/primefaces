@@ -45,10 +45,6 @@ public class SortFeature implements DataTableFeature {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
     }
     
-    private boolean isMultiSort(FacesContext context, DataTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_multiSorting");
-    }
-
     public void decode(FacesContext context, DataTable table) {
         table.setRowIndex(-1);
         String clientId = table.getClientId(context);
@@ -57,24 +53,26 @@ public class SortFeature implements DataTableFeature {
 		String sortKey = params.get(clientId + "_sortKey");
 		String sortDir  = params.get(clientId + "_sortDir");
         boolean isDynamicColumn = params.containsKey(clientId + "_dynamic_column");
-        boolean isMultiSort = isMultiSort(context, table);
         
         //Reset state
 		table.setFirst(0);
         
-        if(isMultiSort) {
-            List<SortMeta> sortMeta = new ArrayList<SortMeta>();
+        if(table.isMultiSort()) {
+            List<SortMeta> multiSortMeta = new ArrayList<SortMeta>();
             String[] sortKeys = sortKey.split(",");
             String[] sortOrders = sortDir.split(",");
             
             for(int i = 0; i < sortKeys.length; i++) {
                 UIColumn sortColumn = findSortColumn(context, table, sortKeys[i], isDynamicColumn);
+                String sortField = table.resolveStaticField(sortColumn.getValueExpression("sortBy"));
                 
-                sortMeta.add(new SortMeta(sortColumn, SortOrder.valueOf(sortOrders[i])));
+                multiSortMeta.add(new SortMeta(sortColumn, sortField, SortOrder.valueOf(sortOrders[i])));
             }
             
+            table.setMultiSortMeta(multiSortMeta);
+            
             if(!table.isLazy()) {
-                multiSort(context, table, sortMeta);
+                multiSort(context, table, multiSortMeta);
             }
         }
         else {
