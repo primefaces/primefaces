@@ -12,7 +12,11 @@ import javax.faces.event.FacesEvent;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
+import javax.el.ELContext;
+import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+import org.primefaces.component.panel.Panel;
 
 	public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content ui-corner-all";
 	public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all";
@@ -92,6 +96,15 @@ import javax.faces.event.PhaseId;
     public void processUpdates(FacesContext context) {
         if(!isSelfRequest(context)) {
             super.processUpdates(context);
+        }
+        
+        FacesContext facesContext = getFacesContext();
+        ELContext eLContext = facesContext.getELContext();
+        
+        ValueExpression collapsedVE = this.getValueExpression("collapsed");
+        if(collapsedVE != null) {
+            collapsedVE.setValue(eLContext, this.isCollapsed());
+            getStateHelper().put(Panel.PropertyKeys.collapsed, null);
         }
     }
 
