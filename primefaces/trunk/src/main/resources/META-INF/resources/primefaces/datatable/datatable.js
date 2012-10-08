@@ -120,7 +120,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         _self.addSortMeta({col: columnHeader.attr('id'), order: sortOrder});
                         _self.sort(columnHeader, sortOrder, true);
                     }
-                    else {
+                    else {                        
                         _self.sortMeta = [];
                         _self.addSortMeta({col: columnHeader.attr('id'), order: sortOrder});
                         _self.sort(columnHeader, sortOrder);
@@ -139,8 +139,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         });
         
         this.sortMeta.push(meta);
-        
-        var x = 10;
     },
       
     /**
