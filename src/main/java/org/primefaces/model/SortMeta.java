@@ -18,17 +18,18 @@ package org.primefaces.model;
 import org.primefaces.component.api.UIColumn;
 
 public class SortMeta {
-
+    
     private UIColumn column;
+    
+    private String sortField;
     
     private SortOrder sortOrder;
 
-    public SortMeta() {
-        
-    }
+    public SortMeta() {}
     
-    public SortMeta(UIColumn column, SortOrder sortOrder) {
+    public SortMeta(UIColumn column, String sortField, SortOrder sortOrder) {
         this.column = column;
+        this.sortField = sortField;
         this.sortOrder = sortOrder;
     }
     
@@ -36,15 +37,11 @@ public class SortMeta {
         return column;
     }
 
-    public void setColumn(UIColumn column) {
-        this.column = column;
+    public String getSortField() {
+        return sortField;
     }
 
     public SortOrder getSortOrder() {
         return sortOrder;
-    }
-
-    public void setSortOrder(SortOrder sortOrder) {
-        this.sortOrder = sortOrder;
     }
 }

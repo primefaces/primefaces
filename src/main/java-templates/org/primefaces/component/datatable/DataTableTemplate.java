@@ -49,6 +49,7 @@ import javax.faces.FacesException;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.DynamicColumn;
 import javax.faces.context.FacesContext;
+import org.primefaces.model.SortMeta;
 import org.primefaces.component.datatable.feature.*;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
@@ -302,7 +303,14 @@ import org.primefaces.component.datatable.feature.*;
         if(model != null && model instanceof LazyDataModel) {            
             LazyDataModel lazyModel = (LazyDataModel) model;
             
-            List<?> data = lazyModel.load(getFirst(), getRows(), resolveSortField() , convertSortOrder(), getFilters());
+            List<?> data = null;
+            
+            if(this.isMultiSort()) {
+                data = lazyModel.load(getFirst(), getRows(), getMultiSortMeta(), getFilters());
+            }
+            else {
+                data = lazyModel.load(getFirst(), getRows(), resolveSortField(), convertSortOrder(), getFilters());
+            }
             
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -630,7 +638,7 @@ import org.primefaces.component.datatable.feature.*;
                         columns.add(new DynamicColumn(j, uiColumns));
                     }
                 }
-            }
+            } 
         }
         
         return columns;
@@ -663,5 +671,17 @@ import org.primefaces.component.datatable.feature.*;
     }
     
     public boolean isMultiSort() {
-        return this.getSortMode().equals("multiple");
+        String sortMode = this.getSortMode();
+        
+        return (sortMode != null && sortMode.equals("multiple"));
+    }
+    
+    private List<SortMeta> multiSortMeta;
+    
+    public List<SortMeta> getMultiSortMeta() {
+        return this.multiSortMeta;
+    }
+    
+    public void setMultiSortMeta(List<SortMeta> value) {
+        this.multiSortMeta = value;
     }
