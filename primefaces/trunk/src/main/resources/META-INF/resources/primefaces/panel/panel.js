@@ -62,18 +62,11 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         var _self = this;
         
         this.originalWidth = this.jq.width();
-        this.originalHeaderHeight = this.header.height();
                 
         this.title.hide();
         this.toggler.hide();
-        
-        this.content.css({
-            'visibility':'hidden'
-            ,'height': this.content.height()
-        });
-        
-        this.header.height(this.originalHeaderHeight);
-        
+        this.content.hide();
+
         this.jq.animate({
             width: '42px'
         }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
@@ -83,23 +76,23 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     slideRight: function() {
-        var _self = this;
+        var _self = this,
+        expandWidth = this.originalWidth||'100%';
         
         this.toggler.hide();
         
         this.jq.animate({
-            width: this.originalWidth
+            width: expandWidth
         }, this.cfg.toggleSpeed, 'easeInOutCirc', function() {
             _self.jq.removeClass('ui-panel-collapsed-h');
             _self.title.show();
             _self.toggler.show();
         
             _self.content.css({
-                'visibility':'visible'
+                'visibility': 'visible'
+                ,'display': 'block'
                 ,'height': 'auto'
             });
-            
-            _self.header.css('height', 'auto');
         });
     },
     
