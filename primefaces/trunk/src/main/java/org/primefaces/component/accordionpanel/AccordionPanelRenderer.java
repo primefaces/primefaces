@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class AccordionPanelRenderer extends CoreRenderer {
 
@@ -99,21 +100,22 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = acco.getClientId(context);
         boolean dynamic = acco.isDynamic();
+        WidgetBuilder wb = new WidgetBuilder("AccordionPanel", acco.resolveWidgetVar(), clientId);
  		
         startScript(writer, clientId);
 		
-        writer.write("PrimeFaces.cw('AccordionPanel','" + acco.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-                		
-        if(acco.isDynamic()) writer.write(",dynamic:true");
-        if(acco.isMultiple()) writer.write(",multiple:true");
-        if(dynamic) writer.write(",cache:" + acco.isCache());
-        if(acco.getOnTabChange() != null) writer.write(",onTabChange: function(panel) {" + acco.getOnTabChange() + "}");
-        if(acco.getOnTabShow() != null) writer.write(",onTabShow: function(panel) {" + acco.getOnTabShow() + "}");
-
-        encodeClientBehaviors(context, acco);
-		
-		writer.write("});");
+        if(dynamic) {
+            wb.attr("dynamic", true, false);
+            wb.attr("cache", acco.isCache(), true);
+        }
+        
+        wb.attr("multiple", acco.isMultiple(), false)
+        .callback("onTabChange", "function(panel)", acco.getOnTabChange())
+        .callback("onTabShow", "function(panel)", acco.getOnTabShow());
+        
+        encodeClientBehaviors(context, acco, wb);
+        
+        writer.write(wb.build());
 		
 		endScript(writer);
 	}
