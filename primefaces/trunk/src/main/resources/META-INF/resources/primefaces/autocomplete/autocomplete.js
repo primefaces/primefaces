@@ -16,7 +16,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.pojo = this.hinput.length == 1;
         this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
         this.cfg.delay = this.cfg.delay != undefined ? this.cfg.delay : 300;
-        var _self = this;
         
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -243,12 +242,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             highlightedItem.removeClass('ui-state-highlight');
                             prev.addClass('ui-state-highlight');
                             
-                            if(_self.cfg.itemtip) {
-                                _self.showItemtip(prev);
-                            }
-                            
                             if(_self.cfg.scrollHeight) {
                                 _self.alignScrollbar(prev);
+                            }
+                            
+                            if(_self.cfg.itemtip) {
+                                _self.showItemtip(prev);
                             }
                         }
  
@@ -263,12 +262,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             highlightedItem.removeClass('ui-state-highlight');
                             next.addClass('ui-state-highlight');
                             
-                            if(_self.cfg.itemtip) {
-                                _self.showItemtip(next);
-                            }
-                            
                             if(_self.cfg.scrollHeight) {
                                 _self.alignScrollbar(next);
+                            }
+                            
+                            if(_self.cfg.itemtip) {
+                                _self.showItemtip(next);
                             }
                         }
                         
