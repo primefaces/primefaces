@@ -166,6 +166,10 @@ PrimeFaces = {
         return text.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     },
     
+    escapeHTML: function(value) {
+        return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    },
+    
     clearSelection: function() {
         if(window.getSelection) {
             if(window.getSelection().empty) {
