@@ -24,6 +24,12 @@ public class WidgetBuilder {
         
     private WidgetBuilder() {}
 
+    /**
+     *
+     * @param widgetClass   Constructor name of the widget
+     * @param widgetVar     Name of the client side widget
+     * @param id            Client id of the component
+     */
     public WidgetBuilder(String widgetClass, String widgetVar, String id) {
         buffer = new StringBuilder();
         buffer.append("PrimeFaces.cw('").append(widgetClass).append("','").append(widgetVar).append("',{");
