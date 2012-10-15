@@ -59,12 +59,16 @@ public class RadioButtonRenderer extends InputRenderer {
 
         //render markup
         String style = radio.getStyle();
+        String defaultStyleClass = selectOneRadio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
         String styleClass = radio.getStyleClass();
-        styleClass = styleClass == null ? HTML.RADIOBUTTON_CLASS : HTML.RADIOBUTTON_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
         
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
         encodeOptionInput(context, selectOneRadio, radio, inputId, masterClientId, selected, disabled, itemValueAsString);
         encodeOptionOutput(context, selected, disabled);

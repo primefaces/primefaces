@@ -65,6 +65,13 @@
             <ignoreInComponent>true</ignoreInComponent>
             <description>The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.</description>
         </attribute>
+        <attribute>
+            <name>plain</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Plain mode displays radiobuttons using native browser rendering instead of themes.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
