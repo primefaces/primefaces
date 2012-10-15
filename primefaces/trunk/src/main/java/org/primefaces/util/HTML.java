@@ -176,6 +176,7 @@ public class HTML {
     public final static String CHECKBOX_LABEL_CLASS = "ui-chkbox-label";
     
     public final static String RADIOBUTTON_CLASS = "ui-radiobutton ui-widget";
+    public final static String RADIOBUTTON_NATIVE_CLASS = "ui-radiobutton ui-radiobutton-native ui-widget";
     public final static String RADIOBUTTON_BOX_CLASS = "ui-radiobutton-box ui-widget ui-corner-all ui-radiobutton-relative ui-state-default";
     public final static String RADIOBUTTON_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
     public final static String RADIOBUTTON_ICON_CLASS = "ui-radiobutton-icon";

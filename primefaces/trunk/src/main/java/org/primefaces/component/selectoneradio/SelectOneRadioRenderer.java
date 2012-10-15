@@ -56,7 +56,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         boolean custom = layout != null && layout.equals("custom");
         
         List<SelectItem> selectItems = getSelectItems(context, radio);
-        
+                
         if(custom) {
             //populate selectitems for radiobutton access
             radio.setSelectItems(getSelectItems(context, radio));
@@ -136,11 +136,12 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name, Converter converter, boolean selected, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, radio, converter, option.getValue());
-       
+        String styleClass = radio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
+        
         writer.startElement("td", null);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.RADIOBUTTON_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
 
         encodeOptionInput(context, radio, id, name, selected, disabled, itemValueAsString);
         encodeOptionOutput(context, radio, selected, disabled);
