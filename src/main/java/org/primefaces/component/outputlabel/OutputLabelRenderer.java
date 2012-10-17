@@ -17,7 +17,6 @@ package org.primefaces.component.outputlabel;
 
 import java.io.IOException;
 import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -72,6 +71,8 @@ public class OutputLabelRenderer extends CoreRenderer {
                 writer.write(text);
         }
         
+        renderChildren(context, label);
+        
         if(input != null && input.isRequired()) {
             writer.startElement("span", label);
             writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
@@ -94,5 +95,15 @@ public class OutputLabelRenderer extends CoreRenderer {
         }
         
         return _forComponent;
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }
