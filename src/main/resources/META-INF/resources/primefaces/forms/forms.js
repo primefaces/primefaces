@@ -182,7 +182,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                         }
                         
                         if(_self.cfg.scrollHeight) {
-                            _self.alignScrollbar(prev);
+                            PrimeFaces.scrollInView(_self.panel, prev);
                         }
 
                         e.preventDefault();
@@ -204,7 +204,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                         }
                         
                         if(_self.cfg.scrollHeight) {
-                            _self.alignScrollbar(next);
+                            PrimeFaces.scrollInView(_self.panel, next);
                         }
 
                         e.preventDefault();
@@ -411,26 +411,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                         'z-index': ++PrimeFaces.zindex
                 });
     },
-    
-    alignScrollbar: function(item) {
-        var relativeTop = item.offset().top - this.items.eq(0).offset().top,
-        visibleTop = relativeTop + item.height(),
-        scrollTop = this.panel.scrollTop(),
-        scrollBottom = scrollTop + this.cfg.scrollHeight,
-        viewportCapacity = parseInt(this.cfg.scrollHeight / item.outerHeight(true));
         
-        //scroll up
-        if(visibleTop < scrollTop) {
-            this.panel.scrollTop(relativeTop);
-        }
-        //scroll down
-        else if(visibleTop > scrollBottom) {
-            var viewportTopitem = this.items.eq(item.index() - viewportCapacity + 1);
-            
-            this.panel.scrollTop(viewportTopitem.offset().top - this.items.eq(0).offset().top);
-        }
-    },
-    
     show: function() {
         this.alignPanel();
 
@@ -707,7 +688,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.setLabel(item.text());
         this.input.val(this.options.eq(item.index()).val());
         
-        this.alignScroller(item);
+        PrimeFaces.scrollInView(this.itemsWrapper, item);
     },
     
     deactivateItem: function(item) {
@@ -875,27 +856,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }  
     },
-         
-    alignScroller: function(item) {
-        var scrollHeight = this.panel.height();
-        
-        if(scrollHeight < this.itemsContainer.height()) {
-            var itemTop = item.offset().top - this.items.eq(0).offset().top,
-            visibleTop = itemTop + item.height(),
-            scrollTop = this.panel.scrollTop(),
-            scrollBottom = scrollTop + scrollHeight;
-            
-            //scroll up
-            if(itemTop < scrollTop) {
-                this.panel.scrollTop(itemTop);
-            }
-            //scroll down
-            else if(visibleTop > scrollBottom) {
-                this.panel.scrollTop(itemTop);
-            }
-        }
-    },
-    
+             
     show: function() {
         //calculate panel position
         this.alignPanel();
@@ -1359,7 +1320,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
     
 });
 
-            /**
+/**
  * PrimeFaces SelectListbox Widget
  */
 PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
