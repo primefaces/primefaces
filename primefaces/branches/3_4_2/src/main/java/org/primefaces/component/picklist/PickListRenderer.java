@@ -92,7 +92,7 @@ public class PickListRenderer extends CoreRenderer {
 		writer.endElement("td");
 
 		//Target List
-		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), pickList.getFacet("targetCaption"), pickList.isShowSourceFilter());
+		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), pickList.getFacet("targetCaption"), pickList.isShowTargetFilter());
 
         //Target List Reorder Buttons
         if(pickList.isShowTargetControls()) {
