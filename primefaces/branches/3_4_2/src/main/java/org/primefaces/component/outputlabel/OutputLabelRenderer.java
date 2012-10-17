@@ -17,6 +17,7 @@ package org.primefaces.component.outputlabel;
 
 import java.io.IOException;
 import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -33,32 +34,45 @@ public class OutputLabelRenderer extends CoreRenderer {
         OutputLabel label = (OutputLabel) component;
         String clientId = label.getClientId();
         Object value = label.getValue();
-        
-        UIInput target = findTarget(context, label);
-        String _for = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
-        
-        String defaultStyleClass = target.isValid() ? OutputLabel.VALID_CLASS : OutputLabel.INVALID_CLASS;
+        UIComponent target = null;
+        String targetClientId = null;
+        UIInput input = null;
         String styleClass = label.getStyleClass();
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = styleClass == null ? OutputLabel.STYLE_CLASS : OutputLabel.STYLE_CLASS + " " + styleClass;
         
+        if(label.getFor() != null) {
+            target = findTarget(context, label);
+            targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
+            
+            if(target instanceof UIInput) {
+                input = (UIInput) target;
+                input.getAttributes().put("label", value);
+                
+                if(!input.isValid()) {
+                    styleClass = styleClass + " ui-state-error";
+                }
+            }
+        }
+
         writer.startElement("label", label);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
-        writer.writeAttribute("for", _for, "for");
         renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
+        
+        if(target != null) {
+            writer.writeAttribute("for", targetClientId, "for");
+        }
         
         if(value != null) {
             String text = value.toString();
+            
             if(label.isEscape())
                 writer.writeText(text, "value");
             else
                 writer.write(text);
-            
-            //assign label of target
-            target.getAttributes().put("label", value);
         }
         
-        if(target.isRequired()) {
+        if(input != null && input.isRequired()) {
             writer.startElement("span", label);
             writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
             writer.write("*");
@@ -68,7 +82,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         writer.endElement("label");        
     }
     
-    protected UIInput findTarget(FacesContext context, OutputLabel label) {
+    protected UIComponent findTarget(FacesContext context, OutputLabel label) {
         UIComponent _forComponent = null;
         String _for = label.getFor();
         
@@ -79,6 +93,6 @@ public class OutputLabelRenderer extends CoreRenderer {
             }
         }
         
-        return (UIInput) _forComponent;
+        return _forComponent;
     }
 }
