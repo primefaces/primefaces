@@ -45,7 +45,10 @@ public class OutputLabelRenderer extends CoreRenderer {
             
             if(target instanceof UIInput) {
                 input = (UIInput) target;
-                input.getAttributes().put("label", value);
+                
+                if(input.getAttributes().get("label") == null) {
+                    input.getAttributes().put("label", value);
+                }
                 
                 if(!input.isValid()) {
                     styleClass = styleClass + " ui-state-error";
