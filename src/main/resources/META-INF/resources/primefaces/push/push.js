@@ -2530,7 +2530,7 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
         this.connection.push(JSON.stringify(data));
     },
     
-    close: function() {
+    disconnect: function() {
         this.connection.close();
     },
 
