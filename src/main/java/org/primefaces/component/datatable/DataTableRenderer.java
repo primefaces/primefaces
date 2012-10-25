@@ -592,6 +592,7 @@ public class DataTableRenderer extends DataRenderer {
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
         String emptyMessage = table.getEmptyMessage();
+        UIComponent emptyFacet = table.getFacet("emptyMessage");
         SubTable subTable = table.getSubTable();
         SummaryRow summaryRow = table.getSummaryRow();
                 
@@ -632,7 +633,7 @@ public class DataTableRenderer extends DataRenderer {
                 }
             }
         }
-        else if(emptyMessage != null){
+        else {
             //Empty message
             writer.startElement("tr", null);
             writer.writeAttribute("class", DataTable.EMPTY_MESSAGE_ROW_CLASS, null);
@@ -641,7 +642,12 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("colspan", table.getColumnsCount(), null);
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
-            writer.write(emptyMessage);
+            
+            if(emptyFacet != null)
+                emptyFacet.encodeAll(context);
+            else
+                writer.write(emptyMessage);
+            
             writer.endElement("div");
             writer.endElement("td");
             
