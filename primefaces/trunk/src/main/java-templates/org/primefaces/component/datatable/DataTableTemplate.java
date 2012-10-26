@@ -539,25 +539,33 @@ import org.primefaces.component.datatable.feature.*;
 
         if(isSelectionEnabled() && selection != null) {
             if(this.isSingleSelectionMode()) {
-                if(hasRowKeyVe) {
-                    requestMap.put(var, selection);
-                    selectedRowKeys.add(this.getRowKey());
-                }
-                else {
-                    selectedRowKeys.add(this.getRowKeyFromModel(selection));
-                }
+                addToSelectedRowKeys(selection, requestMap, var, hasRowKeyVe);
             } 
             else {
-                for(int i = 0; i < Array.getLength(selection); i++) {
-                    if(hasRowKeyVe) {
-                        requestMap.put(var, Array.get(selection, i));
-                        selectedRowKeys.add(this.getRowKey());
+                if(selection.getClass().isArray()) {
+                    for(int i = 0; i < Array.getLength(selection); i++) {
+                        addToSelectedRowKeys(Array.get(selection, i), requestMap, var, hasRowKeyVe);   
                     }
-                    else {
-                        selectedRowKeys.add(this.getRowKeyFromModel(Array.get(selection, i)));
-                    }    
                 }
+                else {
+                    List<?> list = (List<?>) selection;
+                    
+                    for(Iterator<? extends Object> it = list.iterator(); it.hasNext();) {
+                        addToSelectedRowKeys(it.next(), requestMap, var, hasRowKeyVe);   
+                    }
+                }
+                
             }
+        }
+    }
+    
+    void addToSelectedRowKeys(Object object, Map<String,Object> map, String var, boolean hasRowKey) {
+        if(hasRowKey) {
+            map.put(var, object);
+            this.selectedRowKeys.add(this.getRowKey());
+        }
+        else {
+            this.selectedRowKeys.add(this.getRowKeyFromModel(object));
         }
     }
 
