@@ -510,8 +510,6 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         cfg.draggable = false;
         cfg.resizable = false;
         cfg.modal = true;
-        cfg.showEffect = 'fade';
-        cfg.hideEffect = 'fade';
                 
         this._super(cfg);
     },
