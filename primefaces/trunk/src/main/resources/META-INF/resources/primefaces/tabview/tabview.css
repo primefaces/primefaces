@@ -122,3 +122,14 @@
     margin:0 0.2em 1px 0;
     border-left:0 none;
 }
+
+/** RTL **/
+.ui-rtl .ui-tabs,
+.ui-rtl .ui-tabs-panel { 
+    direction: rtl; 
+}
+
+.ui-rtl .ui-tabs .ui-tabs-nav li,
+.ui-rtl ui-tabs .ui-tabs-nav li a{
+    float: right;
+}
