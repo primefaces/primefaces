@@ -28,6 +28,7 @@ import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.AttachedObjectHandler;
 import javax.faces.view.AttachedObjectTarget;
 import javax.faces.view.BehaviorHolderAttachedObjectHandler;
@@ -173,7 +174,8 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
         
         if(listener != null) {
             behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
-                this.listener.getMethodExpression(ctx, Object.class, new Class[] {})));
+                this.listener.getMethodExpression(ctx, Object.class, new Class[] {}) ,
+                this.listener.getMethodExpression(ctx, Object.class, new Class[] {AjaxBehaviorEvent.class})));
         }
         
         return behavior;
