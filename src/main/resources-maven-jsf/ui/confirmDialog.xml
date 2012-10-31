@@ -88,6 +88,18 @@
             <defaultValue>false</defaultValue>
             <description>Sets dialogs visibility. Default is false.</description>
         </attribute>
+        <attribute>
+            <name>showEffect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Effect to use when showing the dialog.</description>
+        </attribute>
+        <attribute>
+            <name>hideEffect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Effect to use when hiding the dialog.</description>
+        </attribute>
 	</attributes>
 		<resources>
         <resource>

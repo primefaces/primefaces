@@ -71,6 +71,8 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 		if(dialog.getWidth() != null) writer.write(",width:" + dialog.getWidth());
 		if(dialog.getHeight() != null) writer.write(",height:" + dialog.getHeight());
         if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
+        if(dialog.getShowEffect() != null) writer.write(",showEffect:'" + dialog.getShowEffect() + "'");
+        if(dialog.getHideEffect() != null) writer.write(",hideEffect:'" + dialog.getHideEffect() + "'");
 
         writer.write("});});");
 
