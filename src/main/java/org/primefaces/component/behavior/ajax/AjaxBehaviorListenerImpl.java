@@ -27,11 +27,13 @@ import javax.faces.event.AjaxBehaviorListener;
 public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializable {
 
     private MethodExpression listener;
+    private MethodExpression listenerWithArg;
 
     public AjaxBehaviorListenerImpl() {}
 
-    public AjaxBehaviorListenerImpl(MethodExpression listener) {
+    public AjaxBehaviorListenerImpl(MethodExpression listener, MethodExpression listenerWithArg) {
         this.listener = listener;
+        this.listenerWithArg = listenerWithArg;
     }
 
     public void processAjaxBehavior(AjaxBehaviorEvent event) throws AbortProcessingException {
@@ -41,10 +43,14 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         try{
             listener.invoke(elContext, new Object[]{});
         } catch (MethodNotFoundException mnfe) {
-            MethodExpression argListener = context.getApplication().getExpressionFactory().
+
+            try{
+                listenerWithArg.invoke(elContext , new Object[]{event});
+            }catch (MethodNotFoundException mnfe2){
+                MethodExpression argListener = context.getApplication().getExpressionFactory().
                         createMethodExpression(elContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
-            
-            argListener.invoke(elContext, new Object[]{event});
+                argListener.invoke(elContext, new Object[]{event});
+            }
         }
     }
 }
