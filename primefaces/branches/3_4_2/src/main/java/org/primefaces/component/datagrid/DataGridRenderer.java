@@ -142,10 +142,6 @@ public class DataGridRenderer extends DataRenderer {
                 if(renderedItems < itemsToRender) {
                     grid.setRowIndex(rowIndex);
 
-                    if(rowIndexVar != null) {
-                        requestMap.put(rowIndexVar, j);
-                    }
-
                     if(grid.isRowAvailable()) {
                         renderChildren(context, grid);
                         rowIndex++;
@@ -159,10 +155,6 @@ public class DataGridRenderer extends DataRenderer {
         }
 
         grid.setRowIndex(-1);	//cleanup
-
-        if(rowIndexVar != null) {
-            requestMap.remove(rowIndexVar);
-        }
 
         writer.endElement("tbody");
         writer.endElement("table");
