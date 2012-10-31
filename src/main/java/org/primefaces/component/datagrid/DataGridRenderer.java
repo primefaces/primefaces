@@ -124,8 +124,6 @@ public class DataGridRenderer extends DataRenderer {
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
         int renderedItems = 0;
-        String rowIndexVar = grid.getRowIndexVar();
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
 
         writer.startElement("table", grid);
         writer.writeAttribute("class", DataGrid.TABLE_CLASS, null);
