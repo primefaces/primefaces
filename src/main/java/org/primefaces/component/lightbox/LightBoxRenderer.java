@@ -77,6 +77,8 @@ public class LightBoxRenderer extends CoreRenderer {
         if(lb.isVisible()) writer.write(",visible:true");
         if(lb.getOnShow() != null) writer.write(",onShow:function(){" + lb.getOnShow() + "}");
         if(lb.getOnHide() != null) writer.write(",onHide:function(){" + lb.getOnHide() + "}");
+        if(lb.getIframeTitle() != null) writer.write(",iframeTitle:'" + lb.getIframeTitle() + "'");
+        
         
 		writer.write("});});");
 
