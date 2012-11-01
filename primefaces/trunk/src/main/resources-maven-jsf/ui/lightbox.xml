@@ -54,6 +54,12 @@
 			<defaultValue>false</defaultValue>
             <description>Specifies an iframe to display an external url in overlay. Default is false.</description>
 		</attribute>
+        <attribute>
+			<name>iframeTitle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Title of the iframe element.</description>
+		</attribute>
 		<attribute>
 			<name>visible</name>
 			<required>false</required>

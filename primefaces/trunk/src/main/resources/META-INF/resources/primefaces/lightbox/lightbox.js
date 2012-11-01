@@ -199,6 +199,10 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         
         this.iframe = $('<iframe frameborder="0" style="width:' + this.cfg.width + ';height:' + this.cfg.height + ';border:0 none; display: block;" src="' 
             + this.links.eq(0).attr('href') + '"></iframe>').appendTo(this.content);
+        
+        if(this.cfg.iframeTitle) {
+            this.iframe.attr('title', this.cfg.iframeTitle);
+        }
 
         this.links.click(function(e) {
             _self.show();
