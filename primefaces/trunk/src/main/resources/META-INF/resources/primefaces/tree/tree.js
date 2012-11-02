@@ -636,7 +636,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
             this.jq.find('.ui-treenode-content.ui-state-highlight').removeClass('ui-state-highlight');
         }
 
-        node.children('.ui-treenode-content').removeClass('ui-state-hover').addClass('ui-state-highlight');
+        node.removeClass('ui-treenode-unselected').addClass('ui-treenode-selected').children('.ui-treenode-content').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
         this.addToSelection(this.getRowKey(node));
 
@@ -648,7 +648,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
     unselectNode: function(node) {
         var rowKey = this.getRowKey(node);
            
-        node.children('.ui-treenode-content').removeClass('ui-state-highlight');
+        node.removeClass('ui-treenode-selected').addClass('ui-treenode-unselected').children('.ui-treenode-content').removeClass('ui-state-highlight');
 
         this.removeFromSelection(rowKey);
 
