@@ -35,6 +35,7 @@ import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
 public abstract class CoreRenderer extends Renderer {
@@ -473,5 +474,9 @@ public abstract class CoreRenderer extends Renderer {
         
         return (null != id) && (!id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX) || ((component instanceof ClientBehaviorHolder) &&
                           ! ((ClientBehaviorHolder) component).getClientBehaviors().isEmpty()));
+    }
+    
+    protected WidgetBuilder getWidgetBuilder(FacesContext context) {
+        return (WidgetBuilder) context.getAttributes().get(Constants.WIDGET_BUILDER_ATTR);
     }
 }
