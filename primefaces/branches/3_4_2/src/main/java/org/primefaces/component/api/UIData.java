@@ -167,13 +167,19 @@ public class UIData extends javax.faces.component.UIData {
     }
     
     public int getPage() {
-        int rows = this.getRowsToRender();
+        if(this.getRowCount() > 0) {
+            int rows = this.getRowsToRender();
         
-        if(rows > 0) {
-            int first = this.getFirst();
-         
-            return (int) (first / rows);
-        } else {
+            if(rows > 0) {
+                int first = this.getFirst();
+
+                return (int) (first / rows);
+            } 
+            else {
+                return 0;
+            }
+        }
+        else {
             return 0;
         }
     }
