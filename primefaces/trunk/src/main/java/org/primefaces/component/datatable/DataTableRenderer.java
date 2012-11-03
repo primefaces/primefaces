@@ -172,9 +172,10 @@ public class DataTableRenderer extends DataRenderer {
         }
         
         //default sort
-        if(!isPostBack() && table.getValueExpression("sortBy") != null && !table.isLazy()) {
+        if(!table.isDefaultSorted() && table.getValueExpression("sortBy") != null && !table.isLazy()) {
             SortFeature sortFeature = (SortFeature) DataTable.FEATURES.get(DataTableFeatureKey.SORT);
             sortFeature.sort(context, table);
+            table.setDefaultSorted();
         }
 
         if(hasPaginator) {
