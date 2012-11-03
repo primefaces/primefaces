@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -49,14 +50,10 @@ public class SortFeature implements DataTableFeature {
         table.setRowIndex(-1);
         String clientId = table.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        
 		String sortKey = params.get(clientId + "_sortKey");
 		String sortDir  = params.get(clientId + "_sortDir");
         boolean isDynamicColumn = params.containsKey(clientId + "_dynamic_column");
-        
-        //Reset state
-		table.setFirst(0);
-        
+         
         if(table.isMultiSort()) {
             List<SortMeta> multiSortMeta = new ArrayList<SortMeta>();
             String[] sortKeys = sortKey.split(",");
@@ -70,10 +67,6 @@ public class SortFeature implements DataTableFeature {
             }
             
             table.setMultiSortMeta(multiSortMeta);
-            
-            if(!table.isLazy()) {
-                multiSort(context, table, multiSortMeta);
-            }
         }
         else {
             UIColumn sortColumn = findSortColumn(context, table, sortKey, isDynamicColumn);
@@ -81,16 +74,31 @@ public class SortFeature implements DataTableFeature {
             table.setValueExpression("sortBy", sortByVE);
             table.setSortColumn(sortColumn);
             table.setSortOrder(sortDir);
-            
-            if(!table.isLazy()) {
-                sort(context, table, sortByVE, table.getVar(), SortOrder.valueOf(sortDir), sortColumn.getSortFunction());
+        }
+    }
+    
+    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+		table.setFirst(0);
+        
+        if(table.isLazy()) {
+            table.loadLazyData();
+        }
+        else {
+            if(table.isMultiSort()) {
+                multiSort(context, table);
+            } else {
+                sort(context, table);
             }
         }
-
+   
+        renderer.encodeTbody(context, table, true);
     }
     
-    public void sort(FacesContext context, DataTable table, ValueExpression sortByVE, String var, SortOrder sortOrder, MethodExpression sortFunction) {
+    public void sort(FacesContext context, DataTable table) {
         Object value = table.getValue();
+        ValueExpression sortByVE = table.getValueExpression("sortBy");
+        SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
+        MethodExpression sortFunction = table.getSortFunction();
         List list = null;
         
         if(value == null) {
@@ -105,11 +113,12 @@ public class SortFeature implements DataTableFeature {
             throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
         }
 
-        Collections.sort(list, new BeanPropertyComparator(sortByVE, var, sortOrder, sortFunction));
+        Collections.sort(list, new BeanPropertyComparator(sortByVE, table.getVar(), sortOrder, sortFunction));
     }
     
-    public void multiSort(FacesContext context, DataTable table, List<SortMeta> sortMeta) {
+    public void multiSort(FacesContext context, DataTable table) {
         Object value = table.getValue();
+        List<SortMeta> sortMeta = table.getMultiSortMeta();
         List list = null;
         
         if(value == null) {
@@ -124,7 +133,6 @@ public class SortFeature implements DataTableFeature {
             throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
         }
 
-        
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
         for(SortMeta meta : sortMeta) {
             UIColumn column = meta.getColumn();
@@ -135,14 +143,6 @@ public class SortFeature implements DataTableFeature {
         }
         
         Collections.sort(list, chainedComparator);
-    }
-
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        if(table.isLazy()) {
-            table.loadLazyData();
-        }
-                
-        renderer.encodeTbody(context, table, true);
     }
 
     public boolean shouldDecode(FacesContext context, DataTable table) {
