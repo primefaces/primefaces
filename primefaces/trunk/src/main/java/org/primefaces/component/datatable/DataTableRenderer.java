@@ -71,6 +71,10 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
         else {
+            if(table.isLazy()) {
+                table.loadLazyData();
+            }
+                    
             encodeMarkup(context, table);
             encodeScript(context, table);
         }
@@ -160,10 +164,6 @@ public class DataTableRenderer extends DataRenderer {
         boolean hasPaginator = table.isPaginator();
         String style = table.getStyle();
         
-        if(table.isLazy()) {
-            table.loadLazyData();
-        }
-
         //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
@@ -174,9 +174,7 @@ public class DataTableRenderer extends DataRenderer {
         //default sort
         if(!isPostBack() && table.getValueExpression("sortBy") != null && !table.isLazy()) {
             SortFeature sortFeature = (SortFeature) DataTable.FEATURES.get(DataTableFeatureKey.SORT);
-            
-            sortFeature.sort(context, table, table.getValueExpression("sortBy"), table.getVar(),
-                SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH)), table.getSortFunction());
+            sortFeature.sort(context, table);
         }
 
         if(hasPaginator) {
