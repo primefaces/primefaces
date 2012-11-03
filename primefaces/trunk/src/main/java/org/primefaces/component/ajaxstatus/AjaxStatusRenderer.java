@@ -38,8 +38,9 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = status.getClientId(context);
 		String widgetVar = status.resolveWidgetVar();
-        WidgetBuilder wb = new WidgetBuilder("AjaxStatus", widgetVar, clientId);
-		
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("AjaxStatus", widgetVar, clientId);
+
         startScript(writer, clientId);
         
         writer.write(wb.build());

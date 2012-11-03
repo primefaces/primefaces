@@ -23,7 +23,8 @@ public class WidgetBuilderTest {
     
     @Test
     public void shouldBuildBasicWidget() {
-        WidgetBuilder builder = new WidgetBuilder("AccordionPanel", "acco", "accoId");
+        WidgetBuilder builder = new WidgetBuilder();
+        builder.widget("AccordionPanel", "acco", "accoId");
         String script = builder.build();
         
         assertEquals("PrimeFaces.cw('AccordionPanel','acco',{id:'accoId'});", script);
@@ -31,7 +32,8 @@ public class WidgetBuilderTest {
     
     @Test
     public void shouldBuildWithAttributes() {
-        WidgetBuilder builder = new WidgetBuilder("DataTable", "dt", "dt1");
+        WidgetBuilder builder = new WidgetBuilder();
+        builder.widget("DataTable", "dt", "dt1");
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
         builder.attr("paginator", false, false);
@@ -44,7 +46,8 @@ public class WidgetBuilderTest {
     
     @Test
     public void shouldBuildWithCallbacks() {
-        WidgetBuilder builder = new WidgetBuilder("DataTable", "dt", "dt1");
+        WidgetBuilder builder = new WidgetBuilder();
+        builder.widget("DataTable", "dt", "dt1");
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
         builder.attr("paginator", false, false);

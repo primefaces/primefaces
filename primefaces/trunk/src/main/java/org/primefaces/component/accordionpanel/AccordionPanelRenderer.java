@@ -99,7 +99,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, AccordionPanel acco) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = acco.getClientId(context);
-        WidgetBuilder wb = new WidgetBuilder("AccordionPanel", acco.resolveWidgetVar(), clientId);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("AccordionPanel", acco.resolveWidgetVar(), clientId);
  		
         startScript(writer, clientId);
 		

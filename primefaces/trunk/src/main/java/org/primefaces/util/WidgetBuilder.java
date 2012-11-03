@@ -22,18 +22,21 @@ public class WidgetBuilder {
     
     protected StringBuilder buffer;
         
-    private WidgetBuilder() {}
-
+    public WidgetBuilder() {
+        buffer = new StringBuilder();
+    }
+    
     /**
      *
      * @param widgetClass   Constructor name of the widget
      * @param widgetVar     Name of the client side widget
      * @param id            Client id of the component
      */
-    public WidgetBuilder(String widgetClass, String widgetVar, String id) {
-        buffer = new StringBuilder();
+    public WidgetBuilder widget(String widgetClass, String widgetVar, String id) {
         buffer.append("PrimeFaces.cw('").append(widgetClass).append("','").append(widgetVar).append("',{");
         buffer.append("id:'").append(id).append("'");
+        
+        return this;
     }
     
     public WidgetBuilder attr(String name, String value, String defaultValue) {

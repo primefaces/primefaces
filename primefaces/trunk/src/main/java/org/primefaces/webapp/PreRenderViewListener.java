@@ -15,22 +15,20 @@
  */
 package org.primefaces.webapp;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import org.primefaces.util.Constants;
+import org.primefaces.util.WidgetBuilder;
 
-public class PostConstructApplicationEventListener implements SystemEventListener {
-
-    private final static Logger logger = Logger.getLogger(PostConstructApplicationEventListener.class.getName());
+public class PreRenderViewListener implements SystemEventListener {
 
     public boolean isListenerForSource(Object source) {
         return true;
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        logger.log(Level.INFO, "Running on PrimeFaces {0}", Constants.VERSION);
+        FacesContext.getCurrentInstance().getAttributes().put(Constants.WIDGET_BUILDER_ATTR, new WidgetBuilder());
     }
 }

@@ -28,6 +28,7 @@ public class Constants {
     public static final String PUSH_SERVER_URL = "primefaces.PUSH_SERVER_URL";
     public static final String SUBMIT_PARAM = "primefaces.SUBMIT";
     public static final String REQUEST_CONTEXT_ATTR = "primefaces.REQUEST_CONTEXT";
+    public static final String WIDGET_BUILDER_ATTR = "primefaces.WIDGET_BUILDER";
     
     public static final String DOWNLOAD_COOKIE = "primefaces.download";
 
