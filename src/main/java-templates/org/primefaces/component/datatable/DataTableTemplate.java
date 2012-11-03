@@ -696,3 +696,12 @@ import org.primefaces.component.datatable.feature.*;
     public void setMultiSortMeta(List<SortMeta> value) {
         this.multiSortMeta = value;
     }
+    
+    public boolean isDefaultSorted() {
+        Object value = getStateHelper().get("defaultSorted");
+
+        return value == null ? false : true;
+	}
+	public void setDefaultSorted() {
+		getStateHelper().put("defaultSorted", true);
+	}
