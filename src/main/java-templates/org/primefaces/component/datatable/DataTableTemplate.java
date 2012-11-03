@@ -38,6 +38,7 @@ import org.primefaces.event.data.SortEvent;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.event.ToggleEvent;
+import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.model.Visibility;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.SelectableDataModel;
@@ -234,7 +235,9 @@ import org.primefaces.component.datatable.feature.*;
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
             else if(eventName.equals("toggleSelect")) {
-                wrapperEvent = behaviorEvent;
+                boolean checked = Boolean.valueOf(params.get(clientId + "_checked"));
+                
+                wrapperEvent = new ToggleSelectEvent(this, behaviorEvent.getBehavior(), checked);
             }
             else if(eventName.equals("colReorder")) {
                 wrapperEvent = behaviorEvent;

@@ -1049,20 +1049,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     toggleCheckAll: function() {
         var checkboxes = this.tbody.find('> tr > td.ui-selection-column .ui-chkbox-box:not(.ui-state-disabled)'),
         checked = this.checkAllToggler.hasClass('ui-state-active'),
-        _self = this;
+        $this = this;
 
         if(checked) {
             this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
 
             checkboxes.each(function() {
-                _self.unselectRowWithCheckbox($(this), true);
+                $this.unselectRowWithCheckbox($(this), true);
             });
         } 
         else {
             this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
 
             checkboxes.each(function() {
-                _self.selectRowWithCheckbox($(this), true);
+                $this.selectRowWithCheckbox($(this), true);
 
             });
         }
@@ -1074,8 +1074,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.behaviors) {
             var toggleSelectBehavior = this.cfg.behaviors['toggleSelect'];
 
-            if(toggleSelectBehavior) {            
-                toggleSelectBehavior.call(this);
+            if(toggleSelectBehavior) {
+                var ext = {
+                    params: [
+                        {name: this.id + '_checked', value: !checked}
+                    ]
+                };
+                
+                toggleSelectBehavior.call(this, null, ext);
             }
         }
     },
