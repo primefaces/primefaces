@@ -322,8 +322,6 @@ public class DataTableRenderer extends DataRenderer {
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
         columnClass = resizable ? columnClass + " " + DataTable.RESIZABLE_COLUMN_CLASS : columnClass;
         columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
-        columnClass = column.isDynamic() ? columnClass + " " + DataTable.DYNAMIC_COLUMN_HEADER_CLASS : columnClass;
-
         if(isSortable) {
             if(tableSortByVe != null) {
                 if(table.isMultiSort()) {

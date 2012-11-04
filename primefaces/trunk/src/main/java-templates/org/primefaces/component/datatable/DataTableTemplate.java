@@ -47,6 +47,7 @@ import java.lang.reflect.Array;
 import javax.el.ELContext;
 import javax.faces.model.DataModel;
 import javax.faces.FacesException;
+import javax.faces.component.UINamingContainer;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.DynamicColumn;
 import javax.faces.context.FacesContext;
@@ -637,6 +638,8 @@ import org.primefaces.component.datatable.feature.*;
     public List<UIColumn> getColumns() {
         if(columns == null) {
             columns = new ArrayList<UIColumn>();
+            FacesContext context = getFacesContext();
+            char separator = UINamingContainer.getSeparatorChar(context);
             
             for(UIComponent child : this.getChildren()) {
                 if(child instanceof Column) {
@@ -644,12 +647,15 @@ import org.primefaces.component.datatable.feature.*;
                 }
                 else if(child instanceof Columns) {
                     Columns uiColumns = (Columns) child;
+                    String uiColumnsClientId = uiColumns.getClientId(context);
                     
-                    for(int j=0; j < uiColumns.getRowCount(); j++) {
-                        columns.add(new DynamicColumn(j, uiColumns));
+                    for(int i=0; i < uiColumns.getRowCount(); i++) {
+                        DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
+                        dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
+                        columns.add(dynaColumn);
                     }
                 }
-            } 
+            }
         }
         
         return columns;
