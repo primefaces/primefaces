@@ -690,6 +690,13 @@ import org.primefaces.component.datatable.feature.*;
     private List<SortMeta> multiSortMeta;
     
     public List<SortMeta> getMultiSortMeta() {
+        if(this.multiSortMeta == null) {
+            ValueExpression ve = this.getValueExpression("sortBy");
+            if(ve != null) {
+                this.multiSortMeta = (List<SortMeta>) ve.getValue(getFacesContext().getELContext());
+            }
+        }
+        
         return this.multiSortMeta;
     }
     

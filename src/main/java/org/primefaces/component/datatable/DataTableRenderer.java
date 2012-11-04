@@ -36,7 +36,7 @@ import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
-import org.primefaces.model.SortOrder;
+import org.primefaces.model.SortMeta;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.HTML;
 
@@ -174,7 +174,12 @@ public class DataTableRenderer extends DataRenderer {
         //default sort
         if(!table.isDefaultSorted() && table.getValueExpression("sortBy") != null && !table.isLazy()) {
             SortFeature sortFeature = (SortFeature) DataTable.FEATURES.get(DataTableFeatureKey.SORT);
-            sortFeature.sort(context, table);
+            if(table.isMultiSort()) {
+                sortFeature.multiSort(context, table);
+            } else {
+                sortFeature.sort(context, table);
+            }
+            
             table.setDefaultSorted();
         }
 
@@ -309,7 +314,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean isSortable = columnSortByVe != null;
         boolean hasFilter = column.getValueExpression("filterBy") != null;
         String selectionMode = column.getSelectionMode();
-        String sortIcon = isSortable ? DataTable.SORTABLE_COLUMN_ICON_CLASS : null;
+        String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
         
         String columnClass = isSortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
@@ -320,21 +325,28 @@ public class DataTableRenderer extends DataRenderer {
         columnClass = column.isDynamic() ? columnClass + " " + DataTable.DYNAMIC_COLUMN_HEADER_CLASS : columnClass;
 
         if(isSortable) {
-            String columnSortByExpression = columnSortByVe.getExpressionString();
-            
             if(tableSortByVe != null) {
-                String tableSortByExpression = tableSortByVe.getExpressionString();
-
-                if(tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression)) {
-                    String sortOrder = table.getSortOrder().toUpperCase();
-
-                    if(sortOrder.equals("ASCENDING"))
-                        sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
-                    else if(sortOrder.equals("DESCENDING"))
-                        sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
-
-                    columnClass = columnClass + " ui-state-active";
+                if(table.isMultiSort()) {
+                    List<SortMeta> sortMeta = table.getMultiSortMeta();
+                    if(sortMeta != null) {
+                        for(SortMeta meta : sortMeta) {
+                            sortIcon = resolveDefaultSortIcon(columnSortByVe, meta.getSortBy(), meta.getSortOrder().name());
+                            
+                            if(sortIcon != null) {
+                                break;
+                            }
+                        }
+                    }
                 }
+                else {
+                    sortIcon = resolveDefaultSortIcon(columnSortByVe, tableSortByVe, table.getSortOrder());
+                }
+            }
+            
+            if(sortIcon == null) {
+                sortIcon = DataTable.SORTABLE_COLUMN_ICON_CLASS;
+            } else {
+                columnClass += " ui-state-active";
             }
         }
         
@@ -384,6 +396,21 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("th");
     }
     
+    protected String resolveDefaultSortIcon(ValueExpression columnSortBy, ValueExpression tableSortBy, String sortOrder) {
+        String columnSortByExpression = columnSortBy.getExpressionString();
+        String tableSortByExpression = tableSortBy.getExpressionString();
+        String sortIcon = null;
+
+        if(tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression)) {
+            if(sortOrder.equals("ASCENDING"))
+                sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
+            else if(sortOrder.equals("DESCENDING"))
+                sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
+        }
+        
+        return sortIcon;
+    }
+        
     protected void encodeColumnHeaderContent(FacesContext context, UIColumn column, String sortIcon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         

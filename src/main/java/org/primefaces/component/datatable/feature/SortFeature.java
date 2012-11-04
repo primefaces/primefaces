@@ -63,7 +63,7 @@ public class SortFeature implements DataTableFeature {
                 UIColumn sortColumn = findSortColumn(context, table, sortKeys[i], isDynamicColumn);
                 String sortField = table.resolveStaticField(sortColumn.getValueExpression("sortBy"));
                 
-                multiSortMeta.add(new SortMeta(sortColumn, sortField, SortOrder.valueOf(sortOrders[i])));
+                multiSortMeta.add(new SortMeta(sortColumn.getValueExpression("sortBy"), sortField, SortOrder.valueOf(sortOrders[i]), sortColumn.getSortFunction()));
             }
             
             table.setMultiSortMeta(multiSortMeta);
@@ -134,11 +134,8 @@ public class SortFeature implements DataTableFeature {
         }
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
-        for(SortMeta meta : sortMeta) {
-            UIColumn column = meta.getColumn();
-            SortOrder order = meta.getSortOrder();
-            
-            BeanPropertyComparator comparator = new BeanPropertyComparator(column.getValueExpression("sortBy"), table.getVar(), order, column.getSortFunction());
+        for(SortMeta meta : sortMeta) {            
+            BeanPropertyComparator comparator = new BeanPropertyComparator(meta.getSortBy(), table.getVar(), meta.getSortOrder(), meta.getSortFunction());
             chainedComparator.addComparator(comparator);
         }
         

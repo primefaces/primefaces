@@ -625,11 +625,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var options = {
             source: this.id,
             update: this.id,
-            process: this.id,
-            formId: this.cfg.formId
-        };
-
-        var _self = this;
+            process: this.id
+        },
+        $this = this;
+        
         options.onsuccess = function(responseXML) {
             var xmlDoc = $(responseXML.documentElement),
             updates = xmlDoc.find("update");
@@ -639,12 +638,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 id = update.attr('id'),
                 content = update.text();
 
-                if(id == _self.id) {
-                    //update body
-                    _self.tbody.html(content);
+                if(id == $this.id) {
+                    $this.tbody.html(content);
 
-                    //reset paginator
-                    var paginator = _self.getPaginator();
+                    var paginator = $this.getPaginator();
                     if(paginator) {
                         paginator.setPage(0, true);
                     }
@@ -682,8 +679,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         if(multi) {
             options.params.push({name: this.id + '_multiSorting', value: true});
-            options.params.push({name: this.id + '_sortKey', value: _self.joinSortMetaOption('col')});
-            options.params.push({name: this.id + '_sortDir', value: _self.joinSortMetaOption('order')});
+            options.params.push({name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')});
+            options.params.push({name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')});
         }
         else {
             options.params.push({name: this.id + '_sortKey', value: columnHeader.attr('id')});
