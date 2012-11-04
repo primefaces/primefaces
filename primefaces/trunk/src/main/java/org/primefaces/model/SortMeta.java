@@ -15,33 +15,56 @@
  */
 package org.primefaces.model;
 
-import org.primefaces.component.api.UIColumn;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
 
 public class SortMeta {
     
-    private UIColumn column;
+    private ValueExpression sortBy;
     
     private String sortField;
     
     private SortOrder sortOrder;
+    
+    private MethodExpression sortFunction;
 
     public SortMeta() {}
     
-    public SortMeta(UIColumn column, String sortField, SortOrder sortOrder) {
-        this.column = column;
+    public SortMeta(ValueExpression sortBy, String sortField, SortOrder sortOrder, MethodExpression sortFunction) {
+        this.sortBy = sortBy;
         this.sortField = sortField;
         this.sortOrder = sortOrder;
     }
-    
-    public UIColumn getColumn() {
-        return column;
+
+    public ValueExpression getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(ValueExpression sortBy) {
+        this.sortBy = sortBy;
     }
 
     public String getSortField() {
         return sortField;
     }
 
+    public void setSortField(String sortField) {
+        this.sortField = sortField;
+    }
+
     public SortOrder getSortOrder() {
         return sortOrder;
+    }
+
+    public void setSortOrder(SortOrder sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    public MethodExpression getSortFunction() {
+        return sortFunction;
+    }
+
+    public void setSortFunction(MethodExpression sortFunction) {
+        this.sortFunction = sortFunction;
     }
 }
