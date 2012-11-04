@@ -24,17 +24,12 @@ import java.util.Map;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.row.Row;
 import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.ChainedBeanPropertyComparator;
 import org.primefaces.model.SortMeta;
@@ -52,7 +47,6 @@ public class SortFeature implements DataTableFeature {
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		String sortKey = params.get(clientId + "_sortKey");
 		String sortDir  = params.get(clientId + "_sortDir");
-        boolean isDynamicColumn = params.containsKey(clientId + "_dynamic_column");
          
         if(table.isMultiSort()) {
             List<SortMeta> multiSortMeta = new ArrayList<SortMeta>();
@@ -60,7 +54,7 @@ public class SortFeature implements DataTableFeature {
             String[] sortOrders = sortDir.split(",");
             
             for(int i = 0; i < sortKeys.length; i++) {
-                UIColumn sortColumn = findSortColumn(context, table, sortKeys[i], isDynamicColumn);
+                UIColumn sortColumn = findSortColumn(table, sortKeys[i]);
                 String sortField = table.resolveStaticField(sortColumn.getValueExpression("sortBy"));
                 
                 multiSortMeta.add(new SortMeta(sortColumn.getValueExpression("sortBy"), sortField, SortOrder.valueOf(sortOrders[i]), sortColumn.getSortFunction()));
@@ -69,7 +63,7 @@ public class SortFeature implements DataTableFeature {
             table.setMultiSortMeta(multiSortMeta);
         }
         else {
-            UIColumn sortColumn = findSortColumn(context, table, sortKey, isDynamicColumn);
+            UIColumn sortColumn = findSortColumn(table, sortKey);
             ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
             table.setValueExpression("sortBy", sortByVE);
             table.setSortColumn(sortColumn);
@@ -86,7 +80,8 @@ public class SortFeature implements DataTableFeature {
         else {
             if(table.isMultiSort()) {
                 multiSort(context, table);
-            } else {
+            } 
+            else {
                 sort(context, table);
             }
         }
@@ -95,6 +90,11 @@ public class SortFeature implements DataTableFeature {
     }
     
     public void sort(FacesContext context, DataTable table) {
+        UIColumn sortColumn = table.getSortColumn();
+        if(sortColumn.isDynamic()) {
+            ((DynamicColumn) sortColumn).applyModel();
+        }
+        
         Object value = table.getValue();
         ValueExpression sortByVE = table.getValueExpression("sortBy");
         SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
@@ -149,46 +149,11 @@ public class SortFeature implements DataTableFeature {
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return isSortRequest(context, table);
     }
-    
-    private UIColumn findSortColumn(FacesContext context, DataTable table, String sortKey, boolean isDynamicColumn) {
-        if(isDynamicColumn) {
-            String[] idTokens = sortKey.split(String.valueOf(UINamingContainer.getSeparatorChar(context)));
-            int colIndex = Integer.parseInt(idTokens[idTokens.length - 1]);
-                   
-            for(UIColumn column : table.getColumns()) {
-                if(column instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) column;
-                    
-                    if(dynamicColumn.getIndex() == colIndex) {
-                        dynamicColumn.applyModel();
-                        return dynamicColumn;
-                    }
-                }
-            }
-        }
-        else {
-            ColumnGroup group = table.getColumnGroup("header");
-            if(group != null) {
 
-                for(UIComponent child : group.getChildren()) {
-                    Row headerRow = (Row) child;
-                    
-                    for(UIComponent headerRowChild : headerRow.getChildren()) {
-                        Column column = (Column) headerRowChild;
-                        
-                        if(column.getClientId(context).equals(sortKey)) {
-                            return column;
-                        }
-                    }
-                }
-            } 
-            else {
-                //single header row
-                for(UIComponent child : table.getChildren()) {
-                    if(child.getClientId(context).equals(sortKey)) {
-                        return (Column) child;
-                    }
-                }
+    private UIColumn findSortColumn(DataTable table, String sortKey) {
+        for(UIColumn column : table.getColumns()) {
+            if(column.getColumnKey().equals(sortKey)) {
+                return column;
             }
         }
         

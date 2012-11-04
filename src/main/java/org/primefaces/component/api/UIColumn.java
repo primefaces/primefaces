@@ -29,6 +29,8 @@ public interface UIColumn {
     
     public String getContainerClientId(FacesContext context);
     
+    public String getColumnKey();
+    
     public String getClientId();
     
     public String getClientId(FacesContext context);

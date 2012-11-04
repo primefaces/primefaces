@@ -19,3 +19,7 @@ import javax.faces.component.UIComponent;
     public boolean isDynamic() {
         return false;
     }
+
+    public String getColumnKey() {
+        return this.getClientId();
+    }
