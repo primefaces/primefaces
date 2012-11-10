@@ -65,8 +65,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(modal.length > 0) {
             modal.remove();
         }
+        
+        //aria
+        this.applyARIA();
 
-        if(this.cfg.autoOpen){
+        if(this.cfg.visible){
             this.show();
         }
     },
@@ -178,6 +181,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
+        
+        this.jq.attr({
+            'aria-hidden': false
+            ,'aria-live': 'polite'
+        });
     },
     
     hide: function() {   
@@ -198,8 +206,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.onHide();
         }
 
-        if(this.cfg.modal)
+        if(this.cfg.modal) {
             this.disableModality();
+        }
+       
     },
     
     applyFocus: function() {
@@ -325,6 +335,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 closeBehavior.call(this);
             }
         }
+        
+        this.jq.attr({
+            'aria-hidden': true
+            ,'aria-live': 'off'
+        });
     },
     
     moveToTop: function() {
@@ -497,6 +512,16 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         ];
         
         PrimeFaces.ajax.AjaxRequest(options);
+    },
+    
+    applyARIA: function() {
+        this.jq.attr({
+            'role': 'dialog'
+            ,'aria-labelledby': this.id + '_title'
+            ,'aria-hidden': !this.cfg.visible
+        });
+        
+        this.titlebar.children('a.ui-dialog-titlebar-icon').attr('role', 'button');
     }
     
 });

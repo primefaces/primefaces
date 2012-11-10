@@ -54,7 +54,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.write("PrimeFaces.cw('Dialog','" + dialog.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
                 
-        if(dialog.isVisible()) writer.write(",autoOpen:true");
+        if(dialog.isVisible()) writer.write(",visible:true");
         if(!dialog.isDraggable()) writer.write(",draggable:false");
         if(!dialog.isResizable()) writer.write(",resizable:false");
         if(dialog.isModal()) writer.write(",modal:true");
@@ -117,6 +117,7 @@ public class DialogRenderer extends CoreRenderer {
         
         //title
         writer.startElement("span", null);
+        writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
         writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
         
         if(headerFacet != null)
