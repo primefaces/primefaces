@@ -136,6 +136,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             if(valueToRender != null) {
                 writer.writeAttribute("value", valueToRender , null);
             }
+            
+            if(menu.getMaxlength() != Integer.MAX_VALUE) {
+                writer.writeAttribute("maxlength", menu.getMaxlength(), null);
+            }
 
             writer.endElement("input");
         }
