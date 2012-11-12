@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class DialogRenderer extends CoreRenderer {
 
@@ -46,37 +47,34 @@ public class DialogRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dialog.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Dialog", dialog.resolveWidgetVar(), clientId);
 
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-
-        writer.write("PrimeFaces.cw('Dialog','" + dialog.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-                
-        if(dialog.isVisible()) writer.write(",visible:true");
-        if(!dialog.isDraggable()) writer.write(",draggable:false");
-        if(!dialog.isResizable()) writer.write(",resizable:false");
-        if(dialog.isModal()) writer.write(",modal:true");
-        if(dialog.getWidth() != null) writer.write(",width:" + dialog.getWidth());
-        if(dialog.getHeight() != null) writer.write(",height:" + dialog.getHeight());
-        if(dialog.getMinWidth() != Integer.MIN_VALUE) writer.write(",minWidth:" + dialog.getMinWidth());
-        if(dialog.getMinHeight() != Integer.MIN_VALUE) writer.write(",minHeight:" + dialog.getMinHeight());
-        if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
-        if(dialog.isDynamic()) writer.write(",dynamic:true");
         
-        if(dialog.getShowEffect() != null) writer.write(",showEffect:'" + dialog.getShowEffect() + "'");
-        if(dialog.getHideEffect() != null) writer.write(",hideEffect:'" + dialog.getHideEffect() + "'");
-        if(dialog.getPosition() != null) writer.write(",position:'" + dialog.getPosition() + "'");
-
-        //Client side callbacks
-        if(dialog.getOnShow() != null) writer.write(",onShow:function() {" + dialog.getOnShow() + "}");
-        if(dialog.getOnHide() != null) writer.write(",onHide:function() {" + dialog.getOnHide() + "}");
+        wb.attr("visible", dialog.isVisible(), false)
+            .attr("draggable", dialog.isDraggable(), true)
+            .attr("resizable", dialog.isResizable(), true)
+            .attr("modal", dialog.isModal(), false)
+            .attr("width", dialog.getWidth(), null)
+            .attr("height", dialog.getHeight(), null)
+            .attr("minWidth", dialog.getMinWidth(), Integer.MIN_VALUE)
+            .attr("minHeight", dialog.getMinHeight(), Integer.MIN_VALUE)
+            .attr("appendToBody", dialog.isAppendToBody(), false)
+            .attr("dynamic", dialog.isDynamic(), false)
+            .attr("showEffect", dialog.getShowEffect(), dialog.getShowEffect())
+            .attr("hideEffect", dialog.getHideEffect(), dialog.getHideEffect())
+            .attr("position", dialog.getPosition(), null)
+            .attr("closeOnEscape", dialog.isCloseOnEscape(), false);
 
         //Behaviors
         encodeClientBehaviors(context, dialog);
+        
+        writer.write(wb.build());
 
-        writer.write("});});");
+        writer.write("});");
 
         endScript(writer);
     }

@@ -79,6 +79,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.positionInitialized = false;
         this.loaded = false;
         
+        $(document).off('keydown.dialog_' + cfg.id);
+        
         this.init(cfg);
     },
     
@@ -217,12 +219,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindEvents: function() {   
-        var _self = this;
+        var $this = this;
 
         //Move dialog to top if target is not a trigger for a PrimeFaces overlay
         this.jq.mousedown(function(e) {
             if(!$(e.target).data('primefaces-overlay-target')) {
-                _self.moveToTop();
+                $this.moveToTop();
             }
         });
 
@@ -230,22 +232,34 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             $(this).addClass('ui-state-hover');
         }).mouseout(function() {
             $(this).removeClass('ui-state-hover');
-        })
+        });
 
         this.closeIcon.click(function(e) {
-            _self.hide();
+            $this.hide();
             e.preventDefault();
         });
 
         this.maximizeIcon.click(function(e) {
-            _self.toggleMaximize();
+            $this.toggleMaximize();
             e.preventDefault();
         });
 
         this.minimizeIcon.click(function(e) {
-            _self.toggleMinimize();
+            $this.toggleMinimize();
             e.preventDefault();
         });
+        
+        if(this.cfg.closeOnEscape) {
+            $(document).on('keydown.dialog_' + this.id, function(e) {
+                var keyCode = $.ui.keyCode,
+                active = parseInt($this.jq.css('z-index')) === PrimeFaces.zindex;
+                console.log($this.id);
+                if(e.which === keyCode.ESCAPE && $this.jq.hasClass('ui-overlay-visible') && active) {
+                    $this.hide();
+                    PrimeFaces.zindex--;
+                };
+            });
+        }
     },
     
     setupDraggable: function() {    
