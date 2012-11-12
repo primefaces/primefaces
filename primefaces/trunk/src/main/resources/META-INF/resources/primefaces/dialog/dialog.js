@@ -1,4 +1,4 @@
-            /**
+/**
  * PrimeFaces Dialog Widget
  */ 
 PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
@@ -253,10 +253,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             $(document).on('keydown.dialog_' + this.id, function(e) {
                 var keyCode = $.ui.keyCode,
                 active = parseInt($this.jq.css('z-index')) === PrimeFaces.zindex;
-                console.log($this.id);
+
                 if(e.which === keyCode.ESCAPE && $this.jq.hasClass('ui-overlay-visible') && active) {
                     $this.hide();
-                    PrimeFaces.zindex--;
                 };
             });
         }
