@@ -100,6 +100,13 @@
             <type>java.lang.String</type>
             <description>Effect to use when hiding the dialog.</description>
         </attribute>
+        <attribute>
+            <name>closeOnEscape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if dialog should close when escape key is pressed. Default is false.</description>
+        </attribute>
 	</attributes>
 		<resources>
         <resource>

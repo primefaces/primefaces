@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.dialog.Dialog;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmDialogRenderer extends CoreRenderer {
 
@@ -59,22 +60,21 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, ConfirmDialog dialog) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dialog.getClientId();
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("ConfirmDialog", dialog.resolveWidgetVar(), clientId)
+            .attr("visible", dialog.isVisible(), false)
+            .attr("width", dialog.getWidth(), null)
+            .attr("height", dialog.getHeight(), null)
+            .attr("appendToBody", dialog.isAppendToBody(), false)
+            .attr("showEffect", dialog.getShowEffect(), dialog.getShowEffect())
+            .attr("hideEffect", dialog.getHideEffect(), dialog.getHideEffect())
+            .attr("closeOnEscape", dialog.isCloseOnEscape(), false);
 		
         startScript(writer, clientId);
 		
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('ConfirmDialog','" + dialog.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-
-		if(dialog.isVisible()) writer.write(",autoOpen:true");
-		if(dialog.getWidth() != null) writer.write(",width:" + dialog.getWidth());
-		if(dialog.getHeight() != null) writer.write(",height:" + dialog.getHeight());
-        if(dialog.isAppendToBody()) writer.write(",appendToBody:true");
-        if(dialog.getShowEffect() != null) writer.write(",showEffect:'" + dialog.getShowEffect() + "'");
-        if(dialog.getHideEffect() != null) writer.write(",hideEffect:'" + dialog.getHideEffect() + "'");
-
-        writer.write("});});");
+        writer.write("$(function() {");                
+        writer.write(wb.build());
+        writer.write("});");
 
 		endScript(writer);
 	}
