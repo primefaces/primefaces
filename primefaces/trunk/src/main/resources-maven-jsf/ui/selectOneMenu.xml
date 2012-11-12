@@ -137,6 +137,13 @@
             <defaultValue>false</defaultValue>
             <description>Defines if filtering would be case sensitive. Default is false.</description>
 		</attribute>
+        <attribute>
+            <name>maxlength</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>Integer.MAX_VALUE</defaultValue>
+            <description>Maximum number of characters that may be entered in this field.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
