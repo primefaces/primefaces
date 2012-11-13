@@ -262,6 +262,13 @@ public class ComponentUtils {
             else if(id.equals("@parent")) {
                 buffer.append(component.getParent().getClientId(context));
             }
+            else if(id.equals("@namingcontainer")) {
+                UIComponent container = ComponentUtils.findParentNamingContainer(component);
+                
+                if(container != null) {
+                    buffer.append(container.getClientId(context));
+                } 
+            }
 			else {
 				UIComponent comp = component.findComponent(id);
 				if(comp != null) {
