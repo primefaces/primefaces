@@ -46,6 +46,7 @@ public class MessageRenderer extends UINotificationRenderer {
 
 		writer.startElement("div", uiMessage);
 		writer.writeAttribute("id", uiMessage.getClientId(facesContext), null);
+        writer.writeAttribute("aria-live", "polite", null);
 		
 		if(msgs.hasNext()) {
 			FacesMessage msg = msgs.next();
