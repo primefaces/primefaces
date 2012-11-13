@@ -17,7 +17,11 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
@@ -29,9 +33,25 @@ public class RowEditFeature implements DataTableFeature {
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = table.getClientId(context);
         int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_rowEditIndex"));
+        String action = params.get(table.getClientId(context) + "_rowEditAction");
         table.setRowIndex(editedRowId);
-        
+
+        if(action.equals("cancel")) {
+            for(UIColumn column : table.getColumns()) {
+                for(UIComponent grandkid : column.getChildren()) {
+                    if(grandkid instanceof CellEditor) {
+                        UIComponent inputFacet = grandkid.getFacet("input");
+                        
+                        if(inputFacet instanceof EditableValueHolder) {
+                            ((EditableValueHolder) inputFacet).resetValue();
+                        }
+                    }
+                }
+            }            
+        }
+
         if(table.isRowAvailable()) {
             renderer.encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar());
         }
