@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>confirmDialog</tag>
+	<tagClass>org.primefaces.component.confirmdialog.ConfirmDialogTag</tagClass>
+	<componentClass>org.primefaces.component.confirmdialog.ConfirmDialog</componentClass>
+	<componentType>org.primefaces.component.ConfirmDialog</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ConfirmDialogRenderer</rendererType>
+	<rendererClass>org.primefaces.component.confirmdialog.ConfirmDialogRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+    <description>
+      ConfirmDialog is a replacement to the legacy javascript confirmation box. 
+      Skinning, customization and avoiding popup blockers are notabled advantages over classic javascript confirmation.
+    </description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>message</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Text to be displayed in body. Required.</description>
+		</attribute>
+		<attribute>
+			<name>header</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Text for the header.</description>
+		</attribute>
+		<attribute>
+			<name>severity</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>alert</defaultValue>
+            <description>Message severity for the dislayed icon. Default is alert.</description>
+		</attribute>
+        <attribute>
+            <name>width</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Width of the dialog in pixels. Default is auto.</description>
+        </attribute>
+        <attribute>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Height of the dialog.</description>
+        </attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inner style of the dialog container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the dialog container.</description>
+		</attribute>
+		<attribute>
+			<name>closable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines if close icon should be displayed or not. Default is true.</description>
+		</attribute>
+        <attribute>
+            <name>appendToBody</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Appends dialog as a child of document body. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>visible</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Sets dialogs visibility. Default is false.</description>
+        </attribute>
+	</attributes>
+		<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

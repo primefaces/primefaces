@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY command_component_attributes			SYSTEM "../entities/command_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+<!ENTITY html_command_button_attributes			SYSTEM "../entities/html_command_button_attributes.xml">
+]>
+<component>
+	<tag>commandLink</tag>
+	<tagClass>org.primefaces.component.commandlink.CommandLinkTag</tagClass>
+	<componentClass>org.primefaces.component.commandlink.CommandLink</componentClass>
+	<componentType>org.primefaces.component.CommandLink</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.CommandLinkRenderer</rendererType>
+	<rendererClass>org.primefaces.component.commandlink.CommandLinkRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlCommandLink</parent>
+    <description>CommandLink extends standard JSF commandLink with Ajax capabilities.</description>
+	<interfaces>
+		<interface>
+			<name>org.primefaces.component.api.AjaxSource</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&command_component_attributes;
+		<attribute>
+			<name>ajax</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Specifies the submit mode, when set to true (default), submit would be made with Ajax.</description>
+		</attribute>
+		<attribute>
+			<name>async</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When set to true, ajax requests are not queued.</description>
+		</attribute>
+		<attribute>
+			<name>process</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Component(s) to process partially instead of whole view.</description>
+		</attribute>
+		<attribute>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Component(s) to be updated with ajax.</description>
+		</attribute>
+		<attribute>
+			<name>onstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute before ajax request is begins.</description>
+		</attribute>
+		<attribute>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute when ajax request is completed.</description>
+		</attribute>
+		<attribute>
+			<name>onerror</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute when ajax request fails.</description>
+		</attribute>
+		<attribute>
+			<name>onsuccess</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute when ajax request succeeds.</description>
+		</attribute>
+		<attribute>
+			<name>global</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines whether to trigger ajaxStatus or not.</description>
+		</attribute>
+        <attribute>
+			<name>partialSubmit</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When enabled, only values related to partially processed components would be serialized for ajax 
+            instead of whole form.</description>
+		</attribute>
+		<attribute>
+			<name>accesskey</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Access key that when pressed transfers focus to the link.</description>
+		</attribute>
+		<attribute>
+			<name>charset</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Character encoding of the resource designated by this hyperlink.</description>
+		</attribute>
+		<attribute>
+			<name>coords</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Position and shape of the hot spot on the screen for client use in image maps.</description>
+        </attribute>
+		<attribute>
+			<name>dir</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<defaultValue>false</defaultValue>
+			<type>java.lang.Boolean</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Disables the link.</description>
+		</attribute>
+		<attribute>
+			<name>hreflang</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Languae code of the resource designated by the link.</description>
+		</attribute>
+		<attribute>
+			<name>rel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Relationship from the current document to the anchor specified by the link, values are provided by a space-separated list of link types.</description>
+		</attribute>
+		<attribute>
+			<name>rev</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>A reverse link from the anchor specified by this link to the current document, values are provided by a space-separated list of link types.</description>
+		</attribute>
+		<attribute>
+			<name>shape</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Shape of hot spot on the screen, valid values are default, rect, circle and poly.</description>
+		</attribute>
+		<attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Position of the button element in the tabbing order.</description>
+		</attribute>
+		<attribute>
+			<name>target</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Name of a frame where the resource targeted by this link will be displayed.</description>
+		</attribute>
+		<attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Advisory tooltip informaton.</description>
+		</attribute>
+		<attribute>
+			<name>type</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Type of resource referenced by the link.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Style to be applied on the anchor element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>StyleClass to be applied on the anchor element</description>
+		</attribute>
+		<attribute>
+			<name>onblur</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when link loses focus.</description>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when link is clicked.</description>
+		</attribute>
+		<attribute>
+			<name>ondblclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when link is double clicked.</description>
+		</attribute>
+		<attribute>
+			<name>onfocus</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when link receives focus.</description>
+		</attribute>
+		<attribute>
+			<name>onkeydown</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when a key is pressed down over link.</description>
+		</attribute>
+		<attribute>
+			<name>onkeypress</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when a key is pressed and released over link.</description>
+		</attribute>
+		<attribute>
+			<name>onkeyup</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when a key is released over link.</description>
+		</attribute>
+		<attribute>
+			<name>onmousedown</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when a pointer button is pressed down over link.</description>
+		</attribute>
+		<attribute>
+			<name>onmousemove</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when a pointer button is moved within link.</description>
+		</attribute>
+		<attribute>
+			<name>onmouseout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when a pointer button is moved away from link.</description>
+		</attribute>
+		<attribute>
+			<name>onmouseover</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when a pointer button is moved onto link.</description>
+		</attribute>
+		<attribute>
+			<name>onmouseup</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when a pointer button is released over link.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

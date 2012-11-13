@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>pickList</tag>
+	<tagClass>org.primefaces.component.picklist.PickListTag</tagClass>
+	<componentClass>org.primefaces.component.picklist.PickList</componentClass>
+	<componentType>org.primefaces.component.PickList</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.PickListRenderer</rendererType>
+	<rendererClass>org.primefaces.component.picklist.PickListRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <description>PickList is used for transferring data between two different collections.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>var</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the iterator.</description>
+		</attribute>
+		<attribute>
+			<name>itemLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label of an item.</description>
+		</attribute>
+		<attribute>
+			<name>itemValue</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Value of an item.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Disables the component.</description>
+		</attribute>
+        <attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+            <description>Name of the animation to display. Default is fade.</description>
+		</attribute>
+        <attribute>
+			<name>effectSpeed</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fast</defaultValue>
+            <description>Speed of the animation. Default is fast.</description>
+		</attribute>
+        <attribute>
+			<name>addLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Add</defaultValue>
+            <description>Text of add button. Default is "Add".</description>
+		</attribute>
+        <attribute>
+			<name>addAllLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Add All</defaultValue>
+            <description>Text of add all button. Default is "Add All".</description>
+		</attribute>
+        <attribute>
+			<name>removeLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Remove</defaultValue>
+            <description>Text of remove button. Default is "Remove".</description>
+		</attribute>
+        <attribute>
+			<name>removeAllLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Remove All</defaultValue>
+            <description>Text of remove all button. Default is "Remove All".</description>
+		</attribute>
+        <attribute>
+			<name>moveUpLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Up</defaultValue>
+            <description>Text of move up button. Default is "Move Up".</description>
+		</attribute>
+        <attribute>
+			<name>moveTopLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Top</defaultValue>
+            <description>Text of move top button. Default is "Move Top".</description>
+		</attribute>
+        <attribute>
+			<name>moveDownLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Down</defaultValue>
+            <description>Text of move down button. Default is "Move Down".</description>
+		</attribute>
+        <attribute>
+			<name>moveBottomLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>Move Bottom</defaultValue>
+            <description>Text of move bottom button. Default is "Move Down".</description>
+		</attribute>
+        <attribute>
+			<name>showSourceControls</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Specifies visibility of reorder buttons of sourcelist. Default is false.</description>
+		</attribute>
+        <attribute>
+			<name>showTargetControls</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Specifies visibility of reorder buttons of target list. Default is false.</description>
+		</attribute>
+        <attribute>
+			<name>onTransfer</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute when an item is transferred from one list to another.</description>
+		</attribute>
+        <attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>A localized user presentable name.</description>
+		</attribute>
+        <attribute>
+			<name>itemDisabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Specifies if an item can be picked or not.</description>
+		</attribute>
+        <attribute>
+			<name>showSourceFilter</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Displays an input filter for source list.</description>
+		</attribute>
+        <attribute>
+			<name>showTargetFilter</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Displays an input filter for target list.</description>
+		</attribute>
+        <attribute>
+			<name>filterMatchMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.</description>
+		</attribute>
+        <attribute>
+			<name>filterFunction</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side function to use in custom filterMatchMode.</description>
+		</attribute>
+	</attributes>
+	    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

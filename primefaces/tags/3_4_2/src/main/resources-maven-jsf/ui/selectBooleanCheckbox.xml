@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>selectBooleanCheckbox</tag>
+	<tagClass>org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckboxTag</tagClass>
+	<componentClass>org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox</componentClass>
+	<componentType>org.primefaces.component.SelectBooleanCheckbox</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.SelectBooleanCheckboxRenderer</rendererType>
+	<rendererClass>org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckboxRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlSelectBooleanCheckbox</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>disabled</name>
+            <required></required>
+            <type>boolean</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>label</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>onchange</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>itemLabel</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <description>Label to display next to checkbox.</description>
+        </attribute>
+        <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.</description>
+        </attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

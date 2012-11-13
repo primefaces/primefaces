@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>poll</tag>
+    <tagClass>org.primefaces.component.poll.PollTag</tagClass>
+    <componentClass>org.primefaces.component.poll.Poll</componentClass>
+    <componentHandlerClass>org.primefaces.component.poll.PollHandler</componentHandlerClass>
+    <componentType>org.primefaces.component.Poll</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.PollRenderer</rendererType>
+    <rendererClass>org.primefaces.component.poll.PollRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description>Poll is an ajax component that has the ability to send periodical ajax requests and execute listeners on JSF backing beans.</description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.AjaxSource</name>
+        </interface>
+        <interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>interval</name>
+            <required>false</required>
+            <defaultValue>2</defaultValue>
+            <type>java.lang.Integer</type>
+            <description>Interval in seconds to do periodic ajax requests. Default is 2.</description>
+        </attribute>
+        <attribute>
+            <name>update</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Component(s) to be updated with ajax.</description>
+        </attribute>
+        <attribute>
+            <name>listener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void listener()</method-signature>
+            <description>A method expression to invoke by polling.</description>
+        </attribute>
+        <attribute>
+            <name>immediate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase.</description>
+        </attribute>
+        <attribute>
+            <name>onstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute before ajax request is begins.</description>
+        </attribute>
+        <attribute>
+            <name>oncomplete</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request is completed.</description>
+        </attribute>
+        <attribute>
+            <name>process</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Component id(s) to process partially instead of whole view.</description>
+        </attribute>
+        <attribute>
+            <name>onerror</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request fails.</description>
+        </attribute>
+        <attribute>
+            <name>onsuccess</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request succeeds.</description>
+        </attribute>
+        <attribute>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>async</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When set to true, ajax requests are not queued. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>autoStart</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>In autoStart mode, polling starts automatically on page load, to start polling on demand set to false. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>stop</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Stops polling when true.</description>
+        </attribute>
+        <attribute>
+			<name>partialSubmit</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When enabled, only values related to partially processed components would be serialized for ajax 
+            instead of whole form.</description>
+		</attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+    </resources>
+</component>

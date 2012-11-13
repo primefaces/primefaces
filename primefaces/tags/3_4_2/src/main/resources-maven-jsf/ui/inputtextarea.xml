@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_textarea_attributes			SYSTEM "../entities/html_input_textarea_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>inputTextarea</tag>
+	<tagClass>org.primefaces.component.inputtextarea.InputTextarea</tagClass>
+    <componentHandlerClass>org.primefaces.component.autocomplete.AutoCompleteHandler</componentHandlerClass>
+	<componentClass>org.primefaces.component.inputtextarea.InputTextarea</componentClass>
+	<componentType>org.primefaces.component.InputTextarea</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.InputTextareaRenderer</rendererType>
+	<rendererClass>org.primefaces.component.inputtextarea.InputTextareaRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlInputTextarea</parent>
+    <description>InputTextarea is an extension to standard inputTextara with skinning capabilities and auto growing.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&html_input_textarea_attributes;
+        &widget_var_attribute;
+        <attribute>
+			<name>autoResize</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Allows to expand height automatically when text input overflows.</description>
+		</attribute>
+        <attribute>
+			<name>maxlength</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Sets maximum character number of text area container. Default is 0, means no limit.</description>
+		</attribute>
+        <attribute>
+			<name>counter</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Id of the label component to display remaining characters.</description>
+		</attribute>
+        <attribute>
+			<name>counterTemplate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Template text to display in counter, default value is "{0}".</description>
+		</attribute>
+        <attribute>
+            <name>completeMethod</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>java.util.List completeMethod(java.lang.String)</method-signature>
+            <description>Method providing suggestions.</description>
+        </attribute>
+        <attribute>
+            <name>minQueryLength</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>3</defaultValue>
+            <description>Number of characters of a word to be typed before starting to query. Default is 3.</description>
+        </attribute>
+        <attribute>
+            <name>queryDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>700</defaultValue>
+            <description>Delay to wait in milliseconds before sending each query to the server. Default is 700</description>
+        </attribute>
+        <attribute>
+            <name>scrollHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Defines the height of the viewport for autocomplete suggestions.</description>
+        </attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

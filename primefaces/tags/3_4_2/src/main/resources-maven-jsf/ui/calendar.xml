@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>calendar</tag>
+    <tagClass>org.primefaces.component.calendar.CalendarTag</tagClass>
+    <componentClass>org.primefaces.component.calendar.Calendar</componentClass>
+    <componentHandlerClass>org.primefaces.component.calendar.CalendarHandler</componentHandlerClass>
+    <componentType>org.primefaces.component.Calendar</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.CalendarRenderer</rendererType>
+    <rendererClass>org.primefaces.component.calendar.CalendarRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlInputText</parent>
+    <description>Calendar is an input component used to provide a date. Other than basic features calendar supports paging, localization, ajax selection and more.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.InputHolder</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &input_component_attributes;
+        &html_input_text_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>mindate</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Sets calendar's minimum visible date.</description>
+        </attribute>
+        <attribute>
+            <name>maxdate</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Sets calendar's maximum visible date.</description>
+        </attribute>
+        <attribute>
+            <name>pages</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>1</defaultValue>
+            <description>Enables multiple page rendering.</description>
+        </attribute>
+        <attribute>
+            <name>mode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>popup</defaultValue>
+            <description>Defines how the calendar will be displayed. Default is popup</description>
+        </attribute>
+        <attribute>
+            <name>pattern</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>DateFormat pattern for localization.</description>
+        </attribute>
+        <attribute>
+            <name>locale</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Locale to be used for labels and conversion.</description>
+        </attribute>
+        <attribute>
+            <name>navigator</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Enables month/year navigator. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>timeZone</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()</description>
+        </attribute>
+        <attribute>
+            <name>readonlyInput</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Makes input text of a popup calendar readonly. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>showButtonPanel</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Visibility of button panel containing today and done buttons. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>effect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Effect to use when displaying and showing the popup calendar.</description>
+        </attribute>
+        <attribute>
+            <name>effectDuration</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>normal</defaultValue>
+            <description>Duration of the effect. Default is normal.</description>
+        </attribute>
+        <attribute>
+            <name>showOn</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>focus</defaultValue>
+            <description>Client side event that displays the popup calendar.</description>
+        </attribute>
+        <attribute>
+            <name>showWeek</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Displays the week number next to each week. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>disabledWeekends</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Disables weekend columns. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>showOtherMonths</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Displays days belonging to other months. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>selectOtherMonths</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Enables selection of days belonging to other months. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>yearRange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Year range for the navigator, default is "c-10:c+10"</description>
+        </attribute>
+        <attribute>
+            <name>timeOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Shows only time picker without date.</description>
+        </attribute>
+        <attribute>
+            <name>stepHour</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>1</defaultValue>
+            <description>Hour steps, default is 1.</description>
+        </attribute>
+        <attribute>
+            <name>stepMinute</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>1</defaultValue>
+            <description>Minute steps, default is 1.</description>
+        </attribute>
+        <attribute>
+            <name>stepSecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>1</defaultValue>
+            <description>Second steps, default is 1.</description>
+        </attribute>
+        <attribute>
+            <name>minHour</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Minimum boundary for hour selection. Default is 0.</description>
+        </attribute>
+        <attribute>
+            <name>maxHour</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>23</defaultValue>
+            <description>Maximum boundary for hour selection. Default is 23.</description>
+        </attribute>
+        <attribute>
+            <name>minMinute</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Minimum boundary for minute selection. Default is 0.</description>
+        </attribute>
+        <attribute>
+            <name>maxMinute</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>59</defaultValue>
+            <description>Maximum boundary for minute selection. Default is 59.</description>
+        </attribute>
+        <attribute>
+            <name>minSecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Minimum boundary for second selection. Default is 0.</description>
+        </attribute>
+        <attribute>
+            <name>maxSecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>59</defaultValue>
+            <description>Maximum boundary for second selection. Default is 59.</description>
+        </attribute>
+        <attribute>
+            <name>pagedate</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Sets the initial date when value is not populated.</description>
+        </attribute>
+        <attribute>
+            <name>beforeShowDay</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Callback to execute before displaying a date, used to customize date display.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+    </resources>
+</component>

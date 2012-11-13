@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>autoComplete</tag>
+    <tagClass>org.primefaces.component.autocomplete.AutoCompleteTag</tagClass>
+    <componentHandlerClass>org.primefaces.component.autocomplete.AutoCompleteHandler</componentHandlerClass>
+    <componentClass>org.primefaces.component.autocomplete.AutoComplete</componentClass>
+    <componentType>org.primefaces.component.AutoComplete</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.AutoCompleteRenderer</rendererType>
+    <rendererClass>org.primefaces.component.autocomplete.AutoCompleteRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlInputText</parent>
+    <description>AutoComplete provides live suggestions while an input is being typed.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.InputHolder</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &input_component_attributes;
+        &html_input_text_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>completeMethod</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>java.util.List completeMethod(java.lang.String)</method-signature>
+            <description>Method providing suggestions.</description>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Name of the iterator used in pojo based suggestion.</description>
+        </attribute>
+        <attribute>
+            <name>itemLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Label of the item.</description>
+        </attribute>
+        <attribute>
+            <name>itemValue</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Value of the item.</description>
+        </attribute>
+        <attribute>
+            <name>maxResults</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Maximum number of results to be displayed. Default is unlimited.</description>
+        </attribute>
+        <attribute>
+            <name>minQueryLength</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>1</defaultValue>
+            <description>Number of characters to be typed before starting to query. Default is 1.</description>
+        </attribute>
+        <attribute>
+            <name>queryDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>300</defaultValue>
+            <description>Delay to wait in milliseconds before sending each query to the server. Default is 300.</description>
+        </attribute>
+        <attribute>
+            <name>forceSelection</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, autoComplete only accepts input from the selection list. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>onstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute before ajax request to load suggestions begins.</description>
+        </attribute>
+        <attribute>
+            <name>oncomplete</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute after ajax request to load suggestions completes.</description>
+        </attribute>
+        <attribute>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether to trigger ajaxStatus or not. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>scrollHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Defines the height of the viewport for autocomplete suggestions.</description>
+        </attribute>
+        <attribute>
+            <name>effect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>effectDuration</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>400</defaultValue>
+        </attribute>
+        <attribute>
+            <name>dropdown</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+        <attribute>
+            <name>panelStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>panelStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>multiple</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+        <attribute>
+            <name>process</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Component(s) to process during autocomplete request.</description>
+        </attribute>
+        <attribute>
+            <name>itemtipMyPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of itemtip with respect to item. Default is "left top".</description>
+        </attribute>
+        <attribute>
+            <name>itemtipAtPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of item with respect to item. Default is "right bottom".</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+    </resources>
+</component>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>pieChart</tag>
+	<tagClass>org.primefaces.component.chart.pie.PieChartTag</tagClass>
+	<componentClass>org.primefaces.component.chart.pie.PieChart</componentClass>
+	<componentType>org.primefaces.component.chart.PieChart</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.chart.PieChartRenderer</rendererType>
+	<rendererClass>org.primefaces.component.chart.pie.PieChartRenderer</rendererClass>
+	<parent>org.primefaces.component.chart.UIChart</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+        &widget_var_attribute;
+		<attribute>
+			<name>value</name>
+			<required>false</required>
+			<type>org.primefaces.model.chart.ChartModel</type>
+			<ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>legendPosition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>seriesColors</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>diameter</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+		</attribute>
+        <attribute>
+			<name>sliceMargin</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+		</attribute>
+        <attribute>
+			<name>fill</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+		</attribute>
+        <attribute>
+			<name>shadow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+        <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>showDataLabels</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Whether data information will be showed on chart. Default is false.</description>
+		</attribute>
+        <attribute>
+            <name>dataFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Defines data information type on highlighter or slices. Default is percent.</description>
+        </attribute>
+        <attribute>
+			<name>legendCols</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <description>Defines visible column count of chart legend.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>legendRows</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <description>Defines visible row count of chart legend.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>extender</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <description>Javascript function to extend the chart with low level jqplot options.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>charts/charts.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>charts/charts.js</name>
+		</resource>
+	</resources>
+</component>

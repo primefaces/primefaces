@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>keyboard</tag>
+	<tagClass>org.primefaces.component.keyboard.KeyboardTag</tagClass>
+	<componentClass>org.primefaces.component.keyboard.Keyboard</componentClass>
+	<componentType>org.primefaces.component.Keyboard</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.KeyboardRenderer</rendererType>
+	<rendererClass>org.primefaces.component.keyboard.KeyboardRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <description>Keyboard is an input component that uses a virtual keyboard to provide the input. Notable features are the customizable layouts and skinning capabilities.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&html_input_text_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>password</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Makes the input a password field. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>showMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>focus</defaultValue>
+            <description>Specifies the showMode, 'focus', 'button', 'both'</description>
+		</attribute>
+		<attribute>
+			<name>buttonImage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Image for the button.</description>
+		</attribute>
+		<attribute>
+			<name>buttonImageOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When set to true only image of the button would be displayed. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fadeIn</defaultValue>
+            <description>Effect of the display animation. Default is fadeIn</description>
+		</attribute>
+		<attribute>
+			<name>effectDuration</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Length of the display animation.</description>
+		</attribute>
+		<attribute>
+			<name>layout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>qwerty</defaultValue>
+            <description>Built-in layout of the keyboard. Default is qwerty.</description>
+		</attribute>
+		<attribute>
+			<name>layoutTemplate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Template of the custom layout.</description>
+		</attribute>
+		<attribute>
+			<name>keypadOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Specifies displaying a keypad instead of a keyboard. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>promptLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label of the prompt text.</description>
+		</attribute>
+		<attribute>
+			<name>closeLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label of the close key.</description>
+		</attribute>
+		<attribute>
+			<name>clearLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label of the clear key.</description>
+		</attribute>
+		<attribute>
+			<name>backspaceLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label of the backspace key.</description>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+        <resource>
+			<name>keyboard/keyboard.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>keyboard/keyboard.js</name>
+		</resource>
+	</resources>
+</component>

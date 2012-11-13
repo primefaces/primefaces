@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>separator</tag>
+	<tagClass>org.primefaces.component.separator.SeparatorTag</tagClass>
+	<componentClass>org.primefaces.component.separator.Separator</componentClass>
+	<componentType>org.primefaces.component.Separator</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.SeparatorRenderer</rendererType>
+	<rendererClass>org.primefaces.component.separator.SeparatorRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Seperator displays a horizontal line to separate content.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Advisory tooltip informaton.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the separator.</description>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the separator.</description>
+		</attribute>
+	</attributes>
+</component>
