@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class BlockUIRenderer extends CoreRenderer {
     
@@ -41,21 +42,15 @@ public class BlockUIRenderer extends CoreRenderer {
             throw new FacesException("Cannot find component with identifier \"" + blockUI.getBlock() + "\" in view.");
         }
         
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("BlockUI", blockUI.resolveWidgetVar(), clientId, true);
+        
+        wb.attr("block", block.getClientId(context));
+        wb.attr("triggers", triggers, null);
+        wb.attr("blocked", blockUI.isBlocked(), false);
+        
         startScript(writer, null);
-        
-        writer.write("$(function() {");
-        writer.write("PrimeFaces.cw('BlockUI','" + blockUI.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",block:'" + block.getClientId(context) + "'");
-        if(triggers != null) {
-            writer.write(",triggers:'" + triggers + "'");
-        }
-        if(blockUI.isBlocked()) {
-            writer.write(",blocked:true");
-        }
-        
-        writer.write("});});");
-        
+        writer.write(wb.build());
         endScript(writer);
     }
     
