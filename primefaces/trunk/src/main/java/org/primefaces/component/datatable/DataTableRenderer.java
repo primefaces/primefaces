@@ -546,8 +546,6 @@ public class DataTableRenderer extends DataRenderer {
             facet.encodeAll(context);
         } else if(text != null) {
             writer.write(text);
-        } else {
-            column.encodeAll(context);
         }
         
         writer.endElement("div");
