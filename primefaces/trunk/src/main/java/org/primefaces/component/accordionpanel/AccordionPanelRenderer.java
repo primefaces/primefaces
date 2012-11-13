@@ -100,10 +100,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = acco.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("AccordionPanel", acco.resolveWidgetVar(), clientId);
+        wb.widget("AccordionPanel", acco.resolveWidgetVar(), clientId, false);
  		
-        startScript(writer, clientId);
-		
         if(acco.isDynamic()) {
             wb.attr("dynamic", true, false);
             wb.attr("cache", acco.isCache(), true);
@@ -115,8 +113,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         
         encodeClientBehaviors(context, acco, wb);
         
+        startScript(writer, clientId);
         writer.write(wb.build());
-		
 		endScript(writer);
 	}
 

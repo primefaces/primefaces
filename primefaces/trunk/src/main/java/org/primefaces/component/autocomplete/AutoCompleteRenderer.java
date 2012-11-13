@@ -33,6 +33,7 @@ import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class AutoCompleteRenderer extends InputRenderer {
 
@@ -464,47 +465,36 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
-
-        startScript(writer, clientId);
-
-        writer.write("$(function(){");
-
-        writer.write("PrimeFaces.cw('AutoComplete','" + ac.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("AutoComplete", ac.resolveWidgetVar(), clientId, true);
         
-        //Configuration
-        if(ac.getMinQueryLength() != 1) writer.write(",minLength:" + ac.getMinQueryLength());
-        if(ac.getQueryDelay() != 300) writer.write(",delay:" + ac.getQueryDelay());
-        if(ac.isForceSelection()) writer.write(",forceSelection:true");
-        if(!ac.isGlobal()) writer.write(",global:false");
-        if(ac.getScrollHeight() != Integer.MAX_VALUE) writer.write(",scrollHeight:" + ac.getScrollHeight());
-        if(ac.isMultiple()) writer.write(",multiple:true");
-        if(ac.getProcess() != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, ac, ac.getProcess()) + "'");
-        
+        wb.attr("minLength", ac.getMinQueryLength(), 1)
+            .attr("delay", ac.getQueryDelay(), 300)
+            .attr("forceSelection", ac.isForceSelection(), false)
+            .attr("global", ac.isGlobal(), true)
+            .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
+            .attr("multiple", ac.isMultiple(), false)
+            .attr("process", ac.getProcess(), null);
 
-        //Client side callbacks
-        if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");
-        if(ac.getOncomplete() != null) writer.write(",oncomplete:function(response) {" + ac.getOncomplete() + ";}");
-        
-        //Effects
         String effect = ac.getEffect();
         if(effect != null) {
-            writer.write(",effect:'" + effect + "'");
-            writer.write(",effectDuration:" + ac.getEffectDuration());
+            wb.attr("effect", effect, null)
+                .attr("effectDuration", ac.getEffectDuration(), Integer.MAX_VALUE);
         }
         
         if(ac.getFacet("itemtip") != null) {
-            writer.write(",itemtip:true");
-            
-            if(ac.getItemtipMyPosition() != null) writer.write(",itemtipMyPosition:'" + ac.getItemtipMyPosition() + "'");
-            if(ac.getItemtipAtPosition() != null) writer.write(",itemtipAtPosition:'" + ac.getItemtipAtPosition() + "'");
+            wb.attr("itemtip", true, false)
+                .attr("itemtipMyPosition", ac.getItemtipMyPosition(), null)
+                .attr("itemtipAtPosition", ac.getItemtipAtPosition(), null);
         }
-  
-        //Behaviors
-        encodeClientBehaviors(context, ac);
+        
+        wb.callback("onstart", "function(request)", ac.getOnstart())
+            .callback("oncomplete", "function(response)", ac.getOnstart());
+        
+        encodeClientBehaviors(context, ac, wb);
 
-        writer.write("});});");
-
+        startScript(writer, clientId);
+        writer.write(wb.build());
         endScript(writer);
     }
     
