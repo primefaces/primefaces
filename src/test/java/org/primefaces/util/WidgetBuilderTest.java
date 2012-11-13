@@ -24,7 +24,7 @@ public class WidgetBuilderTest {
     @Test
     public void shouldBuildBasicWidget() {
         WidgetBuilder builder = new WidgetBuilder();
-        builder.widget("AccordionPanel", "acco", "accoId");
+        builder.widget("AccordionPanel", "acco", "accoId", false);
         String script = builder.build();
         
         assertEquals("PrimeFaces.cw('AccordionPanel','acco',{id:'accoId'});", script);
@@ -33,7 +33,7 @@ public class WidgetBuilderTest {
     @Test
     public void shouldBuildWithAttributes() {
         WidgetBuilder builder = new WidgetBuilder();
-        builder.widget("DataTable", "dt", "dt1");
+        builder.widget("DataTable", "dt", "dt1", true);
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
         builder.attr("paginator", false, false);
@@ -41,13 +41,13 @@ public class WidgetBuilderTest {
         
         String script = builder.build();
         
-        assertEquals("PrimeFaces.cw('DataTable','dt',{id:'dt1',selectionMode:'single',lazy:true});", script);
+        assertEquals("$(function(){PrimeFaces.cw('DataTable','dt',{id:'dt1',selectionMode:'single',lazy:true});});", script);
     }
     
     @Test
     public void shouldBuildWithCallbacks() {
         WidgetBuilder builder = new WidgetBuilder();
-        builder.widget("DataTable", "dt", "dt1");
+        builder.widget("DataTable", "dt", "dt1", false);
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
         builder.attr("paginator", false, false);

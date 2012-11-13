@@ -61,7 +61,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dialog.getClientId();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("ConfirmDialog", dialog.resolveWidgetVar(), clientId)
+        wb.widget("ConfirmDialog", dialog.resolveWidgetVar(), clientId, true)
             .attr("visible", dialog.isVisible(), false)
             .attr("width", dialog.getWidth(), null)
             .attr("height", dialog.getHeight(), null)
@@ -70,12 +70,8 @@ public class ConfirmDialogRenderer extends CoreRenderer {
             .attr("hideEffect", dialog.getHideEffect(), dialog.getHideEffect())
             .attr("closeOnEscape", dialog.isCloseOnEscape(), false);
 		
-        startScript(writer, clientId);
-		
-        writer.write("$(function() {");                
+        startScript(writer, clientId);              
         writer.write(wb.build());
-        writer.write("});");
-
 		endScript(writer);
 	}
 

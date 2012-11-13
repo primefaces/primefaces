@@ -48,11 +48,7 @@ public class DialogRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Dialog", dialog.resolveWidgetVar(), clientId);
-
-        startScript(writer, clientId);
-
-        writer.write("$(function() {");
+        wb.widget("Dialog", dialog.resolveWidgetVar(), clientId, true);
         
         wb.attr("visible", dialog.isVisible(), false)
             .attr("draggable", dialog.isDraggable(), true)
@@ -69,13 +65,10 @@ public class DialogRenderer extends CoreRenderer {
             .attr("position", dialog.getPosition(), null)
             .attr("closeOnEscape", dialog.isCloseOnEscape(), false);
 
-        //Behaviors
         encodeClientBehaviors(context, dialog);
         
+        startScript(writer, clientId);        
         writer.write(wb.build());
-
-        writer.write("});");
-
         endScript(writer);
     }
 

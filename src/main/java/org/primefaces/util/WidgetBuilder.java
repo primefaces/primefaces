@@ -21,6 +21,8 @@ package org.primefaces.util;
 public class WidgetBuilder {
     
     protected StringBuilder buffer;
+    
+    private boolean onload = false;
         
     public WidgetBuilder() {
         buffer = new StringBuilder();
@@ -32,7 +34,12 @@ public class WidgetBuilder {
      * @param widgetVar     Name of the client side widget
      * @param id            Client id of the component
      */
-    public WidgetBuilder widget(String widgetClass, String widgetVar, String id) {
+    public WidgetBuilder widget(String widgetClass, String widgetVar, String id, boolean onload) {
+        this.onload = onload;
+        if(this.onload) {
+            buffer.append("$(function(){");
+        }
+        
         buffer.append("PrimeFaces.cw('").append(widgetClass).append("','").append(widgetVar).append("',{");
         buffer.append("id:'").append(id).append("'");
         
@@ -87,6 +94,10 @@ public class WidgetBuilder {
 
     public String build() {
         buffer.append("});");
+        
+        if(this.onload) {
+            buffer.append("});");
+        }
         
         String script = buffer.toString();
         buffer.setLength(0);
