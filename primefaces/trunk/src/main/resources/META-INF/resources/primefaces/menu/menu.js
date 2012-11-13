@@ -39,11 +39,18 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.trigger.bind(this.cfg.triggerEvent + '.ui-menu', function(e) {
+            var trigger = $(this);
+            
             if(_self.jq.is(':visible')) {
                 _self.hide();
             }
             else {
                 _self.show();
+                
+                if(trigger.is(':button')) {
+                    trigger.addClass('ui-state-focus');
+                }
+                
                 e.preventDefault();
             }
         });
@@ -66,6 +73,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 e.pageX > offset.left + _self.jq.width() ||
                 e.pageY < offset.top ||
                 e.pageY > offset.top + _self.jq.height()) {
+                
                 _self.hide(e);
             }
         });
@@ -97,6 +105,10 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     
     hide: function() {
         this.jq.fadeOut('fast');
+        
+        if(this.trigger && this.trigger.is(':button')) {
+            this.trigger.removeClass('ui-state-focus');
+        }
     },
     
     align: function() {
@@ -415,15 +427,13 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         this.rendered = true;
     },
     
-    show: function(e) {                
+    show: function() {                
         this.align();
         this.jq.css('z-index', ++PrimeFaces.zindex).show();
         
         if(!this.rendered) {
             this.render();
         }
-
-        e.preventDefault();
     }
 });
 
