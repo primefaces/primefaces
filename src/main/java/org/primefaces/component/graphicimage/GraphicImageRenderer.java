@@ -30,7 +30,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 
