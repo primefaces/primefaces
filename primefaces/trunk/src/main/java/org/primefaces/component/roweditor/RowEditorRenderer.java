@@ -38,12 +38,10 @@ public class RowEditorRenderer extends CoreRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-check", null);
-        writer.writeAttribute("style", "display:none", null);
         writer.endElement("span");
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-close", null);
-        writer.writeAttribute("style", "display:none", null);
         writer.endElement("span");
 
         writer.endElement("span");

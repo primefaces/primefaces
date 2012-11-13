@@ -1246,14 +1246,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 content = update.text();
 
                 if(id == _self.id){
-                    if(!this.args.validationFailed) {
-                        //remove row expansion
-                        if(expanded) {
-                            row.next().remove();
-                        }
-
-                        row.replaceWith(content);
+                    if(this.args.validationFailed) {
+                        content = content.replace('ui-widget-content', 'ui-widget-content ui-datatable-invalidrow ui-state-error');
                     }
+                    
+                    //remove row expansion
+                    if(expanded) {
+                        row.next().remove();
+                    }
+
+                    row.replaceWith(content);
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -1268,12 +1270,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             {name: this.id + '_rowEditAction', value: action},
             {name: this.id + '_encodeFeature', value: true}
         ];
-        
+
         if(action === 'save') {
             row.find('span.ui-cell-editor').each(function() {
-                var editorId = $(this).attr('id');
-                
-                options.params.push({name: editorId, value: editorId});
+                options.params.push({name: this.id, value: this.id});
             });
         }
 

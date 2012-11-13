@@ -190,3 +190,28 @@
     position: absolute;
     top: -4px;
 }
+
+/* InCell Editing */
+.ui-datatable .ui-datatable-invalidrow .ui-cell-editor .ui-cell-editor-output {
+    display:none;
+}
+.ui-datatable .ui-datatable-invalidrow .ui-cell-editor .ui-cell-editor-input {
+    display:inline;
+}
+
+.ui-datatable .ui-row-editor .ui-icon-pencil {
+    display: inline;
+}
+.ui-datatable .ui-datatable-invalidrow .ui-row-editor .ui-icon-pencil {
+    display: none;
+}
+
+.ui-datatable .ui-row-editor .ui-icon-check,
+.ui-datatable .ui-row-editor .ui-icon-close {
+    display: none;
+}
+
+.ui-datatable .ui-datatable-invalidrow .ui-row-editor .ui-icon-check,
+.ui-datatable .ui-datatable-invalidrow .ui-row-editor .ui-icon-close {
+    display: inline;
+}
