@@ -63,6 +63,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 		writer.startElement("div", uiMessages);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("class", "ui-messages ui-widget", null);
+        writer.writeAttribute("aria-live", "polite", null);
         
 		for(String severity : messagesMap.keySet()) {
 			List<FacesMessage> severityMessages = messagesMap.get(severity);
