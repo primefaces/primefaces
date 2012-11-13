@@ -1,4 +1,4 @@
-/**
+            /**
  * PrimeFaces Dialog Widget
  */ 
 PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
@@ -78,8 +78,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         this.positionInitialized = false;
         this.loaded = false;
-        
-        $(document).off('keydown.dialog_' + cfg.id);
         
         this.init(cfg);
     },
@@ -219,12 +217,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindEvents: function() {   
-        var $this = this;
+        var _self = this;
 
         //Move dialog to top if target is not a trigger for a PrimeFaces overlay
         this.jq.mousedown(function(e) {
             if(!$(e.target).data('primefaces-overlay-target')) {
-                $this.moveToTop();
+                _self.moveToTop();
             }
         });
 
@@ -232,33 +230,22 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             $(this).addClass('ui-state-hover');
         }).mouseout(function() {
             $(this).removeClass('ui-state-hover');
-        });
+        })
 
         this.closeIcon.click(function(e) {
-            $this.hide();
+            _self.hide();
             e.preventDefault();
         });
 
         this.maximizeIcon.click(function(e) {
-            $this.toggleMaximize();
+            _self.toggleMaximize();
             e.preventDefault();
         });
 
         this.minimizeIcon.click(function(e) {
-            $this.toggleMinimize();
+            _self.toggleMinimize();
             e.preventDefault();
         });
-        
-        if(this.cfg.closeOnEscape) {
-            $(document).on('keydown.dialog_' + this.id, function(e) {
-                var keyCode = $.ui.keyCode,
-                active = parseInt($this.jq.css('z-index')) === PrimeFaces.zindex;
-
-                if(e.which === keyCode.ESCAPE && $this.jq.hasClass('ui-overlay-visible') && active) {
-                    $this.hide();
-                };
-            });
-        }
     },
     
     setupDraggable: function() {    
@@ -548,6 +535,8 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         cfg.draggable = false;
         cfg.resizable = false;
         cfg.modal = true;
+        cfg.showEffect = 'fade';
+        cfg.hideEffect = 'fade';
                 
         this._super(cfg);
     },

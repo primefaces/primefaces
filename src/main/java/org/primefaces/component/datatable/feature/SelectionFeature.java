@@ -20,7 +20,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
@@ -49,19 +48,10 @@ public class SelectionFeature implements DataTableFeature {
 
 	void decodeMultipleSelection(DataTable table, String selection) {
 		Class<?> clazz = table.getValueExpression("selection").getType(FacesContext.getCurrentInstance().getELContext());
-        boolean isArray = clazz.isArray();
-        
-        if(!isArray && !clazz.isAssignableFrom(List.class)) {
-            throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
-        }
-                
+
 		if(ComponentUtils.isValueBlank(selection)) {
-            if(isArray) {
-                table.setSelection(Array.newInstance(clazz.getComponentType(), 0));
-            }
-            else {
-                table.setSelection(new ArrayList<Object>());
-            }
+			Object data = Array.newInstance(clazz.getComponentType(), 0);
+			table.setSelection(data);   
 		}
         else {
             String[] rowKeys = selection.split(",");
@@ -74,13 +64,8 @@ public class SelectionFeature implements DataTableFeature {
                     selectionList.add(rowData);
             }
 
-            if(isArray) {
-                Object selectionArray = Array.newInstance(clazz.getComponentType(), selectionList.size());
-                table.setSelection(selectionList.toArray((Object[]) selectionArray));
-            }
-            else {
-                table.setSelection(selectionList);
-            }
+            Object selectinArray = Array.newInstance(clazz.getComponentType(), selectionList.size());
+            table.setSelection(selectionList.toArray((Object[])selectinArray));
 		}
 	}
     

@@ -38,7 +38,6 @@ import org.primefaces.event.data.SortEvent;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.event.ToggleEvent;
-import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.model.Visibility;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.SelectableDataModel;
@@ -47,11 +46,9 @@ import java.lang.reflect.Array;
 import javax.el.ELContext;
 import javax.faces.model.DataModel;
 import javax.faces.FacesException;
-import javax.faces.component.UINamingContainer;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.DynamicColumn;
 import javax.faces.context.FacesContext;
-import org.primefaces.model.SortMeta;
 import org.primefaces.component.datatable.feature.*;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
@@ -236,9 +233,7 @@ import org.primefaces.component.datatable.feature.*;
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
             else if(eventName.equals("toggleSelect")) {
-                boolean checked = Boolean.valueOf(params.get(clientId + "_checked"));
-                
-                wrapperEvent = new ToggleSelectEvent(this, behaviorEvent.getBehavior(), checked);
+                wrapperEvent = behaviorEvent;
             }
             else if(eventName.equals("colReorder")) {
                 wrapperEvent = behaviorEvent;
@@ -307,14 +302,7 @@ import org.primefaces.component.datatable.feature.*;
         if(model != null && model instanceof LazyDataModel) {            
             LazyDataModel lazyModel = (LazyDataModel) model;
             
-            List<?> data = null;
-            
-            if(this.isMultiSort()) {
-                data = lazyModel.load(getFirst(), getRows(), getMultiSortMeta(), getFilters());
-            }
-            else {
-                data = lazyModel.load(getFirst(), getRows(), resolveSortField(), convertSortOrder(), getFilters());
-            }
+            List<?> data = lazyModel.load(getFirst(), getRows(), resolveSortField() , convertSortOrder(), getFilters());
             
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -543,33 +531,25 @@ import org.primefaces.component.datatable.feature.*;
 
         if(isSelectionEnabled() && selection != null) {
             if(this.isSingleSelectionMode()) {
-                addToSelectedRowKeys(selection, requestMap, var, hasRowKeyVe);
-            } 
-            else {
-                if(selection.getClass().isArray()) {
-                    for(int i = 0; i < Array.getLength(selection); i++) {
-                        addToSelectedRowKeys(Array.get(selection, i), requestMap, var, hasRowKeyVe);   
-                    }
+                if(hasRowKeyVe) {
+                    requestMap.put(var, selection);
+                    selectedRowKeys.add(this.getRowKey());
                 }
                 else {
-                    List<?> list = (List<?>) selection;
-                    
-                    for(Iterator<? extends Object> it = list.iterator(); it.hasNext();) {
-                        addToSelectedRowKeys(it.next(), requestMap, var, hasRowKeyVe);   
-                    }
+                    selectedRowKeys.add(this.getRowKeyFromModel(selection));
                 }
-                
+            } 
+            else {
+                for(int i = 0; i < Array.getLength(selection); i++) {
+                    if(hasRowKeyVe) {
+                        requestMap.put(var, Array.get(selection, i));
+                        selectedRowKeys.add(this.getRowKey());
+                    }
+                    else {
+                        selectedRowKeys.add(this.getRowKeyFromModel(Array.get(selection, i)));
+                    }    
+                }
             }
-        }
-    }
-    
-    void addToSelectedRowKeys(Object object, Map<String,Object> map, String var, boolean hasRowKey) {
-        if(hasRowKey) {
-            map.put(var, object);
-            this.selectedRowKeys.add(this.getRowKey());
-        }
-        else {
-            this.selectedRowKeys.add(this.getRowKeyFromModel(object));
         }
     }
 
@@ -638,8 +618,6 @@ import org.primefaces.component.datatable.feature.*;
     public List<UIColumn> getColumns() {
         if(columns == null) {
             columns = new ArrayList<UIColumn>();
-            FacesContext context = getFacesContext();
-            char separator = UINamingContainer.getSeparatorChar(context);
             
             for(UIComponent child : this.getChildren()) {
                 if(child instanceof Column) {
@@ -647,12 +625,9 @@ import org.primefaces.component.datatable.feature.*;
                 }
                 else if(child instanceof Columns) {
                     Columns uiColumns = (Columns) child;
-                    String uiColumnsClientId = uiColumns.getClientId(context);
                     
-                    for(int i=0; i < uiColumns.getRowCount(); i++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
-                        dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
-                        columns.add(dynaColumn);
+                    for(int j=0; j < uiColumns.getRowCount(); j++) {
+                        columns.add(new DynamicColumn(j, uiColumns));
                     }
                 }
             }
@@ -686,35 +661,3 @@ import org.primefaces.component.datatable.feature.*;
     public UIColumn getSortColumn() {
         return this.sortColumn;
     }
-    
-    public boolean isMultiSort() {
-        String sortMode = this.getSortMode();
-        
-        return (sortMode != null && sortMode.equals("multiple"));
-    }
-    
-    private List<SortMeta> multiSortMeta;
-    
-    public List<SortMeta> getMultiSortMeta() {
-        if(this.multiSortMeta == null) {
-            ValueExpression ve = this.getValueExpression("sortBy");
-            if(ve != null) {
-                this.multiSortMeta = (List<SortMeta>) ve.getValue(getFacesContext().getELContext());
-            }
-        }
-        
-        return this.multiSortMeta;
-    }
-    
-    public void setMultiSortMeta(List<SortMeta> value) {
-        this.multiSortMeta = value;
-    }
-    
-    public boolean isDefaultSorted() {
-        Object value = getStateHelper().get("defaultSorted");
-
-        return value == null ? false : true;
-	}
-	public void setDefaultSorted() {
-		getStateHelper().put("defaultSorted", true);
-	}

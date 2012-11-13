@@ -20,7 +20,6 @@ import java.util.List;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.columns.Columns;
@@ -29,7 +28,6 @@ public class DynamicColumn implements UIColumn {
     
     private int index;
     private Columns columns;
-    private String columnKey;
 
     public DynamicColumn(int index, Columns columns) {
         this.index = index;
@@ -154,13 +152,5 @@ public class DynamicColumn implements UIColumn {
 
     public void encodeAll(FacesContext context) throws IOException {
         this.columns.encodeAll(context);
-    }
-
-    public String getColumnKey() {
-        return this.columnKey;
-    }
-    
-    public void setColumnKey(String columnKey) {
-        this.columnKey = columnKey;
     }
 }

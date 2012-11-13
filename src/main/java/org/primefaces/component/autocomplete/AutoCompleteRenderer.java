@@ -480,7 +480,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.getScrollHeight() != Integer.MAX_VALUE) writer.write(",scrollHeight:" + ac.getScrollHeight());
         if(ac.isMultiple()) writer.write(",multiple:true");
         if(ac.getProcess() != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, ac, ac.getProcess()) + "'");
-        
 
         //Client side callbacks
         if(ac.getOnstart() != null) writer.write(",onstart:function(request) {" + ac.getOnstart() + ";}");

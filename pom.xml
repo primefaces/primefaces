@@ -6,7 +6,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>3.5-SNAPSHOT</version>
+    <version>3.4.2</version>
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
     
@@ -355,6 +355,7 @@
             <id>prime-repo</id>
             <name>PrimeFaces Maven Repository</name>
             <url>sftp://primefaces.org/var/www/repository</url>
+            <uniqueVersion>false</uniqueVersion>
         </repository>
     </distributionManagement>
 

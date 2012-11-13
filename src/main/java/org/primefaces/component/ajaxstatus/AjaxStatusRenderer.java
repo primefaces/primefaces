@@ -22,7 +22,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
 
 public class AjaxStatusRenderer extends CoreRenderer {
 
@@ -38,13 +37,13 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = status.getClientId(context);
 		String widgetVar = status.resolveWidgetVar();
-        WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("AjaxStatus", widgetVar, clientId);
-
+		
         startScript(writer, clientId);
-        
-        writer.write(wb.build());
-				
+		
+        writer.write("PrimeFaces.cw('AjaxStatus','" + widgetVar + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write("});");
+		
 		encodeCallback(context, status, widgetVar, "ajaxSend", "onprestart", AjaxStatus.PRESTART_FACET);
 		encodeCallback(context, status, widgetVar, "ajaxStart", "onstart", AjaxStatus.START_FACET);
 		encodeCallback(context, status, widgetVar, "ajaxError", "onerror", AjaxStatus.ERROR_FACET);

@@ -56,18 +56,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         //Closable tabs
         this.navContainer.find('li .ui-icon-close')
             .bind('click.tabview', function(e) {
-                var index = $(this).parent().index();
-                
-                if(_self.cfg.onTabClose) {
-                    var retVal = _self.cfg.onTabClose.call(_self, index);
-                    
-                    if(retVal !== false) {
-                        _self.remove(index);
-                    }
-                }
-                else {
-                    _self.remove(index);
-                }
+                _self.remove($(this).parent().index());
 
                 e.preventDefault();
             });

@@ -35,8 +35,6 @@ import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.Constants;
-import org.primefaces.util.WidgetBuilder;
 
 public abstract class CoreRenderer extends Renderer {
 	
@@ -305,51 +303,6 @@ public abstract class CoreRenderer extends Renderer {
             writer.write("}");
         }
     }
-    
-    /**
-     * Non-obstrusive way to apply client behaviors.
-     * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
-     */
-    protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, WidgetBuilder wb) throws IOException {
-        //ClientBehaviors
-        Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
-
-        if(!behaviorEvents.isEmpty()) {
-            String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
-
-            wb.append(",behaviors:{");
-            for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
-                String event = eventIterator.next();
-                String domEvent = event;
-
-                if(event.equalsIgnoreCase("valueChange"))       //editable value holders
-                    domEvent = "change";
-                else if(event.equalsIgnoreCase("action"))       //commands
-                    domEvent = "click";
-
-                wb.append(domEvent).append(":");
-
-                wb.append("function(event) {");
-                for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
-                    ClientBehavior behavior = behaviorIter.next();
-                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
-                    String script = behavior.getScript(cbc);    //could be null if disabled
-
-                    if(script != null) {
-                        wb.append(script);
-                    }
-                }
-                wb.append("}");
-
-                if(eventIterator.hasNext()) {
-                    wb.append(",");
-                }
-            }
-
-            wb.append("}");
-        }
-    }
 
     protected void decodeBehaviors(FacesContext context, UIComponent component)  {
 
@@ -474,9 +427,5 @@ public abstract class CoreRenderer extends Renderer {
         
         return (null != id) && (!id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX) || ((component instanceof ClientBehaviorHolder) &&
                           ! ((ClientBehaviorHolder) component).getClientBehaviors().isEmpty()));
-    }
-    
-    protected WidgetBuilder getWidgetBuilder(FacesContext context) {
-        return (WidgetBuilder) context.getAttributes().get(Constants.WIDGET_BUILDER_ATTR);
     }
 }

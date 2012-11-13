@@ -22,6 +22,10 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import org.primefaces.util.Constants;
 
+/**
+ *
+ * Displays PrimeFaces version information on startup
+ */
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
     private final static Logger logger = Logger.getLogger(PostConstructApplicationEventListener.class.getName());

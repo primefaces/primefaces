@@ -26,8 +26,4 @@ import org.primefaces.component.celleditor.CellEditor;
 	public void setColumnIndexVar(String _columnIndexVar) {
 		super.setRowIndexVar(_columnIndexVar);
 	}
-
-    public String getColumnKey() {
-        return this.getClientId();
-    }
     

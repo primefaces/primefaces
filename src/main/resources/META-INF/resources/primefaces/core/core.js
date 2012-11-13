@@ -621,13 +621,15 @@ PrimeFaces.ajax.AjaxUtils = {
             source: cfg.source,
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
-            }
-        };
+            },
+            error: function(xhr, status, errorThrown) {
+                if(cfg.onerror) {
+                    cfg.onerror.call(xhr, status, errorThrown);
+                }
 
-        xhrOptions.global = cfg.global === true || cfg.global === undefined ? true : false;
-        
-        $.ajax(xhrOptions)
-            .done(function(data, status, xhr) {
+                PrimeFaces.error('Request return with error:' + status + '.');
+            },
+            success : function(data, status, xhr) {
                 PrimeFaces.debug('Response received succesfully.');
 
                 var parsed;
@@ -651,15 +653,8 @@ PrimeFaces.ajax.AjaxUtils = {
                 }
 
                 PrimeFaces.debug('DOM is updated.');
-            })
-            .fail(function(xhr, status, errorThrown) {
-                if(cfg.onerror) {
-                    cfg.onerror.call(xhr, status, errorThrown);
-                }
-
-                PrimeFaces.error('Request return with error:' + status + '.');
-            })
-            .always(function(xhr, status) {
+            },
+            complete : function(xhr, status) {
                 if(cfg.oncomplete) {
                     cfg.oncomplete.call(this, xhr, status, this.args);
                 }
@@ -673,7 +668,12 @@ PrimeFaces.ajax.AjaxUtils = {
                 if(!cfg.async) {
                     PrimeFaces.ajax.Queue.poll();
                 }
-            });
+            }
+        };
+
+        xhrOptions.global = cfg.global == true || cfg.global == undefined ? true : false;
+        
+        $.ajax(xhrOptions);
     }
 };
 
