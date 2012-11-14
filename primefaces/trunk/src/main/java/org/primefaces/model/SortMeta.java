@@ -16,11 +16,11 @@
 package org.primefaces.model;
 
 import javax.el.MethodExpression;
-import javax.el.ValueExpression;
+import org.primefaces.component.api.UIColumn;
 
 public class SortMeta {
     
-    private ValueExpression sortBy;
+    private UIColumn column;
     
     private String sortField;
     
@@ -30,18 +30,18 @@ public class SortMeta {
 
     public SortMeta() {}
     
-    public SortMeta(ValueExpression sortBy, String sortField, SortOrder sortOrder, MethodExpression sortFunction) {
-        this.sortBy = sortBy;
+    public SortMeta(UIColumn column, String sortField, SortOrder sortOrder, MethodExpression sortFunction) {
+        this.column = column;
         this.sortField = sortField;
         this.sortOrder = sortOrder;
     }
 
-    public ValueExpression getSortBy() {
-        return sortBy;
+    public UIColumn getColumn() {
+        return column;
     }
 
-    public void setSortBy(ValueExpression sortBy) {
-        this.sortBy = sortBy;
+    public void setSortBy(UIColumn column) {
+        this.column = column;
     }
 
     public String getSortField() {

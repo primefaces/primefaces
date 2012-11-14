@@ -20,7 +20,6 @@ import java.util.List;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.columns.Columns;
@@ -42,6 +41,10 @@ public class DynamicColumn implements UIColumn {
     
     public void applyModel() {
         this.columns.setRowIndex(index);
+    }
+    
+    public void applyStatelessModel() {
+        this.columns.setRowModel(index);
     }
 
     public ValueExpression getValueExpression(String property) {
