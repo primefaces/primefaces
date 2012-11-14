@@ -32,6 +32,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.ChainedBeanPropertyComparator;
+import org.primefaces.model.DynamicChainedPropertyComparator;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
@@ -57,7 +58,7 @@ public class SortFeature implements DataTableFeature {
                 UIColumn sortColumn = findSortColumn(table, sortKeys[i]);
                 String sortField = table.resolveStaticField(sortColumn.getValueExpression("sortBy"));
                 
-                multiSortMeta.add(new SortMeta(sortColumn.getValueExpression("sortBy"), sortField, SortOrder.valueOf(sortOrders[i]), sortColumn.getSortFunction()));
+                multiSortMeta.add(new SortMeta(sortColumn, sortField, SortOrder.valueOf(sortOrders[i]), sortColumn.getSortFunction()));
             }
             
             table.setMultiSortMeta(multiSortMeta);
@@ -82,23 +83,15 @@ public class SortFeature implements DataTableFeature {
                 multiSort(context, table);
             } 
             else {
-                sort(context, table);
+                sortColumn(context, table);
             }
         }
    
         renderer.encodeTbody(context, table, true);
     }
     
-    public void sort(FacesContext context, DataTable table) {
-        UIColumn sortColumn = table.getSortColumn();
-        if(sortColumn.isDynamic()) {
-            ((DynamicColumn) sortColumn).applyModel();
-        }
-        
+    public void sort(FacesContext context, DataTable table, ValueExpression sortBy, SortOrder sortOrder, MethodExpression sortFunction) {
         Object value = table.getValue();
-        ValueExpression sortByVE = table.getValueExpression("sortBy");
-        SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
-        MethodExpression sortFunction = table.getSortFunction();
         List list = null;
         
         if(value == null) {
@@ -112,8 +105,19 @@ public class SortFeature implements DataTableFeature {
         } else {
             throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
         }
-
-        Collections.sort(list, new BeanPropertyComparator(sortByVE, table.getVar(), sortOrder, sortFunction));
+        
+        Collections.sort(list, new BeanPropertyComparator(sortBy, table.getVar(), sortOrder, sortFunction));
+    }
+      
+    private void sortColumn(FacesContext context, DataTable table) {
+        UIColumn sortColumn = table.getSortColumn();        
+        SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
+        
+        if(sortColumn.isDynamic()) {
+            ((DynamicColumn) sortColumn).applyStatelessModel();
+        }
+        
+        sort(context, table, sortColumn.getValueExpression("sortBy"), sortOrder, sortColumn.getSortFunction());
     }
     
     public void multiSort(FacesContext context, DataTable table) {
@@ -134,8 +138,18 @@ public class SortFeature implements DataTableFeature {
         }
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
-        for(SortMeta meta : sortMeta) {            
-            BeanPropertyComparator comparator = new BeanPropertyComparator(meta.getSortBy(), table.getVar(), meta.getSortOrder(), meta.getSortFunction());
+        for(SortMeta meta : sortMeta) { 
+            BeanPropertyComparator comparator = null;
+            UIColumn sortColumn = meta.getColumn();
+            
+            if(sortColumn.isDynamic()) {
+                comparator = new DynamicChainedPropertyComparator((DynamicColumn) sortColumn, sortColumn.getValueExpression("sortBy"), 
+                                            table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction());
+            } 
+            else {
+                comparator = new BeanPropertyComparator(sortColumn.getValueExpression("sortBy"), table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction());
+            }
+            
             chainedComparator.addComparator(comparator);
         }
         

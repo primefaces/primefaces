@@ -32,7 +32,7 @@ public class ChainedBeanPropertyComparator implements Comparator {
     }
     
     public int compare(Object obj1, Object obj2) {        
-        for (BeanPropertyComparator comparator : comparators) {
+        for(BeanPropertyComparator comparator : comparators) {
             int result = comparator.compare(obj1, obj2);
             
             if(result == 0) {

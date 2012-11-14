@@ -110,8 +110,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 
                 if(sortOrder === 'ASCENDING') {
                     sortOrder = 'DESCENDING';
-                }
-                else if(sortOrder === 'DESCENDING') {
+                } else if(sortOrder === 'DESCENDING') {
                     sortOrder = 'ASCENDING';
                 }
                 

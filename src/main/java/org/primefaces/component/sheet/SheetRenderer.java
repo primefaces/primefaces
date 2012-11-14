@@ -382,7 +382,7 @@ public class SheetRenderer extends CoreRenderer {
             throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
         }
 
-        Collections.sort(list, new BeanPropertyComparator(sortByVE, sheet.getVar(), sortOrder, null));
+        //Collections.sort(list, new BeanPropertyComparator(sortByVE, sheet.getVar(), sortOrder, null));
     }
     
     protected String getColumnCode(int index){
