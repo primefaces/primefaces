@@ -339,7 +339,14 @@ import org.primefaces.component.datatable.feature.*;
             sortField = resolveStaticField(sortVE);
         }
         else {
-            sortField = (column instanceof DynamicColumn) ? resolveDynamicField(sortVE) : resolveStaticField(sortVE);
+            if(column.isDynamic()) {
+                ((DynamicColumn) column).applyStatelessModel();
+                sortField = resolveDynamicField(sortVE);
+            }
+            else {
+                sortField = resolveStaticField(sortVE);
+            }
+            
         }
         
         return sortField;
