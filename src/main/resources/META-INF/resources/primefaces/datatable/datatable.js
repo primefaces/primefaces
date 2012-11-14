@@ -87,14 +87,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Applies events related to sorting in a non-obstrusive way
      */
     bindSortEvents: function() {
-        var _self = this;
+        var _self = this,
+        sortableColumns = $(this.jqId + ' th.ui-sortable-column');
         
         if(this.cfg.multiSort) {
             this.sortMeta = [];
         }
-
-        $(this.jqId + ' th.ui-sortable-column').
-            on('hover.dataTable', function() {
+        
+        sortableColumns.filter('.ui-state-active').each(function() {
+            var columnHeader = $(this),
+            sortIcon = columnHeader.find('span.ui-sortable-column-icon:first');
+            
+            if(sortIcon.hasClass('ui-icon-triangle-1-n'))
+                columnHeader.data('sortorder', 'ASCENDING');
+            else
+                columnHeader.data('sortorder', 'DESCENDING');
+        });
+        
+        sortableColumns.on('hover.dataTable', function() {
                 $(this).toggleClass('ui-state-hover');
             }).
             on('click.dataTable', function(e) {
@@ -107,7 +117,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 var columnHeader = $(this),
                 sortOrder = columnHeader.data('sortorder')||'DESCENDING',
                 metaKey = e.metaKey||e.ctrlKey;
-                
+                                
                 if(sortOrder === 'ASCENDING') {
                     sortOrder = 'DESCENDING';
                 } else if(sortOrder === 'DESCENDING') {
