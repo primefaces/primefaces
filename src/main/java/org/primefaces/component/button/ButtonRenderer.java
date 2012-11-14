@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class ButtonRenderer extends OutcomeTargetRenderer {
 
@@ -83,13 +84,11 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
     public void encodeScript(FacesContext context, Button button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
-
-        startScript(writer, clientId);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Button", button.resolveWidgetVar(), clientId, false);
         
-        writer.write("PrimeFaces.cw('Button','" + button.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-		writer.write("});");
-
+        startScript(writer, clientId);
+        writer.write(wb.build());
 		endScript(writer);
     }
 
