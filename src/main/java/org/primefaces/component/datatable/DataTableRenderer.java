@@ -414,13 +414,7 @@ public class DataTableRenderer extends DataRenderer {
         
     protected void encodeColumnHeaderContent(FacesContext context, UIColumn column, String sortIcon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
-        if(sortIcon != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", sortIcon, null);
-            writer.endElement("span");
-        }
-                
+                        
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
         
@@ -432,6 +426,12 @@ public class DataTableRenderer extends DataRenderer {
             writer.write(headerText);
         
         writer.endElement("span");
+        
+        if(sortIcon != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", sortIcon, null);
+            writer.endElement("span");
+        }
     }
     
     protected void encodeFilter(FacesContext context, DataTable table, UIColumn column) throws IOException {
