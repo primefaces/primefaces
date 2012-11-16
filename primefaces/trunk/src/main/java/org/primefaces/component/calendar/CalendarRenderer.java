@@ -31,6 +31,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
+import org.primefaces.util.WidgetBuilder;
 
 public class CalendarRenderer extends InputRenderer {
 
@@ -121,18 +122,13 @@ public class CalendarRenderer extends InputRenderer {
         String clientId = calendar.getClientId(context);
         Locale locale = calendar.calculateLocale(context);
         String pattern = calendar.isTimeOnly() ? calendar.calculateTimeOnlyPattern() : calendar.calculatePattern();
-
-        startScript(writer, clientId);
-
-        writer.write("$(function(){");
-
-        writer.write("PrimeFaces.cw('Calendar','" + calendar.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Calendar", calendar.resolveWidgetVar(), clientId, true);
         
-        writer.write(",popup:" + calendar.isPopup());
-        writer.write(",locale:'" + locale.toString() + "'");
-        writer.write(",dateFormat:'" + CalendarUtils.convertPattern(pattern) + "'");
-
+        wb.attr("popup", calendar.isPopup())
+            .attr("locale", locale.toString())
+            .attr("dateFormat", CalendarUtils.convertPattern(pattern));
+        
         //default date
         Object pagedate = calendar.getPagedate();
         String defaultDate = null;
@@ -147,63 +143,52 @@ public class CalendarRenderer extends InputRenderer {
             defaultDate = CalendarUtils.getValueAsString(context, calendar, pagedate);
         }
         
-        if(defaultDate != null) {
-            writer.write(",defaultDate:'" + defaultDate + "'");
+        wb.attr("defaultDate", defaultDate, null)
+            .attr("numberOfMonths", calendar.getPages(), 1)
+            .attr("minDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMindate()), null)
+            .attr("maxDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMaxdate()), null)
+            .attr("showButtonPanel", calendar.isShowButtonPanel(), false)
+            .attr("showWeek", calendar.isShowWeek(), false)
+            .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
+            .attr("disabled", calendar.isDisabled(), false)
+            .attr("yearRange", calendar.getYearRange(), null)
+            .attr("preShowDay", calendar.getBeforeShowDay(), null)
+            .attr("readOnlyInput", calendar.isReadonlyInput(), false);
+        
+        if(calendar.isNavigator()) {
+            wb.attr("changeMonth", true).attr("changeYear", true);
         }
         
-        if(calendar.getPages() != 1) writer.write(",numberOfMonths:" + calendar.getPages());
-        if(calendar.getMindate() != null) writer.write(",minDate:'" + CalendarUtils.getValueAsString(context, calendar, calendar.getMindate()) + "'");
-        if(calendar.getMaxdate() != null) writer.write(",maxDate:'" + CalendarUtils.getValueAsString(context, calendar, calendar.getMaxdate()) + "'");
-        if(calendar.isShowButtonPanel()) writer.write(",showButtonPanel:true");
-        if(calendar.isShowWeek()) writer.write(",showWeek:true");
-        if(calendar.isDisabledWeekends()) writer.write(",disabledWeekends:true");
-        if(calendar.isDisabled()) writer.write(",disabled:true");
-        if(calendar.getYearRange() != null) writer.write(",yearRange:'" + calendar.getYearRange() + "'");
-        if(calendar.getBeforeShowDay() != null) writer.write(",preShowDay:" + calendar.getBeforeShowDay());
-        if(calendar.isReadonlyInput()) writer.write(",readonlyInput:true");
-
-        if(calendar.isNavigator()) {
-            writer.write(",changeMonth:true");
-            writer.write(",changeYear:true");
-        }
-
         if(calendar.getEffect() != null) {
-            writer.write(",showAnim:'" + calendar.getEffect() + "'");
-            writer.write(",duration:'" + calendar.getEffectDuration() + "'");
+            wb.attr("showAnim", calendar.getEffect()).attr("duration", calendar.getEffectDuration());
         }
-
+        
         String showOn = calendar.getShowOn();
         if(!showOn.equalsIgnoreCase("focus")) {
-            writer.write(",showOn:'" + showOn + "'");
+            wb.attr("showOn", showOn);
         }
-
+        
         if(calendar.isShowOtherMonths()) {
-            writer.write(",showOtherMonths:true");
-            writer.write(",selectOtherMonths:" + calendar.isSelectOtherMonths());
+            wb.attr("showOtherMonths", true).attr("selectOtherMonths", true);
         }
-
-        //time
+        
         if(calendar.hasTime()) {
-            writer.write(",timeOnly:" + calendar.isTimeOnly());
-
-            //step
-            writer.write(",stepHour:" + calendar.getStepHour());
-            writer.write(",stepMinute:" + calendar.getStepMinute());
-            writer.write(",stepSecond:" + calendar.getStepSecond());
-            
-            //minmax
-            writer.write(",hourMin:" + calendar.getMinHour());
-            writer.write(",hourMax:" + calendar.getMaxHour());
-            writer.write(",minuteMin:" + calendar.getMinMinute());
-            writer.write(",minuteMax:" + calendar.getMaxMinute());
-            writer.write(",secondMin:" + calendar.getMinSecond());
-            writer.write(",secondMax:" + calendar.getMaxSecond());
+            wb.attr("timeOnly", calendar.isTimeOnly())
+                .attr("stepHour", calendar.getStepHour())
+                .attr("stepMinute", calendar.getStepMinute())
+                .attr("stepSecond", calendar.getStepSecond())
+                .attr("hourMin", calendar.getMinHour())
+                .attr("hourMax", calendar.getMaxHour())
+                .attr("minuteMin", calendar.getMinMinute())
+                .attr("minuteMax", calendar.getMaxMinute())
+                .attr("secondMin", calendar.getMinSecond())
+                .attr("secondMax", calendar.getMaxSecond());
         }
-
-        encodeClientBehaviors(context, calendar);
-
-        writer.write("});});");
-
+        
+        encodeClientBehaviors(context, calendar, wb);
+        
+        startScript(writer, clientId);
+        writer.write(wb.build());
         endScript(writer);
     }
 

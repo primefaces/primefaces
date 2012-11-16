@@ -52,6 +52,18 @@ public class WidgetBuilder {
         return this;
     }
     
+    public WidgetBuilder attr(String name, boolean value) {
+        buffer.append(",").append(name).append(":").append(value);
+        
+        return this;
+    }
+    
+    public WidgetBuilder attr(String name, int value) {
+        buffer.append(",").append(name).append(":").append(value);
+        
+        return this;
+    }
+    
     public WidgetBuilder attr(String name, String value, String defaultValue) {
         if(value != null && !value.equals(defaultValue)) {
             buffer.append(",").append(name).append(":'").append(value).append("'");
