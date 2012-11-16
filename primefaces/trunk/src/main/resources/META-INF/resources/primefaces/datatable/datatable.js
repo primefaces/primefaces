@@ -42,7 +42,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.cfg.editable) {
-            this.setupCellEditorEvents();
+            this.bindEditEvents();
         }
 
         if(this.cfg.scrollable) {
@@ -1198,6 +1198,40 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
+     * Binds editor events non-obstrusively
+     */
+    bindEditEvents: function() {
+        this.cfg.editMode = this.cfg.editMode||'row';
+        var $this = this;
+        
+        if(this.cfg.editMode === 'row') {
+            var rowEditors = $(this.jqId + ' tbody.ui-datatable-data > tr > td span.ui-row-editor');
+
+            rowEditors.find('span.ui-icon-pencil').die().live('click', function() {
+                $this.showEditors(this);
+            });
+
+            rowEditors.find('span.ui-icon-check').die().live('click', function() {
+                $this.saveRowEdit($(this).parent());
+            });
+
+            rowEditors.find('span.ui-icon-close').die().live('click', function() {
+                $this.cancelRowEdit($(this).parent());
+            }); 
+        }
+        else if(this.cfg.editMode === 'cell') {
+            var cellSelector = this.jqId + ' tbody.ui-datatable-data tr td.ui-editable-column div.ui-dt-c';
+            
+            $(document).off('dblclick.dataTable', cellSelector)
+                        .on('dblclick.dataTable', cellSelector, null, function(e) {
+                           var cell = $(this);
+                           cell.parent().addClass('ui-state-highlight');
+                           $this.showCellEditor(cell);
+                        });
+        }
+    },
+    
+    /**
      * Displays in-cell editors for given row
      */
     showEditors: function(el) {
@@ -1213,6 +1247,58 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 element.hide().siblings().show();
             }
         });
+    },
+    
+    showCellEditor: function(cellvalue) {
+        var cell = cellvalue||this.currentCell,
+        $this = this;
+        
+        cell.find('span.ui-cell-editor-output').hide();
+        cell.find('span.ui-cell-editor-input').show().find(':input:first').focus();
+        
+        if(!cell.data('events-bound')) {
+            cell.data('events-bound', true)
+                .find(':input').on('blur.dataTable', function(e) {
+                    $this.hideCellEditor(cell);
+            });
+        }
+        
+    },
+    
+    hideCellEditor: function(cell) {
+        var editableContainer = cell.find('span.ui-cell-editor-input'),
+        displayContainer = cell.find('span.ui-cell-editor-output'),
+        input = editableContainer.find(':input:first');
+        
+        editableContainer.hide();
+        displayContainer.text(input.val()).show();
+        editableContainer.parents('td:first').removeClass('ui-state-highlight');
+        
+        this.doCellEditRequest(cell);
+    },
+    
+    doCellEditRequest: function(cell) {
+        var rowMeta = this.getRowMeta(cell.parents('tr.ui-widget-content:first')),
+        cellEditor = cell.children('.ui-cell-editor'),
+        cellEditorId = cellEditor.attr('id'),
+        cellIndex = cell.parents('td:first').index(),
+        cellInfo = rowMeta.index + ',' + cellIndex;
+
+        var options = {
+            source: this.id
+            ,process: this.id
+            ,params: [
+                {name: this.id + '_cellInfo', value: cellInfo}
+                ,{name: cellEditorId, value: cellEditorId}
+            ]
+        };
+
+        if(this.hasBehavior('cellEdit')) {
+            this.cfg.behaviors['cellEdit'].call(this, cell, options);
+        } 
+        else {
+            PrimeFaces.ajax.AjaxRequest(options);
+        }
     },
     
     /**
@@ -1334,27 +1420,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     isSelectionEnabled: function() {
         return this.cfg.selectionMode != undefined || this.cfg.columnSelectionMode != undefined;
     },
-        
-    /**
-     * Binds cell editor events non-obstrusively
-     */
-    setupCellEditorEvents: function() {
-        var _self = this,
-        rowEditors = $(this.jqId + ' tbody.ui-datatable-data > tr > td span.ui-row-editor');
-
-        rowEditors.find('span.ui-icon-pencil').die().live('click', function() {
-            _self.showEditors(this);
-        });
-
-        rowEditors.find('span.ui-icon-check').die().live('click', function() {
-            _self.saveRowEdit($(this).parent());
-        });
-
-        rowEditors.find('span.ui-icon-close').die().live('click', function() {
-            _self.cancelRowEdit($(this).parent());
-        }); 
-    },
-    
+            
     /**
      * Clears table filters
      */

@@ -143,6 +143,7 @@ public class DataTableRenderer extends DataRenderer {
         //Editing
         if(table.isEditable()) {
             writer.write(",editable:true");
+            writer.write(",editMode:'" + table.getEditMode() + "'");
         }
         
         //MultiColumn Sorting
