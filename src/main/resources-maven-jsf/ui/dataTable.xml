@@ -255,6 +255,12 @@
             <defaultValue>single</defaultValue>
             <description>Defines sorting mode, valid values are "single" (default) and "multiple".</description>
 		</attribute>
+        <attribute>
+			<name>editMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Defines edit mode, valid values are "row" and "cell".</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

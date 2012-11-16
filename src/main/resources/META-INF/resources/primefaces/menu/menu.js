@@ -676,17 +676,33 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         $(document).off(event, rowSelector)
                     .on(event, rowSelector, null, function(e) {
                         var widget = window[_self.cfg.targetWidgetVar];
-                        widget.onRowClick(e, this, true);
                         
-                        if(widget.hasBehavior('contextMenu')) {
-                            var rowMeta = widget.getRowMeta($(this));
-        
-                            widget.fireRowSelectEvent(rowMeta.key, 'contextMenu');
-                        }
-                        
-                        _self.show(e);
+                        if(widget.cfg.selectionMode) {
+                            widget.onRowClick(e, this, true);
 
-                        e.preventDefault();
+                            if(widget.hasBehavior('contextMenu')) {
+                                var rowMeta = widget.getRowMeta($(this));
+
+                                widget.fireRowSelectEvent(rowMeta.key, 'contextMenu');
+                            }
+
+                            _self.show(e);
+
+                            e.preventDefault();
+                        }
+                        else {
+                            var target = $(e.target),
+                            cell = target.is('div.ui-dt-c') ? target : target.parents('div.ui-dt-c:first');
+                            
+                            if(widget.currentCell) {
+                                widget.currentCell.parent().removeClass('ui-state-highlight');
+                            }
+                            
+                            widget.currentCell = cell;
+                            widget.currentCell.parent().addClass('ui-state-highlight');
+                            
+                            _self.show(e);
+                        }
                     });
     },
     

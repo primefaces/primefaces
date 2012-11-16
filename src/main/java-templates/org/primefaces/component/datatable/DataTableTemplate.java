@@ -31,6 +31,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.PhaseId;
 import org.primefaces.util.Constants;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.event.data.PageEvent;
@@ -102,7 +103,8 @@ import org.primefaces.component.datatable.feature.*;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
                                                         "rowUnselect", "rowEdit", "rowEditCancel", "colResize", "toggleSelect", "colReorder", "contextMenu"
-                                                        ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect", "rowToggle"));
+                                                        ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect", "rowToggle"
+                                                        ,"cellEdit"));
 
                                                         
     static Map<DataTableFeatureKey,DataTableFeature> FEATURES;
@@ -250,6 +252,14 @@ import org.primefaces.component.datatable.feature.*;
                 setRowIndex(Integer.parseInt(rowIndex));
                 
                 wrapperEvent = new ToggleEvent(this, behaviorEvent.getBehavior(), visibility, getRowData());
+            }
+            else if(eventName.equals("cellEdit")) {
+                String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
+                int rowIndex = Integer.parseInt(cellInfo[0]);
+                int cellIndex = Integer.parseInt(cellInfo[1]);
+                UIColumn column = this.getColumns().get(cellIndex);
+                
+                wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), rowIndex, column);
             }
             
             wrapperEvent.setPhaseId(event.getPhaseId());
