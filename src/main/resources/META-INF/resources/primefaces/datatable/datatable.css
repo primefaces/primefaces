@@ -216,3 +216,8 @@
 .ui-datatable .ui-datatable-invalidrow .ui-row-editor .ui-icon-close {
     display: inline;
 }
+
+.ui-datatable .ui-datatable-data .ui-dt-c.ui-cell-editing {
+    padding:0;
+    margin:0;
+}
