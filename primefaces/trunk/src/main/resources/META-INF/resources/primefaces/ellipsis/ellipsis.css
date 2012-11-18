@@ -1,0 +1,26 @@
+/* 
+    Document   : ellipsis
+    Created on : 15.Kas.2012, 10:44:36
+    Author     : umut
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.ui-ellipsis {
+    white-space:nowrap; 
+    overflow:hidden; 
+    text-overflow:ellipsis;
+    cursor: default;
+}
+
+.ui-ellipsis-open {
+    overflow:visible;
+    white-space: normal;
+}
+
+/* will be delete 
+.ui-ellipsis:hover {
+    overflow:visible;
+    white-space: normal;
+}
+*/
