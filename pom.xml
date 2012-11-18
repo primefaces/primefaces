@@ -286,6 +286,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/ellipsis/ellipsis.css</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -528,6 +529,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/ellipsis/ellipsis.css</include>
                                     </includes>
                                 </aggregation>
                                 <aggregation>

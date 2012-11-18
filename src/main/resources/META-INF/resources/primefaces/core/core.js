@@ -53,16 +53,16 @@ PrimeFaces = {
             function() {
                 $(this).removeClass('ui-state-hover');
             }
-        ).focus(function() {
-                $(this).addClass('ui-state-focus');
+            ).focus(function() {
+            $(this).addClass('ui-state-focus');
         }).blur(function() {
-                $(this).removeClass('ui-state-focus');
+            $(this).removeClass('ui-state-focus');
         });
         
         //aria
         input.attr('role', 'textbox').attr('aria-disabled', input.is(':disabled'))
-                                      .attr('aria-readonly', input.prop('readonly'))
-                                      .attr('aria-multiline', input.is('textarea'));
+        .attr('aria-readonly', input.prop('readonly'))
+        .attr('aria-multiline', input.is('textarea'));
         
         
         return this;
@@ -102,23 +102,23 @@ PrimeFaces = {
     },
     
     skinSelect : function(select) {
-       select.mouseover(function() {
+        select.mouseover(function() {
             var el = $(this);
             if(!el.hasClass('ui-state-focus'))
                 el.addClass('ui-state-hover'); 
-       }).mouseout(function() {
+        }).mouseout(function() {
             $(this).removeClass('ui-state-hover'); 
-       }).focus(function() {
+        }).focus(function() {
             $(this).addClass('ui-state-focus').removeClass('ui-state-hover');
-       }).blur(function() {
+        }).blur(function() {
             $(this).removeClass('ui-state-focus ui-state-hover'); 
-       });
+        });
         
         return this;
     },
     
     isIE: function(version) {
-       return ($.browser.msie && parseInt($.browser.version, 10) == version);
+        return ($.browser.msie && parseInt($.browser.version, 10) == version);
     },
 
     //ajax shortcut
@@ -189,7 +189,7 @@ PrimeFaces = {
     createWidget : function(widgetConstructor, widgetVar, cfg, resource) {            
         if(PrimeFaces.widget[widgetConstructor]) {
             if(window[widgetVar])
-                window[widgetVar].refresh(cfg);                                     //ajax update
+                window[widgetVar].refresh(cfg);                                     //ajax spdate
             else
                 window[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);  //page init
         }
@@ -226,11 +226,11 @@ PrimeFaces = {
     
     getScript: function(url, callback) {
         $.ajax({
-			type: "GET",
-			url: url,
-			success: callback,
-			dataType: "script",
-			cache: true
+            type: "GET",
+            url: url,
+            success: callback,
+            dataType: "script",
+            cache: true
         });
     },
     
@@ -282,11 +282,12 @@ PrimeFaces = {
         var offset = $(PrimeFaces.escapeClientId(id)).offset();
 
         $('html,body').animate({
-                scrollTop:offset.top
-                ,scrollLeft:offset.left
-            },{
-               easing: 'easeInCirc'
-            },1000);
+            scrollTop:offset.top
+            ,
+            scrollLeft:offset.left
+        },{
+            easing: 'easeInCirc'
+        },1000);
             
     },
     
@@ -306,6 +307,12 @@ PrimeFaces = {
         }
         else if((offset + itemHeight) > elementHeight) {
             container.scrollTop(scroll + offset - elementHeight + itemHeight);
+        }
+    },
+    
+    ellipsis: function(element){
+        if(!element.hasClass('ui-ellipsis-open')){
+            element.addClass("ui-ellipsis-open");
         }
     },
 
@@ -343,25 +350,25 @@ PrimeFaces.widget = {};
  */
 PrimeFaces.widget.BaseWidget = Class.extend({
     
-  init: function(cfg) {
-    this.cfg = cfg;
-    this.id = cfg.id;
-    this.jqId = PrimeFaces.escapeClientId(this.id),
-    this.jq = $(this.jqId);
+    init: function(cfg) {
+        this.cfg = cfg;
+        this.id = cfg.id;
+        this.jqId = PrimeFaces.escapeClientId(this.id),
+        this.jq = $(this.jqId);
     
-    //remove script tag
-    $(this.jqId + '_s').remove();
-  },
+        //remove script tag
+        $(this.jqId + '_s').remove();
+    },
   
-  //used mostly in ajax updates, reloads the widget configuration
-  refresh: function(cfg) {
-    return this.init(cfg);
-  },
+    //used mostly in ajax updates, reloads the widget configuration
+    refresh: function(cfg) {
+        return this.init(cfg);
+    },
   
-  //returns jquery object representing the main dom element related to the widget
-  getJQ: function(){
-    return this.jq;
-  }
+    //returns jquery object representing the main dom element related to the widget
+    getJQ: function(){
+        return this.jq;
+    }
   
 });
 
@@ -526,25 +533,40 @@ PrimeFaces.ajax.AjaxUtils = {
         PrimeFaces.debug('URL to post ' + postURL + '.');
 
         //partial ajax
-        postParams.push({name:PrimeFaces.PARTIAL_REQUEST_PARAM, value:true});
+        postParams.push({
+            name:PrimeFaces.PARTIAL_REQUEST_PARAM, 
+            value:true
+        });
 
         //source
-        postParams.push({name:PrimeFaces.PARTIAL_SOURCE_PARAM, value:sourceId});
+        postParams.push({
+            name:PrimeFaces.PARTIAL_SOURCE_PARAM, 
+            value:sourceId
+        });
 
         //process
         var processArray = PrimeFaces.ajax.AjaxUtils.idsToArray(cfg, 'process', cfg.processSelector),
         processIds = processArray.length > 0 ? processArray.join(' ') : '@all';
-        postParams.push({name:PrimeFaces.PARTIAL_PROCESS_PARAM, value:processIds});
+        postParams.push({
+            name:PrimeFaces.PARTIAL_PROCESS_PARAM, 
+            value:processIds
+        });
         
         //update
         var updateArray = PrimeFaces.ajax.AjaxUtils.idsToArray(cfg, 'update', cfg.updateSelector);
         if(updateArray.length > 0) {
-            postParams.push({name:PrimeFaces.PARTIAL_UPDATE_PARAM, value:updateArray.join(' ')});
+            postParams.push({
+                name:PrimeFaces.PARTIAL_UPDATE_PARAM, 
+                value:updateArray.join(' ')
+            });
         }
         
         //behavior event
         if(cfg.event) {
-            postParams.push({name:PrimeFaces.BEHAVIOR_EVENT_PARAM, value:cfg.event});
+            postParams.push({
+                name:PrimeFaces.BEHAVIOR_EVENT_PARAM, 
+                value:cfg.event
+            });
 
             var domEvent = cfg.event;
 
@@ -553,10 +575,16 @@ PrimeFaces.ajax.AjaxUtils = {
             else if(cfg.event == 'action')
                 domEvent = 'click';
 
-            postParams.push({name:PrimeFaces.PARTIAL_EVENT_PARAM, value:domEvent});
+            postParams.push({
+                name:PrimeFaces.PARTIAL_EVENT_PARAM, 
+                value:domEvent
+            });
         } 
         else {
-            postParams.push({name:sourceId, value:sourceId});
+            postParams.push({
+                name:sourceId, 
+                value:sourceId
+            });
         }
 
         //params
@@ -598,7 +626,10 @@ PrimeFaces.ajax.AjaxUtils = {
             
             //add viewstate if necessary
             if(!hasViewstate) {
-                postParams.push({name:PrimeFaces.VIEW_STATE, value:form.children("input[name='javax.faces.ViewState']").val()});
+                postParams.push({
+                    name:PrimeFaces.VIEW_STATE, 
+                    value:form.children("input[name='javax.faces.ViewState']").val()
+                });
             }
 
         }
@@ -627,53 +658,53 @@ PrimeFaces.ajax.AjaxUtils = {
         xhrOptions.global = cfg.global === true || cfg.global === undefined ? true : false;
         
         $.ajax(xhrOptions)
-            .done(function(data, status, xhr) {
-                PrimeFaces.debug('Response received succesfully.');
+        .done(function(data, status, xhr) {
+            PrimeFaces.debug('Response received succesfully.');
 
-                var parsed;
+            var parsed;
 
-                //call user callback
-                if(cfg.onsuccess) {
-                    parsed = cfg.onsuccess.call(this, data, status, xhr);
-                }
+            //call user callback
+            if(cfg.onsuccess) {
+                parsed = cfg.onsuccess.call(this, data, status, xhr);
+            }
 
-                //extension callback that might parse response
-                if(cfg.ext && cfg.ext.onsuccess && !parsed) {
-                    parsed = cfg.ext.onsuccess.call(this, data, status, xhr); 
-                }
+            //extension callback that might parse response
+            if(cfg.ext && cfg.ext.onsuccess && !parsed) {
+                parsed = cfg.ext.onsuccess.call(this, data, status, xhr); 
+            }
 
-                //do not execute default handler as response already has been parsed
-                if(parsed) {
-                    return;
-                } 
-                else {
-                    PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
-                }
+            //do not execute default handler as response already has been parsed
+            if(parsed) {
+                return;
+            } 
+            else {
+                PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
+            }
 
-                PrimeFaces.debug('DOM is updated.');
-            })
-            .fail(function(xhr, status, errorThrown) {
-                if(cfg.onerror) {
-                    cfg.onerror.call(xhr, status, errorThrown);
-                }
+            PrimeFaces.debug('DOM is updated.');
+        })
+        .fail(function(xhr, status, errorThrown) {
+            if(cfg.onerror) {
+                cfg.onerror.call(xhr, status, errorThrown);
+            }
 
-                PrimeFaces.error('Request return with error:' + status + '.');
-            })
-            .always(function(xhr, status) {
-                if(cfg.oncomplete) {
-                    cfg.oncomplete.call(this, xhr, status, this.args);
-                }
+            PrimeFaces.error('Request return with error:' + status + '.');
+        })
+        .always(function(xhr, status) {
+            if(cfg.oncomplete) {
+                cfg.oncomplete.call(this, xhr, status, this.args);
+            }
 
-                if(cfg.ext && cfg.ext.oncomplete) {
-                    cfg.ext.oncomplete.call(this, xhr, status, this.args);
-                }
+            if(cfg.ext && cfg.ext.oncomplete) {
+                cfg.ext.oncomplete.call(this, xhr, status, this.args);
+            }
 
-                PrimeFaces.debug('Response completed.');
+            PrimeFaces.debug('Response completed.');
 
-                if(!cfg.async) {
-                    PrimeFaces.ajax.Queue.poll();
-                }
-            });
+            if(!cfg.async) {
+                PrimeFaces.ajax.Queue.poll();
+            }
+        });
     }
 };
 

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>ellipsis</tag>
+	<tagClass>org.primefaces.component.ellipsis.Ellipsis</tagClass>
+	<componentClass>org.primefaces.component.ellipsis.Ellipsis</componentClass>
+	<componentType>org.primefaces.component.Ellipsis</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.EllipsisRenderer</rendererType>
+	<rendererClass>org.primefaces.component.ellipsis.EllipsisRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlOutputLabel</parent>
+    <description>Ellipsis is use for large texts in small areas.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+        <attribute>
+			<name>value</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Label to display.</description>
+		</attribute>
+        <attribute>
+			<name>escape</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Defines if value should be escaped or not.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Inline style of the component.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Style class of the component.</description>
+		</attribute>
+		<attribute>
+			<name>onblur</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when component loses focus.</description>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when component is clicked.</description>
+        </attribute>
+		<attribute>
+			<name>ondblclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when component is double clicked.</description>
+		</attribute>
+		<attribute>
+			<name>onfocus</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when component receives focus.</description>
+		</attribute>
+		<attribute>
+			<name>onmouseover</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when a pointer button is moved onto component.</description>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>
