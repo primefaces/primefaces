@@ -690,16 +690,16 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
                             e.preventDefault();
                         }
-                        else {
+                        else if(widget.cfg.editMode === 'cell') {
                             var target = $(e.target),
                             cell = target.is('div.ui-dt-c') ? target : target.parents('div.ui-dt-c:first');
                             
-                            if(widget.currentCell) {
-                                widget.currentCell.parent().removeClass('ui-state-highlight');
+                            if(widget.contextMenuCell) {
+                                widget.contextMenuCell.parent().removeClass('ui-state-highlight');
                             }
                             
-                            widget.currentCell = cell;
-                            widget.currentCell.parent().addClass('ui-state-highlight');
+                            widget.contextMenuCell = cell;
+                            widget.contextMenuCell.parent().addClass('ui-state-highlight');
                             
                             _self.show(e);
                         }
