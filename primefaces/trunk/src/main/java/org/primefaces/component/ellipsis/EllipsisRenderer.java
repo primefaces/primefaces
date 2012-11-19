@@ -28,9 +28,7 @@ public class EllipsisRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Ellipsis ellipsis = (Ellipsis) component;
         Object value = ellipsis.getValue();
-        //String styleClass = ellipsis.getStyleClass();
-        //styleClass = styleClass == null ? Ellipsis.STYLE_CLASS : Ellipsis.STYLE_CLASS + " " + styleClass;
-
+        
         writer.startElement("div", ellipsis);
         writer.writeAttribute("class", "ui-widget ui-ellipsis", "id");
         writer.writeAttribute("onclick", "PrimeFaces.ellipsis($(this));", null);
@@ -45,7 +43,7 @@ public class EllipsisRenderer extends CoreRenderer {
             }
         }
         
-        renderChildren(context, ellipsis); //?????????????????????????????????
+        renderChildren(context, ellipsis);
         
         writer.endElement("div");
     }
