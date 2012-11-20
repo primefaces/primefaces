@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class CarouselRenderer extends CoreRenderer {
 	
@@ -53,25 +54,22 @@ public class CarouselRenderer extends CoreRenderer {
 	private void encodeScript(FacesContext context, Carousel carousel) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = carousel.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Carousel", carousel.resolveWidgetVar(), clientId, false);
+        
+        wb.attr("firstVisible", carousel.getFirstVisible(), 0)
+            .attr("circular", carousel.isCircular(), false)
+            .attr("vertical", carousel.isVertical(), false)
+            .attr("numVisible", carousel.getRows(), 0)
+            .attr("autoPlayInterval", carousel.getAutoPlayInterval(), 0)
+            .attr("dropDownTemplate", carousel.getDropdownTemplate(), null)
+            .attr("pageLinks", carousel.getPageLinks(), 3)
+            .attr("effect", carousel.getEffect(), null)
+            .attr("effectDuration", carousel.getEffectDuration(), Integer.MIN_VALUE)
+            .attr("easing", carousel.getEasing(), null);
 		
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('Carousel','" + carousel.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-	
-		if(carousel.getFirstVisible() != 0) writer.write(",firstVisible:" + carousel.getFirstVisible());
-		if(carousel.isCircular()) writer.write(",isCircular:" + carousel.isCircular());
-		if(carousel.isVertical()) writer.write(",vertical:true");
-		if(carousel.getRows() != 0) writer.write(",numVisible:" + carousel.getRows());
-		if(carousel.getAutoPlayInterval() != 0) writer.write(",autoPlayInterval:" + carousel.getAutoPlayInterval());
-        if(carousel.getDropdownTemplate() != null) writer.write(",dropDownTemplate:'" + carousel.getDropdownTemplate() + "'");
-        if(carousel.getEffectDuration() != Integer.MIN_VALUE) writer.write(",effectDuration:" + carousel.getEffectDuration());
-        if(carousel.getPageLinks() != 3) writer.write(",pageLinks:" + carousel.getPageLinks());
-        if(carousel.getEffect() != null) writer.write(",effect:'" + carousel.getEffect() + "'");
-        if(carousel.getEasing() != null) writer.write(",easing:'" + carousel.getEasing() + "'");
-
-        writer.write("});");
-			
+        writer.write(wb.build());			
 		endScript(writer);
 	}
     
