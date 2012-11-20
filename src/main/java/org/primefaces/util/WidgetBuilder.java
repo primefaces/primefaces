@@ -23,6 +23,8 @@ public class WidgetBuilder {
     protected StringBuilder buffer;
     
     private boolean onload = false;
+    
+    private String resourcePath = null;
         
     public WidgetBuilder() {
         buffer = new StringBuilder();
@@ -33,6 +35,7 @@ public class WidgetBuilder {
      * @param widgetClass   Constructor name of the widget
      * @param widgetVar     Name of the client side widget
      * @param id            Client id of the component
+     * @param onload        Flag to define if widget should be created on document load
      */
     public WidgetBuilder widget(String widgetClass, String widgetVar, String id, boolean onload) {
         this.onload = onload;
@@ -42,6 +45,21 @@ public class WidgetBuilder {
         
         buffer.append("PrimeFaces.cw('").append(widgetClass).append("','").append(widgetVar).append("',{");
         buffer.append("id:'").append(id).append("'");
+        
+        return this;
+    }
+    
+    /**
+     *
+     * @param widgetClass   Constructor name of the widget
+     * @param widgetVar     Name of the client side widget
+     * @param id            Client id of the component
+     * @param resourcePath  Path for dynamic resource loading
+     * @param onload        Flag to define if widget should be created on document load
+     */
+    public WidgetBuilder widget(String widgetClass, String widgetVar, String id, String resourcePath, boolean onload) {
+        this.widget(widgetClass, widgetVar, id, onload);
+        this.resourcePath = resourcePath;
         
         return this;
     }
@@ -103,7 +121,7 @@ public class WidgetBuilder {
         
         return this;
     }
-    
+        
     public WidgetBuilder append(String str) {
         buffer.append(str);
         
@@ -111,7 +129,13 @@ public class WidgetBuilder {
     }
 
     public String build() {
-        buffer.append("});");
+        buffer.append("}");
+        
+        if(this.resourcePath != null) {
+            buffer.append(",'").append(this.resourcePath).append("'");
+        } 
+        
+        buffer.append(");");
         
         if(this.onload) {
             buffer.append("});");
