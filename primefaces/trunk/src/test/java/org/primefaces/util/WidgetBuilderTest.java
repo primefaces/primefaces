@@ -58,4 +58,13 @@ public class WidgetBuilderTest {
         
         assertEquals("PrimeFaces.cw('DataTable','dt',{id:'dt1',selectionMode:'single',lazy:true,onRowSelect:function(row){alert(row);}});", script);
     }
+    
+    @Test
+    public void shouldBuildWithResourcePath() {
+        WidgetBuilder builder = new WidgetBuilder();
+        builder.widget("AccordionPanel", "acco", "accoId", "accordion", false);
+        String script = builder.build();
+        
+        assertEquals("PrimeFaces.cw('AccordionPanel','acco',{id:'accoId'},'accordion');", script);
+    }
 }
