@@ -76,9 +76,9 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Selects an inactive tab given index
      */
-    select: function(index) {
+    select: function(index, silent) {
         //Call user onTabChange callback
-        if(this.cfg.onTabChange) {
+        if(this.cfg.onTabChange && !silent) {
             var result = this.cfg.onTabChange.call(this, index);
             if(result == false)
                 return false;
@@ -95,7 +95,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             this.loadDynamicTab(newPanel);
         }
         else {
-            if(this.hasBehavior('tabChange')) {
+            if(this.hasBehavior('tabChange') && !silent) {
                 this.fireTabChangeEvent(newPanel);
             }
             else {
@@ -213,7 +213,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         //active next tab if active tab is removed
         if(index == this.cfg.selected) {
             var newIndex = this.cfg.selected == this.getLength() ? this.cfg.selected - 1: this.cfg.selected;
-            this.select(newIndex);
+            this.select(newIndex, true);
         }
     },
     
