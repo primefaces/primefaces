@@ -193,26 +193,41 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     },
     
     setupIframe: function() {
-        var _self = this;
+        var $this = this;
         this.cfg.width = this.cfg.width||'640px';
         this.cfg.height = this.cfg.height||'480px';
         
-        this.iframe = $('<iframe frameborder="0" style="width:' + this.cfg.width + ';height:' + this.cfg.height + ';border:0 none; display: block;" src="' 
-            + this.links.eq(0).attr('href') + '"></iframe>').appendTo(this.content);
+        this.iframe = $('<iframe frameborder="0" style="width:' + this.cfg.width + ';height:' 
+                        + this.cfg.height + ';border:0 none; display: block;"></iframe>').appendTo(this.content);
         
         if(this.cfg.iframeTitle) {
             this.iframe.attr('title', this.cfg.iframeTitle);
         }
 
         this.links.click(function(e) {
-            _self.show();
-
-            var title = $(this).attr('title');
-            if(title) {
-                _self.caption.html(title);
-                _self.caption.slideDown();
+            if(!$this.iframeLoaded) {
+                $this.content.addClass('ui-lightbox-loading').css({
+                    width: $this.cfg.width
+                    ,height: $this.cfg.height
+                });
+                $this.show();
+                
+                $this.iframe.on('load', function() {
+                                $this.iframeLoaded = true;
+                                $this.content.removeClass('ui-lightbox-loading');
+                            })
+                            .attr('src', $this.links.eq(0).attr('href'));
             }
-
+            else {
+                $this.show();
+            }
+            
+            var title = $this.links.eq(0).attr('title');
+            if(title) {
+                $this.caption.html(title);
+                $this.caption.slideDown();
+            }
+                
             e.preventDefault();
         });
     },
