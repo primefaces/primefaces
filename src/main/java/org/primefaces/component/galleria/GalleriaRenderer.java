@@ -34,21 +34,21 @@ public class GalleriaRenderer extends CoreRenderer {
     public void encodeMarkup(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Galleria galleria = (Galleria) component;
-        String styleClass = galleria.getStyleClass();
-        styleClass = styleClass == null ? "ui-galleria" : "ui-galleria " + styleClass;
         
-        writer.startElement("ul", null);
-        writer.writeAttribute("id", galleria.getClientId(context), null);
-        writer.writeAttribute("class", styleClass, "style");
-        if(galleria.getStyle() !=  null)
-            writer.writeAttribute("style", galleria.getStyle(), "style");
-
+        writer.startElement("div", component);
+        writer.writeAttribute("id", galleria.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-galleria ui-widget ui-widget-content ui-corner-all", "styleClass");
+        
+        writer.startElement("div", component);
+        writer.writeAttribute("class", "ui-galleria-panel-wrapper", null);
+        
         if(galleria.getVar() == null) {
             for(UIComponent child : galleria.getChildren()) {
                 if(child.isRendered()) {
-                    writer.startElement("li", null);
+                    writer.startElement("div", null);
+                    writer.writeAttribute("class", "ui-galleria-panel ui-helper-hidden", null);
                     child.encodeAll(context);
-                    writer.endElement("li");
+                    writer.endElement("div");
                 }
             }
         }
@@ -56,15 +56,18 @@ public class GalleriaRenderer extends CoreRenderer {
             for(int i=0; i < galleria.getRowCount(); i++) {
                 galleria.setRowIndex(i);
 
-                writer.startElement("li", null);
+                writer.startElement("div", null);
+                writer.writeAttribute("class", "ui-galleria-panel ui-helper-hidden", null);
                 renderChildren(context, galleria);
-                writer.endElement("li");
+                writer.endElement("div");
             }
 
             galleria.setRowIndex(-1);
         }
-
-        writer.endElement("ul");
+        
+        writer.endElement("div");
+                
+        writer.endElement("div");
     }
 
     public void encodeScript(FacesContext context, UIComponent component) throws IOException {
@@ -78,20 +81,6 @@ public class GalleriaRenderer extends CoreRenderer {
         
         writer.write("PrimeFaces.cw('Galleria','" + galleria.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",panel_animation:'" + galleria.getEffect() + "'");
-        writer.write(",transition_speed:" + galleria.getEffectSpeed());
-        writer.write(",transition_interval:" + galleria.getTransitionInterval());
-
-        if(galleria.getPanelWidth() != 600) writer.write(",panel_width:" + galleria.getPanelWidth());
-        if(galleria.getPanelHeight() != 400) writer.write(",panel_height:" + galleria.getPanelHeight());
-        if(galleria.getFrameWidth() != 60) writer.write(",frame_width:" + galleria.getFrameWidth());
-        if(galleria.getFrameHeight() != 40) writer.write(",frame_height:" + galleria.getFrameHeight());
-        if(galleria.getFilmstripStyle() != null) writer.write(",filmstrip_style:'" + galleria.getFilmstripStyle() + "'");
-        if(galleria.getFilmstripPosition() != null) writer.write(",filmstrip_position:'" + galleria.getFilmstripPosition() + "'");
-        if(!galleria.isShowFilmstrip()) writer.write(",show_filmstrip:false");
-        if(galleria.isShowCaptions()) writer.write(",show_captions:true");
-        if(galleria.isShowOverlays()) writer.write(",show_overlays:true");
-
         writer.write("},'galleria');});");
 
         endScript(writer);
