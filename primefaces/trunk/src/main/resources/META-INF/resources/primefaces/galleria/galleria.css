@@ -1,74 +1,65 @@
-/* GALLERY CONTAINER */
-.ui-galleria { overflow: hidden; visibility: hidden; }
+.ui-galleria { 
+    overflow: hidden; 
+    visibility: hidden; 
+    position: relative;
+    padding: 1px;
+}
 
-/*************************************************/
-/**   PANEL STYLES								**/
-/*************************************************/
+.ui-galleria-panel-wrapper {
+    position: relative;
+}
 
-/* GALLERY PANELS */
-.ui-galleria-panel { filter: inherit; }
+.ui-galleria-panel {
+    filter: inherit;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
 
-/* DEFINE HEIGHT OF PANEL OVERLAY */
-/* NOTE - It is best to define padding here as well so overlay and background retain identical dimensions */
-.ui-galleria-panel .ui-galleria-overlay,
-.ui-galleria-panel .ui-galleria-overlay-background { height: 5em; padding: 1em; }
+.ui-galleria-filmstrip-wrapper {
+    height: 40px;
+    overflow: hidden;
+    margin: 5px auto;
+    position: relative;
+}
 
-/* PANEL OVERLAY BACKGROUND */
-.ui-galleria-panel .ui-galleria-overlay-background { background: #222; }
+.ui-galleria-filmstrip { 
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    width: 2340px;
+    z-index: 900;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
 
-/* PANEL OVERLAY CONTENT */
-.ui-galleria-panel .ui-galleria-overlay { color: white; }
-.ui-galleria-panel .ui-galleria-overlay a { color: white; text-decoration: underline; font-weight: bold; }
-
-/* CONTENT PANELS */
-.ui-galleria-panel-content { overflow-y: auto; }
-
-
-/*************************************************/
-/**   FILMSTRIP STYLES							**/
-/*************************************************/
-
-
-/* FILMSTRIP */
-/* 'margin' will define top/bottom margin in completed gallery */
-.ui-galleria-filmstrip { margin: 5px; }
-
-/* FILMSTRIP FRAMES (contains both images and captions) */
 .ui-galleria-frame {
     float:left;
+    margin-right: 5px;
+    opacity: 0.3;
+    cursor: pointer;
 }
 
-/* WRAPPER FOR FILMSTRIP IMAGES */
-.ui-galleria-frame .ui-galleria-img-wrap {}
-
-/* WRAPPER FOR CURRENT FILMSTRIP IMAGE */
-.ui-galleria-frame.current .ui-galleria-img-wrap {}
-
-/* FRAME IMAGES */
-.ui-galleria-frame img { border: none; }
-
-/* FRAME CAPTION */
-.ui-galleria-frame .ui-galleria-caption { height: 2em; line-height: 2em; font-size: 1em; text-align: center; }
-
-/* CURRENT FRAME CAPTION */
-.ui-galleria-frame.current .ui-galleria-caption { }
-
-/* POINTER FOR CURRENT FRAME */
-.ui-galleria-pinter {
-	border-color: black;
+.ui-galleria-frame-active {
+    opacity: 1;
 }
 
-/* NAVIGATION BUTTONS */
+.ui-galleria-frame-content {
+    overflow: hidden;
+}
+
 .ui-galleria-nav-next, .ui-galleria-nav-prev {
 	cursor: pointer;
+    position: absolute;
 }
 
-.ui-galleria-panel-nav-next, ui-galleria-panel-nav-prev {
-	display:none;
+.ui-galleria-nav-prev {	
+    left: 5px;
+    bottom: 20px;
 }
 
-/* TRANSPARENT BORDER FIX FOR IE6 */
-/* NOTE - DO NOT CHANGE THIS RULE */
-*html .ui-galleria-pinter {
-	filter: chroma(color=pink);
+.ui-galleria-nav-next {
+    right: 5px;
+    bottom: 20px;
 }
