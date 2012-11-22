@@ -1,3 +1,6 @@
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+
     public final static String CONTAINER_CLASS = "ui-carousel ui-widget ui-widget-content ui-corner-all";
     public final static String ITEM_CLASS = "ui-carousel-item ui-widget-content ui-corner-all";
     public final static String HEADER_CLASS = "ui-carousel-header ui-widget-header ui-corner-all";
@@ -16,7 +19,7 @@
     public int getRenderedChildCount() {
         int i = 0;
     
-        for(UIComponent child : getChildren()) {
+    for(UIComponent child : getChildren()) {
             if(child.isRendered()) {
                 i++;
             }
@@ -32,7 +35,7 @@
 		getStateHelper().put("firsVisible", _firstVisible);
 	}
 
-    /** Following three overrides enables processing of all items **/
+    @Override
     public void processDecodes(FacesContext facesContext) {
         int rows = this.getRows();
 		this.setRows(this.getRowCount());
@@ -40,6 +43,7 @@
         this.setRows(rows);
     }
 	
+    @Override
 	public void processValidators(FacesContext facesContext) {
         int rows = this.getRows();
 		this.setRows(this.getRowCount());
@@ -47,10 +51,21 @@
         this.setRows(rows);
     }
 	
+    @Override
 	public void processUpdates(FacesContext facesContext) {
         int rows = this.getRows();
 		this.setRows(this.getRowCount());
         super.processUpdates(facesContext);
         this.setRows(rows);
 	}
+
+    @Override
+    protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows) {
+        int rows = this.getRows();
+		this.setRows(this.getRowCount());
+        boolean retVal = super.visitRows(context, callback, visitRows);
+        this.setRows(rows);
+
+        return retVal;
+    }
     
