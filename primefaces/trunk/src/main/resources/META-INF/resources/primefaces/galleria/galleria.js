@@ -92,7 +92,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             '<div class="ui-galleria-nav-next ui-icon ui-icon-circle-triangle-e" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>');
     },
                 
-    bindEvents: function() {
+    bindEvents: function() {
         var $this = this;
                     
         this.jq.children('div.ui-galleria-nav-prev').on('click.galleria', function() {
