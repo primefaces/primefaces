@@ -65,7 +65,7 @@ public class DialogRenderer extends CoreRenderer {
             .attr("position", dialog.getPosition(), null)
             .attr("closeOnEscape", dialog.isCloseOnEscape(), false);
 
-        encodeClientBehaviors(context, dialog);
+        encodeClientBehaviors(context, dialog, wb);
         
         startScript(writer, clientId);        
         writer.write(wb.build());
