@@ -146,4 +146,10 @@ public class WidgetBuilder {
         
         return script;
     }
+    
+    public void reset() {
+        buffer.setLength(0);
+        onload = false;
+        resourcePath = null;
+    }
 }

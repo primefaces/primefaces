@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class GalleriaRenderer extends CoreRenderer {
 
@@ -34,19 +35,25 @@ public class GalleriaRenderer extends CoreRenderer {
     public void encodeMarkup(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Galleria galleria = (Galleria) component;
+        String style = galleria.getStyle();
+        String styleClass = galleria.getStyleClass();
+        styleClass = (styleClass == null) ? Galleria.CONTAINER_CLASS : Galleria.CONTAINER_CLASS + " " + styleClass; 
         
         writer.startElement("div", component);
         writer.writeAttribute("id", galleria.getClientId(context), "id");
-        writer.writeAttribute("class", "ui-galleria ui-widget ui-widget-content ui-corner-all", "styleClass");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
         
         writer.startElement("div", component);
-        writer.writeAttribute("class", "ui-galleria-panel-wrapper", null);
+        writer.writeAttribute("class", Galleria.PANEL_WRAPPER_CLASS, null);
         
         if(galleria.getVar() == null) {
             for(UIComponent child : galleria.getChildren()) {
                 if(child.isRendered()) {
                     writer.startElement("div", null);
-                    writer.writeAttribute("class", "ui-galleria-panel ui-helper-hidden", null);
+                    writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                     child.encodeAll(context);
                     writer.endElement("div");
                 }
@@ -57,7 +64,7 @@ public class GalleriaRenderer extends CoreRenderer {
                 galleria.setRowIndex(i);
 
                 writer.startElement("div", null);
-                writer.writeAttribute("class", "ui-galleria-panel ui-helper-hidden", null);
+                writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                 renderChildren(context, galleria);
                 writer.endElement("div");
             }
@@ -74,15 +81,17 @@ public class GalleriaRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Galleria galleria = (Galleria) component;
         String clientId = galleria.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Galleria", galleria.resolveWidgetVar(), clientId, "galleria", true);
+        
+        wb.attr("showFilmstrip", galleria.isShowFilmstrip(), true)
+                .attr("frameWidth", galleria.getFrameWidth(), 60)
+                .attr("frameHeight", galleria.getFrameHeight(), 40)
+                .attr("autoPlay", galleria.isAutoPlay(), true)
+                .attr("transitionInterval", galleria.getTransitionInterval(), 4000);
 
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('Galleria','" + galleria.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write("},'galleria');});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
 
