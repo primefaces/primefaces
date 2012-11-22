@@ -1216,34 +1216,33 @@
     }
 }).call(this);
 
- /******************************************
-                Clock Widget
- ******************************************/
+/**
+ *  PrimeFaces Clock Widget 
+ */
 PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
         
-        var _self = this;
-        var pattern = this.cfg.dateFormat || "hh:mm dd.MM.yyyy";
-        this.cfg.serverMode = this.cfg.serverMode || false;
-        
-        /*** for language
-        var userLang = (navigator.language) ? navigator.language.substring(0,2) : navigator.userLanguage; 
-        alert (userLang);
-        moment.lang(userLang);
-        *****/
-       
-        if(this.cfg.serverMode){
-             this.jq.text(moment(this.cfg.serverDate, 'ddd MMM d HH:mm:ss EET YYYY').format(pattern));
+        this.cfg.pattern = this.cfg.pattern||"hh:mm dd.MM.yyyy";
+
+        var $this = this;
+        if(!this.isClient()) {
+            setInterval(function(){
+                $this.updateOutput()}, 1000
+            );
         }
         else {
-            setInterval(function(){_self.showDate(pattern)}, 1000);
+            this.jq.text(moment(this.cfg.value, 'ddd MMM d HH:mm:ss EET YYYY').format(this.cfg.pattern));
         }
-    }, 
+    },
     
-    showDate: function(pattern) {
-        this.jq.text(moment().format(pattern));            
+    isClient: function() {
+        return this.cfg.mode === 'client';
+    },
+    
+    updateOutput: function() {
+        this.jq.text(moment().format(this.cfg.pattern));            
     },
     
     refresh: function(){
