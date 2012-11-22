@@ -1227,7 +1227,7 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.pattern = this.cfg.pattern||"hh:mm dd.MM.yyyy";
 
         var $this = this;
-        if(!this.isClient()) {
+        if(this.isClient()) {
             setInterval(function(){
                 $this.updateOutput()}, 1000
             );
