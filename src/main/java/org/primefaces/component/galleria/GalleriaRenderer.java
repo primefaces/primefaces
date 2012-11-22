@@ -82,7 +82,7 @@ public class GalleriaRenderer extends CoreRenderer {
         Galleria galleria = (Galleria) component;
         String clientId = galleria.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Galleria", galleria.resolveWidgetVar(), clientId, "galleria", true);
+        wb.widget("Galleria", galleria.resolveWidgetVar(), clientId, "galleria", false);
         
         wb.attr("showFilmstrip", galleria.isShowFilmstrip(), true)
                 .attr("frameWidth", galleria.getFrameWidth(), 60)
@@ -93,7 +93,9 @@ public class GalleriaRenderer extends CoreRenderer {
                 .attr("effectSpeed", galleria.getEffectSpeed(), 500);
 
         startScript(writer, clientId);
+        writer.write("$(window).load(function(){");
         writer.write(wb.build());
+        writer.write("});");
         endScript(writer);
     }
 
