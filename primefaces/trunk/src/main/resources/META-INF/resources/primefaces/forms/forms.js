@@ -1684,7 +1684,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     renderPanel: function() {
-        this.panelId = this.jqId + '_panel';
+        this.panelId = this.id + '_panel';
                 
         this.panel = $('<div id="' + this.panelId + '" class="ui-selectcheckboxmenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden"></div>')
                         .appendTo(document.body);
