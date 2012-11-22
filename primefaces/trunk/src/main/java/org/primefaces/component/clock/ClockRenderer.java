@@ -20,7 +20,6 @@ import java.util.Date;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.calendar.CalendarUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -28,38 +27,34 @@ public class ClockRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-
-        ResponseWriter writer = context.getResponseWriter();
         Clock clock = (Clock) component;
-        WidgetBuilder wb = getWidgetBuilder(context);
-        //wb.widget("Clock", null, clock.getClientId(context), true);
-
+        
+        encodeMarkup(context, clock);
+        encodeScript(context, clock);
+    }
+    
+    protected void encodeMarkup(FacesContext context, Clock clock) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
         writer.startElement("span", clock);
         writer.writeAttribute("id", clock.getClientId(), null);
         writer.writeAttribute("class", "ui-clock", null);
         writer.endElement("span");
-
-        encodeScript(context, clock);
-
-    }
-
-    @Override
-    public boolean getRendersChildren() {
-        return true;
     }
 
     protected void encodeScript(FacesContext context, Clock clock) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = clock.getClientId(context);
+        String mode = clock.getMode();
         WidgetBuilder wb = getWidgetBuilder(context);
-        Date newDate = new Date();
 
         wb.widget("Clock", clock.resolveWidgetVar(), clientId, false);
-        wb.attr("dateFormat", clock.getPattern());
-        wb.attr("serverDate", newDate.toString());
-        wb.attr("serverMode", clock.isServerMode());
-
-        encodeClientBehaviors(context, clock, wb);
+        wb.attr("pattern", clock.getPattern());
+        wb.attr("mode", mode);
+        
+        if(mode.equals("server")) {
+            wb.attr("value", (new Date().toString()));
+        }
 
         startScript(writer, clientId);
         writer.write(wb.build());

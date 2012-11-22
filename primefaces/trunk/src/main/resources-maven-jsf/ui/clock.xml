@@ -14,8 +14,8 @@
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.ClockRenderer</rendererType>
     <rendererClass>org.primefaces.component.clock.ClockRenderer</rendererClass>
-    <parent>javax.faces.component.html.HtmlInputText</parent>
-    <description>AutoComplete provides live suggestions while an input is being typed.</description>
+    <parent>javax.faces.component.UIOutput</parent>
+    <description>Clock displays datetime in real time.</description>
     <interfaces>
         <interface>
             <name>org.primefaces.component.api.Widget</name>
@@ -23,29 +23,17 @@
     </interfaces>
     <attributes>
         <attribute>
-            <name>value</name>
-            <required>false</required>
-            <type>String</type>
-            <description>Method providing suggestions.</description>
-        </attribute>
-        <attribute>
             <name>pattern</name>
             <required>false</required>
             <type>String</type>
-            <description>Method providing suggestions.</description>
+            <description>Datetime format.</description>
         </attribute>
         <attribute>
-            <name>serverMode</name>
+            <name>mode</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
-            <description>Method providing suggestions.</description>
-        </attribute>
-        <attribute>
-            <name>timeOnly</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Shows only time picker without date.</description>
+            <type>java.lang.String</type>
+            <defaultValue>client</defaultValue>
+            <description>Mode of the client, valid values are client and server.</description>
         </attribute>
         <attribute>
             <name>locale</name>
