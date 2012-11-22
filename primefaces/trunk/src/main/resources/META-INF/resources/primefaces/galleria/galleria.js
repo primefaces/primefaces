@@ -36,7 +36,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         this.jq.css('visibility', 'visible');
         
         if(this.cfg.autoPlay) {
-            this.play();
+            this.startSlideshow();
         }
     },
                 
@@ -72,24 +72,48 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
                     
         this.jq.children('div.ui-galleria-nav-prev').on('click.galleria', function() {
+            if($this.slideshowActive) {
+                $this.stopSlideshow();
+            }
+            
             $this.prev();
         });
                     
         this.jq.children('div.ui-galleria-nav-next').on('click.galleria', function() {
+            if($this.slideshowActive) {
+                $this.stopSlideshow();
+            }
+            
             $this.next();
         });
                     
         this.strip.children('li.ui-galleria-frame').on('click.galleria', function() {
+            if($this.slideshowActive) {
+                $this.stopSlideshow();
+            }
+            
             $this.select($(this).index(), false);
         });
     },
                 
-    play: function() {
+    startSlideshow: function() {
         var $this = this;
                     
-        setInterval(function() {
+        this.interval = setInterval(function() {
             $this.next();
         }, this.cfg.transitionInterval);
+        
+        this.slideshowActive = true;
+    },
+    
+    stopSlideshow: function() {
+        clearInterval(this.interval);
+        
+        this.slideshowActive = false;
+    },
+    
+    isSlideshowActive: function() {
+        return this.slideshowActive;
     },
                 
     select: function(index, reposition) {
