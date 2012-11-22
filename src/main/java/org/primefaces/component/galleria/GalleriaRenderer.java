@@ -16,6 +16,9 @@
 package org.primefaces.component.galleria;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -35,6 +38,7 @@ public class GalleriaRenderer extends CoreRenderer {
     public void encodeMarkup(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Galleria galleria = (Galleria) component;
+        String var = galleria.getVar();
         String style = galleria.getStyle();
         String styleClass = galleria.getStyleClass();
         styleClass = (styleClass == null) ? Galleria.CONTAINER_CLASS : Galleria.CONTAINER_CLASS + " " + styleClass; 
@@ -49,7 +53,7 @@ public class GalleriaRenderer extends CoreRenderer {
         writer.startElement("div", component);
         writer.writeAttribute("class", Galleria.PANEL_WRAPPER_CLASS, null);
         
-        if(galleria.getVar() == null) {
+        if(var == null) {
             for(UIComponent child : galleria.getChildren()) {
                 if(child.isRendered()) {
                     writer.startElement("div", null);
@@ -60,16 +64,20 @@ public class GalleriaRenderer extends CoreRenderer {
             }
         }
         else {
-            for(int i=0; i < galleria.getRowCount(); i++) {
-                galleria.setRowIndex(i);
+            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+            Collection<?> value = (Collection<?>) galleria.getValue();
+            if(value != null) {
+                for(Iterator<?> it = value.iterator(); it.hasNext();) {
+                    requestMap.put(var, it.next());
 
-                writer.startElement("div", null);
-                writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
-                renderChildren(context, galleria);
-                writer.endElement("div");
+                    writer.startElement("div", null);
+                    writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
+                    renderChildren(context, galleria);
+                    writer.endElement("div");
+                }
             }
 
-            galleria.setRowIndex(-1);
+            requestMap.remove(var);
         }
         
         writer.endElement("div");

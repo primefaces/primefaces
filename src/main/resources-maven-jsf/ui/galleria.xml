@@ -11,7 +11,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.GalleriaRenderer</rendererType>
 	<rendererClass>org.primefaces.component.galleria.GalleriaRenderer</rendererClass>
-	<parent>org.primefaces.component.api.UIData</parent>
+	<parent>javax.faces.component.UIOutput</parent>
     <description>Galleria is used to display a set of images.</description>
     <interfaces>
 		<interface>
@@ -25,15 +25,13 @@
             <name>value</name>
             <required>true</required>
             <type>java.lang.Object</type>
-            <ignoreInComponent>true</ignoreInComponent>
-            <description></description>
+            <description>Collection of images.</description>
         </attribute>
         <attribute>
             <name>var</name>
             <required>true</required>
             <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-            <description></description>
+            <description>Name of the iterator to display a collection of images.</description>
         </attribute>
          <attribute>
             <name>style</name>
@@ -66,35 +64,35 @@
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>60</defaultValue>
+            <description>Width of the filmstrip frames.</description>
 		</attribute>
         <attribute>
 			<name>frameHeight</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>40</defaultValue>
-		</attribute>
-        <attribute>
-			<name>filmstripPosition</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <description>Height of the filmstrip frames.</description>
 		</attribute>
         <attribute>
 			<name>showFilmstrip</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Defines visibility of filmstrip.</description>
 		</attribute>
         <attribute>
 			<name>autoPlay</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
+            <description>Images are displayed with a slideshow in autoPlay mode, default is true.</description>
 		</attribute>
         <attribute>
 			<name>transitionInterval</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>4000</defaultValue>
+            <description>Time in milliseconds between each slide in autoPlay mode.</description>
 		</attribute>
 	</attributes>
 	<resources>
