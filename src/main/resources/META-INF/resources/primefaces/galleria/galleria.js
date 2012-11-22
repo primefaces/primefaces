@@ -43,7 +43,11 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
     renderStrip: function() {
         var frameStyle = 'style="width:' + this.cfg.frameWidth + "px;height:" + this.cfg.frameHeight + 'px;"';
                     
-        this.stripWrapper = $('<div class="ui-galleria-filmstrip-wrapper"></div>').width(this.panelWrapper.width() - 50).appendTo(this.jq);
+        this.stripWrapper = $('<div class="ui-galleria-filmstrip-wrapper"></div>')
+                .width(this.panelWrapper.width() - 50)
+                .height(this.cfg.frameHeight)
+                .appendTo(this.jq);
+                
         this.strip = $('<ul class="ui-galleria-filmstrip"></div>').appendTo(this.stripWrapper);
                     
         for(var i = 0; i < this.panels.length; i++) {
@@ -60,8 +64,8 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         this.frames = this.strip.children('li.ui-galleria-frame');
                     
         //navigators
-        this.jq.append('<div class="ui-galleria-nav-prev ui-icon ui-icon-circle-triangle-w"></div>' + 
-            '<div class="ui-galleria-nav-next ui-icon ui-icon-circle-triangle-e"></div>');
+        this.jq.append('<div class="ui-galleria-nav-prev ui-icon ui-icon-circle-triangle-w" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>' + 
+            '<div class="ui-galleria-nav-next ui-icon ui-icon-circle-triangle-e" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>');
     },
                 
     bindEvents: function() {
@@ -93,7 +97,8 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             var oldPanel = this.panels.eq(this.cfg.activeIndex),
             oldFrame = this.frames.eq(this.cfg.activeIndex),
             newPanel = this.panels.eq(index),
-            newFrame = this.frames.eq(index);
+            newFrame = this.frames.eq(index),
+            stepFactor = this.cfg.frameWidth + 5;
 
             //content
             oldPanel.hide(this.cfg.effect, null, this.cfg.effectSpeed);
@@ -116,7 +121,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
 
                     if(lastFrameViewportLeft > this.stripWrapper.width()) {
                         this.strip.animate({
-                            left: '-=65'
+                            left: '-=' + stepFactor
                         }, 500, 'easeInOutCirc');
                     }                             
                 }
@@ -126,7 +131,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
 
                     if(firstFrameViewportLeft != 0) {
                         this.strip.animate({
-                            left: '+=65'
+                            left: '+=' + stepFactor
                         }, 500, 'easeInOutCirc');
                     }
                 }

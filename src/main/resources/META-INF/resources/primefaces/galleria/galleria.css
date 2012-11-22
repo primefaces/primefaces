@@ -17,7 +17,6 @@
 }
 
 .ui-galleria-filmstrip-wrapper {
-    height: 40px;
     overflow: hidden;
     margin: 5px auto;
     position: relative;
@@ -56,10 +55,8 @@
 
 .ui-galleria-nav-prev {	
     left: 5px;
-    bottom: 20px;
 }
 
 .ui-galleria-nav-next {
     right: 5px;
-    bottom: 20px;
 }

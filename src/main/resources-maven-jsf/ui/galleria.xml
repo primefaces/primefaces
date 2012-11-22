@@ -62,18 +62,6 @@
             <description>Duration of animation in milliseconds. Default is 500.</description>
 		</attribute>
         <attribute>
-			<name>panelWidth</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>600</defaultValue>
-		</attribute>
-        <attribute>
-			<name>panelHeight</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>400</defaultValue>
-		</attribute>
-        <attribute>
 			<name>frameWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
