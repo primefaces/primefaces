@@ -88,7 +88,9 @@ public class GalleriaRenderer extends CoreRenderer {
                 .attr("frameWidth", galleria.getFrameWidth(), 60)
                 .attr("frameHeight", galleria.getFrameHeight(), 40)
                 .attr("autoPlay", galleria.isAutoPlay(), true)
-                .attr("transitionInterval", galleria.getTransitionInterval(), 4000);
+                .attr("transitionInterval", galleria.getTransitionInterval(), 4000)
+                .attr("effect", galleria.getEffect(), "fade")
+                .attr("effectSpeed", galleria.getEffectSpeed(), 500);
 
         startScript(writer, clientId);
         writer.write(wb.build());

@@ -12,6 +12,8 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.showFilmstrip = (this.cfg.showFilmstrip === false) ? false : true;
         this.cfg.autoPlay = (this.cfg.autoPlay === false) ? false : true;
         this.cfg.transitionInterval = this.cfg.transitionInterval||4000;
+        this.cfg.effect = this.cfg.effect||'fade';
+        this.cfg.effectSpeed = this.cfg.effectSpeed||500;
 
         this.panelWrapper = this.jq.children('div.ui-galleria-panel-wrapper');
         this.panels = this.panelWrapper.children('div.ui-galleria-panel');
@@ -94,8 +96,8 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             newFrame = this.frames.eq(index);
 
             //content
-            oldPanel.fadeOut();
-            newPanel.fadeIn();
+            oldPanel.hide(this.cfg.effect, null, this.cfg.effectSpeed);
+            newPanel.show(this.cfg.effect, null, this.cfg.effectSpeed);
 
             //frame
             oldFrame.removeClass('ui-galleria-frame-active');

@@ -51,15 +51,15 @@
 			<name>effect</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>crossfade</defaultValue>
-            <description>Name of animation to use on galleria switches. Default is crossfade.</description>
+            <defaultValue>fade</defaultValue>
+            <description>Name of animation to use on transitions. Default is fade.</description>
 		</attribute>
         <attribute>
 			<name>effectSpeed</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-            <defaultValue>800</defaultValue>
-            <description>Duration of animation in milliseconds. Default is 800.</description>
+            <defaultValue>500</defaultValue>
+            <description>Duration of animation in milliseconds. Default is 500.</description>
 		</attribute>
         <attribute>
 			<name>panelWidth</name>
