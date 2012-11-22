@@ -17,26 +17,50 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
 
         this.panelWrapper = this.jq.children('div.ui-galleria-panel-wrapper');
         this.panels = this.panelWrapper.children('div.ui-galleria-panel');
-                    
-        var activePanel = this.panels.eq(this.cfg.activeIndex);
-        activePanel.removeClass('ui-helper-hidden'); 
-        
-        var activePanelImg = activePanel.children('img'),
-        imageW = activePanelImg.width(),
-        imageH = activePanelImg.height();
-                                
-        this.panelWrapper.width(imageW).height(imageH);
-        this.jq.width(imageW);
-                    
-        if(this.cfg.showFilmstrip) {
-            this.renderStrip();
-            this.bindEvents();
+
+        var $this = this;
+        if(this.jq.is(':not(:visible)')) {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return $this.render();
+                });
+            }
+        } 
+        else {
+            this.render();
         }
-           
-        this.jq.css('visibility', 'visible');
-        
-        if(this.cfg.autoPlay) {
-            this.startSlideshow();
+    },
+    
+    render: function() {
+        if(this.jq.is(':visible')) {
+            var activePanel = this.panels.eq(this.cfg.activeIndex);
+            activePanel.removeClass('ui-helper-hidden'); 
+
+            var activePanelImg = activePanel.children('img'),
+            imageW = activePanelImg.width(),
+            imageH = activePanelImg.height();
+
+            this.panelWrapper.width(imageW).height(imageH);
+            this.jq.width(imageW);
+
+            if(this.cfg.showFilmstrip) {
+                this.renderStrip();
+                this.bindEvents();
+            }
+
+            this.jq.css('visibility', 'visible');
+
+            if(this.cfg.autoPlay) {
+                this.startSlideshow();
+            }
+
+            return true;
+        } 
+        else {
+            return false;
         }
     },
                 
