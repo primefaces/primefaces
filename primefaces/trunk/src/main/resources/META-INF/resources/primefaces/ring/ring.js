@@ -144,7 +144,6 @@
 							padding:   0,
 							position:  holderCSSPosition
 						})
-						.addClass("roundabout-holder")
 						.data(  // starting options
 							"roundabout",
 							$.extend(
@@ -435,9 +434,9 @@
 						.each(function(i) {
 							if (methods.updateChild.apply(self, [$(this), info, i, function() { $(this).trigger('ready'); }]) && (!info.animating || data.lastAnimationStep)) {
 								inFocus = i;
-								$(this).addClass("roundabout-in-focus");
+								$(this).addClass("ui-ring-item-focus");
 							} else {
-								$(this).removeClass("roundabout-in-focus");
+								$(this).removeClass("ui-ring-item-focus");
 							}
 						});
 
