@@ -193,17 +193,17 @@
 }
 
 /* InCell Editing */
-.ui-datatable .ui-datatable-invalidrow .ui-cell-editor .ui-cell-editor-output {
+.ui-datatable .ui-datatable-editingrow .ui-cell-editor .ui-cell-editor-output {
     display:none;
 }
-.ui-datatable .ui-datatable-invalidrow .ui-cell-editor .ui-cell-editor-input {
+.ui-datatable .ui-datatable-editingrow .ui-cell-editor .ui-cell-editor-input {
     display:inline;
 }
 
 .ui-datatable .ui-row-editor .ui-icon-pencil {
     display: inline;
 }
-.ui-datatable .ui-datatable-invalidrow .ui-row-editor .ui-icon-pencil {
+.ui-datatable .ui-datatable-editingrow .ui-row-editor .ui-icon-pencil {
     display: none;
 }
 
@@ -212,8 +212,8 @@
     display: none;
 }
 
-.ui-datatable .ui-datatable-invalidrow .ui-row-editor .ui-icon-check,
-.ui-datatable .ui-datatable-invalidrow .ui-row-editor .ui-icon-close {
+.ui-datatable .ui-datatable-editingrow .ui-row-editor .ui-icon-check,
+.ui-datatable .ui-datatable-editingrow .ui-row-editor .ui-icon-close {
     display: inline;
 }
 

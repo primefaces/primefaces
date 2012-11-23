@@ -100,6 +100,7 @@ import org.primefaces.component.datatable.feature.*;
     public static final String SUBTABLE_HEADER = "ui-datatable-subtable-header"; 
     public static final String SUBTABLE_FOOTER = "ui-datatable-subtable-footer"; 
     public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
+    public static final String EDITING_ROW_CLASS = "ui-datatable-editingrow";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
                                                         "rowUnselect", "rowEdit", "rowEditCancel", "colResize", "toggleSelect", "colReorder", "contextMenu"

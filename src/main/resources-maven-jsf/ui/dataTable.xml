@@ -262,6 +262,13 @@
             <defaultValue>row</defaultValue>
             <description>Defines edit mode, valid values are "row" (default) and "cell".</description>
 		</attribute>
+        <attribute>
+			<name>editingRow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if cell editors of row should be displayed as editable or not. Default is false meaning display mode.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

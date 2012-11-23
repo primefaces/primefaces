@@ -1056,8 +1056,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Selects the corresping row of a checkbox based column selection
-                 */
+     * Selects the corresping row of a checkbox based column selection
+     */
     selectRowWithCheckbox: function(checkbox, silent) {
         var row = checkbox.parents('tr:first'),
         rowMeta = this.getRowMeta(row);
@@ -1085,8 +1085,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Unselects the corresping row of a checkbox based column selection
-                 */
+     * Unselects the corresping row of a checkbox based column selection
+     */
     unselectRowWithCheckbox: function(checkbox, silent) {
         var row = checkbox.parents('tr:first'),
         rowMeta = this.getRowMeta(row);
@@ -1117,8 +1117,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Toggles all rows with checkbox
-                 */
+     * Toggles all rows with checkbox
+     */
     toggleCheckAll: function() {
         var checkboxes = this.tbody.find('> tr > td.ui-selection-column .ui-chkbox-box:not(.ui-state-disabled)'),
         checked = this.checkAllToggler.hasClass('ui-state-active'),
@@ -1163,8 +1163,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Expands a row to display detail content
-                 */
+     * Expands a row to display detail content
+     */
     toggleExpansion: function(expanderElement) {
         var expander = $(expanderElement),
         row = expander.parents('tr:first'),
@@ -1290,8 +1290,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Binds editor events non-obstrusively
-                 */
+     * Binds editor events non-obstrusively
+     */
     bindEditEvents: function() {
         var $this = this;
         
@@ -1314,15 +1314,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             var cellSelector = this.jqId + ' tbody.ui-datatable-data tr td.ui-editable-column div.ui-dt-c';
             
             $(document).off('dblclick.dataTable-cell', cellSelector)
-            .on('dblclick.dataTable-cell', cellSelector, null, function(e) {
-                $this.showCellEditor($(this));
-            });
+                        .on('dblclick.dataTable-cell', cellSelector, null, function(e) {
+                            $this.showCellEditor($(this));
+                        });
         }
     },
     
-    /**
-                 * Displays in-cell editors for given row
-                 */
     showEditors: function(el) {
         var element = $(el);
 
@@ -1383,22 +1380,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         cellInfo = rowMeta.index + ',' + cellIndex;
 
         var options = {
-            source: this.id
-            ,
-            process: this.id
-            ,
-            params: [
-            {
-                name: this.id + '_cellInfo', 
-                value: cellInfo
-            }
-            ,{
-                name: cellEditorId, 
-                value: cellEditorId
-            }
-            ]
-            ,
-            oncomplete: function(xhr, status, args) {
+            source: this.id,
+            process: this.id,
+            params: [{name: this.id + '_cellInfo', value: cellInfo},
+                    {name: cellEditorId, value: cellEditorId}]
+            ,oncomplete: function(xhr, status, args) {
                 var editableContainer = cell.find('span.ui-cell-editor-input'),
                 displayContainer = cell.find('span.ui-cell-editor-output'),
                 input = editableContainer.find(':input:first'),
@@ -1425,22 +1411,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Saves the edited row
-                 */
+     * Saves the edited row
+     */
     saveRowEdit: function(rowEditor) {
         this.doRowEditRequest(rowEditor, 'save');
     },
     
     /**
-                 * Cancels row editing
-                 */
+     * Cancels row editing
+     */
     cancelRowEdit: function(rowEditor) {
         this.doRowEditRequest(rowEditor, 'cancel');
     },
     
     /**
-                 * Sends an ajax request to handle row save or cancel
-                 */
+     * Sends an ajax request to handle row save or cancel
+     */
     doRowEditRequest: function(rowEditor, action) {
         var row = rowEditor.parents('tr:first'),
         options = {
@@ -1463,7 +1449,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 id = update.attr('id'),
                 content = update.text();
 
-                if(id == _self.id){
+                if(id == _self.id) {
                     if(this.args.validationFailed) {
                         content = content.replace('ui-widget-content', 'ui-widget-content ui-datatable-invalidrow ui-state-error');
                     }
@@ -1484,28 +1470,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         };
 
         options.params = [
-        {
-            name: this.id + '_rowEditIndex', 
-            value: this.getRowMeta(row).index
-            },
-
-            {
-            name: this.id + '_rowEditAction', 
-            value: action
-        },
-
-        {
-            name: this.id + '_encodeFeature', 
-            value: true
-        }
+            {name: this.id + '_rowEditIndex', value: this.getRowMeta(row).index},
+            {name: this.id + '_rowEditAction', value: action},
+            {name: this.id + '_encodeFeature', value: true}
         ];
 
         if(action === 'save') {
             row.find('span.ui-cell-editor').each(function() {
-                options.params.push({
-                    name: this.id, 
-                    value: this.id
-                    });
+                options.params.push({name: this.id, value: this.id});
             });
         }
 
@@ -1521,16 +1493,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     }
 
     /**
-                 * Returns the paginator instance if any defined
-                 */
+     * Returns the paginator instance if any defined
+     */
     ,
     getPaginator: function() {
         return this.paginator;
     },
     
     /**
-                 * Writes selected row ids to state holder
-                 */
+     * Writes selected row ids to state holder
+     */
     writeSelections: function() {
         $(this.selectionHolder).val(this.selection.join(','));
     },
