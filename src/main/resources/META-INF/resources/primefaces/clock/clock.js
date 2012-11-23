@@ -322,18 +322,55 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.pattern = this.cfg.pattern||"MM/dd/yyyy hh:mm:ss";
         this.cfg.dateFormat = new SimpleDateFormat(this.cfg.pattern);
         this.current = this.isClient() ? new Date() : new Date(this.cfg.value);
+
+        this.start();
         
         var $this = this;
-        
-        setInterval(function(){$this.updateOutput();}, 1000);
+        if(!this.isClient() && this.cfg.autoSync) {
+            setInterval(function() {
+                $this.sync();
+            }, this.cfg.syncInterval);
+        }
     },
     
     isClient: function() {
         return this.cfg.mode === 'client';
     },
+    
+    start: function() {
+        var $this = this;
+        this.interval = setInterval(function(){
+            $this.updateOutput();
+        }, 1000);
+    },
+    
+    stop: function() {
+        clearTimeout(this.interval);
+    },
      
     updateOutput: function() {
         this.current.setSeconds(this.current.getSeconds() + 1);
         this.jq.text(this.cfg.dateFormat.format(this.current));   
+    },
+    
+    sync: function() {
+        this.stop();
+        
+        var $this = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            async: true,
+            global: false,
+            params: [{
+                name: this.id + '_sync', value: true
+            }],
+            oncomplete: function(xhr, status, args) {
+                $this.current = new Date(args.datetime);
+                $this.start();
+            }
+        };
+        
+        PrimeFaces.ajax.AjaxRequest(options);
     }
 });
