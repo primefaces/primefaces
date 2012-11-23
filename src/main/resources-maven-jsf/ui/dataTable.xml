@@ -259,7 +259,8 @@
 			<name>editMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Defines edit mode, valid values are "row" and "cell".</description>
+            <defaultValue>row</defaultValue>
+            <description>Defines edit mode, valid values are "row" (default) and "cell".</description>
 		</attribute>
 	</attributes>
 	<resources>

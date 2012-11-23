@@ -1293,7 +1293,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                  * Binds editor events non-obstrusively
                  */
     bindEditEvents: function() {
-        this.cfg.editMode = this.cfg.editMode||'row';
         var $this = this;
         
         if(this.cfg.editMode === 'row') {
