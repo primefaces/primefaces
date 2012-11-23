@@ -701,10 +701,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, String rowIndexVar) throws IOException {
-        //Row index var
-        if(rowIndexVar != null) {
-            context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
-        }
+        ResponseWriter writer = context.getResponseWriter();
         
         boolean selectionEnabled = table.isSelectionEnabled();
         
@@ -721,8 +718,6 @@ public class DataTableRenderer extends DataRenderer {
         //Preselection
         boolean selected = table.getSelectedRowKeys().contains(rowKey);
 
-        ResponseWriter writer = context.getResponseWriter();
-
         String userRowStyleClass = table.getRowStyleClass();
         String rowStyleClass = rowIndex % 2 == 0 ? DataTable.ROW_CLASS + " " + DataTable.EVEN_ROW_CLASS : DataTable.ROW_CLASS + " " + DataTable.ODD_ROW_CLASS;
         
@@ -732,6 +727,10 @@ public class DataTableRenderer extends DataRenderer {
 
         if(userRowStyleClass != null) {
             rowStyleClass = rowStyleClass + " " + userRowStyleClass;
+        }
+        
+        if(table.isEditingRow()) {
+            rowStyleClass = rowStyleClass + " " + DataTable.EDITING_ROW_CLASS;
         }
 
         writer.startElement("tr", null);
@@ -1028,16 +1027,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
     
-    protected void encodeEditedRow(FacesContext context, DataTable table) throws IOException {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_rowEditIndex"));
-
-        table.setRowIndex(editedRowId);
-        if(table.isRowAvailable()) {
-            encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar());
-        }
-    }
-
     protected void encodeLiveRows(FacesContext context, DataTable table) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
