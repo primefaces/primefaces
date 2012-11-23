@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class ColorPickerRenderer extends CoreRenderer {
 
@@ -118,20 +119,14 @@ public class ColorPickerRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = colorPicker.getClientId(context);
         String value = (String) colorPicker.getValue();
-
+        WidgetBuilder wb = getWidgetBuilder(context);
+        
+        wb.widget("ColorPicker", colorPicker.resolveWidgetVar(), clientId, "colorpicker", true)
+            .attr("mode", colorPicker.getMode())
+            .attr("color", value, null);
 
 		startScript(writer, clientId);
-
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('ColorPicker','" + colorPicker.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",mode:'" + colorPicker.getMode() + "'");
-
-        if(value != null) 
-            writer.write(",color:'" + value + "'");
-
-        writer.write("},'colorpicker');});");
+        writer.write(wb.build());
 
         endScript(writer);
     }
