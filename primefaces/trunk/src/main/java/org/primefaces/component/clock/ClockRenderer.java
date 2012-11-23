@@ -53,7 +53,7 @@ public class ClockRenderer extends CoreRenderer {
         wb.attr("mode", mode);
         
         if(mode.equals("server")) {
-            wb.attr("value", (new Date().toString()));
+            wb.attr("value", (new Date().getTime() + ""));
         }
 
         startScript(writer, clientId);
