@@ -142,7 +142,8 @@ public class WidgetBuilder {
         }
         
         String script = buffer.toString();
-        buffer.setLength(0);
+        
+        reset();
         
         return script;
     }
