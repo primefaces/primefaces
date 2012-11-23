@@ -1,8 +1,4 @@
 /**
-* PrimeFaces Clock Widget
-*/
-
-/**
 * Copyright 2007 Tim Down.
 * 
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -323,41 +319,21 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.cfg.pattern = this.cfg.pattern||"hh:mm dd.MM.yyyy";
-        var dateFormat = new SimpleDateFormat(this.cfg.pattern);
-
+        this.cfg.pattern = this.cfg.pattern||"MM/dd/yyyy hh:mm:ss";
+        this.cfg.dateFormat = new SimpleDateFormat(this.cfg.pattern);
+        this.current = this.isClient() ? new Date() : new Date(this.cfg.value);
+        
         var $this = this;
-        if(this.isClient()) {
-            var date = new Date();
-            setInterval(function(){
-                $this.updateOutput(date,dateFormat)
-            }, 1000
-            );
-        }
-        else {
-            var $this = this,
-            date = new Date(parseInt($this.cfg.value, 0));
-            
-            setInterval(function(){
-                $this.addSecondAndShow(date,dateFormat)
-            }, 1000
-            );
-        }
+        
+        setInterval(function(){$this.updateOutput();}, 1000);
     },
     
     isClient: function() {
         return this.cfg.mode === 'client';
     },
      
-    updateOutput: function(date,dateFormat) {
-        this.jq.text(dateFormat.format(new Date()));  //dont create new date obj. find soln.          
-    },
-    
-    addSecondAndShow: function(date, dateFormat){
-        date.setSeconds(date.getSeconds() + 1, 0);
-        this.jq.text(dateFormat.format(date));
-    },
-    
-    refresh: function(){
+    updateOutput: function() {
+        this.current.setSeconds(this.current.getSeconds() + 1);
+        this.jq.text(this.cfg.dateFormat.format(this.current));   
     }
 });

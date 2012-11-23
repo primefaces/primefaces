@@ -49,11 +49,11 @@ public class ClockRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         wb.widget("Clock", clock.resolveWidgetVar(), clientId, false);
-        wb.attr("pattern", clock.getPattern());
-        wb.attr("mode", mode);
+        wb.attr("mode", mode)
+            .attr("pattern", clock.getPattern(), null);
         
         if(mode.equals("server")) {
-            wb.attr("value", (String.valueOf(new Date().getTime())));
+            wb.attr("value", new Date().getTime());
         }
 
         startScript(writer, clientId);
