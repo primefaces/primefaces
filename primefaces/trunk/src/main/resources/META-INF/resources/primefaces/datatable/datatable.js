@@ -1321,9 +1321,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     showEditors: function(el) {
-        var element = $(el);
+        var element = $(el),
+        row = element.parents('tr:first');
 
-        element.parents('tr:first').addClass('ui-state-highlight').children('td.ui-editable-column').each(function() {
+        row.addClass('ui-state-highlight ui-datatable-editing-row').children('td.ui-editable-column').each(function() {
             var column = $(this);
 
             column.find('span.ui-cell-editor-output').hide();
@@ -1333,6 +1334,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 element.hide().siblings().show();
             }
         });
+        
+        if(this.hasBehavior('rowEditInit')) {
+            var rowEditInitBehavior = this.cfg.behaviors['rowEditInit'],
+            rowIndex = this.getRowMeta(row).index;
+            
+            var ext = {
+                params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
+            };
+
+            rowEditInitBehavior.call(this, null, ext);
+        }
     },
     
     showCellEditor: function(c) {

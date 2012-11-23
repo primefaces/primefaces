@@ -103,7 +103,7 @@ import org.primefaces.component.datatable.feature.*;
     public static final String EDITING_ROW_CLASS = "ui-datatable-editingrow";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
-                                                        "rowUnselect", "rowEdit", "rowEditCancel", "colResize", "toggleSelect", "colReorder", "contextMenu"
+                                                        "rowUnselect", "rowEdit", "rowEditInit", "rowEditCancel", "colResize", "toggleSelect", "colReorder", "contextMenu"
                                                         ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect", "rowToggle"
                                                         ,"cellEdit"));
 
@@ -226,7 +226,7 @@ import org.primefaces.component.datatable.feature.*;
             else if(eventName.equals("filter")) {
                 wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredValue(), getFilters());
             }
-            else if(eventName.equals("rowEdit")||eventName.equals("rowEditCancel")) {
+            else if(eventName.equals("rowEdit")||eventName.equals("rowEditCancel")||eventName.equals("rowEditInit")) {
                 int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
                 setRowIndex(rowIndex);
                 wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), this.getRowData());
