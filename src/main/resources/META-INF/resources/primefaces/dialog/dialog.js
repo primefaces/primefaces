@@ -172,10 +172,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.moveToTop();
-        this.applyFocus();
 
-        if(this.cfg.modal)
+        if(this.cfg.modal) {
             this.enableModality();
+        }
     },
     
     postShow: function() {   
@@ -188,6 +188,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             'aria-hidden': false
             ,'aria-live': 'polite'
         });
+        
+        this.applyFocus();
     },
     
     hide: function() {   
