@@ -34,16 +34,18 @@
             <description>Mode of the client, valid values are client and server.</description>
         </attribute>
         <attribute>
-            <name>locale</name>
+            <name>autoSync</name>
             <required>false</required>
-            <type>java.lang.Object</type>
-            <description>Locale to be used for labels and conversion.</description>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Syncs time periodically in server mode.</description>
         </attribute>
         <attribute>
-            <name>timeZone</name>
+            <name>syncInterval</name>
             <required>false</required>
-            <type>java.lang.Object</type>
-            <description>String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault().</description>
+            <type>java.lang.Integer</type>
+            <defaultValue>60000</defaultValue>
+            <description>Defines the sync interval in autoSync mode, default is 60000 milliseconds.</description>
         </attribute>
     </attributes>
     <resources>

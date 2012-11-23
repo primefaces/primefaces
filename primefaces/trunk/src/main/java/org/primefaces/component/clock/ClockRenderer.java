@@ -16,15 +16,25 @@
 package org.primefaces.component.clock;
 
 import java.io.IOException;
-import java.util.Date;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class ClockRenderer extends CoreRenderer {
 
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        Clock clock = (Clock) component;
+        
+        if(clock.isSyncRequest()) {
+            RequestContext.getCurrentInstance().addCallbackParam("datetime", System.currentTimeMillis());
+            context.renderResponse();
+        }
+    }
+    
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Clock clock = (Clock) component;
@@ -53,7 +63,11 @@ public class ClockRenderer extends CoreRenderer {
             .attr("pattern", clock.getPattern(), null);
         
         if(mode.equals("server")) {
-            wb.attr("value", new Date().getTime());
+            wb.attr("value", System.currentTimeMillis());
+            
+            if(clock.isAutoSync()) {
+                wb.attr("autoSync", true).attr("syncInterval", clock.getSyncInterval());
+            }
         }
 
         startScript(writer, clientId);
