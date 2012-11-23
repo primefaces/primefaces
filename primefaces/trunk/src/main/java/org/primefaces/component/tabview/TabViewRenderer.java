@@ -112,6 +112,10 @@ public class TabViewRenderer extends CoreRenderer {
         String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
+        if(tabView.getDir().equalsIgnoreCase("rtl")) {
+            styleClass += " ui-tabs-rtl";
+        }
+        
         writer.startElement("div", tabView);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, "styleClass");
