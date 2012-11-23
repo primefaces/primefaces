@@ -113,6 +113,13 @@
             <type>java.lang.String</type>
             <description>Client side callback to execute before a tab is closed. Return false to prevent closing.</description>
         </attribute>
+        <attribute>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>dir</defaultValue>
+            <description>Defines text direction, valid values are "ltr" (default) and "rtl".</description>
+        </attribute>
     </attributes>
 	<resources>
         <resource>

@@ -124,12 +124,12 @@
 }
 
 /** RTL **/
-.ui-rtl .ui-tabs,
-.ui-rtl .ui-tabs-panel { 
+.ui-rtl .ui-tabs, .ui-rtl .ui-tabs-panel,
+.ui-tabs-rtl, .ui-tabs-rtl .ui-tabs-panel { 
     direction: rtl; 
 }
 
-.ui-rtl .ui-tabs .ui-tabs-nav li,
-.ui-rtl ui-tabs .ui-tabs-nav li a{
+.ui-rtl .ui-tabs .ui-tabs-nav li, .ui-rtl ui-tabs .ui-tabs-nav li a,
+.ui-tabs-rtl .ui-tabs-nav li, .ui-tabs-rtl .ui-tabs-nav li a {
     float: right;
 }
