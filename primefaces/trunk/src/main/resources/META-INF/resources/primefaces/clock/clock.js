@@ -319,7 +319,7 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.cfg.pattern = this.cfg.pattern||"MM/dd/yyyy hh:mm:ss";
+        this.cfg.pattern = this.cfg.pattern||"MM/dd/yyyy HH:mm:ss";
         this.cfg.dateFormat = new SimpleDateFormat(this.cfg.pattern);
         this.current = this.isClient() ? new Date() : new Date(this.cfg.value);
 
