@@ -15,7 +15,7 @@
     <rendererType>org.primefaces.component.ClockRenderer</rendererType>
     <rendererClass>org.primefaces.component.clock.ClockRenderer</rendererClass>
     <parent>javax.faces.component.UIOutput</parent>
-    <description>Clock displays datetime in real time.</description>
+    <description>Clock displays server or client datetime live.</description>
     <interfaces>
         <interface>
             <name>org.primefaces.component.api.Widget</name>
@@ -45,7 +45,7 @@
             <name>timeZone</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()</description>
+            <description>String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault().</description>
         </attribute>
     </attributes>
     <resources>
