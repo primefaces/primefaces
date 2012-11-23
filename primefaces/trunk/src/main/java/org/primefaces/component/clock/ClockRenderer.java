@@ -38,7 +38,7 @@ public class ClockRenderer extends CoreRenderer {
         
         writer.startElement("span", clock);
         writer.writeAttribute("id", clock.getClientId(), null);
-        writer.writeAttribute("class", "ui-clock", null);
+        writer.writeAttribute("class", Clock.STYLE_CLASS, null);
         writer.endElement("span");
     }
 
@@ -53,7 +53,7 @@ public class ClockRenderer extends CoreRenderer {
         wb.attr("mode", mode);
         
         if(mode.equals("server")) {
-            wb.attr("value", (new Date().getTime() + ""));
+            wb.attr("value", (String.valueOf(new Date().getTime())));
         }
 
         startScript(writer, clientId);
