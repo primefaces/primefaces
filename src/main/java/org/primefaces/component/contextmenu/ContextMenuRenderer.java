@@ -45,11 +45,13 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         writer.write("id:'" + clientId + "'");     
         
         if(target != null) {
-            String targetWidgetVar = ((Widget) target).resolveWidgetVar();
-            
             writer.write(",target:'" + target.getClientId(context) + "'");
             writer.write(",type:'" + target.getClass().getSimpleName() + "'");
-            writer.write(",targetWidgetVar:'" + targetWidgetVar + "'");
+            
+            if(target instanceof Widget){
+                String targetWidgetVar = ((Widget) target).resolveWidgetVar();
+                writer.write(",targetWidgetVar:'" + targetWidgetVar + "'");
+            }
         }
         
         if(menu.getNodeType() != null) writer.write(",nodeType:'" + menu.getNodeType() + "'");
