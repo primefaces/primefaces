@@ -151,6 +151,10 @@
     padding:0.4em 0.3em;
 }
 
+.ui-menubar .ui-menubar-options {
+    float: right;
+}
+
 /*IE7 hack*/
 .ui-menubar > .ui-menu-list > .ui-menuitem > .ui-menuitem-link span.ui-icon-triangle-1-e,
 .ui-menubar > .ui-menu-list > .ui-menuitem > .ui-menuitem-link span.ui-icon-triangle-1-s{

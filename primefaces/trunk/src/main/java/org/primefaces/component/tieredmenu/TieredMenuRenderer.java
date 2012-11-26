@@ -62,6 +62,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
     
     protected void encodeMenu(FacesContext context, AbstractMenu component, String style, String styleClass, String role) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        UIComponent optionsFacet = component.getFacet("options");
         
         writer.startElement("div", component);
 		writer.writeAttribute("id", component.getClientId(context), "id");
@@ -75,6 +76,14 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
 		encodeMenuContent(context, component);
+        
+        if(optionsFacet != null) {
+            writer.startElement("li", null);
+            writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
+            writer.writeAttribute("role", "menuitem", null);
+            optionsFacet.encodeAll(context);
+            writer.endElement("li");
+        }
 		
 		writer.endElement("ul");
 

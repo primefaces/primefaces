@@ -31,6 +31,7 @@ public abstract class AbstractMenu extends UIComponentBase {
     public static final String SUBMENU_RIGHT_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
     public static final String SUBMENU_DOWN_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
     public static final String SEPARATOR_CLASS = "ui-separator ui-state-default";
+    public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
     
 	public void buildMenuFromModel() {
 		MenuModel model = (MenuModel) getModel();
