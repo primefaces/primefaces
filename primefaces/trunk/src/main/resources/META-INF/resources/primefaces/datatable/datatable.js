@@ -1463,7 +1463,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 if(id == _self.id) {
                     if(this.args.validationFailed) {
-                        content = content.replace('ui-widget-content', 'ui-widget-content ui-datatable-invalidrow ui-state-error');
+                        content = content.replace('ui-widget-content', 'ui-widget-content ui-datatable-editingrow ui-state-error');
                     }
                     
                     //remove row expansion
