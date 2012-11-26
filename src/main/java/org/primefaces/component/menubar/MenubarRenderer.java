@@ -45,7 +45,6 @@ public class MenubarRenderer extends TieredMenuRenderer {
 
     @Override
 	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
         Menubar menubar = (Menubar) abstractMenu;
         String style = menubar.getStyle();
         String styleClass = menubar.getStyleClass();
