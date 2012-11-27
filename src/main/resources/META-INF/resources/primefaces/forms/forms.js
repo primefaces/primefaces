@@ -481,7 +481,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            this.activateItem(this.items.eq(selectedOption.index()), true);
+            this.highlightItem(this.items.eq(selectedOption.index()));
         }
                 
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
@@ -508,7 +508,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
             if(hiddenParentWidget) {
                 hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.initWidths();
+                    return $this.initWidths();
                 });
             }
         }
@@ -683,25 +683,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.items.eq(0).addClass('ui-state-active');
         }
         else {
-            this.activateItem(this.items.eq(this.preShowValue.index()));
+            this.highlightItem(this.items.eq(this.preShowValue.index()));
         }
     },
     
-    activateItem: function(item, update) {
-        this.deactivateItem(this.items.filter('.ui-state-highlight'));
+    highlightItem: function(item) {
+        this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
         item.addClass('ui-state-highlight');
         
         this.setLabel(item.text());
-        
-        if(update) {
-            this.input.val(this.options.eq(item.index()).val());
-        }
-        
-        PrimeFaces.scrollInView(this.itemsWrapper, item);
-    },
-    
-    deactivateItem: function(item) {
-        item.removeClass('ui-state-highlight');
     },
     
     triggerChange: function(edited) {
@@ -738,7 +728,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         }
         
         if(shouldChange) {
-            this.activateItem(item, true);
+            this.highlightItem(item);
+            this.input.val(selectedOption.val())
 
             this.triggerChange();
             
@@ -773,10 +764,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                             $this.selectItem(prev);
                         } 
                         else {
-                            $this.activateItem(prev, false);
+                            $this.highlightItem(prev);
                         }
+                        
+                        PrimeFaces.scrollInView($this.itemsWrapper, next);
                     }
-                    
+
                     e.preventDefault();                    
                 break;
 
@@ -787,12 +780,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                     
                     if(next.length == 1) {
                         if($this.panel.is(':hidden')) {
-                            $this.activateItem(next, true);
-                            $this.triggerChange();
+                            $this.selectItem(next);
                         }
                         else {
-                            $this.activateItem(next, false);
+                            $this.highlightItem(next);
                         }
+                        
+                        PrimeFaces.scrollInView($this.itemsWrapper, next);
                     }
                     
                     e.preventDefault();
