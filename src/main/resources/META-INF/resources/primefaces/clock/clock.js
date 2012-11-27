@@ -1,36 +1,36 @@
 /**
-* Copyright 2007 Tim Down.
-* 
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-* 
-*      http://www.apache.org/licenses/LICENSE-2.0
-* 
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+             * Copyright 2007 Tim Down.
+             * 
+             * Licensed under the Apache License, Version 2.0 (the "License");
+             * you may not use this file except in compliance with the License.
+             * You may obtain a copy of the License at
+             * 
+             *      http://www.apache.org/licenses/LICENSE-2.0
+             * 
+             * Unless required by applicable law or agreed to in writing, software
+             * distributed under the License is distributed on an "AS IS" BASIS,
+             * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+             * See the License for the specific language governing permissions and
+             * limitations under the License.
+             */
 
 /**
-* simpledateformat.js
-*
-* A faithful JavaScript implementation of Java's SimpleDateFormat's format
-* method. All pattern layouts present in the Java implementation are
-* implemented here except for z, the text version of the date's time zone.
-*
-* Thanks to Ash Searle (http://hexmen.com/blog/) for his fix to my
-* misinterpretation of pattern letters h and k.
-* 
-* See the official Sun documentation for the Java version:
-* http://java.sun.com/j2se/1.5.0/docs/api/java/text/SimpleDateFormat.html
-*
-* Author: Tim Down <tim@timdown.co.uk>
-* Last modified: 6/2/2007
-* Website: http://www.timdown.co.uk/code/simpledateformat.php
-*/
+             * simpledateformat.js
+             *
+             * A faithful JavaScript implementation of Java's SimpleDateFormat's format
+             * method. All pattern layouts present in the Java implementation are
+             * implemented here except for z, the text version of the date's time zone.
+             *
+             * Thanks to Ash Searle (http://hexmen.com/blog/) for his fix to my
+             * misinterpretation of pattern letters h and k.
+             * 
+             * See the official Sun documentation for the Java version:
+             * http://java.sun.com/j2se/1.5.0/docs/api/java/text/SimpleDateFormat.html
+             *
+             * Author: Tim Down <tim@timdown.co.uk>
+             * Last modified: 6/2/2007
+             * Website: http://www.timdown.co.uk/code/simpledateformat.php
+             */
  
 /* ------------------------------------------------------------------------- */
 
@@ -156,8 +156,18 @@ var SimpleDateFormat;
         return isUndefined(this.minimalDaysInFirstWeek)	?
         DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK : this.minimalDaysInFirstWeek;
     };
+                
+    SimpleDateFormat.prototype.getMonthNames = function() {
+        return monthNames;
+    };
+                
+    SimpleDateFormat.prototype.getDayNames = function() {
+        return dayNames;
+    };
 
-    SimpleDateFormat.prototype.format = function(date) {
+    SimpleDateFormat.prototype.format = function(date,monthNames_,dayNames_) {
+        monthNames = monthNames_||monthNames;
+        dayNames = dayNames_||dayNames;
         var formattedString = "";
         var result;
 
@@ -311,14 +321,19 @@ var SimpleDateFormat;
     };
 })();
 
+
 /**
-*  PrimeFaces Clock Widget 
-*/
+             *  PrimeFaces Clock Widget 
+             */
 PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        
+                    
+        this.localeSettings = this.cfg.locale==null ? null:PrimeFaces.locales[this.cfg.locale];
+        this.monthNames = this.localeSettings==null?SimpleDateFormat.prototype.getMonthNames():this.localeSettings['monthNames'];
+        this.dayNames = this.localeSettings==null?SimpleDateFormat.prototype.getDayNames():this.localeSettings['dayNames'];
+                    
         this.cfg.pattern = this.cfg.pattern||"MM/dd/yyyy HH:mm:ss";
         this.cfg.dateFormat = new SimpleDateFormat(this.cfg.pattern);
         this.current = this.isClient() ? new Date() : new Date(this.cfg.value);
@@ -330,7 +345,7 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
             setInterval(function() {
                 $this.sync();
             }, this.cfg.syncInterval);
-        }
+        }                    
     },
     
     isClient: function() {
@@ -350,7 +365,7 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
      
     updateOutput: function() {
         this.current.setSeconds(this.current.getSeconds() + 1);
-        this.jq.text(this.cfg.dateFormat.format(this.current));   
+        this.jq.text(this.cfg.dateFormat.format(this.current,this.monthNames,this.dayNames));
     },
     
     sync: function() {
@@ -363,7 +378,8 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
             async: true,
             global: false,
             params: [{
-                name: this.id + '_sync', value: true
+                name: this.id + '_sync', 
+                value: true
             }],
             oncomplete: function(xhr, status, args) {
                 $this.current = new Date(args.datetime);
@@ -374,3 +390,4 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.ajax.AjaxRequest(options);
     }
 });
+            
