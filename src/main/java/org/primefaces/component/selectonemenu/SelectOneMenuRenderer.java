@@ -96,6 +96,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     protected void encodeInput(FacesContext context, SelectOneMenu menu, String clientId, List<SelectItem> selectItems, Object values, Object submittedValues, Converter converter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
+        String focusId = clientId + "_focus";
         
         writer.startElement("div", menu);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -112,6 +113,17 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         writer.endElement("select");
 
+        writer.endElement("div");
+        
+        writer.startElement("div", menu);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        
+        //input for focus
+        writer.startElement("input", menu);
+        writer.writeAttribute("id", focusId, null);
+        writer.writeAttribute("name", focusId, null);
+        writer.writeAttribute("type", "text", null);
+        writer.endElement("input");
         writer.endElement("div");
     }
 
