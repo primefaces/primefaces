@@ -1,163 +1,132 @@
 /**
-* Copyright 2007 Tim Down.
-* 
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-* 
-*      http://www.apache.org/licenses/LICENSE-2.0
-* 
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
-/**
-* simpledateformat.js
-*
-* A faithful JavaScript implementation of Java's SimpleDateFormat's format
-* method. All pattern layouts present in the Java implementation are
-* implemented here except for z, the text version of the date's time zone.
-*
-* Thanks to Ash Searle (http://hexmen.com/blog/) for his fix to my
-* misinterpretation of pattern letters h and k.
-* 
-* See the official Sun documentation for the Java version:
-* http://java.sun.com/j2se/1.5.0/docs/api/java/text/SimpleDateFormat.html
-*
-* Author: Tim Down <tim@timdown.co.uk>
-* Last modified: 6/2/2007
-* Website: http://www.timdown.co.uk/code/simpledateformat.php
-*/
- 
-/* ------------------------------------------------------------------------- */
-
-var SimpleDateFormat;
-
-(function() {
-    function isUndefined(obj) {
-        return typeof obj == "undefined";
-    }
-
-    var regex = /('[^']*')|(G+|y+|M+|w+|W+|D+|d+|F+|E+|a+|H+|k+|K+|h+|m+|s+|S+|Z+)|([a-zA-Z]+)|([^a-zA-Z']+)/;
-    var monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
-    var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    var TEXT2 = 0, TEXT3 = 1, NUMBER = 2, YEAR = 3, MONTH = 4, TIMEZONE = 5;
-    var types = {
-        G : TEXT2,
-        y : YEAR,
-        M : MONTH,
-        w : NUMBER,
-        W : NUMBER,
-        D : NUMBER,
-        d : NUMBER,
-        F : NUMBER,
-        E : TEXT3,
-        a : TEXT2,
-        H : NUMBER,
-        k : NUMBER,
-        K : NUMBER,
-        h : NUMBER,
-        m : NUMBER,
-        s : NUMBER,
-        S : NUMBER,
-        Z : TIMEZONE
-    };
-    var ONE_DAY = 24 * 60 * 60 * 1000;
-    var ONE_WEEK = 7 * ONE_DAY;
-    var DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK = 1;
-
-    var newDateAtMidnight = function(year, month, day) {
+ * PrimeFaces SimpleDateFormat widget, code ported from Tim Down's http://www.timdown.co.uk/code/simpledateformat.php
+ */
+PrimeFaces.widget.SimpleDateFormat = Class.extend({
+    
+    init: function(cfg) {
+        this.cfg = cfg;
+        this.cfg.regex = /('[^']*')|(G+|y+|M+|w+|W+|D+|d+|F+|E+|a+|H+|k+|K+|h+|m+|s+|S+|Z+)|([a-zA-Z]+)|([^a-zA-Z']+)/
+        this.cfg.TEXT2 = 0;
+        this.cfg.TEXT3 = 1;
+        this.cfg.NUMBER = 2;
+        this.cfg.YEAR = 3;
+        this.cfg.MONTH = 4;
+        this.cfg.TIMEZONE = 6;
+        this.cfg.types = {
+            G : this.cfg.TEXT2,
+            y : this.cfg.YEAR,
+            M : this.cfg.MONTH,
+            w : this.cfg.NUMBER,
+            W : this.cfg.NUMBER,
+            D : this.cfg.NUMBER,
+            d : this.cfg.NUMBER,
+            F : this.cfg.NUMBER,
+            E : this.cfg.TEXT3,
+            a : this.cfg.TEXT2,
+            H : this.cfg.NUMBER,
+            k : this.cfg.NUMBER,
+            K : this.cfg.NUMBER,
+            h : this.cfg.NUMBER,
+            m : this.cfg.NUMBER,
+            s : this.cfg.NUMBER,
+            S : this.cfg.NUMBER,
+            Z : this.cfg.TIMEZONE
+        };
+        
+        this.cfg.ONE_DAY = 24 * 60 * 60 * 1000;
+        this.cfg.ONE_WEEK = 7 * this.cfg.ONE_DAY;
+        this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK = 1;
+        
+        if(this.cfg.locale && PrimeFaces.locales[this.cfg.locale]) {
+            this.cfg.monthNames = PrimeFaces.locales[this.cfg.locale].monthNames;
+            this.cfg.dayNames = PrimeFaces.locales[this.cfg.locale].dayNames;
+        } 
+        else {
+            this.cfg.monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            this.cfg.dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        }
+    },
+    
+    newDateAtMidnight: function(year, month, day) {
         var d = new Date(year, month, day, 0, 0, 0);
         d.setMilliseconds(0);
+        
         return d;
-    }
+    },
+    
+    getDifference : function(date1, date2) {
+        return date1.getTime() - date2.getTime();
+    },
+    
+    isBefore : function(date1, date2) {
+        return date1.getTime() < date2.getTime();
+    },
 
-    Date.prototype.getDifference = function(date) {
-        return this.getTime() - date.getTime();
-    };
+    getUTCTime: function(date) {
+        return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+    },
+    
+    getTimeSince: function(date1, date2) {
+        return date1.getUTCTime() - date2.getUTCTime();
+    },
 
-    Date.prototype.isBefore = function(d) {
-        return this.getTime() < d.getTime();
-    };
-
-    Date.prototype.getUTCTime = function() {
-        return Date.UTC(this.getFullYear(), this.getMonth(), this.getDate(), this.getHours(), this.getMinutes(),
-            this.getSeconds(), this.getMilliseconds());
-    };
-
-    Date.prototype.getTimeSince = function(d) {
-        return this.getUTCTime() - d.getUTCTime();
-    };
-
-    Date.prototype.getPreviousSunday = function() {
+    getPreviousSunday: function(date) {
         // Using midday avoids any possibility of DST messing things up
-        var midday = new Date(this.getFullYear(), this.getMonth(), this.getDate(), 12, 0, 0);
-        var previousSunday = new Date(midday.getTime() - this.getDay() * ONE_DAY);
-        return newDateAtMidnight(previousSunday.getFullYear(), previousSunday.getMonth(),
-            previousSunday.getDate());
-    }
+        var midday = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0);
+        var previousSunday = new Date(midday.getTime() - date.getDay() * this.cfg.ONE_DAY);
+        
+        return this.newDateAtMidnight(previousSunday.getFullYear(), previousSunday.getMonth(), previousSunday.getDate());
+    },
 
-    Date.prototype.getWeekInYear = function(minimalDaysInFirstWeek) {
-        if (isUndefined(this.minimalDaysInFirstWeek)) {
-            minimalDaysInFirstWeek = DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK;
+    getWeekInYear : function(date, minimalDaysInFirstWeek) {
+        if(!this.minimalDaysInFirstWeek) {
+            minimalDaysInFirstWeek = this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK;
         }
-        var previousSunday = this.getPreviousSunday();
-        var startOfYear = newDateAtMidnight(this.getFullYear(), 0, 1);
-        var numberOfSundays = previousSunday.isBefore(startOfYear) ?
-        0 : 1 + Math.floor(previousSunday.getTimeSince(startOfYear) / ONE_WEEK);
+        
+        var previousSunday = this.getPreviousSunday(date);
+        var startOfYear = this.newDateAtMidnight(date.getFullYear(), 0, 1);
+        var numberOfSundays = previousSunday.isBefore(startOfYear) ? 0 : 1 + Math.floor(previousSunday.getTimeSince(startOfYear) / this.cfg.ONE_WEEK);
         var numberOfDaysInFirstWeek =  7 - startOfYear.getDay();
         var weekInYear = numberOfSundays;
         if (numberOfDaysInFirstWeek < minimalDaysInFirstWeek) {
             weekInYear--;
         }
+        
         return weekInYear;
-    };
+    },
 
-    Date.prototype.getWeekInMonth = function(minimalDaysInFirstWeek) {
-        if (isUndefined(this.minimalDaysInFirstWeek)) {
-            minimalDaysInFirstWeek = DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK;
+   getWeekInMonth: function(date, minimalDaysInFirstWeek) {
+        if(!this.minimalDaysInFirstWeek) {
+            minimalDaysInFirstWeek = this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK;
         }
-        var previousSunday = this.getPreviousSunday();
-        var startOfMonth = newDateAtMidnight(this.getFullYear(), this.getMonth(), 1);
-        var numberOfSundays = previousSunday.isBefore(startOfMonth) ?
-        0 : 1 + Math.floor((previousSunday.getTimeSince(startOfMonth)) / ONE_WEEK);
+        
+        var previousSunday = this.getPreviousSunday(date);
+        var startOfMonth = this.newDateAtMidnight(date.getFullYear(), date.getMonth(), 1);
+        var numberOfSundays = previousSunday.isBefore(startOfMonth) ? 0 : 1 + Math.floor((previousSunday.getTimeSince(startOfMonth)) / this.cfg.ONE_WEEK);
         var numberOfDaysInFirstWeek =  7 - startOfMonth.getDay();
         var weekInMonth = numberOfSundays;
         if (numberOfDaysInFirstWeek >= minimalDaysInFirstWeek) {
             weekInMonth++;
         }
+        
         return weekInMonth;
-    };
+    },
 
-    Date.prototype.getDayInYear = function() {
-        var startOfYear = newDateAtMidnight(this.getFullYear(), 0, 1);
-        return 1 + Math.floor(this.getTimeSince(startOfYear) / ONE_DAY);
-    };
-
-    /* ----------------------------------------------------------------- */
-
-    SimpleDateFormat = function(formatString) {
-        this.formatString = formatString;
-    };
-
-    /**
-                 * Sets the minimum number of days in a week in order for that week to
-                 * be considered as belonging to a particular month or year
-                 */
-    SimpleDateFormat.prototype.setMinimalDaysInFirstWeek = function(days) {
+    getDayInYear: function(date) {
+        var startOfYear = this.newDateAtMidnight(date.getFullYear(), 0, 1);
+        
+        return 1 + Math.floor(this.getTimeSince(startOfYear) / this.cfg.ONE_DAY);
+    },
+    
+    setMinimalDaysInFirstWeek: function(days) {
         this.minimalDaysInFirstWeek = days;
-    };
+    },
 
-    SimpleDateFormat.prototype.getMinimalDaysInFirstWeek = function(days) {
-        return isUndefined(this.minimalDaysInFirstWeek)	?
-        DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK : this.minimalDaysInFirstWeek;
-    };
+    getMinimalDaysInFirstWeek: function(days) {
+        return this.minimalDaysInFirstWeek	? this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK : this.minimalDaysInFirstWeek;
+    },
 
-    SimpleDateFormat.prototype.format = function(date) {
+    format: function(date) {
         var formattedString = "";
         var result;
 
@@ -178,8 +147,8 @@ var SimpleDateFormat;
             return padWithZeroes(dataString, numberOfLetters);
         };
 
-        var searchString = this.formatString;
-        while ((result = regex.exec(searchString))) {
+        var searchString = this.cfg.pattern;
+        while ((result = this.cfg.regex.exec(searchString))) {
             var matchedString = result[0];
             var quotedString = result[1];
             var patternLetters = result[2];
@@ -214,10 +183,10 @@ var SimpleDateFormat;
                         rawData = date.getMonth();
                         break;
                     case "w":
-                        rawData = date.getWeekInYear(this.getMinimalDaysInFirstWeek());
+                        rawData = this.getWeekInYear(date, this.getMinimalDaysInFirstWeek());
                         break;
                     case "W":
-                        rawData = date.getWeekInMonth(this.getMinimalDaysInFirstWeek());
+                        rawData = date.getWeekInMonth(date, this.getMinimalDaysInFirstWeek());
                         break;
                     case "D":
                         rawData = date.getDayInYear();
@@ -229,7 +198,7 @@ var SimpleDateFormat;
                         rawData = 1 + Math.floor((date.getDate() - 1) / 7);
                         break;
                     case "E":
-                        rawData = dayNames[date.getDay()];
+                        rawData = this.cfg.dayNames[date.getDay()];
                         break;
                     case "a":
                         rawData = (date.getHours() >= 12) ? "PM" : "AM";
@@ -260,17 +229,17 @@ var SimpleDateFormat;
                         break;
                 }
                 // Format the raw data depending on the type
-                switch (types[patternLetter]) {
-                    case TEXT2:
+                switch (this.cfg.types[patternLetter]) {
+                    case this.cfg.TEXT2:
                         formattedString += formatText(rawData, numberOfLetters, 2);
                         break;
-                    case TEXT3:
+                    case this.cfg.TEXT3:
                         formattedString += formatText(rawData, numberOfLetters, 3);
                         break;
-                    case NUMBER:
+                    case this.cfg.NUMBER:
                         formattedString += formatNumber(rawData, numberOfLetters);
                         break;
-                    case YEAR:
+                    case this.cfg.YEAR:
                         if (numberOfLetters <= 3) {
                             // Output a 2-digit year
                             var dataString = "" + rawData;
@@ -279,15 +248,15 @@ var SimpleDateFormat;
                             formattedString += formatNumber(rawData, numberOfLetters);
                         }
                         break;
-                    case MONTH:
+                    case this.cfg.MONTH:
                         if (numberOfLetters >= 3) {
-                            formattedString += formatText(monthNames[rawData], numberOfLetters, numberOfLetters);
+                            formattedString += formatText(this.cfg.monthNames[rawData], numberOfLetters, numberOfLetters);
                         } else {
                             // NB. Months returned by getMonth are zero-based
                             formattedString += formatNumber(rawData + 1, numberOfLetters);
                         }
                         break;
-                    case TIMEZONE:
+                    case this.cfg.TIMEZONE:
                         var isPositive = (rawData > 0);
                         // The following line looks like a mistake but isn't
                         // because of the way getTimezoneOffset measures.
@@ -305,22 +274,26 @@ var SimpleDateFormat;
                         break;
                 }
             }
+            
             searchString = searchString.substr(result.index + result[0].length);
         }
         return formattedString;
-    };
-})();
+    }
+});
 
 /**
-*  PrimeFaces Clock Widget 
-*/
+ *  PrimeFaces Clock Widget 
+ */
 PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
         
         this.cfg.pattern = this.cfg.pattern||"MM/dd/yyyy HH:mm:ss";
-        this.cfg.dateFormat = new SimpleDateFormat(this.cfg.pattern);
+        this.cfg.dateFormat = new PrimeFaces.widget.SimpleDateFormat({
+            pattern: this.cfg.pattern,
+            locale: this.cfg.locale
+        });
         this.current = this.isClient() ? new Date() : new Date(this.cfg.value);
 
         this.start();
