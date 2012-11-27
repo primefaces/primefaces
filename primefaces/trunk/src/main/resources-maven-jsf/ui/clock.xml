@@ -41,12 +41,6 @@
             <description>Syncs time periodically in server mode.</description>
         </attribute>
         <attribute>
-            <name>locale</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <description>Locale to be used for changing the language of days and months.</description>
-        </attribute>
-        <attribute>
             <name>syncInterval</name>
             <required>false</required>
             <type>java.lang.Integer</type>
