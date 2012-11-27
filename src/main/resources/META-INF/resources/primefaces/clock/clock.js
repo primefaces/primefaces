@@ -78,11 +78,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
         return this.newDateAtMidnight(previousSunday.getFullYear(), previousSunday.getMonth(), previousSunday.getDate());
     },
 
-    getWeekInYear : function(date, minimalDaysInFirstWeek) {
-        if(!this.minimalDaysInFirstWeek) {
-            minimalDaysInFirstWeek = this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK;
-        }
-        
+    getWeekInYear : function(date, minimalDaysInFirstWeek) {        
         var previousSunday = this.getPreviousSunday(date);
         var startOfYear = this.newDateAtMidnight(date.getFullYear(), 0, 1);
         var numberOfSundays = previousSunday.isBefore(startOfYear) ? 0 : 1 + Math.floor(previousSunday.getTimeSince(startOfYear) / this.cfg.ONE_WEEK);
@@ -95,11 +91,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
         return weekInYear;
     },
 
-   getWeekInMonth: function(date, minimalDaysInFirstWeek) {
-        if(!this.minimalDaysInFirstWeek) {
-            minimalDaysInFirstWeek = this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK;
-        }
-        
+   getWeekInMonth: function(date, minimalDaysInFirstWeek) {        
         var previousSunday = this.getPreviousSunday(date);
         var startOfMonth = this.newDateAtMidnight(date.getFullYear(), date.getMonth(), 1);
         var numberOfSundays = previousSunday.isBefore(startOfMonth) ? 0 : 1 + Math.floor((previousSunday.getTimeSince(startOfMonth)) / this.cfg.ONE_WEEK);
@@ -118,12 +110,8 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
         return 1 + Math.floor(this.getTimeSince(startOfYear) / this.cfg.ONE_DAY);
     },
     
-    setMinimalDaysInFirstWeek: function(days) {
-        this.minimalDaysInFirstWeek = days;
-    },
-
     getMinimalDaysInFirstWeek: function(days) {
-        return this.minimalDaysInFirstWeek	? this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK : this.minimalDaysInFirstWeek;
+        return this.cfg.minimalDaysInFirstWeek	? this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK : this.cfg.minimalDaysInFirstWeek;
     },
 
     format: function(date) {
