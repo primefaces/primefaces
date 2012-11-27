@@ -50,7 +50,6 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
     newDateAtMidnight: function(year, month, day) {
         var d = new Date(year, month, day, 0, 0, 0);
         d.setMilliseconds(0);
-        
         return d;
     },
     
@@ -63,11 +62,14 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
     },
 
     getUTCTime: function(date) {
-        return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+        if(date != undefined){
+            return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+        }
+        
     },
     
     getTimeSince: function(date1, date2) {
-        return date1.getUTCTime() - date2.getUTCTime();
+        return this.getUTCTime(date1) - this.getUTCTime(date2);
     },
 
     getPreviousSunday: function(date) {
@@ -81,7 +83,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
     getWeekInYear : function(date, minimalDaysInFirstWeek) {        
         var previousSunday = this.getPreviousSunday(date);
         var startOfYear = this.newDateAtMidnight(date.getFullYear(), 0, 1);
-        var numberOfSundays = previousSunday.isBefore(startOfYear) ? 0 : 1 + Math.floor(previousSunday.getTimeSince(startOfYear) / this.cfg.ONE_WEEK);
+        var numberOfSundays = this.isBefore(previousSunday, startOfYear) ? 0 : 1 + Math.floor(this.getTimeSince(previousSunday,startOfYear) / this.cfg.ONE_WEEK);
         var numberOfDaysInFirstWeek =  7 - startOfYear.getDay();
         var weekInYear = numberOfSundays;
         if (numberOfDaysInFirstWeek < minimalDaysInFirstWeek) {
@@ -94,7 +96,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
    getWeekInMonth: function(date, minimalDaysInFirstWeek) {        
         var previousSunday = this.getPreviousSunday(date);
         var startOfMonth = this.newDateAtMidnight(date.getFullYear(), date.getMonth(), 1);
-        var numberOfSundays = previousSunday.isBefore(startOfMonth) ? 0 : 1 + Math.floor((previousSunday.getTimeSince(startOfMonth)) / this.cfg.ONE_WEEK);
+        var numberOfSundays = this.isBefore(previousSunday,startOfMonth) ? 0 : 1 + Math.floor((this.getTimeSince(previousSunday, startOfMonth)) / this.cfg.ONE_WEEK);
         var numberOfDaysInFirstWeek =  7 - startOfMonth.getDay();
         var weekInMonth = numberOfSundays;
         if (numberOfDaysInFirstWeek >= minimalDaysInFirstWeek) {
@@ -107,7 +109,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
     getDayInYear: function(date) {
         var startOfYear = this.newDateAtMidnight(date.getFullYear(), 0, 1);
         
-        return 1 + Math.floor(this.getTimeSince(startOfYear) / this.cfg.ONE_DAY);
+        return 1 + Math.floor(this.getTimeSince(date, startOfYear) / this.cfg.ONE_DAY);
     },
     
     getMinimalDaysInFirstWeek: function(days) {
@@ -174,10 +176,10 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
                         rawData = this.getWeekInYear(date, this.getMinimalDaysInFirstWeek());
                         break;
                     case "W":
-                        rawData = date.getWeekInMonth(date, this.getMinimalDaysInFirstWeek());
+                        rawData = this.getWeekInMonth(date, this.getMinimalDaysInFirstWeek());
                         break;
                     case "D":
-                        rawData = date.getDayInYear();
+                        rawData = this.getDayInYear(date);
                         break;
                     case "d":
                         rawData = date.getDate();
