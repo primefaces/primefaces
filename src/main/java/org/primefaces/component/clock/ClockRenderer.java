@@ -60,8 +60,7 @@ public class ClockRenderer extends CoreRenderer {
 
         wb.widget("Clock", clock.resolveWidgetVar(), clientId, false);
         wb.attr("mode", mode)
-            .attr("pattern", clock.getPattern(), null)
-            .attr("locale", clock.getLocale(), null);
+            .attr("pattern", clock.getPattern(), null);
         
         if(mode.equals("server")) {
             wb.attr("value", System.currentTimeMillis());
