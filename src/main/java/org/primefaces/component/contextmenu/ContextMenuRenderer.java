@@ -25,6 +25,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ContextMenuRenderer extends TieredMenuRenderer {
 
@@ -32,32 +33,27 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         ContextMenu menu = (ContextMenu) abstractMenu;
-		String widgetVar = menu.resolveWidgetVar();
 		String clientId = menu.getClientId(context);
 		UIComponent target = findTarget(context, menu);
-        String event = menu.getEvent();
-		
-        startScript(writer, clientId);
-
-        writer.write("$(function() {");
         
-        writer.write("PrimeFaces.cw('ContextMenu','" + widgetVar + "',{");
-        writer.write("id:'" + clientId + "'");     
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("ContextMenu", menu.resolveWidgetVar(), clientId, true);
         
         if(target != null) {
-            writer.write(",target:'" + target.getClientId(context) + "'");
-            writer.write(",type:'" + target.getClass().getSimpleName() + "'");
+            wb.attr("target", target.getClientId(context))
+                .attr("type", target.getClass().getSimpleName());
             
-            if(target instanceof Widget){
-                String targetWidgetVar = ((Widget) target).resolveWidgetVar();
-                writer.write(",targetWidgetVar:'" + targetWidgetVar + "'");
+            if(target instanceof Widget) {
+                wb.attr("targetWidgetVar", ((Widget) target).resolveWidgetVar());
             }
         }
         
-        if(menu.getNodeType() != null) writer.write(",nodeType:'" + menu.getNodeType() + "'");
-        if(event != null) writer.write(",event:'" + event + "'");
-        
-        writer.write("});});");
+        wb.attr("nodeType", menu.getNodeType(), null)
+            .attr("event", menu.getEvent(), null);
+		
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
 		
 		endScript(writer);
 	}
