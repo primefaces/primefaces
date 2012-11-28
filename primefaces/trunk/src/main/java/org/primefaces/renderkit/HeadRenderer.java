@@ -68,7 +68,7 @@ public class HeadRenderer extends Renderer {
             if(name != null) {
                 if(name.endsWith(".css"))
                     styles.add(resource);
-                else if(name.endsWith(".js"));
+                else if(name.endsWith(".js"))
                     scripts.add(resource);
             }
         }
