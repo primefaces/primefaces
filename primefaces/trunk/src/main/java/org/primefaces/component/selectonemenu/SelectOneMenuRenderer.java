@@ -28,6 +28,7 @@ import javax.faces.model.SelectItem;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
 
@@ -288,30 +289,24 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
-
-        startScript(writer, clientId);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("SelectOneMenu", menu.resolveWidgetVar(), clientId, true)
+                .attr("effect", menu.getEffect(), null)
+                .attr("effectSpeed", menu.getEffectSpeed(), null)
+                .attr("editable", menu.isEditable(), false)
+                .callback("onchange", "function()", menu.getOnchange());
         
-        writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('SelectOneMenu','" + menu.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        
-        if(menu.getEffect() != null) writer.write(",effect:'" + menu.getEffect() + "'");
-        if(menu.getEffectSpeed() != null) writer.write(",effectSpeed:'" + menu.getEffectSpeed() + "'");
-        if(menu.isEditable())  writer.write(",editable:true");
-        if(menu.getOnchange() != null) writer.write(",onchange:function() {" + menu.getOnchange() + "}");
-
         if(menu.isFilter()) {
-            writer.write(",filter:true");
-            
-            if(menu.getFilterMatchMode() != null) writer.write(",filterMatchMode:'" + menu.getFilterMatchMode() + "'");     
-            if(menu.getFilterFunction() != null) writer.write(",filterFunction:" + menu.getFilterFunction());
-            if(menu.isCaseSensitive()) writer.write(",caseSensitive:true");
+            wb.attr("filter", true)
+                .attr("filterMatchMode", menu.getFilterMatchMode(), null)
+                .attr("filterFunction", menu.getFilterFunction(), null)
+                .attr("caseSensitive", menu.isCaseSensitive(), false);
         }
         
-        encodeClientBehaviors(context, menu);
-
-        writer.write("});});");
-
+        encodeClientBehaviors(context, menu, wb);
+        
+        startScript(writer, clientId);
+        writer.write(wb.build());
         endScript(writer);
     }
 
