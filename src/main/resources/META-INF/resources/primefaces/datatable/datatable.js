@@ -38,7 +38,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.expansion) {
             this.expansionProcess = [];
-            this.setupExpansionEvents();
+            this.bindExpansionEvents();
         }
 
         if(this.cfg.editable) {
@@ -430,9 +430,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Applies events related to row expansion in a non-obstrusive way
-                 */
-    setupExpansionEvents: function() {
+     * Applies events related to row expansion in a non-obstrusive way
+     */
+    bindExpansionEvents: function() {
         var _self = this;
 
         $(this.jqId + ' tbody.ui-datatable-data tr td span.ui-row-toggler')
