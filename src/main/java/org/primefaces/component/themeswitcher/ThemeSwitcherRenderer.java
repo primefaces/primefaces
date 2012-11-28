@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.component.selectonemenu.SelectOneMenuRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
  
@@ -29,21 +30,15 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         ThemeSwitcher ts = (ThemeSwitcher) menu;
         String clientId = ts.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("ThemeSwitcher", ts.resolveWidgetVar(), clientId, true)
+                .attr("effect", ts.getEffect(), null)
+                .attr("effectSpeed", ts.getEffectSpeed(), null);
+        
+        encodeClientBehaviors(context, menu, wb);
         
         startScript(writer, clientId);
-		
-		writer.write("$(function(){");
-        
-        writer.write("PrimeFaces.cw('ThemeSwitcher','" + ts.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        
-        if(ts.getEffect() != null) writer.write(",effect:'" + ts.getEffect() + "'");
-        if(ts.getEffectSpeed() != null) writer.write(",effectSpeed:'" + ts.getEffectSpeed() + "'");
-
-        encodeClientBehaviors(context, menu);
-		
-		writer.write("});});");
-        
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 }
