@@ -782,7 +782,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                     
                     if(next.length == 1) {
                         if($this.panel.is(':hidden')) {
-                            $this.selectItem(next);
+                            if(e.altKey) {
+                                $this.show();
+                            } else {
+                                $this.selectItem(next);
+                            }
                         }
                         else {
                             $this.highlightItem(next);
