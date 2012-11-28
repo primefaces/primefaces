@@ -563,11 +563,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         });
         
         //Triggers
-        this.triggers.mouseover(function() {
-            $this.jq.addClass('ui-state-hover');
-            $this.menuIcon.addClass('ui-state-hover');
+        this.triggers.mouseenter(function() {
+            if(!$this.jq.hasClass('ui-state-focus')) {
+                $this.jq.addClass('ui-state-hover');
+                $this.menuIcon.addClass('ui-state-hover');
+            }
         })
-        .mouseout(function() {
+        .mouseleave(function() {
             $this.jq.removeClass('ui-state-hover');
             $this.menuIcon.removeClass('ui-state-hover');
         })
@@ -751,9 +753,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         
         this.focusInput.on('keydown.ui-selectonemenu', function(e) {
-            var keyCode = $.ui.keyCode;
+            var keyCode = $.ui.keyCode,
+            key = e.which;
 
-            switch(e.which) { 
+            switch(key) { 
                 case keyCode.UP:
                 case keyCode.LEFT:
                     var activeItem = $this.getActiveItem(),
@@ -765,9 +768,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                         } 
                         else {
                             $this.highlightItem(prev);
+                            PrimeFaces.scrollInView($this.itemsWrapper, prev);
                         }
-                        
-                        PrimeFaces.scrollInView($this.itemsWrapper, next);
                     }
 
                     e.preventDefault();                    
@@ -784,9 +786,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                         }
                         else {
                             $this.highlightItem(next);
+                            PrimeFaces.scrollInView($this.itemsWrapper, next);
                         }
-                        
-                        PrimeFaces.scrollInView($this.itemsWrapper, next);
                     }
                     
                     e.preventDefault();
@@ -803,8 +804,46 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                     
                     e.preventDefault();
                 break;
+                
+                case keyCode.TAB:
+                    if($this.panel.is(':visible')) {
+                        $this.revert();
+                        $this.hide();
+                    }
+                break;
+                
+                default:                    
+                    var k = String.fromCharCode((96 <= key && key <= 105)? key-48 : key),
+                    currentItem = $this.items.filter('.ui-state-highlight');
+
+                    //Search items forward from current to end and on no result, search from start until current
+                    var highlightItem = $this.search(k, currentItem.index() + 1, $this.options.length);
+                    if(!highlightItem) {
+                        highlightItem = $this.search(k, 0, currentItem.index());
+                    }
+                    
+                    if($this.panel.is(':hidden')) {
+                        $this.selectItem(highlightItem);
+                    }
+                    else {
+                        $this.highlightItem(highlightItem);
+                        PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
+                    }                
+                break;
             }
         });
+    },
+    
+    search: function(text, start, end) { 
+        for(var i = start; i  < end; i++) {
+            var option = this.options.eq(i);
+
+            if(option.text().indexOf(text) == 0) {
+                return this.items.eq(i);
+            }
+        }
+        
+        return null;
     },
     
     hideAndChange: function() {
