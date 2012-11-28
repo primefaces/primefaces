@@ -1833,19 +1833,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     updateHeaderCheckbox: function() {
-        var checkboxes = $(this.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column .ui-chkbox-box'),
-        uncheckedBoxes = $.grep(checkboxes, function(element) {
-            var checkbox = $(element),
-            disabled = checkbox.hasClass('ui-state-disabled'),
-            checked = checkbox.hasClass('ui-state-active');
-
-            return !(checked || disabled); 
-        });
-
-        if(uncheckedBoxes.length == 0)
-            this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
-        else
+        if(this.isEmpty()) {
             this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+        }
+        else {
+            var checkboxes = $(this.jqId + ' tbody.ui-datatable-data:first > tr > td.ui-selection-column .ui-chkbox-box'),
+            uncheckedBoxes = $.grep(checkboxes, function(element) {
+                var checkbox = $(element),
+                disabled = checkbox.hasClass('ui-state-disabled'),
+                checked = checkbox.hasClass('ui-state-active');
+
+                return !(checked || disabled); 
+            });
+
+            if(uncheckedBoxes.length == 0)
+                this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+            else
+                this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+        }
+        
     }  
 
 });
