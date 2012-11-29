@@ -345,22 +345,10 @@ public class DataTableRenderer extends DataRenderer {
         //column content wrapper
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER , null);
-        
-        //add max-min width.
-        String styleString = "";
-        Column column_ = (Column)column;
-        if(column_.getMinWidth() != -1){
-            styleString += "min-width: " + column_.getMinWidth() + "px; ";
-        }
-        if(column_.getMaxWidth()  != -1)
-        {
-            styleString += "max-width: " + column_.getMaxWidth() + "px; ";
-        }
         if(column.getWidth() != -1) {
-            styleString += "width: " + column.getWidth() + "px; ";
+            writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
         }
-        writer.writeAttribute("style", styleString, null);
-        
+
         if(hasFilter) {
             table.enableFiltering();
 
