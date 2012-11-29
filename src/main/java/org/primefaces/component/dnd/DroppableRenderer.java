@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class DroppableRenderer extends CoreRenderer {
 
@@ -37,27 +38,24 @@ public class DroppableRenderer extends CoreRenderer {
         Droppable droppable = (Droppable) component;
         String target = findTarget(context, droppable).getClientId(context);
         String clientId = droppable.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Droppable", droppable.resolveWidgetVar(), clientId, true)
+                .attr("target", target)
+                .attr("disabled", droppable.isDisabled(), false)
+                .attr("hoverClass", droppable.getHoverStyleClass(), null)
+                .attr("activeClass", droppable.getActiveStyleClass(), null)
+                .attr("accept", droppable.getAccept(), null)
+                .attr("scope", droppable.getScope(), null)
+                .attr("tolerance", droppable.getTolerance(), null);
+        
+        if(droppable.getOnDrop() != null) {
+            wb.append(",onDrop:").append(droppable.getOnDrop());
+        }
+        
+        encodeClientBehaviors(context, droppable, wb);
 
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('Droppable','" + droppable.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",target:'" + target + "'");
-
-        if(droppable.isDisabled()) writer.write(",disabled:true");
-        if(droppable.getHoverStyleClass() != null) writer.write(",hoverClass:'" + droppable.getHoverStyleClass() + "'");
-        if(droppable.getActiveStyleClass() != null) writer.write(",activeClass:'" + droppable.getActiveStyleClass() + "'");
-        if(droppable.getOnDrop() != null) writer.write(",onDrop:" + droppable.getOnDrop());
-        if(droppable.getAccept() != null) writer.write(",accept:'" + droppable.getAccept() + "'");
-        if(droppable.getScope() != null) writer.write(",scope:'" + droppable.getScope() + "'");
-        if(droppable.getTolerance() != null) writer.write(",tolerance:'" + droppable.getTolerance() + "'");
-
-        encodeClientBehaviors(context, droppable);
-        
-        writer.write("});});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
 
