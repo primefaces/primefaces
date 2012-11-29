@@ -15,11 +15,9 @@
  */
 package org.primefaces.component.feedreader;
 
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -55,7 +53,7 @@ public class FeedReaderRenderer extends CoreRenderer {
     
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //Rendering happens on encodeEnd
+        //Do nothing
     }
 
     @Override
