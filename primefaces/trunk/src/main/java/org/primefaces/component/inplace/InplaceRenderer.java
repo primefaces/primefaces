@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class InplaceRenderer extends CoreRenderer {
 
@@ -114,26 +115,19 @@ public class InplaceRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, Inplace inplace) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inplace.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Inplace", inplace.resolveWidgetVar(), clientId, false)
+            .attr("effect", inplace.getEffect())
+            .attr("effectSpeed", inplace.getEffectSpeed())
+            .attr("event", inplace.getEvent())
+            .attr("toggleable", inplace.isToggleable(), false)
+            .attr("disabled", inplace.isDisabled(), false)
+            .attr("editor", inplace.isEditor(), false);
+        
+        encodeClientBehaviors(context, inplace, wb);
 		
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('Inplace','" + inplace.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-		writer.write(",effect:'" + inplace.getEffect() + "'");
-		writer.write(",effectSpeed:'" + inplace.getEffectSpeed() + "'");
-        writer.write(",event:'" + inplace.getEvent() + "'");
-
-        if(inplace.isToggleable()) writer.write(",toggleable:true");
-		if(inplace.isDisabled()) writer.write(",disabled:true");
-        
-        if(inplace.isEditor()) {
-            writer.write(",editor:true");
-        }
-        
-        encodeClientBehaviors(context, inplace);
-
-		writer.write("});");
-        
+        writer.write(wb.build());
         endScript(writer);
 	}
 
