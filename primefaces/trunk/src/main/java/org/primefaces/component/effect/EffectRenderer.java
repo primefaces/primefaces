@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class EffectRenderer extends CoreRenderer {
 
@@ -49,20 +50,16 @@ public class EffectRenderer extends CoreRenderer {
 		
 		String animation = getEffectBuilder(effect, target).build();
 		
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Effect", effect.resolveWidgetVar(), clientId, true)
+            .attr("source", source)
+            .attr("event", event)
+            .attr("delay", delay)
+            .callback("fn", "function()", animation);
+        
         startScript(writer, clientId);
-        
-		writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('Effect','" + effect.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",source:'" + source + "'");
-        writer.write(",event:'" + event + "'");
-        writer.write(",fn:function() {" + animation + "}");
-        writer.write(",delay:" + delay);
-
-        writer.write("});});");
-        
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 	
 	private EffectBuilder getEffectBuilder(Effect effect, String effectedComponentClientId) {
