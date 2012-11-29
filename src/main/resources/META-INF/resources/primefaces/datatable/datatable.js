@@ -1553,8 +1553,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Add resize behavior to columns
-                 */
+     * Add resize behavior to columns
+     */
     setupResizableColumns: function() {
         //Add resizers and resizer helper
         $(this.jqId + ' thead tr th.ui-resizable-column div.ui-dt-c').prepend('<span class="ui-column-resizer">&nbsp;</span>');
@@ -1582,27 +1582,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             },
             drag: function(event, ui) {
                 resizerHelper.offset(
-                {
-                    left: ui.helper.offset().left + ui.helper.width() / 2, 
-                    top: thead.offset().top + thead.height()
-                });  
+                    {
+                        left: ui.helper.offset().left + ui.helper.width() / 2, 
+                        top: thead.offset().top + thead.height()
+                    });  
             },
             stop: function(event, ui) {
                 var columnHeaderWrapper = ui.helper.parent(),
                 columnHeader = columnHeaderWrapper.parent(),
-                minWidth = parseInt(columnHeader.css('min-width')),
-                maxWidth = parseInt(columnHeader.css('max-width')),
                 oldPos = ui.originalPosition.left,
-                newPos = ui.position.left;
-                
-                if(ui.position.left<minWidth){
-                    newPos = minWidth;
-                }
-                else if(ui.position.left>maxWidth){
-                    newPos = maxWidth;
-                }
-                
-                var change = (newPos - oldPos),
+                newPos = ui.position.left,
+                change = (newPos - oldPos),
                 newWidth = (columnHeaderWrapper.width() + change - (ui.helper.width() / 2));
 
                 ui.helper.css('left','');
@@ -1621,25 +1611,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     source: _self.id,
                     process: _self.id,
                     params: [
-                    {
-                        name: _self.id + '_colResize', 
-                        value: true
-                    },
-
-                    {
-                        name: _self.id + '_columnId', 
-                        value: columnHeader.attr('id')
-                        },
-
-                        {
-                        name: _self.id + '_width', 
-                        value: newWidth
-                    },
-
-                    {
-                        name: _self.id + '_height', 
-                        value: columnHeader.height()
-                        }
+                        {name: _self.id + '_colResize', value: true},
+                        {name: _self.id + '_columnId', value: columnHeader.attr('id')},
+                        {name: _self.id + '_width', value: newWidth},
+                        {name: _self.id + '_height', value: columnHeader.height()}
                     ]
                 }
                 
@@ -1666,8 +1641,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Remove given rowIndex from selection
-                 */
+     * Remove given rowIndex from selection
+     */
     removeSelection: function(rowIndex) {        
         this.selection = $.grep(this.selection, function(value) {
             return value != rowIndex;
