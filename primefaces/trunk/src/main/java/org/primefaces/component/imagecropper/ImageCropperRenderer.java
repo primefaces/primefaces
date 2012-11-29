@@ -31,6 +31,7 @@ import javax.servlet.ServletContext;
 
 import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ImageCropperRenderer extends CoreRenderer {
 
@@ -57,22 +58,23 @@ public class ImageCropperRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String widgetVar = cropper.resolveWidgetVar();
 		String clientId = cropper.getClientId(context);
-
-        startScript(writer, clientId);	
-
-        writer.write("$(PrimeFaces.escapeClientId('" + clientId + "_image')).load(function(){");
+        String image = clientId + "_image";
+        String select = null;
         
-        writer.write("PrimeFaces.cw('ImageCropper','" + widgetVar + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",image:'" + clientId + "_image'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("ImageCropper", widgetVar, clientId, "imagecropper", false)
+            .attr("image", image);
         
-        if(cropper.getMinSize() != null) writer.write(",minSize:[" + cropper.getMinSize() + "]");
-        if(cropper.getMaxSize() != null) writer.write(",maxSize:[" + cropper.getMaxSize() + "]");
-        if(cropper.getBackgroundColor() != null) writer.write(",bgColor:'" + cropper.getBackgroundColor() + "'");
-        if(cropper.getBackgroundOpacity() != 0.6) writer.write(",bgOpacity:" + cropper.getBackgroundOpacity());
-        if(cropper.getAspectRatio() != Double.MIN_VALUE) writer.write(",aspectRatio:" + cropper.getAspectRatio());
-
-        //Initial crop area
+        if(cropper.getMinSize() != null) 
+            wb.append(",minSize:[").append(cropper.getMinSize()).append("]");
+        
+        if(cropper.getMaxSize() != null) 
+            wb.append(",maxSize:[").append(cropper.getMaxSize()).append("]");
+        
+        wb.attr("bgColor", cropper.getBackgroundColor(), null)
+            .attr("bgOpacity", cropper.getBackgroundOpacity(), 0.6)
+            .attr("aspectRation", cropper.getAspectRatio(), Double.MIN_VALUE);
+        
 		if(cropper.getValue() != null) {
             CroppedImage croppedImage = (CroppedImage) cropper.getValue();
             
@@ -81,16 +83,19 @@ public class ImageCropperRenderer extends CoreRenderer {
             int x2 = x + croppedImage.getWidth();
             int y2 = y + croppedImage.getHeight();
 
-			writer.write(",setSelect:[" + x +  "," + y + "," + x2 + "," + y2 + "]");
-
-		} else if(cropper.getInitialCoords() != null) {
-            writer.write(",setSelect:[" + cropper.getInitialCoords() + "]");
+            select = "[" + x +  "," + y + "," + x2 + "," + y2 + "]";
+		} 
+        else if(cropper.getInitialCoords() != null) {
+            select = "[" + cropper.getInitialCoords() + "]";
         }
-
         
-		writer.write("},'imagecropper');});");
+        wb.append(",setSelect:").append(select);
 
-		endScript(writer);
+        startScript(writer, clientId);	
+        writer.write("$(PrimeFaces.escapeClientId('" + clientId + "_image')).load(function(){");
+        writer.write(wb.build());
+        writer.write("});");
+        endScript(writer);
 	}
 	
 	protected void encodeMarkup(FacesContext context, ImageCropper cropper) throws IOException{

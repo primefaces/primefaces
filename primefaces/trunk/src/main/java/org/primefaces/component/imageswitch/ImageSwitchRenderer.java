@@ -22,14 +22,15 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ImageSwitchRenderer extends CoreRenderer {
 
     @Override
-	public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
 		ImageSwitch imageSwitch = (ImageSwitch) component;
-        ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = imageSwitch.getClientId(facesContext);
+        ResponseWriter writer = context.getResponseWriter();
+		String clientId = imageSwitch.getClientId(context);
 
         writer.startElement("div", imageSwitch);
 		writer.writeAttribute("id", clientId, "id");
@@ -39,26 +40,23 @@ public class ImageSwitchRenderer extends CoreRenderer {
 	}
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ImageSwitch imageSwitch = (ImageSwitch) component;
-        String clientId = imageSwitch.getClientId(facesContext);
-        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = imageSwitch.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
         int slideshowSpeed = imageSwitch.isSlideshowAuto() ? imageSwitch.getSlideshowSpeed() : 0;
-
+        
         writer.endElement("div");
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("ImageSwitch", imageSwitch.resolveWidgetVar(), clientId, "imageswitch", true)
+            .attr("fx", imageSwitch.getEffect())
+            .attr("speed", imageSwitch.getSpeed())
+            .attr("timeout", slideshowSpeed);
 		
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('ImageSwitch','" + imageSwitch.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-		writer.write(",fx:'" + imageSwitch.getEffect() + "'");
-		writer.write(",speed:" + imageSwitch.getSpeed());
-		writer.write(",timeout:" + slideshowSpeed);
-		writer.write("},'imageswitch');});");
-
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 
 }
