@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class InputMaskRenderer extends InputRenderer {
 	
@@ -57,24 +58,19 @@ public class InputMaskRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputMask.getClientId(context);
         String mask = inputMask.getMask();
-		
-        startScript(writer, clientId);
-
-        writer.write("PrimeFaces.cw('InputMask','" + inputMask.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("InputMask", inputMask.resolveWidgetVar(), clientId, false);
         
         if(mask != null) {
-            writer.write(",mask:'" + inputMask.getMask() + "'");
-            
-            if(inputMask.getPlaceHolder()!=null)
-                writer.write(",placeholder:'" + inputMask.getPlaceHolder() + "'");
+            wb.attr("mask", mask)
+                .attr("placeholder", inputMask.getPlaceHolder(), null);
         }
-
-        encodeClientBehaviors(context, inputMask);
-
-		writer.write("});");
-	
-		endScript(writer);
+        
+        encodeClientBehaviors(context, inputMask, wb);
+		
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 	
 	protected void encodeMarkup(FacesContext context, InputMask inputMask) throws IOException {

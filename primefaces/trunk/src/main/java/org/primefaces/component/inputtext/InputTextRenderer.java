@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class InputTextRenderer extends InputRenderer {
 
@@ -54,17 +55,14 @@ public class InputTextRenderer extends InputRenderer {
 	protected void encodeScript(FacesContext context, InputText inputText) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputText.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("InputText", inputText.resolveWidgetVar(), clientId, false);
+        
+        encodeClientBehaviors(context, inputText, wb);
 
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('InputText','" + inputText.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-
-        encodeClientBehaviors(context, inputText);
-
-        writer.write("});");
-
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, InputText inputText) throws IOException {
