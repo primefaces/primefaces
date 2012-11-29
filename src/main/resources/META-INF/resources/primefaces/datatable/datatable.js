@@ -1590,9 +1590,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             stop: function(event, ui) {
                 var columnHeaderWrapper = ui.helper.parent(),
                 columnHeader = columnHeaderWrapper.parent(),
+                minWidth = parseInt(columnHeader.css('min-width')),
+                maxWidth = parseInt(columnHeader.css('max-width')),
                 oldPos = ui.originalPosition.left,
-                newPos = ui.position.left,
-                change = (newPos - oldPos),
+                newPos = ui.position.left;
+                
+                if(ui.position.left<minWidth){
+                    newPos = minWidth;
+                }
+                else if(ui.position.left>maxWidth){
+                    newPos = maxWidth;
+                }
+                
+                var change = (newPos - oldPos),
                 newWidth = (columnHeaderWrapper.width() + change - (ui.helper.width() / 2));
 
                 ui.helper.css('left','');
@@ -1700,12 +1710,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var _self = this;
 
         $(this.jqId + ' thead th').draggable({
-            appendTo: 'body'
-            ,
-            opacity: 0.75
-            ,
-            cursor: 'move'
-            ,
+            appendTo: 'body',
+            opacity: 0.75,
+            cursor: 'move',
             drag: function(event, ui) {
                 var droppable = ui.helper.data('droppable-column');
 
