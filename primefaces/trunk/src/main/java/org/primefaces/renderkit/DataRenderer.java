@@ -31,6 +31,7 @@ import org.primefaces.component.paginator.PageLinksRenderer;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class DataRenderer extends CoreRenderer {
     
@@ -87,7 +88,7 @@ public class DataRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodePaginatorConfig(FacesContext context, UIData uidata) throws IOException {
+    protected void encodePaginatorConfig(FacesContext context, UIData uidata, WidgetBuilder wb) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = uidata.getClientId(context);
         String paginatorPosition = uidata.getPaginatorPosition();
@@ -99,19 +100,22 @@ public class DataRenderer extends CoreRenderer {
         else
             paginatorContainers = "'" + clientId + "_paginator_" + paginatorPosition + "'";
 
-        writer.write(",paginator:{");
-        writer.write("id:[" + paginatorContainers + "]");
-        writer.write(",rows:" + uidata.getRows());
-        writer.write(",rowCount:" + uidata.getRowCount());
-        writer.write(",page:" + uidata.getPage());
+        wb.append(",paginator:{")
+            .append("id:[").append(paginatorContainers).append("]")
+            .append(",rows:").append(uidata.getRows())
+            .append(",rowCount:").append(uidata.getRowCount())
+            .append(",page:").append(uidata.getPage());
         
         if(currentPageTemplate != null)
-            writer.write(",currentPageTemplate:'" + currentPageTemplate + "'");
+            wb.append(",currentPageTemplate:'").append(currentPageTemplate).append("'");
 
-        if(uidata.getPageLinks() != 10) writer.write(",pageLinks:" + uidata.getPageLinks());
-        if(!uidata.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
+        if(uidata.getPageLinks() != 10) 
+            wb.append(",pageLinks:").append(uidata.getPageLinks());
+        
+        if(!uidata.isPaginatorAlwaysVisible()) 
+            wb.append(",alwaysVisible:false");
 
-        writer.write("}");
+        wb.append("}");
     }
     
     public void encodeFacet(FacesContext context, UIData data, String facet, String styleClass) throws IOException {

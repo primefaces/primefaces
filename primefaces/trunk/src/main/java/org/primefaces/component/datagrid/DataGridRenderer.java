@@ -22,6 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class DataGridRenderer extends DataRenderer {
 
@@ -97,21 +98,15 @@ public class DataGridRenderer extends DataRenderer {
     protected void encodeScript(FacesContext context, DataGrid grid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = grid.getClientId();
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("DataGrid", grid.resolveWidgetVar(), clientId, false);
+        
+        if(grid.isPaginator()) {
+            encodePaginatorConfig(context, grid, wb);
+        }
 
         startScript(writer, clientId);
-
-        writer.write("$(function() { ");
-        
-        writer.write("PrimeFaces.cw('DataGrid','" + grid.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        
-        //Pagination
-        if(grid.isPaginator()) {
-            encodePaginatorConfig(context, grid);
-        }
-        
-        writer.write("});});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
 
