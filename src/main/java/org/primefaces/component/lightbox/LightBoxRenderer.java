@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class LightBoxRenderer extends CoreRenderer {
 
@@ -60,29 +61,25 @@ public class LightBoxRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         LightBox lb = (LightBox) component;
 		String clientId = lb.getClientId(context);
-        
         String mode = "image";
         if(lb.getFacet("inline") != null)
             mode = "inline";
         else if(lb.isIframe())
             mode = "iframe";
         
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("LightBox", lb.resolveWidgetVar(), clientId, true)
+            .attr("mode", mode)
+            .attr("width", lb.getWidth(), null)
+            .attr("height", lb.getHeight(), null)
+            .attr("visible", lb.isVisible(), false)
+            .attr("iframeTitle", lb.getIframeTitle(), null)
+            .callback("onShow", "function()", lb.getOnShow())
+            .callback("onHide", "function()", lb.getOnHide());
+        
         startScript(writer, clientId);
-        writer.write("$(function() {");
-        writer.write("PrimeFaces.cw('LightBox','" + lb.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",mode:'" + mode + "'");
-        if(lb.getWidth() != null) writer.write(",width:'" + lb.getWidth() + "'");
-        if(lb.getHeight() != null) writer.write(",height:'" + lb.getHeight() + "'");
-        if(lb.isVisible()) writer.write(",visible:true");
-        if(lb.getOnShow() != null) writer.write(",onShow:function(){" + lb.getOnShow() + "}");
-        if(lb.getOnHide() != null) writer.write(",onHide:function(){" + lb.getOnHide() + "}");
-        if(lb.getIframeTitle() != null) writer.write(",iframeTitle:'" + lb.getIframeTitle() + "'");
-        
-        
-		writer.write("});});");
-
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
     }
     
     @Override
