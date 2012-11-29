@@ -27,6 +27,7 @@ import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class EditorRenderer extends CoreRenderer{
 
@@ -81,27 +82,21 @@ public class EditorRenderer extends CoreRenderer{
         writer.endElement("div");
 	}
 	
-	private void encodeScript(FacesContext facesContext, Editor editor) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = editor.getClientId(facesContext);
-		String widgetVar = editor.resolveWidgetVar();
-		
+	private void encodeScript(FacesContext context, Editor editor) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = editor.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Editor", editor.resolveWidgetVar(), clientId, "editor", true)
+                .attr("disabled", editor.isDisabled(), false)
+                .attr("invalid", editor.isValid(), true)
+                .attr("controls", editor.getControls(), null)
+                .attr("width", editor.getWidth(), Integer.MIN_VALUE)
+                .attr("height", editor.getHeight(), Integer.MIN_VALUE)
+                .callback("change", "function(e)", editor.getOnchange());
+
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
-        writer.write("PrimeFaces.cw('Editor','" + widgetVar + "',{");
-        writer.write("id:'" + clientId + "'");
-
-        if(editor.isDisabled()) writer.write(",disabled:true");
-        if(!editor.isValid()) writer.write(",invalid:true");
-        if(editor.getControls() != null) writer.write(",controls:'" + editor.getControls() + "'");
-        if(editor.getWidth() != Integer.MIN_VALUE) writer.write(",width:" + editor.getWidth());
-        if(editor.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + editor.getHeight());
-        if(editor.getOnchange() != null) writer.write(",change:function(e){" + editor.getOnchange() + "}");
-
-		writer.write("},'editor');});");
-		
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
     
     @Override
