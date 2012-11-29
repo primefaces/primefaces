@@ -39,6 +39,7 @@ import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.model.SortMeta;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class DataTableRenderer extends DataRenderer {
 
@@ -83,78 +84,58 @@ public class DataTableRenderer extends DataRenderer {
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
-
-        startScript(writer, clientId);
-                
-        writer.write("PrimeFaces.cw('DataTable','" + table.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("DataTable", table.resolveWidgetVar(), clientId, false);
+        
         //Pagination
         if(table.isPaginator()) {
-            encodePaginatorConfig(context, table);
+            encodePaginatorConfig(context, table, wb);
         }
-
+        
         //Selection
-        if(table.isRowSelectionEnabled()) {
-            writer.write(",selectionMode:'" + table.getSelectionMode() + "'");
-        }
-
-        if(table.isColumnSelectionEnabled()) {
-            writer.write(",columnSelectionMode:'" + table.getColumnSelectionMode() + "'");
-        }
+        wb.attr("selectionMode", table.getSelectionMode(), null)
+            .attr("columnSelectionMode", table.getColumnSelectionMode(), null);
+        
         
         //Filtering
         if(table.isFilteringEnabled()) {
-            writer.write(",filter:true");
-            
-            if(table.getFilterEvent() != null)
-                writer.write(",filterEvent:'" + table.getFilterEvent() + "'");
-            
-            if(table.getFilterDelay() != Integer.MAX_VALUE)
-                writer.write(",filterDelay:'" + table.getFilterDelay() + "'");
+            wb.attr("filter", true)
+                .attr("filterEvent", table.getFilterEvent(), null)
+                .attr("filterDelay", table.getFilterDelay(), Integer.MAX_VALUE);
         }
         
         //Row expansion
         if(table.getRowExpansion() != null) {
-            writer.write(",expansion:true");
-            if(table.getOnExpandStart() != null) {
-                writer.write(",onExpandStart:function(row) {" + table.getOnExpandStart() + "}");
-            }
+            wb.attr("rowExpansion", true);
         }
 
         //Scrolling
         if(table.isScrollable()) {
-            writer.write(",scrollable:true");
-            writer.write(",liveScroll:" + table.isLiveScroll());
-            writer.write(",scrollStep:" + table.getScrollRows());
-            writer.write(",scrollLimit:" + table.getRowCount());
+            wb.attr("scrollable", true)
+                .attr("liveScroll", table.isLiveScroll())
+                .attr("scrollStep", table.getScrollRows())
+                .attr("scrollLimit", table.getRowCount());
         }
 
-        //Resizable Columns
-        if(table.isResizableColumns()) {
-            writer.write(",resizableColumns:true");
-        }
-        
-        //Draggable Columns
-        if(table.isDraggableColumns()) {
-            writer.write(",draggableColumns:true");
-        }
+        //Resizable/Draggable Columns
+        wb.attr("resizableColumns", table.isResizableColumns(), false)
+            .attr("draggableColumns", table.isDraggableColumns(), false);
         
         //Editing
         if(table.isEditable()) {
-            writer.write(",editable:true");
-            writer.write(",editMode:'" + table.getEditMode() + "'");
+            wb.attr("editable", true).attr("editMode", table.getEditMode());
         }
         
         //MultiColumn Sorting
         if(table.isMultiSort()) {
-            writer.write(",multiSort:true");
+            wb.attr("multiSort", true);
         }
 
         //Behaviors
-        encodeClientBehaviors(context, table);
-        writer.write("});");
-
+        encodeClientBehaviors(context, table, wb);
+        
+        startScript(writer, clientId);
+        writer.write(wb.build());
         endScript(writer);
 	}
 

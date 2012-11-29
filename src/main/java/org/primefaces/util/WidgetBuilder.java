@@ -133,6 +133,12 @@ public class WidgetBuilder {
         
         return this;
     }
+    
+    public WidgetBuilder append(Number number) {
+        buffer.append(number);
+        
+        return this;
+    }
 
     public String build() {
         buffer.append("}");

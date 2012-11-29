@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class DataListRenderer extends DataRenderer {
 
@@ -96,21 +97,15 @@ public class DataListRenderer extends DataRenderer {
     protected void encodeScript(FacesContext context, DataList list) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId();
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("DataList", list.resolveWidgetVar(), clientId, false);
         
-        startScript(writer, clientId);
-
-        writer.write("$(function() { ");
-
-        writer.write("PrimeFaces.cw('DataList','" + list.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        
-        //Pagination
         if(list.isPaginator()) {
-            encodePaginatorConfig(context, list);
+            encodePaginatorConfig(context, list, wb);
         }
         
-        writer.write("});});");
-
+        startScript(writer, clientId);
+        writer.write(wb.build());
         endScript(writer);
     }
 
