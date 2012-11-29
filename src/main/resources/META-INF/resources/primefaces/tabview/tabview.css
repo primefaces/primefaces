@@ -124,8 +124,7 @@
 }
 
 /** RTL **/
-.ui-rtl .ui-tabs, .ui-rtl .ui-tabs-panel,
-.ui-tabs-rtl, .ui-tabs-rtl .ui-tabs-panel { 
+.ui-rtl .ui-tabs, .ui-tabs-rtl { 
     direction: rtl; 
 }
 
