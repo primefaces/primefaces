@@ -155,19 +155,5 @@
 			<type>java.lang.Object</type>
             <description>Value of the filter field.</description>
 		</attribute>
-        <attribute>
-			<name>minWidth</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>-1</defaultValue>
-            <description>Minimum width of a resizable column.</description>
-		</attribute>
-        <attribute>
-			<name>maxWidth</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>-1</defaultValue>
-            <description>Maximum width of a resizable column.</description>
-		</attribute>
 	</attributes>
 </component>
