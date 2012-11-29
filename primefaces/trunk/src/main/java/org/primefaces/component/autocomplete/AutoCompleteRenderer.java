@@ -181,7 +181,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 itemLabel = ac.getItemLabel();
             }
             else {
-                itemLabel = String.valueOf(ac.getSubmittedValue());
+                Object submittedValue = ac.getSubmittedValue();
+                itemLabel = (submittedValue == null) ? null : String.valueOf(submittedValue);
             }
 
             if(itemLabel != null) {
