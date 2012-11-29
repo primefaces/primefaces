@@ -28,6 +28,7 @@ import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class InputTextareaRenderer extends InputRenderer {
 
@@ -96,45 +97,34 @@ public class InputTextareaRenderer extends InputRenderer {
 		String clientId = inputTextarea.getClientId(context);
         boolean autoResize = inputTextarea.isAutoResize();
         String counter = inputTextarea.getCounter();
-
-        startScript(writer, clientId);
-        writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('InputTextarea','" + inputTextarea.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",autoResize:" + autoResize);
-        if(inputTextarea.getScrollHeight() != Integer.MAX_VALUE) {
-            writer.write(",scrollHeight:" + inputTextarea.getScrollHeight());
-        }
         
-        if(inputTextarea.getMaxlength() != Integer.MAX_VALUE) {
-            writer.write(",maxlength:" + inputTextarea.getMaxlength());
-        }
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("InputTextarea", inputTextarea.resolveWidgetVar(), clientId, true)
+            .attr("autoResize", autoResize)
+            .attr("maxlength", inputTextarea.getMaxlength(), Integer.MAX_VALUE);
         
         if(counter != null) {
-            String counterTemplate = inputTextarea.getCounterTemplate();
             UIComponent counterComponent = inputTextarea.findComponent(counter);
             if(counterComponent == null) {
                 throw new FacesException("Cannot find component \"" + counter + "\" in view.");
             }
             
-            writer.write(",counter:'" + counterComponent.getClientId(context) + "'");
-            
-            if(counterTemplate != null) {
-                writer.write(",counterTemplate:'" + counterTemplate + "'");
-            }
+            wb.attr("counter", counterComponent.getClientId(context))
+                .attr("counterTemplate", inputTextarea.getCounterTemplate(), null);
         }
         
         if(inputTextarea.getCompleteMethod() != null) {
-            writer.write(",autoComplete:true");
-            writer.write(",minQueryLength:" + inputTextarea.getMinQueryLength());
-            writer.write(",queryDelay:" + inputTextarea.getQueryDelay());
+            wb.attr("autoComplete", true)
+                .attr("minQueryLength", inputTextarea.getMinQueryLength())
+                .attr("queryDelay", inputTextarea.getQueryDelay())
+                .attr("scrollHeight", inputTextarea.getScrollHeight(), Integer.MAX_VALUE);
         }
         
         encodeClientBehaviors(context, inputTextarea);
 
-        writer.write("});});");
-
-		endScript(writer);
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, InputTextarea inputTextarea) throws IOException {
