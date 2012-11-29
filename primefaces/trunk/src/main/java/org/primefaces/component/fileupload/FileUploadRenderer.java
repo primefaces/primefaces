@@ -29,6 +29,7 @@ import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 import org.primefaces.webapp.MultipartRequest;
 
 public class FileUploadRenderer extends CoreRenderer {
@@ -94,40 +95,32 @@ public class FileUploadRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = fileUpload.getClientId(context);
         String mode = fileUpload.getMode();
-				
-        startScript(writer, clientId);
-
-        writer.write("$(function(){");
-        
-        writer.write("PrimeFaces.cw('FileUpload','" + fileUpload.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",mode:'" + mode + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("FileUpload", fileUpload.resolveWidgetVar(), clientId, "fileupload", true)
+            .attr("mode", mode);
         
         if(!mode.equals("simple")) {
             String update = fileUpload.getUpdate();
             String process = fileUpload.getProcess();
             
-            writer.write(",autoUpload:" + fileUpload.isAuto());
-            writer.write(",dnd:" + fileUpload.isDragDropSupport());
+            wb.attr("autoUpload", fileUpload.isAuto())
+                .attr("dnd", fileUpload.isDragDropSupport())
+                .attr("update", ComponentUtils.findClientIds(context, fileUpload, update), null)
+                .attr("process", ComponentUtils.findClientIds(context, fileUpload, process), null)
+                .attr("maxFileSize", fileUpload.getSizeLimit(), Integer.MAX_VALUE)
+                .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
+                .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
+                .callback("onstart", "function()", fileUpload.getOnstart())
+                .callback("oncomplete", "function()", fileUpload.getOncomplete());
             
-            if(update != null) writer.write(",update:'" + ComponentUtils.findClientIds(context, fileUpload, update) + "'");
-            if(process != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, fileUpload, process) + "'");
-            
-            if(fileUpload.getOnstart() != null) writer.write(",onstart:function() {" + fileUpload.getOnstart() + ";}");
-            if(fileUpload.getOncomplete() != null) writer.write(",oncomplete:function() {" + fileUpload.getOncomplete() + ";}");
-            
-            //restrictions
-            if(fileUpload.getAllowTypes() != null) writer.write(",acceptFileTypes:" + fileUpload.getAllowTypes());
-            if(fileUpload.getSizeLimit() != Integer.MAX_VALUE) writer.write(",maxFileSize:" + fileUpload.getSizeLimit());
-            
-            //restriction messages
-            if(fileUpload.getInvalidFileMessage() != null) writer.write(",invalidFileMessage:'" + fileUpload.getInvalidFileMessage() + "'");
-            if(fileUpload.getInvalidSizeMessage() != null) writer.write(",invalidSizeMessage:'" + fileUpload.getInvalidSizeMessage() + "'");
+            if(fileUpload.getAllowTypes() != null) {
+                wb.append(",acceptFileTypes:").append(fileUpload.getAllowTypes());
+            }
         }
-
-		writer.write("},'fileupload');});");
-		
-		endScript(writer);
+        
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
