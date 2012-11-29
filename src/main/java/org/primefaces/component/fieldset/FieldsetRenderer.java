@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class FieldsetRenderer extends CoreRenderer {
 
@@ -95,22 +96,19 @@ public class FieldsetRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fieldset.getClientId(context);
         boolean toggleable = fieldset.isToggleable();
-        
-        startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('Fieldset','" + fieldset.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Fieldset", fieldset.resolveWidgetVar(), clientId, false);
         
         if(toggleable) {
-            writer.write(",toggleable:true");
-            writer.write(",collapsed:" + fieldset.isCollapsed());
-            writer.write(",toggleSpeed:" + fieldset.getToggleSpeed());
+            wb.attr("toggleable", true)
+                .attr("collapsed", fieldset.isCollapsed())
+                .attr("toggleSpeed", fieldset.getToggleSpeed());
         }
         
-        encodeClientBehaviors(context, fieldset);
-
-        writer.write("});");
-
+        encodeClientBehaviors(context, fieldset, wb);
+        
+        startScript(writer, clientId);
+        writer.write(wb.build());
         endScript(writer);
     }
 
