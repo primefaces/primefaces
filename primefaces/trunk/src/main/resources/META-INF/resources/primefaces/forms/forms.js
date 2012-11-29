@@ -471,11 +471,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             
             //predefined input
             if(customInputVal === selectedOption.text()) {
-                this.activateItem(this.items.eq(selectedOption.index()));
+                this.highlightItem(this.items.eq(selectedOption.index()));
             }
             //custom input
             else {
-                this.items.eq(0).addClass('ui-state-active');
+                this.items.eq(0).addClass('ui-state-highlight');
                 this.customInput = true;
                 this.customInputVal = customInputVal;
             }
@@ -673,9 +673,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     unbindEvents: function() {
-        this.items.filter(':not(.ui-state-disabled)').unbind('mouseover click');
-        this.triggers.unbind('mouseover mouseout click');
-        this.input.unbind('focus blur keydown keyup');
+        this.items.off();
+        this.triggers.off();
+        this.input.off();
+        this.focusInput.off();
+        this.label.off();
     },
     
     revert: function() {
@@ -848,21 +850,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         }
         
         return null;
-    },
-    
-    hideAndChange: function() {
-        if(this.panel.is(":visible")) {
-            this.hide();
-            
-            if(this.cfg.editable) {
-                this.customInput = false;
-            }
-
-            //check if current value is different from pre shown value
-            if(this.input.val() !== this.preShowValue.val()) {
-                this.triggerChange();
-            }
-        }  
     },
              
     show: function() {
