@@ -23,6 +23,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.submenu.Submenu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class MenubarRenderer extends TieredMenuRenderer {
 
@@ -31,16 +32,14 @@ public class MenubarRenderer extends TieredMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         Menubar menubar = (Menubar) abstractMenu;
 		String clientId = menubar.getClientId(context);
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Menubar", menubar.resolveWidgetVar(), clientId, false)
+            .attr("autoDisplay", menubar.isAutoDisplay());
 		
 		startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('Menubar','" + menubar.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",autoDisplay:" + menubar.isAutoDisplay());
-        
-        writer.write("});");
-        
-		endScript(writer);        	
+        writer.write(wb.build());
+        endScript(writer);        	
 	}
 
     @Override

@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
+import org.primefaces.util.WidgetBuilder;
 
 public class MenuRenderer extends BaseMenuRenderer {
 
@@ -32,22 +33,17 @@ public class MenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         Menu menu = (Menu) abstractMenu;
 		String clientId = menu.getClientId(context);
-		String widgetVar = menu.resolveWidgetVar();
-
-		startScript(writer, clientId);
         
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('PlainMenu','" + widgetVar + "',{");
-        writer.write("id:'" + clientId + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("PlainMenu", menu.resolveWidgetVar(), clientId, true);
         
         if(menu.isOverlay()) {
-            encodeOverlayConfig(context, menu);
+            encodeOverlayConfig(context, menu, wb);
         }
 
-        writer.write("});});");
-
-		endScript(writer);
+		startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {

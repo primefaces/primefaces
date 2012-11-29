@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.util.WidgetBuilder;
 
 public class TabMenuRenderer extends BaseMenuRenderer {
     
@@ -30,17 +31,12 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         TabMenu menu = (TabMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
-		String widgetVar = menu.resolveWidgetVar();
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("TabMenu", menu.resolveWidgetVar(), clientId, false);
 
 		startScript(writer, clientId);
-        
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('TabMenu','" + widgetVar + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write("});});");
-
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
     }
     
     @Override

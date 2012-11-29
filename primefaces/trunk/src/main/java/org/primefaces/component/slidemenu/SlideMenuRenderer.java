@@ -17,12 +17,12 @@ package org.primefaces.component.slidemenu;
 
 import java.io.IOException;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class SlideMenuRenderer extends TieredMenuRenderer {
     
@@ -31,22 +31,17 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         SlideMenu menu = (SlideMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
-		String widgetVar = menu.resolveWidgetVar();
 
-		startScript(writer, clientId);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("SlideMenu", menu.resolveWidgetVar(), clientId, true);
         
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('SlideMenu','" + widgetVar + "',{");
-        writer.write("id:'" + clientId + "'");
-                
         if(menu.isOverlay()) {
-            encodeOverlayConfig(context, menu);
+            encodeOverlayConfig(context, menu, wb);
         }
 
-        writer.write("});});");
-
-		endScript(writer);
+		startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 
     @Override

@@ -27,6 +27,7 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
+import org.primefaces.util.WidgetBuilder;
 
 public class TieredMenuRenderer extends BaseMenuRenderer {
 
@@ -34,20 +35,18 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         TieredMenu menu = (TieredMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
-		
-		startScript(writer, clientId);
         
-        writer.write("PrimeFaces.cw('TieredMenu','" + menu.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",autoDisplay:" + menu.isAutoDisplay());
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("TieredMenu", menu.resolveWidgetVar(), clientId, true)
+            .attr("autoDisplay", menu.isAutoDisplay());
         
         if(menu.isOverlay()) {
-            encodeOverlayConfig(context, menu);
+            encodeOverlayConfig(context, menu, wb);
         }
-        
-        writer.write("});");
-        
-		endScript(writer);        	
+
+		startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);	
 	}
 
 	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
