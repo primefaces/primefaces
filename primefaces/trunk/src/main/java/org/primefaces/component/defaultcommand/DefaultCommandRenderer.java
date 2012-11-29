@@ -20,8 +20,8 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.defaultcommand.DefaultCommand;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class DefaultCommandRenderer extends CoreRenderer {
     
@@ -29,19 +29,17 @@ public class DefaultCommandRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         DefaultCommand command = (DefaultCommand) component;
-        String clientId = command.getClientId(context);
+        
         String scope = command.getScope();
         UIComponent target = command.findComponent(command.getTarget());
         if(target == null) {
             throw new FacesException("Cannot find component \"" + command.getTarget() + "\" in view.");
         }
-
-        startScript(writer, clientId);
         
-        writer.write("$(function() {");
-        writer.write("PrimeFaces.cw('DefaultCommand','" + command.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",target:'" + target.getClientId(context) + "'");
+        String clientId = command.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("DefaultCommand", command.resolveWidgetVar(), clientId, true)
+                .attr("target", target.getClientId(context));
         
         if(scope != null) {
             UIComponent scopeComponent = command.findComponent(scope);
@@ -49,11 +47,11 @@ public class DefaultCommandRenderer extends CoreRenderer {
                 throw new FacesException("Cannot find component \"" + scope + "\" in view.");
             }
             
-            writer.write(",scope:'" + scopeComponent.getClientId(context) + "'");
+            wb.attr("scope", scopeComponent.getClientId(context));
         }
-        
-        writer.write("});});");
-        
+
+        startScript(writer, clientId);
+        writer.write(wb.build());
         endScript(writer);
     }
 }
