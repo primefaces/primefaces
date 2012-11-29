@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class KeyboardRenderer extends InputRenderer {
 	
@@ -56,36 +57,35 @@ public class KeyboardRenderer extends InputRenderer {
 	protected void encodeScript(FacesContext context, Keyboard keyboard) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = keyboard.getClientId(context);
-
-		startScript(writer, clientId);
         
-        writer.write("PrimeFaces.cw('Keyboard','" + keyboard.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-		writer.write(",showOn:'" + keyboard.getShowMode() + "'");
-		writer.write(",showAnim:'" + keyboard.getEffect() + "'");
-		
-		if(keyboard.isButtonImageOnly()) writer.write(",buttonImageOnly:true");
-		if(keyboard.getButtonImage() != null) writer.write(",buttonImage:'" + getResourceURL(context, keyboard.getButtonImage()) + "'");
-		if(keyboard.getEffectDuration() != null) writer.write(",duration:'" + keyboard.getEffectDuration() + "'");
-		if(!keyboard.isKeypadOnly()) {
-			writer.write(",keypadOnly:false");
-			writer.write(",layoutName:'" + keyboard.getLayout() + "'");
-			
-			if(keyboard.getLayoutTemplate() != null)
-				writer.write(",layoutTemplate:'" + keyboard.getLayoutTemplate() + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Keyboard", keyboard.resolveWidgetVar(), clientId, false)
+            .attr("showOn", keyboard.getShowMode())
+            .attr("showAnim", keyboard.getEffect())
+            .attr("buttonImageOnly", keyboard.isButtonImageOnly(), false)
+            .attr("duration", keyboard.getEffectDuration(), null);
+        
+        if(keyboard.getButtonImage() != null) {
+            wb.attr("buttonImage", getResourceURL(context, keyboard.getButtonImage()));
+        }
+        
+        if(!keyboard.isKeypadOnly()) {
+            wb.attr("keypadOnly", false)
+                .attr("layoutName", keyboard.getLayout())
+                .attr("layoutTemplate", keyboard.getLayoutTemplate(), null);
 		}
-		
-		if(keyboard.getStyleClass() != null) writer.write(",keypadClass:'" + keyboard.getStyleClass() + "'");
-		if(keyboard.getPromptLabel() != null) writer.write(",prompt:'" + keyboard.getPromptLabel() + "'");
-		if(keyboard.getBackspaceLabel() != null) writer.write(",backText:'" + keyboard.getBackspaceLabel() + "'");
-		if(keyboard.getClearLabel() != null) writer.write(",clearText:'" + keyboard.getClearLabel() + "'");
-		if(keyboard.getCloseLabel() != null) writer.write(",closeText:'" + keyboard.getCloseLabel() + "'");
-
-        encodeClientBehaviors(context, keyboard);
-	
-		writer.write("});");
-		
-		endScript(writer);
+        
+        wb.attr("keypadClass", keyboard.getStyleClass(), null)
+            .attr("prompt", keyboard.getPromptLabel(), null)
+            .attr("backText", keyboard.getBackspaceLabel(), null)
+            .attr("clearText", keyboard.getClearLabel(), null)
+            .attr("closeText", keyboard.getCloseLabel(), null);
+        
+        encodeClientBehaviors(context, keyboard, wb);
+ 
+		startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, Keyboard keyboard) throws IOException {

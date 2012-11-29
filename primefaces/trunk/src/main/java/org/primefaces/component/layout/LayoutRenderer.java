@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class LayoutRenderer extends CoreRenderer {
 
@@ -61,78 +62,54 @@ public class LayoutRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Layout layout) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = layout.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Layout", layout.resolveWidgetVar(), clientId, "layout", true)
+            .attr("full", layout.isFullPage(), false)
+            .attr("useStateCookie", layout.isStateful(), false);
+        
+        if(layout.isNested()) {
+            wb.attr("parent", layout.getParent().getClientId(context));
+        }
+        
+        wb.callback("onToggle", "function(e)", layout.getOnToggle())
+            .callback("onClose", "function(e)", layout.getOnClose())
+            .callback("onResize", "function(e)", layout.getOnResize());
+        
+        encodeUnits(context, layout, wb);
+        encodeClientBehaviors(context, layout, wb);
         
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
-        writer.write("PrimeFaces.cw('Layout','" + layout.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-                
-        if(layout.isFullPage()) 
-            writer.write(",full:true");
-
-        if(layout.isNested())
-            writer.write(",parent:'" + layout.getParent().getClientId(context) + "'");
-        
-        if(layout.isStateful())
-            writer.write(",useStateCookie:true");
-
-        encodeUnits(context, layout);
-
-        encodeClientCallbacks(context, layout);
-
-        encodeClientBehaviors(context, layout);
-
-        writer.write("},'layout');});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
 
-    protected void encodeUnits(FacesContext context, Layout layout) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
+    protected void encodeUnits(FacesContext context, Layout layout, WidgetBuilder wb) throws IOException {
         for(UIComponent child : layout.getChildren()) {
             if(child.isRendered() && child instanceof LayoutUnit) {
                 LayoutUnit unit = (LayoutUnit) child;
                 
-                writer.write("," + unit.getPosition() + ":{");
-                writer.write("paneSelector:'" + ComponentUtils.escapeJQueryId(unit.getClientId(context)) + "'");
-                writer.write(",size:'" + unit.getSize() + "'");
-                writer.write(",resizable:" + unit.isResizable());
-                writer.write(",closable:" + unit.isCollapsible());
-
-                if(unit.getMinSize() != 50) writer.write(",minSize:" + unit.getMinSize());
-                if(unit.getMaxSize() != 0) writer.write(",maxSize:" + unit.getMaxSize());
-
+                wb.append(",").append(unit.getPosition()).append(":{")
+                    .append("panelSelector:'").append(ComponentUtils.escapeJQueryId(unit.getClientId(context))).append("'")
+                    .attr("size", unit.getSize())
+                    .attr("resizable", unit.isResizable())
+                    .attr("closable", unit.isCollapsible())
+                    .attr("minSize", unit.getMinSize(), 50)
+                    .attr("maxSize", unit.getMaxSize(), 0);
+                
                 if(unit.isCollapsible()) {
-                    writer.write(",spacing_open:" + unit.getGutter());
-                    writer.write(",spacing_closed:" + unit.getCollapseSize());
+                    wb.attr("spacing_open", unit.getGutter())
+                        .attr("spacing_closed", unit.getCollapseSize());
                 }
-
-                if(!unit.isVisible()) writer.write(",initHidden:true");
-                if(unit.isCollapsed()) writer.write(",initClosed:true");
-
-                if(unit.getEffect() != null) writer.write(",fxName:'" + unit.getEffect() + "'");
-                if(unit.getEffectSpeed() != null) writer.write(",fxSpeed:'" + unit.getEffectSpeed() + "'");
-
-                if(layout.getResizeTitle() != null) writer.write(",resizerTip:'" + layout.getResizeTitle() + "'");
-                if(layout.getExpandTitle() != null) writer.write(",togglerTip_closed:'" + layout.getExpandTitle() + "'");
-
-                writer.write("}");
+                
+                wb.attr("initHidden", unit.isVisible(), true)
+                    .attr("initClosed", unit.isCollapsed(), false)
+                    .attr("fxName", unit.getEffect(), null)
+                    .attr("fxSpeed", unit.getEffectSpeed(), null)
+                    .attr("resizerTip", layout.getResizeTitle(), null)
+                    .attr("togglerTip_closed", layout.getExpandTitle(), null);
+                
+                wb.append("}");
             }
         }
-    }
-
-    protected void encodeClientCallbacks(FacesContext context, Layout layout) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        if(layout.getOnToggle() != null)
-            writer.write(",onToggle:function(e) {" + layout.getOnToggle() + "}");
-
-        if(layout.getOnClose() != null)
-            writer.write(",onClose:function(e) {" + layout.getOnClose() + "}");
-
-        if(layout.getOnResize() != null)
-            writer.write(",onResize:function(e) {" + layout.getOnResize() + "}");
     }
 }
