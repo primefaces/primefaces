@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ImageCompareRenderer extends CoreRenderer {
 	
@@ -36,17 +37,16 @@ public class ImageCompareRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, ImageCompare compare) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = compare.getClientId(context);
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("ImageCompare", compare.resolveWidgetVar(), clientId, "imagecompare", false)
+            .attr("handle", getResourceRequestPath(context, "imagecompare/handle.gif"))
+            .attr("lt", getResourceRequestPath(context, "imagecompare/lt-small.png"))
+            .attr("rt", getResourceRequestPath(context, "imagecompare/rt-small.png"));
 		
 		startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('ImageCompare','" + compare.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-		writer.write(",handle:'" + getResourceRequestPath(context, "imagecompare/handle.gif") + "'");
-        writer.write(",lt:'" + getResourceRequestPath(context, "imagecompare/lt-small.png") + "'");
-        writer.write(",rt:'" + getResourceRequestPath(context, "imagecompare/rt-small.png") + "'");
-		writer.write("},'imagecompare');");
-        
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 	
 	protected void encodeMarkup(FacesContext context, ImageCompare compare) throws IOException {
