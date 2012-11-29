@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class DockRenderer extends CoreRenderer {
 
@@ -36,45 +37,30 @@ public class DockRenderer extends CoreRenderer {
 			dock.buildMenuFromModel();
 		}
 		
-		encodeStyle(context,dock);
-		
 		encodeMarkup(context, dock);
 		encodeScript(context, dock);
 	}
 	
-	protected void encodeStyle(FacesContext context, Dock dock) throws IOException {
-		//IE specific style class
-		ResponseWriter responseWriter = context.getResponseWriter();
-		responseWriter.write("<!--[if lt IE 7]>\n<style type=\"text/css\">\n");
-		responseWriter.write(".ui-dock img { behavior: url('" + getResourceRequestPath(context, "dock/assets/iepngfix.htc") + "');}");
-		responseWriter.write("</style><![endif]-->");
-	}
-
-	protected void encodeScript(FacesContext facesContext, Dock dock) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = dock.getClientId(facesContext);
-		String position = dock.getPosition();
-		String containerClass = ".ui-dock-container-" + position;
+	protected void encodeScript(FacesContext context, Dock dock) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = dock.getClientId(context);
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Dock", dock.resolveWidgetVar(), clientId, "dock", false)
+                .attr("position", dock.getPosition())
+                .attr("maxWidth", dock.getMaxWidth())
+                .attr("itemWidth", dock.getItemWidth())
+                .attr("proximity", dock.getProximity())
+                .attr("halign", dock.getHalign());
 		
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('Dock','" + dock.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-		writer.write(",maxWidth: " + dock.getMaxWidth());
-		writer.write(",items: 'a'");
-		writer.write(",itemsText: 'span'");
-		writer.write(",container: '"+ containerClass + "'");
-		writer.write(",itemWidth: " + dock.getItemWidth());
-		writer.write(",proximity: " + dock.getProximity());
-		writer.write(",halign: '" + dock.getHalign() + "'");
-		writer.write("},'dock');");
-
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 
-	protected void encodeMarkup(FacesContext facesContext, Dock dock) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = dock.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, Dock dock) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = dock.getClientId(context);
 		String position = dock.getPosition();
 		
 		writer.startElement("div", null);
@@ -84,7 +70,7 @@ public class DockRenderer extends CoreRenderer {
 		writer.startElement("div", null);
 		writer.writeAttribute("class", "ui-dock-container-" + position + " ui-widget-header", null);
 		
-		encodeMenuItems(facesContext, dock);
+		encodeMenuItems(context, dock);
 		
 		writer.endElement("div");
 		
@@ -145,16 +131,16 @@ public class DockRenderer extends CoreRenderer {
 		}
 	}
 	
-	protected void encodeItemIcon(FacesContext facesContext, MenuItem menuitem) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeItemIcon(FacesContext context, MenuItem menuitem) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("img", null);
-		writer.writeAttribute("src", getResourceURL(facesContext, menuitem.getIcon()), null);
+		writer.writeAttribute("src", getResourceURL(context, menuitem.getIcon()), null);
 		writer.endElement("img");
 	}
 	
-	protected void encodeItemLabel(FacesContext facesContext, MenuItem menuitem) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeItemLabel(FacesContext context, MenuItem menuitem) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("span", null);
 
@@ -163,10 +149,12 @@ public class DockRenderer extends CoreRenderer {
 		writer.endElement("span");
 	}
 
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    @Override
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do nothing
 	}
 
+    @Override
 	public boolean getRendersChildren() {
 		return true;
 	}
