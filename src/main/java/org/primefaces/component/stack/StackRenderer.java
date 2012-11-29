@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class StackRenderer extends CoreRenderer {
 
@@ -40,37 +41,30 @@ public class StackRenderer extends CoreRenderer {
 		encodeScript(facesContext, stack);
 	}
 	
-	protected void encodeScript(FacesContext facesContext, Stack stack) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = stack.getClientId(facesContext);
+	protected void encodeScript(FacesContext context, Stack stack) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = stack.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Stack", stack.resolveWidgetVar(), clientId, "stack", true)
+            .attr("openSpeed", stack.getOpenSpeed())
+            .attr("closeSpeed", stack.getCloseSpeed())
+            .attr("expanded", stack.isExpanded(), false);
 		
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('Stack','" + stack.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-		writer.write(",openSpeed:" + stack.getOpenSpeed());
-		writer.write(",closeSpeed:" + stack.getCloseSpeed());
-
-        if(stack.isExpanded())
-            writer.write(",expanded:" + true);
-        
-		writer.write("},'stack');});");
-		
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, Stack stack) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = stack.getClientId(facesContext);
+	protected void encodeMarkup(FacesContext context, Stack stack) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = stack.getClientId(context);
 		
 		writer.startElement("div", stack);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("class", "ui-stack", null);
 		
 		writer.startElement("img", null);
-		writer.writeAttribute("src", getResourceURL(facesContext, stack.getIcon()), null);
+		writer.writeAttribute("src", getResourceURL(context, stack.getIcon()), null);
 		writer.endElement("img");
 		
 		writer.startElement("ul", null);
@@ -78,7 +72,7 @@ public class StackRenderer extends CoreRenderer {
 		
 		for(UIComponent child : stack.getChildren()) {
 			if(child instanceof MenuItem && child.isRendered()) {
-				encodeMenuItem(facesContext, (MenuItem) child);
+				encodeMenuItem(context, (MenuItem) child);
 			}
 		}
 		
@@ -136,7 +130,8 @@ public class StackRenderer extends CoreRenderer {
 		writer.endElement("li");
 	}
 
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    @Override
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Rendering happens on encodeEnd
 	}
 

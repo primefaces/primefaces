@@ -24,6 +24,7 @@ import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
@@ -133,18 +134,18 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         writer.endElement("li");
 	}
     
-    protected void encodeOverlayConfig(FacesContext context, OverlayMenu menu) throws IOException {
+    protected void encodeOverlayConfig(FacesContext context, OverlayMenu menu, WidgetBuilder wb) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
-        writer.write(",overlay:true");
-        writer.write(",my:'" + menu.getMy() + "'");
-        writer.write(",at:'" + menu.getAt() + "'");
-
+        wb.attr("overlay", true)
+            .attr("my", menu.getMy())
+            .attr("at", menu.getAt());
+        
         UIComponent trigger = ((UIComponent) menu).findComponent(menu.getTrigger());
         String triggerClientId = trigger == null ? menu.getTrigger() : trigger.getClientId(context);
 
-        writer.write(",trigger:'" + triggerClientId + "'");
-        writer.write(",triggerEvent:'" + menu.getTriggerEvent() + "'");
+        wb.attr("trigger", triggerClientId)
+            .attr("triggerEvent", menu.getTriggerEvent());
     }
  
     @Override

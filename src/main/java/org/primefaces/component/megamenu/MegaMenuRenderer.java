@@ -27,6 +27,7 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
+import org.primefaces.util.WidgetBuilder;
 
 public class MegaMenuRenderer extends BaseMenuRenderer {
     
@@ -34,15 +35,14 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         MegaMenu menu = (MegaMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("MegaMenu", menu.resolveWidgetVar(), clientId, false)
+            .attr("autoDisplay", menu.isAutoDisplay());
 		
 		startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('MegaMenu','" + menu.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",autoDisplay:" + menu.isAutoDisplay());
-        writer.write("});");
-        
-		endScript(writer);        	
+        writer.write(wb.build());
+        endScript(writer);       	
 	}
 
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {

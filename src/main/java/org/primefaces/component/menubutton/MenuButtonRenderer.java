@@ -29,6 +29,7 @@ import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class MenuButtonRenderer extends BaseMenuRenderer {
 
@@ -126,20 +127,17 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         MenuButton button = (MenuButton) abstractMenu;
 		String clientId = button.getClientId(context);
-		
-		UIComponent form = ComponentUtils.findParentForm(context, button);
+        
+        UIComponent form = ComponentUtils.findParentForm(context, button);
 		if(form == null) {
 			throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
 		}
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("MenuButton", button.resolveWidgetVar(), clientId, true);
 		
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('MenuButton','" + button.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
- 		writer.write("});});");
-		
+        writer.write(wb.build());
 		endScript(writer);
 	}
 }

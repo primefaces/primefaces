@@ -24,6 +24,7 @@ import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.submenu.Submenu;
+import org.primefaces.util.WidgetBuilder;
 
 public class PanelMenuRenderer extends BaseMenuRenderer {
 
@@ -32,12 +33,11 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         PanelMenu menu = (PanelMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
-		String widgetVar = menu.resolveWidgetVar();
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("PanelMenu", menu.resolveWidgetVar(), clientId, false);
         
         startScript(writer, clientId);        
-        writer.write("PrimeFaces.cw('PanelMenu','" + widgetVar + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write("});");
+        writer.write(wb.build());
 		endScript(writer);
     }
 
