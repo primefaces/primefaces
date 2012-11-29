@@ -314,12 +314,6 @@ PrimeFaces = {
         }
     },
     
-    ellipsis: function(element){
-        if(!element.hasClass('ui-ellipsis-open')){
-            element.addClass("ui-ellipsis-open");
-        }
-    },
-
     locales : {},
     
     zindex : 1000,
