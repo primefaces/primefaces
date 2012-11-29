@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class IdleMonitorRenderer extends CoreRenderer {
 
@@ -35,26 +36,17 @@ public class IdleMonitorRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         IdleMonitor monitor = (IdleMonitor) component;
         String clientId = monitor.getClientId();
-
-        //script
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
-
-        writer.write("$(function() {");
         
-        writer.write("PrimeFaces.cw('IdleMonitor','" + monitor.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",timeout:" + monitor.getTimeout());
-
-        //client side callbacks
-        if(monitor.getOnidle() != null) writer.write(",onidle: function() {" + monitor.getOnidle() + ";}");
-        if(monitor.getOnactive() != null) writer.write(",onactive: function() {" + monitor.getOnactive() + ";}");
-
-        //behaviors
-        encodeClientBehaviors(context, monitor);
-
-        writer.write("},'idlemonitor');});");
-
-        writer.endElement("script");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("IdleMonitor", monitor.resolveWidgetVar(), clientId, "idlemonitor", true)
+            .attr("timeout", monitor.getTimeout())
+            .callback("onidle", "function()", monitor.getOnidle())
+            .callback("onactive", "function()", monitor.getOnactive());
+        
+        encodeClientBehaviors(context, monitor, wb);
+        
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
     }
 }
