@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class LogRenderer extends CoreRenderer {
     
@@ -79,15 +80,11 @@ public class LogRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Log log) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = log.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Log", log.resolveWidgetVar(), clientId, true);
 
         startScript(writer, clientId);
-
-        writer.write("$(function(){");
-
-        writer.write("PrimeFaces.cw('Log','" + log.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write("});});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
 }
