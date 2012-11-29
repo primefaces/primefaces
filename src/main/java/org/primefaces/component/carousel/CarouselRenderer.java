@@ -58,7 +58,7 @@ public class CarouselRenderer extends CoreRenderer {
         wb.widget("Carousel", carousel.resolveWidgetVar(), clientId, false);
         
         wb.attr("firstVisible", carousel.getFirstVisible(), 0)
-            .attr("circular", carousel.isCircular(), false)
+            .attr("isCircular", carousel.isCircular(), false)
             .attr("vertical", carousel.isVertical(), false)
             .attr("numVisible", carousel.getRows(), 0)
             .attr("autoPlayInterval", carousel.getAutoPlayInterval(), 0)
