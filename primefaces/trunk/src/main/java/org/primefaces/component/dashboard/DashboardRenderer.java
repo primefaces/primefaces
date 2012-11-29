@@ -25,6 +25,7 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class DashboardRenderer extends CoreRenderer {
 	
@@ -75,20 +76,15 @@ public class DashboardRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, Dashboard dashboard) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dashboard.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Dashboard", dashboard.resolveWidgetVar(), clientId, false)
+            .attr("disabled", dashboard.isDisabled(), false);
+        
+        encodeClientBehaviors(context, dashboard, wb);
         
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('Dashboard','" + dashboard.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-		
-        if(dashboard.isDisabled()) 
-            writer.write(",disabled:true");
-
-        encodeClientBehaviors(context, dashboard);
-        
-		writer.write("});");
-		
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 	
 	protected Panel findWidget(String id, Dashboard dashboard) {
