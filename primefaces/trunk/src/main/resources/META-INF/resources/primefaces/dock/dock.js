@@ -396,6 +396,10 @@ PrimeFaces.widget.Dock = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
+        this.cfg.items = 'a';
+        this.cfg.itemsText = 'span';
+        this.cfg.container = '.ui-dock-container-' + this.cfg.position;
+        
         $(this.jqId).Fisheye(this.cfg);
     }
     
