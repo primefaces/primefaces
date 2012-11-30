@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class TerminalRenderer extends CoreRenderer {
 
@@ -50,22 +51,16 @@ public class TerminalRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, Terminal terminal) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = terminal.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Terminal", terminal.resolveWidgetVar(), clientId, "terminal", true)
+            .attr("PS1:", terminal.getPrompt())
+            .attr("WELCOME_MESSAGE", terminal.getWelcomeMessage(), null)
+            .attr("WIDTH", terminal.getWidth())
+            .attr("HEIGHT", terminal.getHeight());
 		
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('Terminal','" + terminal.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-		writer.write(",PS1:'" + terminal.getPrompt() + "'");
-
-  		if(terminal.getWelcomeMessage() != null) writer.write(",WELCOME_MESSAGE:'" + terminal.getWelcomeMessage() + "'");
-		if(terminal.getWidth() != null) writer.write(",WIDTH:'" + terminal.getWidth() + "'");
-		if(terminal.getHeight() != null) writer.write(",HEIGHT:'" + terminal.getHeight() + "'");
-
-		writer.write("},'terminal');});");
-		
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 
 	protected void handleCommand(FacesContext context, UIComponent component) throws IOException {

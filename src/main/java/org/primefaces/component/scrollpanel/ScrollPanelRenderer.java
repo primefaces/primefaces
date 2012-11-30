@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ScrollPanelRenderer extends CoreRenderer {
 
@@ -57,14 +58,12 @@ public class ScrollPanelRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, ScrollPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("ScrollPanel", panel.resolveWidgetVar(), clientId, false)
+            .attr("mode", panel.getMode());
 
         startScript(writer, clientId);
-
-        writer.write("PrimeFaces.cw('ScrollPanel','" + panel.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",mode:'" + panel.getMode() + "'");
-        writer.write("});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
 

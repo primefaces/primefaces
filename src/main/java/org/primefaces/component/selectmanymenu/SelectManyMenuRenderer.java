@@ -25,6 +25,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.renderkit.SelectManyRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyMenuRenderer extends SelectManyRenderer {
     
@@ -64,20 +65,15 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     protected void encodeScript(FacesContext context, SelectManyMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("SelectListbox", menu.resolveWidgetVar(), clientId, false)
+            .attr("selection", "multiple")
+            .attr("disabled", menu.isDisabled(), false);
+        
+        encodeClientBehaviors(context, menu, wb);
 
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('SelectListbox','" + menu.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");        
-        writer.write(",selection:'multiple'");
-
-        if(menu.isDisabled()) 
-            writer.write(",disabled:true");
-
-        encodeClientBehaviors(context, menu);
-
-        writer.write("});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
 

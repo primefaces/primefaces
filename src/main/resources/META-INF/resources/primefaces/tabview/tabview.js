@@ -120,11 +120,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         newHeader.attr('aria-expanded', true);
 
         if(this.cfg.effect) {
-                oldPanel.hide(this.cfg.effect.name, null, this.cfg.effect.duration, function() {
+                oldPanel.hide(this.cfg.effect, null, this.cfg.effectDuration, function() {
                 oldHeader.removeClass('ui-state-focus ui-tabs-selected ui-state-active');
 
                 newHeader.addClass('ui-state-focus ui-tabs-selected ui-state-active');
-                newPanel.show(_self.cfg.effect.name, null, _self.cfg.effect.duration, function() {
+                newPanel.show(_self.cfg.effect, null, _self.cfg.effectDuration, function() {
                     _self.postTabShow(newPanel);
                 });
             });

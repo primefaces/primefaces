@@ -30,6 +30,7 @@ import javax.faces.model.SelectItem;
 import org.primefaces.component.radiobutton.RadioButton;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneRadioRenderer extends SelectOneRenderer {
 
@@ -85,20 +86,15 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String clientId = radio.getClientId(context);
         String layout = radio.getLayout();
         boolean custom = layout != null && layout.equals("custom");
+       
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("SelectOneRadio", radio.resolveWidgetVar(), clientId, true)
+            .attr("custom", custom, false);
+        
+        encodeClientBehaviors(context, radio, wb);
 
         startScript(writer, clientId);
-        
-        writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('SelectOneRadio','" + radio.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        if(custom) {
-            writer.write(",custom:true");
-        }
-
-        encodeClientBehaviors(context, radio);
-
-        writer.write("});});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
     

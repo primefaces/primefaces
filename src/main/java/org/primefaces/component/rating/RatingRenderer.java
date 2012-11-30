@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class RatingRenderer extends InputRenderer {
 
@@ -51,22 +52,16 @@ public class RatingRenderer extends InputRenderer {
     private void encodeScript(FacesContext context, Rating rating) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = rating.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Rating", rating.resolveWidgetVar(), clientId, "rating", true)
+            .callback("onRate", "function(value)", rating.getOnRate())
+            .attr("readonly", rating.isReadonly(), false)
+            .attr("disabled", rating.isDisabled(), false);
+        
+        encodeClientBehaviors(context, rating, wb);
 
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
-
-        writer.write("PrimeFaces.cw('Rating','" + rating.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        
-        if(rating.getOnRate() != null) writer.write(",onRate:function(value) {" + rating.getOnRate() + ";}");        
-        if(rating.isReadonly()) writer.write(",readonly:true");
-        if(rating.isDisabled()) writer.write(",disabled:true");
-        
-        encodeClientBehaviors(context, rating);
-
-        writer.write("},'rating');});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
 

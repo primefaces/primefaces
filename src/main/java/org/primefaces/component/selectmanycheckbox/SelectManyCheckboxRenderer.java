@@ -28,6 +28,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
@@ -65,16 +66,12 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     protected void encodeScript(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId, false);
+        encodeClientBehaviors(context, checkbox, wb);
 
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('SelectManyCheckbox','" + checkbox.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-
-        encodeClientBehaviors(context, checkbox);
-
-        writer.write("});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
 

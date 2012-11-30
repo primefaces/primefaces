@@ -26,6 +26,7 @@ import org.primefaces.event.CaptureEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class PhotoCamRenderer extends CoreRenderer {
     
@@ -71,20 +72,18 @@ public class PhotoCamRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, PhotoCam cam) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = cam.getClientId(context);
+        String camera = getResourceRequestPath(context, "photocam/photocam.swf");
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("PhotoCam", cam.resolveWidgetVar(), clientId, true)
+            .attr("camera", camera);
+        
+        if(cam.getUpdate() != null) wb.attr("update", ComponentUtils.findClientIds(context, cam, cam.getUpdate()));
+        if(cam.getProcess() != null) wb.attr("process", ComponentUtils.findClientIds(context, cam, cam.getProcess()));
 		
         startScript(writer, clientId);
-        
-        writer.write("$(function() {");
-        writer.write("PrimeFaces.cw('PhotoCam','" + cam.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",camera:'" + getResourceRequestPath(context, "photocam/photocam.swf") + "'");
-                    
-        if(cam.getUpdate() != null) writer.write(",update:'" + ComponentUtils.findClientIds(context, cam, cam.getUpdate()) + "'");
-        if(cam.getProcess() != null) writer.write(",process:'" + ComponentUtils.findClientIds(context, cam, cam.getProcess()) + "'");
-        
-        writer.write("});});");
-		
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
     
 }

@@ -27,6 +27,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneButtonRenderer extends SelectOneRenderer {
     
@@ -131,16 +132,12 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneButton button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("SelectOneButton", button.resolveWidgetVar(), clientId, false);
+        encodeClientBehaviors(context, button, wb);
 
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('SelectOneButton','" + button.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-
-        encodeClientBehaviors(context, button);
-
-        writer.write("});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
     

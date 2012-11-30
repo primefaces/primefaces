@@ -42,7 +42,8 @@
 		<attribute>
 			<name>aspectRatio</name>
 			<required>false</required>
-			<type>java.lang.Float</type>
+			<type>java.lang.Double</type>
+            <defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
             <description>Ratio of calendar width to height, higher the value shorter the height is.</description>
 		</attribute>
 		<attribute>

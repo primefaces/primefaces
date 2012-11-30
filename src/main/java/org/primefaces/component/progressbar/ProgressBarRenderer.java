@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ProgressBarRenderer extends CoreRenderer {
 
@@ -94,27 +95,21 @@ public class ProgressBarRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = progressBar.getClientId(context);
         boolean isAjax = progressBar.isAjax();
-
-        startScript(writer, clientId);
-
-        writer.write("$(function() {");
-
-        writer.write("PrimeFaces.cw('ProgressBar','" + progressBar.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",initialValue:" + progressBar.getValue());
-        writer.write(",ajax:" + isAjax);
         
-        if(progressBar.getLabelTemplate() != null)  
-            writer.write(",labelTemplate:'" + progressBar.getLabelTemplate() + "'");
-
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("ProgressBar", progressBar.resolveWidgetVar(), clientId, true)
+            .attr("initialValue", progressBar.getValue())
+            .attr("ajax", isAjax)
+            .attr("labelTemplate", progressBar.getLabelTemplate(), null);
+        
         if(isAjax) {
-            writer.write(",interval:" + progressBar.getInterval());
-
-            encodeClientBehaviors(context, progressBar);
+            wb.attr("interval", progressBar.getInterval());
+            
+            encodeClientBehaviors(context, progressBar, wb);
         }
 
-        writer.write("});});");
-
+        startScript(writer, clientId);
+        writer.write(wb.build());
         endScript(writer);
     }
 }

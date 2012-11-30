@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class PasswordRenderer extends InputRenderer {
 	
@@ -56,30 +57,23 @@ public class PasswordRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = password.getClientId(context);
         boolean feedback = password.isFeedback();
-
-        startScript(writer, clientId);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Password", password.resolveWidgetVar(), clientId, true);
         
-		writer.write("$(function(){");
-        
-        writer.write("PrimeFaces.cw('Password','" + password.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-
-
         if(feedback) {
-            writer.write(",feedback:true");
-            writer.write(",inline:" + password.isInline());
-            
-            if(password.getPromptLabel() != null) writer.write(",promptLabel:'" + password.getPromptLabel() + "'");
-            if(password.getWeakLabel() != null) writer.write(",weakLabel:'" + password.getWeakLabel() + "'");
-            if(password.getGoodLabel() != null) writer.write(",goodLabel:'" + password.getGoodLabel() + "'");
-            if(password.getStrongLabel() != null) writer.write(",strongLabel:'" + password.getStrongLabel() + "'"); 
+            wb.attr("feedback", true)
+                .attr("inline", password.isInline())
+                .attr("promptLabel", password.getPromptLabel(), null)
+                .attr("weakLabel", password.getWeakLabel(), null)
+                .attr("goodLabel", password.getGoodLabel(), null)
+                .attr("strongLabel", password.getStrongLabel(), null);
         }
 
         encodeClientBehaviors(context, password);
 
-		writer.write("});});");
-        
-		endScript(writer);
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, Password password) throws IOException {

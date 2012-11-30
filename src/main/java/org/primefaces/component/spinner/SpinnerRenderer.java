@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class SpinnerRenderer extends InputRenderer {
 
@@ -69,25 +70,19 @@ public class SpinnerRenderer extends InputRenderer {
 	protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = spinner.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Spinner", spinner.resolveWidgetVar(), clientId, false)
+            .attr("step", spinner.getStepFactor())
+            .attr("min", spinner.getMin(), Double.MIN_VALUE)
+            .attr("max", spinner.getMax(), Double.MAX_VALUE)
+            .attr("prefix", spinner.getPrefix(), null)
+            .attr("suffix", spinner.getSuffix(), null);
+        
+        encodeClientBehaviors(context, spinner, wb);
 
         startScript(writer, clientId);
-
-		writer.write("$(function(){");
-        
-        writer.write("PrimeFaces.cw('Spinner','" + spinner.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",step:" + spinner.getStepFactor());
-		
-		if(spinner.getMin() != Double.MIN_VALUE) writer.write(",min:" + spinner.getMin());
-		if(spinner.getMax() != Double.MAX_VALUE) writer.write(",max:" + spinner.getMax());
-		if(spinner.getPrefix() != null) writer.write(",prefix:'" + spinner.getPrefix() + "'");
-		if(spinner.getSuffix() != null) writer.write(",suffix:'" + spinner.getSuffix() + "'");
-
-        encodeClientBehaviors(context, spinner);
- 		
-		writer.write("});});");
-		
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 	
 	protected void encodeMarkup(FacesContext context, Spinner spinner) throws IOException {

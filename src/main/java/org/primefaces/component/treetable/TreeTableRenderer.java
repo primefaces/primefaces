@@ -27,6 +27,7 @@ import org.primefaces.component.api.UITree;
 import org.primefaces.component.column.Column;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class TreeTableRenderer extends CoreRenderer {
 
@@ -94,20 +95,15 @@ public class TreeTableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = tt.getClientId(context);
         String selectionMode = tt.getSelectionMode();
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("TreeTable", tt.resolveWidgetVar(), clientId, false)
+            .attr("selectionMode", selectionMode, null);
+        
+        encodeClientBehaviors(context, tt, wb);
 		
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('TreeTable','" + tt.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        
-        if(selectionMode != null) 
-            writer.write(",selectionMode:'" + selectionMode + "'");
-                
-        encodeClientBehaviors(context, tt);
-        
-		writer.write("});");
-		
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 
 	protected void encodeMarkup(FacesContext context, TreeTable tt) throws IOException {

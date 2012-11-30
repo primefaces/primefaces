@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ResizableRenderer extends CoreRenderer {
 
@@ -39,51 +40,51 @@ public class ResizableRenderer extends CoreRenderer {
         String clientId = resizable.getClientId(context);
 		UIComponent target = findTarget(context, resizable);
         String targetId = target.getClientId(context);
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Resizable", resizable.resolveWidgetVar(), clientId, false)
+            .attr("target", targetId)
+            .attr("minWidth", resizable.getMinWidth(), Integer.MIN_VALUE)
+            .attr("maxWidth", resizable.getMaxWidth(), Integer.MAX_VALUE)
+            .attr("minHeight", resizable.getMinHeight(), Integer.MIN_VALUE)
+            .attr("maxHeight", resizable.getMaxHeight(), Integer.MAX_VALUE);
+        
+        if(resizable.isAnimate()) {
+            wb.attr("animate", true)
+                .attr("animateEasing", resizable.getEffect())
+                .attr("animateDuration", resizable.getEffectDuration());
+        }
+        
+        if(resizable.isProxy()) {
+            wb.attr("helper", "ui-resizable-proxy");
+        }
+        
+        wb.attr("handles", resizable.getHandles(), null)
+            .attr("grid", resizable.getGrid(), 1)
+            .attr("aspectRatio", resizable.isAspectRatio(), false)
+            .attr("ghost", resizable.isGhost(), false);
+        
+        if(resizable.isContainment()) {
+            wb.attr("containment", "PrimeFaces.escapeClientId('" + resizable.getParent().getClientId(context) + "')");
+        }
+        
+        wb.callback("onStart", "function(event,ui)", resizable.getOnStart())
+            .callback("onResize", "function(event,ui)", resizable.getOnResize())
+            .callback("onStop", "function(event,ui)", resizable.getOnStop());
+            
+        encodeClientBehaviors(context, resizable, wb);
 
         startScript(writer, clientId);
 
-        //If it is an image wait until the image is loaded
         if(target instanceof UIGraphic)
             writer.write("$(PrimeFaces.escapeClientId('" + targetId + "')).load(function(){");
         else
             writer.write("$(function(){");
-		
-        writer.write("PrimeFaces.cw('Resizable','" + resizable.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",target:'" + targetId + "'");
-
-        //Boundaries
-        if(resizable.getMinWidth() != Integer.MIN_VALUE) writer.write(",minWidth:" + resizable.getMinWidth());
-        if(resizable.getMaxWidth() != Integer.MAX_VALUE) writer.write(",maxWidth:" + resizable.getMaxWidth());
-        if(resizable.getMinHeight() != Integer.MIN_VALUE) writer.write(",minHeight:" + resizable.getMinHeight());
-        if(resizable.getMaxHeight() != Integer.MAX_VALUE) writer.write(",maxHeight:" + resizable.getMaxHeight());
-
-        //Animation
-        if(resizable.isAnimate()) {
-            writer.write(",animate:true");
-            writer.write(",animateEasing:'" + resizable.getEffect() + "'");
-            writer.write(",animateDuration:'" + resizable.getEffectDuration() + "'");
-        }
-
-        //Config
-        if(resizable.isProxy()) writer.write(",helper:'ui-resizable-proxy'");
-        if(resizable.getHandles() != null) writer.write(",handles:'" + resizable.getHandles() + "'");
-        if(resizable.getGrid() != 1) writer.write(",grid:" + resizable.getGrid());
-        if(resizable.isAspectRatio()) writer.write(",aspectRatio:true");
-        if(resizable.isGhost()) writer.write(",ghost:true");
-        if(resizable.isContainment()) writer.write(",containment:PrimeFaces.escapeClientId('" + resizable.getParent().getClientId(context) +"')");
-
-        //Client side callbacks
-        if(resizable.getOnStart() != null) writer.write(",onStart:function(event, ui) {" + resizable.getOnStart() + "}");
-        if(resizable.getOnResize() != null) writer.write(",onResize:function(event, ui) {" + resizable.getOnResize() + "}");
-        if(resizable.getOnStop() != null) writer.write(",onStop:function(event, ui) {" + resizable.getOnStop() + "}");
-
-        //Behaviors
-        encodeClientBehaviors(context, resizable);
-		
-		writer.write("});});");
-		
-		endScript(writer);
+        
+        writer.write(wb.build());
+        
+        writer.write("});");
+        endScript(writer);
 	}
 
     protected UIComponent findTarget(FacesContext context, Resizable resizable) {

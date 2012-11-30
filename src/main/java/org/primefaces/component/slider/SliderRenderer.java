@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class SliderRenderer extends CoreRenderer{
 
@@ -57,30 +58,30 @@ public class SliderRenderer extends CoreRenderer{
 		String clientId = slider.getClientId(context);
 		UIComponent input = getTarget(context, slider, slider.getFor());
 		UIComponent output = getTarget(context, slider, slider.getDisplay());
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Slider", slider.resolveWidgetVar(), clientId, false)
+            .attr("value", ComponentUtils.getValueToRender(context, input))
+            .attr("input", input.getClientId(context))
+            .attr("min", slider.getMinValue())
+            .attr("max", slider.getMaxValue())
+            .attr("animate", slider.isAnimate())
+            .attr("step", slider.getStep())
+            .attr("orientation", slider.getType())
+            .attr("disabled", slider.isDisabled(), false)
+            .callback("onSlideStart", "function(event,ui)", slider.getOnSlideStart())
+            .callback("onSlide", "function(event,ui)", slider.getOnSlide())
+            .callback("onSlideEnd", "function(event,ui)", slider.getOnSlideEnd());
+        
+        if(output != null) {
+            wb.attr("output", output.getClientId(context));
+        }
+        
+        encodeClientBehaviors(context, slider, wb);
 
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('Slider','" + slider.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-		writer.write(",value:" + ComponentUtils.getValueToRender(context, input));
-		writer.write(",input:'" + input.getClientId(context) + "'");
-		writer.write(",min:" + slider.getMinValue());
-		writer.write(",max:" + slider.getMaxValue());
-		writer.write(",animate:" + slider.isAnimate());
-		writer.write(",step:" + slider.getStep());
-		writer.write(",orientation:'" + slider.getType() + "'");
-		
-		if(slider.isDisabled()) writer.write(",disabled:true");
-		if(output != null) writer.write(",output:'" + output.getClientId(context) + "'");
-        if(slider.getOnSlideStart() != null) writer.write(",onSlideStart:function(event, ui) {" + slider.getOnSlideStart() + "}");
-        if(slider.getOnSlide() != null) writer.write(",onSlide:function(event, ui) {" + slider.getOnSlide() + "}");
-        if(slider.getOnSlideEnd() != null) writer.write(",onSlideEnd:function(event, ui) {" + slider.getOnSlideEnd() + "}");
-
-		encodeClientBehaviors(context, slider);
-                
-		writer.write("});");
-	
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 	
 	protected UIComponent getTarget(FacesContext context, Slider slider, String target) {

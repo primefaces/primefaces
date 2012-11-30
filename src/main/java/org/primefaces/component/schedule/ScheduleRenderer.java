@@ -29,6 +29,7 @@ import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ScheduleRenderer extends CoreRenderer {
 
@@ -110,51 +111,47 @@ public class ScheduleRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = schedule.getClientId(context);
-
-        startScript(writer, clientId);
-		
-		writer.write("$(function() {");
-        writer.write("PrimeFaces.cw('Schedule','" + schedule.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");		
-		writer.write(",defaultView:'"+ schedule.getView() + "'");
-		writer.write(",locale:'"+ schedule.calculateLocale(context) + "'");
-        writer.write(",offset:" + schedule.calculateTimeZone().getRawOffset());
-
-		if(schedule.getInitialDate() != null) {
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Schedule", schedule.resolveWidgetVar(), clientId, "schedule", true)
+            .attr("defaultView", schedule.getView())
+            .attr("locale", schedule.calculateLocale(context).toString())
+            .attr("offset", schedule.calculateTimeZone().getRawOffset());
+        
+        if(schedule.getInitialDate() != null) {
 			Calendar c = Calendar.getInstance();
 			c.setTime((Date) schedule.getInitialDate());
-			writer.write(",year: " + c.get(Calendar.YEAR));
-	 		writer.write(",month: " + c.get(Calendar.MONTH));
-			writer.write(",date: " + c.get(Calendar.DATE));
+            
+            wb.attr("year", c.get(Calendar.YEAR)).attr("month", c.get(Calendar.MONTH)).attr("date", c.get(Calendar.DATE));
 		}
-
-		if(schedule.isShowHeader()) {
-			writer.write(",header:{");
-			writer.write("left:'" + schedule.getLeftHeaderTemplate() + "'");
-			writer.write(",center:'" + schedule.getCenterHeaderTemplate() + "'");
-			writer.write(",right:'" + schedule.getRightHeaderTemplate() + "'}");
-		} else {
-			writer.write(",header:false");
-		}
-		
-		if(!schedule.isAllDaySlot()) writer.write(",allDaySlot:false");
-		if(schedule.getSlotMinutes() != 30) writer.write(",slotMinutes:" + schedule.getSlotMinutes());
-		if(schedule.getFirstHour() != 6) writer.write(",firstHour:" + schedule.getFirstHour());
-		if(schedule.getMinTime() != null) writer.write(",minTime:'" + schedule.getMinTime() + "'");
-		if(schedule.getMaxTime() != null) writer.write(",maxTime:'" + schedule.getMaxTime() + "'");
-		if(schedule.getAspectRatio() != null) writer.write(",aspectRatio: '"+ schedule.getAspectRatio() + "'");
-		if(!schedule.isShowWeekends()) writer.write(",weekends:false");
-		if(!schedule.isDraggable()) writer.write(",disableDragging:true");
-		if(!schedule.isResizable()) writer.write(",disableResizing:true");
-        if(schedule.getAxisFormat() != null) writer.write(",axisFormat:'" + schedule.getAxisFormat() + "'");
-        if(schedule.getTimeFormat() != null) writer.write(",timeFormat:'" + schedule.getTimeFormat() + "'");
         
-        //behaviors
-        encodeClientBehaviors(context, schedule);
-		
-		writer.write("});});");
-		
-		endScript(writer);        		
+        if(schedule.isShowHeader()) {
+            wb.attr("header", "{")
+                .append("left:'").append(schedule.getLeftHeaderTemplate()).append("'")
+                .attr("center", schedule.getCenterHeaderTemplate())
+                .attr("right", schedule.getRightHeaderTemplate())
+                .append("}");
+		} 
+        else {
+            wb.attr("header", false);
+		}
+        
+        wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
+            .attr("slotMinutes", schedule.getSlotMinutes(), 30)
+            .attr("firstHour", schedule.getFirstHour(), 6)
+            .attr("minTime", schedule.getMinTime(), null)
+            .attr("maxTime", schedule.getMaxTime(), null)
+            .attr("aspectRatio", schedule.getAspectRatio(), Double.MAX_VALUE)
+            .attr("weekends", schedule.isShowWeekends(), true)
+            .attr("disableDragging", schedule.isDraggable(), true)
+            .attr("disableResizing", schedule.isResizable(), true)
+            .attr("axisFormat", schedule.getAxisFormat(), null)
+            .attr("timeFormat", schedule.getTimeFormat(), null);
+        
+        encodeClientBehaviors(context, schedule, wb);
+
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);      		
 	}
 
 	protected void encodeMarkup(FacesContext context, Schedule schedule) throws IOException {

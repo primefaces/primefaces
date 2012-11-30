@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
@@ -136,16 +137,13 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("SelectBooleanCheckbox", checkbox.resolveWidgetVar(), clientId, false);
+        
+        encodeClientBehaviors(context, checkbox, wb);
 
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('SelectBooleanCheckbox','" + checkbox.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        
-        encodeClientBehaviors(context, checkbox);
-
-        writer.write("});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
 }

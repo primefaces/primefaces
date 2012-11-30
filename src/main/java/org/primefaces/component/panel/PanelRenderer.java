@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menu.Menu;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class PanelRenderer extends CoreRenderer {
 
@@ -59,35 +60,29 @@ public class PanelRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Panel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Panel", panel.resolveWidgetVar(), clientId, false);
+        
+        if(panel.isToggleable()) {
+            wb.attr("toggleable", true)
+                .attr("toggleSpeed", panel.getToggleSpeed())
+                .attr("collapsed", panel.isCollapsed())
+                .attr("toggleOrientation", panel.getToggleOrientation());
+        }
+        
+        if(panel.isClosable()) {
+            wb.attr("closable", true)
+                .attr("closeSpeed", panel.getCloseSpeed());
+        }
+        
+        if(panel.getOptionsMenu() != null) {
+            wb.attr("hasMenu", true);
+        }
+        
+        encodeClientBehaviors(context, panel, wb);
 
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('Panel','" + panel.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-
-        //Toggle configuration
-        if(panel.isToggleable()) {
-            writer.write(",toggleable:true");
-            writer.write(",toggleSpeed:" + panel.getToggleSpeed());
-            writer.write(",collapsed:" + panel.isCollapsed());
-            writer.write(",toggleOrientation:'" + panel.getToggleOrientation() + "'");
-        }
-
-        //Toggle configuration
-        if(panel.isClosable()) {
-            writer.write(",closable:true");
-            writer.write(",closeSpeed:" + panel.getCloseSpeed());
-        }
-
-        //Options menu configuration
-        if(panel.getOptionsMenu() != null) {
-            writer.write(",hasMenu:true");
-        }
-
-        encodeClientBehaviors(context, panel);
-
-        writer.write("});");
-        
+        writer.write(wb.build());
         endScript(writer);
     }
 
