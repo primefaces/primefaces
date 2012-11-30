@@ -16,7 +16,6 @@
 package org.primefaces.component.sheet;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.el.ValueExpression;
@@ -26,10 +25,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.ListDataModel;
 import org.primefaces.component.column.Column;
-import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class SheetRenderer extends CoreRenderer {
     
@@ -79,14 +78,12 @@ public class SheetRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Sheet sheet) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = sheet.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Sheet", sheet.resolveWidgetVar(), clientId, false);
         
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('Sheet','" + sheet.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write("},'sheet');");
-
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
     }
     
     protected void encodeCaption(FacesContext context, Sheet sheet) throws IOException {

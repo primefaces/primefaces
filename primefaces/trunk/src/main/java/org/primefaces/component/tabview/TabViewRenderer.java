@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class TabViewRenderer extends CoreRenderer {
 
@@ -75,32 +76,24 @@ public class TabViewRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tabView.getClientId(context);
         boolean dynamic = tabView.isDynamic();
-
-        startScript(writer, clientId);
         
-        writer.write("PrimeFaces.cw('TabView','" + tabView.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("TabView", tabView.resolveWidgetVar(), clientId, false);
         
         if(dynamic) {
-            writer.write(",dynamic:true");
-            writer.write(",cache:" + tabView.isCache());
+            wb.attr("dynamic", true).attr("cache", tabView.isCache());
         }
         
-        if(tabView.getOnTabChange() != null) writer.write(",onTabChange: function(index) {" + tabView.getOnTabChange() + "}");
-        if(tabView.getOnTabShow() != null) writer.write(",onTabShow:function(index) {" + tabView.getOnTabShow() + "}");
-        if(tabView.getOnTabClose() != null) writer.write(",onTabClose:function(index) {" + tabView.getOnTabClose() + "}");
+        wb.callback("onTabChange", "function(index)", tabView.getOnTabChange())
+            .callback("onTabShow", "function(index)", tabView.getOnTabShow())
+            .callback("onTabClose", "function(index)", tabView.getOnTabClose());
 
-        if(tabView.getEffect() != null) {
-            writer.write(",effect: {");
-            writer.write("name:'" + tabView.getEffect() + "'");
-            writer.write(",duration:'" + tabView.getEffectDuration() + "'");
-            writer.write("}");
-        }
+        wb.attr("effect", tabView.getEffect(), null).attr("effectDuration", tabView.getEffectDuration(), null);
         
-        encodeClientBehaviors(context, tabView);
-
-        writer.write("});");
-
+        encodeClientBehaviors(context, tabView, wb);
+        
+        startScript(writer, clientId);
+        writer.write(wb.build());
         endScript(writer);
     }
 

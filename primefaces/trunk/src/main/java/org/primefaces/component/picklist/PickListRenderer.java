@@ -30,6 +30,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class PickListRenderer extends CoreRenderer {
 	
@@ -108,26 +109,22 @@ public class PickListRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, PickList pickList) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = pickList.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("PickList", pickList.resolveWidgetVar(), clientId, true)
+            .attr("effect", pickList.getEffect())
+            .attr("effectSpeed", pickList.getEffectSpeed())
+            .attr("showSourceControls", pickList.isShowSourceControls(), false)
+            .attr("showTargetControls", pickList.isShowTargetControls(), false)
+            .attr("disabled", pickList.isDisabled(), false)
+            .attr("filterMatchModel", pickList.getFilterMatchMode(), null)
+            .attr("filterFunction", pickList.getFilterFunction(), null)
+            .callback("onTransfer", "function(e)", pickList.getOnTransfer());
+        
+        encodeClientBehaviors(context, pickList, wb);
 		
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('PickList','" + pickList.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",effect:'" + pickList.getEffect() + "'");
-        writer.write(",effectSpeed:'" + pickList.getEffectSpeed() + "'");
-        
-        if(pickList.isShowSourceControls()) writer.write(",showSourceControls:true");
-        if(pickList.isShowTargetControls()) writer.write(",showTargetControls:true");
-        if(pickList.isDisabled()) writer.write(",disabled:true");
-        if(pickList.getFilterMatchMode() != null) writer.write(",filterMatchMode:'" + pickList.getFilterMatchMode() + "'");
-        if(pickList.getFilterFunction() != null) writer.write(",filterFunction:" + pickList.getFilterFunction());
-        if(pickList.getOnTransfer() != null) writer.write((",onTransfer:function(e) {" + pickList.getOnTransfer() + ";}"));
-
-        encodeClientBehaviors(context, pickList);
-        
-        writer.write("});");
-		
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
 	}
     
     protected void encodeListControls(FacesContext context, PickList pickList, String styleClass) throws IOException {

@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class OverlayPanelRenderer extends CoreRenderer {
     
@@ -67,28 +68,23 @@ public class OverlayPanelRenderer extends CoreRenderer {
         
         String clientId = panel.getClientId(context);
         String targetClientId = target.getClientId(context);
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("OverlayPanel", panel.resolveWidgetVar(), clientId, true)
+            .attr("target", targetClientId)
+            .attr("showEvent", panel.getShowEvent(), null)
+            .attr("hideEvent", panel.getHideEvent(), null)
+            .attr("showEffect", panel.getShowEffect(), null)
+            .attr("hideEffect", panel.getHideEffect(), null)
+            .callback("onShow", "function()", panel.getOnShow())
+            .callback("onHide", "function()", panel.getOnHide())
+            .attr("my", panel.getMy(), null)
+            .attr("at", panel.getAt(), null)
+            .attr("appendToBody", panel.isAppendToBody(), false)
+            .attr("dynamic", panel.isDynamic(), false);
 
         startScript(writer, clientId);
-
-        writer.write("$(function(){");
-
-        writer.write("PrimeFaces.cw('OverlayPanel','" + panel.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",target:'" + targetClientId + "'");
-        
-        if(panel.getShowEvent() != null) writer.write(",showEvent:'" + panel.getShowEvent() + "'");
-        if(panel.getHideEvent() != null) writer.write(",hideEvent:'" + panel.getHideEvent() + "'");
-        if(panel.getShowEffect() != null) writer.write(",showEffect:'" + panel.getShowEffect() + "'");
-        if(panel.getHideEffect() != null) writer.write(",hideEffect:'" + panel.getHideEffect() + "'");
-        if(panel.getOnShow() != null) writer.write(",onShow:function(){" + panel.getOnShow() + "}");
-        if(panel.getOnHide() != null) writer.write(",onHide:function(){" + panel.getOnHide() + "}");
-        if(panel.getMy() != null) writer.write(",my:'" + panel.getMy() + "'");
-        if(panel.getAt() != null) writer.write(",at:'" + panel.getAt() + "'");
-        if(panel.isAppendToBody()) writer.write(",appendToBody:true");
-        if(panel.isDynamic()) writer.write(",dynamic:true");
-        
-        writer.write("});});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
     

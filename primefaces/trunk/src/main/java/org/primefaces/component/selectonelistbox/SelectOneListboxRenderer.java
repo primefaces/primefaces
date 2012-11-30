@@ -25,6 +25,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneListboxRenderer extends SelectOneRenderer {
 
@@ -65,17 +66,15 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneListbox listbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = listbox.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("SelectListbox", listbox.resolveWidgetVar(), clientId, false)
+            .attr("selection", "single")
+            .attr("disabled", listbox.isDisabled(), false);
+        
+        encodeClientBehaviors(context, listbox, wb);
 
         startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('SelectListbox','" + listbox.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",selection:'single'");
-
-        encodeClientBehaviors(context, listbox);
-
-        writer.write("});");
-
+        writer.write(wb.build());
         endScript(writer);
     }
 

@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class NotificationBarRenderer extends CoreRenderer {
 
@@ -50,31 +51,23 @@ public class NotificationBarRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 
-	private void encodeScript(FacesContext facesContext, NotificationBar bar) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
-		String clientId = bar.getClientId(facesContext);
+	private void encodeScript(FacesContext context, NotificationBar bar) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		String clientId = bar.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("NotificationBar", bar.resolveWidgetVar(), clientId, true)
+            .attr("position", bar.getPosition())
+            .attr("effect", bar.getEffect())
+            .attr("effectSpeed", bar.getEffectSpeed())
+            .attr("autoDisplay", bar.isAutoDisplay(), false);
 		
 		startScript(writer, clientId);
-		
-		writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('NotificationBar','" + bar.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-		writer.write(",position:'" + bar.getPosition() + "'");
-		writer.write(",effect:'" + bar.getEffect() + "'");
-		writer.write(",effectSpeed:'" + bar.getEffectSpeed() + "'");
-		
-		if(bar.isAutoDisplay()) {
-			writer.write(",autoDisplay:true");
-        }
-		
-		writer.write("});});");
-		
+		writer.write(wb.build());		
 		endScript(writer);
 	}
 
     @Override
-	public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do nothing
 	}
 

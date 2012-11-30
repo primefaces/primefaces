@@ -27,6 +27,7 @@ import javax.faces.event.PhaseId;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class PollRenderer extends CoreRenderer {
 
@@ -81,20 +82,15 @@ public class PollRenderer extends CoreRenderer {
                 .oncomplete(poll.getOncomplete())
                 .params(poll)
                 .build();
-
-        //script
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
-
-        writer.write("$(function() {");
-        writer.write("PrimeFaces.cw('Poll','" + poll.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",frequency:" + poll.getInterval());
-        writer.write(",autoStart:" + poll.isAutoStart());
-        writer.write(",fn: function() {");
-        writer.write(request);
-        writer.write("}});});");
-
-        writer.endElement("script");
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Poll", poll.resolveWidgetVar(), clientId, true)
+            .attr("frequency", poll.getInterval())
+            .attr("autoStart", poll.isAutoStart())
+            .callback("fn", "function()", request);
+        
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
     }
 }

@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class WatermarkRenderer extends CoreRenderer {
 
@@ -48,15 +49,13 @@ public class WatermarkRenderer extends CoreRenderer {
 			throw new FacesException("Either for or forElement options must be used to define a watermark.");
 		}
 		
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Watermark", watermark.resolveWidgetVar(), watermark.getClientId(context), "watermark", true)
+            .attr("value", watermark.getValue())
+            .attr("target", target);
+        
         startScript(writer, watermark.getClientId(context));
-		
-		writer.write("$(function() {");
-        writer.write("PrimeFaces.cw('Watermark','" + watermark.resolveWidgetVar() + "',{");
-        writer.write("id:'" + watermark.getClientId(context) + "'");
-        writer.write(",value:'" + watermark.getValue() + "'");
-        writer.write(",target:'" + target + "'");
-		writer.write("},'watermark');});");
-		
+		writer.write(wb.build());
 		endScript(writer);
 	}
 }

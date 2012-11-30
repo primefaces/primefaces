@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class TagCloudRenderer extends CoreRenderer {
 
@@ -78,16 +79,13 @@ public class TagCloudRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, TagCloud tagCloud) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tagCloud.getClientId(context);
-        
-        startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('TagCloud','" + tagCloud.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("TagCloud", tagCloud.resolveWidgetVar(), clientId, false);
         
         encodeClientBehaviors(context, tagCloud);
         
-        writer.write("});");
-        
+        startScript(writer, clientId);
+        writer.write(wb.build());
         endScript(writer);
     }
 }

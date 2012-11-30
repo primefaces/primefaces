@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class TooltipRenderer extends CoreRenderer {
 
@@ -64,23 +65,17 @@ public class TooltipRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         String clientId = tooltip.getClientId(context);
 		String target = getTarget(context, tooltip);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Tooltip", tooltip.resolveWidgetVar(), clientId, true)
+            .attr("target", target)
+            .attr("showEvent", tooltip.getShowEvent(), null)
+            .attr("hideEvent", tooltip.getHideEvent(), null)
+            .attr("showEffect", tooltip.getShowEffect(), null)
+            .attr("hideEffect", tooltip.getHideEffect(), null);
 		
         startScript(writer, clientId);
-		
-        writer.write("$(function() {");
-			
-        writer.write("PrimeFaces.cw('Tooltip','" + tooltip.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",target:'" + target + "'");
-        
-        if(tooltip.getShowEvent() != null) writer.write(",showEvent:'" + tooltip.getShowEvent() + "'");
-        if(tooltip.getHideEvent() != null) writer.write(",hideEvent:'" + tooltip.getHideEvent() + "'");
-        if(tooltip.getShowEffect() != null) writer.write(",showEffect:'" + tooltip.getShowEffect() + "'");
-        if(tooltip.getHideEffect() != null) writer.write(",hideEffect:'" + tooltip.getHideEffect() + "'");
-        		
-		writer.write("});});");
-		
-		endScript(writer);
+		writer.write(wb.build());
+        endScript(writer);
 	}
 	
 	protected String getTarget(FacesContext context, Tooltip tooltip) {

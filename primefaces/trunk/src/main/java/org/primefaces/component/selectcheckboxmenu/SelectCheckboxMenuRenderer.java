@@ -26,6 +26,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.renderkit.SelectManyRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     
@@ -175,31 +176,26 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     protected void encodeScript(FacesContext context, SelectCheckboxMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
-
-        startScript(writer, clientId);
         
-        writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('SelectCheckboxMenu','" + menu.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId, true)
+            .callback("onShow", "function()", menu.getOnShow())
+            .callback("onHide", "function()", menu.getOnHide())
+            .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE);
         
-        if(menu.getOnShow() != null) writer.write(",onShow:function(){" + menu.getOnShow() + "}");
-        if(menu.getOnHide() != null) writer.write(",onHide:function(){" + menu.getOnHide() + "}");
-        if(menu.getScrollHeight() != Integer.MAX_VALUE) writer.write(",scrollHeight:" + menu.getScrollHeight());
         if(menu.isFilter()) {
-            writer.write(",filter:true");
-            
-            if(menu.getFilterMatchMode() != null) writer.write(",filterMatchMode:'" + menu.getFilterMatchMode() + "'");     
-            if(menu.getFilterFunction() != null) writer.write(",filterFunction:" + menu.getFilterFunction());
-            if(menu.isCaseSensitive()) writer.write(",caseSensitive:true");
+            wb.attr("filter", true)
+                .attr("filterMatchMode", menu.getFilterMatchMode(), null)
+                .attr("filterFunction", menu.getFilterFunction(), null)
+                .attr("caseSensitive", menu.isCaseSensitive(), false);
         }
         
-        if(menu.getPanelStyle() != null) writer.write(",panelStyle:'" + menu.getPanelStyle() + "'");
-        if(menu.getPanelStyleClass() != null) writer.write(",panelStyleClass:'" + menu.getPanelStyleClass() + "'");
+        wb.attr("panelStyle", menu.getPanelStyle(), null).attr("panelStyleClass", menu.getPanelStyleClass(), null);
+
+        encodeClientBehaviors(context, menu, wb);
         
-        encodeClientBehaviors(context, menu);
-
-        writer.write("});});");
-
+        startScript(writer, clientId);
+        writer.write(wb.build());
         endScript(writer);
     }
     

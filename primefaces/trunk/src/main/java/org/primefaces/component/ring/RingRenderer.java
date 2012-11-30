@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class RingRenderer extends CoreRenderer {
 
@@ -69,20 +70,14 @@ public class RingRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ring.getClientId(context);
         String easing = ring.getEasing();
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Ring", ring.resolveWidgetVar(), clientId, "ring", true)
+            .attr("startingChild", ring.getFirst())
+            .attr("easing", ring.getEasing(), null);
 
         startScript(writer, clientId);
-
-        writer.write("$(function() {");
-        
-        writer.write("PrimeFaces.cw('Ring','" + ring.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",startingChild:" + ring.getFirst());
-
-        if(easing != null) 
-            writer.write(",easing:'" + easing + "'");
-
-        writer.write("},'ring');});");
-
+        writer.write(wb.build());
         endScript(writer);
 	}
 

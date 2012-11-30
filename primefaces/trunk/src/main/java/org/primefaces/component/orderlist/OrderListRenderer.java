@@ -28,6 +28,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class OrderListRenderer extends CoreRenderer {
     
@@ -213,18 +214,13 @@ public class OrderListRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, OrderList ol) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = ol.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("OrderList", ol.resolveWidgetVar(), clientId, false)
+            .attr("effect", ol.getEffect(), null);
 		
         startScript(writer, clientId);
-
-        writer.write("PrimeFaces.cw('OrderList','" + ol.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");    
-        
-        if(ol.getEffect() != null) 
-            writer.write(",effect:'" + ol.getEffect() + "'");
-        
-        writer.write("});");
-		
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
     }
     
     @Override

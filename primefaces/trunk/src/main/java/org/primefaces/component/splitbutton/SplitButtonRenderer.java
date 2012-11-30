@@ -29,6 +29,7 @@ import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class SplitButtonRenderer extends CommandButtonRenderer {
     
@@ -157,15 +158,12 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
 	protected void encodeScript(FacesContext context, SplitButton button) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("SplitButton", button.resolveWidgetVar(), clientId, true);
 		
         startScript(writer, clientId);
-
-        writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('SplitButton','" + button.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");		
-		writer.write("});});");
-		
-		endScript(writer);
+        writer.write(wb.build());
+        endScript(writer);
     }
     
     protected String buildOnclick(FacesContext context, SplitButton button) throws IOException {
