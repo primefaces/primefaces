@@ -269,6 +269,12 @@
             <defaultValue>false</defaultValue>
             <description>Defines if cell editors of row should be displayed as editable or not. Default is false meaning display mode.</description>
 		</attribute>
+        <attribute>
+			<name>cellEditEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Defines cell edit event, such as "click" (default), "dblclick".</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
