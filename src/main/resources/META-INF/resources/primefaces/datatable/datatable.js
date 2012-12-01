@@ -1294,6 +1294,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      */
     bindEditEvents: function() {
         var $this = this;
+        this.cfg.cellEditEvent = this.cfg.cellEditEvent||'click';
         
         if(this.cfg.editMode === 'row') {
             var rowEditors = $(this.jqId + ' tbody.ui-datatable-data > tr > td span.ui-row-editor');
@@ -1311,10 +1312,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }); 
         }
         else if(this.cfg.editMode === 'cell') {
-            var cellSelector = this.jqId + ' tbody.ui-datatable-data tr td.ui-editable-column';
+            var cellSelector = this.jqId + ' tbody.ui-datatable-data tr td.ui-editable-column',
+            cellEditEventNS = this.cfg.cellEditEvent + '.datatable-cell';
             
-            $(document).off('click.datatable-cell', cellSelector)
-                        .on('click.datatable-cell', cellSelector, null, function(e) {
+            $(document).off(cellEditEventNS, cellSelector)
+                        .on(cellEditEventNS, cellSelector, null, function(e) {
                             var cell = $(this);
                             if(!cell.hasClass('ui-cell-editing')) {
                                 $this.showCellEditor($(this));
