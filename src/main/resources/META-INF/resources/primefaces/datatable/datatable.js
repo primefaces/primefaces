@@ -59,8 +59,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * @Override
-                 */
+     * @Override
+     */
     refresh: function(cfg) {
         //remove arrows
         if(cfg.draggableColumns) {
@@ -72,8 +72,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Binds the change event listener and renders the paginator
-                 */
+     * Binds the change event listener and renders the paginator
+     */
     bindPaginator: function() {
         var _self = this;
         this.cfg.paginator.paginate = function(newState) {
@@ -84,8 +84,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Applies events related to sorting in a non-obstrusive way
-                 */
+     * Applies events related to sorting in a non-obstrusive way
+     */
     bindSortEvents: function() {
         var _self = this,
         sortableColumns = $(this.jqId + ' th.ui-sortable-column');
@@ -157,8 +157,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
       
     /**
-                 * Binds filter events to filters
-                 */
+     * Binds filter events to filters
+     */
     setupFiltering: function() {
         var _self = this;
         this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
@@ -224,8 +224,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Applies events related to selection in a non-obstrusive way
-                 */
+     * Applies events related to selection in a non-obstrusive way
+     */
     bindSelectionEvents: function() {
         var _self = this;
         this.rowSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)';
@@ -1311,11 +1311,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }); 
         }
         else if(this.cfg.editMode === 'cell') {
-            var cellSelector = this.jqId + ' tbody.ui-datatable-data tr td.ui-editable-column div.ui-dt-c';
+            var cellSelector = this.jqId + ' tbody.ui-datatable-data tr td.ui-editable-column';
             
-            $(document).off('dblclick.dataTable-cell', cellSelector)
-                        .on('dblclick.dataTable-cell', cellSelector, null, function(e) {
-                            $this.showCellEditor($(this));
+            $(document).off('click.datatable-cell', cellSelector)
+                        .on('click.datatable-cell', cellSelector, null, function(e) {
+                            var cell = $(this);
+                            if(!cell.hasClass('ui-cell-editing')) {
+                                $this.showCellEditor($(this));
+                            }
                         });
         }
     },
@@ -1362,54 +1365,94 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         else {
             cell = this.contextMenuCell;
         }
-                                                                    
-        cell.addClass('ui-cell-editing').parent().addClass('ui-state-highlight');
-        cell.find('span.ui-cell-editor-output').hide();
-        cell.find('span.ui-cell-editor-input').show().find(':input:first').focus();
+                
+        var cellContent = cell.children('div.ui-dt-c'),
+        displayContainer = cellContent.find('span.ui-cell-editor-output'),
+        inputContainer = cellContent.find('span.ui-cell-editor-input'),
+        input = inputContainer.find(':input:enabled');
+                                        
+        cell.addClass('ui-state-highlight ui-cell-editing');
+        displayContainer.hide();
+        inputContainer.show();
+        input.focus().select();
         
-        if(!cell.data('events-bound')) {
-            cell.data('events-bound', true)
-            .find(':input').on('blur.dataTable-cell', function(e) {
-                $this.doCellEditRequest(cell);
-            })
-            .on('keyup.dataTable-cell', function(e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which;
-                                
-                if(key == keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
-                    $(this).trigger('blur.dataTable-cell');
-                }
-            });
-        }
+        //metadata
+        cell.removeData('changed').data('old-value', input.val());
         
-    },
+        //bind events on demand
+        if(!cell.data('edit-events-bound')) {
+            cell.data('edit-events-bound', true);
+            
+            input.on('keydown.datatable-cell', function(e) {
+                    var keyCode = $.ui.keyCode,
+                    shiftKey = e.shiftKey,
+                    key = e.which;
+
+                    if(key === keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
+                        $(this).get(0).blur();
+
+                        e.preventDefault();
+                    }
+                    else if(key === keyCode.TAB) {
+                        $this.viewMode(cell);
                         
+                        var tabCell = shiftKey ? cell.prev() : cell.next();
+                        if(tabCell.length == 0) {
+                            var tabRow = shiftKey ? cell.parent().prev() : cell.parent().next(),
+                            tabCell = shiftKey ? tabRow.children('td.ui-editable-column:last') : tabRow.children('td.ui-editable-column:first');
+                        }
+                        
+                        $this.showCellEditor(tabCell);
+                        
+                        e.preventDefault();
+                    }
+                })
+                .on('blur.datatable-cell', function(e) {
+                    var newValue = $(this).val();
+                    if(newValue == cell.data('old-value')) {
+                        $this.viewMode(cell)
+                    } 
+                    else {
+                        $this.doCellEditRequest(cell);
+                    }
+                });
+        }        
+    },
+        
+    viewMode: function(cell) {
+        var cellContent = cell.children('div.ui-dt-c'),
+        editableContainer = cellContent.find('span.ui-cell-editor-input'),
+        displayContainer = cellContent.find('span.ui-cell-editor-output'),
+        input = editableContainer.find(':input:first');
+        
+        cell.removeClass('ui-cell-editing ui-state-error ui-state-highlight');
+        editableContainer.hide();
+        displayContainer.text(input.val()).show();
+    },
+                            
     doCellEditRequest: function(cell) {
         var rowMeta = this.getRowMeta(cell.parents('tr.ui-widget-content:first')),
-        cellEditor = cell.children('.ui-cell-editor'),
+        cellContent = cell.children('div.ui-dt-c'),
+        cellEditor = cellContent.children('.ui-cell-editor'),
         cellEditorId = cellEditor.attr('id'),
-        cellIndex = cell.parents('td:first').index(),
-        cellInfo = rowMeta.index + ',' + cellIndex;
+        cellIndex = cell.index(),
+        cellInfo = rowMeta.index + ',' + cellIndex,
+        $this = this;
 
         var options = {
             source: this.id,
             process: this.id,
-            params: [{name: this.id + '_cellInfo', value: cellInfo},
-                    {name: cellEditorId, value: cellEditorId}]
-            ,oncomplete: function(xhr, status, args) {
-                var editableContainer = cell.find('span.ui-cell-editor-input'),
-                displayContainer = cell.find('span.ui-cell-editor-output'),
-                input = editableContainer.find(':input:first'),
-                cellParent = cell.parent();
-                            
+            params: [
+                        {name: this.id + '_cellInfo', value: cellInfo},
+                        {name: cellEditorId, value: cellEditorId}
+                    ]
+            ,oncomplete: function(xhr, status, args) {                            
                 if(args.validationFailed) {
-                    cellParent.addClass('ui-state-error');
+                    cell.addClass('ui-state-error');
                 }
                 else {
-                    cell.removeClass('ui-cell-editing');
-                    cellParent.removeClass('ui-state-error ui-state-highlight');
-                    editableContainer.hide();
-                    displayContainer.text(input.val()).show();
+                    $this.viewMode(cell);
+                    cell.removeData('old-value');
                 }
             }
         };
