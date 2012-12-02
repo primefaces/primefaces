@@ -1332,8 +1332,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         row.addClass('ui-state-highlight ui-datatable-editing-row').children('td.ui-editable-column').each(function() {
             var column = $(this);
 
-            column.find('span.ui-cell-editor-output').hide();
-            column.find('span.ui-cell-editor-input').show();
+            column.find('.ui-cell-editor-output').hide();
+            column.find('.ui-cell-editor-input').show();
 
             if(element.hasClass('ui-icon-pencil')) {
                 element.hide().siblings().show();
@@ -1369,8 +1369,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
                 
         var cellContent = cell.children('div.ui-dt-c'),
-        displayContainer = cellContent.find('span.ui-cell-editor-output'),
-        inputContainer = cellContent.find('span.ui-cell-editor-input'),
+        displayContainer = cellContent.find('div.ui-cell-editor-output'),
+        inputContainer = cellContent.find('div.ui-cell-editor-input'),
         input = inputContainer.find(':input:enabled');
                                         
         cell.addClass('ui-state-highlight ui-cell-editing');
@@ -1379,7 +1379,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         input.focus().select();
         
         //metadata
-        cell.removeData('changed').data('old-value', input.val());
+        cell.data('old-value', input.val());
         
         //bind events on demand
         if(!cell.data('edit-events-bound')) {
@@ -1395,15 +1395,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                         e.preventDefault();
                     }
-                    else if(key === keyCode.TAB) {
-                        $this.viewMode(cell);
-                        
+                    else if(key === keyCode.TAB) {                        
                         var tabCell = shiftKey ? cell.prev() : cell.next();
                         if(tabCell.length == 0) {
                             var tabRow = shiftKey ? cell.parent().prev() : cell.parent().next(),
                             tabCell = shiftKey ? tabRow.children('td.ui-editable-column:last') : tabRow.children('td.ui-editable-column:first');
                         }
-                        
+
                         $this.showCellEditor(tabCell);
                         
                         e.preventDefault();
@@ -1411,8 +1409,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 })
                 .on('blur.datatable-cell', function(e) {
                     var newValue = $(this).val();
+
                     if(newValue == cell.data('old-value')) {
-                        $this.viewMode(cell)
+                        $this.viewMode(cell);
                     } 
                     else {
                         $this.doCellEditRequest(cell);
@@ -1423,15 +1422,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         
     viewMode: function(cell) {
         var cellContent = cell.children('div.ui-dt-c'),
-        editableContainer = cellContent.find('span.ui-cell-editor-input'),
-        displayContainer = cellContent.find('span.ui-cell-editor-output'),
+        editableContainer = cellContent.find('div.ui-cell-editor-input'),
+        displayContainer = cellContent.find('div.ui-cell-editor-output'),
         input = editableContainer.find(':input:first');
         
         cell.removeClass('ui-cell-editing ui-state-error ui-state-highlight');
         editableContainer.hide();
         displayContainer.text(input.val()).show();
+        cell.removeData('old-value');
     },
-                            
+    
     doCellEditRequest: function(cell) {
         var rowMeta = this.getRowMeta(cell.parents('tr.ui-widget-content:first')),
         cellContent = cell.children('div.ui-dt-c'),
@@ -1454,7 +1454,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 }
                 else {
                     $this.viewMode(cell);
-                    cell.removeData('old-value');
                 }
             }
         };
@@ -1547,12 +1546,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         else {
             PrimeFaces.ajax.AjaxRequest(options); 
         }
-    }
+    },
 
     /**
      * Returns the paginator instance if any defined
      */
-    ,
     getPaginator: function() {
         return this.paginator;
     },
@@ -1573,8 +1571,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Clears the selection state
-                 */
+     * Clears the selection state
+     */
     clearSelection: function() {
         this.selection = [];
 
@@ -1582,15 +1580,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Returns true|false if selection is enabled|disabled
-                 */
+     * Returns true|false if selection is enabled|disabled
+     */
     isSelectionEnabled: function() {
         return this.cfg.selectionMode != undefined || this.cfg.columnSelectionMode != undefined;
     },
             
     /**
-                 * Clears table filters
-                 */
+     * Clears table filters
+     */
     clearFilters: function() {
         $(this.jqId + ' thead th .ui-column-filter').val('');
         
