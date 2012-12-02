@@ -1367,31 +1367,50 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         else {
             cell = this.contextMenuCell;
         }
+        
+        if(this.currentCell) {
+            $this.saveCell(this.currentCell);
+        }
+        
+        this.currentCell = cell;
                 
         var cellContent = cell.children('div.ui-dt-c'),
         displayContainer = cellContent.find('div.ui-cell-editor-output'),
         inputContainer = cellContent.find('div.ui-cell-editor-input'),
-        input = inputContainer.find(':input:enabled');
+        inputs = inputContainer.find(':input:enabled'),
+        multi = inputs.length > 1;
                                         
         cell.addClass('ui-state-highlight ui-cell-editing');
         displayContainer.hide();
         inputContainer.show();
-        input.focus().select();
+        inputs.eq(0).focus().select();
         
         //metadata
-        cell.data('old-value', input.val());
+        if(multi) {
+            var oldValues = [];
+            for(var i = 0; i < inputs.length; i++) {
+                oldValues.push(inputs.eq(i).val());
+            }
+            
+            cell.data('multi-edit', true);
+            cell.data('old-value', oldValues);
+        } 
+        else {
+            cell.data('multi-edit', false);
+            cell.data('old-value', inputs.eq(0).val());
+        }
         
         //bind events on demand
         if(!cell.data('edit-events-bound')) {
             cell.data('edit-events-bound', true);
             
-            input.on('keydown.datatable-cell', function(e) {
+            inputs.on('keydown.datatable-cell', function(e) {
                     var keyCode = $.ui.keyCode,
                     shiftKey = e.shiftKey,
                     key = e.which;
 
                     if(key === keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
-                        $(this).get(0).blur();
+                        $this.saveCell(cell);
 
                         e.preventDefault();
                     }
@@ -1406,18 +1425,36 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         
                         e.preventDefault();
                     }
-                })
-                .on('blur.datatable-cell', function(e) {
-                    var newValue = $(this).val();
-
-                    if(newValue == cell.data('old-value')) {
-                        $this.viewMode(cell);
-                    } 
-                    else {
-                        $this.doCellEditRequest(cell);
-                    }
                 });
         }        
+    },
+    
+    saveCell: function(cell) {
+        var inputs = cell.find('div.ui-cell-editor-input :input:enabled'),
+        changed = false,
+        $this = this;
+        
+        if(cell.data('multi-edit')) {
+            var oldValues = cell.data('old-value');
+            for(var i = 0; i < inputs.length; i++) {
+                if(inputs.eq(i).val() != oldValues[i]) {
+                    changed = true;
+                    break;
+                }
+            }
+        } 
+        else {
+            changed = (inputs.eq(0).val() != cell.data('old-value'));
+        }
+        
+        if(changed) {
+            $this.doCellEditRequest(cell);
+        } 
+        else {
+            $this.viewMode(cell);
+        }
+        
+        this.currentCell = null;
     },
         
     viewMode: function(cell) {
@@ -1429,7 +1466,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         cell.removeClass('ui-cell-editing ui-state-error ui-state-highlight');
         editableContainer.hide();
         displayContainer.text(input.val()).show();
-        cell.removeData('old-value');
+        cell.removeData('old-value').removeData('multi-edit');
     },
     
     doCellEditRequest: function(cell) {
