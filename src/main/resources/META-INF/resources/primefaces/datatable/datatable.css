@@ -197,7 +197,7 @@
     display:none;
 }
 .ui-datatable .ui-datatable-editingrow .ui-cell-editor .ui-cell-editor-input {
-    display:inline;
+    display:block;
 }
 
 .ui-datatable .ui-row-editor .ui-icon-pencil {
