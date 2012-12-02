@@ -1398,7 +1398,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     else if(key === keyCode.TAB) {                        
                         var tabCell = shiftKey ? cell.prev() : cell.next();
                         if(tabCell.length == 0) {
-                            var tabRow = shiftKey ? cell.parent().prev() : cell.parent().next(),
+                            var tabRow = shiftKey ? cell.parent().prev() : cell.parent().next();
                             tabCell = shiftKey ? tabRow.children('td.ui-editable-column:last') : tabRow.children('td.ui-editable-column:first');
                         }
 
