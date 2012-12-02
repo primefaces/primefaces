@@ -15,7 +15,10 @@
  */
 package org.primefaces.event;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -82,14 +85,31 @@ public class CellEditEvent extends AjaxBehaviorEvent {
     private Object resolveValue() {
         DataTable data = (DataTable) source;
         data.setRowModel(rowIndex);
+        Object value = null;
         
         for(UIComponent child : column.getChildren()) {
             if(child instanceof CellEditor) {
-                ValueHolder input = (ValueHolder) child.getFacet("input");
-                return input.getValue();
+                UIComponent inputFacet = child.getFacet("input");
+                
+                //multiple
+                if(inputFacet instanceof UIPanel) {
+                    List<Object> values = new ArrayList<Object>();
+                    for(UIComponent kid : inputFacet.getChildren()) {
+                        if(kid instanceof ValueHolder) {
+                            values.add(((ValueHolder) kid).getValue());
+                        }
+                    }
+                    
+                    value = values;
+                } 
+                //single
+                else {
+                    value = ((ValueHolder) inputFacet).getValue();
+                }
+                
             }
         }
         
-        return null;
+        return value;
     }
 }
