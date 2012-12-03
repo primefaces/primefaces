@@ -1295,6 +1295,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     bindEditEvents: function() {
         var $this = this;
         this.cfg.cellEditEvent = this.cfg.cellEditEvent||'click';
+        this.cfg.cellSeparator = this.cfg.cellSeparator||' ';
         
         if(this.cfg.editMode === 'row') {
             var rowEditors = $(this.jqId + ' tbody.ui-datatable-data > tr > td span.ui-row-editor');
@@ -1461,11 +1462,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var cellContent = cell.children('div.ui-dt-c'),
         editableContainer = cellContent.find('div.ui-cell-editor-input'),
         displayContainer = cellContent.find('div.ui-cell-editor-output'),
-        input = editableContainer.find(':input:first');
+        inputs = editableContainer.find(':input:enabled');
+        
+        if(cell.data('multi-edit')) {
+            displayContainer.text(cell.data('old-value').join(this.cfg.cellSeparator)).show();
+        } 
+        else {
+            displayContainer.text(inputs.eq(0).val()).show();
+        }
         
         cell.removeClass('ui-cell-editing ui-state-error ui-state-highlight');
         editableContainer.hide();
-        displayContainer.text(input.val()).show();
         cell.removeData('old-value').removeData('multi-edit');
     },
     
@@ -1730,8 +1737,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Adds given rowIndex to selection if it doesn't exist already
-                 */
+     * Adds given rowIndex to selection if it doesn't exist already
+     */
     addSelection: function(rowIndex) {
         if(!this.isSelected(rowIndex)) {
             this.selection.push(rowIndex);
@@ -1739,8 +1746,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Finds if given rowIndex is in selection
-                 */
+     * Finds if given rowIndex is in selection
+     */
     isSelected: function(rowIndex) {
         return PrimeFaces.inArray(this.selection, rowIndex);
     },
@@ -1760,7 +1767,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         
         this.dragIndicatorTop = $('<div id="' + this.id + '_dnd_top" class="ui-column-dnd-top"><span class="ui-icon ui-icon-arrowthick-1-s" /></div>').appendTo(document.body);
         this.dragIndicatorBottom = $('<div id="' + this.id + '_dnd_bottom" class="ui-column-dnd-bottom"><span class="ui-icon ui-icon-arrowthick-1-n" /></div>').appendTo(document.body);
-
 
         var _self = this;
 
@@ -1823,16 +1829,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }
 
         }).droppable({
-            hoverClass:'ui-state-highlight'
-            ,
-            tolerance:'pointer'
-            ,
+            hoverClass:'ui-state-highlight',
+            tolerance:'pointer',
             over: function(event, ui) {
                 ui.helper.data('droppable-column', $(this));
-            }
-            ,
+            },
             drop: function(event, ui) {
-                
                 var draggedColumn = ui.draggable,
                 dropLocation = ui.helper.data('drop-location'),
                 droppedColumn =  $(this);
@@ -1884,8 +1886,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Returns if there is any data displayed
-                 */
+     * Returns if there is any data displayed
+     */
     isEmpty: function() {
         return this.tbody.children('tr.ui-datatable-empty-message').length == 1;
     },

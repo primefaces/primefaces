@@ -124,7 +124,8 @@ public class DataTableRenderer extends DataRenderer {
         //Editing
         if(table.isEditable()) {
             wb.attr("editable", true).attr("editMode", table.getEditMode())
-                .attr("cellEditEvent", table.getCellEditEvent(), null);
+                .attr("cellEditEvent", table.getCellEditEvent(), null)
+                .attr("cellSeparator", table.getCellSeparator(), null);
         }
         
         //MultiColumn Sorting
