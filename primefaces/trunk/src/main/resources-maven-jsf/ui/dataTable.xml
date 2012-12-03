@@ -275,6 +275,12 @@
 			<type>java.lang.String</type>
             <description>Defines cell edit event, such as "click" (default), "dblclick".</description>
 		</attribute>
+        <attribute>
+			<name>cellSeparator</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Separator text to use in output mode of editable cells with multiple components.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
