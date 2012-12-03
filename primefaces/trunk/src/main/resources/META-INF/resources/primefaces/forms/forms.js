@@ -1473,7 +1473,7 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.buttons = this.jq.children('div:not(:disabled)');
+        this.buttons = this.jq.children('div:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':checkbox:not(:disabled)');
         var _self = this;
 
@@ -1522,7 +1522,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.buttons = this.jq.children('div:not(:disabled)');
+        this.buttons = this.jq.children('div:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':radio:not(:disabled)');
 
         this.bindEvents();
