@@ -65,7 +65,6 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
     }
     
     protected void encodeSelectItems(FacesContext context, SelectManyButton button) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, button);
         Converter converter = button.getConverter();
         Object values = getValues(button);
@@ -116,7 +115,6 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         //button
         writer.startElement("div", null);
 		writer.writeAttribute("class", buttonStyle, null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
               
         //input

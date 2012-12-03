@@ -103,7 +103,6 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         //button
         writer.startElement("div", null);
 		writer.writeAttribute("class", buttonStyle, null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
               
         //input
