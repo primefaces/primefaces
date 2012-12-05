@@ -1643,7 +1643,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Add resize behavior to columns
      */
     setupResizableColumns: function() {
-        //Add resizers and resizer helper
+        //Add resizers and resizer helper        
         $(this.jqId + ' thead tr th.ui-resizable-column div.ui-dt-c').prepend('<span class="ui-column-resizer">&nbsp;</span>');
         $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
 
@@ -1677,6 +1677,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             stop: function(event, ui) {
                 var columnHeaderWrapper = ui.helper.parent(),
                 columnHeader = columnHeaderWrapper.parent(),
+                minWidth = columnHeaderWrapper.data('minwidth'),
+                maxWidth = columnHeaderWrapper.data('maxwidth'),
                 oldPos = ui.originalPosition.left,
                 newPos = ui.position.left,
                 change = (newPos - oldPos),
@@ -1684,6 +1686,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 ui.helper.css('left','');
                 resizerHelper.hide();
+                
+                if(minWidth && newWidth < minWidth) {
+                    newWidth = minWidth;
+                } else if(maxWidth && newWidth > maxWidth) {
+                    newWidth = maxWidth;
+                }
 
                 columnHeaderWrapper.width(newWidth);
                 columnHeader.css('width', '');
