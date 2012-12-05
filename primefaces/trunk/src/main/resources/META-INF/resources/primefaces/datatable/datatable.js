@@ -1576,7 +1576,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         ];
 
         if(action === 'save') {
-            row.find('span.ui-cell-editor').each(function() {
+            row.find('div.ui-cell-editor').each(function() {
                 options.params.push({name: this.id, value: this.id});
             });
         }
