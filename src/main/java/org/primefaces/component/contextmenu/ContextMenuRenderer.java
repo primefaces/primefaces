@@ -54,8 +54,6 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         startScript(writer, clientId);
         writer.write(wb.build());
         endScript(writer);
-		
-		endScript(writer);
 	}
 	
     @Override
