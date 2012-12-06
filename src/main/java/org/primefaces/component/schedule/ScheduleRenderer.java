@@ -125,8 +125,8 @@ public class ScheduleRenderer extends CoreRenderer {
 		}
         
         if(schedule.isShowHeader()) {
-            wb.attr("header", "{")
-                .append("left:'").append(schedule.getLeftHeaderTemplate()).append("'")
+            wb.append(",header:{left:'")
+                .append(schedule.getLeftHeaderTemplate()).append("'")
                 .attr("center", schedule.getCenterHeaderTemplate())
                 .attr("right", schedule.getRightHeaderTemplate())
                 .append("}");
@@ -140,7 +140,7 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("firstHour", schedule.getFirstHour(), 6)
             .attr("minTime", schedule.getMinTime(), null)
             .attr("maxTime", schedule.getMaxTime(), null)
-            .attr("aspectRatio", schedule.getAspectRatio(), Double.MAX_VALUE)
+            .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
             .attr("weekends", schedule.isShowWeekends(), true)
             .attr("disableDragging", schedule.isDraggable(), true)
             .attr("disableResizing", schedule.isResizable(), true)
