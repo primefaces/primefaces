@@ -281,6 +281,12 @@
 			<type>java.lang.String</type>
             <description>Separator text to use in output mode of editable cells with multiple components.</description>
 		</attribute>
+        <attribute>
+			<name>summary</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Summary attribute for WCAG.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
