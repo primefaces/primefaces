@@ -16,6 +16,7 @@
 package org.primefaces.component.outputlabel;
 
 import java.io.IOException;
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -46,8 +47,12 @@ public class OutputLabelRenderer extends CoreRenderer {
             if(target instanceof UIInput) {
                 input = (UIInput) target;
                 
-                if(input.getAttributes().get("label") == null) {
-                    input.getAttributes().put("label", value);
+                if(input.getAttributes().get("label") == null || input.getValueExpression("label") == null) {
+                    ValueExpression ve = label.getValueExpression("value");
+                    if(ve != null)
+                        input.setValueExpression("label", ve);
+                    else
+                        input.getAttributes().put("label", value);
                 }
                 
                 if(!input.isValid()) {
