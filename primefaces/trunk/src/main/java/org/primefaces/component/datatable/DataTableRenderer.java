@@ -208,6 +208,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("role", "grid", null);
         if(table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
         if(table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
+        if(table.getSummary() != null) writer.writeAttribute("summary", table.getSummary(), null);
         
         encodeThead(context, table);
         encodeTFoot(context, table);
