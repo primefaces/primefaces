@@ -42,8 +42,8 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
             public void onComplete(Broadcaster b) {
                 for (PushContextListener p: listeners) {
                     p.onComplete(channel, t);
-                    b.removeBroadcasterListener(this);
                 }
+                b.removeBroadcasterListener(this);
             }
 
             public void onPreDestroy(Broadcaster broadcaster) {
