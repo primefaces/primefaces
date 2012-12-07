@@ -2,7 +2,6 @@
     overflow: hidden; 
     visibility: hidden; 
     position: relative;
-    padding: 1px;
 }
 
 .ui-galleria-panel-wrapper {
@@ -59,4 +58,13 @@
 
 .ui-galleria-nav-next {
     right: 5px;
+}
+
+.ui-galleria-caption {
+    position: absolute;
+    left:1px;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+    color: #FFFFFF;
+    padding: 0.2em 1em;
 }

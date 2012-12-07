@@ -13,7 +13,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.autoPlay = (this.cfg.autoPlay === false) ? false : true;
         this.cfg.transitionInterval = this.cfg.transitionInterval||4000;
         this.cfg.effect = this.cfg.effect||'fade';
-        this.cfg.effectSpeed = this.cfg.effectSpeed||500;
+        this.cfg.effectSpeed = this.cfg.effectSpeed||250;
 
         this.panelWrapper = this.jq.children('div.ui-galleria-panel-wrapper');
         this.panels = this.panelWrapper.children('div.ui-galleria-panel');
@@ -65,6 +65,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
     },
                 
     renderStrip: function() {
+        //strip
         var frameStyle = 'style="width:' + this.cfg.frameWidth + "px;height:" + this.cfg.frameHeight + 'px;"';
                     
         this.stripWrapper = $('<div class="ui-galleria-filmstrip-wrapper"></div>')
@@ -90,6 +91,12 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         //navigators
         this.jq.append('<div class="ui-galleria-nav-prev ui-icon ui-icon-circle-triangle-w" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>' + 
             '<div class="ui-galleria-nav-next ui-icon ui-icon-circle-triangle-e" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>');
+        
+        //caption
+        this.caption = $('<div class="ui-galleria-caption"></div>').css({
+            'bottom': this.stripWrapper.outerHeight(true),
+            'width': this.panelWrapper.width()
+            }).appendTo(this.jq);
     },
                 
     bindEvents: function() {
@@ -100,7 +107,9 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
                 $this.stopSlideshow();
             }
             
-            $this.prev();
+            if(!$this.isAnimating()) {
+                $this.prev();
+            }
         });
                     
         this.jq.children('div.ui-galleria-nav-next').on('click.galleria', function() {
@@ -108,7 +117,9 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
                 $this.stopSlideshow();
             }
             
-            $this.next();
+            if(!$this.isAnimating()) {
+                $this.next();
+            }
         });
                     
         this.strip.children('li.ui-galleria-frame').on('click.galleria', function() {
@@ -140,49 +151,40 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         return this.slideshowActive;
     },
                 
-    select: function(index, reposition) {
+    select: function(index) {
         if(index !== this.cfg.activeIndex) {
+            this.caption.slideUp('fast');
+            
             var oldPanel = this.panels.eq(this.cfg.activeIndex),
             oldFrame = this.frames.eq(this.cfg.activeIndex),
             newPanel = this.panels.eq(index),
-            newFrame = this.frames.eq(index),
-            stepFactor = this.cfg.frameWidth + 5;
+            newFrame = this.frames.eq(index);
 
             //content
             oldPanel.hide(this.cfg.effect, null, this.cfg.effectSpeed);
             newPanel.show(this.cfg.effect, null, this.cfg.effectSpeed);
 
             //frame
-            oldFrame.removeClass('ui-galleria-frame-active');
-            newFrame.addClass('ui-galleria-frame-active');
+            oldFrame.removeClass('ui-galleria-frame-active').css('opacity', '');
+            newFrame.animate({opacity:1.0}, this.cfg.effectSpeed, null, function() {
+               $(this).addClass('ui-galleria-frame-active'); 
+            });
+            
+            //caption
+            var image = newPanel.children('img');
+            this.caption.html('<h4>' + image.attr('title') + '</h4><p>' + image.attr('alt') + '</p>').slideDown('fast');
                         
-            //position
-            if(reposition) {
-                var frameLeft = newFrame.position().left,
-                stripLeft = this.strip.position().left,
-                frameViewportLeft = frameLeft + stripLeft,
-                viewportMid = (this.stripWrapper.width() / 2);
+            //viewport
+            var frameLeft = newFrame.position().left,
+            stepFactor = this.cfg.frameWidth + parseInt(newFrame.css('margin-right')),
+            stripLeft = this.strip.position().left,
+            frameViewportLeft = frameLeft + stripLeft,
+            frameViewportRight = frameViewportLeft + this.cfg.frameWidth;
 
-                if(frameViewportLeft > viewportMid) {
-                    var lastFrame = this.frames.eq(this.frames.length - 1),
-                    lastFrameViewportLeft = lastFrame.position().left + stripLeft;
-
-                    if(lastFrameViewportLeft > this.stripWrapper.width()) {
-                        this.strip.animate({
-                            left: '-=' + stepFactor
-                        }, 500, 'easeInOutCirc');
-                    }                             
-                }
-                else if((frameViewportLeft + newFrame.width()) < viewportMid) {
-                    var firstFrame = this.frames.eq(0),
-                    firstFrameViewportLeft = firstFrame.position().left + stripLeft;
-
-                    if(firstFrameViewportLeft != 0) {
-                        this.strip.animate({
-                            left: '+=' + stepFactor
-                        }, 500, 'easeInOutCirc');
-                    }
-                }
+            if(frameViewportRight > this.stripWrapper.width()) {
+                this.strip.animate({left: '-=' + stepFactor}, this.cfg.effectSpeed, 'easeInOutCirc');
+            } else if(frameViewportLeft < 0) {
+                this.strip.animate({left: '+=' + stepFactor}, this.cfg.effectSpeed, 'easeInOutCirc');
             }
             
             this.cfg.activeIndex = index;
@@ -190,26 +192,19 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
     },
                 
     prev: function() {
-        var activeIndex = this.cfg.activeIndex;
-        if(activeIndex != 0) {
-            this.select(activeIndex - 1, true);
+        if(this.cfg.activeIndex != 0) {
+            this.select(this.cfg.activeIndex - 1, true);
         }
     },
                 
     next: function() {
-        var activeIndex = this.cfg.activeIndex,
-        $this = this;
-                    
-        if(activeIndex === (this.panels.length - 1)) {
-            this.strip.animate({
-                left: 0
-            }, 250, 'easeInOutCirc', function() {
-                $this.select(0, true);
-            });
-        } 
-        else {
-            this.select(activeIndex + 1, true);
+        if(this.cfg.activeIndex !== (this.panels.length - 1)) {
+            this.select(this.cfg.activeIndex + 1, true);
         }
+    },
+    
+    isAnimating: function() {
+        return this.strip.is(':animated');
     }
     
 });
