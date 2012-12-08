@@ -41,7 +41,8 @@ public class GalleriaRenderer extends CoreRenderer {
         String var = galleria.getVar();
         String style = galleria.getStyle();
         String styleClass = galleria.getStyleClass();
-        styleClass = (styleClass == null) ? Galleria.CONTAINER_CLASS : Galleria.CONTAINER_CLASS + " " + styleClass; 
+        styleClass = (styleClass == null) ? Galleria.CONTAINER_CLASS : Galleria.CONTAINER_CLASS + " " + styleClass;
+        UIComponent content = galleria.getFacet("content");
         
         writer.startElement("div", component);
         writer.writeAttribute("id", galleria.getClientId(context), "id");
@@ -59,6 +60,14 @@ public class GalleriaRenderer extends CoreRenderer {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                     child.encodeAll(context);
+                    
+                    if(content != null) {
+                        writer.startElement("div", null);
+                        writer.writeAttribute("class", Galleria.PANEL_CONTENT_CLASS, null);
+                        content.encodeAll(context);
+                        writer.endElement("div");
+                    }
+                    
                     writer.endElement("div");
                 }
             }
@@ -73,6 +82,14 @@ public class GalleriaRenderer extends CoreRenderer {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                     renderChildren(context, galleria);
+                    
+                    if(content != null) {
+                        writer.startElement("div", null);
+                        writer.writeAttribute("class", Galleria.PANEL_CONTENT_CLASS, null);
+                        content.encodeAll(context);
+                        writer.endElement("div");
+                    }
+                    
                     writer.endElement("div");
                 }
             }
@@ -98,7 +115,11 @@ public class GalleriaRenderer extends CoreRenderer {
                 .attr("autoPlay", galleria.isAutoPlay(), true)
                 .attr("transitionInterval", galleria.getTransitionInterval(), 4000)
                 .attr("effect", galleria.getEffect(), "fade")
-                .attr("effectSpeed", galleria.getEffectSpeed(), 500);
+                .attr("effectSpeed", galleria.getEffectSpeed(), 500)
+                .attr("showCaption", galleria.isShowCaption(), false)
+                .attr("panelWidth", galleria.getPanelWidth(), Integer.MIN_VALUE)
+                .attr("panelHeight", galleria.getPanelHeight(), Integer.MIN_VALUE)
+                .attr("custom", (galleria.getFacet("content") != null));
 
         startScript(writer, clientId);
         writer.write("$(window).load(function(){");
