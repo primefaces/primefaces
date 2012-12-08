@@ -6,6 +6,8 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
+        this.cfg.panelWidth = this.cfg.panelWidth||600;
+        this.cfg.panelHeight = this.cfg.panelHeight||400;
         this.cfg.frameWidth = this.cfg.frameWidth||60;
         this.cfg.frameHeight = this.cfg.frameHeight||40;
         this.cfg.activeIndex = 0;
@@ -17,7 +19,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
 
         this.panelWrapper = this.jq.children('div.ui-galleria-panel-wrapper');
         this.panels = this.panelWrapper.children('div.ui-galleria-panel');
-
+        
         var $this = this;
         if(this.jq.is(':not(:visible)')) {
             var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
@@ -37,18 +39,19 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
     render: function() {
         if(this.jq.is(':visible')) {
             var activePanel = this.panels.eq(this.cfg.activeIndex);
-            activePanel.removeClass('ui-helper-hidden'); 
-
-            var activePanelImg = activePanel.children('img'),
-            imageW = activePanelImg.width(),
-            imageH = activePanelImg.height();
-
-            this.panelWrapper.width(imageW).height(imageH);
-            this.jq.width(imageW);
+            activePanel.removeClass('ui-helper-hidden');
+            
+            this.panelWrapper.width(this.cfg.panelWidth).height(this.cfg.panelHeight);
+            this.panels.width(this.cfg.panelWidth).height(this.cfg.panelHeight);
+            this.jq.width(this.cfg.panelWidth);
 
             if(this.cfg.showFilmstrip) {
                 this.renderStrip();
                 this.bindEvents();
+            }
+            
+            if(this.cfg.custom) {
+                this.panels.children('img').remove();
             }
 
             this.jq.css('visibility', 'visible');
@@ -93,10 +96,12 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             '<div class="ui-galleria-nav-next ui-icon ui-icon-circle-triangle-e" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>');
         
         //caption
-        this.caption = $('<div class="ui-galleria-caption"></div>').css({
-            'bottom': this.stripWrapper.outerHeight(true),
-            'width': this.panelWrapper.width()
-            }).appendTo(this.jq);
+        if(this.cfg.showCaption) {
+            this.caption = $('<div class="ui-galleria-caption"></div>').css({
+                'bottom': this.stripWrapper.outerHeight(true),
+                'width': this.panelWrapper.width()
+                }).appendTo(this.jq);
+        }
     },
                 
     bindEvents: function() {
@@ -153,7 +158,9 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
                 
     select: function(index) {
         if(index !== this.cfg.activeIndex) {
-            this.caption.slideUp('fast');
+            if(this.cfg.showCaption) {
+                this.caption.slideUp('fast');
+            }
             
             var oldPanel = this.panels.eq(this.cfg.activeIndex),
             oldFrame = this.frames.eq(this.cfg.activeIndex),
@@ -171,9 +178,11 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             });
             
             //caption
-            var image = newPanel.children('img');
-            this.caption.html('<h4>' + image.attr('title') + '</h4><p>' + image.attr('alt') + '</p>').slideDown('fast');
-                        
+            if(this.cfg.showCaption) {
+                var image = newPanel.children('img');
+                this.caption.html('<h4>' + image.attr('title') + '</h4><p>' + image.attr('alt') + '</p>').slideDown('fast');
+            }
+            
             //viewport
             var frameLeft = newFrame.position().left,
             stepFactor = this.cfg.frameWidth + parseInt(newFrame.css('margin-right')),

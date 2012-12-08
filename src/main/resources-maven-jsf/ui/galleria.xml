@@ -94,6 +94,27 @@
             <defaultValue>4000</defaultValue>
             <description>Time in milliseconds between each slide in autoPlay mode.</description>
 		</attribute>
+        <attribute>
+            <name>panelWidth</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Width of the content panel.</description>
+        </attribute>
+        <attribute>
+            <name>panelHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Height of the content panel.</description>
+        </attribute>
+        <attribute>
+            <name>showCaption</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Displays information retrieved from title and alt attributes of images in content caption.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
