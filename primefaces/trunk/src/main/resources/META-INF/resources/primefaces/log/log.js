@@ -15,7 +15,10 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
 
         //make draggable
         this.jq.draggable({handle:this.header});
-        this.header.mousedown(function(e) {
+        
+        //z-index
+        this.jq.zIndex(++PrimeFaces.zindex);
+        this.header.mousedown(function() {
             _self.jq.zIndex(++PrimeFaces.zindex);
         });
 
