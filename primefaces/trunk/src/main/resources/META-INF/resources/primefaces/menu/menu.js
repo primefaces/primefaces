@@ -788,6 +788,10 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         if((top + height ) > (win.height() + win.scrollTop())) {
             top = top - height;
         }
+        
+        if(this.cfg.beforeShow) {
+            this.cfg.beforeShow.call(this);
+        }
 
         this.jq.css({
             'left': left,
@@ -811,6 +815,10 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     
     isVisible: function() {
         return this.jq.is(':visible');
+    },
+    
+    getTarget: function() {
+        return this.jqTarget;
     }
 
 });

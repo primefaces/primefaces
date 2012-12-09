@@ -57,6 +57,12 @@
 			<type>java.lang.String</type>
             <description>Event to bind the contextmenu default is right click.</description>
 		</attribute>
+        <attribute>
+			<name>beforeShow</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute before context menu is shown.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
