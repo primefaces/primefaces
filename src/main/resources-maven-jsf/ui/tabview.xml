@@ -11,7 +11,7 @@
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.TabViewRenderer</rendererType>
     <rendererClass>org.primefaces.component.tabview.TabViewRenderer</rendererClass>
-    <parent>javax.faces.component.UIData</parent>
+	<parent>org.primefaces.component.api.UIData</parent>
     <description>TabView is a tabbed panel component featuring client side tabs, dynamic content loading with ajax and content transition effects.</description>
      <interfaces>
 		<interface>

@@ -11,7 +11,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.AccordionPanelRenderer</rendererType>
 	<rendererClass>org.primefaces.component.accordionpanel.AccordionPanelRenderer</rendererClass>
-	<parent>javax.faces.component.UIData</parent>
+	<parent>org.primefaces.component.api.UIData</parent>
     <description>
       AccordionPanel is a container component that displays content in stacked format.
     </description>
