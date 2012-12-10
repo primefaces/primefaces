@@ -45,5 +45,5 @@ public class EffectBuilderTest {
 													.build();
 		
 		assertEquals("$(PrimeFaces.escapeClientId('id')).effect('highlight',{startcolor:'#FFFFFF',endcolor:'#CCCCCC',restorecolor:'#000000'},1000);", effect);
-	}	
+	}
 }
