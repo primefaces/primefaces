@@ -35,21 +35,10 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
 
     public <T> Future<T> push(final String channel, final T t) {
         String data = toJSON(t);
-        final Future<?> f = broadcaster.addBroadcasterListener(new BroadcasterListener() {
-            public void onPostCreate(Broadcaster broadcaster) {
-            }
+        final BroadcasterListener l = new PushContextMetaListener(listeners, channel, t);
+        final Future<?> f = broadcaster.addBroadcasterListener(l).broadcastTo(channel, data);
 
-            public void onComplete(Broadcaster b) {
-                for (PushContextListener p: listeners) {
-                    p.onComplete(channel, t);
-                }
-                b.removeBroadcasterListener(this);
-            }
-
-            public void onPreDestroy(Broadcaster broadcaster) {
-            }
-        }).broadcastTo(channel, data);
-
+        finalizePush(f, l);
         return new WrappedFuture(f, t);
     }
 
@@ -59,44 +48,26 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
             data = toJSON(t);
         }
 
-        final AtomicBoolean completed = new AtomicBoolean();
-        final Future<List<Broadcaster>> f = broadcaster.addBroadcasterListener(new BroadcasterListener() {
-            public void onPostCreate(Broadcaster broadcaster) {
-            }
+        final BroadcasterListener l = new PushContextMetaListener(listeners, channel, t);
+        final Future<List<Broadcaster>> f = broadcaster.addBroadcasterListener(l).scheduleTo(channel, data, time, unit);
 
-            public void onComplete(Broadcaster b) {
-                completed.set(true);
-                for (PushContextListener p: listeners) {
-                    p.onComplete(channel, t);
-                }
-                b.removeBroadcasterListener(this);
-            }
-
-            public void onPreDestroy(Broadcaster broadcaster) {
-            }
-        }).scheduleTo(channel, data, time, unit);
-
+        finalizePush(f, l);
         return new WrappedFuture(f, t);
     }
 
     public <T> Future<T> delay(final String channel, final T t, int time, TimeUnit unit) {
         String data = toJSON(t);
-        final Future<?> f = broadcaster.addBroadcasterListener(new BroadcasterListener() {
-            public void onPostCreate(Broadcaster broadcaster) {
-            }
 
-            public void onComplete(Broadcaster b) {
-                for (PushContextListener p: listeners) {
-                    p.onComplete(channel, t);
-                }
-                broadcaster.removeBroadcasterListener(this);
-            }
-
-            public void onPreDestroy(Broadcaster broadcaster) {
-            }
-        }).delayTo(channel, data, time, unit);
-
+        final BroadcasterListener l = new PushContextMetaListener(listeners, channel, t);
+        final Future<?> f = broadcaster.addBroadcasterListener(l).delayTo(channel, data, time, unit);
+        finalizePush(f, l);
         return new WrappedFuture(f, t);
+    }
+
+    private void finalizePush(Future<?> f, BroadcasterListener l) {
+        if (f.isDone()) {
+            broadcaster.removeBroadcasterListener(l);
+        }
     }
 
     public PushContext addListener(PushContextListener p) {
@@ -162,11 +133,6 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
         }
     }
 
-    @Override
-    public void onSuspend(AtmosphereRequest request, AtmosphereResponse response) {
-
-    }
-
     private final static class WrappedFuture<T> implements Future {
 
         private final Future<?> f;
@@ -199,5 +165,31 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
             return t;
         }
     }
+
+    private final static class PushContextMetaListener<T> implements BroadcasterListener {
+        private final ConcurrentLinkedQueue<PushContextListener> listeners;
+        private final String channel;
+        private final T t;
+
+        private PushContextMetaListener(ConcurrentLinkedQueue<PushContextListener> listeners, String channel, T t) {
+            this.listeners = listeners;
+            this.channel = channel;
+            this.t = t;
+        }
+
+        public void onPostCreate(Broadcaster broadcaster) {
+        }
+
+        public void onComplete(Broadcaster b) {
+            for (PushContextListener p: listeners) {
+                p.onComplete(channel, t);
+            }
+            b.removeBroadcasterListener(this);
+        }
+
+        public void onPreDestroy(Broadcaster broadcaster) {
+        }
+    }
+
 
 }
