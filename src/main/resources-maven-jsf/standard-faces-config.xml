@@ -9,6 +9,7 @@
     
     <lifecycle>
         <phase-listener>org.primefaces.lifecycle.RestoreViewPhaseListener</phase-listener>
+        <phase-listener>org.primefaces.lifecycle.RenderResponsePhaseListener</phase-listener>
     </lifecycle>
 
     <application>
@@ -17,11 +18,6 @@
             <source-class>javax.faces.application.Application</source-class>
             <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
             <system-event-listener-class>org.primefaces.webapp.PostConstructApplicationEventListener</system-event-listener-class>
-        </system-event-listener>
-        <system-event-listener>
-            <source-class>javax.faces.component.UIViewRoot</source-class>
-            <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
-            <system-event-listener-class>org.primefaces.webapp.PreRenderViewListener</system-event-listener-class>
         </system-event-listener>
         <system-event-listener>
             <source-class>org.primefaces.component.messages.Messages</source-class>

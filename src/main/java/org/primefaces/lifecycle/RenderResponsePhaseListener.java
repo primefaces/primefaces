@@ -13,22 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.webapp;
+package org.primefaces.lifecycle;
 
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
 import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
-public class PreRenderViewListener implements SystemEventListener {
+public class RenderResponsePhaseListener implements PhaseListener {
 
-    public boolean isListenerForSource(Object source) {
-        return true;
+    public void afterPhase(PhaseEvent event) {
+        
     }
 
-    public void processEvent(SystemEvent event) throws AbortProcessingException {
-        FacesContext.getCurrentInstance().getAttributes().put(Constants.WIDGET_BUILDER_ATTR, new WidgetBuilder());
+    public void beforePhase(PhaseEvent event) {
+        event.getFacesContext().getAttributes().put(Constants.WIDGET_BUILDER_ATTR, new WidgetBuilder());
     }
+
+    public PhaseId getPhaseId() {
+        return PhaseId.RENDER_RESPONSE;
+    }
+    
 }
