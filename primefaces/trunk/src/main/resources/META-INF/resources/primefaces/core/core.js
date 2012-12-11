@@ -150,6 +150,26 @@ PrimeFaces = {
         }
     },
     
+    setCaretToEnd: function(element) {
+        if(element) {
+            element.focus();
+            var length = element.value.length;
+
+            if(length > 0) {
+                if(element.setSelectionRange) {
+                    element.setSelectionRange(0, length);
+                } 
+                else if (element.createTextRange) {
+                  var range = element.createTextRange();
+                  range.collapse(true);
+                  range.moveEnd('character', 1);
+                  range.moveStart('character', 1);
+                  range.select();
+                }
+            }
+        }
+    },
+    
     changeTheme: function(newTheme) {
         if(newTheme && newTheme != '') {
             var themeLink = $('link[href*="javax.faces.resource/theme.css"]'),
@@ -658,6 +678,7 @@ PrimeFaces.ajax.AjaxUtils = {
         $.ajax(xhrOptions)
         .done(function(data, status, xhr) {
             PrimeFaces.debug('Response received succesfully.');
+            this.focusedId = (document.activeElement !== document.body) ? document.activeElement.id : null;
 
             var parsed;
 
@@ -701,6 +722,11 @@ PrimeFaces.ajax.AjaxUtils = {
 
             if(!cfg.async) {
                 PrimeFaces.ajax.Queue.poll();
+            }
+            
+            //restore focus
+            if(document.activeElement === document.body && this.focusedId) {
+                PrimeFaces.setCaretToEnd(document.getElementById(this.focusedId));
             }
         });
     }
