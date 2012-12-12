@@ -40,7 +40,7 @@
 			<required>false</required>
 			<type>java.lang.Double</type>
             <defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
-            <description>Aspect ratio of the cropper area. Default is min integer value.</description>
+            <description>Aspect ratio of the cropper area.</description>
 		</attribute>
         <attribute>
 			<name>minSize</name>
