@@ -101,12 +101,16 @@ import javax.faces.component.visit.VisitResult;
             return;
         }
 
-        //only process loaded tabs on dynamic case
         if(isDynamic()) {
-            for(Tab tab : getLoadedTabs()) {
-                tab.processDecodes(context);
+            if(this.getVar() == null) {
+                for(Tab tab : getLoadedTabs()) {
+                    tab.processDecodes(context);
+                }
+                this.decode(context);
             }
-            this.decode(context);
+            else {
+                super.processDecodes(context);
+            }
         }
         else {
             if(this.getVar() == null) {
@@ -115,7 +119,6 @@ import javax.faces.component.visit.VisitResult;
                     UIComponent kid = (UIComponent) kids.next();
                     kid.processDecodes(context);
                 }
-
                 this.decode(context);
             }
             else {
@@ -132,8 +135,13 @@ import javax.faces.component.visit.VisitResult;
 
         //only process loaded tabs on dynamic case
         if(isDynamic()) {
-            for(Tab tab : getLoadedTabs()) {
-                tab.processValidators(context);
+            if(this.getVar() == null) {
+                for(Tab tab : getLoadedTabs()) {
+                    tab.processValidators(context);
+                }
+            } 
+            else {
+                super.processValidators(context);
             }
         }
         else {
@@ -164,8 +172,13 @@ import javax.faces.component.visit.VisitResult;
 
         //only process loaded tabs on dynamic case
         if(isDynamic()) {
-            for(Tab tab : getLoadedTabs()) {
-                tab.processUpdates(context);
+            if(this.getVar() == null) {
+                for(Tab tab : getLoadedTabs()) {
+                    tab.processUpdates(context);
+                }
+            }
+            else {
+                super.processUpdates(context);
             }
         }
         else {
