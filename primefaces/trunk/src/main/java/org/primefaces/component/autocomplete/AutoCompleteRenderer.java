@@ -243,6 +243,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("button", ac);
         writer.writeAttribute("class", "ui-button ui-widget ui-state-default ui-corner-right ui-button-icon-only", null);
         writer.writeAttribute("type", "button", null);
+        if(ac.getTabindex() != null) {
+            writer.writeAttribute("tabindex", ac.getTabindex(), null);
+        }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-button-icon-primary ui-icon ui-icon-triangle-1-s", null);
