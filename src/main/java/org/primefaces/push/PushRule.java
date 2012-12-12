@@ -9,7 +9,7 @@ import java.util.List;
  * channel of communication based on the value of the request's pathInfo.
  * <br/>
  * PushRule can be implemented to customize the behavior of Atmosphere and to create channel (named {@link org.atmosphere.cpr.Broadcaster})
- * on the fly. For example, the following PushRule will create a single Channel of communication. All invokation of
+ * on the fly. For example, the following PushRule will create a single Channel of communication. All invocation of
  * {@link PushContext#push(String, Object)} will be shared to all connected browser
  * <blockquote>
  *   boolean apply(AtmosphereResource resource) {
