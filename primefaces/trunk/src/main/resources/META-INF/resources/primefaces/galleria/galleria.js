@@ -159,7 +159,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
     select: function(index) {
         if(index !== this.cfg.activeIndex) {
             if(this.cfg.showCaption) {
-                this.caption.slideUp('fast');
+                this.caption.slideUp(this.cfg.effectSpeed);
             }
             
             var oldPanel = this.panels.eq(this.cfg.activeIndex),
@@ -180,7 +180,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             //caption
             if(this.cfg.showCaption) {
                 var image = newPanel.children('img');
-                this.caption.html('<h4>' + image.attr('title') + '</h4><p>' + image.attr('alt') + '</p>').slideDown('fast');
+                this.caption.html('<h4>' + image.attr('title') + '</h4><p>' + image.attr('alt') + '</p>').slideDown(this.cfg.effectSpeed);
             }
             
             //viewport
