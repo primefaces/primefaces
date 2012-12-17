@@ -65,6 +65,9 @@
         <resource>
 			<name>primefaces.js</name>
 		</resource>
+        <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
 		<resource>
 			<name>imagecompare/imagecompare.js</name>
 		</resource>

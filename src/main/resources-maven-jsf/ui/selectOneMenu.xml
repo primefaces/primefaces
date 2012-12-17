@@ -152,6 +152,9 @@
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
+        <resource>
 			<name>primefaces.js</name>
 		</resource>
 	</resources>
