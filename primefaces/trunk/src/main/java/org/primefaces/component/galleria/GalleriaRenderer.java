@@ -51,13 +51,13 @@ public class GalleriaRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
         
-        writer.startElement("div", component);
+        writer.startElement("ul", component);
         writer.writeAttribute("class", Galleria.PANEL_WRAPPER_CLASS, null);
         
         if(var == null) {
             for(UIComponent child : galleria.getChildren()) {
                 if(child.isRendered()) {
-                    writer.startElement("div", null);
+                    writer.startElement("li", null);
                     writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                     child.encodeAll(context);
                     
@@ -68,7 +68,7 @@ public class GalleriaRenderer extends CoreRenderer {
                         writer.endElement("div");
                     }
                     
-                    writer.endElement("div");
+                    writer.endElement("li");
                 }
             }
         }
@@ -79,7 +79,7 @@ public class GalleriaRenderer extends CoreRenderer {
                 for(Iterator<?> it = value.iterator(); it.hasNext();) {
                     requestMap.put(var, it.next());
 
-                    writer.startElement("div", null);
+                    writer.startElement("li", null);
                     writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                     renderChildren(context, galleria);
                     
@@ -90,14 +90,14 @@ public class GalleriaRenderer extends CoreRenderer {
                         writer.endElement("div");
                     }
                     
-                    writer.endElement("div");
+                    writer.endElement("li");
                 }
             }
 
             requestMap.remove(var);
         }
         
-        writer.endElement("div");
+        writer.endElement("ul");
                 
         writer.endElement("div");
     }
