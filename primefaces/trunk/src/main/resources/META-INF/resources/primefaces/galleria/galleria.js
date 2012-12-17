@@ -39,10 +39,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
     },
     
     render: function() {
-        if(this.jq.is(':visible')) {
-            var activePanel = this.panels.eq(this.cfg.activeIndex);
-            activePanel.removeClass('ui-helper-hidden');
-            
+        if(this.jq.is(':visible')) {            
             this.panelWrapper.width(this.cfg.panelWidth).height(this.cfg.panelHeight);
             this.panels.width(this.cfg.panelWidth).height(this.cfg.panelHeight);
             this.jq.width(this.cfg.panelWidth);
@@ -54,6 +51,12 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             
             if(this.cfg.custom) {
                 this.panels.children('img').remove();
+            }
+            
+            var activePanel = this.panels.eq(this.cfg.activeIndex);
+            activePanel.removeClass('ui-helper-hidden');
+            if(this.cfg.showCaption) {
+                this.showCaption(activePanel);
             }
 
             this.jq.css('visibility', 'visible');
@@ -161,7 +164,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
     select: function(index, reposition) {
         if(index !== this.cfg.activeIndex) {
             if(this.cfg.showCaption) {
-                this.caption.slideUp(this.cfg.effectSpeed);
+                this.hideCaption();
             }
             
             var oldPanel = this.panels.eq(this.cfg.activeIndex),
@@ -181,8 +184,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             
             //caption
             if(this.cfg.showCaption) {
-                var image = newPanel.children('img');
-                this.caption.html('<h4>' + image.attr('title') + '</h4><p>' + image.attr('alt') + '</p>').slideDown(this.cfg.effectSpeed);
+                this.showCaption(newPanel);
             }
             
             //viewport
@@ -202,6 +204,15 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             
             this.cfg.activeIndex = index;
         }
+    },
+    
+    hideCaption: function() {
+        this.caption.slideUp(this.cfg.effectSpeed);
+    },
+        
+    showCaption: function(panel) {
+        var image = panel.children('img');
+        this.caption.html('<h4>' + image.attr('title') + '</h4><p>' + image.attr('alt') + '</p>').slideDown(this.cfg.effectSpeed);
     },
                 
     prev: function() {
