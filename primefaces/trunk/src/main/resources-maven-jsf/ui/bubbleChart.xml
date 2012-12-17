@@ -107,7 +107,7 @@
         <attribute>
 			<name>extender</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
+			<type>java.lang.String</type>
             <description>Javascript function to extend the chart with low level jqplot options.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
