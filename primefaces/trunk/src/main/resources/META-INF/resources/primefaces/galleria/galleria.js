@@ -17,6 +17,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.transitionInterval = this.cfg.transitionInterval||4000;
         this.cfg.effect = this.cfg.effect||'fade';
         this.cfg.effectSpeed = this.cfg.effectSpeed||250;
+        this.cfg.effectOptions = {};
 
         this.panelWrapper = this.jq.children('ul.ui-galleria-panel-wrapper');
         this.panels = this.panelWrapper.children('li.ui-galleria-panel');
@@ -169,8 +170,8 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             newFrame = this.frames.eq(index);
 
             //content
-            oldPanel.hide(this.cfg.effect, null, this.cfg.effectSpeed);
-            newPanel.show(this.cfg.effect, null, this.cfg.effectSpeed);
+            oldPanel.hide(this.cfg.effect, this.cfg.effectOptions, this.cfg.effectSpeed);
+            newPanel.show(this.cfg.effect, this.cfg.effectOptions, this.cfg.effectSpeed);
 
             //frame
             oldFrame.removeClass('ui-galleria-frame-active').css('opacity', '');
@@ -185,7 +186,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             }
             
             //viewport
-            if(reposition) {
+            if(reposition === undefined || reposition === true) {
                 var frameLeft = newFrame.position().left,
                 stepFactor = this.cfg.frameWidth + parseInt(newFrame.css('margin-right')),
                 stripLeft = this.strip.position().left,
@@ -205,13 +206,13 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
                 
     prev: function() {
         if(this.cfg.activeIndex != 0) {
-            this.select(this.cfg.activeIndex - 1, true);
+            this.select(this.cfg.activeIndex - 1);
         }
     },
                 
     next: function() {
         if(this.cfg.activeIndex !== (this.panels.length - 1)) {
-            this.select(this.cfg.activeIndex + 1, true);
+            this.select(this.cfg.activeIndex + 1);
         } 
         else {
             this.select(0, false);
