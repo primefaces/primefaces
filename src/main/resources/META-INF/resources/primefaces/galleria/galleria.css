@@ -6,6 +6,8 @@
 
 .ui-galleria-panel-wrapper {
     position: relative;
+    padding: 0px;
+    margin: 0px;
 }
 
 .ui-galleria-panel {
@@ -13,6 +15,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
+    list-style-type: none;
 }
 
 .ui-galleria-filmstrip-wrapper {

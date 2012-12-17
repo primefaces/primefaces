@@ -1,3 +1,4 @@
+//<![CDATA[
 /**
  * PrimeFaces Galleria Widget
  */
@@ -17,8 +18,8 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.effect = this.cfg.effect||'fade';
         this.cfg.effectSpeed = this.cfg.effectSpeed||250;
 
-        this.panelWrapper = this.jq.children('div.ui-galleria-panel-wrapper');
-        this.panels = this.panelWrapper.children('div.ui-galleria-panel');
+        this.panelWrapper = this.jq.children('ul.ui-galleria-panel-wrapper');
+        this.panels = this.panelWrapper.children('li.ui-galleria-panel');
         
         var $this = this;
         if(this.jq.is(':not(:visible)')) {
@@ -156,7 +157,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         return this.slideshowActive;
     },
                 
-    select: function(index) {
+    select: function(index, reposition) {
         if(index !== this.cfg.activeIndex) {
             if(this.cfg.showCaption) {
                 this.caption.slideUp(this.cfg.effectSpeed);
@@ -184,16 +185,18 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             }
             
             //viewport
-            var frameLeft = newFrame.position().left,
-            stepFactor = this.cfg.frameWidth + parseInt(newFrame.css('margin-right')),
-            stripLeft = this.strip.position().left,
-            frameViewportLeft = frameLeft + stripLeft,
-            frameViewportRight = frameViewportLeft + this.cfg.frameWidth;
+            if(reposition) {
+                var frameLeft = newFrame.position().left,
+                stepFactor = this.cfg.frameWidth + parseInt(newFrame.css('margin-right')),
+                stripLeft = this.strip.position().left,
+                frameViewportLeft = frameLeft + stripLeft,
+                frameViewportRight = frameViewportLeft + this.cfg.frameWidth;
 
-            if(frameViewportRight > this.stripWrapper.width()) {
-                this.strip.animate({left: '-=' + stepFactor}, this.cfg.effectSpeed, 'easeInOutCirc');
-            } else if(frameViewportLeft < 0) {
-                this.strip.animate({left: '+=' + stepFactor}, this.cfg.effectSpeed, 'easeInOutCirc');
+                if(frameViewportRight > this.stripWrapper.width()) {
+                    this.strip.animate({left: '-=' + stepFactor}, this.cfg.effectSpeed, 'easeInOutCirc');
+                } else if(frameViewportLeft < 0) {
+                    this.strip.animate({left: '+=' + stepFactor}, this.cfg.effectSpeed, 'easeInOutCirc');
+                }
             }
             
             this.cfg.activeIndex = index;
@@ -209,6 +212,10 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
     next: function() {
         if(this.cfg.activeIndex !== (this.panels.length - 1)) {
             this.select(this.cfg.activeIndex + 1, true);
+        } 
+        else {
+            this.select(0, false);
+            this.strip.animate({left: 0}, this.cfg.effectSpeed, 'easeInOutCirc');
         }
     },
     
