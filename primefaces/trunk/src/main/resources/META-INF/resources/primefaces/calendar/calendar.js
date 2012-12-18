@@ -138,7 +138,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
     
     configureTimePicker: function() {
         var pattern = this.cfg.dateFormat,
-        timeSeparatorIndex = pattern.indexOf('h');
+        timeSeparatorIndex = pattern.toLowerCase().indexOf('h');
 
         this.cfg.dateFormat = pattern.substring(0, timeSeparatorIndex - 1);
         this.cfg.timeFormat = pattern.substring(timeSeparatorIndex, pattern.length);
@@ -152,10 +152,19 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.timeFormat.indexOf('TT') != -1) {
             this.cfg.ampm = true;
         }
+        
+        //restrains
+        if(this.cfg.minDate) {
+            this.cfg.minDate = $.datepicker.parseDateTime(this.cfg.dateFormat, this.cfg.timeFormat, this.cfg.minDate, {}, {});
+        }
+        
+        if(this.cfg.maxDate) {
+            this.cfg.maxDate = $.datepicker.parseDateTime(this.cfg.dateFormat, this.cfg.timeFormat, this.cfg.maxDate, {}, {});
+        }
     },
     
     hasTimePicker: function() {
-        return this.cfg.dateFormat.indexOf('h') != -1;
+        return this.cfg.dateFormat.toLowerCase().indexOf('h') != -1;
     },
     
     setDate: function(date) {
