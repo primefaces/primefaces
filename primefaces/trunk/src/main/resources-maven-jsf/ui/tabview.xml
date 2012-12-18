@@ -117,7 +117,7 @@
             <name>dir</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>dir</defaultValue>
+            <defaultValue>ltr</defaultValue>
             <description>Defines text direction, valid values are "ltr" (default) and "rtl".</description>
         </attribute>
     </attributes>

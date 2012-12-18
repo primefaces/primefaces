@@ -78,6 +78,10 @@ public class DialogRenderer extends CoreRenderer {
         String style = dialog.getStyle();
         String styleClass = dialog.getStyleClass();
         styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : Dialog.CONTAINER_CLASS + " " + styleClass;
+        
+        if(dialog.getDir().equalsIgnoreCase("rtl")) {
+            styleClass += " ui-dialog-rtl";
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);

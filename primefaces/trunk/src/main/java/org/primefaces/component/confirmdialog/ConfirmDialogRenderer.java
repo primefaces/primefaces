@@ -42,6 +42,10 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         String styleClass = dialog.getStyleClass();
         styleClass = styleClass == null ? ConfirmDialog.CONTAINER_CLASS : ConfirmDialog.CONTAINER_CLASS + " " + styleClass;
 
+        if(dialog.getDir().equalsIgnoreCase("rtl")) {
+            styleClass += " ui-dialog-rtl";
+        }
+        
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);

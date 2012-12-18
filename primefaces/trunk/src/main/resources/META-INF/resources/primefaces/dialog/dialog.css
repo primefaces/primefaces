@@ -15,3 +15,22 @@
 .ui-dialog-minimizing {border: 2px dotted gray;}
 .ui-confirm-dialog-severity {float: left; margin: 3px 7px 20px 0;}
 .ui-dialog.ui-dialog-minimized{*width: 200px !important;} /*IE7 hack*/
+
+/** RTL **/
+.ui-dialog-rtl {
+    direction: rtl;
+}
+
+.ui-dialog.ui-dialog-rtl .ui-dialog-title {
+    float: right;
+}
+
+.ui-dialog.ui-dialog-rtl .ui-dialog-titlebar-close,
+.ui-dialog.ui-dialog-rtl .ui-dialog-titlebar-minimize,
+.ui-dialog.ui-dialog-rtl .ui-dialog-titlebar-maximize {
+    float: left;
+}
+
+.ui-dialog.ui-dialog-rtl .ui-dialog-footer {
+    text-align: right;
+}
