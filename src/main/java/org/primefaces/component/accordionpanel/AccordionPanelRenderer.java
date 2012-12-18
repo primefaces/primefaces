@@ -80,6 +80,10 @@ public class AccordionPanelRenderer extends CoreRenderer {
         String styleClass = acco.getStyleClass();
         styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
 		
+        if(acco.getDir().equalsIgnoreCase("rtl")) {
+            styleClass = styleClass + " ui-accordion-rtl";
+        }
+        
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
@@ -136,6 +140,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         boolean multiple = acco.isMultiple();
         String var = acco.getVar();
         String activeIndex = acco.getActiveIndex();
+        boolean rtl = acco.getDir().equalsIgnoreCase("rtl");
 
         if(var == null) {
             int i = 0;
@@ -144,7 +149,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
                 if(child.isRendered() && child instanceof Tab) {  
                     boolean active = multiple ? activeIndex.indexOf(String.valueOf(i)) != -1 : activeIndex.equals(String.valueOf(i));
                             
-                    encodeTab(context, (Tab) child, active, dynamic);
+                    encodeTab(context, (Tab) child, active, dynamic, rtl);
 
                     i++;
                 }
@@ -158,20 +163,20 @@ public class AccordionPanelRenderer extends CoreRenderer {
                 acco.setRowIndex(i);
                 boolean active = multiple ? activeIndex.indexOf(String.valueOf(i)) != -1 : activeIndex.equals(String.valueOf(i));
                 
-                encodeTab(context, tab, active, dynamic);
+                encodeTab(context, tab, active, dynamic, rtl);
             }
             
             acco.setRowIndex(-1);
         }
 	}
  
-    protected void encodeTab(FacesContext context, Tab tab, boolean active, boolean dynamic) throws IOException {
+    protected void encodeTab(FacesContext context, Tab tab, boolean active, boolean dynamic, boolean rtl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
         headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
         headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
-        String iconClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS;
+        String iconClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
         String contentClass = active ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
         UIComponent titleFacet = tab.getFacet("title");
 
