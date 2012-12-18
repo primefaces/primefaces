@@ -290,6 +290,13 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
  */
 PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         
+    init: function(cfg) {
+        this._super(cfg);
+    
+        this.cfg.rtl = this.jq.hasClass('ui-tree-rtl');
+        this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
+    },
+        
     bindEvents: function() {
         var _self = this,
         selectionMode = this.cfg.selectionMode,
@@ -303,7 +310,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         var toggleIcon = $(this),
                         node = toggleIcon.parents('li:first');
 
-                        if(toggleIcon.hasClass('ui-icon-triangle-1-e'))
+                        if(toggleIcon.hasClass(_self.cfg.collapsedIcon))
                             _self.expandNode(node);
                         else
                             _self.collapseNode(node);
@@ -363,7 +370,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         iconState = this.cfg.iconStates[nodeType],
         childrenContainer = node.children('.ui-treenode-children');
         
-        toggleIcon.addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+        toggleIcon.addClass(_self.cfg.collapsedIcon).removeClass('ui-icon-triangle-1-s');
         
         if(iconState) {
             nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
@@ -403,7 +410,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         nodeIcon = toggleIcon.next(),
         iconState = this.cfg.iconStates[nodeType];
 
-        toggleIcon.addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
+        toggleIcon.addClass('ui-icon-triangle-1-s').removeClass(this.cfg.collapsedIcon);
 
         if(iconState) {
             nodeIcon.removeClass(iconState.collapsedIcon).addClass(iconState.expandedIcon);

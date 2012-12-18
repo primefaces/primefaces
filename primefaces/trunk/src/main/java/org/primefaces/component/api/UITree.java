@@ -40,6 +40,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     private String rowKey;
    
     private TreeNode rowNode;
+    
+    private boolean rtl;
             
     protected enum PropertyKeys {
 		var
@@ -488,4 +490,11 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
+    public boolean isRTL() {
+        return rtl;
+    }
+
+    public void setRTL(boolean rtl) {
+        this.rtl = rtl;
+    }
 }
