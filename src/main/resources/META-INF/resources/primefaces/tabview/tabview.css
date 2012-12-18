@@ -124,11 +124,10 @@
 }
 
 /** RTL **/
-.ui-rtl .ui-tabs, .ui-tabs-rtl { 
+.ui-tabs-rtl { 
     direction: rtl; 
 }
 
-.ui-rtl .ui-tabs .ui-tabs-nav li, .ui-rtl ui-tabs .ui-tabs-nav li a,
 .ui-tabs-rtl .ui-tabs-nav li, .ui-tabs-rtl .ui-tabs-nav li a {
     float: right;
 }
