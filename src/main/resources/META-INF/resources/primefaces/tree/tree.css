@@ -155,3 +155,11 @@
     vertical-align: bottom;
 }
 
+/** RTL **/
+.ui-tree.ui-tree-rtl {
+    direction: rtl;
+}
+
+.ui-tree.ui-tree-rtl .ui-treenode-children {
+    padding: 0 16px 0 0;
+}

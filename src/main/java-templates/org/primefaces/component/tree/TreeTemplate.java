@@ -85,6 +85,7 @@ import org.primefaces.model.TreeNode;
     }
 
     public static String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
+    public static String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
     public static String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content ui-corner-all";
     public static String ROOT_NODES_CLASS = "ui-tree-container";
     public static String PARENT_NODE_CLASS = "ui-treenode ui-treenode-parent";
@@ -96,6 +97,7 @@ import org.primefaces.model.TreeNode;
     public static String SELECTABLE_NODE_CONTENT_CLASS_H = "ui-treenode-content ui-tree-selectable ui-state-default ui-corner-all";
     public static String EXPANDED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-s";
     public static String COLLAPSED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-e";
+    public static String COLLAPSED_ICON_RTL_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-w";
     public static String EXPANDED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-minus";
     public static String COLLAPSED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-plus";
     public static String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
