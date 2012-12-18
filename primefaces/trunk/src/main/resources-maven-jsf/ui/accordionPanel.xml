@@ -92,6 +92,13 @@
 			<defaultValue>false</defaultValue>
             <description>Enables activating multiple tabs, default is false.</description>
 		</attribute>
+        <attribute>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>ltr</defaultValue>
+            <description>Defines text direction, valid values are "ltr" (default) and "rtl".</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
