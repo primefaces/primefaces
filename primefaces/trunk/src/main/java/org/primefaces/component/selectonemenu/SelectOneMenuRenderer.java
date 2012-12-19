@@ -106,7 +106,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
         if(menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
         if(menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
         
@@ -119,12 +118,15 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         
-        //input for focus
+        //input for accessibility
         writer.startElement("input", menu);
         writer.writeAttribute("id", focusId, null);
         writer.writeAttribute("name", focusId, null);
         writer.writeAttribute("type", "text", null);
+        if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
+        
         writer.endElement("input");
+        
         writer.endElement("div");
     }
 
