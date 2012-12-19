@@ -818,7 +818,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                     }
                 break;
                 
-                default:                    
+                case keyCode.ESCAPE:
+                    if($this.panel.is(':visible')) {
+                        $this.revert();
+                        $this.hide();
+                    }
+                break;
+                
+                default:    
                     var k = String.fromCharCode((96 <= key && key <= 105)? key-48 : key),
                     currentItem = $this.items.filter('.ui-state-highlight');
 
@@ -828,13 +835,16 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                         highlightItem = $this.search(k, 0, currentItem.index());
                     }
                     
-                    if($this.panel.is(':hidden')) {
-                        $this.selectItem(highlightItem);
+                    if(highlightItem) {
+                        if($this.panel.is(':hidden')) {
+                            $this.selectItem(highlightItem);
+                        }
+                        else {
+                            $this.highlightItem(highlightItem);
+                            PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
+                        }    
                     }
-                    else {
-                        $this.highlightItem(highlightItem);
-                        PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
-                    }                
+                                
                 break;
             }
         });
