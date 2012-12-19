@@ -16,13 +16,13 @@
 }
 
 .ui-selectonelistbox, .ui-selectmanymenu {
-    width:100px;
     overflow:auto;
     padding:2px;
     position: relative;
+    width: 125px;
 }
 
-.ui-selectonelistbox ul, .ui-selectmanymenu ul {
+.ui-selectonelistbox .ui-selectlistbox-list, .ui-selectmanymenu .ui-selectlistbox-list {
     list-style-type: none; 
     margin: 0;
     padding: 0;
@@ -34,6 +34,20 @@
     border:0 none;
     cursor: pointer;
     font-weight: normal;
+}
+
+.ui-selectonelistbox table.ui-selectlistbox-list,
+.ui-selectmanymenu table.ui-selectlistbox-list{
+    border-collapse:collapse;
+    width:100%;
+}
+
+.ui-selectonemenu-panel table.ui-selectlistbox-list td,
+.ui-selectmanymenu table.ui-selectlistbox-list td{
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding:4px 10px 4px 10px;
 }
 
 /**

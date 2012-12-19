@@ -1333,40 +1333,9 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         
         this.input = $(this.jqId + '_input'),
-        this.listContainer = this.jq.children('ul'),
+        this.listContainer = this.jq.children('.ui-selectlistbox-list'),
         this.options = $(this.input).children('option');
-
-        this.generateItems(cfg);
-
-        this.bindEvents();
-
-        //Client Behaviors
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-        }
-        
-        //pfs metadata
-        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-    },
-    
-    /**
-     * Creates items for each option 
-     */
-    generateItems: function() {
-        var _self = this;
-
-        this.options.each(function(i) {
-            var option = $(this),
-            selected = option.is(':selected'),
-            disabled = option.is(':disabled'),
-            styleClass = 'ui-selectlistbox-item ui-corner-all';
-            styleClass = disabled ? styleClass + ' ui-state-disabled' : styleClass;
-            styleClass = selected ? styleClass + ' ui-state-active' : styleClass;
-
-            _self.listContainer.append('<li class="' + styleClass + '">' + option.text() + '</li>');
-        });
-
-        this.items = this.listContainer.children('li:not(.ui-state-disabled)');
+        this.items = this.listContainer.find('.ui-selectlistbox-item:not(.ui-state-disabled)');
         
         //scroll to selected
         var selected = this.options.filter(':selected');
@@ -1379,42 +1348,53 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
                 this.jq.scrollTop(selectedItem.position().top);
             }
         }
+        
+        this.bindEvents();
+
+        //Client Behaviors
+        if(this.cfg.behaviors) {
+            PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
+        }
+        
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     bindEvents: function() {
-        var _self = this;
+        var $this = this;
 
         //items
-        this.items.mouseover(function() {
-            var element = $(this);
-            if(!element.hasClass('ui-state-active')) {
-                $(this).addClass('ui-state-hover');
+        this.items.on('mouseover.selectListbox', function() {
+            var item = $(this);
+            if(!item.hasClass('ui-state-highlight')) {
+                item.addClass('ui-state-hover');
             }
-        }).mouseout(function() {
+        }).on('mouseout.selectListbox', function() {
             $(this).removeClass('ui-state-hover');
-        }).mousedown(function(e) {        
-            var element = $(this),
-            option = $(_self.options.get(element.index())),
+        })
+        .on('mousedown.selectListbox', function(e) {        
+            var item = $(this),
+            option = $this.options.eq(item.index()),
             metaKey = (e.metaKey||e.ctrlKey);
 
             //clear previous selection if single or multiple with no metakey
-            if(_self.cfg.selection == 'single' || (_self.cfg.selection == 'multiple' && !metaKey)) {
-                _self.items.removeClass('ui-state-active ui-state-hover');
-                _self.options.removeAttr('selected');
+            if($this.cfg.selection === 'single' || ($this.cfg.selection === 'multiple' && !metaKey)) {
+                $this.items.removeClass('ui-state-highlight ui-state-hover');
+                $this.options.filter(':selected').removeAttr('selected');
             }
 
             //unselect current selected item if multiple with metakey
-            if(_self.cfg.selection == 'multiple' && metaKey && element.hasClass('ui-state-active')) {
-                element.removeClass('ui-state-active');
+            if($this.cfg.selection == 'multiple' && metaKey && item.hasClass('ui-state-highlight')) {
+                item.removeClass('ui-state-highlight');
                 option.removeAttr('selected');
             } 
             //select item
             else {
-                element.addClass('ui-state-active').removeClass('ui-state-hover');
-                option.attr('selected', 'selected');
+                item.addClass('ui-state-highlight').removeClass('ui-state-hover');
+                option.prop('selected', 'selected');
             }
 
-            _self.input.change();
+            $this.input.change();
 
             PrimeFaces.clearSelection();
 
@@ -1422,10 +1402,10 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //input
-        this.input.focus(function() {
-            _self.jq.addClass('ui-state-focus');
-        }).blur(function() {
-            _self.jq.removeClass('ui-state-focus');
+        this.input.on('focus.selectListbox', function() {
+            $this.jq.addClass('ui-state-focus');
+        }).on('blur.selectListbox', function() {
+            $this.jq.removeClass('ui-state-focus');
         })
     }
 

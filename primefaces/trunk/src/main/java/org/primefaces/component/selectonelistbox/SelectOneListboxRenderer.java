@@ -24,6 +24,8 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -45,6 +47,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
     protected void encodeMarkup(FacesContext context, SelectOneListbox listbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = listbox.getClientId(context);
+        List<SelectItem> selectItems = getSelectItems(context, listbox);
         
         String style = listbox.getStyle();
         String styleClass = listbox.getStyleClass();
@@ -57,8 +60,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("class", styleClass, "styleClass");
         if(style != null) writer.writeAttribute("style", style, "style");
 
-        encodeInput(context, listbox, clientId);
-        encodeList(context, listbox);
+        encodeInput(context, listbox, clientId, selectItems);
+        encodeList(context, listbox, selectItems);
 
         writer.endElement("div");
     }
@@ -78,7 +81,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         endScript(writer);
     }
 
-    protected void encodeInput(FacesContext context, SelectOneListbox listbox, String clientId) throws IOException {
+    protected void encodeInput(FacesContext context, SelectOneListbox listbox, String clientId, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
 
@@ -93,23 +96,100 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         if(listbox.getTabindex() != null) writer.writeAttribute("tabindex", listbox.getTabindex(), null);
         if(listbox.getOnchange() != null) writer.writeAttribute("onchange", listbox.getOnchange(), null);
 
-        encodeSelectItems(context, listbox);
+        encodeSelectItems(context, listbox, selectItems);
 
         writer.endElement("select");
 
         writer.endElement("div");
     }
 
-    protected void encodeList(FacesContext context, SelectOneListbox listbox) throws IOException {
+    protected void encodeList(FacesContext context, SelectOneListbox listbox, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        Converter converter = listbox.getConverter();
+        Object values = getValues(listbox);
+        Object submittedValues = getSubmittedValues(listbox);
+        boolean customContent = listbox.getVar() != null;
 
-        writer.startElement("ul", null);
-        //dom created by widget
-        writer.endElement("ul");
+        if(customContent) {
+            writer.startElement("table", null);
+            writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
+            writer.startElement("tbody", null);
+            for(SelectItem selectItem : selectItems) {
+                encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent);
+            }
+            writer.endElement("tbody");
+            writer.endElement("table");
+        }
+        else {
+            writer.startElement("ul", null);
+            writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
+            for(SelectItem selectItem : selectItems) {
+                encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent);
+            }
+            writer.endElement("ul");
+        }
+    }
+    
+    protected void encodeItem(FacesContext context, SelectOneListbox listbox, SelectItem option, Object values, Object submittedValues, Converter converter, boolean customContent) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String itemValueAsString = getOptionAsString(context, listbox, converter, option.getValue());
+        boolean disabled = option.isDisabled() || listbox.isDisabled();
+        String itemClass = disabled ? SelectOneListbox.ITEM_CLASS + " ui-state-disabled" : SelectOneListbox.ITEM_CLASS;
+
+        Object valuesArray;
+        Object itemValue;
+        if(submittedValues != null) {
+            valuesArray = submittedValues;
+            itemValue = itemValueAsString;
+        } else {
+            valuesArray = values;
+            itemValue = option.getValue();
+        }
+
+        boolean selected = isSelected(context, listbox, itemValue, valuesArray, converter);
+        if(option.isNoSelectionOption() && values != null && !selected) {
+            return;
+        }
+        
+        if(selected) {
+            itemClass = itemClass + " ui-state-highlight";
+        }
+
+        if(customContent) {
+            String var = listbox.getVar();
+            context.getExternalContext().getRequestMap().put(var, option.getValue());
+            
+            writer.startElement("tr", null);
+            writer.writeAttribute("class", itemClass, null);
+            if(option.getDescription() != null) {
+                writer.writeAttribute("title", option.getDescription(), null);
+            }
+
+            for(UIComponent child : listbox.getChildren()) {
+                if(child instanceof Column && child.isRendered()) {
+                    writer.startElement("td", null);
+                    child.encodeAll(context);
+                    writer.endElement("td");
+                }
+            }
+
+            writer.endElement("tr");
+        } 
+        else {
+            writer.startElement("li", null);
+            writer.writeAttribute("class", itemClass, null);
+            if(option.isEscape()) {
+                writer.writeText(option.getLabel(), null);
+            } else {
+                writer.write(option.getLabel());
+            }
+
+            writer.endElement("li");
+        }
+        
     }
 
-    protected void encodeSelectItems(FacesContext context, SelectOneListbox listbox) throws IOException {
-        List<SelectItem> selectItems = getSelectItems(context, listbox);
+    protected void encodeSelectItems(FacesContext context, SelectOneListbox listbox, List<SelectItem> selectItems) throws IOException {
         Converter converter = listbox.getConverter();
         Object values = getValues(listbox);
         Object submittedValues = getSubmittedValues(listbox);
@@ -152,5 +232,15 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
     @Override
     protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
         return selectOne.getClientId(context) + "_input";
-    }    
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+		//Rendering happens on encodeEnd
+	}
+
+    @Override
+	public boolean getRendersChildren() {
+		return true;
+	}
 }
