@@ -218,8 +218,20 @@ import org.primefaces.component.datatable.feature.*;
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
             }
             else if(eventName.equals("sort")) {
-                SortOrder order = SortOrder.valueOf(params.get(clientId + "_sortDir"));
-                Column sortColumn = findColumn(params.get(clientId + "_sortKey"));
+                SortOrder order;
+                Column sortColumn;
+                
+                if(isMultiSort()) {
+                    String[] sortDirs = params.get(clientId + "_sortDir").split(",");
+                    String[] sortKeys = params.get(clientId + "_sortKey").split(",");
+                    
+                    order = SortOrder.valueOf(sortDirs[sortDirs.length - 1]);
+                    sortColumn = findColumn(sortKeys[sortKeys.length - 1]);
+                } 
+                else {
+                    order = SortOrder.valueOf(params.get(clientId + "_sortDir"));
+                    sortColumn = findColumn(params.get(clientId + "_sortKey"));
+                }
 
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order);
             }
