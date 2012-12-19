@@ -1338,7 +1338,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         this.items = this.listContainer.find('.ui-selectlistbox-item:not(.ui-state-disabled)');
         
         //scroll to selected
-        var selected = this.options.filter(':selected:first');
+        var selected = this.options.filter(':selected:not(:disabled)');
         if(selected.length > 0) {
             var selectedItem = this.items.eq(selected.eq(0).index()),
             itemBottom = selectedItem.position().top + selectedItem.height(),
