@@ -46,8 +46,8 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
             if(resizeBehavior) {
                 var ext = {
                     params: [
-                        {name: this.id + '_width', value: ui.helper.width()},
-                        {name: this.id + '_height', value: ui.helper.height()}
+                        {name: this.id + '_width', value: parseInt(ui.helper.width())},
+                        {name: this.id + '_height', value: parseInt(ui.helper.height())}
                     ]
                 };
 
