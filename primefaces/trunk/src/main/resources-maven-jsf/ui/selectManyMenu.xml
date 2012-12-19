@@ -59,6 +59,12 @@
             <description>Position of the input element in the tabbing order.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Name of iterator to be used in custom content display.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
