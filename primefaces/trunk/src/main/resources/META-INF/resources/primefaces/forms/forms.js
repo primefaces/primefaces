@@ -1371,44 +1371,104 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
             }
         }).on('mouseout.selectListbox', function() {
             $(this).removeClass('ui-state-hover');
-        })
-        .on('mousedown.selectListbox', function(e) {        
-            var item = $(this),
-            option = $this.options.eq(item.index()),
-            metaKey = (e.metaKey||e.ctrlKey);
-
-            //clear previous selection if single or multiple with no metakey
-            if($this.cfg.selection === 'single' || ($this.cfg.selection === 'multiple' && !metaKey)) {
-                $this.items.removeClass('ui-state-highlight ui-state-hover');
-                $this.options.filter(':selected').removeAttr('selected');
-            }
-
-            //unselect current selected item if multiple with metakey
-            if($this.cfg.selection == 'multiple' && metaKey && item.hasClass('ui-state-highlight')) {
-                item.removeClass('ui-state-highlight');
-                option.removeAttr('selected');
-            } 
-            //select item
-            else {
-                item.addClass('ui-state-highlight').removeClass('ui-state-hover');
-                option.prop('selected', 'selected');
-            }
-
-            $this.input.change();
-
-            PrimeFaces.clearSelection();
-
-            e.preventDefault();
         });
-
+        
         //input
         this.input.on('focus.selectListbox', function() {
             $this.jq.addClass('ui-state-focus');
         }).on('blur.selectListbox', function() {
             $this.jq.removeClass('ui-state-focus');
         })
+    },
+    
+    unselectAll: function() {
+        this.items.removeClass('ui-state-highlight ui-state-hover');
+        this.options.filter(':selected').prop('selected', false);
+    },
+    
+    selectItem: function(item) {
+        item.addClass('ui-state-highlight').removeClass('ui-state-hover');
+        this.options.eq(item.index()).prop('selected', true);
+        this.cursorItem = item;
     }
 
+});
+
+/**
+ * PrimeFaces SelectOneListbox Widget
+ */
+PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
+    
+    bindEvents: function() {
+        this._super();
+        var $this = this;
+        
+        this.items.on('mousedown.selectListbox', function(e) {       
+            var item = $(this);
+            
+            $this.unselectAll();
+            $this.selectItem(item);
+            $this.input.change();
+            PrimeFaces.clearSelection();
+            e.preventDefault();
+        });
+    }
+});
+
+/**
+ * PrimeFaces SelectManyMenu Widget
+ */
+PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
+    
+    bindEvents: function() {
+        this._super();
+        var $this = this;
+        
+        this.items.on('mousedown.selectListbox', function(e) {       
+            var item = $(this),
+            option = $this.options.eq(item.index()),
+            metaKey = (e.metaKey||e.ctrlKey);
+            
+            if(!e.shiftKey) {
+                if(!metaKey) {
+                    $this.unselectAll();
+                }
+
+                //unselect current selected item if multiple with metakey
+                if(metaKey && item.hasClass('ui-state-highlight')) {
+                    item.removeClass('ui-state-highlight');
+                    option.removeAttr('selected');
+                } 
+                //select item
+                else {
+                    $this.selectItem(item);
+                }
+            } 
+            else {
+                //range selection
+                if($this.cursorItem) {
+                    $this.unselectAll();
+                    
+                    var currentItemIndex = item.index(),
+                    cursorItemIndex = $this.cursorItem.index(),
+                    startIndex = (currentItemIndex > cursorItemIndex) ? cursorItemIndex : currentItemIndex,
+                    endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
+                    
+                    for(var i = startIndex ; i < endIndex; i++) {
+                        $this.items.eq(i).addClass('ui-state-highlight');
+                        $this.options.eq(i).prop('selected', true);
+                    }
+                } 
+                else {
+                    $this.selectItem(item);
+                }
+            }
+
+            $this.input.change();
+            PrimeFaces.clearSelection();
+            e.preventDefault();
+        });
+    }
 });
 
 /** 

@@ -71,8 +71,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectListbox", menu.resolveWidgetVar(), clientId, false)
-            .attr("selection", "multiple")
+        wb.widget("SelectManyMenu", menu.resolveWidgetVar(), clientId, false)
             .attr("disabled", menu.isDisabled(), false);
         
         encodeClientBehaviors(context, menu, wb);

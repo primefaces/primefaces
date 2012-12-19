@@ -69,8 +69,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = listbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectListbox", listbox.resolveWidgetVar(), clientId, false)
-            .attr("selection", "single")
+        wb.widget("SelectOneListbox", listbox.resolveWidgetVar(), clientId, false)
             .attr("disabled", listbox.isDisabled(), false);
         
         encodeClientBehaviors(context, listbox, wb);
