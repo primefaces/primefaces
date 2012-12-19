@@ -108,7 +108,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             $(this).toggleClass('ui-state-hover');
         }).
         on('click.dataTable', function(e) {
-            if($(e.target).is(':not(th,span,.ui-dt-c)')) {
+            if($(e.target).is(':not(th,span,div.ui-dt-c)')) {
                 return;
             }
 
@@ -658,8 +658,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Ajax sort
-                 */
+     * Ajax sort
+     */
     sort: function(columnHeader, order, multi) {  
         columnHeader.data('sortorder', order);
     
@@ -693,7 +693,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 
                 if(!multi) {
                     columnHeader.siblings('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
-                    .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                                .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
                 }
                 
                 columnHeader.addClass('ui-state-active');
@@ -712,46 +712,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             return true;
         };
                 
-        options.params = [
-        {
-            name: this.id + '_sorting', 
-            value: true
-        },
-
-        {
-            name: this.id + '_skipChildren', 
-            value: true
-        },
-
-        {
-            name: this.id + '_encodeFeature', 
-            value: true
-        }
-        ];
+        options.params = [{name: this.id + '_sorting', value: true},
+                          {name: this.id + '_skipChildren', value: true},
+                          {name: this.id + '_encodeFeature', value: true}];
 
         if(multi) {
-            options.params.push({
-                name: this.id + '_multiSorting', 
-                value: true
-            });
-            options.params.push({
-                name: this.id + '_sortKey', 
-                value: $this.joinSortMetaOption('col')
-                });
-            options.params.push({
-                name: this.id + '_sortDir', 
-                value: $this.joinSortMetaOption('order')
-                });
+            options.params.push({name: this.id + '_multiSorting', value: true});
+            options.params.push({name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')});
+            options.params.push({name: this.id + '_sortDir', value: $this.joinSortMetaOption('order')});
         }
         else {
-            options.params.push({
-                name: this.id + '_sortKey', 
-                value: columnHeader.attr('id')
-                });
-            options.params.push({
-                name: this.id + '_sortDir', 
-                value: order
-            });
+            options.params.push({name: this.id + '_sortKey', value: columnHeader.attr('id')});
+            options.params.push({name: this.id + '_sortDir', value: order});
         }
 
         if(this.hasBehavior('sort')) {
