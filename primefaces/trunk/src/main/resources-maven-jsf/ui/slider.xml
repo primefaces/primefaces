@@ -110,6 +110,19 @@
 			<type>java.lang.String</type>
             <description>Client side callback to execute when slide ends.</description>
 		</attribute>
+        <attribute>
+			<name>range</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When enabled, two handles are provided for selecting a range.</description>
+		</attribute>
+        <attribute>
+			<name>displayTemplate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>String template to use when updating the display. Valid placeholders are {value}, {min} and {max}.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
