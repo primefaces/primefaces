@@ -36,6 +36,7 @@
     width: 100%;
 }
 
+.ui-autocomplete-panel .ui-autocomplete-table th,
 .ui-autocomplete-panel .ui-autocomplete-table td {
     border-width: 1px;
     border-style: solid;

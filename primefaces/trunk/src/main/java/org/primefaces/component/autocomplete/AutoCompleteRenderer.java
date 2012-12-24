@@ -378,9 +378,45 @@ public class AutoCompleteRenderer extends InputRenderer {
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         boolean pojo = var != null;
         UIComponent itemtip = ac.getFacet("itemtip");
+        boolean hasHeader = false;
+        
+        for(Column column : ac.getColums()) {
+            if(column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
+                hasHeader = true;
+                break;
+            }
+        }
         
         writer.startElement("table", ac);
         writer.writeAttribute("class", AutoComplete.TABLE_CLASS, null);
+        
+        if(hasHeader) { 
+            writer.startElement("thead", ac);
+            for(Column column : ac.getColums()) {
+                if(!column.isRendered()) {
+                    return;
+                }
+
+                String headerText = column.getHeaderText();
+                UIComponent headerFacet = column.getFacet("header");
+                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
+                
+                writer.startElement("th", null);
+                writer.writeAttribute("class", styleClass, null);
+                
+                if(column.getStyle() != null) 
+                    writer.writeAttribute("style", column.getStyle(), null);
+                
+                if(headerFacet != null)
+                    headerFacet.encodeAll(context);
+                else if(headerText != null)
+                    writer.write(headerText);
+
+                writer.endElement("th");
+            }
+            writer.endElement("thead");
+        }
+        
         writer.startElement("tbody", ac);
 
         for(Object item : items) {
@@ -417,7 +453,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         }
 
         writer.endElement("tbody");
-            writer.endElement("table");
+        writer.endElement("table");
     }
 
     protected void encodeSuggestionsAsList(FacesContext context, AutoComplete ac, List items, Converter converter) throws IOException {
