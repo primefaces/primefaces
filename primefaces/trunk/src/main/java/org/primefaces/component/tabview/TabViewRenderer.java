@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class TabViewRenderer extends CoreRenderer {
@@ -105,7 +106,7 @@ public class TabViewRenderer extends CoreRenderer {
         String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
-        if(tabView.getDir().equalsIgnoreCase("rtl")) {
+        if(ComponentUtils.isRTL(context, tabView)) {
             styleClass += " ui-tabs-rtl";
         }
         

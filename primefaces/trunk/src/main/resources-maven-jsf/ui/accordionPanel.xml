@@ -20,6 +20,9 @@
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
         <interface>
+			<name>org.primefaces.component.api.RTLAware</name>
+		</interface>
+        <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
