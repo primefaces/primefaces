@@ -34,11 +34,11 @@ public class SliderRenderer extends CoreRenderer{
     }
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Slider slider = (Slider) component;
 		
-		encodeMarkup(facesContext, slider);
-		encodeScript(facesContext, slider);
+		encodeMarkup(context, slider);
+		encodeScript(context, slider);
 	}
 	
 	protected void encodeMarkup(FacesContext context, Slider slider) throws IOException {
@@ -56,27 +56,45 @@ public class SliderRenderer extends CoreRenderer{
 	protected void encodeScript(FacesContext context, Slider slider) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = slider.getClientId(context);
-		UIComponent input = getTarget(context, slider, slider.getFor());
-		UIComponent output = getTarget(context, slider, slider.getDisplay());
+        boolean range = slider.isRange();
+        UIComponent output = getTarget(context, slider, slider.getDisplay());
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Slider", slider.resolveWidgetVar(), clientId, false)
-            .attr("value", ComponentUtils.getValueToRender(context, input))
-            .attr("input", input.getClientId(context))
-            .attr("min", slider.getMinValue())
+        wb.widget("Slider", slider.resolveWidgetVar(), clientId, true);
+                    
+        if(range) {
+            String[] inputIds = slider.getFor().split(",");
+            UIComponent inputMin = getTarget(context, slider, inputIds[0].trim());
+            UIComponent inputMax = getTarget(context, slider, inputIds[1].trim());
+            String inputMinValue = ComponentUtils.getValueToRender(context, inputMin);
+            String inputMaxValue = ComponentUtils.getValueToRender(context, inputMax);
+            
+            wb.attr("input", inputMin.getClientId(context) + "," + inputMax.getClientId(context))
+                .append(",values:[").append(inputMinValue).append(",").append(inputMaxValue).append("]");
+        } 
+        else {
+            UIComponent input = getTarget(context, slider, slider.getFor());
+            
+            wb.attr("value", ComponentUtils.getValueToRender(context, input))
+               .attr("input", input.getClientId(context));
+        }
+        
+        wb.attr("min", slider.getMinValue())
             .attr("max", slider.getMaxValue())
             .attr("animate", slider.isAnimate())
             .attr("step", slider.getStep())
             .attr("orientation", slider.getType())
             .attr("disabled", slider.isDisabled(), false)
+            .attr("range", range)
+            .attr("displayTemplate", slider.getDisplayTemplate(), null)
             .callback("onSlideStart", "function(event,ui)", slider.getOnSlideStart())
             .callback("onSlide", "function(event,ui)", slider.getOnSlide())
             .callback("onSlideEnd", "function(event,ui)", slider.getOnSlideEnd());
         
         if(output != null) {
-            wb.attr("output", output.getClientId(context));
+            wb.attr("display", output.getClientId(context));
         }
-        
+     
         encodeClientBehaviors(context, slider, wb);
 
         startScript(writer, clientId);
@@ -87,7 +105,8 @@ public class SliderRenderer extends CoreRenderer{
 	protected UIComponent getTarget(FacesContext context, Slider slider, String target) {
 		if(target == null) {
 			return null;
-		} else {
+		} 
+        else {
 			UIComponent targetComponent = slider.findComponent(target);
             if(targetComponent == null) {
                 throw new FacesException("Cannot find slider target component '" + target + "' in view");
