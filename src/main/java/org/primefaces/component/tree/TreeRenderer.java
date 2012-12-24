@@ -27,6 +27,7 @@ import org.primefaces.component.api.UITree;
 
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class TreeRenderer extends CoreRenderer {
@@ -184,7 +185,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean checkbox = selectable && selectionMode.equals("checkbox");
         
         //enable RTL
-        if(tree.getDir().equalsIgnoreCase("rtl")) {
+        if(ComponentUtils.isRTL(context, tree)) {
             tree.setRTL(true);
         }
         

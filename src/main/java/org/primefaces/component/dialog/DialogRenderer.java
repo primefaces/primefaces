@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DialogRenderer extends CoreRenderer {
@@ -79,7 +80,7 @@ public class DialogRenderer extends CoreRenderer {
         String styleClass = dialog.getStyleClass();
         styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : Dialog.CONTAINER_CLASS + " " + styleClass;
         
-        if(dialog.getDir().equalsIgnoreCase("rtl")) {
+        if(ComponentUtils.isRTL(context, dialog)) {
             styleClass += " ui-dialog-rtl";
         }
 

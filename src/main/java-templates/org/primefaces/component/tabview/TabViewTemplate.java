@@ -244,3 +244,7 @@ import javax.faces.component.visit.VisitResult;
             return super.visitTree(context, callback);
         }
     }
+
+    public boolean isRTL() {
+        return this.getDir().equalsIgnoreCase("rtl");
+    }

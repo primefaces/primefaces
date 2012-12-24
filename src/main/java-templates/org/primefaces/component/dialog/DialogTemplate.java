@@ -87,3 +87,7 @@ import javax.faces.event.PhaseId;
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
     }
+
+    public boolean isRTL() {
+        return this.getDir().equalsIgnoreCase("rtl");
+    }

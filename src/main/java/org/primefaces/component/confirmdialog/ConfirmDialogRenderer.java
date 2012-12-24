@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.dialog.Dialog;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmDialogRenderer extends CoreRenderer {
@@ -42,7 +43,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         String styleClass = dialog.getStyleClass();
         styleClass = styleClass == null ? ConfirmDialog.CONTAINER_CLASS : ConfirmDialog.CONTAINER_CLASS + " " + styleClass;
 
-        if(dialog.getDir().equalsIgnoreCase("rtl")) {
+        if(ComponentUtils.isRTL(context, dialog)) {
             styleClass += " ui-dialog-rtl";
         }
         

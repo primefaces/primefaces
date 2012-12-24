@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.BeanValidator;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
 public class ComponentUtils {
@@ -419,5 +420,13 @@ public class ComponentUtils {
 			return true;
 
 		return value.trim().equals("");
-	}
+    }
+    
+    public static boolean isRTL(FacesContext context, RTLAware component) {
+        ExternalContext externalContext = context.getExternalContext();
+        String value = externalContext.getInitParameter(Constants.DIRECTION_PARAM);
+        boolean globalValue = (value == null) ? false : value.equalsIgnoreCase("rtl");
+        
+        return globalValue||component.isRTL();
+    }
 }
