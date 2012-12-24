@@ -64,8 +64,6 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             this.input.eq(0).val(ui.values[0]);
             this.input.eq(1).val(ui.values[1]);
             
-            console.log(this.input.eq(0).val());
-            
             if(this.output) {
                 this.output.html(this.cfg.displayTemplate.replace('{min}', ui.values[0]).replace('{max}', ui.values[1]));
             }
@@ -80,7 +78,6 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
     },
     
     onSlideEnd: function(event, ui) {
-        //User callback
         if(this.cfg.onSlideEnd) {
             this.cfg.onSlideEnd.call(this, event, ui);
         }
