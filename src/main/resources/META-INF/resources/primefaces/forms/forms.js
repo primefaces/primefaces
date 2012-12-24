@@ -979,6 +979,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     filter: function(value) {
+        this.cfg.initialHeight = this.cfg.initialHeight||this.itemsWrapper.height();        
         var filterValue = this.cfg.caseSensitive ? $.trim(value) : $.trim(value).toLowerCase();
 
         if(filterValue === '') {
@@ -1839,7 +1840,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         
         //filter
         if(this.cfg.filter) {
-            this.cfg.initialHeight = this.itemContainerWrapper.height();
             this.setupFilterMatcher();
             
             PrimeFaces.skinInput(this.filterInput);
