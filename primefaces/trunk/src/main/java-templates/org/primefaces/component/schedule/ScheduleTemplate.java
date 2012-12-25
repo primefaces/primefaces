@@ -12,7 +12,6 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.event.ScheduleEntrySelectEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.model.ScheduleModel;
@@ -87,7 +86,7 @@ import org.primefaces.model.ScheduleEvent;
                 String selectedEventId = params.get(clientId + "_selectedEventId");
 				ScheduleEvent selectedEvent = this.getValue().getEvent(selectedEventId);
 
-                wrapperEvent = new ScheduleEntrySelectEvent(this, behaviorEvent.getBehavior(), selectedEvent);
+                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedEvent);
             }
             else if(eventName.equals("eventMove")) {
                 String movedEventId = params.get(clientId + "_movedEventId");
