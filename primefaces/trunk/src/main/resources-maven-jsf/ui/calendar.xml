@@ -10,7 +10,6 @@
     <tag>calendar</tag>
     <tagClass>org.primefaces.component.calendar.CalendarTag</tagClass>
     <componentClass>org.primefaces.component.calendar.Calendar</componentClass>
-    <componentHandlerClass>org.primefaces.component.calendar.CalendarHandler</componentHandlerClass>
     <componentType>org.primefaces.component.Calendar</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.CalendarRenderer</rendererType>

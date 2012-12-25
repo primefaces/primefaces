@@ -11,8 +11,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ScheduleEntrySelectEvent;
-import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.model.ScheduleModel;
@@ -78,10 +78,10 @@ import org.primefaces.model.ScheduleEvent;
                 calendar.setTimeInMillis(Long.valueOf(params.get(clientId + "_selectedDate")));
                 calendar.setTimeZone(tz);
                 Date selectedDate = calendar.getTime();
-                DateSelectEvent dateSelectEvent = new DateSelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
-                dateSelectEvent.setPhaseId(behaviorEvent.getPhaseId());
+                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
+                selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
-                wrapperEvent = dateSelectEvent;
+                wrapperEvent = selectEvent;
             }
             else if(eventName.equals("eventSelect")) {
                 String selectedEventId = params.get(clientId + "_selectedEventId");
