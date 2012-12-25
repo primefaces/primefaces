@@ -287,6 +287,12 @@
 			<type>java.lang.String</type>
             <description>Summary attribute for WCAG.</description>
 		</attribute>
+        <attribute>
+			<name>frozenRows</name>
+			<required>false</required>
+			<type>java.util.Collection</type>
+            <description>Collection to display as fixed in scrollable mode.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

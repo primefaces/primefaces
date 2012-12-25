@@ -217,7 +217,6 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeScrollableTable(FacesContext context, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         int scrollHeight = table.getScrollHeight();    
         int scrollWidth = table.getScrollWidth();
         StringBuilder bodyStyle = new StringBuilder();
@@ -593,6 +592,8 @@ public class DataTableRenderer extends DataRenderer {
 
             writer.endElement("tr");
         }
+        
+        encodeFrozenRows(context, table);
 
         writer.endElement("thead");
     }
@@ -615,7 +616,7 @@ public class DataTableRenderer extends DataRenderer {
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? table.getScrollRows() : rowCount) : rows;
         boolean hasData = rowCount > 0;
-      
+              
         if(!dataOnly) {
             writer.startElement("tbody", null);
             writer.writeAttribute("id", clientId + "_data", null);
@@ -675,7 +676,32 @@ public class DataTableRenderer extends DataRenderer {
 		}
     }
     
-    private void encodeSummaryRow(FacesContext context, DataTable table, SummaryRow summaryRow) throws IOException{
+    protected void encodeFrozenRows(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = table.getClientId(context);
+        Collection<?> frozenRows = table.getFrozenRows();
+        String var = table.getVar();
+        String rowIndexVar = table.getRowIndexVar();
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        
+        writer.startElement("tbody", null);
+        writer.writeAttribute("class", DataTable.DATA_CLASS, null);
+        
+        int index = 0;
+        for(Iterator<? extends Object> it = frozenRows.iterator(); it.hasNext();) {
+            requestMap.put(var, it.next());
+            
+            if(rowIndexVar != null) {
+                requestMap.put(rowIndexVar, index);
+            }
+            
+            encodeRow(context, table, clientId, index, rowIndexVar);
+        }
+
+        writer.endElement("tbody");
+    }
+    
+    protected void encodeSummaryRow(FacesContext context, DataTable table, SummaryRow summaryRow) throws IOException{
         MethodExpression me = summaryRow.getListener();
         if(me != null) {
             me.invoke(context.getELContext(), new Object[]{table.getSortBy()});

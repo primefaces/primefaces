@@ -130,6 +130,10 @@
     padding-right: 40px;
 }
 
+.ui-datatable-scrollable .ui-datatable-scrollable-header td {
+    font-weight: normal;
+}
+
 .ui-datatable .ui-column-resizer {
     position:absolute;
     right:0;
