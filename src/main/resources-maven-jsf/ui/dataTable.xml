@@ -20,6 +20,9 @@
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
         <interface>
+			<name>org.primefaces.component.api.RTLAware</name>
+		</interface>
+        <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
@@ -293,6 +296,13 @@
 			<type>java.util.Collection</type>
             <description>Collection to display as fixed in scrollable mode.</description>
 		</attribute>
+        <attribute>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>ltr</defaultValue>
+            <description>Defines text direction, valid values are "ltr" (default) and "rtl".</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
