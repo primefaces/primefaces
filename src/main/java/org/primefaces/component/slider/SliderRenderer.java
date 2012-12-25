@@ -109,7 +109,7 @@ public class SliderRenderer extends CoreRenderer{
         else {
 			UIComponent targetComponent = slider.findComponent(target);
             if(targetComponent == null) {
-                throw new FacesException("Cannot find slider target component '" + target + "' in view");
+                throw new FacesException("Cannot find component with identifier \"" + target + "\" referenced from \"" + slider.getClientId(context) + "\".");
             }
 			
 			return targetComponent;

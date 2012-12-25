@@ -20,29 +20,29 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             this.output = $(PrimeFaces.escapeClientId(this.cfg.display));
         }
 
-        var $this = this;
-
-        //Create slider
         this.jq.slider(this.cfg);
 
-        //Slide handler
+        this.bindEvents();
+    },
+    
+    bindEvents: function() {
+        var $this = this;
+        
         this.jq.bind('slide', function(event, ui) {
             $this.onSlide(event, ui);
         });
 
-        //Slide start handler
         if(this.cfg.onSlideStart) {
             this.jq.bind('slidestart', function(event, ui) {
                 $this.cfg.onSlideStart.call(this, event, ui);
             });
         }
 
-        //Slide end handler
         this.jq.bind('slidestop', function(event, ui) {
             $this.onSlideEnd(event, ui);
         });
 
-        this.input.keypress(function(e){
+        this.input.keypress(function(e) {
             var charCode = (e.which) ? e.which : e.keyCode
             if(charCode > 31 && (charCode < 48 || charCode > 57))
                 return false;
@@ -88,7 +88,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             if(slideEndBehavior) {
                 var ext = {
                     params: [
-                        {name: this.id + '_ajaxSlideValue', value: ui.value}
+                        {name: this.id + '_slideValue', value: ui.value}
                     ]
                 };
 
