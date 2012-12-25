@@ -38,6 +38,7 @@ import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.model.SortMeta;
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -151,9 +152,8 @@ public class DataTableRenderer extends DataRenderer {
         //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
-        if(table.isResizableColumns()) {
-            containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS; 
-        }
+        if(table.isResizableColumns()) containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;         
+        if(ComponentUtils.isRTL(context, table)) containerClass = containerClass + " " + DataTable.RTL_CLASS;
         
         //default sort
         if(!table.isDefaultSorted() && table.getValueExpression("sortBy") != null && !table.isLazy()) {
@@ -677,9 +677,13 @@ public class DataTableRenderer extends DataRenderer {
     }
     
     protected void encodeFrozenRows(FacesContext context, DataTable table) throws IOException {
+        Collection<?> frozenRows = table.getFrozenRows();
+        if(frozenRows == null || frozenRows.isEmpty()) {
+            return;
+        }
+        
         ResponseWriter writer = context.getResponseWriter();
         String clientId = table.getClientId(context);
-        Collection<?> frozenRows = table.getFrozenRows();
         String var = table.getVar();
         String rowIndexVar = table.getRowIndexVar();
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();

@@ -225,3 +225,12 @@
     padding:0;
     margin:0;
 }
+
+.ui-datatable-rtl {
+    direction: rtl;
+}
+
+.ui-datatable-rtl.ui-datatable thead th, 
+.ui-datatable-rtl.ui-datatable tfoot td {
+    text-align: right;
+}
