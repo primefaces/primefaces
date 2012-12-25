@@ -1670,6 +1670,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 _self.tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
                 tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
+                
+                //frozen rows
+                var frozenRowsBody = thead.next('tbody');
+                if(frozenRowsBody.length === 1) {
+                    frozenRowsBody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);  
+                }
 
                 scrollHeader.scrollLeft(scrollBody.scrollLeft());
 
