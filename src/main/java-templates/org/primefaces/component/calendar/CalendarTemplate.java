@@ -1,5 +1,5 @@
 import org.primefaces.component.calendar.Calendar;
-import org.primefaces.event.DateSelectEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
@@ -99,16 +99,16 @@ import javax.faces.event.PhaseId;
         if(isValid()) {
             for(Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext();) {
                 AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
-                DateSelectEvent dateSelectEvent = new DateSelectEvent(this, behaviorEvent.getBehavior(), (Date) getValue());
+                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getValue());
 
                 if(behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
-                    dateSelectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
+                    selectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
                 }
                 else {
-                    dateSelectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                    selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
                 }
 
-                super.queueEvent(dateSelectEvent);
+                super.queueEvent(selectEvent);
             }
         }
     }
