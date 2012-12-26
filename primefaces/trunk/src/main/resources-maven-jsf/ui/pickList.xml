@@ -192,6 +192,13 @@
 			<type>java.lang.String</type>
             <description>Client side function to use in custom filterMatchMode.</description>
 		</attribute>
+        <attribute>
+			<name>showCheckbox</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When true, a checkbox is displayed next to each item.</description>
+		</attribute>
 	</attributes>
 	    <resources>
         <resource>

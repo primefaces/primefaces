@@ -118,6 +118,7 @@ public class PickListRenderer extends CoreRenderer {
             .attr("disabled", pickList.isDisabled(), false)
             .attr("filterMatchModel", pickList.getFilterMatchMode(), null)
             .attr("filterFunction", pickList.getFilterFunction(), null)
+            .attr("showCheckbox", pickList.isShowCheckbox(), false)
             .callback("onTransfer", "function(e)", pickList.getOnTransfer());
         
         encodeClientBehaviors(context, pickList, wb);
@@ -218,6 +219,7 @@ public class PickListRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String var = pickList.getVar();
 		Converter converter = pickList.getConverter();
+        boolean showCheckbox = pickList.isShowCheckbox();
         
         for(Iterator it = model.iterator(); it.hasNext();) {
             Object item = it.next();
@@ -235,25 +237,35 @@ public class PickListRenderer extends CoreRenderer {
                 writer.startElement("table", null);
                 writer.startElement("tbody", null);
                 writer.startElement("tr", null);
+                
+                if(showCheckbox) {
+                    writer.startElement("td", null);
+                    encodeCheckbox(context, pickList);
+                    writer.endElement("td");
+                }
                         
-                 for(UIComponent kid : pickList.getChildren()) {
-                     if(kid instanceof Column && kid.isRendered()) {
-                         Column column = (Column) kid;
-                         
-                         writer.startElement("td", null);
-                         if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-                         if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
-                         
-                         kid.encodeAll(context);
-                         writer.endElement("td");
-                     }
-                 }
+                for(UIComponent kid : pickList.getChildren()) {
+                    if(kid instanceof Column && kid.isRendered()) {
+                        Column column = (Column) kid;
+
+                        writer.startElement("td", null);
+                        if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
+                        if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+
+                        kid.encodeAll(context);
+                        writer.endElement("td");
+                    }
+                }
                  
                 writer.endElement("tr");
                 writer.endElement("tbody");
                 writer.endElement("table");
             }
             else {
+                if(showCheckbox) {
+                    encodeCheckbox(context, pickList);
+                }
+                
                 writer.writeText(itemLabel, null);
             }
                 
@@ -299,6 +311,24 @@ public class PickListRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-search", null);
         writer.endElement("span");
+        
+        writer.endElement("div");
+    }
+    
+    protected void encodeCheckbox(FacesContext context, PickList list) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
+                
+        writer.startElement("div", null);
+        writer.writeAttribute("class", HTML.CHECKBOX_BOX_CLASS, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.CHECKBOX_ICON_CLASS, null);
+        writer.endElement("span");
+
+        writer.endElement("div");
         
         writer.endElement("div");
     }
