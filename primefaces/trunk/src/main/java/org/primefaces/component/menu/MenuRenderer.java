@@ -80,7 +80,6 @@ public class MenuRenderer extends BaseMenuRenderer {
             UIComponent child = (UIComponent) iterator.next();
 
             if(child.isRendered()) {
-
                 if(child instanceof MenuItem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
@@ -107,6 +106,9 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         //title
         writer.startElement("li", null);
+        if(shouldWriteId(submenu)) {
+            writer.writeAttribute("id", submenu.getClientId(context), null);
+        }
         writer.writeAttribute("class", styleClass, null);
         if(style != null) {
             writer.writeAttribute("style", style, null);
