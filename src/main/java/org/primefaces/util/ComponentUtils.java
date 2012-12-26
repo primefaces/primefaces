@@ -109,37 +109,6 @@ public class ComponentUtils {
         return converter;
     }
 	
-	/**
-	 * Resolves the end text to render by using a specified value
-	 * 
-	 * @param context			FacesContext instance
-	 * @param component			UIComponent instance whose value will be returned
-	 * @return					End text
-	 */
-	public static String getStringValueToRender(FacesContext facesContext, UIComponent component, Object value) {
-		if(value == null)
-			return null;
-		
-		ValueHolder valueHolder = (ValueHolder) component;
-		
-		Converter converter = valueHolder.getConverter();
-		if(converter != null) {
-			return converter.getAsString(facesContext, component, value);
-		}
-		else {
-			ValueExpression expr = component.getValueExpression("value");
-			if(expr != null) {
-				Class<?> valueType = expr.getType(facesContext.getELContext());
-				Converter converterForType = facesContext.getApplication().createConverter(valueType);
-				
-				if(converterForType != null)
-					return converterForType.getAsString(facesContext, component, value);
-			}
-		}
-		
-		return value.toString();
-	}
-
 	public static UIComponent findParentForm(FacesContext context, UIComponent component) {
 		UIComponent parent = component.getParent();
 		
