@@ -22,7 +22,8 @@ public class Constants {
     public static final String PARTIAL_PROCESS_PARAM = "javax.faces.partial.execute";
     public static final String PARTIAL_SOURCE_PARAM = "javax.faces.source";
     public static final String PARTIAL_BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
-
+    public static final String INTERPRET_EMPTY_STRING_AS_NULL = "javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL";
+    
     public static final String THEME_PARAM = "primefaces.THEME";
     public static final String AUTO_UPDATE = "primefaces.AUTO_UPDATE";
     public static final String PUSH_SERVER_URL = "primefaces.PUSH_SERVER_URL";

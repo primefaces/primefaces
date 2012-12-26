@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -35,8 +34,6 @@ import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
 public class ComponentUtils {
-
-    private final static Logger logger = Logger.getLogger(ComponentUtils.class.getName());
 
 	/**
 	 * Algorithm works as follows;
@@ -52,10 +49,12 @@ public class ComponentUtils {
 		if(component instanceof ValueHolder) {
 			
 			if(component instanceof EditableValueHolder) {
-				Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
-				if(submittedValue != null) {
-					return submittedValue.toString();
-				}
+                EditableValueHolder input = (EditableValueHolder) component;
+                if(!input.isValid()) {
+                    Object submittedValue = input.getSubmittedValue();
+                    
+                    return (submittedValue != null) ? submittedValue.toString() : null;
+                }
 			}
 
 			ValueHolder valueHolder = (ValueHolder) component;
@@ -429,4 +428,11 @@ public class ComponentUtils {
         
         return globalValue||component.isRTL();
     }
+    
+    public static boolean considerEmptyStringAsNull(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String value = externalContext.getInitParameter(Constants.INTERPRET_EMPTY_STRING_AS_NULL);
+        
+        return (value == null) ? false : Boolean.valueOf(value);
+    } 
 }
