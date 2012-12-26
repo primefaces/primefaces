@@ -396,9 +396,8 @@ PrimeFaces.ajax.AjaxUtils = {
             PrimeFaces.ajax.AjaxUtils.updateState.call(this, content);
         }
         else if(id == PrimeFaces.VIEW_ROOT) {
-            document.open();
-            document.write(content);
-            document.close();
+            $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
+            $('body').html(content.substring(content.indexOf("<body>") + 6, content.lastIndexOf("</body>")));
         }
         else {
             $(PrimeFaces.escapeClientId(id)).replaceWith(content);
