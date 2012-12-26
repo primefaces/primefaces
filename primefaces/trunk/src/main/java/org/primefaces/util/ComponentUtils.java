@@ -15,6 +15,7 @@
  */
 package org.primefaces.util;
 
+import com.sun.org.apache.bcel.internal.generic.FCONST;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -50,10 +51,13 @@ public class ComponentUtils {
 			
 			if(component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
-                if(!input.isValid()) {
-                    Object submittedValue = input.getSubmittedValue();
-                    
-                    return (submittedValue != null) ? submittedValue.toString() : null;
+                Object submittedValue = input.getSubmittedValue();
+                
+                if(ComponentUtils.considerEmptyStringAsNull(context) && submittedValue == null && context.isValidationFailed()) {
+                    return null;
+                }
+                else if(submittedValue != null) {
+                    return submittedValue.toString();
                 }
 			}
 
