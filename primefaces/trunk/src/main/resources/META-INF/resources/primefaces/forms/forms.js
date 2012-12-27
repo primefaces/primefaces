@@ -2363,19 +2363,18 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
         this.scope = this.cfg.scope ? $(PrimeFaces.escapeClientId(this.cfg.scope)) : null;
-        var _self = this;
+        var $this = this;
         
         //attach keypress listener to parent form
-        this.jqTarget.parents('form:first').keydown(function(e) {
-           //do not proceed if event target is not in this scope or target is a textarea
-           if((_self.scope && _self.scope.find(e.target).length == 0)||$(e.target).is('textarea')) {
-               return true;
-           }
-               
+        this.jqTarget.closest('form').off('keydown.' + this.id).on('keydown.' + this.id, function(e) { 
            var keyCode = $.ui.keyCode;
-           
            if(e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
-               _self.jqTarget.click();
+                //do not proceed if event target is not in this scope or target is a textarea
+                if(($this.scope && $this.scope.find(e.target).length == 0)||$(e.target).is('textarea')) {
+                    return true;
+                }
+           
+               $this.jqTarget.click();
                e.preventDefault();
            }
         });
