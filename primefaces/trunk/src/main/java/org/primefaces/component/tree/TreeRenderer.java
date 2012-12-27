@@ -186,11 +186,11 @@ public class TreeRenderer extends CoreRenderer {
         
         //enable RTL
         if(ComponentUtils.isRTL(context, tree)) {
-            tree.setRTL(true);
+            tree.setRTLRendering(true);
         }
         
         //container class
-        String containerClass = tree.isRTL() ? Tree.CONTAINER_RTL_CLASS : Tree.CONTAINER_CLASS;
+        String containerClass = tree.isRTLRendering() ? Tree.CONTAINER_RTL_CLASS : Tree.CONTAINER_CLASS;
         if(tree.getStyleClass() != null) {
             containerClass = containerClass + " " + tree.getStyleClass();
         }
@@ -408,7 +408,7 @@ public class TreeRenderer extends CoreRenderer {
             boolean isLeaf = node.isLeaf();
             boolean expanded = node.isExpanded();
             boolean selectable = node.isSelectable();
-            String toggleIcon = expanded ? Tree.EXPANDED_ICON_CLASS_V : (tree.isRTL() ? Tree.COLLAPSED_ICON_RTL_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V);
+            String toggleIcon = expanded ? Tree.EXPANDED_ICON_CLASS_V : (tree.isRTLRendering() ? Tree.COLLAPSED_ICON_RTL_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V);
             String stateIcon = isLeaf ? Tree.LEAF_ICON_CLASS : toggleIcon;
             UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
             Object datakey = tree.getDatakey();

@@ -209,3 +209,7 @@ import org.primefaces.model.TreeNode;
         
         return selectionMode != null && selectionMode.equals("checkbox");
     }
+
+    public boolean isRTL() {
+        return this.getDir().equalsIgnoreCase("rtl");
+    }
