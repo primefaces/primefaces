@@ -465,6 +465,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             this.scrollBody.width(fitWidth);
             this.scrollFooter.width(fitWidth);
         }
+        
+        if(this.scrollBody.height() > this.tbody.height()) {
+            this.scrollBody.height(this.tbody.height());
+        }
                 
         this.restoreScrollState();
 
