@@ -10,7 +10,7 @@
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
 		super.broadcast(event);
 		
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+		FacesContext facesContext = getFacesContext();
 		MethodExpression me = getFileUploadListener();
 		
 		if (me != null && event instanceof org.primefaces.event.FileUploadEvent) {

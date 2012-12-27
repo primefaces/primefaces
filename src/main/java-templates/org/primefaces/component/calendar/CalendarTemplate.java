@@ -82,7 +82,7 @@ import javax.faces.event.PhaseId;
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = getFacesContext();
         String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
         
         if(eventName != null && eventName.equals("dateSelect") && event instanceof AjaxBehaviorEvent) {
@@ -118,7 +118,7 @@ import javax.faces.event.PhaseId;
     public String calculatePattern() {
         if(calculatedPattern == null) {
             String pattern = this.getPattern();
-            Locale locale = this.calculateLocale(FacesContext.getCurrentInstance());
+            Locale locale = this.calculateLocale(getFacesContext());
             if(pattern == null) {
                 calculatedPattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
             }
@@ -135,7 +135,7 @@ import javax.faces.event.PhaseId;
 
     public String calculateTimeOnlyPattern() {
         if(timeOnlyPattern == null) {
-            String localePattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, calculateLocale(FacesContext.getCurrentInstance()))).toPattern();
+            String localePattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, calculateLocale(getFacesContext()))).toPattern();
             String userTimePattern = getPattern();
 
             timeOnlyPattern = localePattern + " " + userTimePattern;

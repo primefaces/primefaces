@@ -44,7 +44,7 @@ import org.primefaces.util.Constants;
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = getFacesContext();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
@@ -73,7 +73,7 @@ import org.primefaces.util.Constants;
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
 		super.broadcast(event);
 		
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+		FacesContext facesContext = getFacesContext();
 		MethodExpression me = getCompleteMethod();
 		
 		if(me != null && event instanceof org.primefaces.event.AutoCompleteEvent) {

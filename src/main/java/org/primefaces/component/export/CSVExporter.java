@@ -212,10 +212,11 @@ public class CSVExporter extends Exporter {
 	
 	protected void addColumnValue(Writer writer, List<UIComponent> components) throws IOException {
 		StringBuilder builder = new StringBuilder();
+        FacesContext context = FacesContext.getCurrentInstance();
 		
 		for(UIComponent component : components) {
 			if(component.isRendered()) {
-				String value = exportValue(FacesContext.getCurrentInstance(), component);
+				String value = exportValue(context, component);
 
                 //escape double quotes
                 value = value.replaceAll("\"", "\"\"");

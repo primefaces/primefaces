@@ -69,7 +69,7 @@ import org.primefaces.component.column.Column;
     }
 
     public void syncColumnWidths() {
-        Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        Map<String,String> params = getFacesContext().getExternalContext().getRequestParameterMap();
         String clientId = this.getClientId();
         
         String columnId = params.get(clientId + "_columnId");

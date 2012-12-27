@@ -25,7 +25,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 public class ResizableColumnsFeature implements DataTableFeature {
 
     public void decode(FacesContext context, DataTable table) {
-        Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = table.getClientId();
         
         String columnId = params.get(clientId + "_columnId");

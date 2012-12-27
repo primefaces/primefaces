@@ -27,6 +27,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -67,18 +68,19 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public void setRowKey(String rowKey) {
+        Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
         saveDescendantState();
         
         this.rowKey = rowKey;
 
         if(rowKey == null) {
-            FacesContext.getCurrentInstance().getExternalContext().getRequestMap().remove(getVar());
+            requestMap.remove(getVar());
         } 
         else {
             TreeNode root = getValue();
             this.rowNode = findTreeNode(root, rowKey);
             
-            FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put(getVar(), this.rowNode.getData());
+            requestMap.put(getVar(), this.rowNode.getData());
         }
 
         restoreDescendantState();
@@ -299,7 +301,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
     
     private void saveDescendantState() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = getFacesContext();
         
         for(UIComponent child : getChildren()) {
             saveDescendantState(child, context);
@@ -346,7 +348,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
     
     private void restoreDescendantState() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = getFacesContext();
 
         for(UIComponent child : getChildren()) {
             restoreDescendantState(child, context);

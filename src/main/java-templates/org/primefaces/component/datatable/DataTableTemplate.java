@@ -191,7 +191,7 @@ import org.primefaces.component.datatable.feature.*;
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = getFacesContext();
 
         if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
             setRowIndex(-1);
@@ -538,7 +538,7 @@ import org.primefaces.component.datatable.feature.*;
         boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
         
         if(hasRowKeyVe) {
-            Map<String,Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+            Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
             String var = this.getVar();
             Collection data = (Collection) getDataModel().getWrappedData();
 
@@ -570,7 +570,7 @@ import org.primefaces.component.datatable.feature.*;
         selectedRowKeys = new ArrayList<Object>();
         boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
         String var = this.getVar();
-        Map<String,Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
 
         if(isSelectionEnabled() && selection != null) {
             if(this.isSingleSelectionMode()) {

@@ -30,7 +30,7 @@ import org.primefaces.util.Constants;
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = getFacesContext();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = this.getClientId(context);
         AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;

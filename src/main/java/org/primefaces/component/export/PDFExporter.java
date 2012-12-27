@@ -218,10 +218,11 @@ public class PDFExporter extends Exporter {
     
     protected void addColumnValue(PdfPTable pdfTable, List<UIComponent> components, Font font) {
         StringBuilder builder = new StringBuilder();
+        FacesContext context = FacesContext.getCurrentInstance();
         
         for(UIComponent component : components) {
         	if(component.isRendered() ) {
-        		String value = exportValue(FacesContext.getCurrentInstance(), component);
+        		String value = exportValue(context, component);
                 
                 if(value != null)
                 	builder.append(value);

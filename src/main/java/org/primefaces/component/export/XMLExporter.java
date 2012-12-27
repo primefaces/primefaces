@@ -175,12 +175,13 @@ public class XMLExporter extends Exporter {
     }
     		
 	protected void addColumnValue(Writer writer, List<UIComponent> components, String tag) throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
 		StringBuilder builder = new StringBuilder();
 		writer.write("\t\t<" + tag + ">");
 
 		for(UIComponent component : components) {
 			if(component.isRendered()) {
-				String value = exportValue(FacesContext.getCurrentInstance(), component);
+				String value = exportValue(context, component);
 
 				builder.append(value);
 			}

@@ -175,7 +175,7 @@ public abstract class UIChart extends UIOutput implements ClientBehaviorHolder {
     public void queueEvent(FacesEvent event) {
         if(event instanceof AjaxBehaviorEvent) {
             BehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-            Map<String,String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            Map<String,String> map = getFacesContext().getExternalContext().getRequestParameterMap();
             int itemIndex = Integer.parseInt(map.get("itemIndex"));
             int seriesIndex = Integer.parseInt(map.get("seriesIndex"));
 
