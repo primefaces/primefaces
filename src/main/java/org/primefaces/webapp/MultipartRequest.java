@@ -16,6 +16,7 @@
 package org.primefaces.webapp;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -82,13 +83,22 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 	
 	private void addFormParam(FileItem item) {
 		if(formParams.containsKey(item.getFieldName())) {
-			formParams.get(item.getFieldName()).add(item.getString());
+			formParams.get(item.getFieldName()).add(getItemString(item));
 		} else {
 			List<String> items = new ArrayList<String>();
-			items.add(item.getString());
+			items.add(getItemString(item));
 			formParams.put(item.getFieldName(), items);
 		}
 	}
+
+    private String getItemString(FileItem item) {
+        try {
+            return item.getString(getRequest().getCharacterEncoding());
+        } catch (UnsupportedEncodingException e) {
+            logger.severe("Unsupported character encoding " + getRequest().getCharacterEncoding());
+            return item.getString();
+        }
+    }
 	
 	@Override
 	public String getParameter(String name) {
