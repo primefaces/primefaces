@@ -27,7 +27,6 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -492,11 +491,11 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    public boolean isRTL() {
+    public boolean isRTLRendering() {
         return rtl;
     }
 
-    public void setRTL(boolean rtl) {
+    public void setRTLRendering(boolean rtl) {
         this.rtl = rtl;
     }
 }
