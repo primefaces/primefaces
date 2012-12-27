@@ -443,15 +443,29 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Initialize data scrolling, for live scrolling listens scroll event to load data dynamically
-                 */
+     * Initialize data scrolling, for live scrolling listens scroll event to load data dynamically
+     */
     setupScrolling: function() {
         this.scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header');
         this.scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body');
         this.scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer');
         this.scrollStateHolder = $(this.jqId + '_scrollState');
-        var _self = this;
+        this.scrollHeaderBox = this.scrollHeader.children('div.ui-datatable-scrollable-header-box');
+        var $this = this;
         
+        if(this.scrollBody.width() > this.tbody.width()) {
+            var fitWidth = 0,
+            cols = this.scrollHeaderBox.find('> table > thead > tr > th > div.ui-dt-c');
+            for(var i = 0; i < cols.length; i++) {
+                fitWidth += cols.eq(i).innerWidth();
+            }
+            fitWidth+=20;
+        
+            this.scrollHeader.width(fitWidth);
+            this.scrollBody.width(fitWidth);
+            this.scrollFooter.width(fitWidth);
+        }
+                
         this.restoreScrollState();
 
         if(this.cfg.liveScroll) {
@@ -460,29 +474,29 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.scrollHeader.scroll(function() {
-            _self.scrollBody.scrollLeft(_self.scrollHeader.scrollLeft());
-            _self.scrollFooter.scrollLeft(_self.scrollHeader.scrollLeft());
+            $this.scrollBody.scrollLeft($this.scrollHeader.scrollLeft());
+            $this.scrollFooter.scrollLeft($this.scrollHeader.scrollLeft());
         });
         
         this.scrollBody.scroll(function() {
-            _self.scrollHeader.scrollLeft(_self.scrollBody.scrollLeft());
-            _self.scrollFooter.scrollLeft(_self.scrollBody.scrollLeft());
+            $this.scrollHeader.scrollLeft($this.scrollBody.scrollLeft());
+            $this.scrollFooter.scrollLeft($this.scrollBody.scrollLeft());
 
-            if(_self.shouldLiveScroll) {
+            if($this.shouldLiveScroll) {
                 var scrollTop = this.scrollTop,
                 scrollHeight = this.scrollHeight,
                 viewportHeight = this.clientHeight;
 
                 if(scrollTop >= (scrollHeight - (viewportHeight))) {
-                    _self.loadLiveRows();
+                    $this.loadLiveRows();
                 }
             }
             
-            _self.saveScrollState();
+            $this.saveScrollState();
         });
         
-        if(_self.isEmpty()) {
-            _self.alignEmptyMessage();
+        if($this.isEmpty()) {
+            $this.alignEmptyMessage();
         }
     },
     
