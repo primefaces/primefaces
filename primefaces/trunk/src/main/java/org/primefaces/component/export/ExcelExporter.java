@@ -197,10 +197,11 @@ public class ExcelExporter extends Exporter {
         int cellIndex = row.getLastCellNum() == -1 ? 0 : row.getLastCellNum();
         Cell cell = row.createCell(cellIndex);
         StringBuilder builder = new StringBuilder();
+        FacesContext context = FacesContext.getCurrentInstance();
         
         for(UIComponent component : components) {
         	if(component.isRendered()) {
-                String value = exportValue(FacesContext.getCurrentInstance(), component);
+                String value = exportValue(context, component);
                 
                 if(value != null)
                 	builder.append(value);

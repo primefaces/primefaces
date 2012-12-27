@@ -37,7 +37,7 @@ public class SelectionFeature implements DataTableFeature {
 		if(table.isSingleSelectionMode())
 			decodeSingleSelection(table, selection);
 		else
-			decodeMultipleSelection(table, selection);
+			decodeMultipleSelection(context, table, selection);
     }
     
     void decodeSingleSelection(DataTable table, String selection) {
@@ -47,8 +47,8 @@ public class SelectionFeature implements DataTableFeature {
             table.setSelection(table.getRowData(selection));
 	}
 
-	void decodeMultipleSelection(DataTable table, String selection) {
-		Class<?> clazz = table.getValueExpression("selection").getType(FacesContext.getCurrentInstance().getELContext());
+	void decodeMultipleSelection(FacesContext context, DataTable table, String selection) {
+		Class<?> clazz = table.getValueExpression("selection").getType(context.getELContext());
         boolean isArray = clazz.isArray();
         
         if(!isArray && !clazz.isAssignableFrom(List.class)) {

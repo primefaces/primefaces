@@ -29,7 +29,7 @@ import javax.faces.event.PhaseId;
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = getFacesContext();
 
         if(isRequestSource(context)) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();

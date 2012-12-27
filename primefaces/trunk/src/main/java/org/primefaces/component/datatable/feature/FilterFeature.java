@@ -207,7 +207,7 @@ public class FilterFeature implements DataTableFeature {
                         Column column= (Column) headerRowChild;
 
                         if(column.isRendered() && column.getValueExpression("filterBy") != null) {
-                            String filterId = column.getClientId(FacesContext.getCurrentInstance()) + separator + "filter";
+                            String filterId = column.getClientId(context) + separator + "filter";
                             filterMap.put(filterId, column);
                         }
                     }
@@ -220,14 +220,14 @@ public class FilterFeature implements DataTableFeature {
                     
                 if(column.getValueExpression("filterBy") != null) {
                     if(column instanceof Column) {
-                        String filterId = column.getClientId(FacesContext.getCurrentInstance()) + separator + "filter";
+                        String filterId = column.getClientId(context) + separator + "filter";
                         filterMap.put(filterId, column);
                     }
                     else if(column instanceof DynamicColumn) {
                         DynamicColumn dynamicColumn = (DynamicColumn) column;
                         dynamicColumn.applyModel();
 
-                        String filterId = dynamicColumn.getContainerClientId(FacesContext.getCurrentInstance()) + separator + "filter";
+                        String filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
                         filterMap.put(filterId, dynamicColumn);
                     }
                 }

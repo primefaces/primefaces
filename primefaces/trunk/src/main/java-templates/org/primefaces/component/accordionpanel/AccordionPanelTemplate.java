@@ -66,7 +66,7 @@ import javax.faces.component.visit.VisitResult;
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = getFacesContext();
 
         if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
