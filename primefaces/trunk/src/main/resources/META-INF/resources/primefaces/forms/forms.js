@@ -1390,9 +1390,12 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
     selectItem: function(item) {
         item.addClass('ui-state-highlight').removeClass('ui-state-hover');
         this.options.eq(item.index()).prop('selected', true);
-        this.cursorItem = item;
+    },
+    
+    unselectItem: function(item) {
+        item.removeClass('ui-state-highlight');
+        this.options.eq(item.index()).prop('selected', false);
     }
-
 });
 
 /**
@@ -1404,7 +1407,7 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
         this._super();
         var $this = this;
         
-        this.items.on('mousedown.selectListbox', function(e) {       
+        this.items.on('click.selectListbox', function(e) {       
             var item = $(this);
             
             $this.unselectAll();
@@ -1420,14 +1423,19 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
  * PrimeFaces SelectManyMenu Widget
  */
 PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
-    
+        
     bindEvents: function() {
         this._super();
         var $this = this;
         
-        this.items.on('mousedown.selectListbox', function(e) {       
+        this.items.on('click.selectListbox', function(e) { 
+            //stop propagation
+            if($this.checkboxClick) {
+                $this.checkboxClick = false;
+                return;
+            }
+            
             var item = $(this),
-            option = $this.options.eq(item.index()),
             metaKey = (e.metaKey||e.ctrlKey);
             
             if(!e.shiftKey) {
@@ -1435,29 +1443,26 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                     $this.unselectAll();
                 }
 
-                //unselect current selected item if multiple with metakey
                 if(metaKey && item.hasClass('ui-state-highlight')) {
-                    item.removeClass('ui-state-highlight');
-                    option.removeAttr('selected');
+                    $this.unselectItem(item);
                 } 
-                //select item
                 else {
                     $this.selectItem(item);
+                    $this.cursorItem = item;
                 }
             } 
             else {
                 //range selection
                 if($this.cursorItem) {
                     $this.unselectAll();
-                    
+ 
                     var currentItemIndex = item.index(),
                     cursorItemIndex = $this.cursorItem.index(),
                     startIndex = (currentItemIndex > cursorItemIndex) ? cursorItemIndex : currentItemIndex,
                     endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
                     
                     for(var i = startIndex ; i < endIndex; i++) {
-                        $this.items.eq(i).addClass('ui-state-highlight');
-                        $this.options.eq(i).prop('selected', true);
+                        $this.selectItem($this.items.eq(i))
                     }
                 } 
                 else {
@@ -1469,6 +1474,61 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
             PrimeFaces.clearSelection();
             e.preventDefault();
         });
+        
+        if(this.cfg.showCheckbox) {
+            this.checkboxes = this.jq.find('div.ui-chkbox > div.ui-chkbox-box');
+            
+            this.checkboxes.on('mouseover.selectManyMenu', function(e) {
+                var chkbox = $(this);
+                
+                if(!chkbox.hasClass('ui-state-active'))
+                    chkbox.addClass('ui-state-hover');
+            })
+            .on('mouseout.selectManyMenu', function(e) {
+                $(this).removeClass('ui-state-hover');
+            })
+            .on('click.selectManyMenu', function(e) {
+                $this.checkboxClick = true;
+                
+                var item = $(this).closest('.ui-selectlistbox-item');
+                if(item.hasClass('ui-state-highlight'))
+                    $this.unselectItem(item);
+                else
+                    $this.selectItem(item);
+                
+                $this.input.change();
+            });
+        }
+    },
+    
+    unselectAll: function() {
+        for(var i = 0; i < this.items.length; i++) {
+            this.unselectItem(this.items.eq(i));
+        }
+    },
+    
+    selectItem: function(item) {
+        this._super(item);
+        
+        if(this.cfg.showCheckbox) {
+            this.selectCheckbox(item.find('div.ui-chkbox-box'));
+        }
+    },
+    
+    unselectItem: function(item) {
+        this._super(item);
+        
+        if(this.cfg.showCheckbox) {
+            this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+        }
+    },
+    
+    selectCheckbox: function(chkbox) {
+        chkbox.removeClass('ui-state-hover').addClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+    },
+    
+    unselectCheckbox: function(chkbox) {
+        chkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
     }
 });
 

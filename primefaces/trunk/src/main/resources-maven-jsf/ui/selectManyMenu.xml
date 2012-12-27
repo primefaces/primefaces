@@ -65,6 +65,13 @@
             <type>java.lang.String</type>
             <description>Name of iterator to be used in custom content display.</description>
         </attribute>
+        <attribute>
+			<name>showCheckbox</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When true, a checkbox is displayed next to each item.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

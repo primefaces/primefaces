@@ -29,11 +29,12 @@ import org.primefaces.component.column.Column;
 
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class PickListRenderer extends CoreRenderer {
-	
+      	
 	@Override
 	public void decode(FacesContext context, UIComponent component) {
 		PickList pickList = (PickList) component;
@@ -240,7 +241,7 @@ public class PickListRenderer extends CoreRenderer {
                 
                 if(showCheckbox) {
                     writer.startElement("td", null);
-                    encodeCheckbox(context, pickList);
+                    RendererUtils.encodeCheckbox(context);
                     writer.endElement("td");
                 }
                         
@@ -263,7 +264,7 @@ public class PickListRenderer extends CoreRenderer {
             }
             else {
                 if(showCheckbox) {
-                    encodeCheckbox(context, pickList);
+                    RendererUtils.encodeCheckbox(context);
                 }
                 
                 writer.writeText(itemLabel, null);
@@ -314,25 +315,7 @@ public class PickListRenderer extends CoreRenderer {
         
         writer.endElement("div");
     }
-    
-    protected void encodeCheckbox(FacesContext context, PickList list) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
-                
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_BOX_CLASS, null);
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_ICON_CLASS, null);
-        writer.endElement("span");
-
-        writer.endElement("div");
         
-        writer.endElement("div");
-    }
-    
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Rendering happens on encodeEnd
