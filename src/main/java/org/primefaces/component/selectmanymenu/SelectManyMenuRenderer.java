@@ -26,6 +26,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.selectonelistbox.SelectOneListbox;
+import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -72,7 +73,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("SelectManyMenu", menu.resolveWidgetVar(), clientId, false)
-            .attr("disabled", menu.isDisabled(), false);
+            .attr("disabled", menu.isDisabled(), false)
+            .attr("showCheckbox", menu.isShowCheckbox(), false);
         
         encodeClientBehaviors(context, menu, wb);
 
@@ -110,13 +112,14 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
         boolean customContent = menu.getVar() != null;
+        boolean showCheckbox = menu.isShowCheckbox();
 
         if(customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
             writer.startElement("tbody", null);
             for(SelectItem selectItem : selectItems) {
-                encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent);
+                encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
             }
             writer.endElement("tbody");
             writer.endElement("table");
@@ -125,13 +128,14 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
             for(SelectItem selectItem : selectItems) {
-                encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent);
+                encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
             }
             writer.endElement("ul");
         }
     }
     
-    protected void encodeItem(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues, Converter converter, boolean customContent) throws IOException {
+    protected void encodeItem(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues, 
+                        Converter converter, boolean customContent, boolean showCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         boolean disabled = option.isDisabled() || menu.isDisabled();
@@ -165,6 +169,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             if(option.getDescription() != null) {
                 writer.writeAttribute("title", option.getDescription(), null);
             }
+            
+            if(showCheckbox) {
+                writer.startElement("td", null);
+                RendererUtils.encodeCheckbox(context);
+                writer.endElement("td");
+            }
 
             for(UIComponent child : menu.getChildren()) {
                 if(child instanceof Column && child.isRendered()) {
@@ -179,6 +189,11 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         else {
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
+            
+            if(showCheckbox) {
+                RendererUtils.encodeCheckbox(context);
+            }
+            
             if(option.isEscape()) {
                 writer.writeText(option.getLabel(), null);
             } else {
