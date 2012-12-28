@@ -82,7 +82,7 @@ public class TagCloudRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("TagCloud", tagCloud.resolveWidgetVar(), clientId, false);
         
-        encodeClientBehaviors(context, tagCloud);
+        encodeClientBehaviors(context, tagCloud, wb);
         
         startScript(writer, clientId);
         writer.write(wb.build());
