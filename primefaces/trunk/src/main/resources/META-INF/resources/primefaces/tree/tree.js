@@ -6,7 +6,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.cfg.formId = this.jq.parents('form:first').attr('id');
+        this.cfg.formId = this.jq.closest('form').attr('id');
 
         this.initSelection();
 
@@ -207,8 +207,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
         return false;
     },
-    
-        
+       
     nodeClick: function(e, nodeContent) {
         PrimeFaces.clearSelection();
         
@@ -220,12 +219,15 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 this.cfg.onNodeClick.call(this, node);
             }
             
-            if(nodeContent.hasClass('ui-tree-selectable') && this.cfg.selectionMode && !this.isCheckboxSelection()) {
-                if(this.isNodeSelected(node) && metaKey) {
-                    this.unselectNode(node);
+            if(nodeContent.hasClass('ui-tree-selectable') && this.cfg.selectionMode) {
+                if(this.isCheckboxSelection()) {
+                    this.toggleCheckbox(nodeContent.children(('div.ui-chkbox')));
                 }
                 else {
-                    this.selectNode(node, metaKey);
+                    if(this.isNodeSelected(node) && metaKey)
+                        this.unselectNode(node);
+                    else
+                        this.selectNode(node, metaKey);
                 }
             };
         }
@@ -243,18 +245,16 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         throw "Unsupported Operation";
     },
     
-        toggleCheckbox: function(checkbox, checked) {
-        if(checked) {
+    toggleCheckboxState: function(checkbox, checked) {
+        if(checked)
             this.uncheck(checkbox);
-        }
-        else {
+        else
             this.check(checkbox);
-        }
     },
     
     partialCheck: function(checkbox) {
         var icon = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon'),
-        treeNode = checkbox.parents('.ui-treenode:first'),
+        treeNode = checkbox.closest('.ui-treenode'),
         rowKey = this.getRowKey(treeNode);
         
         this.removeFromSelection(rowKey);
@@ -265,7 +265,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         
     check: function(checkbox) {
         var icon = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon'),
-        treeNode = checkbox.parents('.ui-treenode:first'),
+        treeNode = checkbox.closest('.ui-treenode'),
         rowKey = this.getRowKey(treeNode);
         
         icon.removeClass('ui-icon ui-icon-minus').addClass('ui-icon ui-icon-check');
@@ -275,7 +275,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     
     uncheck: function(checkbox) {
         var icon = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon'),
-        treeNode = checkbox.parents('.ui-treenode:first'),
+        treeNode = checkbox.closest('.ui-treenode'),
         rowKey = this.getRowKey(treeNode);
         
         icon.removeClass('ui-icon ui-icon-minus ui-icon-check');
@@ -298,66 +298,69 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     },
         
     bindEvents: function() {
-        var _self = this,
+        var $this = this,
         selectionMode = this.cfg.selectionMode,
         togglerSelector = this.jqId + ' .ui-tree-toggler',
-        nodeLabelSelector = this.jqId  + ' .ui-treenode-label',
+        nodeLabelSelector = this.jqId  + ' .ui-tree-selectable .ui-treenode-label',
         nodeContentSelector = this.jqId + ' .ui-treenode-content';
 
         //expand-collapse
         $(document).off('click', togglerSelector)
                     .on('click', togglerSelector, null, function(e) {
                         var toggleIcon = $(this),
-                        node = toggleIcon.parents('li:first');
+                        node = toggleIcon.closest('li');
 
-                        if(toggleIcon.hasClass(_self.cfg.collapsedIcon))
-                            _self.expandNode(node);
+                        if(toggleIcon.hasClass($this.cfg.collapsedIcon))
+                            $this.expandNode(node);
                         else
-                            _self.collapseNode(node);
+                            $this.collapseNode(node);
                     });
 
         //selection hover
-        if(selectionMode && !this.isCheckboxSelection() && this.cfg.highlight) {
+        if(selectionMode && this.cfg.highlight) {
             $(document).off('mouseout.tree mouseover.tree', nodeLabelSelector)
                         .on('mouseout.tree', nodeLabelSelector, null, function() {
-                            var element = $(this);
-
-                            if(element.hasClass('ui-state-hover')) {
-                                element.removeClass('ui-state-hover');
+                            var label = $(this);
+                            
+                            label.removeClass('ui-state-hover');
+                            
+                            if($this.isCheckboxSelection()) {
+                                label.siblings('div.ui-chkbox').children('div.ui-chkbox-box').removeClass('ui-state-hover');
                             }
                         })
                         .on('mouseover.tree', nodeLabelSelector, null, function() {
-                            var element = $(this);
+                            var label = $(this);
 
-                            if(!element.hasClass('ui-state-highlight') && element.parent().hasClass('ui-tree-selectable')) {
+                            if(!label.hasClass('ui-state-highlight')) {
                                 $(this).addClass('ui-state-hover');
+                                
+                                if($this.isCheckboxSelection()) {
+                                    label.siblings('div.ui-chkbox').children('div.ui-chkbox-box').addClass('ui-state-hover');
+                                }
                             }
                         });
         }
         
         //checkboxes
-        if(this.isCheckboxSelection()) {
+        if(this.isCheckboxSelection()) {       
             var checkboxSelector = this.jqId + ' .ui-chkbox-box';
             
             $(document).off('mouseout.tree-checkbox mouseover.tree-checkbox click.tree-checkbox', checkboxSelector)
                         .on('mouseout.tree-checkbox', checkboxSelector, null, function() {
-                            $(this).removeClass('ui-state-hover');
+                            $(this).removeClass('ui-state-hover').parent().siblings('span.ui-treenode-label').removeClass('ui-state-hover');
                         })
                         .on('mouseover.tree-checkbox', checkboxSelector, null, function() {
-                            $(this).addClass('ui-state-hover');
-                        })
-                        .on('click.tree-checkbox', checkboxSelector, null, function() {
-                            _self.clickCheckbox($(this).parent());
+                            $(this).addClass('ui-state-hover').parent().siblings('span.ui-treenode-label').addClass('ui-state-hover');
                         });
         }
         
         //node click
         $(document).off('click.tree', nodeContentSelector)
                         .on('click.tree', nodeContentSelector, null, function(e) {
-                            _self.nodeClick(e, $(this));
+                            $this.nodeClick(e, $(this));
                         });
     },
-        
+            
     collapseNode: function(node) {
         var _self = this;
         
@@ -428,7 +431,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
             this.selections = [];
             this.jq.find('.ui-treenode-label.ui-state-highlight').each(function() {
-                $(this).removeClass('ui-state-highlight').parents('.ui-treenode:first').attr('aria-selected', false);
+                $(this).removeClass('ui-state-highlight').closest('.ui-treenode').attr('aria-selected', false);
             });
         }
 
@@ -455,16 +458,16 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.fireNodeUnselectEvent(node);
     },
 
-    clickCheckbox: function(checkbox) {
-        var _self = this,
-        node = checkbox.parents('.ui-treenode:first'),
+    toggleCheckbox: function(checkbox) {
+        var $this = this,
+        node = checkbox.closest('.ui-treenode'),
         checked = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon').hasClass('ui-icon-check');
 
-        this.toggleCheckbox(checkbox, checked);
+        this.toggleCheckboxState(checkbox, checked);
 
         if(this.cfg.propagateDown) {
             node.children('.ui-treenode-children').find('.ui-chkbox').each(function() {
-                _self.toggleCheckbox($(this), checked);
+                $this.toggleCheckboxState($(this), checked);
             });
         }
 
@@ -476,15 +479,15 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 
                 if(checked) {
                     if(children.filter('.ui-treenode-unselected').length === children.length)
-                        _self.uncheck(parentsCheckbox);
+                        $this.uncheck(parentsCheckbox);
                     else
-                        _self.partialCheck(parentsCheckbox);
+                        $this.partialCheck(parentsCheckbox);
                 }
                 else {
                     if(children.filter('.ui-treenode-selected').length === children.length)
-                        _self.check(parentsCheckbox);
+                        $this.check(parentsCheckbox);
                     else
-                        _self.partialCheck(parentsCheckbox);
+                        $this.partialCheck(parentsCheckbox);
                 }
             });
         }
@@ -502,7 +505,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     preselectCheckbox: function() {
         this.jq.find('.ui-chkbox-icon').not('.ui-icon-check').each(function() {
             var icon = $(this),
-            node = icon.parents('li:first');
+            node = icon.closest('li');
 
             if(node.children('.ui-treenode-children').find('.ui-chkbox-icon.ui-icon-check').length > 0) {
                 icon.addClass('ui-icon ui-icon-minus');
