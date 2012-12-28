@@ -507,9 +507,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //height
-        if(this.scrollBody.height() > this.tbody.outerHeight()) {
+        var diff = this.scrollBody.outerHeight() - this.tbody.outerHeight();
+        if(diff > 0) {
             if(this.scrollBody.prop('scrollWidth') > this.scrollBody.outerWidth()) {
-                this.scrollBody.height(this.tbody.outerHeight() + 15);
+                this.scrollBody.height(this.tbody.outerHeight() + diff);
             } 
             else {
                 this.scrollBody.height(this.tbody.outerHeight());
