@@ -453,21 +453,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.scrollHeaderBox = this.scrollHeader.children('div.ui-datatable-scrollable-header-box');
         var $this = this;
         
-        if(this.scrollBody.width() > this.tbody.width()) {
-            var fitWidth = 0,
-            cols = this.scrollHeaderBox.find('> table > thead > tr > th > div.ui-dt-c');
-            for(var i = 0; i < cols.length; i++) {
-                fitWidth += cols.eq(i).innerWidth();
-            }
-            fitWidth+=20;
-        
-            this.scrollHeader.width(fitWidth);
-            this.scrollBody.width(fitWidth);
-            this.scrollFooter.width(fitWidth);
-        }
-        
-        if(this.scrollBody.height() > this.tbody.height()) {
-            this.scrollBody.height(this.tbody.height());
+        if(this.jq.is(':visible')) {
+            this.alignScrollbars();
         }
                 
         this.restoreScrollState();
@@ -504,6 +491,32 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    alignScrollbars: function() {
+        //width
+        if(this.scrollBody.width() > this.tbody.width()) {
+            var fitWidth = 0,
+            cols = this.scrollHeaderBox.find('> table > thead > tr > th > div.ui-dt-c');
+            for(var i = 0; i < cols.length; i++) {
+                fitWidth += cols.eq(i).innerWidth();
+            }
+            fitWidth+=20;
+        
+            this.scrollHeader.width(fitWidth);
+            this.scrollBody.width(fitWidth);
+            this.scrollFooter.width(fitWidth);
+        }
+
+        //height
+        if(this.scrollBody.height() > this.tbody.outerHeight()) {
+            if(this.scrollBody.prop('scrollWidth') > this.scrollBody.outerWidth()) {
+                this.scrollBody.height(this.tbody.outerHeight() + 15);
+            } 
+            else {
+                this.scrollBody.height(this.tbody.outerHeight());
+            }
+        }
+    },
+    
     restoreScrollState: function() {
         var scrollState = this.scrollStateHolder.val(),
         scrollValues = scrollState.split(',');
@@ -519,8 +532,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Loads rows on-the-fly when scrolling live
-                 */
+     * Loads rows on-the-fly when scrolling live
+     */
     loadLiveRows: function() {
         var options = {
             source: this.id,
