@@ -55,25 +55,28 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             StreamedContent streamedContent = null;
             
             try {
-                String dynamicContentEL = (String) session.get(dynamicContentId);
-                ELContext eLContext = context.getELContext();
-                ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL, StreamedContent.class);
-                streamedContent = (StreamedContent) ve.getValue(eLContext);
-
+                String dynamicContentEL = (String) session.get(dynamicContentId);                
                 ExternalContext externalContext = context.getExternalContext();
-                externalContext.setResponseStatus(200);
-                externalContext.setResponseContentType(streamedContent.getContentType());
                 
-                if(streamedContent.getContentEncoding() != null) {
-                    externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
-                }
+                if(dynamicContentEL != null) {
+                    ELContext eLContext = context.getELContext();
+                    ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL, StreamedContent.class);
+                    streamedContent = (StreamedContent) ve.getValue(eLContext);
 
-                byte[] buffer = new byte[2048];
+                    externalContext.setResponseStatus(200);
+                    externalContext.setResponseContentType(streamedContent.getContentType());
 
-                int length;
-                InputStream inputStream = streamedContent.getStream();
-                while ((length = (inputStream.read(buffer))) >= 0) {
-                	externalContext.getResponseOutputStream().write(buffer, 0, length);
+                    if(streamedContent.getContentEncoding() != null) {
+                        externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
+                    }
+
+                    byte[] buffer = new byte[2048];
+
+                    int length;
+                    InputStream inputStream = streamedContent.getStream();
+                    while ((length = (inputStream.read(buffer))) >= 0) {
+                        externalContext.getResponseOutputStream().write(buffer, 0, length);
+                    }
                 }
 
                 externalContext.responseFlushBuffer();

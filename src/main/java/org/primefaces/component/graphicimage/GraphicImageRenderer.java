@@ -85,7 +85,7 @@ public class GraphicImageRenderer extends CoreRenderer {
             }
             else if(value instanceof StreamedContent) {
                 StreamedContent streamedContent = (StreamedContent) value;
-                Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent", "primefaces", streamedContent.getContentType());
+                Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
                 String resourcePath = resource.getRequestPath();
                 String rid = createUniqueContentId(context);
                 StringBuilder builder = new StringBuilder(resourcePath);
