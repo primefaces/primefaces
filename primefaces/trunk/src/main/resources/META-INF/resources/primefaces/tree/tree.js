@@ -138,6 +138,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     writeSelections: function() {    
         this.selectionHolder.val(this.selections.join(','));
     },
+    
     fireNodeSelectEvent: function(node) {
         if(this.cfg.behaviors) {
             var selectBehavior = this.cfg.behaviors['select'];
@@ -220,24 +221,44 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             }
             
             if(nodeContent.hasClass('ui-tree-selectable') && this.cfg.selectionMode) {
-                if(this.isCheckboxSelection()) {
-                    this.toggleCheckbox(nodeContent.children(('div.ui-chkbox')));
+                if(this.isSingleSelection()) {
+                    this.unselectAllRows();
+                    this.selectNode(node);
                 }
-                else {
-                    if(this.isNodeSelected(node) && metaKey)
-                        this.unselectNode(node);
-                    else
-                        this.selectNode(node, metaKey);
+                else if(this.isMultipleSelection()) { 
+                    if(e.shiftKey && this.cursorNode) {
+                        //TODO
+                    }
+                    else {
+                        if(!metaKey) {
+                            this.unselectAllNodes();
+                        }
+
+                        if(this.isNodeSelected(node) && metaKey) {
+                            this.unselectNode(node);
+                        }
+                        else {
+                            this.selectNode(node);
+                            this.cursorNode = node;
+                        }
+                    }                    
+                }
+                else if(this.isCheckboxSelection()) {
+                    this.toggleCheckbox(nodeContent.children(('div.ui-chkbox')));
                 }
             };
         }
     },
     
-    selectNode: function(node, metaKey) {        
+    selectNode: function(node) {        
         throw "Unsupported Operation";
     },
     
     unselectNode: function(node) {        
+        throw "Unsupported Operation";
+    },
+    
+    unselectAllNodes: function() {        
         throw "Unsupported Operation";
     },
     
@@ -427,14 +448,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
     },
     
-    selectNode: function(node, metaKey) {        
-        if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
-            this.selections = [];
-            this.jq.find('.ui-treenode-label.ui-state-highlight').each(function() {
-                $(this).removeClass('ui-state-highlight').closest('.ui-treenode').attr('aria-selected', false);
-            });
-        }
-
+    unselectAllNodes: function() {
+        this.selections = [];
+        this.jq.find('.ui-treenode-label.ui-state-highlight').each(function() {
+            $(this).removeClass('ui-state-highlight').closest('.ui-treenode').attr('aria-selected', false);
+        });
+    },
+    
+    selectNode: function(node) {        
         node.attr('aria-selected', true)
             .find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
