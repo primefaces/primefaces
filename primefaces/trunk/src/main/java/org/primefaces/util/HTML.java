@@ -162,16 +162,16 @@ public class HTML {
     public final static String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only";
     public final static String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left";
     public final static String BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-right";
-    public final static String BUTTON_LEFT_ICON_CLASS = "ui-button-icon-left ui-icon";
-    public final static String BUTTON_RIGHT_ICON_CLASS = "ui-button-icon-right ui-icon";
-    public final static String BUTTON_TEXT_CLASS = "ui-button-text";
+    public final static String BUTTON_LEFT_ICON_CLASS = "ui-button-icon-left ui-icon ui-c";
+    public final static String BUTTON_RIGHT_ICON_CLASS = "ui-button-icon-right ui-icon ui-c";
+    public final static String BUTTON_TEXT_CLASS = "ui-button-text ui-c";
     public final static String BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
     
     public final static String CHECKBOX_ALL_CLASS = "ui-chkbox ui-chkbox-all ui-widget";
     public final static String CHECKBOX_CLASS = "ui-chkbox ui-widget";
     public final static String CHECKBOX_BOX_CLASS = "ui-chkbox-box ui-widget ui-corner-all ui-state-default";
     public final static String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
-    public final static String CHECKBOX_ICON_CLASS = "ui-chkbox-icon";
+    public final static String CHECKBOX_ICON_CLASS = "ui-chkbox-icon ui-c";
     public final static String CHECKBOX_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-check";
     public final static String CHECKBOX_LABEL_CLASS = "ui-chkbox-label";
     
