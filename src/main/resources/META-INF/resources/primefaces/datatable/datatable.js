@@ -7,7 +7,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         
         this.tbody = $(this.jqId + '_data');
-        this.cfg.formId = this.jq.parents('form:first').attr('id');
+        this.cfg.formId = this.jq.closest('form:first').attr('id');
 
         //Paginator
         if(this.cfg.paginator) {
@@ -18,7 +18,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.bindSortEvents();
 
         //Selection events
-        if(this.cfg.selectionMode || this.cfg.columnSelectionMode) {
+        if(this.cfg.selectionMode) {
             this.selectionHolder = this.jqId + '_selection';
 
             var preselection = $(this.selectionHolder).val();
@@ -227,52 +227,50 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Applies events related to selection in a non-obstrusive way
      */
     bindSelectionEvents: function() {
-        var _self = this;
+        var $this = this;
         this.rowSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)';
 
-        if(this.cfg.selectionMode) {
+        //row events
+        if(this.cfg.selectionMode != 'radio') {
             this.bindRowHover();
             
             $(document).off('click.datatable', this.rowSelector).on('click.datatable', this.rowSelector, null, function(e) {
-                _self.onRowClick(e, this);
+                $this.onRowClick(e, this);
             });
         }
-        //Radio-Checkbox based rowselection
-        else if(this.cfg.columnSelectionMode) {
-
-            if(this.cfg.columnSelectionMode == 'single') {
-                this.bindRadioEvents();
-            }
-            else {
-                this.bindCheckboxEvents();
-                this.updateHeaderCheckbox();
-            }
+        else {
+            this.bindRadioEvents();
+        }
+        
+        if(this.cfg.selectionMode == 'checkbox') {
+            this.bindCheckboxEvents();
+            this.updateHeaderCheckbox();
         }
         
         //double click
         if(this.hasBehavior('rowDblselect')) {
             $(document).off('dblclick.datatable', this.rowSelector).on('dblclick.datatable', this.rowSelector, null, function(e) {
-                _self.onRowDblclick(e, $(this));
+                $this.onRowDblclick(e, $(this));
             });
         };
     },
     
     bindRowHover: function() {
         $(document).off('mouseover.datatable mouseout.datatable', this.rowSelector)
-        .on('mouseover.datatable', this.rowSelector, null, function() {
-            var element = $(this);
+                    .on('mouseover.datatable', this.rowSelector, null, function() {
+                        var element = $(this);
 
-            if(!element.hasClass('ui-state-highlight')) {
-                element.addClass('ui-state-hover');
-            }
-        })
-        .on('mouseout.datatable', this.rowSelector, null, function() {
-            var element = $(this);
+                        if(!element.hasClass('ui-state-highlight')) {
+                            element.addClass('ui-state-hover');
+                        }
+                    })
+                    .on('mouseout.datatable', this.rowSelector, null, function() {
+                        var element = $(this);
 
-            if(!element.hasClass('ui-state-highlight')) {
-                element.removeClass('ui-state-hover');
-            }
-        });
+                        if(!element.hasClass('ui-state-highlight')) {
+                            element.removeClass('ui-state-hover');
+                        }
+                    });
     },
     
     bindRadioEvents: function() {
@@ -358,75 +356,73 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         checkboxInputSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-chkbox input';
 
         $(document).off('mouseover.ui-chkbox mouseover.ui-chkbox click.ui-chkbox', checkboxSelector)
-        .on('mouseover.ui-chkbox', checkboxSelector, null, function() {
-            var box = $(this);
-            if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
-                box.addClass('ui-state-hover');
-            }
-        })
-        .on('mouseout.ui-chkbox', checkboxSelector, null, function() {
-            $(this).removeClass('ui-state-hover');
-        })
-        .on('click.ui-chkbox', checkboxSelector, null, function() {
-            var checkbox = $(this);
+                    .on('mouseover.ui-chkbox', checkboxSelector, null, function() {
+                        var box = $(this);
+                        if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
+                            box.addClass('ui-state-hover');
+                        }
+                    })
+                    .on('mouseout.ui-chkbox', checkboxSelector, null, function() {
+                        $(this).removeClass('ui-state-hover');
+                    })
+                    .on('click.ui-chkbox', checkboxSelector, null, function() {
+                        var checkbox = $(this);
 
-            if(!checkbox.hasClass('ui-state-disabled')) {
-                var checked = checkbox.hasClass('ui-state-active');
+                        if(!checkbox.hasClass('ui-state-disabled')) {
+                            var checked = checkbox.hasClass('ui-state-active');
 
-                if(checked) {
-                    _self.unselectRowWithCheckbox(checkbox);
-                } 
-                else {                        
-                    _self.selectRowWithCheckbox(checkbox);
-                }
-            }
-        });
+                            if(checked)
+                                _self.unselectRowWithCheckbox(checkbox);
+                            else                      
+                                _self.selectRowWithCheckbox(checkbox);
+                        }
+                    });
 
         //keyboard support
         $(document).off('focus.ui-chkbox blur.ui-chkbox keydown.ui-chkbox keyup.ui-chkbox', checkboxInputSelector)
-        .on('focus.ui-chkbox', checkboxInputSelector, null, function() {
-            var input = $(this),
-            box = input.parent().next();
+                    .on('focus.ui-chkbox', checkboxInputSelector, null, function() {
+                        var input = $(this),
+                        box = input.parent().next();
 
-            if(input.prop('checked')) {
-                box.removeClass('ui-state-active');
-            }
+                        if(input.prop('checked')) {
+                            box.removeClass('ui-state-active');
+                        }
 
-            box.addClass('ui-state-focus');
-        })
-        .on('blur.ui-chkbox', checkboxInputSelector, null, function() {
-            var input = $(this),
-            box = input.parent().next();
+                        box.addClass('ui-state-focus');
+                    })
+                    .on('blur.ui-chkbox', checkboxInputSelector, null, function() {
+                        var input = $(this),
+                        box = input.parent().next();
 
-            if(input.prop('checked')) {
-                box.addClass('ui-state-active');
-            }
+                        if(input.prop('checked')) {
+                            box.addClass('ui-state-active');
+                        }
 
-            box.removeClass('ui-state-focus');
-        })
-        .on('keydown.ui-chkbox', checkboxInputSelector, null, function(e) {
-            var keyCode = $.ui.keyCode;
-            if(e.which == keyCode.SPACE) {
-                e.preventDefault();
-            }
-        })
-        .on('keyup.ui-chkbox', checkboxInputSelector, null, function(e) {
-            var keyCode = $.ui.keyCode;
+                        box.removeClass('ui-state-focus');
+                    })
+                    .on('keydown.ui-chkbox', checkboxInputSelector, null, function(e) {
+                        var keyCode = $.ui.keyCode;
+                        if(e.which == keyCode.SPACE) {
+                            e.preventDefault();
+                        }
+                    })
+                    .on('keyup.ui-chkbox', checkboxInputSelector, null, function(e) {
+                        var keyCode = $.ui.keyCode;
 
-            if(e.which == keyCode.SPACE) {
-                var input = $(this),
-                box = input.parent().next();
+                        if(e.which == keyCode.SPACE) {
+                            var input = $(this),
+                            box = input.parent().next();
 
-                if(input.prop('checked')) {
-                    _self.unselectRowWithCheckbox(box);
-                } 
-                else {                        
-                    _self.selectRowWithCheckbox(box);
-                }
+                            if(input.prop('checked')) {
+                                _self.unselectRowWithCheckbox(box);
+                            } 
+                            else {                        
+                                _self.selectRowWithCheckbox(box);
+                            }
 
-                e.preventDefault();
-            }
-        });
+                            e.preventDefault();
+                        }
+                    });
     },
     
     /**
@@ -869,7 +865,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if($(event.target).is('.ui-dt-c,td,span')) {
             var row = $(rowElement),
             selected = row.hasClass('ui-state-highlight'),
-            metaKey = event.metaKey||event.ctrlKey;
+            metaKey = event.metaKey||event.ctrlKey,
+            shiftKey = event.shiftKey;
 
             //unselect a selected row if metakey is on
             if(selected && metaKey) {
@@ -877,7 +874,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 //unselect previous selection if this is single selection or multiple one with no keys
-                if(this.isSingleSelection() || (this.isMultipleSelection() && event && !metaKey && !event.shiftKey)) {
+                if(this.isSingleSelection() || (this.isMultipleSelection() && event && !metaKey && !shiftKey)) {
                     this.unselectAllRows();
                 }
                 
@@ -950,11 +947,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var row = this.findRow(r),
         rowMeta = this.getRowMeta(row);
 
-        //add to selection
         row.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
+        
+        if(this.cfg.selectionMode == 'checkbox') {
+            var checkbox = row.children('td.ui-selection-column').find('> div.ui-dt-c > div.ui-chkbox > div.ui-chkbox-box');
+            this.selectCheckbox(checkbox);
+        }
+        
         this.addSelection(rowMeta.key);
 
-        //save state
         this.writeSelections();
 
         if(!silent) {
@@ -966,13 +967,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var row = this.findRow(r),
         rowMeta = this.getRowMeta(row);
 
-        //remove visual style
         row.removeClass('ui-state-highlight').attr('aria-selected', false);
+        
+        if(this.cfg.selectionMode == 'checkbox') {
+            var checkbox = row.children('td.ui-selection-column').find('> div.ui-dt-c > div.ui-chkbox > div.ui-chkbox-box');
+            this.unselectCheckbox(checkbox);
+        }
 
-        //remove from selection
         this.removeSelection(rowMeta.key);
 
-        //save state
         this.writeSelections();
 
         if(!silent) {
@@ -981,8 +984,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Sends a rowSelectEvent on server side to invoke a rowSelectListener if defined
-                 */
+     * Sends a rowSelectEvent on server side to invoke a rowSelectListener if defined
+     */
     fireRowSelectEvent: function(rowKey, behaviorEvent) {
         if(this.cfg.behaviors) {
             var selectBehavior = this.cfg.behaviors[behaviorEvent];
@@ -1003,8 +1006,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Sends a rowUnselectEvent on server side to invoke a rowUnselectListener if defined
-                 */
+     * Sends a rowUnselectEvent on server side to invoke a rowUnselectListener if defined
+     */
     fireRowUnselectEvent: function(rowKey, behaviorEvent) {
         if(this.cfg.behaviors) {
             var unselectBehavior = this.cfg.behaviors[behaviorEvent];
@@ -1025,8 +1028,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Selects the corresping row of a radio based column selection
-                 */
+     * Selects the corresping row of a radio based column selection
+     */
     selectRowWithRadio: function(radio) {
         var row = radio.parents('tr:first'),
         rowMeta = this.getRowMeta(row);
@@ -1060,23 +1063,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-     * Selects the corresping row of a checkbox based column selection
+     * Selects the corresponding row of a checkbox based column selection
      */
     selectRowWithCheckbox: function(checkbox, silent) {
-        var row = checkbox.parents('tr:first'),
+        var row = checkbox.closest('tr'),
         rowMeta = this.getRowMeta(row);
 
-        //update visuals
-        if(!checkbox.hasClass('ui-state-focus')) {
-            checkbox.addClass('ui-state-active');
-        }
-        checkbox.children('span.ui-chkbox-icon:first').addClass('ui-icon ui-icon-check');
-        row.addClass('ui-state-highlight').attr('aria-selected', true);
+        row.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
+        this.selectCheckbox(checkbox);
 
-        //check input
-        checkbox.prev().children('input').attr('checked', 'checked');
-
-        //add to selection
         this.addSelection(rowMeta.key);
 
         this.updateHeaderCheckbox();
@@ -1089,22 +1084,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-     * Unselects the corresping row of a checkbox based column selection
+     * Unselects the corresponding row of a checkbox based column selection
      */
     unselectRowWithCheckbox: function(checkbox, silent) {
         var row = checkbox.parents('tr:first'),
         rowMeta = this.getRowMeta(row);
 
-        checkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon:first').removeClass('ui-icon ui-icon-check');
         row.removeClass('ui-state-highlight').attr('aria-selected', false);
+        this.unselectCheckbox(checkbox);
 
-        //uncheck input
-        checkbox.prev().children('input').removeAttr('checked');
-
-        //remove from selection
         this.removeSelection(rowMeta.key);
 
-        //unselect header checkbox
         this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon:first').removeClass('ui-icon ui-icon-check');
 
         this.writeSelections();
@@ -1115,7 +1105,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     unselectAllRows: function() {
-        this.tbody.children('tr.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false); 
+        var selectedRows = this.tbody.children('tr.ui-state-highlight');
+        for(var i = 0; i < selectedRows.length; i++) {
+            var row = selectedRows.eq(i);
+            
+            row.removeClass('ui-state-highlight').attr('aria-selected', false);
+            
+            if(this.cfg.selectionMode == 'checkbox') {
+                var checkbox = row.children('td.ui-selection-column').find('> div.ui-dt-c > div.ui-chkbox > div.ui-chkbox-box');
+                this.unselectCheckbox(checkbox);
+            }
+        }
+        
         this.selection = [];
         this.writeSelections();
     },
@@ -1140,7 +1141,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             checkboxes.each(function() {
                 $this.selectRowWithCheckbox($(this), true);
-
             });
         }
 
@@ -1153,17 +1153,27 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             if(toggleSelectBehavior) {
                 var ext = {
-                    params: [
-                    {
-                        name: this.id + '_checked', 
-                        value: !checked
-                        }
+                        params: [{name: this.id + '_checked', value: !checked}
                     ]
                 };
                 
                 toggleSelectBehavior.call(this, null, ext);
             }
         }
+    },
+    
+    selectCheckbox: function(checkbox) {
+        if(!checkbox.hasClass('ui-state-focus')) {
+            checkbox.addClass('ui-state-active');
+        }
+        checkbox.children('span.ui-chkbox-icon:first').addClass('ui-icon ui-icon-check');
+        checkbox.prev().children('input').prop('checked', true);
+    },
+    
+    unselectCheckbox: function(checkbox) {
+        checkbox.removeClass('ui-state-active');
+        checkbox.children('span.ui-chkbox-icon:first').removeClass('ui-icon ui-icon-check');
+        checkbox.prev().children('input').prop('checked', false);
     },
     
     /**
@@ -1615,7 +1625,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     isMultipleSelection: function() {
-        return this.cfg.selectionMode == 'multiple';
+        return this.cfg.selectionMode == 'multiple' || this.cfg.selectionMode == 'checkbox';
     },
     
     /**

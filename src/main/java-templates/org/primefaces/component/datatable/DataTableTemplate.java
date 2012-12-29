@@ -753,3 +753,16 @@ import org.primefaces.component.datatable.feature.*;
     public boolean isRTL() {
         return this.getDir().equalsIgnoreCase("rtl");
     }
+    
+    public String resolveSelectionMode() {
+        String tableSelectionMode = this.getSelectionMode();
+        String columnSelectionMode = this.getColumnSelectionMode();
+        String selectionMode = null;
+
+        if(tableSelectionMode != null)
+            selectionMode = tableSelectionMode;
+        else if(columnSelectionMode != null)
+            selectionMode = columnSelectionMode.equals("single") ? "radio" : "checkbox";
+            
+        return selectionMode;
+    }
