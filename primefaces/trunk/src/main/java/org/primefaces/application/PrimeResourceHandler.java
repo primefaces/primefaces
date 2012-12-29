@@ -64,8 +64,8 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
                 externalContext.setResponseStatus(200);
                 externalContext.setResponseContentType(streamedContent.getContentType());
                 
-                if(streamedContent.getEncoding() != null) {
-                    externalContext.setResponseCharacterEncoding(streamedContent.getEncoding());
+                if(streamedContent.getContentEncoding() != null) {
+                    externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
                 }
 
                 byte[] buffer = new byte[2048];
@@ -81,6 +81,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
             } catch(Exception e) {
                 logger.log(Level.SEVERE, "Error in streaming dynamic resource. {0}", new Object[]{e.getMessage()});
+                e.printStackTrace();
             }
             finally {
                 //cleanup
