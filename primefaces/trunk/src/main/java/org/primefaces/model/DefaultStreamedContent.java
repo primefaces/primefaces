@@ -26,8 +26,10 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
 	private InputStream stream;
 	
 	private String contentType;
-	
+    
 	private String name;
+    
+    private String encoding;
 	
 	public DefaultStreamedContent() {}
 	
@@ -44,6 +46,13 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
 		this.contentType = contentType;
 		this.stream = stream;
 		this.name = name;
+	}
+    
+    public DefaultStreamedContent(InputStream stream, String contentType, String name, String encoding) {
+		this.contentType = contentType;
+		this.stream = stream;
+		this.name = name;
+        this.encoding = encoding;
 	}
 
 	public InputStream getStream() {
@@ -69,4 +78,8 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+    public String getEncoding() {
+        return encoding;
+    }
 }

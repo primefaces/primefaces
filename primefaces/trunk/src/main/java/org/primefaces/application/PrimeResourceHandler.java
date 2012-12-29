@@ -63,6 +63,10 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
                 ExternalContext externalContext = context.getExternalContext();
                 externalContext.setResponseStatus(200);
                 externalContext.setResponseContentType(streamedContent.getContentType());
+                
+                if(streamedContent.getEncoding() != null) {
+                    externalContext.setResponseCharacterEncoding(streamedContent.getEncoding());
+                }
 
                 byte[] buffer = new byte[2048];
 
