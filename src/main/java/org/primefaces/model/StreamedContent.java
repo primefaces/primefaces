@@ -24,5 +24,7 @@ public interface StreamedContent {
 	public InputStream getStream();
 	
 	public String getContentType();
+    
+    public String getEncoding();
 	
 }
