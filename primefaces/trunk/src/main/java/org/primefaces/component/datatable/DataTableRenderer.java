@@ -85,6 +85,8 @@ public class DataTableRenderer extends DataRenderer {
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
+        String selectionMode = table.resolveSelectionMode();
+        
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("DataTable", table.resolveWidgetVar(), clientId, false);
         
@@ -94,9 +96,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         
         //Selection
-        wb.attr("selectionMode", table.getSelectionMode(), null)
-            .attr("columnSelectionMode", table.getColumnSelectionMode(), null);
-        
+        wb.attr("selectionMode", selectionMode, null);
         
         //Filtering
         if(table.isFilteringEnabled()) {
