@@ -27,6 +27,7 @@ import org.primefaces.component.api.UITree;
 import org.primefaces.component.column.Column;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class TreeTableRenderer extends CoreRenderer {
@@ -78,12 +79,13 @@ public class TreeTableRenderer extends CoreRenderer {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         
         String nodeKey = params.get(clientId + "_expand");
+        String parentNodeKey = params.get(clientId + "_expandParent");
         if(nodeKey != null) {
             tt.setRowKey(nodeKey);
             TreeNode node = tt.getRowNode();
             node.setExpanded(true);
             
-            encodeNode(context, tt, node, clientId, nodeKey);
+            encodeNode(context, tt, node, clientId, nodeKey, parentNodeKey);
         } 
         else {
             encodeMarkup(context, tt);
@@ -277,10 +279,11 @@ public class TreeTableRenderer extends CoreRenderer {
         String clientId = tt.getClientId(context);
 		
 		writer.startElement("tbody", null);
+        writer.writeAttribute("id", clientId + "_data", null);
 		writer.writeAttribute("class", TreeTable.DATA_CLASS, null);
 
 		if(root != null) {
-            encodeNode(context, tt, root, clientId, null);
+            encodeNode(context, tt, root, clientId, null, null);
 		}
         
         //cleanup
@@ -289,15 +292,15 @@ public class TreeTableRenderer extends CoreRenderer {
 		writer.endElement("tbody");
 	}
     
-    protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode, String clientId, String rowKey) throws IOException {
+    protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode, String clientId, String rowKey, String parentRowKey) throws IOException {
         if(rowKey != null) {
             boolean scrollable = tt.isScrollable();
             ResponseWriter writer = context.getResponseWriter();
             tt.setRowKey(rowKey);
-            String nodeId = clientId + "_node_" + rowKey;
             String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
             int depth = rowKey.split(UITree.SEPARATOR).length - 1;
-            boolean selectionEnabled = tt.getSelectionMode() != null;
+            String selectionMode = tt.getSelectionMode();
+            boolean selectionEnabled = selectionMode != null;
             boolean selectable = treeNode.isSelectable() && selectionEnabled;
             boolean selected = treeNode.isSelected();
             
@@ -310,14 +313,20 @@ public class TreeTableRenderer extends CoreRenderer {
             }
 
             writer.startElement("tr", null);
-            writer.writeAttribute("id", nodeId, null);
+            writer.writeAttribute("id", tt.getClientId(context) + "_node_" + rowKey, null);
             writer.writeAttribute("class", rowStyleClass, null);
             writer.writeAttribute("role", "row", null);
             writer.writeAttribute("aria-expanded", String.valueOf(treeNode.isExpanded()), null);
             if(selectionEnabled) {
                 writer.writeAttribute("aria-selected", String.valueOf(selected), null);
             }
-
+            
+            writer.writeAttribute("data-rk", rowKey, null);
+            
+            if(parentRowKey != null) {
+                writer.writeAttribute("data-prk", parentRowKey, null);
+            }
+            
             for(int i=0; i < tt.getChildren().size(); i++) {
                 UIComponent kid = (UIComponent) tt.getChildren().get(i);
 
@@ -348,6 +357,11 @@ public class TreeTableRenderer extends CoreRenderer {
                             writer.writeAttribute("style", "visibility:hidden", null);
                         }
                         writer.endElement("span");
+                        
+                        if(selectable && selectionMode.equals("checkbox")) {
+                            RendererUtils.encodeCheckbox(context);
+                        }
+
                     }
                     else if(scrollable) {
                         writer.writeAttribute("style", "width:" + width + "px", null);
@@ -371,7 +385,7 @@ public class TreeTableRenderer extends CoreRenderer {
             for(Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext();) {
                 String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
 
-                encodeNode(context, tt, iterator.next(), clientId, childRowKey);
+                encodeNode(context, tt, iterator.next(), clientId, childRowKey, rowKey);
 
                 childIndex++;
             }
