@@ -12,5 +12,11 @@
     <description>RowExpansion is a helper component of datatable used to implement expandable rows.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the rowExpansion.</description>
+        </attribute>
 	</attributes>
 </component>

@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.rowexpansion.RowExpansion;
 
 public class RowExpandFeature implements DataTableFeature {
 
@@ -33,6 +34,12 @@ public class RowExpandFeature implements DataTableFeature {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
         String rowIndexVar = table.getRowIndexVar();
+        RowExpansion rowExpansion = table.getRowExpansion();
+        
+        String styleClass = DataTable.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content";
+        if(rowExpansion.getStyleClass() != null) {
+            styleClass = styleClass + " " + rowExpansion.getStyleClass();
+        }
 
         table.setRowIndex(expandedRowIndex);
         
@@ -42,7 +49,7 @@ public class RowExpandFeature implements DataTableFeature {
 
         writer.startElement("tr", null);
         writer.writeAttribute("style", "display:none", null);
-        writer.writeAttribute("class", DataTable.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content", null);
+        writer.writeAttribute("class", styleClass, null);
 
         writer.startElement("td", null);
         writer.writeAttribute("colspan", table.getColumnsCount(), null);
