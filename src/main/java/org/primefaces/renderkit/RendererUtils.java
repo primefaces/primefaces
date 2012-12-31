@@ -22,8 +22,9 @@ import org.primefaces.util.HTML;
 
 public class RendererUtils {
     
-    public static void encodeCheckbox(FacesContext context) throws IOException {
+    public static void encodeCheckbox(FacesContext context, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String icon = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_ICON_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
@@ -32,7 +33,7 @@ public class RendererUtils {
         writer.writeAttribute("class", HTML.CHECKBOX_BOX_CLASS, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_ICON_CLASS, null);
+        writer.writeAttribute("class", icon, null);
         writer.endElement("span");
 
         writer.endElement("div");
