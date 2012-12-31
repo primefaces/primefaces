@@ -19,6 +19,7 @@ import org.primefaces.component.column.Column;
 import java.lang.StringBuilder;
 
 	public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
+    public final static String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
     public final static String HEADER_CLASS = "ui-treetable-header ui-widget-header";
 	public final static String DATA_CLASS = "ui-treetable-data ui-widget-content";
     public final static String FOOTER_CLASS = "ui-treetable-footer ui-widget-header";
@@ -34,10 +35,10 @@ import java.lang.StringBuilder;
     public static final String SCROLLABLE_BODY_CLASS = "ui-treetable-scrollable-body";
     public static final String SCROLLABLE_FOOTER_CLASS = "ui-widget-header ui-treetable-scrollable-footer";
     public static final String SCROLLABLE_FOOTER_BOX_CLASS = "ui-treetable-scrollable-footer-box";
-    public static final String RESIZABLE_CONTAINER_CLASS = "ui-treetable-resizable";
-    public static String SELECTABLE_NODE_CLASS = "ui-treetable-selectable-node";
+    public static final String SELECTABLE_NODE_CLASS = "ui-treetable-selectable-node";
+    public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize"));
 
     private List<String> selectedRowKeys = new ArrayList<String>();
 
@@ -93,6 +94,13 @@ import java.lang.StringBuilder;
 
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            }
+            else if(eventName.equals("colResize")) {
+                String columnId = params.get(clientId + "_columnId");
+                int width = Integer.parseInt(params.get(clientId + "_width"));
+                int height = Integer.parseInt(params.get(clientId + "_height"));
+
+                wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
             
             super.queueEvent(wrapperEvent);
@@ -168,7 +176,7 @@ import java.lang.StringBuilder;
         return builder.toString();
     }
 
-    private Column findColumn(String clientId) {
+    public Column findColumn(String clientId) {
         for(UIComponent child : getChildren()) {
             if(child instanceof Column && child.getClientId().equals(clientId)) {
                 return (Column) child;
@@ -196,6 +204,13 @@ import java.lang.StringBuilder;
         String clientId = getClientId(context);
 
         return params.get(clientId + "_expand") != null || params.get(clientId + "_collapse") != null;
+    }
+
+    public boolean isResizeRequest(FacesContext context) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
+
+        return params.get(clientId + "_colResize") != null;
     }
 
     private int columnsCount = -1;
