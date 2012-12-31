@@ -41,6 +41,7 @@
     padding: 4px 10px;
     overflow: hidden;
     position: relative;
+    white-space:nowrap;
 }
 
 .ui-treetable .ui-treetable-toggler {
@@ -85,4 +86,33 @@
     border-color: inherit;
     font-weight: inherit;
     *font-weight: normal; /*IE7 hack*/
+}
+
+/** Resizable Columns **/
+.ui-treetable-resizable {
+    padding-bottom:1px;     /*fix for webkit overlow*/
+    overflow:auto;
+}
+
+.ui-treetable.ui-treetable-resizable table {
+    width: auto;
+}
+
+.ui-treetable .ui-column-resizer {
+    position:absolute;
+    right:0;
+    width:8px;
+    height:20px;
+    padding:0px;
+    cursor:col-resize;
+    background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
+    margin: -4px 0px;
+    *margin-left: 2px;
+}
+
+.ui-treetable .ui-column-resizer-helper {
+    width: 1px;
+    position: absolute;
+    z-index: 10;
+    display: none;
 }

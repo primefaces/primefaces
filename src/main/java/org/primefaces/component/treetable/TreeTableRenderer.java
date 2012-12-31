@@ -34,9 +34,28 @@ public class TreeTableRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        decodeSelection(context, component);
+        TreeTable tt = (TreeTable) component;
+        
+        if(tt.getSelectionMode() != null) {
+            decodeSelection(context, component);
+        }
+        
+        if(tt.isResizableColumns() && tt.isResizeRequest(context)) {
+            decodeColumnResize(context, tt);
+        }
             
         decodeBehaviors(context, component);
+    }
+    
+    protected void decodeColumnResize(FacesContext context, TreeTable tt) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = tt.getClientId(context);
+        
+        String columnId = params.get(clientId + "_columnId");
+        String width = params.get(clientId + "_width");
+        Column column = tt.findColumn(columnId);
+        
+        column.setWidth(Integer.parseInt(width));
     }
 
     protected void decodeSelection(FacesContext context, UIComponent component) {
@@ -79,7 +98,6 @@ public class TreeTableRenderer extends CoreRenderer {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         
         String nodeKey = params.get(clientId + "_expand");
-        String parentNodeKey = params.get(clientId + "_expandParent");
         if(nodeKey != null) {
             tt.setRowKey(nodeKey);
             TreeNode node = tt.getRowNode();
@@ -99,7 +117,8 @@ public class TreeTableRenderer extends CoreRenderer {
         String selectionMode = tt.getSelectionMode();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("TreeTable", tt.resolveWidgetVar(), clientId, false)
-            .attr("selectionMode", selectionMode, null);
+            .attr("selectionMode", selectionMode, null)
+            .attr("resizableColumns", tt.isResizableColumns(), false);
         
         encodeClientBehaviors(context, tt, wb);
 		
@@ -114,7 +133,7 @@ public class TreeTableRenderer extends CoreRenderer {
         boolean scrollable = tt.isScrollable();
         
         //Style class for container
-        String containerClass = TreeTable.CONTAINER_CLASS;
+        String containerClass = tt.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
         containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
 		containerClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
 	
@@ -243,6 +262,10 @@ public class TreeTableRenderer extends CoreRenderer {
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
                 styleClass = styleClass == null ? TreeTable.COLUMN_HEADER_CLASS  : TreeTable.COLUMN_HEADER_CLASS  + " " + styleClass;
+                
+                if(column.isResizable()) {
+                    styleClass = styleClass + " " + TreeTable.RESIZABLE_COLUMN_CLASS;
+                }
 
 				writer.startElement("th", null);
                 writer.writeAttribute("id", column.getClientId(context), null);
@@ -254,9 +277,9 @@ public class TreeTableRenderer extends CoreRenderer {
                 
 				writer.startElement("div", null);
                 writer.writeAttribute("class", TreeTable.COLUMN_CONTENT_WRAPPER, null);
-                if(column.getWidth() != -1) {
-                    writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
-                }
+                if(column.getWidth() != -1) writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
+                if(column.getMinWidth() != Integer.MIN_VALUE) writer.writeAttribute("data-minwidth", column.getMinWidth(), null);
+                if(column.getMaxWidth() != Integer.MAX_VALUE) writer.writeAttribute("data-maxwidth", column.getMaxWidth(), null);
                 
                 if(header != null) 
                     header.encodeAll(context);
@@ -332,7 +355,7 @@ public class TreeTableRenderer extends CoreRenderer {
                 if(kid instanceof Column && kid.isRendered()) {
                     Column column = (Column) kid;
                     int width = column.getWidth();
-
+                    
                     writer.startElement("td", null);
                     writer.writeAttribute("role", "gridcell", null);
                     if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
@@ -344,10 +367,12 @@ public class TreeTableRenderer extends CoreRenderer {
                     if(i == 0) {
                         int paddingLeft = (depth * 15);
                         String cellStyle = "padding-left:" + paddingLeft + "px";
-                        if(scrollable) {
+                        
+                        if(width > 0) {
                             width = width - (paddingLeft - 10);
                             cellStyle = cellStyle + ";width:" + width + "px";
                         }
+                        
                         writer.writeAttribute("style", cellStyle, null);
 
                         writer.startElement("span", null);
@@ -360,17 +385,14 @@ public class TreeTableRenderer extends CoreRenderer {
                         if(selectable && selectionMode.equals("checkbox")) {
                             RendererUtils.encodeCheckbox(context, selected);
                         }
-
                     }
-                    else if(scrollable) {
+                    else if(width > 0) {
                         writer.writeAttribute("style", "width:" + width + "px", null);
                     }
 
-                    //content
                     column.encodeAll(context);
 
                     writer.endElement("div");
-
                     writer.endElement("td");
                 }
             }
@@ -447,9 +469,7 @@ public class TreeTableRenderer extends CoreRenderer {
 
                     writer.startElement("div", null);
                     writer.writeAttribute("class", TreeTable.COLUMN_CONTENT_WRAPPER, null);
-                    if(column.getWidth() != -1) {
-                        writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
-                    }
+                    if(column.getWidth() != -1) writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
 
                     if(footer != null) 
                         footer.encodeAll(context);

@@ -10,9 +10,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.scrollable = this.jq.hasClass('ui-treetable-scrollable');
         this.cfg.resizable = this.jq.hasClass('ui-treetable-resizable');
 
-        //scrolling
         if(this.cfg.scrollable) {
             this.setupScrolling();
+        }
+        
+        if(this.cfg.resizableColumns) {
+            this.setupResizableColumns();
         }
         
         this.bindEvents();
@@ -96,8 +99,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
             update: this.id
         },
         $this = this,
-        nodeKey = node.attr('data-rk'),
-        parentNodeKey = node.attr('data-prk');
+        nodeKey = node.attr('data-rk');
 
         options.onsuccess = function(responseXML) {
             var xmlDoc = $(responseXML.documentElement),
@@ -124,8 +126,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         };
 
         options.params = [
-            {name: this.id + '_expand', value: nodeKey},
-            {name: this.id + '_expandParent', value: parentNodeKey}
+            {name: this.id + '_expand', value: nodeKey}
         ];
 
         if(this.hasBehavior('expand')) {
@@ -471,6 +472,105 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         scrollBody.scroll(function() {
             scrollHeader.scrollLeft(scrollBody.scrollLeft());
             scrollFooter.scrollLeft(scrollBody.scrollLeft());
+        });
+    },
+    
+    /**
+     * Add resize behavior to columns
+     */
+    setupResizableColumns: function() {
+        //Add resizers and resizer helper        
+        $(this.jqId + ' thead tr th.ui-resizable-column div.ui-tt-c').prepend('<span class="ui-column-resizer">&nbsp;</span>');
+        this.jq.append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
+
+        //Variables
+        var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
+        resizers = $(this.jqId + ' thead th span.ui-column-resizer'),
+        scrollHeader = $(this.jqId + ' .ui-treetable-scrollable-header'),
+        scrollBody = $(this.jqId + ' .ui-treetable-scrollable-body'),
+        table = $(this.jqId + ' table'),
+        thead = $(this.jqId + ' thead'),  
+        tfoot = $(this.jqId + ' tfoot'),
+        _self = this;
+
+        //Main resize events
+        resizers.draggable({
+            axis: 'x',
+            start: function(event, ui) {
+                var height = _self.cfg.scrollable ? scrollBody.height() : table.height() - thead.height() - 1;
+
+                //Set height of resizer helper
+                resizerHelper.height(height);
+                resizerHelper.show();
+            },
+            drag: function(event, ui) {
+                resizerHelper.offset(
+                    {
+                        left: ui.helper.offset().left + ui.helper.width() / 2, 
+                        top: thead.offset().top + thead.height()
+                    });  
+            },
+            stop: function(event, ui) {
+                var columnHeaderWrapper = ui.helper.parent(),
+                columnHeader = columnHeaderWrapper.parent(),
+                minWidth = columnHeaderWrapper.data('minwidth'),
+                maxWidth = columnHeaderWrapper.data('maxwidth'),
+                oldPos = ui.originalPosition.left,
+                newPos = ui.position.left,
+                change = (newPos - oldPos),
+                newWidth = (columnHeaderWrapper.width() + change - (ui.helper.width() / 2));
+
+                ui.helper.css('left','');
+                resizerHelper.hide();
+                
+                if(minWidth && newWidth < minWidth) {
+                    newWidth = minWidth;
+                } else if(maxWidth && newWidth > maxWidth) {
+                    newWidth = maxWidth;
+                }
+
+                columnHeaderWrapper.width(newWidth);
+                columnHeader.css('width', '');
+
+                if(columnHeader.index() === 0) {
+                    var headerPaddingLeft = parseInt(columnHeaderWrapper.css('padding-left'));
+                    _self.tbody.find('> tr > td:first-child > div.ui-tt-c').each(function() {
+                        var cell = $(this),
+                        paddingLeft = parseInt(cell.css('padding-left'));
+                        
+                        cell.width(newWidth + (headerPaddingLeft - paddingLeft));
+                    });
+                }
+                else {
+                    _self.tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
+                    tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
+                }
+                
+                scrollHeader.scrollLeft(scrollBody.scrollLeft());
+
+                //Sync width change with server side state
+                var options = {
+                    source: _self.id,
+                    process: _self.id,
+                    params: [
+                        {name: _self.id + '_colResize', value: true},
+                        {name: _self.id + '_columnId', value: columnHeader.attr('id')},
+                        {name: _self.id + '_width', value: newWidth},
+                        {name: _self.id + '_height', value: columnHeader.height()}
+                    ]
+                }
+                
+                if(_self.hasBehavior('colResize')) {
+                    var colResizeBehavior = _self.cfg.behaviors['colResize'];
+                    
+                    colResizeBehavior.call(_self, event, options);
+                }
+                else {
+                    PrimeFaces.ajax.AjaxRequest(options);
+                }
+                
+            },
+            containment: this.jq
         });
     }
 });
