@@ -109,7 +109,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
                 content = update.text();
 
                 if(id == $this.id){
-                    node.replaceWith(content);
+                    node.after(content);
                     node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
                     node.attr('aria-expanded', true);
                 }
