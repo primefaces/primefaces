@@ -85,7 +85,7 @@ public class TreeTableRenderer extends CoreRenderer {
             TreeNode node = tt.getRowNode();
             node.setExpanded(true);
             
-            encodeNode(context, tt, node, clientId, nodeKey, parentNodeKey);
+            encodeNodeChildren(context, tt, node, nodeKey);
         } 
         else {
             encodeMarkup(context, tt);
@@ -283,16 +283,15 @@ public class TreeTableRenderer extends CoreRenderer {
 		writer.writeAttribute("class", TreeTable.DATA_CLASS, null);
 
 		if(root != null) {
-            encodeNode(context, tt, root, clientId, null, null);
+            encodeNode(context, tt, root, null, null);
 		}
-        
-        //cleanup
+
         tt.setRowKey(null);
 		
 		writer.endElement("tbody");
 	}
     
-    protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode, String clientId, String rowKey, String parentRowKey) throws IOException {
+    protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode, String rowKey, String parentRowKey) throws IOException {
         if(rowKey != null) {
             boolean scrollable = tt.isScrollable();
             ResponseWriter writer = context.getResponseWriter();
@@ -385,10 +384,21 @@ public class TreeTableRenderer extends CoreRenderer {
             for(Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext();) {
                 String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
 
-                encodeNode(context, tt, iterator.next(), clientId, childRowKey, rowKey);
+                encodeNode(context, tt, iterator.next(), childRowKey, rowKey);
 
                 childIndex++;
             }
+        }
+    }
+    
+    protected void encodeNodeChildren(FacesContext context, TreeTable tt, TreeNode treeNode, String rowKey) throws IOException {
+        int childIndex = 0;
+        for(Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext();) {
+            String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
+
+            encodeNode(context, tt, iterator.next(), childRowKey, rowKey);
+
+            childIndex++;
         }
     }
     
