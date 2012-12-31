@@ -241,7 +241,7 @@ public class PickListRenderer extends CoreRenderer {
                 
                 if(showCheckbox) {
                     writer.startElement("td", null);
-                    RendererUtils.encodeCheckbox(context);
+                    RendererUtils.encodeCheckbox(context, false);
                     writer.endElement("td");
                 }
                         
@@ -264,7 +264,7 @@ public class PickListRenderer extends CoreRenderer {
             }
             else {
                 if(showCheckbox) {
-                    RendererUtils.encodeCheckbox(context);
+                    RendererUtils.encodeCheckbox(context, false);
                 }
                 
                 writer.writeText(itemLabel, null);

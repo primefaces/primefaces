@@ -359,7 +359,7 @@ public class TreeTableRenderer extends CoreRenderer {
                         writer.endElement("span");
                         
                         if(selectable && selectionMode.equals("checkbox")) {
-                            RendererUtils.encodeCheckbox(context);
+                            RendererUtils.encodeCheckbox(context, selected);
                         }
 
                     }
