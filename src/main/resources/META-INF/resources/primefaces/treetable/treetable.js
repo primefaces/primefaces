@@ -41,6 +41,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
             this.selection = selectionValue === "" ? [] : selectionValue.split(',');
 
             this.bindSelectionEvents();
+            
+            if(this.isCheckboxSelection()) {
+                this.preselectCheckbox();
+            }
         }
     },
     
@@ -359,6 +363,17 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         var parent = this.getParent(node);
         if(parent) {
             this.propagateUp(this.getParent(node));
+        }
+    },
+    
+    preselectCheckbox: function() {
+        var selectedNodes = this.tbody.children('tr.ui-state-highlight');
+        
+        for(var i = 0; i < selectedNodes.length; i++) {
+            var parent = this.getParent(selectedNodes.eq(i));
+            if(parent) {
+                this.propagateUp(parent);
+            }
         }
     },
     
