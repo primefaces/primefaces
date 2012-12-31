@@ -101,6 +101,12 @@
             <defaultValue>false</defaultValue>
             <description>Defines if columns can be resized or not.</description>
 		</attribute>
+        <attribute>
+			<name>rowStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class for each row.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

@@ -316,7 +316,6 @@ public class TreeTableRenderer extends CoreRenderer {
     
     protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode, String rowKey, String parentRowKey) throws IOException {
         if(rowKey != null) {
-            boolean scrollable = tt.isScrollable();
             ResponseWriter writer = context.getResponseWriter();
             tt.setRowKey(rowKey);
             String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
@@ -329,6 +328,11 @@ public class TreeTableRenderer extends CoreRenderer {
             String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
             rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
             rowStyleClass = rowStyleClass + " " + treeNode.getType();
+            
+            String userRowStyleClass = tt.getRowStyleClass();
+            if(userRowStyleClass != null) {
+                rowStyleClass = rowStyleClass + " " + userRowStyleClass;
+            }
             
             if(selected) {
                 tt.getSelectedRowKeys().add(rowKey);
