@@ -698,6 +698,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                                 widget.contextMenuCell.removeClass('ui-state-highlight');
                             }
                             
+                            widget.contextMenuClick = true;
                             widget.contextMenuCell = cell;
                             widget.contextMenuCell.addClass('ui-state-highlight');
                             
