@@ -92,6 +92,7 @@ public class EditorRenderer extends CoreRenderer{
                 .attr("controls", editor.getControls(), null)
                 .attr("width", editor.getWidth(), Integer.MIN_VALUE)
                 .attr("height", editor.getHeight(), Integer.MIN_VALUE)
+                .attr("maxlength", editor.getMaxlength(), Integer.MAX_VALUE)
                 .callback("change", "function(e)", editor.getOnchange());
 
         startScript(writer, clientId);

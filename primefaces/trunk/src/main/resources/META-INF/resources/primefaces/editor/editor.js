@@ -1185,15 +1185,47 @@ PrimeFaces.widget.Editor = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.change) {
                 this.editor.change(this.cfg.change);
             }
+            
+            if(this.cfg.maxlength) {
+                this.bindMaxlength();
+            }
 
-            //show container after progressive enhancement
             this.jq.css('visibility', '');
-
+            
             return true;
         } 
         else {
             return false;
         }
+    },
+    
+    bindMaxlength: function() {
+        var $this = this,
+        frameDoc = this.editor.$frame[0].contentWindow.document;
+
+        $(frameDoc).bind('keydown.editor', function(event){
+            $this.editor.updateTextArea();
+
+            var text = $this.editor.$area.val();
+            if(text.length >= $this.cfg.maxlength &&
+                event.which != 8 &&  // back
+                event.which != 46 && // cancel
+                event.which != 37 && // left
+                event.which != 38 && // up
+                event.which != 39 && // right
+                event.which != 16 && // shift
+                event.which != 20 && // caps lock
+                event.which != 91 && // os special
+                event.which != 18 // alt
+                ) {
+                $this.editor.$area.val(text.substr(0, $this.cfg.maxlength)); 
+                return false;
+            }
+            else{
+                $this.editor.updateTextArea();
+                return true;
+            }
+        });
     },
     
     saveHTML: function() {
