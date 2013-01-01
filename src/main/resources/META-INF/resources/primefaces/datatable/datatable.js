@@ -1308,7 +1308,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      */
     bindEditEvents: function() {
         var $this = this;
-        this.cfg.cellEditEvent = this.cfg.cellEditEvent||'click';
         this.cfg.cellSeparator = this.cfg.cellSeparator||' ';
         
         if(this.cfg.editMode === 'row') {
@@ -1327,15 +1326,26 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }); 
         }
         else if(this.cfg.editMode === 'cell') {
-            var cellSelector = this.jqId + ' tbody.ui-datatable-data tr td.ui-editable-column',
-            cellEditEventNS = this.cfg.cellEditEvent + '.datatable-cell';
+            var cellSelector = this.jqId + ' tbody.ui-datatable-data tr td.ui-editable-column';
             
-            $(document).off(cellEditEventNS, cellSelector)
-                        .on(cellEditEventNS, cellSelector, null, function(e) {
+            $(document).off('click.datatable-cell', cellSelector)
+                        .on('click.datatable-cell', cellSelector, null, function(e) {
+                            $this.incellClick = true;
+                            
                             var cell = $(this);
                             if(!cell.hasClass('ui-cell-editing')) {
                                 $this.showCellEditor($(this));
                             }
+                        });
+                        
+            $(document).off('click.datatable-cell-blur' + this.id)
+                        .on('click.datatable-cell-blur' + this.id, function(e) {                            
+                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick) {
+                                $this.saveCell($this.currentCell);
+                            }
+                            
+                            $this.incellClick = false;
+                            $this.contextMenuClick = false;
                         });
         }
     },
@@ -1368,6 +1378,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     showCellEditor: function(c) {
+        this.incellClick = true;
+        
         var cell = null,
         $this = this;
                     
@@ -1422,26 +1434,42 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             inputs.on('keydown.datatable-cell', function(e) {
                     var keyCode = $.ui.keyCode,
                     shiftKey = e.shiftKey,
-                    key = e.which;
+                    key = e.which,
+                    input = $(this);
 
                     if(key === keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
                         $this.saveCell(cell);
 
                         e.preventDefault();
                     }
-                    else if(key === keyCode.TAB) {                        
-                        var tabCell = shiftKey ? cell.prev() : cell.next();
-                        if(tabCell.length == 0) {
-                            var tabRow = shiftKey ? cell.parent().prev() : cell.parent().next();
-                            tabCell = shiftKey ? tabRow.children('td.ui-editable-column:last') : tabRow.children('td.ui-editable-column:first');
-                        }
+                    else if(key === keyCode.TAB) {
+                        if(multi) {
+                            var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
 
-                        $this.showCellEditor(tabCell);
+                            if(focusIndex < 0 || (focusIndex === inputs.length)) {
+                                $this.tabCell(cell, !shiftKey);                                
+                            } else {
+                                inputs.eq(focusIndex).focus();
+                            }
+                        }
+                        else {
+                            $this.tabCell(cell, !shiftKey);
+                        }
                         
                         e.preventDefault();
                     }
                 });
         }        
+    },
+    
+    tabCell: function(cell, forward) {
+        var targetCell = forward ? cell.next() : cell.prev();
+        if(targetCell.length == 0) {
+            var tabRow = forward ? cell.parent().next() : cell.parent().prev();
+            targetCell = forward ? tabRow.children('td.ui-editable-column:first') : tabRow.children('td.ui-editable-column:last');
+        }
+
+        this.showCellEditor(targetCell);
     },
     
     saveCell: function(cell) {
