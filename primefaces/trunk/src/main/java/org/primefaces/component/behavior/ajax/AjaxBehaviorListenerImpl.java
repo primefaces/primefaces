@@ -18,7 +18,6 @@ package org.primefaces.component.behavior.ajax;
 import java.io.Serializable;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
-import javax.el.MethodNotFoundException;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -42,11 +41,11 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         
         try{
             listener.invoke(elContext, new Object[]{});
-        } catch (MethodNotFoundException mnfe) {
+        } catch (Exception mnfe) {
 
             try{
                 listenerWithArg.invoke(elContext , new Object[]{event});
-            }catch (MethodNotFoundException mnfe2){
+            }catch (Exception mnfe2){
                 MethodExpression argListener = context.getApplication().getExpressionFactory().
                         createMethodExpression(elContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
                 argListener.invoke(elContext, new Object[]{event});
