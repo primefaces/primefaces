@@ -69,6 +69,13 @@
 			<type>java.lang.String</type>
             <description>Client side callback to execute when editor data changes.</description>
 		</attribute>
+        <attribute>
+			<name>maxlength</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Maximum length for input.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
