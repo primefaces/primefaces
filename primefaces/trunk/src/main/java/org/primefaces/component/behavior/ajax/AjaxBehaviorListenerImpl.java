@@ -18,6 +18,7 @@ package org.primefaces.component.behavior.ajax;
 import java.io.Serializable;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
+import javax.el.MethodNotFoundException;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -41,15 +42,24 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         
         try{
             listener.invoke(elContext, new Object[]{});
-        } catch (Exception mnfe) {
+        } 
+        catch(MethodNotFoundException mnfe) {
+            processArgListener(context, elContext, event);
+        } 
+        catch(IllegalArgumentException iae) {
+            processArgListener(context, elContext, event);
+        }
+    }
+    
+    private void processArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
+        try{
+            listenerWithArg.invoke(elContext , new Object[]{event});
+        } 
+        catch (IllegalArgumentException e) {
+            MethodExpression argListener = context.getApplication().getExpressionFactory().
+                        createMethodExpression(elContext, listenerWithArg.getExpressionString(), null, new Class[]{event.getClass()});
 
-            try{
-                listenerWithArg.invoke(elContext , new Object[]{event});
-            }catch (Exception mnfe2){
-                MethodExpression argListener = context.getApplication().getExpressionFactory().
-                        createMethodExpression(elContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
-                argListener.invoke(elContext, new Object[]{event});
-            }
+            argListener.invoke(elContext, new Object[]{event});
         }
     }
 }
