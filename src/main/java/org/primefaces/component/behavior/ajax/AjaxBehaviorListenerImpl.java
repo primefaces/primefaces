@@ -40,26 +40,33 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         FacesContext context = FacesContext.getCurrentInstance();
         final ELContext elContext = context.getELContext();
         
-        try{
+        try {
             listener.invoke(elContext, new Object[]{});
         } 
-        catch(MethodNotFoundException mnfe) {
+        catch (MethodNotFoundException mnfe) {
             processArgListener(context, elContext, event);
         } 
-        catch(IllegalArgumentException iae) {
+        catch (IllegalArgumentException iae) {
             processArgListener(context, elContext, event);
         }
     }
     
     private void processArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
-        try{
+        try {
             listenerWithArg.invoke(elContext , new Object[]{event});
-        } 
-        catch (IllegalArgumentException e) {
-            MethodExpression argListener = context.getApplication().getExpressionFactory().
-                        createMethodExpression(elContext, listenerWithArg.getExpressionString(), null, new Class[]{event.getClass()});
-
-            argListener.invoke(elContext, new Object[]{event});
         }
+        catch (MethodNotFoundException mnfe) {
+            processCustomListener(context, elContext, event);
+        }
+        catch (IllegalArgumentException e) {
+            processCustomListener(context, elContext, event);
+        }
+    }
+    
+    private void processCustomListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
+        MethodExpression argListener = context.getApplication().getExpressionFactory().
+                    createMethodExpression(elContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
+
+        argListener.invoke(elContext, new Object[]{event});
     }
 }
