@@ -657,8 +657,7 @@
             $.ajax(xhrOptions)
             .done(function(data, status, xhr) {
                 PrimeFaces.debug('Response received succesfully.');
-                this.focusedId = (document.activeElement !== document.body) ? document.activeElement.id : null;
-
+                
                 var parsed;
 
                 //call user callback
@@ -701,11 +700,6 @@
 
                 if(!cfg.async) {
                     PrimeFaces.ajax.Queue.poll();
-                }
-
-                //restore focus
-                if(document.activeElement === document.body && this.focusedId) {
-                    PrimeFaces.setCaretToEnd(document.getElementById(this.focusedId));
                 }
             });
         }
