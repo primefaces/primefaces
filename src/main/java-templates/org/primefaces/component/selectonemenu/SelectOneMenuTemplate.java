@@ -16,6 +16,7 @@ import org.primefaces.util.MessageFactory;
     public final static String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";
     public final static String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
     public final static String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";
+    public final static String ITEM_GROUP_CLASS = "ui-selectonemenu-item-group ui-corner-all";
     public final static String ITEM_CLASS = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
     public final static String ROW_CLASS = "ui-selectonemenu-item ui-selectonemenu-row ui-widget-content";
     public final static String FILTER_CONTAINER_CLASS = "ui-selectonemenu-filter-container";

@@ -16,6 +16,7 @@
 package org.primefaces.component.selectonemenu;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.faces.component.UIComponent;
@@ -25,6 +26,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -260,32 +262,47 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOptionsAsList(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        Object value = menu.getValue();
-
+        Converter converter = menu.getConverter();
+         
         for(int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            String itemLabel = selectItem.getLabel();
-            itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
-            
-            writer.startElement("li", null);
-            writer.writeAttribute("class", SelectOneMenu.ITEM_CLASS, null);
-            if(selectItem.getDescription() != null) {
-                writer.writeAttribute("title", selectItem.getDescription(), null);
-            }
-            
-            if(itemLabel.equals("&nbsp;"))
-                writer.write(itemLabel);
-            else {
-                if(selectItem.isEscape())
-                    writer.writeText(itemLabel, "value");
-                else
-                    writer.write(itemLabel);
-            }
-                
 
-            writer.endElement("li");
+            if(selectItem instanceof SelectItemGroup) {
+                SelectItemGroup group = (SelectItemGroup) selectItem;
+
+                encodeItem(context, menu, group, SelectOneMenu.ITEM_GROUP_CLASS, converter);
+                encodeOptionsAsList(context, menu, Arrays.asList(group.getSelectItems()));
+            }
+            else {
+                encodeItem(context, menu, selectItem, SelectOneMenu.ITEM_CLASS, converter);
+            }
         }
+    }
+    
+    protected void encodeItem(FacesContext context, SelectOneMenu menu, SelectItem selectItem, String styleClass, Converter converter) throws IOException  {
+        ResponseWriter writer = context.getResponseWriter();
+        String itemLabel = selectItem.getLabel();
+        itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
+        String itemValueAsString = getOptionAsString(context, menu, converter, selectItem.getValue());
+            
+        writer.startElement("li", null);
+        writer.writeAttribute("data-value", itemValueAsString, null);
+        writer.writeAttribute("class", styleClass, null);
+        if(selectItem.getDescription() != null) {
+            writer.writeAttribute("title", selectItem.getDescription(), null);
+        }
+
+        if(itemLabel.equals("&nbsp;"))
+            writer.write(itemLabel);
+        else {
+            if(selectItem.isEscape())
+                writer.writeText(itemLabel, "value");
+            else
+                writer.write(itemLabel);
+        }
+
+
+        writer.endElement("li");
     }
 
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
@@ -320,35 +337,53 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     
     protected void encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, Object values, Object submittedValues, Converter converter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
-        boolean disabled = option.isDisabled();
-
-        Object valuesArray;
-        Object itemValue;
-        if(submittedValues != null) {
-            valuesArray = submittedValues;
-            itemValue = itemValueAsString;
-        } else {
-            valuesArray = values;
-            itemValue = option.getValue();
+        
+        if(option instanceof SelectItemGroup) {
+            SelectItemGroup group = (SelectItemGroup) option;
+            /*String label = group.getLabel();
+            writer.startElement("optgroup", null);
+            
+            if(label != null) {
+                writer.writeAttribute("label", label, null);
+            }*/
+            
+            for(SelectItem groupItem : group.getSelectItems()) {
+                encodeOption(context, menu, groupItem, values, submittedValues, converter);
+            }
+            
+            //writer.endElement("optgroup");
         }
+        else {
+            String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
+            boolean disabled = option.isDisabled();
 
-        boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
-        if(option.isNoSelectionOption() && values != null && !selected) {
-            return;
+            Object valuesArray;
+            Object itemValue;
+            if(submittedValues != null) {
+                valuesArray = submittedValues;
+                itemValue = itemValueAsString;
+            } else {
+                valuesArray = values;
+                itemValue = option.getValue();
+            }
+
+            boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
+            if(option.isNoSelectionOption() && values != null && !selected) {
+                return;
+            }
+
+            writer.startElement("option", null);
+            writer.writeAttribute("value", itemValueAsString, null);
+            if(disabled) writer.writeAttribute("disabled", "disabled", null);
+            if(selected) writer.writeAttribute("selected", "selected", null);
+
+            if(option.isEscape())
+                writer.writeText(option.getLabel(), "value");
+            else
+                writer.write(option.getLabel());
+
+            writer.endElement("option");
         }
-
-        writer.startElement("option", null);
-        writer.writeAttribute("value", itemValueAsString, null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
-        if(selected) writer.writeAttribute("selected", "selected", null);
-
-        if(option.isEscape())
-            writer.writeText(option.getLabel(), "value");
-        else
-            writer.write(option.getLabel());
-
-        writer.endElement("option");
     }
 
     protected String calculateWrapperHeight(SelectOneMenu menu, int itemSize) {

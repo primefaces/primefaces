@@ -453,7 +453,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.options = this.input.children('option');
         this.cfg.effect = this.cfg.effect||'fade';
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
-                
+                        
         var $this = this,
         selectedOption = this.options.filter(':selected');
 
@@ -471,7 +471,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             
             //predefined input
             if(customInputVal === selectedOption.text()) {
-                this.highlightItem(this.items.eq(selectedOption.index()));
+                this.highlightInitialValue(selectedOption);
             }
             //custom input
             else {
@@ -481,7 +481,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            this.highlightItem(this.items.eq(selectedOption.index()));
+            this.highlightInitialValue(selectedOption);
         }
                 
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
@@ -515,6 +515,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+    },
+    
+    highlightInitialValue: function(selectedOption) {
+        for(var i = 0; i < this.items.length; i++) {
+            if(this.items.eq(i).data('value') === selectedOption.val()) {
+                this.highlightItem(this.items.eq(i));
+            }
+        }
     },
     
     setupDialogSupport: function() {
@@ -719,11 +727,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
      * Handler to process item selection with mouse
      */
     selectItem: function(item, silent) {
-        var selectedOption = this.options.eq(item.index()),
+        var selectedValue = item.data('value'),
+        selectedOption = this.options.filter('[value="' + selectedValue + '"]'),
         currentOption = this.options.filter(':selected'),
         sameOption = selectedOption.val() == currentOption.val(),
         shouldChange = null;
-        
+                
         if(this.cfg.editable) {
             shouldChange = (!sameOption)||(selectedOption.text() != this.label.val());
         }
@@ -762,7 +771,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.UP:
                 case keyCode.LEFT:
                     var activeItem = $this.getActiveItem(),
-                    prev = activeItem.prevAll(':not(.ui-state-disabled):first');
+                    prev = activeItem.prevAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):first');
                     
                     if(prev.length == 1) {
                         if($this.panel.is(':hidden')) {
@@ -779,8 +788,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
-                    var activeItem = $this.getActiveItem(),                    
-                    next = activeItem.nextAll(':not(.ui-state-disabled):first');
+                    var activeItem = $this.getActiveItem(),
+                    next = activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):first');
                     
                     if(next.length == 1) {
                         if($this.panel.is(':hidden')) {
