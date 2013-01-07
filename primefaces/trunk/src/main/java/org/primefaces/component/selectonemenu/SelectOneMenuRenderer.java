@@ -262,31 +262,27 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOptionsAsList(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
-        Converter converter = menu.getConverter();
-         
         for(int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
 
             if(selectItem instanceof SelectItemGroup) {
                 SelectItemGroup group = (SelectItemGroup) selectItem;
 
-                encodeItem(context, menu, group, SelectOneMenu.ITEM_GROUP_CLASS, converter);
+                encodeItem(context, menu, group, SelectOneMenu.ITEM_GROUP_CLASS);
                 encodeOptionsAsList(context, menu, Arrays.asList(group.getSelectItems()));
             }
             else {
-                encodeItem(context, menu, selectItem, SelectOneMenu.ITEM_CLASS, converter);
+                encodeItem(context, menu, selectItem, SelectOneMenu.ITEM_CLASS);
             }
         }
     }
     
-    protected void encodeItem(FacesContext context, SelectOneMenu menu, SelectItem selectItem, String styleClass, Converter converter) throws IOException  {
+    protected void encodeItem(FacesContext context, SelectOneMenu menu, SelectItem selectItem, String styleClass) throws IOException  {
         ResponseWriter writer = context.getResponseWriter();
         String itemLabel = selectItem.getLabel();
         itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
-        String itemValueAsString = getOptionAsString(context, menu, converter, selectItem.getValue());
-            
+
         writer.startElement("li", null);
-        writer.writeAttribute("data-value", itemValueAsString, null);
         writer.writeAttribute("class", styleClass, null);
         if(selectItem.getDescription() != null) {
             writer.writeAttribute("title", selectItem.getDescription(), null);
@@ -339,19 +335,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         
         if(option instanceof SelectItemGroup) {
-            SelectItemGroup group = (SelectItemGroup) option;
-            /*String label = group.getLabel();
-            writer.startElement("optgroup", null);
-            
-            if(label != null) {
-                writer.writeAttribute("label", label, null);
-            }*/
-            
+            SelectItemGroup group = (SelectItemGroup) option;            
             for(SelectItem groupItem : group.getSelectItems()) {
                 encodeOption(context, menu, groupItem, values, submittedValues, converter);
             }
-            
-            //writer.endElement("optgroup");
         }
         else {
             String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());

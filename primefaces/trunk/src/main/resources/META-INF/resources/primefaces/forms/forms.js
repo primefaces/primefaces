@@ -453,7 +453,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.options = this.input.children('option');
         this.cfg.effect = this.cfg.effect||'fade';
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
-                        
+        this.optGroupsSize = this.itemsContainer.children('li.ui-selectonemenu-item-group').length;
+
         var $this = this,
         selectedOption = this.options.filter(':selected');
 
@@ -471,7 +472,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             
             //predefined input
             if(customInputVal === selectedOption.text()) {
-                this.highlightInitialValue(selectedOption);
+                this.highlightItem(this.items.eq(selectedOption.index()));
             }
             //custom input
             else {
@@ -481,7 +482,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            this.highlightInitialValue(selectedOption);
+            this.highlightItem(this.items.eq(selectedOption.index()));
         }
                 
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
@@ -516,15 +517,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
-    
-    highlightInitialValue: function(selectedOption) {
-        for(var i = 0; i < this.items.length; i++) {
-            if(this.items.eq(i).data('value') === selectedOption.val()) {
-                this.highlightItem(this.items.eq(i));
-            }
-        }
-    },
-    
+        
     setupDialogSupport: function() {
         var dialog = this.jq.parents('.ui-dialog:first');
 
@@ -727,8 +720,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
      * Handler to process item selection with mouse
      */
     selectItem: function(item, silent) {
-        var selectedValue = item.data('value'),
-        selectedOption = this.options.filter('[value="' + selectedValue + '"]'),
+        var selectedOption = this.options.eq(this.resolveItemIndex(item)),
         currentOption = this.options.filter(':selected'),
         sameOption = selectedOption.val() == currentOption.val(),
         shouldChange = null;
@@ -758,6 +750,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         if(this.panel.is(':visible')) {
             this.hide();
         }
+    },
+    
+    resolveItemIndex: function(item) {
+        if(this.optGroupsSize === 0)
+            return item.index();
+        else
+            return item.index() - item.prevAll('li.ui-selectonemenu-item-group').length;        
     },
     
     bindKeyEvents: function() {
