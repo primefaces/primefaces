@@ -14,14 +14,6 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             this.bindTarget();
         else
             this.bindGlobal();
-
-        //Hide overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if($this.jq.is(':visible')) {
-                $this.align();
-            }
-        });
         
         $(this.jqId + '_s').remove();
     },
@@ -45,8 +37,9 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                         if(title) {
                             $this.jq.text(title);
                             $this.globalTitle = title;
+                            $this.target = element;
                             element.removeAttr('title');
-                            $this.show(element);
+                            $this.show();
                         }
                     })
                     .on(this.cfg.hideEvent + '.tooltip', this.globalSelector, function() {
@@ -56,8 +49,16 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             $this.hide();
                             element.attr('title', $this.globalTitle);
                             $this.globalTitle = null;
+                            $this.target = null;
                         }
                     });
+                    
+        var resizeNS = 'resize.tooltip';
+        $(window).unbind(resizeNS).bind(resizeNS, function() {
+            if($this.jq.is(':visible')) {
+                $this.align();
+            }
+        });
     },
     
     bindTarget: function() {
@@ -81,11 +82,16 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.target.removeAttr('title');
+        
+        var resizeNS = 'resize.' + this.id;
+        $(window).unbind(resizeNS).bind(resizeNS, function() {
+            if($this.jq.is(':visible')) {
+                $this.align();
+            }
+        });
     },
 
-    align: function(element) {
-        var el = element ? element : this.target;
-        
+    align: function() {
         this.jq.css({
             left:'', 
             top:'',
@@ -94,15 +100,15 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         .position({
             my: 'left top',
             at: 'right bottom',
-            of: el
+            of: this.target
         });
     },
     
-    show: function(element) {
+    show: function() {
         var _self = this;
 
         this.timeout = setTimeout(function() {
-            _self.align(element);
+            _self.align();
             _self.jq.show(_self.cfg.showEffect, {}, 400);
         }, 150);
     },
