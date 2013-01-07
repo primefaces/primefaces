@@ -31,47 +31,53 @@ public class TooltipRenderer extends CoreRenderer {
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Tooltip tooltip = (Tooltip) component;
+        String target = getTarget(context, tooltip);
 		
-        encodeMarkup(context, tooltip);
-		encodeScript(context, tooltip);
+        encodeMarkup(context, tooltip, target);
+		encodeScript(context, tooltip, target);
 	}
     
-    protected void encodeMarkup(FacesContext context, Tooltip tooltip) throws IOException {
+    protected void encodeMarkup(FacesContext context, Tooltip tooltip, String target) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = tooltip.getStyleClass();
-        styleClass = styleClass == null ? Tooltip.CONTAINER_CLASS : Tooltip.CONTAINER_CLASS + " " + styleClass;
         
-        writer.startElement("div", tooltip);
-        writer.writeAttribute("id", tooltip.getClientId(context), null);
-        writer.writeAttribute("class", styleClass, "styleClass");
-        
-        if(tooltip.getStyle() != null) 
-            writer.writeAttribute("style", tooltip.getStyle(), "style");
-        
-        if(tooltip.getChildCount() > 0) {
-            renderChildren(context, tooltip);
+        if(target != null) {
+            String styleClass = tooltip.getStyleClass();
+            styleClass = styleClass == null ? Tooltip.CONTAINER_CLASS : Tooltip.CONTAINER_CLASS + " " + styleClass;
+
+            writer.startElement("div", tooltip);
+            writer.writeAttribute("id", tooltip.getClientId(context), null);
+            writer.writeAttribute("class", styleClass, "styleClass");
+
+            if(tooltip.getStyle() != null) 
+                writer.writeAttribute("style", tooltip.getStyle(), "style");
+
+            if(tooltip.getChildCount() > 0) {
+                renderChildren(context, tooltip);
+            }
+            else {
+                String valueToRender = ComponentUtils.getValueToRender(context, tooltip);
+                if(valueToRender != null)
+                    writer.writeText(valueToRender, "value");
+            }
+
+
+            writer.endElement("div");
         }
-        else {
-            String valueToRender = ComponentUtils.getValueToRender(context, tooltip);
-            if(valueToRender != null)
-                writer.writeText(valueToRender, "value");
-        }
-        
-        
-        writer.endElement("div");
     }
 
-	protected void encodeScript(FacesContext context, Tooltip tooltip) throws IOException {
+	protected void encodeScript(FacesContext context, Tooltip tooltip, String target) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         String clientId = tooltip.getClientId(context);
-		String target = getTarget(context, tooltip);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Tooltip", tooltip.resolveWidgetVar(), clientId, true)
-            .attr("target", target)
+        wb.widget("Tooltip", tooltip.resolveWidgetVar(), clientId, true)            
             .attr("showEvent", tooltip.getShowEvent(), null)
             .attr("hideEvent", tooltip.getHideEvent(), null)
             .attr("showEffect", tooltip.getShowEffect(), null)
             .attr("hideEffect", tooltip.getHideEffect(), null);
+        
+        if(target != null) {
+            wb.attr("target", target);
+        }
 		
         startScript(writer, clientId);
 		writer.write(wb.build());
@@ -90,7 +96,7 @@ public class TooltipRenderer extends CoreRenderer {
                 return forComponent.getClientId(context);
 
         } else {
-            throw new FacesException("No target is defined for tooltip '" + tooltip.getClientId(context) + "'");
+            return null;
         }
 	}
 
