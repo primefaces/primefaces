@@ -54,7 +54,7 @@ public abstract class InputRenderer extends CoreRenderer {
                 
                 if(value != null) {
                     if(value instanceof SelectItem) {
-                    selectItems.add((SelectItem) value);
+                        selectItems.add((SelectItem) value);
                     }
                     else if(value.getClass().isArray()) {
                         for(int i = 0; i < Array.getLength(value); i++) {
