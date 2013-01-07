@@ -73,25 +73,46 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-state-hover');
         })
         .on('click.pickList', function(e) {
-            
             //stop propagation
             if($this.checkboxClick||$this.dragging) {
                 $this.checkboxClick = false;
                 return;
             }
-            console.log('click');
-            var element = $(this),
+            
+            var item = $(this),
             metaKey = (e.metaKey||e.ctrlKey);
+            
+            if(!e.shiftKey) {
+                if(!metaKey) {
+                    $this.unselectAll();
+                }
 
-            if(metaKey) {
-                if(element.hasClass('ui-state-highlight'))
-                    $this.unselectItem(element);
-                else
-                    $this.selectItem(element);
+                if(metaKey && item.hasClass('ui-state-highlight')) {
+                    $this.unselectItem(item);
+                } 
+                else {
+                    $this.selectItem(item);
+                    $this.cursorItem = item;
+                }
             }
             else {
-                $this.selectItem(element);
-                $this.unselectSiblings(element);
+                $this.unselectAll();
+                
+                if($this.cursorItem && ($this.cursorItem.parent().is(item.parent()))) {
+                    var currentItemIndex = item.index(),
+                    cursorItemIndex = $this.cursorItem.index(),
+                    startIndex = (currentItemIndex > cursorItemIndex) ? cursorItemIndex : currentItemIndex,
+                    endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1),
+                    parentList = item.parent();
+                    
+                    for(var i = startIndex ; i < endIndex; i++) {
+                        $this.selectItem(parentList.children('li.ui-picklist-item').eq(i));
+                    }
+                } 
+                else {
+                    $this.selectItem(item);
+                    $this.cursorItem = item;
+                }
             }
         })
         .on('dblclick.pickList', function() {
@@ -143,13 +164,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    unselectSiblings: function(item) {
-        var $this = this;
-        item.siblings('.ui-state-highlight').each(function() {
-            $this.unselectItem($(this));
-        });
+    unselectAll: function() {
+        var selectedItems = this.items.filter('.ui-state-highlight');
+        for(var i = 0; i < selectedItems.length; i++) {
+            this.unselectItem(selectedItems.eq(i));
+        }
     },
-    
+   
     selectCheckbox: function(chkbox) {
         chkbox.removeClass('ui-state-hover').addClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
     },
@@ -380,8 +401,6 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 else {
                     item.hide().insertAfter(item.next()).show();
                 }
-                
-                
             }
 
         });
@@ -435,6 +454,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
         this.generateItems(this.sourceList, this.sourceInput);
         this.generateItems(this.targetList, this.targetInput);
+        this.cursorItem = null;
     },
     
     transfer: function(items, from, to, type) {  

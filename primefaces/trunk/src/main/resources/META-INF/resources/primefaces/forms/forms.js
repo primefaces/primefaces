@@ -1450,7 +1450,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                     $this.selectItem(item);
                     $this.cursorItem = item;
                 }
-            } 
+            }
             else {
                 //range selection
                 if($this.cursorItem) {
@@ -1467,6 +1467,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                 } 
                 else {
                     $this.selectItem(item);
+                    $this.cursorItem = item;
                 }
             }
 
