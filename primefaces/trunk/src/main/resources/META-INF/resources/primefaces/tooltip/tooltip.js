@@ -46,7 +46,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                         var element = $(this);
 
                         if($this.globalTitle) {
-                            $this.hide();
+                            $this.jq.hide();
                             element.attr('title', $this.globalTitle);
                             $this.globalTitle = null;
                             $this.target = null;
