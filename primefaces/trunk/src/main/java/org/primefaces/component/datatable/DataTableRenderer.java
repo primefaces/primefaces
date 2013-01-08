@@ -167,7 +167,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if(hasPaginator) {
-            table.calculatePage();
+            table.calculateFirst();
         }
 
         writer.startElement("div", table);

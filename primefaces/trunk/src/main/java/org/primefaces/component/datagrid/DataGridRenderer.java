@@ -60,7 +60,7 @@ public class DataGridRenderer extends DataRenderer {
         String contentClass = empty ? DataGrid.EMPTY_CONTENT_CLASS : DataGrid.CONTENT_CLASS;
 
         if(hasPaginator) {
-            grid.calculatePage();
+            grid.calculateFirst();
         }
         
         writer.startElement("div", grid);

@@ -61,7 +61,7 @@ public class DataListRenderer extends DataRenderer {
         UIComponent header = list.getHeader();
         
         if(hasPaginator) {
-            list.calculatePage();
+            list.calculateFirst();
         }
         
         writer.startElement("div", list);
