@@ -355,9 +355,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             }
 
             boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
-            if(option.isNoSelectionOption() && values != null && !selected) {
-                return;
-            }
 
             writer.startElement("option", null);
             writer.writeAttribute("value", itemValueAsString, null);
