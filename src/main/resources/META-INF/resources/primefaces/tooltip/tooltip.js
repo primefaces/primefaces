@@ -21,7 +21,11 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         if(cfg.target) {
             $(document.body).children(PrimeFaces.escapeClientId(cfg.id)).remove();
-        } 
+        } else {
+            $(document.body).children('.ui-tooltip-global').remove();
+        }
+        
+        this._super(cfg);
     },
     
     bindGlobal: function() {
@@ -68,12 +72,13 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
         
         var $this = this;
-        this.target.on(this.cfg.showEvent + '.tooltip', function() {
-            $this.show();
-        })
-        .on(this.cfg.hideEvent + '.tooltip', function() {
-            $this.hide();
-        });
+        this.target.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent)
+                    .on(this.cfg.showEvent, function() {
+                        $this.show();
+                    })
+                    .on(this.cfg.hideEvent + '.tooltip', function() {
+                        $this.hide();
+                    });
 
         this.jq.appendTo(document.body);
 
