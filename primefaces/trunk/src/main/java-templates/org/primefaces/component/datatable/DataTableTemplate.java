@@ -271,8 +271,20 @@ import org.primefaces.component.datatable.feature.*;
                 String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
                 int rowIndex = Integer.parseInt(cellInfo[0]);
                 int cellIndex = Integer.parseInt(cellInfo[1]);
-                UIColumn column = this.getColumns().get(cellIndex);
+                int i = -1;
+                UIColumn column = null;
                 
+                for(UIColumn col : this.getColumns()) {
+                    if(col.isRendered()) {
+                        i++;
+                        
+                        if(i == cellIndex) {
+                            column = col;
+                            break;
+                        }
+                    }
+                }
+
                 wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), rowIndex, column);
             }
             
