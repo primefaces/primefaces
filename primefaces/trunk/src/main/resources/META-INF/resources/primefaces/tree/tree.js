@@ -222,7 +222,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             
             if(nodeContent.hasClass('ui-tree-selectable') && this.cfg.selectionMode) {
                 if(this.isSingleSelection()) {
-                    this.unselectAllRows();
+                    this.unselectAllNodes();
                     this.selectNode(node);
                 }
                 else if(this.isMultipleSelection()) { 
