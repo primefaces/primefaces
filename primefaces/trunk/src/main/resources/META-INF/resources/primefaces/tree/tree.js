@@ -662,11 +662,6 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
     },
     
     selectNode: function(node, metaKey) {        
-        if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
-            this.selections = [];
-            this.jq.find('.ui-treenode-content.ui-state-highlight').removeClass('ui-state-highlight');
-        }
-
         node.removeClass('ui-treenode-unselected').addClass('ui-treenode-selected').children('.ui-treenode-content').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
         this.addToSelection(this.getRowKey(node));
@@ -686,6 +681,13 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         this.writeSelections();
 
         this.fireNodeUnselectEvent(node);
+    },
+    
+    unselectAllNodes: function() {
+        this.selections = [];
+        this.jq.find('.ui-treenode-content.ui-state-highlight').each(function() {
+            $(this).removeClass('ui-state-highlight').closest('.ui-treenode').attr('aria-selected', false);
+        });
     },
     
     preselectCheckbox: function() {
