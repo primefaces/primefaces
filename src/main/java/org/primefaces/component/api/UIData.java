@@ -149,19 +149,17 @@ public class UIData extends javax.faces.component.UIData {
 		getStateHelper().put(PropertyKeys.rowIndexVar, _rowIndexVar);
 	}
     
-    public void calculatePage() {
+    public void calculateFirst() {
         int rows = this.getRowsToRender();
         
         if(rows > 0) {
-            int rowCount = this.getRowCount();
             int first = this.getFirst();
-            int currentPage = (int) (first / rows);
-            int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
-
-            if(currentPage > numberOfPages && numberOfPages > 0) {
-                currentPage = numberOfPages;
-
-                this.setFirst((currentPage-1) * rows);
+            int rowCount = this.getRowCount();
+            
+            if(first >= rowCount) {
+                int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
+                
+                this.setFirst((numberOfPages-1) * rows);
             }
         }
     }
