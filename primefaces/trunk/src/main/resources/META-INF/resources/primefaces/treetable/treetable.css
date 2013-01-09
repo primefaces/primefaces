@@ -116,3 +116,7 @@
     z-index: 10;
     display: none;
 }
+
+.ui-treetable .ui-chkbox {
+    margin-right: 3px;
+}

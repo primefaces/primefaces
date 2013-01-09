@@ -243,7 +243,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                         }
                     }
                 }
-            };
+            }
         }
     },
     
