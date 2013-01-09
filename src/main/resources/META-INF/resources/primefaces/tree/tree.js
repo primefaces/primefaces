@@ -684,7 +684,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         
         this.jq.find('.ui-chkbox-icon').not('.ui-icon-check').each(function() {
             var icon = $(this),
-            node = icon.parents('.ui-treenode:first'),
+            node = icon.closest('.ui-treenode'),
             childrenContainer = _self.getNodeChildrenContainer(node);
 
             if(childrenContainer.find('.ui-chkbox-icon.ui-icon-check').length > 0) {
