@@ -696,7 +696,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
         item.addClass('ui-state-highlight');
         
-        this.setLabel(item.text());
+        this.setLabel(item.data('label'));
     },
     
     triggerChange: function(edited) {
