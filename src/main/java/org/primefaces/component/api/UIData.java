@@ -150,13 +150,13 @@ public class UIData extends javax.faces.component.UIData {
 	}
     
     public void calculateFirst() {
-        int rows = this.getRowsToRender();
+        int rows = this.getRows();
         
         if(rows > 0) {
             int first = this.getFirst();
             int rowCount = this.getRowCount();
             
-            if(first >= rowCount) {
+            if(rowCount > 0 && first >= rowCount) {
                 int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
                 
                 this.setFirst((numberOfPages-1) * rows);
