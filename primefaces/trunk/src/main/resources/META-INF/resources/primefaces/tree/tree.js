@@ -5,23 +5,21 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        
-        this.cfg.formId = this.jq.closest('form').attr('id');
 
-        this.initSelection();
+        if(this.cfg.selectionMode) {
+            this.initSelection();
+        }
 
         this.bindEvents();
     },
     
     initSelection: function() {
-        if(this.cfg.selectionMode) {
-            this.selectionHolder = $(this.jqId + '_selection');
-            var selectionsValue = this.selectionHolder.val();
-            this.selections = selectionsValue === '' ? [] : selectionsValue.split(',');
+        this.selectionHolder = $(this.jqId + '_selection');
+        var selectionsValue = this.selectionHolder.val();
+        this.selections = selectionsValue === '' ? [] : selectionsValue.split(',');
 
-            if(this.isCheckboxSelection()) {
-                this.preselectCheckbox();
-            }
+        if(this.isCheckboxSelection()) {
+            this.preselectCheckbox();
         }
     },
     
@@ -209,45 +207,48 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         return false;
     },
        
-    nodeClick: function(e, nodeContent) {
+    nodeClick: function(event, nodeContent) {
         PrimeFaces.clearSelection();
         
-        if($(e.target).is(':not(.ui-tree-toggler)')) {
-            var node = nodeContent.parent(),
-            metaKey = (e.metaKey||e.ctrlKey);
+        if($(event.target).is(':not(.ui-tree-toggler)')) {
+            var node = nodeContent.parent();
                     
             if(this.cfg.onNodeClick) {
                 this.cfg.onNodeClick.call(this, node);
             }
             
             if(nodeContent.hasClass('ui-tree-selectable') && this.cfg.selectionMode) {
-                if(this.isSingleSelection()) {
-                    this.unselectAllNodes();
-                    this.selectNode(node);
+                var selected = this.isNodeSelected(node),
+                metaKey = event.metaKey||event.ctrlKey,
+                shiftKey = event.shiftKey;
+                
+                if(this.isCheckboxSelection()) {
+                    this.toggleCheckboxNode(node);
                 }
-                else if(this.isMultipleSelection()) { 
-                    if(e.shiftKey && this.cursorNode) {
-                        //TODO
+                else {
+                    if(selected && metaKey) {
+                        this.unselectNode(node);
                     }
                     else {
-                        if(!metaKey) {
+                        if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
                             this.unselectAllNodes();
                         }
 
-                        if(this.isNodeSelected(node) && metaKey) {
-                            this.unselectNode(node);
+                        if(this.isMultipleSelection && shiftKey) {
+                            //TODO: Range selection
                         }
                         else {
                             this.selectNode(node);
                             this.cursorNode = node;
                         }
-                    }                    
-                }
-                else if(this.isCheckboxSelection()) {
-                    this.toggleCheckbox(nodeContent.children(('div.ui-chkbox')));
+                    }
                 }
             };
         }
+    },
+    
+    bindEvents: function() {
+        throw "Unsupported Operation";
     },
     
     selectNode: function(node) {        
@@ -263,6 +264,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     preselectCheckbox: function() {
+        throw "Unsupported Operation";
+    },
+    
+    toggleCheckboxNode: function(node) {
         throw "Unsupported Operation";
     },
     
@@ -320,12 +325,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         
     bindEvents: function() {
         var $this = this,
-        selectionMode = this.cfg.selectionMode,
         togglerSelector = this.jqId + ' .ui-tree-toggler',
         nodeLabelSelector = this.jqId  + ' .ui-tree-selectable .ui-treenode-label',
         nodeContentSelector = this.jqId + ' .ui-treenode-content';
 
-        //expand-collapse
         $(document).off('click', togglerSelector)
                     .on('click', togglerSelector, null, function(e) {
                         var toggleIcon = $(this),
@@ -337,8 +340,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                             $this.collapseNode(node);
                     });
 
-        //selection hover
-        if(selectionMode && this.cfg.highlight) {
+        if(this.cfg.selectionMode && this.cfg.highlight) {
             $(document).off('mouseout.tree mouseover.tree', nodeLabelSelector)
                         .on('mouseout.tree', nodeLabelSelector, null, function() {
                             var label = $(this);
@@ -362,7 +364,6 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         });
         }
         
-        //checkboxes
         if(this.isCheckboxSelection()) {       
             var checkboxSelector = this.jqId + ' .ui-chkbox-box';
             
@@ -375,7 +376,6 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         });
         }
         
-        //node click
         $(document).off('click.tree', nodeContentSelector)
                         .on('click.tree', nodeContentSelector, null, function(e) {
                             $this.nodeClick(e, $(this));
@@ -479,9 +479,9 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.fireNodeUnselectEvent(node);
     },
 
-    toggleCheckbox: function(checkbox) {
+    toggleCheckboxNode: function(node) {
         var $this = this,
-        node = checkbox.closest('.ui-treenode'),
+        checkbox = node.find('> .ui-treenode-content > .ui-chkbox'),
         checked = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon').hasClass('ui-icon-check');
 
         this.toggleCheckboxState(checkbox, checked);
@@ -551,61 +551,50 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
     
     //@Override
     bindEvents: function() {
-        var _self = this,
+        var $this = this,
         selectionMode = this.cfg.selectionMode,
         togglerSelector = this.jqId + ' .ui-tree-toggler',
-        nodeContentSelector = this.jqId + ' .ui-treenode-content';
+        nodeContentSelector = this.jqId + ' .ui-treenode-content.ui-tree-selectable';
 
-        //toggle
         $(document).off('click.tree', togglerSelector)
                     .on('click.tree', togglerSelector, null, function() {
                         var icon = $(this),
-                        node = icon.parents('td.ui-treenode:first');
+                        node = icon.closest('td.ui-treenode');
                         
-                        if(node.hasClass('ui-treenode-collapsed')) {
-                            _self.expandNode(node);
-                        }
-                        else {
-                            _self.collapseNode(node);
-                        }
+                        if(node.hasClass('ui-treenode-collapsed'))
+                            $this.expandNode(node);
+                        else
+                            $this.collapseNode(node);
                     });
                     
-        //selection hover
-        if(selectionMode && !this.isCheckboxSelection() && this.cfg.highlight) {
+        if(selectionMode && this.cfg.highlight) {
             $(document).off('mouseout.tree mouseover.tree', nodeContentSelector)
-                        .on('mouseout.tree', nodeContentSelector, null, function() {
-                            $(this).removeClass('ui-state-hover');
-                        })
                         .on('mouseover.tree', nodeContentSelector, null, function() {
-                            var element = $(this);
-
-                            if(!element.hasClass('ui-state-highlight') && element.hasClass('ui-tree-selectable')) {
-                                $(this).addClass('ui-state-hover');
+                            var nodeContent = $(this);
+                            if(!nodeContent.hasClass('ui-state-highlight')) {
+                                nodeContent.addClass('ui-state-hover');
+                                
+                                if($this.isCheckboxSelection()) {
+                                    nodeContent.children('div.ui-chkbox').children('div.ui-chkbox-box').addClass('ui-state-hover');
+                                }
+                            }
+                        })
+                        .on('mouseout.tree', nodeContentSelector, null, function() {
+                            var nodeContent = $(this);
+                            if(!nodeContent.hasClass('ui-state-highlight')) {
+                                nodeContent.removeClass('ui-state-hover');
+                                
+                                if($this.isCheckboxSelection()) {
+                                    nodeContent.children('div.ui-chkbox').children('div.ui-chkbox-box').removeClass('ui-state-hover');
+                                }
                             }
                         });
         }
         
-        //checkboxes
-        if(this.isCheckboxSelection()) {
-            var checkboxSelector = this.jqId + ' .ui-chkbox-box';
-            
-            $(document).off('mouseout.tree-checkbox mouseover.tree-checkbox click.tree-checkbox', checkboxSelector)
-                        .on('mouseout.tree-checkbox', checkboxSelector, null, function() {
-                            $(this).removeClass('ui-state-hover');
-                        })
-                        .on('mouseover.tree-checkbox', checkboxSelector, null, function() {
-                            $(this).addClass('ui-state-hover');
-                        })
-                        .on('click.tree-checkbox', checkboxSelector, null, function() {
-                            _self.clickCheckbox($(this).parent());
-                        });
-        }
-        
-        //node click
         $(document).off('click.tree', nodeContentSelector)
-                        .on('click.tree', nodeContentSelector, null, function(e) {
-                            _self.nodeClick(e, $(this));
-                        });
+                .on('click.tree', nodeContentSelector, null, function(e) {
+                    $this.nodeClick(e, $(this));
+                });
 
     },
     
@@ -661,7 +650,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         return node.next('.ui-treenode-children-container').children('.ui-treenode-children');
     },
     
-    selectNode: function(node, metaKey) {        
+    selectNode: function(node) {        
         node.removeClass('ui-treenode-unselected').addClass('ui-treenode-selected').children('.ui-treenode-content').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
         this.addToSelection(this.getRowKey(node));
@@ -704,16 +693,16 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         });
     },
     
-    clickCheckbox: function(checkbox) {
-        var _self = this,
-        node = checkbox.parents('.ui-treenode:first'),
+    toggleCheckboxNode: function(node) {
+        var $this = this,
+        checkbox = node.find('> .ui-treenode-content > .ui-chkbox'),
         checked = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon').hasClass('ui-icon-check');
 
-        this.toggleCheckbox(checkbox, checked);
+        this.toggleCheckboxState(checkbox, checked);
 
         if(this.cfg.propagateDown) {
             node.next('.ui-treenode-children-container').find('.ui-chkbox').each(function() {
-                _self.toggleCheckbox($(this), checked);
+                $this.toggleCheckboxState($(this), checked);
             });
         }
 
@@ -726,27 +715,25 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
                 
                 if(checked) {
                     if(children.filter('.ui-treenode-unselected').length === children.length)
-                        _self.uncheck(parentsCheckbox);
+                        $this.uncheck(parentsCheckbox);
                     else
-                        _self.partialCheck(parentsCheckbox);
+                        $this.partialCheck(parentsCheckbox);
                 }
                 else {
                     if(children.filter('.ui-treenode-selected').length === children.length)
-                        _self.check(parentsCheckbox);
+                        $this.check(parentsCheckbox);
                     else
-                        _self.partialCheck(parentsCheckbox);
+                        $this.partialCheck(parentsCheckbox);
                 }
             });
         }
         
         this.writeSelections();
 
-        if(checked) {
+        if(checked)
             this.fireNodeUnselectEvent(node);
-        }
-        else {
+        else
             this.fireNodeSelectEvent(node);
-        }
     },
             
     drawConnectors: function() {
