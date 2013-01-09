@@ -228,15 +228,17 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String var = menu.getVar();
         List<Column> columns = menu.getColums();
-        Object value = menu.getValue();
 
         for(SelectItem selectItem : selectItems) {
+            String itemLabel = selectItem.getLabel();
+            itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
             Object itemValue = selectItem.getValue();
             
             context.getExternalContext().getRequestMap().put(var, selectItem.getValue());
             
             writer.startElement("tr", null);
             writer.writeAttribute("class", SelectOneMenu.ROW_CLASS, null);
+            writer.writeAttribute("data-label", itemLabel, null);
             if(selectItem.getDescription() != null) {
                 writer.writeAttribute("title", selectItem.getDescription(), null);
             }
@@ -284,6 +286,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         writer.startElement("li", null);
         writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("data-label", itemLabel, null);
         if(selectItem.getDescription() != null) {
             writer.writeAttribute("title", selectItem.getDescription(), null);
         }
