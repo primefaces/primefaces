@@ -438,9 +438,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         });
     },
     
-    /**
-     * Initialize data scrolling, for live scrolling listens scroll event to load data dynamically
-     */
     setupScrolling: function() {
         this.scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header');
         this.scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body');
@@ -449,9 +446,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.scrollHeaderBox = this.scrollHeader.children('div.ui-datatable-scrollable-header-box');
         var $this = this;
         
-        if(this.jq.is(':visible')) {
-            this.alignScrollbars();
-        }
+        this.colGroup = $('<colgroup />').prependTo(this.scrollBody.children('table'));
+        
+        //set fixed widths
+        this.scrollHeader.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
+            $(this).width($(this).width());
+            
+            $this.colGroup.append('<col style="width:' + $(this).width() + 'px"/>');
+        });
                 
         this.restoreScrollState();
 
@@ -486,34 +488,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             $this.alignEmptyMessage();
         }
     },
-    
-    alignScrollbars: function() {
-        //width
-        if(this.scrollBody.width() > this.tbody.width()) {
-            var fitWidth = 0,
-            cols = this.scrollHeaderBox.find('> table > thead > tr > th > div.ui-dt-c');
-            for(var i = 0; i < cols.length; i++) {
-                fitWidth += cols.eq(i).innerWidth();
-            }
-            fitWidth+=20;
-        
-            this.scrollHeader.width(fitWidth);
-            this.scrollBody.width(fitWidth);
-            this.scrollFooter.width(fitWidth);
-        }
 
-        //height
-        var diff = this.scrollBody.outerHeight() - this.tbody.outerHeight();
-        if(diff > 0) {
-            if(this.scrollBody.prop('scrollWidth') > this.scrollBody.outerWidth()) {
-                this.scrollBody.height(this.tbody.outerHeight() + diff);
-            } 
-            else {
-                this.scrollBody.height(this.tbody.outerHeight());
-            }
-        }
-    },
-    
     restoreScrollState: function() {
         var scrollState = this.scrollStateHolder.val(),
         scrollValues = scrollState.split(',');
@@ -1681,14 +1656,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.filter();
     },
     
-    /**
-     * Add resize behavior to columns
-     */
     setupResizableColumns: function() {
-        //Add resizers and resizer helper        
-        $(this.jqId + ' thead tr th.ui-resizable-column div.ui-dt-c').prepend('<span class="ui-column-resizer">&nbsp;</span>');
+        //Add resizers and resizer helper
+        $(this.jqId + ' thead tr th.ui-resizable-column:not(:last-child)').prepend('<span class="ui-column-resizer">&nbsp;</span>');
         $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
 
+        
+        //set fixed widths
+        $(this.jqId + ' thead tr th.ui-resizable-column').each(function() {
+            $(this).width($(this).width());
+        });
+        
         //Variables
         var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
         resizers = $(this.jqId + ' thead th span.ui-column-resizer'),
@@ -1697,13 +1675,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         table = $(this.jqId + ' table'),
         thead = $(this.jqId + ' thead'),  
         tfoot = $(this.jqId + ' tfoot'),
-        _self = this;
+        $this = this;
 
         //Main resize events
         resizers.draggable({
             axis: 'x',
             start: function(event, ui) {
-                var height = _self.cfg.scrollable ? scrollBody.height() : table.height() - thead.height() - 1;
+                var height = $this.cfg.scrollable ? scrollBody.height() : table.height() - thead.height() - 1;
 
                 //Set height of resizer helper
                 resizerHelper.height(height);
@@ -1717,14 +1695,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     });  
             },
             stop: function(event, ui) {
-                var columnHeaderWrapper = ui.helper.parent(),
-                columnHeader = columnHeaderWrapper.parent(),
-                minWidth = columnHeaderWrapper.data('minwidth'),
-                maxWidth = columnHeaderWrapper.data('maxwidth'),
+                var columnHeader = ui.helper.parent(),
+                minWidth = columnHeader.data('minwidth'),
+                maxWidth = columnHeader.data('maxwidth'),
                 oldPos = ui.originalPosition.left,
                 newPos = ui.position.left,
                 change = (newPos - oldPos),
-                newWidth = (columnHeaderWrapper.width() + change - (ui.helper.width() / 2));
+                newWidth = (columnHeader.width() + change),
+                nextColumnWidth = (columnHeader.next().width() - change);
 
                 ui.helper.css('left','');
                 resizerHelper.hide();
@@ -1735,11 +1713,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     newWidth = maxWidth;
                 }
 
-                columnHeaderWrapper.width(newWidth);
-                columnHeader.css('width', '');
-
-                _self.tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
-                tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
+                columnHeader.width(newWidth);
+                columnHeader.next().width(nextColumnWidth);
+   
+                
+                if($this.cfg.scrollable) {
+                    $this.tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
+                    tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
+                }
                 
                 //frozen rows
                 var frozenRowsBody = thead.next('tbody');
@@ -1751,20 +1732,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 //Sync width change with server side state
                 var options = {
-                    source: _self.id,
-                    process: _self.id,
+                    source: $this.id,
+                    process: $this.id,
                     params: [
-                        {name: _self.id + '_colResize', value: true},
-                        {name: _self.id + '_columnId', value: columnHeader.attr('id')},
-                        {name: _self.id + '_width', value: newWidth},
-                        {name: _self.id + '_height', value: columnHeader.height()}
+                        {name: $this.id + '_colResize', value: true},
+                        {name: $this.id + '_columnId', value: columnHeader.attr('id')},
+                        {name: $this.id + '_width', value: newWidth},
+                        {name: $this.id + '_height', value: columnHeader.height()}
                     ]
                 }
                 
-                if(_self.hasBehavior('colResize')) {
-                    var colResizeBehavior = _self.cfg.behaviors['colResize'];
+                if($this.hasBehavior('colResize')) {
+                    var colResizeBehavior = $this.cfg.behaviors['colResize'];
                     
-                    colResizeBehavior.call(_self, event, options);
+                    colResizeBehavior.call($this, event, options);
                 }
                 else {
                     PrimeFaces.ajax.AjaxRequest(options);

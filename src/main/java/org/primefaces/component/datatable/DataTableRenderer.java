@@ -279,6 +279,7 @@ public class DataTableRenderer extends DataRenderer {
         if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if(table.getTableStyleClass() != null) writer.writeAttribute("class", tableStyleClass, null);
         
+        encodeColGroup(context, table);
         encodeTbody(context, table, false);
         
         writer.endElement("table");
@@ -341,14 +342,9 @@ public class DataTableRenderer extends DataRenderer {
         if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
-        
-        //column content wrapper
-        writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER , null);
-        if(column.getWidth() != -1) writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
         if(column.getMinWidth() != Integer.MIN_VALUE) writer.writeAttribute("data-minwidth", column.getMinWidth(), null);
         if(column.getMaxWidth() != Integer.MAX_VALUE) writer.writeAttribute("data-maxwidth", column.getMaxWidth(), null);
-
+        
         if(hasFilter) {
             table.enableFiltering();
 
@@ -517,12 +513,6 @@ public class DataTableRenderer extends DataRenderer {
         if(style != null) writer.writeAttribute("style", style, null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
-        if(column.getWidth() != -1) {
-            writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
-        }
         
         //Footer content
         UIComponent facet = column.getFacet("footer");
@@ -532,8 +522,6 @@ public class DataTableRenderer extends DataRenderer {
         } else if(text != null) {
             writer.write(text);
         }
-        
-        writer.endElement("div");
 
         writer.endElement("td");
     }
@@ -594,6 +582,19 @@ public class DataTableRenderer extends DataRenderer {
         encodeFrozenRows(context, table);
 
         writer.endElement("thead");
+    }
+    
+    public void encodeColGroup(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("colgroup", null);
+        for(UIColumn column : table.getColumns()) {
+            if(column.isRendered()) {
+                writer.startElement("col", null);
+                writer.endElement("col");
+            }
+        }
+        writer.endElement("colgroup");
     }
 
     public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly) throws IOException {
@@ -758,13 +759,13 @@ public class DataTableRenderer extends DataRenderer {
         
         for(UIColumn column : table.getColumns()) {                
             if(column instanceof Column) {
-                encodeRegularCell(context, table, column, clientId, selected);
+                encodeCell(context, table, column, clientId, selected);
             }
             else if(column instanceof DynamicColumn) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyModel();
 
-                encodeRegularCell(context, table, dynamicColumn, null, false);
+                encodeCell(context, table, dynamicColumn, null, false);
             }
         }
 
@@ -773,7 +774,7 @@ public class DataTableRenderer extends DataRenderer {
         return true;
     }
 
-    protected void encodeRegularCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected) throws IOException {
+    protected void encodeCell(FacesContext context, DataTable table, UIColumn column, String clientId, boolean selected) throws IOException {
         if(!column.isRendered()) {
             return;
         }
@@ -796,11 +797,6 @@ public class DataTableRenderer extends DataRenderer {
         if(style != null) writer.writeAttribute("style", style, null);
         if(!isValueBlank(styleClass)) writer.writeAttribute("class", styleClass.trim(), null);
 
-        writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
-        if(column.getWidth() != -1) {
-            writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
-        }
         
         if(selectionEnabled) {
             encodeColumnSelection(context, table, clientId, column, selected);
@@ -808,8 +804,6 @@ public class DataTableRenderer extends DataRenderer {
         else {
             column.encodeAll(context);            
         }
-        
-        writer.endElement("div");
 
         writer.endElement("td");
     }
