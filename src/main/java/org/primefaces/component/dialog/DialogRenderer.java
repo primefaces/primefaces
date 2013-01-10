@@ -61,8 +61,8 @@ public class DialogRenderer extends CoreRenderer {
             .attr("minHeight", dialog.getMinHeight(), Integer.MIN_VALUE)
             .attr("appendToBody", dialog.isAppendToBody(), false)
             .attr("dynamic", dialog.isDynamic(), false)
-            .attr("showEffect", dialog.getShowEffect(), dialog.getShowEffect())
-            .attr("hideEffect", dialog.getHideEffect(), dialog.getHideEffect())
+            .attr("showEffect", dialog.getShowEffect(), null)
+            .attr("hideEffect", dialog.getHideEffect(), null)
             .attr("position", dialog.getPosition(), null)
             .attr("closeOnEscape", dialog.isCloseOnEscape(), false);
 
