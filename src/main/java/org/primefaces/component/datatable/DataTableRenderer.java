@@ -650,15 +650,12 @@ public class DataTableRenderer extends DataRenderer {
 
             writer.startElement("td", null);
             writer.writeAttribute("colspan", table.getColumnsCount(), null);
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
             
             if(emptyFacet != null)
                 emptyFacet.encodeAll(context);
             else
                 writer.write(emptyMessage);
-            
-            writer.endElement("div");
+
             writer.endElement("td");
             
             writer.endElement("tr");
