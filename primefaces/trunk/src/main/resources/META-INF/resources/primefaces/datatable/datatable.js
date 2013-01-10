@@ -108,7 +108,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             $(this).toggleClass('ui-state-hover');
         }).
         on('click.dataTable', function(e) {
-            if($(e.target).is(':not(th,span,div.ui-dt-c)')) {
+            if($(e.target).is(':not(th,span)')) {
                 return;
             }
 
@@ -164,7 +164,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
         this.cfg.filterDelay = this.cfg.filterDelay||300;
 
-        $(this.jqId + ' thead:first th.ui-filter-column div.ui-dt-c .ui-column-filter').each(function() {
+        $(this.jqId + ' thead:first th.ui-filter-column .ui-column-filter').each(function() {
             var filter = $(this);
 
             if(filter.is('input:text')) {
@@ -478,10 +478,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             
             $this.saveScrollState();
         });
-        
-        if($this.isEmpty()) {
-            $this.alignEmptyMessage();
-        }
     },
 
     restoreScrollState: function() {
@@ -548,23 +544,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 content = update.text();
 
                 if(id == _self.id) {
-                    var lastRow = $(_self.jqId + ' .ui-datatable-scrollable-body table tr:last'),
-                    lastRowColumnWrappers = lastRow.find('div.ui-dt-c');
-
+                    var lastRow = $(_self.jqId + ' .ui-datatable-scrollable-body table tr:last');
+                    
                     //insert new rows
                     lastRow.after(content);
-
-                    //align column widths of newly added rows with older ones
-                    lastRow.nextAll('tr').each(function() {
-                        var row = $(this);
-                        row.find('div.ui-dt-c').each(function(i) {
-                            var wrapper = $(this),
-                            column = wrapper.parent();
-
-                            wrapper.width(lastRowColumnWrappers.eq(i).width());
-                            column.width('');
-                        });
-                    });
 
                     _self.scrollOffset += _self.cfg.scrollStep;
 
@@ -777,8 +760,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
         
     /**
-                 * Ajax filter
-                 */
+     * Ajax filter
+     */
     filter: function() {
         var options = {
             source: this.id,
@@ -813,26 +796,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             if(paginator) {
                 paginator.setTotalRecords(this.args.totalRecords);
             }
-            
-            //align empty message width for scrolling table
-            if(_self.cfg.scrollable && _self.isEmpty()) {
-                _self.alignEmptyMessage();
-            }
-            
+                        
             return true;
         };
 
         options.params = [
-        {
-            name: this.id + '_filtering', 
-            value: true
-        },
-
-        {
-            name: this.id + '_encodeFeature', 
-            value: true
-        }
-        ];
+                            {name: this.id + '_filtering', value: true},
+                            {name: this.id + '_encodeFeature', value: true}
+                        ];
 
         if(this.hasBehavior('filter')) {
             var filterBehavior = this.cfg.behaviors['filter'];
@@ -844,23 +815,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    alignEmptyMessage: function() {
-        var emptyMessageContainer = this.tbody.find('div.ui-dt-c'),
-        columns = this.scrollHeader.find('thead:first > tr > th > div.ui-dt-c'),
-        emptyMessageWidth = 0;
-
-        for(var i = 0; i < columns.length; i++) {
-            emptyMessageWidth += columns.eq(i).outerWidth();
-        }
-
-        emptyMessageContainer.width(emptyMessageWidth);
-        
-        this.restoreScrollState();
-    },
-    
     onRowClick: function(event, rowElement, silent) {    
         //Check if rowclick triggered this event not a clickable element in row content
-        if($(event.target).is('.ui-dt-c,td,span:not(.ui-c)')) {
+        if($(event.target).is('td,span:not(.ui-c)')) {
             var row = $(rowElement),
             selected = row.hasClass('ui-state-highlight'),
             metaKey = event.metaKey||event.ctrlKey,
@@ -897,7 +854,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.clearSelection();
         
         //Check if rowclick triggered this event not a clickable element in row content
-        if($(event.target).is('.ui-dt-c,td,span')) {
+        if($(event.target).is('td,span')) {
             var rowMeta = this.getRowMeta(row);
 
             this.fireRowSelectEvent(rowMeta.key, 'rowDblselect');
@@ -948,7 +905,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         row.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
         
         if(this.cfg.selectionMode == 'checkbox') {
-            var checkbox = row.children('td.ui-selection-column').find('> div.ui-dt-c > div.ui-chkbox > div.ui-chkbox-box');
+            var checkbox = row.children('td.ui-selection-column').find('> div.ui-chkbox > div.ui-chkbox-box');
             this.selectCheckbox(checkbox);
         }
         
@@ -968,7 +925,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         row.removeClass('ui-state-highlight').attr('aria-selected', false);
         
         if(this.cfg.selectionMode == 'checkbox') {
-            var checkbox = row.children('td.ui-selection-column').find('> div.ui-dt-c > div.ui-chkbox > div.ui-chkbox-box');
+            var checkbox = row.children('td.ui-selection-column').find('> div.ui-chkbox > div.ui-chkbox-box');
             this.unselectCheckbox(checkbox);
         }
 
@@ -1110,7 +1067,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             row.removeClass('ui-state-highlight').attr('aria-selected', false);
             
             if(this.cfg.selectionMode == 'checkbox') {
-                var checkbox = row.children('td.ui-selection-column').find('> div.ui-dt-c > div.ui-chkbox > div.ui-chkbox-box');
+                var checkbox = row.children('td.ui-selection-column').find('> div.ui-chkbox > div.ui-chkbox-box');
                 this.unselectCheckbox(checkbox);
             }
         }
@@ -1399,9 +1356,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         
         this.currentCell = cell;
                 
-        var cellContent = cell.children('div.ui-dt-c'),
-        displayContainer = cellContent.find('div.ui-cell-editor-output'),
-        inputContainer = cellContent.find('div.ui-cell-editor-input'),
+        var cellEditor = cell.children('div.ui-cell-editor'),
+        displayContainer = cellEditor.children('div.ui-cell-editor-output'),
+        inputContainer = cellEditor.children('div.ui-cell-editor-input'),
         inputs = inputContainer.find(':input:enabled'),
         multi = inputs.length > 1;
                                         
@@ -1499,9 +1456,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
         
     viewMode: function(cell) {
-        var cellContent = cell.children('div.ui-dt-c'),
-        editableContainer = cellContent.find('div.ui-cell-editor-input'),
-        displayContainer = cellContent.find('div.ui-cell-editor-output'),
+        var cellEditor = cell.children('div.ui-cell-editor'),
+        editableContainer = cellEditor.children('div.ui-cell-editor-input'),
+        displayContainer = cellEditor.children('div.ui-cell-editor-output'),
         inputs = editableContainer.find(':input:enabled');
         
         if(cell.data('multi-edit')) {
@@ -1518,8 +1475,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     
     doCellEditRequest: function(cell) {
         var rowMeta = this.getRowMeta(cell.parents('tr.ui-widget-content:first')),
-        cellContent = cell.children('div.ui-dt-c'),
-        cellEditor = cellContent.children('.ui-cell-editor'),
+        cellEditor = cell.children('.ui-cell-editor'),
         cellEditorId = cellEditor.attr('id'),
         cellIndex = cell.index(),
         cellInfo = rowMeta.index + ',' + cellIndex,
