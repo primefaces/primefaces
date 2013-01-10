@@ -945,7 +945,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.label.val(value);
         }
         else {
-            if(value == '')
+            if(value === '&nbsp;')
                 this.label.html('&nbsp;');
             else
                 this.label.text(value);
