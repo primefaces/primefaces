@@ -28,7 +28,6 @@ public class SummaryRowRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         SummaryRow row = (SummaryRow) component;
-        DataTable table = (DataTable) row.getParent();
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("tr", null);
@@ -39,23 +38,14 @@ public class SummaryRowRenderer extends CoreRenderer {
                 Column column = (Column) kid;
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
-                styleClass = styleClass == null ? DataTable.COLUMN_CONTENT_WRAPPER : DataTable.COLUMN_CONTENT_WRAPPER + " " + styleClass;
         
                 writer.startElement("td", null);
-                //writer.writeAttribute("class", DataTable.COLUMN_FOOTER_CLASS, null);
+                if(style != null) writer.writeAttribute("style", style, null);
+                if(styleClass != null) writer.writeAttribute("class", styleClass, null);
                 if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
                 if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
-                writer.startElement("div", null);
-                writer.writeAttribute("class", styleClass, null);
-
-                if(style != null) {
-                    writer.writeAttribute("style", style, null);
-                }
-
                 column.encodeAll(context);
-
-                writer.endElement("div");
 
                 writer.endElement("td");
             }
