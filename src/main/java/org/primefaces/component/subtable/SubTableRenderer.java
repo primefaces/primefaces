@@ -58,10 +58,7 @@ public class SubTableRenderer extends CoreRenderer {
         writer.writeAttribute("class", DataTable.SUBTABLE_HEADER, null);
         writer.writeAttribute("colspan", table.getColumns().size(), null);
         
-        writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.COLUMN_CONTENT_WRAPPER, null);
         header.encodeAll(context);
-        writer.endElement("div");
         
         writer.endElement("td");
         writer.endElement("tr");
@@ -83,20 +80,13 @@ public class SubTableRenderer extends CoreRenderer {
         for(Column column : table.getColumns()) {
             String style = column.getStyle();
             String styleClass = column.getStyleClass();
-            styleClass = styleClass == null ? DataTable.COLUMN_CONTENT_WRAPPER : DataTable.COLUMN_CONTENT_WRAPPER + " " + styleClass;
-        
+
             writer.startElement("td", null);
-            
-            writer.startElement("div", null);
-            writer.writeAttribute("class", styleClass, null);
-            
-            if(style != null) {
-                writer.writeAttribute("style", style, null);
-            }
+            if(style != null) writer.writeAttribute("style", style, null);
+            if(styleClass != null) writer.writeAttribute("class", styleClass, null);
             
             column.encodeAll(context);
             
-            writer.endElement("div");
             writer.endElement("td");
         }
         
@@ -134,18 +124,13 @@ public class SubTableRenderer extends CoreRenderer {
         
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
-        styleClass = styleClass == null ? DataTable.COLUMN_CONTENT_WRAPPER : DataTable.COLUMN_CONTENT_WRAPPER + " " + styleClass;
+        styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
         writer.startElement("td", null);
-        writer.writeAttribute("class", DataTable.COLUMN_FOOTER_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", styleClass, null);
-        
-        if(style != null) 
-            writer.writeAttribute("style", style, null);
+        if(style != null) writer.writeAttribute("style", style, null);
         
         //Footer content
         UIComponent facet = column.getFacet("footer");
@@ -155,9 +140,7 @@ public class SubTableRenderer extends CoreRenderer {
         } else if(text != null) {
             writer.write(text);
         }
-        
-        writer.endElement("div");
-
+ 
         writer.endElement("td");
     }
         
