@@ -444,16 +444,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer');
         this.scrollStateHolder = $(this.jqId + '_scrollState');
         this.scrollHeaderBox = this.scrollHeader.children('div.ui-datatable-scrollable-header-box');
+        this.colgroup = this.scrollBody.find('> table > colgroup');
+        this.footerCols = this.scrollFooter.find('> .ui-datatable-scrollable-header-box > table > tfoot > tr > td');
         var $this = this;
         
-        this.colGroup = $('<colgroup />').prependTo(this.scrollBody.children('table'));
-        
-        //set fixed widths
-        this.scrollHeader.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
-            $(this).width($(this).width());
-            
-            $this.colGroup.append('<col style="width:' + $(this).width() + 'px"/>');
-        });
+        this.fixColumnWidths();
                 
         this.restoreScrollState();
 
@@ -501,6 +496,34 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var scrollState = this.scrollBody.scrollLeft() + ',' + this.scrollBody.scrollTop();
         
         this.scrollStateHolder.val(scrollState);
+    },
+    
+    fixColumnWidths: function() {
+        var $this = this;
+        
+        if(!this.columnWidthsFixed) {
+            if(this.cfg.scrollable) {
+                this.scrollHeader.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
+                    var headerCol = $(this),
+                    colIndex = headerCol.index();
+                    
+                    headerCol.width(headerCol.width());
+                    $this.colgroup.children().eq(colIndex).width(headerCol.innerWidth());
+                    if($this.footerCols.length > 0) {
+                        var footerCol = $this.footerCols.eq(colIndex);
+                        footerCol.width(footerCol.width());
+                    }
+                });
+            }
+            else {
+                this.jq.find('> table > thead > tr > th').each(function() {
+                    var col = $(this);
+                    col.width(col.width());
+                });
+            }
+            
+            this.columnWidthsFixed = true;
+        }
     },
     
     /**
@@ -1661,11 +1684,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         $(this.jqId + ' thead tr th.ui-resizable-column:not(:last-child)').prepend('<span class="ui-column-resizer">&nbsp;</span>');
         $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
 
-        
-        //set fixed widths
-        $(this.jqId + ' thead tr th.ui-resizable-column').each(function() {
-            $(this).width($(this).width());
-        });
+        this.fixColumnWidths();
         
         //Variables
         var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
@@ -1680,7 +1699,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         //Main resize events
         resizers.draggable({
             axis: 'x',
-            start: function(event, ui) {
+            start: function() {
                 var height = $this.cfg.scrollable ? scrollBody.height() : table.height() - thead.height() - 1;
 
                 //Set height of resizer helper
@@ -1696,30 +1715,37 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             },
             stop: function(event, ui) {
                 var columnHeader = ui.helper.parent(),
+                nextColumnHeader = columnHeader.next(),
+                colIndex = columnHeader.index(),
                 minWidth = columnHeader.data('minwidth'),
                 maxWidth = columnHeader.data('maxwidth'),
-                oldPos = ui.originalPosition.left,
-                newPos = ui.position.left,
-                change = (newPos - oldPos),
+                change = (ui.position.left - ui.originalPosition.left),
                 newWidth = (columnHeader.width() + change),
-                nextColumnWidth = (columnHeader.next().width() - change);
-
+                nextColumnWidth = (nextColumnHeader.width() - change);
                 ui.helper.css('left','');
                 resizerHelper.hide();
                 
-                if(minWidth && newWidth < minWidth) {
+                /*TODO
+                 *if(minWidth && newWidth < minWidth) {
                     newWidth = minWidth;
                 } else if(maxWidth && newWidth > maxWidth) {
                     newWidth = maxWidth;
-                }
+                }*/
 
                 columnHeader.width(newWidth);
-                columnHeader.next().width(nextColumnWidth);
-   
-                
+                nextColumnHeader.width(nextColumnWidth);
+
                 if($this.cfg.scrollable) {
-                    $this.tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
-                    tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
+                    $this.colgroup.children().eq(colIndex).width(columnHeader.innerWidth());
+                    $this.colgroup.children().eq(colIndex + 1).width(nextColumnHeader.innerWidth());
+                    
+                    if($this.footerCols.length > 0) {
+                        var footerCol = $this.footerCols.eq(colIndex),
+                        nextFooterCol = footerCol.next();
+                        
+                        footerCol.width(newWidth);
+                        nextFooterCol.width(nextColumnWidth);
+                    }
                 }
                 
                 //frozen rows
@@ -1727,8 +1753,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 if(frozenRowsBody.length === 1) {
                     frozenRowsBody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);  
                 }
-
-                scrollHeader.scrollLeft(scrollBody.scrollLeft());
 
                 //Sync width change with server side state
                 var options = {
