@@ -201,7 +201,15 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeRegularTable(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
+        boolean paginator = table.isPaginator();
+        String paginatorPosition = table.getPaginatorPosition();
+        
+        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
+        
+        if(paginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+            encodePaginatorMarkup(context, table, "top");
+        }
+        
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
         if(table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
@@ -212,6 +220,12 @@ public class DataTableRenderer extends DataRenderer {
         encodeTFoot(context, table);
         encodeTbody(context, table, false);
         writer.endElement("table");
+        
+        if(paginator && !paginatorPosition.equalsIgnoreCase("top")) {
+            encodePaginatorMarkup(context, table, "bottom");
+        }
+        
+        encodeFacet(context, table, table.getFooter(), DataTable.FOOTER_CLASS);
     }
 
     protected void encodeScrollableTable(FacesContext context, DataTable table) throws IOException {
@@ -535,12 +549,6 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("thead", null);
         
-        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS, "th");
-        
-        if(table.isPaginator() && !table.getPaginatorPosition().equalsIgnoreCase("bottom")) {
-            encodePaginatorMarkup(context, table, "top", "th", org.primefaces.component.api.UIData.PAGINATOR_TOP_CONTAINER_CLASS);
-        }
-
         if(group != null && group.isRendered()) {
 
             for(UIComponent child : group.getChildren()) {
@@ -847,60 +855,24 @@ public class DataTableRenderer extends DataRenderer {
             
             writer.endElement("tr");
         }
-        
-        if(table.isPaginator() && !table.getPaginatorPosition().equalsIgnoreCase("top")) {
-            encodePaginatorMarkup(context, table, "bottom", "td", org.primefaces.component.api.UIData.PAGINATOR_BOTTOM_CONTAINER_CLASS);
-        }
- 
-        encodeFacet(context, table, table.getFooter(), DataTable.FOOTER_CLASS, "td");
-        
+  
         writer.endElement("tfoot");
     }
 
-    protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass, String tag) throws IOException {
+    protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass) throws IOException {
         if(facet == null)
             return;
         
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("tr", null);
-        writer.startElement(tag, null);
+        writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("colspan", table.getColumnsCount(), null);
 
         facet.encodeAll(context);
         
-        writer.endElement(tag);
-        writer.endElement("tr");
+        writer.endElement("div");
     }
     
-    protected void encodePaginatorMarkup(FacesContext context, DataTable table, String position, String tag, String styleClass) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        if(!table.isPaginatorAlwaysVisible() && table.getPageCount() <= 1) {
-            return;
-        }
-        
-        String id = table.getClientId(context) + "_paginator_" + position; 
-
-        writer.startElement("tr", null);
-        writer.startElement(tag, null);
-        writer.writeAttribute("id", id, null);
-        writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("colspan", table.getColumnsCount(), null);
-                      
-        String[] elements = table.getPaginatorTemplate().split(" ");
-        for(String element : elements) {            
-            PaginatorElementRenderer renderer = paginatorElements.get(element);
-            if(renderer != null)
-                renderer.render(context, table);
-            else
-                writer.write(element + " ");
-        }
-        
-        writer.endElement(tag);
-        writer.endElement("tr");
-    }
-
     protected void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
