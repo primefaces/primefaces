@@ -47,10 +47,9 @@
 }
 
 .ui-datatable .ui-sortable-column-icon {
-    left: 0;
-    top: 0;
-    position: absolute;
-    margin-top: 0.2em;
+    margin: -16px 0 0px -10px;
+    *margin-left: 2px;
+    float: left;
 }
 
 .ui-datatable .ui-column-filter {
@@ -196,7 +195,7 @@
     padding:0px;
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
-    margin: -4px 0px;
+    margin: -4px -10px -4px 0px;
     *margin-left: 2px;
     float: right;
 }
