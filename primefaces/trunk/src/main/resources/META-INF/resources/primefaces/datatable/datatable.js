@@ -1309,7 +1309,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var element = $(el),
         row = element.parents('tr:first');
 
-        row.addClass('ui-state-highlight ui-datatable-editing-row').children('td.ui-editable-column').each(function() {
+        row.addClass('ui-state-highlight ui-row-editing').children('td.ui-editable-column').each(function() {
             var column = $(this);
 
             column.find('.ui-cell-editor-output').hide();
@@ -1532,7 +1532,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             formId: this.cfg.formId
         },
         expanded = row.hasClass('ui-expanded-row'),
-        _self = this;
+        $this = this;
 
         options.onsuccess = function(responseXML) {
             var xmlDoc = $(responseXML.documentElement),
@@ -1545,9 +1545,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 id = update.attr('id'),
                 content = update.text();
 
-                if(id == _self.id) {
+                if(id == $this.id) {
                     if(this.args.validationFailed) {
-                        content = content.replace('ui-widget-content', 'ui-widget-content ui-datatable-editingrow ui-state-error');
+                        content = content.replace('ui-widget-content', 'ui-widget-content ui-row-editing ui-state-error');
                     }
                     
                     //remove row expansion
