@@ -102,8 +102,6 @@
     height: 16px;
 }
 
-.ui-datatable-scrollable {}
-
 .ui-datatable-scrollable-body {
     overflow:auto;
     *position: relative;
