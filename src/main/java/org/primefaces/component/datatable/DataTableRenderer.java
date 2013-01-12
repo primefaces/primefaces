@@ -32,7 +32,6 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.feature.DataTableFeature;
 import org.primefaces.component.datatable.feature.DataTableFeatureKey;
 import org.primefaces.component.datatable.feature.SortFeature;
-import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
@@ -131,6 +130,8 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isMultiSort()) {
             wb.attr("multiSort", true);
         }
+        
+        wb.attr("scrollWidth", table.getScrollWidth(), Integer.MIN_VALUE);
 
         //Behaviors
         encodeClientBehaviors(context, table, wb);
@@ -229,41 +230,30 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeScrollableTable(FacesContext context, DataTable table) throws IOException {
-        int scrollHeight = table.getScrollHeight();    
-        int scrollWidth = table.getScrollWidth();
-        StringBuilder bodyStyle = new StringBuilder();
         String tableStyle = table.getStyle();
         String tableStyleClass = table.getStyleClass();
-        
-        if(scrollHeight != Integer.MIN_VALUE)
-            bodyStyle.append("height:").append(scrollHeight).append("px;");
-        if(scrollWidth != Integer.MIN_VALUE)
-            bodyStyle.append("width:").append(scrollWidth).append("px;");
-                
-        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass, scrollWidth);
+                        
+        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
         encodeThead(context, table);
         encodeScrollAreaEnd(context);
         
-        encodeScrollBody(context, table, bodyStyle.toString(), tableStyle, tableStyleClass);
+        encodeScrollBody(context, table, tableStyle, tableStyleClass);
         
-        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass, scrollWidth);
+        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
         encodeTFoot(context, table);
         encodeScrollAreaEnd(context);
     }
     
     protected void encodeScrollAreaStart(FacesContext context, DataTable table, String containerClass, String containerBoxClass, 
-                            String tableStyle, String tableStyleClass, int scrollWidth) throws IOException {
+                            String tableStyle, String tableStyleClass) throws IOException {
         
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("div", null);
         writer.writeAttribute("class", containerClass, null);
-        if(scrollWidth != Integer.MIN_VALUE) {
-            writer.writeAttribute("style", "width:" + scrollWidth + "px", null);
-        }
-        
+
         writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.SCROLLABLE_HEADER_BOX_CLASS, null);
+        writer.writeAttribute("class", containerBoxClass, null);
         
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
@@ -279,13 +269,14 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
        
-    protected void encodeScrollBody(FacesContext context, DataTable table, String containerStyle, String tableStyle, String tableStyleClass) throws IOException {
+    protected void encodeScrollBody(FacesContext context, DataTable table, String tableStyle, String tableStyleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+        int scrollHeight = table.getScrollHeight();
+
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
-        if(containerStyle.length() > 0) {
-            writer.writeAttribute("style", containerStyle.toString(), null);
+        if(scrollHeight != Integer.MIN_VALUE) {
+            writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
         }
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);

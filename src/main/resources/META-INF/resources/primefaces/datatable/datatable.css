@@ -118,11 +118,6 @@
 .ui-datatable-scrollable .ui-datatable-scrollable-footer {
     position: relative;
 } 
-            
-.ui-datatable-scrollable .ui-datatable-scrollable-header-box,
-.ui-datatable-scrollable .ui-datatable-scrollable-footer-box {
-    margin-right:15px;
-}
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header td {
     font-weight: normal;

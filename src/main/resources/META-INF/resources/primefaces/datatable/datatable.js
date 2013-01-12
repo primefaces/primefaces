@@ -444,27 +444,47 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer');
         this.scrollStateHolder = $(this.jqId + '_scrollState');
         this.scrollHeaderBox = this.scrollHeader.children('div.ui-datatable-scrollable-header-box');
+        this.scrollFooterBox = this.scrollFooter.children('div.ui-datatable-scrollable-footer-box');
+        this.headerTable = this.scrollHeaderBox.children('table');
+        this.bodyTable = this.scrollBody.children('table');
+        this.footerTable = this.scrollFooter.children('table');
         this.colgroup = this.scrollBody.find('> table > colgroup');
-        this.footerCols = this.scrollFooter.find('> .ui-datatable-scrollable-header-box > table > tfoot > tr > td');
-        var $this = this;
+        this.footerCols = this.scrollFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
+        var $this = this,
+        verticalScroll = this.bodyTable.outerHeight() > this.scrollBody.height();
+        
+        if(verticalScroll) {
+            this.scrollHeaderBox.css('margin-right', '15px');
+            this.scrollFooterBox.css('margin-right', '15px');
+        }
         
         this.fixColumnWidths();
-                
+        
+        if(this.cfg.scrollWidth) {
+            
+            if(verticalScroll) {
+                this.scrollBody.width(this.cfg.scrollWidth);
+                this.scrollHeader.width(this.cfg.scrollWidth);
+                this.scrollFooter.width(this.cfg.scrollWidth);
+            } 
+            else {
+                this.scrollBody.width(this.cfg.scrollWidth);
+                this.scrollHeader.width(this.cfg.scrollWidth);
+                this.scrollFooter.width(this.cfg.scrollWidth);
+            }
+        }
+        
         this.restoreScrollState();
 
         if(this.cfg.liveScroll) {
             this.scrollOffset = this.cfg.scrollStep;
             this.shouldLiveScroll = true;       
         }
-
-        this.scrollHeader.scroll(function() {
-            $this.scrollBody.scrollLeft($this.scrollHeader.scrollLeft());
-            $this.scrollFooter.scrollLeft($this.scrollHeader.scrollLeft());
-        });
         
         this.scrollBody.scroll(function() {
-            $this.scrollHeader.scrollLeft($this.scrollBody.scrollLeft());
-            $this.scrollFooter.scrollLeft($this.scrollBody.scrollLeft());
+            var scrollLeft = $this.scrollBody.scrollLeft();
+            $this.scrollHeaderBox.css('margin-left', -scrollLeft);
+            $this.scrollFooterBox.css('margin-left', -scrollLeft);
 
             if($this.shouldLiveScroll) {
                 var scrollTop = this.scrollTop,
@@ -510,6 +530,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         footerCol.width(footerCol.width());
                     }
                 });
+                
+                this.headerTable.width(this.headerTable.width());
+                this.bodyTable.width(this.bodyTable.width() + 1);
+                this.bodyTable.width(this.footerTable.width());
             }
             else {
                 this.jq.find('> table > thead > tr > th').each(function() {
