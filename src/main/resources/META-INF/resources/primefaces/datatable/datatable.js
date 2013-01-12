@@ -454,8 +454,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         verticalScroll = this.bodyTable.outerHeight() > this.scrollBody.height();
         
         if(verticalScroll) {
-            this.scrollHeaderBox.css('margin-right', '15px');
-            this.scrollFooterBox.css('margin-right', '15px');
+            var marginLeft = $.browser.msie ? '17px' : '16px';
+            this.scrollHeaderBox.css('margin-right', marginLeft);
+            this.scrollFooterBox.css('margin-right', marginLeft);
         }
         
         this.fixColumnWidths();
@@ -516,7 +517,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     colIndex = headerCol.index();
                     
                     headerCol.width(headerCol.width());
-                    $this.colgroup.children().eq(colIndex).width(headerCol.innerWidth());
+                    $this.colgroup.children().eq(colIndex).width(headerCol.outerWidth());
                     if($this.footerCols.length > 0) {
                         var footerCol = $this.footerCols.eq(colIndex);
                         footerCol.width(footerCol.width());
@@ -524,7 +525,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 });
                 
                 this.headerTable.width(this.headerTable.width());
-                this.bodyTable.width(this.bodyTable.outerWidth());
+                this.bodyTable.width(this.bodyTable.width());
                 this.footerTable.width(this.footerTable.width());
             }
             else {
