@@ -123,6 +123,18 @@
     font-weight: normal;
 }
 
+.ui-datatable-scrollable-body::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 15px;
+    background-color: transparent;
+}
+
+.ui-datatable-scrollable-body::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 1px solid white;
+    background-color: rgba(0,0,0,.5);
+}
+
 .ui-datatable th,
 .ui-datatable .ui-datatable-data td,
 .ui-datatable .ui-datatable-data-empty td,

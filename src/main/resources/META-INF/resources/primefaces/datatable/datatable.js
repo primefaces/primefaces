@@ -461,17 +461,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.fixColumnWidths();
         
         if(this.cfg.scrollWidth) {
-            
-            if(verticalScroll) {
-                this.scrollBody.width(this.cfg.scrollWidth);
-                this.scrollHeader.width(this.cfg.scrollWidth);
-                this.scrollFooter.width(this.cfg.scrollWidth);
-            } 
-            else {
-                this.scrollBody.width(this.cfg.scrollWidth);
-                this.scrollHeader.width(this.cfg.scrollWidth);
-                this.scrollFooter.width(this.cfg.scrollWidth);
-            }
+            this.scrollHeader.width(this.cfg.scrollWidth);
+            this.scrollBody.width(this.cfg.scrollWidth);
+            this.scrollFooter.width(this.cfg.scrollWidth);
         }
         
         this.restoreScrollState();
@@ -530,10 +522,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         footerCol.width(footerCol.width());
                     }
                 });
-                
-                this.headerTable.width(this.headerTable.width());
-                this.bodyTable.width(this.bodyTable.width() + 1);
-                this.bodyTable.width(this.footerTable.width());
             }
             else {
                 this.jq.find('> table > thead > tr > th').each(function() {
