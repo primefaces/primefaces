@@ -522,6 +522,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         footerCol.width(footerCol.width());
                     }
                 });
+                
+                this.headerTable.width(this.headerTable.width());
+                this.bodyTable.width(this.bodyTable.outerWidth());
+                this.footerTable.width(this.footerTable.width());
             }
             else {
                 this.jq.find('> table > thead > tr > th').each(function() {
