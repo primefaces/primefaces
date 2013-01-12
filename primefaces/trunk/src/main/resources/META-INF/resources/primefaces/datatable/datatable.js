@@ -1707,10 +1707,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 columnHeader.width(newWidth);
                 nextColumnHeader.width(nextColumnWidth);
-
+                
                 if($this.cfg.scrollable) {
-                    $this.colgroup.children().eq(colIndex).width(columnHeader.innerWidth());
-                    $this.colgroup.children().eq(colIndex + 1).width(nextColumnHeader.innerWidth());
+                    var padding = columnHeader.innerWidth() - columnHeader.width();
+                    $this.colgroup.children().eq(colIndex).width(newWidth + padding + 1);
+                    $this.colgroup.children().eq(colIndex + 1).width(nextColumnWidth + padding + 1);
                     
                     if($this.footerCols.length > 0) {
                         var footerCol = $this.footerCols.eq(colIndex),
