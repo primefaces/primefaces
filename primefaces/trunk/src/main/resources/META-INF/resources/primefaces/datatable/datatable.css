@@ -1,7 +1,6 @@
 .ui-datatable table {
 	border-collapse:collapse;
     width: 100%;
-    table-layout: fixed;
 }
 
 .ui-datatable .ui-datatable-header,
@@ -100,6 +99,10 @@
     margin: 0px auto;
     width: 16px;
     height: 16px;
+}
+
+.ui-datatable-scrollable table {
+    table-layout: fixed;
 }
 
 .ui-datatable-scrollable-body {
@@ -220,6 +223,10 @@
 .ui-datatable-resizable {
     padding-bottom:1px;     /*fix for webkit overlow*/
     overflow:auto;
+}
+
+.ui-datatable-resizable table {
+    table-layout: fixed;
 }
 
 .ui-datatable-rtl {
