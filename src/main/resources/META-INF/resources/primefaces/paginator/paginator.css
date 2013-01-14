@@ -51,11 +51,6 @@
 	overflow: inherit;
 }
 
-/* IE7 Hack */
-.ui-paginator .ui-paginator-pages {
-    *padding-bottom: 0px;
-}
-
 .ui-paginator .ui-paginator-jtp-select option,
 .ui-paginator .ui-paginator-rpp-options option {
     background-image: none;

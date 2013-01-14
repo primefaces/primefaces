@@ -28,4 +28,3 @@
 /* IE Fixes */
 .ui-stack { _position: absolute; }
 .ui-stack ul { _z-index:-1; _top:-15px; }
-.ui-stack ul li { *right:5px; }

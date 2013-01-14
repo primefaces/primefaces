@@ -73,7 +73,6 @@
 
 .ui-tree .ui-chkbox {
     display: inline-block;
-    *display: inline;
     zoom: 1;
 }
 
