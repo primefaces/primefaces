@@ -111,7 +111,6 @@
     zoom: 1;
     cursor: pointer;
     overflow: hidden;
-    *display: inline;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {
@@ -188,7 +187,6 @@
 .ui-selectonemenu-panel .ui-selectonemenu-table {
     border-collapse:collapse;
     width:100%;
-    *width:auto;
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-table td {
@@ -301,7 +299,6 @@ button.ui-button::-moz-focus-inner {
     width: auto;
     zoom: 1;
     cursor: pointer;
-    *display: inline;
 }
 
 .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger {
@@ -397,7 +394,6 @@ button.ui-button::-moz-focus-inner {
     position: absolute;
     right: 5px;
     top: 2px;
-    *right:15px;
 }
             
 .ui-selectcheckboxmenu-header .ui-inputfield {
@@ -430,7 +426,6 @@ button.ui-button::-moz-focus-inner {
 div.ui-button, .ui-splitbutton {
     display: inline-block;
     zoom: 1;
-    *display: inline;
 }
 
 /** Password **/

@@ -96,10 +96,3 @@
   display: inline-table;
   float: right;
 }
-
-/* ie7 hack*/
-.ui-carousel .ui-carousel-page-links, 
-.ui-carousel .ui-carousel-button, 
-.ui-carousel .ui-carousel-dropdown {
-  *margin-top:-1.4em ;
-}

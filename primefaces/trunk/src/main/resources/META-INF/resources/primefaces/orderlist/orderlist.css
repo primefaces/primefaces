@@ -38,10 +38,6 @@
     border-collapse:collapse;
 }
 
-.ui-orderlist{
-    *position: relative; /*IE7 hack*/
-}
-
 .ui-orderlist.ui-state-disabled .ui-orderlist-item,
 .ui-orderlist.ui-state-disabled .ui-button {
     cursor: default;

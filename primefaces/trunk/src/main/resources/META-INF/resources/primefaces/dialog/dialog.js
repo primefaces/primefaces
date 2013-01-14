@@ -17,9 +17,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
         //configuration
         this.cfg.width = this.cfg.width||'auto';
-        if(this.cfg.width == 'auto' && PrimeFaces.isIE(7)) {
-            this.cfg.width = '300px';
-        }
         this.cfg.height = this.cfg.height||'auto';
         this.cfg.draggable = this.cfg.draggable == false ? false : true;
         this.cfg.resizable = this.cfg.resizable == false ? false : true;

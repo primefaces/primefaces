@@ -56,7 +56,6 @@
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
     margin: -4px 0px;
-    *margin-left: 2px;
 }
 
 .ui-sheet .ui-column-resizer-helper {

@@ -26,9 +26,6 @@
 .ui-layout-unit-header-icon:focus {
 	margin-right: 0.2em;
     margin-top:-0.2em;
-
-    /*IE7 hack*/
-    *margin-top: -2em;
 }
 
 .ui-layout-unit-expand-icon {

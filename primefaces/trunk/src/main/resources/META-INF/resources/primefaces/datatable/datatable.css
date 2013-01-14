@@ -47,7 +47,6 @@
 
 .ui-datatable .ui-sortable-column-icon {
     margin: -16px 0 0px -10px;
-    *margin-left: 2px;
     float: left;
 }
 
@@ -107,7 +106,6 @@
 
 .ui-datatable-scrollable-body {
     overflow:auto;
-    *position: relative;
 }
 .ui-datatable-scrollable-header,
 .ui-datatable-scrollable-footer {
@@ -148,7 +146,6 @@
     border-color: inherit;
     font-weight: inherit;
     cursor: pointer;
-    *font-weight: normal; /*IE7 hack*/
 }
 
 .ui-datatable .ui-paginator,
@@ -205,7 +202,6 @@
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
     margin: -4px -10px -4px 0px;
-    *margin-left: 2px;
     float: right;
 }
 

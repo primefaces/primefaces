@@ -15,10 +15,6 @@
     display:inline-block;
 }
 
-.ui-tagcloud li {
-    *display:inline;
-}
-
 .ui-tagcloud li a {
     text-decoration:none;
     padding:0 5px;
@@ -47,5 +43,4 @@
 .ui-tagcloud li a.ui-state-hover {
     border: 0px none;
     font-weight: inherit;
-    *font-weight: normal;
 }

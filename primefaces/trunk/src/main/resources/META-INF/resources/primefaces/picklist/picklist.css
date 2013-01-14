@@ -34,11 +34,6 @@
     border-collapse:collapse;
 }
 
-.ui-picklist > tbody{
-    /*IE7 hack*/
-    *position: relative;
-}
-
 .ui-picklist .ui-picklist-filter {
     padding-right: 15px;
     width: 90%;

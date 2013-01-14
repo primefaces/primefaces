@@ -155,12 +155,6 @@
     float: right;
 }
 
-/*IE7 hack*/
-.ui-menubar > .ui-menu-list > .ui-menuitem > .ui-menuitem-link span.ui-icon-triangle-1-e,
-.ui-menubar > .ui-menu-list > .ui-menuitem > .ui-menuitem-link span.ui-icon-triangle-1-s{
-    *float: none;
-}
-
 .ui-menu .ui-separator {
     width:98%;
     height:0px;
@@ -219,7 +213,6 @@
     position: relative;
     overflow: hidden;
     float: left; 
-    *cursor: pointer;
     margin-top:3px;
 }
 
