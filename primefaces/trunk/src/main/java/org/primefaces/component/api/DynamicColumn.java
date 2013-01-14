@@ -166,12 +166,4 @@ public class DynamicColumn implements UIColumn {
     public void setColumnKey(String columnKey) {
         this.columnKey = columnKey;
     }
-
-    public int getMinWidth() {
-        return this.columns.getMinWidth();
-    }
-
-    public int getMaxWidth() {
-        return this.columns.getMaxWidth();
-    }
 }

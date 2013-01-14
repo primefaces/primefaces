@@ -278,8 +278,6 @@ public class TreeTableRenderer extends CoreRenderer {
 				writer.startElement("div", null);
                 writer.writeAttribute("class", TreeTable.COLUMN_CONTENT_WRAPPER, null);
                 if(column.getWidth() != -1) writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
-                if(column.getMinWidth() != Integer.MIN_VALUE) writer.writeAttribute("data-minwidth", column.getMinWidth(), null);
-                if(column.getMaxWidth() != Integer.MAX_VALUE) writer.writeAttribute("data-maxwidth", column.getMaxWidth(), null);
                 
                 if(header != null) 
                     header.encodeAll(context);
