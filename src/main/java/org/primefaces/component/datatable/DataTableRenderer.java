@@ -347,8 +347,6 @@ public class DataTableRenderer extends DataRenderer {
         if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
-        if(column.getMinWidth() != Integer.MIN_VALUE) writer.writeAttribute("data-minwidth", column.getMinWidth(), null);
-        if(column.getMaxWidth() != Integer.MAX_VALUE) writer.writeAttribute("data-maxwidth", column.getMaxWidth(), null);
         
         if(hasFilter) {
             table.enableFiltering();

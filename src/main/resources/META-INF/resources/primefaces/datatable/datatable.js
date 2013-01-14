@@ -1662,18 +1662,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         //Variables
         var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
         resizers = $(this.jqId + ' thead th span.ui-column-resizer'),
-        scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header'),
-        scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body'),
         table = $(this.jqId + ' table'),
         thead = $(this.jqId + ' thead'),  
-        tfoot = $(this.jqId + ' tfoot'),
         $this = this;
 
         //Main resize events
         resizers.draggable({
             axis: 'x',
             start: function() {
-                var height = $this.cfg.scrollable ? scrollBody.height() : table.height() - thead.height() - 1;
+                var height = $this.cfg.scrollable ? $this.scrollBody.height() : table.height() - thead.height() - 1;
 
                 //Set height of resizer helper
                 resizerHelper.height(height);
@@ -1690,20 +1687,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 var columnHeader = ui.helper.parent(),
                 nextColumnHeader = columnHeader.next(),
                 colIndex = columnHeader.index(),
-                minWidth = columnHeader.data('minwidth'),
-                maxWidth = columnHeader.data('maxwidth'),
                 change = (ui.position.left - ui.originalPosition.left),
                 newWidth = (columnHeader.width() + change),
                 nextColumnWidth = (nextColumnHeader.width() - change);
                 ui.helper.css('left','');
                 resizerHelper.hide();
-                
-                /*TODO
-                 *if(minWidth && newWidth < minWidth) {
-                    newWidth = minWidth;
-                } else if(maxWidth && newWidth > maxWidth) {
-                    newWidth = maxWidth;
-                }*/
 
                 columnHeader.width(newWidth);
                 nextColumnHeader.width(nextColumnWidth);
@@ -1728,7 +1716,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     frozenRowsBody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);  
                 }
 
-                //Sync width change with server side state
                 var options = {
                     source: $this.id,
                     process: $this.id,
