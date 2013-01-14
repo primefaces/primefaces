@@ -119,6 +119,7 @@ public class DataTableRenderer extends DataRenderer {
 
         //Resizable/Draggable Columns
         wb.attr("resizableColumns", table.isResizableColumns(), false)
+            .attr("liveResize", table.isLiveResize(), false)
             .attr("draggableColumns", table.isDraggableColumns(), false);
         
         //Editing
