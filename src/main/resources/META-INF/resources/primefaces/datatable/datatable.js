@@ -1655,13 +1655,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     setupResizableColumns: function() {
         //Add resizers and resizer helper
         $(this.jqId + ' thead tr th.ui-resizable-column:not(:last-child)').prepend('<span class="ui-column-resizer">&nbsp;</span>');
-        $(this.jqId).append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
+        this.resizerHelper = $('<div class="ui-column-resizer-helper ui-state-highlight"></div>').appendTo(this.jq);
 
         this.fixColumnWidths();
         
         //Variables
-        var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
-        resizers = $(this.jqId + ' thead th span.ui-column-resizer'),
+        var resizers = $(this.jqId + ' thead th span.ui-column-resizer'),
         table = $(this.jqId + ' table'),
         thead = $(this.jqId + ' thead'),  
         $this = this;
@@ -1670,75 +1669,104 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         resizers.draggable({
             axis: 'x',
             start: function() {
-                var height = $this.cfg.scrollable ? $this.scrollBody.height() : table.height() - thead.height() - 1;
-
-                //Set height of resizer helper
-                resizerHelper.height(height);
-                resizerHelper.show();
+                if($this.cfg.liveResize) {
+                    $this.jq.css('cursor', 'col-resize');
+                }
+                else {
+                    var height = $this.cfg.scrollable ? $this.scrollBody.height() : table.height() - thead.height() - 1;
+                    $this.resizerHelper.height(height);
+                    $this.resizerHelper.show();
+                }
             },
             drag: function(event, ui) {
-                resizerHelper.offset(
-                    {
+                if($this.cfg.liveResize) {
+                    $this.resize(event, ui);
+                }
+                else {
+                    $this.resizerHelper.offset({
                         left: ui.helper.offset().left + ui.helper.width() / 2, 
                         top: thead.offset().top + thead.height()
                     });  
+                }                
             },
             stop: function(event, ui) {
-                var columnHeader = ui.helper.parent(),
-                nextColumnHeader = columnHeader.next(),
-                colIndex = columnHeader.index(),
-                change = (ui.position.left - ui.originalPosition.left),
-                newWidth = (columnHeader.width() + change),
-                nextColumnWidth = (nextColumnHeader.width() - change);
+                var columnHeader = ui.helper.parent();
                 ui.helper.css('left','');
-                resizerHelper.hide();
-
-                columnHeader.width(newWidth);
-                nextColumnHeader.width(nextColumnWidth);
                 
-                if($this.cfg.scrollable) {
-                    var padding = columnHeader.innerWidth() - columnHeader.width();
-                    $this.colgroup.children().eq(colIndex).width(newWidth + padding + 1);
-                    $this.colgroup.children().eq(colIndex + 1).width(nextColumnWidth + padding + 1);
-                    
-                    if($this.footerCols.length > 0) {
-                        var footerCol = $this.footerCols.eq(colIndex),
-                        nextFooterCol = footerCol.next();
-                        
-                        footerCol.width(newWidth);
-                        nextFooterCol.width(nextColumnWidth);
-                    }
+                if($this.cfg.liveResize) {
+                    $this.jq.css('cursor', 'default');
+                }
+                else {
+                    $this.resize(event, ui);
+                    $this.resizerHelper.hide();
                 }
                 
-                //frozen rows
-                var frozenRowsBody = thead.next('tbody');
-                if(frozenRowsBody.length === 1) {
-                    frozenRowsBody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);  
-                }
-
+                
                 var options = {
                     source: $this.id,
                     process: $this.id,
                     params: [
                         {name: $this.id + '_colResize', value: true},
                         {name: $this.id + '_columnId', value: columnHeader.attr('id')},
-                        {name: $this.id + '_width', value: newWidth},
+                        {name: $this.id + '_width', value: columnHeader.width()},
                         {name: $this.id + '_height', value: columnHeader.height()}
                     ]
                 }
                 
                 if($this.hasBehavior('colResize')) {
-                    var colResizeBehavior = $this.cfg.behaviors['colResize'];
-                    
-                    colResizeBehavior.call($this, event, options);
-                }
-                else {
+                    $this.cfg.behaviors['colResize'].call($this, event, options);
+                } else {
                     PrimeFaces.ajax.AjaxRequest(options);
                 }
                 
             },
             containment: this.jq
         });
+    },
+    
+    resize: function(event, ui) {
+        var columnHeader = ui.helper.parent(),
+        nextColumnHeader = columnHeader.next(),
+        colIndex = columnHeader.index(),
+        change = null,
+        newWidth = null,
+        nextColumnWidth = null;
+        
+        if(this.cfg.liveResize) {
+            var change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
+            newWidth = (columnHeader.width() - change),
+            nextColumnWidth = (nextColumnHeader.width() + change);
+        } 
+        else {
+            change = (ui.position.left - ui.originalPosition.left),
+            newWidth = (columnHeader.width() + change),
+            nextColumnWidth = (nextColumnHeader.width() - change);
+        }
+        
+        if(newWidth > 15 && nextColumnWidth > 15) {
+            columnHeader.width(newWidth);
+            nextColumnHeader.width(nextColumnWidth);
+
+            if(this.cfg.scrollable) {
+                var padding = columnHeader.innerWidth() - columnHeader.width();
+                this.colgroup.children().eq(colIndex).width(newWidth + padding + 1);
+                this.colgroup.children().eq(colIndex + 1).width(nextColumnWidth + padding + 1);
+
+                if(this.footerCols.length > 0) {
+                    var footerCol = this.footerCols.eq(colIndex),
+                    nextFooterCol = footerCol.next();
+
+                    footerCol.width(newWidth);
+                    nextFooterCol.width(nextColumnWidth);
+                }
+            }
+        }
+
+        //frozen rows
+        /*var frozenRowsBody = thead.next('tbody');
+        if(frozenRowsBody.length === 1) {
+            frozenRowsBody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);  
+        }*/
     },
     
     hasBehavior: function(event) {
