@@ -66,7 +66,6 @@
 .ui-treetable-scrollable .ui-treetable-scrollable-header-box,
 .ui-treetable-scrollable .ui-treetable-scrollable-footer-box {
     float:left;
-    padding-right: 40px;
 }
 
 .ui-treetable .ui-treetable-data tr.ui-state-hover {
@@ -104,4 +103,10 @@
 
 .ui-treetable .ui-chkbox {
     margin-right: 3px;
+}
+
+.ui-treetable .ui-treetable-indent {
+    width: 16px;
+    height: 16px;
+    float: left;
 }

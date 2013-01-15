@@ -22,11 +22,9 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
@@ -106,7 +104,9 @@ public class TreeTableRenderer extends CoreRenderer {
         wb.widget("TreeTable", tt.resolveWidgetVar(), clientId, false)
             .attr("selectionMode", selectionMode, null)
             .attr("resizableColumns", tt.isResizableColumns(), false)
-            .attr("scrollable", tt.isScrollable(), false);
+            .attr("scrollable", tt.isScrollable(), false)
+            .attr("scrollHeight", tt.getScrollHeight(), Integer.MIN_VALUE)
+            .attr("scrollWidth", tt.getScrollWidth(), Integer.MIN_VALUE);
         
         encodeClientBehaviors(context, tt, wb);
 		
@@ -127,22 +127,19 @@ public class TreeTableRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("class", containerClass, null);
-		if(tt.getStyle() != null) {
+		if(tt.getStyle() != null)
             writer.writeAttribute("style", tt.getStyle(), null);
-        }
-        
-        encodeFacet(context, tt, tt.getFacet("header"), TreeTable.HEADER_CLASS);
         
         if(scrollable)
             encodeScrollableMarkup(context, tt);
         else
             encodeRegularMarkup(context, tt);
         
-        encodeFacet(context, tt, tt.getFacet("footer"), TreeTable.FOOTER_CLASS);
+        if(tt.getSelectionMode() != null)
+            encodeStateHolder(context, tt, clientId + "_selection", tt.getSelectedRowKeysAsString());
         
-        if(tt.getSelectionMode() != null) {
-            encodeSelectionHolder(context, tt);
-        }
+        if(scrollable)
+            encodeStateHolder(context, tt, clientId + "_scrollState", tt.getScrollState());
         
         writer.endElement("div");
 	}
@@ -151,13 +148,13 @@ public class TreeTableRenderer extends CoreRenderer {
         String tableStyle = tt.getStyle();
         String tableStyleClass = tt.getStyleClass();
                         
-        encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_HEADER_CLASS, TreeTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
+        encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_HEADER_CLASS, TreeTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass, "header", TreeTable.HEADER_CLASS);
         encodeThead(context, tt);
         encodeScrollAreaEnd(context);
         
         encodeScrollBody(context, tt, tableStyle, tableStyleClass);
         
-        encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_FOOTER_CLASS, TreeTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
+        encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_FOOTER_CLASS, TreeTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass, "footer", TreeTable.FOOTER_CLASS);
         encodeTfoot(context, tt);
         encodeScrollAreaEnd(context);
     }
@@ -198,12 +195,14 @@ public class TreeTableRenderer extends CoreRenderer {
     }
     
     protected void encodeScrollAreaStart(FacesContext context, TreeTable tt, String containerClass, String containerBoxClass, 
-                            String tableStyle, String tableStyleClass) throws IOException {
+                            String tableStyle, String tableStyleClass, String facet, String facetClass) throws IOException {
         
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("div", null);
         writer.writeAttribute("class", containerClass, null);
+        
+        encodeFacet(context, tt, tt.getFacet(facet), facetClass);
 
         writer.startElement("div", null);
         writer.writeAttribute("class", containerBoxClass, null);
@@ -224,6 +223,8 @@ public class TreeTableRenderer extends CoreRenderer {
     
     protected void encodeRegularMarkup(FacesContext context, TreeTable tt) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        
+        encodeFacet(context, tt, tt.getFacet("header"), TreeTable.HEADER_CLASS);
                 
         writer.startElement("table", tt);
         writer.writeAttribute("role", "treegrid", null);
@@ -235,6 +236,8 @@ public class TreeTableRenderer extends CoreRenderer {
 		encodeTbody(context, tt);
         
 		writer.endElement("table");
+        
+        encodeFacet(context, tt, tt.getFacet("footer"), TreeTable.FOOTER_CLASS);
     }
 
 	protected void encodeThead(FacesContext context, TreeTable tt) throws IOException {
@@ -348,18 +351,15 @@ public class TreeTableRenderer extends CoreRenderer {
                     
                     writer.startElement("td", null);
                     writer.writeAttribute("role", "gridcell", null);
-                    if(columnStyleClass != null) {
-                        writer.writeAttribute("class", column.getStyleClass(), null);
-                    }
+                    if(columnStyle != null) writer.writeAttribute("style", columnStyle, null);
+                    if(columnStyleClass != null) writer.writeAttribute("class", columnStyleClass, null);
 
                     if(i == 0) {
-                        int paddingLeft = (depth * 15);
-                        String cellStyle = "padding-left:" + paddingLeft + "px";
-                        if(columnStyle != null) {
-                            cellStyle = columnStyle + ";" + cellStyle;
+                        for(int j = 0; j < depth; j++) {
+                            writer.startElement("span", null);
+                            writer.writeAttribute("class", TreeTable.INDENT_CLASS, null);
+                            writer.endElement("span");
                         }
-
-                        writer.writeAttribute("style", cellStyle, null);
                         
                         writer.startElement("span", null);
                         writer.writeAttribute("class", icon, null);
@@ -371,9 +371,6 @@ public class TreeTableRenderer extends CoreRenderer {
                         if(selectable && selectionMode.equals("checkbox")) {
                             RendererUtils.encodeCheckbox(context, selected);
                         }
-                    }
-                    else if(columnStyle != null) {
-                        writer.writeAttribute("style", column.getStyle(), null);
                     }
 
                     column.encodeAll(context);
@@ -473,15 +470,14 @@ public class TreeTableRenderer extends CoreRenderer {
 		return true;
 	}
 
-    private void encodeSelectionHolder(FacesContext context, TreeTable tt) throws IOException {
+    private void encodeStateHolder(FacesContext context, TreeTable tt, String name, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String name = tt.getClientId(context) + "_selection";
         
         writer.startElement("input", null);
         writer.writeAttribute("id", name, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("value", tt.getSelectedRowKeysAsString(), null);
+        writer.writeAttribute("value", value, null);
         writer.endElement("input");
     }
 }
