@@ -425,13 +425,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Applies events related to row expansion in a non-obstrusive way
      */
     bindExpansionEvents: function() {
-        var _self = this;
+        var $this = this,
+        togglerSelector = this.jqId + ' tbody.ui-datatable-data > tr > td > div.ui-row-toggler';
 
-        $(this.jqId + ' tbody.ui-datatable-data tr td span.ui-row-toggler')
-        .die()
-        .live('click', function() {
-            _self.toggleExpansion(this);
-        });
+        $(document).off('click.datatable-expansion', togglerSelector)
+                    .on('click.datatable-expansion', togglerSelector, null, function() {
+                        $this.toggleExpansion($(this));
+                    });
     },
     
     setupScrolling: function() {
@@ -1147,24 +1147,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Expands a row to display detail content
      */
-    toggleExpansion: function(expanderElement) {
-        var expander = $(expanderElement),
-        row = expander.parents('tr:first'),
+    toggleExpansion: function(toggler) {
+        var row = toggler.closest('tr'),
         rowIndex = this.getRowMeta(row).index,
         expanded = row.hasClass('ui-expanded-row'),
-        _self = this;
+        $this = this;
 
         //Run toggle expansion if row is not being toggled already to prevent conflicts
         if($.inArray(rowIndex, this.expansionProcess) == -1) {
             if(expanded) {
                 this.expansionProcess.push(rowIndex);
-                expander.removeClass('ui-icon-circle-triangle-s');
+                toggler.removeClass('ui-icon-circle-triangle-s');
                 row.removeClass('ui-expanded-row');
 
                 row.next().fadeOut(function() {
                     $(this).remove();
 
-                    _self.expansionProcess = $.grep(_self.expansionProcess, function(r) {
+                    $this.expansionProcess = $.grep($this.expansionProcess, function(r) {
                         return r != rowIndex;
                     });
                 });
@@ -1173,7 +1172,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 this.expansionProcess.push(rowIndex);
-                expander.addClass('ui-icon-circle-triangle-s');
+                toggler.addClass('ui-icon-circle-triangle-s');
                 row.addClass('ui-expanded-row');
 
                 this.loadExpandedRowContent(row);
