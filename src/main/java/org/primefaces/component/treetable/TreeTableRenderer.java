@@ -105,7 +105,8 @@ public class TreeTableRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("TreeTable", tt.resolveWidgetVar(), clientId, false)
             .attr("selectionMode", selectionMode, null)
-            .attr("resizableColumns", tt.isResizableColumns(), false);
+            .attr("resizableColumns", tt.isResizableColumns(), false)
+            .attr("scrollable", tt.isScrollable(), false);
         
         encodeClientBehaviors(context, tt, wb);
 		

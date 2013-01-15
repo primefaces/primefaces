@@ -7,8 +7,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         
         this.tbody = $(this.jqId + '_data');
-        this.cfg.scrollable = this.jq.hasClass('ui-treetable-scrollable');
-        this.cfg.resizable = this.jq.hasClass('ui-treetable-resizable');
 
         if(this.cfg.scrollable) {
             this.setupScrolling();
@@ -62,7 +60,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
                             element.addClass('ui-state-hover');
                         
                             if($this.isCheckboxSelection()) {
-                                element.find('> td:first-child > div.ui-tt-c > div.ui-chkbox > div.ui-chkbox-box').addClass('ui-state-hover');
+                                element.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').addClass('ui-state-hover');
                             }
                         }
                     })
@@ -72,7 +70,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
                             element.removeClass('ui-state-hover');
                             
                             if($this.isCheckboxSelection()) {
-                                element.find('> td:first-child > div.ui-tt-c > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-hover');
+                                element.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-hover');
                             }
                         }
                     })
@@ -82,7 +80,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
                     });
                     
         if(this.isCheckboxSelection()) {
-           var checkboxSelector = this.jqId + ' .ui-treetable-data tr.ui-treetable-selectable-node td:first-child div.ui-tt-c div.ui-chkbox-box';
+           var checkboxSelector = this.jqId + ' .ui-treetable-data tr.ui-treetable-selectable-node td:first-child div.ui-chkbox-box';
            $(document).off('click.treeTable', checkboxSelector)
                       .on('click.treeTable', checkboxSelector, null, function(e) {
                           var node = $(this).closest('tr.ui-treetable-selectable-node');
@@ -173,7 +171,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     onRowClick: function(event, node) {
-        if($(event.target).is('.ui-tt-c,td,span:not(.ui-c)')) {
+        if($(event.target).is('td,span:not(.ui-c)')) {
             var selected = node.hasClass('ui-state-highlight'),
             metaKey = event.metaKey||event.ctrlKey,
             shiftKey = event.shiftKey;
@@ -212,7 +210,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         this.writeSelections();
         
         if(this.isCheckboxSelection()) {
-            node.find('> td:first-child > div.ui-tt-c > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-hover')
+            node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-hover')
                 .children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-minus').addClass('ui-icon ui-icon-check');
         }
 
@@ -229,7 +227,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         this.writeSelections();
         
         if(this.isCheckboxSelection()) {
-            node.find('> td:first-child > div.ui-tt-c > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check ui-icon-minus');
+            node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check ui-icon-minus');
         }
 
         if(!silent) {
@@ -331,7 +329,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         var children = this.getChildren(node),
         allSelected = true,
         partialSelected = false,
-        checkboxIcon = node.find('> td:first-child > div.ui-tt-c > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon');
+        checkboxIcon = node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon');
 
         for(var i = 0; i < children.length; i++) {
             var child = children[i],
