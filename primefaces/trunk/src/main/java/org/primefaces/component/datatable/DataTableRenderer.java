@@ -148,7 +148,8 @@ public class DataTableRenderer extends DataRenderer {
         boolean scrollable = table.isScrollable();
         boolean hasPaginator = table.isPaginator();
         String style = table.getStyle();
-        
+        String paginatorPosition = table.getPaginatorPosition();
+                        
         //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
@@ -178,6 +179,12 @@ public class DataTableRenderer extends DataRenderer {
         if(style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        
+        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
+        
+        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+            encodePaginatorMarkup(context, table, "top");
+        }
 
         if(scrollable) {
             encodeScrollableTable(context, table);
@@ -185,6 +192,12 @@ public class DataTableRenderer extends DataRenderer {
         else {
             encodeRegularTable(context, table);
         }
+        
+        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+            encodePaginatorMarkup(context, table, "bottom");
+        }
+        
+        encodeFacet(context, table, table.getFooter(), DataTable.FOOTER_CLASS);
 
         if(table.isSelectionEnabled()) {
             encodeStateHolder(context, table, table.getClientId(context) + "_selection", table.getSelectedRowKeysAsString());
@@ -203,14 +216,6 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeRegularTable(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean paginator = table.isPaginator();
-        String paginatorPosition = table.getPaginatorPosition();
-        
-        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
-        
-        if(paginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
-            encodePaginatorMarkup(context, table, "top");
-        }
         
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
@@ -222,12 +227,6 @@ public class DataTableRenderer extends DataRenderer {
         encodeTFoot(context, table);
         encodeTbody(context, table, false);
         writer.endElement("table");
-        
-        if(paginator && !paginatorPosition.equalsIgnoreCase("top")) {
-            encodePaginatorMarkup(context, table, "bottom");
-        }
-        
-        encodeFacet(context, table, table.getFooter(), DataTable.FOOTER_CLASS);
     }
 
     protected void encodeScrollableTable(FacesContext context, DataTable table) throws IOException {

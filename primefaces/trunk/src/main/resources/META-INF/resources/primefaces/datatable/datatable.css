@@ -5,8 +5,8 @@
 
 .ui-datatable .ui-datatable-header,
 .ui-datatable .ui-datatable-footer {
-    text-align:center;
-    padding:4px 10px;
+    text-align: center;
+    padding: 4px 10px;
 }
 
 .ui-datatable .ui-datatable-header {
@@ -17,24 +17,22 @@
     border-top: 0px none;
 }
 
-.ui-datatable th, .ui-datatable tfoot td {
-    text-align:center;
-    white-space:nowrap;
-    padding:0px;
-    margin:0px;
-    overflow: hidden;
+.ui-datatable thead th, .ui-datatable tfoot td {
+    text-align: center;
 }
 
-.ui-datatable-data, .ui-datatable-data-empty {}
-
-.ui-datatable .ui-datatable-data td,
-.ui-datatable .ui-datatable-data-empty td {
+.ui-datatable thead th,
+.ui-datatable tbody td,
+.ui-datatable tfoot td {
+    padding: 4px 10px;
+    overflow: hidden;
+    white-space: nowrap;
     border-width: 1px;
     border-style: solid;
+}
+
+.ui-datatable tbody td {
     border-color: inherit;
-    padding:0px;
-    margin:0px;
-    overflow: hidden;
 }
 
 .ui-datatable .ui-sortable-column {
@@ -111,14 +109,6 @@
     border-radius: 8px;
     border: 1px solid white;
     background-color: rgba(194,194,194,.5);
-}
-
-.ui-datatable th,
-.ui-datatable .ui-datatable-data td,
-.ui-datatable .ui-datatable-data-empty td,
-.ui-datatable tfoot td {
-    padding: 4px 10px;
-    overflow: hidden;
 }
 
 .ui-datatable .ui-datatable-data tr.ui-state-hover {
