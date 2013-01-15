@@ -115,6 +115,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
                 }
+                
+                
             }
 
             PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
@@ -152,9 +154,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     
-        node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
-
-        node.attr('aria-expanded', false);
+        node.attr('aria-expanded', false).find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
 
         if(this.hasBehavior('collapse')) {
             var collapseBehavior = this.cfg.behaviors['collapse'],
@@ -457,14 +457,91 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     setupScrolling: function() {
-        var scrollHeader = $(this.jqId + ' .ui-treetable-scrollable-header'),
-        scrollBody = $(this.jqId + ' .ui-treetable-scrollable-body'),
-        scrollFooter = $(this.jqId + ' .ui-treetable-scrollable-footer');
-
-        scrollBody.scroll(function() {
-            scrollHeader.scrollLeft(scrollBody.scrollLeft());
-            scrollFooter.scrollLeft(scrollBody.scrollLeft());
+        this.scrollHeader = this.jq.children('div.ui-treetable-scrollable-header');
+        this.scrollBody = this.jq.children('div.ui-treetable-scrollable-body');
+        this.scrollFooter = this.jq.children('div.ui-treetable-scrollable-footer');
+        this.scrollStateHolder = $(this.jqId + '_scrollState');
+        this.scrollHeaderBox = this.scrollHeader.children('div.ui-treetable-scrollable-header-box');
+        this.scrollFooterBox = this.scrollFooter.children('div.ui-treetable-scrollable-footer-box');
+        this.headerTable = this.scrollHeaderBox.children('table');
+        this.bodyTable = this.scrollBody.children('table');
+        this.footerTable = this.scrollFooterBox.children('table');
+        this.colgroup = this.bodyTable.children('colgroup');
+        this.headerCols = this.headerTable.find('> thead > tr > th');
+        this.footerCols = this.footerTable.find('> tfoot > tr > td');
+        var $this = this;
+        
+        var marginRight = $.browser.msie ? '17px' : '16px';
+        if(this.cfg.scrollHeight) {
+            this.scrollHeaderBox.css('margin-right', marginRight);
+            this.scrollBody.css('padding-right', marginRight);
+            this.scrollFooterBox.css('margin-right', marginRight);
+        }
+        
+        this.fixColumnWidths();
+        
+        if(this.cfg.scrollWidth) {
+            this.scrollBody.css('padding-right', 0);
+            this.scrollHeader.width(this.cfg.scrollWidth);
+            this.scrollBody.width(this.cfg.scrollWidth);
+            this.scrollFooter.width(this.cfg.scrollWidth);
+        }
+        
+        this.restoreScrollState();
+        
+        this.scrollBody.scroll(function() {
+            var scrollLeft = $this.scrollBody.scrollLeft();
+            $this.scrollHeaderBox.css('margin-left', -scrollLeft);
+            $this.scrollFooterBox.css('margin-left', -scrollLeft);
+            
+            $this.saveScrollState();
         });
+    },
+    
+    fixColumnWidths: function() {
+        var $this = this;
+        
+        if(!this.columnWidthsFixed) {
+            if(this.cfg.scrollable) {
+                this.headerCols.each(function() {
+                    var headerCol = $(this),
+                    colIndex = headerCol.index();
+                    
+                    headerCol.width(headerCol.width());                    
+                    $this.colgroup.children().eq(colIndex).width(headerCol.outerWidth());
+                    if($this.footerCols.length > 0) {
+                        var footerCol = $this.footerCols.eq(colIndex);
+                        footerCol.width(footerCol.width());
+                    }
+                });
+                
+                this.headerTable.width(this.headerTable.width());
+                this.bodyTable.width(this.bodyTable.width() - 1);
+                this.footerTable.width(this.footerTable.width());
+            }
+            else {
+                this.jq.find('> table > thead > tr > th').each(function() {
+                    var col = $(this);
+                    col.width(col.width());
+                });
+            }
+            
+            this.columnWidthsFixed = true;
+        }
+    },
+
+    restoreScrollState: function() {
+        var scrollState = this.scrollStateHolder.val(),
+        scrollValues = scrollState.split(',');
+
+        this.scrollBody.scrollLeft(scrollValues[0]);
+        this.scrollBody.scrollTop(scrollValues[1]);
+    },
+    
+    saveScrollState: function() {
+        var scrollState = this.scrollBody.scrollLeft() + ',' + this.scrollBody.scrollTop();
+        
+        this.scrollStateHolder.val(scrollState);
     },
     
     /**

@@ -37,6 +37,7 @@ import java.lang.StringBuilder;
     public static final String SCROLLABLE_FOOTER_BOX_CLASS = "ui-treetable-scrollable-footer-box";
     public static final String SELECTABLE_NODE_CLASS = "ui-treetable-selectable-node";
     public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
+    public static final String INDENT_CLASS = "ui-treetable-indent";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize"));
 
@@ -227,4 +228,12 @@ import java.lang.StringBuilder;
         }
 
         return columnsCount;
+    }
+
+    public String getScrollState() {
+        Map<String,String> params = getFacesContext().getExternalContext().getRequestParameterMap();
+        String name = this.getClientId() + "_scrollState";
+        String value = params.get(name);
+        
+        return value == null ? "0,0" : value;
     }
