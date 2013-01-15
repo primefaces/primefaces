@@ -107,6 +107,13 @@
 			<type>java.lang.String</type>
             <description>Style class for each row.</description>
 		</attribute>
+        <attribute>
+			<name>liveResize</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Columns are resized live in this mode without using a resize helper.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
