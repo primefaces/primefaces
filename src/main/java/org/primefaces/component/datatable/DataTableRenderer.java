@@ -538,6 +538,7 @@ public class DataTableRenderer extends DataRenderer {
         ColumnGroup group = table.getColumnGroup("header");
 
         writer.startElement("thead", null);
+        writer.writeAttribute("id", table.getClientId(context) + "_head", null);
         
         if(group != null && group.isRendered()) {
 
