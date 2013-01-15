@@ -6,18 +6,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
+        this.thead = $(this.jqId + '_head'); 
         this.tbody = $(this.jqId + '_data');
-        this.cfg.formId = this.jq.closest('form:first').attr('id');
 
-        //Paginator
         if(this.cfg.paginator) {
             this.bindPaginator();
         }
 
-        //Sort events
         this.bindSortEvents();
 
-        //Selection events
         if(this.cfg.selectionMode) {
             this.selectionHolder = this.jqId + '_selection';
 
@@ -31,7 +28,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             this.bindSelectionEvents();
         }
 
-        //Filtering
         if(this.cfg.filter) {
             this.setupFiltering();
         }
@@ -88,7 +84,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      */
     bindSortEvents: function() {
         var _self = this,
-        sortableColumns = $(this.jqId + ' th.ui-sortable-column');
+        sortableColumns = this.thead.find('th.ui-sortable-column');
         
         if(this.cfg.multiSort) {
             this.sortMeta = [];
@@ -1653,19 +1649,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     setupResizableColumns: function() {
-        //Add resizers and resizer helper
-        $(this.jqId + ' thead tr th.ui-resizable-column:not(:last-child)').prepend('<span class="ui-column-resizer">&nbsp;</span>');
-        this.resizerHelper = $('<div class="ui-column-resizer-helper ui-state-highlight"></div>').appendTo(this.jq);
-
         this.fixColumnWidths();
         
-        //Variables
-        var resizers = $(this.jqId + ' thead th span.ui-column-resizer'),
-        table = $(this.jqId + ' table'),
-        thead = $(this.jqId + ' thead'),  
+        if(!this.cfg.liveResize) {
+            this.resizerHelper = $('<div class="ui-column-resizer-helper ui-state-highlight"></div>').appendTo(this.jq);
+        }
+        
+        this.thead.find('> tr > th.ui-resizable-column:not(:last-child)').prepend('<span class="ui-column-resizer">&nbsp;</span>');        
+        var resizers = this.thead.find('> tr > th > span.ui-column-resizer'),
         $this = this;
-
-        //Main resize events
+            
         resizers.draggable({
             axis: 'x',
             start: function() {
@@ -1673,7 +1666,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     $this.jq.css('cursor', 'col-resize');
                 }
                 else {
-                    var height = $this.cfg.scrollable ? $this.scrollBody.height() : table.height() - thead.height() - 1;
+                    var height = $this.cfg.scrollable ? $this.scrollBody.height() : $this.thead.parent().height() - $this.thead.height() - 1;
                     $this.resizerHelper.height(height);
                     $this.resizerHelper.show();
                 }
@@ -1685,7 +1678,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 else {
                     $this.resizerHelper.offset({
                         left: ui.helper.offset().left + ui.helper.width() / 2, 
-                        top: thead.offset().top + thead.height()
+                        top: $this.thead.offset().top + $this.thead.height()
                     });  
                 }                
             },
@@ -1695,12 +1688,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 
                 if($this.cfg.liveResize) {
                     $this.jq.css('cursor', 'default');
-                }
-                else {
+                } else {
                     $this.resize(event, ui);
                     $this.resizerHelper.hide();
                 }
-                
                 
                 var options = {
                     source: $this.id,
@@ -1718,7 +1709,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 } else {
                     PrimeFaces.ajax.AjaxRequest(options);
                 }
-                
             },
             containment: this.jq
         });
@@ -1727,10 +1717,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     resize: function(event, ui) {
         var columnHeader = ui.helper.parent(),
         nextColumnHeader = columnHeader.next(),
-        colIndex = columnHeader.index(),
-        change = null,
-        newWidth = null,
-        nextColumnWidth = null;
+        change = null, newWidth = null, nextColumnWidth = null;
         
         if(this.cfg.liveResize) {
             var change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
@@ -1746,6 +1733,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(newWidth > 15 && nextColumnWidth > 15) {
             columnHeader.width(newWidth);
             nextColumnHeader.width(nextColumnWidth);
+            var colIndex = columnHeader.index();
 
             if(this.cfg.scrollable) {
                 var padding = columnHeader.innerWidth() - columnHeader.width();
@@ -1761,12 +1749,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         }
-
-        //frozen rows
-        /*var frozenRowsBody = thead.next('tbody');
-        if(frozenRowsBody.length === 1) {
-            frozenRowsBody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);  
-        }*/
     },
     
     hasBehavior: function(event) {
