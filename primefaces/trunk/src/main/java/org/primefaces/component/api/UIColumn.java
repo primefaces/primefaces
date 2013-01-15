@@ -46,9 +46,7 @@ public interface UIColumn {
     public int getRowspan();
     
     public int getColspan();
-    
-    public int getWidth();
-        
+            
     public boolean isDisabledSelection();
     
     public String getFilterPosition();

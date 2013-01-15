@@ -87,10 +87,6 @@ public class DynamicColumn implements UIColumn {
         return this.columns.getColspan();
     }
 
-    public int getWidth() {
-        return this.columns.getWidth();
-    }
-
     public boolean isDisabledSelection() {
         return this.columns.isDisabledSelection();
     }
