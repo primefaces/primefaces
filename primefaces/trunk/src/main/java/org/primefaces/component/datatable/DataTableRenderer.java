@@ -374,8 +374,6 @@ public class DataTableRenderer extends DataRenderer {
             encodeCheckbox(context, table, false, column.isDisabledSelection(), HTML.CHECKBOX_ALL_CLASS);
         }
         
-        writer.endElement("div");
-
         writer.endElement("th");
     }
     
