@@ -1,12 +1,12 @@
 .ui-treetable table {
 	border-collapse:collapse;
-    width:100%;
+    width: 100%;
 }
 
 .ui-treetable .ui-treetable-header,
 .ui-treetable .ui-treetable-footer {
     text-align:center;
-    padding:4px 10px;
+    padding: 4px 10px;
 }
 
 .ui-treetable .ui-treetable-header {
@@ -18,34 +18,25 @@
 }
 
 .ui-treetable th, .ui-treetable tfoot td {
-    text-align:center;
-    white-space:nowrap;
-    padding:0px;
-    margin:0px;
-    overflow: hidden;
+    text-align: center;
 }
 
-.ui-treetable .ui-treetable-data td,
-.ui-treetable .ui-treetable-data-empty td {
-    border-width: 1px;
-    border-style: solid;
-    border-color: inherit;
-    padding:0px;
-    margin:0px;
-    overflow: hidden;
-}
-
-.ui-treetable th div.ui-tt-c,
-.ui-treetable .ui-treetable-data td div.ui-tt-c,
-.ui-treetable tfoot td div.ui-tt-c {
+.ui-treetable thead th,
+.ui-treetable tbody td,
+.ui-treetable tfoot td {
     padding: 4px 10px;
     overflow: hidden;
-    position: relative;
-    white-space:nowrap;
+    white-space: nowrap;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.ui-treetable tbody td {
+    border-color: inherit;
 }
 
 .ui-treetable .ui-treetable-toggler {
-    float:left;
+    float: left;
     margin-top: -2px;
     cursor: pointer;
 }
@@ -54,8 +45,6 @@
 .ui-treetable .ui-treetable-data tr.ui-state-hover {
     cursor: pointer;
 }
-
-.ui-treetable-scrollable {}
 
 .ui-treetable-scrollable-body {
     overflow:auto;
@@ -66,10 +55,8 @@
     border:0 none;
 }
 
-.ui-treetable-scrollable .ui-treetable-scrollable-body table,
-.ui-treetable-scrollable .ui-treetable-scrollable-header table,
-.ui-treetable-scrollable .ui-treetable-scrollable-footer table {
-    width:auto;
+.ui-treetable.ui-treetable-scrollable table {
+    table-layout: fixed;
 }
 .ui-treetable-scrollable .ui-treetable-scrollable-header,
 .ui-treetable-scrollable .ui-treetable-scrollable-footer {
@@ -94,7 +81,7 @@
 }
 
 .ui-treetable.ui-treetable-resizable table {
-    width: auto;
+    table-layout: fixed;
 }
 
 .ui-treetable .ui-column-resizer {
