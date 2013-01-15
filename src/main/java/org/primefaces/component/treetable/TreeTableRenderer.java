@@ -39,23 +39,8 @@ public class TreeTableRenderer extends CoreRenderer {
         if(tt.getSelectionMode() != null) {
             decodeSelection(context, component);
         }
-        
-        if(tt.isResizableColumns() && tt.isResizeRequest(context)) {
-            decodeColumnResize(context, tt);
-        }
-            
+                    
         decodeBehaviors(context, component);
-    }
-    
-    protected void decodeColumnResize(FacesContext context, TreeTable tt) {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = tt.getClientId(context);
-        
-        String columnId = params.get(clientId + "_columnId");
-        String width = params.get(clientId + "_width");
-        Column column = tt.findColumn(columnId);
-        
-        column.setWidth(Integer.parseInt(width));
     }
 
     protected void decodeSelection(FacesContext context, UIComponent component) {
@@ -274,18 +259,12 @@ public class TreeTableRenderer extends CoreRenderer {
                 if(style != null) {
                     writer.writeAttribute("style", style, null);
                 }
-                
-				writer.startElement("div", null);
-                writer.writeAttribute("class", TreeTable.COLUMN_CONTENT_WRAPPER, null);
-                if(column.getWidth() != -1) writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
-                
+
                 if(header != null) 
                     header.encodeAll(context);
                 else if(headerText != null)
                     writer.write(headerText);
-                
-                writer.endElement("div");
-				
+                				
 				writer.endElement("th");
 			}
 		}
@@ -356,8 +335,8 @@ public class TreeTableRenderer extends CoreRenderer {
 
                 if(kid instanceof Column && kid.isRendered()) {
                     Column column = (Column) kid;
-                    int width = column.getWidth();
-                    
+                    //int width = column.getWidth();
+                    /*
                     writer.startElement("td", null);
                     writer.writeAttribute("role", "gridcell", null);
                     if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
@@ -390,7 +369,7 @@ public class TreeTableRenderer extends CoreRenderer {
                     }
                     else if(width > 0) {
                         writer.writeAttribute("style", "width:" + width + "px", null);
-                    }
+                    }*/
 
                     column.encodeAll(context);
 
@@ -463,22 +442,15 @@ public class TreeTableRenderer extends CoreRenderer {
                     String style = column.getStyle();
 
                     writer.startElement("td", null);
-                    writer.writeAttribute("id", column.getClientId(context), null);
                     writer.writeAttribute("class", columnStyleClass, null);
                     if(style != null) {
                         writer.writeAttribute("style", style, null);
                     }
-
-                    writer.startElement("div", null);
-                    writer.writeAttribute("class", TreeTable.COLUMN_CONTENT_WRAPPER, null);
-                    if(column.getWidth() != -1) writer.writeAttribute("style", "width:" + column.getWidth() + "px", null);
-
+                   
                     if(footer != null) 
                         footer.encodeAll(context);
                     else if(footerText != null)
                         writer.write(footerText);
-
-                    writer.endElement("div");
 
                     writer.endElement("td");
                 }
