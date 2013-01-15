@@ -29,8 +29,8 @@ public class RowTogglerRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         RowToggler toggler = (RowToggler) component;
 
-        writer.startElement("span", toggler);
+        writer.startElement("div", toggler);
         writer.writeAttribute("class", DataTable.ROW_TOGGLER_CLASS + " ui-icon ui-icon-circle-triangle-e", null);
-        writer.endElement("span");
+        writer.endElement("div");
     }
 }
