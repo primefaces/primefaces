@@ -104,6 +104,7 @@ public class TreeTableRenderer extends CoreRenderer {
         wb.widget("TreeTable", tt.resolveWidgetVar(), clientId, false)
             .attr("selectionMode", selectionMode, null)
             .attr("resizableColumns", tt.isResizableColumns(), false)
+            .attr("liveResize", tt.isLiveResize(), false)
             .attr("scrollable", tt.isScrollable(), false)
             .attr("scrollHeight", tt.getScrollHeight(), Integer.MIN_VALUE)
             .attr("scrollWidth", tt.getScrollWidth(), Integer.MIN_VALUE);
@@ -242,8 +243,10 @@ public class TreeTableRenderer extends CoreRenderer {
 
 	protected void encodeThead(FacesContext context, TreeTable tt) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+        String clientId = tt.getClientId(context);
 
 		writer.startElement("thead", null);
+        writer.writeAttribute("id", clientId + "_head", null);
                 
 		writer.startElement("tr", null);
         writer.writeAttribute("role", "row", null);

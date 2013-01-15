@@ -6,6 +6,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
+        this.thead = $(this.jqId + '_head');
         this.tbody = $(this.jqId + '_data');
 
         if(this.cfg.scrollable) {
@@ -544,102 +545,104 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         this.scrollStateHolder.val(scrollState);
     },
     
-    /**
-     * Add resize behavior to columns
-     */
     setupResizableColumns: function() {
-        //Add resizers and resizer helper        
-        $(this.jqId + ' thead tr th.ui-resizable-column div.ui-tt-c').prepend('<span class="ui-column-resizer">&nbsp;</span>');
-        this.jq.append('<div class="ui-column-resizer-helper ui-state-highlight"></div>');
-
-        //Variables
-        var resizerHelper = $(this.jqId + ' .ui-column-resizer-helper'),
-        resizers = $(this.jqId + ' thead th span.ui-column-resizer'),
-        scrollHeader = $(this.jqId + ' .ui-treetable-scrollable-header'),
-        scrollBody = $(this.jqId + ' .ui-treetable-scrollable-body'),
-        table = $(this.jqId + ' table'),
-        thead = $(this.jqId + ' thead'),  
-        tfoot = $(this.jqId + ' tfoot'),
-        _self = this;
-
-        //Main resize events
+        this.fixColumnWidths();
+        
+        if(!this.cfg.liveResize) {
+            this.resizerHelper = $('<div class="ui-column-resizer-helper ui-state-highlight"></div>').appendTo(this.jq);
+        }
+        
+        this.thead.find('> tr > th.ui-resizable-column:not(:last-child)').prepend('<span class="ui-column-resizer">&nbsp;</span>');        
+        var resizers = this.thead.find('> tr > th > span.ui-column-resizer'),
+        $this = this;
+            
         resizers.draggable({
             axis: 'x',
-            start: function(event, ui) {
-                var height = _self.cfg.scrollable ? scrollBody.height() : table.height() - thead.height() - 1;
-
-                //Set height of resizer helper
-                resizerHelper.height(height);
-                resizerHelper.show();
-            },
-            drag: function(event, ui) {
-                resizerHelper.offset(
-                    {
-                        left: ui.helper.offset().left + ui.helper.width() / 2, 
-                        top: thead.offset().top + thead.height()
-                    });  
-            },
-            stop: function(event, ui) {
-                var columnHeaderWrapper = ui.helper.parent(),
-                columnHeader = columnHeaderWrapper.parent(),
-                minWidth = columnHeaderWrapper.data('minwidth'),
-                maxWidth = columnHeaderWrapper.data('maxwidth'),
-                oldPos = ui.originalPosition.left,
-                newPos = ui.position.left,
-                change = (newPos - oldPos),
-                newWidth = (columnHeaderWrapper.width() + change - (ui.helper.width() / 2));
-
-                ui.helper.css('left','');
-                resizerHelper.hide();
-                
-                if(minWidth && newWidth < minWidth) {
-                    newWidth = minWidth;
-                } else if(maxWidth && newWidth > maxWidth) {
-                    newWidth = maxWidth;
-                }
-
-                columnHeaderWrapper.width(newWidth);
-                columnHeader.css('width', '');
-
-                if(columnHeader.index() === 0) {
-                    var headerPaddingLeft = parseInt(columnHeaderWrapper.css('padding-left'));
-                    _self.tbody.find('> tr > td:first-child > div.ui-tt-c').each(function() {
-                        var cell = $(this),
-                        paddingLeft = parseInt(cell.css('padding-left'));
-                        
-                        cell.width(newWidth + (headerPaddingLeft - paddingLeft));
-                    });
+            start: function() {
+                if($this.cfg.liveResize) {
+                    $this.jq.css('cursor', 'col-resize');
                 }
                 else {
-                    _self.tbody.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);            
-                    tfoot.find('tr td:nth-child(' + (columnHeader.index() + 1) + ')').width('').children('div').width(newWidth);
+                    var height = $this.cfg.scrollable ? $this.scrollBody.height() : $this.thead.parent().height() - $this.thead.height() - 1;
+                    $this.resizerHelper.height(height);
+                    $this.resizerHelper.show();
+                }
+            },
+            drag: function(event, ui) {
+                if($this.cfg.liveResize) {
+                    $this.resize(event, ui);
+                }
+                else {
+                    $this.resizerHelper.offset({
+                        left: ui.helper.offset().left + ui.helper.width() / 2, 
+                        top: $this.thead.offset().top + $this.thead.height()
+                    });  
+                }                
+            },
+            stop: function(event, ui) {
+                var columnHeader = ui.helper.parent();
+                ui.helper.css('left','');
+                
+                if($this.cfg.liveResize) {
+                    $this.jq.css('cursor', 'default');
+                } else {
+                    $this.resize(event, ui);
+                    $this.resizerHelper.hide();
                 }
                 
-                scrollHeader.scrollLeft(scrollBody.scrollLeft());
-
-                //Sync width change with server side state
                 var options = {
-                    source: _self.id,
-                    process: _self.id,
+                    source: $this.id,
+                    process: $this.id,
                     params: [
-                        {name: _self.id + '_colResize', value: true},
-                        {name: _self.id + '_columnId', value: columnHeader.attr('id')},
-                        {name: _self.id + '_width', value: newWidth},
-                        {name: _self.id + '_height', value: columnHeader.height()}
+                        {name: $this.id + '_colResize', value: true},
+                        {name: $this.id + '_columnId', value: columnHeader.attr('id')},
+                        {name: $this.id + '_width', value: columnHeader.width()},
+                        {name: $this.id + '_height', value: columnHeader.height()}
                     ]
                 }
                 
-                if(_self.hasBehavior('colResize')) {
-                    var colResizeBehavior = _self.cfg.behaviors['colResize'];
-                    
-                    colResizeBehavior.call(_self, event, options);
+                if($this.hasBehavior('colResize')) {
+                    $this.cfg.behaviors['colResize'].call($this, event, options);
                 }
-                else {
-                    PrimeFaces.ajax.AjaxRequest(options);
-                }
-                
             },
             containment: this.jq
         });
+    },
+    
+    resize: function(event, ui) {
+        var columnHeader = ui.helper.parent(),
+        nextColumnHeader = columnHeader.next(),
+        change = null, newWidth = null, nextColumnWidth = null;
+        
+        if(this.cfg.liveResize) {
+            var change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
+            newWidth = (columnHeader.width() - change),
+            nextColumnWidth = (nextColumnHeader.width() + change);
+        } 
+        else {
+            change = (ui.position.left - ui.originalPosition.left),
+            newWidth = (columnHeader.width() + change),
+            nextColumnWidth = (nextColumnHeader.width() - change);
+        }
+        
+        if(newWidth > 15 && nextColumnWidth > 15) {
+            columnHeader.width(newWidth);
+            nextColumnHeader.width(nextColumnWidth);
+            var colIndex = columnHeader.index();
+
+            if(this.cfg.scrollable) {
+                var padding = columnHeader.innerWidth() - columnHeader.width();
+                this.colgroup.children().eq(colIndex).width(newWidth + padding + 1);
+                this.colgroup.children().eq(colIndex + 1).width(nextColumnWidth + padding + 1);
+
+                if(this.footerCols.length > 0) {
+                    var footerCol = this.footerCols.eq(colIndex),
+                    nextFooterCol = footerCol.next();
+
+                    footerCol.width(newWidth);
+                    nextFooterCol.width(nextColumnWidth);
+                }
+            }
+        }
     }
 });

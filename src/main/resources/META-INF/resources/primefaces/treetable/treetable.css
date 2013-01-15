@@ -84,14 +84,13 @@
 }
 
 .ui-treetable .ui-column-resizer {
-    position:absolute;
-    right:0;
     width:8px;
     height:20px;
     padding:0px;
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
-    margin: -4px 0px;
+    margin: -4px -10px -4px 0px;
+    float: right;
 }
 
 .ui-treetable .ui-column-resizer-helper {
