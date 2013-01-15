@@ -230,7 +230,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                         this.unselectNode(node);
                     }
                     else {
-                        if(this.isSingleSelection() || (this.isMultipleSelection() && !metaKey)) {
+                        if(this.isSingleSelection()||(this.isMultipleSelection() && !metaKey)) {
                             this.unselectAllNodes();
                         }
 
