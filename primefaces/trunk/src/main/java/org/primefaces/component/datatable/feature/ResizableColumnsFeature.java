@@ -16,23 +16,14 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import java.util.Map;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
 public class ResizableColumnsFeature implements DataTableFeature {
 
     public void decode(FacesContext context, DataTable table) {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = table.getClientId();
-        
-        String columnId = params.get(clientId + "_columnId");
-        String width = params.get(clientId + "_width");
-        Column column = table.findColumn(columnId);
-        
-        column.setWidth(Integer.parseInt(width));
+        throw new RuntimeException("ResizableColumnsFeature should not decode.");
     }
     
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
@@ -40,14 +31,10 @@ public class ResizableColumnsFeature implements DataTableFeature {
     }
     
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return table.isResizableColumns() && isResizeRequest(context, table);
+        return false;
     }
 
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return false;
-    }
-    
-    private boolean isResizeRequest(FacesContext context, DataTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_colResize");
     }
 }
