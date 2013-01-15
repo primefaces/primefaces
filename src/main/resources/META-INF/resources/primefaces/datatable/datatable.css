@@ -47,7 +47,7 @@
 
 .ui-datatable .ui-sortable-column-icon {
     margin: -16px -10px 0px 0px;
-    float: left;
+    float: right;
 }
 
 .ui-datatable .ui-column-filter {
