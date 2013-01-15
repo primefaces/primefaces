@@ -28,7 +28,7 @@ public class RowEditorRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("span", null);
+        writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("class", DataTable.ROW_EDITOR_CLASS, null);
 
@@ -44,6 +44,6 @@ public class RowEditorRenderer extends CoreRenderer {
         writer.writeAttribute("class", "ui-icon ui-icon-close", null);
         writer.endElement("span");
 
-        writer.endElement("span");
+        writer.endElement("div");
     }
 }

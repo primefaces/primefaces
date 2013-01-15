@@ -999,7 +999,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Selects the corresping row of a radio based column selection
      */
     selectRowWithRadio: function(radio) {
-        var row = radio.parents('tr:first'),
+        var row = radio.closest('tr'),
         rowMeta = this.getRowMeta(row);
 
         //clean previous selection
@@ -1055,7 +1055,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Unselects the corresponding row of a checkbox based column selection
      */
     unselectRowWithCheckbox: function(checkbox, silent) {
-        var row = checkbox.parents('tr:first'),
+        var row = checkbox.closest('tr'),
         rowMeta = this.getRowMeta(row);
 
         row.removeClass('ui-state-highlight').attr('aria-selected', false);
@@ -1278,19 +1278,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.cellSeparator = this.cfg.cellSeparator||' ';
         
         if(this.cfg.editMode === 'row') {
-            var rowEditors = $(this.jqId + ' tbody.ui-datatable-data > tr > td span.ui-row-editor');
-
-            rowEditors.find('span.ui-icon-pencil').die().live('click', function() {
-                $this.showEditors(this);
-            });
-
-            rowEditors.find('span.ui-icon-check').die().live('click', function() {
-                $this.saveRowEdit($(this).parent());
-            });
-
-            rowEditors.find('span.ui-icon-close').die().live('click', function() {
-                $this.cancelRowEdit($(this).parent());
-            }); 
+            var rowEditorSelector = this.jqId + ' tbody.ui-datatable-data > tr > td > div.ui-row-editor';
+            
+            $(document).off('click.datatable', rowEditorSelector)
+                        .on('click.datatable', rowEditorSelector, null, function(e) {
+                            var element = $(e.target),
+                            row = element.closest('tr');
+                            
+                            if(element.hasClass('ui-icon-pencil')) {
+                                $this.showEditors(row);
+                                element.hide().siblings().show();
+                            }
+                            else if(element.hasClass('ui-icon-check')) {
+                                $this.saveRowEdit(row);
+                            }
+                            else if(element.hasClass('ui-icon-close')) {
+                                $this.cancelRowEdit(row);
+                            }
+                        });
         }
         else if(this.cfg.editMode === 'cell') {
             var cellSelector = this.jqId + ' tbody.ui-datatable-data tr td.ui-editable-column';
@@ -1317,19 +1322,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    showEditors: function(el) {
-        var element = $(el),
-        row = element.parents('tr:first');
-
+    showEditors: function(row) {
         row.addClass('ui-state-highlight ui-row-editing').children('td.ui-editable-column').each(function() {
             var column = $(this);
 
             column.find('.ui-cell-editor-output').hide();
             column.find('.ui-cell-editor-input').show();
-
-            if(element.hasClass('ui-icon-pencil')) {
-                element.hide().siblings().show();
-            }
         });
         
         if(this.hasBehavior('rowEditInit')) {
@@ -1486,7 +1484,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     doCellEditRequest: function(cell) {
-        var rowMeta = this.getRowMeta(cell.parents('tr.ui-widget-content:first')),
+        var rowMeta = this.getRowMeta(cell.closest('tr')),
         cellEditor = cell.children('.ui-cell-editor'),
         cellEditorId = cellEditor.attr('id'),
         cellIndex = cell.index(),
@@ -1536,7 +1534,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Sends an ajax request to handle row save or cancel
      */
     doRowEditRequest: function(rowEditor, action) {
-        var row = rowEditor.parents('tr:first'),
+        var row = rowEditor.closest('tr'),
         options = {
             source: this.id,
             process: this.id,

@@ -68,29 +68,8 @@
     cursor: pointer;
 }
 
-.ui-datatable .ui-cell-editor-input {
-    display:none;
-}
-
-.ui-datatable .ui-row-editor-column {
-
-}
-
-.ui-datatable .ui-row-editor {
-    
-}
-
-.ui-datatable .ui-row-editor span {
-    cursor:pointer;
-    float:left;
-}
-
 .ui-datatable tr.ui-state-highlight {
     cursor: pointer;
-}
-
-.ui-datatable .ui-selection-column {
-    width: 44px;
 }
 
 .ui-datatable .ui-selection-column .ui-chkbox-all {
@@ -164,6 +143,10 @@
 }
 
 /* InCell Editing */
+.ui-datatable .ui-cell-editor-input {
+    display: none;
+}
+
 .ui-datatable .ui-row-editing .ui-cell-editor .ui-cell-editor-output {
     display:none;
 }
@@ -171,8 +154,13 @@
     display:block;
 }
 
+.ui-datatable .ui-row-editor span {
+    cursor: pointer;
+    display: inline-block;
+}
+
 .ui-datatable .ui-row-editor .ui-icon-pencil {
-    display: inline;
+    display: inline-block;
 }
 .ui-datatable .ui-row-editing .ui-row-editor .ui-icon-pencil {
     display: none;
@@ -185,7 +173,7 @@
 
 .ui-datatable .ui-row-editing .ui-row-editor .ui-icon-check,
 .ui-datatable .ui-row-editing .ui-row-editor .ui-icon-close {
-    display: inline;
+    display: inline-block;
 }
 
 .ui-datatable .ui-datatable-data tr.ui-row-editing td.ui-editable-column,
