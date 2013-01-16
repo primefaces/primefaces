@@ -114,7 +114,9 @@ public class DataTableRenderer extends DataRenderer {
             wb.attr("scrollable", true)
                 .attr("liveScroll", table.isLiveScroll())
                 .attr("scrollStep", table.getScrollRows())
-                .attr("scrollLimit", table.getRowCount());
+                .attr("scrollLimit", table.getRowCount())
+                .attr("scrollWidth", table.getScrollWidth(), null)
+                .attr("scrollHeight", table.getScrollHeight(), null);
         }
 
         //Resizable/Draggable Columns
@@ -131,8 +133,6 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isMultiSort()) {
             wb.attr("multiSort", true);
         }
-        
-        wb.attr("scrollWidth", table.getScrollWidth(), Integer.MIN_VALUE);
 
         //Behaviors
         encodeClientBehaviors(context, table, wb);
@@ -271,11 +271,11 @@ public class DataTableRenderer extends DataRenderer {
        
     protected void encodeScrollBody(FacesContext context, DataTable table, String tableStyle, String tableStyleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        int scrollHeight = table.getScrollHeight();
+        String scrollHeight = table.getScrollHeight();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
-        if(scrollHeight != Integer.MIN_VALUE) {
+        if(scrollHeight != null && scrollHeight.indexOf("%") == -1) {
             writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
         }
         writer.startElement("table", null);

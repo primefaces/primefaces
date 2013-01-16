@@ -470,6 +470,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.footerTable = this.scrollFooter.children('table');
         this.colgroup = this.scrollBody.find('> table > colgroup');
         this.footerCols = this.scrollFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
+        
+        if(this.cfg.scrollHeight) {
+            if(this.cfg.scrollHeight.indexOf('%') != -1) {
+                var height = (this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100)) - (this.scrollHeader.innerHeight() + this.scrollFooter.innerHeight());
+                this.scrollBody.height(height);
+            }
+        }
+        
         var $this = this,
         verticalScroll = this.bodyTable.outerHeight() > this.scrollBody.height();
         
@@ -482,9 +490,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.fixColumnWidths();
         
         if(this.cfg.scrollWidth) {
-            this.scrollHeader.width(this.cfg.scrollWidth);
-            this.scrollBody.width(this.cfg.scrollWidth);
-            this.scrollFooter.width(this.cfg.scrollWidth);
+            var swidth = this.cfg.scrollWidth;
+            if(this.cfg.scrollWidth.indexOf('%') != -1) {
+                swidth = (this.jq.parent().innerWidth() * (parseInt(this.cfg.scrollWidth) / 100));
+            }
+            
+            this.scrollHeader.width(swidth);
+            this.scrollBody.width(swidth);
+            this.scrollFooter.width(swidth);
         }
         
         this.restoreScrollState();
