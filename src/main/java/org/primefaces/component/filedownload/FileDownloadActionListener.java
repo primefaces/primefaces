@@ -74,7 +74,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 			
 			externalContext.setResponseStatus(200);
 			externalContext.responseFlushBuffer();
-            content.getStream().close();
+            inputStream.close();
 			facesContext.responseComplete();
 		}
         catch(IOException e) {
