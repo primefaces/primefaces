@@ -53,7 +53,7 @@ public class TerminalRenderer extends CoreRenderer {
 		String clientId = terminal.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("Terminal", terminal.resolveWidgetVar(), clientId, "terminal", true)
-            .attr("PS1:", terminal.getPrompt())
+            .attr("PS1", terminal.getPrompt())
             .attr("WELCOME_MESSAGE", terminal.getWelcomeMessage(), null)
             .attr("WIDTH", terminal.getWidth())
             .attr("HEIGHT", terminal.getHeight());
