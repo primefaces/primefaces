@@ -101,7 +101,7 @@
 
 .ui-datatable-scrollable-body::-webkit-scrollbar {
     -webkit-appearance: none;
-    width: 16px;
+    width: 15px;
     background-color: transparent;
 }
 

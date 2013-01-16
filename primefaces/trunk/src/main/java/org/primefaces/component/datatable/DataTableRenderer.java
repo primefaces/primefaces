@@ -87,7 +87,7 @@ public class DataTableRenderer extends DataRenderer {
         String selectionMode = table.resolveSelectionMode();
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("DataTable", table.resolveWidgetVar(), clientId, false);
+        wb.widget("DataTable", table.resolveWidgetVar(), clientId, true);
         
         //Pagination
         if(table.isPaginator()) {
