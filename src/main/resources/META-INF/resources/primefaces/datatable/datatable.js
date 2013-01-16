@@ -40,17 +40,41 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.editable) {
             this.bindEditEvents();
         }
+        
+        var $this = this;
+        if(this.jq.is(':visible')) {
+            this.setupDimensionalConfig();
+        } 
+        else {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
 
-        if(this.cfg.scrollable) {
-            this.setupScrolling();
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return $this.setupDimensionalConfig();
+                });
+            }
         }
+    },
+    
+    setupDimensionalConfig: function() {
+        if(this.jq.is(':visible')) {
+            if(this.cfg.scrollable) {
+                this.setupScrolling();
+            }
 
-        if(this.cfg.resizableColumns) {
-            this.setupResizableColumns();
-        }
+            if(this.cfg.resizableColumns) {
+                this.setupResizableColumns();
+            }
 
-        if(this.cfg.draggableColumns) {
-            this.setupDraggableColumns();
+            if(this.cfg.draggableColumns) {
+                this.setupDraggableColumns();
+            }
+            
+            return true;
+        } 
+        else {
+            return false;
         }
     },
     
@@ -450,7 +474,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         verticalScroll = this.bodyTable.outerHeight() > this.scrollBody.height();
         
         if(verticalScroll) {
-            var marginLeft = $.browser.msie ? '17px' : '16px';
+            var marginLeft = $.browser.msie ? '17px' : '15px';
             this.scrollHeaderBox.css('margin-right', marginLeft);
             this.scrollFooterBox.css('margin-right', marginLeft);
         }
@@ -513,7 +537,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     colIndex = headerCol.index();
                     
                     headerCol.width(headerCol.width());
-                    $this.colgroup.children().eq(colIndex).width(headerCol.outerWidth());
+                    $this.colgroup.children().eq(colIndex).width(headerCol.innerWidth() + 1);
                     if($this.footerCols.length > 0) {
                         var footerCol = $this.footerCols.eq(colIndex);
                         footerCol.width(footerCol.width());

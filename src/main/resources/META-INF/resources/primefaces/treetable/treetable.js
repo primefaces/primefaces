@@ -9,15 +9,39 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         this.thead = $(this.jqId + '_head');
         this.tbody = $(this.jqId + '_data');
 
-        if(this.cfg.scrollable) {
-            this.setupScrolling();
+        var $this = this;
+        if(this.jq.is(':visible')) {
+            this.setupDimensionalConfig();
         }
-        
-        if(this.cfg.resizableColumns) {
-            this.setupResizableColumns();
+        else {
+            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+            hiddenParentWidget = hiddenParent.data('widget');
+
+            if(hiddenParentWidget) {
+                hiddenParentWidget.addOnshowHandler(function() {
+                    return $this.setupDimensionalConfig();
+                });
+            }
         }
         
         this.bindEvents();
+    },
+    
+    setupDimensionalConfig: function() {
+        if(this.jq.is(':visible')) {
+            if(this.cfg.scrollable) {
+                this.setupScrolling();
+            }
+        
+            if(this.cfg.resizableColumns) {
+                this.setupResizableColumns();
+            }
+            
+            return true;
+        } 
+        else {
+            return false;
+        }
     },
     
     bindEvents: function() {
@@ -472,7 +496,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         this.footerCols = this.footerTable.find('> tfoot > tr > td');
         var $this = this;
         
-        var marginRight = $.browser.msie ? '17px' : '16px';
+        var marginRight = $.browser.msie ? '17px' : '15px';
         if(this.cfg.scrollHeight) {
             this.scrollHeaderBox.css('margin-right', marginRight);
             this.scrollBody.css('padding-right', marginRight);
@@ -517,7 +541,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
                 });
                 
                 this.headerTable.width(this.headerTable.width());
-                this.bodyTable.width(this.bodyTable.width() - 1);
+                this.bodyTable.width(this.bodyTable.width());
                 this.footerTable.width(this.footerTable.width());
             }
             else {
