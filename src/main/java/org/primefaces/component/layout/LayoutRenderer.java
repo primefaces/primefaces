@@ -89,7 +89,7 @@ public class LayoutRenderer extends CoreRenderer {
                 LayoutUnit unit = (LayoutUnit) child;
                 
                 wb.append(",").append(unit.getPosition()).append(":{")
-                    .append("panelSelector:'").append(ComponentUtils.escapeJQueryId(unit.getClientId(context))).append("'")
+                    .append("paneSelector:'").append(ComponentUtils.escapeJQueryId(unit.getClientId(context))).append("'")
                     .attr("size", unit.getSize())
                     .attr("resizable", unit.isResizable())
                     .attr("closable", unit.isCollapsible())
