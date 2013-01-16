@@ -106,8 +106,8 @@ public class TreeTableRenderer extends CoreRenderer {
             .attr("resizableColumns", tt.isResizableColumns(), false)
             .attr("liveResize", tt.isLiveResize(), false)
             .attr("scrollable", tt.isScrollable(), false)
-            .attr("scrollHeight", tt.getScrollHeight(), Integer.MIN_VALUE)
-            .attr("scrollWidth", tt.getScrollWidth(), Integer.MIN_VALUE);
+            .attr("scrollHeight", tt.getScrollHeight(), null)
+            .attr("scrollWidth", tt.getScrollWidth(), null);
         
         encodeClientBehaviors(context, tt, wb);
 		
@@ -162,11 +162,11 @@ public class TreeTableRenderer extends CoreRenderer {
     
     protected void encodeScrollBody(FacesContext context, TreeTable tt, String tableStyle, String tableStyleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        int scrollHeight = tt.getScrollHeight();
+        String scrollHeight = tt.getScrollHeight();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", TreeTable.SCROLLABLE_BODY_CLASS, null);
-        if(scrollHeight != Integer.MIN_VALUE) {
+        if(scrollHeight != null && scrollHeight.indexOf("%") == -1) {
             writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
         }
         writer.startElement("table", null);

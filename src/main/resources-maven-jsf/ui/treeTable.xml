@@ -71,16 +71,14 @@
         <attribute>
 			<name>scrollHeight</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-            <description>Height in pixels for scrollable data.</description>
+			<type>java.lang.String</type>
+            <description>Height for scrollable data.</description>
 		</attribute>
         <attribute>
 			<name>scrollWidth</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-            <description>Width in pixels for scrollable data.</description>
+			<type>java.lang.String</type>
+            <description>Width for scrollable data.</description>
 		</attribute>
         <attribute>
 			<name>tableStyle</name>

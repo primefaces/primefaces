@@ -494,9 +494,16 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         this.colgroup = this.bodyTable.children('colgroup');
         this.headerCols = this.headerTable.find('> thead > tr > th');
         this.footerCols = this.footerTable.find('> tfoot > tr > td');
-        var $this = this;
         
-        var marginRight = $.browser.msie ? '17px' : '15px';
+        if(this.cfg.scrollHeight) {
+            if(this.cfg.scrollHeight.indexOf('%') != -1) {
+                var height = (this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100)) - (this.scrollHeader.innerHeight() + this.scrollFooter.innerHeight());
+                this.scrollBody.height(parseInt(height));
+            }
+        }
+        
+        var $this = this,
+        marginRight = $.browser.msie ? '17px' : '15px';
         if(this.cfg.scrollHeight) {
             this.scrollHeaderBox.css('margin-right', marginRight);
             this.scrollBody.css('padding-right', marginRight);
@@ -506,10 +513,15 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         this.fixColumnWidths();
         
         if(this.cfg.scrollWidth) {
+            var swidth = this.cfg.scrollWidth;
+            if(this.cfg.scrollWidth.indexOf('%') != -1) {
+                swidth = parseInt((this.jq.parent().innerWidth() * (parseInt(this.cfg.scrollWidth) / 100)));
+            }
+            
             this.scrollBody.css('padding-right', 0);
-            this.scrollHeader.width(this.cfg.scrollWidth);
-            this.scrollBody.width(this.cfg.scrollWidth);
-            this.scrollFooter.width(this.cfg.scrollWidth);
+            this.scrollHeader.width(swidth);
+            this.scrollBody.width(swidth);
+            this.scrollFooter.width(swidth);
         }
         
         this.restoreScrollState();
