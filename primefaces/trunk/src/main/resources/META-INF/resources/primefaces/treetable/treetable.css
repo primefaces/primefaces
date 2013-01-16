@@ -63,11 +63,6 @@
     position: relative;
 } 
             
-.ui-treetable-scrollable .ui-treetable-scrollable-header-box,
-.ui-treetable-scrollable .ui-treetable-scrollable-footer-box {
-    float:left;
-}
-
 .ui-treetable .ui-treetable-data tr.ui-state-hover {
     border-color: inherit;
     font-weight: inherit;
