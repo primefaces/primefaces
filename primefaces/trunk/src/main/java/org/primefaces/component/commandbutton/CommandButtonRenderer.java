@@ -55,7 +55,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
 		String type = button.getType();
-        String value = (String) button.getValue();
+        Object value = (String) button.getValue();
         String icon = button.resolveIcon();
         
         StringBuilder onclick = new StringBuilder();
@@ -121,7 +121,7 @@ public class CommandButtonRenderer extends CoreRenderer {
             if(button.isEscape())
                 writer.writeText(value, "value");
             else
-                writer.write(value);
+                writer.write(value.toString());
         }
         
         writer.endElement("span");
