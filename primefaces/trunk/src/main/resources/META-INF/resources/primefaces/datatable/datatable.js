@@ -474,7 +474,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.scrollHeight) {
             if(this.cfg.scrollHeight.indexOf('%') != -1) {
                 var height = (this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100)) - (this.scrollHeader.innerHeight() + this.scrollFooter.innerHeight());
-                this.scrollBody.height(height);
+                this.scrollBody.height(parseInt(height));
             }
         }
         
@@ -492,7 +492,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.scrollWidth) {
             var swidth = this.cfg.scrollWidth;
             if(this.cfg.scrollWidth.indexOf('%') != -1) {
-                swidth = (this.jq.parent().innerWidth() * (parseInt(this.cfg.scrollWidth) / 100));
+                swidth = parseInt((this.jq.parent().innerWidth() * (parseInt(this.cfg.scrollWidth) / 100)));
             }
             
             this.scrollHeader.width(swidth);
