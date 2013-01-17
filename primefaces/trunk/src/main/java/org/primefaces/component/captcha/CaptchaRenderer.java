@@ -69,7 +69,6 @@ public class CaptchaRenderer extends CoreRenderer {
         
 		writer.write("var RecaptchaOptions = {");
 		writer.write("theme:\"" + captcha.getTheme() + "\"");
-		writer.write(",lang:\"" + captcha.getLanguage() + "\"");
 		if(captcha.getTabindex() != 0) {
 			writer.write(",tabIndex:" + captcha.getTabindex());
 		}
@@ -78,12 +77,12 @@ public class CaptchaRenderer extends CoreRenderer {
 		
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		writer.writeAttribute("src", protocol + "://www.google.com/recaptcha/api/challenge?k=" + publicKey, null);
+		writer.writeAttribute("src", protocol + "://www.google.com/recaptcha/api/challenge?k=" + publicKey + "&hl=" + captcha.getLanguage(), null);
 		writer.endElement("script");
 		
 		writer.startElement("noscript", null);
 		writer.startElement("iframe", null);
-		writer.writeAttribute("src", protocol + "://www.google.com/recaptcha/api/noscript?k=" + publicKey, null);
+		writer.writeAttribute("src", protocol + "://www.google.com/recaptcha/api/noscript?k=" + publicKey + "&hl=" + captcha.getLanguage(), null);
 		writer.endElement("iframe");
 		
 		writer.startElement("textarea", null);
