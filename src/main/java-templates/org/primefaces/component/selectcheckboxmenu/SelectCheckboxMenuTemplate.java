@@ -34,7 +34,7 @@ import org.primefaces.util.Constants;
         FacesContext context = getFacesContext();
         String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
         
-        if(eventName.equals("toggleSelect") && event instanceof AjaxBehaviorEvent) {
+        if(event instanceof AjaxBehaviorEvent && eventName.equals("toggleSelect")) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = this.getClientId(context);
             boolean checked = Boolean.valueOf(params.get(clientId + "_checked"));
