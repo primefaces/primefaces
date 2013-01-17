@@ -19,13 +19,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorListener;
 import javax.faces.event.FacesListener;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 
 public class ColumnResizeEvent extends ResizeEvent {
 
-	private Column column;
+	private UIColumn column;
 	
-	public ColumnResizeEvent(UIComponent component, Behavior behavior, int width, int height, Column column) {
+	public ColumnResizeEvent(UIComponent component, Behavior behavior, int width, int height, UIColumn column) {
 		super(component, behavior, width, height);
 		this.column = column;
 	}
@@ -40,7 +41,7 @@ public class ColumnResizeEvent extends ResizeEvent {
 		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
-    public Column getColumn() {
+    public UIColumn getColumn() {
         return column;
     }
 }

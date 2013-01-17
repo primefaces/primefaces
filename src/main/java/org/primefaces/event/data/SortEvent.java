@@ -20,16 +20,16 @@ import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.AjaxBehaviorListener;
 import javax.faces.event.FacesListener;
-import org.primefaces.component.column.Column;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.model.SortOrder;
 
 public class SortEvent extends AjaxBehaviorEvent {
 
-	private Column sortColumn;
+	private UIColumn sortColumn;
     
     private boolean ascending;
 	
-	public SortEvent(UIComponent component, Behavior behavior, Column sortColumn, SortOrder order) {
+	public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order) {
 		super(component, behavior);
 		this.sortColumn = sortColumn;
         this.ascending = order.equals(SortOrder.ASCENDING);
@@ -49,7 +49,7 @@ public class SortEvent extends AjaxBehaviorEvent {
         return ascending;
     }
 
-    public Column getSortColumn() {
+    public UIColumn getSortColumn() {
         return sortColumn;
     }
 }

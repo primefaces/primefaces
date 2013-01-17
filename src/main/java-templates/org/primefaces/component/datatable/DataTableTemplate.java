@@ -219,7 +219,7 @@ import org.primefaces.component.datatable.feature.*;
             }
             else if(eventName.equals("sort")) {
                 SortOrder order;
-                Column sortColumn;
+                UIColumn sortColumn;
                 
                 if(isMultiSort()) {
                     String[] sortDirs = params.get(clientId + "_sortDir").split(",");
@@ -296,10 +296,10 @@ import org.primefaces.component.datatable.feature.*;
         }
     }
 
-    public Column findColumn(String clientId) {
-        for(UIComponent column : getChildren()) {
-            if(column.getClientId().equals(clientId)) {
-                return (Column) column;
+    public UIColumn findColumn(String clientId) {
+        for(UIColumn column : this.getColumns()) {
+            if(column.getColumnKey().equals(clientId)) {
+                return column;
             }
         }
         
