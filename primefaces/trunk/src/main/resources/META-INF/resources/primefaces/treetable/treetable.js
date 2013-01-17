@@ -503,7 +503,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         }
         
         var $this = this,
-        marginRight = $.browser.msie ? '17px' : '15px';
+        marginRight = $.browser.webkit ? '15px' : PrimeFaces.calculateScrollbarWidth();
         if(this.cfg.scrollHeight) {
             this.scrollHeaderBox.css('margin-right', marginRight);
             this.scrollBody.css('padding-right', marginRight);

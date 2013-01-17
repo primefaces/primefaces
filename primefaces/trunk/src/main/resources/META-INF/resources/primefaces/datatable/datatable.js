@@ -482,9 +482,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         verticalScroll = this.bodyTable.outerHeight() > this.scrollBody.height();
         
         if(verticalScroll) {
-            var marginLeft = $.browser.msie ? '17px' : '15px';
-            this.scrollHeaderBox.css('margin-right', marginLeft);
-            this.scrollFooterBox.css('margin-right', marginLeft);
+            var marginRight = $.browser.webkit ? '15px' : PrimeFaces.calculateScrollbarWidth();
+            this.scrollHeaderBox.css('margin-right', marginRight);
+            this.scrollFooterBox.css('margin-right', marginRight);
         }
         
         this.fixColumnWidths();
