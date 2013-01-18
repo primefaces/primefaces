@@ -52,6 +52,7 @@ import javax.faces.component.UINamingContainer;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.DynamicColumn;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortMeta;
 import org.primefaces.component.datatable.feature.*;
 
@@ -295,7 +296,7 @@ import org.primefaces.component.datatable.feature.*;
             super.queueEvent(event);
         }
     }
-
+    
     public UIColumn findColumn(String clientId) {
         for(UIColumn column : this.getColumns()) {
             if(column.getColumnKey().equals(clientId)) {
@@ -303,7 +304,17 @@ import org.primefaces.component.datatable.feature.*;
             }
         }
         
-        return null;
+        FacesContext context = this.getFacesContext();
+        ColumnGroup headerGroup = this.getColumnGroup("header");
+        for(UIComponent row : headerGroup.getChildren()) {
+            for(UIComponent col : row.getChildren()) {
+                if(col.getClientId(context).equals(clientId)) {
+                    return (UIColumn) col;
+                }
+            }
+        }
+       
+        throw new FacesException("Cannot find column with key: " + clientId);
     }
 
     public ColumnGroup getColumnGroup(String target) {
