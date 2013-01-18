@@ -24,10 +24,13 @@ import java.util.Map;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.model.BeanPropertyComparator;
@@ -55,7 +58,7 @@ public class SortFeature implements DataTableFeature {
             String[] sortOrders = sortDir.split(",");
             
             for(int i = 0; i < sortKeys.length; i++) {
-                UIColumn sortColumn = findSortColumn(table, sortKeys[i]);
+                UIColumn sortColumn = table.findColumn(sortKeys[i]);
                 ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
                 String sortField = null;
                 
@@ -73,7 +76,7 @@ public class SortFeature implements DataTableFeature {
             table.setMultiSortMeta(multiSortMeta);
         }
         else {
-            UIColumn sortColumn = findSortColumn(table, sortKey);
+            UIColumn sortColumn = table.findColumn(sortKey);
             ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
             table.setValueExpression("sortBy", sortByVE);
             table.setSortColumn(sortColumn);
@@ -171,16 +174,5 @@ public class SortFeature implements DataTableFeature {
 
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return isSortRequest(context, table);
-    }
-
-    private UIColumn findSortColumn(DataTable table, String sortKey) {
-        for(UIColumn column : table.getColumns()) {
-            if(column.getColumnKey().equals(sortKey)) {
-                return column;
-            }
-        }
-        
-        throw new FacesException("Cannot find column with key " + sortKey);
-    }
-    
+    }    
 }
