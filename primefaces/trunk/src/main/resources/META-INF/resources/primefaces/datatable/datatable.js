@@ -480,9 +480,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         
-        var $this = this;
+        var $this = this,
+        marginRight = $.browser.webkit ? '15px' : PrimeFaces.calculateScrollbarWidth();
         
-        this.updateScrollMargins();
+        this.scrollHeaderBox.css('margin-right', marginRight);
+        this.scrollBody.css('padding-right', marginRight);
+        this.scrollFooterBox.css('margin-right', marginRight);
+        
         this.fixColumnWidths();
         
         if(this.cfg.scrollWidth) {
@@ -492,7 +496,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }
             
             this.scrollHeader.width(swidth);
-            this.scrollBody.width(swidth);
+            this.scrollBody.css('padding-right', 0).width(swidth);
             this.scrollFooter.width(swidth);
         }
         
@@ -522,20 +526,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         });
     },
     
-    updateScrollMargins: function() {
-        var marginRight = $.browser.webkit ? '15px' : PrimeFaces.calculateScrollbarWidth(),
-        verticalScroll = this.bodyTable.outerHeight() > this.scrollBody.height();
-        
-        if(verticalScroll) {
-            this.scrollHeaderBox.css('margin-right', marginRight);
-            this.scrollFooterBox.css('margin-right', marginRight);
-        }
-        else {
-            this.scrollHeaderBox.css('margin-right', '0px');
-            this.scrollFooterBox.css('margin-right', '0px');
-        }
-    },
-
     restoreScrollState: function() {
         var scrollState = this.scrollStateHolder.val(),
         scrollValues = scrollState.split(',');
@@ -854,10 +844,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 paginator.setTotalRecords(this.args.totalRecords);
             }
             
-            if($this.cfg.scrollable) {
-                $this.updateScrollMargins();
-            }
-                        
             return true;
         };
 
