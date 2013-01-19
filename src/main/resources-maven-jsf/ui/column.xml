@@ -148,5 +148,12 @@
 			<type>java.lang.Object</type>
             <description>Value of the filter field.</description>
 		</attribute>
+        <attribute>
+            <name>width</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>-1</defaultValue>
+            <description>Width of the column in pixels.</description>
+        </attribute>
 	</attributes>
 </component>
