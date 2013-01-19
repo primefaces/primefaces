@@ -39,13 +39,17 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 		String clientId = checkbox.getClientId(context);
 		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
-        if(submittedValue != null && submittedValue.equalsIgnoreCase("on")) {
-            checkbox.setSubmittedValue("true");
+        if(submittedValue != null && isChecked(submittedValue)) {
+            checkbox.setSubmittedValue(true);
         }
         else {
-            checkbox.setSubmittedValue("false");
+            checkbox.setSubmittedValue(false);
         }
 	}
+    
+    protected boolean isChecked(String value) {
+        return value.equalsIgnoreCase("on")||value.equalsIgnoreCase("yes")||value.equalsIgnoreCase("true");
+    }
     
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
