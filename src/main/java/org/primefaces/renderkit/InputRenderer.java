@@ -196,8 +196,9 @@ public abstract class InputRenderer extends CoreRenderer {
 		Converter converter = findConverter(context, component);
 
 		if(converter != null) {
-            return converter.getAsObject(context, component, (String) submittedValue);
-        } 
+            String convertableValue = submittedValue == null ? null : submittedValue.toString();
+            return converter.getAsObject(context, component, convertableValue);
+        }
         else {
             return submittedValue;
         }
