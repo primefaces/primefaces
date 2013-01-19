@@ -27,6 +27,11 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
     },
     
+    refresh: function(cfg) {
+        this.columnWidthsFixed = false;
+        this.init(cfg);
+    },
+    
     setupDimensionalConfig: function() {
         if(this.jq.is(':visible')) {
             if(this.cfg.scrollable) {
@@ -140,8 +145,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
                 }
-                
-                
             }
 
             PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
@@ -502,13 +505,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         
-        var $this = this,
-        marginRight = $.browser.webkit ? '15px' : PrimeFaces.calculateScrollbarWidth();
-        if(this.cfg.scrollHeight) {
-            this.scrollHeaderBox.css('margin-right', marginRight);
-            this.scrollBody.css('padding-right', marginRight);
-            this.scrollFooterBox.css('margin-right', marginRight);
-        }
+        var $this = this;
+        
+        var marginRight = $.browser.webkit ? '15px' : PrimeFaces.calculateScrollbarWidth();
+        this.scrollHeaderBox.css('margin-right', marginRight);
+        this.scrollBody.css('padding-right', marginRight);
+        this.scrollFooterBox.css('margin-right', marginRight);
         
         this.fixColumnWidths();
         
@@ -542,19 +544,17 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.scrollable) {
                 this.headerCols.each(function() {
                     var headerCol = $(this),
-                    colIndex = headerCol.index();
+                    colIndex = headerCol.index(),
+                    width = headerCol.width(),
+                    innerWidth = headerCol.innerWidth();
                     
-                    headerCol.width(headerCol.width());                    
-                    $this.colgroup.children().eq(colIndex).width(headerCol.outerWidth());
+                    headerCol.width(width);                    
+                    $this.colgroup.children().eq(colIndex).width(innerWidth + 1);
                     if($this.footerCols.length > 0) {
                         var footerCol = $this.footerCols.eq(colIndex);
-                        footerCol.width(footerCol.width());
+                        footerCol.width(width);
                     }
                 });
-                
-                this.headerTable.width(this.headerTable.width());
-                this.bodyTable.width(this.bodyTable.width());
-                this.footerTable.width(this.footerTable.width());
             }
             else {
                 this.jq.find('> table > thead > tr > th').each(function() {
@@ -651,7 +651,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         change = null, newWidth = null, nextColumnWidth = null;
         
         if(this.cfg.liveResize) {
-            var change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
+            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
             newWidth = (columnHeader.width() - change),
             nextColumnWidth = (nextColumnHeader.width() + change);
         } 

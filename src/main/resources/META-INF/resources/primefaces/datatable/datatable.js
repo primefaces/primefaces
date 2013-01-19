@@ -1763,7 +1763,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         change = null, newWidth = null, nextColumnWidth = null;
         
         if(this.cfg.liveResize) {
-            var change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
+            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
             newWidth = (columnHeader.width() - change),
             nextColumnWidth = (nextColumnHeader.width() + change);
         } 
