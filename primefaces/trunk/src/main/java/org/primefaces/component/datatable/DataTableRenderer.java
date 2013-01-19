@@ -586,7 +586,13 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("colgroup", null);
         for(UIColumn column : table.getColumns()) {
             if(column.isRendered()) {
+                String style = column.getStyle();
+                String styleClass = column.getStyleClass();
+                
                 writer.startElement("col", null);
+                if(style != null) writer.writeAttribute("style", style, null);
+                if(styleClass != null) writer.writeAttribute("class", styleClass, null);
+                
                 writer.endElement("col");
             }
         }
@@ -774,8 +780,7 @@ public class DataTableRenderer extends DataRenderer {
         
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = column.getSelectionMode() != null;
-        String style = column.getStyle();
-        String styleClass = "";
+        String styleClass = null;
         
         if(selectionEnabled)
             styleClass = DataTable.SELECTION_COLUMN_CLASS;
@@ -787,16 +792,13 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("td", null);
         writer.writeAttribute("role", "gridcell", null);
         
-        if(style != null) writer.writeAttribute("style", style, null);
-        if(!isValueBlank(styleClass)) writer.writeAttribute("class", styleClass.trim(), null);
+        if(styleClass != null) 
+            writer.writeAttribute("class", styleClass, null);
 
-        
-        if(selectionEnabled) {
+        if(selectionEnabled)
             encodeColumnSelection(context, table, clientId, column, selected);
-        }
-        else {
+        else
             column.encodeAll(context);            
-        }
 
         writer.endElement("td");
     }
