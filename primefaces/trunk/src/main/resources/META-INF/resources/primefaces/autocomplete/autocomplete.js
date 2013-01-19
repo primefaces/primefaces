@@ -69,7 +69,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * Binds events for multiple selection mode
      */
     setupMultipleMode: function() {
-        var _self = this;
+        var $this = this;
         this.multiItemContainer = this.jq.children('ul');
         this.inputContainer = this.multiItemContainer.children('.ui-autocomplete-input-token');
 
@@ -80,19 +80,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $(this).removeClass('ui-state-hover');
             }
         ).click(function() {
-            _self.input.focus();
+            $this.input.focus();
         });
 
         //delegate events to container
         this.input.focus(function() {
-            _self.multiItemContainer.addClass('ui-state-focus');
+            $this.multiItemContainer.addClass('ui-state-focus');
         }).blur(function(e) {
-            _self.multiItemContainer.removeClass('ui-state-focus');
+            $this.multiItemContainer.removeClass('ui-state-focus');
         });
 
-        //remove token
-        $(this.jqId + ' li.ui-autocomplete-token .ui-autocomplete-token-icon').die().live('click', function(e) {
-            _self.removeItem(e, $(this).parent());
+        var closeSelector = this.jqId + ' li.ui-autocomplete-token .ui-autocomplete-token-icon';
+        $(document).off('click', closeSelector).on('click', closeSelector, null, function(event) {
+            $this.removeItem(event, $(this).parent());
         });
     },
     
