@@ -480,15 +480,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         
-        var $this = this,
-        verticalScroll = this.bodyTable.outerHeight() > this.scrollBody.height();
+        var $this = this;
         
-        if(verticalScroll) {
-            var marginRight = $.browser.webkit ? '15px' : PrimeFaces.calculateScrollbarWidth();
-            this.scrollHeaderBox.css('margin-right', marginRight);
-            this.scrollFooterBox.css('margin-right', marginRight);
-        }
-        
+        this.updateScrollMargins();
         this.fixColumnWidths();
         
         if(this.cfg.scrollWidth) {
@@ -526,6 +520,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             
             $this.saveScrollState();
         });
+    },
+    
+    updateScrollMargins: function() {
+        var marginRight = $.browser.webkit ? '15px' : PrimeFaces.calculateScrollbarWidth(),
+        verticalScroll = this.bodyTable.outerHeight() > this.scrollBody.height();
+        
+        if(verticalScroll) {
+            this.scrollHeaderBox.css('margin-right', marginRight);
+            this.scrollFooterBox.css('margin-right', marginRight);
+        }
+        else {
+            this.scrollHeaderBox.css('margin-right', '0px');
+            this.scrollFooterBox.css('margin-right', '0px');
+        }
     },
 
     restoreScrollState: function() {
@@ -820,7 +828,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             formId: this.cfg.formId
         };
 
-        var _self = this;
+        var $this = this;
         options.onsuccess = function(responseXML) {
             var xmlDoc = $(responseXML.documentElement),
             updates = xmlDoc.find("update");
@@ -830,9 +838,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 id = update.attr('id'),
                 content = update.text();
 
-                if(id == _self.id){
-                    //update body
-                    _self.tbody.html(content);
+                if(id == $this.id){
+                    $this.tbody.html(content);
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -842,9 +849,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
             //update paginator
-            var paginator = _self.getPaginator();
+            var paginator = $this.getPaginator();
             if(paginator) {
                 paginator.setTotalRecords(this.args.totalRecords);
+            }
+            
+            if($this.cfg.scrollable) {
+                $this.updateScrollMargins();
             }
                         
             return true;
