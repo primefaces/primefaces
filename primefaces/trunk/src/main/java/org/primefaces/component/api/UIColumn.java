@@ -80,4 +80,6 @@ public interface UIColumn {
     public boolean isRendered();
     
     public void encodeAll(FacesContext context) throws IOException;
+    
+    public int getWidth();
 }

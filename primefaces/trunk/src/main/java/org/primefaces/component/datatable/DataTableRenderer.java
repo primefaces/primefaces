@@ -17,6 +17,8 @@ package org.primefaces.component.datatable;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -42,6 +44,8 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataTableRenderer extends DataRenderer {
+    
+    private final static Logger logger = Logger.getLogger(DataTableRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -344,7 +348,19 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
         
-        if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
+        //backward compatibility until 3.6
+        String style = column.getStyle();
+        int width = column.getWidth();
+        if(width != -1) {
+            if(style != null)
+                style = style + ";width:" + width + "px";
+            else
+                style = "width:" + width + "px";
+            
+            logger.log(Level.WARNING, "width attribute is deprecated and will be removed in 3.6, use style attribute to defined widths instead.");
+        }
+        
+        if(style != null) writer.writeAttribute("style", style, null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
         
