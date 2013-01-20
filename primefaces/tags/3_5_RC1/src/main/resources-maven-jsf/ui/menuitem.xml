@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY command_component_attributes			SYSTEM "../entities/command_component_attributes.xml">
+]>
+<component>
+	<tag>menuitem</tag>
+	<tagClass>org.primefaces.component.menuitem.MenuItemTag</tagClass>
+	<componentClass>org.primefaces.component.menuitem.MenuItem</componentClass>
+	<componentType>org.primefaces.component.MenuItem</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<parent>javax.faces.component.UICommand</parent>
+    <description>MenuItem is used by various menu components of PrimeFaces.</description>
+	<interfaces>
+		<interface>
+			<name>org.primefaces.component.api.AjaxSource</name>
+		</interface>
+		<interface>
+			<name>java.io.Serializable</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.UIOutcomeTarget</name>
+		</interface>        
+	</interfaces>
+	<attributes>
+		&command_component_attributes;
+		<attribute>
+			<name>url</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Url to be navigated when menuitem is clicked.</description>
+		</attribute>
+		<attribute>
+			<name>target</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Target type of url navigation.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the menuitem label.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>StyleClass of the menuitem label.</description>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript event handler for click event.</description>
+		</attribute>
+		<attribute>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side id of the component(s) to be updated after async partial submit request.</description>
+		</attribute>
+		<attribute>
+			<name>process</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Component id(s) to process partially instead of whole view.</description>
+		</attribute>
+		<attribute>
+			<name>onstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript handler to execute before ajax request is begins.</description>
+		</attribute>
+        <attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Disables or enables the menu item.</description>
+		</attribute>
+		<attribute>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request is completed.</description>
+		</attribute>
+		<attribute>
+			<name>onerror</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request fails.</description>
+		</attribute>
+		<attribute>
+			<name>onsuccess</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript handler to execute when ajax request succeeds.</description>
+		</attribute>
+		<attribute>
+			<name>global</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.</description>
+		</attribute>
+		<attribute>
+			<name>async</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When set to true, ajax requests are not queued.</description>
+		</attribute>
+		<attribute>
+			<name>ajax</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Specifies submit mode.</description>
+		</attribute>
+		<attribute>
+			<name>icon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Path of the menuitem image.</description>
+		</attribute>
+        <attribute>
+			<name>partialSubmit</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>When enabled, only values related to partially processed components would be serialized for ajax 
+            instead of whole form.</description>
+		</attribute>
+        <attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Title text of the menuitem.</description>
+		</attribute>
+        <attribute>
+			<name>outcome</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Used to resolve a navigation case.</description>
+		</attribute>
+        <attribute>
+			<name>includeViewParams</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Whether to include page parameters in target URI. Default is false.</description>
+		</attribute>
+        <attribute>
+            <name>fragment</name>
+            <required>false</required>
+			<type>java.lang.String</type>
+            <description>Identifier of the target page which should be scrolled to.</description>
+		</attribute>
+	</attributes>
+</component>

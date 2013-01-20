@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>media</tag>
+	<tagClass>org.primefaces.component.media.MediaTag</tagClass>
+	<componentClass>org.primefaces.component.media.Media</componentClass>
+	<componentType>org.primefaces.component.Media</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.MediaRenderer</rendererType>
+	<rendererClass>org.primefaces.component.media.MediaRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Media component is used for embedding multimedia content such as videos and music to JSF views. Media renders object or embed html tags depending on the user client.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>value</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Media source to play.</description>
+		</attribute>
+		<attribute>
+			<name>player</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Type of the player, possible values are "quicktime","windows","flash","real" and "pdf".</description>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Width of the player.</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Height of the player.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the player.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the player.</description>
+		</attribute>
+	</attributes>
+</component>

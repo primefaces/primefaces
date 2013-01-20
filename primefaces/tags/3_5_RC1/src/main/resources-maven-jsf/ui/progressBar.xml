@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>progressBar</tag>
+    <tagClass>org.primefaces.component.progressbar.ProgressBarTag</tagClass>
+    <componentClass>org.primefaces.component.progressbar.ProgressBar</componentClass>
+    <componentType>org.primefaces.component.ProgressBar</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.ProgressBarRenderer</rendererType>
+    <rendererClass>org.primefaces.component.progressbar.ProgressBarRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description>ProgressBar is a process status indicator that can either work purely on client side or interact with server side using ajax.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <defaultValue>0</defaultValue>
+            <type>java.lang.Integer</type>
+            <description>Value of the progress bar. Default is 0.</description>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <defaultValue>false</defaultValue>
+            <type>java.lang.Boolean</type>
+            <description>Disables or enables the progressbar.</description>
+        </attribute>
+        <attribute>
+            <name>ajax</name>
+            <required>false</required>
+            <defaultValue>false</defaultValue>
+            <type>java.lang.Boolean</type>
+            <description>Specifies the mode of progressBar, in ajax mode progress value is retrieved from a backing bean. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>interval</name>
+            <required>false</required>
+            <defaultValue>3000</defaultValue>
+            <type>java.lang.Integer</type>
+            <description>Interval in seconds to do periodic requests in ajax mode. Default is 300.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the main container element.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the main container element.</description>
+        </attribute>
+        <attribute>
+            <name>labelTemplate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Template of the progress value e.g. "{value}%"</description>
+        </attribute>
+        <attribute>
+            <name>displayOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Enables static value display mode.</description>
+        </attribute>
+    </attributes>
+	<resources>
+		<resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

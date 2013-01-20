@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY data_component_attributes				SYSTEM "../entities/data_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>dataGrid</tag>
+    <tagClass>org.primefaces.component.datagrid.DataGridTag</tagClass>
+    <componentClass>org.primefaces.component.datagrid.DataGrid</componentClass>
+    <componentType>org.primefaces.component.DataGrid</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.DataGridRenderer</rendererType>
+    <rendererClass>org.primefaces.component.datagrid.DataGridRenderer</rendererClass>
+    <parent>org.primefaces.component.api.UIData</parent>
+    <description>DataGrid displays a collection of data in grid layout. Ajax Pagination is a built-in feature and paginator UI is fully customizable via various options like paginatorTemplate, rowPerPageOptions, pageLinks and more.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &data_component_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>columns</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>3</defaultValue>
+            <description>Number of columns of grid. Default is 3.</description>
+        </attribute>
+        <attribute>
+            <name>paginator</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Enables pagination.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>paginatorTemplate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Template of the paginator.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>rowsPerPageTemplate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Template of the rowsPerPage dropdown.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>currentPageReportTemplate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Template of the currentPageReport UI.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>pageLinks</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>10</defaultValue>
+            <description>Maximum number of page links to display. Default is 10.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>paginatorPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>both</defaultValue>
+            <description>Position of the paginator. Default is both.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>paginatorAlwaysVisible</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if paginator should be hidden if total data count is less than number of rows per page. Default is true.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+        </attribute>
+        <attribute>
+            <name>rowIndexVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Name of iterator to refer each row index.</description>
+        </attribute>
+        <attribute>
+			<name>emptyMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>No records found.</defaultValue>
+            <description>Text to display when there is no data to display. Default is "No records found."</description>
+		</attribute>
+        <attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <description>Defines if lazy loading is enabled for the data component.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+    </attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>growl</tag>
+	<tagClass>org.primefaces.component.growl.GrowlTag</tagClass>
+	<componentClass>org.primefaces.component.growl.Growl</componentClass>
+	<componentType>org.primefaces.component.Growl</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.GrowlRenderer</rendererType>
+	<rendererClass>org.primefaces.component.growl.GrowlRenderer</rendererClass>
+	<parent>javax.faces.component.UIMessages</parent>
+    <description>Growl is based on the Mac's growl notification widget and used to display FacesMessages similar to h:messages.</description>
+    <interfaces>
+        <interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.AutoUpdatable</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.UINotification</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+        &widget_var_attribute;
+		<attribute>
+			<name>sticky</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Specifies if the message should stay instead of hidden automatically. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>showSummary</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Specifies if the summary of message should be displayed. Default is true.</description>
+		</attribute>
+		<attribute>
+			<name>showDetail</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Specifies if the detail of message should be displayed. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>globalOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>When true, only facesmessages without client-ids are displayed. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>life</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>6000</defaultValue>
+            <description>Duration in milliseconds to display non-sticky messages. Default is 800.</description>
+		</attribute>
+        <attribute>
+			<name>autoUpdate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, growl is updated for each ajax request implicitly.</description>
+		</attribute>
+        <attribute>
+			<name>redisplay</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Defines if already rendered messages should be displayed. Default is true.</description>
+		</attribute>
+        <attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Identifier of the component whose messages to display only, takes precendence when used with globalOnly.</description>
+		</attribute>
+        <attribute>
+			<name>escape</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether html would be escaped or not, defaults to true.</description>
+		</attribute>
+        <attribute>
+			<name>severity</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Comma seperated list of severities to display only.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

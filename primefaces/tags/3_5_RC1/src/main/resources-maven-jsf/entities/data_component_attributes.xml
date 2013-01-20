@@ -1,0 +1,31 @@
+&standard_uicomponent_attributes;
+<attribute>
+	<name>value</name>
+	<required>false</required>
+	<type>java.lang.Object</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Datasource of the component.</description>
+</attribute>
+<attribute>
+	<name>var</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<literal>true</literal>
+    <description>Name of the iterator variable used to refer each data.</description>
+</attribute>
+<attribute>
+	<name>rows</name>
+	<type>java.lang.Integer</type>
+	<defaultValue>0</defaultValue>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Number of rows to display per page. Default value is 0 meaning to display all data available.</description>
+</attribute>
+<attribute>
+	<name>first</name>
+	<required>false</required>
+	<type>java.lang.Integer</type>
+	<defaultValue>0</defaultValue>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Index of the first data to display.</description>
+</attribute>
