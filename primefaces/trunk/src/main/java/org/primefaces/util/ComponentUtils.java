@@ -53,7 +53,7 @@ public class ComponentUtils {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
                 
-                if(ComponentUtils.considerEmptyStringAsNull(context) && submittedValue == null && context.isValidationFailed()) {
+                if(ComponentUtils.considerEmptyStringAsNull(context) && submittedValue == null && context.isValidationFailed() && !input.isValid()) {
                     return null;
                 }
                 else if(submittedValue != null) {
