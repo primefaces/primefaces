@@ -91,7 +91,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         });
 
         var closeSelector = this.jqId + ' li.ui-autocomplete-token .ui-autocomplete-token-icon';
-        $(document).off('click', closeSelector).on('click', closeSelector, null, function(event) {
+        $(document).off('click', closeSelector).on('click', closeSelector, null, function(event) {
             $this.removeItem(event, $(this).parent());
         });
     },
