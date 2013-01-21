@@ -17,7 +17,6 @@ package org.primefaces.component.datatable;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -343,22 +342,20 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
         
+        String style = column.getStyle();
+        String width = column.getWidth();
+        if(width != null) {
+            String unit = width.endsWith("%") ? "" : "px";
+            if(style != null)
+                style = style + ";width:" + width + unit;
+            else
+                style = "width:" + width + unit;
+        }
+        
         writer.startElement("th", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
-        
-        //backward compatibility until 3.6
-        String style = column.getStyle();
-        int width = column.getWidth();
-        if(width != -1) {
-            if(style != null)
-                style = style + ";width:" + width + "px";
-            else
-                style = "width:" + width + "px";
-            
-            logger.log(Level.WARNING, "width attribute is deprecated and will be removed in 3.6, use style attribute to defined widths instead.");
-        }
         
         if(style != null) writer.writeAttribute("style", style, null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
@@ -602,13 +599,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("colgroup", null);
         for(UIColumn column : table.getColumns()) {
             if(column.isRendered()) {
-                String style = column.getStyle();
-                String styleClass = column.getStyleClass();
-                
                 writer.startElement("col", null);
-                if(style != null) writer.writeAttribute("style", style, null);
-                if(styleClass != null) writer.writeAttribute("class", styleClass, null);
-                
                 writer.endElement("col");
             }
         }
@@ -796,20 +787,15 @@ public class DataTableRenderer extends DataRenderer {
         
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = column.getSelectionMode() != null;
-        String styleClass = null;
-        
-        if(selectionEnabled)
-            styleClass = DataTable.SELECTION_COLUMN_CLASS;
-        else if(column.getCellEditor() != null) 
-             styleClass = DataTable.EDITABLE_COLUMN_CLASS;
-            
-        styleClass = column.getStyleClass() == null ? styleClass : styleClass + " " + column.getStyleClass();
+        String style = column.getStyle();
+        String styleClass = selectionEnabled ? DataTable.SELECTION_COLUMN_CLASS : (column.getCellEditor() != null) ? DataTable.EDITABLE_COLUMN_CLASS : null;
+        String userStyleClass = column.getStyleClass();
+        styleClass = userStyleClass == null ? styleClass : (styleClass == null) ? userStyleClass : styleClass + " " + userStyleClass;
         
         writer.startElement("td", null);
         writer.writeAttribute("role", "gridcell", null);
-        
-        if(styleClass != null) 
-            writer.writeAttribute("class", styleClass, null);
+        if(style != null) writer.writeAttribute("style", style, null);
+        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
 
         if(selectionEnabled)
             encodeColumnSelection(context, table, clientId, column, selected);

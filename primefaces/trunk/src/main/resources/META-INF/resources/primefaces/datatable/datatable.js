@@ -481,12 +481,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
         
         var $this = this,
-        marginRight = $.browser.webkit ? '15px' : PrimeFaces.calculateScrollbarWidth();
+        scrollBarWidth = this.getScrollbarWidth() + 'px';
+
+        this.scrollHeaderBox.css('margin-right', scrollBarWidth);
+        this.scrollFooterBox.css('margin-right', scrollBarWidth);
         
-        this.scrollHeaderBox.css('margin-right', marginRight);
-        this.scrollBody.css('padding-right', marginRight);
-        this.scrollFooterBox.css('margin-right', marginRight);
-        
+        this.alignScrollBody();
         this.fixColumnWidths();
         
         if(this.cfg.scrollWidth) {
@@ -496,7 +496,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }
             
             this.scrollHeader.width(swidth);
-            this.scrollBody.css('padding-right', 0).width(swidth);
+            this.scrollBody.css('margin-right', 0).width(swidth);
             this.scrollFooter.width(swidth);
         }
         
@@ -524,6 +524,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             
             $this.saveScrollState();
         });
+    },
+    
+    getScrollbarWidth: function() {
+        if(!this.scrollbarWidth) {
+            this.scrollbarWidth = $.browser.webkit ? '15' : PrimeFaces.calculateScrollbarWidth();
+        }
+        
+        return this.scrollbarWidth;
+    },
+    
+    alignScrollBody: function() {
+        var verticalScroll = this.bodyTable.outerHeight() > this.scrollBody.outerHeight(),
+        marginRight = verticalScroll ? '0px' : this.getScrollbarWidth() + 'px';
+
+        this.scrollBody.css('margin-right', marginRight);
     },
     
     restoreScrollState: function() {
@@ -635,8 +650,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-                 * Ajax pagination
-                 */
+     * Ajax pagination
+     */
     paginate: function(newState) {
         var options = {
             source: this.id,
@@ -645,7 +660,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             formId: this.cfg.formId
         };
 
-        var _self = this;
+        var $this = this;
 
         options.onsuccess = function(responseXML) {
             var xmlDoc = $(responseXML.documentElement),
@@ -656,13 +671,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 id = update.attr('id'),
                 content = update.text();
 
-                if(id == _self.id) {
-                    //update body
-                    _self.tbody.html(content);
+                if(id == $this.id) {
+                    $this.tbody.html(content);
 
-                    //update header checkbox if all enabled checkboxes are checked in new page
-                    if(_self.checkAllToggler) {
-                        _self.updateHeaderCheckbox();
+                    if($this.checkAllToggler) {
+                        $this.updateHeaderCheckbox();
+                    }
+                    
+                    if($this.cfg.scrollable) {
+                        $this.alignScrollBody();
                     }
                 }
                 else {
@@ -677,9 +694,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         
         options.oncomplete = function() {
             //update paginator state
-            _self.paginator.cfg.page = newState.page;
+            $this.paginator.cfg.page = newState.page;
             
-            _self.paginator.updateUI();
+            $this.paginator.updateUI();
         };
 
         options.params = [
@@ -830,6 +847,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 if(id == $this.id){
                     $this.tbody.html(content);
+                    
+                    var paginator = $this.getPaginator();
+                    if(paginator) {
+                        paginator.setTotalRecords(this.args.totalRecords);
+                    }
+                    
+                    if($this.cfg.scrollable) {
+                        $this.alignScrollBody();
+                    }
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -838,12 +864,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
-            //update paginator
-            var paginator = $this.getPaginator();
-            if(paginator) {
-                paginator.setTotalRecords(this.args.totalRecords);
-            }
-            
             return true;
         };
 

@@ -81,5 +81,5 @@ public interface UIColumn {
     
     public void encodeAll(FacesContext context) throws IOException;
     
-    public int getWidth();
+    public String getWidth();
 }

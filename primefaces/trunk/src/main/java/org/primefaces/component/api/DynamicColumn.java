@@ -163,7 +163,7 @@ public class DynamicColumn implements UIColumn {
         this.columnKey = columnKey;
     }
     
-    public int getWidth() {
+    public String getWidth() {
         return this.columns.getWidth();
     }
 }
