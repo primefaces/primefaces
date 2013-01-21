@@ -149,9 +149,8 @@
         <attribute>
             <name>width</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
-            <defaultValue>-1</defaultValue>
-            <description>Width of the column in pixels.</description>
+            <type>java.lang.String</type>
+            <description>Width of the column in pixels or percentage.</description>
         </attribute>
     </attributes>
 </component>
