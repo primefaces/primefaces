@@ -29,6 +29,7 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 
 import javax.faces.context.FacesContext;
+import org.primefaces.util.WidgetBuilder;
 import org.primefaces.visit.ResetInputVisitCallback;
 
 public class DefaultRequestContext extends RequestContext {
@@ -36,9 +37,11 @@ public class DefaultRequestContext extends RequestContext {
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
     private Map<String, Object> attributes;
+    private WidgetBuilder widgetBuilder;
 
     public DefaultRequestContext() {
         attributes = new HashMap<String, Object>();
+        widgetBuilder = new WidgetBuilder();
     }
 
     @Override
@@ -71,6 +74,10 @@ public class DefaultRequestContext extends RequestContext {
             attributes.put(EXECUTE_SCRIPT_KEY, new ArrayList());
         }
         return (List<String>) attributes.get(EXECUTE_SCRIPT_KEY);
+    }
+
+    public WidgetBuilder getWidgetBuilder() {
+        return widgetBuilder;
     }
     
     @Override
