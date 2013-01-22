@@ -22,9 +22,9 @@ public class WidgetBuilder {
     
     protected StringBuilder buffer;
     
-    private boolean onload = false;
+    protected boolean onload = false;
     
-    private String resourcePath = null;
+    protected String resourcePath = null;
         
     public WidgetBuilder() {
         buffer = new StringBuilder();
