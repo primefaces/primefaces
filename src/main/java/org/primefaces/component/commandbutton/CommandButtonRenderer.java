@@ -55,7 +55,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
 		String type = button.getType();
-        Object value = (String) button.getValue();
+        Object value = button.getValue();
         String icon = button.resolveIcon();
         
         StringBuilder onclick = new StringBuilder();
