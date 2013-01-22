@@ -711,6 +711,7 @@ public class UIData extends javax.faces.component.UIData {
     }
     
     protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows) {
+        boolean requiresColumns = this.requiresColumns();
         int processed = 0;
         int rowIndex = 0;
         int rows = 0;
@@ -734,11 +735,18 @@ public class UIData extends javax.faces.component.UIData {
             if(getChildCount() > 0) {
                 for(UIComponent kid : getChildren()) {
 
-                    if(kid.getChildCount() > 0) {
-                        for(UIComponent grandkid : kid.getChildren()) {
-                            if(grandkid.visitTree(context, callback)) {
-                                return true;
+                    if(requiresColumns) {
+                        if(kid.getChildCount() > 0) {
+                            for(UIComponent grandkid : kid.getChildren()) {
+                                if(grandkid.visitTree(context, callback)) {
+                                    return true;
+                                }
                             }
+                        }    
+                    }
+                    else {
+                        if(kid.visitTree(context, callback)) {
+                            return true;
                         }
                     }
                 }
@@ -764,6 +772,10 @@ public class UIData extends javax.faces.component.UIData {
             Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
             return !Boolean.TRUE.equals(skipHint);
         }
+    }
+    
+    protected boolean requiresColumns() {
+        return false;
     }
 }
 

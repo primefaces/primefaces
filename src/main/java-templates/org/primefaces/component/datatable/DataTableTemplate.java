@@ -789,3 +789,8 @@ import org.primefaces.component.datatable.feature.*;
             
         return selectionMode;
     }
+    
+    @Override
+    protected boolean requiresColumns() {
+        return true;
+    }

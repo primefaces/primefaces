@@ -20,8 +20,36 @@
 		</interface>
 	</interfaces>
 	<attributes>
-		&data_component_attributes;
 		&widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Datasource of the component.</description>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <literal>true</literal>
+            <description>Name of the iterator variable used to refer each data.</description>
+        </attribute>
+        <attribute>
+			<name>firstVisible</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Index of the first visible item.</description>
+		</attribute>
+        <attribute>
+			<name>numVisible</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>3</defaultValue>
+            <description>Number of visible items per page. Default is 3.</description>
+		</attribute>
 		<attribute>
 			<name>circular</name>
 			<required>false</required>
