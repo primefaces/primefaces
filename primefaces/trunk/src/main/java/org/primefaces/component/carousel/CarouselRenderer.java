@@ -42,11 +42,7 @@ public class CarouselRenderer extends CoreRenderer {
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Carousel carousel = (Carousel) component;
-        
-        //workaround for proper event processing
-        carousel.setFirstVisible(carousel.getFirst());
-        carousel.setFirst(0);
-		
+        		
 		encodeMarkup(context, carousel);
 		encodeScript(context, carousel);
 	}
@@ -60,7 +56,7 @@ public class CarouselRenderer extends CoreRenderer {
         wb.attr("firstVisible", carousel.getFirstVisible(), 0)
             .attr("isCircular", carousel.isCircular(), false)
             .attr("vertical", carousel.isVertical(), false)
-            .attr("numVisible", carousel.getRows(), 0)
+            .attr("numVisible", carousel.getNumVisible(), 3)
             .attr("autoPlayInterval", carousel.getAutoPlayInterval(), 0)
             .attr("dropDownTemplate", carousel.getDropdownTemplate(), null)
             .attr("pageLinks", carousel.getPageLinks(), 3)
@@ -144,9 +140,9 @@ public class CarouselRenderer extends CoreRenderer {
     protected void encodeHeader(FacesContext context, Carousel carousel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean vertical = carousel.isVertical();
-        int rows = carousel.getRows();
-        int numVisible = rows == 0 ? 3 : rows;
-        int pageCount = carousel.getVar() != null ? (int) (Math.ceil(carousel.getRowCount() / (1d * numVisible))) : carousel.getRenderedChildCount();
+        //int rows = carousel.getRows();
+        //int numVisible = rows == 0 ? 3 : rows;
+        //int pageCount = carousel.getVar() != null ? (int) (Math.ceil(carousel.getRowCount() / (1d * numVisible))) : carousel.getRenderedChildCount();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.HEADER_CLASS, null);
@@ -175,12 +171,12 @@ public class CarouselRenderer extends CoreRenderer {
         writer.endElement("span");
         
         //pageLinks
-        if(pageCount <= carousel.getPageLinks()) {
+        /*if(pageCount <= carousel.getPageLinks()) {
             encodePageLinks(context, carousel, pageCount);
         } 
         else {
             encodeDropDown(context, carousel, pageCount);
-        }
+        }*/
 
         writer.endElement("div");
     }
