@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import javax.faces.context.FacesContext;
 import org.primefaces.util.Constants;
+import org.primefaces.util.WidgetBuilder;
 
 /**
  * A RequestContext is a helper class consisting of several utilities.
@@ -95,4 +96,9 @@ public abstract class RequestContext {
      * @param ids Client side identifiers of the components.
      */
     public abstract void reset(Collection<String> ids);
+    
+    /**
+     * @return Shared WidgetBuilder instance of the current request
+     */
+    public abstract WidgetBuilder getWidgetBuilder();
 }

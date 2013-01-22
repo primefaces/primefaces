@@ -9,7 +9,6 @@
     
     <lifecycle>
         <phase-listener>org.primefaces.lifecycle.RestoreViewPhaseListener</phase-listener>
-        <phase-listener>org.primefaces.lifecycle.RenderResponsePhaseListener</phase-listener>
     </lifecycle>
 
     <application>

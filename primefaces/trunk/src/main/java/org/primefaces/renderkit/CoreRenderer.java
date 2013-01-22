@@ -34,6 +34,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.AjaxSource;
+import org.primefaces.context.RequestContext;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
@@ -477,6 +478,6 @@ public abstract class CoreRenderer extends Renderer {
     }
     
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
-        return (WidgetBuilder) context.getAttributes().get(Constants.WIDGET_BUILDER_ATTR);
+        return ((RequestContext) context.getAttributes().get(Constants.REQUEST_CONTEXT_ATTR)).getWidgetBuilder();
     }
 }
