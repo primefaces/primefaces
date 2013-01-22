@@ -109,8 +109,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Applies events related to sorting in a non-obstrusive way
      */
     bindSortEvents: function() {
-        var _self = this,
-        sortableColumns = this.thead.find('th.ui-sortable-column');
+        var $this = this,
+        sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
         
         if(this.cfg.multiSort) {
             this.sortMeta = [];
@@ -118,7 +118,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         
         sortableColumns.filter('.ui-state-active').each(function() {
             var columnHeader = $(this),
-            sortIcon = columnHeader.find('span.ui-sortable-column-icon:first');
+            sortIcon = columnHeader.children('span.ui-sortable-column-icon');
             
             if(sortIcon.hasClass('ui-icon-triangle-1-n'))
                 columnHeader.data('sortorder', 'ASCENDING');
@@ -126,10 +126,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 columnHeader.data('sortorder', 'DESCENDING');
         });
         
-        sortableColumns.on('hover.dataTable', function() {
-            $(this).toggleClass('ui-state-hover');
-        }).
-        on('click.dataTable', function(e) {
+        sortableColumns.on('mouseover.dataTable', function() {
+            var column = $(this);
+            
+            if(!column.hasClass('ui-state-active'))
+                column.addClass('ui-state-hover');
+        })
+        .on('mouseout.dataTable', function() {
+            var column = $(this);
+            
+            if(!column.hasClass('ui-state-active'))
+                column.removeClass('ui-state-hover');
+        })
+        .on('click.dataTable', function(e) {
             if($(e.target).is(':not(th,span)')) {
                 return;
             }
@@ -146,25 +155,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 sortOrder = 'ASCENDING';
             }
                 
-            if(_self.cfg.multiSort) {                      
+            if($this.cfg.multiSort) {                      
                 if(metaKey) {
-                    _self.addSortMeta({
+                    $this.addSortMeta({
                         col: columnHeader.attr('id'), 
                         order: sortOrder
                     });
-                    _self.sort(columnHeader, sortOrder, true);
+                    $this.sort(columnHeader, sortOrder, true);
                 }
                 else {                        
-                    _self.sortMeta = [];
-                    _self.addSortMeta({
+                    $this.sortMeta = [];
+                    $this.addSortMeta({
                         col: columnHeader.attr('id'), 
                         order: sortOrder
                     });
-                    _self.sort(columnHeader, sortOrder);
+                    $this.sort(columnHeader, sortOrder);
                 }
             }
             else {
-                _self.sort(columnHeader, sortOrder);
+                $this.sort(columnHeader, sortOrder);
             }
 
         });
@@ -182,33 +191,33 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Binds filter events to filters
      */
     setupFiltering: function() {
-        var _self = this;
+        var $this = this;
         this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
         this.cfg.filterDelay = this.cfg.filterDelay||300;
 
-        $(this.jqId + ' thead:first th.ui-filter-column .ui-column-filter').each(function() {
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').each(function() {
             var filter = $(this);
 
             if(filter.is('input:text')) {
                 PrimeFaces.skinInput(filter);
 
-                if(_self.cfg.filterEvent === 'enter')
-                    _self.bindEnterKeyFilter(filter);
+                if($this.cfg.filterEvent === 'enter')
+                    $this.bindEnterKeyFilter(filter);
                 else
-                    _self.bindFilterEvent(filter);
+                    $this.bindFilterEvent(filter);
             } 
             else {
                 PrimeFaces.skinSelect(filter);
                 
                 filter.change(function(e) {
-                    _self.filter();
+                    $this.filter();
                 });
             }
         });
     },
     
     bindEnterKeyFilter: function(filter) {
-        var _self = this;
+        var $this = this;
     
         filter.bind('keydown', function(e) {
             var key = e.which,
@@ -222,7 +231,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             keyCode = $.ui.keyCode;
 
             if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
-                _self.filter();
+                $this.filter();
 
                 e.preventDefault();
             }
@@ -230,18 +239,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindFilterEvent: function(filter) {
-        var _self = this;
+        var $this = this;
     
         filter.bind(this.cfg.filterEvent, function(e) {
-            if(_self.filterTimeout) {
-                clearTimeout(_self.filterTimeout);
+            if($this.filterTimeout) {
+                clearTimeout($this.filterTimeout);
             }
 
-            _self.filterTimeout = setTimeout(function() {
-                _self.filter();
-                _self.filterTimeout = null;
+            $this.filterTimeout = setTimeout(function() {
+                $this.filter();
+                $this.filterTimeout = null;
             }, 
-            _self.cfg.filterDelay);
+            $this.cfg.filterDelay);
         });
     },
     
@@ -461,9 +470,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     setupScrolling: function() {
-        this.scrollHeader = $(this.jqId + ' .ui-datatable-scrollable-header');
-        this.scrollBody = $(this.jqId + ' .ui-datatable-scrollable-body');
-        this.scrollFooter = $(this.jqId + ' .ui-datatable-scrollable-footer');
+        this.scrollHeader = this.jq.children('.ui-datatable-scrollable-header');
+        this.scrollBody = this.jq.children('.ui-datatable-scrollable-body');
+        this.scrollFooter = this.jq.children('.ui-datatable-scrollable-footer')
         this.scrollStateHolder = $(this.jqId + '_scrollState');
         this.scrollHeaderBox = this.scrollHeader.children('div.ui-datatable-scrollable-header-box');
         this.scrollFooterBox = this.scrollFooter.children('div.ui-datatable-scrollable-footer-box');
@@ -770,7 +779,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                                 .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
                 }
                 
-                columnHeader.addClass('ui-state-active');
+                columnHeader.removeClass('ui-state-hover').addClass('ui-state-active');
                 var sortIcon = columnHeader.find('.ui-sortable-column-icon');
 
                 if(order === 'DESCENDING') {
