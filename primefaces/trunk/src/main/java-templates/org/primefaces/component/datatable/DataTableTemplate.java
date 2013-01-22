@@ -59,6 +59,7 @@ import org.primefaces.component.datatable.feature.*;
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
+    public static final String TABLE_WRAPPER_CLASS = "ui-datatable-tablewrapper";
     public static final String RTL_CLASS = "ui-datatable-rtl";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
     public static final String DYNAMIC_COLUMN_HEADER_CLASS = "ui-dynamic-column";

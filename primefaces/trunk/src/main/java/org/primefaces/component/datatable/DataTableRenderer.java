@@ -220,6 +220,9 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeRegularTable(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.TABLE_WRAPPER_CLASS, null);
+        
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
         if(table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
@@ -229,7 +232,9 @@ public class DataTableRenderer extends DataRenderer {
         encodeThead(context, table);
         encodeTFoot(context, table);
         encodeTbody(context, table, false);
+        
         writer.endElement("table");
+        writer.endElement("div");
     }
 
     protected void encodeScrollableTable(FacesContext context, DataTable table) throws IOException {
