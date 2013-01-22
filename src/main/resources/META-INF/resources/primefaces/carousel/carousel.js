@@ -50,8 +50,8 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
 
         this.bindEvents();
 
-        if(this.cfg.autoPlayInterval) {
-            this.startAutoPlay();
+        if(this.cfg.autoplayInterval) {
+            this.startAutoplay();
         }
     },
     
@@ -65,7 +65,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Autoplay startup.
      */
-    startAutoPlay: function(){
+    startAutoplay: function(){
         var _self = this;
         if(this.cfg.autoPlayInterval){
             setInterval(function() {
@@ -195,7 +195,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     setPage: function(index) {    
-        if(this.cfg.isCircular)
+        if(this.cfg.circular)
             this.cfg.page = index > this.cfg.pageCount ? 1 : index < 1 ? this.cfg.pageCount : index;
         else
             this.cfg.page  = index;
@@ -224,7 +224,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
         this.dropdown.val(this.cfg.page);
 
         //no bound
-        if(this.cfg.isCircular)
+        if(this.cfg.circular)
             return;
 
         //lower bound
