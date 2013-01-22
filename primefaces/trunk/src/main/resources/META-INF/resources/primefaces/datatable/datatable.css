@@ -44,8 +44,8 @@
 }
 
 .ui-datatable .ui-sortable-column-icon {
-    margin: -16px -10px 0px 0px;
-    float: right;
+    display: inline-block;
+    margin: -3px 0px -3px 2px;
 }
 
 .ui-datatable .ui-column-filter {
