@@ -194,6 +194,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     
     setupIframe: function() {
         var $this = this;
+        this.iframeLoaded = false;
         this.cfg.width = this.cfg.width||'640px';
         this.cfg.height = this.cfg.height||'480px';
         
