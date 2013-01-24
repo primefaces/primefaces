@@ -69,7 +69,7 @@ public class PasswordRenderer extends InputRenderer {
                 .attr("strongLabel", password.getStrongLabel(), null);
         }
 
-        encodeClientBehaviors(context, password);
+        encodeClientBehaviors(context, password, wb);
 
         startScript(writer, clientId);
         writer.write(wb.build());
