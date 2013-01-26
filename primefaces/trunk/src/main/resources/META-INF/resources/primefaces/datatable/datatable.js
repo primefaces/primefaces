@@ -856,15 +856,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 if(id == $this.id){
                     $this.tbody.html(content);
-                    
-                    var paginator = $this.getPaginator();
-                    if(paginator) {
-                        paginator.setTotalRecords(this.args.totalRecords);
-                    }
-                    
-                    if($this.cfg.scrollable) {
-                        $this.alignScrollBody();
-                    }
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -872,6 +863,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }
 
             PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+            
+            var paginator = $this.getPaginator();
+            if(paginator) {
+                paginator.setTotalRecords(this.args.totalRecords);
+            }
+
+            if($this.cfg.scrollable) {
+                $this.alignScrollBody();
+            }
 
             return true;
         };
