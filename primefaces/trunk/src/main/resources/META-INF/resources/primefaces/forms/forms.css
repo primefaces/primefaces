@@ -51,6 +51,7 @@
 .ui-chkbox .ui-chkbox-box {
     width: 16px;
     height: 16px;
+    display: inline-block;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
@@ -58,7 +59,6 @@
 
 .ui-chkbox .ui-chkbox-label {
     cursor: pointer;
-    display: block;
     margin: 0 3px;
     outline: medium none;
     z-index: 1;
