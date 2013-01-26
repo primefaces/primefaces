@@ -133,7 +133,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         if(messageFacet != null)
             messageFacet.encodeAll(context);
         else if(messageText != null)
-			writer.write(dialog.getMessage());
+			writer.writeText(messageText, null);
         
         writer.endElement("p");
         
