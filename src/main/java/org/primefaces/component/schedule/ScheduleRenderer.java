@@ -142,8 +142,8 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("maxTime", schedule.getMaxTime(), null)
             .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
             .attr("weekends", schedule.isShowWeekends(), true)
-            .attr("disableDragging", schedule.isDraggable(), true)
-            .attr("disableResizing", schedule.isResizable(), true)
+            .attr("disableDragging", !schedule.isDraggable(), false)
+            .attr("disableResizing", !schedule.isResizable(), false)
             .attr("axisFormat", schedule.getAxisFormat(), null)
             .attr("timeFormat", schedule.getTimeFormat(), null);
         
