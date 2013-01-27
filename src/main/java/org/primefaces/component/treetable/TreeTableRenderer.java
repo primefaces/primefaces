@@ -107,7 +107,9 @@ public class TreeTableRenderer extends CoreRenderer {
             .attr("liveResize", tt.isLiveResize(), false)
             .attr("scrollable", tt.isScrollable(), false)
             .attr("scrollHeight", tt.getScrollHeight(), null)
-            .attr("scrollWidth", tt.getScrollWidth(), null);
+            .attr("scrollWidth", tt.getScrollWidth(), null)
+            .attr("propagateUp", tt.isPropagateSelectionUp(), true)
+            .attr("propagateDown", tt.isPropagateSelectionDown(), true);
         
         encodeClientBehaviors(context, tt, wb);
 		
