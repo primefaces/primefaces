@@ -36,7 +36,6 @@ public class AccordionPanelRenderer extends CoreRenderer {
         String active = params.get(acco.getClientId(context) + "_active");
 		
 		if(active != null) {
-            //collapsed all
             if(isValueBlank(active)) {                
                 acco.setActiveIndex(null);
             }
@@ -104,15 +103,21 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, AccordionPanel acco) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = acco.getClientId(context);
+        boolean multiple = acco.isMultiple();
+        String activeIndex = acco.getActiveIndex();
+        String activeIndexValue = multiple ? "[" + activeIndex + "]" : activeIndex;
+        
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("AccordionPanel", acco.resolveWidgetVar(), clientId, false);
+        
+        wb.nativeAttr("active", activeIndexValue);
  		
         if(acco.isDynamic()) {
             wb.attr("dynamic", true, false);
             wb.attr("cache", acco.isCache(), true);
         }
         
-        wb.attr("multiple", acco.isMultiple(), false)
+        wb.attr("multiple", multiple, false)
         .callback("onTabChange", "function(panel)", acco.getOnTabChange())
         .callback("onTabShow", "function(panel)", acco.getOnTabShow());
         
