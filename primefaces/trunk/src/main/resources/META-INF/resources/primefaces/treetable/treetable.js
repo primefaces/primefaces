@@ -6,6 +6,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
+        this.cfg.propagateUp = this.cfg.propagateUp === false ? false : true;
+        this.cfg.propagateDown = this.cfg.propagateDown === false ? false : true;
+        
         this.thead = $(this.jqId + '_head');
         this.tbody = $(this.jqId + '_data');
 
@@ -300,19 +303,22 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         else
             this.selectNode(node, true);
         
-        //propagate down
-        var descendants = this.getDescendants(node);
-        for(var i = 0; i < descendants.length; i++) {
-            var descendant = descendants[i];
-            
-            if(selected)
-                this.unselectNode(descendant, true);
-            else
-                this.selectNode(descendant, true);
+        if(this.cfg.propagateDown) {
+            var descendants = this.getDescendants(node);
+            for(var i = 0; i < descendants.length; i++) {
+                var descendant = descendants[i];
+
+                if(selected)
+                    this.unselectNode(descendant, true);
+                else
+                    this.selectNode(descendant, true);
+            }
         }
         
-        if(parentNode) {
-            this.propagateUp(parentNode);
+        if(this.cfg.propagateUp) {
+            if(parentNode) {
+                this.propagateUp(parentNode);
+            }
         }
     },
     
