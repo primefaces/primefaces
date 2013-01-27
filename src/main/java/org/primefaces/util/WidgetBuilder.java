@@ -70,6 +70,12 @@ public class WidgetBuilder {
         return this;
     }
     
+    public WidgetBuilder nativeAttr(String name, String value) {
+        buffer.append(",").append(name).append(":").append(value);
+        
+        return this;
+    }
+    
     public WidgetBuilder attr(String name, boolean value) {
         buffer.append(",").append(name).append(":").append(value);
         

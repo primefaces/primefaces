@@ -15,20 +15,17 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.expandedIcon = 'ui-icon-triangle-1-s';
         this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
 
-        //active index
-        this.cfg.active = this.cfg.multiple ? this.stateHolder.val().split(',') : this.stateHolder.val();
-
         this.bindEvents();
 
         if(this.cfg.dynamic && this.cfg.cache) {
-            this.markAsLoaded(this.panels.eq(this.cfg.active));
+            this.markLoadedPanels();
         }
 
         this.jq.data('widget', this);
     },
-    
+        
     bindEvents: function() {
-        var _self = this;
+        var $this = this;
     
         this.headers.mouseover(function() {
             var element = $(this);
@@ -46,15 +43,27 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 var tabIndex = element.index() / 2;
 
                 if(element.hasClass('ui-state-active')) {
-                    _self.unselect(tabIndex);
+                    $this.unselect(tabIndex);
                 }
                 else {
-                    _self.select(tabIndex);
+                    $this.select(tabIndex);
                 }
             }
 
             e.preventDefault();
         });
+    },
+    
+    markLoadedPanels: function() {
+        if(this.cfg.multiple) {
+            for(var i = 0; i < this.cfg.active.length; i++) {
+                if(this.cfg.active[i] >= 0)
+                    this.markAsLoaded(this.panels.eq(this.cfg.active[i]));
+            }
+        } else {
+            if(this.cfg.active >= 0)
+                this.markAsLoaded(this.panels.eq(this.cfg.active));
+        }
     },
     
     /**
@@ -131,7 +140,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     loadDynamicTab: function(panel) {
-        var _self = this,
+        var $this = this,
         options = {
             source: this.id,
             process: this.id,
@@ -147,11 +156,11 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 id = update.attr('id'),
                 content = update.text();
 
-                if(id == _self.id){
+                if(id == $this.id){
                     $(panel).html(content);
 
-                    if(_self.cfg.cache) {
-                        _self.markAsLoaded(panel);
+                    if($this.cfg.cache) {
+                        $this.markAsLoaded(panel);
                     }
                 }
                 else {
@@ -165,7 +174,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         };
 
         options.oncomplete = function() {
-            _self.show(panel);
+            $this.show(panel);
         };
 
         options.params = [
@@ -189,7 +198,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      */
     fireTabChangeEvent : function(panel) {
         var tabChangeBehavior = this.cfg.behaviors['tabChange'],
-        _self = this,
+        $this = this,
         ext = {
             params: [
                 {name: this.id + '_newTab', value: panel.attr('id')},
@@ -198,7 +207,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         };
         
         ext.oncomplete = function() {
-            _self.show(panel);
+            $this.show(panel);
         };
 
         tabChangeBehavior.call(this, null, ext);
