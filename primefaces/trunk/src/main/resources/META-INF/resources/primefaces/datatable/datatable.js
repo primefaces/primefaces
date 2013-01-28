@@ -1715,7 +1715,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             this.resizerHelper = $('<div class="ui-column-resizer-helper ui-state-highlight"></div>').appendTo(this.jq);
         }
         
-        this.thead.find('> tr > th.ui-resizable-column:not(:last-child)').prepend('<span class="ui-column-resizer">&nbsp;</span>');        
+        this.thead.find('> tr > th.ui-resizable-column').prepend('<span class="ui-column-resizer">&nbsp;</span>').filter(':last-child')
+                .children('span.ui-column-resizer').hide();        
         var resizers = this.thead.find('> tr > th > span.ui-column-resizer'),
         $this = this;
             
@@ -1858,12 +1859,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         this.dragIndicatorTop = $('<div id="' + this.id + '_dnd_top" class="ui-column-dnd-top"><span class="ui-icon ui-icon-arrowthick-1-s" /></div>').appendTo(document.body);
         this.dragIndicatorBottom = $('<div id="' + this.id + '_dnd_bottom" class="ui-column-dnd-bottom"><span class="ui-icon ui-icon-arrowthick-1-n" /></div>').appendTo(document.body);
 
-        var _self = this;
+        var $this = this;
 
         $(this.jqId + ' thead th').draggable({
             appendTo: 'body',
             opacity: 0.75,
             cursor: 'move',
+            scope: this.id,
+            cancel: 'span.ui-column-resizer',
             drag: function(event, ui) {
                 var droppable = ui.helper.data('droppable-column');
 
@@ -1875,7 +1878,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     
                     //calculate coordinates of arrow depending on mouse location
                     if(event.originalEvent.pageX >= droppableOffset.left + (droppable.width() / 2)) {
-                        arrowX = droppable.next().offset().left - 9;
+                        var nextDroppable = droppable.next();
+                        if(nextDroppable.length == 1)
+                            arrowX = nextDroppable.offset().left - 9;
+                        else
+                            arrowX = droppable.offset().left + droppable.innerWidth() - 9;
+                            
                         ui.helper.data('drop-location', 1);     //right
                     }
                     else {
@@ -1883,29 +1891,29 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         ui.helper.data('drop-location', -1);    //left
                     }
                     
-                    _self.dragIndicatorTop.offset({
+                    $this.dragIndicatorTop.offset({
                         'left': arrowX, 
                         'top': topArrowY
                     }).show();
-                    _self.dragIndicatorBottom.offset({
+                    
+                    $this.dragIndicatorBottom.offset({
                         'left': arrowX, 
                         'top': bottomArrowY
                     }).show();
                 }
-            }
-            ,
+            },
             stop: function(event, ui) {
                 //hide dnd arrows
-                _self.dragIndicatorTop.css({
+                $this.dragIndicatorTop.css({
                     'left':0, 
                     'top':0
                 }).hide();
-                _self.dragIndicatorBottom.css({
+                
+                $this.dragIndicatorBottom.css({
                     'left':0, 
                     'top':0
                 }).hide();
-            }
-            ,
+            },
             helper: function() {
                 var header = $(this),
                 helper = $('<div class="ui-widget ui-state-default" style="padding:4px 10px;text-align:center;"></div>');
@@ -1921,6 +1929,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }).droppable({
             hoverClass:'ui-state-highlight',
             tolerance:'pointer',
+            scope: this.id,
             over: function(event, ui) {
                 ui.helper.data('droppable-column', $(this));
             },
@@ -1928,17 +1937,26 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 var draggedColumn = ui.draggable,
                 dropLocation = ui.helper.data('drop-location'),
                 droppedColumn =  $(this);
-                
-                var draggedCells = _self.tbody.find('> tr > td:nth-child(' + (draggedColumn.index() + 1) + ')'),
-                droppedCells = _self.tbody.find('> tr > td:nth-child(' + (droppedColumn.index() + 1) + ')');
+                                
+                var draggedCells = $this.tbody.find('> tr > td:nth-child(' + (draggedColumn.index() + 1) + ')'),
+                droppedCells = $this.tbody.find('> tr > td:nth-child(' + (droppedColumn.index() + 1) + ')');
                 
                 //drop right
                 if(dropLocation > 0) {
+                    if($this.cfg.resizableColumns) {
+                        if(droppedColumn.next().length == 0) {
+                            droppedColumn.children('span.ui-column-resizer').show();
+                            draggedColumn.children('span.ui-column-resizer').hide();
+                        }
+                    }
+                    
                     draggedColumn.insertAfter(droppedColumn);
 
                     draggedCells.each(function(i, item) {
                         $(this).insertAfter(droppedCells.eq(i));
                     });
+                    
+                    
                 }
                 //drop left
                 else {
@@ -1950,14 +1968,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 }
                
                 //save order
-                _self.saveColumnOrder();
+                $this.saveColumnOrder();
 
                 //fire toggleCheckAll event
-                if(_self.cfg.behaviors) {
-                    var columnReorderBehavior = _self.cfg.behaviors['colReorder'];
+                if($this.cfg.behaviors) {
+                    var columnReorderBehavior = $this.cfg.behaviors['colReorder'];
 
                     if(columnReorderBehavior) {            
-                        columnReorderBehavior.call(_self);
+                        columnReorderBehavior.call($this);
                     }
                 }
             }
