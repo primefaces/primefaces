@@ -293,10 +293,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    toggleCheckboxNode: function(node) {
-        var selected = node.hasClass('ui-state-highlight'),
-        parentNode = this.getParent(node);
-                
+    toggleCheckboxNode: function(node) {;
+        var selected = node.hasClass('ui-state-highlight');
+     
         //toggle itself
         if(selected)
             this.unselectNode(node);
@@ -305,6 +304,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         
         if(this.cfg.propagateDown) {
             var descendants = this.getDescendants(node);
+
             for(var i = 0; i < descendants.length; i++) {
                 var descendant = descendants[i];
 
@@ -316,8 +316,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         }
         
         if(this.cfg.propagateUp) {
+            var parentNode = this.getParent(node);
             if(parentNode) {
                 this.propagateUp(parentNode);
+                this.writeSelections();
             }
         }
     },
@@ -373,7 +375,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
             partialSelected = partialSelected||childSelected||child.hasClass('ui-treetable-partialselected');
         }
         
-       
         if(allSelected) {
             node.removeClass('ui-treetable-partialselected');
             this.selectNode(node, true);
@@ -381,6 +382,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         else if(partialSelected) {
             node.removeClass('ui-state-highlight').addClass('ui-treetable-partialselected');
             checkboxIcon.removeClass('ui-icon ui-icon-check').addClass('ui-icon ui-icon-minus');
+            this.removeSelection(node.attr('data-rk'));
         }
         else {
             node.removeClass('ui-state-highlight ui-treetable-partialselected');
@@ -389,7 +391,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         
         var parent = this.getParent(node);
         if(parent) {
-            this.propagateUp(this.getParent(node));
+            this.propagateUp(parent);
         }
     },
     
