@@ -1061,28 +1061,30 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindEvents: function() {
-        var _self = this;
+        var $this = this;
         
-        //events for displays
-        this.outputs.mouseover(function() {
+        this.outputs.on('mouseover.selectOneRadio', function() {
             $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
+        })
+        .on('mouseout.selectOneRadio', function() {
             $(this).removeClass('ui-state-hover');
-        }).click(function() {
+        })
+        .on('click.selectOneRadio', function() {
             var radio = $(this),
             input = radio.prev().children(':radio');
             
-            if(!input.is(':checked')) {
+            if(!radio.hasClass('ui-state-active')) {
+                $this.unselect($this.checkedRadio);
+                $this.select(radio);
                 input.trigger('click');
-                
-                if($.browser.msie && parseInt($.browser.version) < 9) {
-                    input.trigger('change');
-                }
+                input.trigger('change');
+            } 
+            else {
+                input.trigger('click');
             }
         });
         
-        //selects radio when label is clicked
-        this.labels.click(function(e) {
+        this.labels.on('click.selectOneRadio', function(e) {
             var target = $(PrimeFaces.escapeClientId($(this).attr('for'))),
             radio = null;
 
@@ -1092,13 +1094,12 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             else
                 radio = target.children('.ui-radiobutton-box'); //custom layout
 
-            radio.click();
+            radio.trigger('click.selectOneRadio');
             
             e.preventDefault();
         });
         
-        //delegate focus-blur-change states
-        this.inputs.focus(function() {
+        this.inputs.on('focus.selectOneRadio', function() {
             var input = $(this),
             radio = input.parent().next();
             
@@ -1108,7 +1109,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             
             radio.addClass('ui-state-focus');
         })
-        .blur(function() {
+        .on('blur.selectOneRadio', function() {
             var input = $(this),
             radio = input.parent().next();
             
@@ -1118,26 +1119,55 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                         
             radio.removeClass('ui-state-focus');
         })
-        .change(function(e) {
-            //unselect previous
-            _self.checkedRadio.removeClass('ui-state-active').children('.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
-            
-            //select current
-            var currentInput = _self.inputs.filter(':checked'),
-            currentRadio = currentInput.parent().next();
-            currentRadio.children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
-            
-            if(!currentInput.is(':focus')) {
-                currentRadio.addClass('ui-state-active');
+        .on('keydown.selectOneRadio', function(e) {
+            var input = $(this),
+            currentRadio = input.parent().next(),
+            index = $this.inputs.index(input),
+            size = $this.inputs.length,
+            keyCode = $.ui.keyCode,
+            key = e.which;
+
+            switch(key) { 
+                case keyCode.UP:
+                case keyCode.LEFT:
+                    var prevRadioInput = (index === 0) ? $this.inputs.eq((size - 1)) : $this.inputs.eq(--index),
+                    prevRadio = prevRadioInput.parent().next();
+
+                    input.blur();
+                    $this.unselect(currentRadio);
+                    $this.select(prevRadio);
+                    prevRadioInput.trigger('focus').trigger('change');
+                    e.preventDefault();
+                break;
+                
+                case keyCode.DOWN:
+                case keyCode.RIGHT:
+                    var nextRadioInput = (index === (size - 1)) ? $this.inputs.eq(0) : $this.inputs.eq(++index),
+                    nextRadio = nextRadioInput.parent().next();
+
+                    input.blur();
+                    $this.unselect(currentRadio);
+                    $this.select(nextRadio);
+                    nextRadioInput.trigger('focus').trigger('change');
+                    e.preventDefault();
+                break;
             }
-            
-            _self.checkedRadio = currentRadio;
         });
         
-        //Client Behaviors
         if(this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
         }
+    },
+    
+    unselect: function(radio) {
+        radio.prev().children(':radio').prop('checked', false);
+        radio.removeClass('ui-state-active').children('.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');
+    },
+    
+    select: function(radio) {
+        this.checkedRadio = radio;
+        radio.addClass('ui-state-active').children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
+        radio.prev().children(':radio').prop('checked', true);
     }
     
 });
