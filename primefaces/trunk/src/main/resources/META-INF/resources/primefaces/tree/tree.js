@@ -290,21 +290,27 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
         
     check: function(checkbox) {
-        var icon = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon'),
+        var box = checkbox.children('.ui-chkbox-box'),
+        icon = box.children('.ui-chkbox-icon'),
         treeNode = checkbox.closest('.ui-treenode'),
         rowKey = this.getRowKey(treeNode);
-        
+
+        box.removeClass('ui-state-hover');
         icon.removeClass('ui-icon ui-icon-minus').addClass('ui-icon ui-icon-check');
+        checkbox.siblings('span.ui-treenode-label').addClass('ui-state-highlight').removeClass('ui-state-hover');
         this.addToSelection(rowKey);
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-unselected').addClass('ui-treenode-selected').attr('aria-checked', true).attr('aria-selected', true);
     },
     
     uncheck: function(checkbox) {
-        var icon = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon'),
+        var box = checkbox.children('.ui-chkbox-box'),
+        icon = box.children('.ui-chkbox-icon'),
         treeNode = checkbox.closest('.ui-treenode'),
         rowKey = this.getRowKey(treeNode);
         
+        box.removeClass('ui-state-hover');
         icon.removeClass('ui-icon ui-icon-minus ui-icon-check');
+        checkbox.siblings('span.ui-treenode-label').removeClass('ui-state-highlight');
         this.removeFromSelection(rowKey);
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-selected').addClass('ui-treenode-unselected').attr('aria-checked', false).attr('aria-selected', false);
     }
@@ -354,12 +360,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         .on('mouseover.tree', nodeLabelSelector, null, function() {
                             var label = $(this);
 
-                            if(!label.hasClass('ui-state-highlight')) {
-                                $(this).addClass('ui-state-hover');
+                            $(this).addClass('ui-state-hover');
                                 
-                                if($this.isCheckboxSelection()) {
-                                    label.siblings('div.ui-chkbox').children('div.ui-chkbox-box').addClass('ui-state-hover');
-                                }
+                            if($this.isCheckboxSelection()) {
+                                label.siblings('div.ui-chkbox').children('div.ui-chkbox-box').addClass('ui-state-hover');
                             }
                         });
         }
@@ -515,12 +519,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         
         this.writeSelections();
 
-        if(checked) {
+        if(checked)
             this.fireNodeUnselectEvent(node);
-        }
-        else {
+        else
             this.fireNodeSelectEvent(node);
-        }
     },
           
     preselectCheckbox: function() {
