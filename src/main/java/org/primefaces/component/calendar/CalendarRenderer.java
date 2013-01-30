@@ -152,7 +152,6 @@ public class CalendarRenderer extends InputRenderer {
             .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
             .attr("disabled", calendar.isDisabled(), false)
             .attr("yearRange", calendar.getYearRange(), null)
-            .attr("preShowDay", calendar.getBeforeShowDay(), null)
             .attr("readOnlyInput", calendar.isReadonlyInput(), false);
         
         if(calendar.isNavigator()) {
@@ -161,6 +160,11 @@ public class CalendarRenderer extends InputRenderer {
         
         if(calendar.getEffect() != null) {
             wb.attr("showAnim", calendar.getEffect()).attr("duration", calendar.getEffectDuration());
+        }
+        
+        String beforeShowDay = calendar.getBeforeShowDay();
+        if(beforeShowDay != null) {
+            wb.nativeAttr("preShowDay", beforeShowDay);
         }
         
         String showOn = calendar.getShowOn();
