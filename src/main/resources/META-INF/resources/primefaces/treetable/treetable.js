@@ -299,9 +299,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
                 
         //toggle itself
         if(selected)
-            this.unselectNode(node, true);
+            this.unselectNode(node);
         else
-            this.selectNode(node, true);
+            this.selectNode(node);
         
         if(this.cfg.propagateDown) {
             var descendants = this.getDescendants(node);
