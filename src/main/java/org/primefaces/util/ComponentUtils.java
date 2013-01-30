@@ -15,7 +15,6 @@
  */
 package org.primefaces.util;
 
-import com.sun.org.apache.bcel.internal.generic.FCONST;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
