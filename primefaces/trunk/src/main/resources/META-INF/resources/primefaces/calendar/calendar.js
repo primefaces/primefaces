@@ -29,7 +29,6 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-
         //Setup timepicker
         var hasTimePicker = this.hasTimePicker();
         if(hasTimePicker) {
@@ -65,14 +64,6 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             else {
                 this.jqEl.datepicker(this.cfg);
             }
-        }
-        
-        //readonly input
-        if(this.cfg.popup && this.cfg.readonlyInput) {
-            this.input.focus(function(e) {
-                e.preventDefault();
-                $(this).blur();
-            });
         }
 
         //button title
@@ -160,6 +151,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         
         if(this.cfg.maxDate) {
             this.cfg.maxDate = $.datepicker.parseDateTime(this.cfg.dateFormat, this.cfg.timeFormat, this.cfg.maxDate, {}, {});
+        }
+        
+        if(!this.cfg.showButtonPanel) {
+            this.cfg.showButtonPanel = false;
         }
     },
     
