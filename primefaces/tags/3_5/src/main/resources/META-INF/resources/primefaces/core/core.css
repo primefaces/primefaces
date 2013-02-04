@@ -1,0 +1,31 @@
+.ui-shadow {
+    -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+}
+
+.ui-overlay-visible {
+    visibility: visible;
+}
+ui-overlay-visible * {
+    visibility: visible !important;
+}
+
+.ui-overlay-hidden {
+    visibility: hidden;
+}
+.ui-overlay-hidden * {
+    visibility: hidden !important;;
+}
+
+/* IE7 Fixes */
+.ui-overlay-visible table {
+    *border-collapse: collapse !important;
+}
+.ui-overlay-hidden table {
+    *border-collapse: separate !important;
+}
+
+.ui-datepicker .ui-datepicker-current.ui-priority-secondary {
+    opacity: 1;
+}

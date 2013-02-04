@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>cellEditor</tag>
+	<tagClass>org.primefaces.component.celleditor.CellEditorTag</tagClass>
+	<componentClass>org.primefaces.component.celleditor.CellEditor</componentClass>
+	<componentType>org.primefaces.component.CellEditor</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.CellEditorRenderer</rendererType>
+	<rendererClass>org.primefaces.component.celleditor.CellEditorRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>CellEditor is a helper component of datatable used for incell editing.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+	</attributes>
+</component>

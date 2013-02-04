@@ -1,0 +1,91 @@
+.ui-scrollpanel {
+    overflow: hidden;
+    outline: none;
+    background-image: none;
+}
+
+.ui-scrollpanel-native {
+    overflow: auto;
+}
+
+.ui-scrollpanel-container {
+    overflow: hidden;
+    position: relative;
+    zoom:1;
+}
+
+.ui-scrollpanel-wrapper {
+    position: absolute;
+    overflow: hidden;
+}
+
+.ui-scrollpanel-content {
+    left: 0px; 
+    top: 0px; 
+    width: auto;
+    height: auto; 
+    display: block;
+    position: absolute; 
+    zoom: 1;
+}
+
+.ui-scrollpanel-vbar {
+    width: 18px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    left: auto; right: 0px; top: 0px; bottom: auto;
+}
+
+.ui-scrollpanel-hbar {
+    height: 18px;
+    padding-left: 18px;
+    padding-right: 18px;
+    top: auto; 
+    right: auto; 
+    left: 0px; 
+    bottom: 0px;
+}
+
+.ui-scrollpanel-hbar, .ui-scrollpanel-vbar {
+    display: none;
+    position: absolute;
+    font-size: 0px;
+    border:0;
+}
+
+.ui-scrollpanel-hbar .ui-state-default, .ui-scrollpanel-vbar .ui-state-default {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+}
+
+.ui-scrollpanel-hbar.ui-widget-header,
+.ui-scrollpanel-vbar.ui-widget-header {
+    background-image: none;
+}
+            
+.ui-scrollpanel-handle {
+    position: absolute;
+    font-size:0px;
+    overflow:hidden;
+}
+
+.ui-scrollpanel-handle * {
+    font-size:0px;
+}
+
+.ui-scrollpanel-bl {
+    left: 0;
+}
+
+.ui-scrollpanel-br {
+    right: 0;
+}
+
+.ui-scrollpanel-bt {
+    top: 0;
+}
+
+.ui-scrollpanel-bb {
+    bottom: 0;
+}
