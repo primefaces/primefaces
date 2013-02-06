@@ -42,7 +42,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             $this.jq.text(title);
                             $this.globalTitle = title;
                             $this.target = element;
-                            element.removeAttr('title');
+                            element.attr('title','');
                             $this.show();
                         }
                     })
