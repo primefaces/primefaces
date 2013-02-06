@@ -117,7 +117,7 @@ public class PickListRenderer extends CoreRenderer {
             .attr("showSourceControls", pickList.isShowSourceControls(), false)
             .attr("showTargetControls", pickList.isShowTargetControls(), false)
             .attr("disabled", pickList.isDisabled(), false)
-            .attr("filterMatchModel", pickList.getFilterMatchMode(), null)
+            .attr("filterMatchMode", pickList.getFilterMatchMode(), null)
             .attr("filterFunction", pickList.getFilterFunction(), null)
             .attr("showCheckbox", pickList.isShowCheckbox(), false)
             .callback("onTransfer", "function(e)", pickList.getOnTransfer());
