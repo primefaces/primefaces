@@ -145,7 +145,8 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("disableDragging", !schedule.isDraggable(), false)
             .attr("disableResizing", !schedule.isResizable(), false)
             .attr("axisFormat", schedule.getAxisFormat(), null)
-            .attr("timeFormat", schedule.getTimeFormat(), null);
+            .attr("timeFormat", schedule.getTimeFormat(), null)
+            .attr("columnFormat", schedule.getColumnFormat(), null);
         
         encodeClientBehaviors(context, schedule, wb);
 
