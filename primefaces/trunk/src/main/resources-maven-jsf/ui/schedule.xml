@@ -166,6 +166,12 @@
             <description>Determines the time-text that will be displayed on each event.</description>
 		</attribute>
         <attribute>
+			<name>columnFormat</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Format for column headers.</description>
+		</attribute>
+        <attribute>
             <name>timeZone</name>
             <required>false</required>
             <type>java.lang.Object</type>
