@@ -1703,8 +1703,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
      * Clears table filters
      */
     clearFilters: function() {
-        $(this.jqId + ' thead th .ui-column-filter').val('');
-        
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
+        $(this.jqId + '\\:globalFilter').val('');
+
         this.filter();
     },
     
