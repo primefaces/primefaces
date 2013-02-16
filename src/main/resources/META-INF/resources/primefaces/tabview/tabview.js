@@ -27,19 +27,19 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
 
         //Tab header events
         this.navContainer.children('li')
-                .bind('mouseover.tabview', function(e) {
+                .on('mouseover.tabview', function(e) {
                     var element = $(this);
                     if(!element.hasClass('ui-state-disabled')) {
                         element.addClass('ui-state-hover');
                     }
                 })
-                .bind('mouseout.tabview', function(e) {
+                .on('mouseout.tabview', function(e) {
                     var element = $(this);
                     if(!element.hasClass('ui-state-disabled')) {
                         element.removeClass('ui-state-hover');
                     }
                 })
-                .bind('click.tabview', function(e) {
+                .on('click.tabview', function(e) {
                     var element = $(this);
 
                     if($(e.target).is(':not(.ui-icon-close)')) {
@@ -55,7 +55,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
 
         //Closable tabs
         this.navContainer.find('li .ui-icon-close')
-            .bind('click.tabview', function(e) {
+            .on('click.tabview', function(e) {
                 var index = $(this).parent().index();
                 
                 if(_self.cfg.onTabClose) {
