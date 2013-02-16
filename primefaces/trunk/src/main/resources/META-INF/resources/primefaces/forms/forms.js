@@ -2129,9 +2129,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 var ext = {
                     params: [{name: this.id + '_checked', value: checked}]
                 }
+                
+                toggleSelectBehavior.call(this, null, ext);
             }
-            
-            toggleSelectBehavior.call(this, null, ext);
         }
     },
     
