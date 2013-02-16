@@ -118,13 +118,17 @@ public class DataGridRenderer extends DataRenderer {
         int rows = grid.getRows();
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
-        int renderedItems = 0;
 
         writer.startElement("table", grid);
         writer.writeAttribute("class", DataGrid.TABLE_CLASS, null);
         writer.startElement("tbody", null);
 
         for(int i = 0; i < numberOfRowsToRender; i++) {
+            grid.setRowIndex(rowIndex);
+            if(!grid.isRowAvailable()) {
+                break;
+            }
+            
             writer.startElement("tr", null);
             writer.writeAttribute("class", DataGrid.TABLE_ROW_CLASS, null);
 
@@ -132,15 +136,11 @@ public class DataGridRenderer extends DataRenderer {
                 writer.startElement("td", null);
                 writer.writeAttribute("class", DataGrid.TABLE_COLUMN_CLASS, null);
                 
-                if(renderedItems < itemsToRender) {
-                    grid.setRowIndex(rowIndex);
-
-                    if(grid.isRowAvailable()) {
-                        renderChildren(context, grid);
-                        rowIndex++;
-                        renderedItems++;
-                    }
+                grid.setRowIndex(rowIndex);
+                if(grid.isRowAvailable()) {
+                    renderChildren(context, grid);
                 }
+                rowIndex++;
                 
                 writer.endElement("td");
             }
