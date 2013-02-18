@@ -20511,7 +20511,8 @@ PrimeFaces.widget.BarChart = PrimeFaces.widget.CartesianChart.extend({
                 barPadding: this.cfg.barPadding,
                 barMargin: this.cfg.barMargin,
                 breakOnNull: this.cfg.breakOnNull
-            }
+            },
+            fillToZero: true
         };
         
         if(this.cfg.orientation == 'vertical') {
