@@ -34,7 +34,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 containment: this.jq,
                 cancel: '.ui-chkbox-box',
                 update: function(event, ui) {
-                    ui.item.removeClass('ui-state-highlight');
+                    $this.unselectItem(ui.item);
 
                     $this.saveState();
                 },
