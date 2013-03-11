@@ -1185,6 +1185,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.icon = this.box.children('.ui-chkbox-icon');
         this.itemLabel = this.jq.find('.ui-chkbox-label');
         this.disabled = this.input.is(':disabled');
+        this.outputLabel = $('label[for="' + this.id + '"]');
         
         var _self = this;
 
@@ -1229,6 +1230,10 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
             //toggle state on label click
             this.itemLabel.click(function() {
+                _self.toggle();
+            });
+            
+            this.outputLabel.click(function() {
                 _self.toggle();
             });
 
