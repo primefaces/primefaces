@@ -95,11 +95,10 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             this.loadDynamicTab(newPanel);
         }
         else {
+            this.show(newPanel);
+            
             if(this.hasBehavior('tabChange') && !silent) {
                 this.fireTabChangeEvent(newPanel);
-            }
-            else {
-                this.show(newPanel);
             }
         }
 
@@ -227,7 +226,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
     
     fireTabChangeEvent: function(panel) {
         var tabChangeBehavior = this.cfg.behaviors['tabChange'],
-        _self = this,
         ext = {
             params: [
                 {name: this.id + '_newTab', value: panel.attr('id')},
@@ -235,10 +233,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             ]
         };
         
-        ext.oncomplete = function() {
-            _self.show(panel);
-        };
-
         tabChangeBehavior.call(this, panel, ext);
     },
     
