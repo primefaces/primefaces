@@ -18,11 +18,14 @@ package org.primefaces.component.behavior.ajax;
 import java.beans.BeanDescriptor;
 import java.beans.BeanInfo;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.el.MethodExpression;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
@@ -115,7 +118,25 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
             }
             
             if(supportedEvent) {
-                getAttachedObjectHandlers(parent).add(this);
+                //Workaround to implementation specific composite component handlers
+                FacesContext context = FacesContext.getCurrentInstance();
+                if(context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate")) {
+                    getAttachedObjectHandlers(parent).add(this);
+                } 
+                else {
+                    Class clazz;
+                    try {
+                        clazz = Class.forName("org.apache.myfaces.view.facelets.FaceletCompositionContext");
+                        Method instanceMethod = clazz.getDeclaredMethod("getCurrentInstance", FaceletContext.class);
+                        Object faceletCompositionContextInstance = instanceMethod.invoke(null, ctx);
+                        Method addAttachedObjectHandlerMethod = clazz.getDeclaredMethod("addAttachedObjectHandler", UIComponent.class, AttachedObjectHandler.class);
+                        addAttachedObjectHandlerMethod.invoke(faceletCompositionContextInstance, parent, this);
+                    } 
+                    catch (Exception ex) {
+                        Logger.getLogger(AjaxBehaviorHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                }
             } 
             else {
                 if(!tagApplied) {
