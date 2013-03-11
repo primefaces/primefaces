@@ -93,11 +93,10 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             this.loadDynamicTab(panel);
         }
         else {
+            this.show(panel);
+            
             if(this.hasBehavior('tabChange')) {
                 this.fireTabChangeEvent(panel);
-            }
-            else {
-                this.show(panel);
             }
         }
 
@@ -198,7 +197,6 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      */
     fireTabChangeEvent : function(panel) {
         var tabChangeBehavior = this.cfg.behaviors['tabChange'],
-        $this = this,
         ext = {
             params: [
                 {name: this.id + '_newTab', value: panel.attr('id')},
@@ -206,10 +204,6 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             ]
         };
         
-        ext.oncomplete = function() {
-            $this.show(panel);
-        };
-
         tabChangeBehavior.call(this, null, ext);
     },
     
