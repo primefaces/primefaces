@@ -5289,7 +5289,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.BaseWidget.extend({
                 if(dateSelectBehavior) {
                     var ext = {
                         params: [
-                            {name: _self.id + '_selectedDate', value: dayDate.getTime() - new Date().getTimezoneOffset()*60000 - _self.cfg.offset}
+//                            {name: _self.id + '_selectedDate', value: dayDate.getTime() - new Date().getTimezoneOffset()*60000 - _self.cfg.offset}
+							{name: _self.id + '_selectedDate', value: dayDate.getTime() - dayDate.getTimezoneOffset()*60000 - _self.cfg.offset}
                         ]
                     };
 
@@ -5370,10 +5371,11 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.BaseWidget.extend({
                         if(id == _self.id){
                             var events = $.parseJSON(data).events;
 
-                            for(var j=0; j < events.length; j++) {
-                                events[j].start = new Date(events[j].start + offset);
-                                events[j].end = new Date(events[j].end + offset);
-                            }
+//                            for(var j=0; j < events.length; j++) {
+//                            	/* IGNORE THIS, Using UTC now */
+//                                events[j].start = new Date(events[j].start + offset);
+//                                events[j].end = new Date(events[j].end + offset);
+//                            }
 
                             callback(events);
                         }

@@ -16,6 +16,7 @@
 package org.primefaces.component.schedule;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -76,23 +77,24 @@ public class ScheduleRenderer extends CoreRenderer {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeZone(schedule.calculateTimeZone());
 
-		writer.write("{");
-		writer.write("\"events\" : [");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+        writer.write("{");
+        writer.write("\"events\" : [");
 		
         if(model != null) {
             for(Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext();) {
                 ScheduleEvent event = iterator.next();
                 calendar.setTime(event.getStartDate());
-                long startDateInMillis = calendar.getTimeInMillis();
-
+                String startDateInMillis = df.format(calendar.getTime());
+                
                 calendar.setTime(event.getEndDate());
-                long endDateInMillis = calendar.getTimeInMillis();
+                String endDateInMillis = df.format(calendar.getTimeInMillis());
 
                 writer.write("{");
                 writer.write("\"id\": \"" + event.getId() + "\"");	
                 writer.write(",\"title\": \"" + escapeText(event.getTitle()) + "\"");
-                writer.write(",\"start\": " + startDateInMillis);	
-                writer.write(",\"end\": " + endDateInMillis);	
+                writer.write(",\"start\": \"" + startDateInMillis + "\"");	
+                writer.write(",\"end\": \"" + endDateInMillis + "\"");	
                 writer.write(",\"allDay\":" + event.isAllDay());
                 writer.write(",\"editable\":" + event.isEditable());
                 if(event.getStyleClass() != null)
