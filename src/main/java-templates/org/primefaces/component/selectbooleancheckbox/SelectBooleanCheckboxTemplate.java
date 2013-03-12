@@ -5,3 +5,7 @@
     public final static String CHECKBOX_ICON_CLASS = "ui-checkbox-icon";
     public final static String CHECKBOX_CHECKED_ICON_CLASS = "ui-icon ui-icon-check";
     public final static String LABEL_CLASS = "ui-checkbox-label";
+
+    public String getInputClientId() {
+        return this.getClientId(getFacesContext()) + "_input";
+    }
