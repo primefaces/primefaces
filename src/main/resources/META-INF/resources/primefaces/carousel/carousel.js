@@ -66,11 +66,11 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
      * Autoplay startup.
      */
     startAutoplay: function(){
-        var _self = this;
-        if(this.cfg.autoPlayInterval){
+        var $this = this;
+        if(this.cfg.autoplayInterval){
             setInterval(function() {
-                _self.next();
-            }, this.cfg.autoPlayInterval);
+                $this.next();
+            }, this.cfg.autoplayInterval);
         }
     },
     
