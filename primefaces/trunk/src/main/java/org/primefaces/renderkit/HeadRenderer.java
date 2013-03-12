@@ -34,6 +34,7 @@ import org.primefaces.util.Constants;
  * - First Facet
  * - Theme CSS
  * - Registered Resources
+ * - Head Content
  * - Last Facet
  */
 public class HeadRenderer extends Renderer {
@@ -42,11 +43,6 @@ public class HeadRenderer extends Renderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("head", component);
-    }
-
-    @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         
         //First facet
         UIComponent first = component.getFacet("first");
@@ -78,6 +74,11 @@ public class HeadRenderer extends Renderer {
         for (UIComponent resource : viewRoot.getComponentResources(context, "head")) {
             resource.encodeAll(context);
         }
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         
         //Last facet
         UIComponent last = component.getFacet("last");
