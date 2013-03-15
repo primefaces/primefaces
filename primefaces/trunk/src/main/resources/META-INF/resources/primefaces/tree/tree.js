@@ -190,7 +190,9 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     addToSelection: function(rowKey) {
-        this.selections.push(rowKey);
+        if(!PrimeFaces.inArray(this.selections, rowKey)) {
+            this.selections.push(rowKey);
+        }
     },
     
     removeFromSelection: function(rowKey) {
