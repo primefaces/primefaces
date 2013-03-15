@@ -294,7 +294,9 @@ public class UIData extends javax.faces.component.UIData {
             
             for(UIComponent child : this.getChildren()) {
                 if(child.isRendered()) {
-                    process(context, child, phaseId);
+                    for(UIComponent grandkid : child.getChildren()) {
+                        process(context, grandkid, phaseId);
+                    }
                 }
             }            
         }
