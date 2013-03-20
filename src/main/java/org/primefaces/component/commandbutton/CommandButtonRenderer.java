@@ -41,6 +41,8 @@ public class CommandButtonRenderer extends CoreRenderer {
 		if(context.getExternalContext().getRequestParameterMap().containsKey(param)) {
 			component.queueEvent(new ActionEvent(component));
 		}
+        
+        decodeBehaviors(context, component);
 	}
 
 	@Override
@@ -134,7 +136,9 @@ public class CommandButtonRenderer extends CoreRenderer {
 		String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("CommandButton", button.resolveWidgetVar(), clientId, false);
-		
+        
+		encodeClientBehaviors(context, button, wb);
+        
         startScript(writer, clientId);
         writer.write(wb.build());
 		endScript(writer);

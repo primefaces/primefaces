@@ -363,6 +363,50 @@
 
             return this.scrollbarWidth;
         },
+                
+        openDialog : function(cfg) {
+            var dialogId = cfg.sourceComponentId + '_dlg',
+            dialogWidget = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget';
+            dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-draggable ui-resizable ui-overlay-hidden" data-url="' + cfg.url +  '"/>');
+            dialogDOM.append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top><span class="ui-dialog-title">Dialog</span>' +
+                    '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' + 
+                    '<div class="ui-dialog-content ui-widget-content" style="height: auto;">' +
+                    '<iframe name="' + cfg.name + '" src="' + cfg.url + '" width="640" height="480"/>' + 
+                    '</div>').appendTo(document.body);
+
+            PrimeFaces.cw('Dialog', dialogWidget, {
+                id: dialogId,
+                visible: true,
+                position: 'center',
+                sourceComponentId: cfg.sourceComponentId,
+                sourceWidget: cfg.sourceWidget
+            });
+        },
+
+        hideDialog : function(cfg) {
+            var url = cfg.url.replace(/xhtml/g, 'jsf'),
+            dlg = $(parent.document.body).children('div.ui-dialog').filter(function() {
+            return $(this).data('url') === url;
+            }),
+            dlgWidget = parent[dlg.attr('id').split('_dlg')[0].replace(/:/g, '_') + '_dlgwidget'];
+
+            dlgWidget.hide();
+            var sourceWidget = dlgWidget.cfg.sourceWidget;
+
+            if(sourceWidget&&sourceWidget.cfg.behaviors) {
+                var dialogReturnBehavior = sourceWidget.cfg.behaviors['dialogReturn'];
+
+                if(dialogReturnBehavior) {
+                    var ext = {
+                            params: [
+                                {name: dlgWidget.cfg.sourceComponentId + '_url', value: cfg.url}
+                            ]
+                        };
+
+                    dialogReturnBehavior.call(this, null, ext);
+                }
+            }
+        },
 
         locales : {},
 

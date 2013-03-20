@@ -120,4 +120,15 @@ public class DefaultRequestContext extends RequestContext {
         
         reset(list);
     }
+
+    @Override
+    public void returnFromDialog(Object data) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String,Object> session = context.getExternalContext().getSessionMap();
+        String viewId = context.getViewRoot().getViewId();
+        String url = context.getExternalContext().getRequestContextPath() + viewId;
+        session.put(url, data);
+        
+        this.execute("PrimeFaces.hideDialog({url:'" + url + "'});");
+    }
 }
