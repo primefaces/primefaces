@@ -102,7 +102,7 @@ import org.primefaces.component.panel.Panel;
         ELContext eLContext = facesContext.getELContext();
         
         ValueExpression collapsedVE = this.getValueExpression("collapsed");
-        if(collapsedVE != null) {
+        if(collapsedVE != null && !collapsedVE.isReadOnly(eLContext)) {
             collapsedVE.setValue(eLContext, this.isCollapsed());
             getStateHelper().put(Panel.PropertyKeys.collapsed, null);
         }
