@@ -59,10 +59,11 @@
 
 .ui-chkbox .ui-chkbox-label {
     cursor: pointer;
-    margin: 0 3px;
+    margin: 3px 0 0 3px;
     outline: medium none;
     z-index: 1;
-    float: left;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .ui-selectmanycheckbox label,
