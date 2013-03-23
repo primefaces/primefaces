@@ -21,6 +21,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.config.ConfigContainer;
+import org.primefaces.context.RequestContext;
+
 /**
  * Helper to generate javascript code of an ajax call
  */
@@ -131,8 +134,10 @@ public class AjaxRequestBuilder {
     }
     
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet) {
-        //component can override global setting
-        boolean partialSubmit = partialSubmitSet ? value : ComponentUtils.isPartialSubmitEnabled(FacesContext.getCurrentInstance());
+        ConfigContainer config = RequestContext.getCurrentInstance().getConfig();
+    	
+    	//component can override global setting
+        boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
         
         if(partialSubmit) {
             buffer.append(",partialSubmit:true");
