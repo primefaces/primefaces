@@ -10,6 +10,7 @@ import java.util.Collections;
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -115,11 +116,7 @@ import javax.faces.component.visit.VisitResult;
         }
         else {
             if(this.getVar() == null) {
-                Iterator kids = getFacetsAndChildren();
-                while (kids.hasNext()) {
-                    UIComponent kid = (UIComponent) kids.next();
-                    kid.processDecodes(context);
-                }
+            	ComponentUtils.processDecodesOfFacetsAndChilds(this, context);
                 this.decode(context);
             }
             else {
@@ -147,11 +144,7 @@ import javax.faces.component.visit.VisitResult;
         }
         else {
             if(this.getVar() == null) {
-                Iterator kids = getFacetsAndChildren();
-                while (kids.hasNext()) {
-                    UIComponent kid = (UIComponent) kids.next();
-                    kid.processValidators(context);
-                }
+            	ComponentUtils.processValidatorsOfFacetsAndChilds(this, context);
             }
             else {
                 super.processValidators(context);
@@ -184,11 +177,7 @@ import javax.faces.component.visit.VisitResult;
         }
         else {
             if(this.getVar() == null) {
-                Iterator kids = getFacetsAndChildren();
-                while (kids.hasNext()) {
-                    UIComponent kid = (UIComponent) kids.next();
-                    kid.processUpdates(context);
-                }
+            	ComponentUtils.processUpdatesOfFacetsAndChilds(this, context);
             }
             else {
                 super.processUpdates(context);
