@@ -21,14 +21,16 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
-
 import javax.faces.context.FacesContext;
+
+import org.primefaces.config.ConfigContainer;
 import org.primefaces.util.WidgetBuilder;
 import org.primefaces.visit.ResetInputVisitCallback;
 
@@ -36,17 +38,29 @@ public class DefaultRequestContext extends RequestContext {
 
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
+    private final static String CONFIG_KEY = ConfigContainer.class.getName();
+
     private Map<String, Object> attributes;
     private WidgetBuilder widgetBuilder;
+    private FacesContext context;
+    private ConfigContainer config;
 
-    public DefaultRequestContext() {
-        attributes = new HashMap<String, Object>();
-        widgetBuilder = new WidgetBuilder();
+    public DefaultRequestContext(FacesContext context) {
+    	this.context = context;
+    	this.attributes = new HashMap<String, Object>();
+    	this.widgetBuilder = new WidgetBuilder();
+
+    	// get config from application map
+    	this.config = (ConfigContainer) context.getExternalContext().getApplicationMap().get(CONFIG_KEY);
+    	if (this.config == null) {
+    		this.config = new ConfigContainer(context);
+			context.getExternalContext().getApplicationMap().put(CONFIG_KEY, this.config);
+    	}
     }
 
     @Override
     public boolean isAjaxRequest() {
-        return FacesContext.getCurrentInstance().getPartialViewContext().isAjaxRequest();
+        return context.getPartialViewContext().isAjaxRequest();
     }
 
     @Override
@@ -58,7 +72,7 @@ public class DefaultRequestContext extends RequestContext {
     public void execute(String script) {
         getScriptsToExecute().add(script);
     }
-    
+
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, Object> getCallbackParams() {
@@ -68,7 +82,8 @@ public class DefaultRequestContext extends RequestContext {
         return (Map<String, Object>) attributes.get(CALLBACK_PARAMS_KEY);
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
     public List<String> getScriptsToExecute() {
         if(attributes.get(EXECUTE_SCRIPT_KEY) == null) {
             attributes.put(EXECUTE_SCRIPT_KEY, new ArrayList());
@@ -76,10 +91,11 @@ public class DefaultRequestContext extends RequestContext {
         return (List<String>) attributes.get(EXECUTE_SCRIPT_KEY);
     }
 
-    public WidgetBuilder getWidgetBuilder() {
+    @Override
+	public WidgetBuilder getWidgetBuilder() {
         return widgetBuilder;
     }
-    
+
     @Override
     public void scrollTo(String clientId) {
         this.execute("PrimeFaces.scrollTo('" + clientId +  "');");
@@ -87,48 +103,61 @@ public class DefaultRequestContext extends RequestContext {
 
     @Override
     public void update(String clientId) {
-        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(clientId);
+    	context.getPartialViewContext().getRenderIds().add(clientId);
     }
 
     @Override
     public void update(Collection<String> collection) {
-        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().addAll(collection);
+    	context.getPartialViewContext().getRenderIds().addAll(collection);
     }
 
     @Override
-    public void reset(Collection<String> ids) {        
-        FacesContext context = FacesContext.getCurrentInstance();
+    public void reset(Collection<String> ids) {
         EnumSet<VisitHint> hints = EnumSet.of(VisitHint.SKIP_UNRENDERED);
         VisitContext visitContext = VisitContext.createVisitContext(context, null, hints);
         VisitCallback visitCallback = new ResetInputVisitCallback();
         UIViewRoot root = context.getViewRoot();
-                
+
         for(String id : ids) {
             UIComponent targetComponent = root.findComponent(id);
             if(targetComponent == null) {
                 throw new FacesException("Cannot find component with identifier \"" + id + "\" referenced from viewroot.");
             }
-            
+
             targetComponent.visitTree(visitContext, visitCallback);
         }
     }
-    
+
     @Override
     public void reset(String id) {
         Collection<String> list = new ArrayList<String>();
         list.add(id);
-        
+
         reset(list);
     }
 
     @Override
     public void returnFromDialog(Object data) {
-        FacesContext context = FacesContext.getCurrentInstance();
         Map<String,Object> session = context.getExternalContext().getSessionMap();
         String viewId = context.getViewRoot().getViewId();
         String url = context.getExternalContext().getRequestContextPath() + viewId;
         session.put(url, data);
-        
+
         this.execute("PrimeFaces.hideDialog({url:'" + url + "'});");
     }
+    
+    @Override
+    public void release() {
+        attributes = null;
+        widgetBuilder = null;;
+        context = null;
+        config = null;
+    	
+    	setCurrentInstance(null);
+    }
+
+	@Override
+	public ConfigContainer getConfig() {
+		return config;
+	}
 }

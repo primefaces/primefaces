@@ -32,6 +32,8 @@ import javax.faces.model.SelectItem;
 import javax.faces.validator.BeanValidator;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.config.ConfigContainer;
+import org.primefaces.context.RequestContext;
 
 public class ComponentUtils {
 
@@ -51,8 +53,9 @@ public class ComponentUtils {
 			if(component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
+                ConfigContainer config = RequestContext.getCurrentInstance().getConfig();
                 
-                if(ComponentUtils.considerEmptyStringAsNull(context) && submittedValue == null && context.isValidationFailed() && !input.isValid()) {
+                if(config.isInterpretEmptyStringAsNull() && submittedValue == null && context.isValidationFailed() && !input.isValid()) {
                     return null;
                 }
                 else if(submittedValue != null) {
@@ -342,50 +345,7 @@ public class ComponentUtils {
             }
         }
     }
-    
-    public static boolean validateEmptyFields(FacesContext context) {
-        ExternalContext externalContext = context.getExternalContext();
-        String value = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
 
-        if(null == value) {
-            value = (String) externalContext.getApplicationMap().get(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
-        }
-
-        if(value == null || value.equals("auto")) {
-            return isBeansValidationAvailable(context);
-        }
-        else {
-            return Boolean.valueOf(value);
-        }
-    }
-    
-    public static boolean isBeansValidationAvailable(FacesContext context) {
-        boolean result = false;
-        String beanValidationAvailableKey = "javax.faces.private.BEANS_VALIDATION_AVAILABLE";
-
-        Map<String,Object> appMap = context.getExternalContext().getApplicationMap();
-        
-        if (appMap.containsKey(beanValidationAvailableKey)) {
-            result = (Boolean) appMap.get(beanValidationAvailableKey);
-        } else {
-            try {
-                new BeanValidator();
-                appMap.put(beanValidationAvailableKey, result = true);
-            } catch (Throwable t) {
-                appMap.put(beanValidationAvailableKey, Boolean.FALSE);
-            }
-        }
-
-        return result;
-    }
-    
-    public static boolean isPartialSubmitEnabled(FacesContext context) {
-        ExternalContext externalContext = context.getExternalContext();
-        String value = externalContext.getInitParameter(Constants.SUBMIT_PARAM);
-        
-        return (value == null) ? false : value.equalsIgnoreCase("partial");
-    }
-    
     public static boolean isValueBlank(String value) {
 		if(value == null)
 			return true;
@@ -394,17 +354,9 @@ public class ComponentUtils {
     }
     
     public static boolean isRTL(FacesContext context, RTLAware component) {
-        ExternalContext externalContext = context.getExternalContext();
-        String value = externalContext.getInitParameter(Constants.DIRECTION_PARAM);
-        boolean globalValue = (value == null) ? false : value.equalsIgnoreCase("rtl");
+        boolean globalValue = RequestContext.getCurrentInstance().getConfig().isRightToLeft();
         
         return globalValue||component.isRTL();
     }
-    
-    public static boolean considerEmptyStringAsNull(FacesContext context) {
-        ExternalContext externalContext = context.getExternalContext();
-        String value = externalContext.getInitParameter(Constants.INTERPRET_EMPTY_STRING_AS_NULL);
-        
-        return (value == null) ? false : Boolean.valueOf(value);
-    } 
+
 }

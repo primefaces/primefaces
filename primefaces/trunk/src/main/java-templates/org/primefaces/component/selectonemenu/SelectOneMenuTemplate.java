@@ -1,4 +1,6 @@
 import org.primefaces.component.column.Column;
+import org.primefaces.config.ConfigContainer;
+import org.primefaces.context.RequestContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
@@ -53,8 +55,10 @@ import org.primefaces.util.MessageFactory;
                 setValid(false);
             }
 
+            ConfigContainer config = RequestContext.getCurrentInstance().getConfig();
+            
             //other validators
-            if(isValid() && (!isEmpty(value) || ComponentUtils.validateEmptyFields(context))) {
+            if(isValid() && (!isEmpty(value) || config.isValidateEmptyFields())) {
                 Validator[] validators = getValidators();
                     
                 for(Validator validator : validators) {

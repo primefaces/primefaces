@@ -478,6 +478,6 @@ public abstract class CoreRenderer extends Renderer {
     }
     
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
-        return ((RequestContext) context.getAttributes().get(Constants.REQUEST_CONTEXT_ATTR)).getWidgetBuilder();
+        return RequestContext.getCurrentInstance().getWidgetBuilder();
     }
 }

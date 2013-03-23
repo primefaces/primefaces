@@ -18,8 +18,8 @@ package org.primefaces.context;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import javax.faces.context.FacesContext;
-import org.primefaces.util.Constants;
+
+import org.primefaces.config.ConfigContainer;
 import org.primefaces.util.WidgetBuilder;
 
 /**
@@ -32,11 +32,18 @@ import org.primefaces.util.WidgetBuilder;
  */
 public abstract class RequestContext {
 
-    /**
-     * @return Current RequestRequest instance in thread-local.
-     */
+	private static final ThreadLocal<RequestContext> instance = new ThreadLocal<RequestContext>();
+
     public static RequestContext getCurrentInstance() {
-        return (RequestContext) FacesContext.getCurrentInstance().getAttributes().get(Constants.REQUEST_CONTEXT_ATTR);
+        return instance.get();
+    }
+
+    public static void setCurrentInstance(final RequestContext context) {
+        if (context == null) {
+            instance.remove();
+        } else {
+            instance.set(context);
+        }
     }
 
     /**
@@ -66,13 +73,13 @@ public abstract class RequestContext {
      * @param script Javascript statement to execute.
      */
     public abstract void execute(String script);
-    
+
     /**
      * Scroll to a component after ajax request is completed.
      * @param clientId Client side identifier of the component.
      */
     public abstract void scrollTo(String clientId);
-    
+
     /**
      * Update a component with ajax.
      * @param name Client side identifier of the component.
@@ -84,23 +91,27 @@ public abstract class RequestContext {
      * @param collection Client side identifiers of the components.
      */
     public abstract void update(Collection<String> collection);
-    
+
     /**
      * Reset an editableValueHolder.
      * @param id Client side identifier of the component.
      */
     public abstract void reset(String id);
-    
+
     /**
      * Reset a collection of editableValueHolders.
      * @param ids Client side identifiers of the components.
      */
     public abstract void reset(Collection<String> ids);
-    
+
     /**
      * @return Shared WidgetBuilder instance of the current request
      */
     public abstract WidgetBuilder getWidgetBuilder();
-    
+
     public abstract void returnFromDialog(Object data);
+    
+    public abstract ConfigContainer getConfig();
+
+    public abstract void release();
 }
