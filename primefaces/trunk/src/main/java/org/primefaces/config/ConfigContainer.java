@@ -15,10 +15,14 @@
  */
 package org.primefaces.config;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.BeanValidator;
+import javax.validation.Validation;
 
 import org.primefaces.util.Constants;
 
@@ -27,6 +31,8 @@ import org.primefaces.util.Constants;
  */
 public class ConfigContainer {
 
+	private static final Logger LOG = Logger.getLogger(ConfigContainer.class.getName());
+	
 	private boolean validateEmptyFields = false;
 	private boolean beanValidationAvailable = false;
 	private boolean partialSubmitEnabled = false;
@@ -47,13 +53,8 @@ public class ConfigContainer {
         value = externalContext.getInitParameter(Constants.SUBMIT_PARAM);
         partialSubmitEnabled = (value == null) ? false : value.equalsIgnoreCase("partial");
         
-        try {
-            new BeanValidator();
-            beanValidationAvailable = true;
-        } catch (Throwable t) {
-        	beanValidationAvailable = false;
-        }
-        
+        beanValidationAvailable = checkIfBeanValidationIsAvailable();
+
         value = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
         if (null == value) {
             value = (String) externalContext.getApplicationMap().get(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
@@ -65,6 +66,32 @@ public class ConfigContainer {
         }
 	}
 
+    private boolean checkIfBeanValidationIsAvailable()
+    {
+    	boolean available = false;
+
+    	// check if class is available
+        try {
+        	available = Class.forName("javax.validation.Validation") != null;
+        } catch (ClassNotFoundException e) {
+        	available = false;
+        }
+
+        if (available) {
+            // Trial-error approach to check for Bean Validation impl existence.
+            // If any Exception occurs here, we assume that Bean Validation is not available.
+            // The cause may be anything, i.e. NoClassDef, config error...
+            try {
+            	Validation.buildDefaultValidatorFactory().getValidator();
+            } catch (Throwable t) {
+            	LOG.log(Level.SEVERE, "Could not build BeanValidation default ValidatorFactory.", t);
+            	available = false;
+            }
+        }
+
+        return available;
+    }
+	
 	public boolean isValidateEmptyFields() {
 		return validateEmptyFields;
 	}

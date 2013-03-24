@@ -32,17 +32,17 @@ import org.primefaces.util.WidgetBuilder;
  */
 public abstract class RequestContext {
 
-	private static final ThreadLocal<RequestContext> instance = new ThreadLocal<RequestContext>();
+	private static final ThreadLocal<RequestContext> INSTANCE = new ThreadLocal<RequestContext>();
 
     public static RequestContext getCurrentInstance() {
-        return instance.get();
+        return INSTANCE.get();
     }
 
     public static void setCurrentInstance(final RequestContext context) {
         if (context == null) {
-            instance.remove();
+        	INSTANCE.remove();
         } else {
-            instance.set(context);
+        	INSTANCE.set(context);
         }
     }
 
