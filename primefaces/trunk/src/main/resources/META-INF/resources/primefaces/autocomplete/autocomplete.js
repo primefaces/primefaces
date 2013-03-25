@@ -372,7 +372,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         //start callback
         if(this.cfg.onstart) {
-            this.cfg.onstart.call(this, query);
+            var retVal = this.cfg.onstart.call(this, query);     
+            if(retVal === false) {
+                return;
+            }        
         }
         
         if(this.cfg.itemtip) {
