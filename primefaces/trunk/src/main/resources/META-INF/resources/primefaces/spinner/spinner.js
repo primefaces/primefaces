@@ -29,47 +29,50 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindEvents: function() {
-        var _self = this;
+        var $this = this;
 
         //visuals for spinner buttons
         this.jq.children('.ui-spinner-button')
-            .mouseover(function() {
+            .on('mouseover.spinner', function() {
                 $(this).addClass('ui-state-hover');
-            }).mouseout(function() {
+            })
+            .on('mouseout.spinner', function() {
                 $(this).removeClass('ui-state-hover ui-state-active');
 
-                if(_self.timer) {
-                    clearInterval(_self.timer);
+                if($this.timer) {
+                    clearInterval($this.timer);
                 }
-            }).mouseup(function() {
-                clearInterval(_self.timer);
+            })
+            .on('mouseup.spinner', function() {
+                clearInterval($this.timer);
                 $(this).removeClass('ui-state-active').addClass('ui-state-hover');
-            }).mousedown(function(e) {
+            })
+            .on('mousedown.spinner', function(e) {
                 var element = $(this),
                 dir = element.hasClass('ui-spinner-up') ? 1 : -1;
 
                 element.removeClass('ui-state-hover').addClass('ui-state-active');
                 
-                if(_self.input.is(':not(:focus)')) {
-                    _self.input.focus();
+                if($this.input.is(':not(:focus)')) {
+                    $this.input.focus();
                 }
 
-                _self.repeat(null, dir);
+                $this.repeat(null, dir);
 
                 //keep focused
                 e.preventDefault();
         });
 
-        this.input.keydown(function (e) {        
+        this.input.on('keydown.spinner', function (e) {        
             var keyCode = $.ui.keyCode;
             
             switch(e.which) {            
                 case keyCode.UP:
-                    _self.spin(_self.cfg.step);
+                    $this.spin($this.cfg.step);
                 break;
 
                 case keyCode.DOWN:
-                    _self.spin(-1 * _self.cfg.step);
+                    $this.spin(-1 * $this.cfg.step);
                 break;
 
                 default:
@@ -80,25 +83,24 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         
         this.input.keyup(function () { 
-            //update value from manual user input
-            _self.updateValue();
+            $this.updateValue();
         })
         .blur(function () { 
-            //format value onblur
-            _self.format();
+            $this.format();
         })
         .focus(function () {
-            //remove formatting
-            _self.input.val(_self.value);
+            if($this.value !== null) {
+                $this.input.val($this.value);
+            }
         });
         
         //mousewheel
         this.input.bind('mousewheel', function(event, delta) {
-            if(_self.input.is(':focus')) {
+            if($this.input.is(':focus')) {
                 if(delta > 0)
-                    _self.spin(_self.cfg.step);
+                    $this.spin($this.cfg.step);
                 else
-                    _self.spin(-1 * _self.cfg.step);
+                    $this.spin(-1 * $this.cfg.step);
                 
                 return false;
             }
@@ -123,13 +125,14 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
     },
     
     spin: function(step) {
-        var newValue = this.value + step;
+        var currentValue = this.value ? this.value : 0,
+        newValue = currentValue + step;
 
-        if(this.cfg.min != undefined && newValue < this.cfg.min) {
+        if(this.cfg.min !== undefined && newValue < this.cfg.min) {
             newValue = this.cfg.min;
         }
 
-        if(this.cfg.max != undefined && newValue > this.cfg.max) {
+        if(this.cfg.max !== undefined && newValue > this.cfg.max) {
             newValue = this.cfg.max;
         }
 
@@ -146,11 +149,11 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
     updateValue: function() {
         var value = this.input.val();
 
-        if(value == '') {
-            if(this.cfg.min != undefined)
+        if($.trim(value) === '') {
+            if(this.cfg.min !== undefined)
                 this.value = this.cfg.min;
             else
-                this.value = 0;
+                this.value = null;
         }
         else {
             if(this.cfg.step)
@@ -170,11 +173,11 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
     initValue: function() {
         var value = this.input.val();
 
-        if(value == '') {
-            if(this.cfg.min != undefined)
+        if($.trim(value) === '') {
+            if(this.cfg.min !== undefined)
                 this.value = this.cfg.min;
             else
-                this.value = 0;
+                this.value = null;
         }
         else {
             if(this.cfg.prefix)
@@ -191,15 +194,17 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
     },
      
     format: function() {
-        var value = this.value;
+        if(this.value !== null) {
+            var value = this.value;
 
-        if(this.cfg.prefix)
-            value = this.cfg.prefix + value;
+            if(this.cfg.prefix)
+                value = this.cfg.prefix + value;
 
-        if(this.cfg.suffix)
-            value = value + this.cfg.suffix;
-        
-        this.input.val(value);
+            if(this.cfg.suffix)
+                value = value + this.cfg.suffix;
+
+            this.input.val(value);
+        }
     },
     
     addARIA: function() {
@@ -207,10 +212,10 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.input.attr('aria-multiline', false);
         this.input.attr('aria-valuenow', this.value);
 
-        if(this.cfg.min != undefined) 
+        if(this.cfg.min !== undefined) 
             this.input.attr('aria-valuemin', this.cfg.min);
 
-        if(this.cfg.max != undefined) 
+        if(this.cfg.max !== undefined) 
             this.input.attr('aria-valuemax', this.cfg.max);
 
         if(this.input.prop('disabled'))

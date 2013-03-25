@@ -120,10 +120,9 @@ public class SpinnerRenderer extends InputRenderer {
         writer.writeAttribute("autocomplete", "off", null);
 
 		String valueToRender = ComponentUtils.getValueToRender(context, spinner);
-        valueToRender = spinner.getPrefix() != null ? spinner.getPrefix() + valueToRender : valueToRender;
-        valueToRender = spinner.getSuffix() != null ? valueToRender + spinner.getSuffix(): valueToRender;
-        
-		if(valueToRender != null) {
+        if(valueToRender != null) {
+            valueToRender = spinner.getPrefix() != null ? spinner.getPrefix() + valueToRender : valueToRender;
+            valueToRender = spinner.getSuffix() != null ? valueToRender + spinner.getSuffix(): valueToRender;
 			writer.writeAttribute("value", valueToRender, null);
 		}
         
