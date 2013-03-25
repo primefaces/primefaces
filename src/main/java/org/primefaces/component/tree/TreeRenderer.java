@@ -403,6 +403,17 @@ public class TreeRenderer extends CoreRenderer {
 	public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, boolean dynamic, boolean checkbox) throws IOException {
         
         if(rowKey != null) {
+            //preselection
+            boolean selected = node.isSelected();
+            if(selected) {
+                tree.getSelectedRowKeys().add(rowKey);
+            }
+            
+            UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
+            if(!uiTreeNode.isRendered()) {
+                return;
+            }
+            
             ResponseWriter writer = context.getResponseWriter();
             tree.setRowKey(rowKey);
             boolean isLeaf = node.isLeaf();
@@ -410,15 +421,8 @@ public class TreeRenderer extends CoreRenderer {
             boolean selectable = node.isSelectable();
             String toggleIcon = expanded ? Tree.EXPANDED_ICON_CLASS_V : (tree.isRTLRendering() ? Tree.COLLAPSED_ICON_RTL_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V);
             String stateIcon = isLeaf ? Tree.LEAF_ICON_CLASS : toggleIcon;
-            UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
             Object datakey = tree.getDatakey();
             String nodeId = clientId + UINamingContainer.getSeparatorChar(context) + rowKey;
-
-            //preselection
-            boolean selected = node.isSelected();
-            if(selected) {
-                tree.getSelectedRowKeys().add(rowKey);
-            }
 
             //style class of node
             String containerClass = isLeaf ? Tree.LEAF_NODE_CLASS : Tree.PARENT_NODE_CLASS;
