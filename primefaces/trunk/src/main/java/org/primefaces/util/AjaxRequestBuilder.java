@@ -28,7 +28,9 @@ import org.primefaces.context.RequestContext;
  * Helper to generate javascript code of an ajax call
  */
 public class AjaxRequestBuilder {
-    
+
+	private static final Pattern ID_PATTERN = Pattern.compile("@\\(.+\\)\\s*");
+	
     protected StringBuilder buffer;
     
     private boolean preventDefault = false;
@@ -56,8 +58,7 @@ public class AjaxRequestBuilder {
     }
     
     private String[] parseIds(String ids) {
-        Pattern p = Pattern.compile("@\\(.+\\)\\s*");
-        Matcher m = p.matcher(ids);
+        Matcher m = ID_PATTERN.matcher(ids);
         String selector, regular;
         
         if(m.find()) {
