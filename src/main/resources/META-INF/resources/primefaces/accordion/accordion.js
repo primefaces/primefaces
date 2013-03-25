@@ -75,7 +75,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         //Call user onTabChange callback
         if(this.cfg.onTabChange) {
             var result = this.cfg.onTabChange.call(this, panel);
-            if(result == false)
+            if(result === false)
                 return false;
         }
 
@@ -116,6 +116,10 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
         this.removeFromSelection(index);
         this.saveState();
+        
+        if(this.hasBehavior('tabClose')) {
+            this.fireTabCloseEvent(panel);
+        }
     },
     
     show: function(panel) {
@@ -155,7 +159,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 id = update.attr('id'),
                 content = update.text();
 
-                if(id == $this.id){
+                if(id === $this.id){
                     $(panel).html(content);
 
                     if($this.cfg.cache) {
@@ -192,9 +196,6 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    /**
-     * Fires an ajax tabChangeEvent if a tabChangeListener is defined on server side
-     */
     fireTabChangeEvent : function(panel) {
         var tabChangeBehavior = this.cfg.behaviors['tabChange'],
         ext = {
@@ -205,6 +206,18 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         };
         
         tabChangeBehavior.call(this, null, ext);
+    },
+
+    fireTabCloseEvent : function(panel) {
+        var tabCloseBehavior = this.cfg.behaviors['tabClose'],
+        ext = {
+            params: [
+                {name: this.id + '_tabId', value: panel.attr('id')},
+                {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
+            ]
+        };
+        
+        tabCloseBehavior.call(this, null, ext);
     },
     
     markAsLoaded: function(panel) {

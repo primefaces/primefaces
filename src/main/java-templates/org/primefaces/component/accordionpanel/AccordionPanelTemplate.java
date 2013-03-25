@@ -1,5 +1,6 @@
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
+import org.primefaces.event.TabCloseEvent;
 import javax.el.ValueExpression;
 import java.util.Iterator;
 import java.util.Map;
@@ -28,7 +29,7 @@ import javax.faces.component.visit.VisitResult;
     public final static String ACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-helper-reset ui-widget-content";
     public final static String INACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-helper-reset ui-widget-content ui-helper-hidden";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(DEFAULT_EVENT));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("tabChange","tabClose"));
 
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
@@ -90,6 +91,21 @@ import javax.faces.component.visit.VisitResult;
 
                 changeEvent.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(changeEvent);
+            }
+            else if(eventName.equals("tabClose")) {
+                String tabClientId = params.get(clientId + "_tabId");
+                TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
+
+                if(this.getVar() != null) {
+                    int index = Integer.parseInt(params.get(clientId + "_tabindex"));
+                    setRowIndex(index);
+                    closeEvent.setData(this.getRowData());
+                    closeEvent.setTab((Tab) getChildren().get(0));
+                    setRowIndex(-1);
+                }
+
+                closeEvent.setPhaseId(behaviorEvent.getPhaseId());
+                super.queueEvent(closeEvent);
             }
         }
         else {
