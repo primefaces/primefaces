@@ -533,7 +533,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         }
         
         wb.callback("onstart", "function(request)", ac.getOnstart())
-            .callback("oncomplete", "function(response)", ac.getOnstart());
+            .callback("oncomplete", "function(response)", ac.getOncomplete());
         
         encodeClientBehaviors(context, ac, wb);
 
