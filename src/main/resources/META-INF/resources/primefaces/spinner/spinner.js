@@ -162,6 +162,14 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 value = parseInt(value);
             
             if(!isNaN(value)) {
+                if(this.cfg.max !== undefined && value > this.cfg.max) {
+                    value = this.cfg.max;
+                }
+                
+                if(this.cfg.min !== undefined && value < this.cfg.min) {
+                    value = this.cfg.min;
+                }
+                
                 this.value = value;
             }
         }
