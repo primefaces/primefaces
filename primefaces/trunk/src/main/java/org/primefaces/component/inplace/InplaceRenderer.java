@@ -54,6 +54,9 @@ public class InplaceRenderer extends CoreRenderer {
         boolean validationFailed = context.isValidationFailed();
         String displayStyle = validationFailed ? "none" : "inline";
         String contentStyle = validationFailed ? "inline" : "none";
+        
+        UIComponent outputFacet = inplace.getFacet("output");
+        UIComponent inputFacet = inplace.getFacet("input");
 
         //container
 		writer.startElement("span", inplace);
@@ -68,7 +71,12 @@ public class InplaceRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId + "_display", "id");
 		writer.writeAttribute("class", displayClass, null);
         writer.writeAttribute("style", "display:" + displayStyle, null);
-		writer.writeText(getLabelToRender(context, inplace), null);
+        
+        if(outputFacet != null)
+            outputFacet.encodeAll(context);
+        else
+            writer.writeText(getLabelToRender(context, inplace), null);
+        
 		writer.endElement("span");
 
         //content
@@ -78,11 +86,13 @@ public class InplaceRenderer extends CoreRenderer {
 			writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
             writer.writeAttribute("style", "display:" + contentStyle, null);
             
-			renderChildren(context, inplace);
+            if(inputFacet != null)
+                inputFacet.encodeAll(context);
+            else
+                renderChildren(context, inplace);
 
-            if(inplace.isEditor()) {
+            if(inplace.isEditor())
                 encodeEditor(context, inplace);
-            }
 
 			writer.endElement("span");
 		}
