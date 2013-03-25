@@ -49,7 +49,7 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return isFilterRequest(context, table);
+        return false;
     }
     
     public boolean shouldEncode(FacesContext context, DataTable table) {
@@ -57,20 +57,7 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public void decode(FacesContext context, DataTable table) {
-        //reset state
-        updateFilteredValue(context, table, null);
-        table.setFirst(0);
-        table.setRowIndex(-1);
-        
-        String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
-        Map<String,UIColumn> columnFilterMap = this.populateColumnFilterMap(context, table);
-        Map<String,String> filterParameterMap = this.populateFilterParameterMap(context, table, columnFilterMap, globalFilterParam);
-
-        table.setFilters(filterParameterMap);
-        
-        if(!table.isLazy()) {
-            filter(context, table, columnFilterMap, globalFilterParam);
-        }
+        throw new RuntimeException("FilterFeature should not decode.");
     }
     
     protected void filter(FacesContext context, DataTable table, Map<String,UIColumn> filterMap, String globalFilterParam) {
@@ -135,10 +122,24 @@ public class FilterFeature implements DataTableFeature {
     }
         
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        //reset state
+        updateFilteredValue(context, table, null);
+        table.setFirst(0);
+        table.setRowIndex(-1);
+        
+        String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+        Map<String,UIColumn> columnFilterMap = this.populateColumnFilterMap(context, table);
+        Map<String,String> filterParameterMap = this.populateFilterParameterMap(context, table, columnFilterMap, globalFilterParam);
+
+        table.setFilters(filterParameterMap);
+        
         if(table.isLazy()) {
             table.loadLazyData();
         }
-        
+        else {
+            filter(context, table, columnFilterMap, globalFilterParam);
+        }
+                
         renderer.encodeTbody(context, table, true);
     }
     
