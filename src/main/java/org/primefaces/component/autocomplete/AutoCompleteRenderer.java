@@ -239,9 +239,13 @@ public class AutoCompleteRenderer extends InputRenderer {
     
     protected void encodeDropDown(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String dropdownClass = "ui-button ui-widget ui-state-default ui-corner-right ui-button-icon-only";
+        if(ac.isDisabled()) {
+            dropdownClass += " ui-state-disabled";
+        }
         
         writer.startElement("button", ac);
-        writer.writeAttribute("class", "ui-button ui-widget ui-state-default ui-corner-right ui-button-icon-only", null);
+        writer.writeAttribute("class", dropdownClass, null);
         writer.writeAttribute("type", "button", null);
         if(ac.getTabindex() != null) {
             writer.writeAttribute("tabindex", ac.getTabindex(), null);
