@@ -27,7 +27,6 @@ public class FeedReaderRenderer extends CoreRenderer {
     
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         FeedReader reader = (FeedReader) component;
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         String var = reader.getVar();

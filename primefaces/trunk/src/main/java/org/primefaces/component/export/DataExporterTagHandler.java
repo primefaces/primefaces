@@ -60,7 +60,6 @@ public class DataExporterTagHandler extends TagHandler {
 			ValueExpression fileNameVE = fileName.getValueExpression(faceletContext, Object.class);
 			ValueExpression pageOnlyVE = null;
 			ValueExpression selectionOnlyVE = null;
-			ValueExpression excludeColumnsVE = null;
 			ValueExpression encodingVE = null;
 			MethodExpression preProcessorME = null;
 			MethodExpression postProcessorME = null;

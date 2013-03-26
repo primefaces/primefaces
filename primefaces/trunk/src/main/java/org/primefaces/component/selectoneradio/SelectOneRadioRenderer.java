@@ -209,7 +209,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
         
     protected void encodeRadioButton(FacesContext context, SelectOneRadio radio, RadioButton button) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+
     }
 
     protected Class getValueType(FacesContext context, UIInput input) {

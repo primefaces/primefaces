@@ -135,8 +135,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 	}
     
     protected void encodeOverlayConfig(FacesContext context, OverlayMenu menu, WidgetBuilder wb) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        
+
         wb.attr("overlay", true)
             .attr("my", menu.getMy())
             .attr("at", menu.getAt());

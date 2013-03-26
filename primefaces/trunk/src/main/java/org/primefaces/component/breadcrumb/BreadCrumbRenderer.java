@@ -114,8 +114,8 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         
         writer.startElement("span", null);
         writer.writeAttribute("class", styleClass, null);
-        if(menuItem.getStyle() != null) {
-            writer.writeAttribute("style", menuItem.getStyle(), null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
         }
         
         writer.startElement("span", null);

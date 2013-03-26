@@ -34,8 +34,8 @@ public class RowEditFeature implements DataTableFeature {
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = table.getClientId(context);
-        int editedRowId = Integer.parseInt(params.get(table.getClientId(context) + "_rowEditIndex"));
-        String action = params.get(table.getClientId(context) + "_rowEditAction");
+        int editedRowId = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
+        String action = params.get(clientId + "_rowEditAction");
         table.setRowIndex(editedRowId);
 
         if(action.equals("cancel")) {
@@ -53,7 +53,7 @@ public class RowEditFeature implements DataTableFeature {
         }
 
         if(table.isRowAvailable()) {
-            renderer.encodeRow(context, table, table.getClientId(context), editedRowId, table.getRowIndexVar());
+            renderer.encodeRow(context, table, clientId, editedRowId, table.getRowIndexVar());
         }
     }
 

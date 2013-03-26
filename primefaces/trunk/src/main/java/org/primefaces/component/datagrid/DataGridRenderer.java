@@ -29,7 +29,6 @@ public class DataGridRenderer extends DataRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DataGrid grid = (DataGrid) component;
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if(grid.isPaginationRequest(context)) {
             grid.updatePaginationData(context, grid);

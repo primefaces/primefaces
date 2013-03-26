@@ -27,7 +27,6 @@ public class DataListRenderer extends DataRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         DataList list = (DataList) component;
 
         if(list.isPaginationRequest(context)) {
@@ -58,7 +57,6 @@ public class DataListRenderer extends DataRenderer {
         boolean hasPaginator = list.isPaginator();
         String paginatorPosition = list.getPaginatorPosition();
         String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
-        UIComponent header = list.getHeader();
         
         if(hasPaginator) {
             list.calculateFirst();

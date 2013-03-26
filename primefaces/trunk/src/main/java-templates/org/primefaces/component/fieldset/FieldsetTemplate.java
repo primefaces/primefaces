@@ -28,7 +28,6 @@ import javax.faces.event.PhaseId;
         if(isRequestSource(context)) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = this.getClientId(context);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             
             if(eventName.equals("toggle")) {

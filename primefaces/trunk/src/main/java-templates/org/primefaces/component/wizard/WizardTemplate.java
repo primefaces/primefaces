@@ -65,8 +65,6 @@ import javax.faces.event.FacesEvent;
         if(event instanceof FlowEvent) {
             FlowEvent flowEvent = (FlowEvent) event;
             FacesContext context = getFacesContext();
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String clientId = this.getClientId(context);
             MethodExpression me = this.getFlowListener();
 
             if(me != null) {
