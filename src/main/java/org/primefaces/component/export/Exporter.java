@@ -63,12 +63,10 @@ public abstract class Exporter {
 	
 	protected List<UIColumn> getColumnsToExport(UIData table) {
         List<UIColumn> columns = new ArrayList<UIColumn>();
-        int columnIndex = -1;
 
         for(UIComponent child : table.getChildren()) {
             if(child instanceof UIColumn) {
                 UIColumn column = (UIColumn) child;
-                columnIndex++;
 
                 columns.add(column);
             }

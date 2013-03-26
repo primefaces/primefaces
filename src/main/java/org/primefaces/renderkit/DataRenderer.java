@@ -89,7 +89,6 @@ public class DataRenderer extends CoreRenderer {
     }
 
     protected void encodePaginatorConfig(FacesContext context, UIData uidata, WidgetBuilder wb) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = uidata.getClientId(context);
         String paginatorPosition = uidata.getPaginatorPosition();
         String paginatorContainers = null;

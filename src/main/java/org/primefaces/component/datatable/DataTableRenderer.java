@@ -1032,9 +1032,7 @@ public class DataTableRenderer extends DataRenderer {
     }
     
     boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex) {
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
-        String var = table.getVar();
-        
+
         table.setRowIndex(currentRowIndex);
         Object currentGroupByData = table.getSortBy();
 

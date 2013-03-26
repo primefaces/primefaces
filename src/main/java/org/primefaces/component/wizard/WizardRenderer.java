@@ -65,7 +65,6 @@ public class WizardRenderer extends CoreRenderer {
     }
     
     protected void encodeStep(FacesContext context, Wizard wizard) throws IOException {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String stepToDisplay = wizard.getStep();
         UIComponent tabToDisplay = null;
         for(UIComponent child : wizard.getChildren()) {
@@ -182,7 +181,6 @@ public class WizardRenderer extends CoreRenderer {
     protected void encodeNavigators(FacesContext facesContext, Wizard wizard) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = wizard.getClientId(facesContext);
-        String widgetVar = wizard.resolveWidgetVar();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-wizard-navbar ui-helper-clearfix", null);

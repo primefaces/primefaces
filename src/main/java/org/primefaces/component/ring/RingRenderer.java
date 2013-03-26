@@ -35,8 +35,6 @@ public class RingRenderer extends CoreRenderer {
 
 	public void encodeMarkup(FacesContext context, Ring ring) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Collection<?> value = (Collection<?>) ring.getValue();
-        String var = ring.getVar();
         String style = ring.getStyle();
         String styleClass = ring.getStyleClass();
         styleClass = styleClass == null ? Ring.STYLE_CLASS : Ring.STYLE_CLASS + " " + ring.getStyleClass();
@@ -69,7 +67,6 @@ public class RingRenderer extends CoreRenderer {
     public void encodeScript(FacesContext context, Ring ring) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ring.getClientId(context);
-        String easing = ring.getEasing();
         
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("Ring", ring.resolveWidgetVar(), clientId, "ring", true)
