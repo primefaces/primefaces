@@ -23,8 +23,8 @@ public class PrimeFacesContext extends FacesContextWrapper {
 	
 	@Override
 	public void release() {
-		wrapped.release();
-
 		RequestContext.getCurrentInstance().release();
+
+		wrapped.release();
 	}
 }
