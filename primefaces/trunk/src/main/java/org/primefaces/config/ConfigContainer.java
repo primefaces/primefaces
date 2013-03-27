@@ -66,8 +66,7 @@ public class ConfigContainer {
         }
 	}
 
-    private boolean checkIfBeanValidationIsAvailable()
-    {
+    private boolean checkIfBeanValidationIsAvailable() {
     	boolean available = false;
 
     	// check if class is available
