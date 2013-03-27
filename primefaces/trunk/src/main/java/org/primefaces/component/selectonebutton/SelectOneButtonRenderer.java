@@ -51,6 +51,9 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         String styleClass = button.getStyleClass();
         styleClass = styleClass == null ? SelectOneButton.STYLE_CLASS : SelectOneButton.STYLE_CLASS + " " + styleClass;
         
+        styleClass = !button.isValid() ? styleClass + " ui-state-error" : styleClass;
+            
+        
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
@@ -98,7 +101,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         
         buttonStyle = selected ? buttonStyle + " ui-state-active" : buttonStyle;
         buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
-        buttonStyle = !button.isValid() ? buttonStyle + " ui-state-error" : buttonStyle;
+      
         
         //button
         writer.startElement("div", null);

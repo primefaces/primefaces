@@ -459,3 +459,21 @@ div.ui-button, .ui-splitbutton {
 .ui-outputlabel .ui-outputlabel-rfi {
     margin-left: 0.4em;
 }
+/* SelectOneButton */
+.ui-selectonebutton{
+    display: inline-block;
+    padding:1px;
+}
+            
+.ui-selectonebutton.ui-state-error{
+    padding:0px;
+}
+/* SelectManyButton */
+.ui-selectmanybutton{
+    display: inline-block;
+    padding:1px;
+}
+            
+.ui-selectmanybutton.ui-state-error{
+    padding:0px;
+}
