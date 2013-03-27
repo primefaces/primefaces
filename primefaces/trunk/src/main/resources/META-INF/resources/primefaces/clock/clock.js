@@ -274,6 +274,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
 /**
  *  PrimeFaces Clock Widget 
  */
+
 PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
@@ -295,6 +296,11 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
             }, this.cfg.syncInterval);
         }
     },
+        
+    refresh: function(cfg) {
+        clearInterval(this.interval);
+        this.init(cfg);
+    },
     
     isClient: function() {
         return this.cfg.mode === 'client';
@@ -308,7 +314,7 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
     },
     
     stop: function() {
-        clearTimeout(this.interval);
+        clearInterval(this.interval);
     },
      
     updateOutput: function() {
