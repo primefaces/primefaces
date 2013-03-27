@@ -2,7 +2,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Arrays;
 
-    public final static String STYLE_CLASS = "ui-selectmanybutton ui-buttonset ui-widget";
+    public final static String STYLE_CLASS = "ui-selectmanybutton ui-buttonset ui-widget ui-corner-all";
 
     private final static String DEFAULT_EVENT = "change";
 

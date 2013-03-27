@@ -51,6 +51,8 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         String style = button.getStyle();
         String styleClass = button.getStyleClass();
         styleClass = styleClass == null ? SelectManyButton.STYLE_CLASS : SelectManyButton.STYLE_CLASS + " " + styleClass;
+        styleClass = !button.isValid() ? styleClass + " ui-state-error" : styleClass;
+
         
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
@@ -110,7 +112,6 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         
         buttonStyle = selected ? buttonStyle + " ui-state-active" : buttonStyle;
         buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
-        buttonStyle = !button.isValid() ? buttonStyle + " ui-state-error" : buttonStyle;
         
         //button
         writer.startElement("div", null);
