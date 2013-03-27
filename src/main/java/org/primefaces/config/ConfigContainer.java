@@ -84,7 +84,7 @@ public class ConfigContainer {
             try {
             	Validation.buildDefaultValidatorFactory().getValidator();
             } catch (Throwable t) {
-            	LOG.log(Level.SEVERE, "Could not build BeanValidation default ValidatorFactory.", t);
+            	LOG.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
             	available = false;
             }
         }
