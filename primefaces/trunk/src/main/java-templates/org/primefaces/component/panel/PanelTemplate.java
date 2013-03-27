@@ -49,7 +49,6 @@ import org.primefaces.component.panel.Panel;
         FacesContext context = getFacesContext();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
-        String source = params.get(Constants.PARTIAL_SOURCE_PARAM);
         String clientId = this.getClientId(context);
         
         if(isSelfRequest(context)) {
