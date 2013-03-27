@@ -108,6 +108,8 @@ public abstract class RequestContext {
      * @return Shared WidgetBuilder instance of the current request
      */
     public abstract WidgetBuilder getWidgetBuilder();
+    
+    public abstract Map<Object,Object> getAttributes();
 
     public abstract void returnFromDialog(Object data);
     
