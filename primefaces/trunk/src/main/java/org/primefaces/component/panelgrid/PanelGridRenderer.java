@@ -74,7 +74,7 @@ public class PanelGridRenderer extends CoreRenderer {
         int i = 0;
         for(UIComponent child : grid.getChildren()) {
             int colMod = i % columns;
-            
+
             if(colMod == 0) {
                 writer.startElement("tr", null);
                 writer.writeAttribute("class", PanelGrid.ROW_CLASS, null);
@@ -101,11 +101,15 @@ public class PanelGridRenderer extends CoreRenderer {
         }
     }
     
-    public void encodeStaticBody(FacesContext context, PanelGrid grid) throws IOException {        
+    public void encodeStaticBody(FacesContext context, PanelGrid grid) throws IOException { 
+        int i=0;
         for(UIComponent child : grid.getChildren()) {
+            String rowStyleClass = i % 2 == 0 ? PanelGrid.ROW_CLASS + " " + PanelGrid.EVEN_ROW_CLASS : PanelGrid.ROW_CLASS + " " + PanelGrid.ODD_ROW_CLASS;
+
             if(child instanceof Row && child.isRendered()) {
-                encodeRow(context, (Row) child, "gridcell", PanelGrid.ROW_CLASS, null);
+                encodeRow(context, (Row) child, "gridcell", rowStyleClass, null);
             }
+            i++;
         }
     }
     
@@ -116,6 +120,7 @@ public class PanelGridRenderer extends CoreRenderer {
         if(shouldWriteId(row)) {
             writer.writeAttribute("id", row.getClientId(context), null);
         }
+
         writer.writeAttribute("class", rowClass, null);
         writer.writeAttribute("role", "row", null);
         
