@@ -174,14 +174,14 @@
 	<required></required>
 	<type>java.lang.String</type>
 	<ignoreInComponent>true</ignoreInComponent>
-    <description>Inline style of the input element.</description>
+    <description>Inline style of the component.</description>
 </attribute>
 <attribute>
 	<name>styleClass</name>
 	<required></required>
 	<type>java.lang.String</type>
 	<ignoreInComponent>true</ignoreInComponent>
-    <description>Style class of the input element.</description>
+    <description>Style class of the component.</description>
 </attribute>
 <attribute>
 	<name>tabindex</name>
