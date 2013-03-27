@@ -28,6 +28,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.config.ConfigContainer;
@@ -36,6 +37,7 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class DefaultRequestContext extends RequestContext {
 
+    private final static String ATTRIBUTES_KEY = "ATTRIBUTES";
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
     private final static String CONFIG_KEY = ConfigContainer.class.getName();
@@ -139,11 +141,11 @@ public class DefaultRequestContext extends RequestContext {
     @Override
     public void returnFromDialog(Object data) {
         Map<String,Object> session = context.getExternalContext().getSessionMap();
-        String viewId = context.getViewRoot().getViewId();
-        String url = context.getExternalContext().getRequestContextPath() + viewId;
-        session.put(url, data);
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String dcid = params.get("dcid");
+        session.put(dcid, data);
 
-        this.execute("PrimeFaces.hideDialog({url:'" + url + "'});");
+        this.execute("PrimeFaces.hideDialog({dcid:'" + dcid + "'});");
     }
     
     @Override
@@ -160,4 +162,12 @@ public class DefaultRequestContext extends RequestContext {
 	public ConfigContainer getConfig() {
 		return config;
 	}
+
+    @Override
+    public Map<Object, Object> getAttributes() {
+        if(attributes.get(ATTRIBUTES_KEY) == null) {
+            attributes.put(ATTRIBUTES_KEY, new HashMap<Object, Object>());
+        }
+        return (Map<Object, Object>) attributes.get(ATTRIBUTES_KEY);
+    }
 }

@@ -35,9 +35,9 @@ import org.primefaces.event.SelectEvent;
             if(eventName.equals("dialogReturn")) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 Map<String,Object> session = context.getExternalContext().getSessionMap();
-                String url = params.get(this.getClientId(context) + "_url");
-                Object selectedValue = session.get(url);
-                session.remove(url);
+                String dcid = params.get(this.getClientId(context) + "_dcid");
+                Object selectedValue = session.get(dcid);
+                session.remove(dcid);
         
                 event = new SelectEvent(this, behaviorEvent.getBehavior(), selectedValue);
                 super.queueEvent(event);
