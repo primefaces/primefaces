@@ -2073,6 +2073,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                                         '{{else}}$' + '{error}' +
                                         '{{/if}}' +
                                 '</td>' +
+                                '<td class="cancel"><button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">' +
+                                '<span class="ui-button-icon-left ui-icon ui-icon ui-icon-cancel"></span>' +
+                                '<span class="ui-button-text">ui-button</span></button></td>' +
                                 '{{else}}' +
                                 '<td class="progress"><div></div></td>' +
                                 '<td class="start"><button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">' +
