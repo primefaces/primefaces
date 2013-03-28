@@ -200,18 +200,23 @@ public class CalendarRenderer extends InputRenderer {
         Calendar calendar = (Calendar) component;
         String submittedValue = (String) value;
         Converter converter = calendar.getConverter();
+        SimpleDateFormat format = null;
 
         if(isValueBlank(submittedValue)) {
             return null;
         }
-
+        try{
         //Delegate to user supplied converter if defined
-        if(converter != null) {
-            return converter.getAsObject(context, calendar, submittedValue);
+            if(converter != null) {
+                return converter.getAsObject(context, calendar, submittedValue);
+            }
         }
-
+        catch(ConverterException e){
+            calendar.setConversionFailed(true);
+                   
+            throw e;
+        }
         //Use built-in converter
-        SimpleDateFormat format = null;
         try {
             format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
             format.setTimeZone(calendar.calculateTimeZone());
