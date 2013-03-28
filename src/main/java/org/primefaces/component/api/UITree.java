@@ -123,6 +123,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 		int childIndex = Integer.parseInt(paths[0]);
         if(childIndex >= searchRoot.getChildren().size()) 
             return null;
+        
 		searchRoot = searchRoot.getChildren().get(childIndex);
 
 		if(paths.length == 1) {
