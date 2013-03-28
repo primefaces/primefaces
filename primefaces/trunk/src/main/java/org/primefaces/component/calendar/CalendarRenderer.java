@@ -205,8 +205,9 @@ public class CalendarRenderer extends InputRenderer {
         if(isValueBlank(submittedValue)) {
             return null;
         }
-        try{
+        
         //Delegate to user supplied converter if defined
+        try {
             if(converter != null) {
                 return converter.getAsObject(context, calendar, submittedValue);
             }
@@ -216,14 +217,12 @@ public class CalendarRenderer extends InputRenderer {
                    
             throw e;
         }
+        
         //Use built-in converter
+        format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
+        format.setTimeZone(calendar.calculateTimeZone());
         try {
-            format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
-            format.setTimeZone(calendar.calculateTimeZone());
-            
-            Object date = format.parse(submittedValue);
-            
-            return date;
+            return format.parse(submittedValue);
         } 
         catch (ParseException e) {
             calendar.setConversionFailed(true);
