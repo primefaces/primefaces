@@ -79,7 +79,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             TreeNode root = getValue();
             this.rowNode = findTreeNode(root, rowKey);
             
-            requestMap.put(getVar(), this.rowNode.getData());
+            if(this.rowNode != null) 
+                requestMap.put(getVar(), this.rowNode.getData());
+            else 
+                requestMap.remove(getVar());
         }
 
         restoreDescendantState();
@@ -118,6 +121,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 			return null;
 		
 		int childIndex = Integer.parseInt(paths[0]);
+        if(childIndex >= searchRoot.getChildren().size()) 
+            return null;
 		searchRoot = searchRoot.getChildren().get(childIndex);
 
 		if(paths.length == 1) {
