@@ -9801,7 +9801,6 @@ $.effects.transfer = function(o) {
 		selectLocalTimeZone(tp_inst);
 		var now = new Date();
 		this._setTime(inst, now);
-		$('.ui-datepicker-today', $dp).click();
 	};
 
 	/*
