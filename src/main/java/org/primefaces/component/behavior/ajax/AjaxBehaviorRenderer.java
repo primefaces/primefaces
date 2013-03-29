@@ -24,6 +24,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.render.ClientBehaviorRenderer;
+
+import org.primefaces.context.RequestContext;
 import org.primefaces.util.AjaxRequestBuilder;
 
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
@@ -49,8 +51,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         if(ajaxBehavior.isDisabled()) {
             return null;
         }
-        
-        FacesContext context = behaviorContext.getFacesContext();
+
         UIComponent component = behaviorContext.getComponent();
         String source = behaviorContext.getSourceId();
         String process = ajaxBehavior.getProcess();
@@ -58,12 +59,13 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             process = "@this";
         }
 
-        AjaxRequestBuilder builder = new AjaxRequestBuilder();
+        AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
         
-        String request = builder.source(source)
+        String request = builder.init()
+        				.source(source)
                         .event(behaviorContext.getEventName())
-                        .process(context, component, process)
-                        .update(context, component, ajaxBehavior.getUpdate())
+                        .process(component, process)
+                        .update(component, ajaxBehavior.getUpdate())
                         .async(ajaxBehavior.isAsync())
                         .global(ajaxBehavior.isGlobal())
                         .partialSubmit(ajaxBehavior.isPartialSubmit(), ajaxBehavior.isPartialSubmitSet())

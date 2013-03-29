@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
@@ -67,12 +68,13 @@ public class PollRenderer extends CoreRenderer {
             poll.setOncomplete(oncomplete);
         }
         
-        AjaxRequestBuilder builder = new AjaxRequestBuilder();
+        AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
         
-        String request = builder.source(clientId)
+        String request = builder.init()
+        		.source(clientId)
                 .form(form.getClientId(context))
-                .process(context, component, poll.getProcess())
-                .update(context, component, poll.getUpdate())
+                .process(component, poll.getProcess())
+                .update(component, poll.getUpdate())
                 .async(poll.isAsync())
                 .global(poll.isGlobal())
                 .partialSubmit(poll.isPartialSubmit(),poll.isPartialSubmitSet())

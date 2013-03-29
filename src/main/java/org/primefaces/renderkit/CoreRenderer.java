@@ -195,11 +195,12 @@ public abstract class CoreRenderer extends Renderer {
         UIComponent component = (UIComponent) source;
         String clientId = component.getClientId(context);
         
-        AjaxRequestBuilder builder = new AjaxRequestBuilder();
+        AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
         
-        builder.source(clientId)
-                .process(context, component, source.getProcess())
-                .update(context, component, source.getUpdate())
+        builder.init()
+        		.source(clientId)
+                .process(component, source.getProcess())
+                .update(component, source.getUpdate())
                 .async(source.isAsync())
                 .global(source.isGlobal())
                 .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet())
