@@ -9,11 +9,13 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.input = this.jq.children('.ui-spinner-input');
         this.upButton = this.jq.children('a.ui-spinner-up');
         this.downButton = this.jq.children('a.ui-spinner-down');
+        if(this.cfg.step)
+            this.cfg.precision = this.cfg.step.toString().split(/[,]|[.]/)[1].length;
+        else
+            this.cfg.step = 1;
 
-        //init value from input
         this.initValue();
 
-        //aria
         this.addARIA();
 
         if(this.input.prop('disabled')||this.input.prop('readonly')) {
@@ -22,7 +24,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         this.bindEvents();
         
-        //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
         PrimeFaces.skinInput(this.input);
@@ -31,7 +32,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        //visuals for spinner buttons
         this.jq.children('.ui-spinner-button')
             .on('mouseover.spinner', function() {
                 $(this).addClass('ui-state-hover');
@@ -79,23 +79,19 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                     //do nothing
                 break;
             }
-        });
-
-        
-        this.input.keyup(function () { 
+        })
+        .on('keyup.spinner', function () { 
             $this.updateValue();
         })
-        .blur(function () { 
+        .on('blur.spinner', function () { 
             $this.format();
         })
-        .focus(function () {
+        .on('focus.spinner', function () {
             if($this.value !== null) {
                 $this.input.val($this.value);
             }
-        });
-        
-        //mousewheel
-        this.input.bind('mousewheel', function(event, delta) {
+        })
+        .on('mousewheel.spinner', function(event, delta) {
             if($this.input.is(':focus')) {
                 if(delta > 0)
                     $this.spin($this.cfg.step);
@@ -106,28 +102,37 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        //client behaviors
         if(this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
         }
     },
     
     repeat: function(interval, dir) {
-        var _self = this,
-        i = interval || 500;
+        var $this = this,
+        i = interval||500;
 
         clearTimeout(this.timer);
         this.timer = setTimeout(function() {
-            _self.repeat(40, dir);
+            $this.repeat(40, dir);
         }, i);
 
-        this.spin(this.cfg.step * dir);
+        this.spin(dir);
     },
+            
+    toFixed: function (value, precision) {
+        var power = Math.pow(10, precision||0);
+        return String(Math.round(value * power) / power);
+    },
+                    
+    spin: function(dir) {
+        var step = this.cfg.step * dir,
+        currentValue = this.value ? this.value : 0;
+        
+        if(this.cfg.precision)
+            newValue = parseFloat(this.toFixed(currentValue + step, this.cfg.precision));
+        else
+            newValue = parseInt(currentValue + step);
     
-    spin: function(step) {
-        var currentValue = this.value ? this.value : 0,
-        newValue = currentValue + step;
-
         if(this.cfg.min !== undefined && newValue < this.cfg.min) {
             newValue = this.cfg.min;
         }
@@ -143,9 +148,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.input.change();
     },
     
-    /**
-     * Parses value on keyup
-     */
     updateValue: function() {
         var value = this.input.val();
 
@@ -156,7 +158,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 this.value = null;
         }
         else {
-            if(this.cfg.step)
+            if(this.cfg.precision)
                 value = parseFloat(value);
             else
                 value = parseInt(value);
@@ -175,9 +177,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    /**
-     * Parses value on initial load
-     */
     initValue: function() {
         var value = this.input.val();
 
@@ -194,7 +193,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.suffix)
                 value = value.split(this.cfg.suffix)[0];
 
-            if(this.cfg.step)
+            if(this.cfg.precision)
                 this.value = parseFloat(value);
             else
                 this.value = parseInt(value);
