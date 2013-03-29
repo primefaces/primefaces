@@ -19,21 +19,25 @@ import java.util.List;
 
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.facelets.MethodRule;
 
 public class InputTextareaHandler extends ComponentHandler {
 
+	private static final MetaRule COMPLETE_METHOD =
+			new MethodRule("completeMethod", List.class, new Class[]{String.class});
+	
 	public InputTextareaHandler(ComponentConfig config) {
 		super(config);
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) { 
+	protected MetaRuleset createMetaRuleset(Class type) {
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
 		
-		metaRuleset.addRule(new MethodRule("completeMethod", List.class, new Class[]{String.class}));
+		metaRuleset.addRule(COMPLETE_METHOD);
 		
 		return metaRuleset; 
 	} 

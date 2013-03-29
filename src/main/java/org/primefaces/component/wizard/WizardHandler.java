@@ -17,6 +17,7 @@ package org.primefaces.component.wizard;
 
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.event.FlowEvent;
@@ -24,6 +25,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class WizardHandler extends ComponentHandler {
 
+	private static final MetaRule FLOW_LISTENER =
+			new MethodRule("flowListener", String.class, new Class[]{FlowEvent.class});
+	
 	public WizardHandler(ComponentConfig config) {
 		super(config);
 	}
@@ -31,11 +35,9 @@ public class WizardHandler extends ComponentHandler {
 	@SuppressWarnings("unchecked")
 	protected MetaRuleset createMetaRuleset(Class type) { 
 		MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+		metaRuleset.addRule(FLOW_LISTENER);
 		
-		Class[] eventClasses = new Class[]{FlowEvent.class};
-		
-		metaRuleset.addRule(new MethodRule("flowListener", String.class, eventClasses));
-		
-		return metaRuleset;  
+		return metaRuleset;
 	} 
 }

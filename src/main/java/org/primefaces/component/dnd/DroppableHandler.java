@@ -17,12 +17,16 @@ package org.primefaces.component.dnd;
 
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.facelets.MethodRule;
 
 public class DroppableHandler extends ComponentHandler {
+
+	private static final MetaRule DROP_LISTENER =
+			new MethodRule("dropListener", null, new Class[]{DragDropEvent.class});
 
 	public DroppableHandler(ComponentConfig config) {
 		super(config);
@@ -31,9 +35,8 @@ public class DroppableHandler extends ComponentHandler {
 	@SuppressWarnings("unchecked")
 	protected MetaRuleset createMetaRuleset(Class type) { 
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
-		Class[] eventClasses = new Class[]{DragDropEvent.class};
 		
-		metaRuleset.addRule(new MethodRule("dropListener", null, eventClasses));
+		metaRuleset.addRule(DROP_LISTENER);
 		
 		return metaRuleset;  
 	}

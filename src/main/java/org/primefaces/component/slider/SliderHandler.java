@@ -17,12 +17,16 @@ package org.primefaces.component.slider;
 
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
 import org.primefaces.event.SlideEndEvent;
 import org.primefaces.facelets.MethodRule;
 
 public class SliderHandler extends ComponentHandler {
 
+	private static final MetaRule SLIDE_END_LISTENER =
+			new MethodRule("slideEndListener", null, new Class[]{SlideEndEvent.class});
+	
 	public SliderHandler(ComponentConfig config) {
 		super(config);
 	}
@@ -31,7 +35,7 @@ public class SliderHandler extends ComponentHandler {
 	protected MetaRuleset createMetaRuleset(Class type) {
 		MetaRuleset metaRuleset = super.createMetaRuleset(type);
 
-		metaRuleset.addRule(new MethodRule("slideEndListener", null, new Class[]{SlideEndEvent.class}));
+		metaRuleset.addRule(SLIDE_END_LISTENER);
 
 		return metaRuleset;
 	}

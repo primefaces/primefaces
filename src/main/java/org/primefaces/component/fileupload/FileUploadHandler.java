@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.event.FileUploadEvent;
@@ -26,6 +27,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class FileUploadHandler extends ComponentHandler {
 
+	private static final MetaRule FILE_UPLOAD_LISTENER =
+			new MethodRule("fileUploadListener", List.class, new Class[]{FileUploadEvent.class});
+	
 	public FileUploadHandler(ComponentConfig config) {
 		super(config);
 	}
@@ -33,9 +37,8 @@ public class FileUploadHandler extends ComponentHandler {
 	@SuppressWarnings("unchecked")
 	protected MetaRuleset createMetaRuleset(Class type) { 
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
-		Class[] fileUploadEventClass = new Class[]{FileUploadEvent.class};
-		
-		metaRuleset.addRule(new MethodRule("fileUploadListener", List.class, fileUploadEventClass));
+
+		metaRuleset.addRule(FILE_UPLOAD_LISTENER);
 		
 		return metaRuleset; 
 	} 

@@ -24,6 +24,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class ColumnHandler extends ComponentHandler {
 
+	private static final MetaRule SORT_FUNCTION =
+			new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
+	
 	public ColumnHandler(ComponentConfig config) {
 		super(config);
 	}
@@ -31,10 +34,8 @@ public class ColumnHandler extends ComponentHandler {
 	@SuppressWarnings("unchecked")
 	protected MetaRuleset createMetaRuleset(Class type) { 
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
-		Class[] paramList = new Class[]{Object.class, Object.class}; 
-		
-		MetaRule metaRule = new MethodRule("sortFunction", Integer.class, paramList); 
-		metaRuleset.addRule(metaRule);
+ 
+		metaRuleset.addRule(SORT_FUNCTION);
 		
 		return metaRuleset; 
 	} 
