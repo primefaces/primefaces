@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
 import org.primefaces.event.CaptureEvent;
 
@@ -26,6 +27,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class PhotoCamHandler extends ComponentHandler {
 
+	private static final MetaRule LISTENER =
+			new MethodRule("listener", List.class, new Class[]{CaptureEvent.class});
+	
 	public PhotoCamHandler(ComponentConfig config) {
 		super(config);
 	}
@@ -34,7 +38,7 @@ public class PhotoCamHandler extends ComponentHandler {
 	protected MetaRuleset createMetaRuleset(Class type) { 
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
 		
-		metaRuleset.addRule(new MethodRule("listener", List.class, new Class[]{CaptureEvent.class}));
+		metaRuleset.addRule(LISTENER);
 		
 		return metaRuleset; 
 	} 

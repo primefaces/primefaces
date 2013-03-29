@@ -24,6 +24,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class AccordionPanelHandler extends ComponentHandler {
 
+	private static final MethodRule TAB_CHANGE_LISTENER =
+			new MethodRule("tabChangeListener", String.class, new Class[]{TabChangeEvent.class});
+	
 	public AccordionPanelHandler(ComponentConfig config) {
 		super(config);
 	}
@@ -32,7 +35,7 @@ public class AccordionPanelHandler extends ComponentHandler {
 	protected MetaRuleset createMetaRuleset(Class type) {
 		MetaRuleset metaRuleset = super.createMetaRuleset(type);
 
-		metaRuleset.addRule(new MethodRule("tabChangeListener", String.class, new Class[]{TabChangeEvent.class}));
+		metaRuleset.addRule(TAB_CHANGE_LISTENER);
 
 		return metaRuleset;
 	}

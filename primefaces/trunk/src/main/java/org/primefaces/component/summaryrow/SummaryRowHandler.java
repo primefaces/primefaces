@@ -17,12 +17,16 @@ package org.primefaces.component.summaryrow;
 
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.facelets.MethodRule;
 
 public class SummaryRowHandler extends ComponentHandler {
 
+	private static final MetaRule LISTENER =
+			new MethodRule("listener", null, new Class[]{Object.class});
+	
 	public SummaryRowHandler(ComponentConfig config) {
 		super(config);
 	}
@@ -31,7 +35,7 @@ public class SummaryRowHandler extends ComponentHandler {
 	protected MetaRuleset createMetaRuleset(Class type) { 
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
 		
-		metaRuleset.addRule(new MethodRule("listener", null, new Class[]{Object.class}));
+		metaRuleset.addRule(LISTENER);
 		
 		return metaRuleset; 
 	} 
