@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.primefaces.config.ConfigContainer;
+import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 /**
@@ -108,6 +109,11 @@ public abstract class RequestContext {
      * @return Shared WidgetBuilder instance of the current request
      */
     public abstract WidgetBuilder getWidgetBuilder();
+
+    /**
+     * @return Shared AjaxRequestBuilder instance of the current request
+     */
+    public abstract AjaxRequestBuilder getAjaxRequestBuilder();
     
     public abstract Map<Object,Object> getAttributes();
 

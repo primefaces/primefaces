@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
@@ -59,12 +60,13 @@ public class HotkeyRenderer extends CoreRenderer {
 				throw new FacesException("Hotkey '"+ clientId+ "' needs to be enclosed in a form when ajax mode is enabled");
 			}
             
-            AjaxRequestBuilder builder = new AjaxRequestBuilder();
+            AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
         
-            String request = builder.source(clientId)
+            String request = builder.init()
+            	.source(clientId)
                 .form(form.getClientId(context))
-                .process(context, component, hotkey.getProcess())
-                .update(context, component, hotkey.getUpdate())
+                .process(component, hotkey.getProcess())
+                .update(component, hotkey.getUpdate())
                 .async(hotkey.isAsync())
                 .global(hotkey.isGlobal())
                 .partialSubmit(hotkey.isPartialSubmit(), hotkey.isPartialSubmitSet())

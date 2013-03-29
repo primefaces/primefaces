@@ -32,14 +32,20 @@ public class AjaxRequestBuilder {
 	private static final Pattern ID_PATTERN = Pattern.compile("@\\(.+\\)\\s*");
 	
     protected StringBuilder buffer;
+    protected FacesContext context;
     
     private boolean preventDefault = false;
     
-    public AjaxRequestBuilder() {
-        buffer = new StringBuilder();
-        buffer.append("PrimeFaces.ab({");
+    public AjaxRequestBuilder(FacesContext context) {
+    	this.context = context;
+        this.buffer = new StringBuilder();
     }
     
+    public AjaxRequestBuilder init() {
+    	buffer.append("PrimeFaces.ab({");
+    	return this;
+    }
+
     public AjaxRequestBuilder source(String source) {
         if(source != null)
             buffer.append("source:").append("'").append(source).append("'");
@@ -84,19 +90,19 @@ public class AjaxRequestBuilder {
 		return value.trim().equals("");
 	}
     
-    public AjaxRequestBuilder process(FacesContext context, UIComponent component, String ids) {        
-        addIds(context, component, ids, "process", "processSelector");
+    public AjaxRequestBuilder process(UIComponent component, String ids) {        
+        addIds(component, ids, "process", "processSelector");
         
         return this;
     }
     
-    public AjaxRequestBuilder update(FacesContext context, UIComponent component, String ids) {        
-        addIds(context, component, ids, "update", "updateSelector");
+    public AjaxRequestBuilder update(UIComponent component, String ids) {        
+        addIds(component, ids, "update", "updateSelector");
         
         return this;
     }
     
-    private AjaxRequestBuilder addIds(FacesContext context, UIComponent component, String ids, String key, String keySel) {        
+    private AjaxRequestBuilder addIds(UIComponent component, String ids, String key, String keySel) {        
         if(!isValueBlank(ids)) {
             String[] parsed = parseIds(ids);
             String regular = parsed[0];
@@ -228,7 +234,8 @@ public class AjaxRequestBuilder {
         }
         
         String request = buffer.toString();
-        buffer.setLength(0);
+
+        reset();
         
         return request;
     }
@@ -241,8 +248,14 @@ public class AjaxRequestBuilder {
         }
         
         String request = buffer.toString();
-        buffer.setLength(0);
+        
+        reset();
         
         return request;
+    }
+    
+    public void reset() {
+        buffer.setLength(0);
+        preventDefault = false;
     }
 }

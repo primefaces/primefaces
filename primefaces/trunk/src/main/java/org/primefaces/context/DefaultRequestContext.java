@@ -32,6 +32,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.config.ConfigContainer;
+import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.WidgetBuilder;
 import org.primefaces.visit.ResetInputVisitCallback;
 
@@ -44,6 +45,7 @@ public class DefaultRequestContext extends RequestContext {
 
     private Map<String, Object> attributes;
     private WidgetBuilder widgetBuilder;
+    private AjaxRequestBuilder ajaxRequestBuilder;
     private FacesContext context;
     private ConfigContainer config;
 
@@ -51,6 +53,7 @@ public class DefaultRequestContext extends RequestContext {
     	this.context = context;
     	this.attributes = new HashMap<String, Object>();
     	this.widgetBuilder = new WidgetBuilder();
+    	this.ajaxRequestBuilder = new AjaxRequestBuilder(context);
 
     	// get config from application map
     	this.config = (ConfigContainer) context.getExternalContext().getApplicationMap().get(CONFIG_KEY);
@@ -98,6 +101,11 @@ public class DefaultRequestContext extends RequestContext {
         return widgetBuilder;
     }
 
+	@Override
+	public AjaxRequestBuilder getAjaxRequestBuilder() {
+		return ajaxRequestBuilder;
+	}
+    
     @Override
     public void scrollTo(String clientId) {
         this.execute("PrimeFaces.scrollTo('" + clientId +  "');");
@@ -151,10 +159,11 @@ public class DefaultRequestContext extends RequestContext {
     @Override
     public void release() {
         attributes = null;
-        widgetBuilder = null;;
+        widgetBuilder = null;
+        ajaxRequestBuilder = null;
         context = null;
         config = null;
-    	
+
     	setCurrentInstance(null);
     }
 
