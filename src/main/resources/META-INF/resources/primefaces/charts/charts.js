@@ -21222,8 +21222,7 @@ PrimeFaces.widget.BarChart = PrimeFaces.widget.CartesianChart.extend({
                 barDirection: this.cfg.orientation,
                 barPadding: this.cfg.barPadding,
                 barMargin: this.cfg.barMargin,
-                breakOnNull: this.cfg.breakOnNull,
-                barWidth: this.cfg.barWidth||null
+                breakOnNull: this.cfg.breakOnNull
             },
             fillToZero: true
         };
