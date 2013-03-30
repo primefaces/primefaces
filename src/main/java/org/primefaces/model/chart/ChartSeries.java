@@ -54,4 +54,7 @@ public class ChartSeries implements Serializable {
     public String getRenderer() {
         return null;
     }
+    public boolean isFill() {
+        return false;
+    }
 }
