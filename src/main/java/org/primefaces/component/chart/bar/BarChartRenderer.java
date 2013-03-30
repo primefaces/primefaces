@@ -75,9 +75,13 @@ public class BarChartRenderer extends BaseChartRenderer {
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = (ChartSeries) it.next();
+            String seriesRenderer = series.getRenderer();
 
             writer.write("{");
             writer.write("label:'" + series.getLabel() + "'");
+            if(seriesRenderer != null) {
+                writer.write(",renderer: $.jqplot." + seriesRenderer);
+            }
             writer.write("}");
 
             if(it.hasNext()) {

@@ -50,4 +50,8 @@ public class ChartSeries implements Serializable {
     public void set(Object x, Number y) {
         this.data.put(x, y);
     }
+    
+    public String getRenderer() {
+        return null;
+    }
 }

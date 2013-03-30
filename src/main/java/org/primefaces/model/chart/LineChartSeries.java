@@ -43,4 +43,9 @@ public class LineChartSeries extends ChartSeries {
     public void setShowLine(boolean showLine) {
         this.showLine = showLine;
     }
+    
+    @Override
+    public String getRenderer() {
+        return "LineRenderer";
+    }
 }
