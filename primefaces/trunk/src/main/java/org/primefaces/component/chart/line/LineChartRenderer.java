@@ -128,6 +128,7 @@ public class LineChartRenderer extends BaseChartRenderer {
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = (ChartSeries) it.next();
+            String seriesRenderer = series.getRenderer();
 
             writer.write("{");
             writer.write("label:'" + series.getLabel() + "'");
@@ -136,6 +137,9 @@ public class LineChartRenderer extends BaseChartRenderer {
                 LineChartSeries  lineChartSeries = (LineChartSeries) series;
                 writer.write(",showLine:" + lineChartSeries.isShowLine());
                 writer.write(",markerOptions:{show:" + chart.isShowMarkers()+ ", style:'" + lineChartSeries.getMarkerStyle() + "'}");
+            }
+            if(seriesRenderer != null) {
+                writer.write(",renderer: $.jqplot." + seriesRenderer);
             }
             writer.write("}");
 
