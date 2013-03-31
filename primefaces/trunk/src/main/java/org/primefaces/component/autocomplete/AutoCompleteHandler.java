@@ -29,9 +29,7 @@ public class AutoCompleteHandler extends ComponentHandler {
 
 	private static final MetaRule COMPLETE_METHOD =
 			new MethodRule("completeMethod", List.class, new Class[]{String.class});
-	private static final MetaRule SELECT_LISTENER =
-			new MethodRule("selectListener", null, new Class[]{SelectEvent.class});
-	
+
 	public AutoCompleteHandler(ComponentConfig config) {
 		super(config);
 	}
@@ -41,7 +39,6 @@ public class AutoCompleteHandler extends ComponentHandler {
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
 		
 		metaRuleset.addRule(COMPLETE_METHOD);
-		metaRuleset.addRule(SELECT_LISTENER);
 		
 		return metaRuleset; 
 	} 

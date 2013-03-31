@@ -9,7 +9,7 @@
 <component>
 	<tag>inputTextarea</tag>
 	<tagClass>org.primefaces.component.inputtextarea.InputTextarea</tagClass>
-    <componentHandlerClass>org.primefaces.component.autocomplete.AutoCompleteHandler</componentHandlerClass>
+    <componentHandlerClass>org.primefaces.component.inputtextarea.InputTextareaHandler</componentHandlerClass>
 	<componentClass>org.primefaces.component.inputtextarea.InputTextarea</componentClass>
 	<componentType>org.primefaces.component.InputTextarea</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>

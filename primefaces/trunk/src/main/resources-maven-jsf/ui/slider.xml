@@ -7,7 +7,6 @@
 <component>
 	<tag>slider</tag>
 	<tagClass>org.primefaces.component.slider.SliderTag</tagClass>
-    <componentHandlerClass>org.primefaces.component.slider.SliderHandler</componentHandlerClass>
 	<componentClass>org.primefaces.component.slider.Slider</componentClass>
 	<componentType>org.primefaces.component.Slider</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
