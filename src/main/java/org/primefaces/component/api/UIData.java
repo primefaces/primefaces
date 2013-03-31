@@ -35,6 +35,7 @@ import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
+import org.primefaces.component.column.Column;
 import org.primefaces.util.ComponentUtils;
 
 public class UIData extends javax.faces.component.UIData {
@@ -294,8 +295,13 @@ public class UIData extends javax.faces.component.UIData {
             
             for(UIComponent child : this.getChildren()) {
                 if(child.isRendered()) {
-                    for(UIComponent grandkid : child.getChildren()) {
-                        process(context, grandkid, phaseId);
+                    if(child instanceof Column) {
+                        for(UIComponent grandkid : child.getChildren()) {
+                            process(context, grandkid, phaseId);
+                        }
+                    }
+                    else {
+                        process(context, child, phaseId);
                     }
                 }
             }            
