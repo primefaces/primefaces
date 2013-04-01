@@ -55,6 +55,7 @@ public class DataListRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId();
         boolean hasPaginator = list.isPaginator();
+        boolean empty = list.getRowCount() == 0;
         String paginatorPosition = list.getPaginatorPosition();
         String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
         
@@ -76,10 +77,23 @@ public class DataListRenderer extends DataRenderer {
         writer.writeAttribute("id", clientId + "_content", "id");
         writer.writeAttribute("class", DataList.CONTENT_CLASS, "styleClass");
 
-        if(list.getType().equals("none"))
-            encodeFreeList(context, list);
-        else
-            encodeStrictList(context, list); 
+        if(empty) {
+            writer.startElement("div", list);
+            writer.writeAttribute("class", DataList.DATALIST_EMPTYMESSAGE_CLASS,null);
+            writer.write(list.getEmptyMessage());
+            writer.endElement("div");
+        } 
+        else {
+            if(list.getType().equals("none")){
+                
+                encodeFreeList(context, list);
+            }
+            else{
+              
+                encodeStrictList(context, list); 
+            }
+        }
+
 
         writer.endElement("div");
 
