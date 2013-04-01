@@ -23,6 +23,8 @@ import javax.faces.component.visit.VisitResult;
 
 public class ResetInputVisitCallback implements VisitCallback {
 
+	public static final ResetInputVisitCallback INSTANCE = new ResetInputVisitCallback();
+	
     public VisitResult visit(VisitContext context, UIComponent target) {
         if(target instanceof EditableValueHolder) {
             EditableValueHolder input = (EditableValueHolder) target;

@@ -33,6 +33,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.config.ConfigContainer;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 import org.primefaces.visit.ResetInputVisitCallback;
 
@@ -123,27 +124,29 @@ public class DefaultRequestContext extends RequestContext {
 
     @Override
     public void reset(Collection<String> ids) {
-        EnumSet<VisitHint> hints = EnumSet.of(VisitHint.SKIP_UNRENDERED);
-        VisitContext visitContext = VisitContext.createVisitContext(context, null, hints);
-        VisitCallback visitCallback = new ResetInputVisitCallback();
-        UIViewRoot root = context.getViewRoot();
+        VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 
         for(String id : ids) {
-            UIComponent targetComponent = root.findComponent(id);
-            if(targetComponent == null) {
-                throw new FacesException("Cannot find component with identifier \"" + id + "\" referenced from viewroot.");
-            }
-
-            targetComponent.visitTree(visitContext, visitCallback);
+        	reset(visitContext, id);
         }
     }
 
     @Override
     public void reset(String id) {
-        Collection<String> list = new ArrayList<String>();
-        list.add(id);
+        VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 
-        reset(list);
+        reset(visitContext, id);
+    }
+    
+    private void reset(VisitContext visitContext, String id) {
+        UIViewRoot root = context.getViewRoot();
+
+        UIComponent targetComponent = root.findComponent(id);
+        if(targetComponent == null) {
+            throw new FacesException("Cannot find component with identifier \"" + id + "\" referenced from viewroot.");
+        }
+
+        targetComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
     }
 
     @Override

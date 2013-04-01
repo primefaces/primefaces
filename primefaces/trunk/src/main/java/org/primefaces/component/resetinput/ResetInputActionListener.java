@@ -27,6 +27,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
 
 public class ResetInputActionListener implements ActionListener {
@@ -40,9 +42,7 @@ public class ResetInputActionListener implements ActionListener {
     public void processAction(ActionEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
 		ELContext elContext = context.getELContext();
-        EnumSet<VisitHint> hints = EnumSet.of(VisitHint.SKIP_UNRENDERED);
-        VisitContext visitContext = VisitContext.createVisitContext(context, null, hints);
-        VisitCallback visitCallback = new ResetInputVisitCallback();
+        VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
         
         String targetIds = (String) target.getValue(elContext);
         UIComponent source = event.getComponent();
@@ -54,7 +54,7 @@ public class ResetInputActionListener implements ActionListener {
                 throw new FacesException("Cannot find component with identifier \"" + id + "\" referenced from \"" + source.getClientId(context) + "\".");
             }
             
-            targetComponent.visitTree(visitContext, visitCallback);
+            targetComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
         }
     }
 }
