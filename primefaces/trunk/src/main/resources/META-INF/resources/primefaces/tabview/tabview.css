@@ -131,3 +131,35 @@
 .ui-tabs-rtl .ui-tabs-nav li, .ui-tabs-rtl .ui-tabs-nav li a {
     float: right;
 }
+
+/** Scroll **/
+.ui-tabs-scrollable .ui-tabs-nav {
+    width:5000px;
+}
+
+.ui-tabs .ui-tabs-navscroller {
+    overflow: hidden;
+    position: relative;
+    padding-left: 18px;
+}
+
+.ui-tabs .ui-tabs-navscroller-btn {
+    position: absolute;
+    height: 28px;
+    top: 0px;
+    z-index: 100;
+    cursor: pointer;
+}
+
+.ui-tabs .ui-tabs-navscroller-btn-left {
+    left: 0px;
+}
+
+.ui-tabs .ui-tabs-navscroller-btn-right {
+    right: 0px;
+}
+
+.ui-tabs .ui-tabs-navscroller-btn-left .ui-icon,
+.ui-tabs .ui-tabs-navscroller-btn-right .ui-icon {
+    margin-top: 5px;
+}

@@ -89,7 +89,9 @@ public class TabViewRenderer extends CoreRenderer {
             .callback("onTabShow", "function(index)", tabView.getOnTabShow())
             .callback("onTabClose", "function(index)", tabView.getOnTabClose());
 
-        wb.attr("effect", tabView.getEffect(), null).attr("effectDuration", tabView.getEffectDuration(), null);
+        wb.attr("effect", tabView.getEffect(), null)
+            .attr("effectDuration", tabView.getEffectDuration(), null)
+            .attr("scrollable", tabView.isScrollable());
         
         encodeClientBehaviors(context, tabView, wb);
         
@@ -104,6 +106,9 @@ public class TabViewRenderer extends CoreRenderer {
         String orientation = tabView.getOrientation();
         String styleClass = tabView.getStyleClass();
         String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;
+        if(tabView.isScrollable()) {
+            defaultStyleClass = defaultStyleClass + " " + TabView.SCROLLABLE_TABS_CLASS;
+        }
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         if(ComponentUtils.isRTL(context, tabView)) {
@@ -127,20 +132,26 @@ public class TabViewRenderer extends CoreRenderer {
             encodeContents(context, tabView);
         }
 
-        encodeActiveIndexHolder(context, tabView);
+        encodeStateHolder(context, tabView, clientId + "_activeIndex", String.valueOf(tabView.getActiveIndex()));
+        
+        if(tabView.isScrollable()) {
+            String scrollParam = clientId + "_scrollState";
+            String scrollState = context.getExternalContext().getRequestParameterMap().get(scrollParam);
+            String scrollValue = scrollState == null ? "0" : scrollState; 
+            encodeStateHolder(context, tabView, scrollParam, scrollValue);
+        }
 
         writer.endElement("div");
     }
 
-    protected void encodeActiveIndexHolder(FacesContext facesContext, TabView tabView) throws IOException {
+    protected void encodeStateHolder(FacesContext facesContext, TabView tabView, String name, String value) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        String paramName = tabView.getClientId(facesContext) + "_activeIndex";
 
         writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", paramName, null);
-        writer.writeAttribute("name", paramName, null);
-        writer.writeAttribute("value", tabView.getActiveIndex(), null);
+        writer.writeAttribute("id", name, null);
+        writer.writeAttribute("name", name, null);
+        writer.writeAttribute("value", value, null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.endElement("input");
     }
@@ -149,6 +160,15 @@ public class TabViewRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String var = tabView.getVar();
         int activeIndex = tabView.getActiveIndex();
+        boolean scrollable = tabView.isScrollable();
+        
+        if(scrollable) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", TabView.NAVIGATOR_SCROLLER_CLASS, null);
+            
+            encodeScrollerButton(context, tabView, TabView.NAVIGATOR_LEFT_CLASS, TabView.NAVIGATOR_LEFT_ICON_CLASS);
+            encodeScrollerButton(context, tabView, TabView.NAVIGATOR_RIGHT_CLASS, TabView.NAVIGATOR_RIGHT_ICON_CLASS);
+        }
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", TabView.NAVIGATOR_CLASS, null);
@@ -181,6 +201,10 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         writer.endElement("ul");
+        
+        if(scrollable) {
+            writer.endElement("div");
+        }
     }
     
     protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, boolean active) throws IOException {
@@ -280,6 +304,19 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         writer.endElement("div");
+    }
+    
+    protected void encodeScrollerButton(FacesContext context, TabView tabView, String styleClass, String iconClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("a", null);
+        writer.writeAttribute("class", styleClass, null);
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass, null);
+        writer.endElement("span");
+        
+        writer.endElement("a");
     }
 
     @Override
