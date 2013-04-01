@@ -123,6 +123,13 @@
             <defaultValue>ltr</defaultValue>
             <description>Defines text direction, valid values are "ltr" (default) and "rtl".</description>
         </attribute>
+        <attribute>
+            <name>scrollable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, tab headers can be scrolled horizontally instead of wrapping. Default is false.</description>
+        </attribute>
     </attributes>
 	<resources>
         <resource>
