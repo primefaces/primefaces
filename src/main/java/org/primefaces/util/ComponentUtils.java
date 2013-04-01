@@ -17,6 +17,7 @@ package org.primefaces.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -25,6 +26,7 @@ import java.util.Map;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.*;
+import javax.faces.component.visit.VisitHint;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -37,6 +39,8 @@ import org.primefaces.context.RequestContext;
 
 public class ComponentUtils {
 
+	public static final EnumSet<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = EnumSet.of(VisitHint.SKIP_UNRENDERED);
+	
 	/**
 	 * Algorithm works as follows;
 	 * - If it's an input component, submitted value is checked first since it'd be the value to be used in case validation errors
