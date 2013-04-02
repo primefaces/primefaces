@@ -160,14 +160,13 @@ public class DataTableRenderer extends DataRenderer {
         if(ComponentUtils.isRTL(context, table)) containerClass = containerClass + " " + DataTable.RTL_CLASS;
         
         //default sort
-        if(!table.isDefaultSorted() && table.getValueExpression("sortBy") != null && !table.isLazy()) {
+        if(!table.isDefaultSorted() && table.getSortBy() != null && !table.isLazy()) {
             SortFeature sortFeature = (SortFeature) DataTable.FEATURES.get(DataTableFeatureKey.SORT);
             
-            if(table.isMultiSort()) {
+            if(table.isMultiSort())
                 sortFeature.multiSort(context, table);
-            } else {
-                sortFeature.sort(context, table, table.getValueExpression("sortBy"), table.convertSortOrder(), table.getSortFunction());
-            }
+            else
+                sortFeature.sort(context, table, table.getSortBy(), table.convertSortOrder(), table.getSortFunction());
             
             table.setDefaultSorted();
         }
@@ -306,9 +305,9 @@ public class DataTableRenderer extends DataRenderer {
         
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
-        ValueExpression tableSortByVe = table.getValueExpression("sortBy");
-        ValueExpression columnSortByVe = column.getValueExpression("sortBy");
-        boolean isSortable = columnSortByVe != null;
+        Object tableSortBy = table.getSortBy();
+        Object columnSortBy = column.getSortBy();
+        boolean isSortable = columnSortBy != null;
         boolean hasFilter = column.getValueExpression("filterBy") != null;
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
@@ -321,13 +320,13 @@ public class DataTableRenderer extends DataRenderer {
         columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
         
         if(isSortable) {
-            if(tableSortByVe != null) {
+            if(tableSortBy != null) {
                 if(table.isMultiSort()) {
                     List<SortMeta> sortMeta = table.getMultiSortMeta();
                     
                     if(sortMeta != null) {
                         for(SortMeta meta : sortMeta) {
-                            sortIcon = resolveDefaultSortIcon(columnSortByVe, meta.getColumn().getValueExpression("sortBy"), meta.getSortOrder().name());
+                            sortIcon = resolveDefaultSortIcon(columnSortBy, meta.getColumn().getSortBy(), meta.getSortOrder().name());
                             
                             if(sortIcon != null) {
                                 break;
@@ -336,15 +335,14 @@ public class DataTableRenderer extends DataRenderer {
                     }
                 }
                 else {
-                    sortIcon = resolveDefaultSortIcon(columnSortByVe, tableSortByVe, table.getSortOrder());
+                    sortIcon = resolveDefaultSortIcon(columnSortBy, tableSortBy, table.getSortOrder());
                 }
             }
             
-            if(sortIcon == null) {
+            if(sortIcon == null)
                 sortIcon = DataTable.SORTABLE_COLUMN_ICON_CLASS;
-            } else {
+            else
                 columnClass += " ui-state-active";
-            }
         }
         
         String style = column.getStyle();
@@ -394,12 +392,10 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("th");
     }
     
-    protected String resolveDefaultSortIcon(ValueExpression columnSortBy, ValueExpression tableSortBy, String sortOrder) {
-        String columnSortByExpression = columnSortBy.getExpressionString();
-        String tableSortByExpression = tableSortBy.getExpressionString();
+    protected String resolveDefaultSortIcon(Object columnSortBy, Object tableSortBy, String sortOrder) {
         String sortIcon = null;
 
-        if(tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression)) {
+        if(tableSortBy != null && tableSortBy.equals(columnSortBy)) {
             if(sortOrder.equalsIgnoreCase("ASCENDING"))
                 sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
             else if(sortOrder.equalsIgnoreCase("DESCENDING"))

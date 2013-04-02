@@ -73,6 +73,8 @@ public interface UIColumn {
     
     public MethodExpression getSortFunction();
     
+    public Object getSortBy();
+    
     public List<UIComponent> getChildren();
     
     public boolean isExportable();

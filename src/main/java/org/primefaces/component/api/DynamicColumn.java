@@ -166,4 +166,8 @@ public class DynamicColumn implements UIColumn {
     public String getWidth() {
         return this.columns.getWidth();
     }
+
+    public Object getSortBy() {
+        return this.columns.getSortBy();
+    }
 }
