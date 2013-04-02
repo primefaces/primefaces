@@ -87,7 +87,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
             for(int i = 0; i < scripts.size(); i++) {
                 write(scripts.get(i));
-                write(";");
+                write(';');
             }
 
             endEval();
