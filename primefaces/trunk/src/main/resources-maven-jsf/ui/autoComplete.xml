@@ -159,6 +159,18 @@
             <type>java.lang.String</type>
             <description>Position of item with respect to item. Default is "right bottom".</description>
         </attribute>
+        <attribute>
+            <name>cache</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+        <attribute>
+            <name>cacheTimeout</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>300000</defaultValue>
+        </attribute>
     </attributes>
     <resources>
         <resource>
