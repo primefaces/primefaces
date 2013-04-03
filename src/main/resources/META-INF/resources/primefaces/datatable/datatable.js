@@ -1778,6 +1778,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var columnHeader = ui.helper.parent(),
         nextColumnHeader = columnHeader.next(),
         change = null, newWidth = null, nextColumnWidth = null;
+        $this = this;
         
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
@@ -1797,9 +1798,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             if(this.cfg.scrollable) {
                 var padding = columnHeader.innerWidth() - columnHeader.width();
-                this.colgroup.children().eq(colIndex).width(newWidth + padding + 1);
-                this.colgroup.children().eq(colIndex + 1).width(nextColumnWidth + padding + 1);
-
+                this.colgroup.children().eq(colIndex).css('width', newWidth + padding + 1 + 'px');
+                setTimeout(function() {
+                    $this.colgroup.children().eq(colIndex + 1).css('width', nextColumnWidth + padding + 1 + 'px');
+                }, 1); 
                 if(this.footerCols.length > 0) {
                     var footerCol = this.footerCols.eq(colIndex),
                     nextFooterCol = footerCol.next();
