@@ -519,6 +519,10 @@ public class AutoCompleteRenderer extends InputRenderer {
             .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
             .attr("multiple", ac.isMultiple(), false)
             .attr("process", ac.getProcess(), null);
+        
+        if(ac.isCache()) {
+            wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());            
+        }
 
         String effect = ac.getEffect();
         if(effect != null) {

@@ -16,6 +16,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.pojo = this.hinput.length == 1;
         this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
         this.cfg.delay = this.cfg.delay != undefined ? this.cfg.delay : 300;
+        this.cfg.cache = this.cfg.cache||false;
+        
+        if(this.cfg.cache)
+            this.initCache();
         
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -63,6 +67,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.setupDialogSupport();
         }
         
+    },
+        
+    initCache: function() {
+        this.cache = {};
+        var $this=this;
+        this.cacheTimeout=setInterval(function(){
+          $this.cache = {};
+        },this.cfg.cacheTimeout);        
+    }, 
+            
+    clearCache: function() {
+        this.cache = {};      
     },
     
     /**
@@ -357,11 +373,63 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     })
                     .show();
     },
-    
+    showSuggestion: function(query) {
+    this.items = this.panel.find('.ui-autocomplete-item');                   
+    this.bindDynamicEvents();
+    var hidden = this.panel.is(':hidden');
+    if(this.items.length > 0) {
+        var firstItem = this.items.eq(0);                    
+        //highlight first item
+        firstItem.addClass('ui-state-highlight');                    
+        //highlight query string
+        if(this.panel.children().is('ul') && query.length > 0) {
+            this.items.each(function() {
+                var item = $(this),
+                text = item.html(),
+                re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
+                highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
+                item.html(highlighedText);
+            });
+        }
+        if(this.cfg.forceSelection) {
+            this.cachedResults = [];
+            this.items.each(function(i, item) {
+                this.cachedResults.push($(item).attr('data-item-label'));
+            });
+        }                    
+        //adjust height
+        if(this.cfg.scrollHeight) {
+            var heightConstraint = hidden ? this.panel.height() : this.panel.children().height();
+            if(heightConstraint > this.cfg.scrollHeight)
+                this.panel.height(this.cfg.scrollHeight);
+            else
+                this.panel.css('height', 'auto');                                               
+        }
+        if(hidden) {
+            this.show();
+        }
+        else {
+            this.alignPanel();
+        }                            
+        //show itemtip if defined
+        if(this.cfg.itemtip && firstItem.length == 1) {
+            this.showItemtip(firstItem);
+        }
+        }
+        else {
+        this.panel.hide();
+        }
+    },
     search: function(query) {
         //allow empty string but not undefined or null
         if(query === undefined || query === null) {
             return;
+        }
+        
+        if(this.cfg.cache&&this.cache[query]) {
+            this.panel.html(this.cache[query]);
+            this.showSuggestion(query);
+            return;            
         }
         
         if(!this.active) {
@@ -389,71 +457,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             onsuccess: function(responseXML) {
                 var xmlDoc = $(responseXML.documentElement),
                 updates = xmlDoc.find("update");
-
                 for(var i=0; i < updates.length; i++) {
                     var update = updates.eq(i),
                     id = update.attr('id'),
-                    data = update.text();
+                    data = update.text();                    
 
                     if(id == _self.id) {
                         _self.panel.html(data);
-                        _self.items = _self.panel.find('.ui-autocomplete-item');
+                        if(_self.cache)
+                            _self.cache[query] = data;
                         
-                        _self.bindDynamicEvents();
-                        
-                        var hidden = _self.panel.is(':hidden');
-
-                        if(_self.items.length > 0) {
-                            var firstItem = _self.items.eq(0);
-                            
-                            //highlight first item
-                            firstItem.addClass('ui-state-highlight');
-                            
-                            //highlight query string
-                            if(_self.panel.children().is('ul') && query.length > 0) {
-                                _self.items.each(function() {
-                                    var item = $(this),
-                                    text = item.html(),
-                                    re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
-                                    highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
-
-                                    item.html(highlighedText);
-                                });
-                            }
-
-                            if(_self.cfg.forceSelection) {
-                                _self.cachedResults = [];
-                                _self.items.each(function(i, item) {
-                                    _self.cachedResults.push($(item).attr('data-item-label'));
-                                });
-                            }
-                            
-                            //adjust height
-                            if(_self.cfg.scrollHeight) {
-                                var heightConstraint = hidden ? _self.panel.height() : _self.panel.children().height();
-
-                                if(heightConstraint > _self.cfg.scrollHeight)
-                                    _self.panel.height(_self.cfg.scrollHeight);
-                                else
-                                    _self.panel.css('height', 'auto');                              
-                                 
-                            }
-
-                            if(hidden) {
-                                _self.show();
-                            }
-                            else {
-                                _self.alignPanel();
-                            }
-                            
-                            //show itemtip if defined
-                            if(_self.cfg.itemtip && firstItem.length == 1) {
-                                _self.showItemtip(firstItem);
-                            }
-                        }
-                        else {
-                            _self.panel.hide();
-                        }
+                        _self.showSuggestion(query);
                     } 
                     else {
                         PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, data);
