@@ -373,17 +373,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     })
                     .show();
     },
+            
     showSuggestion: function(query) {
-    this.items = this.panel.find('.ui-autocomplete-item');                   
-    this.bindDynamicEvents();
-    var hidden = this.panel.is(':hidden');
-    if(this.items.length > 0) {
-        var firstItem = this.items.eq(0);                    
-        //highlight first item
-        firstItem.addClass('ui-state-highlight');                    
+        this.items = this.panel.find('.ui-autocomplete-item');                   
+        this.bindDynamicEvents();
+        var $this=this;
+        var hidden = this.panel.is(':hidden');
+        if(this.items.length > 0) {
+          var firstItem = this.items.eq(0);                    
+            //highlight first item
+          firstItem.addClass('ui-state-highlight');                    
         //highlight query string
-        if(this.panel.children().is('ul') && query.length > 0) {
-            this.items.each(function() {
+            if(this.panel.children().is('ul') && query.length > 0) {
+                this.items.each(function() {
                 var item = $(this),
                 text = item.html(),
                 re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
@@ -394,7 +396,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.forceSelection) {
             this.cachedResults = [];
             this.items.each(function(i, item) {
-                this.cachedResults.push($(item).attr('data-item-label'));
+                $this.cachedResults.push($(item).attr('data-item-label'));
             });
         }                    
         //adjust height
@@ -417,9 +419,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
         }
         else {
-        this.panel.hide();
+         this.panel.hide();
         }
     },
+            
     search: function(query) {
         //allow empty string but not undefined or null
         if(query === undefined || query === null) {
