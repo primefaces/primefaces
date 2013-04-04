@@ -61,10 +61,7 @@ public class DialogRenderer extends CoreRenderer {
                 throw new FacesException("Cannot find component with identifier \"" + _for + "\" referenced from \"" + dialog.getClientId(context) + "\".");
             }
             else {
-                focusedClientId=_forComponent.getClientId();
-                System.out.println(focusedClientId);
-          
- 
+                focusedClientId=_forComponent.getClientId(); 
             }
         }
                 
