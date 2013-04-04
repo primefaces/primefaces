@@ -51,8 +51,17 @@ public class OutputLabelRenderer extends CoreRenderer {
                     ValueExpression ve = label.getValueExpression("value");
                     if(ve != null)
                         input.setValueExpression("label", ve);
-                    else
-                        input.getAttributes().put("label", value);
+                    else{
+                        int strLength = value.toString().length() - 1;
+                        if(value.toString().charAt(strLength) == ':'){
+                            Object formattedValue = null;
+                            formattedValue = value.toString().substring(0, strLength);
+                            input.getAttributes().put("label", formattedValue);
+                        }
+                        else{
+                            input.getAttributes().put("label", value);
+                        }
+                    }
                 }
                 
                 if(!input.isValid()) {
