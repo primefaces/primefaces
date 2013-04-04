@@ -192,6 +192,12 @@
             <defaultValue>ltr</defaultValue>
             <description>Defines text direction, valid values are "ltr" (default) and "rtl".</description>
         </attribute>
+        <attribute>
+            <name>focus</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Defines which component to focus</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
