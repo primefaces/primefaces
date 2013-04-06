@@ -293,11 +293,30 @@ public class TreeTableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		TreeNode root = (TreeNode) tt.getValue();
         String clientId = tt.getClientId(context);
-		
+		boolean empty = tt.getValue() == null;
+        UIComponent emptyFacet = tt.getFacet("emptyMessage");
+        
 		writer.startElement("tbody", null);
         writer.writeAttribute("id", clientId + "_data", null);
 		writer.writeAttribute("class", TreeTable.DATA_CLASS, null);
+        
+        if(empty) {
+            writer.startElement("tr", null);
+            writer.writeAttribute("class", TreeTable.EMPTY_MESSAGE_ROW_CLASS, null);
 
+            writer.startElement("td", null);
+            writer.writeAttribute("colspan", tt.getColumnsCount(), null);
+            
+            if(emptyFacet != null){
+                emptyFacet.encodeAll(context);
+            }
+            else{
+                writer.write(tt.getEmptyMessage());
+                writer.endElement("td");
+                writer.endElement("tr");
+            }
+        }
+        
 		if(root != null) {
             encodeNode(context, tt, root, null, null);
 		}

@@ -38,7 +38,8 @@ import java.lang.StringBuilder;
     public static final String SELECTABLE_NODE_CLASS = "ui-treetable-selectable-node";
     public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
     public static final String INDENT_CLASS = "ui-treetable-indent";
-
+	public static final String EMPTY_MESSAGE_ROW_CLASS = "ui-widget-content ui-datatable-empty-message";
+    
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize"));
 
     private List<String> selectedRowKeys = new ArrayList<String>();
