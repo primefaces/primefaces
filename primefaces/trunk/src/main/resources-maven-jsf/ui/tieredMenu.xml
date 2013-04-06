@@ -27,7 +27,7 @@
 		<attribute>
 			<name>model</name>
 			<required>false</required>
-			<type>org.primefaces.model.MenuModel</type>
+			<type>org.primefaces.model.menu.MenuModel</type>
             <description>MenuModel instance to create menus programmatically.</description>
 		</attribute>
         <attribute>

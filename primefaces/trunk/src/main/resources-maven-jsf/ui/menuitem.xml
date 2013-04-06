@@ -5,9 +5,9 @@
 ]>
 <component>
 	<tag>menuitem</tag>
-	<tagClass>org.primefaces.component.menuitem.MenuItemTag</tagClass>
-	<componentClass>org.primefaces.component.menuitem.MenuItem</componentClass>
-	<componentType>org.primefaces.component.MenuItem</componentType>
+	<tagClass>org.primefaces.component.menuitem.UIMenuItemTag</tagClass>
+	<componentClass>org.primefaces.component.menuitem.UIMenuItem</componentClass>
+	<componentType>org.primefaces.component.UIMenuItem</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UICommand</parent>
     <description>MenuItem is used by various menu components of PrimeFaces.</description>
@@ -20,7 +20,13 @@
 		</interface>
         <interface>
 			<name>org.primefaces.component.api.UIOutcomeTarget</name>
-		</interface>        
+		</interface>
+        <interface>
+			<name>org.primefaces.model.menu.MenuItem</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.model.menu.MenuElement</name>
+		</interface>       
 	</interfaces>
 	<attributes>
 		&command_component_attributes;

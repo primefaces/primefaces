@@ -25,6 +25,8 @@ import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.application.ConfigurableNavigationHandler;
+import javax.faces.application.NavigationCase;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.ExternalContext;
@@ -406,5 +408,12 @@ public class ComponentUtils {
 	    		child.processUpdates(context);
 	    	}
     	}
+    }
+    
+    public static NavigationCase findNavigationCase(FacesContext context, String outcome) {
+        ConfigurableNavigationHandler navHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
+        String outcomeValue = (outcome == null) ? context.getViewRoot().getViewId() : outcome;
+        
+        return navHandler.getNavigationCase(context, null, outcomeValue);
     }
 }

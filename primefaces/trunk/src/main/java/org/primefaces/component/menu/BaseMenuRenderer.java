@@ -16,14 +16,13 @@
 package org.primefaces.component.menu;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.separator.Separator;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
@@ -31,10 +30,6 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		AbstractMenu menu = (AbstractMenu) component;
-
-        if(menu.isDynamic()) {
-            menu.buildMenuFromModel();
-        }
 
 		encodeMarkup(context, menu);
 		encodeScript(context, menu);
@@ -45,20 +40,18 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     protected abstract void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException;
 
     protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
-		String clientId = menuItem.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         String icon = menuItem.getIcon();
         String title = menuItem.getTitle();
 
 		if(menuItem.shouldRenderChildren()) {
-			renderChildren(context, menuItem);
+			renderChildren(context, (UIComponent) menuItem);
 		}
         else {
             boolean disabled = menuItem.isDisabled();
             String onclick = menuItem.getOnclick();
             
             writer.startElement("a", null);
-            writer.writeAttribute("id", menuItem.getClientId(context), null);
             if(title != null) {
                 writer.writeAttribute("title", title, null);
             }
@@ -74,8 +67,8 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             }
                   
             //GET
-			if(menuItem.getUrl() != null || menuItem.getOutcome() != null) {
-                String targetURL = getTargetURL(context, menuItem);
+			if(menuItem.getUrl() != null || menuItem.getOutcome() != null) {                
+                String targetURL = getTargetURL(context, (UIOutcomeTarget) menuItem);
                 String href = disabled ? "javascript:void(0)" : targetURL;
 				writer.writeAttribute("href", href, null);
                                 
@@ -87,12 +80,14 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             else {
 				writer.writeAttribute("href", "javascript:void(0)", null);
                 
-                UIComponent form = ComponentUtils.findParentForm(context, menuItem);
+                /*UIComponent form = ComponentUtils.findParentForm(context, menuItem);
                 if(form == null) {
                     throw new FacesException("MenuItem must be inside a form element");
-                }
+                }*/
+                
+                UIComponent form = null;
 
-                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form, clientId, true);
+                String command = null; //= menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form, clientId, true);
 
                 onclick = onclick == null ? command : onclick + ";" + command;
 			}

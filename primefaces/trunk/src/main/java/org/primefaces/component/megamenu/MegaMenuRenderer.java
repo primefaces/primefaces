@@ -17,6 +17,7 @@ package org.primefaces.component.megamenu;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -24,9 +25,10 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
-import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
-import org.primefaces.component.submenu.Submenu;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 
 public class MegaMenuRenderer extends BaseMenuRenderer {
@@ -64,7 +66,9 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 		writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
-		encodeRootItems(context, menu);
+        if(menu.getElementsCount() > 0) {
+            encodeRootItems(context, menu);
+        }
         
         UIComponent optionsFacet = menu.getFacet("options");
         if(optionsFacet != null) {
@@ -82,23 +86,22 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
     
     protected void encodeRootItems(FacesContext context, MegaMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        List<MenuElement> elements = (List<MenuElement>) menu.getElements();
         
-        for(Iterator<UIComponent> iterator = menu.getChildren().iterator(); iterator.hasNext();) {
-            UIComponent child = (UIComponent) iterator.next();
-
-            if(child.isRendered()) {
-                if(child instanceof MenuItem) {
+        for(MenuElement element : elements) {
+            if(element.isRendered()) {
+                if(element instanceof MenuItem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, (MenuItem) child);
+                    encodeMenuItem(context, (MenuItem) element);
                     writer.endElement("li");
+                }
+                else if(element instanceof Submenu) {                    
+                    encodeRootSubmenu(context, (Submenu) element);
                 } 
-                else if(child instanceof Submenu) {                    
-                    encodeRootSubmenu(context, (Submenu) child);
-                } 
-                else if(child instanceof Separator) {
-                    encodeSeparator(context, (Separator) child);
+                else if(element instanceof Separator) {
+                    encodeSeparator(context, (Separator) element);
                 }
             }
         }
@@ -143,7 +146,8 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.endElement("a");
         
         //submenus
-		if(submenu.getChildCount() > 0) {
+		if(submenu.getElementsCount() > 0) {
+            List<MenuElement> submenuElements = (List<MenuElement>) submenu.getElements();
 			writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
             writer.writeAttribute("role", "menu", null);
@@ -151,12 +155,10 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             writer.startElement("table", null);
             writer.startElement("tbody", null);
             writer.startElement("tr", null);
-
-            for(Iterator<UIComponent> iterator = submenu.getChildren().iterator(); iterator.hasNext();) {
-                UIComponent child = (UIComponent) iterator.next();
-
-                if(child.isRendered() && child instanceof Column) {
-                    encodeColumn(context, (Column) child);
+            
+            for(MenuElement submenuElement : submenuElements) {
+                if(submenuElement.isRendered() && submenuElement instanceof Column) {
+                    encodeColumn(context, (Column) submenuElement);
                 }
             }
             
@@ -183,9 +185,11 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             if(child.isRendered()) {
                 if(child instanceof Submenu) {
                     encodeDescendantSubmenu(context, (Submenu) child);
-                } else if(child instanceof Separator) {
+                } 
+                else if(child instanceof Separator) {
                     encodeSubmenuSeparator(context, (Separator) child);
-                } else {
+                } 
+                else {
                     child.encodeAll(context);
                 }
             }
@@ -221,19 +225,20 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.endElement("li");
 
         //menuitems
-        for(Iterator<UIComponent> iterator = submenu.getChildren().iterator(); iterator.hasNext();) {
-            UIComponent child = (UIComponent) iterator.next();
-
-            if(child.isRendered()) {
-                if(child instanceof MenuItem) {
-                    writer.startElement("li", null);
-                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                    writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, (MenuItem) child);
-                    writer.endElement("li");
-                } 
-                else if(child instanceof Separator) {
-                    encodeSeparator(context, (Separator) child);
+        if(submenu.getElementsCount() > 0) {
+            List<MenuElement> submenuElements = (List<MenuElement>) submenu.getElements();
+            for(MenuElement submenuElement : submenuElements) {
+                if(submenuElement.isRendered()) {
+                    if(submenuElement instanceof MenuItem) {
+                        writer.startElement("li", null);
+                        writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                        writer.writeAttribute("role", "menuitem", null);
+                        encodeMenuItem(context, (MenuItem) submenuElement);
+                        writer.endElement("li");
+                    } 
+                    else if(submenuElement instanceof Separator) {
+                        encodeSeparator(context, (Separator) submenuElement);
+                    }
                 }
             }
         }

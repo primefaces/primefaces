@@ -16,15 +16,15 @@
 package org.primefaces.component.dock;
 
 import java.io.IOException;
+import java.util.List;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
 
-import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DockRenderer extends CoreRenderer {
@@ -32,11 +32,7 @@ public class DockRenderer extends CoreRenderer {
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Dock dock = (Dock) component;
-		
-		if(dock.isDynamic()) {
-			dock.buildMenuFromModel();
-		}
-		
+				
 		encodeMarkup(context, dock);
 		encodeScript(context, dock);
 	}
@@ -81,54 +77,56 @@ public class DockRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String position = dock.getPosition();
 		
-		for(UIComponent child : dock.getChildren()) {
-			if(child instanceof MenuItem && child.isRendered()) {
-				MenuItem menuitem = (MenuItem) child;
-				String clientId = menuitem.getClientId(context);
-				
-				String styleClass = "ui-dock-item-" + position;
-				if(menuitem.getStyleClass() != null) {
-					styleClass = styleClass + " " + menuitem.getStyleClass();
-				}
-				
-				writer.startElement("a", null);
-				writer.writeAttribute("id", menuitem.getClientId(context), null);
-				writer.writeAttribute("class", styleClass, null);
-				
-				if(menuitem.getStyle() != null) writer.writeAttribute("style", menuitem.getStyle(), null);
-				
-				if(menuitem.getUrl() != null) {
-					writer.writeAttribute("href", getResourceURL(context, menuitem.getUrl()), null);
-					if(menuitem.getOnclick() != null) writer.writeAttribute("onclick", menuitem.getOnclick(), null);
-					if(menuitem.getTarget() != null) writer.writeAttribute("target", menuitem.getTarget(), null);
-				} 
-                else {
-                    writer.writeAttribute("href", "#", null);
+        if(dock.getElementsCount()> 0) {
+            List<MenuElement> menuElements = (List<MenuElement>) dock.getElements();
                     
-                    UIComponent form = ComponentUtils.findParentForm(context, menuitem);
-					if(form == null) {
-						throw new FacesException("Dock must be inside a form element");
-					}
-                    
-                    String command = menuitem.isAjax() ? buildAjaxRequest(context, menuitem, form) : buildNonAjaxRequest(context, menuitem, form, clientId, true);
+            for(MenuElement element : menuElements) {
+                if(element.isRendered() && element instanceof MenuItem) {
+                    MenuItem menuitem = (MenuItem) element;
 
-					command = menuitem.getOnclick() == null ? command : menuitem.getOnclick() + ";" + command;
-					
-					writer.writeAttribute("onclick", command, null);
-				}
-				
-				if(position.equalsIgnoreCase("top")) {
-					encodeItemIcon(context, menuitem);
-					encodeItemLabel(context, menuitem);
-				}
-				else{
-					encodeItemLabel(context, menuitem);
-					encodeItemIcon(context, menuitem);
-				}
-				
-				writer.endElement("a");
-			}
-		}
+                    String styleClass = "ui-dock-item-" + position;
+                    if(menuitem.getStyleClass() != null) {
+                        styleClass = styleClass + " " + menuitem.getStyleClass();
+                    }
+
+                    writer.startElement("a", null);
+                    writer.writeAttribute("class", styleClass, null);
+
+                    if(menuitem.getStyle() != null) writer.writeAttribute("style", menuitem.getStyle(), null);
+
+                    if(menuitem.getUrl() != null) {
+                        writer.writeAttribute("href", getResourceURL(context, menuitem.getUrl()), null);
+                        if(menuitem.getOnclick() != null) writer.writeAttribute("onclick", menuitem.getOnclick(), null);
+                        if(menuitem.getTarget() != null) writer.writeAttribute("target", menuitem.getTarget(), null);
+                    } 
+                    else {
+                        writer.writeAttribute("href", "#", null);
+
+                        /*UIComponent form = ComponentUtils.findParentForm(context, menuitem);
+                        if(form == null) {
+                            throw new FacesException("Dock must be inside a form element");
+                        }
+
+                        String command = menuitem.isAjax() ? buildAjaxRequest(context, menuitem, form) : buildNonAjaxRequest(context, menuitem, form, clientId, true);
+
+                        command = menuitem.getOnclick() == null ? command : menuitem.getOnclick() + ";" + command;
+
+                        writer.writeAttribute("onclick", command, null);*/
+                    }
+
+                    if(position.equalsIgnoreCase("top")) {
+                        encodeItemIcon(context, menuitem);
+                        encodeItemLabel(context, menuitem);
+                    }
+                    else{
+                        encodeItemLabel(context, menuitem);
+                        encodeItemIcon(context, menuitem);
+                    }
+
+                    writer.endElement("a");
+                }
+            }
+        }
 	}
 	
 	protected void encodeItemIcon(FacesContext context, MenuItem menuitem) throws IOException {

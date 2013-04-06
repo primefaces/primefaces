@@ -16,15 +16,15 @@
 package org.primefaces.component.menu;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.List;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
-import org.primefaces.component.submenu.Submenu;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 
 public class MenuRenderer extends BaseMenuRenderer {
@@ -62,36 +62,34 @@ public class MenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, "style");
         }
         writer.writeAttribute("role", "menu", null);
-        
-		writer.startElement("ul", null);
-        writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
-        encodeContent(context, menu);
+        if(menu.getElementsCount() > 0) {
+            writer.startElement("ul", null);
+            writer.writeAttribute("class", Menu.LIST_CLASS, null);
+            encodeElements(context, menu.getElements());
+            writer.endElement("ul");
+        }
 
-		writer.endElement("ul");
-        
         writer.endElement("div");
 	}
 
-    protected void encodeContent(FacesContext context, UIComponent component) throws IOException{
+    protected void encodeElements(FacesContext context, List<MenuElement> elements) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
-
-        for(Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
-            UIComponent child = (UIComponent) iterator.next();
-
-            if(child.isRendered()) {
-                if(child instanceof MenuItem) {
+        
+        for(MenuElement element : elements) {
+            if(element.isRendered()) {
+                if(element instanceof MenuItem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, (MenuItem) child);
+                    encodeMenuItem(context, (MenuItem) element);
                     writer.endElement("li");
-                } 
-                else if(child instanceof Submenu) {
-                    encodeSubmenu(context, (Submenu) child);
                 }
-                else if(child instanceof Separator) {
-                    encodeSeparator(context, (Separator) child);
+                else if(element instanceof Submenu) {
+                    encodeSubmenu(context, (Submenu) element);
+                }
+                else if(element instanceof Separator) {
+                    encodeSeparator(context, (Separator) element);
                 }
             }
         }
@@ -106,9 +104,6 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         //title
         writer.startElement("li", null);
-        if(shouldWriteId(submenu)) {
-            writer.writeAttribute("id", submenu.getClientId(context), null);
-        }
         writer.writeAttribute("class", styleClass, null);
         if(style != null) {
             writer.writeAttribute("style", style, null);
@@ -122,6 +117,6 @@ public class MenuRenderer extends BaseMenuRenderer {
         
         writer.endElement("li");
 
-        encodeContent(context, submenu);
+        encodeElements(context, submenu.getElements());
 	}
 }

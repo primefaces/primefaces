@@ -4,16 +4,16 @@
 ]>
 <component>
 	<tag>submenu</tag>
-	<tagClass>org.primefaces.component.submenu.SubmenuTag</tagClass>
-	<componentClass>org.primefaces.component.submenu.Submenu</componentClass>
-	<componentType>org.primefaces.component.Submenu</componentType>
+	<tagClass>org.primefaces.component.submenu.UISubmenuTag</tagClass>
+	<componentClass>org.primefaces.component.submenu.UISubmenu</componentClass>
+	<componentType>org.primefaces.component.UISubmenu</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UIComponentBase</parent>
     <description>Submenu is nested in menu components and represents a sub menu items.</description>
 	<interfaces>
-		<interface>
-			<name>java.io.Serializable</name>
-		</interface>
+        <interface>
+			<name>org.primefaces.model.menu.Submenu</name>
+		</interface>  
 	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
