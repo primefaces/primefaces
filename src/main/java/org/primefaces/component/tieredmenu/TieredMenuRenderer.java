@@ -16,7 +16,7 @@
 package org.primefaces.component.tieredmenu;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.List;
 import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
@@ -24,9 +24,10 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
-import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
-import org.primefaces.component.submenu.Submenu;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 
 public class TieredMenuRenderer extends BaseMenuRenderer {
@@ -59,12 +60,12 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         encodeMenu(context, menu, style, styleClass, "menu");
 	}
     
-    protected void encodeMenu(FacesContext context, AbstractMenu component, String style, String styleClass, String role) throws IOException {
+    protected void encodeMenu(FacesContext context, AbstractMenu menu, String style, String styleClass, String role) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent optionsFacet = component.getFacet("options");
+        UIComponent optionsFacet = menu.getFacet("options");
         
-        writer.startElement("div", component);
-		writer.writeAttribute("id", component.getClientId(context), "id");
+        writer.startElement("div", menu);
+		writer.writeAttribute("id", menu.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if(style != null) {
             writer.writeAttribute("style", style, "style");
@@ -74,7 +75,9 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 		writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
-		encodeMenuContent(context, component);
+        if(menu.getElementsCount() > 0) {
+            encodeElements(context, menu.getElements());
+        }
         
         if(optionsFacet != null) {
             writer.startElement("li", null);
@@ -89,42 +92,36 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
     
-    protected void encodeMenuContent(FacesContext context, UIComponent component) throws IOException {
+    protected void encodeElements(FacesContext context, List<MenuElement> elements) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
-        for(Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
-            UIComponent child = (UIComponent) iterator.next();
-
-            if(child.isRendered()) {
-
-                if(child instanceof MenuItem) {
+        
+        for(MenuElement element : elements) {
+            if(element.isRendered()) {
+                if(element instanceof MenuItem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, (MenuItem) child);
+                    encodeMenuItem(context, (MenuItem) element);
                     writer.endElement("li");
-                } 
-                else if(child instanceof Submenu) {
-                    Submenu submenu = (Submenu) child;
+                }
+                else if(element instanceof Submenu) {
+                    Submenu submenu = (Submenu) element;
                     String style = submenu.getStyle();
                     String styleClass = submenu.getStyleClass();
                     styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
         
                     writer.startElement("li", null);
-                    if(shouldWriteId(submenu)) {
-                        writer.writeAttribute("id", submenu.getClientId(context), null);
-                    }
                     writer.writeAttribute("class", styleClass, null);
                     if(style != null) {
                         writer.writeAttribute("style", style, null);
                     }
                     writer.writeAttribute("role", "menuitem", null);
                     writer.writeAttribute("aria-haspopup", "true", null);
-                    encodeSubmenu(context, (Submenu) child);
+                    encodeSubmenu(context, submenu);
                     writer.endElement("li");
                 } 
-                else if(child instanceof Separator) {
-                    encodeSeparator(context, (Separator) child);
+                else if(element instanceof Separator) {
+                    encodeSeparator(context, (Separator) element);
                 }
             }
         }
@@ -158,15 +155,13 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.endElement("a");
 
         //submenus and menuitems
-		if(submenu.getChildCount() > 0) {
-			writer.startElement("ul", null);
+        if(submenu.getElementsCount() > 0) {
+            writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
             writer.writeAttribute("role", "menu", null);
-
-			encodeMenuContent(context, submenu);
-
+			encodeElements(context, submenu.getElements());
 			writer.endElement("ul");
-		}
+        }
 	}
     
     protected void encodeSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {

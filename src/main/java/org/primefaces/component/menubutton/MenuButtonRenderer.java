@@ -24,9 +24,8 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
-
-import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -106,7 +105,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                     if(child instanceof MenuItem) {
                         MenuItem item = (MenuItem) child;
                         
-                        writer.startElement("li", item);
+                        writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
                         encodeMenuItem(context, item);

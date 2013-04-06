@@ -71,10 +71,12 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         writer.writeAttribute("class", SlideMenu.CONTENT_CLASS, "styleClass");
 
         //root menu
-		writer.startElement("ul", null);
-        writer.writeAttribute("class", Menu.LIST_CLASS, null);
-		encodeMenuContent(context, menu);
-		writer.endElement("ul");
+        if(menu.getElementsCount() > 0) {
+            writer.startElement("ul", null);
+            writer.writeAttribute("class", Menu.LIST_CLASS, null);
+            encodeElements(context, menu.getElements());
+            writer.endElement("ul");
+        }
         
         //content
         writer.endElement("div");

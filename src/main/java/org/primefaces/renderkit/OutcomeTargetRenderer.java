@@ -25,7 +25,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.component.button.Button;
 
 public class OutcomeTargetRenderer extends CoreRenderer {
     
@@ -45,20 +44,23 @@ public class OutcomeTargetRenderer extends CoreRenderer {
      */
     protected Map<String, List<String>> getParams(NavigationCase navCase, UIOutcomeTarget outcomeTarget) {
         Map<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+        List<UIComponent> children = outcomeTarget.getChildren();
 
         //UIParams
-        for(UIComponent child : outcomeTarget.getChildren()) {
-            if(child.isRendered() && (child instanceof UIParameter)) {
-                UIParameter uiParam = (UIParameter) child;
-                
-                if(!uiParam.isDisable()) {
-                    List<String> paramValues = params.get(uiParam.getName());
-                    if(paramValues == null) {
-                        paramValues = new ArrayList<String>();
-                        params.put(uiParam.getName(), paramValues);
-                    }
+        if(children != null) {
+            for(UIComponent child : outcomeTarget.getChildren()) {
+                if(child.isRendered() && (child instanceof UIParameter)) {
+                    UIParameter uiParam = (UIParameter) child;
 
-                    paramValues.add(String.valueOf(uiParam.getValue()));
+                    if(!uiParam.isDisable()) {
+                        List<String> paramValues = params.get(uiParam.getName());
+                        if(paramValues == null) {
+                            paramValues = new ArrayList<String>();
+                            params.put(uiParam.getName(), paramValues);
+                        }
+
+                        paramValues.add(String.valueOf(uiParam.getValue()));
+                    }
                 }
             }
         }

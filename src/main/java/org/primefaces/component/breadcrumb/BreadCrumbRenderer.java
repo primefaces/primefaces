@@ -16,13 +16,14 @@
 package org.primefaces.component.breadcrumb;
 
 import java.io.IOException;
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
-
-import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
@@ -30,10 +31,6 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		BreadCrumb breadCrumb = (BreadCrumb) component;
 		
-		if(breadCrumb.isDynamic()) {
-			breadCrumb.buildMenuFromModel();
-		}
-
 		encodeMarkup(context, breadCrumb);
 	}
 
@@ -43,10 +40,11 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 		String clientId = breadCrumb.getClientId(context);
 		String styleClass = breadCrumb.getStyleClass();
 		styleClass = styleClass == null ? BreadCrumb.CONTAINER_CLASS : BreadCrumb.CONTAINER_CLASS + " " + styleClass;
+        int elementCount = menu.getElementsCount();
         
         //home icon for first item
         if(breadCrumb.getChildCount() > 0) {
-            ((MenuItem) breadCrumb.getChildren().get(0)).setStyleClass("ui-icon ui-icon-home");
+            ((MenuItem) breadCrumb.getElements().get(0)).setStyleClass("ui-icon ui-icon-home");
         }
 
 		writer.startElement("div", null);
@@ -57,34 +55,38 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", breadCrumb.getStyle(), null);
         }
 
-		writer.startElement("ul", null);
-        
-        for(int i = 0; i < breadCrumb.getChildCount(); i++) {
-            UIComponent child = breadCrumb.getChildren().get(i);
+        if(elementCount > 0) {
+            List<MenuElement> menuElements = (List<MenuElement>) menu.getElements();
             
-            if(child.isRendered() && child instanceof MenuItem) {
-                MenuItem item = (MenuItem) child;
-                        
-                //dont render chevron before home icon
-                if(i != 0) {
+            writer.startElement("ul", null);
+        
+            for(int i = 0; i < elementCount; i++) {
+                MenuElement element = menuElements.get(i);
+
+                if(element.isRendered() && element instanceof MenuItem) {
+                    MenuItem item = (MenuItem) element;
+
+                    //dont render chevron before home icon
+                    if(i != 0) {
+                        writer.startElement("li", null);
+                        writer.writeAttribute("class", BreadCrumb.CHEVRON_CLASS, null);
+                        writer.endElement("li");
+                    }
+
                     writer.startElement("li", null);
-                    writer.writeAttribute("class", BreadCrumb.CHEVRON_CLASS, null);
-                    writer.endElement("li");
+                    writer.writeAttribute("role", "menuitem", null);
+
+                    if(item.isDisabled())
+                        encodeDisabledMenuItem(context, item);
+                    else
+                        encodeMenuItem(context, item);
+
+                    writer.endElement("li");                
                 }
-                
-				writer.startElement("li", null);
-                writer.writeAttribute("role", "menuitem", null);
 
-                if(item.isDisabled())
-                    encodeDisabledMenuItem(context, (MenuItem) child);
-                else
-                    encodeMenuItem(context, (MenuItem) child);
-
-				writer.endElement("li");                
-			}
+                writer.endElement("ul");
+            }
         }
-
-		writer.endElement("ul");
 		
 		writer.endElement("div");
 	}

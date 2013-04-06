@@ -13,22 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.model;
+package org.primefaces.model.menu;
 
-import java.util.List;
-import javax.faces.component.UIComponent;
-
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.separator.Separator;
-import org.primefaces.component.submenu.Submenu;
-
-public interface MenuModel {
-
-	public List<UIComponent> getContents();
-	
-	public void addSubmenu(Submenu submenu);
-	
-	public void addMenuItem(MenuItem menuItem);
+public interface MenuElement {
     
-    public void addSeparator(Separator separator);
+    public boolean isRendered();
 }

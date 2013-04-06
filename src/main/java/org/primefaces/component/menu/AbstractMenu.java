@@ -15,9 +15,10 @@
  */
 package org.primefaces.component.menu;
 
+import java.util.List;
 import javax.faces.component.UIComponentBase;
 
-import org.primefaces.model.MenuModel;
+import org.primefaces.model.menu.MenuModel;
 
 public abstract class AbstractMenu extends UIComponentBase {
 		
@@ -33,16 +34,20 @@ public abstract class AbstractMenu extends UIComponentBase {
     public static final String SEPARATOR_CLASS = "ui-separator ui-state-default";
     public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
     
-	public void buildMenuFromModel() {
-		MenuModel model = (MenuModel) getModel();
-		
-        getChildren().clear();
+	public List getElements() {
+        MenuModel model = getModel();
+        if(model != null)
+            return model.getElements();
+        else
+            return getChildren();
+    }
+    
+    public int getElementsCount() {
+        List elements = getElements();
         
-		if(model != null) {
-            getChildren().addAll(model.getContents());
-		}
-	}
-	
+        return (elements == null) ? 0 : elements.size();
+    }
+    
 	public abstract MenuModel getModel();
 	
 	public boolean isDynamic() {

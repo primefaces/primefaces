@@ -13,38 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.model;
+package org.primefaces.model.menu;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.component.UIComponent;
-
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.separator.Separator;
-import org.primefaces.component.submenu.Submenu;
 
 public class DefaultMenuModel implements MenuModel, Serializable {
 
-    private List<UIComponent> contents;
+    private List<MenuElement> elements;
 
     public DefaultMenuModel() {
-        contents = new ArrayList<UIComponent>();
+        elements = new ArrayList<MenuElement>();
     }
 
     public void addSubmenu(Submenu submenu) {
-        contents.add(submenu);
+        elements.add(submenu);
     }
 
     public void addMenuItem(MenuItem menuItem) {
-        contents.add(menuItem);
+        elements.add(menuItem);
     }
 
-    public void addSeparator(Separator separator) {
-        contents.add(separator);
-    }
+    /*public void addSeparator(Separator separator) {
+        elements.add(separator);
+    }*/
     
-    public List<UIComponent> getContents() {
-        return contents;
+    public List<MenuElement> getElements() {
+        return elements;
     }
 }

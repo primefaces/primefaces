@@ -21,8 +21,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
-import org.primefaces.component.submenu.Submenu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
+import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 
 public class MenubarRenderer extends TieredMenuRenderer {

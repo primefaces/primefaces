@@ -25,8 +25,8 @@ import org.primefaces.component.commandbutton.CommandButtonRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
-import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -208,7 +208,7 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
                     if(child instanceof MenuItem) {
                         MenuItem item = (MenuItem) child;
                         
-                        writer.startElement("li", item);
+                        writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
                         encodeMenuItem(context, item);
@@ -226,19 +226,19 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
     }
     
     protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
-		String clientId = menuItem.getClientId(context);
+		//String clientId = menuItem.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         String icon = menuItem.getIcon();
 
 		if(menuItem.shouldRenderChildren()) {
-			renderChildren(context, menuItem);
+			renderChildren(context, (UIComponent) menuItem);
 		}
         else {
             boolean disabled = menuItem.isDisabled();
             String onclick = menuItem.getOnclick();
             
             writer.startElement("a", null);
-            writer.writeAttribute("id", menuItem.getClientId(context), null);
+            //writer.writeAttribute("id", menuItem.getClientId(context), null);
             
             String styleClass = menuItem.getStyleClass();
             styleClass = styleClass == null ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
@@ -259,14 +259,14 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
             else {
 				writer.writeAttribute("href", "#", null);
 
-				UIComponent form = ComponentUtils.findParentForm(context, menuItem);
+				/*UIComponent form = ComponentUtils.findParentForm(context, menuItem);
 				if(form == null) {
 					throw new FacesException("Menubar must be inside a form element");
 				}
 
                 String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form, clientId, true);
 
-                onclick = onclick == null ? command : onclick + ";" + command;
+                onclick = onclick == null ? command : onclick + ";" + command;*/
 			}
 
             if(onclick != null && !disabled) {

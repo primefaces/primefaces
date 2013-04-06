@@ -16,14 +16,15 @@
 package org.primefaces.component.panelmenu;
 
 import java.io.IOException;
-import javax.faces.component.UIComponent;
+import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.submenu.Submenu;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelMenuRenderer extends BaseMenuRenderer {
@@ -58,10 +59,12 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         }
         writer.writeAttribute("role", "menu", null);
         
-        for(UIComponent child : menu.getChildren()) {
-            if(child.isRendered()) {
-                if(child instanceof Submenu) {
-                    encodeRootSubmenu(context, menu, (Submenu) child);
+        if(menu.getElementsCount() > 0) {
+            List<MenuElement> elements = menu.getElements();
+            
+            for(MenuElement element : elements) {
+                if(element.isRendered() && element instanceof Submenu) {
+                    encodeRootSubmenu(context, menu, (Submenu) element);
                 }
             }
         }
@@ -102,29 +105,32 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
         //content
         writer.startElement("div", null);
-        writer.writeAttribute("id", submenu.getClientId(context), null);
         writer.writeAttribute("class", PanelMenu.ROOT_SUBMENU_CONTENT, null);
         writer.writeAttribute("role", "tabpanel", null);
         
-        writer.startElement("ul", null);
-        writer.writeAttribute("class", PanelMenu.LIST_CLASS, null);
+        if(submenu.getElementsCount() > 0) {
+            List<MenuElement> elements = submenu.getElements();
+            
+            writer.startElement("ul", null);
+            writer.writeAttribute("class", PanelMenu.LIST_CLASS, null);
 
-        for(UIComponent child : submenu.getChildren()) {
-            if(child.isRendered()) {
-                if(child instanceof MenuItem) {
-                    writer.startElement("li", null);
-                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                    writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, (MenuItem) child);
-                    writer.endElement("li");
-                }
-                else if(child instanceof Submenu) {
-                    encodeDescendantSubmenu(context, (Submenu) child);
+            for(MenuElement element : elements) {
+                if(element.isRendered()) {
+                    if(element instanceof MenuItem) {
+                        writer.startElement("li", null);
+                        writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                        writer.writeAttribute("role", "menuitem", null);
+                        encodeMenuItem(context, (MenuItem) element);
+                        writer.endElement("li");
+                    }
+                    else if(element instanceof Submenu) {
+                        encodeDescendantSubmenu(context, (Submenu) element);
+                    }
                 }
             }
+            
+            writer.endElement("ul");
         }
-
-		writer.endElement("ul");
 
         writer.endElement("div");   //content
         
@@ -146,7 +152,6 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("role", "menuitem", null);
         
         writer.startElement("a", null);
-        writer.writeAttribute("id", submenu.getClientId(context), null);
         writer.writeAttribute("class", PanelMenu.MENUITEM_LINK_CLASS, null);
         
         //toggle icon
@@ -170,27 +175,30 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.endElement("a");
         
         //submenu children
-        writer.startElement("ul", null);
-        writer.writeAttribute("class", PanelMenu.LIST_CLASS, null);
-        
-        for(UIComponent child : submenu.getChildren()) {
-            if(child.isRendered()) {
-                if(child instanceof MenuItem) {
-                    writer.startElement("li", null);
-                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                    writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, (MenuItem) child);
-                    writer.endElement("li");
-                }
-                else if(child instanceof Submenu) {
-                    encodeDescendantSubmenu(context, (Submenu) child);
+        if(submenu.getElementsCount() > 0) {
+            List<MenuElement> elements = submenu.getElements();
+            
+            writer.startElement("ul", null);
+            writer.writeAttribute("class", PanelMenu.LIST_CLASS, null);
+
+            for(MenuElement element : elements) {
+                if(element.isRendered()) {
+                    if(element instanceof MenuItem) {
+                        writer.startElement("li", null);
+                        writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                        writer.writeAttribute("role", "menuitem", null);
+                        encodeMenuItem(context, (MenuItem) element);
+                        writer.endElement("li");
+                    }
+                    else if(element instanceof Submenu) {
+                        encodeDescendantSubmenu(context, (Submenu) element);
+                    }
                 }
             }
+
+            writer.endElement("ul");
         }
         
-        writer.endElement("ul");
-        
         writer.endElement("li");
-    }
-    
+    } 
 }
