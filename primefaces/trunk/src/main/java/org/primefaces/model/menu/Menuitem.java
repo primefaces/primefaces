@@ -18,7 +18,7 @@ package org.primefaces.model.menu;
 import java.util.List;
 import java.util.Map;
 
-public interface MenuItem extends MenuElement {
+public interface Menuitem extends MenuElement {
     
     public String getIcon();
     

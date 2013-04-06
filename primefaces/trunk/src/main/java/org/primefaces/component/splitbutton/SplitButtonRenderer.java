@@ -26,7 +26,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
 import org.primefaces.component.separator.Separator;
-import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Menuitem;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -205,8 +205,8 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
 
             for(UIComponent child : button.getChildren()) {
                 if(child.isRendered()) {
-                    if(child instanceof MenuItem) {
-                        MenuItem item = (MenuItem) child;
+                    if(child instanceof Menuitem) {
+                        Menuitem item = (Menuitem) child;
                         
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
@@ -225,7 +225,7 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
 
     }
     
-    protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
+    protected void encodeMenuItem(FacesContext context, Menuitem menuItem) throws IOException {
 		//String clientId = menuItem.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         String icon = menuItem.getIcon();

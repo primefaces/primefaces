@@ -20,7 +20,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import org.primefaces.component.api.UIOutcomeTarget;
 
-public class DefaultMenuItem implements MenuItem, UIOutcomeTarget {
+public class DefaultMenuitem implements Menuitem, UIOutcomeTarget {
     
     private String icon;
     private String title;
@@ -39,18 +39,18 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget {
     private Map<String, List<String>> params;
     private boolean rendered = true;
     
-    public DefaultMenuItem() {}
+    public DefaultMenuitem() {}
     
-    public DefaultMenuItem(Object value) {
+    public DefaultMenuitem(Object value) {
         this.value = value;
     }
     
-    public DefaultMenuItem(Object value, String icon) {
+    public DefaultMenuitem(Object value, String icon) {
         this.value = value;
         this.icon = icon;
     }
         
-    public DefaultMenuItem(Object value, String icon, String url) {
+    public DefaultMenuitem(Object value, String icon, String url) {
         this.value = value;
         this.icon = icon;
     }

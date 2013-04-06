@@ -23,7 +23,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Menuitem;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
@@ -44,7 +44,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         
         //home icon for first item
         if(breadCrumb.getChildCount() > 0) {
-            ((MenuItem) breadCrumb.getElements().get(0)).setStyleClass("ui-icon ui-icon-home");
+            ((Menuitem) breadCrumb.getElements().get(0)).setStyleClass("ui-icon ui-icon-home");
         }
 
 		writer.startElement("div", null);
@@ -63,8 +63,8 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
             for(int i = 0; i < elementCount; i++) {
                 MenuElement element = menuElements.get(i);
 
-                if(element.isRendered() && element instanceof MenuItem) {
-                    MenuItem item = (MenuItem) element;
+                if(element.isRendered() && element instanceof Menuitem) {
+                    Menuitem item = (Menuitem) element;
 
                     //dont render chevron before home icon
                     if(i != 0) {
@@ -106,7 +106,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         // Do nothing
     }
 
-    private void encodeDisabledMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
+    private void encodeDisabledMenuItem(FacesContext context, Menuitem menuItem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         String style = menuItem.getStyle();

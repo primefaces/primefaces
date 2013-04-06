@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.separator.Separator;
-import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Menuitem;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -39,7 +39,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     protected abstract void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException;
 
-    protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
+    protected void encodeMenuItem(FacesContext context, Menuitem menuItem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = menuItem.getIcon();
         String title = menuItem.getTitle();
