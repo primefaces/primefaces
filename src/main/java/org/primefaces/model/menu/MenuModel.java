@@ -23,7 +23,7 @@ public interface MenuModel {
 	
 	public void addSubmenu(Submenu submenu);
 	
-	public void addMenuItem(MenuItem menuItem);
+	public void addMenuItem(Menuitem menuItem);
     
     //public void addSeparator(Separator separator);
 }

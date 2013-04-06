@@ -22,7 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Menuitem;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -81,8 +81,8 @@ public class DockRenderer extends CoreRenderer {
             List<MenuElement> menuElements = (List<MenuElement>) dock.getElements();
                     
             for(MenuElement element : menuElements) {
-                if(element.isRendered() && element instanceof MenuItem) {
-                    MenuItem menuitem = (MenuItem) element;
+                if(element.isRendered() && element instanceof Menuitem) {
+                    Menuitem menuitem = (Menuitem) element;
 
                     String styleClass = "ui-dock-item-" + position;
                     if(menuitem.getStyleClass() != null) {
@@ -129,7 +129,7 @@ public class DockRenderer extends CoreRenderer {
         }
 	}
 	
-	protected void encodeItemIcon(FacesContext context, MenuItem menuitem) throws IOException {
+	protected void encodeItemIcon(FacesContext context, Menuitem menuitem) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("img", null);
@@ -137,7 +137,7 @@ public class DockRenderer extends CoreRenderer {
 		writer.endElement("img");
 	}
 	
-	protected void encodeItemLabel(FacesContext context, MenuItem menuitem) throws IOException {
+	protected void encodeItemLabel(FacesContext context, Menuitem menuitem) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("span", null);

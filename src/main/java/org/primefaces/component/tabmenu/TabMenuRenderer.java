@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
-import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Menuitem;
 import org.primefaces.util.WidgetBuilder;
 
 public class TabMenuRenderer extends BaseMenuRenderer {
@@ -61,8 +61,8 @@ public class TabMenuRenderer extends BaseMenuRenderer {
 
         int i = 0;
         for(UIComponent kid : menu.getChildren()) {
-            if(kid.isRendered() && kid instanceof MenuItem) {
-                encodeItem(context, menu, (MenuItem) kid, (i == activeIndex));
+            if(kid.isRendered() && kid instanceof Menuitem) {
+                encodeItem(context, menu, (Menuitem) kid, (i == activeIndex));
                 i++;
             }
         }
@@ -72,7 +72,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
     
-    protected void encodeItem(FacesContext context, TabMenu menu, MenuItem item, boolean active) throws IOException {
+    protected void encodeItem(FacesContext context, TabMenu menu, Menuitem item, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String containerClass = active ? TabMenu.ACTIVE_TAB_HEADER_CLASS : TabMenu.INACTIVE_TAB_HEADER_CLASS;
         if(item.getIcon() != null) {

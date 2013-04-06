@@ -27,7 +27,7 @@ import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.separator.Separator;
 import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Menuitem;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 
@@ -90,11 +90,11 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         
         for(MenuElement element : elements) {
             if(element.isRendered()) {
-                if(element instanceof MenuItem) {
+                if(element instanceof Menuitem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, (MenuItem) element);
+                    encodeMenuItem(context, (Menuitem) element);
                     writer.endElement("li");
                 }
                 else if(element instanceof Submenu) {                    
@@ -229,11 +229,11 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             List<MenuElement> submenuElements = (List<MenuElement>) submenu.getElements();
             for(MenuElement submenuElement : submenuElements) {
                 if(submenuElement.isRendered()) {
-                    if(submenuElement instanceof MenuItem) {
+                    if(submenuElement instanceof Menuitem) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, (MenuItem) submenuElement);
+                        encodeMenuItem(context, (Menuitem) submenuElement);
                         writer.endElement("li");
                     } 
                     else if(submenuElement instanceof Separator) {
