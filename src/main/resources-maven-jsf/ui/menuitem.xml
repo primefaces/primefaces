@@ -15,18 +15,12 @@
 		<interface>
 			<name>org.primefaces.component.api.AjaxSource</name>
 		</interface>
-		<interface>
-			<name>java.io.Serializable</name>
-		</interface>
         <interface>
 			<name>org.primefaces.component.api.UIOutcomeTarget</name>
 		</interface>
         <interface>
 			<name>org.primefaces.model.menu.Menuitem</name>
-		</interface>
-        <interface>
-			<name>org.primefaces.model.menu.MenuElement</name>
-		</interface>       
+		</interface>     
 	</interfaces>
 	<attributes>
 		&command_component_attributes;
