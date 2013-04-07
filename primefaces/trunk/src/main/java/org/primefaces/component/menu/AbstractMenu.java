@@ -16,9 +16,18 @@
 package org.primefaces.component.menu;
 
 import java.util.List;
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.MethodNotFoundException;
 import javax.faces.component.UIComponentBase;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.FacesEvent;
+import org.primefaces.event.MenuActionEvent;
 
 import org.primefaces.model.menu.MenuModel;
+import org.primefaces.model.menu.Menuitem;
 
 public abstract class AbstractMenu extends UIComponentBase {
 		
@@ -53,4 +62,31 @@ public abstract class AbstractMenu extends UIComponentBase {
 	public boolean isDynamic() {
 		return this.getValueExpression("model") != null;
 	}
+
+    @Override
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        if(event instanceof MenuActionEvent) {
+            FacesContext facesContext = getFacesContext();
+            ELContext eLContext = facesContext.getELContext();
+            MenuActionEvent menuActionEvent = (MenuActionEvent) event;
+            Menuitem menuitem = menuActionEvent.getMenuitem();
+            MethodExpression noArgExpr = facesContext.getApplication().getExpressionFactory().
+                            createMethodExpression(eLContext, menuitem.getActionExpressionString(), 
+                                                        null, new Class[0]);
+            
+            try {
+                noArgExpr.invoke(eLContext, null);
+            } catch(MethodNotFoundException methodNotFoundException) {
+                MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
+                            createMethodExpression(eLContext, menuitem.getActionExpressionString(), 
+                                                        null, new Class[]{ActionEvent.class});
+                
+                argExpr.invoke(eLContext, new Object[]{event});
+            }
+            
+        }
+        else {
+            super.broadcast(event);
+        }
+    }
 }

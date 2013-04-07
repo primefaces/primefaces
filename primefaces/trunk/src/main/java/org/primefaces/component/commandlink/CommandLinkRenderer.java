@@ -72,7 +72,7 @@ public class CommandLinkRenderer extends CoreRenderer {
                     throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
                 }
                 
-                request = buildNonAjaxRequest(context, link, form, clientId, true);
+                request = buildNonAjaxRequest(context, link, form, clientId, null, true);
             }
 
 			String onclick = link.getOnclick() != null ? link.getOnclick() + ";" + request : request;

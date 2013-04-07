@@ -76,7 +76,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
         if(menu.getElementsCount() > 0) {
-            encodeElements(context, menu.getElements());
+            encodeElements(context, menu, menu.getElements());
         }
         
         if(optionsFacet != null) {
@@ -92,7 +92,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
     
-    protected void encodeElements(FacesContext context, List<MenuElement> elements) throws IOException {
+    protected void encodeElements(FacesContext context, AbstractMenu menu, List<MenuElement> elements) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         for(MenuElement element : elements) {
@@ -101,7 +101,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, (Menuitem) element);
+                    encodeMenuItem(context, menu, (Menuitem) element);
                     writer.endElement("li");
                 }
                 else if(element instanceof Submenu) {
@@ -117,7 +117,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     }
                     writer.writeAttribute("role", "menuitem", null);
                     writer.writeAttribute("aria-haspopup", "true", null);
-                    encodeSubmenu(context, submenu);
+                    encodeSubmenu(context, menu, submenu);
                     writer.endElement("li");
                 } 
                 else if(element instanceof Separator) {
@@ -127,7 +127,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         }
     }
     
-    protected void encodeSubmenu(FacesContext context, Submenu submenu) throws IOException{
+    protected void encodeSubmenu(FacesContext context, AbstractMenu menu, Submenu submenu) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getIcon();
         String label = submenu.getLabel();
@@ -159,7 +159,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
             writer.writeAttribute("role", "menu", null);
-			encodeElements(context, submenu.getElements());
+			encodeElements(context, menu, submenu.getElements());
 			writer.endElement("ul");
         }
 	}

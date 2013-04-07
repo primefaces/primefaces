@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.model.menu;
+package org.primefaces.event;
 
-public interface MenuElement {
+import javax.faces.component.UIComponent;
+import javax.faces.event.ActionEvent;
+import org.primefaces.model.menu.Menuitem;
+
+public class MenuActionEvent extends ActionEvent {
     
-    public String getId();
+    private Menuitem menuitem;
     
-    public void setId(String id);
-    
-    public boolean isRendered();
+    public MenuActionEvent(UIComponent component, Menuitem menuitem) {
+        super(component);
+        this.menuitem = menuitem;
+    }
+
+    public Menuitem getMenuitem() {
+        return menuitem;
+    }
 }

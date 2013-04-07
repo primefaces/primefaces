@@ -74,7 +74,7 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         if(menu.getElementsCount() > 0) {
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.LIST_CLASS, null);
-            encodeElements(context, menu.getElements());
+            encodeElements(context, abstractMenu, menu.getElements());
             writer.endElement("ul");
         }
         

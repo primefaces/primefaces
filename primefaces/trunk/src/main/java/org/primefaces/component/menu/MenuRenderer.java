@@ -66,14 +66,14 @@ public class MenuRenderer extends BaseMenuRenderer {
         if(menu.getElementsCount() > 0) {
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.LIST_CLASS, null);
-            encodeElements(context, menu.getElements());
+            encodeElements(context, menu, menu.getElements());
             writer.endElement("ul");
         }
 
         writer.endElement("div");
 	}
 
-    protected void encodeElements(FacesContext context, List<MenuElement> elements) throws IOException{
+    protected void encodeElements(FacesContext context, Menu menu, List<MenuElement> elements) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
         
         for(MenuElement element : elements) {
@@ -82,11 +82,11 @@ public class MenuRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, (Menuitem) element);
+                    encodeMenuItem(context, menu, (Menuitem) element);
                     writer.endElement("li");
                 }
                 else if(element instanceof Submenu) {
-                    encodeSubmenu(context, (Submenu) element);
+                    encodeSubmenu(context, menu, (Submenu) element);
                 }
                 else if(element instanceof Separator) {
                     encodeSeparator(context, (Separator) element);
@@ -95,7 +95,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         }
     }
 
-    protected void encodeSubmenu(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeSubmenu(FacesContext context, Menu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
         String style = submenu.getStyle();
@@ -117,6 +117,6 @@ public class MenuRenderer extends BaseMenuRenderer {
         
         writer.endElement("li");
 
-        encodeElements(context, submenu.getElements());
+        encodeElements(context, menu, submenu.getElements());
 	}
 }

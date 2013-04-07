@@ -22,17 +22,20 @@ import java.util.List;
 public class DefaultMenuModel implements MenuModel, Serializable {
 
     private List<MenuElement> elements;
+    private int lastId = 0;
 
     public DefaultMenuModel() {
         elements = new ArrayList<MenuElement>();
     }
 
     public void addSubmenu(Submenu submenu) {
+        submenu.setId(String.valueOf(lastId++));
         elements.add(submenu);
     }
 
-    public void addMenuItem(Menuitem menuItem) {
-        elements.add(menuItem);
+    public void addMenuitem(Menuitem menuitem) {
+        menuitem.setId(String.valueOf(lastId++));
+        elements.add(menuitem);
     }
 
     /*public void addSeparator(Separator separator) {
