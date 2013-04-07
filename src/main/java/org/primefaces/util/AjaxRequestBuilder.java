@@ -15,6 +15,8 @@
  */
 package org.primefaces.util;
 
+import java.util.Iterator;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.component.UIComponent;
@@ -204,6 +206,27 @@ public class AjaxRequestBuilder {
         }
 
         if(paramWritten) {
+            buffer.append("]");
+        }
+        
+        return this;
+    }
+    
+    public AjaxRequestBuilder params(Map<String,Object> params) {
+        if(params != null && !params.isEmpty()) {
+            buffer.append(",params:[");
+            
+            for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+                String name = it.next();
+                Object value = params.get(name);
+                        
+                buffer.append("{name:").append("'").append(name).append("',value:'").append(value).append("'}");
+                
+                if(it.hasNext()) {
+                    buffer.append(",");
+                }
+            }
+            
             buffer.append("]");
         }
         
