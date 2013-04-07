@@ -17,20 +17,24 @@ package org.primefaces.component.menu;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
+import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.separator.Separator;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.Menuitem;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
+import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -139,19 +143,16 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 }
 
                 String command = null;
-                if(!menuitem.isAjax()) {
-                    if(menuitem.isDynamic()) {
-                        String menuClientId = menu.getClientId(context);
-                        Map<String,String> params = new HashMap<String, String>();
-                        params.put(menuClientId + "_menuid", menuitem.getId());
-                        
-                        command = buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
-                    } 
-                    else {
-                        command = buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), null, true);
-                    } 
+                if(menuitem.isDynamic()) {
+                    String menuClientId = menu.getClientId(context);
+                    Map<String,Object> params = new HashMap<String,Object>();
+                    params.put(menuClientId + "_menuid", menuitem.getId());
+
+                    command = menuitem.isAjax() ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params) : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
+                } 
+                else {
+                    command = menuitem.isAjax() ? buildAjaxRequest(context, (AjaxSource) menuitem, form) : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
-                //= menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form, clientId, true);
 
                 onclick = (onclick == null) ? command : onclick + ";" + command;
 			}
@@ -214,5 +215,77 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     @Override
 	public boolean getRendersChildren() {
 		return true;
+	}
+    
+    protected String buildAjaxRequest(FacesContext context, AbstractMenu menu, AjaxSource source, UIComponent form, Map<String,Object> params) {
+        String clientId = menu.getClientId(context);
+        
+        AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
+        
+        builder.init()
+        		.source(clientId)
+                .process(menu, source.getProcess())
+                .update(menu, source.getUpdate())
+                .async(source.isAsync())
+                .global(source.isGlobal())
+                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet())
+                .onstart(source.getOnstart())
+                .onerror(source.getOnerror())
+                .onsuccess(source.getOnsuccess())
+                .oncomplete(source.getOncomplete())
+                .params(params);
+        
+        if(form != null) {
+            builder.form(form.getClientId(context));
+        }
+        
+        builder.preventDefault();
+                
+        return builder.build();
+    }
+    
+    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, Map<String,Object> parameters, boolean submit) {		
+        StringBuilder request = new StringBuilder();
+        String formId = form.getClientId(context);
+        Map<String,Object> params = new HashMap<String, Object>();
+        
+        if(decodeParam != null) {
+            params.put(decodeParam, decodeParam);
+        }
+        
+		for(UIComponent child : component.getChildren()) {
+			if(child instanceof UIParameter) {
+                UIParameter param = (UIParameter) child;
+
+                params.put(param.getName(), param.getValue());
+			}
+		}
+        
+        if(parameters != null && !parameters.isEmpty()) {
+            params.putAll(parameters);
+        }
+        
+        //append params
+        if(!params.isEmpty()) {
+            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
+            
+            for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+                String key = it.next();
+                Object value = params.get(key);
+
+                request.append("'").append(key).append("':'").append(value).append("'");
+
+                if(it.hasNext())
+                    request.append(",");
+            }
+            
+            request.append("})");
+        }
+        
+        if(submit) {
+            request.append(".submit('").append(formId).append("');");
+        }
+		
+		return request.toString();
 	}
 }

@@ -218,10 +218,10 @@ public abstract class CoreRenderer extends Renderer {
         return builder.build();
     }
 	
-	protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, Map<String,String> parameters, boolean submit) {		
+	protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {		
         StringBuilder request = new StringBuilder();
         String formId = form.getClientId(context);
-        Map<String,String> params = new HashMap<String, String>();
+        Map<String,Object> params = new HashMap<String, Object>();
         
         if(decodeParam != null) {
             params.put(decodeParam, decodeParam);
@@ -231,13 +231,9 @@ public abstract class CoreRenderer extends Renderer {
 			if(child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
 
-                params.put(param.getName(), String.valueOf(param.getValue()));
+                params.put(param.getName(), param.getValue());
 			}
 		}
-        
-        if(parameters != null && !parameters.isEmpty()) {
-            params.putAll(parameters);
-        }
         
         //append params
         if(!params.isEmpty()) {
@@ -245,7 +241,7 @@ public abstract class CoreRenderer extends Renderer {
             
             for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String key = it.next();
-                String value = params.get(key);
+                Object value = params.get(key);
 
                 request.append("'").append(key).append("':'").append(value).append("'");
 

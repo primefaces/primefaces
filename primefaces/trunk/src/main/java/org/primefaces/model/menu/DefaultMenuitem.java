@@ -18,9 +18,10 @@ package org.primefaces.model.menu;
 import java.util.List;
 import java.util.Map;
 import javax.faces.component.UIComponent;
+import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 
-public class DefaultMenuitem implements Menuitem, UIOutcomeTarget {
+public class DefaultMenuitem implements Menuitem, UIOutcomeTarget, AjaxSource {
     
     private String id;
     private String icon;
@@ -31,7 +32,7 @@ public class DefaultMenuitem implements Menuitem, UIOutcomeTarget {
     private String styleClass;
     private String url;
     private String target;
-    private boolean ajax;
+    private boolean ajax = true;
     private Object value;
     private String outcome;
     private String href;
@@ -40,6 +41,16 @@ public class DefaultMenuitem implements Menuitem, UIOutcomeTarget {
     private Map<String, List<String>> params;
     private String actionExpressionString;
     private boolean rendered = true;
+    private String onstart;
+    private String onerror;
+    private String onsuccess;
+    private String oncomplete;
+    private String update;
+    private String process;
+    private boolean partialSubmit;
+    private boolean global;
+    private boolean async;
+    private boolean partialSubmitSet;
     
     public DefaultMenuitem() {}
     
@@ -198,5 +209,82 @@ public class DefaultMenuitem implements Menuitem, UIOutcomeTarget {
 
     public void setRendered(boolean rendered) {
         this.rendered = rendered;
+    }
+
+    public String getOnstart() {
+        return onstart;
+    }
+
+    public void setOnstart(String onstart) {
+        this.onstart = onstart;
+    }
+
+    public String getOnerror() {
+        return onerror;
+    }
+
+    public void setOnerror(String onerror) {
+        this.onerror = onerror;
+    }
+
+    public String getOnsuccess() {
+        return onsuccess;
+    }
+
+    public void setOnsuccess(String onsuccess) {
+        this.onsuccess = onsuccess;
+    }
+
+    public String getOncomplete() {
+        return oncomplete;
+    }
+
+    public void setOncomplete(String oncomplete) {
+        this.oncomplete = oncomplete;
+    }
+
+    public String getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(String update) {
+        this.update = update;
+    }
+
+    public String getProcess() {
+        return process;
+    }
+
+    public void setProcess(String process) {
+        this.process = process;
+    }
+
+    public boolean isPartialSubmit() {
+        return partialSubmit;
+    }
+
+    public void setPartialSubmit(boolean partialSubmit) {
+        this.partialSubmit = partialSubmit;
+        this.partialSubmitSet = true;
+    }
+
+    public boolean isGlobal() {
+        return global;
+    }
+
+    public void setGlobal(boolean global) {
+        this.global = global;
+    }
+
+    public boolean isAsync() {
+        return async;
+    }
+
+    public void setAsync(boolean async) {
+        this.async = async;
+    }
+
+    public boolean isPartialSubmitSet() {
+        return partialSubmitSet;
     }
 }
