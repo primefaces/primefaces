@@ -94,11 +94,11 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, (Menuitem) element);
+                    encodeMenuItem(context, menu, (Menuitem) element);
                     writer.endElement("li");
                 }
                 else if(element instanceof Submenu) {                    
-                    encodeRootSubmenu(context, (Submenu) element);
+                    encodeRootSubmenu(context, menu, (Submenu) element);
                 } 
                 else if(element instanceof Separator) {
                     encodeSeparator(context, (Separator) element);
@@ -107,7 +107,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         }
     }
 
-    protected void encodeRootSubmenu(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeRootSubmenu(FacesContext context, MegaMenu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getIcon();
         String label = submenu.getLabel();
@@ -158,7 +158,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             
             for(MenuElement submenuElement : submenuElements) {
                 if(submenuElement.isRendered() && submenuElement instanceof Column) {
-                    encodeColumn(context, (Column) submenuElement);
+                    encodeColumn(context, menu, (Column) submenuElement);
                 }
             }
             
@@ -172,7 +172,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.endElement("li");
     }
     
-    protected void encodeColumn(FacesContext context, Column column) throws IOException {
+    protected void encodeColumn(FacesContext context, MegaMenu menu, Column column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("td", null);
@@ -184,7 +184,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             
             if(child.isRendered()) {
                 if(child instanceof Submenu) {
-                    encodeDescendantSubmenu(context, (Submenu) child);
+                    encodeDescendantSubmenu(context, menu, (Submenu) child);
                 } 
                 else if(child instanceof Separator) {
                     encodeSubmenuSeparator(context, (Separator) child);
@@ -198,7 +198,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.endElement("td");
     }
 
-    protected void encodeDescendantSubmenu(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeDescendantSubmenu(FacesContext context, MegaMenu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
         String style = submenu.getStyle();
@@ -233,7 +233,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, (Menuitem) submenuElement);
+                        encodeMenuItem(context, menu, (Menuitem) submenuElement);
                         writer.endElement("li");
                     } 
                     else if(submenuElement instanceof Separator) {

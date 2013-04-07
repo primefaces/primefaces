@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface Menuitem extends MenuElement {
-    
+        
     public String getIcon();
     
     public String getTitle();
@@ -53,4 +53,6 @@ public interface Menuitem extends MenuElement {
     public Map<String, List<String>> getParams();
     
     public boolean isDynamic();
+    
+    public String getActionExpressionString();
 }

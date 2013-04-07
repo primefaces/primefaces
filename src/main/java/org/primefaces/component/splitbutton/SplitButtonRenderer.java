@@ -181,7 +181,7 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
                 throw new FacesException("SplitButton : \"" + button.getClientId(context) + "\" must be inside a form element");
             }
         
-            onclick.append(buildNonAjaxRequest(context, button, form, null, false));
+            onclick.append(buildNonAjaxRequest(context, button, form, null, null, false));
         }
         
         String onclickBehaviors = getOnclickBehaviors(context, button);

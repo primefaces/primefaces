@@ -218,7 +218,7 @@ public abstract class CoreRenderer extends Renderer {
         return builder.build();
     }
 	
-	protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {		
+	protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, Map<String,String> parameters, boolean submit) {		
         StringBuilder request = new StringBuilder();
         String formId = form.getClientId(context);
         Map<String,String> params = new HashMap<String, String>();
@@ -234,6 +234,10 @@ public abstract class CoreRenderer extends Renderer {
                 params.put(param.getName(), String.valueOf(param.getValue()));
 			}
 		}
+        
+        if(parameters != null && !parameters.isEmpty()) {
+            params.putAll(parameters);
+        }
         
         //append params
         if(!params.isEmpty()) {

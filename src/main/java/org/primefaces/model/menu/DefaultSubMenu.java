@@ -24,12 +24,14 @@ import java.util.List;
 
 public class DefaultSubMenu implements Submenu {
     
+    private String id;
     private String style;
     private String styleClass;
     private String icon;
     private String label;
     private List<MenuElement> elements;
     private boolean rendered = true;
+    private int lastId = 0;
     
     public DefaultSubMenu() {
         elements = new ArrayList<MenuElement>();
@@ -44,6 +46,13 @@ public class DefaultSubMenu implements Submenu {
         this.label = label;
         this.icon = icon;
         elements = new ArrayList<MenuElement>();
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getStyle() {
@@ -98,6 +107,7 @@ public class DefaultSubMenu implements Submenu {
     }
     
     public void addElement(MenuElement element) {
+        element.setId(this.id + "_" + (lastId++));
         elements.add(element);
     }
 }

@@ -3,6 +3,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import java.util.Map;
 import javax.faces.event.ActionEvent;
+import javax.el.MethodExpression;
 
 	public void decode(FacesContext facesContext) {
 		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
@@ -41,4 +42,9 @@ import javax.faces.event.ActionEvent;
 
     public Map<String, List<String>> getParams() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public String getActionExpressionString() {
+        MethodExpression expr = super.getActionExpression();
+        return expr != null ? expr.getExpressionString() : null;
     }

@@ -22,6 +22,7 @@ import org.primefaces.component.api.UIOutcomeTarget;
 
 public class DefaultMenuitem implements Menuitem, UIOutcomeTarget {
     
+    private String id;
     private String icon;
     private String title;
     private boolean disabled;
@@ -37,6 +38,7 @@ public class DefaultMenuitem implements Menuitem, UIOutcomeTarget {
     private boolean includeViewParams;
     private String fragment;
     private Map<String, List<String>> params;
+    private String actionExpressionString;
     private boolean rendered = true;
     
     public DefaultMenuitem() {}
@@ -53,6 +55,13 @@ public class DefaultMenuitem implements Menuitem, UIOutcomeTarget {
     public DefaultMenuitem(Object value, String icon, String url) {
         this.value = value;
         this.icon = icon;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
     }
     
     public String getIcon() {
@@ -173,6 +182,14 @@ public class DefaultMenuitem implements Menuitem, UIOutcomeTarget {
 
     public boolean isDynamic() {
         return true;
+    }
+
+    public String getActionExpressionString() {
+        return actionExpressionString;
+    }
+
+    public void setActionExpressionString(String actionExpressionString) {
+        this.actionExpressionString = actionExpressionString;
     }
 
     public boolean isRendered() {

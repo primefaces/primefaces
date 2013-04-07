@@ -120,11 +120,11 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, (Menuitem) element);
+                        encodeMenuItem(context, menu, (Menuitem) element);
                         writer.endElement("li");
                     }
                     else if(element instanceof Submenu) {
-                        encodeDescendantSubmenu(context, (Submenu) element);
+                        encodeDescendantSubmenu(context, menu, (Submenu) element);
                     }
                 }
             }
@@ -137,7 +137,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");   //wrapper
     }
 
-    protected void encodeDescendantSubmenu(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeDescendantSubmenu(FacesContext context, PanelMenu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getIcon();
         String style = submenu.getStyle();
@@ -187,11 +187,11 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, (Menuitem) element);
+                        encodeMenuItem(context, menu, (Menuitem) element);
                         writer.endElement("li");
                     }
                     else if(element instanceof Submenu) {
-                        encodeDescendantSubmenu(context, (Submenu) element);
+                        encodeDescendantSubmenu(context, menu, (Submenu) element);
                     }
                 }
             }
