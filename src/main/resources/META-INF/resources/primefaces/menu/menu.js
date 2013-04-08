@@ -55,8 +55,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        //hide overlay on document mousedown
-        $(document.body).bind('mousedown.ui-menu', function (e) {            
+        //hide overlay on document click
+        $(document.body).bind('click.ui-menu', function (e) {            
             if(_self.jq.is(":hidden")) {
                 return;
             }
