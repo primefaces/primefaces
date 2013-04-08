@@ -293,7 +293,7 @@ public class TreeTableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		TreeNode root = (TreeNode) tt.getValue();
         String clientId = tt.getClientId(context);
-		boolean empty = tt.getValue() == null;
+		boolean empty = (root == null || root.getChildCount() == 0);
         UIComponent emptyFacet = tt.getFacet("emptyMessage");
         
 		writer.startElement("tbody", null);
@@ -307,14 +307,13 @@ public class TreeTableRenderer extends CoreRenderer {
             writer.startElement("td", null);
             writer.writeAttribute("colspan", tt.getColumnsCount(), null);
             
-            if(emptyFacet != null){
+            if(emptyFacet != null)
                 emptyFacet.encodeAll(context);
-            }
-            else{
+            else
                 writer.write(tt.getEmptyMessage());
-                writer.endElement("td");
-                writer.endElement("tr");
-            }
+
+            writer.endElement("td");
+            writer.endElement("tr");
         }
         
 		if(root != null) {
