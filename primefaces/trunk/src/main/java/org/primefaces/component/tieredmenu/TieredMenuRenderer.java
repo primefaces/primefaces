@@ -24,9 +24,9 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
-import org.primefaces.component.separator.Separator;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.Menuitem;
+import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 

@@ -25,9 +25,10 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
-import org.primefaces.component.separator.Separator;
+import org.primefaces.component.separator.UISeparator;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.Menuitem;
+import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 
@@ -258,10 +259,9 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 	protected void encodeSubmenuSeparator(FacesContext context, Separator separator) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? Separator.DEFAULT_STYLE_CLASS : Separator.DEFAULT_STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? UISeparator.DEFAULT_STYLE_CLASS : UISeparator.DEFAULT_STYLE_CLASS + " " + styleClass;
 		
-		writer.startElement("hr", separator);
-		writer.writeAttribute("id", separator.getClientId(context), "id");
+		writer.startElement("hr", null);
 		writer.writeAttribute("class", styleClass, "styleClass");
 		
 		if(separator.getTitle() != null) writer.writeAttribute("title", separator.getTitle(), "title");
