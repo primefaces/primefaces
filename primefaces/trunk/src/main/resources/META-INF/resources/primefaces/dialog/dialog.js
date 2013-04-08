@@ -214,12 +214,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     applyFocus: function() {
-        if(this.cfg.focus) {
+        if(this.cfg.focus)
            $(PrimeFaces.escapeClientId(this.cfg.focus)).focus();
-        }
-        else {
+        else
             this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').focus();
-        }
     },
     
     bindEvents: function() {   
