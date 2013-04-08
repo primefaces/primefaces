@@ -5,9 +5,9 @@
 ]>
 <component>
 	<tag>menuitem</tag>
-	<tagClass>org.primefaces.component.menuitem.UIMenuitemTag</tagClass>
-	<componentClass>org.primefaces.component.menuitem.UIMenuitem</componentClass>
-	<componentType>org.primefaces.component.UIMenuitem</componentType>
+	<tagClass>org.primefaces.component.menuitem.UIMenuItemTag</tagClass>
+	<componentClass>org.primefaces.component.menuitem.UIMenuItem</componentClass>
+	<componentType>org.primefaces.component.UIMenuItem</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<parent>javax.faces.component.UICommand</parent>
     <description>Menuitem is used by various menu components of PrimeFaces.</description>
