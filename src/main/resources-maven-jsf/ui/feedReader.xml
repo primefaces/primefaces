@@ -28,7 +28,7 @@
 		</attribute>
         <attribute>
 			<name>size</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Number of items to display.</description>
