@@ -27,7 +27,7 @@ import javax.faces.event.FacesEvent;
 import org.primefaces.event.MenuActionEvent;
 
 import org.primefaces.model.menu.MenuModel;
-import org.primefaces.model.menu.Menuitem;
+import org.primefaces.model.menu.MenuItem;
 
 public abstract class AbstractMenu extends UIComponentBase {
 		
@@ -69,16 +69,16 @@ public abstract class AbstractMenu extends UIComponentBase {
             FacesContext facesContext = getFacesContext();
             ELContext eLContext = facesContext.getELContext();
             MenuActionEvent menuActionEvent = (MenuActionEvent) event;
-            Menuitem menuitem = menuActionEvent.getMenuitem();
+            MenuItem menuItem = menuActionEvent.getMenuItem();
             MethodExpression noArgExpr = facesContext.getApplication().getExpressionFactory().
-                            createMethodExpression(eLContext, menuitem.getActionExpressionString(), 
+                            createMethodExpression(eLContext, menuItem.getActionExpressionString(), 
                                                         null, new Class[0]);
             
             try {
                 noArgExpr.invoke(eLContext, null);
             } catch(MethodNotFoundException methodNotFoundException) {
                 MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
-                            createMethodExpression(eLContext, menuitem.getActionExpressionString(), 
+                            createMethodExpression(eLContext, menuItem.getActionExpressionString(), 
                                                         null, new Class[]{ActionEvent.class});
                 
                 argExpr.invoke(eLContext, new Object[]{event});

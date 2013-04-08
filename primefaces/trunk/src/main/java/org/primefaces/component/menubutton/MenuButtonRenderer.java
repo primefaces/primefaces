@@ -24,7 +24,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
-import org.primefaces.model.menu.Menuitem;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -102,8 +102,8 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
             for(UIComponent child : button.getChildren()) {
                 if(child.isRendered()) {
-                    if(child instanceof Menuitem) {
-                        Menuitem item = (Menuitem) child;
+                    if(child instanceof MenuItem) {
+                        MenuItem item = (MenuItem) child;
                         
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);

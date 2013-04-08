@@ -23,7 +23,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.Menuitem;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 
@@ -116,11 +116,11 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
             for(MenuElement element : elements) {
                 if(element.isRendered()) {
-                    if(element instanceof Menuitem) {
+                    if(element instanceof MenuItem) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, menu, (Menuitem) element);
+                        encodeMenuItem(context, menu, (MenuItem) element);
                         writer.endElement("li");
                     }
                     else if(element instanceof Submenu) {
@@ -183,11 +183,11 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
             for(MenuElement element : elements) {
                 if(element.isRendered()) {
-                    if(element instanceof Menuitem) {
+                    if(element instanceof MenuItem) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, menu, (Menuitem) element);
+                        encodeMenuItem(context, menu, (MenuItem) element);
                         writer.endElement("li");
                     }
                     else if(element instanceof Submenu) {
