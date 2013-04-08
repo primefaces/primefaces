@@ -383,6 +383,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         var $this=this,
         hidden = this.panel.is(':hidden');
         
+        if(hidden) {
+            this.show();
+        }
+        else {
+            this.alignPanel();
+        }
+        
         if(this.items.length > 0) {
             var firstItem = this.items.eq(0);                    
         
@@ -415,14 +422,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     this.panel.height(this.cfg.scrollHeight);
                 else
                     this.panel.css('height', 'auto');                                               
-            }
-        
-            if(hidden) {
-                this.show();
-            }
-            else {
-                this.alignPanel();
-            }                      
+            }                    
         
             //show itemtip if defined
             if(this.cfg.itemtip && firstItem.length === 1) {
@@ -430,8 +430,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            this.panel.hide();
-        }
+            if(this.cfg.emptyMessage) { 
+                var emptyText = '<div class="ui-autocomplete-emptyMessage ui-widget">'+this.cfg.emptyMessage+'</div>';
+                this.panel.html(emptyText);
+            }
+            else {
+                this.panel.hide();
+            }
+        }     
     },
             
     search: function(query) {

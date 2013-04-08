@@ -110,3 +110,7 @@
     display: none;
     padding: 0.4em;
 }
+
+.ui-autocomplete-emptyMessage {
+    padding:3px 5px;
+}
