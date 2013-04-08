@@ -47,20 +47,21 @@ public class OutputLabelRenderer extends CoreRenderer {
             if(target instanceof UIInput) {
                 input = (UIInput) target;
                 
-                if(input.getAttributes().get("label") == null || input.getValueExpression("label") == null) {
+                if(value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
                     ValueExpression ve = label.getValueExpression("value");
-                    if(ve != null)
+                    
+                    if(ve != null) {
                         input.setValueExpression("label", ve);
-                    else{
-                        int strLength = value.toString().length() - 1;
-                        if(value.toString().charAt(strLength) == ':'){
-                            Object formattedValue = null;
-                            formattedValue = value.toString().substring(0, strLength);
-                            input.getAttributes().put("label", formattedValue);
+                    }
+                    else {
+                        String labelString = value.toString();
+                        int colonPos = labelString.lastIndexOf(":");
+                        
+                        if(colonPos != -1) {
+                            labelString = labelString.substring(0, colonPos);
                         }
-                        else{
-                            input.getAttributes().put("label", value);
-                        }
+                        
+                        input.getAttributes().put("label", labelString);
                     }
                 }
                 
