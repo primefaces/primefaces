@@ -30,7 +30,7 @@ import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.Menuitem;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
@@ -50,14 +50,14 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         
         if(params.containsKey(clientId)) {
             String menuid = params.get(clientId + "_menuid");
-            Menuitem menuitem = findMenuitem(menu.getElements(), menuid);
+            MenuItem menuitem = findMenuitem(menu.getElements(), menuid);
             MenuActionEvent event = new MenuActionEvent(menu, menuitem);
             
             menu.queueEvent(event);
         }
 	}
     
-    protected Menuitem findMenuitem(List<MenuElement> elements, String id) {        
+    protected MenuItem findMenuitem(List<MenuElement> elements, String id) {        
         if(elements == null || elements.isEmpty()) {
             return null;
         }
@@ -74,7 +74,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             MenuElement childElement = elements.get(childIndex);
 
             if(paths.length == 1) {
-                return (Menuitem) childElement;
+                return (MenuItem) childElement;
             } 
             else {
                 String relativeIndex = id.substring(id.indexOf(SEPARATOR) + 1);
@@ -96,7 +96,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     protected abstract void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException;
 
-    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, Menuitem menuitem) throws IOException {
+    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = menuitem.getIcon();
         String title = menuitem.getTitle();

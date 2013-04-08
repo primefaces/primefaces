@@ -17,18 +17,18 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
-import org.primefaces.model.menu.Menuitem;
+import org.primefaces.model.menu.MenuItem;
 
 public class MenuActionEvent extends ActionEvent {
     
-    private Menuitem menuitem;
+    private MenuItem menuItem;
     
-    public MenuActionEvent(UIComponent component, Menuitem menuitem) {
+    public MenuActionEvent(UIComponent component, MenuItem menuItem) {
         super(component);
-        this.menuitem = menuitem;
+        this.menuItem = menuItem;
     }
 
-    public Menuitem getMenuitem() {
-        return menuitem;
+    public MenuItem getMenuItem() {
+        return menuItem;
     }
 }

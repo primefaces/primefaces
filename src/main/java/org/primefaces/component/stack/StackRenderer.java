@@ -22,7 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.Menuitem;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -69,8 +69,8 @@ public class StackRenderer extends CoreRenderer {
             writer.writeAttribute("id", clientId + "_stack", "id");
 		
             for(MenuElement element : elements) {
-                if(element.isRendered() && element instanceof Menuitem) {
-                    encodeMenuItem(context, (Menuitem) element);
+                if(element.isRendered() && element instanceof MenuItem) {
+                    encodeMenuItem(context, (MenuItem) element);
                 }
             }
         }
@@ -80,7 +80,7 @@ public class StackRenderer extends CoreRenderer {
 		writer.endElement("div");
 	}
 	
-	protected void encodeMenuItem(FacesContext context, Menuitem menuitem) throws IOException {
+	protected void encodeMenuItem(FacesContext context, MenuItem menuitem) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("li", null);

@@ -33,7 +33,7 @@ public class DefaultMenuModel implements MenuModel, Serializable {
         elements.add(submenu);
     }
 
-    public void addMenuitem(Menuitem menuitem) {
+    public void addMenuItem(MenuItem menuitem) {
         menuitem.setId(String.valueOf(lastId++));
         elements.add(menuitem);
     }

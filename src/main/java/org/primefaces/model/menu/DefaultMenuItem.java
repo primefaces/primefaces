@@ -21,7 +21,7 @@ import javax.faces.component.UIComponent;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 
-public class DefaultMenuitem implements Menuitem, UIOutcomeTarget, AjaxSource {
+public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource {
     
     private String id;
     private String icon;
@@ -52,18 +52,18 @@ public class DefaultMenuitem implements Menuitem, UIOutcomeTarget, AjaxSource {
     private boolean async;
     private boolean partialSubmitSet;
     
-    public DefaultMenuitem() {}
+    public DefaultMenuItem() {}
     
-    public DefaultMenuitem(Object value) {
+    public DefaultMenuItem(Object value) {
         this.value = value;
     }
     
-    public DefaultMenuitem(Object value, String icon) {
+    public DefaultMenuItem(Object value, String icon) {
         this.value = value;
         this.icon = icon;
     }
         
-    public DefaultMenuitem(Object value, String icon, String url) {
+    public DefaultMenuItem(Object value, String icon, String url) {
         this.value = value;
         this.icon = icon;
     }

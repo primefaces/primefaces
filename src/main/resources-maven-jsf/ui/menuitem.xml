@@ -19,7 +19,7 @@
 			<name>org.primefaces.component.api.UIOutcomeTarget</name>
 		</interface>
         <interface>
-			<name>org.primefaces.model.menu.Menuitem</name>
+			<name>org.primefaces.model.menu.MenuItem</name>
 		</interface>     
 	</interfaces>
 	<attributes>
