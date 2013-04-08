@@ -50,7 +50,7 @@
 		</attribute>
 		<attribute>
 			<name>for</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.String</type>
             <description>Id of the component to attach the tooltip.</description>
 		</attribute>
