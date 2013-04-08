@@ -341,7 +341,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 stringValues.add(tokenValue);
             }
         }
-        
+       
         writer.startElement("li", null);
         writer.writeAttribute("class", AutoComplete.TOKEN_INPUT_CLASS, null);
         writer.startElement("input", null);
@@ -528,6 +528,11 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(effect != null) {
             wb.attr("effect", effect, null)
                 .attr("effectDuration", ac.getEffectDuration(), Integer.MAX_VALUE);
+        }
+        
+        String emptyMessage = ac.getEmptyMessage();
+        if(emptyMessage != null) {
+            wb.attr("emptyMessage", emptyMessage, null);
         }
         
         if(ac.getFacet("itemtip") != null) {
