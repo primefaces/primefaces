@@ -51,20 +51,7 @@ public class DialogRenderer extends CoreRenderer {
         String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("Dialog", dialog.resolveWidgetVar(), clientId, true);
-        String focusedClientId = null;
-        UIComponent _forComponent = null;
-        String _for = dialog.getFocus();
         
-        if(_for != null) {
-            _forComponent = dialog.findComponent(_for);
-            if(_forComponent == null) {
-                throw new FacesException("Cannot find component with identifier \"" + _for + "\" referenced from \"" + dialog.getClientId(context) + "\".");
-            }
-            else {
-                focusedClientId=_forComponent.getClientId(); 
-            }
-        }
-                
         wb.attr("visible", dialog.isVisible(), false)
             .attr("draggable", dialog.isDraggable(), true)
             .attr("resizable", dialog.isResizable(), true)
@@ -78,11 +65,19 @@ public class DialogRenderer extends CoreRenderer {
             .attr("showEffect", dialog.getShowEffect(), null)
             .attr("hideEffect", dialog.getHideEffect(), null)
             .attr("position", dialog.getPosition(), null)
-            .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
-            .attr("focus", focusedClientId, null)
+            .attr("closeOnEscape", dialog.isCloseOnEscape(), false)  
             .callback("onHide", "function()", dialog.getOnHide())
             .callback("onShow", "function()", dialog.getOnShow());
         
+        String focusId = dialog.getFocus();
+        if(focusId != null) {
+            UIComponent focusComponent = dialog.findComponent(focusId);
+
+            if(focusComponent == null)
+                throw new FacesException("Cannot find component with identifier \"" + focusId + "\" referenced from \"" + dialog.getClientId(context) + "\".");
+            else
+                wb.attr("focus", focusComponent.getClientId(context));
+        }
 
         encodeClientBehaviors(context, dialog, wb);
         
