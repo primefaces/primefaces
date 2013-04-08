@@ -346,6 +346,7 @@
  
         </plugins>
         
+        <!-- Deployment -->
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
