@@ -38,9 +38,10 @@ public class DefaultMenuModel implements MenuModel, Serializable {
         elements.add(menuitem);
     }
 
-    /*public void addSeparator(Separator separator) {
+    public void addSeparator(Separator separator) {
+        separator.setId(String.valueOf(lastId++));
         elements.add(separator);
-    }*/
+    }
     
     public List<MenuElement> getElements() {
         return elements;

@@ -27,10 +27,10 @@ public class SeparatorRenderer extends CoreRenderer{
 
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
-		Separator separator = (Separator) component;
+		UISeparator separator = (UISeparator) component;
 		ResponseWriter writer = context.getResponseWriter();
 		String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? Separator.DEFAULT_STYLE_CLASS : Separator.DEFAULT_STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? UISeparator.DEFAULT_STYLE_CLASS : UISeparator.DEFAULT_STYLE_CLASS + " " + styleClass;
 		
 		writer.startElement("hr", separator);
 		writer.writeAttribute("id", separator.getClientId(context), "id");

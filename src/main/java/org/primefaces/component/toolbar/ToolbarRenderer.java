@@ -19,7 +19,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.separator.Separator;
+import org.primefaces.component.separator.UISeparator;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class ToolbarRenderer extends CoreRenderer {
@@ -55,8 +55,8 @@ public class ToolbarRenderer extends CoreRenderer {
                 }
 
                 for(UIComponent groupChild : group.getChildren()) {
-                    if(groupChild instanceof Separator && groupChild.isRendered())
-                        encodeSeparator(context, (Separator) groupChild);
+                    if(groupChild instanceof UISeparator && groupChild.isRendered())
+                        encodeSeparator(context, (UISeparator) groupChild);
                     else
                         groupChild.encodeAll(context);
                 }
@@ -68,7 +68,7 @@ public class ToolbarRenderer extends CoreRenderer {
         writer.endElement("div");
     }
     
-    public void encodeSeparator(FacesContext context, Separator separator) throws IOException {
+    public void encodeSeparator(FacesContext context, UISeparator separator) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
         String styleClass = separator.getStyleClass();

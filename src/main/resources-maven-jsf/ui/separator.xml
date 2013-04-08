@@ -5,13 +5,18 @@
 <component>
 	<tag>separator</tag>
 	<tagClass>org.primefaces.component.separator.SeparatorTag</tagClass>
-	<componentClass>org.primefaces.component.separator.Separator</componentClass>
+	<componentClass>org.primefaces.component.separator.UISeparator</componentClass>
 	<componentType>org.primefaces.component.Separator</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.SeparatorRenderer</rendererType>
 	<rendererClass>org.primefaces.component.separator.SeparatorRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
     <description>Seperator displays a horizontal line to separate content.</description>
+    <interfaces>
+        <interface>
+			<name>org.primefaces.model.menu.Separator</name>
+		</interface> 
+    </interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
 		<attribute>
