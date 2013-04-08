@@ -20,7 +20,7 @@
     border-top: 0px none;
 }
 
-.ui-datalist ui-datalist-emptymessage {
+.ui-datalist .ui-datalist-emptymessage {
     padding: 4px 10px;
 }
 

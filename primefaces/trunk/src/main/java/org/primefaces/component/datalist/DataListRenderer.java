@@ -55,7 +55,7 @@ public class DataListRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId();
         boolean hasPaginator = list.isPaginator();
-        boolean empty = list.getRowCount() == 0;
+        boolean empty = (list.getRowCount() == 0);
         String paginatorPosition = list.getPaginatorPosition();
         String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
         
@@ -93,7 +93,6 @@ public class DataListRenderer extends DataRenderer {
                 encodeStrictList(context, list); 
             }
         }
-
 
         writer.endElement("div");
 
