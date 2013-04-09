@@ -39,7 +39,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource {
     private boolean includeViewParams;
     private String fragment;
     private Map<String, List<String>> params;
-    private String actionExpressionString;
+    private String command;
     private boolean rendered = true;
     private String onstart;
     private String onerror;
@@ -195,12 +195,12 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource {
         return true;
     }
 
-    public String getActionExpressionString() {
-        return actionExpressionString;
+    public String getCommand() {
+        return command;
     }
 
-    public void setActionExpressionString(String actionExpressionString) {
-        this.actionExpressionString = actionExpressionString;
+    public void setCommand(String command) {
+        this.command = command;
     }
 
     public boolean isRendered() {
