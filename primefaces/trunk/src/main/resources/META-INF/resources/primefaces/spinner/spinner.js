@@ -9,11 +9,11 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.input = this.jq.children('.ui-spinner-input');
         this.upButton = this.jq.children('a.ui-spinner-up');
         this.downButton = this.jq.children('a.ui-spinner-down');
-        if(this.cfg.step)
+        this.cfg.step = this.cfg.step||1;
+        if(parseInt(this.cfg.step) === 0) {
             this.cfg.precision = this.cfg.step.toString().split(/[,]|[.]/)[1].length;
-        else
-            this.cfg.step = 1;
-
+        }
+        
         this.initValue();
 
         this.addARIA();
