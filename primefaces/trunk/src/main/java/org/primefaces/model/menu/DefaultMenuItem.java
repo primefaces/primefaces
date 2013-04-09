@@ -15,13 +15,14 @@
  */
 package org.primefaces.model.menu;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import javax.faces.component.UIComponent;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 
-public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource {
+public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, Serializable {
     
     private String id;
     private String icon;

@@ -15,10 +15,11 @@
  */
 package org.primefaces.model.menu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultSubMenu implements Submenu {
+public class DefaultSubMenu implements Submenu, Serializable {
     
     private String id;
     private String style;
