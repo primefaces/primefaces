@@ -70,7 +70,7 @@ public abstract class AbstractMenu extends UIComponentBase {
             ELContext eLContext = facesContext.getELContext();
             MenuActionEvent menuActionEvent = (MenuActionEvent) event;
             MenuItem menuItem = menuActionEvent.getMenuItem();
-            String actionExpressionString = menuItem.getActionExpressionString();
+            String actionExpressionString = menuItem.getCommand();
             MethodExpression noArgExpr = facesContext.getApplication().getExpressionFactory().
                             createMethodExpression(eLContext,actionExpressionString, 
                                                         String.class, new Class[0]);
