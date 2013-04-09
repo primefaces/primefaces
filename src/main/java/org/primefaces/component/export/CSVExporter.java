@@ -96,9 +96,9 @@ public class CSVExporter extends Exporter {
     
     protected void exportSelectionOnly(FacesContext context, DataTable table, Writer writer) throws IOException {
         Object selection = table.getSelection();
-        String var = table.getVar();
-        
+
         if(selection != null) {
+        	String var = table.getVar();
             Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
             
             if(selection.getClass().isArray()) {
@@ -212,11 +212,10 @@ public class CSVExporter extends Exporter {
 	
 	protected void addColumnValue(Writer writer, List<UIComponent> components) throws IOException {
 		StringBuilder builder = new StringBuilder();
-        FacesContext context = FacesContext.getCurrentInstance();
 		
 		for(UIComponent component : components) {
 			if(component.isRendered()) {
-				String value = exportValue(context, component);
+				String value = exportValue(FacesContext.getCurrentInstance(), component);
 
                 //escape double quotes
                 value = value.replaceAll("\"", "\"\"");

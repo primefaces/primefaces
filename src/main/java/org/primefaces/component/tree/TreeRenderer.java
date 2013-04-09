@@ -48,11 +48,10 @@ public class TreeRenderer extends CoreRenderer {
         decodeBehaviors(context, tree);
 	}
     
-    public void decodeSelection(FacesContext context, Tree tree) {
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-		String clientId = tree.getClientId(context);
-        
+    public void decodeSelection(FacesContext context, Tree tree) {        
         if(tree.getSelectionMode() != null) {
+    		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+    		String clientId = tree.getClientId(context);
             String selection = params.get(clientId + "_selection");
             
             boolean isSingle = tree.getSelectionMode().equalsIgnoreCase("single");
@@ -89,9 +88,9 @@ public class TreeRenderer extends CoreRenderer {
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Tree tree = (Tree) component;
-        boolean vertical = tree.getOrientation().equals("vertical");
 
         if(tree.isNodeExpandRequest(context)) {
+        	boolean vertical = tree.getOrientation().equals("vertical");
             String clientId = tree.getClientId(context);
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String rowKey = params.get(clientId + "_expandNode");

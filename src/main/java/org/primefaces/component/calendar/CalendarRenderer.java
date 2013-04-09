@@ -199,7 +199,6 @@ public class CalendarRenderer extends InputRenderer {
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
         Calendar calendar = (Calendar) component;
         String submittedValue = (String) value;
-        Converter converter = calendar.getConverter();
         SimpleDateFormat format = null;
 
         if(isValueBlank(submittedValue)) {
@@ -208,6 +207,7 @@ public class CalendarRenderer extends InputRenderer {
         
         //Delegate to user supplied converter if defined
         try {
+        	Converter converter = calendar.getConverter();
             if(converter != null) {
                 return converter.getAsObject(context, calendar, submittedValue);
             }

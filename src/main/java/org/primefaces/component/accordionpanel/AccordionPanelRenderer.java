@@ -50,11 +50,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-		AccordionPanel acco = (AccordionPanel) component;
-        String clientId = acco.getClientId(context);
-        String var = acco.getVar();
+		AccordionPanel acco = (AccordionPanel) component;        
 
         if(acco.isContentLoadRequest(context)) {
+        	String var = acco.getVar();
+        	String clientId = acco.getClientId(context);
+
             if(var == null) {
                 String tabClientId = params.get(clientId + "_newTab");
                 Tab tabToLoad = acco.findTab(tabClientId);
