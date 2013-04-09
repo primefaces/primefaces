@@ -178,7 +178,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue></defaultValue>
-            <description>Text to display when there is no data to display. Default is "No records found."</description>
+            <description>Text to display when there is no data to display.</description>
         </attribute>
     </attributes>
     <resources>
