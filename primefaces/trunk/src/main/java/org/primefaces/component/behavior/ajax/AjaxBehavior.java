@@ -32,6 +32,8 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorListener;
+
 import org.primefaces.component.api.AjaxSource;
 
 @ResourceDependencies({
@@ -377,11 +379,11 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
         return bindings;
     }
     
-    public void addAjaxBehaviorListener(AjaxBehaviorListenerImpl listener) {
+    public void addAjaxBehaviorListener(AjaxBehaviorListener listener) {
         addBehaviorListener(listener);
     }
 
-    public void removeAjaxBehaviorListener(AjaxBehaviorListenerImpl listener) {
+    public void removeAjaxBehaviorListener(AjaxBehaviorListener listener) {
         removeBehaviorListener(listener);
     }
 }
