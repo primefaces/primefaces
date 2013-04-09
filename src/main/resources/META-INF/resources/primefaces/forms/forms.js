@@ -897,7 +897,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     focus: function() {
-        this.input.focus();
+        this.focusInput.focus();
     },
     
     blur: function() {
