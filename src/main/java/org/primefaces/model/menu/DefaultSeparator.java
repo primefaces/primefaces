@@ -15,7 +15,9 @@
  */
 package org.primefaces.model.menu;
 
-public class DefaultSeparator implements Separator {
+import java.io.Serializable;
+
+public class DefaultSeparator implements Separator, Serializable {
     
     private String id;
     private String title;
