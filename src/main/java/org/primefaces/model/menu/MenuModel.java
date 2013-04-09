@@ -17,13 +17,14 @@ package org.primefaces.model.menu;
 
 import java.util.List;
 
+/**
+ * Interface to create programmatic Menus
+ */
 public interface MenuModel {
 
 	public List<MenuElement> getElements();
 	
-	public void addSubmenu(Submenu submenu);
-	
-	public void addMenuItem(MenuItem menuItem);
+	public void addElement(MenuElement element);
     
-    public void addSeparator(Separator separator);
+    public void generateUniqueIds();
 }

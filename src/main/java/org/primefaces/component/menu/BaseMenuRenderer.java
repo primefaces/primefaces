@@ -31,6 +31,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
@@ -87,6 +88,10 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		AbstractMenu menu = (AbstractMenu) component;
+        MenuModel model = menu.getModel();
+        if(model != null && menu.getElementsCount() > 0) {
+            model.generateUniqueIds();
+        }
 
 		encodeMarkup(context, menu);
 		encodeScript(context, menu);

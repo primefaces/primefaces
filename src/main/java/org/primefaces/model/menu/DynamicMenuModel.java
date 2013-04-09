@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2013 PrimeTek.
+ * Copyright 2013 jagatai.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,17 +16,8 @@
 package org.primefaces.model.menu;
 
 /**
- * Default implementation of a MenuModel optimized for static menus that do not change once built.
+ * Default implementation of a MenuModel optimized for dynamic menus that may change after getting initialized.
  */
-public class DefaultMenuModel extends BaseMenuModel {
-
-    private boolean generated = false;
+public class DynamicMenuModel extends BaseMenuModel {
     
-    @Override
-    public void generateUniqueIds() {
-        if(!generated) {
-            super.generateUniqueIds();
-            generated = true;
-        }
-    }
 }
