@@ -286,9 +286,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         String inputId = clientId + "_input";
         List values = (List) ac.getValue();
         List<String> stringValues = new ArrayList<String>();
-        Converter converter = findConverter(context, ac);
-        String var = ac.getVar();
-        boolean pojo = var != null;
         boolean disabled = ac.isDisabled();
         
         String styleClass = ac.getStyleClass();
@@ -306,6 +303,10 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("class", listClass, null);
         
         if(values != null && !values.isEmpty()) {
+        	Converter converter = findConverter(context, ac);
+        	String var = ac.getVar();
+        	boolean pojo = var != null;
+
             for(Iterator<Object> it = values.iterator(); it.hasNext();) {
                 Object value = it.next();
                 Object itemValue = null;

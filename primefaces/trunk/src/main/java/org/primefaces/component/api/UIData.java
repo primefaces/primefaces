@@ -423,8 +423,8 @@ public class UIData extends javax.faces.component.UIData {
         
         //update var
         String var = (String) this.getVar();
-        String rowIndexVar = this.getRowIndexVar();
         if(var != null) {
+            String rowIndexVar = this.getRowIndexVar();
             Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
             
             if(isRowAvailable()) {

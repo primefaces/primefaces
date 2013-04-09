@@ -265,10 +265,8 @@ public class ComponentUtils {
 	}
 	
 	public static String findComponentClientId(String id) {
-	    UIComponent component = null;
-
 	    FacesContext facesContext = FacesContext.getCurrentInstance();
-	    component = findComponent(facesContext.getViewRoot(), id);
+	    UIComponent component = findComponent(facesContext.getViewRoot(), id);
 
 	    return component.getClientId(facesContext);
 	}
