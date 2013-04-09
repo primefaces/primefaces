@@ -45,6 +45,9 @@ import javax.faces.view.facelets.TagHandler;
 
 public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAttachedObjectHandler  {
 
+    private static Method MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE;
+    private static Method MYFACES_ADD_ATTACHED_OBJECT_HANDLER;
+	
     private final TagAttribute event;
     private final TagAttribute process;
     private final TagAttribute update;
@@ -124,13 +127,15 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
                     getAttachedObjectHandlers(parent).add(this);
                 } 
                 else {
-                    Class clazz;
                     try {
-                        clazz = Class.forName("org.apache.myfaces.view.facelets.FaceletCompositionContext");
-                        Method instanceMethod = clazz.getDeclaredMethod("getCurrentInstance", FaceletContext.class);
-                        Object faceletCompositionContextInstance = instanceMethod.invoke(null, ctx);
-                        Method addAttachedObjectHandlerMethod = clazz.getDeclaredMethod("addAttachedObjectHandler", UIComponent.class, AttachedObjectHandler.class);
-                        addAttachedObjectHandlerMethod.invoke(faceletCompositionContextInstance, parent, this);
+                    	if (MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE == null || MYFACES_ADD_ATTACHED_OBJECT_HANDLER == null) {
+                    		Class<?> clazz = Class.forName("org.apache.myfaces.view.facelets.FaceletCompositionContext");
+                    		MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE = clazz.getDeclaredMethod("getCurrentInstance", FaceletContext.class);
+                    		MYFACES_ADD_ATTACHED_OBJECT_HANDLER = clazz.getDeclaredMethod("addAttachedObjectHandler", UIComponent.class, AttachedObjectHandler.class);;
+                    	}
+
+                        Object faceletCompositionContextInstance = MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE.invoke(null, ctx);
+                        MYFACES_ADD_ATTACHED_OBJECT_HANDLER.invoke(faceletCompositionContextInstance, parent, this);
                     } 
                     catch (Exception ex) {
                         Logger.getLogger(AjaxBehaviorHandler.class.getName()).log(Level.SEVERE, null, ex);
