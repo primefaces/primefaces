@@ -28,7 +28,6 @@ public class DefaultSubMenu implements Submenu, Serializable {
     private String label;
     private List<MenuElement> elements;
     private boolean rendered = true;
-    private int lastId = 0;
     
     public DefaultSubMenu() {
         elements = new ArrayList<MenuElement>();
@@ -104,7 +103,6 @@ public class DefaultSubMenu implements Submenu, Serializable {
     }
     
     public void addElement(MenuElement element) {
-        element.setId(this.id + "_" + (lastId++));
         elements.add(element);
     }
 }
