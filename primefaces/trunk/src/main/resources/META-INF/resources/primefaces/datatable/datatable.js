@@ -845,6 +845,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         };
 
         var $this = this;
+
         options.onsuccess = function(responseXML) {
             var xmlDoc = $(responseXML.documentElement),
             updates = xmlDoc.find("update");
@@ -873,6 +874,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 $this.alignScrollBody();
             }
 
+            if($this.cfg.selectionMode == 'checkbox') {
+                $this.updateHeaderCheckbox();
+            }
+            
             return true;
         };
 
