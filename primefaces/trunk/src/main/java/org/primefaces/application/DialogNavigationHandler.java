@@ -35,7 +35,10 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
     @Override
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
         if(outcome != null && outcome.startsWith("dialog:")) {
-            NavigationCase navCase = getNavigationCase(context, fromAction, outcome.split(":")[1]);
+            String[] outcomeTokens = outcome.split(":")[1].split("\\?");
+            String viewName = outcomeTokens[0];
+            String[] options = (outcomeTokens.length == 1) ? null : outcomeTokens[1].split("&");
+            NavigationCase navCase = getNavigationCase(context, fromAction, viewName);
             String toViewId = navCase.getToViewId(context);
             String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, null, false);
             
@@ -49,6 +52,13 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
                 
                 if(sourceWidget != null) {
                     script += ",sourceWidget:" + sourceWidget;
+                }
+                
+                if(options != null && options.length > 0) {
+                    for(String option : options) {
+                        String[] optionTokens = option.split("=");
+                        script += ",'" + optionTokens[0] + "':'" + optionTokens[1] + "'";
+                    }
                 }
                 
                 script += "});";
