@@ -253,7 +253,7 @@ public abstract class CoreRenderer extends Renderer {
         }
         
         if(submit) {
-            request.append(".submit('").append(formId).append("');");
+            request.append(".submit('").append(formId).append("');return false;");
         }
 		
 		return request.toString();

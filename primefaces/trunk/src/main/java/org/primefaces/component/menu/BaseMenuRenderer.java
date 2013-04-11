@@ -131,7 +131,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             //GET
 			if(menuitem.getUrl() != null || menuitem.getOutcome() != null) {                
                 String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
-                String href = disabled ? "javascript:void(0)" : targetURL;
+                String href = disabled ? "#" : targetURL;
 				writer.writeAttribute("href", href, null);
                                 
 				if(menuitem.getTarget() != null) {
@@ -140,7 +140,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 			}
             //POST
             else {
-				writer.writeAttribute("href", "javascript:void(0)", null);
+				writer.writeAttribute("href", "#", null);
                 
                 UIComponent form = ComponentUtils.findParentForm(context, menu);
                 if(form == null) {
@@ -288,7 +288,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         }
         
         if(submit) {
-            request.append(".submit('").append(formId).append("');");
+            request.append(".submit('").append(formId).append("');return false;");
         }
 		
 		return request.toString();
