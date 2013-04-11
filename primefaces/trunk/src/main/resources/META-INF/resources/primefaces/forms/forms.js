@@ -499,7 +499,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         //Append panel to body
         $(document.body).children(this.panelId).remove();
         this.panel.appendTo(document.body);
-
+        
         if(this.jq.is(':visible')) {
             this.initWidths();
         }
@@ -525,25 +525,32 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.panel.css('position', 'fixed');
         }
     },
-    
+       
     initWidths: function() {
-        var userStyle = this.jq.attr('style');
-        
-        //do not adjust width of container if there is user width defined
-        if(!userStyle||userStyle.indexOf('width') == -1) {
-            this.jq.width(this.input.outerWidth(true) + 5);  
+        if(this.jq.is(':visible')) {
+            var userStyle = this.jq.attr('style');
+            
+            //do not adjust width of container if there is user width defined
+            if(!userStyle||userStyle.indexOf('width') == -1) {
+                this.jq.width(this.input.outerWidth(true) + 5);  
+            }
+
+            //width of label
+            this.label.width(this.jq.width() - this.menuIcon.width());
+
+            //align panel and container
+            var jqWidth = this.jq.innerWidth();
+            if(this.panel.outerWidth() < jqWidth) {
+                this.panel.width(jqWidth);
+            }
+
+            this.input.parent().addClass('ui-helper-hidden').removeClass('ui-helper-hidden-accessible');
+            
+            return true;
         }
-        
-        //width of label
-        this.label.width(this.jq.width() - this.menuIcon.width());
-        
-        //align panel and container
-        var jqWidth = this.jq.innerWidth();
-        if(this.panel.outerWidth() < jqWidth) {
-            this.panel.width(jqWidth);
+        else {
+            return false;
         }
-        
-        this.input.parent().addClass('ui-helper-hidden').removeClass('ui-helper-hidden-accessible');
     },
     
     bindEvents: function() {
