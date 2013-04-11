@@ -21,11 +21,14 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         
         //visuals for action items
         this.header.find('.ui-panel-titlebar-icon').on('hover.ui-panel', function() {$(this).toggleClass('ui-state-hover');});
+        
+        this.jq.data('widget', this);
     },
     
     toggle: function() {
         if(this.cfg.collapsed) {
             this.expand();
+            this.invokeOnshowHandlers();
         }
         else {
             this.collapse();

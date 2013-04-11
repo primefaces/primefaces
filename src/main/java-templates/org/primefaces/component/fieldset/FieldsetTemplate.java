@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.HashMap;
 import javax.faces.event.PhaseId;
 
-    public static final String FIELDSET_CLASS = "ui-fieldset ui-widget ui-widget-content ui-corner-all";
+    public static final String FIELDSET_CLASS = "ui-fieldset ui-widget ui-widget-content ui-corner-all ui-hidden-container";
     public static final String TOGGLEABLE_FIELDSET_CLASS = FIELDSET_CLASS + " ui-fieldset-toggleable";
     public static final String CONTENT_CLASS = "ui-fieldset-content";
     public static final String LEGEND_CLASS = "ui-fieldset-legend ui-corner-all ui-state-default";

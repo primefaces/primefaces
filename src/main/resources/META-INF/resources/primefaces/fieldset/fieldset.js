@@ -44,11 +44,11 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
                     toggleBehavior.call(_self);
                 }
             }
-            
-            if(_self.onshowHandlers.length > 0) {
-                _self.invokeOnshowHandlers();
-            }
         });
+        
+        if(_self.onshowHandlers.length > 0) {
+            _self.invokeOnshowHandlers();
+        }
     },
     
     /**
