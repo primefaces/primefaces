@@ -339,10 +339,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             ,'visibility':'hidden'
         });
         
-        if(this.cfg.onHide) {
-            this.cfg.onHide.call(this, event, ui);
-        }
-
         if(this.cfg.behaviors) {
             var closeBehavior = this.cfg.behaviors['close'];
 
@@ -355,6 +351,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             'aria-hidden': true
             ,'aria-live': 'off'
         });
+        
+        if(this.cfg.onHide) {
+            this.cfg.onHide.call(this, event, ui);
+        }
     },
     
     moveToTop: function() {
