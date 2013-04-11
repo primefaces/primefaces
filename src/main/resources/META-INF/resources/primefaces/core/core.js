@@ -366,24 +366,41 @@
                 
         openDialog: function(cfg) {
             var dialogId = cfg.sourceComponentId + '_dlg',
-            dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget';
-    
+            dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
             dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-overlay-hidden"' + 
                     ' data-dcid="' + cfg.dcid + '" data-dlgwidgetvar="' + dialogWidgetVar + '"/>')
-                    .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top><span class="ui-dialog-title"></span>' +
+                    .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span>' +
                     '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' + 
                     '<div class="ui-dialog-content ui-widget-content" style="height: auto;">' +
-                    '<iframe name="' + cfg.name + '" src="' + cfg.url + '?dcid=' + cfg.dcid + '" width="640" height="480"/>' + 
+                    '<iframe name="' + cfg.name + '" style="border:0 none;width:640px;height:480px;"/>' + 
                     '</div>')
-                    .appendTo(document.body);
-
-            PrimeFaces.cw('Dialog', dialogWidgetVar, {
-                id: dialogId,
-                visible: true,
-                position: 'center',
-                sourceComponentId: cfg.sourceComponentId,
-                sourceWidget: cfg.sourceWidget
-            });
+                    .appendTo(document.body),
+            dialogFrame = dialogDOM.find('iframe'),
+            frameURL = cfg.url + '?dcid=' + cfg.dcid;
+    
+            dialogFrame.on('load', function() {
+                var $frame = $(this),
+                titleElement = $frame.contents().find('title');
+                
+                PrimeFaces.cw('Dialog', dialogWidgetVar, {
+                    id: dialogId,
+                    position: 'center',
+                    sourceComponentId: cfg.sourceComponentId,
+                    sourceWidget: cfg.sourceWidget,
+                    onHide: function() {
+                        this.jq.remove();
+                        window[dialogWidgetVar] = undefined;
+                    },
+                    modal: (cfg.modal === 'true')
+                });
+                
+                if(titleElement.length > 0) {
+                    window[dialogWidgetVar].titlebar.children('span.ui-dialog-title').html(titleElement.text());
+                }
+                
+                window[dialogWidgetVar].show();
+            })
+            .attr('src', frameURL);
         },
 
         hideDialog: function(cfg) {
@@ -394,7 +411,7 @@
             sourceWidget = dlgWidget.cfg.sourceWidget;
 
             dlgWidget.hide();
-            dlgWidget.jq.remove();
+            dlgWidget.jq.remove(); 
             
             if(sourceWidget && sourceWidget.cfg.behaviors) {
                 var dialogReturnBehavior = sourceWidget.cfg.behaviors['dialogReturn'];
