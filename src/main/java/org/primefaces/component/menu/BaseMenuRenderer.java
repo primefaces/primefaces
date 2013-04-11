@@ -111,7 +111,6 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 		}
         else {
             boolean disabled = menuitem.isDisabled();
-            String onclick = menuitem.getOnclick();
             
             writer.startElement("a", null);
             if(title != null) {
@@ -128,24 +127,26 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 writer.writeAttribute("style", menuitem.getStyle(), null);
             }
                   
-            //GET
-			if(menuitem.getUrl() != null || menuitem.getOutcome() != null) {                
-                String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
-                String href = disabled ? "#" : targetURL;
-				writer.writeAttribute("href", href, null);
-                                
-				if(menuitem.getTarget() != null) {
-                    writer.writeAttribute("target", menuitem.getTarget(), null);
-                }
-			}
-            //POST
+            if(disabled) {
+                writer.writeAttribute("href", "#", null);
+                writer.writeAttribute("onclick", "return false;", null);
+            }
             else {
-				writer.writeAttribute("href", "#", null);
+                String onclick = menuitem.getOnclick();
                 
-                if(disabled) {
-                    onclick = "return false;";
+                //GET
+                if(menuitem.getUrl() != null || menuitem.getOutcome() != null) {                
+                    String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
+                    writer.writeAttribute("href", targetURL, null);
+
+                    if(menuitem.getTarget() != null) {
+                        writer.writeAttribute("target", menuitem.getTarget(), null);
+                    }
                 }
+                //POST
                 else {
+                    writer.writeAttribute("href", "#", null);
+
                     UIComponent form = ComponentUtils.findParentForm(context, menu);
                     if(form == null) {
                         throw new FacesException("MenuItem must be inside a form element");
@@ -165,12 +166,12 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
                     onclick = (onclick == null) ? command : onclick + ";" + command;
                 }
-			}
+                
+                if(onclick != null) {
+                    writer.writeAttribute("onclick", onclick, null);
+                }
+            }
 
-            if(onclick != null) {
-                writer.writeAttribute("onclick", onclick, null);
-            } 
- 
             if(icon != null) {
                 writer.startElement("span", null);
                 writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
