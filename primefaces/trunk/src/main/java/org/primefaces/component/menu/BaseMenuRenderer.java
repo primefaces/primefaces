@@ -142,29 +142,34 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             else {
 				writer.writeAttribute("href", "#", null);
                 
-                UIComponent form = ComponentUtils.findParentForm(context, menu);
-                if(form == null) {
-                    throw new FacesException("MenuItem must be inside a form element");
+                if(disabled) {
+                    onclick = "return false;";
                 }
-
-                String command = null;
-                if(menuitem.isDynamic()) {
-                    String menuClientId = menu.getClientId(context);
-                    Map<String,Object> params = new HashMap<String,Object>();
-                    params.put(menuClientId + "_menuid", menuitem.getId());
-
-                    command = menuitem.isAjax() ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params) : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
-                } 
                 else {
-                    command = menuitem.isAjax() ? buildAjaxRequest(context, (AjaxSource) menuitem, form) : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
-                }
+                    UIComponent form = ComponentUtils.findParentForm(context, menu);
+                    if(form == null) {
+                        throw new FacesException("MenuItem must be inside a form element");
+                    }
 
-                onclick = (onclick == null) ? command : onclick + ";" + command;
+                    String command;
+                    if(menuitem.isDynamic()) {
+                        String menuClientId = menu.getClientId(context);
+                        Map<String,Object> params = new HashMap<String,Object>();
+                        params.put(menuClientId + "_menuid", menuitem.getId());
+
+                        command = menuitem.isAjax() ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params) : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
+                    } 
+                    else {
+                        command = menuitem.isAjax() ? buildAjaxRequest(context, (AjaxSource) menuitem, form) : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                    }
+
+                    onclick = (onclick == null) ? command : onclick + ";" + command;
+                }
 			}
 
-            if(onclick != null && !disabled) {
+            if(onclick != null) {
                 writer.writeAttribute("onclick", onclick, null);
-            }
+            } 
  
             if(icon != null) {
                 writer.startElement("span", null);
