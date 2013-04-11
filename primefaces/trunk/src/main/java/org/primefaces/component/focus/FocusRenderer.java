@@ -87,7 +87,7 @@ public class FocusRenderer extends CoreRenderer {
         else if(focus.getContext() != null) {		
             UIComponent focusContext = focus.findComponent(focus.getContext());
 
-            if(context == null)
+            if(focusContext == null)
                 throw new FacesException("Cannot find component " + focus.getContext() + " in view");
             else {
                 writer.write("PrimeFaces.focus(null, '" + focusContext.getClientId(context) +"');");
