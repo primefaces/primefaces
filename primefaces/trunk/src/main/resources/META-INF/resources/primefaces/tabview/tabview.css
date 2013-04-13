@@ -95,9 +95,16 @@
 .ui-tabs.ui-tabs-left > .ui-tabs-nav li,
 .ui-tabs.ui-tabs-right > .ui-tabs-nav li{
     display: block;
-    float: right;
     white-space: normal;
     width: 98%;
+}
+
+.ui-tabs.ui-tabs-left > .ui-tabs-nav li {
+    float: right;
+}
+
+.ui-tabs.ui-tabs-right > .ui-tabs-nav li {
+    float: left;
 }
 
 .ui-tabs.ui-tabs-left > .ui-tabs-nav li {
