@@ -360,7 +360,7 @@ import org.primefaces.component.datatable.feature.*;
                 data = lazyModel.load(getFirst(), getRows(), getMultiSortMeta(), getFilters());
             }
             else {
-                data = lazyModel.load(getFirst(), getRows(), resolveSortField(), convertSortOrder(), getFilters());
+                data = lazyModel.load(getFirst(), getRows(), (String) getSortBy(), convertSortOrder(), getFilters());
             }
             
             lazyModel.setPageSize(getRows());
