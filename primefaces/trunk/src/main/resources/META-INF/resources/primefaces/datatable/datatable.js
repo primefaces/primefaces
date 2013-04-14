@@ -923,9 +923,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     this.originRowIndex = row.index();
                     this.cursorIndex = null;
                     this.selectRow(row, silent);
-                        if(this.isCheckboxSelectionEnabled()) {
-                            this.updateHeaderCheckbox();
-                        }
                 }
             } 
 
@@ -2031,8 +2028,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 return !(checked || disabled); 
             });
-            console.log("Checked Length: " + checkboxes.length);
-            console.log("Unchecked Length: " + uncheckedBoxes.length);
             
             if(uncheckedBoxes.length == 0)
                 this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
