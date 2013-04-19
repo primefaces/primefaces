@@ -15,6 +15,9 @@
 		<interface>
 			<name>org.primefaces.component.api.UIColumn</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.model.menu.MenuElement</name>
+		</interface>   
 	</interfaces>
     <attributes>
 		&standard_uicomponent_attributes;
