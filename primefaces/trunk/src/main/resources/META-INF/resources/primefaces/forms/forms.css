@@ -165,6 +165,7 @@
 
 .ui-selectonemenu-panel .ui-selectonemenu-item {
     font-weight: normal;
+    cursor:pointer;
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-item-group {
@@ -178,7 +179,6 @@
 
 .ui-selectonemenu-panel .ui-selectonemenu-list-item {
     border:0px none;
-    cursor:pointer;
     margin:1px 0;
     padding:3px 5px;
     text-align:left;
