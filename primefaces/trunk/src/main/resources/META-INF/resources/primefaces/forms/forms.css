@@ -57,6 +57,10 @@
     border-radius: 2px;
 }
 
+.ui-chkbox-icon.ui-icon {
+    overflow: visible;
+}
+
 .ui-chkbox .ui-chkbox-label {
     cursor: pointer;
     margin: 3px 0 0 3px;
