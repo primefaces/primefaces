@@ -987,6 +987,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(this.isCheckboxSelectionEnabled()) {
             var checkbox = row.children('td.ui-selection-column').find('> div.ui-chkbox > div.ui-chkbox-box');
             this.selectCheckbox(checkbox);
+            this.updateHeaderCheckbox();
         }
         
         this.addSelection(rowMeta.key);
@@ -1007,6 +1008,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(this.isCheckboxSelectionEnabled()) {
             var checkbox = row.children('td.ui-selection-column').find('> div.ui-chkbox > div.ui-chkbox-box');
             this.unselectCheckbox(checkbox);
+            this.updateHeaderCheckbox();
         }
 
         this.removeSelection(rowMeta.key);
@@ -1149,6 +1151,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             if(this.isCheckboxSelectionEnabled()) {
                 var checkbox = row.children('td.ui-selection-column').find('> div.ui-chkbox > div.ui-chkbox-box');
                 this.unselectCheckbox(checkbox);
+                this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
             }
         }
         
