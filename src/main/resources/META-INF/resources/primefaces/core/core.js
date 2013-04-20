@@ -469,7 +469,7 @@
 
         updateState: function(value) {
             var viewstateValue = $.trim(value),
-            forms = this.portletForms ? this.portletForms : $('form');
+            forms = this.portletForms ? $(this.portletForms) : $('form');
 
             forms.each(function() {
                 var form = $(this),
@@ -608,10 +608,10 @@
             postParams = [];
 
             //portlet support
-            var pForms = null;
+            var pFormsSelector = null;
             if(encodedURLfield.length > 0) {
+                pFormsSelector = 'form[action="' + postURL + '"]';
                 postURL = encodedURLfield.val();
-                pForms = $('form[action="' + form.attr('action') + '"]');   //find forms of the portlet
             }
 
             PrimeFaces.debug('URL to post ' + postURL + '.');
@@ -732,7 +732,7 @@
                 cache : false,
                 dataType : "xml",
                 data : postData,
-                portletForms: pForms,
+                portletForms: pFormsSelector,
                 source: cfg.source,
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('Faces-Request', 'partial/ajax');
@@ -856,7 +856,7 @@
         isEmpty : function() {
             return this.requests.length == 0;
         }
-    };
+};
 
     /* Simple JavaScript Inheritance
      * By John Resig http://ejohn.org/
