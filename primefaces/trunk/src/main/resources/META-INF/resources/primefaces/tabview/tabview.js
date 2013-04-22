@@ -87,7 +87,9 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         this.navContainer.find('li .ui-icon-close')
             .on('click.tabview', function(e) {
                 var index = $(this).parent().index();
-                
+                if(index < $this.cfg.selected) {
+                    $this.cfg.selected = $this.cfg.selected - 1;
+                }                
                 if($this.cfg.onTabClose) {
                     var retVal = $this.cfg.onTabClose.call($this, index);
                     
