@@ -1,6 +1,7 @@
 import org.primefaces.util.Constants;
 
     public static final String STYLE_CLASS = "ui-overlaypanel ui-widget ui-widget-content ui-overlay-hidden ui-corner-all ui-shadow";
+    public static final String CONTENT_CLASS = "ui-overlaypanel-content";
 
     @Override
     public void processDecodes(FacesContext context) {

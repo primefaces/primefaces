@@ -6,14 +6,20 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
+        this.content = this.jq.children('div.ui-overlaypanel-content')
         this.targetId = PrimeFaces.escapeClientId(this.cfg.target);
         this.target = $(this.targetId);
     
         //configuration
         this.cfg.my = this.cfg.my||'left top';
         this.cfg.at = this.cfg.at||'left bottom';
-        this.cfg.showEvent = this.cfg.showEvent||'click.ui-overlay';
-        this.cfg.hideEvent = this.cfg.hideEvent||'click.ui-overlay';
+        this.cfg.showEvent = this.cfg.showEvent||'click.ui-overlaypanel';
+        this.cfg.hideEvent = this.cfg.hideEvent||'click.ui-overlaypanel';
+        this.cfg.dismissable = (this.cfg.dismissable === false) ? false : true;
+        
+        if(this.cfg.showCloseIcon) {
+            this.closerIcon = $('<a href="#" class="ui-overlaypanel-close ui-state-default" href="#"><span class="ui-icon ui-icon-closethick"></span></a>').appendTo(this.jq);
+        }
 
         this.bindEvents();
 
@@ -26,11 +32,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindEvents: function() {
+        var $this = this;
+
         //mark target and descandants of target as a trigger for a primefaces overlay
         this.target.data('primefaces-overlay-target', this.id).find('*').data('primefaces-overlay-target', this.id);
 
         //show and hide events for target
-        if(this.cfg.showEvent == this.cfg.hideEvent) {
+        if(this.cfg.showEvent === this.cfg.hideEvent) {
             var event = this.cfg.showEvent;
             
             $(document).off(event, this.targetId).on(event, this.targetId, this, function(e) {
@@ -38,21 +46,17 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             });
         }
         else {
-            var showEvent = this.cfg.showEvent + '.ui-overlay',
-            hideEvent = this.cfg.hideEvent + '.ui-overlay';
+            var showEvent = this.cfg.showEvent + '.ui-overlaypanel',
+            hideEvent = this.cfg.hideEvent + '.ui-overlaypanel';
             
             $(document).off(showEvent + ' ' + hideEvent, this.targetId).on(showEvent, this.targetId, this, function(e) {
-                var _self = e.data;
-
-                if(!_self.isVisible()) {
-                    _self.show();
+                if(!e.data.isVisible()) {
+                    e.data.show();
                 }
             })
             .on(hideEvent, this.targetId, this, function(e) {
-                var _self = e.data;
-
-                if(_self.isVisible()) {
-                    _self.hide();
+                if(e.data.isVisible()) {
+                    e.data.hide();
                 }
             });
         }
@@ -60,49 +64,62 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         //enter key support for mousedown event
         this.bindKeyEvents();
         
-        var _self = this;
+        if(this.cfg.showCloseIcon) {
+            this.closerIcon.on('mouseover.ui-overlaypanel', function() {
+                $(this).addClass('ui-state-hover');
+            })
+            .on('mouseout.ui-overlaypanel', function() {
+                $(this).removeClass('ui-state-hover');
+            })
+            .on('click.ui-overlaypanel', function(e) {
+                $this.hide();
+                e.preventDefault();
+            });
+        }
 
         //hide overlay when mousedown is at outside of overlay
-        $(document.body).bind('mousedown.ui-overlay', function (e) {
-            if(_self.jq.hasClass('ui-overlay-hidden')) {
-                return;
-            }
+        if(this.cfg.dismissable) {
+           $(document.body).bind('mousedown.ui-overlaypanel', function (e) {
+                if($this.jq.hasClass('ui-overlay-hidden')) {
+                    return;
+                }
 
-            //do nothing on target mousedown
-            var target = $(e.target);
-            if(_self.target.is(target)||_self.target.has(target).length > 0) {
-                return;
-            }
+                //do nothing on target mousedown
+                var target = $(e.target);
+                if($this.target.is(target)||$this.target.has(target).length > 0) {
+                    return;
+                }
 
-            //hide overlay if mousedown is on outside
-            var offset = _self.jq.offset();
-            if(e.pageX < offset.left ||
-                e.pageX > offset.left + _self.jq.outerWidth() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + _self.jq.outerHeight()) {
+                //hide overlay if mousedown is on outside
+                var offset = $this.jq.offset();
+                if(e.pageX < offset.left ||
+                    e.pageX > offset.left + $this.jq.outerWidth() ||
+                    e.pageY < offset.top ||
+                    e.pageY > offset.top + $this.jq.outerHeight()) {
 
-                _self.hide();
-            }
-        });
+                    $this.hide();
+                }
+            }); 
+        }
 
         //Hide overlay on resize
         var resizeNS = 'resize.' + this.id;
         $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if(_self.jq.hasClass('ui-overlay-visible')) {
-                _self.align();
+            if($this.jq.hasClass('ui-overlay-visible')) {
+                $this.align();
             }
         });
     },
     
     bindKeyEvents: function() {
-        $(document).off('keydown.ui-overlay keyup.ui-overlay', this.targetId).on('keydown.ui-overlay', this.targetId, this, function(e) {
+        $(document).off('keydown.ui-overlaypanel keyup.ui-overlaypanel', this.targetId).on('keydown.ui-overlaypanel', this.targetId, this, function(e) {
             var keyCode = $.ui.keyCode, key = e.which;
             
             if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
                 e.preventDefault();
             }
         })
-        .on('keyup.ui-overlay', this.targetId, this, function(e) {
+        .on('keyup.ui-overlaypanel', this.targetId, this, function(e) {
             var keyCode = $.ui.keyCode, key = e.which;
             
             if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
@@ -113,25 +130,21 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     toggle: function() {
-        if(!this.isVisible()) {
+        if(!this.isVisible())
             this.show();
-        } 
-        else {
+        else
             this.hide();
-        }
     },
     
     show: function() {
-        if(!this.loaded && this.cfg.dynamic) {
+        if(!this.loaded && this.cfg.dynamic)
             this.loadContents();
-        }
-        else {
+        else
             this._show();
-        }
     },
     
     _show: function() {
-        var _self = this;
+        var $this = this;
 
         this.align();
 
@@ -143,7 +156,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.showEffect) {
             this.jq.show(this.cfg.showEffect, {}, 200, function() {
-                _self.postShow();
+                $this.postShow();
             });
         }
         else {
@@ -167,11 +180,11 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function() {
-        var _self = this;
+        var $this = this;
 
         if(this.cfg.hideEffect) {
             this.jq.hide(this.cfg.hideEffect, {}, 200, function() {
-                _self.postHide();
+                $this.postHide();
             });
         }
         else {
@@ -222,7 +235,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             process: this.id,
             update: this.id
         },
-        _self = this;
+        $this = this;
 
         options.onsuccess = function(responseXML) {
             var xmlDoc = $(responseXML.documentElement),
@@ -233,9 +246,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
                 id = update.attr('id'),
                 content = update.text();
 
-                if(id == _self.id){
-                    _self.jq.html(content);
-                    _self.loaded = true;
+                if(id == $this.id){
+                    $this.content.html(content);
+                    $this.loaded = true;
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -248,7 +261,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         };
 
         options.oncomplete = function() {
-            _self._show();
+            $this._show();
         };
 
         options.params = [

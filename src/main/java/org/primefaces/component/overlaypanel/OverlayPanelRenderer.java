@@ -52,9 +52,12 @@ public class OverlayPanelRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
         
+        writer.startElement("div", panel);
+        writer.writeAttribute("class", OverlayPanel.CONTENT_CLASS, "styleClass");
         if(!panel.isDynamic()) {
             renderChildren(context, panel);
         }
+        writer.endElement("div");
         
         writer.endElement("div");
     }
@@ -81,7 +84,9 @@ public class OverlayPanelRenderer extends CoreRenderer {
             .attr("my", panel.getMy(), null)
             .attr("at", panel.getAt(), null)
             .attr("appendToBody", panel.isAppendToBody(), false)
-            .attr("dynamic", panel.isDynamic(), false);
+            .attr("dynamic", panel.isDynamic(), false)
+            .attr("dismissable", panel.isDismissable(), true)
+            .attr("showCloseIcon", panel.isShowCloseIcon(), false);
 
         startScript(writer, clientId);
         writer.write(wb.build());
