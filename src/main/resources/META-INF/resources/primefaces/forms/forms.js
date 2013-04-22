@@ -625,12 +625,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.initialHeight = this.itemsWrapper.height();
             this.setupFilterMatcher();
             this.filterInput = this.panel.find('> div.ui-selectonemenu-filter-container > input.ui-selectonemenu-filter');
-            this.bindFilterKeyEvents();
             PrimeFaces.skinInput(this.filterInput);
 
-            this.filterInput.keyup(function() {
-                $this.filter($(this).val());
-            });            
+            this.bindFilterEvents();      
         }        
     },
     
@@ -773,75 +770,28 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
             
-            if($this.cfg.filter) {
-                $this.filterInput.focus();
-            }
-
             switch(key) { 
                 case keyCode.UP:
                 case keyCode.LEFT:
-                    var activeItem = $this.getActiveItem(),
-                    prev = activeItem.prevAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
-                      
-                    if(prev.length == 1) {
-                        if($this.panel.is(':hidden')) {
-                            $this.selectItem(prev);
-                        } 
-                        else {
-                            $this.highlightItem(prev);
-                            PrimeFaces.scrollInView($this.itemsWrapper, prev);
-                        }
-                    }
-
-                    e.preventDefault();                    
+                    $this.highlightPrev(e);
                 break;
 
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
-                    var activeItem = $this.getActiveItem(),
-                    next = activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
-                    
-                    if(next.length == 1) {
-                        if($this.panel.is(':hidden')) {
-                            if(e.altKey) {
-                                $this.show();
-                            } else {
-                                $this.selectItem(next);
-                            }
-                        }
-                        else {
-                            $this.highlightItem(next);
-                            PrimeFaces.scrollInView($this.itemsWrapper, next);
-                        }
-                    }
-                    
-                    e.preventDefault();
+                    $this.highlightNext(e);
                 break;
       
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER: 
-                    if($this.panel.is(':hidden')) {
-                        $this.show();
-                    }
-                    else {
-                        $this.selectItem($this.getActiveItem());
-                    }
-                    
-                    e.preventDefault();
+                    $this.handleEnterKey(e);
                 break;
                 
                 case keyCode.TAB:
-                    if($this.panel.is(':visible')) {
-                        $this.revert();
-                        $this.hide();
-                    }
+                    $this.handleTabKey();
                 break;
                 
                 case keyCode.ESCAPE:
-                    if($this.panel.is(':visible')) {
-                        $this.revert();
-                        $this.hide();
-                    }
+                    $this.handleEscapeKey(e);
                 break;
                 
                 default:    
@@ -869,95 +819,105 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         });
     },
     
-    bindFilterKeyEvents: function() {
+    bindFilterEvents: function() {
         var $this = this;
         
-        this.filterInput.on('keydown.ui-selectonemenu',function(e) {
+        this.filterInput.on('keyup.ui-selectonemenu', function() {
+            $this.filter($(this).val());
+        })
+        .on('keydown.ui-selectonemenu',function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
                         
-            switch(key) { 
+            switch(key) {
                 case keyCode.UP:
-                    var activeItem = $this.getActiveItem(),
-                    prev = activeItem.prevAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
-                    
-                    if(prev.length == 1) {
-                        if($this.panel.is(':hidden')) {
-                        } 
-                        else {
-                            $this.highlightItem(prev);
-                            PrimeFaces.scrollInView($this.itemsWrapper, prev);
-                        }
-                    }
-
-                    e.preventDefault();                    
+                    $this.highlightPrev(e);
                 break;
 
                 case keyCode.DOWN:
-                    var activeItem = $this.getActiveItem(),
-                    next = activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
-                    
-                    if(next.length == 1) {
-                        if($this.panel.is(':hidden')) {
-                           
-                        }
-                        else {
-                            $this.highlightItem(next);
-                            PrimeFaces.scrollInView($this.itemsWrapper, next);
-                        }
-                    }
-                    
-                    e.preventDefault();
+                    $this.highlightNext(e);
                 break;
-      
+                   
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER: 
-                    if($this.panel.is(':hidden')) {
-                        $this.show();
-                    }
-                    else {
-                        $this.selectItem($this.getActiveItem());
-                    }
-                    
-                    e.preventDefault();
+                    $this.handleEnterKey(e);
                 break;
                 
                 case keyCode.TAB:
-                    if($this.panel.is(':visible')) {
-                        $this.hide();
-                    }
+                    $this.handleTabKey();
                 break;
                 
                 case keyCode.ESCAPE:
-                    if($this.panel.is(':visible')) {
-                        $this.revert();
-                        $this.hide();
-                    }
+                    $this.handleEscapeKey(e);
                 break;
                 
-                default:    
-                    var k = String.fromCharCode((96 <= key && key <= 105)? key-48 : key),
-                    currentItem = $this.items.filter('.ui-state-highlight');
-
-                    //Search items forward from current to end and on no result, search from start until current
-                    var highlightItem = $this.search(k, currentItem.index() + 1, $this.options.length);
-                    if(!highlightItem) {
-                        highlightItem = $this.search(k, 0, currentItem.index());
-                    }
-                    
-                    if(highlightItem) {
-                        if($this.panel.is(':hidden')) {
-                            $this.selectItem(highlightItem);
-                        }
-                        else {
-                            $this.highlightItem(highlightItem);
-                            PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
-                        }    
-                    }
-                                
+                default:
                 break;
             }
         });
+    },
+            
+    highlightNext: function(event) {
+        var activeItem = this.getActiveItem(),
+        next = this.panel.is(':hidden') ? activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):first')
+                                : activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
+
+        if(next.length === 1) {
+            if(this.panel.is(':hidden')) {
+                if(event.altKey)
+                    this.show();
+                else
+                    this.selectItem(next);
+            }
+            else {
+                this.highlightItem(next);
+                PrimeFaces.scrollInView(this.itemsWrapper, next);
+            }
+        }
+
+        event.preventDefault();
+    },
+            
+    highlightPrev: function(event) {
+        var activeItem = this.getActiveItem(),
+        prev = this.panel.is(':hidden') ? activeItem.prevAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):first')
+                                : activeItem.prevAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
+
+        if(prev.length === 1) {
+            if(this.panel.is(':hidden')) {
+                this.selectItem(prev);
+            } 
+            else {
+                this.highlightItem(prev);
+                PrimeFaces.scrollInView(this.itemsWrapper, prev);
+            }
+        }
+
+        event.preventDefault();      
+    },
+            
+    handleEnterKey: function(event) {
+        if(this.panel.is(':hidden'))
+            this.show();
+        else
+            this.selectItem(this.getActiveItem());
+
+        event.preventDefault();
+    },
+            
+    handleEscapeKey: function(event) {
+        if(this.panel.is(':visible')) {
+            this.revert();
+            this.hide();
+        }
+
+        event.preventDefault();
+    },
+            
+    handleTabKey: function() {
+        if(this.panel.is(':visible')) {
+            this.selectItem(this.getActiveItem());
+        }
     },
             
     search: function(text, start, end) { 
@@ -972,7 +932,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         return null;
     },
              
-    show: function() {
+    show: function() { 
+        var $this = this;
         this.alignPanel();
 
         this.panel.css('z-index', ++PrimeFaces.zindex);
@@ -981,10 +942,18 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
         }
 
-        if(this.cfg.effect != 'none')
-            this.panel.show(this.cfg.effect, {}, this.cfg.effectSpeed);
-        else
+        if(this.cfg.effect !== 'none') {
+            this.panel.show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
+                if($this.cfg.filter)
+                    $this.focusFilter();
+            });
+        }
+        else {
             this.panel.show();
+            
+            if($this.cfg.filter)
+                this.focusFilter(10);
+        }
         
         //value before panel is shown
         this.preShowValue = this.options.filter(':selected');
@@ -1002,8 +971,16 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.focusInput.focus();
     },
         
-    filterFocus: function() {
-        this.filterInput.focus();
+    focusFilter: function(timeout) {
+        if(timeout) {
+            var $this = this;
+            setTimeout(function() {
+                $this.focusFilter();
+            }, timeout);
+        }
+        else {
+            this.filterInput.focus();
+        }
     },
     
     blur: function() {
