@@ -102,6 +102,20 @@
             <description>Dynamic mode allows overlay panel to fetch it's contents before it's shown rather than on page load
             which is useful to reduce initial page load times. Default is false.</description>
         </attribute>
+        <attribute>
+			<name>dismissable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When set true, clicking outside of the panel hides the overlay.</description>
+		</attribute>
+        <attribute>
+			<name>showCloseIcon</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Displays a close icon to hide the overlay, default is false.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
