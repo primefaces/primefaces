@@ -138,6 +138,17 @@ public class FilterFeature implements DataTableFeature {
         }
         else {
             filter(context, table, columnFilterMap, globalFilterParam);
+            
+            //sort new filtered data to restore sort state
+            Object sortBy = table.getSortBy();
+            if(sortBy != null) {
+                SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
+                
+                if(table.isMultiSort())
+                    sortFeature.multiSort(context, table);
+                else
+                    sortFeature.singleSort(context, table);
+            }
         }
                 
         renderer.encodeTbody(context, table, true);

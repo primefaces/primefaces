@@ -70,8 +70,8 @@ public class SortFeature implements DataTableFeature {
         else {
             UIColumn sortColumn = table.findColumn(sortKey);
             table.setSortBy(sortColumn.getSortBy());
-            table.setSortColumn(sortColumn);
-            table.setSortOrder(sortDir);
+            table.setSortFunction(sortColumn.getSortFunction());
+            table.setSortOrder(sortDir);            
         }
     }
     
@@ -86,48 +86,37 @@ public class SortFeature implements DataTableFeature {
                 multiSort(context, table);
             } 
             else {
-                sortColumn(context, table);
+                singleSort(context, table);
             }
         }
    
         renderer.encodeTbody(context, table, true);
     }
-    
-    public void sort(FacesContext context, DataTable table, Object sortBy, SortOrder sortOrder, MethodExpression sortFunction) {        
-        Object value = table.getValue();
-        List list = null;
-        ValueExpression sortByVe = createValueExpression(context, table.getVar(), sortBy);
         
-        if(value == null) {
-            return;
-        }
-
-        if(value instanceof List) {
-            list = (List) value;
-        } else if(value instanceof ListDataModel) {
-            list = (List) ((ListDataModel) value).getWrappedData();
-        } else {
-            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
-        }
-        
-        Collections.sort(list, new BeanPropertyComparator(sortByVe, table.getVar(), sortOrder, sortFunction));
-    }
-    
     private ValueExpression createValueExpression(FacesContext context, String var, Object sortBy) {
         ELContext elContext = context.getELContext();
         return context.getApplication().getExpressionFactory().createValueExpression(elContext, "#{" + var + "." + sortBy + "}", Object.class);
     }
     
-    private void sortColumn(FacesContext context, DataTable table) {
-        UIColumn sortColumn = table.getSortColumn();
-        if(sortColumn.isDynamic()) {
-            ((DynamicColumn) sortColumn).applyStatelessModel();
-        }
+    public void singleSort(FacesContext context, DataTable table) {
+        Object value = table.getValue();
+        if(value == null)
+            return;
         
+        Object sortBy = table.getSortBy();        
+        ValueExpression sortByVe = createValueExpression(context, table.getVar(), sortBy);
         SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
-        Object sortBy = sortColumn.getSortBy();
+        MethodExpression sortFunction = table.getSortFunction();
+        List list = null;
         
-        sort(context, table, sortBy, sortOrder, sortColumn.getSortFunction());
+        if(value instanceof List)
+            list = (List) value;
+        else if(value instanceof ListDataModel)
+            list = (List) ((ListDataModel) value).getWrappedData();
+        else
+            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
+        
+        Collections.sort(list, new BeanPropertyComparator(sortByVe, table.getVar(), sortOrder, sortFunction));
     }
     
     public void multiSort(FacesContext context, DataTable table) {

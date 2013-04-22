@@ -125,6 +125,10 @@ import org.primefaces.component.datatable.feature.*;
         FEATURES.put(DataTableFeatureKey.SCROLL, new ScrollFeature());
     }
     
+    public DataTableFeature getFeature(DataTableFeatureKey key) {
+        return FEATURES.get(key);
+    }
+    
     public boolean shouldEncodeFeature(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_encodeFeature");
     }
@@ -399,7 +403,7 @@ import org.primefaces.component.datatable.feature.*;
         return sortField;
     }
 
-    protected SortOrder convertSortOrder() {
+    public SortOrder convertSortOrder() {
         String sortOrder = getSortOrder();
         
         if(sortOrder == null)
