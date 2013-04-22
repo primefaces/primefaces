@@ -625,13 +625,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.initialHeight = this.itemsWrapper.height();
             this.setupFilterMatcher();
             this.filterInput = this.panel.find('> div.ui-selectonemenu-filter-container > input.ui-selectonemenu-filter');
-            
+            this.bindFilterKeyEvents();
             PrimeFaces.skinInput(this.filterInput);
 
             this.filterInput.keyup(function() {
                 $this.filter($(this).val());
-            });
-        }
+            });            
+        }        
     },
     
     bindConstantEvents: function() {
@@ -772,13 +772,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.focusInput.on('keydown.ui-selectonemenu', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
+            
+            if($this.cfg.filter) {
+                $this.filterInput.focus();
+            }
 
             switch(key) { 
                 case keyCode.UP:
                 case keyCode.LEFT:
                     var activeItem = $this.getActiveItem(),
-                    prev = activeItem.prevAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):first');
-                    
+                    prev = activeItem.prevAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
+                      
                     if(prev.length == 1) {
                         if($this.panel.is(':hidden')) {
                             $this.selectItem(prev);
@@ -795,7 +799,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
                     var activeItem = $this.getActiveItem(),
-                    next = activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):first');
+                    next = activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
                     
                     if(next.length == 1) {
                         if($this.panel.is(':hidden')) {
@@ -865,6 +869,97 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         });
     },
     
+    bindFilterKeyEvents: function() {
+        var $this = this;
+        
+        this.filterInput.on('keydown.ui-selectonemenu',function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+                        
+            switch(key) { 
+                case keyCode.UP:
+                    var activeItem = $this.getActiveItem(),
+                    prev = activeItem.prevAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
+                    
+                    if(prev.length == 1) {
+                        if($this.panel.is(':hidden')) {
+                        } 
+                        else {
+                            $this.highlightItem(prev);
+                            PrimeFaces.scrollInView($this.itemsWrapper, prev);
+                        }
+                    }
+
+                    e.preventDefault();                    
+                break;
+
+                case keyCode.DOWN:
+                    var activeItem = $this.getActiveItem(),
+                    next = activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
+                    
+                    if(next.length == 1) {
+                        if($this.panel.is(':hidden')) {
+                           
+                        }
+                        else {
+                            $this.highlightItem(next);
+                            PrimeFaces.scrollInView($this.itemsWrapper, next);
+                        }
+                    }
+                    
+                    e.preventDefault();
+                break;
+      
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER: 
+                    if($this.panel.is(':hidden')) {
+                        $this.show();
+                    }
+                    else {
+                        $this.selectItem($this.getActiveItem());
+                    }
+                    
+                    e.preventDefault();
+                break;
+                
+                case keyCode.TAB:
+                    if($this.panel.is(':visible')) {
+                        $this.hide();
+                    }
+                break;
+                
+                case keyCode.ESCAPE:
+                    if($this.panel.is(':visible')) {
+                        $this.revert();
+                        $this.hide();
+                    }
+                break;
+                
+                default:    
+                    var k = String.fromCharCode((96 <= key && key <= 105)? key-48 : key),
+                    currentItem = $this.items.filter('.ui-state-highlight');
+
+                    //Search items forward from current to end and on no result, search from start until current
+                    var highlightItem = $this.search(k, currentItem.index() + 1, $this.options.length);
+                    if(!highlightItem) {
+                        highlightItem = $this.search(k, 0, currentItem.index());
+                    }
+                    
+                    if(highlightItem) {
+                        if($this.panel.is(':hidden')) {
+                            $this.selectItem(highlightItem);
+                        }
+                        else {
+                            $this.highlightItem(highlightItem);
+                            PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
+                        }    
+                    }
+                                
+                break;
+            }
+        });
+    },
+            
     search: function(text, start, end) { 
         for(var i = start; i  < end; i++) {
             var option = this.options.eq(i);
@@ -899,12 +994,16 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
             this.panel.parent().css('z-index', '');
         }
-
+        
         this.panel.css('z-index', '').hide();
     },
     
     focus: function() {
         this.focusInput.focus();
+    },
+        
+    filterFocus: function() {
+        this.filterInput.focus();
     },
     
     blur: function() {
@@ -1006,10 +1105,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 itemLabel = this.cfg.caseSensitive ? option.text() : option.text().toLowerCase(),
                 item = this.items.eq(i);
 
-                if(this.filterMatcher(itemLabel, filterValue))
+                if(this.filterMatcher(itemLabel, filterValue)) 
                     item.show();
-                else
-                    item.hide();
+                else 
+                    item.hide();   
             }
         }
         
