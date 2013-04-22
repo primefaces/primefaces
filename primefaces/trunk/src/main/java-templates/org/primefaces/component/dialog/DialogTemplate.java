@@ -6,6 +6,8 @@ import org.primefaces.util.Constants;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import javax.el.ELContext;
+import org.primefaces.component.dialog.Dialog;
 
     public static final String CONTAINER_CLASS = "ui-dialog ui-widget ui-widget-content ui-overlay-hidden ui-corner-all ui-shadow";
     public static final String TITLE_BAR_CLASS = "ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top";
@@ -39,13 +41,13 @@ import javax.faces.event.PhaseId;
 
         if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
             if(eventName.equals("close")) {
                 setVisible(false);
                 CloseEvent closeEvent = new CloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
-                closeEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+                closeEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(closeEvent);
-                context.renderResponse();       //just process the close event and skip to response
             }
             else {
                 //minimize and maximize
@@ -77,6 +79,18 @@ import javax.faces.event.PhaseId;
     public void processUpdates(FacesContext context) {
         if(!isRequestSource(context)) {
             super.processUpdates(context);
+        }
+        else {
+            ValueExpression visibleVE = this.getValueExpression("visible");
+            if(visibleVE != null) {
+                FacesContext facesContext = getFacesContext();
+                ELContext eLContext = facesContext.getELContext();
+
+                if(!visibleVE.isReadOnly(eLContext)) {
+                    visibleVE.setValue(eLContext, this.isVisible());
+                    this.getStateHelper().put(PropertyKeys.visible, null);
+                }
+            }
         }
     }
 
