@@ -146,7 +146,7 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         if(tree.getOnNodeClick() != null) {
-            writer.write(",onNodeClick:function(node) {" + tree.getOnNodeClick() + "}");
+            writer.write(",onNodeClick:function(node, event) {" + tree.getOnNodeClick() + "}");
         }
         
         if(tree.isAnimate()) {
