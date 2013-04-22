@@ -21,17 +21,19 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-import org.primefaces.component.commandbutton.CommandButtonRenderer;
+import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.Separator;
+import org.primefaces.component.menuitem.UIMenuItem;
+import org.primefaces.component.separator.UISeparator;
+import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-public class SplitButtonRenderer extends CommandButtonRenderer {
+public class SplitButtonRenderer extends OutcomeTargetRenderer {
     
     @Override
 	public void decode(FacesContext context, UIComponent component) {
@@ -205,8 +207,8 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
 
             for(UIComponent child : button.getChildren()) {
                 if(child.isRendered()) {
-                    if(child instanceof MenuItem) {
-                        MenuItem item = (MenuItem) child;
+                    if(child instanceof UIMenuItem) {
+                        UIMenuItem item = (UIMenuItem) child;
                         
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
@@ -214,8 +216,8 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
                         encodeMenuItem(context, item);
                         writer.endElement("li");
                     }
-                    else if(child instanceof Separator) {
-                        encodeSeparator(context, (Separator) child);
+                    else if(child instanceof UISeparator) {
+                        encodeSeparator(context, (UISeparator) child);
                     }
                 }
             }
@@ -225,64 +227,76 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
 
     }
     
-    protected void encodeMenuItem(FacesContext context, MenuItem menuItem) throws IOException {
-		//String clientId = menuItem.getClientId(context);
+    protected void encodeMenuItem(FacesContext context, UIMenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String icon = menuItem.getIcon();
+        String icon = menuitem.getIcon();
+        String title = menuitem.getTitle();
 
-		if(menuItem.shouldRenderChildren()) {
-			renderChildren(context, (UIComponent) menuItem);
+		if(menuitem.shouldRenderChildren()) {
+			renderChildren(context, (UIComponent) menuitem);
 		}
         else {
-            boolean disabled = menuItem.isDisabled();
-            String onclick = menuItem.getOnclick();
+            boolean disabled = menuitem.isDisabled();
             
             writer.startElement("a", null);
-            //writer.writeAttribute("id", menuItem.getClientId(context), null);
+            if(title != null) {
+                writer.writeAttribute("title", title, null);
+            }
             
-            String styleClass = menuItem.getStyleClass();
+            String styleClass = menuitem.getStyleClass();
             styleClass = styleClass == null ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
             styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
             
             writer.writeAttribute("class", styleClass, null);
             
-            if(menuItem.getStyle() != null) 
-                writer.writeAttribute("style", menuItem.getStyle(), null);
-                        
-			if(menuItem.getUrl() != null) {
-                String href = disabled ? "#" : getResourceURL(context, menuItem.getUrl());
-				writer.writeAttribute("href", href, null);
-                                
-				if(menuItem.getTarget() != null) 
-                    writer.writeAttribute("target", menuItem.getTarget(), null);
-			}
-            else {
-				writer.writeAttribute("href", "#", null);
-
-				/*UIComponent form = ComponentUtils.findParentForm(context, menuItem);
-				if(form == null) {
-					throw new FacesException("Menubar must be inside a form element");
-				}
-
-                String command = menuItem.isAjax() ? buildAjaxRequest(context, menuItem, form) : buildNonAjaxRequest(context, menuItem, form, clientId, true);
-
-                onclick = onclick == null ? command : onclick + ";" + command;*/
-			}
-
-            if(onclick != null && !disabled) {
-                writer.writeAttribute("onclick", onclick, null);
+            if(menuitem.getStyle() != null) 
+                writer.writeAttribute("style", menuitem.getStyle(), null);
+            
+            if(disabled) {
+                writer.writeAttribute("href", "#", null);
+                writer.writeAttribute("onclick", "return false;", null);
             }
- 
+            else {
+                 String onclick = menuitem.getOnclick();
+                
+                //GET
+                if(menuitem.getUrl() != null || menuitem.getOutcome() != null) {                
+                    String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
+                    writer.writeAttribute("href", targetURL, null);
+
+                    if(menuitem.getTarget() != null) {
+                        writer.writeAttribute("target", menuitem.getTarget(), null);
+                    }
+                }
+                //POST
+                else {
+                    writer.writeAttribute("href", "#", null);
+
+                    UIComponent form = ComponentUtils.findParentForm(context, menuitem);
+                    if(form == null) {
+                        throw new FacesException("MenuItem must be inside a form element");
+                    }
+
+                    String command = menuitem.isAjax() ? buildAjaxRequest(context, (AjaxSource) menuitem, form) : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+
+                    onclick = (onclick == null) ? command : onclick + ";" + command;
+                }
+                
+                if(onclick != null) {
+                    writer.writeAttribute("onclick", onclick, null);
+                }
+            }
+            
             if(icon != null) {
                 writer.startElement("span", null);
                 writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
                 writer.endElement("span");
             }
 
-			if(menuItem.getValue() != null) {
+			if(menuitem.getValue() != null) {
                 writer.startElement("span", null);
                 writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
-                writer.writeText((String) menuItem.getValue(), "value");
+                writer.writeText((String) menuitem.getValue(), "value");
                 writer.endElement("span");
             }
 
@@ -290,7 +304,7 @@ public class SplitButtonRenderer extends CommandButtonRenderer {
 		}
 	}
     
-    protected void encodeSeparator(FacesContext context, Separator separator) throws IOException {
+    protected void encodeSeparator(FacesContext context, UISeparator separator) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
         String styleClass = separator.getStyleClass();
