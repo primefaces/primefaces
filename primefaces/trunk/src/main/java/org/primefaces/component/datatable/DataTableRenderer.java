@@ -161,12 +161,12 @@ public class DataTableRenderer extends DataRenderer {
         
         //default sort
         if(!table.isDefaultSorted() && table.getSortBy() != null && !table.isLazy()) {
-            SortFeature sortFeature = (SortFeature) DataTable.FEATURES.get(DataTableFeatureKey.SORT);
+            SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
             
             if(table.isMultiSort())
                 sortFeature.multiSort(context, table);
             else
-                sortFeature.sort(context, table, table.getSortBy(), table.convertSortOrder(), table.getSortFunction());
+                sortFeature.singleSort(context, table);
             
             table.setDefaultSorted();
         }
