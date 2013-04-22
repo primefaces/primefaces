@@ -216,7 +216,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             var node = nodeContent.parent();
                     
             if(this.cfg.onNodeClick) {
-                this.cfg.onNodeClick.call(this, node);
+                this.cfg.onNodeClick.call(this, node, event);
             }
             
             if(nodeContent.hasClass('ui-tree-selectable') && this.cfg.selectionMode) {
