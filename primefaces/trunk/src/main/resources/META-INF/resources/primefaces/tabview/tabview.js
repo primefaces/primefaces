@@ -87,9 +87,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         this.navContainer.find('li .ui-icon-close')
             .on('click.tabview', function(e) {
                 var index = $(this).parent().index();
-                if(index < $this.cfg.selected) {
-                    $this.cfg.selected = $this.cfg.selected - 1;
-                }                
+              
                 if($this.cfg.onTabClose) {
                     var retVal = $this.cfg.onTabClose.call($this, index);
                     
@@ -345,10 +343,12 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
 
         header.remove();
         panel.remove();
-
-        //active next tab if active tab is removed
-        if(index === this.cfg.selected) {
-            var newIndex = this.cfg.selected === this.getLength() ? this.cfg.selected - 1: this.cfg.selected;
+        
+        if(index < this.cfg.selected) {
+            this.cfg.selected--;
+        }
+        else if(index === this.cfg.selected) {
+            var newIndex = (this.cfg.selected === this.getLength()) ? this.cfg.selected - 1: this.cfg.selected;
             this.select(newIndex, true);
         }
     },
