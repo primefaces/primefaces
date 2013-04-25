@@ -30,8 +30,13 @@ public class ScrollFeature implements DataTableFeature {
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
+        int scrollRows = table.getScrollRows();
         String clientId = table.getClientId(context);
         String rowIndexVar = table.getRowIndexVar();
+        
+        if(table.isLazy()) {
+            table.loadLazyScrollData(scrollOffset, scrollRows);
+        }
 
         for(int i = scrollOffset; i < (scrollOffset + table.getScrollRows()); i++) {
             table.setRowIndex(i);
