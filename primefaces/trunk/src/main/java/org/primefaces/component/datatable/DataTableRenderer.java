@@ -76,7 +76,10 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             if(table.isLazy()) {
-                table.loadLazyData();
+                if(table.isLiveScroll())
+                    table.loadLazyScrollData(0, table.getScrollRows());
+                else
+                    table.loadLazyData();
             }
                     
             encodeMarkup(context, table);
@@ -994,21 +997,7 @@ public class DataTableRenderer extends DataRenderer {
         
         writer.endElement("div");
     }
-    
-    protected void encodeLiveRows(FacesContext context, DataTable table) throws IOException {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
-        String clientId = table.getClientId(context);
-        String rowIndexVar = table.getRowIndexVar();
-
-        for(int i = scrollOffset; i < (scrollOffset + table.getScrollRows()); i++) {
-            table.setRowIndex(i);
-            if(table.isRowAvailable()) {
-                encodeRow(context, table, clientId, i, rowIndexVar);
-            }
-        }
-    }
-    
+        
     protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int rowIndex, String rowIndexVar) throws IOException {
         table.setRowIndex(rowIndex);
         if(!table.isRowAvailable()) {
