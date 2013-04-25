@@ -409,36 +409,7 @@ import org.primefaces.component.datatable.feature.*;
             }
         }
     }
-    
-    public void loadLazyScrollData(int offset, int rows) {
-        DataModel model = getDataModel();
         
-        if(model != null && model instanceof LazyDataModel) {            
-            LazyDataModel lazyModel = (LazyDataModel) model;
-            
-            List<?> data = null;
-            
-            if(this.isMultiSort()) {
-                data = lazyModel.load(offset, rows, getMultiSortMeta(), getFilters());
-            }
-            else {
-                data = lazyModel.load(offset, rows, (String) getSortBy(), convertSortOrder(), getFilters());
-            }
-            
-            lazyModel.setPageSize(rows);
-            lazyModel.setWrappedData(data);
-
-            //Update paginator for callback
-            if(this.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
-
-                if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
-                }
-            }
-        }
-    }
-    
     protected String resolveSortField() {
         UIColumn column = this.getSortColumn();
         String sortField = null;
