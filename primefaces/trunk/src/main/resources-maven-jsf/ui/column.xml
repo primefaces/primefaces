@@ -50,7 +50,6 @@
 			<name>filterBy</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-			<defaultValue>false</defaultValue>
             <description>Property to be used for filtering.</description>
 		</attribute>
 		<attribute>
