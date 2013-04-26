@@ -329,6 +329,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     
         this.cfg.rtl = this.jq.hasClass('ui-tree-rtl');
         this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
+        
+        if(this.cfg.dragdrop) {
+            this.initDragDrop();
+        }
     },
         
     bindEvents: function() {
