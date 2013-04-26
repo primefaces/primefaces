@@ -163,3 +163,17 @@
 .ui-tree.ui-tree-rtl .ui-treenode-children {
     padding: 0 16px 0 0;
 }
+
+/** DragDrop **/
+.ui-tree-dropnode {
+    height: 2px;
+}
+
+.ui-tree-dropnode.ui-state-hover {
+    border: 0 none;
+}
+
+.ui-treenode-content.ui-state-hover {
+    border: 0 none;
+    font-weight: inherit;
+}
