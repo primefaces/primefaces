@@ -124,7 +124,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>Defines upwards selection propagation for checkbox mode, default is true..</description>
+            <description>Defines upwards selection propagation for checkbox mode, default is true.</description>
 		</attribute>
         <attribute>
             <name>dir</name>
@@ -133,6 +133,13 @@
             <defaultValue>ltr</defaultValue>
             <description>Defines text direction, valid values are "ltr" (default) and "rtl".</description>
         </attribute>
+        <attribute>
+			<name>dragdrop</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Controls the dragdrop based reorganization of nodes, default is false.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

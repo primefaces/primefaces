@@ -536,6 +536,86 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 icon.addClass('ui-icon ui-icon-minus');
             }
         });
+    },
+    
+    initDragDrop: function() {
+        var $this = this;
+        
+        this.jq.find('.ui-treenode-content').draggable({
+            helper: 'clone',
+            revert: true
+        });
+        
+        this.jq.find('div.ui-tree-dropnode').droppable({
+            hoverClass: 'ui-state-hover',
+            accept: 'span.ui-treenode-content',
+            tolerance: 'pointer',
+            drop: function(event, ui) {
+                ui.helper.remove();
+                
+                var draggable = ui.draggable,
+                droppable = $(this),
+                dropNode = droppable.closest('.ui-treenode'),
+                dragNode = draggable.parent(),
+                oldParentNode = dragNode.closest('.ui-treenode-parent');
+        
+                if(dropNode.get(0) === dragNode.get(0)) {
+                    return;
+                }
+                
+                dragNode.hide();
+                
+                if(dropNode.hasClass('ui-treenode-parent')) {
+                    dropNode.children('.ui-treenode-children').prepend(dragNode);
+                }
+                else {
+                    dragNode.insertAfter(dropNode).fadeIn();
+                }
+                
+                $this.updateOldParent(oldParentNode);
+                
+                dragNode.fadeIn();
+            }
+        });
+        
+        this.jq.find('span.ui-treenode-droppable').droppable({
+            accept: '.ui-treenode-content',
+            tolerance: 'pointer',
+            over: function(event, ui) {
+                $(this).children('.ui-treenode-label').addClass('ui-state-hover');
+            },
+            out: function(event, ui) {
+                $(this).children('.ui-treenode-label').removeClass('ui-state-hover');
+            },
+            drop: function(event, ui) {
+                ui.helper.remove();
+
+                var draggable = ui.draggable,
+                dropNodeContent = $(this),
+                dropNode = dropNodeContent.closest('.ui-treenode'),
+                dragNode = draggable.parent(),
+                oldParentNode = dragNode.closest('.ui-treenode-parent'),
+                childrenContainer = dropNode.children('ui-treenode-children');
+        
+                dropNodeContent.children('.ui-treenode-label').removeClass('ui-state-hover');
+        
+                if(childrenContainer.children().length === 0) {
+                    dropNodeContent.children('span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e');
+                }
+                
+                dropNode.children('ul.ui-treenode-children').append(dragNode);
+                
+                $this.updateOldParent(oldParentNode);
+            }
+            
+        });
+    },
+    
+    updateOldParent: function(node) {
+        if(node.children('.ui-treenode-children').children().length === 0) {
+            node.removeClass('ui-treenode-parent').addClass('ui-treenode-leaf');
+            node.find('> .ui-treenode-content > .ui-tree-toggler').addClass('ui-treenode-leaf-icon').removeClass('ui-tree-toggler ui-icon ui-icon-triangle-1-s');
+        }
     }
     
 });
