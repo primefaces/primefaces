@@ -53,6 +53,8 @@ public interface UIColumn {
     
     public UIComponent getFacet(String facet);
     
+    public Object getFilterBy();
+    
     public String getHeaderText();
     
     public String getFooterText();

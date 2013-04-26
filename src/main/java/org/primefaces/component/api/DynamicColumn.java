@@ -170,4 +170,8 @@ public class DynamicColumn implements UIColumn {
     public Object getSortBy() {
         return this.columns.getSortBy();
     }
+
+    public Object getFilterBy() {
+        return this.columns.getFilterBy();
+    }
 }
