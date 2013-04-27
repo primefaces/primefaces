@@ -414,9 +414,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     $this.cachedResults.push($(item).attr('data-item-label'));
                 });
             }
-        
-                                
-        
+
             //show itemtip if defined
             if(this.cfg.itemtip && firstItem.length === 1) {
                 this.showItemtip(firstItem);
