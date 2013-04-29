@@ -32,6 +32,9 @@ import org.primefaces.util.HTML;
 
 public class TreeRenderer extends CoreRenderer {
     
+    private final static String DND_TYPE_INSERT = "insert";
+    private final static String DND_TYPE_ADD = "add";
+    
     protected enum NodeOrder {
         FIRST,
         MIDDLE,
@@ -43,45 +46,79 @@ public class TreeRenderer extends CoreRenderer {
 	public void decode(FacesContext context, UIComponent component) {
         Tree tree = (Tree) component;
         
-        decodeSelection(context, tree);
+        if(tree.getSelectionMode() != null) {
+            decodeSelection(context, tree);
+        }
+        
+        if(tree.isDragdrop() && tree.isDragDropRequest(context)) {
+            decodeDragDrop(context, tree);
+        }
         
         decodeBehaviors(context, tree);
 	}
     
     public void decodeSelection(FacesContext context, Tree tree) {        
-        if(tree.getSelectionMode() != null) {
-    		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-    		String clientId = tree.getClientId(context);
-            String selection = params.get(clientId + "_selection");
-            
-            boolean isSingle = tree.getSelectionMode().equalsIgnoreCase("single");
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = tree.getClientId(context);
+        String selection = params.get(clientId + "_selection");
 
-            if(isValueBlank(selection)) {
-                if(isSingle)
-                    tree.setSelection(null);
-                else
-                    tree.setSelection(new TreeNode[0]);
+        boolean isSingle = tree.getSelectionMode().equalsIgnoreCase("single");
+
+        if(isValueBlank(selection)) {
+            if(isSingle)
+                tree.setSelection(null);
+            else
+                tree.setSelection(new TreeNode[0]);
+        }
+        else {
+            String[] selectedRowKeys = selection.split(",");
+
+            if(isSingle) {
+                tree.setRowKey(selectedRowKeys[0]);
+                tree.setSelection(tree.getRowNode());
             }
             else {
-                String[] selectedRowKeys = selection.split(",");
+                TreeNode[] selectedNodes = new TreeNode[selectedRowKeys.length];
 
-                if(isSingle) {
-                    tree.setRowKey(selectedRowKeys[0]);
-                    tree.setSelection(tree.getRowNode());
+                for(int i = 0 ; i < selectedRowKeys.length; i++) {
+                    tree.setRowKey(selectedRowKeys[i]);
+                    selectedNodes[i] = tree.getRowNode();
                 }
-                else {
-                    TreeNode[] selectedNodes = new TreeNode[selectedRowKeys.length];
 
-                    for(int i = 0 ; i < selectedRowKeys.length; i++) {
-                        tree.setRowKey(selectedRowKeys[i]);
-                        selectedNodes[i] = tree.getRowNode();
-                    }
-
-                    tree.setSelection(selectedNodes);
-                }
-                
-                tree.setRowKey(null);
+                tree.setSelection(selectedNodes);
             }
+
+            tree.setRowKey(null);
+        }
+    }
+    
+    public void decodeDragDrop(FacesContext context, Tree tree) {        
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = tree.getClientId(context);
+        String dragNodeRowKey = params.get(clientId + "_dragNode");
+        String dropNodeRowKey = params.get(clientId + "_dropNode");
+        int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
+        String dndtype = params.get(clientId + "_dndtype");
+        
+        tree.setRowKey(dragNodeRowKey);
+        TreeNode dragNode = tree.getRowNode();
+        
+        tree.setRowKey(dropNodeRowKey);
+        TreeNode dropNode = tree.getRowNode();
+        
+        tree.setDragNode(dragNode);
+        
+        if(dndtype.equalsIgnoreCase(DND_TYPE_INSERT)) {
+            TreeNode newParent = (dndIndex == 0) ? dropNode : dropNode.getParent();
+            
+            newParent.getChildren().add(dndIndex, dragNode);
+            dragNode.setParent(newParent);
+            tree.setDropNode(newParent);
+        }
+        else if(dndtype.equalsIgnoreCase(DND_TYPE_ADD)) {
+            dropNode.getChildren().add(dragNode);
+            dragNode.setParent(dropNode);
+            tree.setDropNode(dropNode);
         }
     }
 

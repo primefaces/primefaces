@@ -41,21 +41,4 @@ public class TreeNodeTest {
 		assertEquals(root, child1.getParent());
 		assertEquals(child1, child11.getParent());
 	}
-    
-    @Test
-	public void assigningParentShouldUpdateParentsChildren() {		
-		TreeNode root = new DefaultTreeNode("Parent", null);
-		
-		TreeNode child1 = new DefaultTreeNode("Child1", root);
-		TreeNode child2 = new DefaultTreeNode("Child2", root);
-		
-		assertEquals(root, child1.getParent());
-        assertEquals(root, child2.getParent());
-        
-        child2.setParent(child1);
-        
-        assertEquals(child1, child2.getParent());
-        assertFalse(root.getChildren().contains(child2));
-        assertTrue(child1.getChildren().contains(child2));
-	}
 }

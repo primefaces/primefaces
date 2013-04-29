@@ -94,10 +94,6 @@ public class DefaultTreeNode implements TreeNode, Serializable {
         }
         
         this.parent = parent;
-        
-        if(this.parent != null) {
-            this.parent.getChildren().add(this);
-        }
 	}
 	
 	public boolean isExpanded() {
