@@ -2,7 +2,7 @@ import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.NodeUnselectEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeCollapseEvent;
-import org.primefaces.event.DragDropEvent;
+import org.primefaces.event.TreeDragDropEvent;
 import javax.faces.component.UIComponent;
 import java.util.Map;
 import java.util.List;
@@ -20,7 +20,7 @@ import javax.faces.event.PhaseId;
 import org.primefaces.util.Constants;
 import org.primefaces.model.TreeNode;
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse"));;;
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "dragdrop"));;;
 
     private List<String> selectedRowKeys = new ArrayList<String>();
 
@@ -176,7 +176,13 @@ import org.primefaces.model.TreeNode;
 
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
-            } 
+            }
+            else if(eventName.equals("dragdrop")) {
+                int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
+
+                wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            }
             
             super.queueEvent(wrapperEvent);
             
@@ -192,6 +198,14 @@ import org.primefaces.model.TreeNode;
         String clientId = getClientId(context);
 
         return params.get(clientId + "_expandNode") != null || params.get(clientId + "_collapseNode") != null;
+    }
+
+    public boolean isDragDropRequest(FacesContext context) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
+        String source = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM);
+
+        return clientId.equals(source) && params.get(clientId + "_dragdrop") != null;
     }
 
     @Override
@@ -213,3 +227,24 @@ import org.primefaces.model.TreeNode;
     public boolean isRTL() {
         return this.getDir().equalsIgnoreCase("rtl");
     }
+
+    private TreeNode dragNode;
+    private TreeNode dropNode;
+
+    TreeNode getDragNode() {
+        return dragNode;
+    }
+    void setDragNode(TreeNode dragNode) {
+        this.dragNode = dragNode;
+    }
+
+    TreeNode getDropNode() {
+        return dropNode;
+    }
+    void setDropNode(TreeNode dropNode) {
+        this.dropNode = dropNode;
+    }
+
+    
+
+    
