@@ -84,10 +84,10 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                     writer.endElement("li");                
                 }
             }
+            
+            writer.endElement("ul");
         }
-        
-        writer.endElement("ul");
-		
+        		
 		writer.endElement("div");
 	}
 	
