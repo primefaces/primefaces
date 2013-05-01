@@ -1,13 +1,21 @@
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Arrays;
+import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.event.PhaseId;
 import javax.faces.component.UIColumn;
 import javax.faces.component.behavior.Behavior;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.model.DataModel;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.util.Constants;
 
 	public static final String DATALIST_CLASS = "ui-datalist ui-widget";
     public static final String CONTENT_CLASS = "ui-datalist-content ui-widget-content";
@@ -17,7 +25,9 @@ import org.primefaces.model.LazyDataModel;
     public static final String FOOTER_CLASS = "ui-datalist-footer ui-widget-header ui-corner-top";
 	public static final String DATALIST_EMPTYMESSAGE_CLASS = "ui-datalist-empty-message";
 
-	public String getListTag() {
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page"));
+
+    public String getListTag() {
 		String type = getType();
 		
 		if(type.equalsIgnoreCase("unordered"))
@@ -116,6 +126,25 @@ import org.primefaces.model.LazyDataModel;
             else
                 parent.queueEvent(event);
         }
+            FacesContext context = getFacesContext();
+
+        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+            setRowIndex(-1);
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String clientId = this.getClientId(context);
+            FacesEvent wrapperEvent = null;
+
+            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+
+            if(eventName.equals("page")) {
+                int rows = this.getRowsToRender();
+                int first = Integer.parseInt(params.get(clientId + "_first"));
+                int page = rows > 0 ? (int) (first / rows) : 0;
+        
+                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
+            }
+        }
     }
 
 
@@ -156,4 +185,15 @@ import org.primefaces.model.LazyDataModel;
                 }
             }
         }
+    }
+
+    public boolean isRequestSource(FacesContext context) {
+        String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM);
+
+        return partialSource != null && this.getClientId(context).equals(partialSource);
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
     }

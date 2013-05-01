@@ -27,6 +27,11 @@ import org.primefaces.util.WidgetBuilder;
 public class DataGridRenderer extends DataRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);        
+    }
+    
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DataGrid grid = (DataGrid) component;
 
@@ -103,7 +108,7 @@ public class DataGridRenderer extends DataRenderer {
         if(grid.isPaginator()) {
             encodePaginatorConfig(context, grid, wb);
         }
-
+        encodeClientBehaviors(context, grid, wb);
         startScript(writer, clientId);
         writer.write(wb.build());
         endScript(writer);
