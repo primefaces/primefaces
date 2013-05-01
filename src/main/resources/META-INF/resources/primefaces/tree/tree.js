@@ -562,9 +562,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 droppable = $(this),
                 dropNode = droppable.closest('.ui-treenode'),
                 dragNode = draggable.parent(),
-                oldParentNode = dragNode.closest('.ui-treenode-parent');
-        
-                if(dropNode.get(0) === dragNode.get(0)) {
+                oldParentNode = dragNode.closest('.ui-treenode-parent'),
+                validDrop = $this.validateDropPoint(dragNode, dropNode);
+
+                if(!validDrop) {
                     return;
                 }
                 
@@ -578,7 +579,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 }
                 
                 if(oldParentNode.length) {
-                    $this.updateOldParent(oldParentNode);
+                    $this.makeLeaf(oldParentNode);
                 }                
                 
                 dragNode.fadeIn();
@@ -608,14 +609,15 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dropNode = dropNodeContent.closest('.ui-treenode'),
                 dragNode = draggable.parent(),
                 oldParentNode = dragNode.closest('.ui-treenode-parent'),
-                childrenContainer = dropNode.children('.ui-treenode-children');
+                childrenContainer = dropNode.children('.ui-treenode-children'),
+                validDrop = $this.validateDropNode(dragNode, dropNode, oldParentNode);
         
                 dropNodeContent.children('.ui-treenode-label').removeClass('ui-state-hover');
         
-                if(oldParentNode.get(0) === dropNode.get(0)) {
+                if(!validDrop) {
                     return;
                 }
-        
+                        
                 if(childrenContainer.children().length === 0) {
                     dropNodeContent.children('span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e');
                 }
@@ -623,7 +625,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 childrenContainer.append(dragNode);
                 
                 if(oldParentNode.length) {
-                    $this.updateOldParent(oldParentNode);
+                    $this.makeLeaf(oldParentNode);
                 }
                 
                 $this.syncDragDrop({
@@ -636,7 +638,41 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         });
     },
     
-    updateOldParent: function(node) {
+    validateDropPoint: function(dragNode, dropNode) {
+        //dropnode of itself
+        if(dropNode.get(0) === dragNode.get(0))
+            return false;
+
+        //dropnode of parent with only one child
+        if(dropNode.children('.ui-treenode-children').has(dragNode).length && dragNode.siblings('li.ui-treenode').length === 0)
+            return false;
+        
+        //dropnode of previous
+        if(dragNode.prev().get(0) === dropNode.get(0))
+            return false;
+        
+        //descendant of dropnode
+        if(dragNode.has(dropNode.get(0)).length) {
+            return false;
+        }
+       
+        return true;
+    },
+            
+    validateDropNode: function(dragNode, dropNode, oldParentNode) {
+        //dropped on parent
+        if(oldParentNode.get(0) === dropNode.get(0))
+            return false;
+        
+        //descendant of dropnode
+        if(dragNode.has(dropNode.get(0)).length) {
+            return false;
+        }
+       
+        return true;
+    },
+    
+    makeLeaf: function(node) {
         if(node.children('.ui-treenode-children').children().length === 0) {
             node.removeClass('ui-treenode-parent').addClass('ui-treenode-leaf');
             node.find('> .ui-treenode-content > .ui-tree-toggler').addClass('ui-treenode-leaf-icon').removeClass('ui-tree-toggler ui-icon ui-icon-triangle-1-s');
