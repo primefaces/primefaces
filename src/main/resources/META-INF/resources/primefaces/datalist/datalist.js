@@ -24,6 +24,14 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
     },
     
+    hasBehavior: function(event) {
+        if(this.cfg.behaviors) {
+            return this.cfg.behaviors[event] != undefined;
+        }
+    
+        return false;
+    },
+    
     handlePagination: function(newState) {
         var _self = this,
         options = {
@@ -67,7 +75,15 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
             {name: this.id + '_rows', value: newState.rows}
         ];
 
-        PrimeFaces.ajax.AjaxRequest(options);
+        if(this.hasBehavior('page')) {
+            var pageBehavior = this.cfg.behaviors['page'];
+
+            pageBehavior.call(this, newState, options);
+        }
+        else {
+            PrimeFaces.ajax.AjaxRequest(options);
+        }
+            
     },
     
     getPaginator: function() {
