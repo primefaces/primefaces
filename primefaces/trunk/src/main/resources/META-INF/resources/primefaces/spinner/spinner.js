@@ -68,11 +68,11 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             
             switch(e.which) {            
                 case keyCode.UP:
-                    $this.spin($this.cfg.step);
+                    $this.spin(1);
                 break;
 
                 case keyCode.DOWN:
-                    $this.spin(-1 * $this.cfg.step);
+                    $this.spin(-1);
                 break;
 
                 default:
