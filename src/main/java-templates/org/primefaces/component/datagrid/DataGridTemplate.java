@@ -25,7 +25,6 @@ import org.primefaces.util.Constants;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page"));
 
-
     public void loadLazyData() {
         DataModel model = getDataModel();
         
@@ -68,17 +67,18 @@ import org.primefaces.util.Constants;
             setRowIndex(-1);
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = this.getClientId(context);
-            FacesEvent wrapperEvent = null;
-
-            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if(eventName.equals("page")) {
+                AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+                String clientId = this.getClientId(context);
                 int rows = this.getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (int) (first / rows) : 0;
         
-                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
+                PageEvent pageEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
+                pageEvent.setPhaseId(behaviorEvent.getPhaseId());
+
+                super.queueEvent(pageEvent);
             }
         }
     }
