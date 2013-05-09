@@ -118,25 +118,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         
         sortableColumns.filter('.ui-state-active').each(function() {
             var columnHeader = $(this),
-            sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
-            sortOrder = columnHeader.data('sortOrder');
+            sortIcon = columnHeader.children('span.ui-sortable-column-icon');
             
-            if(sortIcon.hasClass('ui-icon-triangle-1-n')){
-                sortOrder = 'ASCENDING';
-                $this.addSortMeta({
-                        col: columnHeader.attr('id'), 
-                        order: sortOrder
-                    });
-                     columnHeader.data('sortorder', 'ASCENDING');
-            }
-            else{
-                sortOrder = 'DESCENDING';
-                $this.addSortMeta({
-                        col: columnHeader.attr('id'), 
-                        order: sortOrder
-                    }); 
-                    columnHeader.data('sortorder', 'DESCENDING');
-            }
+            if(sortIcon.hasClass('ui-icon-triangle-1-n'))
+                columnHeader.data('sortorder', 'ASCENDING');
+            else
+                columnHeader.data('sortorder', 'DESCENDING');
         });
         
         sortableColumns.on('mouseover.dataTable', function() {
