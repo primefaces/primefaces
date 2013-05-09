@@ -16,7 +16,6 @@
 package org.primefaces.component.datagrid;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -108,7 +107,9 @@ public class DataGridRenderer extends DataRenderer {
         if(grid.isPaginator()) {
             encodePaginatorConfig(context, grid, wb);
         }
+        
         encodeClientBehaviors(context, grid, wb);
+        
         startScript(writer, clientId);
         writer.write(wb.build());
         endScript(writer);
