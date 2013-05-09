@@ -25,6 +25,7 @@ import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class RadioButtonRenderer extends InputRenderer {
@@ -43,7 +44,7 @@ public class RadioButtonRenderer extends InputRenderer {
         String inputId = selectOneRadio.getRadioButtonId(context);
         String clientId = radio.getClientId(context);
         boolean disabled = radio.isDisabled() || selectOneRadio.isDisabled();
-        Converter converter = getConverter(context, selectOneRadio);
+        Converter converter = ComponentUtils.getConverter(context, selectOneRadio);
         SelectItem selecItem = selectOneRadio.getSelectItems().get(radio.getItemIndex());
         Object itemValue = selecItem.getValue();
         String itemValueAsString = getOptionAsString(context, selectOneRadio, converter, itemValue);
@@ -137,23 +138,5 @@ public class RadioButtonRenderer extends InputRenderer {
         
         return (SelectOneRadio) target;
 	}
-    
-    protected Converter getConverter(FacesContext context, SelectOneRadio selectOneRadio) {
-        Converter converter = selectOneRadio.getConverter();
 
-        if(converter != null) {
-            return converter;
-        } else {
-            ValueExpression ve = selectOneRadio.getValueExpression("value");
-
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
-                
-                if(valueType != null)
-                    return context.getApplication().createConverter(valueType);
-            }
-        }
-
-        return null;
-    }
 }

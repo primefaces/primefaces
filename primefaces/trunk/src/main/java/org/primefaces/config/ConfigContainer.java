@@ -33,26 +33,36 @@ public class ConfigContainer {
 
 	private static final Logger LOG = Logger.getLogger(ConfigContainer.class.getName());
 	
+	// context params
 	private boolean validateEmptyFields = false;
 	private boolean beanValidationAvailable = false;
 	private boolean partialSubmitEnabled = false;
 	private boolean interpretEmptyStringAsNull = false;
 	private boolean rightToLeft = false;
+	
+	// internal config
+	private boolean stringConverterAvailable = false;
 
 	public ConfigContainer(FacesContext context) {
+		initContextParams(context);
+        
+        stringConverterAvailable = null != context.getApplication().createConverter(String.class);
+	}
+
+	private void initContextParams(FacesContext context) {
 		ExternalContext externalContext = context.getExternalContext();
 
         String value = null;
-        
+
         value = externalContext.getInitParameter(Constants.INTERPRET_EMPTY_STRING_AS_NULL);
         interpretEmptyStringAsNull = (value == null) ? false : Boolean.valueOf(value);
-        
+
         value = externalContext.getInitParameter(Constants.DIRECTION_PARAM);
         rightToLeft = (value == null) ? false : value.equalsIgnoreCase("rtl");
-        
+
         value = externalContext.getInitParameter(Constants.SUBMIT_PARAM);
         partialSubmitEnabled = (value == null) ? false : value.equalsIgnoreCase("partial");
-        
+
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
         value = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
@@ -65,7 +75,7 @@ public class ConfigContainer {
         	validateEmptyFields = Boolean.valueOf(value);
         }
 	}
-
+	
     private boolean checkIfBeanValidationIsAvailable() {
     	boolean available = false;
 
@@ -109,5 +119,10 @@ public class ConfigContainer {
 
 	public boolean isRightToLeft() {
 		return rightToLeft;
+	}
+
+	public boolean isStringConverterAvailable()
+	{
+		return stringConverterAvailable;
 	}
 }

@@ -30,6 +30,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.util.ComponentUtils;
+
 public abstract class InputRenderer extends CoreRenderer {
 
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
@@ -175,25 +177,10 @@ public abstract class InputRenderer extends CoreRenderer {
 
         return null;
     }
-    
-    protected Converter findConverter(FacesContext context, UIComponent component) {
-        if(!(component instanceof ValueHolder)) {
-            return null;
-        }
-        
-        Converter converter = ((ValueHolder) component).getConverter();
 
-        if(converter != null) {
-            return converter;
-        } 
-        else {
-            return findImplicitConverter(context, component);
-        }
-    }
-    
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		Converter converter = findConverter(context, component);
+    	Converter converter = ComponentUtils.getConverter(context, component);
 
 		if(converter != null) {
             String convertableValue = submittedValue == null ? null : submittedValue.toString();

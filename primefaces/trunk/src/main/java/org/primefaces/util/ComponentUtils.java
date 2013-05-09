@@ -74,7 +74,7 @@ public class ComponentUtils {
             
             //format the value as string
             if(value != null) {
-                Converter converter = getConverter(context, valueHolder);
+                Converter converter = getConverter(context, component);
                 
                 if(converter != null)
                     return converter.getAsString(context, component, value);
@@ -99,24 +99,35 @@ public class ComponentUtils {
 	 * @param component			ValueHolder instance to look converter for
 	 * @return					Converter
 	 */
-    public static Converter getConverter(FacesContext context, ValueHolder component) {
-        //explicit converter
-        Converter converter = component.getConverter();
-                
-        //try to find implicit converter
-        if(converter == null) {
-            ValueExpression expr = ((UIComponent) component).getValueExpression("value");
-            if(expr != null) {
-                Class<?> valueType = expr.getType(context.getELContext());
-                if(valueType != null) {
-                    converter = context.getApplication().createConverter(valueType);
-                }
-            }
+    public static Converter getConverter(FacesContext context, UIComponent component) {
+    	if (!(component instanceof ValueHolder)) {
+    		return null;
+    	}
+
+    	Converter converter = ((ValueHolder) component).getConverter();
+    	if (converter != null) {
+    		return converter;
+    	}
+
+    	ValueExpression valueExpression = component.getValueExpression("value");
+    	if (valueExpression == null) {
+    		return null;
+    	}
+
+    	Class<?> converterType = valueExpression.getType(context.getELContext());
+    	if (converterType == null || converterType == Object.class) {
+    		// no conversion is needed
+    		return null;
+    	}
+
+        if (converterType == String.class
+        		&& !RequestContext.getCurrentInstance().getConfig().isStringConverterAvailable()) {
+        	return null;
         }
-        
-        return converter;
+
+    	return context.getApplication().createConverter(converterType);
     }
-	
+    
 	public static UIComponent findParentForm(FacesContext context, UIComponent component) {
 		UIComponent parent = component.getParent();
 		
