@@ -15,6 +15,7 @@
  */
 package org.primefaces.application;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -40,7 +41,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             String[] options = (outcomeTokens.length == 1) ? null : outcomeTokens[1].split("&");
             NavigationCase navCase = getNavigationCase(context, fromAction, viewName);
             String toViewId = navCase.getToViewId(context);
-            String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, null, false);
+            String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, Collections.EMPTY_MAP, false);
             
             RequestContext requestContext = RequestContext.getCurrentInstance();
             if(requestContext != null) {
