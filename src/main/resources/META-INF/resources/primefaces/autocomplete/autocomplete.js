@@ -647,15 +647,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 panelWidth = inputWidth;
             }
         }
-            var hidden = this.panel.is(':hidden');
-            //adjust height
-            if(this.cfg.scrollHeight) {
-                var heightConstraint = hidden ? this.panel.height() : this.panel.children().height();
-                if(heightConstraint > this.cfg.scrollHeight)
-                    this.panel.height(this.cfg.scrollHeight);
-                else
-                    this.panel.css('height', 'auto');                                               
-            }
+        
+        if(this.cfg.scrollHeight) {
+            var heightConstraint = this.panel.is(':hidden') ? this.panel.height() : this.panel.children().height();
+            if(heightConstraint > this.cfg.scrollHeight)
+                this.panel.height(this.cfg.scrollHeight);
+            else
+                this.panel.css('height', 'auto');                                               
+        }
 
         this.panel.css({
                         'left':'',
