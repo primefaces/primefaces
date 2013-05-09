@@ -32,6 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.util.ComponentUtils;
 
 public abstract class Exporter {
 	    
@@ -117,23 +118,10 @@ public abstract class Exporter {
 			Object value = valueHolder.getValue();
 			if(value == null)
 				return "";
-
-			//first ask the converter
-			if(valueHolder.getConverter() != null) {
-				return valueHolder.getConverter().getAsString(context, component, value);
-			}
-			//Try to guess
-			else {
-				ValueExpression expr = component.getValueExpression("value");
-				if(expr != null) {
-					Class<?> valueType = expr.getType(context.getELContext());
-					if(valueType != null) {
-						Converter converterForType = context.getApplication().createConverter(valueType);
-
-						if(converterForType != null)
-							return converterForType.getAsString(context, component, value);
-					}
-				}
+			
+			Converter converter = ComponentUtils.getConverter(context, component);
+			if (converter != null) {
+				return converter.getAsString(context, component, value);
 			}
 
 			//No converter found just return the value as string

@@ -104,24 +104,10 @@ public class EditorRenderer extends CoreRenderer{
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
 		Editor editor = (Editor) component;
 		String value = (String) submittedValue;
-		Converter converter = editor.getConverter();
+		Converter converter = ComponentUtils.getConverter(context, component);
 
-		//first ask the converter
 		if(converter != null) {
 			return converter.getAsObject(context, editor, value);
-		}
-		//Try to guess
-		else {
-            ValueExpression ve = editor.getValueExpression("value");
-            
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
-                Converter converterForType = context.getApplication().createConverter(valueType);
-
-                if(converterForType != null) {
-                    return converterForType.getAsObject(context, editor, value);
-                }
-            }
 		}
 
 		return value;

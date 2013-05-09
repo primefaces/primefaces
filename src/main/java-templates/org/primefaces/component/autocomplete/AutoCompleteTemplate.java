@@ -1,6 +1,7 @@
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
@@ -111,27 +112,8 @@ import javax.faces.component.behavior.Behavior;
         return this.suggestions;
     }
 
-    private Converter getConverter(FacesContext context) {
-        Converter converter = this.getConverter();
-
-        if(converter != null) {
-            return converter;
-        } else {
-            ValueExpression ve = this.getValueExpression("value");
-
-            if(ve != null) {
-                Class<?> valueType = ve.getType(context.getELContext());
-                
-                if(valueType != null)
-                    return context.getApplication().createConverter(valueType);
-            }
-        }
-
-        return null;
-    }
-
     private Object convertValue(FacesContext context, String submittedItemValue) {
-        Converter converter = getConverter();
+        Converter converter = ComponentUtils.getConverter(context, this);
 
         if(converter == null)
             return submittedItemValue;
