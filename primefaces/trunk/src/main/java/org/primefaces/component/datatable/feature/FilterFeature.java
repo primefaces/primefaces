@@ -60,7 +60,7 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return false;
+        return isFilterRequest(context, table);
     }
     
     public boolean shouldEncode(FacesContext context, DataTable table) {
@@ -68,10 +68,42 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public void decode(FacesContext context, DataTable table) {
-        throw new RuntimeException("FilterFeature should not decode.");
+        String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+        List<FilterMeta> filterMetadata = this.createFilterMetaData(context, table);
+        Map<String,String> filterParameterMap = this.populateFilterParameterMap(context, table, filterMetadata, globalFilterParam);
+        table.setFilters(filterParameterMap);
+        table.setFilterMetadata(filterMetadata);
+    }
+            
+    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        //reset state
+        updateFilteredValue(context, table, null);
+        table.setFirst(0);
+        table.setRowIndex(-1);
+        
+        if(table.isLazy()) {
+            table.loadLazyData();
+        }
+        else {
+            String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+            filter(context, table, table.getFilterMetadata(), globalFilterParam);
+            
+            //sort new filtered data to restore sort state
+            Object sortBy = table.getSortBy();
+            if(sortBy != null) {
+                SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
+                
+                if(table.isMultiSort())
+                    sortFeature.multiSort(context, table);
+                else
+                    sortFeature.singleSort(context, table);
+            }
+        }
+                
+        renderer.encodeTbody(context, table, true);
     }
     
-    private void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
+        private void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         List filteredData = new ArrayList();
         boolean hasGlobalFilter = params.containsKey(globalFilterParam);
@@ -134,40 +166,6 @@ public class FilterFeature implements DataTableFeature {
         updateFilteredValue(context, table, filteredData);
 
         table.setRowIndex(-1);  //reset datamodel
-    }
-        
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        //reset state
-        updateFilteredValue(context, table, null);
-        table.setFirst(0);
-        table.setRowIndex(-1);
-        
-        String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
-        List<FilterMeta> filterMetadata = this.createFilterMetaData(context, table);
-
-        
-        if(table.isLazy()) {
-            Map<String,String> filterParameterMap = this.populateFilterParameterMap(context, table, filterMetadata, globalFilterParam);
-            table.setFilters(filterParameterMap);
-        
-            table.loadLazyData();
-        }
-        else {
-            filter(context, table, filterMetadata, globalFilterParam);
-            
-            //sort new filtered data to restore sort state
-            Object sortBy = table.getSortBy();
-            if(sortBy != null) {
-                SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
-                
-                if(table.isMultiSort())
-                    sortFeature.multiSort(context, table);
-                else
-                    sortFeature.singleSort(context, table);
-            }
-        }
-                
-        renderer.encodeTbody(context, table, true);
     }
     
     public void updateFilteredValue(FacesContext context, DataTable table, List<?> value) {

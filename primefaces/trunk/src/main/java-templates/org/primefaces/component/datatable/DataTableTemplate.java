@@ -484,6 +484,14 @@ import org.primefaces.component.datatable.feature.*;
         getStateHelper().put("filters", filters);
     }
     
+    private List filterMetadata;
+    public List getFilterMetadata() {
+        return filterMetadata;
+    }
+    public void setFilterMetadata(List filterMetadata) {
+        this.filterMetadata = filterMetadata;
+    }
+    
     private boolean reset = false;
     
     public boolean isReset() {
