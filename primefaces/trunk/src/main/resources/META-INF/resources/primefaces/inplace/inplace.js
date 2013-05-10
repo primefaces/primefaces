@@ -50,7 +50,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
     
     show: function() {    
         this.toggle(this.content, this.display, function() {
-            this.content.find(':input:text:visible:enabled:first').focus().select();
+            this.content.find('input:text,textarea').filter(':visible:enabled:first').focus().select();
         });
     },
     
