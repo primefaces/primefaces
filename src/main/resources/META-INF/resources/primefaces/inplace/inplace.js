@@ -49,47 +49,40 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {    
-        this.toggle(this.content, this.display, function() {
-            this.content.find('input:text,textarea').filter(':visible:enabled:first').focus().select();
-        });
+        this.toggle(this.content, this.display);
     },
     
     hide: function() {
         this.toggle(this.display, this.content);
     },
     
-    toggle: function(elToShow, elToHide, callback) {
+    toggle: function(elToShow, elToHide) {
         var _self = this;
 
-        if(this.cfg.effect == 'fade') {
+        if(this.cfg.effect === 'fade') {
             elToHide.fadeOut(this.cfg.effectSpeed,
                 function(){
                     elToShow.fadeIn(_self.cfg.effectSpeed);
-
                     _self.postShow();
-
-                    if(callback)
-                        callback.call(_self);
                 });
         }
         else if(this.cfg.effect == 'slide') {
-                elToHide.slideUp(this.cfg.effectSpeed,
-                    function(){
-                        elToShow.slideDown(_self.cfg.effectSpeed);
-
-                        _self.postShow();
-                });
+            elToHide.slideUp(this.cfg.effectSpeed,
+                function(){
+                    elToShow.slideDown(_self.cfg.effectSpeed);
+                    _self.postShow();
+            });
         }
         else if(this.cfg.effect == 'none') {
                 elToHide.hide();
                 elToShow.show();
-
                 _self.postShow();
         }
     },
     
     postShow: function() {
-        //execute onshowHandlers and remove successful ones
+        this.content.find('input:text,textarea').filter(':visible:enabled:first').focus().select();
+        
         this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
             return !fn.call();
         });
