@@ -94,9 +94,9 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         .on('mousewheel.spinner', function(event, delta) {
             if($this.input.is(':focus')) {
                 if(delta > 0)
-                    $this.spin($this.cfg.step);
+                    $this.spin(1);
                 else
-                    $this.spin(-1 * $this.cfg.step);
+                    $this.spin(-1);
                 
                 return false;
             }
