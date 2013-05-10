@@ -11,13 +11,13 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.formId = this.jq.parents('form:first').attr('id');
         this.onshowHandlers = [];
 
-        var _self = this;
+        var $this = this;
 
         if(!this.cfg.disabled) {
 
             if(this.cfg.toggleable) {
                 this.display.bind(this.cfg.event, function(){
-                    _self.show();
+                    $this.show();
                 });
 
                 this.display.mouseover(function(){
@@ -40,8 +40,8 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
 
                 PrimeFaces.skinButton(saveButton).skinButton(cancelButton);
 
-                saveButton.click(function(e) {_self.save(e)});
-                cancelButton.click(function(e) {_self.cancel(e)});
+                saveButton.click(function(e) {$this.save(e)});
+                cancelButton.click(function(e) {$this.cancel(e)});
             }
         }
 
@@ -57,26 +57,26 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
     },
     
     toggle: function(elToShow, elToHide) {
-        var _self = this;
+        var $this = this;
 
         if(this.cfg.effect === 'fade') {
             elToHide.fadeOut(this.cfg.effectSpeed,
-                function(){
-                    elToShow.fadeIn(_self.cfg.effectSpeed);
-                    _self.postShow();
+                function() {
+                    elToShow.fadeIn($this.cfg.effectSpeed);
+                    $this.postShow();
                 });
         }
-        else if(this.cfg.effect == 'slide') {
+        else if(this.cfg.effect === 'slide') {
             elToHide.slideUp(this.cfg.effectSpeed,
-                function(){
-                    elToShow.slideDown(_self.cfg.effectSpeed);
-                    _self.postShow();
+                function() {
+                    elToShow.slideDown($this.cfg.effectSpeed);
+                    $this.postShow();
             });
         }
-        else if(this.cfg.effect == 'none') {
-                elToHide.hide();
-                elToShow.show();
-                _self.postShow();
+        else if(this.cfg.effect === 'none') {
+            elToHide.hide();
+            elToShow.show();
+            $this.postShow();
         }
     },
     
@@ -130,14 +130,15 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
             var saveBehavior = this.cfg.behaviors['cancel'];
 
             saveBehavior.call(this, e, options);
-        } else {
+        } 
+        else {
             PrimeFaces.ajax.AjaxRequest(options); 
         }
     },
     
     hasBehavior: function(event) {
         if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
+            return this.cfg.behaviors[event] !== undefined;
         }
 
         return false;
@@ -146,5 +147,4 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
     addOnshowHandler: function(fn) {
         this.onshowHandlers.push(fn);
     }
-    
 });
