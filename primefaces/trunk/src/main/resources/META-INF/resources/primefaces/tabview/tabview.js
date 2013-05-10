@@ -188,7 +188,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
     },
     
     disableScrollerButton: function(btn) {
-        btn.addClass('ui-state-disabled').removeClass('ui-state-hover');
+        btn.addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active');
     },
             
     enableScrollerButton: function(btn) {
