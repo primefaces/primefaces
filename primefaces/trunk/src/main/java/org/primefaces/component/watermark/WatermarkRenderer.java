@@ -40,7 +40,7 @@ public class WatermarkRenderer extends CoreRenderer {
 				throw new FacesException("Cannot find component \"" + _for + "\" in view.");
 			}
             
-			target = forComponent.getClientId(context);
+			target = super.getEscapedClientId(forComponent.getClientId(context));
 		} 
         else if(watermark.getForElement() != null) {
 			target = watermark.getForElement();
