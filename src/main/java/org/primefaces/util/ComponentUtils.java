@@ -227,7 +227,7 @@ public class ComponentUtils {
 			return "@none";
         }
 
-		String[] ids = list.trim().split("[,\\s]+");
+		String[] ids = list.split("[,\\s]+");
 		StringBuilder buffer = new StringBuilder();
 		
 		for(int i = 0; i < ids.length; i++) {
