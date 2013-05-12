@@ -109,7 +109,7 @@ public class FocusRenderer extends CoreRenderer {
 			for(Iterator<FacesMessage> messageIter = context.getMessages(clientId); messageIter.hasNext();) {
 				FacesMessage message = messageIter.next();
 				
-				if(message.getSeverity().getOrdinal() <= minSeverityOrdinal)
+				if(message.getSeverity().getOrdinal() >= minSeverityOrdinal)
 					return clientId;
 			}
 		}
