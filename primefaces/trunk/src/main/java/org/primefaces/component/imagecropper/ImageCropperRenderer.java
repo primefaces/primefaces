@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
@@ -177,20 +178,20 @@ public class ImageCropperRenderer extends CoreRenderer {
 	}
 	
 	private BufferedImage getSourceImage(FacesContext context, String imagePath) throws IOException {
-		 BufferedImage outputImage = null;
-		 boolean isExternal = imagePath.startsWith("http");
-		 
-		 if(isExternal) {
-			 URL url = new URL(imagePath);
-			 
-			 outputImage =  ImageIO.read(url);
-		 }
-		 else {
-			ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
-			
-			outputImage = ImageIO.read(new File(servletContext.getRealPath("") + imagePath));
+		BufferedImage outputImage = null;
+		boolean isExternal = imagePath.startsWith("http");
+
+		if(isExternal) {
+			URL url = new URL(imagePath);
+
+			outputImage =  ImageIO.read(url);
 		}
-		 
+		else {
+			ExternalContext externalContext = context.getExternalContext();
+
+			outputImage = ImageIO.read(new File(externalContext.getRealPath("") + imagePath));
+		}
+
 		return outputImage;
 	}
 }
