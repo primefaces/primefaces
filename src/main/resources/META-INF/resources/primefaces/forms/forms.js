@@ -2534,7 +2534,12 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
         this.scope = this.cfg.scope ? $(PrimeFaces.escapeClientId(this.cfg.scope)) : null;
         var $this = this;
-        
+
+        // container support - e.g. splitButton
+        if (this.jqTarget.is(':not(:button):not(:input)')) {
+        	this.jqTarget = this.jqTarget.find(':button:first');
+        }
+
         //attach keypress listener to parent form
         this.jqTarget.closest('form').off('keydown.' + this.id).on('keydown.' + this.id, function(e) { 
            var keyCode = $.ui.keyCode;
