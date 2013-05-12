@@ -237,7 +237,7 @@ public class ComponentUtils {
 				continue;
 			}
 
-			if(i != 0) {
+			if(i != 0 && buffer.length() > 0) {
 				buffer.append(" ");
             }
 
