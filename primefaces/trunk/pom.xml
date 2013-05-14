@@ -118,7 +118,7 @@
         <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-runtime</artifactId>
-            <version>1.0.8</version>
+            <version>1.0.13</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
