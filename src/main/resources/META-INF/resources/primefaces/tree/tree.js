@@ -58,9 +58,15 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     content = update.text();
 
                     if(id == _self.id) {
-                        _self.getNodeChildrenContainer(node).append(content);
+                        var nodeChildrenContainer = _self.getNodeChildrenContainer(node);
+                        nodeChildrenContainer.append(content);
 
                         _self.showNodeChildren(node);
+  
+                        if(_self.cfg.dragdrop) {
+                            _self.makeDraggable(nodeChildrenContainer);
+                            _self.makeDroppable(nodeChildrenContainer);
+                        }
                     }
                     else {
                         PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -545,13 +551,22 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     initDragDrop: function() {
         var $this = this;
         
-        this.jq.find('.ui-treenode-content').draggable({
+        this.makeDraggable(this.jq);
+        this.makeDroppable(this.jq);
+    },
+    
+    makeDraggable: function(container) {
+        container.find('span.ui-treenode-content').draggable({
             helper: 'clone',
             revert: true,
             containment: this.jq
         });
+    },
+            
+    makeDroppable: function(container) {
+        var $this = this;
         
-        this.jq.find('div.ui-tree-dropnode').droppable({
+        container.find('div.ui-tree-dropnode').droppable({
             hoverClass: 'ui-state-hover',
             accept: 'span.ui-treenode-content',
             tolerance: 'pointer',
@@ -595,7 +610,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             }
         });
         
-        this.jq.find('span.ui-treenode-droppable').droppable({
+        container.find('span.ui-treenode-droppable').droppable({
             accept: '.ui-treenode-content',
             tolerance: 'pointer',
             over: function(event, ui) {
