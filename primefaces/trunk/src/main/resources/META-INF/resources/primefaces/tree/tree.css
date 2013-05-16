@@ -165,11 +165,14 @@
 }
 
 /** DragDrop **/
-.ui-tree-dropnode {
+.ui-tree-droppoint {
+    list-style: none outside none;
     height: 4px;
+    margin: 0;
+    padding: 0;
 }
 
-.ui-tree-dropnode.ui-state-hover {
+.ui-tree-droppoint.ui-state-hover {
     border: 0 none;
 }
 

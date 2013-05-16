@@ -98,28 +98,23 @@ public class TreeRenderer extends CoreRenderer {
         String dragNodeRowKey = params.get(clientId + "_dragNode");
         String dropNodeRowKey = params.get(clientId + "_dropNode");
         int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
-        String dndtype = params.get(clientId + "_dndtype");
+        TreeNode dropNode = null;
         
         tree.setRowKey(dragNodeRowKey);
         TreeNode dragNode = tree.getRowNode();
         
-        tree.setRowKey(dropNodeRowKey);
-        TreeNode dropNode = tree.getRowNode();
+        if(isValueBlank(dropNodeRowKey)) {
+            dropNode = tree.getValue();
+        }
+        else {
+            tree.setRowKey(dropNodeRowKey);
+            dropNode = tree.getRowNode();
+        }
         
         tree.setDragNode(dragNode);
-        
-        if(dndtype.equalsIgnoreCase(DND_TYPE_INSERT)) {
-            TreeNode newParent = (dndIndex == 0) ? dropNode : dropNode.getParent();
-            
-            newParent.getChildren().add(dndIndex, dragNode);
-            dragNode.setParent(newParent);
-            tree.setDropNode(newParent);
-        }
-        else if(dndtype.equalsIgnoreCase(DND_TYPE_ADD)) {
-            dropNode.getChildren().add(dragNode);
-            dragNode.setParent(dropNode);
-            tree.setDropNode(dropNode);
-        }
+        tree.setDropNode(dropNode);
+        dropNode.getChildren().add(dndIndex, dragNode);
+        dragNode.setParent(dropNode);
     }
 
     @Override
@@ -442,7 +437,6 @@ public class TreeRenderer extends CoreRenderer {
 	}
  
 	public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, boolean dynamic, boolean checkbox, boolean dragdrop) throws IOException {
-        
         if(rowKey != null) {
             //preselection
             boolean selected = node.isSelected();
@@ -518,10 +512,6 @@ public class TreeRenderer extends CoreRenderer {
 
                 writer.endElement("span");
                 
-                if(dragdrop) {
-                    encodeDropTarget(context, tree);
-                }
-
                 //children nodes                
                 writer.startElement("ul", null);
                 writer.writeAttribute("class", Tree.CHILDREN_NODES_CLASS , null);
@@ -537,6 +527,10 @@ public class TreeRenderer extends CoreRenderer {
                 writer.endElement("ul");
 
             writer.endElement("li");
+            
+            if(dragdrop) {
+                encodeDropTarget(context, tree);
+            }
         } 
         else {
             encodeTreeNodeChildren(context, tree, node, clientId, rowKey, dynamic, checkbox, dragdrop);
@@ -549,6 +543,10 @@ public class TreeRenderer extends CoreRenderer {
         for(Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext();) {
             String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
 
+            if(childIndex == 0 && tree.isDragdrop()) {
+               encodeDropTarget(context, tree);
+            }
+            
             encodeTreeNode(context, tree, iterator.next(), clientId, childRowKey, dynamic, checkbox, dragdrop);
 
             childIndex++;
@@ -558,9 +556,9 @@ public class TreeRenderer extends CoreRenderer {
     protected void encodeDropTarget(FacesContext context, Tree tree) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-tree-dropnode", null);
-        writer.endElement("div");
+        writer.startElement("li", null);
+        writer.writeAttribute("class", "ui-tree-droppoint", null);
+        writer.endElement("li");
     }
 
     protected void encodeIconStates(FacesContext context, Tree tree) throws IOException {
