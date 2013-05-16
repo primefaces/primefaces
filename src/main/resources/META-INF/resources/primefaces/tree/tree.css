@@ -166,7 +166,7 @@
 
 /** DragDrop **/
 .ui-tree-dropnode {
-    height: 2px;
+    height: 4px;
 }
 
 .ui-tree-dropnode.ui-state-hover {
