@@ -18,6 +18,7 @@ package org.primefaces.component.tree;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -97,12 +98,23 @@ public class TreeRenderer extends CoreRenderer {
         String clientId = tree.getClientId(context);
         String dragNodeRowKey = params.get(clientId + "_dragNode");
         String dropNodeRowKey = params.get(clientId + "_dropNode");
+        String dragSource = params.get(clientId + "_dragSource");
         int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
         TreeNode dropNode = null;
+        TreeNode dragNode = null;
         
-        tree.setRowKey(dragNodeRowKey);
-        TreeNode dragNode = tree.getRowNode();
+        //dragnode
+        if(dragSource.equals(clientId)) {
+            tree.setRowKey(dragNodeRowKey);
+            dragNode = tree.getRowNode();
+        }
+        else {
+            Tree otherTree = (Tree) tree.findComponent(":" + dragSource);
+            otherTree.setRowKey(dragNodeRowKey);
+            dragNode = otherTree.getRowNode();
+        }
         
+        //dropnode
         if(isValueBlank(dropNodeRowKey)) {
             dropNode = tree.getValue();
         }
@@ -187,6 +199,10 @@ public class TreeRenderer extends CoreRenderer {
         
         if(tree.isDragdrop()) {
             writer.write(",dragdrop:true");
+            String scope = tree.getDragdropScope();
+            if(scope != null) {
+                writer.write(",dragdropScope:'" + scope + "'");
+            }
         }
 
         encodeIconStates(context, tree);

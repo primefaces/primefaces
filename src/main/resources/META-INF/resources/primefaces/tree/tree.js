@@ -558,7 +558,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     },
     
     makeDraggable: function(elements) {
-        var $this = this;
+        var $this = this,
+        dragdropScope = this.cfg.dragdropScope||this.id;
         
         elements.draggable({
             helper: function() {
@@ -568,17 +569,20 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             },
             cursor: 'move',
             zIndex: ++PrimeFaces.zindex,
-            revert: true
+            revert: true,
+            scope: dragdropScope
         });
     },
             
     makeDropPoints: function(elements) {
-        var $this = this;
+        var $this = this,
+        dragdropScope = this.cfg.dragdropScope||this.id;
         
         elements.droppable({
             hoverClass: 'ui-state-hover',
             accept: 'span.ui-treenode-content',
             tolerance: 'pointer',
+            scope: dragdropScope,
             drop: function(event, ui) {
                 ui.helper.remove();
                 
@@ -616,11 +620,13 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     },
     
     makeDropNodes: function(elements) {
-        var $this = this;
+        var $this = this,
+        dragdropScope = this.cfg.dragdropScope||this.id;
     
         elements.droppable({
             accept: '.ui-treenode-content',
             tolerance: 'pointer',
+            scope: dragdropScope,
             over: function(event, ui) {
                 $(this).children('.ui-treenode-label').addClass('ui-state-hover');
             },
@@ -752,10 +758,11 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         options.params = [
             {name: this.id + '_dragdrop', value: true},
             {name: this.id + '_dragNode', value: event.dragNode.attr('data-rowkey')},
+            {name: this.id + '_dragSource', value: this.resolveTreeId(event.dragNode)},
             {name: this.id + '_dropNode', value: event.dropNode.attr('data-rowkey')},
             {name: this.id + '_dndIndex', value: event.dragNode.prevAll('li.ui-treenode').length},
         ];
-
+        
         if(this.hasBehavior('dragdrop')) {
             var dragdropBehavior = this.cfg.behaviors['dragdrop'];
 
@@ -764,8 +771,15 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         else {
             PrimeFaces.ajax.AjaxRequest(options);
         }
-    }
+    },
+            
+    resolveTreeId: function(node) {
+        var id = node.attr('id'),
+        rowkey = this.getRowKey(node),
+        index = id.indexOf(rowkey);
     
+        return id.substring(0, (index - 1));
+    }
 });
 
 /**
