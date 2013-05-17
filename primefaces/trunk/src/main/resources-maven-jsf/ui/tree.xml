@@ -140,6 +140,12 @@
             <defaultValue>false</defaultValue>
             <description>Controls the dragdrop based reorganization of nodes, default is false.</description>
 		</attribute>
+        <attribute>
+			<name>dragdropScope</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Scope key to group a set of tree components for transferring nodes using drag and drop.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
