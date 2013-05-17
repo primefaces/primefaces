@@ -769,7 +769,7 @@
             })
             .fail(function(xhr, status, errorThrown) {
                 if(cfg.onerror) {
-                    cfg.onerror.call(xhr, status, errorThrown);
+                    cfg.onerror.call(this, xhr, status, errorThrown);
                 }
 
                 PrimeFaces.error('Request return with error:' + status + '.');
