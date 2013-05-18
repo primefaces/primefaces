@@ -51,7 +51,7 @@ public class TreeRenderer extends CoreRenderer {
             decodeSelection(context, tree);
         }
         
-        if(tree.isDragdrop() && tree.isDragDropRequest(context)) {
+        if(tree.isDragDropRequest(context)) {
             decodeDragDrop(context, tree);
         }
         
@@ -100,8 +100,7 @@ public class TreeRenderer extends CoreRenderer {
         String dropNodeRowKey = params.get(clientId + "_dropNode");
         String dragSource = params.get(clientId + "_dragSource");
         int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
-        TreeNode dropNode = null;
-        TreeNode dragNode = null;
+        TreeNode dragNode, dropNode;
         
         //dragnode
         if(dragSource.equals(clientId)) {
@@ -148,7 +147,7 @@ public class TreeRenderer extends CoreRenderer {
                 node.setExpanded(true);
                 
                 if(vertical) {
-                    encodeTreeNodeChildren(context, tree, node, clientId, rowKey, tree.isDynamic(), tree.isCheckboxSelection(), tree.isDragdrop());
+                    encodeTreeNodeChildren(context, tree, node, clientId, rowKey, tree.isDynamic(), tree.isCheckboxSelection(), tree.isDroppable());
                 }
                 else {
                     encodeHorizontalTreeNodeChildren(context, tree, node, tree.getClientId(context), rowKey, tree.isDynamic(), tree.isCheckboxSelection());
@@ -197,12 +196,17 @@ public class TreeRenderer extends CoreRenderer {
             writer.write(",animate:true");
         }
         
-        if(tree.isDragdrop()) {
-            writer.write(",dragdrop:true");
-            String scope = tree.getDragdropScope();
-            if(scope != null) {
-                writer.write(",dragdropScope:'" + scope + "'");
-            }
+        if(tree.isDroppable()) {
+            writer.write(",droppable:true");
+        }
+        
+        if(tree.isDraggable()) {
+            writer.write(",draggable:true");
+        }
+        
+        String scope = tree.getDragdropScope();
+        if(scope != null) {
+            writer.write(",dragdropScope:'" + scope + "'");
         }
 
         encodeIconStates(context, tree);
@@ -234,7 +238,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean selectable = selectionMode != null;
         boolean multiselectable = selectable && selectionMode.equals("single");
         boolean checkbox = selectable && selectionMode.equals("checkbox");
-        boolean dragdrop = tree.isDragdrop();
+        boolean droppable = tree.isDroppable();
         
         //enable RTL
         if(ComponentUtils.isRTL(context, tree)) {
@@ -261,7 +265,7 @@ public class TreeRenderer extends CoreRenderer {
 
         if(root != null) {
             root.setExpanded(true);
-            encodeTreeNode(context, tree, root, clientId, null, dynamic, checkbox, dragdrop);
+            encodeTreeNode(context, tree, root, clientId, null, dynamic, checkbox, droppable);
         }
 
 		writer.endElement("ul");
@@ -481,7 +485,6 @@ public class TreeRenderer extends CoreRenderer {
             containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();
             
             writer.startElement("li", null);
-                writer.writeAttribute("id", nodeId, null);
                 writer.writeAttribute("data-rowkey", rowKey, null);
                 writer.writeAttribute("data-nodetype", uiTreeNode.getType(), null);
                 writer.writeAttribute("class", containerClass, null);
@@ -553,17 +556,16 @@ public class TreeRenderer extends CoreRenderer {
         }
 	}
     
-    public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, boolean dynamic, boolean checkbox, boolean dragdrop) throws IOException {     
-
+    public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, boolean dynamic, boolean checkbox, boolean droppable) throws IOException {     
         int childIndex = 0;
         for(Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext();) {
             String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
 
-            if(childIndex == 0 && tree.isDragdrop()) {
+            if(childIndex == 0 && droppable) {
                encodeDropTarget(context, tree);
             }
             
-            encodeTreeNode(context, tree, iterator.next(), clientId, childRowKey, dynamic, checkbox, dragdrop);
+            encodeTreeNode(context, tree, iterator.next(), clientId, childRowKey, dynamic, checkbox, droppable);
 
             childIndex++;
         }

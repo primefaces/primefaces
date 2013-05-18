@@ -134,11 +134,18 @@
             <description>Defines text direction, valid values are "ltr" (default) and "rtl".</description>
         </attribute>
         <attribute>
-			<name>dragdrop</name>
+			<name>draggable</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Controls the dragdrop based reorganization of nodes, default is false.</description>
+            <description>Controls dragging of tree nodes. Default is false.</description>
+		</attribute>
+        <attribute>
+			<name>droppable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Controls dropping of tree nodes. Default is false.</description>
 		</attribute>
         <attribute>
 			<name>dragdropScope</name>
