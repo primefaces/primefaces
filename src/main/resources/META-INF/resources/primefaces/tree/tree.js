@@ -337,8 +337,12 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.cfg.rtl = this.jq.hasClass('ui-tree-rtl');
         this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
         
-        if(this.cfg.dragdrop) {
-            this.initDragDrop();
+        if(this.cfg.draggable) {
+            this.initDraggable();
+        }
+        
+        if(this.cfg.droppable) {
+            this.initDroppable();
         }
     },
         
@@ -549,10 +553,11 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         });
     },
     
-    initDragDrop: function() {
-        var $this = this;
-        
+    initDraggable: function() {
         this.makeDraggable(this.jq.find('span.ui-treenode-content'));
+    },
+            
+    initDroppable: function() {
         this.makeDropPoints(this.jq.find('li.ui-tree-droppoint'));
         this.makeDropNodes(this.jq.find('span.ui-treenode-droppable'));
     },
@@ -577,40 +582,55 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     makeDropPoints: function(elements) {
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
-        
+
         elements.droppable({
             hoverClass: 'ui-state-hover',
             accept: 'span.ui-treenode-content',
             tolerance: 'pointer',
             scope: dragdropScope,
             drop: function(event, ui) {
-                ui.helper.remove();
-                
                 var draggable = ui.draggable,
                 droppable = $(this),
                 dropNode = droppable.closest('li.ui-treenode-parent'),
                 dragNode = draggable.parent(),
-                dragNodesDropPoint = dragNode.next('li.ui-tree-droppoint'),
+                dragNodeDropPoint = dragNode.next('li.ui-tree-droppoint'),
                 oldParentNode = dragNode.parent().closest('li.ui-treenode-parent'),
+                dragSource = dragNode.closest('div.ui-tree').attr('id'),
                 validDrop = $this.validateDropPoint(dragNode, dropNode, droppable);
-                
+
+                dragNode.hide();
+                ui.helper.remove();
+                droppable.removeClass('ui-state-hover');
+
                 if(!validDrop) {
                     return;
                 }
                 
-                dragNode.hide();
-                dragNodesDropPoint.insertAfter(droppable);
-                dragNode.insertAfter(droppable).fadeIn();
-                                   
-                if(oldParentNode.length && (oldParentNode.find('> ul.ui-treenode-children > li.ui-treenode').length === 0)) {
-                    $this.makeLeaf(oldParentNode);
-                }                
+                dragNode.insertAfter(droppable);
+
+                if(dragSource !== $this.id) {
+                    dragNodeDropPoint.remove();
+                    dragNode.after('<li class="ui-tree-droppoint ui-droppable"></li>');
+                    $this.makeDropPoints(dragNode.next('li.ui-tree-droppoint'));
+                }
+                else {
+                    dragNodeDropPoint.insertAfter(dragNode);
+                }
                 
                 dragNode.fadeIn();
+        
+                if(oldParentNode.length && (oldParentNode.find('> ul.ui-treenode-children > li.ui-treenode').length === 0)) {
+                    $this.makeLeaf(oldParentNode);
+                }
                 
+                if(!$this.cfg.draggable) {
+                    draggable.draggable('destroy');
+                }
+        
                 $this.syncDragDrop({
                     'dragNode': dragNode,
-                    'dropNode': dropNode
+                    'dropNode': dropNode,
+                    'dragSource': dragSource
                 });
                 
                 $this.updateRowKeys(dropNode);
@@ -634,8 +654,6 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 $(this).children('.ui-treenode-label').removeClass('ui-state-hover');
             },
             drop: function(event, ui) {
-                ui.helper.remove();
-
                 var draggable = ui.draggable,
                 dropNodeContent = $(this),
                 dropNode = dropNodeContent.closest('li.ui-treenode'),
@@ -643,14 +661,17 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dragNodeDropPoint = dragNode.next('li.ui-tree-droppoint'),
                 oldParentNode = dragNode.parent().closest('li.ui-treenode-parent'),
                 childrenContainer = dropNode.children('.ui-treenode-children'),
+                dragSource = dragNode.closest('div.ui-tree').attr('id'),
                 validDrop = $this.validateDropNode(dragNode, dropNode, oldParentNode);
                 
+                dragNode.hide();
+                ui.helper.remove();
                 dropNodeContent.children('.ui-treenode-label').removeClass('ui-state-hover');
         
                 if(!validDrop) {
                     return;
                 }
-                  
+                                  
                 if(childrenContainer.children('li.ui-treenode').length === 0) {
                     $this.makeParent(dropNode);
                 }
@@ -661,10 +682,22 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 if(oldParentNode.length && (oldParentNode.find('> ul.ui-treenode-children > li.ui-treenode').length === 0)) {
                     $this.makeLeaf(oldParentNode);
                 }
+                                
+                if(dragSource !== $this.id) {
+                    dragNodeDropPoint.droppable('destroy');
+                    $this.makeDropPoints(dragNodeDropPoint);
+                    draggable.droppable('destroy');
+                    $this.makeDropNodes(draggable);
+                }
+                
+                if(!$this.cfg.draggable) {
+                    draggable.draggable('destroy');
+                }
                 
                 $this.syncDragDrop({
                     'dragNode': dragNode,
-                    'dropNode': dropNode
+                    'dropNode': dropNode,
+                    'dragSource': dragSource
                 });
                 
                 $this.updateRowKeys(dropNode);
@@ -758,7 +791,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         options.params = [
             {name: this.id + '_dragdrop', value: true},
             {name: this.id + '_dragNode', value: event.dragNode.attr('data-rowkey')},
-            {name: this.id + '_dragSource', value: this.resolveTreeId(event.dragNode)},
+            {name: this.id + '_dragSource', value: event.dragSource},
             {name: this.id + '_dropNode', value: event.dropNode.attr('data-rowkey')},
             {name: this.id + '_dndIndex', value: event.dragNode.prevAll('li.ui-treenode').length},
         ];
@@ -771,14 +804,6 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         else {
             PrimeFaces.ajax.AjaxRequest(options);
         }
-    },
-            
-    resolveTreeId: function(node) {
-        var id = node.attr('id'),
-        rowkey = this.getRowKey(node),
-        index = id.indexOf(rowkey);
-    
-        return id.substring(0, (index - 1));
     }
 });
 
