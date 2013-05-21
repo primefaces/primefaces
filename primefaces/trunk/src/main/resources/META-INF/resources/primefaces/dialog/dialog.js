@@ -18,8 +18,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         //configuration
         this.cfg.width = this.cfg.width||'auto';
         this.cfg.height = this.cfg.height||'auto';
-        this.cfg.draggable = this.cfg.draggable == false ? false : true;
-        this.cfg.resizable = this.cfg.resizable == false ? false : true;
+        this.cfg.draggable = this.cfg.draggable === false ? false : true;
+        this.cfg.resizable = this.cfg.resizable === false ? false : true;
         this.cfg.minWidth = this.cfg.minWidth||150;
         this.cfg.minHeight = this.cfg.minHeight||this.titlebar.outerHeight();
         this.cfg.position = this.cfg.position||'center';
@@ -53,7 +53,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //docking zone
-        if($(document.body).children('.ui-dialog-docking-zone').length == 0) {
+        if($(document.body).children('.ui-dialog-docking-zone').length === 0) {
             $(document.body).append('<div class="ui-dialog-docking-zone"></div>')
         }
 
@@ -82,7 +82,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     enableModality: function() {
-        var _self = this;
+        var $this = this;
 
         $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay"></div>')
                         .children(this.jqId + '_modal').css({
@@ -95,7 +95,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         $(document).bind('keydown.modal-dialog',
                 function(event) {
                     if(event.keyCode == $.ui.keyCode.TAB) {
-                        var tabbables = _self.content.find(':tabbable'), 
+                        var tabbables = $this.content.find(':tabbable'), 
                         first = tabbables.filter(':first'), 
                         last = tabbables.filter(':last');
 
@@ -110,7 +110,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                     }
                 })
                 .bind(this.blockEvents, function(event) {
-                    if ($(event.target).zIndex() < _self.jq.zIndex()) {
+                    if ($(event.target).zIndex() < $this.jq.zIndex()) {
                         return false;
                     }
                 });
@@ -155,10 +155,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         });
         
         if(this.cfg.showEffect) {
-            var _self = this;
+            var $this = this;
 
             this.jq.show(this.cfg.showEffect, null, 'normal', function() {
-                _self.postShow();
+                $this.postShow();
             });
         }    
         else {
@@ -195,10 +195,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
         
         if(this.cfg.hideEffect) {
-            var _self = this;
+            var $this = this;
 
             this.jq.hide(this.cfg.hideEffect, null, 'normal', function() {
-                _self.onHide();
+                $this.onHide();
             });
         }
         else {
@@ -272,7 +272,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     setupResizable: function() {
-        var _self = this;
+        var $this = this;
 
         this.jq.resizable({
             handles : 'n,s,e,w,ne,nw,se,sw',
@@ -281,13 +281,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             alsoResize : this.content,
             containment: 'document',
             start: function(event, ui) {
-                _self.jq.data('offset', _self.jq.offset());
+                $this.jq.data('offset', $this.jq.offset());
             },
             stop: function(event, ui) {
-                var offset = _self.jq.data('offset')
+                var offset = $this.jq.data('offset')
 
-                _self.jq.css('position', 'fixed');
-                _self.jq.offset(offset);
+                $this.jq.css('position', 'fixed');
+                $this.jq.offset(offset);
             }
         });
 
@@ -414,7 +414,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             animate = false;
         }
 
-        var _self = this;
+        var $this = this;
 
         if(this.minimized) {
             this.jq.appendTo(this.parent).removeClass('ui-dialog-minimized').css({'position':'fixed', 'float':'none'});
@@ -435,8 +435,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                                 ,className: 'ui-dialog-minimizing'
                                 }, 500, 
                                 function() {
-                                    _self.dock(dockingZone);
-                                    _self.jq.addClass('ui-dialog-minimized');
+                                    $this.dock(dockingZone);
+                                    $this.jq.addClass('ui-dialog-minimized');
                                 });
             } 
             else {
@@ -493,7 +493,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             process: this.id,
             update: this.id
         },
-        _self = this;
+        $this = this;
 
         options.onsuccess = function(responseXML) {
             var xmlDoc = $(responseXML.documentElement),
@@ -504,9 +504,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 id = update.attr('id'),
                 content = update.text();
 
-                if(id == _self.id){
-                    _self.content.html(content);
-                    _self.loaded = true;
+                if(id === $this.id){
+                    $this.content.html(content);
                 }
                 else {
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
@@ -519,7 +518,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         };
 
         options.oncomplete = function() {
-            _self.show();
+            $this.loaded = true;
+            $this.show();
         };
 
         options.params = [
