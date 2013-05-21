@@ -53,7 +53,7 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
 		writer.writeAttribute("onclick", buildOnclick(context, button), null);
 
 		//icon
-        if(icon != null) {
+        if(icon != null && !icon.trim().equals("")) {
             String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS; 
             String iconClass = defaultIconClass + " " + icon;
             
