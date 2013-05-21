@@ -2750,8 +2750,8 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
 
         this.cfg.request = {
             url: this.cfg.url,
-            transport: 'websocket',
-            fallbackTransport: 'long-polling',
+            transport: this.cfg.transport,
+            fallbackTransport: this.cfg.fallbackTransport,
             enableXDR: false,
             onMessage: function(response) {
                 _self.onMessage(response);
