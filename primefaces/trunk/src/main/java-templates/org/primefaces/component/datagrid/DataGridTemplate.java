@@ -81,4 +81,7 @@ import org.primefaces.util.Constants;
                 super.queueEvent(pageEvent);
             }
         }
+        else {
+            super.queueEvent(event);
+        }
     }
