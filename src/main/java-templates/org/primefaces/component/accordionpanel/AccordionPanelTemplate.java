@@ -121,10 +121,12 @@ import javax.faces.component.visit.VisitResult;
 
         if(isDynamic()) {
             if(this.getVar() == null) {
+            	pushComponentToEL(context, null);
                 for(Tab tab : getLoadedTabs()) {
                     tab.processDecodes(context);
                 }
                 this.decode(context);
+                popComponentFromEL(context);
             }
             else {
                 super.processDecodes(context);
@@ -132,8 +134,10 @@ import javax.faces.component.visit.VisitResult;
         }
         else {
             if(this.getVar() == null) {
+            	pushComponentToEL(context, null);
             	ComponentUtils.processDecodesOfFacetsAndChilds(this, context);
                 this.decode(context);
+                popComponentFromEL(context);
             }
             else {
                 super.processDecodes(context);
