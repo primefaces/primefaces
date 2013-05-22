@@ -24,15 +24,15 @@ import org.primefaces.model.TreeNode;
 
 public class TreeDragDropEvent extends AjaxBehaviorEvent {
 
-	private TreeNode dragNode;
+	private TreeNode[] dragNodes;
     
     private TreeNode dropNode;
     
     private int dropIndex;
     
-	public TreeDragDropEvent(UIComponent component, Behavior behavior, TreeNode dragNode, TreeNode dropNode, int dropIndex) {
+	public TreeDragDropEvent(UIComponent component, Behavior behavior, TreeNode[] dragNodes, TreeNode dropNode, int dropIndex) {
 		super(component, behavior);
-		this.dragNode = dragNode;
+		this.dragNodes = dragNodes;
         this.dropNode = dropNode;
         this.dropIndex = dropIndex;
 	}
@@ -47,8 +47,8 @@ public class TreeDragDropEvent extends AjaxBehaviorEvent {
 		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
-    public TreeNode getDragNode() {
-        return dragNode;
+    public TreeNode[] getDragNodes() {
+        return dragNodes;
     }
 
     public TreeNode getDropNode() {
