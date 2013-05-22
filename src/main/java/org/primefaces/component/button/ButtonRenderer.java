@@ -107,7 +107,8 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         }
 
         if(targetURL != null) {
-            onclick.append("window.location.href='").append(targetURL).append("'");
+            onclick.append("window.open('").append(targetURL).append("','");
+            onclick.append(button.getTarget()).append("')");
         }
         
         return onclick.toString();

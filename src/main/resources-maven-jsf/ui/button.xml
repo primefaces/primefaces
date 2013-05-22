@@ -239,6 +239,13 @@
             <description>Resource to link to.</description>
 		</attribute>
         <attribute>
+			<name>target</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>_self</defaultValue>
+            <description>The window target. Default _self.</description>
+		</attribute>
+        <attribute>
 			<name>escape</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
