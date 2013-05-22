@@ -15,6 +15,7 @@
  */
 package org.primefaces.component.resetinput;
 
+import java.io.Serializable;
 import java.util.EnumSet;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -31,10 +32,17 @@ import javax.faces.event.ActionListener;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
 
-public class ResetInputActionListener implements ActionListener {
+public class ResetInputActionListener implements ActionListener, Serializable {
     
     private ValueExpression target;
-    
+
+    /**
+     * Don't remove - it's for serialization.
+     */
+    public ResetInputActionListener() {
+    	
+    }
+
     public ResetInputActionListener(ValueExpression target) {
 		this.target = target;
 	}
