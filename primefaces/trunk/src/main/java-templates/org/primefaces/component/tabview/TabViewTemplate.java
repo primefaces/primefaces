@@ -126,15 +126,19 @@ import javax.faces.component.visit.VisitResult;
 
         //only process loaded tabs on dynamic case without tab model
         if(isDynamic() && getVar() == null) {
+        	pushComponentToEL(context, null);
             for(Tab tab : getLoadedTabs()) {
                 tab.processDecodes(context);
             }
             this.decode(context);
+            popComponentFromEL(context);
         }
         else {
             if(this.getVar() == null) {
+            	pushComponentToEL(context, null);
             	ComponentUtils.processDecodesOfFacetsAndChilds(this, context);
                 this.decode(context);
+                popComponentFromEL(context);
             }
             else {
                 super.processDecodes(context);
