@@ -26,8 +26,10 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.Constants;
+import org.primefaces.util.StringEncrypter;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
     
@@ -48,16 +50,17 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     public void handleResourceRequest(FacesContext context) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");
-        String dynamicContentId = params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        String dynamicContentId = (String)params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        StringEncrypter strEn = new StringEncrypter(RequestContext.getCurrentInstance().getConfig().getSecretKey().toString());
         
         if(dynamicContentId != null && library != null && library.equals("primefaces")) {
-            Map<String,Object> session = context.getExternalContext().getSessionMap();
+
             StreamedContent streamedContent = null;
             
             try {
-                String dynamicContentEL = (String) session.get(dynamicContentId);                
+                String dynamicContentEL = strEn.decrypt(dynamicContentId);                
                 ExternalContext externalContext = context.getExternalContext();
-                
+                 
                 if(dynamicContentEL != null) {
                     ELContext eLContext = context.getELContext();
                     ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL, StreamedContent.class);
@@ -88,8 +91,6 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             }
             finally {
                 //cleanup
-                session.remove(dynamicContentId);
-                
                 if(streamedContent != null) {
                     streamedContent.getStream().close();
                 }

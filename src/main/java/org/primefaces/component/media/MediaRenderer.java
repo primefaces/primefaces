@@ -16,6 +16,7 @@
 package org.primefaces.component.media;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.UUID;
 import javax.faces.application.Resource;
@@ -27,11 +28,13 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.StringEncrypter;
 
 public class MediaRenderer extends CoreRenderer {
 
@@ -40,7 +43,12 @@ public class MediaRenderer extends CoreRenderer {
 		Media media = (Media) component;
 		MediaPlayer player = resolvePlayer(context, media);
 		ResponseWriter writer = context.getResponseWriter();
-		String src = getMediaSrc(context, media);
+		String src;
+        try {
+            src = getMediaSrc(context, media);
+        } catch (Exception ex) {
+           throw new IOException(ex);
+        }
         boolean isIE = AgentUtils.isIE(context);
         String sourceParam = player.getSourceParam();
 		
@@ -119,7 +127,7 @@ public class MediaRenderer extends CoreRenderer {
 		throw new IllegalArgumentException("Cannot resolve mediaplayer for media component '" + media.getClientId(context) + "', cannot play source:" + media.getValue());
 	}
 
-	protected String getMediaSrc(FacesContext context, Media media) {
+	protected String getMediaSrc(FacesContext context, Media media) throws Exception {
 		String src;
 		Object value = media.getValue();
         
@@ -131,22 +139,26 @@ public class MediaRenderer extends CoreRenderer {
                 StreamedContent streamedContent = (StreamedContent) value;
                 Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
                 String resourcePath = resource.getRequestPath();
-                String rid = createUniqueContentId(context);
+                StringEncrypter strEn = new StringEncrypter(RequestContext.getCurrentInstance().getConfig().getSecretKey());
+                String rid = strEn.encrypt(media.getValueExpression("value").getExpressionString());
                 StringBuilder builder = new StringBuilder(resourcePath);
-
-                builder.append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(rid);
+                
+                builder.append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid,"UTF-8"));
 
                 for(UIComponent kid : media.getChildren()) {
                     if(kid instanceof UIParameter) {
                         UIParameter param = (UIParameter) kid;
-
-                        builder.append("&").append(param.getName()).append("=").append(param.getValue());
+                        Object paramValue = param.getValue();
+                        
+                        builder.append("&").append(param.getName()).append("=");
+                        
+                        if(paramValue != null){
+                            builder.append(URLEncoder.encode(param.getValue().toString(), "UTF-8"));
+                        }
                     }
                 }
 
-                src = builder.toString();
-
-                context.getExternalContext().getSessionMap().put(rid, media.getValueExpression("value").getExpressionString());
+                src = context.getExternalContext().encodeResourceURL(builder.toString());
             }
             else {
                 src = getResourceURL(context, (String) value);
@@ -160,18 +172,7 @@ public class MediaRenderer extends CoreRenderer {
 		return src;
 	}
     
-    protected String createUniqueContentId(FacesContext context) {
-        Map<String,Object> session = context.getExternalContext().getSessionMap();
-        
-        String key = generateKey();
-        
-        while(session.containsKey(key)) {
-            key = generateKey();
-        }
-        
-        return key;
-    }
-    
+
     protected String generateKey() {
         StringBuilder builder = new StringBuilder();
         

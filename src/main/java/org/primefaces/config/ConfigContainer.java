@@ -39,6 +39,7 @@ public class ConfigContainer {
 	private boolean partialSubmitEnabled = false;
 	private boolean interpretEmptyStringAsNull = false;
 	private boolean rightToLeft = false;
+	private String  secretKey = null;
 	
 	// internal config
 	private boolean stringConverterAvailable = false;
@@ -63,6 +64,9 @@ public class ConfigContainer {
         value = externalContext.getInitParameter(Constants.SUBMIT_PARAM);
         partialSubmitEnabled = (value == null) ? false : value.equalsIgnoreCase("partial");
 
+        value = externalContext.getInitParameter(Constants.SECRET_KEY);
+        secretKey = (value == null) ? "primefaces" : value;
+        
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
         value = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
@@ -125,4 +129,13 @@ public class ConfigContainer {
 	{
 		return stringConverterAvailable;
 	}
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+    
 }
