@@ -715,14 +715,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     }
 
                     if(transfer) {
-                        dragNodeLabel.removeClass('ui-state-highlight');
+                        dragNodeLabel.removeClass('ui-state-highlight').draggable('destroy');
                         dragNodeDropPoint.droppable('destroy');
-                        $this.makeDropPoints(dragNodeDropPoint);
+                        dropSource.makeDropPoints(dragNodeDropPoint);
                         dragNodeContent.droppable('destroy');
-                        $this.makeDropNodes(dragNodeContent);
+                        dropSource.makeDropNodes(dragNodeContent);
                         
-                        if(!$this.cfg.draggable)
-                            dragNodeContent.draggable('destroy');
+                        if(dropSource.cfg.draggable)
+                            dropSource.makeDraggable(dragNodeLabel);
                     }
                     
                     dragNode.fadeIn();
