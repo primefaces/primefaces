@@ -988,23 +988,27 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     disable: function() {
-        this.disabled = true;
-        this.jq.addClass('ui-state-disabled');
-        this.input.attr('disabled', 'disabled');
-        if(this.cfg.editable) {
-            this.label.attr('disabled', 'disabled');
-        }
-        this.unbindEvents();
+    	if (!this.disabled) {
+	        this.disabled = true;
+	        this.jq.addClass('ui-state-disabled');
+	        this.input.attr('disabled', 'disabled');
+	        if(this.cfg.editable) {
+	            this.label.attr('disabled', 'disabled');
+	        }
+	        this.unbindEvents();
+    	}
     },
-    
+
     enable: function() {
-        this.disabled = false;
-        this.jq.removeClass('ui-state-disabled');
-        this.input.removeAttr('disabled');
-        if(this.cfg.editable) {
-            this.label.removeAttr('disabled');
-        }
-        this.bindEvents();
+    	if (this.disabled) {
+	        this.disabled = false;
+	        this.jq.removeClass('ui-state-disabled');
+	        this.input.removeAttr('disabled');
+	        if(this.cfg.editable) {
+	            this.label.removeAttr('disabled');
+	        }
+	        this.bindEvents();
+    	}
     },
     
     /**
