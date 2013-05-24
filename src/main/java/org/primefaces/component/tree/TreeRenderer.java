@@ -100,27 +100,18 @@ public class TreeRenderer extends CoreRenderer {
         String dropNodeRowKey = params.get(clientId + "_dropNode");
         String dragSource = params.get(clientId + "_dragSource");
         int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
-        TreeNode[] dragNodes = new TreeNode[dragNodeRowKeys.length];
+        TreeNode[] dragNodes;
         TreeNode dropNode;
         
-        //dragnode
-        for(int i = 0; i < dragNodeRowKeys.length; i++) {
-            tree.setRowKey(dragNodeRowKeys[i]);
-            dragNodes[i] = tree.getRowNode();
-        }
         
-        /*
         if(dragSource.equals(clientId)) {
-            tree.setRowKey(dragNodeRowKey);
-            dragNode = tree.getRowNode();
+            dragNodes = findDragNodes(context, tree, dragNodeRowKeys);
         }
         else {
             Tree otherTree = (Tree) tree.findComponent(":" + dragSource);
-            otherTree.setRowKey(dragNodeRowKey);
-            dragNode = otherTree.getRowNode();
-        }*/
+            dragNodes = findDragNodes(context, otherTree, dragNodeRowKeys);
+        }
         
-        //dropnode
         if(isValueBlank(dropNodeRowKey)) {
             dropNode = tree.getValue();
         }
@@ -136,6 +127,17 @@ public class TreeRenderer extends CoreRenderer {
             dropNode.getChildren().add((dndIndex + i), dragNodes[i]);
             dragNodes[i].setParent(dropNode);
         }
+    }
+    
+    private TreeNode[] findDragNodes(FacesContext context, Tree tree, String[] keys) {
+        TreeNode[] nodes = new TreeNode[keys.length];
+        
+        for(int i = 0; i < keys.length; i++) {
+            tree.setRowKey(keys[i]);
+            nodes[i] = tree.getRowNode();
+        }
+        
+        return nodes;
     }
 
     @Override
