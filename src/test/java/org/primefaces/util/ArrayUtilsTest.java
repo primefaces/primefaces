@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.utils;
+package org.primefaces.util;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.primefaces.util.ArrayUtils;
 
 public class ArrayUtilsTest {
 

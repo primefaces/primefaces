@@ -118,7 +118,7 @@ public class StringEncrypter {
             byte[] enc = ecipher.doFinal(utf8);
 
             // Encode bytes to base64 to get a string
-            return new sun.misc.BASE64Encoder().encode(enc);
+            return Base64.encodeToString(enc, false);
 
         } catch (BadPaddingException e) {
         } catch (IllegalBlockSizeException e) {
@@ -139,7 +139,7 @@ public class StringEncrypter {
         try {
 
             // Decode base64 to get bytes
-            byte[] dec = new sun.misc.BASE64Decoder().decodeBuffer(str);
+            byte[] dec = Base64.decode(str);
 
             // Decrypt
             byte[] utf8 = dcipher.doFinal(dec);

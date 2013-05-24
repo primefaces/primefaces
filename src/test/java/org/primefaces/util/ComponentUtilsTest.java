@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.utils;
+package org.primefaces.util;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +24,6 @@ import javax.faces.component.UIOutput;
 
 import org.junit.Test;
 import org.primefaces.component.commandlink.CommandLink;
-import org.primefaces.util.ComponentUtils;
 
 public class ComponentUtilsTest {
 
