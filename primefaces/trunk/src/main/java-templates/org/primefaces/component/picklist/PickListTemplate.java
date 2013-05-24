@@ -95,7 +95,7 @@ import javax.faces.event.AjaxBehaviorEvent;
                 List transferredItems = new ArrayList();
                 this.populateModel(context, items, transferredItems);
                 TransferEvent transferEvent = new TransferEvent(this, behaviorEvent.getBehavior(), transferredItems, isAdd);
-                transferEvent.setPhaseId(transferEvent.getPhaseId());
+                transferEvent.setPhaseId(event.getPhaseId());
 
                 super.queueEvent(transferEvent);
             }
