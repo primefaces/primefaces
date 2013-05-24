@@ -50,11 +50,10 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     public void handleResourceRequest(FacesContext context) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");
-        String dynamicContentId = (String)params.get(Constants.DYNAMIC_CONTENT_PARAM);
-        StringEncrypter strEn = new StringEncrypter(RequestContext.getCurrentInstance().getConfig().getSecretKey().toString());
+        String dynamicContentId = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        StringEncrypter strEn = new StringEncrypter(RequestContext.getCurrentInstance().getConfig().getSecretKey());
         
         if(dynamicContentId != null && library != null && library.equals("primefaces")) {
-
             StreamedContent streamedContent = null;
             
             try {
@@ -87,7 +86,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
             } catch(Exception e) {
                 logger.log(Level.SEVERE, "Error in streaming dynamic resource. {0}", new Object[]{e.getMessage()});
-                e.printStackTrace();
+                throw new IOException(e);
             }
             finally {
                 //cleanup
