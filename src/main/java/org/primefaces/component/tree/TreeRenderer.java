@@ -500,6 +500,7 @@ public class TreeRenderer extends CoreRenderer {
             containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();
             
             writer.startElement("li", null);
+                writer.writeAttribute("id", nodeId, null);
                 writer.writeAttribute("data-rowkey", rowKey, null);
                 writer.writeAttribute("data-nodetype", uiTreeNode.getType(), null);
                 writer.writeAttribute("class", containerClass, null);
