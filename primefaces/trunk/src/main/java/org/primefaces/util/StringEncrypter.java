@@ -3,7 +3,6 @@ package org.primefaces.util;
 // CIPHER / GENERATORS
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
-import javax.crypto.KeyGenerator;
 
 // KEY SPECIFICATIONS
 import java.security.spec.KeySpec;
