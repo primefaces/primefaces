@@ -49,6 +49,20 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.cfg.appendToBody){
+        	// remove old dialog if already available
+        	// this occurs when we use
+        	// - dynamic
+        	// - appendToBody
+        	// - if we update a container and not the dialog itself
+        	var oldDialog = $("body").children(this.jqId);
+        	if (oldDialog.length > 0) {
+        		// if current dialog is opened, also open the new one
+        		if (oldDialog.css("visibility") == "visible") {
+        			this.cfg.visible = true;
+        		}
+        		oldDialog.remove();
+        	}
+
             this.jq.appendTo('body');
         }
 
