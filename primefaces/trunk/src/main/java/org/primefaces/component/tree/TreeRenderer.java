@@ -124,8 +124,8 @@ public class TreeRenderer extends CoreRenderer {
         tree.setDropNode(dropNode);
         
         for(int i = 0; i < dragNodes.length; i++) {
-            dropNode.getChildren().add((dndIndex + i), dragNodes[i]);
             dragNodes[i].setParent(dropNode);
+            dropNode.getChildren().add((dndIndex + i), dragNodes[i]);
         }
     }
     
@@ -217,6 +217,7 @@ public class TreeRenderer extends CoreRenderer {
         
         if(tree.isDraggable()) {
             writer.write(",draggable:true");
+            writer.write(",dragMode:'" + tree.getDragMode() + "'");
         }
         
         String scope = tree.getDragdropScope();

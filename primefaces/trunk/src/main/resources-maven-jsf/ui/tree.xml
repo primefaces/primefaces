@@ -153,6 +153,13 @@
 			<type>java.lang.String</type>
             <description>Scope key to group a set of tree components for transferring nodes using drag and drop.</description>
 		</attribute>
+        <attribute>
+			<name>dragMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>self</defaultValue>
+            <description>Defines parent-child relationship when a node is dragged, valid values are self (default), parent and ancestor.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
