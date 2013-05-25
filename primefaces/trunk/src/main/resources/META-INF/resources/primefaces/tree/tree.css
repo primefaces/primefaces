@@ -180,3 +180,7 @@
     border: 0 none;
     font-weight: inherit;
 }
+
+.ui-tree-draghelper.ui-state-highlight {
+    background: none transparent;
+}
