@@ -875,18 +875,22 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             dragSource.selections = [];
             dragSource.writeSelections();
 
-            selectedNodes = dropSource.findNodes(dropSource.selections);
+            if(dropSource.cfg.draggable)
+                selectedNodes = dropSource.findNodes(dropSource.selections);
         }
         else {
             selectedNodes = event.dragNodes;
         }
 
         dropSource.updateRowKeys();
-        dropSource.selections = [];
-        $.each(selectedNodes, function(i, item) {
-            dropSource.selections.push(item.attr('data-rowkey'));
-        });
-        dropSource.writeSelections();
+        
+        if(dropSource.cfg.draggable) {
+            dropSource.selections = [];
+            $.each(selectedNodes, function(i, item) {
+                dropSource.selections.push(item.attr('data-rowkey'));
+            });
+            dropSource.writeSelections();
+        }
     },
             
     fireDragDropEvent: function(event) {
