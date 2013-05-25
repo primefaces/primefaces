@@ -139,7 +139,7 @@ public class MediaRenderer extends CoreRenderer {
                 StreamedContent streamedContent = (StreamedContent) value;
                 Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
                 String resourcePath = resource.getRequestPath();
-                StringEncrypter strEn = new StringEncrypter(RequestContext.getCurrentInstance().getConfig().getSecretKey());
+                StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
                 String rid = strEn.encrypt(media.getValueExpression("value").getExpressionString());
                 StringBuilder builder = new StringBuilder(resourcePath);
                 

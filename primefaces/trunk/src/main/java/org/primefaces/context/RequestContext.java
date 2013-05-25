@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.primefaces.config.ConfigContainer;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.StringEncrypter;
 import org.primefaces.util.WidgetBuilder;
 
 /**
@@ -118,8 +119,10 @@ public abstract class RequestContext {
     public abstract Map<Object,Object> getAttributes();
 
     public abstract void returnFromDialog(Object data);
-    
-    public abstract ConfigContainer getConfig();
 
+    public abstract ApplicationContext getApplicationContext();
+
+	public abstract StringEncrypter getEncrypter();
+    
     public abstract void release();
 }

@@ -34,6 +34,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.config.ConfigContainer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.StringEncrypter;
 import org.primefaces.util.WidgetBuilder;
 import org.primefaces.visit.ResetInputVisitCallback;
 
@@ -42,13 +43,14 @@ public class DefaultRequestContext extends RequestContext {
     private final static String ATTRIBUTES_KEY = "ATTRIBUTES";
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
-    private final static String CONFIG_KEY = ConfigContainer.class.getName();
+    private final static String APPLICATION_CONTEXT_KEY = DefaultApplicationContext.class.getName();
 
     private Map<String, Object> attributes;
     private WidgetBuilder widgetBuilder;
     private AjaxRequestBuilder ajaxRequestBuilder;
     private FacesContext context;
-    private ConfigContainer config;
+    private StringEncrypter encrypter;
+    private ApplicationContext applicationContext;
 
     public DefaultRequestContext(FacesContext context) {
     	this.context = context;
@@ -56,11 +58,11 @@ public class DefaultRequestContext extends RequestContext {
     	this.widgetBuilder = new WidgetBuilder();
     	this.ajaxRequestBuilder = new AjaxRequestBuilder(context);
 
-    	// get config from application map
-    	this.config = (ConfigContainer) context.getExternalContext().getApplicationMap().get(CONFIG_KEY);
-    	if (this.config == null) {
-    		this.config = new ConfigContainer(context);
-			context.getExternalContext().getApplicationMap().put(CONFIG_KEY, this.config);
+    	// get applicationContext from application map
+    	this.applicationContext = (ApplicationContext) context.getExternalContext().getApplicationMap().get(APPLICATION_CONTEXT_KEY);
+    	if (this.applicationContext == null) {
+    		this.applicationContext = new DefaultApplicationContext(context);
+			context.getExternalContext().getApplicationMap().put(APPLICATION_CONTEXT_KEY, this.applicationContext);
     	}
     }
 
@@ -165,15 +167,11 @@ public class DefaultRequestContext extends RequestContext {
         widgetBuilder = null;
         ajaxRequestBuilder = null;
         context = null;
-        config = null;
+        applicationContext = null;
+        encrypter = null;
 
     	setCurrentInstance(null);
     }
-
-	@Override
-	public ConfigContainer getConfig() {
-		return config;
-	}
 
     @Override
     public Map<Object, Object> getAttributes() {
@@ -182,4 +180,20 @@ public class DefaultRequestContext extends RequestContext {
         }
         return (Map<Object, Object>) attributes.get(ATTRIBUTES_KEY);
     }
+
+	@Override
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
+	@Override
+	public StringEncrypter getEncrypter() {
+		// lazy init, it's not required for all pages
+    	if (encrypter == null) {
+	    	// we can't store it in the ApplicationMap, as Cipher isn't thread safe
+	    	encrypter = new StringEncrypter(applicationContext.getConfig().getSecretKey());
+    	}
+
+		return encrypter;
+	}
 }
