@@ -66,8 +66,11 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
                         _self.showNodeChildren(node);
   
-                        if(_self.cfg.dragdrop) {                            
+                        if(_self.cfg.draggable) {                            
                             _self.makeDraggable(nodeChildrenContainer.find('span.ui-treenode-content'));
+                        }
+                        
+                        if(_self.cfg.droppable) {
                             _self.makeDropPoints(nodeChildrenContainer.find('li.ui-tree-droppoint'));
                             _self.makeDropNodes(nodeChildrenContainer.find('span.ui-treenode-droppable'));
                         }
