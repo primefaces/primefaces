@@ -55,7 +55,7 @@ import org.primefaces.util.MessageFactory;
                 setValid(false);
             }
 
-            ConfigContainer config = RequestContext.getCurrentInstance().getConfig();
+            ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
             
             //other validators
             if(isValid() && (!isEmpty(value) || config.isValidateEmptyFields())) {

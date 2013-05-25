@@ -143,7 +143,7 @@ public class AjaxRequestBuilder {
     }
     
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet) {
-        ConfigContainer config = RequestContext.getCurrentInstance().getConfig();
+        ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
     	
     	//component can override global setting
         boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();

@@ -59,7 +59,7 @@ public class ComponentUtils {
 			if(component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
-                ConfigContainer config = RequestContext.getCurrentInstance().getConfig();
+                ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
                 
                 if(config.isInterpretEmptyStringAsNull() && submittedValue == null && context.isValidationFailed() && !input.isValid()) {
                     return null;
@@ -121,7 +121,7 @@ public class ComponentUtils {
     	}
 
         if (converterType == String.class
-        		&& !RequestContext.getCurrentInstance().getConfig().isStringConverterAvailable()) {
+        		&& !RequestContext.getCurrentInstance().getApplicationContext().getConfig().isStringConverterAvailable()) {
         	return null;
         }
 
@@ -379,7 +379,7 @@ public class ComponentUtils {
     }
     
     public static boolean isRTL(FacesContext context, RTLAware component) {
-        boolean globalValue = RequestContext.getCurrentInstance().getConfig().isRightToLeft();
+        boolean globalValue = RequestContext.getCurrentInstance().getApplicationContext().getConfig().isRightToLeft();
         
         return globalValue||component.isRTL();
     }

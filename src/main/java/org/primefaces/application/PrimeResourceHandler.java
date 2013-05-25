@@ -51,7 +51,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");
         String dynamicContentId = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
-        StringEncrypter strEn = new StringEncrypter(RequestContext.getCurrentInstance().getConfig().getSecretKey());
+        StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
         
         if(dynamicContentId != null && library != null && library.equals("primefaces")) {
             StreamedContent streamedContent = null;
