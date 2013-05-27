@@ -70,7 +70,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.show();
         }
     },
-    
+            
     //override
     refresh: function(cfg) {
         this.positionInitialized = false;
@@ -79,9 +79,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         $(document).off('keydown.dialog_' + cfg.id);
         
         if(cfg.appendToBody) {
-            var oldJQ = $(document.body).children(this.jqId);
-            if(oldJQ.length) {
-                oldJQ.remove();
+            var jqs = $(this.jqId);
+            if(jqs.length > 1) {
+                $(document.body).children(this.jqId).remove();
             }
         }
         
