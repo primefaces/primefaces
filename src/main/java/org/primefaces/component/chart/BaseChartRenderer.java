@@ -52,7 +52,7 @@ public class BaseChartRenderer extends CoreRenderer {
         String extender = chart.getExtender();
 
         if(title != null)
-            writer.write(",title:'" + title + "'");
+            writer.write(",title:'" + escapeText(title) + "'");
         
         if(!chart.isShadow())
             writer.write(",shadow:false");
