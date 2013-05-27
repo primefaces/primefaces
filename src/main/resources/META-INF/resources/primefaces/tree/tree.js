@@ -887,7 +887,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
         dropSource.updateRowKeys();
         
-        if(dropSource.cfg.draggable) {
+        if(dropSource.cfg.draggable) {
             dropSource.selections = [];
             $.each(selectedNodes, function(i, item) {
                 dropSource.selections.push(item.attr('data-rowkey'));
