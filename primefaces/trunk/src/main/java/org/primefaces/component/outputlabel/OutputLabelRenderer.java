@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class OutputLabelRenderer extends CoreRenderer {
@@ -33,7 +34,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         OutputLabel label = (OutputLabel) component;
         String clientId = label.getClientId();
-        Object value = label.getValue();
+        String value = ComponentUtils.getValueToRender(context, label);
         UIComponent target = null;
         String targetClientId = null;
         UIInput input = null;
@@ -54,7 +55,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                         input.setValueExpression("label", ve);
                     }
                     else {
-                        String labelString = value.toString();
+                        String labelString = value;
                         int colonPos = labelString.lastIndexOf(":");
                         
                         if(colonPos != -1) {
@@ -80,13 +81,11 @@ public class OutputLabelRenderer extends CoreRenderer {
             writer.writeAttribute("for", targetClientId, "for");
         }
         
-        if(value != null) {
-            String text = value.toString();
-            
+        if(value != null) {            
             if(label.isEscape())
-                writer.writeText(text, "value");
+                writer.writeText(value, "value");
             else
-                writer.write(text);
+                writer.write(value);
         }
         
         renderChildren(context, label);
