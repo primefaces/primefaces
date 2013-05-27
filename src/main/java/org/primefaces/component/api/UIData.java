@@ -450,9 +450,15 @@ public class UIData extends javax.faces.component.UIData {
     protected void saveDescendantState() {
         FacesContext context = getFacesContext();
         
-        if(getChildCount() > 0) {
+        if(this.getChildCount() > 0) {
             for(UIComponent kid : getChildren()) {
                 saveDescendantState(kid, context);
+            }
+        }
+        
+        if(this.getFacetCount() > 0) {
+            for(UIComponent facet : this.getFacets().values()) {
+                saveDescendantState(facet, context);
             }
         }
     }
@@ -526,6 +532,12 @@ public class UIData extends javax.faces.component.UIData {
         if(getChildCount() > 0) {
             for(UIComponent kid : getChildren()) {
                 restoreDescendantState(kid, context);
+            }
+        }
+        
+        if(this.getFacetCount() > 0) {
+            for(UIComponent facet : this.getFacets().values()) {
+                restoreDescendantState(facet, context);
             }
         }
     }
