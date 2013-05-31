@@ -9231,8 +9231,6 @@ $.effects.transfer = function(o) {
 			} else {
 				this.$input.val(formattedDateTime);
 			}
-
-			this.$input.trigger("change");
 		},
 
 		_onFocus: function() {

@@ -83,12 +83,17 @@ import javax.faces.event.PhaseId;
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
-        String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
-        
-        if(eventName != null && eventName.equals("dateSelect") && event instanceof AjaxBehaviorEvent) {
-            customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
-        } else {
-            super.queueEvent(event);
+
+        if(this.isRequestSource(context) && (event instanceof AjaxBehaviorEvent)) {
+            String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+
+            if(eventName != null && eventName.equals("dateSelect"))
+                customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
+            else
+                super.queueEvent(event);        //regular events like change, click, blur
+        }
+        else {
+            super.queueEvent(event);            //valueChange
         }
     }
 
@@ -96,7 +101,7 @@ import javax.faces.event.PhaseId;
     public void validate(FacesContext context) {
         super.validate(context);
        
-        if(isValid()) {
+        if(isValid() && isRequestSource(context)) {
             for(Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext();) {
                 AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getValue());
@@ -156,4 +161,8 @@ import javax.faces.event.PhaseId;
 
     public String getInputClientId() {
         return this.getClientId(getFacesContext()) + "_input";
+    }
+
+    private boolean isRequestSource(FacesContext context) {
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
     }
