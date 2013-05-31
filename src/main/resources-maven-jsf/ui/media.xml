@@ -51,5 +51,12 @@
 			<type>java.lang.String</type>
             <description>Style class of the player.</description>
 		</attribute>
+        <attribute>
+			<name>cache</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Controls browser caching mode of the resource. Default is true</description>
+		</attribute>
 	</attributes>
 </component>

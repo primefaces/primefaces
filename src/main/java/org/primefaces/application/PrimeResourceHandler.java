@@ -51,6 +51,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");
         String dynamicContentId = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        String nocache = params.get(Constants.DYNAMIC_CONTENT_NOCACHE_PARAM);
         StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
         
         if(dynamicContentId != null && library != null && library.equals("primefaces")) {
@@ -67,10 +68,13 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
                     externalContext.setResponseStatus(200);
                     externalContext.setResponseContentType(streamedContent.getContentType());
-                    externalContext.setResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-                    externalContext.setResponseHeader("Pragma", "no-cache");
-                    externalContext.setResponseHeader("Expires", "Mon, 8 Aug 1980 10:00:00 GMT");
-
+                    
+                    if(nocache == null) {
+                        externalContext.setResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                        externalContext.setResponseHeader("Pragma", "no-cache");
+                        externalContext.setResponseHeader("Expires", "Mon, 8 Aug 1980 10:00:00 GMT");
+                    }
+                    
                     if(streamedContent.getContentEncoding() != null) {
                         externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
                     }
