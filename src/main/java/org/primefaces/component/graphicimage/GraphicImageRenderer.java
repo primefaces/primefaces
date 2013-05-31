@@ -100,6 +100,7 @@ public class GraphicImageRenderer extends CoreRenderer {
                 StringBuilder builder = new StringBuilder(resourcePath);
 
                 builder.append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid,"UTF-8"));
+                builder.append("&").append("uid").append("=").append(URLEncoder.encode(UUID.randomUUID().toString(), "UTF-8"));
 
                 for(UIComponent kid : image.getChildren()) {
                     if(kid instanceof UIParameter) {
