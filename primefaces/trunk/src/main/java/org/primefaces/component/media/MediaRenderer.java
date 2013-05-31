@@ -144,7 +144,6 @@ public class MediaRenderer extends CoreRenderer {
                 StringBuilder builder = new StringBuilder(resourcePath);
                 
                 builder.append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid,"UTF-8"));
-                builder.append("&").append("uid").append("=").append(URLEncoder.encode(UUID.randomUUID().toString(), "UTF-8"));
 
                 for(UIComponent kid : media.getChildren()) {
                     if(kid instanceof UIParameter) {
@@ -167,6 +166,11 @@ public class MediaRenderer extends CoreRenderer {
                 if(src.startsWith("/")) {
                     src = context.getExternalContext().encodeResourceURL(src);
                 }
+            }
+            
+            if(!media.isCache()) {
+                src += src.contains("?") ? "&" : "?";
+                src += Constants.DYNAMIC_CONTENT_NOCACHE_PARAM + "=" + URLEncoder.encode(UUID.randomUUID().toString(), "UTF-8");
             }
         }
 
