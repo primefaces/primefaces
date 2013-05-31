@@ -17,7 +17,6 @@ package org.primefaces.component.graphicimage;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
