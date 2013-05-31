@@ -418,7 +418,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
     postTabShow: function(newPanel) {    
         //execute user defined callback
         if(this.cfg.onTabShow) {
-            this.cfg.onTabShow.call(this, newPanel);
+            this.cfg.onTabShow.call(this, newPanel.index());
         }
 
         //execute onshowHandlers and remove successful ones
