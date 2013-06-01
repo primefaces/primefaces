@@ -5139,11 +5139,11 @@ function Datepicker() {
 		disabled: false // The initial disabled state
 	};
 	$.extend(this._defaults, this.regional['']);
-	this.dpDiv = bindHover($('<div id="' + this._mainDivId + '" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>'));
+	this.dpDiv = bindHover($('<div id="' + this._mainDivId + '" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-shadow ui-corner-all"></div>'));
 }
 
 $.extend(Datepicker.prototype, {
-	/* Class name added to elements to indicate already configured with a date picker. */
+	/* Class name added to elements to indicate alrneady configured with a date picker. */
 	markerClassName: 'hasDatepicker',
 	
 	//Keep track of the maximum number of rows displayed (see #7043)
