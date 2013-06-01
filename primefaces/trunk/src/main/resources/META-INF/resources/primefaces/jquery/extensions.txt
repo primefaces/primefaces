@@ -1,1 +1,3 @@
 - Added custom button for datepicker. Lines 14287, 14480, 14481.
+- Remove change event trigger on timepicker set datetime
+- Add ui-shadow to calendar div
