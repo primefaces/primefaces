@@ -84,14 +84,10 @@ public class DataListRenderer extends DataRenderer {
             writer.endElement("div");
         } 
         else {
-            if(list.getType().equals("none")){
-                
+            if(list.getType().equals("none"))
                 encodeFreeList(context, list);
-            }
-            else{
-              
+            else
                 encodeStrictList(context, list); 
-            }
         }
 
         writer.endElement("div");
@@ -157,7 +153,6 @@ public class DataListRenderer extends DataRenderer {
             if(varStatus != null) {
                 requestMap.put(varStatus, new VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
             }
-            
             
             list.setRowIndex(i);
 
