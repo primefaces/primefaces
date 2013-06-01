@@ -5143,7 +5143,7 @@ function Datepicker() {
 }
 
 $.extend(Datepicker.prototype, {
-	/* Class name added to elements to indicate alrneady configured with a date picker. */
+	/* Class name added to elements to indicate already configured with a date picker. */
 	markerClassName: 'hasDatepicker',
 	
 	//Keep track of the maximum number of rows displayed (see #7043)
