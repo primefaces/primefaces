@@ -44,3 +44,7 @@
 .ui-spinner .ui-icon-triangle-1-n {
     margin-top: -9px;
 }
+
+.ui-spinner-input::-ms-clear {
+    display: none;
+}
