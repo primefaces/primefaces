@@ -53,16 +53,6 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         //image title
         this.cfg.buttonText = this.jqEl.attr('title') || '';
 
-        // touch support - prevents keyboard popup
-        if (this.cfg.showOn && this.cfg.showOn == 'button') {
-	        this.cfg.beforeShow = function(input, inst) {
-	            $(this).attr("disabled", true);
-	        }
-	        this.cfg.onClose = function(dateText, inst) { 
-	            $(this).attr("disabled", false);
-	        };
-        }
-
         //Initialize calendar
         if(!this.cfg.disabled) {
             if(hasTimePicker) {
