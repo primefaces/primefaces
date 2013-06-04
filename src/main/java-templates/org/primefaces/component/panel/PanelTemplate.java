@@ -18,7 +18,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.panel.Panel;
 
-	public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content ui-corner-all ui-hidden-container";
+	public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content ui-corner-all";
 	public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all";
 	public static final String PANEL_TITLE_CLASS = "ui-panel-title";
 	public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-corner-all ui-state-default";
