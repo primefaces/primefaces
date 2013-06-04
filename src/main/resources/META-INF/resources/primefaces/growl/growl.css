@@ -75,4 +75,5 @@
 
 .ui-growl-message p {
 	font-weight: normal;
+    word-break: break-all;
 }
