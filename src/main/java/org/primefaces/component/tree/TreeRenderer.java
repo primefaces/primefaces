@@ -96,20 +96,21 @@ public class TreeRenderer extends CoreRenderer {
     public void decodeDragDrop(FacesContext context, Tree tree) {        
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = tree.getClientId(context);
-        String[] dragNodeRowKeys = params.get(clientId + "_dragNode").split(",");
+        String dragNodeRowKey = params.get(clientId + "_dragNode");
         String dropNodeRowKey = params.get(clientId + "_dropNode");
         String dragSource = params.get(clientId + "_dragSource");
         int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
-        TreeNode[] dragNodes;
+        TreeNode dragNode;
         TreeNode dropNode;
         
-        
         if(dragSource.equals(clientId)) {
-            dragNodes = findDragNodes(context, tree, dragNodeRowKeys);
+            tree.setRowKey(dragNodeRowKey);
+            dragNode = tree.getRowNode();
         }
         else {
             Tree otherTree = (Tree) tree.findComponent(":" + dragSource);
-            dragNodes = findDragNodes(context, otherTree, dragNodeRowKeys);
+            otherTree.setRowKey(dragNodeRowKey);
+            dragNode = tree.getRowNode();
         }
         
         if(isValueBlank(dropNodeRowKey)) {
@@ -120,26 +121,13 @@ public class TreeRenderer extends CoreRenderer {
             dropNode = tree.getRowNode();
         }
         
-        tree.setDragNodes(dragNodes);
+        tree.setDragNode(dragNode);
         tree.setDropNode(dropNode);
         
-        for(int i = 0; i < dragNodes.length; i++) {
-            dragNodes[i].setParent(dropNode);
-            dropNode.getChildren().add((dndIndex + i), dragNodes[i]);
-        }
+        dragNode.setParent(dropNode);
+        dropNode.getChildren().add(dndIndex, dragNode);
     }
     
-    private TreeNode[] findDragNodes(FacesContext context, Tree tree, String[] keys) {
-        TreeNode[] nodes = new TreeNode[keys.length];
-        
-        for(int i = 0; i < keys.length; i++) {
-            tree.setRowKey(keys[i]);
-            nodes[i] = tree.getRowNode();
-        }
-        
-        return nodes;
-    }
-
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Tree tree = (Tree) component;

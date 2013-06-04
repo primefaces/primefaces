@@ -180,7 +180,7 @@ import org.primefaces.model.TreeNode;
             else if(eventName.equals("dragdrop")) {
                 int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
 
-                wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNodes, dropNode, dndIndex);
+                wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             
@@ -228,14 +228,14 @@ import org.primefaces.model.TreeNode;
         return this.getDir().equalsIgnoreCase("rtl");
     }
 
-    private TreeNode[] dragNodes;
+    private TreeNode dragNode;
     private TreeNode dropNode;
 
-    TreeNode[] getDragNodes() {
-        return dragNodes;
+    TreeNode getDragNode() {
+        return dragNode;
     }
-    void setDragNodes(TreeNode[] dragNodes) {
-        this.dragNodes = dragNodes;
+    void setDragNode(TreeNode dragNode) {
+        this.dragNode = dragNode;
     }
 
     TreeNode getDropNode() {
