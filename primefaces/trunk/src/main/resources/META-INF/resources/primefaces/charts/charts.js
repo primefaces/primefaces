@@ -21123,10 +21123,10 @@ PrimeFaces.widget.CartesianChart = PrimeFaces.widget.Chart.extend({
         //axes
         this.cfg.axes.xaxis.labelRenderer = $.jqplot.CanvasAxisLabelRenderer;
         this.cfg.axes.xaxis.tickRenderer = $.jqplot.CanvasAxisTickRenderer;
-        this.cfg.axes.xaxis.tickOptions = {angle:this.cfg.axes.xaxis.angle};
+        this.cfg.axes.xaxis.tickOptions = {angle:this.cfg.axes.xaxis.angle, enableFontSupport: !PrimeFaces.isIE(8)};
         this.cfg.axes.yaxis.labelRenderer = $.jqplot.CanvasAxisLabelRenderer;
         this.cfg.axes.yaxis.tickRenderer = $.jqplot.CanvasAxisTickRenderer;
-        this.cfg.axes.yaxis.tickOptions = {angle:this.cfg.axes.yaxis.angle};
+        this.cfg.axes.yaxis.tickOptions = {angle:this.cfg.axes.yaxis.angle, enableFontSupport: !PrimeFaces.isIE(8)};
     }
     
     ,resetZoom: function() {
