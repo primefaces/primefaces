@@ -106,7 +106,7 @@ public class TreeRenderer extends CoreRenderer {
         else {
             Tree otherTree = (Tree) tree.findComponent(":" + dragSource);
             otherTree.setRowKey(dragNodeRowKey);
-            dragNode = tree.getRowNode();
+            dragNode = otherTree.getRowNode();
         }
         
         if(isValueBlank(dropNodeRowKey)) {
@@ -121,7 +121,11 @@ public class TreeRenderer extends CoreRenderer {
         tree.setDropNode(dropNode);
         
         dragNode.setParent(dropNode);
-        dropNode.getChildren().add(dndIndex, dragNode);
+        
+        if(dndIndex >= 0 && dndIndex < dropNode.getChildCount())
+            dropNode.getChildren().add(dndIndex, dragNode);
+        else
+            dropNode.getChildren().add(dragNode);
     }
     
     @Override
