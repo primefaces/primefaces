@@ -645,11 +645,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     $this.syncDNDCheckboxes(oldParentNode, dropNode);
                 }
                 
-                $this.syncDragDrop({
-                    'dragSource': dragSource,
-                    'dropSource': dropSource,
-                    'transfer': transfer
-                });
+                $this.syncDragDrop();
+                if(transfer) {
+                    dragSource.syncDragDrop();
+                }
                 
                 $this.fireDragDropEvent({
                     'dragNodeKey': dragNodeKey,
@@ -727,12 +726,11 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     $this.syncDNDCheckboxes(oldParentNode, dropNode);
                 }
                 
-                $this.syncDragDrop({
-                    'dragSource': dragSource,
-                    'dropSource': dropSource,
-                    'transfer': transfer
-                });
-                
+                $this.syncDragDrop();
+                if(transfer) {
+                    dragSource.syncDragDrop();
+                }
+
                 $this.fireDragDropEvent({
                     'dragNodeKey': dragNodeKey,
                     'dropNodeKey': dropNodeKey,
@@ -745,14 +743,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     },
     
     updateDragDropBindings: function(node) {
+        //self droppoint
+        node.after('<li class="ui-tree-droppoint ui-droppable"></li>');
+        this.makeDropPoints(node.next('li.ui-tree-droppoint'));
+        
         //descendant droppoints
         var subtreeDropPoints = node.find('li.ui-tree-droppoint');
         subtreeDropPoints.droppable('destroy');
         this.makeDropPoints(subtreeDropPoints);
-        
-        //self droppoint
-        node.after('<li class="ui-tree-droppoint ui-droppable"></li>');
-        this.makeDropPoints(node.next('li.ui-tree-droppoint'));
 
         //descendant drop node contents
         var subtreeDropNodeContents = node.find('span.ui-treenode-content');
@@ -864,48 +862,22 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.makeDropPoints(node.find('> ul.ui-treenode-children > li.ui-tree-droppoint'));
     },
             
-    syncDragDrop: function(event) {
-        var dragSource = event.dragSource,
-        dropSource = event.dropSource;
-
-        if(dragSource.cfg.selectionMode) {
-            var selectedNodes = dragSource.findNodes(dragSource.selections);
+    syncDragDrop: function() {
+        var $this = this;
+        
+        if(this.cfg.selectionMode) {
+            var selectedNodes = this.findNodes(this.selections);
             
-            dropSource.updateRowKeys();
-            
-            dropSource.selections = [];
+            this.updateRowKeys();
+            this.selections = [];
             $.each(selectedNodes, function(i, item) {
-                dropSource.selections.push(item.attr('data-rowkey'));
+                $this.selections.push(item.attr('data-rowkey'));
             });
-            dropSource.writeSelections();
+            this.writeSelections();
         }
         else {
-            dropSource.updateRowKeys();
+            this.updateRowKeys();
         }
-            
-        /*if(dragSource.selectionMode) {
-            if(event.transfer) {
-                dragSource.updateRowKeys();
-                dragSource.selections = [];
-                dragSource.writeSelections();
-
-                if(dropSource.cfg.draggable)
-                    selectedNodes = dropSource.findNodes(dropSource.selections);
-            }
-            else {
-                selectedNodes = dragSource.findNodes(dragSource.selections);
-            }
-        }
-        
-        dropSource.updateRowKeys();
-        
-        if(dropSource.cfg.selectionMode) {
-            dropSource.selections = [];
-            $.each(selectedNodes, function(i, item) {
-                dropSource.selections.push(item.attr('data-rowkey'));
-            });
-            dropSource.writeSelections();
-        }*/
     },
         
     syncDNDCheckboxes: function(oldParentNode, newParentNode) {
