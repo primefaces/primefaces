@@ -627,6 +627,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 targetDragNode.hide().insertAfter(dropPoint);
 
                 if(transfer) {
+                    if(dragSource.isCheckboxSelection()) {
+                        dragSource.unselectSubtree(targetDragNode);
+                    }
+                    
                     dragNodeLabel.removeClass('ui-state-highlight');
                     dragNodeDropPoint.remove();
                     $this.updateDragDropBindings(targetDragNode);
@@ -642,7 +646,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 targetDragNode.fadeIn();
                 
                 if($this.isCheckboxSelection()) {                                                
-                    $this.syncDNDCheckboxes(oldParentNode, dropNode);
+                    $this.syncDNDCheckboxes(dragSource, oldParentNode, dropNode);
                 }
                 
                 $this.syncDragDrop();
@@ -712,6 +716,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 }
 
                 if(transfer) {
+                    if(dragSource.isCheckboxSelection()) {
+                        dragSource.unselectSubtree(targetDragNode);
+                    }
+                    
                     dragNodeLabel.removeClass('ui-state-highlight');
                     dragNodeDropPoint.remove();
                     $this.updateDragDropBindings(targetDragNode);
@@ -723,7 +731,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 targetDragNode.fadeIn();
                 
                 if($this.isCheckboxSelection()) {                                                
-                    $this.syncDNDCheckboxes(oldParentNode, dropNode);
+                    $this.syncDNDCheckboxes(dragSource, oldParentNode, dropNode);
                 }
                 
                 $this.syncDragDrop();
@@ -880,14 +888,25 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
     },
         
-    syncDNDCheckboxes: function(oldParentNode, newParentNode) {
+    syncDNDCheckboxes: function(dragSource, oldParentNode, newParentNode) {
         if(oldParentNode.length) {
-            this.propagateDNDCheckbox(oldParentNode);
+            dragSource.propagateDNDCheckbox(oldParentNode);
         }
         
         if(newParentNode.length) {
             this.propagateDNDCheckbox(newParentNode);
         }
+    },
+            
+    unselectSubtree: function(node) {
+        var $this = this,
+        checkbox = node.find('> .ui-treenode-content > .ui-chkbox');
+
+        this.toggleCheckboxState(checkbox, true);
+        
+        node.children('.ui-treenode-children').find('.ui-chkbox').each(function() {
+            $this.toggleCheckboxState($(this), true);
+        });
     },
             
     propagateDNDCheckbox: function(node) {
