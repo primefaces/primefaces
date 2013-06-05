@@ -18,7 +18,6 @@ package org.primefaces.component.tree;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
-import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -32,10 +31,7 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class TreeRenderer extends CoreRenderer {
-    
-    private final static String DND_TYPE_INSERT = "insert";
-    private final static String DND_TYPE_ADD = "add";
-    
+        
     protected enum NodeOrder {
         FIRST,
         MIDDLE,
@@ -206,6 +202,7 @@ public class TreeRenderer extends CoreRenderer {
         if(tree.isDraggable()) {
             writer.write(",draggable:true");
             writer.write(",dragMode:'" + tree.getDragMode() + "'");
+            writer.write(",dropRestrict:'" + tree.getDropRestrict() + "'");
         }
         
         String scope = tree.getDragdropScope();
