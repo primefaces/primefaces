@@ -160,6 +160,13 @@
             <defaultValue>self</defaultValue>
             <description>Defines parent-child relationship when a node is dragged, valid values are self (default), parent and ancestor.</description>
 		</attribute>
+        <attribute>
+			<name>dropRestrict</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>none</defaultValue>
+            <description>Defines parent-child restrictions when a node is dropped valid values are none (default) and sibling.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
