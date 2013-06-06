@@ -41,5 +41,8 @@
         <resource>
             <name>primefaces.js</name>
         </resource>
+        <resource>
+            <name>forms.js</name>
+        </resource>
     </resources>
 </component>
