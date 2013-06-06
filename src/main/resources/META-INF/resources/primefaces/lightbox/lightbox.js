@@ -225,7 +225,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             
             var title = $this.links.eq(0).attr('title');
             if(title) {
-                $this.caption.html(title);
+                $this.captionText.text(title);
                 $this.caption.slideDown();
             }
                 
