@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.primefaces.config.ConfigContainer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.StringEncrypter;
 import org.primefaces.util.WidgetBuilder;
