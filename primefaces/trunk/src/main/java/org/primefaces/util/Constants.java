@@ -43,4 +43,11 @@ public class Constants {
     public static final String DYNAMIC_CONTENT_NOCACHE_PARAM = "pfdrid_nc";
     
     public static final String SECRET_KEY = "primefaces.SECRET";
+    
+    public final static String DIALOG_OUTCOME = "dialog.outcome";
+    public final static String DIALOG_OPTIONS = "dialog.options";
+    public final static String DIALOG_PARAMS = "dialog.params";
+    public final static String DIALOG_SOURCE_COMPONENT = "dialog.source.component";
+    public final static String DIALOG_SOURCE_WIDGET = "dialog.source.widget";
+    public final static String DIALOG_CONVERSATION_PARAM = "pfdlgcid";
 }

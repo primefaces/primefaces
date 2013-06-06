@@ -117,7 +117,11 @@ public abstract class RequestContext {
     
     public abstract Map<Object,Object> getAttributes();
 
-    public abstract void returnFromDialog(Object data);
+    public abstract void openDialog(String outcome);
+    
+    public abstract void openDialog(String outcome, Map<String,Object> options, Map<String,String> params);
+    
+    public abstract void closeDialog(Object data);
 
     public abstract ApplicationContext getApplicationContext();
 

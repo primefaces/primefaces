@@ -36,10 +36,10 @@ public class DialogActionListener implements ActionListener {
         RequestContext context = RequestContext.getCurrentInstance();
         Map<Object,Object> attrs = context.getAttributes();
         if(source instanceof Widget) {
-            attrs.put("sourceWidget", ((Widget) source).resolveWidgetVar());
+            attrs.put("dialog.source.widget", ((Widget) source).resolveWidgetVar());
         }
         
-        attrs.put("sourceComponentId", source.getClientId());
+        attrs.put("dialog.source.component", source.getClientId());
         
         base.processAction(event);
     }

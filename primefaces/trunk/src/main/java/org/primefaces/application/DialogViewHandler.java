@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.faces.application.ViewHandler;
 import javax.faces.application.ViewHandlerWrapper;
 import javax.faces.context.FacesContext;
+import org.primefaces.util.Constants;
 
 public class DialogViewHandler extends ViewHandlerWrapper {
     
@@ -36,9 +37,17 @@ public class DialogViewHandler extends ViewHandlerWrapper {
     @Override
     public String getActionURL(FacesContext context, String viewId) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String dcid = params.get("dcid");
+        String pfdlgcid = params.get(Constants.DIALOG_CONVERSATION_PARAM);
         String url = super.getActionURL(context, viewId);
         
-        return dcid == null ? url : url + "?dcid=" + dcid;
+        if(pfdlgcid == null) {
+            return url;
+        }
+        else {
+            if(url.indexOf("?") == -1)
+                return url + "?pfdlgcid=" + pfdlgcid;
+            else
+                return url + "&pfdlgcid=" + pfdlgcid;
+        }
     }
 }
