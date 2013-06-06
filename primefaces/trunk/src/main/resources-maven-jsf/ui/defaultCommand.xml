@@ -39,10 +39,10 @@
             <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>primefaces.js</name>
-        </resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
         <resource>
-            <name>forms.js</name>
+            <name>primefaces.js</name>
         </resource>
     </resources>
 </component>
