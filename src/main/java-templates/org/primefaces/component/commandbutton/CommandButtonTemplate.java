@@ -35,7 +35,7 @@ import org.primefaces.event.SelectEvent;
             if(eventName.equals("dialogReturn")) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 Map<String,Object> session = context.getExternalContext().getSessionMap();
-                String dcid = params.get(this.getClientId(context) + "_dcid");
+                String dcid = params.get(this.getClientId(context) + "_pfdlgcid");
                 Object selectedValue = session.get(dcid);
                 session.remove(dcid);
         

@@ -16,6 +16,7 @@
 package org.primefaces.application;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -35,37 +36,45 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
 
     @Override
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
-        if(outcome != null && outcome.startsWith("dialog:")) {
-            String[] outcomeTokens = outcome.split(":")[1].split("\\?");
-            String viewName = outcomeTokens[0];
-            String[] options = (outcomeTokens.length == 1) ? null : outcomeTokens[1].split("&");
-            NavigationCase navCase = getNavigationCase(context, fromAction, viewName);
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        Map<Object,Object> attrs = requestContext.getAttributes();
+        String dialogOutcome = (String) attrs.get("dialog.outcome");
+        
+        if(dialogOutcome != null) {
+            NavigationCase navCase = getNavigationCase(context, fromAction, dialogOutcome);
             String toViewId = navCase.getToViewId(context);
             String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, Collections.EMPTY_MAP, false);
+            Map<String,Object> options = (Map<String,Object>) attrs.get("dialog.options");
+            StringBuilder sb = new StringBuilder();
             
-            RequestContext requestContext = RequestContext.getCurrentInstance();
-            if(requestContext != null) {
-                Map<Object,Object> attrs = requestContext.getAttributes();
-                String sourceComponentId = (String) attrs.get("sourceComponentId");
-                String sourceWidget = (String) attrs.get("sourceWidget");
-                String dcid = UUID.randomUUID().toString();
-                String script = "PrimeFaces.openDialog({url:'" + url + "',dcid:'" + dcid + "',sourceComponentId:'" + sourceComponentId + "'";
-                
-                if(sourceWidget != null) {
-                    script += ",sourceWidget:" + sourceWidget;
-                }
-                
-                if(options != null && options.length > 0) {
-                    for(String option : options) {
-                        String[] optionTokens = option.split("=");
-                        script += ",'" + optionTokens[0] + "':'" + optionTokens[1] + "'";
-                    }
-                }
-                
-                script += "});";
-                
-                requestContext.execute(script);
+            String sourceComponentId = (String) attrs.get("dialog.source.component");
+            String sourceWidget = (String) attrs.get("dialog.source.widget");
+            String pfdlgcid = UUID.randomUUID().toString();
+            sb.append("PrimeFaces.openDialog({url:'").append(url).append("',pfdlgcid:'").append(pfdlgcid)
+                                    .append("',sourceComponentId:'").append(sourceComponentId).append("'");
+
+            if(sourceWidget != null) {
+                sb.append(",sourceWidget:").append(sourceWidget);
             }
+            
+            sb.append(",options:{");
+            if(options != null && options.size() > 0) {
+                for(Iterator<String> it = options.keySet().iterator(); it.hasNext();) {
+                    String optionName = it.next();
+                    Object optionValue = options.get(optionName);
+                    
+                    sb.append(optionName).append(":").append(optionValue);
+                    
+                    if(it.hasNext())
+                        sb.append(",");
+                }
+            }
+            sb.append("}");
+
+            sb.append("});");
+
+            requestContext.execute(sb.toString());
+            sb.setLength(0);
         }
         else {
             base.handleNavigation(context, fromAction, outcome);

@@ -368,15 +368,23 @@
             var dialogId = cfg.sourceComponentId + '_dlg',
             dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
             dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-overlay-hidden"' + 
-                    ' data-dcid="' + cfg.dcid + '" data-dlgwidgetvar="' + dialogWidgetVar + '"/>')
+                    ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widgetvar="' + dialogWidgetVar + '"/>')
                     .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span>' +
                     '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' + 
                     '<div class="ui-dialog-content ui-widget-content" style="height: auto;">' +
-                    '<iframe name="' + cfg.name + '" style="border:0 none;width:640px;height:480px;"/>' + 
+                    '<iframe style="border:0 none"/>' + 
                     '</div>')
                     .appendTo(document.body),
             dialogFrame = dialogDOM.find('iframe'),
-            frameURL = cfg.url + '?dcid=' + cfg.dcid;
+            symbol = cfg.url.indexOf('?') === -1 ? '?' : '&',
+            frameURL = cfg.url + symbol + 'pfdlgcid=' + cfg.pfdlgcid,
+            frameWidth = cfg.options.contentWidth||640,
+            frameHeight = cfg.options.contentHeight||480;
+    
+            dialogFrame.css({
+               width: frameWidth + 'px',
+               height: frameHeight + 'px'
+            });
     
             dialogFrame.on('load', function() {
                 var $frame = $(this),
@@ -391,7 +399,11 @@
                         this.jq.remove();
                         window[dialogWidgetVar] = undefined;
                     },
-                    modal: (cfg.modal === 'true')
+                    modal: cfg.options.modal,
+                    resizable: cfg.options.resizable,
+                    draggable: cfg.options.draggable,
+                    width: cfg.options.width,
+                    height: cfg.options.height
                 });
                 
                 if(titleElement.length > 0) {
@@ -403,11 +415,11 @@
             .attr('src', frameURL);
         },
 
-        hideDialog: function(cfg) {
+        closeDialog: function(cfg) {
             var dlg = $(parent.document.body).children('div.ui-dialog').filter(function() {
-                return $(this).data('dcid') === cfg.dcid;
+                return $(this).data('pfdlgcid') === cfg.pfdlgcid;
             }),
-            dlgWidget = parent[dlg.data('dlgwidgetvar')],
+            dlgWidget = parent[dlg.data('widgetvar')],
             sourceWidget = dlgWidget.cfg.sourceWidget;
 
             dlgWidget.hide();
@@ -419,7 +431,7 @@
                 if(dialogReturnBehavior) {
                     var ext = {
                             params: [
-                                {name: dlgWidget.cfg.sourceComponentId + '_dcid', value: cfg.dcid}
+                                {name: dlgWidget.cfg.sourceComponentId + '_pfdlgcid', value: cfg.pfdlgcid}
                             ]
                         };
 

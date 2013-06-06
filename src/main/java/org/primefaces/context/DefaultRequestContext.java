@@ -29,6 +29,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.StringEncrypter;
 import org.primefaces.util.WidgetBuilder;
 import org.primefaces.visit.ResetInputVisitCallback;
@@ -145,15 +146,34 @@ public class DefaultRequestContext extends RequestContext {
 
         targetComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
     }
+    
+    @Override
+    public void openDialog(String outcome) {
+        this.getAttributes().put("dialog.outcome", outcome);
+    }
+        
+    @Override
+    public void openDialog(String outcome, Map<String,Object> options, Map<String,String> params) {
+        this.getAttributes().put(Constants.DIALOG_OUTCOME, outcome);
+        
+        if(options != null)
+            this.getAttributes().put(Constants.DIALOG_OPTIONS, options);
+        
+        if(options != null)
+            this.getAttributes().put(Constants.DIALOG_PARAMS, params);
+    }
 
     @Override
-    public void returnFromDialog(Object data) {
-        Map<String,Object> session = context.getExternalContext().getSessionMap();
+    public void closeDialog(Object data) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String dcid = params.get("dcid");
-        session.put(dcid, data);
+        String pfdlgcid = params.get(Constants.DIALOG_CONVERSATION_PARAM);
+            
+        if(data != null) {
+            Map<String,Object> session = context.getExternalContext().getSessionMap();            
+            session.put(pfdlgcid, data);
+        }
 
-        this.execute("PrimeFaces.hideDialog({dcid:'" + dcid + "'});");
+        this.execute("PrimeFaces.closeDialog({pfdlgcid:'" + pfdlgcid + "'});");
     }
     
     @Override
