@@ -17,6 +17,7 @@ package org.primefaces.application;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -24,6 +25,7 @@ import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
+import org.primefaces.util.Constants;
 
 public class DialogNavigationHandler extends ConfigurableNavigationHandler {
     
@@ -38,18 +40,22 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         Map<Object,Object> attrs = requestContext.getAttributes();
-        String dialogOutcome = (String) attrs.get("dialog.outcome");
+        String dialogOutcome = (String) attrs.get(Constants.DIALOG_OUTCOME);
         
         if(dialogOutcome != null) {
             NavigationCase navCase = getNavigationCase(context, fromAction, dialogOutcome);
             String toViewId = navCase.getToViewId(context);
-            String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, Collections.EMPTY_MAP, false);
-            Map<String,Object> options = (Map<String,Object>) attrs.get("dialog.options");
+            Map<String,List<String>> params = (Map<String,List<String>>) attrs.get(Constants.DIALOG_PARAMS);
+            Map parameters = (params == null) ? Collections.EMPTY_MAP : params;
+            String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, parameters, false);
+            Map<String,Object> options = (Map<String,Object>) attrs.get(Constants.DIALOG_OPTIONS);
+            
             StringBuilder sb = new StringBuilder();
             
-            String sourceComponentId = (String) attrs.get("dialog.source.component");
-            String sourceWidget = (String) attrs.get("dialog.source.widget");
+            String sourceComponentId = (String) attrs.get(Constants.DIALOG_SOURCE_COMPONENT);
+            String sourceWidget = (String) attrs.get(Constants.DIALOG_SOURCE_WIDGET);
             String pfdlgcid = UUID.randomUUID().toString();
+                        
             sb.append("PrimeFaces.openDialog({url:'").append(url).append("',pfdlgcid:'").append(pfdlgcid)
                                     .append("',sourceComponentId:'").append(sourceComponentId).append("'");
 
@@ -69,10 +75,8 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
                         sb.append(",");
                 }
             }
-            sb.append("}");
-
-            sb.append("});");
-
+            sb.append("}});");
+            
             requestContext.execute(sb.toString());
             sb.setLength(0);
         }

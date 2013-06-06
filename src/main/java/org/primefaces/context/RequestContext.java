@@ -119,7 +119,7 @@ public abstract class RequestContext {
 
     public abstract void openDialog(String outcome);
     
-    public abstract void openDialog(String outcome, Map<String,Object> options, Map<String,String> params);
+    public abstract void openDialog(String outcome, Map<String,Object> options, Map<String,List<String>> params);
     
     public abstract void closeDialog(Object data);
 

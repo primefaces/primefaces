@@ -153,7 +153,7 @@ public class DefaultRequestContext extends RequestContext {
     }
         
     @Override
-    public void openDialog(String outcome, Map<String,Object> options, Map<String,String> params) {
+    public void openDialog(String outcome, Map<String,Object> options, Map<String,List<String>> params) {
         this.getAttributes().put(Constants.DIALOG_OUTCOME, outcome);
         
         if(options != null)
