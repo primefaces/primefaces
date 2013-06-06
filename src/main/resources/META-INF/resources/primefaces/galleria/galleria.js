@@ -1,4 +1,3 @@
-//<![CDATA[
 /**
  * PrimeFaces Galleria Widget
  */
@@ -52,10 +51,16 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.custom) {
                 this.panels.children('img').remove();
             }
-            
+
             var activePanel = this.panels.eq(this.cfg.activeIndex);
             activePanel.removeClass('ui-helper-hidden');
+            
             if(this.cfg.showCaption) {
+                this.caption = $('<div class="ui-galleria-caption"></div>').css({
+                        'bottom': this.cfg.showFilmstrip ? this.stripWrapper.outerHeight(true) : 0,
+                        'width': this.panelWrapper.width()
+                        }).appendTo(this.jq);
+                        
                 this.showCaption(activePanel);
             }
 
@@ -99,14 +104,6 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         //navigators
         this.jq.append('<div class="ui-galleria-nav-prev ui-icon ui-icon-circle-triangle-w" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>' + 
             '<div class="ui-galleria-nav-next ui-icon ui-icon-circle-triangle-e" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>');
-        
-        //caption
-        if(this.cfg.showCaption) {
-            this.caption = $('<div class="ui-galleria-caption"></div>').css({
-                'bottom': this.stripWrapper.outerHeight(true),
-                'width': this.panelWrapper.width()
-                }).appendTo(this.jq);
-        }
     },
                 
     bindEvents: function() {
@@ -168,38 +165,41 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
             }
             
             var oldPanel = this.panels.eq(this.cfg.activeIndex),
-            oldFrame = this.frames.eq(this.cfg.activeIndex),
-            newPanel = this.panels.eq(index),
-            newFrame = this.frames.eq(index);
-
+            newPanel = this.panels.eq(index);
+    
             //content
             oldPanel.hide(this.cfg.effect, this.cfg.effectOptions, this.cfg.effectSpeed);
             newPanel.show(this.cfg.effect, this.cfg.effectOptions, this.cfg.effectSpeed);
-
+    
             //frame
-            oldFrame.removeClass('ui-galleria-frame-active').css('opacity', '');
-            newFrame.animate({opacity:1.0}, this.cfg.effectSpeed, null, function() {
-               $(this).addClass('ui-galleria-frame-active'); 
-            });
-            
+            if(this.cfg.showFilmstrip) {
+                var oldFrame = this.frames.eq(this.cfg.activeIndex),
+                newFrame = this.frames.eq(index);
+        
+                oldFrame.removeClass('ui-galleria-frame-active').css('opacity', '');
+                newFrame.animate({opacity:1.0}, this.cfg.effectSpeed, null, function() {
+                   $(this).addClass('ui-galleria-frame-active'); 
+                });
+                
+                //viewport
+                if(reposition === undefined || reposition === true) {
+                    var frameLeft = newFrame.position().left,
+                    stepFactor = this.cfg.frameWidth + parseInt(newFrame.css('margin-right')),
+                    stripLeft = this.strip.position().left,
+                    frameViewportLeft = frameLeft + stripLeft,
+                    frameViewportRight = frameViewportLeft + this.cfg.frameWidth;
+
+                    if(frameViewportRight > this.stripWrapper.width()) {
+                        this.strip.animate({left: '-=' + stepFactor}, this.cfg.effectSpeed, 'easeInOutCirc');
+                    } else if(frameViewportLeft < 0) {
+                        this.strip.animate({left: '+=' + stepFactor}, this.cfg.effectSpeed, 'easeInOutCirc');
+                    }
+                }
+            }
+                        
             //caption
             if(this.cfg.showCaption) {
                 this.showCaption(newPanel);
-            }
-            
-            //viewport
-            if(reposition === undefined || reposition === true) {
-                var frameLeft = newFrame.position().left,
-                stepFactor = this.cfg.frameWidth + parseInt(newFrame.css('margin-right')),
-                stripLeft = this.strip.position().left,
-                frameViewportLeft = frameLeft + stripLeft,
-                frameViewportRight = frameViewportLeft + this.cfg.frameWidth;
-
-                if(frameViewportRight > this.stripWrapper.width()) {
-                    this.strip.animate({left: '-=' + stepFactor}, this.cfg.effectSpeed, 'easeInOutCirc');
-                } else if(frameViewportLeft < 0) {
-                    this.strip.animate({left: '+=' + stepFactor}, this.cfg.effectSpeed, 'easeInOutCirc');
-                }
             }
             
             this.cfg.activeIndex = index;
