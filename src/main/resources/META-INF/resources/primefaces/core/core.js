@@ -51,6 +51,17 @@
         setCookie : function(name, value) {
             $.cookie(name, value);
         },
+                
+        cookiesEnabled: function() {
+            var cookieEnabled = (navigator.cookieEnabled) ? true : false;
+
+            if(typeof navigator.cookieEnabled === 'undefined' && !cookieEnabled) { 
+                document.cookie="testcookie";
+                cookieEnabled = (document.cookie.indexOf("testcookie") !== -1) ? true : false;
+            }
+            
+            return (cookieEnabled);
+        },
 
         skinInput : function(input) {
             input.hover(
@@ -285,21 +296,23 @@
         },
 
         monitorDownload: function(start, complete) {
-            if(start) {
-                start();
-            }
-
-            window.downloadMonitor = setInterval(function() {
-                var downloadComplete = PrimeFaces.getCookie('primefaces.download');
-
-                if(downloadComplete == 'true') {
-                    if(complete) {
-                        complete();
-                    }
-                    clearInterval(window.downloadPoll);
-                    PrimeFaces.setCookie('primefaces.download', null);
+            if(this.cookiesEnabled()) {
+                if(start) {
+                    start();
                 }
-            }, 500);
+
+                window.downloadMonitor = setInterval(function() {
+                    var downloadComplete = PrimeFaces.getCookie('primefaces.download');
+
+                    if(downloadComplete === 'true') {
+                        if(complete) {
+                            complete();
+                        }
+                        clearInterval(window.downloadPoll);
+                        PrimeFaces.setCookie('primefaces.download', null);
+                    }
+                }, 500);
+            }
         },
 
         /**
