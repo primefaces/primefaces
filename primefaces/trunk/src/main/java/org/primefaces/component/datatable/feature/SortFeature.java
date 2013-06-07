@@ -69,6 +69,9 @@ public class SortFeature implements DataTableFeature {
         }
         else {
             UIColumn sortColumn = table.findColumn(sortKey);
+            if(sortColumn.isDynamic()) {
+                ((DynamicColumn) sortColumn).applyStatelessModel();
+            }
             table.setSortBy(sortColumn.getSortBy());
             table.setSortFunction(sortColumn.getSortFunction());
             table.setSortOrder(sortDir);            
