@@ -41,7 +41,7 @@ public class DefaultRequestContext extends RequestContext {
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
     private final static String APPLICATION_CONTEXT_KEY = DefaultApplicationContext.class.getName();
 
-    private Map<String, Object> attributes;
+    private Map<Object, Object> attributes;
     private WidgetBuilder widgetBuilder;
     private AjaxRequestBuilder ajaxRequestBuilder;
     private FacesContext context;
@@ -50,7 +50,7 @@ public class DefaultRequestContext extends RequestContext {
 
     public DefaultRequestContext(FacesContext context) {
     	this.context = context;
-    	this.attributes = new HashMap<String, Object>();
+    	this.attributes = new HashMap<Object, Object>();
     	this.widgetBuilder = new WidgetBuilder();
     	this.ajaxRequestBuilder = new AjaxRequestBuilder(context);
 
