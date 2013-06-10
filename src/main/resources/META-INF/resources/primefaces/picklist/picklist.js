@@ -12,7 +12,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         this.targetInput = $(this.jqId + '_target');
         this.items = this.jq.find('.ui-picklist-item:not(.ui-state-disabled)');
         if(this.cfg.showCheckbox) {
-            this.checkboxes = this.jq.find('div.ui-chkbox > div.ui-chkbox-box');
+            this.checkboxes = this.items.find('> div.ui-chkbox > div.ui-chkbox-box');
         }
                 
         //generate input options
@@ -28,11 +28,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             //Sortable lists
             $(this.jqId + ' ul').sortable({
-                cancel: '.ui-state-disabled',
+                cancel: '.ui-state-disabled,.ui-chkbox-box',
                 connectWith: this.jqId + ' .ui-picklist-list',
                 revert: true,
                 containment: this.jq,
-                cancel: '.ui-chkbox-box',
                 update: function(event, ui) {
                     $this.unselectItem(ui.item);
 
