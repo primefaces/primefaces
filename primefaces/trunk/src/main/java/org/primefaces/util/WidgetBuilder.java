@@ -15,6 +15,8 @@
  */
 package org.primefaces.util;
 
+import javax.faces.FacesException;
+
 /**
  * Helper to generate javascript code of an ajax call
  */
@@ -38,7 +40,15 @@ public class WidgetBuilder {
      * @param onload        Flag to define if widget should be created on document load
      */
     public WidgetBuilder widget(String widgetClass, String widgetVar, String id, boolean onload) {
-        this.onload = onload;
+
+    	if(id.equals(widgetVar)) {
+        	throw new FacesException("WidgetVar and the generated ClientId should not be identical, " 
+        			+ "as it may not work correctly in all browsers. ClientId: "
+        			+ id
+        			+ "; See: http://stackoverflow.com/questions/9158238/why-js-function-name-conflicts-with-element-id");
+        }
+
+    	this.onload = onload;
         if(this.onload) {
             buffer.append("$(function(){");
         }
