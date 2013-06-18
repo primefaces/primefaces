@@ -250,6 +250,8 @@ public class AjaxRequestBuilder {
     }
       
     public String build() {
+        addFragmentConfig();
+        
         buffer.append("});");
         
         if(preventDefault) {
@@ -264,6 +266,8 @@ public class AjaxRequestBuilder {
     }
     
     public String buildBehavior() {
+        addFragmentConfig();
+        
         buffer.append("}, arguments[1]);");
         
         if(preventDefault) {
@@ -280,5 +284,16 @@ public class AjaxRequestBuilder {
     public void reset() {
         buffer.setLength(0);
         preventDefault = false;
+    }
+    
+    private void addFragmentConfig() {
+        Map<Object,Object> attrs = RequestContext.getCurrentInstance().getAttributes();
+        Object fragmentId = attrs.get(Constants.FRAGMENT_ID);
+        if(fragmentId != null) {
+            buffer.append(",fragmentId:'").append(fragmentId).append("'");
+            
+            if(attrs.containsKey(Constants.FRAGMENT_AUTO_RENDERED))
+                buffer.append(",fragmentUpdate:true");
+        }
     }
 }

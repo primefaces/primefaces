@@ -44,6 +44,9 @@ public class Constants {
     
     public static final String SECRET_KEY = "primefaces.SECRET";
     
+    public final static String FRAGMENT_ID = "primefaces.fragment";
+    public final static String FRAGMENT_AUTO_RENDERED = "primefaces.fragment.autorendered";
+    
     public final static String DIALOG_OUTCOME = "dialog.outcome";
     public final static String DIALOG_OPTIONS = "dialog.options";
     public final static String DIALOG_PARAMS = "dialog.params";
