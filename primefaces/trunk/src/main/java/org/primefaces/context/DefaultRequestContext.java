@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
@@ -174,6 +175,12 @@ public class DefaultRequestContext extends RequestContext {
         }
 
         this.execute("PrimeFaces.closeDialog({pfdlgcid:'" + pfdlgcid + "'});");
+    }
+
+    @Override
+    public void showMessageInDialog(FacesMessage message) {
+        this.execute("PrimeFaces.showMessageInDialog({severity:'" + message.getSeverity() + 
+                    "',summary:'" + message.getSummary() + "',detail:'" + message.getDetail() + "'});"); 
     }
     
     @Override
