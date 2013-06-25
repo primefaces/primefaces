@@ -57,20 +57,24 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
    
     protected void encodeButton(FacesContext context, MenuButton button, String buttonId, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        boolean isIconLeft = button.getIconPos().equals("left");
         String value = button.getValue();
-        String buttonClass = disabled ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " ui-state-disabled" : HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
+        String buttonTextClass = isIconLeft ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
+        String buttonClass = disabled ? buttonTextClass + " ui-state-disabled" : buttonTextClass;
         
         writer.startElement("button", null);
 		writer.writeAttribute("id", buttonId, null);
 		writer.writeAttribute("name", buttonId, null);
 		writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", buttonClass, buttonId);
+        writer.writeAttribute("class", buttonClass, null);
         if(button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
         
         //button icon
-        String iconClass = HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-triangle-1-s";
+        String iconClass = isIconLeft ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
+        iconClass = iconClass + " " + MenuButton.ICON_CLASS;
+        
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
