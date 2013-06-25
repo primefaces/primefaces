@@ -2,8 +2,10 @@ package org.primefaces.util.expression;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.FacesException;
@@ -15,7 +17,6 @@ import javax.faces.component.UIOutput;
 import javax.faces.component.UIPanel;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -48,7 +49,20 @@ public class SearchExpressionFacadeTest
 		return SearchExpressionFacade.resolveComponentForClient(context, source, expression);
 	}
 
+    private List<UIComponent> resolveComponents(UIComponent source, String expression)
+    {
+        FacesContext context = FacesContext.getCurrentInstance();
 
+        return SearchExpressionFacade.resolveComponents(context, source, expression);
+    }
+
+
+    private String resolveComponentsForClient(UIComponent source, String expression)
+    {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        return SearchExpressionFacade.resolveComponentsForClient(context, source, expression);
+    }
 
 
 
@@ -907,5 +921,212 @@ public class SearchExpressionFacadeTest
 		} catch (Exception e) {
 			assertEquals(FacesException.class, e.getClass());
 		}
+	}
+
+	@Test
+	public void resolveComponentsForClient_RelativeAndParent() {
+
+	    UIComponent root = new UIPanel();
+
+	    UIForm form = new UIForm();
+	    form.setId("form");
+	    root.getChildren().add(form);
+
+	    UINamingContainer outerContainer = new UINamingContainer();
+	    outerContainer.setId("outerContainer");
+	    form.getChildren().add(outerContainer);
+
+	    UINamingContainer innerContainer = new UINamingContainer();
+	    innerContainer.setId("innerContainer");
+	    outerContainer.getChildren().add(innerContainer);
+
+	    UIComponent component = new UIOutput();
+	    component.setId("other");
+	    innerContainer.getChildren().add(component);
+
+	    UIComponent source = new UICommand();
+	    source.setId("source");
+	    innerContainer.getChildren().add(source);
+
+	    assertEquals("Failed", "form:outerContainer:innerContainer:other form:outerContainer:innerContainer", resolveComponentsForClient(source, " other @parent"));
+	}
+
+	@Test
+	public void resolveComponentsForClient_RelativeAndParentParent() {
+
+	    UIComponent root = new UIPanel();
+
+	    UIForm form = new UIForm();
+	    form.setId("form");
+	    root.getChildren().add(form);
+
+	    UINamingContainer outerContainer = new UINamingContainer();
+	    outerContainer.setId("outerContainer");
+	    form.getChildren().add(outerContainer);
+
+	    UINamingContainer innerContainer = new UINamingContainer();
+	    innerContainer.setId("innerContainer");
+	    outerContainer.getChildren().add(innerContainer);
+
+	    UIComponent component = new UIOutput();
+	    component.setId("other");
+	    innerContainer.getChildren().add(component);
+
+	    UIComponent source = new UICommand();
+	    source.setId("source");
+	    innerContainer.getChildren().add(source);
+
+	    assertEquals("Failed", "form:outerContainer:innerContainer:other form:outerContainer", resolveComponentsForClient(source, " other @parent:@parent"));
+	}
+
+	@Test
+	public void resolveComponentsForClient_RelativeAndThisParent() {
+
+	    UIComponent root = new UIPanel();
+
+	    UIForm form = new UIForm();
+	    form.setId("form");
+	    root.getChildren().add(form);
+
+	    UINamingContainer outerContainer = new UINamingContainer();
+	    outerContainer.setId("outerContainer");
+	    form.getChildren().add(outerContainer);
+
+	    UINamingContainer innerContainer = new UINamingContainer();
+	    innerContainer.setId("innerContainer");
+	    outerContainer.getChildren().add(innerContainer);
+
+	    UIComponent component = new UIOutput();
+	    component.setId("other");
+	    innerContainer.getChildren().add(component);
+
+	    UIComponent source = new UICommand();
+	    source.setId("source");
+	    innerContainer.getChildren().add(source);
+
+	    assertEquals("Failed", "form:outerContainer:innerContainer:other form:outerContainer:innerContainer", resolveComponentsForClient(source, " other @this:@parent"));
+	}
+
+	@Test
+	public void resolveComponentsForClient_RelativeAndPFSAndWidgetVarAndFormParent() {
+
+	    UIComponent root = new UIPanel();
+	    root.setId("root");
+
+	    UIForm form = new UIForm();
+	    form.setId("form");
+	    root.getChildren().add(form);
+
+	    UINamingContainer outerContainer = new UINamingContainer();
+	    outerContainer.setId("outerContainer");
+	    form.getChildren().add(outerContainer);
+
+	    UINamingContainer innerContainer = new UINamingContainer();
+	    innerContainer.setId("innerContainer");
+	    outerContainer.getChildren().add(innerContainer);
+
+	    UIComponent component = new UIOutput();
+	    component.setId("other");
+	    innerContainer.getChildren().add(component);
+
+	    UIComponent source = new UICommand();
+	    source.setId("source");
+	    innerContainer.getChildren().add(source);
+
+	    assertEquals("Failed", "form:outerContainer:innerContainer:other @(.myClass, .myClass2) @widgetVar(test) root", resolveComponentsForClient(source, " other @(.myClass, .myClass2) @widgetVar(test) @form:@parent"));
+	}
+
+	@Test
+	public void resolveComponents_RelativeAndParent() {
+
+	    UIComponent root = new UIPanel();
+
+	    UIForm form = new UIForm();
+	    form.setId("form");
+	    root.getChildren().add(form);
+
+	    UINamingContainer outerContainer = new UINamingContainer();
+	    outerContainer.setId("outerContainer");
+	    form.getChildren().add(outerContainer);
+
+	    UINamingContainer innerContainer = new UINamingContainer();
+	    innerContainer.setId("innerContainer");
+	    outerContainer.getChildren().add(innerContainer);
+
+	    UIComponent component = new UIOutput();
+	    component.setId("other");
+	    innerContainer.getChildren().add(component);
+
+	    UIComponent source = new UICommand();
+	    source.setId("source");
+	    innerContainer.getChildren().add(source);
+
+
+	    List<UIComponent> resolvedComponents = resolveComponents(source, " other @parent");
+	    assertTrue("Failed", resolvedComponents.contains(component));
+	    assertTrue("Failed", resolvedComponents.contains(innerContainer));
+	    assertEquals("Failed", 2, resolvedComponents.size());
+	}
+
+	@Test
+	public void resolveComponents_RelativeAndParentParent() {
+
+	    UIComponent root = new UIPanel();
+
+	    UIForm form = new UIForm();
+	    form.setId("form");
+	    root.getChildren().add(form);
+
+	    UINamingContainer outerContainer = new UINamingContainer();
+	    outerContainer.setId("outerContainer");
+	    form.getChildren().add(outerContainer);
+
+	    UINamingContainer innerContainer = new UINamingContainer();
+	    innerContainer.setId("innerContainer");
+	    outerContainer.getChildren().add(innerContainer);
+
+	    UIComponent component = new UIOutput();
+	    component.setId("other");
+	    innerContainer.getChildren().add(component);
+
+	    UIComponent source = new UICommand();
+	    source.setId("source");
+	    innerContainer.getChildren().add(source);
+
+        List<UIComponent> resolvedComponents = resolveComponents(source, " other @parent:@parent ");
+        assertTrue("Failed", resolvedComponents.contains(component));
+        assertTrue("Failed", resolvedComponents.contains(outerContainer));
+        assertEquals("Failed", 2, resolvedComponents.size());
+	}
+
+	@Test
+	public void resolveComponents_RelativeAndThisParent() {
+
+	    UIComponent root = new UIPanel();
+
+	    UIForm form = new UIForm();
+	    form.setId("form");
+	    root.getChildren().add(form);
+
+	    UINamingContainer outerContainer = new UINamingContainer();
+	    outerContainer.setId("outerContainer");
+	    form.getChildren().add(outerContainer);
+
+	    UINamingContainer innerContainer = new UINamingContainer();
+	    innerContainer.setId("innerContainer");
+	    outerContainer.getChildren().add(innerContainer);
+
+	    UIComponent component = new UIOutput();
+	    component.setId("other");
+	    innerContainer.getChildren().add(component);
+
+	    UIComponent source = new UICommand();
+	    source.setId("source");
+	    innerContainer.getChildren().add(source);
+
+        List<UIComponent> resolvedComponents = resolveComponents(source, " other @this:@parent ");
+        assertTrue("Failed", resolvedComponents.contains(component));
+        assertTrue("Failed", resolvedComponents.contains(innerContainer));
+	    assertEquals("Failed", 2, resolvedComponents.size());
 	}
 }

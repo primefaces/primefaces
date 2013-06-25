@@ -14,26 +14,26 @@ import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 
-import org.apache.shale.test.mock.MockRenderKit;
-
 public class FacesContextMock extends FacesContext {
 
 	private Map<Object, Object> attributes;
-	
+
 	public FacesContextMock(Map<Object, Object> attributes) {
 		this.attributes = attributes;
 
 		setCurrentInstance(this);
 	}
-	
-	public Map<Object, Object> getAttributes() {
+
+	@Override
+    public Map<Object, Object> getAttributes() {
 		return attributes;
 	}
-	
-	public boolean isProjectStage(ProjectStage stage) {
+
+	@Override
+    public boolean isProjectStage(ProjectStage stage) {
 		return true;
 	}
-	
+
 	@Override
 	public void addMessage(String arg0, FacesMessage arg1) {
 
@@ -71,7 +71,7 @@ public class FacesContextMock extends FacesContext {
 
 	@Override
 	public RenderKit getRenderKit() {
-		return new MockRenderKit();
+		return new RenderKitMock();
 	}
 
 	@Override
@@ -101,31 +101,31 @@ public class FacesContextMock extends FacesContext {
 
 	@Override
 	public void release() {
-		
+
 	}
 
 	@Override
 	public void renderResponse() {
-		
+
 	}
 
 	@Override
 	public void responseComplete() {
-		
+
 	}
 
 	@Override
 	public void setResponseStream(ResponseStream arg0) {
-		
+
 	}
 
 	@Override
 	public void setResponseWriter(ResponseWriter arg0) {
-		
+
 	}
 
 	@Override
 	public void setViewRoot(UIViewRoot arg0) {
-		
+
 	}
 }
