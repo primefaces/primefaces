@@ -1094,7 +1094,7 @@ public class SearchExpressionFacadeTest
 	    source.setId("source");
 	    innerContainer.getChildren().add(source);
 
-	    assertEquals("Failed", "form:outerContainer:innerContainer:other @(.myClass, .myClass2) @widgetVar(test) root", resolveComponentsForClient(source, " other @(.myClass, .myClass2) @widgetVar(test) @form:@parent"));
+	    assertEquals("Failed", "form:outerContainer:innerContainer:other @(.myClass, .myClass2) @widgetVar(test) root", resolveComponentsForClient(source, " other,@(.myClass, .myClass2) @widgetVar(test),@form:@parent"));
 	}
 
 	@Test
@@ -1185,7 +1185,7 @@ public class SearchExpressionFacadeTest
 	    source.setId("source");
 	    innerContainer.getChildren().add(source);
 
-        List<UIComponent> resolvedComponents = resolveComponents(source, " other @this:@parent ");
+        List<UIComponent> resolvedComponents = resolveComponents(source, " other,@this:@parent ");
         assertTrue("Failed", resolvedComponents.contains(component));
         assertTrue("Failed", resolvedComponents.contains(innerContainer));
 	    assertEquals("Failed", 2, resolvedComponents.size());

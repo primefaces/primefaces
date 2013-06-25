@@ -25,6 +25,7 @@ import javax.servlet.ServletRequestWrapper;
 
 import org.apache.commons.fileupload.FileItem;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -105,8 +106,8 @@ public class FileUploadRenderer extends CoreRenderer {
             
             wb.attr("autoUpload", fileUpload.isAuto())
                 .attr("dnd", fileUpload.isDragDropSupport())
-                .attr("update", ComponentUtils.findClientIds(context, fileUpload, update), null)
-                .attr("process", ComponentUtils.findClientIds(context, fileUpload, process), null)
+                .attr("update", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, update), null)
+                .attr("process", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, process), null)
                 .attr("maxFileSize", fileUpload.getSizeLimit(), Integer.MAX_VALUE)
                 .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
                 .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)

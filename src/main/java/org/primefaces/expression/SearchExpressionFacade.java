@@ -142,7 +142,7 @@ public class SearchExpressionFacade {
 
 		if (SearchExpressionResolverFactory.isClientExpressionOnly(expression)) {
 			throw new FacesException(
-					"Client side expression (PFS, @clientId, @widgetVar) are not supported... Expression: " + expression);
+					"Client side expression (PFS and @widgetVar) are not supported... Expression: " + expression);
 		}
 
 		return resolveComponentInternal(context, source, expression, separatorChar, separatorString);

@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import javax.xml.bind.DatatypeConverter;
 import org.primefaces.event.CaptureEvent;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.ComponentUtils;
@@ -78,8 +79,8 @@ public class PhotoCamRenderer extends CoreRenderer {
         wb.widget("PhotoCam", cam.resolveWidgetVar(), clientId, true)
             .attr("camera", camera);
         
-        if(cam.getUpdate() != null) wb.attr("update", ComponentUtils.findClientIds(context, cam, cam.getUpdate()));
-        if(cam.getProcess() != null) wb.attr("process", ComponentUtils.findClientIds(context, cam, cam.getProcess()));
+        if(cam.getUpdate() != null) wb.attr("update", SearchExpressionFacade.resolveComponentsForClient(context, cam, cam.getUpdate()));
+        if(cam.getProcess() != null) wb.attr("process", SearchExpressionFacade.resolveComponentsForClient(context, cam, cam.getProcess()));
 		
         startScript(writer, clientId);
         writer.write(wb.build());
