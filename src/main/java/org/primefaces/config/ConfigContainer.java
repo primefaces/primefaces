@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.BeanValidator;
 import javax.validation.Validation;
 
 import org.primefaces.util.Constants;
@@ -32,7 +31,7 @@ import org.primefaces.util.Constants;
 public class ConfigContainer {
 
 	private static final Logger LOG = Logger.getLogger(ConfigContainer.class.getName());
-	
+
 	// context params
 	private boolean validateEmptyFields = false;
 	private boolean beanValidationAvailable = false;
@@ -40,13 +39,13 @@ public class ConfigContainer {
 	private boolean interpretEmptyStringAsNull = false;
 	private boolean rightToLeft = false;
 	private String  secretKey = null;
-	
+
 	// internal config
 	private boolean stringConverterAvailable = false;
 
 	public ConfigContainer(FacesContext context) {
 		initContextParams(context);
-        
+
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
 	}
 
@@ -66,7 +65,7 @@ public class ConfigContainer {
 
         value = externalContext.getInitParameter(Constants.SECRET_KEY);
         secretKey = (value == null) ? "primefaces" : value;
-        
+
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
         value = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
@@ -79,7 +78,7 @@ public class ConfigContainer {
         	validateEmptyFields = Boolean.valueOf(value);
         }
 	}
-	
+
     private boolean checkIfBeanValidationIsAvailable() {
     	boolean available = false;
 
@@ -104,7 +103,7 @@ public class ConfigContainer {
 
         return available;
     }
-	
+
 	public boolean isValidateEmptyFields() {
 		return validateEmptyFields;
 	}
@@ -137,5 +136,5 @@ public class ConfigContainer {
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
     }
-    
+
 }
