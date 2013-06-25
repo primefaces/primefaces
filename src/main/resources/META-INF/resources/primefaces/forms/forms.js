@@ -1483,8 +1483,15 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
             if(!item.hasClass('ui-state-highlight')) {
                 item.addClass('ui-state-hover');
             }
-        }).on('mouseout.selectListbox', function() {
+        })
+        .on('mouseout.selectListbox', function() {
             $(this).removeClass('ui-state-hover');
+        })
+        .on('dblclick.selectListbox', function(e) {       
+            $this.input.trigger('dblclick');
+            
+            PrimeFaces.clearSelection();
+            e.preventDefault();
         });
         
         //input
@@ -1492,7 +1499,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
             $this.jq.addClass('ui-state-focus');
         }).on('blur.selectListbox', function() {
             $this.jq.removeClass('ui-state-focus');
-        })
+        });
     },
     
     unselectAll: function() {
