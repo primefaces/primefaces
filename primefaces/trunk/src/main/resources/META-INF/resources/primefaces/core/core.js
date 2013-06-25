@@ -403,27 +403,31 @@
                 var $frame = $(this),
                 titleElement = $frame.contents().find('title');
                 
-                PrimeFaces.cw('Dialog', dialogWidgetVar, {
-                    id: dialogId,
-                    position: 'center',
-                    sourceComponentId: cfg.sourceComponentId,
-                    sourceWidget: cfg.sourceWidget,
-                    onHide: function() {
-                        this.jq.remove();
-                        window[dialogWidgetVar] = undefined;
-                    },
-                    modal: cfg.options.modal,
-                    resizable: cfg.options.resizable,
-                    draggable: cfg.options.draggable,
-                    width: cfg.options.width,
-                    height: cfg.options.height
-                });
+                if(!$frame.data('initialized')) {
+                    PrimeFaces.cw('Dialog', dialogWidgetVar, {
+                        id: dialogId,
+                        position: 'center',
+                        sourceComponentId: cfg.sourceComponentId,
+                        sourceWidget: cfg.sourceWidget,
+                        onHide: function() {
+                            this.jq.remove();
+                            window[dialogWidgetVar] = undefined;
+                        },
+                        modal: cfg.options.modal,
+                        resizable: cfg.options.resizable,
+                        draggable: cfg.options.draggable,
+                        width: cfg.options.width,
+                        height: cfg.options.height
+                    });
+                }
                 
                 if(titleElement.length > 0) {
                     window[dialogWidgetVar].titlebar.children('span.ui-dialog-title').html(titleElement.text());
                 }
                 
                 window[dialogWidgetVar].show();
+                
+                dialogFrame.data('initialized', true);
             })
             .attr('src', frameURL);
         },
