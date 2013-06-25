@@ -36,7 +36,19 @@
         </attribute>
         <attribute>
             <name>onchange</name>
-            <required></required>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>onclick</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>ondblclick</name>
+            <required>false</required>
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>

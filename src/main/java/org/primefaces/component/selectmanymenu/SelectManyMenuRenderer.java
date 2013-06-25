@@ -98,6 +98,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         
         if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
         if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
+        if(menu.getOnclick()!= null) writer.writeAttribute("onclick", menu.getOnclick(), null);
         if(menu.getOndblclick()!= null) writer.writeAttribute("ondblclick", menu.getOndblclick(), null);
 
         encodeSelectItems(context, menu, selectItems);
