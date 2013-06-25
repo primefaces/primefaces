@@ -2,6 +2,7 @@ package org.primefaces.util.expression;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
@@ -16,6 +17,8 @@ import org.primefaces.util.ComponentUtils;
  */
 public class SearchExpressionFacade {
 
+    private static final Pattern EXPRESSIONS_SPLIT_PATTERN = Pattern.compile("(,|\\s)(?![^()]*+\\))");
+
     /**
      * Resolves a list of {@link UIComponent}s for the given expression or expressions.
      *
@@ -25,8 +28,8 @@ public class SearchExpressionFacade {
      * @return A {@link List} with resolved {@link UIComponent}s.
      */
 	public static List<UIComponent> resolveComponents(FacesContext context, UIComponent source, String expressions) {
-	    // split expressions by blank or comma (and ignore blank and commans inside brackets)
-		String[] splittedExpressions = expressions.split("(,|\\s)(?![^()]*+\\))");
+	    // split expressions by blank or comma (and ignore blank and commas inside brackets)
+		String[] splittedExpressions = splitExpressions(expressions);
 
 		ArrayList<UIComponent> components = new ArrayList<UIComponent>();
 
@@ -51,8 +54,8 @@ public class SearchExpressionFacade {
      * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
      */
 	public static String resolveComponentsForClient(FacesContext context, UIComponent source, String expressions) {
-	    // split expressions by blank or comma (and ignore blank and commans inside brackets)
-		String[] splittedExpressions = expressions.split("(,|\\s)(?![^()]*+\\))");
+	    // split expressions by blank or comma (and ignore blank and commas inside brackets)
+	    String[] splittedExpressions = splitExpressions(expressions);
 
 		StringBuilder expressionsBuilder = new StringBuilder();
 
@@ -273,4 +276,14 @@ public class SearchExpressionFacade {
 		return component;
 	}
 
+	/**
+	 * Split up the expressions by comma or blank and ignore blank and commas in brackets.
+	 *
+	 * @param expressions The expressions as string.
+	 * @return The splitted expressions.
+	 */
+	private static String[] splitExpressions(String expressions)
+	{
+	    return EXPRESSIONS_SPLIT_PATTERN.split(expressions);
+	}
 }
