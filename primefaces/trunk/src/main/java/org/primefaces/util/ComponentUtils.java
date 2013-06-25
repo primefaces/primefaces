@@ -221,7 +221,8 @@ public class ComponentUtils {
 	public static String escapeJQueryId(String id) {
 		return "#" + id.replaceAll(":", "\\\\\\\\:");
 	}
-		
+	
+	@Deprecated
 	public static String findClientIds(FacesContext context, UIComponent component, String list) {
 		if(list == null) {
 			return "@none";

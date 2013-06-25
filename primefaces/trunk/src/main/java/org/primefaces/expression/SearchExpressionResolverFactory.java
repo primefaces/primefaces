@@ -81,8 +81,7 @@ public class SearchExpressionResolverFactory {
      */
 	public static boolean isClientExpressionOnly(String expression) {
 		return expression.contains(SearchExpressionConstants.PFS_PREFIX)
-				|| expression.contains(SearchExpressionConstants.WIDGETVAR_PREFIX)
-				|| expression.contains(SearchExpressionConstants.CLIENTID_PREFIX);
+				|| expression.contains(SearchExpressionConstants.WIDGETVAR_PREFIX);
 	}
 
 	/**

@@ -25,6 +25,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
+import org.primefaces.expression.SearchExpressionFacade;
 
 /**
  * Helper to generate javascript code of an ajax call
@@ -111,7 +112,7 @@ public class AjaxRequestBuilder {
             String selector = parsed[1];
             
             if(regular != null)
-                buffer.append(",").append(key).append(":'").append(ComponentUtils.findClientIds(context, component, regular)).append("'");
+                buffer.append(",").append(key).append(":'").append(SearchExpressionFacade.resolveComponentsForClient(context, component, regular)).append("'");
             
             if(selector != null)
                 buffer.append(",").append(keySel).append(":'").append(selector).append("'");
