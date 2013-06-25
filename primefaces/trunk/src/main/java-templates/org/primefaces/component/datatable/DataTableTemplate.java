@@ -835,3 +835,13 @@ import org.primefaces.component.datatable.feature.*;
     protected boolean requiresColumns() {
         return true;
     }
+    
+    private Columns dynamicColumns;
+    
+    public void setDynamicColumns(Columns value) {
+        this.dynamicColumns = value;
+    }
+    public Columns getDynamicColumns() {
+        return dynamicColumns;
+    }
+    
