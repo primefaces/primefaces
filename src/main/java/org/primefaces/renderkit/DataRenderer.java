@@ -56,7 +56,6 @@ public class DataRenderer extends CoreRenderer {
         
         ResponseWriter writer = context.getResponseWriter();
         boolean isTop = position.equals("top");
-        boolean hidden = !uidata.isPaginatorAlwaysVisible() && uidata.getPageCount() == 1;
         
         String styleClass = isTop ? UIData.PAGINATOR_TOP_CONTAINER_CLASS : UIData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
         String id = uidata.getClientId(context) + "_paginator_" + position; 
@@ -72,9 +71,6 @@ public class DataRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", styleClass, null);
-        if(hidden) {
-            writer.writeAttribute("style", "display:none", null);
-        }
         
         String[] elements = uidata.getPaginatorTemplate().split(" ");
         for(String element : elements) {            
