@@ -15,14 +15,9 @@
  */
 package org.primefaces.context;
 
-import java.util.HashMap;
-
 import javax.faces.context.FacesContext;
 
 import org.primefaces.config.ConfigContainer;
-import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.StringEncrypter;
-import org.primefaces.util.WidgetBuilder;
 
 public class DefaultApplicationContext extends ApplicationContext {
 

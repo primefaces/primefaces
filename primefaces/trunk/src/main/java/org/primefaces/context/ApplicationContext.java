@@ -15,15 +15,12 @@
  */
 package org.primefaces.context;
 
-import javax.faces.context.FacesContext;
-
 import org.primefaces.config.ConfigContainer;
-import org.primefaces.util.StringEncrypter;
 
 /**
  * A {@link ApplicationContext} is a contextual store, similar to {@link RequestContext}.
  * Only one {@link ApplicationContext} should be available in the application.
- * 
+ *
  * It can be accessed via:
  * <blockquote>
  *  RequestContext.getCurrentInstance().getApplicationContext();
