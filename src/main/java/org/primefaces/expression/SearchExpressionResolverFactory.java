@@ -2,7 +2,10 @@ package org.primefaces.expression;
 
 import java.util.HashMap;
 
+import javax.faces.FacesException;
+
 import org.primefaces.expression.impl.AllExpressionResolver;
+import org.primefaces.expression.impl.ChildExpressionResolver;
 import org.primefaces.expression.impl.CompositeExpressionResolver;
 import org.primefaces.expression.impl.FormExpressionResolver;
 import org.primefaces.expression.impl.IdExpressionResolver;
@@ -17,6 +20,7 @@ public class SearchExpressionResolverFactory {
 
 	private static final HashMap<String, SearchExpressionResolver> RESOLVER_MAPPING = new HashMap<String, SearchExpressionResolver>();
 	private static final IdExpressionResolver ID_EXPRESSION_RESOLVER = new IdExpressionResolver();
+	private static final ChildExpressionResolver CHILD_EXPRESSION_RESOLVER = new ChildExpressionResolver();
 
 	static {
 		RESOLVER_MAPPING.put(SearchExpressionConstants.THIS_KEYWORD, new ThisExpressionResolver());
@@ -37,9 +41,18 @@ public class SearchExpressionResolverFactory {
 	public static SearchExpressionResolver findResolver(String expression) {
 		SearchExpressionResolver resolver = RESOLVER_MAPPING.get(expression);
 
-		// if no resolver found and if it's not a keyword, take it as id
-		if (resolver == null && !expression.startsWith(SearchExpressionConstants.KEYWORD_PREFIX)) {
-			resolver = ID_EXPRESSION_RESOLVER;
+		if (resolver == null) {
+		    // if no resolver found and if it's not a keyword, take it as id
+		    if (!expression.startsWith(SearchExpressionConstants.KEYWORD_PREFIX)) {
+		        resolver = ID_EXPRESSION_RESOLVER;
+		    }
+		    else if (expression.startsWith(SearchExpressionConstants.CHILD_PREFIX)) {
+		        resolver = CHILD_EXPRESSION_RESOLVER;
+		    }
+		}
+
+		if (resolver == null) {
+		    throw new FacesException("No SearchExpressionResolver avialable for expression \"" + expression + "\"");
 		}
 
 		return resolver;

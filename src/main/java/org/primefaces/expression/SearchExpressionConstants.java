@@ -15,4 +15,6 @@ public class SearchExpressionConstants {
 	public static final String PFS_PREFIX =                 KEYWORD_PREFIX + "(";
 	public static final String CLIENTID_PREFIX =            KEYWORD_PREFIX + "clientId(";
 	public static final String WIDGETVAR_PREFIX =           KEYWORD_PREFIX + "widgetVar(";
+
+	public static final String CHILD_PREFIX =               KEYWORD_PREFIX + "child(";
 }

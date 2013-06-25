@@ -224,9 +224,9 @@ public class SearchExpressionFacade {
 
 					// re-add the seperator string here
 					// the impl will decide to search absolute or relative then
-					if (!subExpression.contains(SearchExpressionConstants.KEYWORD_PREFIX)
-							&& startsWithSeperator
-							&& j == 0) {
+					if (startsWithSeperator
+					        && j == 0
+					        && !subExpression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
 						subExpression = separatorString + subExpression;
 					}
 
