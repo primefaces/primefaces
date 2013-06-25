@@ -406,6 +406,66 @@ public class SearchExpressionFacadeTest
 	}
 
 	@Test
+	public void resolveComponent_ParentChild() {
+
+	    UIComponent root = new UIPanel();
+	    root.setId("root");
+
+	    UIForm form = new UIForm();
+	    form.setId("form");
+	    root.getChildren().add(form);
+
+	    UINamingContainer outerContainer = new UINamingContainer();
+	    outerContainer.setId("outerContainer");
+	    form.getChildren().add(outerContainer);
+
+	    UINamingContainer innerContainer = new UINamingContainer();
+	    innerContainer.setId("innerContainer");
+	    outerContainer.getChildren().add(innerContainer);
+
+	    UIComponent component = new UIOutput();
+	    component.setId("other");
+	    innerContainer.getChildren().add(component);
+
+	    UIComponent source = new UICommand();
+	    source.setId("source");
+	    innerContainer.getChildren().add(source);
+
+	    assertSame("Failed", component, resolveComponent(source, " @parent:@child(0) "));
+	    assertSame("Failed", source, resolveComponent(source, " @parent:@child(1) "));
+	}
+
+	@Test
+	public void resolveComponentForClient_ParentChild() {
+
+	    UIComponent root = new UIPanel();
+	    root.setId("root");
+
+	    UIForm form = new UIForm();
+	    form.setId("form");
+	    root.getChildren().add(form);
+
+	    UINamingContainer outerContainer = new UINamingContainer();
+	    outerContainer.setId("outerContainer");
+	    form.getChildren().add(outerContainer);
+
+	    UINamingContainer innerContainer = new UINamingContainer();
+	    innerContainer.setId("innerContainer");
+	    outerContainer.getChildren().add(innerContainer);
+
+	    UIComponent component = new UIOutput();
+	    component.setId("other");
+	    innerContainer.getChildren().add(component);
+
+	    UIComponent source = new UICommand();
+	    source.setId("source");
+	    innerContainer.getChildren().add(source);
+
+	    assertEquals("Failed", "form:outerContainer:innerContainer:other", resolveComponentForClient(source, " @parent:@child(0) "));
+	    assertEquals("Failed", "form:outerContainer:innerContainer:source", resolveComponentForClient(source, " @parent:@child(1) "));
+	}
+
+	@Test
 	public void resolveComponent_AbsoluteNamingcontainer() {
 
 		UIComponent root = new UIPanel();
