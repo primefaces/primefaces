@@ -1,4 +1,4 @@
-package org.primefaces.util.expression;
+package org.primefaces.expression;
 
 import java.util.Iterator;
 import java.util.Map;
