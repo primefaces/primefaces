@@ -1,14 +1,14 @@
-package org.primefaces.util.expression;
+package org.primefaces.expression;
 
 import java.util.HashMap;
 
-import org.primefaces.util.expression.impl.AllExpressionResolver;
-import org.primefaces.util.expression.impl.CompositeExpressionResolver;
-import org.primefaces.util.expression.impl.FormExpressionResolver;
-import org.primefaces.util.expression.impl.IdExpressionResolver;
-import org.primefaces.util.expression.impl.NamingContainerExpressionResolver;
-import org.primefaces.util.expression.impl.ParentExpressionResolver;
-import org.primefaces.util.expression.impl.ThisExpressionResolver;
+import org.primefaces.expression.impl.AllExpressionResolver;
+import org.primefaces.expression.impl.CompositeExpressionResolver;
+import org.primefaces.expression.impl.FormExpressionResolver;
+import org.primefaces.expression.impl.IdExpressionResolver;
+import org.primefaces.expression.impl.NamingContainerExpressionResolver;
+import org.primefaces.expression.impl.ParentExpressionResolver;
+import org.primefaces.expression.impl.ThisExpressionResolver;
 
 /**
  * Default implementation of the {@link SearchExpressionResolverFactory}.

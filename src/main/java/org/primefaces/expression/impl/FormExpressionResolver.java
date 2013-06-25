@@ -1,9 +1,9 @@
-package org.primefaces.util.expression.impl;
+package org.primefaces.expression.impl;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 
-import org.primefaces.util.expression.SearchExpressionResolver;
+import org.primefaces.expression.SearchExpressionResolver;
 
 /**
  * {@link SearchExpressionResolver} for the "@form" keyword.

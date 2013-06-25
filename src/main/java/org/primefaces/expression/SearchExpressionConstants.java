@@ -1,4 +1,4 @@
-package org.primefaces.util.expression;
+package org.primefaces.expression;
 
 public class SearchExpressionConstants {
 

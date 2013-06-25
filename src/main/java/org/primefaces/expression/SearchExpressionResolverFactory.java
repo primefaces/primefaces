@@ -1,4 +1,4 @@
-package org.primefaces.util.expression;
+package org.primefaces.expression;
 
 /**
  * Exchangeable factory which provides a {@link SearchExpressionResolver} for a expression and some other utils.

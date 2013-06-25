@@ -1,4 +1,4 @@
-package org.primefaces.util.expression;
+package org.primefaces.expression;
 
 import javax.faces.component.UIComponent;
 
