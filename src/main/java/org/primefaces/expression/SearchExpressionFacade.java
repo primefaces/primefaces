@@ -96,21 +96,18 @@ public class SearchExpressionFacade {
 			return null;
 		}
 
-		//TODO allow wrapping
-		SearchExpressionResolverFactory factory = new SearchExpressionResolverFactoryImpl();
-
 		final char separatorChar = UINamingContainer.getSeparatorChar(context);
 		final String separatorString = String.valueOf(separatorChar);
 
 		expression = expression.trim();
 
-		validateExpression(context, source, expression, factory, separatorChar, separatorString);
+		validateExpression(context, source, expression, separatorChar, separatorString);
 
-		if (factory.isPassTroughExpression(expression)) {
+		if (SearchExpressionResolverFactory.isPassTroughExpression(expression)) {
 			return expression;
 		}
 
-		UIComponent component = resolveComponentInternal(context, source, expression, factory, separatorChar, separatorString);
+		UIComponent component = resolveComponentInternal(context, source, expression, separatorChar, separatorString);
 		if (component == null) {
 			return null;
 		} else {
@@ -135,23 +132,20 @@ public class SearchExpressionFacade {
 		final char separatorChar = UINamingContainer.getSeparatorChar(context);
 		final String separatorString = String.valueOf(separatorChar);
 
-		//TODO allow wrapping
-		SearchExpressionResolverFactory factory = new SearchExpressionResolverFactoryImpl();
-
 		expression = expression.trim();
 
-		validateExpression(context, source, expression, factory, separatorChar, separatorString);
+		validateExpression(context, source, expression, separatorChar, separatorString);
 
 		if (expression.equals(SearchExpressionConstants.NONE_KEYWORD)) {
 			return null;
 		}
 
-		if (factory.isClientExpressionOnly(expression)) {
+		if (SearchExpressionResolverFactory.isClientExpressionOnly(expression)) {
 			throw new FacesException(
 					"Client side expression (PFS, @clientId, @widgetVar) are not supported... Expression: " + expression);
 		}
 
-		return resolveComponentInternal(context, source, expression, factory, separatorChar, separatorString);
+		return resolveComponentInternal(context, source, expression, separatorChar, separatorString);
 	}
 
 	/**
@@ -166,8 +160,7 @@ public class SearchExpressionFacade {
 	 * @param separatorString The separator as string.
 	 */
 	private static void validateExpression(FacesContext context, UIComponent source,
-			String expression, SearchExpressionResolverFactory factory,
-			char separatorChar, String separatorString) {
+			String expression, char separatorChar, String separatorString) {
 
 		if (context.isProjectStage(ProjectStage.Development)) {
 
@@ -185,7 +178,7 @@ public class SearchExpressionFacade {
 				for (int j = 0; j < subExpressions.length; j++) {
 					String subExpression = subExpressions[j].trim();
 
-					if (!factory.isNestable(subExpression)) {
+					if (!SearchExpressionResolverFactory.isNestable(subExpression)) {
 						throw new FacesException("Subexpression \"" + subExpression
 								+ "\" in full expression \"" + expression
 								+ "\" from \"" + source.getClientId(context) + "\" can not be nested.");
@@ -196,8 +189,7 @@ public class SearchExpressionFacade {
 	}
 
 	private static UIComponent resolveComponentInternal(FacesContext context, UIComponent source,
-			String expression, SearchExpressionResolverFactory factory,
-			char separatorChar, String separatorString) {
+			String expression, char separatorChar, String separatorString) {
 
 		if (ComponentUtils.isValueBlank(expression)) {
 			return null;
@@ -238,7 +230,7 @@ public class SearchExpressionFacade {
 						subExpression = separatorString + subExpression;
 					}
 
-					SearchExpressionResolver resolver = factory.findResolver(subExpression);
+					SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
 					UIComponent temp = resolver.resolve(source, last, subExpression);
 
 					if (temp == null) {
@@ -254,7 +246,7 @@ public class SearchExpressionFacade {
 				component = last;
 			} else {
 				// it's a keyword and not nested, just ask our resolvers
-				SearchExpressionResolver resolver = factory.findResolver(expression);
+				SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
 				component = resolver.resolve(source, source, expression);
 
 				if (component == null) {
