@@ -353,6 +353,12 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(disabled) {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
+        
+        if(ac.getMaxlength() != Integer.MIN_VALUE)
+        {
+            writer.writeAttribute("maxlength", ""+ac.getMaxlength(),null);
+        }
+        
         writer.endElement("input");
         writer.endElement("li");
         
