@@ -29,6 +29,11 @@
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
             <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
         </system-event-listener>
+        <system-event-listener>
+            <source-class>org.primefaces.component.columns.Columns</source-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <system-event-listener-class>org.primefaces.event.system.DynamicColumnsListener</system-event-listener-class>
+        </system-event-listener>
     </application>
     
     <behavior>
