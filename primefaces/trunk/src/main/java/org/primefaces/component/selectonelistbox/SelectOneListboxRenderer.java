@@ -93,6 +93,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         
         if(listbox.getTabindex() != null) writer.writeAttribute("tabindex", listbox.getTabindex(), null);
         if(listbox.getOnchange() != null) writer.writeAttribute("onchange", listbox.getOnchange(), null);
+        if(listbox.getOndblclick()!= null) writer.writeAttribute("ondblclick", listbox.getOndblclick(), null);
 
         encodeSelectItems(context, listbox, selectItems);
 
