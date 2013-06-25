@@ -11,10 +11,21 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.util.ComponentUtils;
 
-//TODO comments, tests for resolveComponentS
+/**
+ * Simple facade for the whole Search Expression module.
+ */
 public class SearchExpressionFacade {
 
+    /**
+     * Resolves a list of {@link UIComponent}s for the given expression or expressions.
+     *
+     * @param context The {@link FacesContext}.
+     * @param source The source component. E.g. a button.
+     * @param expression The search expression.
+     * @return A {@link List} with resolved {@link UIComponent}s.
+     */
 	public static List<UIComponent> resolveComponents(FacesContext context, UIComponent source, String expressions) {
+	    // split expressions by blank or comma (and ignore blank and commans inside brackets)
 		String[] splittedExpressions = expressions.split("(,|\\s)(?![^()]*+\\))");
 
 		ArrayList<UIComponent> components = new ArrayList<UIComponent>();
@@ -31,7 +42,16 @@ public class SearchExpressionFacade {
 		return components;
 	}
 
+    /**
+     * Resolves a list of {@link UIComponent} clientIds and/or passtrough expressions for the given expression or expressions.
+     *
+     * @param context The {@link FacesContext}.
+     * @param source The source component. E.g. a button.
+     * @param expression The search expression.
+     * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
+     */
 	public static String resolveComponentsForClient(FacesContext context, UIComponent source, String expressions) {
+	    // split expressions by blank or comma (and ignore blank and commans inside brackets)
 		String[] splittedExpressions = expressions.split("(,|\\s)(?![^()]*+\\))");
 
 		StringBuilder expressionsBuilder = new StringBuilder();
@@ -51,13 +71,22 @@ public class SearchExpressionFacade {
 
 		String buildedExpressions = expressionsBuilder.toString();
 
+		// empty expression should resolve to @none
 		if (ComponentUtils.isValueBlank(buildedExpressions)) {
-			return "@none";
+			return SearchExpressionConstants.NONE_KEYWORD;
 		}
 
 		return buildedExpressions;
 	}
 
+    /**
+     * Resolves a {@link UIComponent} clientId and/or passtrough expression for the given expression.
+     *
+     * @param context The {@link FacesContext}.
+     * @param source The source component. E.g. a button.
+     * @param expression The search expression.
+     * @return A resolved clientId and/or passtrough expression (like PFS, widgetVar).
+     */
 	public static String resolveComponentForClient(FacesContext context, UIComponent source, String expression)
 	{
 		if (ComponentUtils.isValueBlank(expression)) {
@@ -86,6 +115,14 @@ public class SearchExpressionFacade {
 		}
 	}
 
+    /**
+     * Resolves a {@link UIComponent} for the given expression.
+     *
+     * @param context The {@link FacesContext}.
+     * @param source The source component. E.g. a button.
+     * @param expression The search expression.
+     * @return A resolved {@link UIComponent} or <code>null</code>.
+     */
 	public static UIComponent resolveComponent(FacesContext context, UIComponent source, String expression) {
 
 		if (ComponentUtils.isValueBlank(expression)) {
@@ -114,12 +151,25 @@ public class SearchExpressionFacade {
 		return resolveComponentInternal(context, source, expression, factory, separatorChar, separatorString);
 	}
 
+	/**
+	 * Validates the given search expression.
+	 * We only validate it, for performance reasons, if the current {@link ProjectStage} is {@link ProjectStage#Development}.
+	 *
+	 * @param context The {@link FacesContext}.
+	 * @param source The source component. E.g. a button.
+	 * @param expression The search expression.
+	 * @param factory The {@link SearchExpressionResolverFactory}.
+	 * @param separatorChar The separator as char.
+	 * @param separatorString The separator as string.
+	 */
 	private static void validateExpression(FacesContext context, UIComponent source,
 			String expression, SearchExpressionResolverFactory factory,
 			char separatorChar, String separatorString) {
 
 		if (context.isProjectStage(ProjectStage.Development)) {
 
+		    // checks the whole expression doesn't start with ":@"
+		    // keywords are always related to the current component, not absolute or relative
 			if (expression.startsWith(separatorString + SearchExpressionConstants.KEYWORD_PREFIX)) {
 				throw new FacesException("A expression should not start with the separater char and a keyword. "
 						+ "Expression: \"" + expression + "\" from \"" + source.getClientId(context) + "\"");
@@ -127,6 +177,7 @@ public class SearchExpressionFacade {
 
 			String[] subExpressions = expression.split("(\\" + separatorString + ")(?![^()]*+\\))");
 
+			// checks for unnestable subexpresions (like @all or @none)
 			if (subExpressions.length > 1) {
 				for (int j = 0; j < subExpressions.length; j++) {
 					String subExpression = subExpressions[j].trim();
@@ -209,6 +260,7 @@ public class SearchExpressionFacade {
 				}
 			}
 		} else {
+		    // default ID case
 			component = source.findComponent(expression);
 
 			if (component == null) {
