@@ -10,8 +10,8 @@ public interface SearchExpressionResolver {
 	/**
 	 * Resolves a {@link UIComponent} for the last or source {@link UIComponent} and for the given
 	 * expression string.
-	 * 
-	 * @param source The source component. E.g. a button or <code>p:ajax</code> tag.
+	 *
+	 * @param source The source component. E.g. a button.
 	 * @param last The last resolved component in the chain.
 	 * 		If it's not a nested expression, it's the same as the source component.
 	 * @param expression The search expression.
