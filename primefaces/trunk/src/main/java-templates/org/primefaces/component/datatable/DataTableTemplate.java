@@ -845,3 +845,29 @@ import org.primefaces.component.datatable.feature.*;
         return dynamicColumns;
     }
     
+    @Override
+    protected void processChildrenFacets(FacesContext context, PhaseId phaseId) {        
+        for(UIComponent child : this.getChildren()) {
+            if(child.isRendered() && (child.getFacetCount() > 0)) {
+                if(child instanceof Column) {
+                    for(UIComponent facet : child.getFacets().values()) {
+                        process(context, facet, phaseId);
+                    }
+                } 
+                else if(child instanceof Columns) {
+                    Columns columns = (Columns) child;
+                    for(int i = 0; i < columns.getRowCount(); i++) {
+                        columns.setRowIndex(i);
+                        
+                        for(UIComponent facet : child.getFacets().values()) {
+                            process(context, facet, phaseId);
+                        }
+                    }
+                    
+                    columns.setRowIndex(-1);
+                }
+                
+            }
+        }
+    }
+    
