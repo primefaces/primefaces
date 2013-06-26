@@ -69,6 +69,7 @@
     cursor: pointer;
     width: 15px;
     height: 15px;
+    float: left;
 }
 
 .ui-tree .ui-chkbox {
