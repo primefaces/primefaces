@@ -17,8 +17,6 @@ package org.primefaces.util;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
@@ -31,8 +29,6 @@ import org.primefaces.expression.SearchExpressionFacade;
  * Helper to generate javascript code of an ajax call
  */
 public class AjaxRequestBuilder {
-
-	private static final Pattern ID_PATTERN = Pattern.compile("@\\(.+\\)\\s*");
 	
     protected StringBuilder buffer;
     protected FacesContext context;
@@ -66,26 +62,6 @@ public class AjaxRequestBuilder {
         return this;
     }
     
-    private String[] parseIds(String ids) {
-        Matcher m = ID_PATTERN.matcher(ids);
-        String selector, regular;
-        
-        if(m.find()) {
-            selector = m.group().trim();
-            regular = m.replaceAll("");
-        }
-        else {
-            selector = null;
-            regular = ids;
-        }
-        
-        if(isValueBlank(regular)) {
-            regular = null;
-        }
-        
-        return new String[]{regular, selector};
-    }
-    
     private boolean isValueBlank(String value) {
 		if(value == null)
 			return true;
@@ -93,29 +69,21 @@ public class AjaxRequestBuilder {
 		return value.trim().equals("");
 	}
     
-    public AjaxRequestBuilder process(UIComponent component, String ids) {        
-        addIds(component, ids, "process", "processSelector");
+    public AjaxRequestBuilder process(UIComponent component, String expressions) {        
+        addExpressions(component, expressions, "process");
         
         return this;
     }
     
-    public AjaxRequestBuilder update(UIComponent component, String ids) {        
-        addIds(component, ids, "update", "updateSelector");
+    public AjaxRequestBuilder update(UIComponent component, String expressions) {        
+        addExpressions(component, expressions, "update");
         
         return this;
     }
     
-    private AjaxRequestBuilder addIds(UIComponent component, String ids, String key, String keySel) {        
-        if(!isValueBlank(ids)) {
-            String[] parsed = parseIds(ids);
-            String regular = parsed[0];
-            String selector = parsed[1];
-            
-            if(regular != null)
-                buffer.append(",").append(key).append(":'").append(SearchExpressionFacade.resolveComponentsForClient(context, component, regular)).append("'");
-            
-            if(selector != null)
-                buffer.append(",").append(keySel).append(":'").append(selector).append("'");
+    private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key) {        
+        if(!isValueBlank(expressions)) {
+            buffer.append(",").append(key).append(":'").append(SearchExpressionFacade.resolveComponentsForClient(context, component, expressions)).append("'");
         }
         
         return this;
