@@ -1169,11 +1169,20 @@ public class SearchExpressionFacadeTest
 	}
 
 	@Test
-	public void resolveComponentsForClient_PFSNestedParenthese () {
+	public void resolveComponentsForClient_PFSNestedParenthese() {
 	    UIComponent source = new UICommand();
 	    source.setId("source");
 
 	    assertEquals("@(.ui-panel :input:not(select)) @widgetVar(test)", resolveComponentsForClient(source, " @(.ui-panel :input:not(select)) @widgetVar(test) "));
+
+	}
+	
+	@Test
+	public void resolveComponentsForClient_PFSMultipleIds() {
+	    UIComponent source = new UICommand();
+	    source.setId("source");
+
+	    assertEquals("@(.ui-panel :input:not(select), #myPanel, #myPanel2)", resolveComponentsForClient(source, " @(.ui-panel :input:not(select), #myPanel, #myPanel2) "));
 
 	}
 }
