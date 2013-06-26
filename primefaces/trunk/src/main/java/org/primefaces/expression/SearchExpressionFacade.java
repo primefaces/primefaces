@@ -286,7 +286,7 @@ public class SearchExpressionFacade {
 	 */
 	private static String[] split(String value, char... separators) {
 
-		List<String> tokens = new ArrayList<>();
+		List<String> tokens = new ArrayList<String>();
 		StringBuilder buffer = new StringBuilder();
 
 		int parenthesesCounter = 0;
