@@ -805,15 +805,6 @@ import org.primefaces.component.datatable.feature.*;
         this.multiSortMeta = value;
     }
     
-    public boolean isDefaultSorted() {
-        Object value = getStateHelper().get("defaultSorted");
-
-        return value == null ? false : true;
-	}
-	public void setDefaultSorted() {
-		getStateHelper().put("defaultSorted", true);
-	}
-    
     public boolean isRTL() {
         return this.getDir().equalsIgnoreCase("rtl");
     }
