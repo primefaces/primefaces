@@ -855,18 +855,25 @@ import org.primefaces.component.datatable.feature.*;
                     }
                 } 
                 else if(child instanceof Columns) {
-                    Columns columns = (Columns) child;
-                    for(int i = 0; i < columns.getRowCount(); i++) {
-                        columns.setRowIndex(i);
+                    Columns uicolumns = (Columns) child;
+                    int f = uicolumns.getFirst();
+                    int r = uicolumns.getRows();
+                    int l = (r == 0) ? uicolumns.getRowCount() : (f + r);
+                            
+                    for(int i = f; i < l; i++) {
+                        uicolumns.setRowIndex(i);
+                        
+                        if(!uicolumns.isRowAvailable()) {
+                            break;
+                        }
                         
                         for(UIComponent facet : child.getFacets().values()) {
                             process(context, facet, phaseId);
                         }
                     }
                     
-                    columns.setRowIndex(-1);
+                    uicolumns.setRowIndex(-1);
                 }
-                
             }
         }
     }
