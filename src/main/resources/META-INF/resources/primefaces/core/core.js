@@ -578,14 +578,14 @@
         },
 
         resolveComponents: function(expressions) {
-            var expressions = expressions.match(/(?:[^(,|\s)(]|\([^)]*\)+)+/g);
+            var splittedExpressions = PrimeFaces.ajax.AjaxUtils.splitExpressions(expressions);
             var ids = [];
             
-            if (expressions) {
-                for (var i = 0; i < expressions.length; ++i) {
-                    var expression = expressions[i].trim();
+            if (splittedExpressions) {
+                for (var i = 0; i < splittedExpressions.length; ++i) {
+                    var expression = splittedExpressions[i].trim();
                     if (expression.length > 0) {
-                        
+
                         // just a id
                         if (expression.indexOf("@") == -1) {
                             if (!PrimeFaces.inArray(ids, expression)) {
@@ -624,6 +624,40 @@
             }
 
             return ids;
+        },
+        
+        splitExpressions: function(value) {
+
+    		var expressions = [];
+    		var buffer = '';
+
+    		var parenthesesCounter = 0;
+
+    		for (var i = 0; i < value.length; i++) {
+    			var c = value[i];
+
+    			if (c == '(') {
+    				parenthesesCounter++;
+    			}
+
+    			if (c == ')') {
+    				parenthesesCounter--;
+    			}
+
+    			if ((c == ' ' || c == ',') && parenthesesCounter == 0) {
+					// lets add token inside buffer to our tokens
+    				expressions.push(buffer);
+					// now we need to clear buffer
+    				buffer = '';
+    			} else {
+    				buffer += c;
+    			}
+    		}
+
+    		// lets not forget about part after the separator
+    		expressions.push(buffer);
+
+    		return expressions;
         },
 
         /**
