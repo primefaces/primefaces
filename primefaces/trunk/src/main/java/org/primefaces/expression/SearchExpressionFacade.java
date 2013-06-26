@@ -2,7 +2,6 @@ package org.primefaces.expression;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
@@ -17,9 +16,8 @@ import org.primefaces.util.ComponentUtils;
  */
 public class SearchExpressionFacade {
 
-    // Pattern to split expressions by comma or/and blank but not inside parenthesis
-    private static final Pattern EXPRESSIONS_SPLIT_PATTERN = Pattern.compile("(,|\\s)(?=(?:[^']*'[^']*')*[^']*$)(?=(?:[^()]*\\([^()]*\\))*[^()]*$)");
-
+    private static final char[] EXPRESSION_SEPARATORS = new char[] { ',', ' ' };
+    
     /**
      * Resolves a list of {@link UIComponent}s for the given expression or expressions.
      *
@@ -30,12 +28,16 @@ public class SearchExpressionFacade {
      */
 	public static List<UIComponent> resolveComponents(FacesContext context, UIComponent source, String expressions) {
 	    // split expressions by blank or comma (and ignore blank and commas inside brackets)
-		String[] splittedExpressions = splitExpressions(expressions);
+		String[] splittedExpressions = split(expressions, EXPRESSION_SEPARATORS);
 
 		ArrayList<UIComponent> components = new ArrayList<UIComponent>();
 
 		for (int i = 0; i < splittedExpressions.length; i++) {
 			String expression = splittedExpressions[i].trim();
+
+			if (ComponentUtils.isValueBlank(expression)) {
+				continue;
+			}
 
 			UIComponent component = resolveComponent(context, source, expression);
 			if (component != null) {
@@ -56,13 +58,17 @@ public class SearchExpressionFacade {
      */
 	public static String resolveComponentsForClient(FacesContext context, UIComponent source, String expressions) {
 	    // split expressions by blank or comma (and ignore blank and commas inside brackets)
-	    String[] splittedExpressions = splitExpressions(expressions);
+		String[] splittedExpressions = split(expressions, EXPRESSION_SEPARATORS);
 
 		StringBuilder expressionsBuilder = new StringBuilder();
 
 		for (int i = 0; i < splittedExpressions.length; i++) {
 			String expression = splittedExpressions[i].trim();
 
+			if (ComponentUtils.isValueBlank(expression)) {
+				continue;
+			}
+			
 			if (i != 0 && expressionsBuilder.length() > 0) {
 				expressionsBuilder.append(" ");
 			}
@@ -173,7 +179,7 @@ public class SearchExpressionFacade {
 			}
 
 			// Pattern to split expressions by the separator but not inside parenthesis
-			String[] subExpressions = expression.split("(\\" + separatorString + ")(?=(?:[^']*'[^']*')*[^']*$)(?=(?:[^()]*\\([^()]*\\))*[^()]*$)");
+			String[] subExpressions = split(expression, separatorChar);
 
 			// checks for unnestable subexpresions (like @all or @none)
 			if (subExpressions.length > 1) {
@@ -215,7 +221,7 @@ public class SearchExpressionFacade {
 
 				UIComponent last = source;
 
-				String[] subExpressions = expression.split("(\\" + separatorString + ")(?![^()]*+\\))");
+				String[] subExpressions = split(expression, separatorChar);
 				for (int j = 0; j < subExpressions.length; j++) {
 
 					String subExpression = subExpressions[j].trim();
@@ -270,15 +276,56 @@ public class SearchExpressionFacade {
 
 		return component;
 	}
-
+	
 	/**
-	 * Split up the expressions by comma or blank and ignore blank and commas in brackets.
-	 *
-	 * @param expressions The expressions as string.
-	 * @return The splitted expressions.
+	 * Splits the given string by the given separator, but ignoring separator inside parenthese.
+     *
+	 * @param value The string value.
+	 * @param separators The separators.
+	 * @return The splitted string.
 	 */
-	private static String[] splitExpressions(String expressions)
-	{
-	    return EXPRESSIONS_SPLIT_PATTERN.split(expressions);
+	private static String[] split(String value, char... separators) {
+
+		List<String> tokens = new ArrayList<>();
+		StringBuilder buffer = new StringBuilder();
+
+		int parenthesesCounter = 0;
+
+		char[] charArray = value.toCharArray();
+		
+		for (char c : charArray) {
+			if (c == '(') {
+				parenthesesCounter++;
+			}
+
+			if (c == ')') {
+				parenthesesCounter--;
+			}
+
+			if (parenthesesCounter == 0) {
+				boolean isSeparator = false;
+				for (char separator : separators) {
+					if (c == separator) {
+						isSeparator = true;
+					}
+				}
+	
+				if (isSeparator) {
+					// lets add token inside buffer to our tokens
+					tokens.add(buffer.toString());
+					// now we need to clear buffer
+					buffer.delete(0, buffer.length());
+				} else {
+					buffer.append(c);
+				}
+			} else {
+				buffer.append(c);
+			}
+		}
+
+		// lets not forget about part after the separator
+		tokens.add(buffer.toString());
+
+		return tokens.toArray(new String[tokens.size()]);
 	}
 }
