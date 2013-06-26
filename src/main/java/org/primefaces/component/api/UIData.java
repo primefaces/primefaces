@@ -36,8 +36,6 @@ import javax.faces.event.PreValidateEvent;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
-import org.primefaces.component.columns.Columns;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 
 public class UIData extends javax.faces.component.UIData {
