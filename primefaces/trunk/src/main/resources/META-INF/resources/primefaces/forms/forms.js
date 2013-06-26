@@ -2049,7 +2049,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         //Closer
         this.closer.on('mouseenter.selectCheckboxMenu', function(){
             $(this).addClass('ui-state-hover');
-        }).on('mousekeave.selectCheckboxMenu', function() {
+        }).on('mouseleave.selectCheckboxMenu', function() {
             $(this).removeClass('ui-state-hover');
         }).on('click.selectCheckboxMenu', function(e) {
             _self.hide(true);
