@@ -14,11 +14,6 @@
     <rendererClass>org.primefaces.component.fragment.FragmentRenderer</rendererClass>
     <parent>javax.faces.component.UIPanel</parent>
     <description>Fragment component is used to define automatically partially processed and updated sections.</description>
-    <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.AutoUpdatable</name>
-		</interface>
-	</interfaces>
     <attributes>
         <attribute>
 			<name>autoUpdate</name>
