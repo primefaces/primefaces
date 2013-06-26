@@ -1183,7 +1183,7 @@ public class SearchExpressionFacadeTest
 	    UIComponent source = new UICommand();
 	    source.setId("source");
 
-	    assertEquals("@(.ui-panel :input:not(select), #myPanel, #myPanel2)", resolveComponentsForClient(source, " @(.ui-panel :input:not(select), #myPanel, #myPanel2) "));
+	    assertEquals("source @(.ui-panel :input:not(select), #myPanel, #myPanel2) @(myId3) source", resolveComponentsForClient(source, " @this @(.ui-panel :input:not(select), #myPanel, #myPanel2) @(myId3) @this"));
 
 	}
 }
