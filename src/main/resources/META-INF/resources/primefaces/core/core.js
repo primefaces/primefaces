@@ -577,46 +577,71 @@
             }
         },
 
-        findComponents: function(selector) {
-            //converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
-            var jqSelector = selector.substring(2, selector.length - 1),
-            components = $(jqSelector),
-            ids = [];
+        resolveComponents: function(expressions) {
+            var expressions = expressions.match(/(?:[^(,|\s)(]|\([^)]*\)+)+/g);
+            var ids = [];
+            
+            if (expressions) {
+                for (var i = 0; i < expressions.length; ++i) {
+                    var expression = expressions[i].trim();
+                    if (expression.length > 0) {
+                        
+                        // just a id
+                        if (expression.indexOf("@") == -1) {
+                            if (!PrimeFaces.inArray(ids, expression)) {
+                                ids.push(expression);
+                            }
+                        }
+                        // @widget
+                        else if (expression.indexOf("@widgetVar(") == 0) {
+                            var widgetVar = expression.substring(11, expression.length - 1);
+                            var widget = window[widgetVar];
+                            
+                            if (widget) {
+                                if (!PrimeFaces.inArray(ids, widget.id)) {
+                                    ids.push(widget.id);
+                                }
+                            } else {
+                                PrimeFaces.error("Widget for widgetVar \"" + widgetVar + "\" not avaiable");
+                            }
+                        }
+                        // PFS
+                        else if (expression.indexOf("@(") == 0) {
+                            //converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
+                            var elements = $(expression.substring(2, expression.length - 1));
 
-            components.each(function() {
-                var element = $(this),
-                clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id');
+                            elements.each(function() {
+                                var element = $(this),
+                                clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id');
 
-                ids.push(clientId);
-            });
-
-            return ids;
-        },
-
-        idsToArray: function(cfg, type, selector) {
-            var arr = [],
-            def = cfg[type],
-            ext = cfg.ext ? cfg.ext[type] : null;
-
-            if(def) {
-                $.merge(arr, def.split(' '));
-            }
-
-            if(ext) {
-                var extArr = ext.split(' ');
-
-                for(var i = 0; i < extArr.length; i++) {
-                    if(!PrimeFaces.inArray(arr, extArr[i])) {
-                        arr.push(extArr[i]);
+                                if (!PrimeFaces.inArray(ids, clientId)) {
+                                    ids.push(clientId);
+                                }
+                            });
+                        }
                     }
                 }
             }
 
-            if(selector) {
-                $.merge(arr, PrimeFaces.ajax.AjaxUtils.findComponents(selector));
+            return ids;
+        },
+
+        /**
+         * Type: update/process
+         */
+        resolveComponentsForAjaxCall: function(cfg, type) {
+
+            var expressions = '';
+            
+            if (cfg[type]) {
+                expressions += cfg[type];
             }
 
-            return arr;
+            if (cfg.ext && cfg.ext[type]) {
+                expressions += " " + cfg.ext[type];
+            }
+            
+            return PrimeFaces.ajax.AjaxUtils.resolveComponents(expressions);
         },
 
         send: function(cfg) {
@@ -686,7 +711,7 @@
             });
 
             //process
-            var processArray = PrimeFaces.ajax.AjaxUtils.idsToArray(cfg, 'process', cfg.processSelector);
+            var processArray = PrimeFaces.ajax.AjaxUtils.resolveComponentsForAjaxCall(cfg, 'process');
             if(cfg.fragmentId) {
                 processArray.push(cfg.fragmentId);
             }
@@ -697,7 +722,7 @@
             });
 
             //update
-            var updateArray = PrimeFaces.ajax.AjaxUtils.idsToArray(cfg, 'update', cfg.updateSelector);
+            var updateArray = PrimeFaces.ajax.AjaxUtils.resolveComponentsForAjaxCall(cfg, 'update');
             if(cfg.fragmentId&&cfg.fragmentUpdate) {
                 updateArray.push(cfg.fragmentId);
             }

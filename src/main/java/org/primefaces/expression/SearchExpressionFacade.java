@@ -17,7 +17,8 @@ import org.primefaces.util.ComponentUtils;
  */
 public class SearchExpressionFacade {
 
-    private static final Pattern EXPRESSIONS_SPLIT_PATTERN = Pattern.compile("(,|\\s)(?![^()]*+\\))");
+    // Pattern to split expressions by comma or/and blank but not inside parenthesis
+    private static final Pattern EXPRESSIONS_SPLIT_PATTERN = Pattern.compile("(,|\\s)(?=(?:[^']*'[^']*')*[^']*$)(?=(?:[^()]*\\([^()]*\\))*[^()]*$)");
 
     /**
      * Resolves a list of {@link UIComponent}s for the given expression or expressions.
@@ -171,7 +172,8 @@ public class SearchExpressionFacade {
 						+ "Expression: \"" + expression + "\" from \"" + source.getClientId(context) + "\"");
 			}
 
-			String[] subExpressions = expression.split("(\\" + separatorString + ")(?![^()]*+\\))");
+			// Pattern to split expressions by the separator but not inside parenthesis
+			String[] subExpressions = expression.split("(\\" + separatorString + ")(?=(?:[^']*'[^']*')*[^']*$)(?=(?:[^()]*\\([^()]*\\))*[^()]*$)");
 
 			// checks for unnestable subexpresions (like @all or @none)
 			if (subExpressions.length > 1) {

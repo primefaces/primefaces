@@ -593,29 +593,6 @@ public class SearchExpressionFacadeTest
 	}
 
 	@Test
-	public void resolveComponentForClient_ClientId() {
-
-		UIComponent root = new UIPanel();
-
-		UIForm form = new UIForm();
-		root.getChildren().add(form);
-
-		UINamingContainer outerContainer = new UINamingContainer();
-		form.getChildren().add(outerContainer);
-
-		UINamingContainer innerContainer = new UINamingContainer();
-		outerContainer.getChildren().add(innerContainer);
-
-		UIComponent component = new UIOutput();
-		innerContainer.getChildren().add(component);
-
-		UIComponent source = new UICommand();
-		innerContainer.getChildren().add(source);
-
-		assertEquals("Failed", "@clientId(myForm:myDiv)", resolveComponentForClient(source, " @clientId(myForm:myDiv)"));
-	}
-
-	@Test
 	public void resolveComponentForClient_WidgetVar() {
 
 		UIComponent root = new UIPanel();
@@ -645,7 +622,7 @@ public class SearchExpressionFacadeTest
 		source.setId("source");
 
 		try {
-			resolveComponent(source, " @clientId(myForm:myDiv):asd");
+			resolveComponent(source, " @widgetVar(myForm:myDiv):asd");
 			Assert.fail("This should actually raise an exception");
 		} catch (Exception e) {
 			assertEquals(FacesException.class, e.getClass());
@@ -666,7 +643,7 @@ public class SearchExpressionFacadeTest
 		source.setId("source");
 
 		try {
-			resolveComponentForClient(source, " @clientId(myForm:myDiv):asd");
+			resolveComponentForClient(source, " @widgetVar(myForm:myDiv):asd");
 			Assert.fail("This should actually raise an exception");
 		} catch (Exception e) {
 			assertEquals(FacesException.class, e.getClass());
@@ -1189,5 +1166,14 @@ public class SearchExpressionFacadeTest
         assertTrue("Failed", resolvedComponents.contains(component));
         assertTrue("Failed", resolvedComponents.contains(innerContainer));
 	    assertEquals("Failed", 2, resolvedComponents.size());
+	}
+
+	@Test
+	public void resolveComponentsForClient_PFSNestedParenthese () {
+	    UIComponent source = new UICommand();
+	    source.setId("source");
+
+	    assertEquals("@(.ui-panel :input:not(select)) @widgetVar(test)", resolveComponentsForClient(source, " @(.ui-panel :input:not(select)) @widgetVar(test) "));
+
 	}
 }
