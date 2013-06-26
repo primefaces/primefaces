@@ -2011,7 +2011,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindEvents: function() {
-        var _self = this;
+        var _self = this,
+        hideNS = 'mousedown.' + this.id,
+        resizeNS = 'resize.' + this.id;
         
         //Events for checkboxes
         this.bindCheckboxHover(this.checkboxes);
@@ -2086,7 +2088,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //hide overlay when outside is clicked
-        $(document.body).on('mousedown.selectCheckboxMenu', function (e) {        
+        $(document.body).off(hideNS).on(hideNS, function (e) {        
             if(_self.panel.is(':hidden')) {
                 return;
             }
@@ -2109,8 +2111,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //Realign overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
+        $(window).off(resizeNS).on(resizeNS, function() {
             if(_self.panel.is(':visible')) {
                 _self.alignPanel();
             }
