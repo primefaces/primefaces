@@ -96,15 +96,15 @@ public abstract class RequestContext {
 
     /**
      * Reset an editableValueHolder.
-     * @param id Client side identifier of the component.
+     * @param expressions A string with one or multiple search expression to resolve the components.
      */
-    public abstract void reset(String id);
+    public abstract void reset(String expressions);
 
     /**
      * Reset a collection of editableValueHolders.
-     * @param ids Client side identifiers of the components.
+     * @param expressions A list with with one or multiple search expression to resolve the components.
      */
-    public abstract void reset(Collection<String> ids);
+    public abstract void reset(Collection<String> expressions);
 
     /**
      * @return Shared WidgetBuilder instance of the current request

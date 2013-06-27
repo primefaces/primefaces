@@ -16,19 +16,18 @@
 package org.primefaces.component.resetinput;
 
 import java.io.Serializable;
-import java.util.EnumSet;
+import java.util.List;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
 
@@ -52,17 +51,12 @@ public class ResetInputActionListener implements ActionListener, Serializable {
 		ELContext elContext = context.getELContext();
         VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
         
-        String targetIds = (String) target.getValue(elContext);
+        String expressions = (String) target.getValue(elContext);
         UIComponent source = event.getComponent();
         
-        String[] ids = targetIds.split("[,\\s]+");
-        for(String id : ids) {
-            UIComponent targetComponent = source.findComponent(id);
-            if(targetComponent == null) {
-                throw new FacesException("Cannot find component with identifier \"" + id + "\" referenced from \"" + source.getClientId(context) + "\".");
-            }
-            
-            targetComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, source, expressions);
+        for (UIComponent component : components) {
+            component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
         }
     }
 }
