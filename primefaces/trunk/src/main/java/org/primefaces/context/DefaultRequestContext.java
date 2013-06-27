@@ -28,6 +28,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -122,30 +123,28 @@ public class DefaultRequestContext extends RequestContext {
     }
 
     @Override
-    public void reset(Collection<String> ids) {
+    public void reset(Collection<String> expressions) {
         VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 
-        for(String id : ids) {
-        	reset(visitContext, id);
+        for(String expression : expressions) {
+        	reset(visitContext, expression);
         }
     }
 
     @Override
-    public void reset(String id) {
+    public void reset(String expressions) {
         VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 
-        reset(visitContext, id);
+        reset(visitContext, expressions);
     }
     
-    private void reset(VisitContext visitContext, String id) {
+    private void reset(VisitContext visitContext, String expressions) {
         UIViewRoot root = context.getViewRoot();
-
-        UIComponent targetComponent = root.findComponent(id);
-        if(targetComponent == null) {
-            throw new FacesException("Cannot find component with identifier \"" + id + "\" referenced from viewroot.");
+        
+        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, root, expressions);
+        for (UIComponent component : components) {
+            component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
         }
-
-        targetComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
     }
     
     @Override
