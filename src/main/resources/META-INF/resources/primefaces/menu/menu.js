@@ -282,22 +282,18 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
             submenuHeight = submenu.outerHeight(),
             menuitemHeight = menuitem.outerHeight();
     
+            submenu.css({
+                    'left': menuitem.outerWidth(),
+                    'top': 0,
+                    'z-index': ++PrimeFaces.zindex,
+                });
             if((menuitemTop + submenuHeight) > (win.height() + win.scrollTop())) {
                 submenu.css({
-                    'left': menuitem.outerWidth(),
-                    'top': 0,
                     'overflow' : 'auto',
                     'height' : win.height()-(menuitemHeight+menuitemTop),
-                    'z-index': ++PrimeFaces.zindex,
-                }).show();
+                });
             }
-            else {
-                submenu.css({
-                    'left': menuitem.outerWidth(),
-                    'top': 0,
-                    'z-index': ++PrimeFaces.zindex,
-                }).show();
-            }
+            submenu.show();
         } 
         else {  
             submenu.css({                                    //root menuitem         
