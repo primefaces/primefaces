@@ -106,17 +106,24 @@ public abstract class CoreRenderer extends Renderer {
 	protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		
+        //pre-defined attributes
 		for(String attribute : attrs) {
 			Object value = component.getAttributes().get(attribute);
 			
 			if(shouldRenderAttribute(value))
 				writer.writeAttribute(attribute, value.toString(), attribute);
 		}
+        
+        //dynamic attributes       
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isPassThroughSupported()) {
+            RendererUtils.renderPassThroughAttributes(context, component);
+        }
 	}
 	
 	protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs, String[] ignoredAttrs) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		
+        //pre-defined attributes
 		for(String attribute : attrs) {
 			if(isIgnoredAttribute(attribute, ignoredAttrs)) {
 				continue;
@@ -127,6 +134,11 @@ public abstract class CoreRenderer extends Renderer {
 			if(shouldRenderAttribute(value))
 				writer.writeAttribute(attribute, value.toString(), attribute);
 		}
+        
+        //dynamic attributes       
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isPassThroughSupported()) {
+            RendererUtils.renderPassThroughAttributes(context, component);
+        }
 	}
 	
 	private boolean isIgnoredAttribute(String attribute, String[] ignoredAttrs) {

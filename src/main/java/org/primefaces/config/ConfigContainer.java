@@ -39,6 +39,7 @@ public class ConfigContainer {
 	private boolean interpretEmptyStringAsNull = false;
 	private boolean rightToLeft = false;
 	private String  secretKey = null;
+    private boolean passThroughSupported = false;
 
 	// internal config
 	private boolean stringConverterAvailable = false;
@@ -77,6 +78,8 @@ public class ConfigContainer {
         } else {
         	validateEmptyFields = Boolean.valueOf(value);
         }
+        
+        passThroughSupported = FacesContext.class.getPackage().getImplementationVersion().startsWith("2.2");
 	}
 
     private boolean checkIfBeanValidationIsAvailable() {
@@ -137,4 +140,7 @@ public class ConfigContainer {
         this.secretKey = secretKey;
     }
 
+    public boolean isPassThroughSupported() {
+        return passThroughSupported;
+    }
 }
