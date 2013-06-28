@@ -586,8 +586,8 @@
                     var expression = splittedExpressions[i].trim();
                     if (expression.length > 0) {
 
-                        // just a id
-                        if (expression.indexOf("@") == -1) {
+                        // just a id or passtrough keywords
+                        if (expression.indexOf("@") == -1 || expression == '@none' || expression == '@all') {
                             if (!PrimeFaces.inArray(ids, expression)) {
                                 ids.push(expression);
                             }
