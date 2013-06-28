@@ -51,7 +51,7 @@ public class HeadRenderer extends Renderer {
         }
         
         //Theme
-        String theme = null;
+        String theme;
         String themeParamValue = context.getExternalContext().getInitParameter(Constants.THEME_PARAM);
 
         if(themeParamValue != null) {
@@ -67,6 +67,12 @@ public class HeadRenderer extends Renderer {
 
         if(theme != null && !theme.equals("none")) {
             encodeTheme(context, "primefaces-" + theme, "theme.css");
+        }
+        
+        //Middle facet
+        UIComponent middle = component.getFacet("middle");
+        if(middle != null) {
+            middle.encodeAll(context);
         }
         
         //Registered Resources
