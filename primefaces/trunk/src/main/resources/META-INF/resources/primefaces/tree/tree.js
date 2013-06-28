@@ -743,7 +743,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     'dragNodeKey': dragNodeKey,
                     'dropNodeKey': dropNodeKey,
                     'dragSource': dragSource.id,
-                    'dndIndex': 0,
+                    'dndIndex': targetDragNode.prevAll('li.ui-treenode').length,
                     'transfer': transfer
                 });
             }
