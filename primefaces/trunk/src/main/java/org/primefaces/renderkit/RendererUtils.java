@@ -16,11 +16,16 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
+import java.util.Map;
+import javax.el.ValueExpression;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.util.HTML;
 
 public class RendererUtils {
+    
+    private RendererUtils() {}
     
     public static void encodeCheckbox(FacesContext context, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -39,5 +44,24 @@ public class RendererUtils {
         writer.endElement("div");
         
         writer.endElement("div");
+    } 
+    
+    public static void renderPassThroughAttributes(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Map<String, Object> passthroughAttributes = component.getPassThroughAttributes(false);
+        
+        if(passthroughAttributes != null && !passthroughAttributes.isEmpty()) {
+            for(Map.Entry<String, Object> attribute : passthroughAttributes.entrySet()) {
+                String value;
+
+                if(attribute.getValue() instanceof ValueExpression)
+                    value = ((ValueExpression) attribute.getValue()).getValue(context.getELContext()).toString();
+                else
+                    value = attribute.getValue().toString();
+
+                writer.writeAttribute(attribute.getKey(), value, null);
+            }
+        }
+        
     }
 }
