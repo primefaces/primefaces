@@ -248,8 +248,8 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeScrollableTable(FacesContext context, DataTable table) throws IOException {
-        String tableStyle = table.getStyle();
-        String tableStyleClass = table.getStyleClass();
+        String tableStyle = table.getTableStyle();
+        String tableStyleClass = table.getTableStyleClass();
                         
         encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
         encodeThead(context, table);
