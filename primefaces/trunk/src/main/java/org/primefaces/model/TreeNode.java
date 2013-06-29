@@ -44,4 +44,8 @@ public interface TreeNode {
     public boolean isSelectable();
 	
 	public void setSelectable(boolean selectable);
+    
+    public boolean isPartialSelected();
+    
+    public void setPartialSelected(boolean value);
 }
