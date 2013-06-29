@@ -211,7 +211,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
                         this.unselectAllNodes();
                     }
 
-                    if(this.isMultipleSelection && shiftKey) {
+                    if(this.isMultipleSelection() && shiftKey) {
                         this.selectNodesInRange(node);
                     }
                     else {
