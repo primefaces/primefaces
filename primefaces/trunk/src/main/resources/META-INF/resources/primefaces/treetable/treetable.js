@@ -4,11 +4,7 @@
 PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
-        this._super(cfg);
-        
-        this.cfg.propagateUp = this.cfg.propagateUp === false ? false : true;
-        this.cfg.propagateDown = this.cfg.propagateDown === false ? false : true;
-        
+        this._super(cfg);        
         this.thead = $(this.jqId + '_head');
         this.tbody = $(this.jqId + '_data');
 
@@ -75,10 +71,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
             this.selection = selectionValue === "" ? [] : selectionValue.split(',');
 
             this.bindSelectionEvents();
-            
-            if(this.isCheckboxSelection()) {
-                this.preselectCheckbox();
-            }
         }
     },
     
@@ -302,25 +294,23 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         else
             this.selectNode(node);
         
-        if(this.cfg.propagateDown) {
-            var descendants = this.getDescendants(node);
+        //propagate down
+        var descendants = this.getDescendants(node);
 
-            for(var i = 0; i < descendants.length; i++) {
-                var descendant = descendants[i];
+        for(var i = 0; i < descendants.length; i++) {
+            var descendant = descendants[i];
 
-                if(selected)
-                    this.unselectNode(descendant, true);
-                else
-                    this.selectNode(descendant, true);
-            }
+            if(selected)
+                this.unselectNode(descendant, true);
+            else
+                this.selectNode(descendant, true);
         }
-        
-        if(this.cfg.propagateUp) {
-            var parentNode = this.getParent(node);
-            if(parentNode) {
-                this.propagateUp(parentNode);
-                this.writeSelections();
-            }
+
+        //propagate up
+        var parentNode = this.getParent(node);
+        if(parentNode) {
+            this.propagateUp(parentNode);
+            this.writeSelections();
         }
     },
     
@@ -392,17 +382,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
         var parent = this.getParent(node);
         if(parent) {
             this.propagateUp(parent);
-        }
-    },
-    
-    preselectCheckbox: function() {
-        var selectedNodes = this.tbody.children('tr.ui-state-highlight');
-        
-        for(var i = 0; i < selectedNodes.length; i++) {
-            var parent = this.getParent(selectedNodes.eq(i));
-            if(parent) {
-                this.propagateUp(parent);
-            }
         }
     },
     

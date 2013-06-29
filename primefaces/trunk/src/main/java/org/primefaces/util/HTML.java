@@ -173,6 +173,7 @@ public class HTML {
     public final static String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
     public final static String CHECKBOX_ICON_CLASS = "ui-chkbox-icon ui-c";
     public final static String CHECKBOX_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-check ui-c";
+    public final static String CHECKBOX_PARTIAL_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-minus ui-c";
     public final static String CHECKBOX_LABEL_CLASS = "ui-chkbox-label";
     
     public final static String RADIOBUTTON_CLASS = "ui-radiobutton ui-widget";

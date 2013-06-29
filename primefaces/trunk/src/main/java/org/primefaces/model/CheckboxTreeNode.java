@@ -112,16 +112,24 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
 
     public void setSelected(boolean value) {
         this.selected = value;
+        this.partialSelected = false;
         
-        //propagate down
         if(!isLeaf()) {
             for(TreeNode child : children) {
-                child.setSelected(value);
+                ((CheckboxTreeNode) child).propagateSelectionDown(value);
             }
         }
         
         if(this.getParent() != null) {
             ((CheckboxTreeNode) this.getParent()).propagateSelectionUp();
+        }
+    }
+    
+    protected void propagateSelectionDown(boolean value) {
+        this.selected = value;
+        
+        for(TreeNode child : children) {
+            ((CheckboxTreeNode) child).propagateSelectionDown(value);
         }
     }
     

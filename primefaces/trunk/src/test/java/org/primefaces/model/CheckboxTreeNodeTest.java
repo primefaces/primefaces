@@ -81,6 +81,8 @@ public class CheckboxTreeNodeTest {
         
         assertTrue(work.isPartialSelected());
         assertTrue(document.isPartialSelected());
+        assertFalse(work.isSelected());
+        assertFalse(document.isSelected());
     }
     
     @Test
@@ -95,6 +97,7 @@ public class CheckboxTreeNodeTest {
         
         assertTrue(work.isSelected());
         assertTrue(document.isPartialSelected());
+        assertFalse(document.isSelected());
     }
     
 }

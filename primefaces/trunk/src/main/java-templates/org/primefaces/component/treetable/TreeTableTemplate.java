@@ -39,6 +39,7 @@ import java.lang.StringBuilder;
     public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
     public static final String INDENT_CLASS = "ui-treetable-indent";
 	public static final String EMPTY_MESSAGE_ROW_CLASS = "ui-widget-content ui-treetable-empty-message";
+    public final static String PARTIAL_SELECTED_CLASS = "ui-treetable-partialselected";
     
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize"));
 
