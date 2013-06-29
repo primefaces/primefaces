@@ -332,17 +332,17 @@ public class TreeTableRenderer extends CoreRenderer {
             String selectionMode = tt.getSelectionMode();
             boolean selectionEnabled = selectionMode != null;
             boolean selectable = treeNode.isSelectable() && selectionEnabled;
-            boolean checkboxSelection = selectionEnabled && selectionMode.equals("checkbox");
-            
-            if(checkboxSelection && treeNode.getParent().isSelected()) {
-                treeNode.setSelected(true);
-            }
-            
+            boolean checkboxSelection = selectionEnabled && selectionMode.equals("checkbox");            
             boolean selected = treeNode.isSelected();
+            boolean partialSelected = treeNode.isPartialSelected();
             
             String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
             rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
             rowStyleClass = rowStyleClass + " " + treeNode.getType();
+            
+            if(partialSelected) {
+                rowStyleClass = rowStyleClass + " " + TreeTable.PARTIAL_SELECTED_CLASS;
+            }
             
             String userRowStyleClass = tt.getRowStyleClass();
             if(userRowStyleClass != null) {
@@ -396,7 +396,7 @@ public class TreeTableRenderer extends CoreRenderer {
                         writer.endElement("span");
                         
                         if(selectable && checkboxSelection) {
-                            RendererUtils.encodeCheckbox(context, selected);
+                            RendererUtils.encodeCheckbox(context, selected, partialSelected);
                         }
                     }
 
