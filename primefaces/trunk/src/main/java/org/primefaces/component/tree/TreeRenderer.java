@@ -27,6 +27,7 @@ import org.primefaces.component.api.UITree;
 
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
@@ -314,7 +315,8 @@ public class TreeRenderer extends CoreRenderer {
         boolean expanded = node.isExpanded();
         boolean leaf = node.isLeaf();
         boolean selectable = node.isSelectable();
-        
+        boolean partialSelected = node.isPartialSelected();
+
         //preselection
         boolean selected = node.isSelected();
         if(selected) {
@@ -330,8 +332,13 @@ public class TreeRenderer extends CoreRenderer {
             nodeClass = expanded ? nodeClass + " ui-treenode-expanded" : nodeClass + " ui-treenode-collapsed";
         }
         
-        nodeClass = selected ? nodeClass + " ui-treenode-selected" : nodeClass + " ui-treenode-unselected";
-        
+        if(selected)
+            nodeClass += " ui-treenode-selected";
+        else if(partialSelected)
+            nodeClass += "ui-treenode-hasselected";
+        else
+            nodeClass += "ui-treenode-unselected";
+      
         writer.startElement("table", tree);        
         writer.startElement("tbody", null);
         writer.startElement("tr", null);
@@ -372,7 +379,7 @@ public class TreeRenderer extends CoreRenderer {
         
         //checkbox
         if(checkbox && selectable) {
-            encodeCheckbox(context, tree, node, selected);
+            RendererUtils.encodeCheckbox(context, selected, partialSelected);
         }
         
         //icon
@@ -465,6 +472,8 @@ public class TreeRenderer extends CoreRenderer {
         if(rowKey != null) {
             //preselection
             boolean selected = node.isSelected();
+            boolean partialSelected = node.isPartialSelected();
+
             if(selected) {
                 tree.getSelectedRowKeys().add(rowKey);
             }
@@ -486,7 +495,14 @@ public class TreeRenderer extends CoreRenderer {
 
             //style class of node
             String containerClass = isLeaf ? Tree.LEAF_NODE_CLASS : Tree.PARENT_NODE_CLASS;
-            containerClass = selected ? containerClass + " ui-treenode-selected" : containerClass + " ui-treenode-unselected";
+            
+            if(selected)
+                containerClass += " ui-treenode-selected";
+            else if(partialSelected)
+                containerClass += "ui-treenode-hasselected";
+            else
+                containerClass += "ui-treenode-unselected";
+            
             containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();
             
             writer.startElement("li", null);
@@ -521,14 +537,14 @@ public class TreeRenderer extends CoreRenderer {
                     
                     //checkbox
                     if(checkbox && selectable) {
-                        encodeCheckbox(context, tree, node, selected);
+                        RendererUtils.encodeCheckbox(context, selected, partialSelected);
                     }
 
                     //node icon
                     encodeIcon(context, uiTreeNode, expanded);
 
                     //label
-                    String nodeLabelClass = (selected && !checkbox) ? Tree.NODE_LABEL_CLASS + " ui-state-highlight" : Tree.NODE_LABEL_CLASS;
+                    String nodeLabelClass = selected? Tree.NODE_LABEL_CLASS + " ui-state-highlight" : Tree.NODE_LABEL_CLASS;
                         
                     writer.startElement("span", null);
                     writer.writeAttribute("class", nodeLabelClass, null);
