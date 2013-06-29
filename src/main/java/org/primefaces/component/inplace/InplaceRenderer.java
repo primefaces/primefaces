@@ -16,6 +16,8 @@
 package org.primefaces.component.inplace;
 
 import java.io.IOException;
+import java.util.Iterator;
+import javax.faces.component.EditableValueHolder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -51,7 +53,7 @@ public class InplaceRenderer extends CoreRenderer {
         boolean disabled = inplace.isDisabled();
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
         
-        boolean validationFailed = context.isValidationFailed();
+        boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
         String displayStyle = validationFailed ? "none" : "inline";
         String contentStyle = validationFailed ? "inline" : "none";
         
@@ -175,7 +177,7 @@ public class InplaceRenderer extends CoreRenderer {
 
         writer.endElement("button");
 	}
-
+    
     @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		//Do Nothing
