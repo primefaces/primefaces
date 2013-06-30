@@ -335,9 +335,9 @@ public class TreeRenderer extends CoreRenderer {
         if(selected)
             nodeClass += " ui-treenode-selected";
         else if(partialSelected)
-            nodeClass += "ui-treenode-hasselected";
+            nodeClass += " ui-treenode-hasselected";
         else
-            nodeClass += "ui-treenode-unselected";
+            nodeClass += " ui-treenode-unselected";
       
         writer.startElement("table", tree);        
         writer.startElement("tbody", null);
@@ -499,9 +499,9 @@ public class TreeRenderer extends CoreRenderer {
             if(selected)
                 containerClass += " ui-treenode-selected";
             else if(partialSelected)
-                containerClass += "ui-treenode-hasselected";
+                containerClass += " ui-treenode-hasselected";
             else
-                containerClass += "ui-treenode-unselected";
+                containerClass += " ui-treenode-unselected";
             
             containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();
             
