@@ -16,6 +16,9 @@
 package org.primefaces.component.behavior.ajax;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
@@ -26,6 +29,8 @@ import javax.faces.event.AjaxBehaviorListener;
 
 public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializable {
 
+	private static Logger LOG = Logger.getLogger(AjaxBehaviorListenerImpl.class.getName());
+	
     private MethodExpression listener;
     private MethodExpression listenerWithArg;
 
@@ -39,7 +44,11 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
     public void processAjaxBehavior(AjaxBehaviorEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         final ELContext elContext = context.getELContext();
-        
+
+    	if (LOG.isLoggable(Level.FINE)) {
+    		LOG.fine("Try to invoke listener: " + listener.getExpressionString());
+    	}
+
         try {
             listener.invoke(elContext, new Object[]{});
         } 
@@ -52,7 +61,11 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
     }
     
     private void processArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
-        try {
+    	if (LOG.isLoggable(Level.FINE)) {
+    		LOG.fine("Try to invoke listenerWithArg: " + listenerWithArg.getExpressionString());
+    	}
+
+    	try {
             listenerWithArg.invoke(elContext , new Object[]{event});
         }
         catch (MethodNotFoundException mnfe) {
@@ -64,8 +77,12 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
     }
     
     private void processCustomListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
-        MethodExpression argListener = context.getApplication().getExpressionFactory().
+    	MethodExpression argListener = context.getApplication().getExpressionFactory().
                     createMethodExpression(elContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
+
+    	if (LOG.isLoggable(Level.FINE)) {
+    		LOG.fine("Try to invoke customListener: " + argListener.getExpressionString());
+    	}
 
         argListener.invoke(elContext, new Object[]{event});
     }
