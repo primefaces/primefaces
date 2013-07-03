@@ -21,28 +21,41 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.component.*;
+import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
-import javax.faces.validator.BeanValidator;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
+import org.primefaces.visit.ResetInputVisitCallback;
 
 public class ComponentUtils {
 
 	public static final EnumSet<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = EnumSet.of(VisitHint.SKIP_UNRENDERED);
-	
+
+	/**
+	 * Visit the current renderIds and, if the component is 
+     * an instance of {@link EditableValueHolder}, 
+     * call its {@link EditableValueHolder#resetValue} method.  
+     * Use {@link #visitTree} to do the visiting.</p>
+	 * 
+	 * @param context The current {@link FacesContext}.
+	 */
+    public static void resetValuesFromComponentsToRender(FacesContext context) {
+    	context.getViewRoot().visitTree(
+        		VisitContext.createVisitContext(context, context.getPartialViewContext().getRenderIds(), null), 
+                ResetInputVisitCallback.INSTANCE);
+    }
+
 	/**
 	 * Algorithm works as follows;
 	 * - If it's an input component, submitted value is checked first since it'd be the value to be used in case validation errors

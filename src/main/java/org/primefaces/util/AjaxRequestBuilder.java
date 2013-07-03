@@ -124,6 +124,19 @@ public class AjaxRequestBuilder {
         return this;
     }
     
+    public AjaxRequestBuilder resetValues(boolean value, boolean resetValuesSet) {
+        ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+    	
+    	//component can override global setting
+        boolean resetValues = resetValuesSet ? value : config.isResetValuesEnabled();
+        
+        if(resetValues) {
+            buffer.append(",resetValues:true");
+        }
+        
+        return this;
+    }
+    
     public AjaxRequestBuilder onstart(String onstart) {
         if(onstart != null) {
             buffer.append(",onstart:function(cfg){").append(onstart).append(";}");

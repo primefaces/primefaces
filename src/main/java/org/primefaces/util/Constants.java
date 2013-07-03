@@ -29,7 +29,8 @@ public class Constants {
     public static final String PUSH_SERVER_URL = "primefaces.PUSH_SERVER_URL";
     public static final String SUBMIT_PARAM = "primefaces.SUBMIT";
     public static final String DIRECTION_PARAM = "primefaces.DIR";
-    
+    public static final String RESET_VALUES_PARAM = "primefaces.RESET_VALUES";
+
     public static final String DOWNLOAD_COOKIE = "primefaces.download";
 
     public final static String VERSION = "4.0-SNAPSHOT";

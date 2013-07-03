@@ -52,6 +52,8 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean global;
     private boolean async;
     private boolean partialSubmitSet;
+    private boolean resetValues;
+    private boolean resetValuesSet;
     
     public DefaultMenuItem() {}
     
@@ -269,6 +271,15 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.partialSubmitSet = true;
     }
 
+    public boolean isResetValues() {
+        return resetValues;
+    }
+
+    public void setResetValues(boolean resetValues) {
+        this.resetValues = resetValues;
+        this.resetValuesSet = true;
+    }
+    
     public boolean isGlobal() {
         return global;
     }
@@ -287,5 +298,9 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
     public boolean isPartialSubmitSet() {
         return partialSubmitSet;
+    }
+    
+    public boolean isResetValuesSet() {
+        return resetValuesSet;
     }
 }
