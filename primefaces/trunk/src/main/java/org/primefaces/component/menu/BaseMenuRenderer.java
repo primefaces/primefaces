@@ -240,6 +240,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 .async(source.isAsync())
                 .global(source.isGlobal())
                 .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet())
+                .resetValues(source.isResetValues(), source.isResetValuesSet())
                 .onstart(source.getOnstart())
                 .onerror(source.getOnerror())
                 .onsuccess(source.getOnsuccess())

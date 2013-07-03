@@ -91,6 +91,13 @@
             <description>When enabled, only values related to partially processed components would be serialized for ajax 
             instead of whole form.</description>
 		</attribute>
+        <attribute>
+			<name>resetValues</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>If true, indicate that this particular Ajax transaction is a value reset transaction. This will cause resetValue() to be called on any EditableValueHolder instances encountered as a result of this ajax transaction. If not specified, or the value is false, no such indication is made.</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>

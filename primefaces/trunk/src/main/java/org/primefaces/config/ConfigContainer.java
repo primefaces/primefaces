@@ -36,21 +36,29 @@ public class ConfigContainer {
 	private boolean validateEmptyFields = false;
 	private boolean beanValidationAvailable = false;
 	private boolean partialSubmitEnabled = false;
+	private boolean resetValuesEnabled = false;
 	private boolean interpretEmptyStringAsNull = false;
 	private boolean rightToLeft = false;
 	private String  secretKey = null;
-    private boolean passThroughSupported = false;
 
 	// internal config
 	private boolean stringConverterAvailable = false;
+	private boolean passThroughSupported = false;
 
 	public ConfigContainer(FacesContext context) {
-		initContextParams(context);
-
-        stringConverterAvailable = null != context.getApplication().createConverter(String.class);
+		initConfig(context);
+		initConfigFromContextParams(context);
 	}
 
-	private void initContextParams(FacesContext context) {
+	private void initConfig(FacesContext context) {
+		beanValidationAvailable = checkIfBeanValidationIsAvailable();
+		
+		passThroughSupported = FacesContext.class.getPackage().getImplementationVersion().startsWith("2.2");
+		
+		stringConverterAvailable = null != context.getApplication().createConverter(String.class);
+	}
+	
+	private void initConfigFromContextParams(FacesContext context) {
 		ExternalContext externalContext = context.getExternalContext();
 
         String value = null;
@@ -63,11 +71,12 @@ public class ConfigContainer {
 
         value = externalContext.getInitParameter(Constants.SUBMIT_PARAM);
         partialSubmitEnabled = (value == null) ? false : value.equalsIgnoreCase("partial");
+        
+        value = externalContext.getInitParameter(Constants.RESET_VALUES_PARAM);
+        resetValuesEnabled = (value == null) ? false : Boolean.valueOf(value);
 
         value = externalContext.getInitParameter(Constants.SECRET_KEY);
         secretKey = (value == null) ? "primefaces" : value;
-
-        beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
         value = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
         if (null == value) {
@@ -78,8 +87,6 @@ public class ConfigContainer {
         } else {
         	validateEmptyFields = Boolean.valueOf(value);
         }
-        
-        passThroughSupported = FacesContext.class.getPackage().getImplementationVersion().startsWith("2.2");
 	}
 
     private boolean checkIfBeanValidationIsAvailable() {
@@ -136,11 +143,11 @@ public class ConfigContainer {
         return secretKey;
     }
 
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
-    }
-
     public boolean isPassThroughSupported() {
         return passThroughSupported;
+    }
+    
+    public boolean isResetValuesEnabled() {
+    	return resetValuesEnabled;
     }
 }
