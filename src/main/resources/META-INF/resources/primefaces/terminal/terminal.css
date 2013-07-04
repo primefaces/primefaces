@@ -1,0 +1,19 @@
+.ui-terminal {
+    height: 300px;
+    overflow: auto;
+    padding: 3px;
+}
+
+.ui-terminal-input {
+    border: 0 none;
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    margin-left: 2px;
+    width: 75%;
+    outline: none;
+}
+
+.ui-terminal-command {
+    margin-left: 3px;
+}
