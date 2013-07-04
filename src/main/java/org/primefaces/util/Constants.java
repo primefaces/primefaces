@@ -17,7 +17,7 @@ package org.primefaces.util;
 
 public class Constants {
 
-    public class Config {
+    public class ContextParams {
         // JSF context params
         public static final String INTERPRET_EMPTY_STRING_AS_NULL = "javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL";
         

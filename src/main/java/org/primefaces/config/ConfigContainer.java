@@ -65,24 +65,24 @@ public class ConfigContainer {
 
         String value = null;
 
-        value = externalContext.getInitParameter(Constants.Config.INTERPRET_EMPTY_STRING_AS_NULL);
+        value = externalContext.getInitParameter(Constants.ContextParams.INTERPRET_EMPTY_STRING_AS_NULL);
         interpretEmptyStringAsNull = (value == null) ? false : Boolean.valueOf(value);
 
-        value = externalContext.getInitParameter(Constants.Config.DIRECTION);
+        value = externalContext.getInitParameter(Constants.ContextParams.DIRECTION);
         rightToLeft = (value == null) ? false : value.equalsIgnoreCase("rtl");
 
-        value = externalContext.getInitParameter(Constants.Config.SUBMIT);
+        value = externalContext.getInitParameter(Constants.ContextParams.SUBMIT);
         partialSubmitEnabled = (value == null) ? false : value.equalsIgnoreCase("partial");
         
-        value = externalContext.getInitParameter(Constants.Config.RESET_VALUES);
+        value = externalContext.getInitParameter(Constants.ContextParams.RESET_VALUES);
         resetValuesEnabled = (value == null) ? false : Boolean.valueOf(value);
 
-        value = externalContext.getInitParameter(Constants.Config.SECRET_KEY);
+        value = externalContext.getInitParameter(Constants.ContextParams.SECRET_KEY);
         secretKey = (value == null) ? "primefaces" : value;
         
-        pushServerURL = externalContext.getInitParameter(Constants.Config.PUSH_SERVER_URL);
+        pushServerURL = externalContext.getInitParameter(Constants.ContextParams.PUSH_SERVER_URL);
         
-        theme = externalContext.getInitParameter(Constants.Config.THEME);
+        theme = externalContext.getInitParameter(Constants.ContextParams.THEME);
 
         value = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
         if (null == value) {
