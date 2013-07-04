@@ -40,6 +40,8 @@ public class ConfigContainer {
 	private boolean interpretEmptyStringAsNull = false;
 	private boolean rightToLeft = false;
 	private String  secretKey = null;
+	private String  pushServerURL = null;
+	private String  theme = null;
 
 	// internal config
 	private boolean stringConverterAvailable = false;
@@ -63,20 +65,24 @@ public class ConfigContainer {
 
         String value = null;
 
-        value = externalContext.getInitParameter(Constants.INTERPRET_EMPTY_STRING_AS_NULL);
+        value = externalContext.getInitParameter(Constants.Config.INTERPRET_EMPTY_STRING_AS_NULL);
         interpretEmptyStringAsNull = (value == null) ? false : Boolean.valueOf(value);
 
-        value = externalContext.getInitParameter(Constants.DIRECTION_PARAM);
+        value = externalContext.getInitParameter(Constants.Config.DIRECTION);
         rightToLeft = (value == null) ? false : value.equalsIgnoreCase("rtl");
 
-        value = externalContext.getInitParameter(Constants.SUBMIT_PARAM);
+        value = externalContext.getInitParameter(Constants.Config.SUBMIT);
         partialSubmitEnabled = (value == null) ? false : value.equalsIgnoreCase("partial");
         
-        value = externalContext.getInitParameter(Constants.RESET_VALUES_PARAM);
+        value = externalContext.getInitParameter(Constants.Config.RESET_VALUES);
         resetValuesEnabled = (value == null) ? false : Boolean.valueOf(value);
 
-        value = externalContext.getInitParameter(Constants.SECRET_KEY);
+        value = externalContext.getInitParameter(Constants.Config.SECRET_KEY);
         secretKey = (value == null) ? "primefaces" : value;
+        
+        pushServerURL = externalContext.getInitParameter(Constants.Config.PUSH_SERVER_URL);
+        
+        theme = externalContext.getInitParameter(Constants.Config.THEME);
 
         value = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
         if (null == value) {
@@ -149,5 +155,13 @@ public class ConfigContainer {
     
     public boolean isResetValuesEnabled() {
     	return resetValuesEnabled;
+    }
+
+    public String getPushServerURL() {
+        return pushServerURL;
+    }
+
+    public String getTheme() {
+        return theme;
     }
 }

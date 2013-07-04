@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 
@@ -33,7 +34,7 @@ public class SocketRenderer extends CoreRenderer {
         String channel = socket.getChannel();
         String channelUrl = Constants.PUSH_PATH + channel;
         String url = getResourceURL(context, channelUrl);
-        String pushServer = context.getExternalContext().getInitParameter(Constants.PUSH_SERVER_URL);
+        String pushServer = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getPushServerURL();
         
         if(pushServer != null) {
             url = pushServer + url;
