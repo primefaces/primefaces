@@ -10,7 +10,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.prompt = this.promptContainer.text();
         this.content = this.jq.children('.ui-terminal-content');
         this.input = this.promptContainer.next('');
-        this.commands = [''];
+        this.commands = [];
         this.commandIndex = 0;
         
         this.bindEvents();
@@ -25,7 +25,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
             switch(e.which) {
                 case keyCode.UP:
                     if($this.commandIndex > 0) {
-                        $this.input.val($this.commands[$this.commandIndex--]);
+                        $this.input.val($this.commands[--$this.commandIndex]);
                     }
                     
                     e.preventDefault();
@@ -34,6 +34,10 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.DOWN:
                     if($this.commandIndex < ($this.commands.length - 1)) {
                         $this.input.val($this.commands[++$this.commandIndex]);
+                    }
+                    else {
+                        ++$this.commandIndex;
+                        $this.input.val('');
                     }
                     
                     e.preventDefault();
