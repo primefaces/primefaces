@@ -85,7 +85,7 @@ import javax.faces.event.PhaseId;
         FacesContext context = getFacesContext();
 
         if(this.isRequestSource(context) && (event instanceof AjaxBehaviorEvent)) {
-            String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
             if(eventName != null && eventName.equals("dateSelect"))
                 customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
@@ -164,5 +164,5 @@ import javax.faces.event.PhaseId;
     }
 
     private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }

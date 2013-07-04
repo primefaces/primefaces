@@ -27,7 +27,7 @@ import javax.faces.event.PhaseId;
         
         if(isRequestSource(context)) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             
             if(eventName.equals("toggle")) {
@@ -71,5 +71,5 @@ import javax.faces.event.PhaseId;
     }
 
     private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }

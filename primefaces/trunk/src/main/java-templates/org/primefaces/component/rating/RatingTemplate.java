@@ -36,7 +36,7 @@ import javax.faces.event.PhaseId;
         FacesContext context = getFacesContext();
 
         if(event instanceof AjaxBehaviorEvent) {
-            String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
             if(eventName.equals("rate")) {
                 customEvents.put(eventName, (AjaxBehaviorEvent) event);

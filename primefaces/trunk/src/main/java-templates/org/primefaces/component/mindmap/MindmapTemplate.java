@@ -34,7 +34,7 @@ import org.primefaces.util.Constants;
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = this.getClientId(context);
         AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-        String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
         if(eventName.equals("select")||eventName.equals("dblselect")) {
             String nodeKey = params.get(clientId + "_nodeKey");
