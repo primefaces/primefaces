@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -92,7 +91,7 @@ public class DefaultRequestContext extends RequestContext {
 	@SuppressWarnings("unchecked")
     public List<String> getScriptsToExecute() {
         if(attributes.get(EXECUTE_SCRIPT_KEY) == null) {
-            attributes.put(EXECUTE_SCRIPT_KEY, new ArrayList());
+            attributes.put(EXECUTE_SCRIPT_KEY, new ArrayList<String>());
         }
         return (List<String>) attributes.get(EXECUTE_SCRIPT_KEY);
     }

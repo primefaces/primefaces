@@ -239,7 +239,7 @@ public class AjaxBehaviorHandler extends TagHandler implements BehaviorHolderAtt
                 result = new ArrayList<AttachedObjectHandler>();
                 attrs.put("javax.faces.RetargetableHandlers", result);
             } else {
-                result = Collections.EMPTY_LIST;
+                result = Collections.emptyList();
             }
         }
         return result;
