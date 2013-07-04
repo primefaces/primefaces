@@ -39,7 +39,7 @@ import javax.el.ELContext;
         FacesContext context = getFacesContext();
 
         if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
-            String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
             if(eventName.equals("close")) {
@@ -94,7 +94,7 @@ import javax.el.ELContext;
     }
 
     private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
     public boolean isContentLoadRequest(FacesContext context) {

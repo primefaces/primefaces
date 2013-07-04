@@ -46,7 +46,7 @@ import org.primefaces.util.Constants;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
         if(eventName != null && event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;

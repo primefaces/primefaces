@@ -63,7 +63,7 @@ import org.primefaces.model.ScheduleEvent;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = this.getClientId(context);
         TimeZone tz = calculateTimeZone();
 
@@ -136,7 +136,7 @@ import org.primefaces.model.ScheduleEvent;
     }
 
     private boolean isSelfRequest(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM));
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
     @Override

@@ -32,7 +32,7 @@ import org.primefaces.util.Constants;
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
-        String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         
         if(event instanceof AjaxBehaviorEvent && eventName.equals("toggleSelect")) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();

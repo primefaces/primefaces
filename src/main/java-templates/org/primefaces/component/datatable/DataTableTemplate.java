@@ -201,7 +201,7 @@ import org.primefaces.component.datatable.feature.*;
         if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
             setRowIndex(-1);
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
             FacesEvent wrapperEvent = null;
 
@@ -569,7 +569,7 @@ import org.primefaces.component.datatable.feature.*;
     }
 
     public boolean isRequestSource(FacesContext context) {
-        String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_SOURCE_PARAM);
+        String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
 
         return partialSource != null && this.getClientId(context).equals(partialSource);
     }

@@ -29,7 +29,7 @@ import org.primefaces.model.tagcloud.TagCloudModel;
         if(event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
 
             if(eventName.equals(DEFAULT_EVENT)) {
