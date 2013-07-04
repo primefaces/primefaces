@@ -47,16 +47,18 @@ public class SearchExpressionFacade {
 
 		ArrayList<UIComponent> components = new ArrayList<UIComponent>();
 
-		for (int i = 0; i < splittedExpressions.length; i++) {
-			String expression = splittedExpressions[i].trim();
-
-			if (ComponentUtils.isValueBlank(expression)) {
-				continue;
-			}
-
-			UIComponent component = resolveComponent(context, source, expression);
-			if (component != null) {
-				components.add(component);
+		if (splittedExpressions != null) {
+			for (int i = 0; i < splittedExpressions.length; i++) {
+				String expression = splittedExpressions[i].trim();
+	
+				if (ComponentUtils.isValueBlank(expression)) {
+					continue;
+				}
+	
+				UIComponent component = resolveComponent(context, source, expression);
+				if (component != null) {
+					components.add(component);
+				}
 			}
 		}
 
@@ -75,26 +77,30 @@ public class SearchExpressionFacade {
 	    // split expressions by blank or comma (and ignore blank and commas inside brackets)
 		String[] splittedExpressions = split(expressions, EXPRESSION_SEPARATORS);
 
-		StringBuilder expressionsBuilder = new StringBuilder();
+		String buildedExpressions = "";
 
-		for (int i = 0; i < splittedExpressions.length; i++) {
-			String expression = splittedExpressions[i].trim();
-
-			if (ComponentUtils.isValueBlank(expression)) {
-				continue;
+		if (splittedExpressions != null) {
+			StringBuilder expressionsBuilder = new StringBuilder();
+			
+			for (int i = 0; i < splittedExpressions.length; i++) {
+				String expression = splittedExpressions[i].trim();
+	
+				if (ComponentUtils.isValueBlank(expression)) {
+					continue;
+				}
+				
+				if (i != 0 && expressionsBuilder.length() > 0) {
+					expressionsBuilder.append(" ");
+				}
+	
+				String component = resolveComponentForClient(context, source, expression);
+				if (component != null) {
+					expressionsBuilder.append(component);
+				}
 			}
 			
-			if (i != 0 && expressionsBuilder.length() > 0) {
-				expressionsBuilder.append(" ");
-			}
-
-			String component = resolveComponentForClient(context, source, expression);
-			if (component != null) {
-				expressionsBuilder.append(component);
-			}
+			buildedExpressions = expressionsBuilder.toString();
 		}
-
-		String buildedExpressions = expressionsBuilder.toString();
 
 		// empty expression should resolve to @none
 		if (ComponentUtils.isValueBlank(buildedExpressions)) {
@@ -196,15 +202,17 @@ public class SearchExpressionFacade {
 			// Pattern to split expressions by the separator but not inside parenthesis
 			String[] subExpressions = split(expression, separatorChar);
 
-			// checks for unnestable subexpresions (like @all or @none)
-			if (subExpressions.length > 1) {
-				for (int j = 0; j < subExpressions.length; j++) {
-					String subExpression = subExpressions[j].trim();
-
-					if (!SearchExpressionResolverFactory.isNestable(subExpression)) {
-						throw new FacesException("Subexpression \"" + subExpression
-								+ "\" in full expression \"" + expression
-								+ "\" from \"" + source.getClientId(context) + "\" can not be nested.");
+			if (subExpressions != null) {
+				// checks for unnestable subexpresions (like @all or @none)
+				if (subExpressions.length > 1) {
+					for (int j = 0; j < subExpressions.length; j++) {
+						String subExpression = subExpressions[j].trim();
+	
+						if (!SearchExpressionResolverFactory.isNestable(subExpression)) {
+							throw new FacesException("Subexpression \"" + subExpression
+									+ "\" in full expression \"" + expression
+									+ "\" from \"" + source.getClientId(context) + "\" can not be nested.");
+						}
 					}
 				}
 			}
@@ -237,33 +245,35 @@ public class SearchExpressionFacade {
 				UIComponent last = source;
 
 				String[] subExpressions = split(expression, separatorChar);
-				for (int j = 0; j < subExpressions.length; j++) {
-
-					String subExpression = subExpressions[j].trim();
-
-					if (ComponentUtils.isValueBlank(subExpression)) {
-						continue;
+				if (subExpressions != null) {
+					for (int j = 0; j < subExpressions.length; j++) {
+	
+						String subExpression = subExpressions[j].trim();
+	
+						if (ComponentUtils.isValueBlank(subExpression)) {
+							continue;
+						}
+	
+						// re-add the seperator string here
+						// the impl will decide to search absolute or relative then
+						if (startsWithSeperator
+						        && j == 0
+						        && !subExpression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
+							subExpression = separatorString + subExpression;
+						}
+	
+						SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
+						UIComponent temp = resolver.resolve(source, last, subExpression);
+	
+						if (temp == null) {
+							throw new FacesException("Cannot find component for subexpression \"" + subExpression
+									+ "\" from component with id \"" + last.getClientId(context)
+									+ "\" in full expression \"" + expression
+									+ "\" referenced from \"" + source.getClientId(context) + "\".");
+						}
+	
+						last = temp;
 					}
-
-					// re-add the seperator string here
-					// the impl will decide to search absolute or relative then
-					if (startsWithSeperator
-					        && j == 0
-					        && !subExpression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
-						subExpression = separatorString + subExpression;
-					}
-
-					SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
-					UIComponent temp = resolver.resolve(source, last, subExpression);
-
-					if (temp == null) {
-						throw new FacesException("Cannot find component for subexpression \"" + subExpression
-								+ "\" from component with id \"" + last.getClientId(context)
-								+ "\" in full expression \"" + expression
-								+ "\" referenced from \"" + source.getClientId(context) + "\".");
-					}
-
-					last = temp;
 				}
 
 				component = last;
@@ -300,6 +310,10 @@ public class SearchExpressionFacade {
 	 * @return The splitted string.
 	 */
 	private static String[] split(String value, char... separators) {
+
+		if (value == null) {
+			return null;
+		}
 
 		List<String> tokens = new ArrayList<String>();
 		StringBuilder buffer = new StringBuilder();
