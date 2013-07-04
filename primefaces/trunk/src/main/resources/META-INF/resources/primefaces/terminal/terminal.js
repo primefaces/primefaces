@@ -36,7 +36,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                         $this.input.val($this.commands[++$this.commandIndex]);
                     }
                     else {
-                        ++$this.commandIndex;
+                        $this.commandIndex = $this.commands.length;
                         $this.input.val('');
                     }
                     
