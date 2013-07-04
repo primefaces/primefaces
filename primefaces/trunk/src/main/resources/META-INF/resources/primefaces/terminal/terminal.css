@@ -17,3 +17,7 @@
 .ui-terminal-command {
     margin-left: 3px;
 }
+
+.ui-terminal-input::-ms-clear {
+    display: none;
+}
