@@ -105,14 +105,10 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = acco.getClientId(context);
         boolean multiple = acco.isMultiple();
-        String activeIndex = acco.getActiveIndex();
-        String activeIndexValue = multiple ? "[" + activeIndex + "]" : activeIndex;
         
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("AccordionPanel", acco.resolveWidgetVar(), clientId, false);
-        
-        wb.nativeAttr("active", activeIndexValue);
- 		
+         		
         if(acco.isDynamic()) {
             wb.attr("dynamic", true, false);
             wb.attr("cache", acco.isCache(), true);
