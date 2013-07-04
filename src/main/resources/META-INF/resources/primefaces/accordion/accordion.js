@@ -15,6 +15,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.expandedIcon = 'ui-icon-triangle-1-s';
         this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
 
+        this.initActive();
         this.bindEvents();
 
         if(this.cfg.dynamic && this.cfg.cache) {
@@ -22,6 +23,20 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.jq.data('widget', this);
+    },
+            
+    initActive: function() {
+        if(this.cfg.multiple) {
+            var indexes = this.stateHolder.val().split(',');
+            for(var i = 0; i < indexes.length; i++) {
+                indexes[i] = parseInt(indexes[i]);
+            }
+            
+            this.cfg.active = indexes;
+        }
+        else {
+            this.cfg.active = parseInt(this.stateHolder.val());
+        }
     },
         
     bindEvents: function() {
