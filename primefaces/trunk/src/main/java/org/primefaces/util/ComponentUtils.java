@@ -51,9 +51,12 @@ public class ComponentUtils {
 	 * @param context The current {@link FacesContext}.
 	 */
     public static void resetValuesFromComponentsToRender(FacesContext context) {
-    	context.getViewRoot().visitTree(
-        		VisitContext.createVisitContext(context, context.getPartialViewContext().getRenderIds(), null), 
-                ResetInputVisitCallback.INSTANCE);
+        VisitContext visitContext = VisitContext.createVisitContext(context, null, VISIT_HINTS_SKIP_UNRENDERED);
+        
+        for (String renderId : context.getPartialViewContext().getRenderIds()) {
+            UIComponent renderComponent = context.getViewRoot().findComponent(renderId);
+            renderComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+        }
     }
 
 	/**
