@@ -822,8 +822,25 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     bindFilterEvents: function() {
         var $this = this;
         
-        this.filterInput.on('keyup.ui-selectonemenu', function() {
-            $this.filter($(this).val());
+        this.filterInput.on('keyup.ui-selectonemenu', function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+                        
+            switch(key) {
+                case keyCode.UP:
+                case keyCode.DOWN:
+                case keyCode.LEFT:
+                case keyCode.RIGHT:
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.TAB:
+                case keyCode.ESCAPE:
+                break;
+                
+                default:
+                    $this.filter($(this).val());
+                break;
+            }
         })
         .on('keydown.ui-selectonemenu',function(e) {
             var keyCode = $.ui.keyCode,
@@ -1092,6 +1109,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                     item.hide();   
             }
         }
+        
+        this.highlightItem(this.items.filter(':visible:first'));
         
         if(this.itemsContainer.height() < this.cfg.initialHeight) {
             this.itemsWrapper.css('height', 'auto');
