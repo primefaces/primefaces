@@ -55,7 +55,7 @@ public class ConfigContainer {
 	private void initConfig(FacesContext context) {
 		beanValidationAvailable = checkIfBeanValidationIsAvailable();
 		
-		passThroughSupported = FacesContext.class.getPackage().getImplementationVersion().startsWith("2.2");
+		passThroughSupported = isAtLeastJSF22();
 		
 		stringConverterAvailable = null != context.getApplication().createConverter(String.class);
 	}
@@ -118,6 +118,22 @@ public class ConfigContainer {
         }
 
         return available;
+    }
+    
+    private boolean isAtLeastJSF22() {
+        String version = FacesContext.class.getPackage().getImplementationVersion();
+        
+        if(version != null) {
+            return version.startsWith("2.2");
+        }
+        else {
+            try {
+                Class.forName("javax.faces.flow.Flow");
+                return true;
+            } catch (ClassNotFoundException ex) {
+                return false;
+            }
+        }
     }
 
 	public boolean isValidateEmptyFields() {
