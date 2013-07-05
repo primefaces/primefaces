@@ -552,16 +552,16 @@
                 }
                 else
                 {
-                    form.append('<input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="' + viewstateValue + '" autocomplete="off" />');
+                    form.append('<input type="hidden" name="javax.faces.ViewState" value="' + viewstateValue + '" autocomplete="off" />');
                 }
             });
         },
 
         updateElement: function(id, content) {        
-            if(id == PrimeFaces.VIEW_STATE) {
+            if(id.indexOf(PrimeFaces.VIEW_STATE) !== -1) {
                 PrimeFaces.ajax.AjaxUtils.updateState.call(this, content);
             }
-            else if(id == PrimeFaces.VIEW_ROOT) {
+            else if(id === PrimeFaces.VIEW_ROOT) {
             	$.ajaxSetup({'cache' : true});
                 $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
                 $.ajaxSetup({'cache' : false});
