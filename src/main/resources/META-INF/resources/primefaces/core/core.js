@@ -508,6 +508,8 @@
         BEHAVIOR_EVENT_PARAM : "javax.faces.behavior.event",
 
         PARTIAL_EVENT_PARAM : "javax.faces.partial.event",
+        
+        RESET_VALUES_PARAM : "primefaces.resetValues",
 
         VIEW_STATE : "javax.faces.ViewState",
 
@@ -758,6 +760,14 @@
                 name:PrimeFaces.PARTIAL_SOURCE_PARAM, 
                 value:sourceId
             });
+            
+            //resetValues
+            if (cfg.resetValues) {
+                postParams.push({
+                    name:PrimeFaces.RESET_VALUES_PARAM, 
+                    value:cfg.resetValues
+                });
+            }
 
             //process
             var processArray = PrimeFaces.ajax.AjaxUtils.resolveComponentsForAjaxCall(cfg, 'process');
