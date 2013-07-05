@@ -7,20 +7,15 @@ import javax.crypto.SecretKey;
 // KEY SPECIFICATIONS
 import java.security.spec.KeySpec;
 import java.security.spec.AlgorithmParameterSpec;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEParameterSpec;
 
 // EXCEPTIONS
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.InvalidKeyException;
-import java.security.spec.InvalidKeySpecException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import java.io.UnsupportedEncodingException;
-import java.io.IOException;
+import javax.faces.FacesException;
 
 /**
  * ----------------------------------------------------------------------------- The following example implements a class for encrypting and decrypting strings
@@ -33,8 +28,10 @@ import java.io.IOException;
  */
 public class StringEncrypter {
 
-    Cipher ecipher;
-    Cipher dcipher;
+	private static final Logger LOG = Logger.getLogger(StringEncrypter.class.getName());
+	
+    private Cipher ecipher;
+    private Cipher dcipher;
 
     /**
      * Constructor used to create this object. Responsible for setting and initializing this object's encrypter and decrypter Chipher instances given a Secret
@@ -49,12 +46,8 @@ public class StringEncrypter {
             dcipher = Cipher.getInstance(algorithm);
             ecipher.init(Cipher.ENCRYPT_MODE, key);
             dcipher.init(Cipher.DECRYPT_MODE, key);
-        } catch (NoSuchPaddingException e) {
-            System.out.println("EXCEPTION: NoSuchPaddingException");
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("EXCEPTION: NoSuchAlgorithmException");
-        } catch (InvalidKeyException e) {
-            System.out.println("EXCEPTION: InvalidKeyException");
+        } catch (Exception e) {
+            throw new FacesException("Could not initialize Cipher objects", e);
         }
     }
 
@@ -89,16 +82,8 @@ public class StringEncrypter {
             ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
             dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
 
-        } catch (InvalidAlgorithmParameterException e) {
-            System.out.println("EXCEPTION: InvalidAlgorithmParameterException");
-        } catch (InvalidKeySpecException e) {
-            System.out.println("EXCEPTION: InvalidKeySpecException");
-        } catch (NoSuchPaddingException e) {
-            System.out.println("EXCEPTION: NoSuchPaddingException");
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("EXCEPTION: NoSuchAlgorithmException");
-        } catch (InvalidKeyException e) {
-            System.out.println("EXCEPTION: InvalidKeyException");
+        } catch (Exception e) {
+            throw new FacesException("Could not initialize Cipher objects", e);
         }
     }
 
@@ -119,11 +104,10 @@ public class StringEncrypter {
             // Encode bytes to base64 to get a string
             return Base64.encodeToString(enc, false);
 
-        } catch (BadPaddingException e) {
-        } catch (IllegalBlockSizeException e) {
-        } catch (UnsupportedEncodingException e) {
-        } catch (IOException e) {
+        } catch (Exception e) {
+        	LOG.log(Level.WARNING, "Could not encrypt string", e);
         }
+
         return null;
     }
 
@@ -146,11 +130,10 @@ public class StringEncrypter {
             // Decode using utf-8
             return new String(utf8, "UTF8");
 
-        } catch (BadPaddingException e) {
-        } catch (IllegalBlockSizeException e) {
-        } catch (UnsupportedEncodingException e) {
-        } catch (IOException e) {
+        } catch (Exception e) {
+        	LOG.log(Level.WARNING, "Could not decrypt string", e);
         }
+
         return null;
     }
 }
