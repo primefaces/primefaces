@@ -315,6 +315,13 @@
             <defaultValue>true</defaultValue>
             <description>Defines if label of the component is escaped or not.</description>
 		</attribute>
+        <attribute>
+			<name>confirm</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Defines if the click event requires confirmation.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
