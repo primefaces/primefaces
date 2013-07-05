@@ -117,8 +117,15 @@
             <defaultValue>ltr</defaultValue>
             <description>Defines text direction, valid values are "ltr" (default) and "rtl".</description>
         </attribute>
+        <attribute>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, confirmDialog becomes a shared for other components that require confirmation.</description>
+        </attribute>
 	</attributes>
-		<resources>
+    <resources>
         <resource>
 			<name>primefaces.css</name>
 		</resource>

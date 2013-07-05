@@ -552,15 +552,38 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
  * PrimeFaces ConfirmDialog Widget
  */
 PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
-    
+
     init: function(cfg) {
         cfg.draggable = false;
         cfg.resizable = false;
         cfg.modal = true;
-                
+        cfg.appendToBody = cfg.appendToBody||cfg.global;
+
         this._super(cfg);
+
+        if(this.cfg.global) {
+            PrimeFaces.confirmDialog = this;
+
+            this.jq.find('.ui-confirmdialog-yes').on('click.ui-confirmdialog', function(e) {
+                if(PrimeFaces.confirmSource) {
+                    var fn = eval('(function(){' + $(PrimeFaces.confirmSource).data('pfcommand') + '})');
+                    fn.call(PrimeFaces.confirmSource);
+                    PrimeFaces.confirmDialog.hide();
+                    PrimeFaces.confirmSource = null;
+                }
+                
+                e.preventDefault();
+            });
+
+            this.jq.find('.ui-confirmdialog-no').on('click.ui-confirmdialog', function(e) {
+                PrimeFaces.confirmDialog.hide();
+                PrimeFaces.confirmSource = null;
+                
+                e.preventDefault();
+            });
+        }
     },
-    
+
     applyFocus: function() {
         this.jq.find(':button,:submit').filter(':visible:enabled').eq(0).focus();
     }

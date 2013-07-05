@@ -73,7 +73,8 @@ public class ConfirmDialogRenderer extends CoreRenderer {
             .attr("appendToBody", dialog.isAppendToBody(), false)
             .attr("showEffect", dialog.getShowEffect(), null)
             .attr("hideEffect", dialog.getHideEffect(), null)
-            .attr("closeOnEscape", dialog.isCloseOnEscape(), false);
+            .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
+            .attr("global", dialog.isGlobal(), false);
 		
         startScript(writer, clientId);              
         writer.write(wb.build());

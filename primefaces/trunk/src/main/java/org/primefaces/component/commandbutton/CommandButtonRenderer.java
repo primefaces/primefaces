@@ -94,7 +94,12 @@ public class CommandButtonRenderer extends CoreRenderer {
         }
 
 		if(onclick.length() > 0) {
-			writer.writeAttribute("onclick", onclick.toString(), "onclick");
+            if(button.isConfirm()) {
+                writer.writeAttribute("data-pfcommand", onclick.toString(), null);
+                writer.writeAttribute("onclick", "PrimeFaces.confirm(this);return false;", "onclick");
+            }
+            else
+                writer.writeAttribute("onclick", onclick.toString(), "onclick");
 		}
 		
 		renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);

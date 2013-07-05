@@ -482,6 +482,16 @@
             this.messageDialog.detailContainer.html('').append('<span class="ui-dialog-message ui-messages-' + msg.severity.split(' ')[0].toLowerCase() + '-icon" />').append(msg.detail);
             this.messageDialog.show();
         },
+                
+        confirm: function(element) {
+            if(PrimeFaces.confirmDialog) {
+                PrimeFaces.confirmSource = element;
+                PrimeFaces.confirmDialog.show();
+            }
+            else {
+                PrimeFaces.warn('No global confirmation dialog available.');
+            }
+        },
 
         locales : {},
 
