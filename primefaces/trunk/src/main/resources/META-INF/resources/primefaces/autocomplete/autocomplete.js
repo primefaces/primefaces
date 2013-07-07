@@ -49,8 +49,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             
             //force selection
-            if(this.cfg.forceSelection) {
+            if(this.cfg.forceSelection && !this.cfg.multiple) {
                 this.setupForceSelection();
+            }
+
+            //Multiple and force selection
+            if(this.cfg.forceSelection && this.cfg.multiple) {
+                this.setupMultipleForceSelection();
             }
 
             //Panel management
@@ -340,8 +345,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                 _self.inputContainer.before(itemDisplayMarkup);
                 _self.multiItemContainer.children('.ui-helper-hidden').fadeIn();
-                _self.input.val('').focus();
-
+                
+                if(!_self.cfg.forceSelection)
+                    _self.input.val('').focus();
+                
                 _self.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
             }
             else {
@@ -582,7 +589,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     setupForceSelection: function() {
         this.cachedResults = [this.input.val()];
         var _self = this;
-
+        
         this.input.blur(function() {
             var value = $(this).val(),
             valid = false;
@@ -593,7 +600,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     break;
                 }
             }
-
+            
             if(!valid) {
                 _self.input.val('');
                 _self.hinput.val('');
@@ -601,6 +608,35 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         });
     },
     
+    setupMultipleForceSelection: function() {
+    
+        this.cachedResults = [this.input.val()];
+        var _self = this;
+        var valid = false;
+        
+        this.input.blur(function() {
+            var value = $(this).val();
+            
+            for(var i = 0; i < _self.cachedResults.length; i++) {
+                if(_self.cachedResults[i] == value) {
+                    valid = true;
+                    break;
+                }
+            }
+            if(!valid) {
+                _self.input.val('');
+            }
+        }).keydown(function(e){
+            var keyCode = $.ui.keyCode;
+            
+            if(e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
+                if(!valid) {
+                    _self.input.val('');
+                }
+            }
+        });
+    },
+            
     disable: function() {
         this.disabled = true;
         this.input.addClass('ui-state-disabled').attr('disabled', 'disabled');
