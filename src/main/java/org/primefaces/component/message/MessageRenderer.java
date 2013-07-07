@@ -18,34 +18,30 @@ package org.primefaces.component.message;
 import java.io.IOException;
 import java.util.Iterator;
 
-import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.UINotificationRenderer;
 
 public class MessageRenderer extends UINotificationRenderer {
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
 		Message uiMessage = (Message) component;
-		UIComponent target = uiMessage.findComponent(uiMessage.getFor());
+		UIComponent target = SearchExpressionFacade.resolveComponent(context, uiMessage, uiMessage.getFor());
         String display = uiMessage.getDisplay();
         boolean iconOnly = display.equals("icon");
         boolean escape = uiMessage.isEscape();
-        
-		if(target == null) {
-			throw new FacesException("Cannot find component \"" + uiMessage.getFor() + "\" in view.");
-		}
 			
-		Iterator<FacesMessage> msgs = facesContext.getMessages(target.getClientId(facesContext));
+		Iterator<FacesMessage> msgs = context.getMessages(target.getClientId(context));
 
 		writer.startElement("div", uiMessage);
-		writer.writeAttribute("id", uiMessage.getClientId(facesContext), null);
+		writer.writeAttribute("id", uiMessage.getClientId(context), null);
         writer.writeAttribute("aria-live", "polite", null);
 		
 		if(msgs.hasNext()) {
