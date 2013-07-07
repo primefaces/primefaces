@@ -7,7 +7,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.cfg = cfg;
         this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
-        this.block = $(PrimeFaces.escapeClientId(this.cfg.block));
+        this.block = PrimeFaces.Expressions.resolveComponentsAsSelector(this.cfg.block);
         this.content = $(this.jqId);
 
         this.render();
@@ -25,19 +25,19 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindTriggers: function() {
-        var _self = this,
-        triggers = this.cfg.triggers.split(',');
-
+        var $this = this,
+        triggers = PrimeFaces.Expressions.resolveComponents(this.cfg.triggers);
+        
         //listen global ajax send and complete callbacks
         $(document).bind('ajaxSend', function(e, xhr, settings) {
             if($.inArray(settings.source, triggers) != -1) {
-                _self.show();
+            	$this.show();
             }
         });
 
         $(document).bind('ajaxComplete', function(e, xhr, settings) {
             if($.inArray(settings.source, triggers) != -1) {
-                _self.hide();
+            	$this.hide();
             }
         });
     },

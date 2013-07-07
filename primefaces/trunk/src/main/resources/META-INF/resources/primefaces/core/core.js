@@ -520,6 +520,13 @@
 
     PrimeFaces.Expressions = {
 
+    	resolveComponentsAsSelector: function(expressions) {
+    		var idArray = PrimeFaces.Expressions.resolveComponents(expressions);
+    		var elementMap = $.map(idArray, function(id) { return document.getElementById(id) });
+
+    		return $(elementMap);
+    	},
+
         resolveComponents: function(expressions) {
             var splittedExpressions = PrimeFaces.Expressions.splitExpressions(expressions);
             var ids = [];
