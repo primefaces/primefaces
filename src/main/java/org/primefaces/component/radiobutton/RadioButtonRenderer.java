@@ -16,7 +16,6 @@
 package org.primefaces.component.radiobutton;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -129,15 +128,5 @@ public class RadioButtonRenderer extends InputRenderer {
 
         writer.endElement("div");
     }
-    
-    public SelectOneRadio findSelectOneRadio(RadioButton radioButton) {
-		UIComponent target = radioButton.findComponent(radioButton.getFor());
-        
-        if(target == null) {
-            throw new FacesException("Cannot find component '" + radioButton.getFor() + "' in view.");
-        }
-        
-        return (SelectOneRadio) target;
-	}
 
 }
