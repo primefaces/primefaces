@@ -17,12 +17,12 @@ package org.primefaces.component.outputlabel;
 
 import java.io.IOException;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -42,7 +42,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         styleClass = styleClass == null ? OutputLabel.STYLE_CLASS : OutputLabel.STYLE_CLASS + " " + styleClass;
         
         if(label.getFor() != null) {
-            target = findTarget(context, label);
+            target = SearchExpressionFacade.resolveComponent(context, label, label.getFor());
             targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
             
             if(target instanceof UIInput) {
@@ -98,20 +98,6 @@ public class OutputLabelRenderer extends CoreRenderer {
         }
         
         writer.endElement("label");        
-    }
-    
-    protected UIComponent findTarget(FacesContext context, OutputLabel label) {
-        UIComponent _forComponent = null;
-        String _for = label.getFor();
-        
-        if(_for != null) {
-            _forComponent = label.findComponent(_for);
-            if(_forComponent == null) {
-                throw new FacesException("Cannot find component with identifier \"" + _for + "\" referenced from \"" + label.getClientId(context) + "\".");
-            }
-        }
-        
-        return _forComponent;
     }
     
     @Override
