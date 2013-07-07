@@ -17,11 +17,11 @@ package org.primefaces.component.tooltip;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -31,7 +31,8 @@ public class TooltipRenderer extends CoreRenderer {
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Tooltip tooltip = (Tooltip) component;
-        String target = getTarget(context, tooltip);
+        String target = SearchExpressionFacade.resolveComponentsForClient(
+        				context, component, tooltip.getFor());
 		
         encodeMarkup(context, tooltip, target);
 		encodeScript(context, tooltip, target);
@@ -82,22 +83,6 @@ public class TooltipRenderer extends CoreRenderer {
         startScript(writer, clientId);
 		writer.write(wb.build());
         endScript(writer);
-	}
-	
-	protected String getTarget(FacesContext context, Tooltip tooltip) {
-        String _for = tooltip.getFor();
-
-        if(_for != null) {
-            UIComponent forComponent = tooltip.findComponent(_for);
-
-            if(forComponent == null)
-                throw new FacesException("Cannot find component \"" + _for + "\" in view.");
-            else
-                return forComponent.getClientId(context);
-
-        } else {
-            return null;
-        }
 	}
 
     @Override
