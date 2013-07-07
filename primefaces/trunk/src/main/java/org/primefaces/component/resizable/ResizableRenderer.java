@@ -23,6 +23,7 @@ import javax.faces.component.UIGraphic;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -38,7 +39,13 @@ public class ResizableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		Resizable resizable = (Resizable) component;
         String clientId = resizable.getClientId(context);
-		UIComponent target = findTarget(context, resizable);
+		UIComponent target = SearchExpressionFacade.resolveComponent(
+				context, resizable, resizable.getFor());
+		
+		if (target == null) {
+			target = resizable.getParent();
+		}
+
         String targetId = target.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -86,18 +93,4 @@ public class ResizableRenderer extends CoreRenderer {
         writer.write("});");
         endScript(writer);
 	}
-
-    protected UIComponent findTarget(FacesContext context, Resizable resizable) {
-        String _for = resizable.getFor();
-
-        if (_for != null) {
-            UIComponent component = resizable.findComponent(_for);
-            if (component == null)
-                throw new FacesException("Cannot find component \"" + _for + "\" in view.");
-            else
-                return component;
-        } else {
-            return resizable.getParent();
-        }
-    }
 }
