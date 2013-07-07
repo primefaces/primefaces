@@ -16,12 +16,12 @@
 package org.primefaces.component.dialog;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -69,14 +69,10 @@ public class DialogRenderer extends CoreRenderer {
             .callback("onHide", "function()", dialog.getOnHide())
             .callback("onShow", "function()", dialog.getOnShow());
         
-        String focusId = dialog.getFocus();
-        if(focusId != null) {
-            UIComponent focusComponent = dialog.findComponent(focusId);
-
-            if(focusComponent == null)
-                throw new FacesException("Cannot find component with identifier \"" + focusId + "\" referenced from \"" + dialog.getClientId(context) + "\".");
-            else
-                wb.attr("focus", focusComponent.getClientId(context));
+        String focusExpressions = SearchExpressionFacade.resolveComponentsForClient(
+        		context, dialog, dialog.getFocus());
+        if (focusExpressions != null) {
+        	wb.attr("focus", focusExpressions);
         }
 
         encodeClientBehaviors(context, dialog, wb);

@@ -521,10 +521,22 @@
     PrimeFaces.Expressions = {
 
     	resolveComponentsAsSelector: function(expressions) {
-    		var idArray = PrimeFaces.Expressions.resolveComponents(expressions);
-    		var elementMap = $.map(idArray, function(id) { return document.getElementById(id) });
 
-    		return $(elementMap);
+    		var ids = PrimeFaces.Expressions.resolveComponents(expressions);
+    		var elements = [];
+
+			for (var i = 0; i < ids.length; i++) {
+				var id = ids[i];
+				
+				// we skip it as we can't resolve it
+				if (id == '@none' || id == '@all') {
+					continue;
+				}
+				
+				elements.push(document.getElementById(id));
+			}
+
+    		return $(elements);
     	},
 
         resolveComponents: function(expressions) {
