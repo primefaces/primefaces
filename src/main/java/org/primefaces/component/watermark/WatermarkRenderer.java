@@ -22,6 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -33,9 +34,11 @@ public class WatermarkRenderer extends CoreRenderer {
 		Watermark watermark = (Watermark) component;
 		String target = null;
 		
-		if(watermark.getFor() != null) {
-			String _for = watermark.getFor();	
-			UIComponent forComponent = watermark.findComponent(_for);
+		String _for = watermark.getFor();
+		if(_for != null) {
+			UIComponent forComponent = SearchExpressionFacade.resolveComponent(
+					context, watermark, _for);
+
 			if(forComponent == null) {
 				throw new FacesException("Cannot find component \"" + _for + "\" in view.");
 			}
