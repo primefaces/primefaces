@@ -18,13 +18,13 @@ package org.primefaces.component.inputtextarea;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.event.AutoCompleteEvent;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -104,13 +104,12 @@ public class InputTextareaRenderer extends InputRenderer {
             .attr("maxlength", inputTextarea.getMaxlength(), Integer.MAX_VALUE);
         
         if(counter != null) {
-            UIComponent counterComponent = inputTextarea.findComponent(counter);
-            if(counterComponent == null) {
-                throw new FacesException("Cannot find component \"" + counter + "\" in view.");
-            }
+            UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputTextarea, counter);
             
-            wb.attr("counter", counterComponent.getClientId(context))
-                .attr("counterTemplate", inputTextarea.getCounterTemplate(), null);
+            if (counterComponent != null) {
+            	wb.attr("counter", counterComponent.getClientId(context))
+                	.attr("counterTemplate", inputTextarea.getCounterTemplate(), null);
+            }
         }
         
         if(inputTextarea.getCompleteMethod() != null) {
