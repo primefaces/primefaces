@@ -16,10 +16,11 @@
 package org.primefaces.component.defaultcommand;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -29,25 +30,21 @@ public class DefaultCommandRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         DefaultCommand command = (DefaultCommand) component;
-        
-        String scope = command.getScope();
-        UIComponent target = command.findComponent(command.getTarget());
-        if(target == null) {
-            throw new FacesException("Cannot find component \"" + command.getTarget() + "\" in view.");
-        }
+
+        UIComponent target = SearchExpressionFacade.resolveComponent(context, command, command.getTarget());
         
         String clientId = command.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("DefaultCommand", command.resolveWidgetVar(), clientId, true)
                 .attr("target", target.getClientId(context));
         
+        String scope = command.getScope();
         if(scope != null) {
-            UIComponent scopeComponent = command.findComponent(scope);
-            if(scopeComponent == null) {
-                throw new FacesException("Cannot find component \"" + scope + "\" in view.");
-            }
+            UIComponent scopeComponent = SearchExpressionFacade.resolveComponent(context, command, scope);
             
-            wb.attr("scope", scopeComponent.getClientId(context));
+            if (scopeComponent != null) {
+            	wb.attr("scope", scopeComponent.getClientId(context));
+            }
         }
 
         startScript(writer, clientId);
