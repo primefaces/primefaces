@@ -16,10 +16,11 @@
 package org.primefaces.component.overlaypanel;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -64,11 +65,8 @@ public class OverlayPanelRenderer extends CoreRenderer {
     
     protected void encodeScript(FacesContext context, OverlayPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent target = panel.findComponent(panel.getFor());
-        if(target == null) {
-            throw new FacesException("Cannot find component '" + panel.getFor() + "' in view.");
-        }
-        
+        UIComponent target = SearchExpressionFacade.resolveComponent(context, panel, panel.getFor());
+
         String clientId = panel.getClientId(context);
         String targetClientId = target.getClientId(context);
         
