@@ -16,10 +16,11 @@
 package org.primefaces.component.blockui;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -36,17 +37,12 @@ public class BlockUIRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, BlockUI blockUI) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = blockUI.getClientId(context);
-        String triggers = getTriggers(context, blockUI);
-        UIComponent block = blockUI.findComponent(blockUI.getBlock());
-        if(block == null) {
-            throw new FacesException("Cannot find component with identifier \"" + blockUI.getBlock() + "\" in view.");
-        }
         
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("BlockUI", blockUI.resolveWidgetVar(), clientId, true);
         
-        wb.attr("block", block.getClientId(context));
-        wb.attr("triggers", triggers, null);
+        wb.attr("block", SearchExpressionFacade.resolveComponentsForClient(context, blockUI, blockUI.getBlock()));
+        wb.attr("triggers", SearchExpressionFacade.resolveComponentsForClient(context, blockUI, blockUI.getTrigger()), null);
         wb.attr("blocked", blockUI.isBlocked(), false);
         
         startScript(writer, null);
@@ -66,33 +62,6 @@ public class BlockUIRenderer extends CoreRenderer {
         renderChildren(context, blockUI);
         
         writer.endElement("div");
-    }
-    
-    protected String getTriggers(FacesContext context, BlockUI blockUI) {
-        String trigger = blockUI.getTrigger();
-        
-        if(trigger != null) {
-            StringBuilder builder = new StringBuilder();
-            String[] ids = trigger.split("[,\\s]+");
-            
-            for (int i = 0; i < ids.length; i++) {
-                String id = ids[i];
-                UIComponent component = blockUI.findComponent(id);
-                
-                if(component == null)
-                    throw new FacesException("Cannot find component with identifier \"" + id + "\" in view.");
-                else
-                    builder.append(component.getClientId(context));   
-                
-                if(i < (ids.length - 1))
-                    builder.append(",");
-            }
-            
-            return builder.toString();
-        }
-        else {
-            return null;
-        }        
     }
     
     @Override

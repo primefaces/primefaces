@@ -42,22 +42,25 @@ public class SearchExpressionFacade {
      * @return A {@link List} with resolved {@link UIComponent}s.
      */
 	public static List<UIComponent> resolveComponents(FacesContext context, UIComponent source, String expressions) {
-	    // split expressions by blank or comma (and ignore blank and commas inside brackets)
-		String[] splittedExpressions = split(expressions, EXPRESSION_SEPARATORS);
 
 		ArrayList<UIComponent> components = new ArrayList<UIComponent>();
 
-		if (splittedExpressions != null) {
-			for (int i = 0; i < splittedExpressions.length; i++) {
-				String expression = splittedExpressions[i].trim();
-	
-				if (ComponentUtils.isValueBlank(expression)) {
-					continue;
-				}
-	
-				UIComponent component = resolveComponent(context, source, expression);
-				if (component != null) {
-					components.add(component);
+		if (!ComponentUtils.isValueBlank(expressions)) {
+		    // split expressions by blank or comma (and ignore blank and commas inside brackets)
+			String[] splittedExpressions = split(expressions, EXPRESSION_SEPARATORS);
+
+			if (splittedExpressions != null) {
+				for (int i = 0; i < splittedExpressions.length; i++) {
+					String expression = splittedExpressions[i].trim();
+		
+					if (ComponentUtils.isValueBlank(expression)) {
+						continue;
+					}
+		
+					UIComponent component = resolveComponent(context, source, expression);
+					if (component != null) {
+						components.add(component);
+					}
 				}
 			}
 		}
@@ -74,7 +77,12 @@ public class SearchExpressionFacade {
      * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
      */
 	public static String resolveComponentsForClient(FacesContext context, UIComponent source, String expressions) {
-	    // split expressions by blank or comma (and ignore blank and commas inside brackets)
+	    
+		if (ComponentUtils.isValueBlank(expressions)) {
+			return null;
+		}
+		
+		// split expressions by blank or comma (and ignore blank and commas inside brackets)
 		String[] splittedExpressions = split(expressions, EXPRESSION_SEPARATORS);
 
 		String buildedExpressions = "";
