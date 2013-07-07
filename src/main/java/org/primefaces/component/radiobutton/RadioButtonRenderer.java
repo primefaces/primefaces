@@ -16,7 +16,6 @@
 package org.primefaces.component.radiobutton;
 
 import java.io.IOException;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -24,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.selectoneradio.SelectOneRadio;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -33,7 +33,8 @@ public class RadioButtonRenderer extends InputRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RadioButton radioButton = (RadioButton) component;
-        SelectOneRadio selectOneRadio = findSelectOneRadio(radioButton);
+        SelectOneRadio selectOneRadio = (SelectOneRadio) SearchExpressionFacade.resolveComponent(
+        		context, radioButton, radioButton.getFor());
 
         encodeMarkup(context, radioButton, selectOneRadio);
     }
