@@ -676,7 +676,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         
         $(document).off(event, rowSelector)
                     .on(event, rowSelector, null, function(e) {
-                        var widget = window[_self.cfg.targetWidgetVar];
+                        var widget = PrimeFaces.widgets[_self.cfg.targetWidgetVar];
                         
                         if(widget.cfg.selectionMode) {
                             widget.onRowClick(e, this, true);
@@ -715,7 +715,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         
         $(document).off(event, rowSelector)
                     .on(event, rowSelector, null, function(e) {
-                        window[_self.cfg.targetWidgetVar].onRowClick(e, $(this));
+                    	PrimeFaces.widgets[_self.cfg.targetWidgetVar].onRowClick(e, $(this));
                         _self.show(e);
                         e.preventDefault();
                     });
@@ -731,7 +731,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                         var nodeContent = $(this);
                         
                         if(_self.cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === _self.cfg.nodeType) {
-                            window[_self.cfg.targetWidgetVar].nodeClick(e, nodeContent);
+                        	PrimeFaces.widgets[_self.cfg.targetWidgetVar].nodeClick(e, nodeContent);
                             _self.show(e);
                             e.preventDefault();
                         }
