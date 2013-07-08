@@ -16,7 +16,6 @@
 package org.primefaces.component.resizable;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIGraphic;
@@ -67,7 +66,8 @@ public class ResizableRenderer extends CoreRenderer {
             .attr("ghost", resizable.isGhost(), false);
         
         if(resizable.isContainment()) {
-            wb.attr("containment", "PrimeFaces.escapeClientId('" + resizable.getParent().getClientId(context) + "')");
+        	wb.attr("isContainment", true);
+            wb.attr("parentComponentId", resizable.getParent().getClientId(context));
         }
         
         wb.callback("onStart", "function(event,ui)", resizable.getOnStart())
