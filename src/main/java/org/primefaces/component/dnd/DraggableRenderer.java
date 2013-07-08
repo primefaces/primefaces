@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.dashboard.Dashboard;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -34,11 +35,16 @@ public class DraggableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Draggable draggable = (Draggable) component;
         String clientId = draggable.getClientId(context);
-        String target = findTarget(context, draggable);
+        
+        UIComponent target = SearchExpressionFacade.resolveComponent(context, draggable, draggable.getFor());
+        if (target == null) {
+        	target = draggable.getParent();
+        }
+        
         String dashboard = draggable.getDashboard();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("Draggable", draggable.resolveWidgetVar(), clientId, true)
-                .attr("target", target)
+                .attr("target", target.getClientId(context))
                 .attr("cursor", draggable.getCursor())
                 .attr("disabled", draggable.isDisabled(), false)
                 .attr("axis", draggable.getAxis(), null)
@@ -64,7 +70,7 @@ public class DraggableRenderer extends CoreRenderer {
         
         //Dashboard support
         if(dashboard != null) {
-            Dashboard db = (Dashboard) draggable.findComponent(dashboard);
+            Dashboard db = (Dashboard) SearchExpressionFacade.resolveComponent(context, draggable, dashboard);
             if(db == null) {
                 throw new FacesException("Cannot find dashboard \"" + dashboard + "\" in view");
             }
@@ -79,17 +85,4 @@ public class DraggableRenderer extends CoreRenderer {
 
     }
 
-    protected String findTarget(FacesContext facesContext, Draggable draggable) {
-        String _for = draggable.getFor();
-
-        if(_for != null) {
-            UIComponent component = draggable.findComponent(_for);
-            if(component == null)
-                throw new FacesException("Cannot find component \"" + _for + "\" in view.");
-            else
-                return component.getClientId(facesContext);
-        } else {
-            return draggable.getParent().getClientId(facesContext);
-        }
-    }
 }
