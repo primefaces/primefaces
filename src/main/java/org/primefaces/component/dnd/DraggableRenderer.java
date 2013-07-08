@@ -36,10 +36,7 @@ public class DraggableRenderer extends CoreRenderer {
         Draggable draggable = (Draggable) component;
         String clientId = draggable.getClientId(context);
         
-        UIComponent target = SearchExpressionFacade.resolveComponent(context, draggable, draggable.getFor());
-        if (target == null) {
-        	target = draggable.getParent();
-        }
+        UIComponent target = SearchExpressionFacade.resolveComponent(context, draggable, draggable.getFor(), true);
         
         String dashboard = draggable.getDashboard();
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -71,9 +68,6 @@ public class DraggableRenderer extends CoreRenderer {
         //Dashboard support
         if(dashboard != null) {
             Dashboard db = (Dashboard) SearchExpressionFacade.resolveComponent(context, draggable, dashboard);
-            if(db == null) {
-                throw new FacesException("Cannot find dashboard \"" + dashboard + "\" in view");
-            }
             
             String selector = ComponentUtils.escapeJQueryId(db.getClientId(context)) + " .ui-dashboard-column";
             wb.attr("connectToSortable", selector);

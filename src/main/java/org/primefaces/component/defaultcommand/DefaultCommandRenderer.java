@@ -41,10 +41,7 @@ public class DefaultCommandRenderer extends CoreRenderer {
         String scope = command.getScope();
         if(scope != null) {
             UIComponent scopeComponent = SearchExpressionFacade.resolveComponent(context, command, scope);
-            
-            if (scopeComponent != null) {
-            	wb.attr("scope", scopeComponent.getClientId(context));
-            }
+            wb.attr("scope", scopeComponent.getClientId(context));
         }
 
         startScript(writer, clientId);

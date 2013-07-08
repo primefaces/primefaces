@@ -34,12 +34,14 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         ContextMenu menu = (ContextMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
-		UIComponent target = SearchExpressionFacade.resolveComponent(context, menu, menu.getFor());
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("ContextMenu", menu.resolveWidgetVar(), clientId, true);
         
-        if(target != null) {
+        String _for = menu.getFor();
+        if(_for != null) {
+        	UIComponent target = SearchExpressionFacade.resolveComponent(context, menu, _for);
+        	
             wb.attr("target", target.getClientId(context))
                 .attr("type", target.getClass().getSimpleName());
             

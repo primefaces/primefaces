@@ -157,6 +157,23 @@ public class SearchExpressionFacade {
      * @param context The {@link FacesContext}.
      * @param source The source component. E.g. a button.
      * @param expression The search expression.
+     * @param fallbackToParent If the expression is null, the parent component will be used.
+     * @return A resolved {@link UIComponent} or <code>null</code>.
+     */
+	public static UIComponent resolveComponent(FacesContext context, UIComponent source, String expression, boolean fallbackToParent) {
+		if (fallbackToParent && expression == null) {
+			return source.getParent();
+		}
+
+		return resolveComponent(context, source, expression);
+	}
+	
+    /**
+     * Resolves a {@link UIComponent} for the given expression.
+     *
+     * @param context The {@link FacesContext}.
+     * @param source The source component. E.g. a button.
+     * @param expression The search expression.
      * @return A resolved {@link UIComponent} or <code>null</code>.
      */
 	public static UIComponent resolveComponent(FacesContext context, UIComponent source, String expression) {

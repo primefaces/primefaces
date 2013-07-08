@@ -41,8 +41,10 @@ public class OutputLabelRenderer extends CoreRenderer {
         String styleClass = label.getStyleClass();
         styleClass = styleClass == null ? OutputLabel.STYLE_CLASS : OutputLabel.STYLE_CLASS + " " + styleClass;
         
-        if(label.getFor() != null) {
-            target = SearchExpressionFacade.resolveComponent(context, label, label.getFor());
+        String _for = label.getFor();
+
+        if(_for != null) {
+            target = SearchExpressionFacade.resolveComponent(context, label, _for);
             targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
             
             if(target instanceof UIInput) {
