@@ -29,6 +29,7 @@ import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.MenuActionEvent;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
@@ -211,7 +212,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             .attr("my", menu.getMy())
             .attr("at", menu.getAt());
         
-        UIComponent trigger = ((UIComponent) menu).findComponent(menu.getTrigger());
+        UIComponent trigger = SearchExpressionFacade.resolveComponent(context, (UIComponent) menu, menu.getTrigger());
         String triggerClientId = trigger == null ? menu.getTrigger() : trigger.getClientId(context);
 
         wb.attr("trigger", triggerClientId)
