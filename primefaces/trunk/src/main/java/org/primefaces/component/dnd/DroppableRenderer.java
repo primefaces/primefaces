@@ -17,11 +17,11 @@ package org.primefaces.component.dnd;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -36,11 +36,16 @@ public class DroppableRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Droppable droppable = (Droppable) component;
-        String target = findTarget(context, droppable).getClientId(context);
+        UIComponent target = SearchExpressionFacade.resolveComponent(context, droppable, droppable.getFor());
+
+        if (target == null) {
+        	target = droppable.getParent();
+        }
+        
         String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("Droppable", droppable.resolveWidgetVar(), clientId, true)
-                .attr("target", target)
+                .attr("target", target.getClientId(context))
                 .attr("disabled", droppable.isDisabled(), false)
                 .attr("hoverClass", droppable.getHoverStyleClass(), null)
                 .attr("activeClass", droppable.getActiveStyleClass(), null)
@@ -59,17 +64,4 @@ public class DroppableRenderer extends CoreRenderer {
         endScript(writer);
     }
 
-    protected UIComponent findTarget(FacesContext facesContext, Droppable droppable) {
-        String _for = droppable.getFor();
-
-        if(_for != null) {
-            UIComponent component = droppable.findComponent(_for);
-            if (component == null)
-                throw new FacesException("Cannot find component \"" + _for + "\" in view.");
-            else
-                return component;
-        } else {
-            return droppable.getParent();
-        }
-    }
 }

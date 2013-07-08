@@ -12,6 +12,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.FacesException;
 import org.primefaces.util.Constants;
+import org.primefaces.expression.SearchExpressionFacade;
 
     private final static String DEFAULT_EVENT = "drop";
 
@@ -72,7 +73,7 @@ import org.primefaces.util.Constants;
     }
 
     protected UIData findDatasource(FacesContext context, Droppable droppable, String datasourceId) {
-        UIComponent datasource = droppable.findComponent(datasourceId);
+        UIComponent datasource = SearchExpressionFacade.resolveComponent(context, droppable, datasourceId);
         
         if(datasource == null)
             throw new FacesException("Cannot find component \"" + datasourceId + "\" in view.");
