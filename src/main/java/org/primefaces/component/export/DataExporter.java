@@ -88,9 +88,6 @@ public class DataExporter implements ActionListener, StateHolder {
 			Exporter exporter = ExporterFactory.getExporterForType(exportAs);
             
 			UIComponent component = SearchExpressionFacade.resolveComponent(context, event.getComponent(), tableId);
-			if(component == null) {
-				throw new FacesException("Cannot find component \"" + tableId + "\" in view.");
-            }
             
 			if(!(component instanceof DataTable)) {
 				throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName() + "\", exporter must target a PrimeFaces DataTable.");
