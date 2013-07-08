@@ -12,6 +12,10 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.ajaxResize) {
             this.cfg.formId = $(this.target).parents('form:first').attr('id');
         }
+        
+        if (this.cfg.isContainment) {
+        	this.cfg.containment = PrimeFaces.escapeClientId(this.cfg.parentComponentId);
+        }
 
         var _self = this;
 
