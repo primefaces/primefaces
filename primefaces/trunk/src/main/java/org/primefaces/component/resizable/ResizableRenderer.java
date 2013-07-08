@@ -39,13 +39,8 @@ public class ResizableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		Resizable resizable = (Resizable) component;
         String clientId = resizable.getClientId(context);
-		UIComponent target = SearchExpressionFacade.resolveComponent(
-				context, resizable, resizable.getFor());
-		
-		if (target == null) {
-			target = resizable.getParent();
-		}
-
+        
+        UIComponent target = SearchExpressionFacade.resolveComponent(context, resizable, resizable.getFor(), true);
         String targetId = target.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);

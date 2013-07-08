@@ -16,7 +16,6 @@
 package org.primefaces.component.slider;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
