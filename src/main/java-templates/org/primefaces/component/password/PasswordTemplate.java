@@ -1,7 +1,9 @@
 import javax.faces.component.UIComponent;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.MessageFactory;
+
 
     public final static String STYLE_CLASS = "ui-inputfield ui-password ui-widget ui-state-default ui-corner-all";
 
@@ -14,10 +16,7 @@ import org.primefaces.util.MessageFactory;
         Object submittedValue = this.getSubmittedValue();
 
         if(isValid() && match != null) {
-            Password matchWith = (Password) this.findComponent(match);
-            if(matchWith == null) {
-                throw new FacesException("Cannot find component " + match + " in view.");
-            }
+        	Password matchWith = (Password) SearchExpressionFacade.resolveComponent(context, this, match);
 
             if(submittedValue != null && !submittedValue.equals(matchWith.getSubmittedValue())) {
                 this.setValid(false);
