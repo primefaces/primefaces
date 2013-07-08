@@ -16,6 +16,7 @@
 package org.primefaces.component.watermark;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -28,6 +29,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class WatermarkRenderer extends CoreRenderer {
 
+	private static final Logger LOG = Logger.getLogger(WatermarkRenderer.class.getName());
+	
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
@@ -41,6 +44,7 @@ public class WatermarkRenderer extends CoreRenderer {
 			target = super.getEscapedClientId(forComponent.getClientId(context));
 		} 
         else if(watermark.getForElement() != null) {
+        	LOG.warning("The attribute 'forElement' will be removed in the future. Please use the 'for' attribute with PrimeFaces Selectors");
 			target = watermark.getForElement();
 		} 
         else {
