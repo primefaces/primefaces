@@ -41,10 +41,7 @@ public class EffectRenderer extends CoreRenderer {
 		
 		if(effect.getFor() != null) {
 			UIComponent _for = SearchExpressionFacade.resolveComponent(context, effect, effect.getFor());
-			if(_for != null)
-				target = _for.getClientId(context);
-			else
-				throw new FacesException("Cannot find component \"" + effect.getFor() + "\" in view.");
+			target = _for.getClientId(context);
 		} else {
 			target = source;
 		}

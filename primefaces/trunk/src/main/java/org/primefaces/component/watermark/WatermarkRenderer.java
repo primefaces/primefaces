@@ -36,12 +36,7 @@ public class WatermarkRenderer extends CoreRenderer {
 		
 		String _for = watermark.getFor();
 		if(_for != null) {
-			UIComponent forComponent = SearchExpressionFacade.resolveComponent(
-					context, watermark, _for);
-
-			if(forComponent == null) {
-				throw new FacesException("Cannot find component \"" + _for + "\" in view.");
-			}
+			UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, watermark, _for);
             
 			target = super.getEscapedClientId(forComponent.getClientId(context));
 		} 

@@ -212,11 +212,13 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             .attr("my", menu.getMy())
             .attr("at", menu.getAt());
         
-        UIComponent trigger = SearchExpressionFacade.resolveComponent(context, (UIComponent) menu, menu.getTrigger());
-        String triggerClientId = trigger == null ? menu.getTrigger() : trigger.getClientId(context);
+        String trigger = menu.getTrigger();
+        if (trigger != null) {
+        	UIComponent triggerComponent = SearchExpressionFacade.resolveComponent(context, (UIComponent) menu, menu.getTrigger());
 
-        wb.attr("trigger", triggerClientId)
-            .attr("triggerEvent", menu.getTriggerEvent());
+            wb.attr("trigger", triggerComponent.getClientId(context))
+                .attr("triggerEvent", menu.getTriggerEvent());
+        }
     }
  
     @Override

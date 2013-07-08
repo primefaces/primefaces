@@ -181,7 +181,15 @@ public class SearchExpressionFacade {
 					"Client side expression (PFS and @widgetVar) are not supported... Expression: " + expression);
 		}
 
-		return resolveComponentInternal(context, source, expression, separatorChar, separatorString);
+		UIComponent component = resolveComponentInternal(context, source, expression, separatorChar, separatorString);
+		
+		if (component == null) {
+			throw new FacesException("Cannot find component with expression \""
+					+ expression + "\" referenced from \""
+					+ source.getClientId(context) + "\".");
+		}
+
+		return component;
 	}
 
 	/**

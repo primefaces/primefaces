@@ -109,10 +109,7 @@ public class SliderRenderer extends CoreRenderer{
 		} 
         else {
 			UIComponent targetComponent = SearchExpressionFacade.resolveComponent(context, slider, target);
-            if(targetComponent == null) {
-                throw new FacesException("Cannot find component with identifier \"" + target + "\" referenced from \"" + slider.getClientId(context) + "\".");
-            }
-			
+
 			return targetComponent;
 		}
 	}
