@@ -123,8 +123,6 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);
-          
-        writer.startElement("p", null);
         
 		//severity
 		writer.startElement("span", null);
@@ -140,8 +138,6 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 			writer.writeText(messageText, null);
         
         writer.endElement("span");
-        
-        writer.endElement("p");
         
         writer.endElement("div");
     }

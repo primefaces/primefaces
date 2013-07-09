@@ -245,20 +245,20 @@
 }
 
 .ui-button-text-only .ui-button-text { 
-    padding: .4em 1em; 
+    padding: .3em 1em; 
 }
 
 .ui-button-icon-only .ui-button-text { 
-    padding: .4em; 
+    padding: .3em; 
     text-indent: -9999999px; 
 }
 
 .ui-button-text-icon-left .ui-button-text { 
-    padding: .4em 1em .4em 2.1em; 
+    padding: .3em 1em .3em 2.1em; 
 }
 
 .ui-button-text-icon-right .ui-button-text { 
-    padding: .4em 2.1em .4em 1em; 
+    padding: .3em 2.1em .3em 1em; 
 }
 
 /*button icon element(s) */
