@@ -50,6 +50,9 @@ public class SearchExpressionFacade {
 			String[] splittedExpressions = split(expressions, EXPRESSION_SEPARATORS);
 
 			if (splittedExpressions != null) {
+				
+				validateExpressions(context, source, expressions, splittedExpressions);
+				
 				for (int i = 0; i < splittedExpressions.length; i++) {
 					String expression = splittedExpressions[i].trim();
 		
@@ -88,6 +91,8 @@ public class SearchExpressionFacade {
 		String buildedExpressions = "";
 
 		if (splittedExpressions != null) {
+			validateExpressions(context, source, expressions, splittedExpressions);
+			
 			StringBuilder expressionsBuilder = new StringBuilder();
 			
 			for (int i = 0; i < splittedExpressions.length; i++) {
@@ -110,9 +115,8 @@ public class SearchExpressionFacade {
 			buildedExpressions = expressionsBuilder.toString();
 		}
 
-		// empty expression should resolve to @none
 		if (ComponentUtils.isValueBlank(buildedExpressions)) {
-			return SearchExpressionConstants.NONE_KEYWORD;
+			return null;
 		}
 
 		return buildedExpressions;
@@ -139,7 +143,7 @@ public class SearchExpressionFacade {
 
 		validateExpression(context, source, expression, separatorChar, separatorString);
 
-		if (SearchExpressionResolverFactory.isPassTroughExpression(expression)) {
+		if (isPassTroughExpression(expression)) {
 			return expression;
 		}
 
@@ -193,7 +197,7 @@ public class SearchExpressionFacade {
 			return null;
 		}
 
-		if (SearchExpressionResolverFactory.isClientExpressionOnly(expression)) {
+		if (isClientExpressionOnly(expression)) {
 			throw new FacesException(
 					"Client side expression (PFS and @widgetVar) are not supported... Expression: " + expression);
 		}
@@ -216,7 +220,6 @@ public class SearchExpressionFacade {
 	 * @param context The {@link FacesContext}.
 	 * @param source The source component. E.g. a button.
 	 * @param expression The search expression.
-	 * @param factory The {@link SearchExpressionResolverFactory}.
 	 * @param separatorChar The separator as char.
 	 * @param separatorString The separator as string.
 	 */
@@ -241,7 +244,7 @@ public class SearchExpressionFacade {
 					for (int j = 0; j < subExpressions.length; j++) {
 						String subExpression = subExpressions[j].trim();
 	
-						if (!SearchExpressionResolverFactory.isNestable(subExpression)) {
+						if (!isNestable(subExpression)) {
 							throw new FacesException("Subexpression \"" + subExpression
 									+ "\" in full expression \"" + expression
 									+ "\" from \"" + source.getClientId(context) + "\" can not be nested.");
@@ -252,6 +255,30 @@ public class SearchExpressionFacade {
 		}
 	}
 
+	/**
+	 * Validates the given search expressions.
+	 * We only validate it, for performance reasons, if the current {@link ProjectStage} is {@link ProjectStage#Development}.
+	 *
+	 * @param context The {@link FacesContext}.
+	 * @param source The source component. E.g. a button.
+	 * @param expression The search expression.
+	 * @param splittedExpressions The already splitted expressions.
+	 */
+	private static void validateExpressions(FacesContext context, UIComponent source, String expressions, String[] splittedExpressions) {
+
+		if (context.isProjectStage(ProjectStage.Development)) {
+			if (splittedExpressions.length > 1) {
+				if (expressions.contains(SearchExpressionConstants.NONE_KEYWORD)
+						|| expressions.contains(SearchExpressionConstants.ALL_KEYWORD)) {
+					
+					throw new FacesException("It's not possible to use @none or @all combined with other expressions."
+							+ " Expressions: \"" + expressions
+							+ "\" referenced from \"" + source.getClientId(context) + "\"");
+				}
+			}
+		}
+	}
+	
 	private static UIComponent resolveComponentInternal(FacesContext context, UIComponent source,
 			String expression, char separatorChar, String separatorString) {
 
@@ -389,5 +416,44 @@ public class SearchExpressionFacade {
 		tokens.add(buffer.toString());
 
 		return tokens.toArray(new String[tokens.size()]);
+	}
+	
+
+	/**
+     * Checks if the given expression must not be resolved by a {@link SearchExpressionResolver},
+     * before rendering it to the client.
+     * e.g. @all or @none.
+     *
+     * @param expression The search expression.
+     * @return <code>true</code> if it should just be rendered without manipulation or resolving.
+     */
+	private static boolean isPassTroughExpression(String expression) {
+		return isClientExpressionOnly(expression)
+				|| expression.contains(SearchExpressionConstants.ALL_KEYWORD)
+				|| expression.contains(SearchExpressionConstants.NONE_KEYWORD);
+	}
+
+	/**
+     * Checks if the given expression can just be used for resolving it on the client.
+     * e.g. PFS
+     *
+     * @param expression The search expression.
+     * @return <code>true</code> if it's a client expression only.
+     */
+	private static boolean isClientExpressionOnly(String expression) {
+		return expression.contains(SearchExpressionConstants.PFS_PREFIX)
+				|| expression.contains(SearchExpressionConstants.WIDGETVAR_PREFIX);
+	}
+
+	/**
+     * Checks if the given expression can be nested.
+     * e.g. @form:@parent
+     * This should not be possible e.g. with @none or @all.
+     *
+     * @param expression The search expression.
+     * @return <code>true</code> if it's nestable.
+     */
+	private static boolean isNestable(String expression) {
+		return !isPassTroughExpression(expression);
 	}
 }

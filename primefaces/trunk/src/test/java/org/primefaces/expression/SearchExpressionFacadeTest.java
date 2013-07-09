@@ -1186,4 +1186,18 @@ public class SearchExpressionFacadeTest
 	    assertEquals("source @(.ui-panel :input:not(select), #myPanel, #myPanel2) @(myId3) source", resolveComponentsForClient(source, " @this,@(.ui-panel :input:not(select), #myPanel, #myPanel2) @(myId3),@this"));
 
 	}
+	
+	@Test
+	public void resolveComponentForClient_NonCombineableAllAndNone() {
+
+		UIComponent source = new UICommand();
+		source.setId("source");
+
+		try {
+			resolveComponentsForClient(source, " :@form:asd @none @all ");
+			Assert.fail("This should actually raise an exception");
+		} catch (Exception e) {
+			assertEquals(FacesException.class, e.getClass());
+		}
+	}
 }

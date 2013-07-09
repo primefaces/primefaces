@@ -29,7 +29,7 @@ import org.primefaces.expression.impl.ParentExpressionResolver;
 import org.primefaces.expression.impl.ThisExpressionResolver;
 
 /**
- * Factory for providing different {@link SearchExpressionResolver} for expressions and some other utils.
+ * Factory for providing different {@link SearchExpressionResolver} for expressions.
  */
 public class SearchExpressionResolverFactory {
 
@@ -71,44 +71,6 @@ public class SearchExpressionResolverFactory {
 		}
 
 		return resolver;
-	}
-
-	/**
-     * Checks if the given expression must not be resolved by a {@link SearchExpressionResolver},
-     * before rendering it to the client.
-     * e.g. @all or @none.
-     *
-     * @param expression The search expression.
-     * @return <code>true</code> if it should just be rendered without manipulation or resolving.
-     */
-	public static boolean isPassTroughExpression(String expression) {
-		return isClientExpressionOnly(expression)
-				|| expression.contains(SearchExpressionConstants.ALL_KEYWORD)
-				|| expression.contains(SearchExpressionConstants.NONE_KEYWORD);
-	}
-
-	/**
-     * Checks if the given expression can just be used for resolving it on the client.
-     * e.g. PFS
-     *
-     * @param expression The search expression.
-     * @return <code>true</code> if it's a client expression only.
-     */
-	public static boolean isClientExpressionOnly(String expression) {
-		return expression.contains(SearchExpressionConstants.PFS_PREFIX)
-				|| expression.contains(SearchExpressionConstants.WIDGETVAR_PREFIX);
-	}
-
-	/**
-     * Checks if the given expression can be nested.
-     * e.g. @form:@parent
-     * This should not be possible e.g. with @none or @all.
-     *
-     * @param expression The search expression.
-     * @return <code>true</code> if it's nestable.
-     */
-	public static boolean isNestable(String expression) {
-		return !isPassTroughExpression(expression);
 	}
 
 	/**
