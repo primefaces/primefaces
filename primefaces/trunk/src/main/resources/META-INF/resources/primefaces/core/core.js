@@ -467,13 +467,13 @@
 
                 PrimeFaces.cw('Dialog', 'primefacesmessagedialog', {
                     id: 'primefacesmessagedlg', 
-                    modal:true, 
+                    modal:true,
                     draggable: false, 
                     resizable: false,
                     showEffect: 'fade',
                     hideEffect: 'fade'
                 });
-                this.messageDialog = window['primefacesmessagedialog'];
+                this.messageDialog = PF('primefacesmessagedialog');
                 this.messageDialog.titleContainer = this.messageDialog.titlebar.children('span.ui-dialog-title');
                 this.messageDialog.detailContainer = this.messageDialog.content.children('p');
             }
