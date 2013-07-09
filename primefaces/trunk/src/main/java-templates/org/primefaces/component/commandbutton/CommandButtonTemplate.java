@@ -98,3 +98,15 @@ import org.primefaces.event.SelectEvent;
     public boolean isResetValuesSet() {
         return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression("resetValues") != null);
     }
+    
+    private String confirmationScript;
+    
+    public String getConfirmationScript() {
+        return this.confirmationScript;
+    }
+    public void setConfirmationScript(String confirmationScript) {
+        this.confirmationScript = confirmationScript;
+    }
+    public boolean requiresConfirmation() {
+        return this.confirmationScript != null;
+    }

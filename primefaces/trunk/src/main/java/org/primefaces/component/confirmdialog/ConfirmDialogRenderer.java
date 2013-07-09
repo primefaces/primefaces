@@ -131,10 +131,15 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 		writer.writeAttribute("class", severityIcon, null);
 		writer.endElement("span");
 
+        writer.startElement("span", null);
+		writer.writeAttribute("class", ConfirmDialog.MESSAGE_CLASS, null);
+        
         if(messageFacet != null)
             messageFacet.encodeAll(context);
         else if(messageText != null)
 			writer.writeText(messageText, null);
+        
+        writer.endElement("span");
         
         writer.endElement("p");
         

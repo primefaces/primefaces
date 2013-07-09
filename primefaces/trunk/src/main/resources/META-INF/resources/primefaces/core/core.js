@@ -483,10 +483,10 @@
             this.messageDialog.show();
         },
                 
-        confirm: function(element) {
+        confirm: function(msg) {
             if(PrimeFaces.confirmDialog) {
-                PrimeFaces.confirmSource = element;
-                PrimeFaces.confirmDialog.show();
+                PrimeFaces.confirmSource = $(PrimeFaces.escapeClientId(msg.source));
+                PrimeFaces.confirmDialog.showMessage(msg);
             }
             else {
                 PrimeFaces.warn('No global confirmation dialog available.');
