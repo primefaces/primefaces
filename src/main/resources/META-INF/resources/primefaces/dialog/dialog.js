@@ -562,8 +562,8 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         this._super(cfg);
         
         this.title = this.titlebar.children('.ui-dialog-title');
-        this.message = this.content.find('> p > .ui-confirm-dialog-message');
-        this.icon = this.content.find('> p > .ui-confirm-dialog-severity');
+        this.message = this.content.children('.ui-confirm-dialog-message');
+        this.icon = this.content.children('.ui-confirm-dialog-severity');
 
         if(this.cfg.global) {
             PrimeFaces.confirmDialog = this;
