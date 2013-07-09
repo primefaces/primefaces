@@ -34,6 +34,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.WidgetBuilder;
@@ -465,7 +466,7 @@ public abstract class CoreRenderer extends Renderer {
     }
     
     protected String getOnclickBehaviors(FacesContext context, ClientBehaviorHolder cbh) {
-        List<ClientBehavior> behaviors = cbh.getClientBehaviors().get("action");
+        List<ClientBehavior> behaviors = cbh.getClientBehaviors().get("click");
         StringBuilder sb = new StringBuilder();
         
         if(behaviors != null && !behaviors.isEmpty()) {
@@ -475,7 +476,7 @@ public abstract class CoreRenderer extends Renderer {
             
             for(Iterator<ClientBehavior> behaviorIter = behaviors.iterator(); behaviorIter.hasNext();) {
                 ClientBehavior behavior = behaviorIter.next();
-                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, "action", clientId, params);
+                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, "click", clientId, params);
                 String script = behavior.getScript(cbc);
 
                 if(script != null)

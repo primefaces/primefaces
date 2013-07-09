@@ -64,6 +64,11 @@ public class CommandButtonRenderer extends CoreRenderer {
         if(button.getOnclick() != null) {
             onclick.append(button.getOnclick()).append(";");
         }
+        
+        String onclickBehaviors = getOnclickBehaviors(context, button);
+        if(onclickBehaviors != null) {
+            onclick.append(onclickBehaviors);
+        }
 
 		writer.startElement("button", button);
 		writer.writeAttribute("id", clientId, "id");
@@ -87,16 +92,11 @@ public class CommandButtonRenderer extends CoreRenderer {
 			
             onclick.append(request);
 		}
-        
-        String onclickBehaviors = getOnclickBehaviors(context, button);
-        if(onclickBehaviors != null) {
-            onclick.append(onclickBehaviors).append(";");
-        }
 
 		if(onclick.length() > 0) {
-            if(button.isConfirm()) {
-                writer.writeAttribute("data-pfcommand", onclick.toString(), null);
-                writer.writeAttribute("onclick", "PrimeFaces.confirm(this);return false;", "onclick");
+            if(button.requiresConfirmation()) {
+                writer.writeAttribute("data-pfconfirmcommand", onclick.toString(), null);
+                writer.writeAttribute("onclick", button.getConfirmationScript(), "onclick");
             }
             else
                 writer.writeAttribute("onclick", onclick.toString(), "onclick");

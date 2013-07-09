@@ -560,13 +560,18 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         cfg.appendToBody = cfg.appendToBody||cfg.global;
 
         this._super(cfg);
+        
+        this.title = this.titlebar.children('.ui-dialog-title');
+        this.message = this.content.find('> p > .ui-confirm-dialog-message');
+        this.icon = this.content.find('> p > .ui-confirm-dialog-severity');
 
         if(this.cfg.global) {
             PrimeFaces.confirmDialog = this;
 
-            this.jq.find('.ui-confirmdialog-yes').on('click.ui-confirmdialog', function(e) {
+            this.jq.find('.ui-confirmdialog-yes').on('click.ui-confirmdialog', function(e) {                
                 if(PrimeFaces.confirmSource) {
-                    var fn = eval('(function(){' + $(PrimeFaces.confirmSource).data('pfcommand') + '})');
+                    var fn = eval('(function(){' + PrimeFaces.confirmSource.data('pfconfirmcommand') + '})');
+                    
                     fn.call(PrimeFaces.confirmSource);
                     PrimeFaces.confirmDialog.hide();
                     PrimeFaces.confirmSource = null;
@@ -586,6 +591,12 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
 
     applyFocus: function() {
         this.jq.find(':button,:submit').filter(':visible:enabled').eq(0).focus();
+    },
+            
+    showMessage: function(msg) {
+        this.title.text(msg.header);
+        this.message.text(msg.message);
+        this.show();
     }
 
 });

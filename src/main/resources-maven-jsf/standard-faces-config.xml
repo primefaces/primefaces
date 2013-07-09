@@ -46,6 +46,11 @@
         <behavior-class>org.primefaces.component.behavior.printer.PrinterBehavior</behavior-class>
     </behavior>
     
+    <behavior>
+        <behavior-id>org.primefaces.behavior.ConfirmBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.confirm.ConfirmBehavior</behavior-class>
+    </behavior>
+    
     <factory>
     	<faces-context-factory>org.primefaces.context.PrimeFacesContextFactory</faces-context-factory>
     </factory>

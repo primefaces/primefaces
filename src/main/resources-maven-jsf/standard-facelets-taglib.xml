@@ -255,6 +255,31 @@
     </tag>
     
     <tag>
+        <tag-name>confirm</tag-name>
+        <behavior>
+            <behavior-id>org.primefaces.behavior.ConfirmBehavior</behavior-id>
+        </behavior>
+		<attribute>
+			<description>Header text of the confirmation dialog.</description>
+			<name>header</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<description>Detail text of the confirmation dialog.</description>
+			<name>message</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<description>Icon to display inside the confirm dialog.</description>
+			<name>icon</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+    </tag>
+    
+    <tag>
 		<tag-name>resetInput</tag-name>
 		<handler-class>
 			org.primefaces.component.resetinput.ResetInputTagHandler
