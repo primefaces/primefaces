@@ -422,10 +422,10 @@
                 }
                 
                 if(titleElement.length > 0) {
-                    window[dialogWidgetVar].titlebar.children('span.ui-dialog-title').html(titleElement.text());
+                    PF(dialogWidgetVar).titlebar.children('span.ui-dialog-title').html(titleElement.text());
                 }
                 
-                window[dialogWidgetVar].show();
+                PF(dialogWidgetVar).show();
                 
                 dialogFrame.data('initialized', true);
             })
@@ -436,7 +436,7 @@
             var dlg = $(parent.document.body).children('div.ui-dialog').filter(function() {
                 return $(this).data('pfdlgcid') === cfg.pfdlgcid;
             }),
-            dlgWidget = parent[dlg.data('widgetvar')],
+            dlgWidget = parent.PF(dlg.data('widgetvar')),
             sourceWidget = dlgWidget.cfg.sourceWidget;
 
             dlgWidget.hide();
