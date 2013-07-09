@@ -51,7 +51,7 @@ public class DialogRenderer extends CoreRenderer {
         String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("Dialog", dialog.resolveWidgetVar(), clientId, true);
-        
+
         wb.attr("visible", dialog.isVisible(), false)
             .attr("draggable", dialog.isDraggable(), true)
             .attr("resizable", dialog.isResizable(), true)
@@ -61,6 +61,7 @@ public class DialogRenderer extends CoreRenderer {
             .attr("minWidth", dialog.getMinWidth(), Integer.MIN_VALUE)
             .attr("minHeight", dialog.getMinHeight(), Integer.MIN_VALUE)
             .attr("appendToBody", dialog.isAppendToBody(), false)
+            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, dialog, dialog.getAppendTo()))
             .attr("dynamic", dialog.isDynamic(), false)
             .attr("showEffect", dialog.getShowEffect(), null)
             .attr("hideEffect", dialog.getHideEffect(), null)
