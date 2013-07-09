@@ -796,14 +796,16 @@
                 processArray.push(cfg.fragmentId);
             }
             var processIds = processArray.length > 0 ? processArray.join(' ') : '@all';
-            postParams.push({
-                name:PrimeFaces.PARTIAL_PROCESS_PARAM, 
-                value:processIds
-            });
+            if (processIds != '@none') {
+	            postParams.push({
+	                name:PrimeFaces.PARTIAL_PROCESS_PARAM, 
+	                value:processIds
+	            });
+            }
 
             //update
             var updateArray = PrimeFaces.ajax.AjaxUtils.resolveComponentsForAjaxCall(cfg, 'update');
-            if(cfg.fragmentId&&cfg.fragmentUpdate) {
+            if(cfg.fragmentId && cfg.fragmentUpdate) {
                 updateArray.push(cfg.fragmentId);
             }
             if(updateArray.length > 0) {
