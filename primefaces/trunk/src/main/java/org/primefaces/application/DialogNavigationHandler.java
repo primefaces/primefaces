@@ -60,7 +60,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
                                     .append("',sourceComponentId:'").append(sourceComponentId).append("'");
 
             if(sourceWidget != null) {
-                sb.append(",sourceWidget:").append(sourceWidget);
+                sb.append(",sourceWidget:PF('").append(sourceWidget).append("')");
             }
             
             sb.append(",options:{");
