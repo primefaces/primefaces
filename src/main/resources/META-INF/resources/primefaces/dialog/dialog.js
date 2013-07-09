@@ -48,7 +48,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.syncWindowResize();
         }
 
-        if(this.cfg.appendToBody){
+        if(this.cfg.appendTo) {
+        	this.jq.appendTo(PrimeFaces.Expressions.resolveComponentsAsSelector(this.cfg.appendTo));
+        }
+        else if(this.cfg.appendToBody){
             this.jq.appendTo('body');
         }
 
