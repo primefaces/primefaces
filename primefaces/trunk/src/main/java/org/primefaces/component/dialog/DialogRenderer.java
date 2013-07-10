@@ -16,6 +16,7 @@
 package org.primefaces.component.dialog;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -28,6 +29,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DialogRenderer extends CoreRenderer {
 
+	private static final Logger LOG = Logger.getLogger(DialogRenderer.class.getName());
+	
     @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decodeBehaviors(context, component);
@@ -52,6 +55,10 @@ public class DialogRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.widget("Dialog", dialog.resolveWidgetVar(), clientId, true);
 
+        if (dialog.isAppendToBody()) {
+        	LOG.warning("The appendToBody attribute of the Dialog will be deprecated in future versions. Please use appendTo=\"@(body)\" now");
+        }
+        
         wb.attr("visible", dialog.isVisible(), false)
             .attr("draggable", dialog.isDraggable(), true)
             .attr("resizable", dialog.isResizable(), true)
