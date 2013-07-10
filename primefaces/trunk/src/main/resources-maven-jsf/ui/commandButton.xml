@@ -102,6 +102,13 @@
 			<defaultValue>false</defaultValue>
             <description>If true, indicate that this particular Ajax transaction is a value reset transaction. This will cause resetValue() to be called on any EditableValueHolder instances encountered as a result of this ajax transaction. If not specified, or the value is false, no such indication is made.</description>
 		</attribute>
+        <attribute>
+			<name>ignoreAutoUpdate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.</description>
+		</attribute>
 		<attribute>
 			<name>accesskey</name>
 			<required>false</required>

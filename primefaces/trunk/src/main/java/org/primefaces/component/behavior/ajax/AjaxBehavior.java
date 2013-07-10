@@ -57,6 +57,7 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
     private boolean partialSubmitSet = false;
     private Boolean resetValues;
     private boolean resetValuesSet = false;
+    private Boolean ignoreAutoUpdate;
     
     public final static String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
 
@@ -216,6 +217,17 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
         return this.resetValuesSet || (this.getValueExpression("resetValues") != null);
     }
     
+    public boolean isIgnoreAutoUpdate() {
+        Boolean result = (Boolean) eval("ignoreAutoUpdate", ignoreAutoUpdate);
+        
+        return ((result != null) ? result : false);
+    }
+    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
+        this.ignoreAutoUpdate = ignoreAutoUpdate;
+        
+        clearInitialState();
+    }
+    
     protected Object eval(String propertyName, Object value) {
         if(value != null) {
             return value;
@@ -302,6 +314,8 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
         } else if ("resetValues".equals(propertyName)) {
         	resetValues = (Boolean)value;
         	this.resetValuesSet = true;
+        } else if ("ignoreAutoUpdate".equals(propertyName)) {
+        	ignoreAutoUpdate = (Boolean)value;
         }
     }
     
@@ -333,8 +347,9 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
             values[10] = global;
             values[11] = partialSubmit;
             values[12] = resetValues;
-            values[13] = listener;
-            values[14] = saveBindings(context, bindings);
+            values[13] = ignoreAutoUpdate;
+            values[14] = listener;
+            values[15] = saveBindings(context, bindings);
         }
 
         return values;
@@ -359,8 +374,9 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
                 global = (Boolean) values[10];
                 partialSubmit = (Boolean) values[11];
                 resetValues = (Boolean) values[12];
-                listener = (MethodExpression) values[13];
-                bindings = restoreBindings(context, values[14]);
+                ignoreAutoUpdate = (Boolean) values[13];
+                listener = (MethodExpression) values[14];
+                bindings = restoreBindings(context, values[15]);
 
                 clearInitialState();
             }

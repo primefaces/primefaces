@@ -509,6 +509,8 @@
         PARTIAL_EVENT_PARAM : "javax.faces.partial.event",
         
         RESET_VALUES_PARAM : "primefaces.resetValues",
+        
+        IGNORE_AUTO_UPDATE_PARAM : "primefaces.ignoreAutoUpdate",
 
         VIEW_STATE : "javax.faces.ViewState",
 
@@ -790,6 +792,14 @@
                 });
             }
 
+            //ignoreAutoUpdate
+            if (cfg.ignoreAutoUpdate) {
+                postParams.push({
+                    name:PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, 
+                    value:cfg.ignoreAutoUpdate
+                });
+            }
+            
             //process
             var processArray = PrimeFaces.ajax.AjaxUtils.resolveComponentsForAjaxCall(cfg, 'process');
             if(cfg.fragmentId) {
