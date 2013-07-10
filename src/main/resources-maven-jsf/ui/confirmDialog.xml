@@ -85,6 +85,12 @@
             <description>Appends dialog as a child of document body. Default is false.</description>
         </attribute>
         <attribute>
+            <name>appendTo</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Alternative to appendToBody. Appends the dialog to the given search expression.</description>
+        </attribute>
+        <attribute>
             <name>visible</name>
             <required>false</required>
             <type>java.lang.Boolean</type>

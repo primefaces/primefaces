@@ -16,11 +16,13 @@
 package org.primefaces.component.confirmdialog;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.dialog.Dialog;
+import org.primefaces.expression.SearchExpressionFacade;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -28,6 +30,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmDialogRenderer extends CoreRenderer {
 
+	private static final Logger LOG = Logger.getLogger(ConfirmDialogRenderer.class.getName());
+	
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ConfirmDialog dialog = (ConfirmDialog) component;
@@ -66,11 +70,17 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dialog.getClientId();
         WidgetBuilder wb = getWidgetBuilder(context);
+        
+        if (dialog.isAppendToBody()) {
+        	LOG.warning("The appendToBody attribute of the ConfirmDialog will be deprecated in future versions. Please use appendTo=\"@(body)\" now");
+        }
+        
         wb.widget("ConfirmDialog", dialog.resolveWidgetVar(), clientId, true)
             .attr("visible", dialog.isVisible(), false)
             .attr("width", dialog.getWidth(), null)
             .attr("height", dialog.getHeight(), null)
             .attr("appendToBody", dialog.isAppendToBody(), false)
+            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, dialog, dialog.getAppendTo()))
             .attr("showEffect", dialog.getShowEffect(), null)
             .attr("hideEffect", dialog.getHideEffect(), null)
             .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
