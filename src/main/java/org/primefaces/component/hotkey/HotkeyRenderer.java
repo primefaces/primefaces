@@ -71,6 +71,7 @@ public class HotkeyRenderer extends CoreRenderer {
                 .global(hotkey.isGlobal())
                 .partialSubmit(hotkey.isPartialSubmit(), hotkey.isPartialSubmitSet())
                 .resetValues(hotkey.isResetValues(), hotkey.isResetValuesSet())
+                .ignoreAutoUpdate(hotkey.isIgnoreAutoUpdate())
                 .onstart(hotkey.getOnstart())
                 .onerror(hotkey.getOnerror())
                 .onsuccess(hotkey.getOnsuccess())

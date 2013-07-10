@@ -110,7 +110,15 @@ public class AjaxRequestBuilder {
         
         return this;
     }
-    
+
+    public AjaxRequestBuilder ignoreAutoUpdate(boolean ignoreAutoUpdate) {
+        if(ignoreAutoUpdate) {
+            buffer.append(",ignoreAutoUpdate:true");
+        }
+        
+        return this;
+    }
+
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet) {
         ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
     	

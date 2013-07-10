@@ -54,6 +54,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean partialSubmitSet;
     private boolean resetValues;
     private boolean resetValuesSet;
+    private boolean ignoreAutoUpdate;
     
     public DefaultMenuItem() {}
     
@@ -302,5 +303,13 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     
     public boolean isResetValuesSet() {
         return resetValuesSet;
+    }
+    
+    public boolean isIgnoreAutoUpdate() {
+        return ignoreAutoUpdate;
+    }
+
+    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
+        this.ignoreAutoUpdate = ignoreAutoUpdate;
     }
 }

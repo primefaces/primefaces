@@ -34,7 +34,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.WidgetBuilder;
@@ -217,6 +216,7 @@ public abstract class CoreRenderer extends Renderer {
                 .global(source.isGlobal())
                 .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet())
                 .resetValues(source.isResetValues(), source.isResetValuesSet())
+                .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
                 .onstart(source.getOnstart())
                 .onerror(source.getOnerror())
                 .onsuccess(source.getOnsuccess())
