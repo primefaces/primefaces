@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menu.Menu;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelRenderer extends CoreRenderer {
@@ -129,7 +130,7 @@ public class PanelRenderer extends CoreRenderer {
 
         if (optionsMenu != null) {
             optionsMenu.setOverlay(true);
-            optionsMenu.setTrigger(clientId + "_menu");
+            optionsMenu.setTrigger("@(" + ComponentUtils.escapeJQueryId(clientId) + "_menu)");
             optionsMenu.setMy("left top");
             optionsMenu.setAt("left bottom");
 
