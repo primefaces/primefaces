@@ -571,14 +571,14 @@
                             //converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
                             var elements = $(expression.substring(2, expression.length - 1));
 
-                            elements.each(function() {
-                                var element = $(this),
-                                clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id');
+                            for (var i = 0; i < elements.length; i++) {
+                                var element = $(elements[i]);
+                                var clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
 
                                 if (!PrimeFaces.inArray(ids, clientId)) {
                                     ids.push(clientId);
                                 }
-                            });
+                            }
                         }
                     }
                 }
