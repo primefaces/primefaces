@@ -126,7 +126,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .callback("oncomplete", "function()", fileUpload.getOncomplete());
             
             if(fileUpload.getAllowTypes() != null) {
-                wb.append(",acceptFileTypes:").append(fileUpload.getAllowTypes());
+                wb.append(",allowTypes:").append(fileUpload.getAllowTypes());
             }
         }
         
