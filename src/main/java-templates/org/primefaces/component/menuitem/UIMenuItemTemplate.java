@@ -54,5 +54,5 @@ import javax.el.MethodExpression;
     }
     
     public boolean isAjaxified() {
-        return getUrl() == null && isAjax();
+    	return getUrl() == null && getOutcome() == null && isAjax();
     }
