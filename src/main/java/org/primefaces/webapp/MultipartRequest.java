@@ -164,8 +164,16 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 			List<FileItem> items = fileParams.get(name);
 			
 			return items.get(0);
-		} else {
+		} 
+        else {
 			return null;
 		}	
+	}
+    
+    public List<FileItem> getFileItems(String name) {
+		if(fileParams.containsKey(name))
+			return fileParams.get(name);
+        else
+			return null;
 	}
 }
