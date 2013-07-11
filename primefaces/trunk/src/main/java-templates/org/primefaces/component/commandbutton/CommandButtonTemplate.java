@@ -110,3 +110,7 @@ import org.primefaces.event.SelectEvent;
     public boolean requiresConfirmation() {
         return this.confirmationScript != null;
     }
+    
+    public boolean isAjaxified() {
+        return !getType().equals("reset") && !getType().equals("button") && isAjax();
+    }

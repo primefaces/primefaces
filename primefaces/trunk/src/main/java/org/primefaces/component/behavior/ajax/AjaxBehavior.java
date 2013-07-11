@@ -425,4 +425,8 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
     public void removeAjaxBehaviorListener(AjaxBehaviorListener listener) {
         removeBehaviorListener(listener);
     }
+
+    public boolean isAjaxified() {
+        return true;
+    }
 }

@@ -52,3 +52,7 @@ import javax.el.MethodExpression;
         MethodExpression expr = super.getActionExpression();
         return expr != null ? expr.getExpressionString() : null;
     }
+    
+    public boolean isAjaxified() {
+        return getUrl() == null && isAjax();
+    }
