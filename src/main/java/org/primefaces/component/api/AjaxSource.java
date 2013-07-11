@@ -46,4 +46,6 @@ public interface AjaxSource {
     public boolean isResetValuesSet();
     
     public boolean isIgnoreAutoUpdate();
+    
+    public boolean isAjaxified();
 }

@@ -9,3 +9,7 @@
     public boolean isResetValuesSet() {
         return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression("resetValues") != null);
     }
+    
+    public boolean isAjaxified() {
+        return isAjax();
+    }
