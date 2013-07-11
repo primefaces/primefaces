@@ -332,7 +332,7 @@ public class AjaxBehavior extends ClientBehaviorBase implements AjaxSource {
                 values = new Object[] {superState};
         } 
         else {
-            values = new Object[14];
+            values = new Object[16];
       
             values[0] = superState;
             values[1] = onstart;
