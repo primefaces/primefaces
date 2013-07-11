@@ -27,6 +27,18 @@
 	<attributes>
 		&input_component_attributes;
 		&widget_var_attribute;
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the main container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container element.</description>
+		</attribute>
 		<attribute>
 			<name>update</name>
 			<required>false</required>
@@ -73,31 +85,19 @@
 			<type>java.lang.String</type>
             <description>Semi colon separated list of file extensions to accept.</description>
 		</attribute>
+        <attribute>
+			<name>fileLimit</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Maximum number of files to be uploaded.</description>
+		</attribute>
 		<attribute>
 			<name>sizeLimit</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-            <description>File size limit in bytes. Default is unlimited.</description>
-		</attribute>
-		<attribute>
-			<name>showButtons</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
-            <description>Defines visibility of upload and cancel buttons in button bar. Default is true</description>
-		</attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Style of the main container element.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Style class of the main container element.</description>
+            <description>Individual file size limit in bytes. Default is unlimited.</description>
 		</attribute>
         <attribute>
 			<name>mode</name>
@@ -148,6 +148,13 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
+			<name>merge</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>By default, each file is uploaded with a separate request, set merge to true to merge all files in one request.</description>
 		</attribute>
 	</attributes>
 	<resources>

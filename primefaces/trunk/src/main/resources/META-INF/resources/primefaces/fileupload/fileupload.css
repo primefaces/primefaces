@@ -11,10 +11,10 @@
  */
 
  .ui-fileupload {
-     display: none;
+     
  }
 
-.fileupload-buttonbar .ui-button input {
+.ui-fileupload-buttonbar .ui-button input {
   position: absolute;
   top: 0;
   right: 0;
@@ -29,70 +29,44 @@
   z-index: 999;
 }
 
-.fileinput-button {
+.ui-fileupload-choose {
   overflow: hidden;
 }
 
-/* Fix for IE 6: */
-*html .fileinput-button {
-  padding: 2px 0;
-}
-
-/* Fix for IE 7: */
-*+html .fileinput-button {
-  padding: 2px 0;
-}
-
-.fileupload-buttonbar {
+.ui-fileupload-buttonbar {
   padding: 0.2em 0.4em;
 }
 
-.fileupload-buttonbar .ui-button {
+.ui-fileupload-buttonbar .ui-button {
   vertical-align: middle;
   margin-right: 0.2em;
 }
 
-.fileupload-content {
+.ui-fileupload-content {
   padding: 0.2em 0.4em;
   border-top-width: 0;
 }
 
-.fileupload-content .ui-progressbar {
+.ui-fileupload-content .ui-progressbar {
   width: 200px;
   height: 20px;
 }
-
-.fileupload-content .ui-progressbar-value {
+/*
+.ui-fileupload-content .ui-progressbar-value {
   background: url("#{resource['primefaces:fileupload/ie-anim.gif']}") repeat-x;
-}
+}*/
 
-.fileupload-content .fileupload-progressbar {
-  width: 400px;
-  margin: 10px 0;
-}
-
-.files {
+.ui-fileupload-files {
   margin: 10px 0;
   border-collapse: collapse;
 }
 
-.files td {
-  padding: 5px;
-  border-spacing: 5px;
+.ui-fileupload-files td {
+  padding: 4px 10px; 
 }
 
-.files img {
+.ui-fileupload-files img {
   border: none;
-}
-
-.files .name {
-  padding: 0 10px;
-}
-
-.files .size {
-  padding: 0 10px 0 0;
-  text-align: right;
-  white-space: nowrap;
 }
 
 .ui-state-disabled .ui-state-disabled {

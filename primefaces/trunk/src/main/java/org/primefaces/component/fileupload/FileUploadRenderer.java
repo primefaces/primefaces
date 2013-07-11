@@ -16,6 +16,8 @@
 package org.primefaces.component.fileupload;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -27,8 +29,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.DefaultUploadedFile;
+import org.primefaces.model.UploadedFile;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 import org.primefaces.webapp.MultipartRequest;
@@ -42,13 +44,11 @@ public class FileUploadRenderer extends CoreRenderer {
 		MultipartRequest multipartRequest = getMultiPartRequestInChain(context);
 		
 		if(multipartRequest != null) {
-			FileItem file = multipartRequest.getFileItem(clientId);
-
             if(fileUpload.getMode().equals("simple")) {
-                decodeSimple(context, fileUpload, file);
+                decodeSimple(context, fileUpload, multipartRequest.getFileItem(clientId));
             }
             else {
-                decodeAdvanced(context, fileUpload, file);
+                decodeAdvanced(context, fileUpload, multipartRequest.getFileItems(clientId));
             }
 		}
     }
@@ -60,9 +60,19 @@ public class FileUploadRenderer extends CoreRenderer {
             fileUpload.setSubmittedValue(new DefaultUploadedFile(file));
 	}
     
-    public void decodeAdvanced(FacesContext context, FileUpload fileUpload, FileItem file) {
-		if(file != null) {
-            fileUpload.queueEvent(new FileUploadEvent(fileUpload, new DefaultUploadedFile(file)));
+    public void decodeAdvanced(FacesContext context, FileUpload fileUpload, List<FileItem> files) {
+        if(files != null && !files.isEmpty()) {
+            if(fileUpload.isMerge()) {
+                List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
+                for(FileItem fileItem : files) {
+                    uploadedFiles.add(new DefaultUploadedFile(fileItem));
+                }
+                
+                fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFiles));
+            }
+            else {
+                fileUpload.queueEvent(new FileUploadEvent(fileUpload, new DefaultUploadedFile(files.get(0))));
+            }
         }
 	}
 	
@@ -111,6 +121,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("maxFileSize", fileUpload.getSizeLimit(), Integer.MAX_VALUE)
                 .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
                 .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
+                .attr("merge", fileUpload.isMerge(), false)
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("oncomplete", "function()", fileUpload.getOncomplete());
             
@@ -134,23 +145,25 @@ public class FileUploadRenderer extends CoreRenderer {
     protected void encodeAdvancedMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = fileUpload.getClientId(context);
+        String style = fileUpload.getStyle();
         String styleClass = fileUpload.getStyleClass();
         styleClass = styleClass == null ? FileUpload.CONTAINER_CLASS : FileUpload.CONTAINER_CLASS + " " + styleClass;
 
 		writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "id");
-        if(fileUpload.getStyle() != null) 
-            writer.writeAttribute("style", fileUpload.getStyle(), "style");
+        writer.writeAttribute("class", styleClass, styleClass);
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
         
         //buttonbar
         writer.startElement("div", fileUpload);
-        writer.writeAttribute("class", FileUpload.BUTTON_BAR_CLASS, "styleClass");
+        writer.writeAttribute("class", FileUpload.BUTTON_BAR_CLASS, null);
 
         //choose button
         encodeChooseButton(context, fileUpload);
         
-        if(fileUpload.isShowButtons() && !fileUpload.isAuto()) {
+        if(!fileUpload.isAuto()) {
             encodeButton(context, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS, "ui-icon-arrowreturnthick-1-n");
             encodeButton(context, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS, "ui-icon-cancel");
         }
@@ -163,6 +176,8 @@ public class FileUploadRenderer extends CoreRenderer {
         
         writer.startElement("table", null);
         writer.writeAttribute("class", FileUpload.FILES_CLASS, null);
+        writer.startElement("tbody", null);
+        writer.endElement("tbody");
         writer.endElement("table");
         
         writer.endElement("div");
@@ -181,7 +196,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.startElement("label", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + FileUpload.CHOOSE_BUTTON_CLASS, null);
         
-        //button icon
+        //button icon 
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-plusthick", null);
         writer.endElement("span");
