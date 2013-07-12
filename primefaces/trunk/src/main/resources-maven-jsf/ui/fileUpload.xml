@@ -128,6 +128,11 @@
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
+			<name>fileLimitMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
 			<name>dragDropSupport</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>

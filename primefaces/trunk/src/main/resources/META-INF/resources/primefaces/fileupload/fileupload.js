@@ -1554,7 +1554,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.files = [];
         this.cfg.invalidFileMessage = this.cfg.invalidFileMessage||'Invalid file type';
         this.cfg.invalidSizeMessage = this.cfg.invalidSizeMessage||'Invalid file size';
+        this.cfg.fileLimitMessage = this.cfg.fileLimitMessage||'Maximum number of files exceeded';
         this.cfg.messageTemplate = this.cfg.messageTemplate||'{name} {size}';
+        this.uploadedFileCount = 0;
         
         this.renderMessages();
         
@@ -1576,6 +1578,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             },
             add: function(e, data) {
                 var files = data.files;
+                
+                if($this.cfg.fileLimit && ($this.uploadedFileCount + files.length) > $this.cfg.fileLimit) {
+                    $this.showMessage({
+                        summary: $this.cfg.fileLimitMessage
+                    });
+                    
+                    return;
+                }
 
                 if(files && files.length) {
                     for(var i = 0; i < files.length; i++) {
@@ -1629,6 +1639,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 }
             },
             done: function(e, data) {
+                $this.uploadedFileCount += data.files.length;
                 $this.removeFiles(data.files);
                         
                 var xmlDoc = $(data.result.documentElement),
@@ -1805,8 +1816,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
             
     showMessage: function(msg) {
-        var detail = this.cfg.messageTemplate.replace('{name}', msg.filename).replace('{size}', this.formatSize(msg.filesize));
-        this.messageList.append('<li><span class="ui-messages-error-summary">' + msg.summary + '</span><span class="ui-messages-error-detail">' + detail + '</span></li>');
+        var summary = msg.summary,
+        detail = '';
+
+        if(msg.filename && msg.filesize) {
+            detail = this.cfg.messageTemplate.replace('{name}', msg.filename).replace('{size}', this.formatSize(msg.filesize));
+        }
+        
+        this.messageList.append('<li><span class="ui-messages-error-summary">' + summary + '</span><span class="ui-messages-error-detail">' + detail + '</span></li>');
         this.messageContainer.show();
     }
 });
