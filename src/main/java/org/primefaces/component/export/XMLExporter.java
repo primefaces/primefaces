@@ -116,6 +116,7 @@ public class XMLExporter extends Exporter {
      
             //restore
             table.setFirst(first);
+            table.setRowIndex(-1);
             table.loadLazyData();
         } 
         else {
