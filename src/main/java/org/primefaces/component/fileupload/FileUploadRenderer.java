@@ -122,6 +122,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
                 .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
                 .attr("merge", fileUpload.isMerge(), false)
+                .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("oncomplete", "function()", fileUpload.getOncomplete());
             
@@ -249,7 +250,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
 		writer.endElement("button");
     }
-
+    
     /**
      * Return null if no file is submitted in simple mode
      * 
