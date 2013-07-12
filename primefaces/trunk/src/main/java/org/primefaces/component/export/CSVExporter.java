@@ -136,6 +136,7 @@ public class CSVExporter extends Exporter {
      
             //restore
             table.setFirst(first);
+            table.setRowIndex(-1);
             table.loadLazyData();
         } 
         else {
