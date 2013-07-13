@@ -302,6 +302,7 @@ public class ComponentUtils {
 		return clientIds;
 	}
 	
+	@Deprecated
 	public static String findComponentClientId(String id) {
 	    FacesContext facesContext = FacesContext.getCurrentInstance();
 	    UIComponent component = findComponent(facesContext.getViewRoot(), id);
@@ -309,6 +310,7 @@ public class ComponentUtils {
 	    return component.getClientId(facesContext);
 	}
 	
+
 	public static UIComponent findComponent(UIComponent base, String id) {
 	    if (id.equals(base.getId()))
 	      return base;
