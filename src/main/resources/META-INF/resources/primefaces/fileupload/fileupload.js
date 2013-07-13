@@ -1563,14 +1563,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
 
         var $this = this,
-                encodedURLfield = this.form.children("input[name='javax.faces.encodedURL']");
+        encodedURLfield = this.form.children("input[name='javax.faces.encodedURL']");
 
         this.ucfg = {
             url: (encodedURLfield.length) ? encodedURLfield.val() : this.form.attr('action'),
             fileInput: this.input,
             paramName: this.id,
             dataType: 'xml',
-            dropZone: (this.cfg.dnd == false) ? null : this.jq,
+            dropZone: (this.cfg.dnd === false) ? null : this.jq,
             formData: function() {
                 return $this.createPostData();
             },
@@ -1593,7 +1593,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if (files && files.length) {
                     for (var i = 0; i < files.length; i++) {
                         var file = files[i],
-                                validMsg = $this.validate(file);
+                        validMsg = $this.validate(file);
 
                         if(validMsg) {
                             $this.showMessage({
@@ -1634,7 +1634,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                             $this.files.push(file);
 
-                            if ($this.cfg.auto) {
+                            if($this.cfg.auto) {
                                 $this.upload();
                             }
                         }
@@ -1674,12 +1674,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 $this.removeFiles(data.files);
 
                 var xmlDoc = $(data.result.documentElement),
-                        updates = xmlDoc.find('update');
+                updates = xmlDoc.find('update');
 
                 for (var i = 0; i < updates.length; i++) {
                     var update = updates.eq(i),
-                            id = update.attr('id'),
-                            content = update.text();
+                    id = update.attr('id'),
+                    content = update.text();
 
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
                 }
@@ -1690,6 +1690,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.fileupload(this.ucfg);
     },
+            
     bindEvents: function() {
         var $this = this;
 
@@ -1721,43 +1722,47 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         $(document).off('mouseover.fileupload mouseout.fileupload mousedown.fileupload mouseup.fileupload focus.fileupload blur.fileupload click.fileupload ', this.rowCancelActionSelector)
                 .on('mouseover.fileupload', this.rowCancelActionSelector, null, function(e) {
-            $(this).addClass('ui-state-hover');
-        })
+                    $(this).addClass('ui-state-hover');
+                })
                 .on('mouseout.fileupload', this.rowCancelActionSelector, null, function(e) {
-            $(this).removeClass('ui-state-hover ui-state-active');
-        })
+                    $(this).removeClass('ui-state-hover ui-state-active');
+                })
                 .on('mousedown.fileupload', this.rowCancelActionSelector, null, function(e) {
-            $(this).addClass('ui-state-active').removeClass('ui-state-hover');
-        })
+                    $(this).addClass('ui-state-active').removeClass('ui-state-hover');
+                })
                 .on('mouseup.fileupload', this.rowCancelActionSelector, null, function(e) {
-            $(this).addClass('ui-state-hover').removeClass('ui-state-active');
-        })
+                    $(this).addClass('ui-state-hover').removeClass('ui-state-active');
+                })
                 .on('focus.fileupload', this.rowCancelActionSelector, null, function(e) {
-            $(this).addclass('ui-state-focus');
-        })
+                    $(this).addclass('ui-state-focus');
+                })
                 .on('blur.fileupload', this.rowCancelActionSelector, null, function(e) {
-            $(this).removeClass('ui-state-focus');
-        })
+                    $(this).removeClass('ui-state-focus');
+                })
                 .on('click.fileupload', this.rowCancelActionSelector, null, function(e) {
-            var row = $(this).closest('tr'),
+                    var row = $(this).closest('tr'),
                     removedFile = $this.files.splice(row.index(), 1);
-            removedFile[0].row = null;
+                    removedFile[0].row = null;
 
-            $this.removeFileRow(row);
+                    $this.removeFileRow(row);
 
-            e.preventDefault();
-        });
+                    e.preventDefault();
+                });
     },
+            
     upload: function() {
-        if (this.cfg.merge) {
-            this.jq.fileupload('send', {files: $this.files});
-        }
-        else {
-            for (var i = 0; i < this.files.length; i++) {
-                this.jq.fileupload('send', {files: this.files[i]});
+        if(this.files.length) {
+            if (this.cfg.merge) {
+                this.jq.fileupload('send', {files: this.files});
+            }
+            else {
+                for (var i = 0; i < this.files.length; i++) {
+                    this.jq.fileupload('send', {files: this.files[i]});
+                }
             }
         }
     },
+            
     createPostData: function() {
         var process = this.cfg.process ? this.id + ' ' + this.cfg.process : this.id,
                 params = this.form.serializeArray();
@@ -1772,6 +1777,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         return params;
     },
+            
     formatSize: function(bytes) {
         if(bytes === undefined)
             return '';
@@ -1785,10 +1791,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         else
             return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + this.sizes[i];
     },
+            
     removeFiles: function(files) {
         for (var i = 0; i < files.length; i++) {
             this.removeFile(files[i]);
-        }           },
+        }           
+    },
+            
     removeFile: function(file) {
         var $this = this;
 
@@ -1799,11 +1808,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         $this.removeFileRow(file.row);
         file.row = null;
     },
+            
     removeFileRow: function(row) {
         row.fadeOut(function() {
             $(this).remove();
         });
     },
+            
     clear: function() {
         for (var i = 0; i < this.files.length; i++) {
             this.removeFileRow(this.files[i].row);
@@ -1814,6 +1825,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         this.files = [];
     },
+            
     validate: function(file) {
         if (this.cfg.allowTypes && !(this.cfg.allowTypes.test(file.type) || this.cfg.allowTypes.test(file.name))) {
             return this.cfg.invalidFileMessage;
@@ -1825,6 +1837,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         return null;
     },
+            
     renderMessages: function() {
         var markup = '<div class="ui-messages ui-widget ui-helper-hidden"><div class="ui-messages-error ui-corner-all">' +
                 '<a class="ui-messages-close" href="#"><span class="ui-icon ui-icon-close"></span></a>' +
@@ -1835,11 +1848,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.messageContainer = $(markup).prependTo(this.content);
         this.messageList = this.messageContainer.find('> .ui-messages-error > ul');
         this.clearMessageLink = this.messageContainer.find('> .ui-messages-error > a.ui-messages-close');
-  },
+    },
+            
     clearMessages: function() {
         this.messageContainer.hide();
         this.messageList.children().remove();
     },
+            
     showMessage: function(msg) {
         var summary = msg.summary,
                 detail = '';
@@ -1851,4 +1866,5 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.messageList.append('<li><span class="ui-messages-error-summary">' + summary + '</span><span class="ui-messages-error-detail">' + detail + '</span></li>');
         this.messageContainer.show();
     }
+    
 });
