@@ -128,6 +128,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("previewWidth", fileUpload.getPreviewWidth(), 48)
                 .attr("previewHeight", fileUpload.getPreviewHeight(), Integer.MAX_VALUE)
                 .callback("onstart", "function()", fileUpload.getOnstart())
+                .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function()", fileUpload.getOncomplete());
             
             if(fileUpload.getAllowTypes() != null) {
