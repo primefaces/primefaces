@@ -198,7 +198,7 @@ public class FileUploadRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fileUpload.getClientId(context);
         
-        writer.startElement("label", null);
+        writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + FileUpload.CHOOSE_BUTTON_CLASS, null);
         
         //button icon 
@@ -214,7 +214,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         encodeInputField(context, fileUpload, clientId + "_input");
         
-		writer.endElement("label");
+		writer.endElement("span");
     }
 
     protected void encodeInputField(FacesContext context, FileUpload fileUpload, String clientId) throws IOException {
