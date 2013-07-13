@@ -118,7 +118,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("dnd", fileUpload.isDragDropSupport(), true)
                 .attr("update", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, update), null)
                 .attr("process", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, process), null)
-                .attr("maxFileSize", fileUpload.getSizeLimit(), Integer.MAX_VALUE)
+                .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                 .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
                 .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
                 .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
