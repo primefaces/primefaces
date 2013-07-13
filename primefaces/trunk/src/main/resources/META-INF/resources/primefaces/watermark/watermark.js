@@ -609,7 +609,7 @@ PrimeFaces.widget.Watermark = PrimeFaces.widget.BaseWidget.extend({
         this.cfg = cfg;
         this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
-        this.target = $(this.cfg.target);
+        this.target = PrimeFaces.Expressions.resolveComponentsAsSelector(this.cfg.target);
 
         if(this.target.is(':not(:input)')) {
             this.target = this.target.find(':input');
