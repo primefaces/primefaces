@@ -1577,6 +1577,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
             },
+            start: function(e) {
+                if($this.cfg.onstart) {
+                    $this.cfg.onstart.call($this);
+                }
+            },
             add: function(e, data) {
                 $this.chooseButton.removeClass('ui-state-hover ui-state-focus');
 
@@ -1685,6 +1690,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 }
 
                 PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+            },
+            always: function(e, data) {
+                if($this.cfg.oncomplete) {
+                    $this.cfg.oncomplete.call($this);
+                }
             }
         };
 
