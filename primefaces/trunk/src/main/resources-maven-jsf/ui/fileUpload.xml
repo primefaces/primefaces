@@ -95,8 +95,8 @@
 		<attribute>
 			<name>sizeLimit</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+			<type>java.lang.Long</type>
+			<defaultValue>java.lang.Long.MAX_VALUE</defaultValue>
             <description>Individual file size limit in bytes. Default is unlimited.</description>
 		</attribute>
         <attribute>
