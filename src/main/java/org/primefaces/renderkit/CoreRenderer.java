@@ -42,9 +42,11 @@ import org.primefaces.util.WidgetBuilder;
 public abstract class CoreRenderer extends Renderer {
 	
 	protected void renderChildren(FacesContext context, UIComponent component) throws IOException {
-		for (Iterator<UIComponent> iterator = component.getChildren().iterator(); iterator.hasNext();) {
-			UIComponent child = (UIComponent) iterator.next();
-			renderChild(context, child);
+		if (component.getChildCount() > 0) {
+			for (int i = 0; i < component.getChildCount(); i++) {
+				UIComponent child = (UIComponent) component.getChildren().get(i);
+				renderChild(context, child);
+			}
 		}
 	}
 
