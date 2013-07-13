@@ -1,3 +1,23 @@
 - Added custom button for datepicker. Lines 14287, 14480, 14481.
 - Remove change event trigger on timepicker set datetime
 - Add ui-shadow to calendar div
+
+List of Plugins
+- jQuery UI Core
+- jQuery UI Widget
+- jQuery UI Mouse
+- jQuery UI Draggable
+- jQuery UI Droppable
+- jQuery UI Resizable
+- jQuery UI Selectable
+- jQuery UI Sortable
+- jQuery UI Effects
+- jQuery UI Datepicker
+- jQuery UI Slider
+- jQuery UI Position
+- Timepicker
+- MouseWheel
+- Masked Input
+- Rangy Text
+- Cursor Position
+- Browser
