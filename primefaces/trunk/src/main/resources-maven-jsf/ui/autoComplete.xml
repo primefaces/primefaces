@@ -83,25 +83,6 @@
             <description>When enabled, autoComplete only accepts input from the selection list. Default is false.</description>
         </attribute>
         <attribute>
-            <name>onstart</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <description>Client side callback to execute before ajax request to load suggestions begins.</description>
-        </attribute>
-        <attribute>
-            <name>oncomplete</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <description>Client side callback to execute after ajax request to load suggestions completes.</description>
-        </attribute>
-        <attribute>
-            <name>global</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>Defines whether to trigger ajaxStatus or not. Default is true.</description>
-        </attribute>
-        <attribute>
             <name>scrollHeight</name>
             <required>false</required>
             <type>java.lang.Integer</type>
@@ -140,12 +121,6 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-        </attribute>
-        <attribute>
-            <name>process</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <description>Component(s) to process during autocomplete request.</description>
         </attribute>
         <attribute>
             <name>itemtipMyPosition</name>
