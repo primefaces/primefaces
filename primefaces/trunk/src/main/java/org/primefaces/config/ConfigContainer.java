@@ -45,7 +45,7 @@ public class ConfigContainer {
 
 	// internal config
 	private boolean stringConverterAvailable = false;
-	private boolean passThroughSupported = false;
+	private boolean jsf22 = false;
 
 	public ConfigContainer(FacesContext context) {
 		initConfig(context);
@@ -55,7 +55,7 @@ public class ConfigContainer {
 	private void initConfig(FacesContext context) {
 		beanValidationAvailable = checkIfBeanValidationIsAvailable();
 		
-		passThroughSupported = isAtLeastJSF22();
+		jsf22 = detectJSF22();
 		
 		stringConverterAvailable = null != context.getApplication().createConverter(String.class);
 	}
@@ -120,17 +120,19 @@ public class ConfigContainer {
         return available;
     }
     
-    private boolean isAtLeastJSF22() {
+    private boolean detectJSF22() {
         String version = FacesContext.class.getPackage().getImplementationVersion();
         
         if(version != null) {
             return version.startsWith("2.2");
         }
         else {
+            //fallback
             try {
                 Class.forName("javax.faces.flow.Flow");
                 return true;
-            } catch (ClassNotFoundException ex) {
+            } 
+            catch (ClassNotFoundException ex) {
                 return false;
             }
         }
@@ -165,8 +167,8 @@ public class ConfigContainer {
         return secretKey;
     }
 
-    public boolean isPassThroughSupported() {
-        return passThroughSupported;
+    public boolean isAtLeastJSF22() {
+        return jsf22;
     }
     
     public boolean isResetValuesEnabled() {

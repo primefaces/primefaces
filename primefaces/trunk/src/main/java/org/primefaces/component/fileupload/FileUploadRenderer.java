@@ -16,83 +16,29 @@
 package org.primefaces.component.fileupload;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
-import javax.servlet.ServletRequestWrapper;
-
-import org.apache.commons.fileupload.FileItem;
-import org.primefaces.event.FileUploadEvent;
+import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.DefaultUploadedFile;
-import org.primefaces.model.UploadedFile;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
-import org.primefaces.webapp.MultipartRequest;
 
 public class FileUploadRenderer extends CoreRenderer {
-
+            
     @Override
 	public void decode(FacesContext context, UIComponent component) {
 		FileUpload fileUpload = (FileUpload) component;
-        String clientId = fileUpload.getClientId(context);
-		MultipartRequest multipartRequest = getMultiPartRequestInChain(context);
-		
-		if(multipartRequest != null) {
-            if(fileUpload.getMode().equals("simple")) {
-                decodeSimple(context, fileUpload, multipartRequest.getFileItem(clientId));
-            }
-            else {
-                decodeAdvanced(context, fileUpload, multipartRequest.getFileItems(clientId));
-            }
-		}
-    }
-	
-	public void decodeSimple(FacesContext context, FileUpload fileUpload, FileItem file) {
-		if(file == null || file.getName().equals(""))
-            fileUpload.setSubmittedValue("");
-        else
-            fileUpload.setSubmittedValue(new DefaultUploadedFile(file));
-	}
-    
-    public void decodeAdvanced(FacesContext context, FileUpload fileUpload, List<FileItem> files) {
-        if(files != null && !files.isEmpty()) {
-            if(fileUpload.isMerge()) {
-                List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
-                for(FileItem fileItem : files) {
-                    uploadedFiles.add(new DefaultUploadedFile(fileItem));
-                }
-                
-                fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFiles));
-            }
-            else {
-                fileUpload.queueEvent(new FileUploadEvent(fileUpload, new DefaultUploadedFile(files.get(0))));
-            }
+        
+        if(!fileUpload.isDisabled()) {
+            if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22())
+                NativeFileUploadDecoder.decode(context, fileUpload);
+            else
+                CommonsFileUploadDecoder.decode(context, fileUpload);
         }
-	}
-	
-	/**
-	 * Finds our MultipartRequestServletWrapper in case application contains other RequestWrappers
-	 */
-	private MultipartRequest getMultiPartRequestInChain(FacesContext facesContext) {
-		Object request = facesContext.getExternalContext().getRequest();
-		
-		while(request instanceof ServletRequestWrapper) {
-			if(request instanceof MultipartRequest) {
-				return (MultipartRequest) request;
-			}
-			else {
-				request = ((ServletRequestWrapper) request).getRequest();
-			}
-		}
-		
-		return null;
-	}
+    }
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -255,25 +201,4 @@ public class FileUploadRenderer extends CoreRenderer {
 
 		writer.endElement("button");
     }
-    
-    /**
-     * Return null if no file is submitted in simple mode
-     * 
-     * @param context
-     * @param component
-     * @param submittedValue
-     * @return
-     * @throws ConverterException 
-     */
-    @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        FileUpload fileUpload = (FileUpload) component;
-        
-        if(fileUpload.getMode().equals("simple") && submittedValue != null && submittedValue.equals("")) {
-            return null;
-        }
-        else {
-            return submittedValue;
-        }
-    } 
 }

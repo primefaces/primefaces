@@ -15,8 +15,6 @@
  */
 package org.primefaces.component.fileupload;
 
-import java.util.List;
-
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
