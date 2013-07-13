@@ -1556,6 +1556,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.invalidSizeMessage = this.cfg.invalidSizeMessage||'Invalid file size';
         this.cfg.fileLimitMessage = this.cfg.fileLimitMessage||'Maximum number of files exceeded';
         this.cfg.messageTemplate = this.cfg.messageTemplate||'{name} {size}';
+        this.cfg.previewWidth = this.cfg.previewWidth||48;
         this.uploadedFileCount = 0;
         
         this.renderMessages();
@@ -1570,6 +1571,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             fileInput: this.input,
             paramName: this.id,
             dataType: 'xml',
+            dropZone: (this.cfg.dnd == false) ? null : this.jq, 
             formData: function() {
                 return $this.createPostData();
             },
@@ -1612,7 +1614,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             //preview
                             var reader = new FileReader();
                             reader.onload = function (e) {
-                                row.children('td.ui-fileupload-preview').append('<img alt="' + file.name + '" src="' + e.target.result + '" width="50"></img>');
+                                var img = $('<img alt="' + file.name + '" src="' + e.target.result + '" width="' + $this.cfg.previewWidth + '"></img>');
+                                if($this.cfg.previewHeight) {
+                                    img.height($this.cfg.previewHeight);
+                                }
+                                
+                                row.children('td.ui-fileupload-preview').append(img);
                             }
                             reader.readAsDataURL(file);
 
