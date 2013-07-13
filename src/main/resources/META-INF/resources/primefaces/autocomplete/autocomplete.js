@@ -455,14 +455,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         var _self = this;
-
-        //start callback
-        if(this.cfg.onstart) {
-            var retVal = this.cfg.onstart.call(this, query);     
-            if(retVal === false) {
-                return;
-            }        
-        }
         
         if(this.cfg.itemtip) {
             this.itemtip.hide();
@@ -470,6 +462,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         
         var options = {
             source: this.id,
+            process: this.id,
             update: this.id,
             formId: this.cfg.formId,
             onsuccess: function(responseXML) {
@@ -500,23 +493,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        //complete callback
-        if(this.cfg.oncomplete) {
-            options.oncomplete = this.cfg.oncomplete;
-        }
-        
-        //process
-        options.process = this.cfg.process ? this.id + ' ' + this.cfg.process : this.id;
-
-        if(this.cfg.global === false) {
-            options.global = false;
-        }
-
         options.params = [
           {name: this.id + '_query', value: query}  
         ];
         
-        PrimeFaces.ajax.AjaxRequest(options);
+        if(this.hasBehavior('query')) {
+            var pageBehavior = this.cfg.behaviors['query'];
+
+            pageBehavior.call(this, null, options);
+        } 
+        else {
+            PrimeFaces.ajax.AjaxRequest(options); 
+        }
     },
     
     show: function() {
@@ -657,6 +645,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     
     activate: function() {
         this.active = true;
+    },
+    
+    hasBehavior: function(event) {
+        if(this.cfg.behaviors) {
+            return this.cfg.behaviors[event] != undefined;
+        }
+    
+        return false;
     },
     
     alignPanel: function() {
