@@ -290,8 +290,10 @@ public abstract class CoreRenderer extends Renderer {
                 writer.write(domEvent + ":");
 
                 writer.write("function(event) {");
-                for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
-                    ClientBehavior behavior = behaviorIter.next();
+                
+                List<ClientBehavior> behaviorsByEvent = behaviorEvents.get(event);
+                for (int i = 0; i < behaviorsByEvent.size(); i++) {
+                    ClientBehavior behavior = behaviorsByEvent.get(i);
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
                     String script = behavior.getScript(cbc);    //could be null if disabled
 
@@ -335,8 +337,9 @@ public abstract class CoreRenderer extends Renderer {
                 wb.append(domEvent).append(":");
 
                 wb.append("function(event) {");
-                for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
-                    ClientBehavior behavior = behaviorIter.next();
+                List<ClientBehavior> behaviorsByEvent = behaviorEvents.get(event);
+                for (int i = 0; i < behaviorsByEvent.size(); i++) {
+                    ClientBehavior behavior = behaviorsByEvent.get(i);
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
                     String script = behavior.getScript(cbc);    //could be null if disabled
 
@@ -462,9 +465,9 @@ public abstract class CoreRenderer extends Renderer {
             UIComponent component = (UIComponent) cbh;
             String clientId = component.getClientId(context);
             List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
-            
-            for(Iterator<ClientBehavior> behaviorIter = behaviors.iterator(); behaviorIter.hasNext();) {
-                ClientBehavior behavior = behaviorIter.next();
+
+            for (int i = 0; i < behaviors.size(); i++) {
+                ClientBehavior behavior = behaviors.get(i);
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, "click", clientId, params);
                 String script = behavior.getScript(cbc);
 
