@@ -115,7 +115,7 @@ public class FileUploadRenderer extends CoreRenderer {
             String process = fileUpload.getProcess();
             
             wb.attr("autoUpload", fileUpload.isAuto())
-                .attr("dnd", fileUpload.isDragDropSupport())
+                .attr("dnd", fileUpload.isDragDropSupport(), true)
                 .attr("update", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, update), null)
                 .attr("process", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, process), null)
                 .attr("maxFileSize", fileUpload.getSizeLimit(), Integer.MAX_VALUE)
@@ -125,6 +125,8 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
                 .attr("merge", fileUpload.isMerge(), false)
                 .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
+                .attr("previewWidth", fileUpload.getPreviewWidth(), 48)
+                .attr("previewHeight", fileUpload.getPreviewHeight(), Integer.MAX_VALUE)
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("oncomplete", "function()", fileUpload.getOncomplete());
             
