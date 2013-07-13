@@ -36,6 +36,7 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public abstract class CoreRenderer extends Renderer {
@@ -183,23 +184,9 @@ public abstract class CoreRenderer extends Renderer {
         
     	return context.getRenderKit().getResponseStateManager().isPostback(context);
     }
-   
-    public String getEscapedClientId(String clientId){
-    	return "#" + clientId.replaceAll(":", "\\\\\\\\:");
-    }
-    
-    public boolean isValueEmpty(String value) {
-		if (value == null || "".equals(value))
-			return true;
-		
-		return false;
-	}
 	
 	public boolean isValueBlank(String value) {
-		if(value == null)
-			return true;
-		
-		return value.trim().equals("");
+		return ComponentUtils.isValueBlank(value);
 	}
     	    
     protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIComponent form) {
