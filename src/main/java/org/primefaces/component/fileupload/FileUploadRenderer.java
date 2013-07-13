@@ -114,7 +114,7 @@ public class FileUploadRenderer extends CoreRenderer {
             String update = fileUpload.getUpdate();
             String process = fileUpload.getProcess();
             
-            wb.attr("autoUpload", fileUpload.isAuto())
+            wb.attr("auto", fileUpload.isAuto(), false)
                 .attr("dnd", fileUpload.isDragDropSupport(), true)
                 .attr("update", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, update), null)
                 .attr("process", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, process), null)

@@ -1629,6 +1629,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             file.row = row;
 
                             $this.files.push(file);
+                            
+                            if($this.cfg.auto) {
+                                $this.upload();
+                            }
                         }
                     }
                 }
@@ -1673,14 +1677,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.skinButton(this.buttonBar.children('.ui-button'));
         
         this.uploadButton.on('click.fileupload', function(e) {
-            if($this.cfg.merge) {
-                $this.jq.fileupload('send', {files: $this.files});
-            }
-            else {
-                for(var i = 0; i < $this.files.length; i++) {
-                    $this.jq.fileupload('send', {files: $this.files[i]});
-                }
-            }
+            $this.upload();
             
             e.preventDefault();
         });
@@ -1731,6 +1728,17 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                         
                         e.preventDefault();
                     });
+    },
+            
+    upload: function() {
+        if(this.cfg.merge) {
+            this.jq.fileupload('send', {files: $this.files});
+        }
+        else {
+            for(var i = 0; i < this.files.length; i++) {
+                this.jq.fileupload('send', {files: this.files[i]});
+            }
+        }
     },
             
     createPostData: function() {
