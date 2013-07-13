@@ -54,7 +54,7 @@ public class FileUploadRenderer extends CoreRenderer {
     }
 	
 	public void decodeSimple(FacesContext context, FileUpload fileUpload, FileItem file) {
-		if(file.getName().equals(""))
+		if(file == null || file.getName().equals(""))
             fileUpload.setSubmittedValue("");
         else
             fileUpload.setSubmittedValue(new DefaultUploadedFile(file));
