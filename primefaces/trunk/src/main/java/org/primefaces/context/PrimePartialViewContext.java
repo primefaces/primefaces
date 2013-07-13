@@ -15,6 +15,9 @@
  */
 package org.primefaces.context;
 
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
@@ -23,6 +26,7 @@ import javax.faces.event.PhaseId;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.visit.ResetInputVisitCallback;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
@@ -42,12 +46,7 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     public void processPartial(PhaseId phaseId) {
         if (phaseId == PhaseId.RENDER_RESPONSE) {
             FacesContext context = FacesContext.getCurrentInstance();
-            Object resetValuesObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.RESET_VALUES_PARAM);
-            boolean resetValues = (null != resetValuesObject && "true".equals(resetValuesObject)) ? true : false;
-            
-            if (resetValues) {
-                ComponentUtils.resetValuesFromComponentsToRender(context);
-            }
+            resetValues(context);
         }
 
         getWrapped().processPartial(phaseId);
@@ -78,5 +77,27 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     public boolean isPartialRequest() {
         return getWrapped().isPartialRequest()
                 || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("javax.faces.partial.execute");
+    }
+    
+	/**
+	 * Visit the current renderIds and, if the component is 
+     * an instance of {@link EditableValueHolder}, 
+     * call its {@link EditableValueHolder#resetValue} method.  
+     * Use {@link #visitTree} to do the visiting.</p>
+	 * 
+	 * @param context The current {@link FacesContext}.
+	 */
+    private void resetValues(FacesContext context) {
+        Object resetValuesObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.RESET_VALUES_PARAM);
+        boolean resetValues = (null != resetValuesObject && "true".equals(resetValuesObject)) ? true : false;
+        
+        if (resetValues) {
+            VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+            
+            for (String renderId : context.getPartialViewContext().getRenderIds()) {
+                UIComponent renderComponent = context.getViewRoot().findComponent(renderId);
+                renderComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+            }
+        }
     }
 }

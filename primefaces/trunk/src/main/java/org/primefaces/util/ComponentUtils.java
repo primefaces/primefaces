@@ -27,7 +27,6 @@ import javax.faces.FacesException;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.component.*;
-import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -36,28 +35,10 @@ import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
-import org.primefaces.visit.ResetInputVisitCallback;
 
 public class ComponentUtils {
 
 	public static final EnumSet<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = EnumSet.of(VisitHint.SKIP_UNRENDERED);
-
-	/**
-	 * Visit the current renderIds and, if the component is 
-     * an instance of {@link EditableValueHolder}, 
-     * call its {@link EditableValueHolder#resetValue} method.  
-     * Use {@link #visitTree} to do the visiting.</p>
-	 * 
-	 * @param context The current {@link FacesContext}.
-	 */
-    public static void resetValuesFromComponentsToRender(FacesContext context) {
-        VisitContext visitContext = VisitContext.createVisitContext(context, null, VISIT_HINTS_SKIP_UNRENDERED);
-        
-        for (String renderId : context.getPartialViewContext().getRenderIds()) {
-            UIComponent renderComponent = context.getViewRoot().findComponent(renderId);
-            renderComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
-        }
-    }
 
 	/**
 	 * Algorithm works as follows;
@@ -202,6 +183,7 @@ public class ComponentUtils {
 		}
 	}
 
+	@Deprecated // currently unused
 	public static List<SelectItem> createSelectItems(UIComponent component) {
 		List<SelectItem> items = new ArrayList<SelectItem>();
 		Iterator<UIComponent> children = component.getChildren().iterator();
@@ -310,7 +292,7 @@ public class ComponentUtils {
 	    return component.getClientId(facesContext);
 	}
 	
-
+	//TODO perf
 	public static UIComponent findComponent(UIComponent base, String id) {
 	    if (id.equals(base.getId()))
 	      return base;
