@@ -115,7 +115,7 @@ public abstract class CoreRenderer extends Renderer {
 		}
         
         //dynamic attributes       
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isPassThroughSupported()) {
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
             RendererUtils.renderPassThroughAttributes(context, component);
         }
 	}
@@ -136,7 +136,7 @@ public abstract class CoreRenderer extends Renderer {
 		}
         
         //dynamic attributes       
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isPassThroughSupported()) {
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
             RendererUtils.renderPassThroughAttributes(context, component);
         }
 	}
