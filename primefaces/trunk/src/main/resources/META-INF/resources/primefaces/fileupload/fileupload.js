@@ -1660,6 +1660,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
             },
+            fail: function(e, data) {
+                if($this.cfg.onerror) {
+                    $this.cfg.onerror.call($this);
+                }
+            },
             progress: function(e, data) {
                 if(window.FormData) {
                     var progress = parseInt(data.loaded / data.total * 100, 10);
