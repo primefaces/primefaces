@@ -498,9 +498,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         ];
         
         if(this.hasBehavior('query')) {
-            var pageBehavior = this.cfg.behaviors['query'];
-
-            pageBehavior.call(this, null, options);
+            var queryBehavior = this.cfg.behaviors['query'];
+            queryBehavior.call(this, query, options);
         } 
         else {
             PrimeFaces.ajax.AjaxRequest(options); 
