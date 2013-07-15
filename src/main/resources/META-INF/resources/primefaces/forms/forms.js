@@ -952,7 +952,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     show: function() { 
         var $this = this;
         this.alignPanel();
-
+        
+        
         this.panel.css('z-index', ++PrimeFaces.zindex);
 
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
@@ -961,12 +962,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.effect !== 'none') {
             this.panel.show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
+                PrimeFaces.scrollInView($this.itemsWrapper, $this.getActiveItem());
+                
                 if($this.cfg.filter)
                     $this.focusFilter();
             });
         }
         else {
             this.panel.show();
+            PrimeFaces.scrollInView(this.itemsWrapper, this.getActiveItem());
             
             if($this.cfg.filter)
                 this.focusFilter(10);
