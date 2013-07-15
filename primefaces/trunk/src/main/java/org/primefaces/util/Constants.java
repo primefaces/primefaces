@@ -40,8 +40,8 @@ public class Constants {
         public static final String PARTIAL_BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
 
         // PF request params
-        public static final String RESET_VALUES_PARAM = "primefaces.resetValues";
-        public static final String IGNORE_AUTO_UPDATE_PARAM = "primefaces.ignoreAutoUpdate";
+        public static final String RESET_VALUES_PARAM = "primefaces.resetvalues";
+        public static final String IGNORE_AUTO_UPDATE_PARAM = "primefaces.ignoreautoupdate";
     }
 
     public static final String DOWNLOAD_COOKIE = "primefaces.download";

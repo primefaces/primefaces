@@ -508,9 +508,9 @@
 
         PARTIAL_EVENT_PARAM : "javax.faces.partial.event",
         
-        RESET_VALUES_PARAM : "primefaces.resetValues",
+        RESET_VALUES_PARAM : "primefaces.resetvalues",
         
-        IGNORE_AUTO_UPDATE_PARAM : "primefaces.ignoreAutoUpdate",
+        IGNORE_AUTO_UPDATE_PARAM : "primefaces.ignoreautoupdate",
 
         VIEW_STATE : "javax.faces.ViewState",
 
@@ -788,7 +788,7 @@
             if (cfg.resetValues) {
                 postParams.push({
                     name:PrimeFaces.RESET_VALUES_PARAM, 
-                    value:cfg.resetValues
+                    value:true
                 });
             }
 
@@ -796,7 +796,7 @@
             if (cfg.ignoreAutoUpdate) {
                 postParams.push({
                     name:PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, 
-                    value:cfg.ignoreAutoUpdate
+                    value:true
                 });
             }
             
