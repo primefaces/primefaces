@@ -920,6 +920,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.selectItem(this.getActiveItem());
 
         event.preventDefault();
+        event.stopPropagation();
     },
             
     handleEscapeKey: function(event) {
