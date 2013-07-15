@@ -953,7 +953,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         this.alignPanel();
         
-        
         this.panel.css('z-index', ++PrimeFaces.zindex);
 
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
