@@ -825,6 +825,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             }
 
             PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+            
+            var paginator = $this.getPaginator();             
+            if(paginator && this.args && paginator.cfg.rowCount !== this.args.totalRecords) {
+                paginator.setTotalRecords(this.args.totalRecords);
+            }
 
             return true;
         };
