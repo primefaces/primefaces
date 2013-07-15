@@ -1047,10 +1047,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                                         ,offset : positionOffset
                                     });
     },
-    
+            
     setLabel: function(value) {
         if(this.cfg.editable) {
-            this.label.val(value);
+            if(value === '&nbsp;')
+                this.label.val('');
+            else
+                this.label.val(value);
         }
         else {
             if(value === '&nbsp;')
