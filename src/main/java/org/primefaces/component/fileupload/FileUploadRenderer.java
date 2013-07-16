@@ -73,6 +73,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
                 .attr("previewWidth", fileUpload.getPreviewWidth(), 48)
                 .attr("previewHeight", fileUpload.getPreviewHeight(), Integer.MAX_VALUE)
+                .attr("disabled", fileUpload.isDisabled(), false)
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function()", fileUpload.getOncomplete());
@@ -100,6 +101,7 @@ public class FileUploadRenderer extends CoreRenderer {
         String style = fileUpload.getStyle();
         String styleClass = fileUpload.getStyleClass();
         styleClass = styleClass == null ? FileUpload.CONTAINER_CLASS : FileUpload.CONTAINER_CLASS + " " + styleClass;
+        boolean disabled = fileUpload.isDisabled();
 
 		writer.startElement("div", fileUpload);
 		writer.writeAttribute("id", clientId, "id");
@@ -113,7 +115,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("class", FileUpload.BUTTON_BAR_CLASS, null);
 
         //choose button
-        encodeChooseButton(context, fileUpload);
+        encodeChooseButton(context, fileUpload, disabled);
         
         if(!fileUpload.isAuto()) {
             encodeButton(context, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS, "ui-icon-arrowreturnthick-1-n");
@@ -141,12 +143,16 @@ public class FileUploadRenderer extends CoreRenderer {
         encodeInputField(context, fileUpload, fileUpload.getClientId(context));
     }
     
-    protected void encodeChooseButton(FacesContext context, FileUpload fileUpload) throws IOException {
+    protected void encodeChooseButton(FacesContext context, FileUpload fileUpload, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fileUpload.getClientId(context);
+        String cssClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + FileUpload.CHOOSE_BUTTON_CLASS;
+        if(disabled) {
+            cssClass += " ui-state-disabled";
+        }
         
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + FileUpload.CHOOSE_BUTTON_CLASS, null);
+        writer.writeAttribute("class", cssClass, null);
         
         //button icon 
         writer.startElement("span", null);
@@ -159,7 +165,9 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeText(fileUpload.getLabel(), "value");
         writer.endElement("span");
 
-        encodeInputField(context, fileUpload, clientId + "_input");
+        if(!disabled) {
+            encodeInputField(context, fileUpload, clientId + "_input");
+        }
         
 		writer.endElement("span");
     }
@@ -182,10 +190,12 @@ public class FileUploadRenderer extends CoreRenderer {
     
     protected void encodeButton(FacesContext context, String label, String styleClass, String icon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String cssClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " ui-state-disabled " + styleClass;
         
         writer.startElement("button", null);
 		writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + styleClass, null);
+        writer.writeAttribute("class", cssClass, null);
+        writer.writeAttribute("disabled", "disabled", null);
         
         //button icon
         String iconClass = HTML.BUTTON_LEFT_ICON_CLASS ;

@@ -21,6 +21,10 @@
     cursor: pointer;
 }
 
+.ui-fileupload-buttonbar .ui-fileupload-choose.ui-state-disabled input {
+    cursor: default;
+}
+
 .ui-fileupload-choose {
     position: relative;
     overflow: hidden;

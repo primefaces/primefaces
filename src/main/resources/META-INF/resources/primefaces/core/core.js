@@ -89,14 +89,14 @@
         skinButton : function(button) {
             button.mouseover(function(){
                 var el = $(this);
-                if(!button.hasClass('ui-state-disabled')) {
+                if(!button.prop('disabled')) {
                     el.addClass('ui-state-hover');
                 }
             }).mouseout(function() {
                 $(this).removeClass('ui-state-active ui-state-hover');
             }).mousedown(function() {
                 var el = $(this);
-                if(!button.hasClass('ui-state-disabled')) {
+                if(!button.prop('disabled')) {
                     el.addClass('ui-state-active').removeClass('ui-state-hover');
                 }
             }).mouseup(function() {
@@ -106,7 +106,7 @@
             }).blur(function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
             }).keydown(function(e) {
-                if(e.keyCode == $.ui.keyCode.SPACE || e.keyCode == $.ui.keyCode.ENTER || e.keyCode == $.ui.keyCode.NUMPAD_ENTER) {
+                if(e.keyCode === $.ui.keyCode.SPACE || e.keyCode === $.ui.keyCode.ENTER || e.keyCode === $.ui.keyCode.NUMPAD_ENTER) {
                     $(this).addClass('ui-state-active');
                 }
             }).keyup(function() {
@@ -114,7 +114,7 @@
             });
 
             //aria
-            button.attr('role', 'button').attr('aria-disabled', button.is(':disabled'));
+            button.attr('role', 'button').attr('aria-disabled', button.prop('disabled'));
 
             return this;
         },
