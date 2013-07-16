@@ -11,8 +11,11 @@
 	<rendererType>org.primefaces.component.OutputPanelRenderer</rendererType>
 	<rendererClass>org.primefaces.component.outputpanel.OutputPanelRenderer</rendererClass>
 	<parent>javax.faces.component.UIPanel</parent>
-    <description>OutputPanel is a display only element that's useful in various cases such as adding placeholders to a page.</description>
+    <description>OutputPanel is used to group content on a page.</description>
     <interfaces>
+        <interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
 		<interface>
 			<name>org.primefaces.component.api.AutoUpdatable</name>
 		</interface>
@@ -31,19 +34,36 @@
 			<type>java.lang.String</type>
             <description>StyleClass of the html container element.</description>
 		</attribute>
-		<attribute>
-			<name>layout</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>inline</defaultValue>
-            <description>Layout of the panel, valid values are inline(span) or block(div).</description>
-		</attribute>
         <attribute>
 			<name>autoUpdate</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description></description>
+            <description>Updates outputPanel after each ajax request implicity.</description>
+		</attribute>
+        <attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Lazy mode loads the contents after page load to speed up page load.</description>
 		</attribute>
 	</attributes>
+    <resources>
+		<resource>
+			<name>primefaces.css</name>
+		</resource>
+        <resource>
+			<name>outputpanel/outputpanel.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+        <resource>
+			<name>outputpanel/outputpanel.js</name>
+		</resource>
+	</resources>
 </component>

@@ -17,36 +17,69 @@ package org.primefaces.component.outputpanel;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class OutputPanelRenderer extends CoreRenderer {
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		OutputPanel panel = (OutputPanel) component;
-        String clientId = panel.getClientId(context);
-		String tagName = getLayoutTag(context, panel);
-		
-		writer.startElement(tagName, panel);
-		writer.writeAttribute("id", clientId, "id");
-		
-		if(panel.getStyle() != null) {
-			writer.writeAttribute("style", panel.getStyle(), "style");
-		}
-		if(panel.getStyleClass() != null) {
-			writer.writeAttribute("class", panel.getStyleClass(), "styleClass");
-		}
-		
-		renderChildren(context, panel);
-		
-		writer.endElement(tagName);
+        
+        if(panel.isContentLoad(context)) {
+            renderChildren(context, panel);
+        }
+        else {
+            encodeMarkup(context, panel);
+            if(panel.isLazy()) {
+                encodeScript(context, panel);
+            }
+        }
 	}
+    
+	public void encodeMarkup(FacesContext context, OutputPanel panel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = panel.getClientId(context);
+        String style = panel.getStyle();
+        String styleClass = panel.getStyleClass();
+        styleClass = (styleClass == null) ? OutputPanel.CONTAINER_CLASS : OutputPanel.CONTAINER_CLASS + " " + styleClass;
+		
+		writer.startElement("div", panel);
+		writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+		if(style != null) 
+            writer.writeAttribute("style", panel.getStyle(), "style");
+		
+        if(panel.isLazy())
+            renderLoading(context, panel);
+        else
+            renderChildren(context, panel);
+		
+		writer.endElement("div");
+    }
+    
+    protected void encodeScript(FacesContext context, OutputPanel panel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = panel.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("OutputPanel", panel.resolveWidgetVar(), clientId, true);
+        
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
+    }
+    
+    protected void renderLoading(FacesContext context, OutputPanel panel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", OutputPanel.LOADING_CLASS, null);
+        writer.endElement("div");
+    }
 
     @Override
 	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
@@ -56,16 +89,5 @@ public class OutputPanelRenderer extends CoreRenderer {
     @Override
 	public boolean getRendersChildren() {
 		return true;
-	}
-	
-	protected String getLayoutTag(FacesContext context, OutputPanel panel) {
-		String layout = panel.getLayout();
-		if(layout.equalsIgnoreCase("inline"))
-			return "span";
-		else if(layout.equalsIgnoreCase("block"))
-			return "div";
-		else
-			throw new FacesException("Layout type '" + layout + "' is not a valid value for OutputPanel '" + panel.getClientId(context)  + "'");
-	}
-	
+	} 
 }

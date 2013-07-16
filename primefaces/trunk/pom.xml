@@ -277,6 +277,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/outputpanel/outputpanel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panelgrid/panelgrid.css</include>
@@ -324,6 +325,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/outputpanel/outputpanel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.js</include>
@@ -520,6 +522,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/outputpanel/outputpanel.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/panelgrid/panelgrid.css</include>
@@ -567,6 +570,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/outputpanel/outputpanel.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/paginator/paginator.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/picklist/picklist.js</include>
