@@ -34,6 +34,7 @@ public class CommonsFileUploadDecoder{
 		while(request instanceof ServletRequestWrapper) {
 			if(request instanceof MultipartRequest) {
 				multipartRequest = (MultipartRequest) request;
+                break;
 			}
 			else {
 				request = ((ServletRequestWrapper) request).getRequest();
