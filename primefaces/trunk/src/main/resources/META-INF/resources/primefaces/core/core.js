@@ -523,21 +523,47 @@
 
     	resolveComponentsAsSelector: function(expressions) {
 
-    		var ids = PrimeFaces.Expressions.resolveComponents(expressions);
-    		var elements = [];
+            var splittedExpressions = PrimeFaces.Expressions.splitExpressions(expressions);
+            var elements = $();
 
-			for (var i = 0; i < ids.length; i++) {
-				var id = ids[i];
-				
-				// we skip it as we can't resolve it
-				if (id == '@none' || id == '@all') {
-					continue;
-				}
-				
-				elements.push(document.getElementById(id));
-			}
+            if (splittedExpressions) {
+                for (var i = 0; i < splittedExpressions.length; ++i) {
+                    var expression =  $.trim(splittedExpressions[i]);
+                    if (expression.length > 0) {
 
-    		return $(elements);
+                    	// skip unresolvable keywords
+                    	if (expression == '@none' || expression == '@all') {
+                    		continue;
+                    	}
+                    	
+                        // just a id
+                        if (expression.indexOf("@") == -1) {
+                        	elements = elements.add(
+                            		$(document.getElementById(expression)));
+                        }
+                        // @widget
+                        else if (expression.indexOf("@widgetVar(") == 0) {
+                            var widgetVar = expression.substring(11, expression.length - 1);
+                            var widget = PrimeFaces.widgets[widgetVar];
+
+                            if (widget) {
+                            	elements = elements.add(
+                                		$(document.getElementById(widget.id)));
+                            } else {
+                                PrimeFaces.error("Widget for widgetVar \"" + widgetVar + "\" not avaiable");
+                            }
+                        }
+                        // PFS
+                        else if (expression.indexOf("@(") == 0) {
+                            //converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
+							elements = elements.add(
+                        			$(expression.substring(2, expression.length - 1)));
+                        }
+                    }
+                }
+            }
+
+            return elements;
     	},
 
         resolveComponents: function(expressions) {

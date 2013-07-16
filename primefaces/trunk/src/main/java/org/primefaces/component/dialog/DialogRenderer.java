@@ -68,7 +68,7 @@ public class DialogRenderer extends CoreRenderer {
             .attr("minWidth", dialog.getMinWidth(), Integer.MIN_VALUE)
             .attr("minHeight", dialog.getMinHeight(), Integer.MIN_VALUE)
             .attr("appendToBody", dialog.isAppendToBody(), false)
-            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, dialog, dialog.getAppendTo()))
+            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, dialog, dialog.getAppendTo()), null)
             .attr("dynamic", dialog.isDynamic(), false)
             .attr("showEffect", dialog.getShowEffect(), null)
             .attr("hideEffect", dialog.getHideEffect(), null)
