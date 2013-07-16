@@ -216,7 +216,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             key = e.which,
             shouldSearch = true;
 
-            if(key == keyCode.UP 
+            if (key == keyCode.ESCAPE) {
+                _self.hide();
+                shouldSearch = false;
+            }
+            else if(key == keyCode.UP 
                 || key == keyCode.LEFT 
                 || key == keyCode.DOWN 
                 || key == keyCode.RIGHT 
