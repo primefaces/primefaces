@@ -17,6 +17,7 @@ package org.primefaces.expression;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
@@ -31,6 +32,8 @@ import org.primefaces.util.ComponentUtils;
  */
 public class SearchExpressionFacade {
 
+	private static final Logger LOG = Logger.getLogger(SearchExpressionFacade.class.getName());
+	
     private static final char[] EXPRESSION_SEPARATORS = new char[] { ',', ' ' };
     
     /**
@@ -81,6 +84,21 @@ public class SearchExpressionFacade {
      */
 	public static String resolveComponentsForClient(FacesContext context, UIComponent source, String expressions) {
 	    
+		return resolveComponentsForClient(context, source, expressions, false);
+	}
+	
+    /**
+     * Resolves a list of {@link UIComponent} clientIds and/or passtrough expressions for the given expression or expressions.
+     *
+     * @param context The {@link FacesContext}.
+     * @param source The source component. E.g. a button.
+     * @param expression The search expression.
+     * @param checkForRenderer Checks if the {@link UIComponent} has a renderer or not.
+     * 			This check is currently only useful for the update attributes, as a component without renderer can't be updated. 
+     * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
+     */
+	public static String resolveComponentsForClient(FacesContext context, UIComponent source, String expressions, boolean checkForRenderer) {
+	    
 		if (ComponentUtils.isValueBlank(expressions)) {
 			return null;
 		}
@@ -106,7 +124,7 @@ public class SearchExpressionFacade {
 					expressionsBuilder.append(" ");
 				}
 	
-				String component = resolveComponentForClient(context, source, expression);
+				String component = resolveComponentForClient(context, source, expression, checkForRenderer);
 				if (component != null) {
 					expressionsBuilder.append(component);
 				}
@@ -127,11 +145,24 @@ public class SearchExpressionFacade {
      *
      * @param context The {@link FacesContext}.
      * @param source The source component. E.g. a button.
-     * @param expression The search expression.
+     * @param expression The search expression. 
      * @return A resolved clientId and/or passtrough expression (like PFS, widgetVar).
      */
-	public static String resolveComponentForClient(FacesContext context, UIComponent source, String expression)
-	{
+	public static String resolveComponentForClient(FacesContext context, UIComponent source, String expression) {
+		return resolveComponentForClient(context, source, expression, false);
+	}
+	
+    /**
+     * Resolves a {@link UIComponent} clientId and/or passtrough expression for the given expression.
+     *
+     * @param context The {@link FacesContext}.
+     * @param source The source component. E.g. a button.
+     * @param expression The search expression.
+     * @param checkForRenderer Checks if the {@link UIComponent} has a renderer or not.
+     * 			This check is currently only useful for the update attributes, as a component without renderer can't be updated. 
+     * @return A resolved clientId and/or passtrough expression (like PFS, widgetVar).
+     */
+	public static String resolveComponentForClient(FacesContext context, UIComponent source, String expression, boolean checkForRenderer) {
 		if (ComponentUtils.isValueBlank(expression)) {
 			return null;
 		}
@@ -151,6 +182,14 @@ public class SearchExpressionFacade {
 		if (component == null) {
 			return null;
 		} else {
+			
+			if (checkForRenderer && context.isProjectStage(ProjectStage.Development)) {
+				if (ComponentUtils.isValueBlank(component.getRendererType())) {
+					LOG.warning("Can not update component without a attached renderer. "
+							+ "Component class: \"" + component.getClass() + "\"");
+				}
+			}
+			
 			return component.getClientId(context);
 		}
 	}
