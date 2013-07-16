@@ -42,11 +42,11 @@
             <description>Updates outputPanel after each ajax request implicity.</description>
 		</attribute>
         <attribute>
-			<name>lazy</name>
+			<name>dynamic</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Lazy mode loads the contents after page load to speed up page load.</description>
+            <description>Dynamic mode loads the contents after page load to speed up page load.</description>
 		</attribute>
 	</attributes>
     <resources>
