@@ -1776,13 +1776,13 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
     
     select: function(button) {
         button.removeClass('ui-state-hover').addClass('ui-state-active')
-                                .children(':checkbox').attr('checked','checked').change();
+                                .children(':checkbox').prop('checked', true).change();
 
     },
     
     unselect: function(button) {
         button.removeClass('ui-state-active').addClass('ui-state-hover')
-                                .children(':checkbox').removeAttr('checked').change();
+                                .children(':checkbox').prop('checked', false).change();
     }
     
 });
@@ -1833,7 +1833,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
     select: function(button) {
         this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').removeAttr('checked');
 
-        button.addClass('ui-state-active').children(':radio').attr('checked','checked').change();
+        button.addClass('ui-state-active').children(':radio').prop('checked', true).change();
     }
     
 });
@@ -1887,7 +1887,7 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
     
     check: function() {
         if(!this.disabled) {
-            this.input.attr('checked', 'checked');
+            this.input.prop('checked', true);
             this.jq.addClass('ui-state-active').children('.ui-button-text').html(this.cfg.onLabel);
 
             if(this.icon.length > 0) {
@@ -1900,7 +1900,7 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
     
     uncheck: function() {
         if(!this.disabled) {
-            this.input.removeAttr('checked', 'checked');
+            this.input.prop('checked', false);
             this.jq.removeClass('ui-state-active').children('.ui-button-text').html(this.cfg.offLabel);
 
             if(this.icon.length > 0) {
