@@ -25,6 +25,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class MultiSelectListboxRenderer extends SelectOneRenderer {
 
@@ -58,8 +59,9 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
             writer.writeAttribute("style", style, "style");
         }
         
+        encodeInput(context, listbox);
         encodeLists(context, listbox, selectItems);
-        
+
         writer.endElement("div");
     }
     
@@ -95,7 +97,10 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
                 
                 if(item instanceof SelectItemGroup) {
                     SelectItemGroup group = (SelectItemGroup) item;
-                    encodeGroupItems(context, listbox, group.getSelectItems());
+                    SelectItem[] groupItems = group.getSelectItems();
+                            
+                    if(groupItems != null && groupItems.length > 0)
+                        encodeGroupItems(context, listbox, group.getSelectItems());
                 }
                 
                 writer.endElement("li");
@@ -113,13 +118,32 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
     }
 
     protected void encodeScript(FacesContext context, MultiSelectListbox listbox) throws IOException {
-    
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = listbox.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        
+        wb.widget("MultiSelectListbox", listbox.resolveWidgetVar(), clientId, false);
+        wb.attr("effect", listbox.getEffect(), null);
+        
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
     } 
+    
+    protected void encodeInput(FacesContext context, MultiSelectListbox listbox) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String inputId = listbox.getClientId(context) + "_input";
+
+		writer.startElement("input", null);
+		writer.writeAttribute("type", "hidden", null);
+		writer.writeAttribute("id", inputId, null);
+		writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("autocomplete", "off", null);
+		writer.endElement("input");
+    }
     
     @Override
     protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
-        return null;
+        return selectOne.getClientId(context) + "_input";
     }
-
-
 }

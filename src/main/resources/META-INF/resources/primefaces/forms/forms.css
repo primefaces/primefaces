@@ -17,10 +17,10 @@
 
 .ui-selectonelistbox, 
 .ui-selectmanymenu,
-.ui-multiselectlistbox {
+.ui-multiselectlistbox-listcontainer {
     overflow:auto;
     padding:2px;
-    width: 125px;
+    width:125px;
 }
 
 .ui-selectonelistbox .ui-selectlistbox-list,
@@ -44,6 +44,19 @@
 .ui-selectmanymenu table.ui-selectlistbox-list {
     border-collapse:collapse;
     width:100%;
+}
+
+.ui-multiselectlistbox .ui-multiselectlistbox-listcontainer {
+    float: left;
+    margin-right: 4px;
+}
+
+.ui-multiselectlistbox .ui-multiselectlistbox-item {
+    white-space: nowrap;
+}
+
+.ui-multiselectlistbox.ui-state-disabled .ui-multiselectlistbox-item {
+    cursor: default;
 }
 
 /**
