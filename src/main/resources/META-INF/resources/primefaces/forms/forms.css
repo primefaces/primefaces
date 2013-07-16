@@ -15,20 +15,25 @@
     resize:none;
 }
 
-.ui-selectonelistbox, .ui-selectmanymenu {
+.ui-selectonelistbox, 
+.ui-selectmanymenu,
+.ui-multiselectlistbox {
     overflow:auto;
     padding:2px;
     width: 125px;
 }
 
-.ui-selectonelistbox .ui-selectlistbox-list, .ui-selectmanymenu .ui-selectlistbox-list {
+.ui-selectonelistbox .ui-selectlistbox-list,
+.ui-selectmanymenu .ui-selectlistbox-list,
+.ui-multiselectlistbox .ui-multiselectlistbox-list {
     list-style-type: none; 
     margin: 0;
     padding: 0;
 }
 
 .ui-selectonelistbox .ui-selectlistbox-item,
-.ui-selectmanymenu .ui-selectlistbox-item {
+.ui-selectmanymenu .ui-selectlistbox-item,
+.ui-multiselectlistbox .ui-multiselectlistbox-item {
     margin:2px;
     border:0 none;
     cursor: pointer;
@@ -36,7 +41,7 @@
 }
 
 .ui-selectonelistbox table.ui-selectlistbox-list,
-.ui-selectmanymenu table.ui-selectlistbox-list{
+.ui-selectmanymenu table.ui-selectlistbox-list {
     border-collapse:collapse;
     width:100%;
 }
