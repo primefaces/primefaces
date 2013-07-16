@@ -1831,7 +1831,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
     },
     
     select: function(button) {
-        this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').removeAttr('checked');
+        this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').prop('checked', false);
 
         button.addClass('ui-state-active').children(':radio').prop('checked', true).change();
     }
