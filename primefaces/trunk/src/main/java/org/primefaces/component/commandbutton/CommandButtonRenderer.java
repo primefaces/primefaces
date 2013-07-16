@@ -16,10 +16,8 @@
 package org.primefaces.component.commandbutton;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.faces.FacesException;
-import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -32,8 +30,6 @@ import org.primefaces.util.WidgetBuilder;
 
 public class CommandButtonRenderer extends CoreRenderer {
 
-	private static final Logger LOG = Logger.getLogger(CommandButtonRenderer.class.getName());
-	
     @Override
 	public void decode(FacesContext context, UIComponent component) {
         CommandButton button = (CommandButton) component;
@@ -52,8 +48,6 @@ public class CommandButtonRenderer extends CoreRenderer {
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		CommandButton button = (CommandButton) component;
-		
-		validateAttributes(context, button);
 		
 		encodeMarkup(context, button);
 		encodeScript(context, button);
@@ -153,31 +147,5 @@ public class CommandButtonRenderer extends CoreRenderer {
         startScript(writer, clientId);
         writer.write(wb.build());
 		endScript(writer);
-	}
-	
-	protected void validateAttributes(FacesContext context, CommandButton component) {
-		if (!context.isProjectStage(ProjectStage.Development)) {
-			return;
-		}
-
-		if (!component.isAjaxified()) {
-			if (component.isAsync()
-					|| !component.isGlobal()
-					|| component.isIgnoreAutoUpdate()
-					|| component.isPartialSubmitSet()
-					|| component.isResetValuesSet()
-					|| component.getOnstart() != null
-					|| component.getOncomplete() != null
-					|| component.getOnerror() != null
-					|| component.getOnsuccess() != null
-					|| component.getProcess() != null
-					|| component.getUpdate() != null) {
-				
-				LOG.warning("The CommandButton with id \"" + component.getId()
-						+ "\" is not ajaxified and therefore it should not have following attributes: "
-						+ "async, global, ignoreAutoUpdate, partialSubmit, resetValues, onstart, oncomplete, "
-						+ "onerror, onsuccess, process, update");
-			}
-		}
 	}
 }

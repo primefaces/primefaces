@@ -16,10 +16,7 @@
 package org.primefaces.component.splitbutton;
 
 import java.io.IOException;
-import java.util.logging.Logger;
-
 import javax.faces.FacesException;
-import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -38,8 +35,6 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SplitButtonRenderer extends OutcomeTargetRenderer {
     
-	private static final Logger LOG = Logger.getLogger(SplitButtonRenderer.class.getName());
-	
     @Override
 	public void decode(FacesContext context, UIComponent component) {
         SplitButton button = (SplitButton) component;
@@ -58,8 +53,6 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		SplitButton button = (SplitButton) component;
-		
-		validateAttributes(context, button);
 		
 		encodeMarkup(context, button);
 		encodeScript(context, button);
@@ -335,31 +328,5 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     @Override
 	public boolean getRendersChildren() {
 		return true;
-	}
-    
-	protected void validateAttributes(FacesContext context, SplitButton component) {
-		if (!context.isProjectStage(ProjectStage.Development)) {
-			return;
-		}
-
-		if (!component.isAjaxified()) {
-			if (component.isAsync()
-					|| !component.isGlobal()
-					|| component.isIgnoreAutoUpdate()
-					|| component.isPartialSubmitSet()
-					|| component.isResetValuesSet()
-					|| component.getOnstart() != null
-					|| component.getOncomplete() != null
-					|| component.getOnerror() != null
-					|| component.getOnsuccess() != null
-					|| component.getProcess() != null
-					|| component.getUpdate() != null) {
-				
-				LOG.warning("The SplitButton with id \"" + component.getId()
-						+ "\" is not ajaxified and therefore it should not have following attributes: "
-						+ "async, global, ignoreAutoUpdate, partialSubmit, resetValues, onstart, oncomplete, "
-						+ "onerror, onsuccess, process, update");
-			}
-		}
 	}
 }
