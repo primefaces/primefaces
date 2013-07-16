@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
-import org.primefaces.component.selectonelistbox.SelectOneListbox;
+import javax.faces.model.SelectItemGroup;
 import org.primefaces.renderkit.SelectOneRenderer;
 
 public class MultiSelectListboxRenderer extends SelectOneRenderer {
@@ -47,7 +47,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         List<SelectItem> selectItems = getSelectItems(context, listbox);      
         String style = listbox.getStyle();
         String styleClass = listbox.getStyleClass();
-        styleClass = styleClass == null ? SelectOneListbox.CONTAINER_CLASS : SelectOneListbox.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? MultiSelectListbox.CONTAINER_CLASS : MultiSelectListbox.CONTAINER_CLASS + " " + styleClass;
         styleClass = listbox.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = !listbox.isValid() ? styleClass + " ui-state-error" : styleClass;
         
@@ -63,17 +63,53 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
     
-    protected void encodeLists(FacesContext context, MultiSelectListbox listbox, List<SelectItem> items) throws IOException {
+    protected void encodeLists(FacesContext context, MultiSelectListbox listbox, List<SelectItem> itemList) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        SelectItem[] items = (itemList == null) ? null : itemList.toArray(new SelectItem[itemList.size()]);
         
         writer.startElement("div", listbox);
         writer.writeAttribute("class", MultiSelectListbox.LIST_CONTAINER_CLASS, null);
         
         writer.startElement("ul", listbox);
         writer.writeAttribute("class", MultiSelectListbox.LIST_CLASS, null);
+        
+        if(items != null) {
+            encodeListItems(context, listbox, items);
+        }
+        
         writer.endElement("ul");
         
         writer.endElement("div");
+    }
+    
+    protected void encodeListItems(FacesContext context, MultiSelectListbox listbox, SelectItem[] items) throws IOException {
+        if(items != null && items.length > 0) {
+            ResponseWriter writer = context.getResponseWriter();
+            
+            for (int i = 0; i < items.length; i++) {
+                SelectItem item = items[i];
+                writer.startElement("li", null);
+                writer.writeAttribute("class", MultiSelectListbox.ITEM_CLASS, null);
+                writer.writeAttribute("data-value", item.getValue(), null);
+                writer.writeText(item.getLabel(), null);
+                
+                if(item instanceof SelectItemGroup) {
+                    SelectItemGroup group = (SelectItemGroup) item;
+                    encodeGroupItems(context, listbox, group.getSelectItems());
+                }
+                
+                writer.endElement("li");
+            }
+        }
+    }
+    
+    protected void encodeGroupItems(FacesContext context, MultiSelectListbox listbox, SelectItem[] selectItems) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("ul", listbox);
+        writer.writeAttribute("class", "ui-helper-hidden", null);
+        encodeListItems(context, listbox, selectItems);
+        writer.endElement("ul");
     }
 
     protected void encodeScript(FacesContext context, MultiSelectListbox listbox) throws IOException {
