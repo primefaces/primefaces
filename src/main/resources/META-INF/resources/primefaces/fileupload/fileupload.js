@@ -1888,7 +1888,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.messageList.children().remove();
     },
             
-    showMessage: function(msg) {
+    showMessage: function(msg) {
         var summary = msg.summary,
                 detail = '';
 
