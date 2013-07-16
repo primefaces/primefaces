@@ -16,8 +16,10 @@
 package org.primefaces.component.commandlink;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.FacesException;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -28,6 +30,8 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class CommandLinkRenderer extends CoreRenderer {
+
+	private static final Logger LOG = Logger.getLogger(CommandLinkRenderer.class.getName());
 
     @Override
 	public void decode(FacesContext context, UIComponent component) {
@@ -50,6 +54,8 @@ public class CommandLinkRenderer extends CoreRenderer {
 		String clientId = link.getClientId(context);
         Object label = link.getValue();
 
+        validateAttributes(context, link);
+        
 		if(!link.isDisabled()) {
             String request;
             String styleClass = link.getStyleClass();
@@ -115,5 +121,31 @@ public class CommandLinkRenderer extends CoreRenderer {
     @Override
 	public boolean getRendersChildren() {
 		return true;
+	}
+    
+	protected void validateAttributes(FacesContext context, CommandLink component) {
+		if (!context.isProjectStage(ProjectStage.Development)) {
+			return;
+		}
+
+		if (!component.isAjaxified()) {
+			if (component.isAsync()
+					|| !component.isGlobal()
+					|| component.isIgnoreAutoUpdate()
+					|| component.isPartialSubmitSet()
+					|| component.isResetValuesSet()
+					|| component.getOnstart() != null
+					|| component.getOncomplete() != null
+					|| component.getOnerror() != null
+					|| component.getOnsuccess() != null
+					|| component.getProcess() != null
+					|| component.getUpdate() != null) {
+				
+				LOG.warning("The CommandLink with id \"" + component.getId()
+						+ "\" is not ajaxified and therefore it should not have following attributes: "
+						+ "async, global, ignoreAutoUpdate, partialSubmit, resetValues, onstart, oncomplete, "
+						+ "onerror, onsuccess, process, update");
+			}
+		}
 	}
 }
