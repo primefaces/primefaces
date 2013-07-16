@@ -13,7 +13,7 @@
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.MultiSelectListboxRenderer</rendererType>
 	<rendererClass>org.primefaces.component.multiselectlistbox.MultiSelectListboxRenderer</rendererClass>
-	<parent>javax.faces.component.UIInput</parent>
+	<parent>javax.faces.component.UISelectOne</parent>
     <description>MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child relationship.</description>
     <interfaces>
 		<interface>
@@ -45,19 +45,25 @@
 			<defaultValue>false</defaultValue>
             <description>Disables the component.</description>
 		</attribute>
+        <attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Effect to use when showing a group of items.</description>
+		</attribute>
 	</attributes>
-	    <resources>
+    <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>primefaces.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
 	</resources>
 </component>
