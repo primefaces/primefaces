@@ -46,6 +46,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             .on('mouseup.spinner', function() {
                 clearInterval($this.timer);
                 $(this).removeClass('ui-state-active').addClass('ui-state-hover');
+                $this.input.trigger('change');
             })
             .on('mousedown.spinner', function(e) {
                 var element = $(this),
@@ -126,7 +127,8 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                     
     spin: function(dir) {
         var step = this.cfg.step * dir,
-        currentValue = this.value ? this.value : 0;
+        currentValue = this.value ? this.value : 0,
+        newValue = null;
         
         if(this.cfg.precision)
             newValue = parseFloat(this.toFixed(currentValue + step, this.cfg.precision));
@@ -144,8 +146,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.input.val(newValue);
         this.value = newValue;
         this.input.attr('aria-valuenow', newValue);
-
-        this.input.change();
     },
     
     updateValue: function() {
