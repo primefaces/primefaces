@@ -18,7 +18,7 @@ package org.primefaces.component.export;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 
 import javax.el.MethodExpression;
@@ -240,7 +240,7 @@ public class PDFExporter extends Exporter {
     	externalContext.setResponseHeader("Pragma", "public");
     	externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ fileName + ".pdf");
     	externalContext.setResponseContentLength(baos.size());
-    	externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", new HashMap<String, Object>());
+    	externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
     	OutputStream out = externalContext.getResponseOutputStream();
         baos.writeTo(out);
         externalContext.responseFlushBuffer();

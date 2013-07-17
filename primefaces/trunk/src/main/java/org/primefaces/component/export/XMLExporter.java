@@ -17,7 +17,7 @@ package org.primefaces.component.export;
 
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -199,7 +199,7 @@ public class XMLExporter extends Exporter {
 		externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
 		externalContext.setResponseHeader("Pragma", "public");
 		externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".xml");
-		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", new HashMap<String, Object>());
+		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
     }
 	
 }
