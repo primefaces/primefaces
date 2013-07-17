@@ -629,7 +629,7 @@ import org.primefaces.component.datatable.feature.*;
 
     private List<Object> selectedRowKeys = new ArrayList<Object>();
 
-    void findSelectedRowKeys() {
+    protected void findSelectedRowKeys() {
         Object selection = this.getSelection();
         selectedRowKeys = new ArrayList<Object>();
         boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
@@ -658,7 +658,7 @@ import org.primefaces.component.datatable.feature.*;
         }
     }
     
-    void addToSelectedRowKeys(Object object, Map<String,Object> map, String var, boolean hasRowKey) {
+    protected void addToSelectedRowKeys(Object object, Map<String,Object> map, String var, boolean hasRowKey) {
         if(hasRowKey) {
             map.put(var, object);
             this.selectedRowKeys.add(this.getRowKey());
@@ -668,11 +668,11 @@ import org.primefaces.component.datatable.feature.*;
         }
     }
 
-    List<Object> getSelectedRowKeys() {
+    protected List<Object> getSelectedRowKeys() {
         return selectedRowKeys;
     }
 
-    String getSelectedRowKeysAsString() {
+    protected String getSelectedRowKeysAsString() {
         StringBuilder builder = new StringBuilder();
         for(Iterator<Object> iter = getSelectedRowKeys().iterator(); iter.hasNext();) {
             builder.append(iter.next());
