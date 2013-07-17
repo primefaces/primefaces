@@ -308,10 +308,10 @@
                         if(complete) {
                             complete();
                         }
-                        clearInterval(window.downloadPoll);
+                        clearInterval(window.downloadMonitor);
                         PrimeFaces.setCookie('primefaces.download', null);
                     }
-                }, 500);
+                }, 250);
             }
         },
 
