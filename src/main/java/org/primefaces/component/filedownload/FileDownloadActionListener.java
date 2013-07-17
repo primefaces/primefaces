@@ -18,7 +18,7 @@ package org.primefaces.component.filedownload;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
+import java.util.Collections;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -61,7 +61,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 		try {
 			externalContext.setResponseContentType(content.getContentType());
 			externalContext.setResponseHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
-			externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", new HashMap<String, Object>());
+			externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
             
 			byte[] buffer = new byte[2048];
 			int length;
