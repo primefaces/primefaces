@@ -61,7 +61,8 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		
 		if(fn != null)
 			writer.write(var + ".bindCallback('" + event + "',function(){" + fn + "});");
-		else if(status.getFacet(facetName) != null)
+
+		if(status.getFacet(facetName) != null)
 			writer.write(var + ".bindFacet('" + event + "', '" + facetName + "');");
 	}
 
