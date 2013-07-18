@@ -16,6 +16,8 @@
 package org.primefaces.component.accordionpanel;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -140,18 +142,17 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	
 	protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
         boolean dynamic = acco.isDynamic();
-        boolean multiple = acco.isMultiple();
         String var = acco.getVar();
-        String activeIndex = acco.getActiveIndex();
+        List<String> activeIndexes = Arrays.asList(acco.getActiveIndex().split(","));
         boolean rtl = acco.getDir().equalsIgnoreCase("rtl");
 
         if(var == null) {
             int i = 0;
-            
+
             for(UIComponent child : acco.getChildren()) {
                 if(child.isRendered() && child instanceof Tab) {  
-                    boolean active = multiple ? activeIndex.indexOf(String.valueOf(i)) != -1 : activeIndex.equals(String.valueOf(i));
-                            
+                    boolean active = activeIndexes.indexOf(Integer.toString(i)) != -1;
+                    
                     encodeTab(context, (Tab) child, active, dynamic, rtl);
 
                     i++;
@@ -164,7 +165,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
             
             for(int i = 0; i < dataCount; i++) {
                 acco.setRowIndex(i);
-                boolean active = multiple ? activeIndex.indexOf(String.valueOf(i)) != -1 : activeIndex.equals(String.valueOf(i));
+                boolean active = activeIndexes.indexOf(Integer.toString(i)) != -1;
                 
                 encodeTab(context, tab, active, dynamic, rtl);
             }
