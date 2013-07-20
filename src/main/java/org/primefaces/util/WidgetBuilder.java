@@ -143,7 +143,13 @@ public class WidgetBuilder {
         
         return this;
     }
-    
+
+    public WidgetBuilder append(char chr) {
+        buffer.append(chr);
+        
+        return this;
+    }
+
     public WidgetBuilder append(Number number) {
         buffer.append(number);
         
