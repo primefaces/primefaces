@@ -180,13 +180,7 @@ public abstract class CoreRenderer extends Renderer {
         
         return true;
     }
-    
-    protected boolean isPostBack() {
-    	FacesContext context = FacesContext.getCurrentInstance();
-        
-    	return context.getRenderKit().getResponseStateManager().isPostback(context);
-    }
-	
+
 	public boolean isValueBlank(String value) {
 		return ComponentUtils.isValueBlank(value);
 	}
@@ -287,21 +281,27 @@ public abstract class CoreRenderer extends Renderer {
                 else if(event.equalsIgnoreCase("action"))       //commands
                     domEvent = "click";
 
-                writer.write(domEvent + ":");
+                writer.write(domEvent);
+                writer.write(':');
 
-                writer.write("function(event) {");
-                
+                writer.write("function(event,ext){PrimeFaces.Behavior.chain(this,event,ext,[");
                 List<ClientBehavior> behaviorsByEvent = behaviorEvents.get(event);
+                int renderedBehaviors = 0;
                 for (int i = 0; i < behaviorsByEvent.size(); i++) {
                     ClientBehavior behavior = behaviorsByEvent.get(i);
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
                     String script = behavior.getScript(cbc);    //could be null if disabled
 
                     if(script != null) {
-                        writer.write(script);
+                        if (renderedBehaviors > 0) {
+                        	writer.write(',');
+                        }
+
+                    	writer.write('\'' + escapeJavaScriptForChain(script) + '\'');
+                        renderedBehaviors++;
                     }
                 }
-                writer.write("}");
+                writer.write("]);}");
 
                 if(eventIterator.hasNext()) {
                     writer.write(",");
@@ -336,18 +336,24 @@ public abstract class CoreRenderer extends Renderer {
 
                 wb.append(domEvent).append(":");
 
-                wb.append("function(event) {");
+                wb.append("function(event,ext){PrimeFaces.Behavior.chain(this,event,ext,[");
                 List<ClientBehavior> behaviorsByEvent = behaviorEvents.get(event);
+                int renderedBehaviors = 0;
                 for (int i = 0; i < behaviorsByEvent.size(); i++) {
                     ClientBehavior behavior = behaviorsByEvent.get(i);
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
                     String script = behavior.getScript(cbc);    //could be null if disabled
 
                     if(script != null) {
-                        wb.append(script);
+                        if (renderedBehaviors > 0) {
+                        	wb.append(',');
+                        }
+
+                        wb.append('\'' + escapeJavaScriptForChain(script) + '\'');
+                        renderedBehaviors++;
                     }
                 }
-                wb.append("}");
+                wb.append("]);}");
 
                 if(eventIterator.hasNext()) {
                     wb.append(",");
@@ -358,6 +364,50 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
+    // Original from MyFaces
+    protected String escapeJavaScriptForChain(String javaScript) {
+        // first replace \' with \\'
+        //String escaped = StringUtils.replace(javaScript, "\\'", "\\\\'");
+
+        // then replace ' with \'
+        // (this will replace every \' in the original to \\\')
+        //escaped = StringUtils.replace(escaped, '\'', "\\'");
+
+        //return escaped;
+
+        StringBuilder out = null;
+        for (int pos = 0; pos < javaScript.length(); pos++)
+        {
+            char c = javaScript.charAt(pos);
+
+            if (c == '\\' || c == '\'')
+            {
+                if (out == null)
+                {
+                    out = new StringBuilder(javaScript.length() + 8);
+                    if (pos > 0)
+                    {
+                        out.append(javaScript, 0, pos);
+                    }
+                }
+                out.append('\\');
+            }
+            if (out != null)
+            {
+                out.append(c);
+            }
+        }
+
+        if (out == null)
+        {
+            return javaScript;
+        }
+        else
+        {
+            return out.toString();
+        }
+    }
+    
     protected void decodeBehaviors(FacesContext context, UIComponent component)  {
 
         if(!(component instanceof ClientBehaviorHolder)) {
