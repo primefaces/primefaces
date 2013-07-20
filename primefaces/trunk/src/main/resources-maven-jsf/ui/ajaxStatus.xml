@@ -34,12 +34,6 @@
             <description>Client side callback to execute after ajax requests complete.</description>
 		</attribute>
 		<attribute>
-			<name>onprestart</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Client side callback to execute before ajax requests start.</description>
-		</attribute>
-		<attribute>
 			<name>onsuccess</name>
 			<required>false</required>
 			<type>java.lang.String</type>

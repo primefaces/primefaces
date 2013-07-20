@@ -1,11 +1,11 @@
 
-    public final static String PRESTART_FACET = "prestart";
-    public final static String START_FACET = "start";
-    public final static String SUCCESS_FACET = "success";
-    public final static String COMPLETE_FACET = "complete";
-    public final static String ERROR_FACET = "error";
-    public final static String DEFAULT_FACET = "default";
+    public final static String START = "start";
+    public final static String SUCCESS= "success";
+    public final static String COMPLETE = "complete";
+    public final static String ERROR = "error";
+    public final static String DEFAULT = "default";
+    public final static String CALLBACK_SIGNATURE = "function()";
 
-	public final static String[] FACETS = {
-        PRESTART_FACET,START_FACET,SUCCESS_FACET,COMPLETE_FACET,ERROR_FACET
+	public final static String[] EVENTS = {
+        START,SUCCESS,COMPLETE,ERROR
     };
