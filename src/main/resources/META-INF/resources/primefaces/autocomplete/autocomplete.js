@@ -1,4 +1,4 @@
-/**
+                /**
  * PrimeFaces AutoComplete Widget
  */
 PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
@@ -49,13 +49,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             
             //force selection
-            if(this.cfg.forceSelection && !this.cfg.multiple) {
+            if(this.cfg.forceSelection) {
                 this.setupForceSelection();
-            }
-
-            //Multiple and force selection
-            if(this.cfg.forceSelection && this.cfg.multiple) {
-                this.setupMultipleForceSelection();
             }
 
             //Panel management
@@ -349,10 +344,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                 _self.inputContainer.before(itemDisplayMarkup);
                 _self.multiItemContainer.children('.ui-helper-hidden').fadeIn();
-                
-                if(!_self.cfg.forceSelection)
-                    _self.input.val('').focus();
-                
+                _self.input.val('').focus();
+             
                 _self.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
             }
             else {
@@ -420,9 +413,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
         
             if(this.cfg.forceSelection) {
-                this.cachedResults = [];
+                this.currentItems = [];
                 this.items.each(function(i, item) {
-                    $this.cachedResults.push($(item).attr('data-item-label'));
+                    $this.currentItems.push($(item).attr('data-item-label'));
                 });
             }
 
@@ -578,51 +571,27 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
     
     setupForceSelection: function() {
-        this.cachedResults = [this.input.val()];
-        var _self = this;
+        this.currentItems = [this.input.val()];
+        var $this = this;
         
         this.input.blur(function() {
             var value = $(this).val(),
             valid = false;
 
-            for(var i = 0; i < _self.cachedResults.length; i++) {
-                if(_self.cachedResults[i] == value) {
+            for(var i = 0; i < $this.currentItems.length; i++) {
+                if($this.currentItems[i] === value) {
                     valid = true;
                     break;
                 }
             }
-            
+                
             if(!valid) {
-                _self.input.val('');
-                _self.hinput.val('');
-            }
-        });
-    },
-    
-    setupMultipleForceSelection: function() {
-    
-        this.cachedResults = [this.input.val()];
-        var _self = this;
-        var valid = false;
-        
-        this.input.blur(function() {
-            var value = $(this).val();
-            
-            for(var i = 0; i < _self.cachedResults.length; i++) {
-                if(_self.cachedResults[i] == value) {
-                    valid = true;
-                    break;
+                if($this.cfg.multiple) {
+                    $this.input.val('');
                 }
-            }
-            if(!valid) {
-                _self.input.val('');
-            }
-        }).keydown(function(e){
-            var keyCode = $.ui.keyCode;
-            
-            if(e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
-                if(!valid) {
-                    _self.input.val('');
+                else {
+                    $this.input.val('');
+                    $this.hinput.val('');
                 }
             }
         });
