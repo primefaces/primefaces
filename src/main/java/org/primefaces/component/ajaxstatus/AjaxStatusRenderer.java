@@ -37,33 +37,17 @@ public class AjaxStatusRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, AjaxStatus status) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = status.getClientId(context);
-		String widgetVar = status.resolveWidgetVar();
-        String widgetInstance = "PF('" + widgetVar + "')";
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("AjaxStatus", widgetVar, clientId, false);
+        wb.widget("AjaxStatus", status.resolveWidgetVar(), clientId, false);
 
-        startScript(writer, clientId);
+        wb.callback(AjaxStatus.START, AjaxStatus.CALLBACK_SIGNATURE, status.getOnstart())
+            .callback(AjaxStatus.ERROR, AjaxStatus.CALLBACK_SIGNATURE, status.getOnerror())
+            .callback(AjaxStatus.SUCCESS, AjaxStatus.CALLBACK_SIGNATURE, status.getOnsuccess())
+            .callback(AjaxStatus.COMPLETE, AjaxStatus.CALLBACK_SIGNATURE, status.getOncomplete());
         
+        startScript(writer, clientId);
         writer.write(wb.build());
-				
-		encodeCallback(context, status, widgetInstance, "ajaxSend", "onprestart", AjaxStatus.PRESTART_FACET);
-		encodeCallback(context, status, widgetInstance, "ajaxStart", "onstart", AjaxStatus.START_FACET);
-		encodeCallback(context, status, widgetInstance, "ajaxError", "onerror", AjaxStatus.ERROR_FACET);
-		encodeCallback(context, status, widgetInstance, "ajaxSuccess", "onsuccess", AjaxStatus.SUCCESS_FACET);
-		encodeCallback(context, status, widgetInstance, "ajaxComplete", "oncomplete", AjaxStatus.COMPLETE_FACET);
-
 		endScript(writer);
-	}
-	
-	protected void encodeCallback(FacesContext context, AjaxStatus status, String var, String event, String callback, String facetName) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String fn = (String) status.getAttributes().get(callback);
-		
-		if(fn != null)
-			writer.write(var + ".bindCallback('" + event + "',function(){" + fn + "});");
-
-		if(status.getFacet(facetName) != null)
-			writer.write(var + ".bindFacet('" + event + "', '" + facetName + "');");
 	}
 
 	protected void encodeMarkup(FacesContext context, AjaxStatus status) throws IOException {
@@ -76,25 +60,24 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		if(status.getStyle() != null)  writer.writeAttribute("style", status.getStyle(), "style");
 		if(status.getStyleClass() != null)  writer.writeAttribute("class", status.getStyleClass(), "styleClass");
 		
-		for(String facetName : AjaxStatus.FACETS) {
-			UIComponent facet = status.getFacet(facetName);
+		for(String event : AjaxStatus.EVENTS) {
+			UIComponent facet = status.getFacet(event);
 
             if(facet != null) {
-                encodeFacet(context, clientId, facet, facetName, true);
+                encodeFacet(context, clientId, facet, event, true);
             }
 		}
 
-        //Default facet
-        UIComponent defaultFacet = status.getFacet(AjaxStatus.DEFAULT_FACET);
+        UIComponent defaultFacet = status.getFacet(AjaxStatus.DEFAULT);
         if(defaultFacet != null) {
-            encodeFacet(context, clientId, defaultFacet, AjaxStatus.DEFAULT_FACET, false);
+            encodeFacet(context, clientId, defaultFacet, AjaxStatus.DEFAULT, false);
         }
 		
 		writer.endElement("div");
 	}
 
-    protected void encodeFacet(FacesContext facesContext, String clientId, UIComponent facet, String facetName, boolean hidden) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    protected void encodeFacet(FacesContext context, String clientId, UIComponent facet, String facetName, boolean hidden) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_" + facetName, null);
@@ -102,7 +85,7 @@ public class AjaxStatusRenderer extends CoreRenderer {
             writer.writeAttribute("style", "display:none", null);
         }
 
-        renderChild(facesContext, facet);
+        renderChild(context, facet);
 
         writer.endElement("div");
     }
