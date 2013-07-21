@@ -260,6 +260,7 @@ public abstract class CoreRenderer extends Renderer {
      * Non-obstrusive way to apply client behaviors.
      * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
      */
+	@Deprecated
     protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
