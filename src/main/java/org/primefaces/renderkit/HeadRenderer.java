@@ -29,7 +29,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.primefaces.context.RequestContext;
-import org.primefaces.util.Constants;
 
 /**
  * Renders head content based on the following order
