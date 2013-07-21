@@ -173,7 +173,6 @@ public class TreeRenderer extends CoreRenderer {
         String widget = tree.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-
         wb.widget(widget, tree.resolveWidgetVar(), clientId, true);
 
         wb.attr("dynamic", dynamic)
