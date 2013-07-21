@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
+import org.primefaces.util.WidgetBuilder;
 
 public class SocketRenderer extends CoreRenderer {
 
@@ -35,30 +36,26 @@ public class SocketRenderer extends CoreRenderer {
         String channelUrl = Constants.PUSH_PATH + channel;
         String url = getResourceURL(context, channelUrl);
         String pushServer = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getPushServerURL();
+        String clientId = socket.getClientId(context);
         
         if(pushServer != null) {
             url = pushServer + url;
         }
 
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
-		
-		writer.write("$(function() {");
-		writer.write(socket.resolveWidgetVar() + " = new PrimeFaces.widget.Socket({");
-		writer.write("url:'" + url + "'");
-		
-        writer.write(",autoConnect:" + socket.isAutoConnect());
-        writer.write(",transport:'" + socket.getTransport() + "'");
-        writer.write(",fallbackTransport:'" + socket.getFallbackTransport() + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.widget("Socket", socket.resolveWidgetVar(), clientId, true);
         
-        //callbacks
-        if(socket.getOnMessage() != null) writer.write(",onMessage:" + socket.getOnMessage());
-        if(socket.getOnError() != null) writer.write(",onError:" + socket.getOnError());
-        
-        encodeClientBehaviors(context, socket);
-        
-		writer.write("});});");
-		
-		writer.endElement("script");
+        wb.attr("url", url)
+        	.attr("autoConnect", socket.isAutoConnect())
+        	.attr("transport", socket.getTransport())
+        	.attr("fallbackTransport", socket.getFallbackTransport())
+        	.attr("onMessage", socket.getOnMessage(), null)
+        	.attr("onError", socket.getOnError(), null);
+
+        encodeClientBehaviors(context, socket, wb);
+
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 }
