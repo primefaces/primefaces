@@ -47,6 +47,11 @@
 .ui-fileupload-content .ui-progressbar {
     width: 200px;
     height: 20px;
+    margin: 0px;
+}
+
+.ui-fileupload-content .ui-progressbar .ui-progressbar-value {
+    height: 100%;
 }
 
 .ui-fileupload-content .ui-progressbar-value-legacy {
