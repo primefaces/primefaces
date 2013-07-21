@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
@@ -44,6 +45,18 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     @Override
     public ResourceHandler getWrapped() {
         return this.wrapped;
+    }
+
+    @Override
+    public Resource createResource(String resourceName, String libraryName) {
+        Resource resource = super.createResource(resourceName, libraryName);
+        
+        if(resource != null && libraryName != null && libraryName.equalsIgnoreCase(Constants.LIBRARY)) {
+            return new PrimeResource(resource);
+        }
+        else {
+            return resource;
+        }
     }
     
     @Override
