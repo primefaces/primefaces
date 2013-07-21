@@ -30,6 +30,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class TreeRenderer extends CoreRenderer {
         
@@ -170,58 +171,38 @@ public class TreeRenderer extends CoreRenderer {
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
         String widget = tree.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
-			
-        startScript(writer, clientId);
-        
-        writer.write("PrimeFaces.cw('" + widget + "','" + tree.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",dynamic:" + dynamic);
-        
-        if(dynamic) {
-            writer.write(",cache:" + tree.isCache());
-        }
+
+        WidgetBuilder wb = getWidgetBuilder(context);
+
+        wb.widget(widget, tree.resolveWidgetVar(), clientId, true);
+
+        wb.attr("dynamic", dynamic)
+        	.attr("highlight", tree.isHighlight(), true)
+    		.attr("animate", tree.isAnimate(), false)
+    		.attr("droppable", tree.isDroppable(), false)
+    		.attr("cache", tree.isCache() && dynamic)
+    		.attr("dragdropScope", tree.getDragdropScope(), null)
+    		.callback("onNodeClick", "function(node, event)", tree.getOnNodeClick());
 
         //selection
         if(selectionMode != null) {
-            writer.write(",selectionMode:'" + selectionMode + "'");
-            writer.write(",propagateUp:" + tree.isPropagateSelectionUp());
-            writer.write(",propagateDown:" + tree.isPropagateSelectionDown());
-        }
-        
-        if(!tree.isHighlight()) {
-            writer.write(",highlight:false");
+        	wb.attr("selectionMode", selectionMode);
+        	wb.attr("propagateUp", tree.isPropagateSelectionUp());
+        	wb.attr("propagateDown", tree.isPropagateSelectionDown());
         }
 
-        if(tree.getOnNodeClick() != null) {
-            writer.write(",onNodeClick:function(node, event) {" + tree.getOnNodeClick() + "}");
-        }
-        
-        if(tree.isAnimate()) {
-            writer.write(",animate:true");
-        }
-        
-        if(tree.isDroppable()) {
-            writer.write(",droppable:true");
-        }
-        
         if(tree.isDraggable()) {
-            writer.write(",draggable:true");
-            writer.write(",dragMode:'" + tree.getDragMode() + "'");
-            writer.write(",dropRestrict:'" + tree.getDropRestrict() + "'");
-        }
-        
-        String scope = tree.getDragdropScope();
-        if(scope != null) {
-            writer.write(",dragdropScope:'" + scope + "'");
+        	wb.attr("draggable", true)
+        		.attr("dragMode", tree.getDragMode())
+        		.attr("dropRestrict", tree.getDropRestrict());
         }
 
-        encodeIconStates(context, tree);
-        
-        encodeClientBehaviors(context, tree);
+        encodeIconStates(context, tree, wb);
+        encodeClientBehaviors(context, tree, wb);
 
-        writer.write("});");
-
-		endScript(writer);
+        startScript(writer, clientId);
+        writer.write(wb.build());
+        endScript(writer);
 	}
 	
 	protected void encodeMarkup(FacesContext context, Tree tree) throws IOException {
@@ -601,11 +582,10 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement("li");
     }
 
-    protected void encodeIconStates(FacesContext context, Tree tree) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    protected void encodeIconStates(FacesContext context, Tree tree, WidgetBuilder wb) throws IOException {
         Map<String,UITreeNode> nodes = tree.getTreeNodes();
 
-        writer.write(",iconStates:{");
+        wb.append(",iconStates:{");
         
         boolean firstWritten = false;
         for(Iterator<String> it = nodes.keySet().iterator(); it.hasNext();) {
@@ -616,19 +596,19 @@ public class TreeRenderer extends CoreRenderer {
 
             if(expandedIcon != null && collapsedIcon != null) {
                 if(firstWritten) {
-                    writer.write(",");
+                	wb.append(",");
                 }
                 
-                writer.write("'" + node.getType() + "' : {");
-                writer.write("expandedIcon:'" + expandedIcon + "'");
-                writer.write(",collapsedIcon:'" + collapsedIcon + "'");
-                writer.write("}");
+                wb.append("'" + node.getType() + "' : {");
+                wb.append("expandedIcon:'" + expandedIcon + "'");
+                wb.append(",collapsedIcon:'" + collapsedIcon + "'");
+                wb.append("}");
                 
                 firstWritten = true;
             }
         }
 
-        writer.write("}");
+        wb.append("}");
     }
     
     protected void encodeIcon(FacesContext context, UITreeNode uiTreeNode, boolean expanded) throws IOException {

@@ -137,6 +137,14 @@ public class WidgetBuilder {
         
         return this;
     }
+    
+    public WidgetBuilder callback(String name, String callback) {
+        if(callback != null) {
+            buffer.append(",").append(name).append(":").append(callback);
+        }
+        
+        return this;
+    }
         
     public WidgetBuilder append(String str) {
         buffer.append(str);
