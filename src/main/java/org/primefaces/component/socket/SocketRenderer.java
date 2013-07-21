@@ -49,8 +49,8 @@ public class SocketRenderer extends CoreRenderer {
         	.attr("autoConnect", socket.isAutoConnect())
         	.attr("transport", socket.getTransport())
         	.attr("fallbackTransport", socket.getFallbackTransport())
-        	.attr("onMessage", socket.getOnMessage(), null)
-        	.attr("onError", socket.getOnError(), null);
+        	.callback("onMessage", socket.getOnMessage())
+        	.callback("onError", socket.getOnError());
 
         encodeClientBehaviors(context, socket, wb);
 
