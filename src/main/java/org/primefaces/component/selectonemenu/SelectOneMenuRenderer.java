@@ -365,10 +365,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             if(disabled) writer.writeAttribute("disabled", "disabled", null);
             if(selected) writer.writeAttribute("selected", "selected", null);
 
-            if(option.isEscape())
-                writer.writeText(option.getLabel(), "value");
-            else
-                writer.write(option.getLabel());
+            if(!isValueBlank(option.getLabel())) {
+	            if(option.isEscape())
+	                writer.writeText(option.getLabel(), "value");
+	            else
+	                writer.write(option.getLabel());
+            }
 
             writer.endElement("option");
         }
