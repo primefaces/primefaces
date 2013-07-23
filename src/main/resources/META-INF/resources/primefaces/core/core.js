@@ -778,6 +778,24 @@
             var global = (cfg.global === false) ? false : true,
             form = null,
             sourceId = null;
+    
+            if(cfg.onstart) {
+                var retVal = cfg.onstart.call(this, cfg);
+                if(retVal === false) {
+                    PrimeFaces.debug('Ajax request cancelled by onstart callback.');
+
+                    //remove from queue
+                    if(!cfg.async) {
+                        PrimeFaces.ajax.Queue.poll();
+                    }
+
+                    return false;  //cancel request
+                }
+            }
+            
+            if(global) {
+                PrimeFaces.ajax.AjaxUtils.triggerEvent('start');
+            }
 
             //source can be a client id or an element defined by this keyword
             if(typeof(cfg.source) == 'string') {
@@ -955,33 +973,15 @@
                 source: cfg.source,
                 global: false,
                 beforeSend: function(xhr) {
-                    if(global) {
-                        PrimeFaces.ajax.AjaxUtils.triggerEvent('start');
-                    }
-                    
-                    if(cfg.onstart) {
-                        var retVal = cfg.onstart.call(this, cfg);
-                        if(retVal === false) {
-                            PrimeFaces.debug('Ajax request cancelled by onstart callback.');
-
-                            //remove from queue
-                            if(!cfg.async) {
-                                PrimeFaces.ajax.Queue.poll();
-                            }
-
-                            return false;  //cancel request
-                        }
-                    }
-                    
                     xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                 },
-                error: function(xhr, status, errorThrown) {
-                    if(global) {
-                        PrimeFaces.ajax.AjaxUtils.triggerEvent('error');
-                    }
-                    
+                error: function(xhr, status, errorThrown) {                    
                     if(cfg.onerror) {
                         cfg.onerror.call(this, xhr, status, errorThrown);
+                    }
+                    
+                    if(global) {
+                        PrimeFaces.ajax.AjaxUtils.triggerEvent('error');
                     }
 
                     PrimeFaces.error('Request return with error:' + status + '.');
@@ -991,18 +991,18 @@
                     
                     var parsed;
 
-                    if(global) {
-                        PrimeFaces.ajax.AjaxUtils.triggerEvent('success');
-                    }
-
                     //call user callback
                     if(cfg.onsuccess) {
                         parsed = cfg.onsuccess.call(this, data, status, xhr);
                     }
-
+                    
                     //extension callback that might parse response
                     if(cfg.ext && cfg.ext.onsuccess && !parsed) {
                         parsed = cfg.ext.onsuccess.call(this, data, status, xhr); 
+                    }
+                    
+                    if(global) {
+                        PrimeFaces.ajax.AjaxUtils.triggerEvent('success');
                     }
 
                     //do not execute default handler as response already has been parsed
@@ -1016,11 +1016,6 @@
                     PrimeFaces.debug('DOM is updated.');
                 },
                 complete: function(xhr, status) {
-                    if(global) {
-                        PrimeFaces.ajax.AjaxUtils.triggerEvent('complete');
-                    }
-
-
                     if(cfg.oncomplete) {
                         cfg.oncomplete.call(this, xhr, status, this.args);
                     }
@@ -1029,7 +1024,10 @@
                         cfg.ext.oncomplete.call(this, xhr, status, this.args);
                     }
                     
-                    
+                    if(global) {
+                        PrimeFaces.ajax.AjaxUtils.triggerEvent('complete');
+                    }
+
                     PrimeFaces.debug('Response completed.');
 
                     if(!cfg.async) {
