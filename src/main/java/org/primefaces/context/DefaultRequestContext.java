@@ -158,7 +158,7 @@ public class DefaultRequestContext extends RequestContext {
         if(options != null)
             this.getAttributes().put(Constants.DIALOG_OPTIONS, options);
         
-        if(options != null)
+        if(params != null)
             this.getAttributes().put(Constants.DIALOG_PARAMS, params);
     }
 
