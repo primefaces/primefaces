@@ -30,13 +30,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         
         //listen global ajax send and complete callbacks
         $(document).bind('ajaxSend', function(e, xhr, settings) {
-            if($.inArray(settings.source, triggers) != -1) {
+            if($.inArray(settings.source, triggers) !== -1) {
             	$this.show();
             }
         });
 
         $(document).bind('ajaxComplete', function(e, xhr, settings) {
-            if($.inArray(settings.source, triggers) != -1) {
+            if($.inArray(settings.source, triggers) !== -1) {
             	$this.hide();
             }
         });

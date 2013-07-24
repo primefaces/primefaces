@@ -6,7 +6,25 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        PrimeFaces.ajaxStatus = this;
+        this.bind();
+    },
+            
+    bind: function() {
+        var doc = $(document),
+        $this = this;
+        
+        doc.on('ajaxSend', function() {
+            $this.trigger('start');
+        })
+        .on('ajaxError', function() {
+            $this.trigger('error');
+        })
+        .on('ajaxSuccess', function() {
+            $this.trigger('success');
+        })
+        .on('ajaxComplete', function() {
+            $this.trigger('complete');
+        });
         
         this.bindToStandard();
     },
@@ -21,29 +39,25 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
     },
          
     bindToStandard: function() {
-        var $this = this;
-        
-        $(function() {
-            if(window.jsf && window.jsf.ajax) {
-                jsf.ajax.addOnEvent(function(data) {
-                    var doc = $(document);
+        if(window.jsf && window.jsf.ajax) {
+            jsf.ajax.addOnEvent(function(data) {
+                var doc = $(document);
 
-                    if(data.status === 'begin') {
-                        $this.trigger('start');
-                    }
-                    else if(data.status === 'complete') {
-                        $this.trigger('success');
-                    }
-                    else if(data.status === 'success') {
-                        $this.trigger('complete');
-                    }
-                });
+                if(data.status === 'begin') {
+                    doc.trigger('ajaxSend');
+                }
+                else if(data.status === 'complete') {
+                    doc.trigger('ajaxSuccess');
+                }
+                else if(data.status === 'success') {
+                    doc.trigger('ajaxComplete');
+                }
+            });
 
-                jsf.ajax.addOnError(function(data) {
-                    $this.trigger('error');
-                });
-            }
-        });
+            jsf.ajax.addOnError(function(data) {
+                doc.trigger('ajaxError');
+            });
+        }
     }
     
 });

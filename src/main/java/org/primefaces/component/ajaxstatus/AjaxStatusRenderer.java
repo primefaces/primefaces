@@ -38,7 +38,7 @@ public class AjaxStatusRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = status.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("AjaxStatus", status.resolveWidgetVar(), clientId, false);
+        wb.widget("AjaxStatus", status.resolveWidgetVar(), clientId, true);
 
         wb.callback(AjaxStatus.START, AjaxStatus.CALLBACK_SIGNATURE, status.getOnstart())
             .callback(AjaxStatus.ERROR, AjaxStatus.CALLBACK_SIGNATURE, status.getOnerror())
