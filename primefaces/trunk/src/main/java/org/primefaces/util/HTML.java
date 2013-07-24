@@ -101,6 +101,7 @@ public class HTML {
 		"dir",
 		"lang",
 		"maxlength",
+        "placeholder",
 		"size",
 		"tabindex",
 		"title"
