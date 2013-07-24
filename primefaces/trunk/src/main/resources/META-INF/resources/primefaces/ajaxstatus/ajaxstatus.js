@@ -13,16 +13,16 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
         var doc = $(document),
         $this = this;
         
-        doc.on('ajaxSend', function() {
+        doc.on('pfAjaxStart', function() {
             $this.trigger('start');
         })
-        .on('ajaxError', function() {
+        .on('pfAjaxError', function() {
             $this.trigger('error');
         })
-        .on('ajaxSuccess', function() {
+        .on('pfAjaxSuccess', function() {
             $this.trigger('success');
         })
-        .on('ajaxComplete', function() {
+        .on('pfAjaxComplete', function() {
             $this.trigger('complete');
         });
         
@@ -44,18 +44,18 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                 var doc = $(document);
 
                 if(data.status === 'begin') {
-                    doc.trigger('ajaxSend');
+                    doc.trigger('pfAjaxSend');
                 }
                 else if(data.status === 'complete') {
-                    doc.trigger('ajaxSuccess');
+                    doc.trigger('pfAjaxSuccess');
                 }
                 else if(data.status === 'success') {
-                    doc.trigger('ajaxComplete');
+                    doc.trigger('pfAjaxComplete');
                 }
             });
 
             jsf.ajax.addOnError(function(data) {
-                doc.trigger('ajaxError');
+                doc.trigger('pfAjaxError');
             });
         }
     }
