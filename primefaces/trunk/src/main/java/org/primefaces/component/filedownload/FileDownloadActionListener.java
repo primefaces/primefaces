@@ -63,6 +63,11 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 			externalContext.setResponseHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
 			externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
             
+            if(externalContext.isSecure()) {
+                externalContext.setResponseHeader("Cache-Control", "public");
+                externalContext.setResponseHeader("Pragma", "public");
+            }
+            
 			byte[] buffer = new byte[2048];
 			int length;
             InputStream inputStream = content.getStream();
