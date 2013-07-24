@@ -775,8 +775,7 @@
         send: function(cfg) {
             PrimeFaces.debug('Initiating ajax request.');
             
-            var global = (cfg.global === false) ? false : true,
-            form = null,
+            var form = null,
             sourceId = null;
     
             if(cfg.onstart) {
@@ -793,10 +792,6 @@
                 }
             }
             
-            if(global) {
-                PrimeFaces.ajax.AjaxUtils.triggerEvent('start');
-            }
-
             //source can be a client id or an element defined by this keyword
             if(typeof(cfg.source) == 'string') {
                 sourceId = cfg.source;
@@ -971,17 +966,12 @@
                 data : postData,
                 portletForms: pFormsSelector,
                 source: cfg.source,
-                global: false,
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                 },
                 error: function(xhr, status, errorThrown) {                    
                     if(cfg.onerror) {
                         cfg.onerror.call(this, xhr, status, errorThrown);
-                    }
-                    
-                    if(global) {
-                        PrimeFaces.ajax.AjaxUtils.triggerEvent('error');
                     }
 
                     PrimeFaces.error('Request return with error:' + status + '.');
@@ -1001,10 +991,6 @@
                         parsed = cfg.ext.onsuccess.call(this, data, status, xhr); 
                     }
                     
-                    if(global) {
-                        PrimeFaces.ajax.AjaxUtils.triggerEvent('success');
-                    }
-
                     //do not execute default handler as response already has been parsed
                     if(parsed) {
                         return;
@@ -1024,10 +1010,6 @@
                         cfg.ext.oncomplete.call(this, xhr, status, this.args);
                     }
                     
-                    if(global) {
-                        PrimeFaces.ajax.AjaxUtils.triggerEvent('complete');
-                    }
-
                     PrimeFaces.debug('Response completed.');
 
                     if(!cfg.async) {
@@ -1036,13 +1018,9 @@
                 }
             };
             
+            xhrOptions.global = (cfg.global === true || cfg.global === undefined) ? true : false;
+            
             $.ajax(xhrOptions);
-        },
-                
-        triggerEvent: function(event) {
-            if(PrimeFaces.ajaxStatus) {
-                PrimeFaces.ajaxStatus.trigger(event);
-            }
         }
     };
 
