@@ -29,13 +29,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         triggers = PrimeFaces.Expressions.resolveComponents(this.cfg.triggers);
         
         //listen global ajax send and complete callbacks
-        $(document).bind('ajaxSend', function(e, xhr, settings) {
+        $(document).on('pfAjaxSend', function(e, xhr, settings) {
             if($.inArray(settings.source, triggers) !== -1) {
             	$this.show();
             }
         });
 
-        $(document).bind('ajaxComplete', function(e, xhr, settings) {
+        $(document).on('pfAjaxComplete', function(e, xhr, settings) {
             if($.inArray(settings.source, triggers) !== -1) {
             	$this.hide();
             }
