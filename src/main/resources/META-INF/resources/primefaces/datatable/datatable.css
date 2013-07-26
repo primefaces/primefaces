@@ -196,6 +196,11 @@
 
 .ui-datatable-resizable {
     padding-bottom:1px;     /*fix for webkit overlow*/
+    overflow:auto;
+}
+
+.ui-datatable-resizable table {
+    table-layout: fixed;
 }
 
 .ui-datatable-rtl {
