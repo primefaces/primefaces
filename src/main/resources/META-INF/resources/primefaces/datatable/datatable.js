@@ -618,7 +618,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 });
             }
             else {
-                this.jq.find('> table > thead > tr > th').each(function() {
+                this.jq.find('> .ui-datatable-tablewrapper > table > thead > tr > th').each(function() {
                     var col = $(this);
                     col.width(col.width());
                 });
