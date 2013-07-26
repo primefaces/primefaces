@@ -187,15 +187,8 @@
 			<name>previewWidth</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-            <defaultValue>48</defaultValue>
+            <defaultValue>80</defaultValue>
             <description>Width for image previews in pixels. Default value is 48.</description>
-		</attribute>
-        <attribute>
-			<name>previewHeight</name>
-			<required>false</required>
-            <type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
-            <description>Width for image previews in pixels. Default value is scaled automatically based on previewWidth.</description>
 		</attribute>
 	</attributes>
 	<resources>

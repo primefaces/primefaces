@@ -1,3 +1,4 @@
+            //<![CDATA[
 /*
  * jQuery Iframe Transport Plugin 1.7
  * https://github.com/blueimp/jQuery-File-Upload
@@ -1538,6 +1539,9 @@
  * PrimeFaces FileUpload Widget
  */
 PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
+
+    IMAGE_TYPES: /(\.|\/)(gif|jpe?g|png)$/,
+
     init: function(cfg) {
         this._super(cfg);
         if(this.cfg.disabled) {
@@ -1559,7 +1563,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.invalidSizeMessage = this.cfg.invalidSizeMessage || 'Invalid file size';
         this.cfg.fileLimitMessage = this.cfg.fileLimitMessage || 'Maximum number of files exceeded';
         this.cfg.messageTemplate = this.cfg.messageTemplate || '{name} {size}';
-        this.cfg.previewWidth = this.cfg.previewWidth || 48;
+        this.cfg.previewWidth = this.cfg.previewWidth || 80;
         this.uploadedFileCount = 0;
 
         this.renderMessages();
@@ -1626,17 +1630,31 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                                     .appendTo($this.filesTbody);
 
                             //preview
-                            if(window.FileReader) {
-                                var reader = new FileReader();
-                                reader.onload = function(e) {
-                                    var img = $('<img alt="' + file.name + '" src="' + e.target.result + '" width="' + $this.cfg.previewWidth + '"></img>');
-                                    if ($this.cfg.previewHeight) {
-                                        img.height($this.cfg.previewHeight);
+                            if($this.isCanvasSupported() && window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
+                                var imageCanvas = $('<canvas></canvas')
+                                                        .appendTo(row.children('td.ui-fileupload-preview')),
+                                context = imageCanvas.get(0).getContext('2d'),
+                                url = URL.createObjectURL(file),
+                                img = new Image();
+                        
+                                img.onload = function() {
+                                    var imgWidth = null, imgHeight = null, scale = 1;
+                                    
+                                    if($this.cfg.previewWidth > this.width) {
+                                        imgWidth = this.width;
                                     }
-
-                                    row.children('td.ui-fileupload-preview').append(img);
+                                    else {
+                                        imgWidth = $this.cfg.previewWidth;
+                                        scale = $this.cfg.previewWidth / this.width;
+                                    }
+                                    
+                                    var imgHeight = this.height * scale;
+                                    
+                                    imageCanvas.attr({width:imgWidth, height: imgHeight});
+                                    context.drawImage(img, 0, 0, imgWidth, imgHeight);  
                                 }
-                                reader.readAsDataURL(file);
+                                
+                                img.src = url; 
                             }
 
                             //progress
@@ -1906,6 +1924,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             
     enableButton: function(btn) {
         btn.prop('disabled', false).removeClass('ui-state-disabled');
+    },
+            
+    isCanvasSupported: function() {
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
     }
     
 });
