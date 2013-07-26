@@ -1648,7 +1648,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                                         scale = $this.cfg.previewWidth / this.width;
                                     }
                                     
-                                    var imgHeight = this.height * scale;
+                                    var imgHeight = parseInt(this.height * scale);
                                     
                                     imageCanvas.attr({width:imgWidth, height: imgHeight});
                                     context.drawImage(img, 0, 0, imgWidth, imgHeight);  
