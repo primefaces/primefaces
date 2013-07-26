@@ -1117,7 +1117,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         
-        this.highlightItem(this.items.filter(':visible:first'));
+        var firstVisibleItem = this.items.filter(':visible:first');
+        if(firstVisibleItem.length) {
+            this.highlightItem(firstVisibleItem);
+        }
         
         if(this.itemsContainer.height() < this.cfg.initialHeight) {
             this.itemsWrapper.css('height', 'auto');
