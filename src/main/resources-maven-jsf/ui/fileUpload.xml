@@ -188,7 +188,7 @@
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>80</defaultValue>
-            <description>Width for image previews in pixels. Default value is 48.</description>
+            <description>Width for image previews in pixels. Default value is 80.</description>
 		</attribute>
 	</attributes>
 	<resources>
