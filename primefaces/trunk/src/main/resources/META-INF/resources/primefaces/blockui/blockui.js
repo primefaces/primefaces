@@ -23,19 +23,27 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         //remove script tag
         $(this.jqId + '_s').remove();
     },
+            
+    refresh: function(cfg) {
+        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
+        
+        this._super(cfg);
+    },
     
     bindTriggers: function() {
         var $this = this,
         triggers = PrimeFaces.Expressions.resolveComponents(this.cfg.triggers);
         
         //listen global ajax send and complete callbacks
-        $(document).on('pfAjaxSend', function(e, xhr, settings) {
+        $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+            console.log('show');
             if($.inArray(settings.source, triggers) !== -1) {
             	$this.show();
             }
         });
 
-        $(document).on('pfAjaxComplete', function(e, xhr, settings) {
+        $(document).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+            console.log('complete');
             if($.inArray(settings.source, triggers) !== -1) {
             	$this.hide();
             }
