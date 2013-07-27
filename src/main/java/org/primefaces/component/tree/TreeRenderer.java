@@ -166,14 +166,13 @@ public class TreeRenderer extends CoreRenderer {
 	}
 		
 	protected void encodeScript(FacesContext context, Tree tree) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = tree.getClientId(context);
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
         String widget = tree.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget(widget, tree.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady(widget, tree.resolveWidgetVar(), clientId);
 
         wb.attr("dynamic", dynamic)
         	.attr("highlight", tree.isHighlight(), true)
@@ -197,11 +196,9 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         encodeIconStates(context, tree, wb);
-        encodeClientBehaviors(context, tree, wb);
+        encodeClientBehaviors(context, tree);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 	
 	protected void encodeMarkup(FacesContext context, Tree tree) throws IOException {

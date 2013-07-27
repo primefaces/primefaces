@@ -78,13 +78,9 @@ public class LogRenderer extends CoreRenderer {
     }
     
     protected void encodeScript(FacesContext context, Log log) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = log.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Log", log.resolveWidgetVar(), clientId, true);
-
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.initWithDomReady("Log", log.resolveWidgetVar(), clientId);
+        wb.finish();
     }
 }

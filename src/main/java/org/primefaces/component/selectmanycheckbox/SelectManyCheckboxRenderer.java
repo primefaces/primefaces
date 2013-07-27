@@ -64,15 +64,12 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId, false);
-        encodeClientBehaviors(context, checkbox, wb);
+        wb.init("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId);
+        encodeClientBehaviors(context, checkbox);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked, boolean disabled, String value) throws IOException {

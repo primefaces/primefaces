@@ -50,10 +50,9 @@ public class DialogRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Dialog", dialog.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("Dialog", dialog.resolveWidgetVar(), clientId);
 
         if (dialog.isAppendToBody()) {
         	LOG.warning("The appendToBody attribute of the Dialog will be deprecated in future versions. Please use appendTo=\"@(body)\" now");
@@ -83,11 +82,9 @@ public class DialogRenderer extends CoreRenderer {
         	wb.attr("focus", focusExpressions);
         }
 
-        encodeClientBehaviors(context, dialog, wb);
-        
-        startScript(writer, clientId);        
-        writer.write(wb.build());
-        endScript(writer);
+        encodeClientBehaviors(context, dialog);
+         
+        wb.finish();
     }
 
     protected void encodeMarkup(FacesContext context, Dialog dialog) throws IOException {

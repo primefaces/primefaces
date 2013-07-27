@@ -54,11 +54,10 @@ public class PasswordRenderer extends InputRenderer {
 	}
 	
 	protected void encodeScript(FacesContext context, Password password) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = password.getClientId(context);
         boolean feedback = password.isFeedback();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Password", password.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("Password", password.resolveWidgetVar(), clientId);
         
         if(feedback) {
             wb.attr("feedback", true)
@@ -69,11 +68,9 @@ public class PasswordRenderer extends InputRenderer {
                 .attr("strongLabel", escapeText(password.getStrongLabel()));
         }
 
-        encodeClientBehaviors(context, password, wb);
+        encodeClientBehaviors(context, password);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 
 	protected void encodeMarkup(FacesContext context, Password password) throws IOException {

@@ -104,12 +104,11 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	}
 
 	protected void encodeScript(FacesContext context, AccordionPanel acco) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = acco.getClientId(context);
         boolean multiple = acco.isMultiple();
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("AccordionPanel", acco.resolveWidgetVar(), clientId, false);
+        wb.init("AccordionPanel", acco.resolveWidgetVar(), clientId);
          		
         if(acco.isDynamic()) {
             wb.attr("dynamic", true, false);
@@ -120,11 +119,9 @@ public class AccordionPanelRenderer extends CoreRenderer {
         .callback("onTabChange", "function(panel)", acco.getOnTabChange())
         .callback("onTabShow", "function(panel)", acco.getOnTabShow());
         
-        encodeClientBehaviors(context, acco, wb);
+        encodeClientBehaviors(context, acco);
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-		endScript(writer);
+        wb.finish();
 	}
 
 	protected void encodeStateHolder(FacesContext context, AccordionPanel accordionPanel) throws IOException {

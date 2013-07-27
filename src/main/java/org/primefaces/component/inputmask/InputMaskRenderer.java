@@ -55,22 +55,19 @@ public class InputMaskRenderer extends InputRenderer {
 	}
 	
 	protected void encodeScript(FacesContext context, InputMask inputMask) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputMask.getClientId(context);
         String mask = inputMask.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("InputMask", inputMask.resolveWidgetVar(), clientId, false);
+        wb.init("InputMask", inputMask.resolveWidgetVar(), clientId);
         
         if(mask != null) {
             wb.attr("mask", mask)
                 .attr("placeholder", inputMask.getPlaceHolder(), null);
         }
         
-        encodeClientBehaviors(context, inputMask, wb);
-		
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        encodeClientBehaviors(context, inputMask);
+
+        wb.finish();
 	}
 	
 	protected void encodeMarkup(FacesContext context, InputMask inputMask) throws IOException {

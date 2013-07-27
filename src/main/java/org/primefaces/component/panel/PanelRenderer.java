@@ -59,10 +59,9 @@ public class PanelRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Panel panel) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Panel", panel.resolveWidgetVar(), clientId, false);
+        wb.init("Panel", panel.resolveWidgetVar(), clientId);
         
         if(panel.isToggleable()) {
             wb.attr("toggleable", true)
@@ -80,11 +79,9 @@ public class PanelRenderer extends CoreRenderer {
             wb.attr("hasMenu", true);
         }
         
-        encodeClientBehaviors(context, panel, wb);
+        encodeClientBehaviors(context, panel);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeMarkup(FacesContext context, Panel panel) throws IOException {

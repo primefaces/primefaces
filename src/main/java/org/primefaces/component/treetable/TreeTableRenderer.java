@@ -97,11 +97,10 @@ public class TreeTableRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeScript(FacesContext context, TreeTable tt) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = tt.getClientId(context);
         String selectionMode = tt.getSelectionMode();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("TreeTable", tt.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("TreeTable", tt.resolveWidgetVar(), clientId)
             .attr("selectionMode", selectionMode, null)
             .attr("resizableColumns", tt.isResizableColumns(), false)
             .attr("liveResize", tt.isLiveResize(), false)
@@ -109,11 +108,9 @@ public class TreeTableRenderer extends CoreRenderer {
             .attr("scrollHeight", tt.getScrollHeight(), null)
             .attr("scrollWidth", tt.getScrollWidth(), null);
         
-        encodeClientBehaviors(context, tt, wb);
-		
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        encodeClientBehaviors(context, tt);
+
+        wb.finish();
 	}
 
 	protected void encodeMarkup(FacesContext context, TreeTable tt) throws IOException {

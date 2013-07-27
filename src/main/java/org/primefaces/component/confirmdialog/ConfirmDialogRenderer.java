@@ -67,7 +67,6 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 	}
     
 	protected void encodeScript(FacesContext context, ConfirmDialog dialog) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dialog.getClientId();
         WidgetBuilder wb = getWidgetBuilder(context);
         
@@ -75,7 +74,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         	LOG.warning("The appendToBody attribute of the ConfirmDialog will be deprecated in future versions. Please use appendTo=\"@(body)\" now");
         }
         
-        wb.widget("ConfirmDialog", dialog.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("ConfirmDialog", dialog.resolveWidgetVar(), clientId)
             .attr("visible", dialog.isVisible(), false)
             .attr("width", dialog.getWidth(), null)
             .attr("height", dialog.getHeight(), null)
@@ -85,10 +84,8 @@ public class ConfirmDialogRenderer extends CoreRenderer {
             .attr("hideEffect", dialog.getHideEffect(), null)
             .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
             .attr("global", dialog.isGlobal(), false);
-		
-        startScript(writer, clientId);              
-        writer.write(wb.build());
-		endScript(writer);
+  
+        wb.finish();
 	}
 
     protected void encodeHeader(FacesContext context, ConfirmDialog dialog) throws IOException {

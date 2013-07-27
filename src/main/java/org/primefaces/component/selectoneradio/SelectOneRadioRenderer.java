@@ -82,20 +82,17 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = radio.getClientId(context);
         String layout = radio.getLayout();
         boolean custom = layout != null && layout.equals("custom");
        
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectOneRadio", radio.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("SelectOneRadio", radio.resolveWidgetVar(), clientId)
             .attr("custom", custom, false);
         
-        encodeClientBehaviors(context, radio, wb);
+        encodeClientBehaviors(context, radio);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
     
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout) throws IOException {

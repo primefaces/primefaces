@@ -74,12 +74,11 @@ public class TabViewRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, TabView tabView) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = tabView.getClientId(context);
         boolean dynamic = tabView.isDynamic();
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("TabView", tabView.resolveWidgetVar(), clientId, false);
+        wb.init("TabView", tabView.resolveWidgetVar(), clientId);
         
         if(dynamic) {
             wb.attr("dynamic", true).attr("cache", tabView.isCache());
@@ -93,11 +92,9 @@ public class TabViewRenderer extends CoreRenderer {
             .attr("effectDuration", tabView.getEffectDuration(), null)
             .attr("scrollable", tabView.isScrollable());
         
-        encodeClientBehaviors(context, tabView, wb);
-        
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        encodeClientBehaviors(context, tabView);
+
+        wb.finish();
     }
 
     protected void encodeMarkup(FacesContext context, TabView tabView) throws IOException {

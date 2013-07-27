@@ -69,18 +69,15 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectManyMenu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectManyMenu", menu.resolveWidgetVar(), clientId, false)
+        wb.init("SelectManyMenu", menu.resolveWidgetVar(), clientId)
             .attr("disabled", menu.isDisabled(), false)
             .attr("showCheckbox", menu.isShowCheckbox(), false);
         
-        encodeClientBehaviors(context, menu, wb);
+        encodeClientBehaviors(context, menu);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeInput(FacesContext context, SelectManyMenu menu, String clientId, List<SelectItem> selectItems) throws IOException {

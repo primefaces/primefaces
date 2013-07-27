@@ -35,19 +35,16 @@ public class AjaxStatusRenderer extends CoreRenderer {
 	}
 
 	protected void encodeScript(FacesContext context, AjaxStatus status) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = status.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("AjaxStatus", status.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("AjaxStatus", status.resolveWidgetVar(), clientId);
 
         wb.callback(AjaxStatus.START, AjaxStatus.CALLBACK_SIGNATURE, status.getOnstart())
             .callback(AjaxStatus.ERROR, AjaxStatus.CALLBACK_SIGNATURE, status.getOnerror())
             .callback(AjaxStatus.SUCCESS, AjaxStatus.CALLBACK_SIGNATURE, status.getOnsuccess())
             .callback(AjaxStatus.COMPLETE, AjaxStatus.CALLBACK_SIGNATURE, status.getOncomplete());
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-		endScript(writer);
+        wb.finish();
 	}
 
 	protected void encodeMarkup(FacesContext context, AjaxStatus status) throws IOException {

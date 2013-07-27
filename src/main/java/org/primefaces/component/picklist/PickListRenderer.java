@@ -108,10 +108,9 @@ public class PickListRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeScript(FacesContext context, PickList pickList) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = pickList.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("PickList", pickList.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("PickList", pickList.resolveWidgetVar(), clientId)
             .attr("effect", pickList.getEffect())
             .attr("effectSpeed", pickList.getEffectSpeed())
             .attr("showSourceControls", pickList.isShowSourceControls(), false)
@@ -122,11 +121,9 @@ public class PickListRenderer extends CoreRenderer {
             .attr("showCheckbox", pickList.isShowCheckbox(), false)
             .callback("onTransfer", "function(e)", pickList.getOnTransfer());
         
-        encodeClientBehaviors(context, pickList, wb);
-		
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        encodeClientBehaviors(context, pickList);
+
+        wb.finish();
 	}
     
     protected void encodeListControls(FacesContext context, PickList pickList, String styleClass) throws IOException {

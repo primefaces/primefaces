@@ -174,11 +174,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     }
     
     protected void encodeScript(FacesContext context, SelectCheckboxMenu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId)
             .callback("onShow", "function()", menu.getOnShow())
             .callback("onHide", "function()", menu.getOnHide())
             .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE);
@@ -192,11 +191,9 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         
         wb.attr("panelStyle", menu.getPanelStyle(), null).attr("panelStyleClass", menu.getPanelStyleClass(), null);
 
-        encodeClientBehaviors(context, menu, wb);
+        encodeClientBehaviors(context, menu);
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
     
     @Override

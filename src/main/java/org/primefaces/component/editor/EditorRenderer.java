@@ -83,10 +83,9 @@ public class EditorRenderer extends CoreRenderer{
 	}
 	
 	private void encodeScript(FacesContext context, Editor editor) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = editor.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Editor", editor.resolveWidgetVar(), clientId, "editor", true)
+        wb.initWithDomReady("Editor", editor.resolveWidgetVar(), clientId, "editor")
                 .attr("disabled", editor.isDisabled(), false)
                 .attr("invalid", editor.isValid(), true)
                 .attr("controls", editor.getControls(), null)
@@ -95,9 +94,7 @@ public class EditorRenderer extends CoreRenderer{
                 .attr("maxlength", editor.getMaxlength(), Integer.MAX_VALUE)
                 .callback("change", "function(e)", editor.getOnchange());
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
     
     @Override

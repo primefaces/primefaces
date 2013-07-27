@@ -16,7 +16,6 @@
 package org.primefaces.component.ring;
 
 import java.io.IOException;
-import java.util.Collection;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -65,17 +64,13 @@ public class RingRenderer extends CoreRenderer {
 	}
 
     public void encodeScript(FacesContext context, Ring ring) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = ring.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Ring", ring.resolveWidgetVar(), clientId, "ring", true)
+        wb.initWithDomReady("Ring", ring.resolveWidgetVar(), clientId, "ring")
             .attr("startingChild", ring.getFirst())
             .attr("easing", ring.getEasing(), null);
-
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 
     @Override

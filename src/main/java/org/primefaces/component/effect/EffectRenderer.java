@@ -30,7 +30,6 @@ public class EffectRenderer extends CoreRenderer {
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		Effect effect = (Effect) component;
         String clientId = effect.getClientId(context);
         String source = component.getParent().getClientId(context);
@@ -43,15 +42,13 @@ public class EffectRenderer extends CoreRenderer {
 		String animation = getEffectBuilder(effect, target).build();
 		
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Effect", effect.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("Effect", effect.resolveWidgetVar(), clientId)
             .attr("source", source)
             .attr("event", event)
             .attr("delay", delay)
             .callback("fn", "function()", animation);
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 	
 	private EffectBuilder getEffectBuilder(Effect effect, String effectedComponentClientId) {

@@ -92,12 +92,11 @@ public class ProgressBarRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, ProgressBar progressBar) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = progressBar.getClientId(context);
         boolean isAjax = progressBar.isAjax();
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("ProgressBar", progressBar.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("ProgressBar", progressBar.resolveWidgetVar(), clientId)
             .attr("initialValue", progressBar.getValue())
             .attr("ajax", isAjax)
             .attr("labelTemplate", progressBar.getLabelTemplate(), null);
@@ -105,11 +104,9 @@ public class ProgressBarRenderer extends CoreRenderer {
         if(isAjax) {
             wb.attr("interval", progressBar.getInterval());
             
-            encodeClientBehaviors(context, progressBar, wb);
+            encodeClientBehaviors(context, progressBar);
         }
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 }

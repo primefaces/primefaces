@@ -112,12 +112,11 @@ public class DataTableRenderer extends DataRenderer {
     }
 	
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
         String selectionMode = table.resolveSelectionMode();
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("DataTable", table.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("DataTable", table.resolveWidgetVar(), clientId);
         
         //Pagination
         if(table.isPaginator()) {
@@ -165,11 +164,9 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         //Behaviors
-        encodeClientBehaviors(context, table, wb);
-        
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        encodeClientBehaviors(context, table);
+
+        wb.finish();
 	}
 
 	protected void encodeMarkup(FacesContext context, DataTable table) throws IOException{

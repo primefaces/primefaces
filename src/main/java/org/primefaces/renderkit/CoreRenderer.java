@@ -260,7 +260,6 @@ public abstract class CoreRenderer extends Renderer {
      * Non-obstrusive way to apply client behaviors.
      * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
      */
-	@Deprecated
     protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
@@ -310,58 +309,6 @@ public abstract class CoreRenderer extends Renderer {
             }
 
             writer.write("}");
-        }
-    }
-    
-    /**
-     * Non-obstrusive way to apply client behaviors.
-     * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
-     */
-    protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, WidgetBuilder wb) throws IOException {
-        //ClientBehaviors
-        Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
-
-        if(!behaviorEvents.isEmpty()) {
-            String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
-
-            wb.append(",behaviors:{");
-            for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
-                String event = eventIterator.next();
-                String domEvent = event;
-
-                if(event.equalsIgnoreCase("valueChange"))       //editable value holders
-                    domEvent = "change";
-                else if(event.equalsIgnoreCase("action"))       //commands
-                    domEvent = "click";
-
-                wb.append(domEvent).append(":");
-
-                wb.append("function(event,ext){PrimeFaces.Behavior.chain(this,event,ext,[");
-                List<ClientBehavior> behaviorsByEvent = behaviorEvents.get(event);
-                int renderedBehaviors = 0;
-                for (int i = 0; i < behaviorsByEvent.size(); i++) {
-                    ClientBehavior behavior = behaviorsByEvent.get(i);
-                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
-                    String script = behavior.getScript(cbc);    //could be null if disabled
-
-                    if(script != null) {
-                        if (renderedBehaviors > 0) {
-                        	wb.append(',');
-                        }
-
-                        wb.append('\'' + escapeJavaScriptForChain(script) + '\'');
-                        renderedBehaviors++;
-                    }
-                }
-                wb.append("]);}");
-
-                if(eventIterator.hasNext()) {
-                    wb.append(",");
-                }
-            }
-
-            wb.append("}");
         }
     }
 

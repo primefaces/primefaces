@@ -15,6 +15,8 @@
  */
 package org.primefaces.util;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -22,49 +24,85 @@ import static org.junit.Assert.*;
 public class WidgetBuilderTest {
     
     @Test
-    public void shouldBuildBasicWidget() {
-        WidgetBuilder builder = new WidgetBuilder();
-        builder.widget("AccordionPanel", "acco", "accoId", false);
-        String script = builder.build();
-        
-        assertEquals("PrimeFaces.cw('AccordionPanel','acco',{id:'accoId'});", script);
+    public void shouldBuildBasicWidget() throws IOException {
+    	CollectingResponseWriter writer = new CollectingResponseWriter();
+
+    	WidgetBuilder builder = new WidgetBuilder(writer);
+        builder.init("AccordionPanel", "acco", "accoId");
+        builder.finish();
+
+        assertEquals(
+        		"<script id=\"accoId_s\" type=\"text/javascript\">PrimeFaces.cw('AccordionPanel','acco',{id:'accoId'});</script>",
+        		writer.toString());
     }
     
     @Test
-    public void shouldBuildWithAttributes() {
-        WidgetBuilder builder = new WidgetBuilder();
-        builder.widget("DataTable", "dt", "dt1", true);
+    public void initWithWindowLoad() throws IOException {
+    	CollectingResponseWriter writer = new CollectingResponseWriter();
+
+    	WidgetBuilder builder = new WidgetBuilder(writer);
+        builder.initWithWindowLoad("AccordionPanel", "acco", "accoId");
+        builder.finish();
+
+        assertEquals(
+        		"<script id=\"accoId_s\" type=\"text/javascript\">$(window).load(function(){PrimeFaces.cw('AccordionPanel','acco',{id:'accoId'});});</script>",
+        		writer.toString());
+    }
+
+    @Test
+    public void initWithComponentLoad() throws IOException {
+    	CollectingResponseWriter writer = new CollectingResponseWriter();
+
+    	WidgetBuilder builder = new WidgetBuilder(writer);
+        builder.initWithComponentLoad("AccordionPanel", "acco", "accoId", "test");
+        builder.finish();
+
+        assertEquals(
+        		"<script id=\"accoId_s\" type=\"text/javascript\">$(PrimeFaces.escapeClientId('test')).load(function(){PrimeFaces.cw('AccordionPanel','acco',{id:'accoId'});});</script>",
+        		writer.toString());
+    }
+
+    @Test
+    public void shouldBuildWithAttributes() throws IOException {
+    	CollectingResponseWriter writer = new CollectingResponseWriter();
+
+    	WidgetBuilder builder = new WidgetBuilder(writer);
+        builder.initWithDomReady("DataTable", "dt", "dt1");
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
         builder.attr("paginator", false, false);
         builder.attr("rows", 10, 10);
+        builder.finish();
         
-        String script = builder.build();
-        
-        assertEquals("$(function(){PrimeFaces.cw('DataTable','dt',{id:'dt1',selectionMode:'single',lazy:true});});", script);
+        assertEquals(
+        		"<script id=\"dt1_s\" type=\"text/javascript\">$(function(){PrimeFaces.cw('DataTable','dt',{id:'dt1',selectionMode:'single',lazy:true});});</script>",
+        		writer.toString());
     }
     
     @Test
-    public void shouldBuildWithCallbacks() {
-        WidgetBuilder builder = new WidgetBuilder();
-        builder.widget("DataTable", "dt", "dt1", false);
+    public void shouldBuildWithCallbacks() throws IOException {
+    	CollectingResponseWriter writer = new CollectingResponseWriter();
+
+        WidgetBuilder builder = new WidgetBuilder(writer);
+        builder.init("DataTable", "dt", "dt1");
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
         builder.attr("paginator", false, false);
         builder.attr("rows", 10, 10);
         builder.callback("onRowSelect", "function(row)", "alert(row);");
+        builder.finish();
         
-        String script = builder.build();
-        
-        assertEquals("PrimeFaces.cw('DataTable','dt',{id:'dt1',selectionMode:'single',lazy:true,onRowSelect:function(row){alert(row);}});", script);
+        assertEquals("<script id=\"dt1_s\" type=\"text/javascript\">PrimeFaces.cw('DataTable','dt',{id:'dt1',selectionMode:'single',lazy:true,onRowSelect:function(row){alert(row);}});</script>", writer.toString());
     }
-    
+
     @Test
-    public void shouldBuildWithResourcePath() {
-        WidgetBuilder builder = new WidgetBuilder();
-        builder.widget("AccordionPanel", "acco", "accoId", "accordion", false);
-        String script = builder.build();
+    public void shouldBuildWithResourcePath() throws IOException {
+    	CollectingResponseWriter writer = new CollectingResponseWriter();
+
+        WidgetBuilder builder = new WidgetBuilder(writer);
+        builder.init("AccordionPanel", "acco", "accoId", "accordion");
+        builder.finish();
         
-        assertEquals("PrimeFaces.cw('AccordionPanel','acco',{id:'accoId'},'accordion');", script);
+        assertEquals("<script id=\"accoId_s\" type=\"text/javascript\">PrimeFaces.cw('AccordionPanel','acco',{id:'accoId'},'accordion');</script>", writer.toString());
     }
 }

@@ -34,14 +34,13 @@ public class DroppableRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         Droppable droppable = (Droppable) component;
         
         UIComponent target = SearchExpressionFacade.resolveComponent(context, droppable, droppable.getFor(), true);
 
         String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Droppable", droppable.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("Droppable", droppable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))
                 .attr("disabled", droppable.isDisabled(), false)
                 .attr("hoverClass", droppable.getHoverStyleClass(), null)
@@ -54,11 +53,9 @@ public class DroppableRenderer extends CoreRenderer {
             wb.append(",onDrop:").append(droppable.getOnDrop());
         }
         
-        encodeClientBehaviors(context, droppable, wb);
+        encodeClientBehaviors(context, droppable);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 
 }

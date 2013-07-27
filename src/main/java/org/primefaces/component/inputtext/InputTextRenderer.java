@@ -53,16 +53,13 @@ public class InputTextRenderer extends InputRenderer {
 	}
 
 	protected void encodeScript(FacesContext context, InputText inputText) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputText.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("InputText", inputText.resolveWidgetVar(), clientId, false);
+        wb.init("InputText", inputText.resolveWidgetVar(), clientId);
         
-        encodeClientBehaviors(context, inputText, wb);
+        encodeClientBehaviors(context, inputText);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 
 	protected void encodeMarkup(FacesContext context, InputText inputText) throws IOException {

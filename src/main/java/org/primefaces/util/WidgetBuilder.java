@@ -15,21 +15,22 @@
  */
 package org.primefaces.util;
 
+import java.io.IOException;
+
 import javax.faces.FacesException;
+import javax.faces.context.ResponseWriter;
 
 /**
  * Helper to generate javascript code of an ajax call
  */
 public class WidgetBuilder {
-    
-    protected StringBuilder buffer;
-    
-    protected boolean onload = false;
-    
+	
+    protected ResponseWriter writer;
+    protected boolean endFunction = false;
     protected String resourcePath = null;
         
-    public WidgetBuilder() {
-        buffer = new StringBuilder();
+    public WidgetBuilder(ResponseWriter writer) {
+    	this.writer = writer;
     }
     
     /**
@@ -38,8 +39,9 @@ public class WidgetBuilder {
      * @param widgetVar     Name of the client side widget
      * @param id            Client id of the component
      * @param onload        Flag to define if widget should be created on document load
+     * @throws IOException 
      */
-    public WidgetBuilder widget(String widgetClass, String widgetVar, String id, boolean onload) {
+    private WidgetBuilder init(String widgetClass, String widgetVar, String id, String resourcePath, boolean endFunction) throws IOException {
 
     	if(id.equals(widgetVar)) {
         	throw new FacesException("WidgetVar and the generated ClientId should not be identical, " 
@@ -48,145 +50,235 @@ public class WidgetBuilder {
         			+ "; See: http://stackoverflow.com/questions/9158238/why-js-function-name-conflicts-with-element-id");
         }
 
-    	this.onload = onload;
-        if(this.onload) {
-            buffer.append("$(function(){");
-        }
+    	this.resourcePath = resourcePath;
+    	this.endFunction = endFunction;
+    	
+        writer.write("PrimeFaces.cw('");
+        writer.write(widgetClass);
+        writer.write("','");
+        writer.write(widgetVar);
+        writer.write("',{");
+        writer.write("id:'");
+        writer.write(id);
+        writer.write("'");
         
-        buffer.append("PrimeFaces.cw('").append(widgetClass).append("','").append(widgetVar).append("',{");
-        buffer.append("id:'").append(id).append("'");
+        return this;
+    }
+
+    public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
+    	this.renderScriptBlock(id);
+    	this.init(widgetClass, widgetVar, id, null, false);
         
         return this;
     }
     
-    /**
-     *
-     * @param widgetClass   Constructor name of the widget
-     * @param widgetVar     Name of the client side widget
-     * @param id            Client id of the component
-     * @param resourcePath  Path for dynamic resource loading
-     * @param onload        Flag to define if widget should be created on document load
-     */
-    public WidgetBuilder widget(String widgetClass, String widgetVar, String id, String resourcePath, boolean onload) {
-        this.widget(widgetClass, widgetVar, id, onload);
-        this.resourcePath = resourcePath;
+    public WidgetBuilder init(String widgetClass, String widgetVar, String id, String resourcePath) throws IOException {
+    	this.renderScriptBlock(id);
+    	this.init(widgetClass, widgetVar, id, resourcePath, false);
+        
+        return this;
+    }
+
+    public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id) throws IOException {
+
+    	this.renderScriptBlock(id);
+    	this.writer.write("$(function(){");
+    	this.init(widgetClass, widgetVar, id, null, true);
         
         return this;
     }
     
-    public WidgetBuilder attr(String name, String value) {
-        buffer.append(",").append(name).append(":'").append(value).append("'");
+    public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id, String resourcePath) throws IOException {
+
+    	this.renderScriptBlock(id);
+    	this.writer.write("$(function(){");
+    	this.init(widgetClass, widgetVar, id, resourcePath, true);
+        
+        return this;
+    }
+
+    public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id) throws IOException {
+    	
+    	this.renderScriptBlock(id);
+    	this.writer.write("$(window).load(function(){");
+    	this.init(widgetClass, widgetVar, id, null, true);
+        
+        return this;
+    }
+
+    public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id, String resourcePath) throws IOException {
+    	
+    	this.renderScriptBlock(id);
+    	this.writer.write("$(window).load(function(){");
+    	this.init(widgetClass, widgetVar, id, resourcePath, true);
+        
+        return this;
+    }
+
+    public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId) throws IOException {
+    	
+    	this.renderScriptBlock(id);
+    	this.writer.write("$(PrimeFaces.escapeClientId('" + targetId + "')).load(function(){");
+    	this.init(widgetClass, widgetVar, id, null, true);
         
         return this;
     }
     
-    public WidgetBuilder nativeAttr(String name, String value) {
-        buffer.append(",").append(name).append(":").append(value);
+    public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId, String resourcePath) throws IOException {
+    	
+    	this.renderScriptBlock(id);
+    	this.writer.write("$(PrimeFaces.escapeClientId('" + targetId + "')).load(function(){");
+    	this.init(widgetClass, widgetVar, id, resourcePath, true);
         
         return this;
     }
     
-    public WidgetBuilder attr(String name, boolean value) {
-        buffer.append(",").append(name).append(":").append(value);
+    private void renderScriptBlock(String id) throws IOException {
+        writer.startElement("script", null);
+        writer.writeAttribute("id", id + "_s", null);
+        writer.writeAttribute("type", "text/javascript", null);
+    }
+
+    public WidgetBuilder attr(String name, String value) throws IOException {
+        writer.write(",");
+        writer.write(name);
+        writer.write(":'");
+        writer.write(value);
+        writer.write("'");
         
         return this;
     }
     
-    public WidgetBuilder attr(String name, Number value) {
-        buffer.append(",").append(name).append(":").append(value);
+    public WidgetBuilder nativeAttr(String name, String value) throws IOException {
+        writer.write(",");
+        writer.write(name);
+        writer.write(":");
+        writer.write(value);
+        
+        return this;
+    }
+    
+    public WidgetBuilder attr(String name, boolean value) throws IOException {
+        writer.write(",");
+        writer.write(name);
+        writer.write(":");
+        writer.write(Boolean.toString(value));
+        
+        return this;
+    }
+    
+    public WidgetBuilder attr(String name, Number value) throws IOException {
+        writer.write(",");
+        writer.write(name);
+        writer.write(":");
+        writer.write(value.toString());
         
         return this;
     }
         
-    public WidgetBuilder attr(String name, String value, String defaultValue) {
+    public WidgetBuilder attr(String name, String value, String defaultValue) throws IOException {
         if(value != null && !value.equals(defaultValue)) {
-            buffer.append(",").append(name).append(":'").append(value).append("'");
+            writer.write(",");
+	        writer.write(name);
+	        writer.write(":'");
+	        writer.write(value);
+	        writer.write("'");
         }
         
         return this;
     }
     
-    public WidgetBuilder attr(String name, double value, double defaultValue) {
+    public WidgetBuilder attr(String name, double value, double defaultValue) throws IOException {
         if(value != defaultValue) {
-            buffer.append(",").append(name).append(":").append(value);
+            writer.write(",");
+	        writer.write(name);
+	        writer.write(":");
+	        writer.write(Double.toString(value));
         }
         
         return this;
     }
     
-    public WidgetBuilder attr(String name, int value, int defaultValue) {
+    public WidgetBuilder attr(String name, int value, int defaultValue) throws IOException {
         if(value != defaultValue) {
-            buffer.append(",").append(name).append(":").append(value);
+            writer.write(",");
+	        writer.write(name);
+	        writer.write(":");
+	        writer.write(Integer.toString(value));
         }
         
         return this;
     }
         
-    public WidgetBuilder attr(String name, boolean value, boolean defaultValue) {
+    public WidgetBuilder attr(String name, boolean value, boolean defaultValue) throws IOException {
         if(value != defaultValue) {
-            buffer.append(",").append(name).append(":").append(value);
+            writer.write(",");
+	        writer.write(name);
+	        writer.write(":");
+	        writer.write(Boolean.toString(value));
         }
         
         return this;
     }
     
-    public WidgetBuilder callback(String name, String signature, String callback) {
+    public WidgetBuilder callback(String name, String signature, String callback) throws IOException {
         if(callback != null) {
-            buffer.append(",").append(name).append(":").append(signature).append("{").append(callback).append("}");
+            writer.write(",");
+	        writer.write(name);
+	        writer.write(":");
+	        writer.write(signature);
+	        writer.write("{");
+	        writer.write(callback);
+	        writer.write("}");
         }
         
         return this;
     }
     
-    public WidgetBuilder callback(String name, String callback) {
+    public WidgetBuilder callback(String name, String callback) throws IOException {
         if(callback != null) {
-            buffer.append(",").append(name).append(":").append(callback);
+            writer.write(",");
+	        writer.write(name);
+	        writer.write(":");
+	        writer.write(callback);
         }
         
         return this;
     }
-        
-    public WidgetBuilder append(String str) {
-        buffer.append(str);
+
+    public WidgetBuilder append(String str) throws IOException {
+    	writer.write(str);
         
         return this;
     }
 
-    public WidgetBuilder append(char chr) {
-        buffer.append(chr);
+    public WidgetBuilder append(char chr) throws IOException {
+    	writer.write(chr);
         
         return this;
     }
 
-    public WidgetBuilder append(Number number) {
-        buffer.append(number);
+    public WidgetBuilder append(Number number) throws IOException {
+    	writer.write(number.toString());
         
         return this;
     }
-
-    public String build() {
-        buffer.append("}");
+    
+    public void finish() throws IOException {
+        writer.write("}");
         
         if(this.resourcePath != null) {
-            buffer.append(",'").append(this.resourcePath).append("'");
+            writer.write(",'");
+	        writer.write(this.resourcePath);
+	        writer.write("'");
         } 
         
-        buffer.append(");");
+        writer.write(");");
         
-        if(this.onload) {
-            buffer.append("});");
+        if(endFunction) {
+            writer.write("});");
         }
         
-        String script = buffer.toString();
-        
-        reset();
-        
-        return script;
-    }
-    
-    public void reset() {
-        buffer.setLength(0);
-        onload = false;
-        resourcePath = null;
+        writer.endElement("script");
     }
 }

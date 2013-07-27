@@ -84,14 +84,10 @@ public class TerminalRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Terminal terminal) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = terminal.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Terminal", terminal.resolveWidgetVar(), clientId, false);
-        
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.init("Terminal", terminal.resolveWidgetVar(), clientId);
+        wb.finish();
     }
     
     protected void handleCommand(FacesContext context, Terminal terminal) throws IOException {

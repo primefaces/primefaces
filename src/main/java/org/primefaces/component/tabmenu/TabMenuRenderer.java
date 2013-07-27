@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2009-2013 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,15 +28,11 @@ public class TabMenuRenderer extends BaseMenuRenderer {
     
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         TabMenu menu = (TabMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("TabMenu", menu.resolveWidgetVar(), clientId, false);
-
-		startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.init("TabMenu", menu.resolveWidgetVar(), clientId);
+        wb.finish();
     }
     
     @Override

@@ -53,12 +53,11 @@ public class ClockRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Clock clock) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = clock.getClientId(context);
         String mode = clock.getMode();
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.widget("Clock", clock.resolveWidgetVar(), clientId, false);
+        wb.init("Clock", clock.resolveWidgetVar(), clientId);
         wb.attr("mode", mode)
             .attr("pattern", clock.getPattern(), null)
             .attr("locale", context.getViewRoot().getLocale().toString());
@@ -71,8 +70,6 @@ public class ClockRenderer extends CoreRenderer {
             }
         }
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 }

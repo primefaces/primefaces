@@ -49,11 +49,10 @@ public class FileUploadRenderer extends CoreRenderer {
 	}
 
 	protected void encodeScript(FacesContext context, FileUpload fileUpload) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = fileUpload.getClientId(context);
         String mode = fileUpload.getMode();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("FileUpload", fileUpload.resolveWidgetVar(), clientId, "fileupload", true)
+        wb.initWithDomReady("FileUpload", fileUpload.resolveWidgetVar(), clientId, "fileupload")
             .attr("mode", mode);
         
         if(!mode.equals("simple")) {
@@ -82,9 +81,7 @@ public class FileUploadRenderer extends CoreRenderer {
             }
         }
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 
 	protected void encodeMarkup(FacesContext context, FileUpload fileUpload) throws IOException {

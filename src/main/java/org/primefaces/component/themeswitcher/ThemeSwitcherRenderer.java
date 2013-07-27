@@ -18,7 +18,6 @@ package org.primefaces.component.themeswitcher;
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.component.selectonemenu.SelectOneMenuRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -27,18 +26,15 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
  
     @Override
 	protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
         ThemeSwitcher ts = (ThemeSwitcher) menu;
         String clientId = ts.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("ThemeSwitcher", ts.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("ThemeSwitcher", ts.resolveWidgetVar(), clientId)
                 .attr("effect", ts.getEffect(), null)
                 .attr("effectSpeed", ts.getEffectSpeed(), null);
         
-        encodeClientBehaviors(context, menu, wb);
-        
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        encodeClientBehaviors(context, menu);
+
+        wb.finish();
 	}
 }

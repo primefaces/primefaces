@@ -33,20 +33,17 @@ public class IdleMonitorRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         IdleMonitor monitor = (IdleMonitor) component;
         String clientId = monitor.getClientId();
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("IdleMonitor", monitor.resolveWidgetVar(), clientId, "idlemonitor", true)
+        wb.initWithDomReady("IdleMonitor", monitor.resolveWidgetVar(), clientId, "idlemonitor")
             .attr("timeout", monitor.getTimeout())
             .callback("onidle", "function()", monitor.getOnidle())
             .callback("onactive", "function()", monitor.getOnactive());
         
-        encodeClientBehaviors(context, monitor, wb);
+        encodeClientBehaviors(context, monitor);
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 }

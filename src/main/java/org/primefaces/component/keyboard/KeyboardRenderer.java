@@ -55,11 +55,10 @@ public class KeyboardRenderer extends InputRenderer {
 	}
 	
 	protected void encodeScript(FacesContext context, Keyboard keyboard) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = keyboard.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Keyboard", keyboard.resolveWidgetVar(), clientId, false)
+        wb.init("Keyboard", keyboard.resolveWidgetVar(), clientId)
             .attr("showOn", keyboard.getShowMode())
             .attr("showAnim", keyboard.getEffect())
             .attr("buttonImageOnly", keyboard.isButtonImageOnly(), false)
@@ -81,11 +80,9 @@ public class KeyboardRenderer extends InputRenderer {
             .attr("clearText", keyboard.getClearLabel(), null)
             .attr("closeText", keyboard.getCloseLabel(), null);
         
-        encodeClientBehaviors(context, keyboard, wb);
+        encodeClientBehaviors(context, keyboard);
  
-		startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 
 	protected void encodeMarkup(FacesContext context, Keyboard keyboard) throws IOException {

@@ -20,7 +20,6 @@ import java.io.IOException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 
@@ -49,7 +48,6 @@ public class PollRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         Poll poll = (Poll) component;
         String clientId = poll.getClientId(context);
         String widgetVar = poll.resolveWidgetVar();
@@ -88,13 +86,11 @@ public class PollRenderer extends CoreRenderer {
                 .build();
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Poll", poll.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("Poll", poll.resolveWidgetVar(), clientId)
             .attr("frequency", poll.getInterval())
             .attr("autoStart", poll.isAutoStart())
             .callback("fn", "function()", request);
-        
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+
+        wb.finish();
     }
 }

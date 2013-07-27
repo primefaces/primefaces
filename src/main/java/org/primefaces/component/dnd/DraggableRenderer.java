@@ -17,10 +17,8 @@ package org.primefaces.component.dnd;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.dashboard.Dashboard;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -32,7 +30,6 @@ public class DraggableRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         Draggable draggable = (Draggable) component;
         String clientId = draggable.getClientId(context);
         
@@ -40,7 +37,7 @@ public class DraggableRenderer extends CoreRenderer {
         
         String dashboard = draggable.getDashboard();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Draggable", draggable.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("Draggable", draggable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))
                 .attr("cursor", draggable.getCursor())
                 .attr("disabled", draggable.isDisabled(), false)
@@ -73,10 +70,7 @@ public class DraggableRenderer extends CoreRenderer {
             wb.attr("connectToSortable", selector);
         }
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
-
+        wb.finish();
     }
 
 }

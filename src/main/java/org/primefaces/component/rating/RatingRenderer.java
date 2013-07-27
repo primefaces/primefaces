@@ -50,19 +50,16 @@ public class RatingRenderer extends InputRenderer {
     }
 
     private void encodeScript(FacesContext context, Rating rating) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = rating.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Rating", rating.resolveWidgetVar(), clientId, "rating", true)
+        wb.initWithDomReady("Rating", rating.resolveWidgetVar(), clientId, "rating")
             .callback("onRate", "function(value)", rating.getOnRate())
             .attr("readonly", rating.isReadonly(), false)
             .attr("disabled", rating.isDisabled(), false);
         
-        encodeClientBehaviors(context, rating, wb);
+        encodeClientBehaviors(context, rating);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeMarkup(FacesContext context, Rating rating) throws IOException {

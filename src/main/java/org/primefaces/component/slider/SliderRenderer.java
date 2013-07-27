@@ -60,7 +60,7 @@ public class SliderRenderer extends CoreRenderer{
         UIComponent output = getTarget(context, slider, slider.getDisplay());
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Slider", slider.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("Slider", slider.resolveWidgetVar(), clientId);
                     
         if(range) {
             String[] inputIds = slider.getFor().split(",");
@@ -95,11 +95,9 @@ public class SliderRenderer extends CoreRenderer{
             wb.attr("display", output.getClientId(context));
         }
      
-        encodeClientBehaviors(context, slider, wb);
+        encodeClientBehaviors(context, slider);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 	
 	protected UIComponent getTarget(FacesContext context, Slider slider, String target) {

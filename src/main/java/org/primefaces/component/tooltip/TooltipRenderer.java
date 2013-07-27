@@ -67,10 +67,9 @@ public class TooltipRenderer extends CoreRenderer {
     }
 
 	protected void encodeScript(FacesContext context, Tooltip tooltip, String target) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
         String clientId = tooltip.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Tooltip", tooltip.resolveWidgetVar(), clientId, true)            
+        wb.initWithDomReady("Tooltip", tooltip.resolveWidgetVar(), clientId)            
             .attr("showEvent", tooltip.getShowEvent(), null)
             .attr("hideEvent", tooltip.getHideEvent(), null)
             .attr("showEffect", tooltip.getShowEffect(), null)
@@ -79,10 +78,8 @@ public class TooltipRenderer extends CoreRenderer {
         if(target != null) {
             wb.attr("target", target);
         }
-		
-        startScript(writer, clientId);
-		writer.write(wb.build());
-        endScript(writer);
+
+		wb.finish();
 	}
 
     @Override

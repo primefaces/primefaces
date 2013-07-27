@@ -99,20 +99,17 @@ public class DataGridRenderer extends DataRenderer {
     }
 
     protected void encodeScript(FacesContext context, DataGrid grid) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = grid.getClientId();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("DataGrid", grid.resolveWidgetVar(), clientId, false);
+        wb.init("DataGrid", grid.resolveWidgetVar(), clientId);
         
         if(grid.isPaginator()) {
             encodePaginatorConfig(context, grid, wb);
         }
         
-        encodeClientBehaviors(context, grid, wb);
-        
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        encodeClientBehaviors(context, grid);
+
+        wb.finish();
     }
 
     protected void encodeTable(FacesContext context, DataGrid grid) throws IOException {

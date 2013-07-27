@@ -140,16 +140,13 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectBooleanCheckbox", checkbox.resolveWidgetVar(), clientId, false);
+        wb.init("SelectBooleanCheckbox", checkbox.resolveWidgetVar(), clientId);
         
-        encodeClientBehaviors(context, checkbox, wb);
+        encodeClientBehaviors(context, checkbox);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
     
     @Override

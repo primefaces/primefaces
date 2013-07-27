@@ -30,20 +30,17 @@ import org.primefaces.util.WidgetBuilder;
 public class MenuRenderer extends BaseMenuRenderer {
 
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
         Menu menu = (Menu) abstractMenu;
 		String clientId = menu.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("PlainMenu", menu.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("PlainMenu", menu.resolveWidgetVar(), clientId);
         
         if(menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);
         }
 
-		startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 
 	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {

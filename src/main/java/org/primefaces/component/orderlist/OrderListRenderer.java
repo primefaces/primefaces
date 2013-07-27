@@ -212,15 +212,11 @@ public class OrderListRenderer extends CoreRenderer {
 	}
     
     protected void encodeScript(FacesContext context, OrderList ol) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
 		String clientId = ol.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("OrderList", ol.resolveWidgetVar(), clientId, false)
+        wb.init("OrderList", ol.resolveWidgetVar(), clientId)
             .attr("effect", ol.getEffect(), null);
-		
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
     
     @Override

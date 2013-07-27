@@ -64,14 +64,13 @@ public class OverlayPanelRenderer extends CoreRenderer {
     }
     
     protected void encodeScript(FacesContext context, OverlayPanel panel) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         UIComponent target = SearchExpressionFacade.resolveComponent(context, panel, panel.getFor());
 
         String clientId = panel.getClientId(context);
         String targetClientId = target.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("OverlayPanel", panel.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("OverlayPanel", panel.resolveWidgetVar(), clientId)
             .attr("target", targetClientId)
             .attr("showEvent", panel.getShowEvent(), null)
             .attr("hideEvent", panel.getHideEvent(), null)
@@ -86,9 +85,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
             .attr("dismissable", panel.isDismissable(), true)
             .attr("showCloseIcon", panel.isShowCloseIcon(), false);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
     
     @Override

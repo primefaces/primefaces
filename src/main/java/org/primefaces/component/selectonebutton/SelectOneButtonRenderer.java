@@ -132,15 +132,12 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectOneButton button) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectOneButton", button.resolveWidgetVar(), clientId, false);
-        encodeClientBehaviors(context, button, wb);
+        wb.init("SelectOneButton", button.resolveWidgetVar(), clientId);
+        encodeClientBehaviors(context, button);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
     
     @Override
