@@ -36,16 +36,18 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         
         //listen global ajax send and complete callbacks
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-            console.log('show');
-            if($.inArray(settings.source, triggers) !== -1) {
-            	$this.show();
+            var sourceId = $.type(settings.source) === 'string' ? settings.source : settings.source.name;
+            
+            if($.inArray(sourceId, triggers) !== -1) {
+                $this.show();
             }
         });
 
         $(document).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-            console.log('complete');
-            if($.inArray(settings.source, triggers) !== -1) {
-            	$this.hide();
+            var sourceId = $.type(settings.source) === 'string' ? settings.source : settings.source.name;
+            
+            if($.inArray(sourceId, triggers) !== -1) {
+                $this.hide();
             }
         });
     },
