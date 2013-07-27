@@ -11,6 +11,12 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         
         this.onshowHandlers = [];
         
+        this.bindEvents();
+        
+        this.jq.data('widget', this);
+    },
+    
+    bindEvents: function() {
         if(this.cfg.toggleable) {
             this.bindToggler();
         }
@@ -20,11 +26,13 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         }
         
         //visuals for action items
-        this.header.find('.ui-panel-titlebar-icon').on('hover.ui-panel', function() {$(this).toggleClass('ui-state-hover');});
-        
-        this.jq.data('widget', this);
+        this.header.find('.ui-panel-titlebar-icon').on('mouseover.panel',function() {
+            $(this).addClass('ui-state-hover');
+        }).on('mouseout.panel',function() {
+            $(this).removeClass('ui-state-hover');
+        });
     },
-    
+            
     toggle: function() {
         if(this.cfg.collapsed) {
             this.expand();
