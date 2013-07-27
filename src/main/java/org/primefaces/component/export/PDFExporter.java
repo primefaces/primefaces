@@ -148,6 +148,7 @@ public class PDFExporter extends Exporter {
             for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
                 if(rowIndex % rows == 0) {
                     table.setFirst(rowIndex);
+                    table.setRowIndex(-1);
                     table.loadLazyData();
                 }
 
