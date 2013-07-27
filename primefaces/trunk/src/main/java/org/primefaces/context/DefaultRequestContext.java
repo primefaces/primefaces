@@ -147,7 +147,7 @@ public class DefaultRequestContext extends RequestContext {
     
     @Override
     public void openDialog(String outcome) {
-        this.getAttributes().put("dialog.outcome", outcome);
+        this.getAttributes().put(Constants.DIALOG_OUTCOME, outcome);
     }
         
     @Override
