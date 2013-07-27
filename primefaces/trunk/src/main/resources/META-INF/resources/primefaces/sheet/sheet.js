@@ -79,7 +79,7 @@ PrimeFaces.widget.Sheet = PrimeFaces.widget.BaseWidget.extend({
                     params: [
                         {name: _self.id + '_colResize', value: true},
                         {name: _self.id + '_columnId', value: columnHeader.attr('id')},
-                        {name: _self.id + '_width', value: newWidth},
+                        {name: _self.id + '_width', value: newWidth}
                     ]
                 }
                 

@@ -940,7 +940,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             {name: this.id + '_dragNode', value: event.dragNodeKey},
             {name: this.id + '_dragSource', value: event.dragSource},
             {name: this.id + '_dropNode', value: event.dropNodeKey},
-            {name: this.id + '_dndIndex', value: event.dndIndex},
+            {name: this.id + '_dndIndex', value: event.dndIndex}
         ];
         
         if(this.hasBehavior('dragdrop')) {
