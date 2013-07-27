@@ -116,18 +116,14 @@ public class ColorPickerRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, ColorPicker colorPicker) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = colorPicker.getClientId(context);
         String value = (String) colorPicker.getValue();
         WidgetBuilder wb = getWidgetBuilder(context);
         
-        wb.widget("ColorPicker", colorPicker.resolveWidgetVar(), clientId, "colorpicker", true)
+        wb.initWithDomReady("ColorPicker", colorPicker.resolveWidgetVar(), clientId, "colorpicker")
             .attr("mode", colorPicker.getMode())
             .attr("color", value, null);
 
-		startScript(writer, clientId);
-        writer.write(wb.build());
-
-        endScript(writer);
+        wb.finish();
     }
 }

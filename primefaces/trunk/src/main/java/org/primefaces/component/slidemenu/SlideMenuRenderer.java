@@ -28,20 +28,17 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
     
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
         SlideMenu menu = (SlideMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SlideMenu", menu.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("SlideMenu", menu.resolveWidgetVar(), clientId);
         
         if(menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);
         }
 
-		startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 
     @Override

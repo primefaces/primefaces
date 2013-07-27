@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
@@ -31,12 +30,11 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
 
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
         ContextMenu menu = (ContextMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("ContextMenu", menu.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("ContextMenu", menu.resolveWidgetVar(), clientId);
         
         String _for = menu.getFor();
         if(_for != null) {
@@ -53,10 +51,8 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         wb.attr("nodeType", menu.getNodeType(), null)
             .attr("event", menu.getEvent(), null)
             .callback("beforeShow", "function()", menu.getBeforeShow());
-		
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+
+        wb.finish();
 	}
 	
     @Override

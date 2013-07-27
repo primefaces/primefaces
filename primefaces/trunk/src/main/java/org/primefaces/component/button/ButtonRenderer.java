@@ -82,14 +82,9 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
     }
 
     public void encodeScript(FacesContext context, Button button) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-		String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Button", button.resolveWidgetVar(), clientId, false);
-        
-        startScript(writer, clientId);
-        writer.write(wb.build());
-		endScript(writer);
+        wb.init("Button", button.resolveWidgetVar(), button.getClientId(context));
+        wb.finish();
     }
 
     protected String buildOnclick(FacesContext context, Button button) {

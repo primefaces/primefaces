@@ -20,7 +20,6 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIGraphic;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -35,7 +34,6 @@ public class ResizableRenderer extends CoreRenderer {
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		Resizable resizable = (Resizable) component;
         String clientId = resizable.getClientId(context);
         
@@ -43,8 +41,13 @@ public class ResizableRenderer extends CoreRenderer {
         String targetId = target.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Resizable", resizable.resolveWidgetVar(), clientId, false)
-            .attr("target", targetId)
+        
+        if(target instanceof UIGraphic)
+        	wb.initWithComponentLoad("Resizable", resizable.resolveWidgetVar(), clientId, targetId);
+        else
+        	wb.initWithDomReady("Resizable", resizable.resolveWidgetVar(), clientId);
+
+        wb.attr("target", targetId)
             .attr("minWidth", resizable.getMinWidth(), Integer.MIN_VALUE)
             .attr("maxWidth", resizable.getMaxWidth(), Integer.MAX_VALUE)
             .attr("minHeight", resizable.getMinHeight(), Integer.MIN_VALUE)
@@ -74,18 +77,8 @@ public class ResizableRenderer extends CoreRenderer {
             .callback("onResize", "function(event,ui)", resizable.getOnResize())
             .callback("onStop", "function(event,ui)", resizable.getOnStop());
             
-        encodeClientBehaviors(context, resizable, wb);
+        encodeClientBehaviors(context, resizable);
 
-        startScript(writer, clientId);
-
-        if(target instanceof UIGraphic)
-            writer.write("$(PrimeFaces.escapeClientId('" + targetId + "')).load(function(){");
-        else
-            writer.write("$(function(){");
-        
-        writer.write(wb.build());
-        
-        writer.write("});");
-        endScript(writer);
+        wb.finish();
 	}
 }

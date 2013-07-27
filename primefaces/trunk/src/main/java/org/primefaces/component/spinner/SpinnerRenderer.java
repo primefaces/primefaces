@@ -68,21 +68,18 @@ public class SpinnerRenderer extends InputRenderer {
 	}
 	
 	protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = spinner.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Spinner", spinner.resolveWidgetVar(), clientId, false)
+        wb.init("Spinner", spinner.resolveWidgetVar(), clientId)
             .attr("step", spinner.getStepFactor(), 1.0)
             .attr("min", spinner.getMin(), Double.MIN_VALUE)
             .attr("max", spinner.getMax(), Double.MAX_VALUE)
             .attr("prefix", spinner.getPrefix(), null)
             .attr("suffix", spinner.getSuffix(), null);
         
-        encodeClientBehaviors(context, spinner, wb);
+        encodeClientBehaviors(context, spinner);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 	
 	protected void encodeMarkup(FacesContext context, Spinner spinner) throws IOException {

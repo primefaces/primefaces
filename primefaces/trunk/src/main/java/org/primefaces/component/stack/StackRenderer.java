@@ -37,17 +37,14 @@ public class StackRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeScript(FacesContext context, Stack stack) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = stack.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Stack", stack.resolveWidgetVar(), clientId, "stack", true)
+        wb.initWithDomReady("Stack", stack.resolveWidgetVar(), clientId, "stack")
             .attr("openSpeed", stack.getOpenSpeed())
             .attr("closeSpeed", stack.getCloseSpeed())
             .attr("expanded", stack.isExpanded(), false);
-		
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+
+        wb.finish();
 	}
 	
 	protected void encodeMarkup(FacesContext context, Stack stack) throws IOException {

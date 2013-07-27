@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -33,7 +32,6 @@ public class WatermarkRenderer extends CoreRenderer {
 	
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		Watermark watermark = (Watermark) component;
 		String target = null;
 		
@@ -50,12 +48,10 @@ public class WatermarkRenderer extends CoreRenderer {
 		}
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Watermark", watermark.resolveWidgetVar(), watermark.getClientId(context), "watermark", true)
+        wb.initWithDomReady("Watermark", watermark.resolveWidgetVar(), watermark.getClientId(context), "watermark")
             .attr("value", watermark.getValue())
             .attr("target", target);
-        
-        startScript(writer, watermark.getClientId(context));
-		writer.write(wb.build());
-		endScript(writer);
+
+		wb.finish();
 	}
 }

@@ -103,19 +103,16 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     }
     
     protected void encodeScript(FacesContext context, SelectBooleanButton button) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectBooleanButton", button.resolveWidgetVar(), clientId, false)
+        wb.init("SelectBooleanButton", button.resolveWidgetVar(), clientId)
             .attr("onLabel", escapeText(button.getOnLabel()))
             .attr("offLabel", escapeText(button.getOffLabel()))
             .attr("onIcon", button.getOnIcon(), null)
             .attr("offIcon", button.getOffIcon(), null);
         
-        encodeClientBehaviors(context, button, wb);
+        encodeClientBehaviors(context, button);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 }

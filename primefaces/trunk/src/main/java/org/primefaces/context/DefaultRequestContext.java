@@ -52,15 +52,6 @@ public class DefaultRequestContext extends RequestContext {
     public DefaultRequestContext(FacesContext context) {
     	this.context = context;
     	this.attributes = new HashMap<Object, Object>();
-    	this.widgetBuilder = new WidgetBuilder();
-    	this.ajaxRequestBuilder = new AjaxRequestBuilder(context);
-
-    	// get applicationContext from application map
-    	this.applicationContext = (ApplicationContext) context.getExternalContext().getApplicationMap().get(APPLICATION_CONTEXT_KEY);
-    	if (this.applicationContext == null) {
-    		this.applicationContext = new DefaultApplicationContext(context);
-			context.getExternalContext().getApplicationMap().put(APPLICATION_CONTEXT_KEY, this.applicationContext);
-    	}
     }
 
     @Override
@@ -98,11 +89,19 @@ public class DefaultRequestContext extends RequestContext {
 
     @Override
 	public WidgetBuilder getWidgetBuilder() {
+    	if (this.widgetBuilder == null) {
+    		this.widgetBuilder = new WidgetBuilder(context.getResponseWriter());
+    	}
+
         return widgetBuilder;
     }
 
 	@Override
 	public AjaxRequestBuilder getAjaxRequestBuilder() {
+		if (this.ajaxRequestBuilder == null) {
+			this.ajaxRequestBuilder = new AjaxRequestBuilder(context);
+		}
+
 		return ajaxRequestBuilder;
 	}
     
@@ -203,6 +202,15 @@ public class DefaultRequestContext extends RequestContext {
 
 	@Override
 	public ApplicationContext getApplicationContext() {
+		if (this.applicationContext == null) {
+	    	// get applicationContext from application map
+	    	this.applicationContext = (ApplicationContext) context.getExternalContext().getApplicationMap().get(APPLICATION_CONTEXT_KEY);
+	    	if (this.applicationContext == null) {
+	    		this.applicationContext = new DefaultApplicationContext(context);
+				context.getExternalContext().getApplicationMap().put(APPLICATION_CONTEXT_KEY, this.applicationContext);
+	    	}
+		}
+
 		return applicationContext;
 	}
 
@@ -211,7 +219,7 @@ public class DefaultRequestContext extends RequestContext {
 		// lazy init, it's not required for all pages
     	if (encrypter == null) {
 	    	// we can't store it in the ApplicationMap, as Cipher isn't thread safe
-	    	encrypter = new StringEncrypter(applicationContext.getConfig().getSecretKey());
+	    	encrypter = new StringEncrypter(getApplicationContext().getConfig().getSecretKey());
     	}
 
 		return encrypter;

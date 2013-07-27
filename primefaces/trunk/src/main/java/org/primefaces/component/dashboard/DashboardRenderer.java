@@ -74,17 +74,14 @@ public class DashboardRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeScript(FacesContext context, Dashboard dashboard) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dashboard.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Dashboard", dashboard.resolveWidgetVar(), clientId, false)
+        wb.init("Dashboard", dashboard.resolveWidgetVar(), clientId)
             .attr("disabled", dashboard.isDisabled(), false);
         
-        encodeClientBehaviors(context, dashboard, wb);
+        encodeClientBehaviors(context, dashboard);
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 	
 	protected Panel findWidget(String id, Dashboard dashboard) {

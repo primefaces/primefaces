@@ -52,18 +52,14 @@ public class NotificationBarRenderer extends CoreRenderer {
 	}
 
 	private void encodeScript(FacesContext context, NotificationBar bar) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = bar.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("NotificationBar", bar.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("NotificationBar", bar.resolveWidgetVar(), clientId)
             .attr("position", bar.getPosition())
             .attr("effect", bar.getEffect())
             .attr("effectSpeed", bar.getEffectSpeed())
             .attr("autoDisplay", bar.isAutoDisplay(), false);
-		
-		startScript(writer, clientId);
-		writer.write(wb.build());		
-		endScript(writer);
+		wb.finish();
 	}
 
     @Override

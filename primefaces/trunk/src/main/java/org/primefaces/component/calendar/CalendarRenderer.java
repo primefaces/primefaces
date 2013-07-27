@@ -118,12 +118,11 @@ public class CalendarRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, Calendar calendar, String value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = calendar.getClientId(context);
         Locale locale = calendar.calculateLocale(context);
         String pattern = calendar.isTimeOnly() ? calendar.calculateTimeOnlyPattern() : calendar.calculatePattern();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Calendar", calendar.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("Calendar", calendar.resolveWidgetVar(), clientId);
         
         wb.attr("popup", calendar.isPopup())
             .attr("locale", locale.toString())
@@ -188,11 +187,9 @@ public class CalendarRenderer extends InputRenderer {
                 .attr("secondMax", calendar.getMaxSecond());
         }
         
-        encodeClientBehaviors(context, calendar, wb);
+        encodeClientBehaviors(context, calendar);
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 
     @Override

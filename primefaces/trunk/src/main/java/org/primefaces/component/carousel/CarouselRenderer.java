@@ -48,10 +48,9 @@ public class CarouselRenderer extends CoreRenderer {
 	}
 	
 	private void encodeScript(FacesContext context, Carousel carousel) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = carousel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Carousel", carousel.resolveWidgetVar(), clientId, false);
+        wb.init("Carousel", carousel.resolveWidgetVar(), clientId);
         
         wb.attr("firstVisible", carousel.getFirstVisible(), 0)
             .attr("circular", carousel.isCircular(), false)
@@ -64,9 +63,7 @@ public class CarouselRenderer extends CoreRenderer {
             .attr("effectDuration", carousel.getEffectDuration(), Integer.MIN_VALUE)
             .attr("easing", carousel.getEasing(), null);
 		
-        startScript(writer, clientId);
-        writer.write(wb.build());			
-		endScript(writer);
+        wb.finish();
 	}
     
     protected void encodeMarkup(FacesContext context, Carousel carousel) throws IOException {

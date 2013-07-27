@@ -35,17 +35,14 @@ import org.primefaces.util.WidgetBuilder;
 public class MegaMenuRenderer extends BaseMenuRenderer {
     
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
         MegaMenu menu = (MegaMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("MegaMenu", menu.resolveWidgetVar(), clientId, false)
+        wb.init("MegaMenu", menu.resolveWidgetVar(), clientId)
             .attr("autoDisplay", menu.isAutoDisplay());
 		
-		startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);       	
+        wb.finish();
 	}
 
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {

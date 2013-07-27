@@ -99,7 +99,7 @@ public class InputTextareaRenderer extends InputRenderer {
         String counter = inputTextarea.getCounter();
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("InputTextarea", inputTextarea.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("InputTextarea", inputTextarea.resolveWidgetVar(), clientId)
             .attr("autoResize", autoResize)
             .attr("maxlength", inputTextarea.getMaxlength(), Integer.MAX_VALUE);
         
@@ -117,11 +117,9 @@ public class InputTextareaRenderer extends InputRenderer {
                 .attr("scrollHeight", inputTextarea.getScrollHeight(), Integer.MAX_VALUE);
         }
         
-        encodeClientBehaviors(context, inputTextarea, wb);
+        encodeClientBehaviors(context, inputTextarea);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 
 	protected void encodeMarkup(FacesContext context, InputTextarea inputTextarea) throws IOException {

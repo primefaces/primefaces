@@ -35,18 +35,15 @@ public class ImageCompareRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeScript(FacesContext context, ImageCompare compare) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = compare.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("ImageCompare", compare.resolveWidgetVar(), clientId, "imagecompare", false)
+        wb.init("ImageCompare", compare.resolveWidgetVar(), clientId, "imagecompare")
             .attr("handle", getResourceRequestPath(context, "imagecompare/handle.gif"))
             .attr("lt", getResourceRequestPath(context, "imagecompare/lt-small.png"))
             .attr("rt", getResourceRequestPath(context, "imagecompare/rt-small.png"));
-		
-		startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+
+        wb.finish();
 	}
 	
 	protected void encodeMarkup(FacesContext context, ImageCompare compare) throws IOException {

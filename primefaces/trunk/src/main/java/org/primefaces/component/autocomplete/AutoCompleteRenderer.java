@@ -518,10 +518,9 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, AutoComplete ac) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("AutoComplete", ac.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("AutoComplete", ac.resolveWidgetVar(), clientId);
 
         if (context.isProjectStage(ProjectStage.Development)) {
 	        if (ac.getAttributes().containsKey("process")
@@ -559,11 +558,9 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("itemtipAtPosition", ac.getItemtipAtPosition(), null);
         }
         
-        encodeClientBehaviors(context, ac, wb);
+        encodeClientBehaviors(context, ac);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
     
     @Override

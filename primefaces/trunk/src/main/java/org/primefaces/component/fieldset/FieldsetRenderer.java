@@ -93,11 +93,10 @@ public class FieldsetRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Fieldset fieldset) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = fieldset.getClientId(context);
         boolean toggleable = fieldset.isToggleable();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Fieldset", fieldset.resolveWidgetVar(), clientId, false);
+        wb.init("Fieldset", fieldset.resolveWidgetVar(), clientId);
         
         if(toggleable) {
             wb.attr("toggleable", true)
@@ -105,11 +104,9 @@ public class FieldsetRenderer extends CoreRenderer {
                 .attr("toggleSpeed", fieldset.getToggleSpeed());
         }
         
-        encodeClientBehaviors(context, fieldset, wb);
+        encodeClientBehaviors(context, fieldset);
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeLegend(FacesContext context, Fieldset fieldset) throws IOException {

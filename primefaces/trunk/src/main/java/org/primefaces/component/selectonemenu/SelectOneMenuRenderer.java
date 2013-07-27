@@ -306,10 +306,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectOneMenu", menu.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("SelectOneMenu", menu.resolveWidgetVar(), clientId)
                 .attr("effect", menu.getEffect(), null)
                 .attr("effectSpeed", menu.getEffectSpeed(), null)
                 .attr("editable", menu.isEditable(), false)
@@ -322,11 +321,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("caseSensitive", menu.isCaseSensitive(), false);
         }
         
-        encodeClientBehaviors(context, menu, wb);
+        encodeClientBehaviors(context, menu);
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Object values, Object submittedValues, Converter converter) throws IOException {

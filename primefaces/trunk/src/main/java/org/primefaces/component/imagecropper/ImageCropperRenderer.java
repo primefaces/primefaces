@@ -28,7 +28,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 
 import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
@@ -56,14 +55,13 @@ public class ImageCropperRenderer extends CoreRenderer {
 	}
 
 	protected void encodeScript(FacesContext context, ImageCropper cropper) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
 		String widgetVar = cropper.resolveWidgetVar();
 		String clientId = cropper.getClientId(context);
         String image = clientId + "_image";
         String select = null;
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("ImageCropper", widgetVar, clientId, "imagecropper", false)
+        wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, clientId + "_image", "imagecropper")
             .attr("image", image);
         
         if(cropper.getMinSize() != null) 
@@ -92,11 +90,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         
         wb.append(",setSelect:").append(select);
 
-        startScript(writer, clientId);	
-        writer.write("$(PrimeFaces.escapeClientId('" + clientId + "_image')).load(function(){");
-        writer.write(wb.build());
-        writer.write("});");
-        endScript(writer);
+        wb.finish();
 	}
 	
 	protected void encodeMarkup(FacesContext context, ImageCropper cropper) throws IOException{

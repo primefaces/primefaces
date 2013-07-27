@@ -38,20 +38,17 @@ public class DockRenderer extends CoreRenderer {
 	}
 	
 	protected void encodeScript(FacesContext context, Dock dock) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = dock.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Dock", dock.resolveWidgetVar(), clientId, "dock", false)
+        wb.init("Dock", dock.resolveWidgetVar(), clientId, "dock")
                 .attr("position", dock.getPosition())
                 .attr("maxWidth", dock.getMaxWidth())
                 .attr("itemWidth", dock.getItemWidth())
                 .attr("proximity", dock.getProximity())
                 .attr("halign", dock.getHalign());
-		
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+
+        wb.finish();
 	}
 
 	protected void encodeMarkup(FacesContext context, Dock dock) throws IOException {

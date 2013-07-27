@@ -60,10 +60,9 @@ public class LayoutRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Layout layout) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = layout.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Layout", layout.resolveWidgetVar(), clientId, "layout", true)
+        wb.initWithDomReady("Layout", layout.resolveWidgetVar(), clientId, "layout")
             .attr("full", layout.isFullPage(), false)
             .attr("useStateCookie", layout.isStateful(), false);
         
@@ -76,11 +75,9 @@ public class LayoutRenderer extends CoreRenderer {
             .callback("onResize", "function(e)", layout.getOnResize());
         
         encodeUnits(context, layout, wb);
-        encodeClientBehaviors(context, layout, wb);
+        encodeClientBehaviors(context, layout);
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeUnits(FacesContext context, Layout layout, WidgetBuilder wb) throws IOException {

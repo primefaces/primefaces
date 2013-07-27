@@ -102,18 +102,15 @@ public class DataListRenderer extends DataRenderer {
     }
 
     protected void encodeScript(FacesContext context, DataList list) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("DataList", list.resolveWidgetVar(), clientId, false);
+        wb.initWithDomReady("DataList", list.resolveWidgetVar(), clientId);
         
         if(list.isPaginator()) {
             encodePaginatorConfig(context, list, wb);
         }
-        
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+
+        wb.finish();
     }
 
     /**

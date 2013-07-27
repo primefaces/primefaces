@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
@@ -30,7 +29,6 @@ public class SocketRenderer extends CoreRenderer {
 
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
 		Socket socket = (Socket) component;
         String channel = socket.getChannel();
         String channelUrl = Constants.PUSH_PATH + channel;
@@ -43,7 +41,7 @@ public class SocketRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Socket", socket.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("Socket", socket.resolveWidgetVar(), clientId);
         
         wb.attr("url", url)
         	.attr("autoConnect", socket.isAutoConnect())
@@ -52,10 +50,8 @@ public class SocketRenderer extends CoreRenderer {
         	.callback("onMessage", socket.getOnMessage())
         	.callback("onError", socket.getOnError());
 
-        encodeClientBehaviors(context, socket, wb);
+        encodeClientBehaviors(context, socket);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 }

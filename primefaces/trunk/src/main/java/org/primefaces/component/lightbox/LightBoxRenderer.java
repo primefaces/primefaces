@@ -58,7 +58,6 @@ public class LightBoxRenderer extends CoreRenderer {
 	}
     
 	public void encodeScript(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         LightBox lb = (LightBox) component;
 		String clientId = lb.getClientId(context);
         String mode = "image";
@@ -68,7 +67,7 @@ public class LightBoxRenderer extends CoreRenderer {
             mode = "iframe";
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("LightBox", lb.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("LightBox", lb.resolveWidgetVar(), clientId)
             .attr("mode", mode)
             .attr("width", lb.getWidth(), null)
             .attr("height", lb.getHeight(), null)
@@ -77,9 +76,7 @@ public class LightBoxRenderer extends CoreRenderer {
             .callback("onShow", "function()", lb.getOnShow())
             .callback("onHide", "function()", lb.getOnHide());
         
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
     
     @Override

@@ -31,15 +31,11 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         PanelMenu menu = (PanelMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("PanelMenu", menu.resolveWidgetVar(), clientId, false);
-        
-        startScript(writer, clientId);        
-        writer.write(wb.build());
-		endScript(writer);
+        wb.init("PanelMenu", menu.resolveWidgetVar(), clientId);
+        wb.finish();
     }
 
     @Override

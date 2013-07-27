@@ -63,14 +63,10 @@ public class OutputPanelRenderer extends CoreRenderer {
     }
     
     protected void encodeScript(FacesContext context, OutputPanel panel) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("OutputPanel", panel.resolveWidgetVar(), clientId, true);
-        
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.initWithDomReady("OutputPanel", panel.resolveWidgetVar(), clientId);
+        wb.finish();
     }
     
     protected void renderLoading(FacesContext context, OutputPanel panel) throws IOException {

@@ -118,16 +118,12 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
     }
 
     protected void encodeScript(FacesContext context, MultiSelectListbox listbox) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = listbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         
-        wb.widget("MultiSelectListbox", listbox.resolveWidgetVar(), clientId, false);
+        wb.init("MultiSelectListbox", listbox.resolveWidgetVar(), clientId);
         wb.attr("effect", listbox.getEffect(), null);
-        
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     } 
     
     protected void encodeInput(FacesContext context, MultiSelectListbox listbox) throws IOException {

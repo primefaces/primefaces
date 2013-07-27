@@ -77,15 +77,12 @@ public class TagCloudRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, TagCloud tagCloud) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = tagCloud.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("TagCloud", tagCloud.resolveWidgetVar(), clientId, false);
+        wb.init("TagCloud", tagCloud.resolveWidgetVar(), clientId);
         
-        encodeClientBehaviors(context, tagCloud, wb);
-        
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        encodeClientBehaviors(context, tagCloud);
+
+        wb.finish();
     }
 }

@@ -66,17 +66,14 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectOneListbox listbox) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = listbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectOneListbox", listbox.resolveWidgetVar(), clientId, false)
+        wb.init("SelectOneListbox", listbox.resolveWidgetVar(), clientId)
             .attr("disabled", listbox.isDisabled(), false);
         
-        encodeClientBehaviors(context, listbox, wb);
+        encodeClientBehaviors(context, listbox);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeInput(FacesContext context, SelectOneListbox listbox, String clientId, List<SelectItem> selectItems) throws IOException {

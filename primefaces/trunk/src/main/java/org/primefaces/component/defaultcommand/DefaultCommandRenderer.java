@@ -28,14 +28,13 @@ public class DefaultCommandRenderer extends CoreRenderer {
     
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         DefaultCommand command = (DefaultCommand) component;
 
         UIComponent target = SearchExpressionFacade.resolveComponent(context, command, command.getTarget());
         
         String clientId = command.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("DefaultCommand", command.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("DefaultCommand", command.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context));
         
         String scope = command.getScope();
@@ -44,8 +43,6 @@ public class DefaultCommandRenderer extends CoreRenderer {
             wb.attr("scope", scopeComponent.getClientId(context));
         }
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
 }

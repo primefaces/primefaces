@@ -142,15 +142,12 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectManyButton button) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SelectManyButton", button.resolveWidgetVar(), clientId, false);
-        encodeClientBehaviors(context, button, wb);
+        wb.init("SelectManyButton", button.resolveWidgetVar(), clientId);
+        encodeClientBehaviors(context, button);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
     
     @Override

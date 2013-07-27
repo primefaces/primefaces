@@ -35,19 +35,16 @@ public class BlockUIRenderer extends CoreRenderer {
 	}
     
     protected void encodeScript(FacesContext context, BlockUI blockUI) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = blockUI.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("BlockUI", blockUI.resolveWidgetVar(), clientId, true);
+        wb.initWithDomReady("BlockUI", blockUI.resolveWidgetVar(), clientId);
         
         wb.attr("block", SearchExpressionFacade.resolveComponentsForClient(context, blockUI, blockUI.getBlock()));
         wb.attr("triggers", SearchExpressionFacade.resolveComponentsForClient(context, blockUI, blockUI.getTrigger()), null);
         wb.attr("blocked", blockUI.isBlocked(), false);
         
-        startScript(writer, null);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
     }
     
     protected void encodeMarkup(FacesContext context, UIComponent component) throws IOException {

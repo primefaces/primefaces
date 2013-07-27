@@ -26,7 +26,6 @@ import org.primefaces.event.CaptureEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class PhotoCamRenderer extends CoreRenderer {
@@ -71,20 +70,17 @@ public class PhotoCamRenderer extends CoreRenderer {
     }
     
     protected void encodeScript(FacesContext context, PhotoCam cam) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = cam.getClientId(context);
         String camera = getResourceRequestPath(context, "photocam/photocam.swf");
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("PhotoCam", cam.resolveWidgetVar(), clientId, true)
+        wb.initWithDomReady("PhotoCam", cam.resolveWidgetVar(), clientId)
             .attr("camera", camera);
         
         if(cam.getUpdate() != null) wb.attr("update", SearchExpressionFacade.resolveComponentsForClient(context, cam, cam.getUpdate()));
         if(cam.getProcess() != null) wb.attr("process", SearchExpressionFacade.resolveComponentsForClient(context, cam, cam.getProcess()));
-		
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+
+       wb.finish();
 	}
     
 }

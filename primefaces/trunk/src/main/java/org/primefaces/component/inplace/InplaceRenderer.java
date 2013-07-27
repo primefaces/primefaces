@@ -128,7 +128,7 @@ public class InplaceRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inplace.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Inplace", inplace.resolveWidgetVar(), clientId, false)
+        wb.init("Inplace", inplace.resolveWidgetVar(), clientId)
             .attr("effect", inplace.getEffect())
             .attr("effectSpeed", inplace.getEffectSpeed())
             .attr("event", inplace.getEvent())
@@ -136,11 +136,9 @@ public class InplaceRenderer extends CoreRenderer {
             .attr("disabled", inplace.isDisabled(), false)
             .attr("editor", inplace.isEditor(), false);
         
-        encodeClientBehaviors(context, inplace, wb);
+        encodeClientBehaviors(context, inplace);
 		
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.finish();
 	}
 
     protected void encodeEditor(FacesContext context, Inplace inplace) throws IOException {

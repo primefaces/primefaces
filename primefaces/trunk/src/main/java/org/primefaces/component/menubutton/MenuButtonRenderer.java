@@ -127,7 +127,6 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
     }
 
 	protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
         MenuButton button = (MenuButton) abstractMenu;
 		String clientId = button.getClientId(context);
         
@@ -135,12 +134,9 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 		if(form == null) {
 			throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
 		}
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("MenuButton", button.resolveWidgetVar(), clientId, true);
-		
-        startScript(writer, clientId);
-        writer.write(wb.build());
-		endScript(writer);
+        wb.initWithDomReady("MenuButton", button.resolveWidgetVar(), clientId);
+        wb.finish();
 	}
 }

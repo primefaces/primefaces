@@ -103,11 +103,10 @@ public class GalleriaRenderer extends CoreRenderer {
     }
 
     public void encodeScript(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         Galleria galleria = (Galleria) component;
         String clientId = galleria.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Galleria", galleria.resolveWidgetVar(), clientId, "galleria", false);
+        wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(), clientId, "galleria");
         
         wb.attr("showFilmstrip", galleria.isShowFilmstrip(), true)
                 .attr("frameWidth", galleria.getFrameWidth(), 60)
@@ -121,11 +120,7 @@ public class GalleriaRenderer extends CoreRenderer {
                 .attr("panelHeight", galleria.getPanelHeight(), Integer.MIN_VALUE)
                 .attr("custom", (galleria.getFacet("content") != null));
 
-        startScript(writer, clientId);
-        writer.write("$(window).load(function(){");
-        writer.write(wb.build());
-        writer.write("});");
-        endScript(writer);
+        wb.finish();
     }
 
     @Override

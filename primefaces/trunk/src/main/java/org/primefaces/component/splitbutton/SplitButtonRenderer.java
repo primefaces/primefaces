@@ -158,14 +158,10 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     }
 	
 	protected void encodeScript(FacesContext context, SplitButton button) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("SplitButton", button.resolveWidgetVar(), clientId, true);
-		
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);
+        wb.initWithDomReady("SplitButton", button.resolveWidgetVar(), clientId);
+        wb.finish();
     }
     
     protected String buildOnclick(FacesContext context, SplitButton button) throws IOException {

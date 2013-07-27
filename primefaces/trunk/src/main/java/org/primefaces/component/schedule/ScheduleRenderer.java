@@ -111,10 +111,9 @@ public class ScheduleRenderer extends CoreRenderer {
 	}
 
 	protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = schedule.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.widget("Schedule", schedule.resolveWidgetVar(), clientId, "schedule", true)
+        wb.initWithDomReady("Schedule", schedule.resolveWidgetVar(), clientId, "schedule")
             .attr("defaultView", schedule.getView())
             .attr("locale", schedule.calculateLocale(context).toString())
             .attr("offset", schedule.calculateTimeZone().getRawOffset());
@@ -150,11 +149,9 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("timeFormat", schedule.getTimeFormat(), null)
             .attr("columnFormat", schedule.getColumnFormat(), null);
         
-        encodeClientBehaviors(context, schedule, wb);
+        encodeClientBehaviors(context, schedule);
 
-        startScript(writer, clientId);
-        writer.write(wb.build());
-        endScript(writer);      		
+        wb.finish();	
 	}
 
 	protected void encodeMarkup(FacesContext context, Schedule schedule) throws IOException {
