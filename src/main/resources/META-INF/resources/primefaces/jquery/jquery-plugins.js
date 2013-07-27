@@ -12399,7 +12399,7 @@ jQuery.cookie = function (key, value, options) {
             '*': "[A-Za-z0-9]"
         },
         dataName: "rawMaskFn",
-        placeholder: '_',
+        placeholder: '_'
     };
 
     $.fn.extend({
