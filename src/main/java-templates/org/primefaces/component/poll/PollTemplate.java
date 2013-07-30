@@ -1,3 +1,4 @@
+import javax.el.ValueExpression;
 import org.primefaces.context.RequestContext;
 
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
@@ -12,8 +13,13 @@ import org.primefaces.context.RequestContext;
 
         ValueExpression expr = getValueExpression("stop");
         if(expr != null) {
-            RequestContext requestContext = RequestContext.getCurrentInstance();
-            requestContext.addCallbackParam("stop", expr.getValue(facesContext.getELContext()));
+        	Boolean stop = (Boolean) expr.getValue(facesContext.getELContext());
+        	
+        	if (Boolean.TRUE.equals(stop)staff roll) {
+        		String widgetVar = resolveWidgetVar();
+        		RequestContext requestContext = RequestContext.getCurrentInstance();
+        		requestContext.execute("PF('" + widgetVar + "').stop();");
+        	}
         }
 	}
 
