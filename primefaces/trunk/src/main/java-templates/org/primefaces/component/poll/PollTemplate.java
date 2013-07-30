@@ -15,7 +15,7 @@ import org.primefaces.context.RequestContext;
         if(expr != null) {
         	Boolean stop = (Boolean) expr.getValue(facesContext.getELContext());
         	
-        	if (Boolean.TRUE.equals(stop)staff roll) {
+        	if (Boolean.TRUE.equals(stop)) {
         		String widgetVar = resolveWidgetVar();
         		RequestContext requestContext = RequestContext.getCurrentInstance();
         		requestContext.execute("PF('" + widgetVar + "').stop();");
