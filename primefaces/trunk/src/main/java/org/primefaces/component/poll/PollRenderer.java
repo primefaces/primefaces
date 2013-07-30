@@ -50,22 +50,12 @@ public class PollRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Poll poll = (Poll) component;
         String clientId = poll.getClientId(context);
-        String widgetVar = poll.resolveWidgetVar();
 
         UIComponent form = ComponentUtils.findParentForm(context, poll);
         if(form == null) {
             throw new FacesException("Poll:" + clientId + " needs to be enclosed in a form component");
         }
 
-        //wrap complete handler to handle server side stop
-        if(poll.getValueExpression("stop") != null) {
-            String userOncomplete = poll.getOncomplete();
-            String defaultOncomplete = widgetVar + ".handleComplete(xhr, status, args);";
-            String oncomplete = userOncomplete == null ? defaultOncomplete : userOncomplete + ";" + defaultOncomplete;
-
-            poll.setOncomplete(oncomplete);
-        }
-        
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
         
         String request = builder.init()
