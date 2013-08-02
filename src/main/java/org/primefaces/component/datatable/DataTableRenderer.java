@@ -162,6 +162,10 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isMultiSort()) {
             wb.attr("multiSort", true);
         }
+        
+        if(table.isStickyHeader()) {
+            wb.attr("stickyHeader", true);
+        }
 
         //Behaviors
         encodeClientBehaviors(context, table);
@@ -180,7 +184,8 @@ public class DataTableRenderer extends DataRenderer {
         //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
-        if(table.isResizableColumns()) containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;         
+        if(table.isResizableColumns()) containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;
+        if(table.isStickyHeader()) containerClass = containerClass + " " + DataTable.STICKY_HEADER_CLASS;
         if(ComponentUtils.isRTL(context, table)) containerClass = containerClass + " " + DataTable.RTL_CLASS;
 
         writer.startElement("div", table);
