@@ -77,7 +77,8 @@
     height: 16px;
 }
 
-.ui-datatable-scrollable table {
+.ui-datatable-scrollable table,
+.ui-datatable-sticky table{
     table-layout: fixed;
 }
 

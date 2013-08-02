@@ -44,7 +44,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         if(this.jq.is(':visible')) {
             this.setupDimensionalConfig();
-        } 
+        }
         else {
             var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
             hiddenParentWidget = hiddenParent.data('widget');
@@ -69,6 +69,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
             if(this.cfg.draggableColumns) {
                 this.setupDraggableColumns();
+            }
+            
+            if(this.cfg.stickyHeader) {
+                this.setupStickyHeader();
             }
             
             return true;
@@ -2076,6 +2080,65 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             else
                 this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
         }
-    }  
+    },
+            
+    setupStickyHeader: function() {
+        var offset = this.thead.parent().offset(),
+        win = $(window),
+        $this = this,
+        stickyNamespace = 'scroll.' + this.id;
+
+        this.cloneContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
+        this.clone = this.thead.clone(true);
+        this.cloneContainer.children('table').append(this.clone);
+        
+        this.cloneContainer.css({
+            position: 'absolute',
+            width: this.thead.parent().width(),
+            top: offset.top,
+            left: offset.left
+        })
+        .appendTo(document.body);
+
+        var cloneContainerOffset = this.cloneContainer.offset();
+        this.initialState = {
+            top: cloneContainerOffset.top,
+            bottom: cloneContainerOffset.top + this.tbody.height()
+        }
+        
+        win.off(stickyNamespace).on(stickyNamespace, function() {
+            var scrollTop = win.scrollTop();
+            if(scrollTop > $this.initialState.top) {
+                if(!$this.fixed) {
+                    $this.cloneContainer.css({
+                        'position': 'fixed',
+                        'top': 0,
+                        'z-index': ++PrimeFaces.zindex
+                    })
+                    .addClass('ui-shadow ui-sticky');
+
+                    $this.fixed = true;
+                }
+                
+                if(scrollTop >= $this.initialState.bottom) {
+                    $this.cloneContainer.hide();
+                }
+                else {
+                    $this.cloneContainer.show();
+                }
+            }
+            else {
+                if($this.fixed) {
+                    $this.cloneContainer.css({
+                        position: 'absolute',
+                        top: $this.initialState.top
+                    })
+                    .removeClass('ui-shadow ui-sticky');
+
+                    $this.fixed = false;
+                }
+            }
+        });
+    }
 
 });
