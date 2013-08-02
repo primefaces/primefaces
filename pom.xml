@@ -335,6 +335,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/slider/slider.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/sticky/sticky.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tooltip/tooltip.js</include>
@@ -580,6 +581,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/slider/slider.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/sticky/sticky.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/tooltip/tooltip.js</include>
