@@ -725,7 +725,10 @@
             	$.ajaxSetup({'cache' : true});
                 $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
                 $.ajaxSetup({'cache' : false});
-                $('body').html(content.substring(content.indexOf("<body>") + 6, content.lastIndexOf("</body>")));
+
+                var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
+                var bodyStartIndex = content.indexOf(bodyStartTag) + bodyStartTag.length;
+                $('body').html(content.substring(bodyStartIndex, content.lastIndexOf("</body>")));
             }
             else {
                 $(PrimeFaces.escapeClientId(id)).replaceWith(content);
