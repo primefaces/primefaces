@@ -17,7 +17,6 @@ package org.primefaces.push;
 
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.atmosphere.cpr.AsyncSupportListenerAdapter;
 import org.atmosphere.cpr.AtmosphereRequest;
@@ -35,11 +34,11 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
 
     public <T> Future<T> push(final String channel, final T t) {
         String data = toJSON(t);
-        final BroadcasterListener l = new PushContextMetaListener(listeners, channel, t);
+        final BroadcasterListener l = new PushContextMetaListener<T>(listeners, channel, t);
         final Future<?> f = broadcaster.addBroadcasterListener(l).broadcastTo(channel, data);
 
         finalizePush(f, l);
-        return new WrappedFuture(f, t);
+        return new WrappedFuture<T>(f, t);
     }
 
     public <T> Future<T> schedule(final String channel, final T t, int time, TimeUnit unit) {
@@ -48,20 +47,21 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
             data = toJSON(t);
         }
 
-        final BroadcasterListener l = new PushContextMetaListener(listeners, channel, t);
+        final BroadcasterListener l = new PushContextMetaListener<T>(listeners, channel, t);
         final Future<List<Broadcaster>> f = broadcaster.addBroadcasterListener(l).scheduleTo(channel, data, time, unit);
 
         finalizePush(f, l);
-        return new WrappedFuture(f, t);
+        return new WrappedFuture<T>(f, t);
     }
 
     public <T> Future<T> delay(final String channel, final T t, int time, TimeUnit unit) {
         String data = toJSON(t);
 
-        final BroadcasterListener l = new PushContextMetaListener(listeners, channel, t);
+        final BroadcasterListener l = new PushContextMetaListener<T>(listeners, channel, t);
         final Future<?> f = broadcaster.addBroadcasterListener(l).delayTo(channel, data, time, unit);
+
         finalizePush(f, l);
-        return new WrappedFuture(f, t);
+        return new WrappedFuture<T>(f, t);
     }
 
     private void finalizePush(Future<?> f, BroadcasterListener l) {
@@ -123,6 +123,10 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
     public void onTimeout(AtmosphereRequest request, AtmosphereResponse response) {
         for (PushContextListener l : listeners) {
             l.onDisconnect(request);
+
+        	if (l instanceof AdvancedPushContextListener) {
+        		((AdvancedPushContextListener) l).onTimeout(request, response);
+        	}
         }
     }
 
@@ -130,10 +134,41 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
     public void onClose(AtmosphereRequest request, AtmosphereResponse response) {
         for (PushContextListener l : listeners) {
             l.onDisconnect(request);
+
+        	if (l instanceof AdvancedPushContextListener) {
+        		((AdvancedPushContextListener) l).onClose(request, response);
+        	}
+        }
+    }
+    
+    @Override
+    public void onResume(AtmosphereRequest request, AtmosphereResponse response) {
+        for (PushContextListener l : listeners) {
+        	if (l instanceof AdvancedPushContextListener) {
+        		((AdvancedPushContextListener) l).onResume(request, response);
+        	}
+        }
+    }
+    
+    @Override
+    public void onDestroyed(AtmosphereRequest request, AtmosphereResponse response) {
+        for (PushContextListener l : listeners) {
+        	if (l instanceof AdvancedPushContextListener) {
+        		((AdvancedPushContextListener) l).onDestroyed(request, response);
+        	}
+        }
+    }
+    
+    @Override
+    public void onSuspend(AtmosphereRequest request, AtmosphereResponse response) {
+        for (PushContextListener l : listeners) {
+        	if (l instanceof AdvancedPushContextListener) {
+        		((AdvancedPushContextListener) l).onSuspend(request, response);
+        	}
         }
     }
 
-    private final static class WrappedFuture<T> implements Future {
+    private final static class WrappedFuture<T> implements Future<T> {
 
         private final Future<?> f;
         private final T t;
@@ -178,6 +213,11 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
         }
 
         public void onPostCreate(Broadcaster broadcaster) {
+            for (PushContextListener l : listeners) {
+            	if (l instanceof AdvancedPushContextListener) {
+            		((AdvancedPushContextListener) l).onPostCreate(broadcaster);
+            	}
+            }
         }
 
         public void onComplete(Broadcaster b) {
@@ -188,6 +228,11 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
         }
 
         public void onPreDestroy(Broadcaster broadcaster) {
+            for (PushContextListener l : listeners) {
+            	if (l instanceof AdvancedPushContextListener) {
+            		((AdvancedPushContextListener) l).onPreDestroy(broadcaster);
+            	}
+            }
         }
     }
 
