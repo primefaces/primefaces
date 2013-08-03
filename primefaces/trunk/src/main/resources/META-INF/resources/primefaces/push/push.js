@@ -2758,41 +2758,13 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        if (this.cfg.onError) {
-        	this.cfg.request.onError = function(response) {
-        		$this.cfg.onError.call(this, response);
-        	}
-        }
-        if (this.cfg.onClose) {
-        	this.cfg.request.onClose = function(response) {
-        		$this.cfg.onClose.call(this, response);
-        	}
-        }
-        if (this.cfg.onOpen) {
-        	this.cfg.request.onOpen = function(response) {
-        		$this.cfg.onOpen.call(this, response);
-        	}
-        }
-        if (this.cfg.onReconnect) {
-        	this.cfg.request.onReconnect = function(response) {
-        		$this.cfg.onReconnect.call(this, response);
-        	}
-        }
-        if (this.cfg.onMessagePublished) {
-        	this.cfg.request.onMessagePublished = function(response) {
-        		$this.cfg.onMessagePublished.call(this, response);
-        	}
-        }
-        if (this.cfg.onTransportFailure) {
-        	this.cfg.request.onTransportFailure = function(response, request) {
-        		$this.cfg.onTransportFailure.call(this, response, request);
-        	}
-        }
-        if (this.cfg.onLocalMessage) {
-        	this.cfg.request.onLocalMessage = function(response) {
-        		$this.cfg.onLocalMessage.call(this, response);
-        	}
-        }
+        this.cfg.request.onError = this.cfg.onError;
+        this.cfg.request.onClose = this.cfg.onClose;
+        this.cfg.request.onOpen = this.cfg.onOpen;
+        this.cfg.request.onReconnect = this.cfg.onReconnect;
+        this.cfg.request.onMessagePublished = this.cfg.onMessagePublished;
+        this.cfg.request.onLocalMessage = this.cfg.onLocalMessage;
+        this.cfg.request.onTransportFailure = this.cfg.onTransportFailure;
 
         if(this.cfg.autoConnect) {
             this.connect();
