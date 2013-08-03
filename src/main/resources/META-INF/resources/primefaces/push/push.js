@@ -2746,7 +2746,7 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
         this.cfg = cfg;
-        var _self = this;
+        var $this = this;
 
         this.cfg.request = {
             url: this.cfg.url,
@@ -2754,9 +2754,45 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
             fallbackTransport: this.cfg.fallbackTransport,
             enableXDR: false,
             onMessage: function(response) {
-                _self.onMessage(response);
+            	$this.onMessage(response);
             }
         };
+
+        if (this.cfg.onError) {
+        	this.cfg.request.onError = function(response) {
+        		$this.cfg.onError.call(this, response);
+        	}
+        }
+        if (this.cfg.onClose) {
+        	this.cfg.request.onClose = function(response) {
+        		$this.cfg.onClose.call(this, response);
+        	}
+        }
+        if (this.cfg.onOpen) {
+        	this.cfg.request.onOpen = function(response) {
+        		$this.cfg.onOpen.call(this, response);
+        	}
+        }
+        if (this.cfg.onReconnect) {
+        	this.cfg.request.onReconnect = function(response) {
+        		$this.cfg.onReconnect.call(this, response);
+        	}
+        }
+        if (this.cfg.onMessagePublished) {
+        	this.cfg.request.onMessagePublished = function(response) {
+        		$this.cfg.onMessagePublished.call(this, response);
+        	}
+        }
+        if (this.cfg.onTransportFailure) {
+        	this.cfg.request.onTransportFailure = function(response, request) {
+        		$this.cfg.onTransportFailure.call(this, response, request);
+        	}
+        }
+        if (this.cfg.onLocalMessage) {
+        	this.cfg.request.onLocalMessage = function(response) {
+        		$this.cfg.onLocalMessage.call(this, response);
+        	}
+        }
 
         if(this.cfg.autoConnect) {
             this.connect();

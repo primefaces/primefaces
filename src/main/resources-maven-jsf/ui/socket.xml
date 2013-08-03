@@ -57,6 +57,42 @@
             <description>Javascript event handler that is processed when there is an error.</description>
 		</attribute>
         <attribute>
+			<name>onClose</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript event handler for atmospheres onClose callback.</description>
+		</attribute>
+        <attribute>
+			<name>onOpen</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript event handler for atmospheres onOpen callback.</description>
+		</attribute>
+        <attribute>
+			<name>onReconnect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript event handler for atmospheres onReconnect callback.</description>
+		</attribute>
+        <attribute>
+			<name>onMessagePublished</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript event handler for atmospheres onMessagePublished callback.</description>
+		</attribute>
+        <attribute>
+			<name>onTransportFailure</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript event handler for atmospheres onTransportFailure callback.</description>
+		</attribute>
+        <attribute>
+			<name>onLocalMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript event handler for atmospheres onLocalMessage callback.</description>
+		</attribute>
+        <attribute>
 			<name>autoConnect</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
