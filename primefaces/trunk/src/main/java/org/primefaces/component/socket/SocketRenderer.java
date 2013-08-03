@@ -48,7 +48,13 @@ public class SocketRenderer extends CoreRenderer {
         	.attr("transport", socket.getTransport())
         	.attr("fallbackTransport", socket.getFallbackTransport())
         	.callback("onMessage", socket.getOnMessage())
-        	.callback("onError", socket.getOnError());
+        	.callback("onError", "function(response)", socket.getOnError())
+        	.callback("onClose", "function(response)", socket.getOnClose())
+        	.callback("onOpen", "function(response)", socket.getOnOpen())
+        	.callback("onReconnect", "function(response)", socket.getOnReconnect())
+        	.callback("onMessagePublished", "function(response)", socket.getOnMessagePublished())
+        	.callback("onTransportFailure", "function(response, request)", socket.getOnTransportFailure())
+        	.callback("onLocalMessage", "function(response)", socket.getOnLocalMessage());
 
         encodeClientBehaviors(context, socket);
 
