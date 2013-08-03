@@ -1802,13 +1802,18 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
             
     upload: function() {
+        var cfg = {files: this.files};
+        if(!($.support.xhrFileUpload&&$.support.xhrFormDataFileUpload)) {
+            cfg.fileInput = this.input;
+        }
+        
         if(this.files.length) {
             if (this.cfg.merge) {
-                this.jq.fileupload('send', {files: this.files});
+                this.jq.fileupload('send', cfg);
             }
             else {
                 for (var i = 0; i < this.files.length; i++) {
-                    this.jq.fileupload('send', {files: this.files[i]});
+                    this.jq.fileupload('send', cfg);
                 }
             }
         }
