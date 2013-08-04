@@ -2753,6 +2753,7 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
             transport: this.cfg.transport,
             fallbackTransport: this.cfg.fallbackTransport,
             enableXDR: false,
+            enableProtocol: true,
             onMessage: function(response) {
             	$this.onMessage(response);
             }
