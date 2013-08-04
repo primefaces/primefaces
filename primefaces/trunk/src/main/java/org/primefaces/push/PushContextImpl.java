@@ -20,6 +20,7 @@ import java.util.concurrent.*;
 
 import org.atmosphere.cpr.AsyncSupportListenerAdapter;
 import org.atmosphere.cpr.AtmosphereRequest;
+import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.AtmosphereResponse;
 import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.cpr.BroadcasterListener;
@@ -234,7 +235,13 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
             	}
             }
         }
+
+		public void onAddAtmosphereResource(Broadcaster broadcaster, AtmosphereResource resource) {
+		
+		}
+
+		public void onRemoveAtmosphereResource(Broadcaster broadcaster, AtmosphereResource resource) {
+		
+		}
     }
-
-
 }
