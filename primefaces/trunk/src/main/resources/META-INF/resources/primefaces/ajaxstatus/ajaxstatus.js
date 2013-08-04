@@ -44,7 +44,7 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                 var doc = $(document);
 
                 if(data.status === 'begin') {
-                    doc.trigger('pfAjaxSend');
+                    doc.trigger('pfAjaxStart');
                 }
                 else if(data.status === 'complete') {
                     doc.trigger('pfAjaxSuccess');
