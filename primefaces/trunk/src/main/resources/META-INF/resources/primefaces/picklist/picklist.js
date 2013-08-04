@@ -12,7 +12,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         this.targetInput = $(this.jqId + '_target');
         this.items = this.jq.find('.ui-picklist-item:not(.ui-state-disabled)');
         if(this.cfg.showCheckbox) {
-            this.checkboxes = this.items.find('> div.ui-chkbox > div.ui-chkbox-box');
+            this.checkboxes = this.items.find('div.ui-chkbox > div.ui-chkbox-box');
         }
                 
         //generate input options
