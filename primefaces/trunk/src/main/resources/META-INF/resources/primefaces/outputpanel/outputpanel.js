@@ -6,7 +6,17 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.loadContent();
+        if(this.cfg.deferred) {
+            if(this.cfg.deferredMode === 'load') {
+                this.loadContent();
+            }
+            else if(this.cfg.deferredMode === 'visible') {
+                if(this.visible())
+                    this.loadContent();
+                else
+                    this.bindScrollMonitor();
+            }
+        }
     },
             
     loadContent: function() {
@@ -43,5 +53,32 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
         options.params = [{name: this.id + '_load', value: true}];
         
         PrimeFaces.ajax.AjaxRequest(options);
+    },
+            
+    bindScrollMonitor: function() {
+        var $this = this,
+        win = $(window);
+        win.off('scroll.' + this.id).on('scroll.' + this.id, function() {
+            if($this.visible()) {
+                $this.unbindScrollMonitor();
+                $this.loadContent();
+            }
+        });
+    },
+            
+    visible: function() {
+        var win = $(window),
+        scrollTop = win.scrollTop(),
+        height = win.height(),
+        top = this.jq.offset().top,
+        bottom = top + this.jq.innerHeight();
+
+        if((top >= scrollTop && top <= (scrollTop + height)) || (bottom >= scrollTop && bottom <= (scrollTop + height))) {
+            return true;
+        }
+    },
+            
+    unbindScrollMonitor: function() {
+        $(window).off('scroll.' + this.id);
     }
 });
