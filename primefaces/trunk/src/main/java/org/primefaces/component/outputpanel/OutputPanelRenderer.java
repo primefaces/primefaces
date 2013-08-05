@@ -35,7 +35,7 @@ public class OutputPanelRenderer extends CoreRenderer {
         }
         else {
             encodeMarkup(context, panel);
-            if(panel.isDynamic()) {
+            if(panel.isDeferred()) {
                 encodeScript(context, panel);
             }
         }
@@ -54,7 +54,7 @@ public class OutputPanelRenderer extends CoreRenderer {
 		if(style != null) 
             writer.writeAttribute("style", panel.getStyle(), "style");
 		
-        if(panel.isDynamic())
+        if(panel.isDeferred())
             renderLoading(context, panel);
         else
             renderChildren(context, panel);

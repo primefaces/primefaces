@@ -42,11 +42,11 @@
             <description>Updates outputPanel after each ajax request implicity.</description>
 		</attribute>
         <attribute>
-			<name>dynamic</name>
+			<name>deferred</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Dynamic mode loads the contents after page load to speed up page load.</description>
+            <description>Deferred mode loads the contents after page load to speed up page load.</description>
 		</attribute>
 	</attributes>
     <resources>
