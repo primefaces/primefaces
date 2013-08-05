@@ -48,6 +48,13 @@
             <defaultValue>false</defaultValue>
             <description>Deferred mode loads the contents after page load to speed up page load.</description>
 		</attribute>
+        <attribute>
+			<name>deferredMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>load</defaultValue>
+            <description>Defines deferred loading mode, valid values are "load" (after page load) and "visible" (once the panel is visible on scroll). Default value is "load".</description>
+		</attribute>
 	</attributes>
     <resources>
 		<resource>
