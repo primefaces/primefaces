@@ -26,7 +26,7 @@
 .ui-treetable tfoot td {
     padding: 4px 10px;
     overflow: hidden;
-    white-space: nowrap;
+    word-break:break-all;
     border-width: 1px;
     border-style: solid;
 }
