@@ -1634,7 +1634,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                                 var imageCanvas = $('<canvas></canvas')
                                                         .appendTo(row.children('td.ui-fileupload-preview')),
                                 context = imageCanvas.get(0).getContext('2d'),
-                                url = URL.createObjectURL(file),
+                                winURL = window.URL||window.webkitURL,
+                                url = winURL.createObjectURL(file),
                                 img = new Image();
                         
                                 img.onload = function() {
