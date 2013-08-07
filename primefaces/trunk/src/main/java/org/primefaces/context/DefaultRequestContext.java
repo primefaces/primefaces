@@ -242,6 +242,5 @@ public class DefaultRequestContext extends RequestContext {
                 return false;
             }
         }
-        
     }
 }
