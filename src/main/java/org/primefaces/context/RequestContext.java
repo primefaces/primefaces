@@ -163,7 +163,7 @@ public abstract class RequestContext {
     public abstract void release();
     
     /**
-     * Clear resources.
+     * Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
      */
     public abstract boolean isSecure();
 }
