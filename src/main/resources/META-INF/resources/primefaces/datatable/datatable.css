@@ -26,7 +26,7 @@
 .ui-datatable tfoot td {
     padding: 4px 10px;
     overflow: hidden;
-    white-space: nowrap;
+    word-break: break-all;
     border-width: 1px;
     border-style: solid;
 }
@@ -198,6 +198,13 @@
 .ui-datatable-resizable {
     padding-bottom:1px;     /*fix for webkit overlow*/
     overflow:auto;
+}
+
+.ui-datatable-resizable thead th,
+.ui-datatable-resizable tbody td,
+.ui-datatable-resizable tfoot td {
+    white-space: nowrap;
+    word-break: normal;
 }
 
 .ui-datatable-resizable table {
