@@ -15,6 +15,7 @@
  */
 package org.primefaces.context;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -224,4 +226,22 @@ public class DefaultRequestContext extends RequestContext {
 
 		return encrypter;
 	}
+
+    @Override
+    public boolean isSecure() {
+        Object request = context.getExternalContext().getRequest();
+        
+        if(request instanceof HttpServletRequest) {
+            return ((HttpServletRequest) request).isSecure();
+        }
+        else {
+            try {
+                Method method = request.getClass().getDeclaredMethod("isSecure", new Class[0]);
+                return (Boolean) method.invoke(request, null);
+            } catch(Exception e) {
+                return false;
+            }
+        }
+        
+    }
 }
