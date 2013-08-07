@@ -161,4 +161,9 @@ public abstract class RequestContext {
      * Clear resources.
      */
     public abstract void release();
+    
+    /**
+     * Clear resources.
+     */
+    public abstract boolean isSecure();
 }
