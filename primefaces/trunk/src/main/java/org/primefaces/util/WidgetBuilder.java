@@ -175,7 +175,9 @@ public class WidgetBuilder {
         writer.write(",");
         writer.write(name);
         writer.write(":");
-        writer.write(value.toString());
+        if (value != null) {
+        	writer.write(value.toString());
+        }
         
         return this;
     }
