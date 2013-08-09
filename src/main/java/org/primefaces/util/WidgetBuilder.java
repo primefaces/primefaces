@@ -143,7 +143,9 @@ public class WidgetBuilder {
         writer.write(",");
         writer.write(name);
         writer.write(":'");
-        writer.write(value);
+        if (value != null) {
+        	writer.write(value);
+        }
         writer.write("'");
         
         return this;
@@ -153,7 +155,9 @@ public class WidgetBuilder {
         writer.write(",");
         writer.write(name);
         writer.write(":");
-        writer.write(value);
+        if (value != null) {
+        	writer.write(value);
+        }
         
         return this;
     }
