@@ -329,8 +329,8 @@ public class SearchExpressionFacade {
 
 		// if the complete expression does not contain '@', just call #findComponent on the source component
 		if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
-			// if it's not a nested expression (e.g. @parent:@parent), we don't need to loop
 
+			// if it's not a nested expression (e.g. @parent:@parent), we don't need to loop
 			if (expression.contains(separatorString)) {
 				boolean startsWithSeperator = expression.charAt(0) == separatorChar;
 
@@ -353,7 +353,7 @@ public class SearchExpressionFacade {
 							continue;
 						}
 	
-						// re-add the seperator string here
+						// re-add the separator string here
 						// the impl will decide to search absolute or relative then
 						if (startsWithSeperator
 						        && j == 0
