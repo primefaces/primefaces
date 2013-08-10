@@ -15,6 +15,8 @@
  */
 package org.primefaces.config;
 
+import java.io.IOException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,10 +48,14 @@ public class ConfigContainer {
 	// internal config
 	private boolean stringConverterAvailable = false;
 	private boolean jsf22 = false;
+	
+	// build properties
+	private String buildVersion = null;
 
 	public ConfigContainer(FacesContext context) {
 		initConfig(context);
 		initConfigFromContextParams(context);
+		initBuildProperties();
 	}
 
 	private void initConfig(FacesContext context) {
@@ -95,6 +101,18 @@ public class ConfigContainer {
         }
 	}
 
+	private void initBuildProperties() {
+		
+		Properties buildProperties = new Properties();
+		try {
+			buildProperties.load(
+					getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties"));
+			buildVersion = buildProperties.getProperty("version");
+		} catch (IOException e) {
+			LOG.log(Level.SEVERE, "Could not load pom.properties", e);
+		}
+	}
+	
     private boolean checkIfBeanValidationIsAvailable() {
     	boolean available = false;
 
@@ -182,4 +200,8 @@ public class ConfigContainer {
     public String getTheme() {
         return theme;
     }
+
+	public String getBuildVersion() {
+		return buildVersion;
+	}
 }

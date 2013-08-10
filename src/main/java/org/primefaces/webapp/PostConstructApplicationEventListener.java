@@ -17,10 +17,13 @@ package org.primefaces.webapp;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import org.primefaces.util.Constants;
+
+import org.primefaces.config.ConfigContainer;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
@@ -31,6 +34,11 @@ public class PostConstructApplicationEventListener implements SystemEventListene
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        logger.log(Level.INFO, "Running on PrimeFaces {0}", Constants.VERSION);
+    	// temp manually instantiate config as it's not available on startup
+    	ConfigContainer config = new ConfigContainer(FacesContext.getCurrentInstance());
+    	
+        logger.log(Level.INFO,
+        		"Running on PrimeFaces {0}", 
+        		config.getBuildVersion());
     }
 }
