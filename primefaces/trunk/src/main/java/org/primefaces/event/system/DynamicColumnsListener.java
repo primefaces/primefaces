@@ -26,7 +26,9 @@ public class DynamicColumnsListener implements SystemEventListener {
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         Columns columns = (Columns) event.getSource();
         
-        ((DataTable) columns.getParent()).setDynamicColumns(columns);
+        if (columns.getParent() instanceof DataTable) {
+        	((DataTable) columns.getParent()).setDynamicColumns(columns);
+        }
     }
 
     public boolean isListenerForSource(Object source) {
