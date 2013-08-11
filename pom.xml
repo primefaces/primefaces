@@ -296,11 +296,17 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.css</include>
                             </includes>
                         </aggregation>
+                        <aggregation> <!-- USED WITH MOBILE -->                            
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/core/primefaces-core.js</output>                            
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
+                            </includes>
+                        </aggregation>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces.js</output>
-                            <includes>
+                            <includes>                                
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/accordion/accordion.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</include>
