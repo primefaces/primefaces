@@ -29,6 +29,7 @@ public class Constants {
         public static final String DIRECTION = "primefaces.DIR";
         public static final String RESET_VALUES = "primefaces.RESET_VALUES";
         public static final String SECRET_KEY = "primefaces.SECRET";
+        public static final String PFV_KEY = "primefaces.CLIENT_SIDE_VALIDATION";
     }
 
     public class RequestParams {

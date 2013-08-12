@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -83,6 +84,10 @@ public class InputTextRenderer extends InputRenderer {
         if(inputText.getStyle() != null) writer.writeAttribute("style", inputText.getStyle(), null);
 
         writer.writeAttribute("class", createStyleClass(inputText), "styleClass");
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, inputText);
+        }
 
         writer.endElement("input");
 	}

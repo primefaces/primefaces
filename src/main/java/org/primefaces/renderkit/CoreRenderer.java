@@ -16,6 +16,7 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
@@ -32,12 +34,15 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
+import javax.faces.validator.Validator;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
+import org.primefaces.validate.ClientValidator;
 
 public abstract class CoreRenderer extends Renderer {
 	
@@ -486,5 +491,58 @@ public abstract class CoreRenderer extends Renderer {
     
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
         return RequestContext.getCurrentInstance().getWidgetBuilder();
+    }
+    
+    protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Object label = ((UIComponent) component).getAttributes().get("label");
+        
+        if(label != null) {
+            writer.writeAttribute(HTML.PFV.LABEL, label, null);
+        }
+        
+        if(component.isRequired()) {
+            writer.writeAttribute(HTML.PFV.REQUIRED, "true", null);
+        }
+        
+        Validator[] validators = component.getValidators();
+        if(validators != null) {
+            List<String> validatorIds = new ArrayList<String>();
+                    
+            for(int i = 0; i < validators.length; i++) {
+                Validator validator = validators[i];
+                
+                if(validator instanceof ClientValidator) {
+                    ClientValidator clientValidator = (ClientValidator) validator;
+                    validatorIds.add(clientValidator.getValidatorId());
+                    Map<String,Object> metadata = clientValidator.getMetadata();
+                                        
+                    if(metadata != null && !metadata.isEmpty()) {
+                        for(Map.Entry<String, Object> entry : metadata.entrySet()) {
+                            String key = entry.getKey();
+                            Object value = entry.getValue();
+                            
+                            if(value != null) {
+                                writer.writeAttribute(key, value, null);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if(!validatorIds.isEmpty()) {
+                StringBuilder builder = new StringBuilder();
+                for(Iterator<String> it = validatorIds.iterator(); it.hasNext();) {
+                    String validatorId = it.next();
+                    builder.append(validatorId);
+                    
+                    if(it.hasNext()) {
+                        builder.append(",");
+                    }
+                }
+                
+                writer.writeAttribute(HTML.PFV.VALIDATOR_IDS, builder.toString(), null);
+            }
+        }
     }
 }

@@ -54,3 +54,8 @@
     <factory>
     	<faces-context-factory>org.primefaces.context.PrimeFacesContextFactory</faces-context-factory>
     </factory>
+    
+    <validator>
+        <validator-id>javax.faces.Length</validator-id>
+        <validator-class>org.primefaces.validate.LengthValidator</validator-class>
+    </validator>
