@@ -265,7 +265,7 @@ public class AjaxRequestBuilder {
             buffer.append("return false;");
         }
         
-        String request = "return " + buffer.toString();
+        String request = buffer.toString();
         
         reset();
         
