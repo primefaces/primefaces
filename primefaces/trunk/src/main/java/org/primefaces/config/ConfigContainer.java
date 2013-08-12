@@ -44,6 +44,7 @@ public class ConfigContainer {
 	private String  secretKey = null;
 	private String  pushServerURL = null;
 	private String  theme = null;
+    private boolean clientSideValidationEnabled = false;
 
 	// internal config
 	private boolean stringConverterAvailable = false;
@@ -85,6 +86,9 @@ public class ConfigContainer {
 
         value = externalContext.getInitParameter(Constants.ContextParams.SECRET_KEY);
         secretKey = (value == null) ? "primefaces" : value;
+        
+        value = externalContext.getInitParameter(Constants.ContextParams.PFV_KEY);
+        clientSideValidationEnabled = (value == null) ? false : Boolean.valueOf(value);;
         
         pushServerURL = externalContext.getInitParameter(Constants.ContextParams.PUSH_SERVER_URL);
         
@@ -191,6 +195,10 @@ public class ConfigContainer {
     
     public boolean isResetValuesEnabled() {
     	return resetValuesEnabled;
+    }
+
+    public boolean isClientSideValidationEnabled() {
+        return clientSideValidationEnabled;
     }
 
     public String getPushServerURL() {

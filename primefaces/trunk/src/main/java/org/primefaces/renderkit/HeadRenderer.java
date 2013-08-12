@@ -75,11 +75,15 @@ public class HeadRenderer extends Renderer {
         if(middle != null) {
             middle.encodeAll(context);
         }
-        
+                
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
         for (UIComponent resource : viewRoot.getComponentResources(context, "head")) {
             resource.encodeAll(context);
+        }
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            encodeValidationResource(context);
         }
     }
 
@@ -109,6 +113,18 @@ public class HeadRenderer extends Renderer {
             writer.writeAttribute("rel", "stylesheet", null);
             writer.writeAttribute("href", themeResource.getRequestPath(), null);
             writer.endElement("link");
+        }
+    }
+    
+    protected void encodeValidationResource(FacesContext context) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Resource resource = context.getApplication().getResourceHandler().createResource("validation/validation.js", "primefaces");
+        
+        if(resource != null) {
+            writer.startElement("script", null);
+            writer.writeAttribute("type", "text/javascript", null);
+            writer.writeAttribute("src", resource.getRequestPath(), null);
+            writer.endElement("script");
         }
     }
 }
