@@ -17,17 +17,45 @@
             MAXIMUM_MESSAGE_ID: 'javax.faces.validator.LengthValidator.MAXIMUM',
             
             validate: function(element) {
-                var value = element.val(),
-                length = value.length,
+                var length = element.val().length,
                 min = element.data('p-minlength'),
                 max = element.data('p-maxlength'),
                 mf = PrimeFaces.util.MessageFactory;
-        
+                
                 if(max !== undefined && length > max) {
                     throw mf.getMessage(this.MAXIMUM_MESSAGE_ID, max, mf.getLabel(element));
                 }
                 
                 if(min !== undefined && length < min) {
+                    throw mf.getMessage(this.MINIMUM_MESSAGE_ID, min, mf.getLabel(element));
+                }
+            }
+        },
+                
+        'javax.faces.LongRange': {
+            
+            MINIMUM_MESSAGE_ID: 'javax.faces.validator.LongRangeValidator.MINIMUM',
+            MAXIMUM_MESSAGE_ID: 'javax.faces.validator.LongRangeValidator.MAXIMUM',
+            NOT_IN_RANGE_MESSAGE_ID: 'javax.faces.validator.LongRangeValidator.NOT_IN_RANGE',
+            TYPE_MESSAGE_ID: 'javax.faces.validator.LongRangeValidator.TYPE',
+            regex: /^-?\d+$/,
+            
+            validate: function(element, value) {
+                var min = element.data('p-minvalue'),
+                max = element.data('p-maxvalue'),
+                mf = PrimeFaces.util.MessageFactory;
+        
+                if(!this.regex.test(element.val())) {
+                    throw mf.getMessage(this.TYPE_MESSAGE_ID, mf.getLabel(element));
+                }
+        
+                if((max !== undefined && min !== undefined) && (value < min || value > max)) {
+                    throw mf.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, mf.getLabel(element));
+                }
+                else if((max !== undefined && min === undefined) && (value > max)) {
+                    throw mf.getMessage(this.MAXIMUM_MESSAGE_ID, max, mf.getLabel(element));
+                }
+                else if((min !== undefined && max === undefined) && (value < min)) {
                     throw mf.getMessage(this.MINIMUM_MESSAGE_ID, min, mf.getLabel(element));
                 }
             }
@@ -53,6 +81,8 @@
                 if(!this.regex.test(value)) {
                     throw mf.getMessage(this.MESSAGE_ID, value, 9346, mf.getLabel(element));
                 }
+                
+                return parseInt(value);
             }
         }
     };
@@ -77,8 +107,9 @@
                 
                 for(var i = 0; i < inputs.length; i++) {
                     var inputElement = inputs.eq(i),
+                    submittedValue = inputElement.val(),
+                    value = submittedValue,
                     valid = true,
-                    value = inputElement.val(),
                     converterId = inputElement.data('p-con');
                     
                     if(converterId) {
@@ -91,14 +122,13 @@
                         }
                     }
                     
-                    if(valid && inputElement.data('p-required') && inputElement.val() === '') {
+                    if(valid && inputElement.data('p-required') && submittedValue === '') {
                         exceptions.push(mf.getMessage('javax.faces.component.UIInput.REQUIRED', mf.getLabel(inputElement)));
-                        
                         valid = false;
                     }
                                         
                     //validators
-                    if(valid && ((value !== '')||PrimeFaces.settings.validateEmptyFields)) {
+                    if(valid && ((submittedValue !== '')||PrimeFaces.settings.validateEmptyFields)) {
                         var validatorIds = inputElement.data('p-val');
                         if(validatorIds) {
                             validatorIds = validatorIds.split(',');
@@ -109,7 +139,7 @@
 
                                 if(validator) {
                                     try {
-                                        validator.validate(inputElement);
+                                        validator.validate(inputElement, value);
                                     }
                                     catch(ve) {
                                         valid = false;

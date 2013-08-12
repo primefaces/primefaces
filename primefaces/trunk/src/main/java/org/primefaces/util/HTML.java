@@ -189,6 +189,8 @@ public class HTML {
         public static final String REQUIRED = "data-p-required";
         public static final String MIN_LENGTH = "data-p-minlength";
         public static final String MAX_LENGTH = "data-p-maxlength";
+        public static final String MIN_VALUE = "data-p-minvalue";
+        public static final String MAX_VALUE = "data-p-maxvalue";
         public static final String VALIDATOR_IDS = "data-p-val";
         public static final String CONVERTER = "data-p-con";
     }

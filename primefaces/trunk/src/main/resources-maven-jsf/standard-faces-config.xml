@@ -60,6 +60,11 @@
         <validator-class>org.primefaces.validate.LengthValidator</validator-class>
     </validator>
     
+    <validator>
+        <validator-id>javax.faces.LongRange</validator-id>
+        <validator-class>org.primefaces.validate.LongRangeValidator</validator-class>
+    </validator>
+    
     <converter>
         <converter-id>javax.faces.Integer</converter-id>
         <converter-class>org.primefaces.convert.IntegerConverter</converter-class>
