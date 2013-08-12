@@ -70,13 +70,5 @@ public class ConfirmBehavior extends ClientBehaviorBase {
     }
     public void setIcon(String icon) {
         this.icon = icon;
-    }
-
-    @Override
-    protected void addBehaviorListener(BehaviorListener listener) {
-        super.addBehaviorListener(listener);
-        System.out.println("Added");
-    }
-    
-    
+    }    
 }
