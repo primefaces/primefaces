@@ -59,3 +59,8 @@
         <validator-id>javax.faces.Length</validator-id>
         <validator-class>org.primefaces.validate.LengthValidator</validator-class>
     </validator>
+    
+    <converter>
+        <converter-id>javax.faces.Integer</converter-id>
+        <converter-class>org.primefaces.convert.IntegerConverter</converter-class>
+    </converter>

@@ -33,11 +33,13 @@ import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.context.RequestContext;
+import org.primefaces.convert.ClientConverter;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -495,14 +497,20 @@ public abstract class CoreRenderer extends Renderer {
     
     protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Object label = ((UIComponent) component).getAttributes().get("label");
+        UIComponent comp = (UIComponent) component;
+        Converter converter = ComponentUtils.getConverter(context, comp);
+        Object label = comp.getAttributes().get("label");
+
+        if(converter != null && converter instanceof ClientConverter) {
+            writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER, ((ClientConverter) converter).getConverterId(), null);
+        }
         
         if(label != null) {
-            writer.writeAttribute(HTML.PFV.LABEL, label, null);
+            writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
         }
         
         if(component.isRequired()) {
-            writer.writeAttribute(HTML.PFV.REQUIRED, "true", null);
+            writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED, "true", null);
         }
         
         Validator[] validators = component.getValidators();
@@ -541,7 +549,7 @@ public abstract class CoreRenderer extends Renderer {
                     }
                 }
                 
-                writer.writeAttribute(HTML.PFV.VALIDATOR_IDS, builder.toString(), null);
+                writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_IDS, builder.toString(), null);
             }
         }
     }
