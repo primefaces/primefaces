@@ -19,28 +19,25 @@ import java.util.HashMap;
 import java.util.Map;
 import org.primefaces.util.HTML;
 
-public class LengthValidator extends javax.faces.validator.LengthValidator implements ClientValidator {
+public class LongRangeValidator extends javax.faces.validator.LongRangeValidator implements ClientValidator {
 
     private Map<String,Object> metadata;
     
     public Map<String, Object> getMetadata() {
-        int min = this.getMinimum();
-        int max = this.getMaximum();
+        metadata = new HashMap<String, Object>();
+        long min = this.getMinimum();
+        long max = this.getMaximum();
         
-        if(metadata == null) {
-            metadata = new HashMap<String, Object>();
+        if(min != 0)
+            metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, min);
             
-            if(min != 0)
-                metadata.put(HTML.VALIDATION_METADATA.MIN_LENGTH, min);
-            
-            if(max != 0)
-                metadata.put(HTML.VALIDATION_METADATA.MAX_LENGTH, max);
-        }
+        if(max != 0)
+            metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, max);
         
         return metadata;
     }
 
     public String getValidatorId() {
-        return LengthValidator.VALIDATOR_ID;
+        return LongRangeValidator.VALIDATOR_ID;
     }
 }
