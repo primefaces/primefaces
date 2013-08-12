@@ -38,7 +38,7 @@
     
         'javax.faces.Integer': {
             
-            regex: /^\d+$/,
+            regex: /^-?\d+$/,
                     
             MESSAGE_ID: 'javax.faces.converter.IntegerConverter.INTEGER',
             
