@@ -85,7 +85,7 @@ public class HeadRenderer extends Renderer {
         }
         
         if(cc.isClientSideValidationEnabled()) {
-            //encodeValidationResource(context);
+            encodeValidationResource(context);
             
             writer.startElement("script", null);
             writer.writeAttribute("type", "text/javascript", null);

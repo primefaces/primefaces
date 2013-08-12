@@ -7,11 +7,7 @@
         PrimeFaces.debug("PrimeFaces client side validation framework already loaded, ignoring duplicate execution.");
         return;
     }
-
-    //package
-    PrimeFaces.validator = {};
-    PrimeFaces.converter = {};
-    
+   
     PrimeFaces.validator = {
         
         'javax.faces.Length': {
@@ -36,7 +32,30 @@
                 }
             }
         }
-    }
+    };
+    
+    PrimeFaces.converter = {
+    
+        'javax.faces.Integer': {
+            
+            regex: /^\d+$/,
+                    
+            MESSAGE_ID: 'javax.faces.converter.IntegerConverter.INTEGER',
+            
+            convert: function(element) {
+                var value = element.val(),
+                mf = PrimeFaces.util.MessageFactory;
+        
+                if($.trim(value).length === 0) {
+                    return null;
+                }
+                
+                if(!this.regex.test(value)) {
+                    throw mf.getMessage(this.MESSAGE_ID, value, 9346, mf.getLabel(element));
+                }
+            }
+        }
+    };
         
     PrimeFaces.vb = function(cfg) {
         return this.validate(cfg);
@@ -58,10 +77,21 @@
                 
                 for(var i = 0; i < inputs.length; i++) {
                     var inputElement = inputs.eq(i),
+                    valid = true,
                     value = inputElement.val(),
-                    required = inputElement.data('p-required');
+                    converterId = inputElement.data('p-con');
                     
-                    if(valid && required && inputElement.val() === '') {
+                    if(converterId) {
+                        try {
+                            value = PrimeFaces.converter[converterId].convert(inputElement);
+                        }
+                        catch(ce) {
+                            valid = false;
+                            exceptions.push(ce);
+                        }
+                    }
+                    
+                    if(valid && inputElement.data('p-required') && inputElement.val() === '') {
                         exceptions.push(mf.getMessage('javax.faces.component.UIInput.REQUIRED', mf.getLabel(inputElement)));
                         
                         valid = false;
@@ -81,9 +111,9 @@
                                     try {
                                         validator.validate(inputElement);
                                     }
-                                    catch(exception) {
+                                    catch(ve) {
                                         valid = false;
-                                        exceptions.push(exception);
+                                        exceptions.push(ve);
                                     }
                                 }
                             }
@@ -119,7 +149,7 @@
             
             for(var i = 0; i < exceptions.length; i++) {
                 var msg = exceptions[i];
-                messageList.append('<li><span class="ui-messages-error-summary">' + msg.summary + '</span><span class="ui-messages-error-detail">' + msg.summary + '</span></li>');
+                messageList.append('<li><span class="ui-messages-error-summary">' + msg.summary + '</span><span class="ui-messages-error-detail">' + msg.detail + '</span></li>');
             }
         }
     }
@@ -131,7 +161,7 @@
             if(bundle) {
                 var s = bundle.messages[key],
                 d = bundle.messages[key + '_detail'];
-                
+
                 s = this.format(s, arguments);
                 
                 if(d)
