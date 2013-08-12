@@ -683,6 +683,8 @@
      */
     PrimeFaces.ajax = {};
     PrimeFaces.widget = {};
+    PrimeFaces.settings = {};
+    PrimeFaces.util = {};
     PrimeFaces.widgets = {};
     
     PF = function(widgetVar) {

@@ -10,6 +10,7 @@
 
     //package
     PrimeFaces.validator = {};
+    PrimeFaces.converter = {};
     
     PrimeFaces.validator = {
         
@@ -24,7 +25,7 @@
                 length = value.length,
                 min = element.data('p-minlength'),
                 max = element.data('p-maxlength'),
-                mf = PrimeFaces.validator.MessageFactory;
+                mf = PrimeFaces.util.MessageFactory;
         
                 if(max !== undefined && length > max) {
                     throw mf.getMessage(this.MAXIMUM_MESSAGE_ID, max, mf.getLabel(element));
@@ -43,7 +44,7 @@
        
     PrimeFaces.validate = function(cfg) {
         var exceptions = [],
-        mf = PrimeFaces.validator.MessageFactory;
+        mf = PrimeFaces.util.MessageFactory;
         
         if(cfg.ajax) {
             
@@ -57,6 +58,7 @@
                 
                 for(var i = 0; i < inputs.length; i++) {
                     var inputElement = inputs.eq(i),
+                    value = inputElement.val(),
                     required = inputElement.data('p-required');
                     
                     if(valid && required && inputElement.val() === '') {
@@ -64,9 +66,9 @@
                         
                         valid = false;
                     }
-                    
+                                        
                     //validators
-                    if(valid) {
+                    if(valid && ((value !== '')||PrimeFaces.settings.validateEmptyFields)) {
                         var validatorIds = inputElement.data('p-val');
                         if(validatorIds) {
                             validatorIds = validatorIds.split(',');
@@ -101,14 +103,14 @@
         else {
             var uimessages = form.find('.ui-messages');
             if(uimessages.length) {
-                PrimeFaces.validator.MessageRenderer.render(uimessages, exceptions);
+                PrimeFaces.util.MessageRenderer.render(uimessages, exceptions);
             }
             
             return false;
         }
     }
     
-    PrimeFaces.validator.MessageRenderer = {
+    PrimeFaces.util.MessageRenderer = {
         
         render: function(element, exceptions) {
             element.html('');
@@ -122,10 +124,10 @@
         }
     }
     
-    PrimeFaces.validator.MessageFactory = {
+    PrimeFaces.util.MessageFactory = {
         
         getMessage: function(key) {
-            var bundle = PrimeFaces.locales[PrimeFaces.locale];
+            var bundle = PrimeFaces.locales[PrimeFaces.settings.locale];
             if(bundle) {
                 var s = bundle.messages[key],
                 d = bundle.messages[key + '_detail'];
