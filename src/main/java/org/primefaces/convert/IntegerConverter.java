@@ -24,7 +24,6 @@ public class IntegerConverter extends javax.faces.convert.IntegerConverter imple
     }
 
     public String getConverterId() {
-        return javax.faces.convert.IntegerConverter.CONVERTER_ID;
+        return IntegerConverter.CONVERTER_ID;
     }
-    
 }
