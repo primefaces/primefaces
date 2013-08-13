@@ -309,6 +309,13 @@
             <defaultValue>false</defaultValue>
             <description>Sticky header stays in window viewport during scrolling.</description>
 		</attribute>
+        <attribute>
+			<name>expandedRow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if row should be rendered as expanded by default.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

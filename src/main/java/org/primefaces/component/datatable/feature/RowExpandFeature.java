@@ -30,9 +30,15 @@ public class RowExpandFeature implements DataTableFeature {
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
+        
+        encodeExpansion(context, renderer, table, expandedRowIndex, true);
+        table.setRowIndex(-1);
+    }
+    
+    public void encodeExpansion(FacesContext context, DataTableRenderer renderer, DataTable table, int rowIndex, boolean hidden) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         RowExpansion rowExpansion = table.getRowExpansion();
         
@@ -41,14 +47,16 @@ public class RowExpandFeature implements DataTableFeature {
             styleClass = styleClass + " " + rowExpansion.getStyleClass();
         }
 
-        table.setRowIndex(expandedRowIndex);
+        table.setRowIndex(rowIndex);
         
         if(rowIndexVar != null) {
-            context.getExternalContext().getRequestMap().put(rowIndexVar, expandedRowIndex);
+            context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
         }
 
         writer.startElement("tr", null);
-        writer.writeAttribute("style", "display:none", null);
+        if(hidden) {
+            writer.writeAttribute("style", "display:none", null);
+        }
         writer.writeAttribute("class", styleClass, null);
 
         writer.startElement("td", null);
@@ -59,8 +67,6 @@ public class RowExpandFeature implements DataTableFeature {
         writer.endElement("td");
 
         writer.endElement("tr");
-
-        table.setRowIndex(-1);
     }
 
     public boolean shouldDecode(FacesContext context, DataTable table) {

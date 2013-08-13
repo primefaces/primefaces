@@ -33,6 +33,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.feature.DataTableFeature;
 import org.primefaces.component.datatable.feature.DataTableFeatureKey;
+import org.primefaces.component.datatable.feature.RowExpandFeature;
 import org.primefaces.component.datatable.feature.SortFeature;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
@@ -651,7 +652,6 @@ public class DataTableRenderer extends DataRenderer {
                     encodeSubTable(context, table, subTable, i, rowIndexVar);
                 }
                 else {
-
                     table.setRowIndex(i);
                     if(!table.isRowAvailable()) {
                         break;
@@ -790,6 +790,10 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         writer.endElement("tr");
+        
+        if(table.isExpandedRow()) {
+            ((RowExpandFeature) table.getFeature(DataTableFeatureKey.ROW_EXPAND)).encodeExpansion(context, this, table, rowIndex, false);
+        }
 
         return true;
     }
@@ -903,34 +907,6 @@ public class DataTableRenderer extends DataRenderer {
 		return true;
 	}
 
-    protected void encodeRowExpansion(FacesContext context, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
-        String rowIndexVar = table.getRowIndexVar();
-
-        table.setRowIndex(expandedRowIndex);
-        
-        if(rowIndexVar != null) {
-            context.getExternalContext().getRequestMap().put(rowIndexVar, expandedRowIndex);
-        }
-
-        writer.startElement("tr", null);
-        writer.writeAttribute("style", "display:none", null);
-        writer.writeAttribute("class", DataTable.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content", null);
-
-        writer.startElement("td", null);
-        writer.writeAttribute("colspan", table.getColumnsCount(), null);
-
-        table.getRowExpansion().encodeAll(context);
-
-        writer.endElement("td");
-
-        writer.endElement("tr");
-
-        table.setRowIndex(-1);
-    }
-
     protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, UIColumn column, boolean selected) throws IOException {
         String selectionMode = column.getSelectionMode();
         boolean disabled = column.isDisabledSelection();
@@ -944,7 +920,6 @@ public class DataTableRenderer extends DataRenderer {
         else {
             throw new FacesException("Invalid column selection mode:" + selectionMode);
         }
-
     }
     
     protected void encodeRadio(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {

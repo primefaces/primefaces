@@ -28,9 +28,11 @@ public class RowTogglerRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RowToggler toggler = (RowToggler) component;
+        DataTable parentTable = toggler.getParentTable(context);
+        String icon = parentTable.isExpandedRow() ? RowToggler.EXPANDED_ICON : RowToggler.COLLAPSED_ICON;
 
         writer.startElement("div", toggler);
-        writer.writeAttribute("class", DataTable.ROW_TOGGLER_CLASS + " ui-icon ui-icon-circle-triangle-e", null);
+        writer.writeAttribute("class", DataTable.ROW_TOGGLER_CLASS + " " + icon, null);
         writer.endElement("div");
     }
 }

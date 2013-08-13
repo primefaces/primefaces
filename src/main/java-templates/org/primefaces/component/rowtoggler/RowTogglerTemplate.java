@@ -1,50 +1,22 @@
-/*import javax.faces.component.UIComponent;
 import org.primefaces.component.datatable.DataTable;
 
-    public void processDecodes(FacesContext context) {
-        UIComponent expansion = getTable(context).getFacet("expansion");
+    public final static String COLLAPSED_ICON = "ui-icon ui-icon-circle-triangle-e";
+    public final static String EXPANDED_ICON = "ui-icon ui-icon-circle-triangle-s";
 
-        if(expansion != null) {
-            expansion.processDecodes(context);
-        }
-    }
+    private DataTable parentTable = null;
 
-    public void processValidators(FacesContext context) {
-        UIComponent expansion = getTable(context).getFacet("expansion");
+    public DataTable getParentTable(FacesContext context) {
+        if(parentTable == null) {
+            UIComponent parent = this.getParent();
 
-        if(expansion != null) {
-            expansion.processValidators(context);
-        }
-    }
+            while(parent != null) {
+                if(parent instanceof DataTable) {
+                    parentTable = (DataTable) parent;
+                }
 
-    public void processUpdates(FacesContext context) {
-        UIComponent expansion = getTable(context).getFacet("expansion");
-
-        if(expansion != null) {
-            expansion.processUpdates(context);
-        }
-    }
-
-    private DataTable table;
-
-    private DataTable getTable(FacesContext context) {
-        if(table == null) {
-            table = findParentTable(context);
-        }
-
-        return table;
-    }
-
-    private DataTable findParentTable(FacesContext context) {
-		UIComponent parent = this.getParent();
-
-		while(parent != null) {
-			if(parent instanceof DataTable) {
-				return (DataTable) parent;
+                parent = parent.getParent();
             }
+        }
 
-			parent = parent.getParent();
-		}
-
-		return null;
-	}*/
+        return parentTable;
+    }
