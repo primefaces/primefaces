@@ -36,6 +36,7 @@ import javax.faces.event.PreValidateEvent;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.util.ComponentUtils;
 
 public class UIData extends javax.faces.component.UIData {
@@ -717,16 +718,40 @@ public class UIData extends javax.faces.component.UIData {
                 }
                     
                 if(column.getFacetCount() > 0) {
-                    for(UIComponent columnFacet : column.getFacets().values()) {
-                        if(columnFacet.visitTree(context, callback)) {
+                    if(column instanceof Columns) {
+                        Columns columns = (Columns) column;
+                        for(int i = 0; i < columns.getRowCount(); i++) {
+                            columns.setRowIndex(i);
+                            boolean value = visitColumnFacets(context, callback, column);
+                            if(value) {
+                                return true;
+                            }
+                        }
+                        
+                        columns.setRowIndex(-1);
+                    }
+                    else {
+                        boolean value = visitColumnFacets(context, callback, column);
+                        if(value) {
                             return true;
                         }
                     }
+
                 }
                 
             }
         }
 
+        return false;
+    }
+    
+    protected boolean visitColumnFacets(VisitContext context, VisitCallback callback, UIComponent component) {
+        for(UIComponent columnFacet : component.getFacets().values()) {
+            if(columnFacet.visitTree(context, callback)) {
+                return true;
+            }
+        }
+        
         return false;
     }
     
@@ -756,13 +781,25 @@ public class UIData extends javax.faces.component.UIData {
                 for(UIComponent kid : getChildren()) {
 
                     if(requiresColumns) {
-                        if(kid.getChildCount() > 0) {
-                            for(UIComponent grandkid : kid.getChildren()) {
-                                if(grandkid.visitTree(context, callback)) {
+                        if(kid instanceof Columns) {
+                            Columns uicolumns = (Columns) kid;
+                            for(int i = 0; i < uicolumns.getRowCount(); i++) {
+                                uicolumns.setRowIndex(i);
+
+                                boolean value = visitColumnContent(context, callback, uicolumns);
+                                if(value) {
                                     return true;
                                 }
                             }
-                        }    
+
+                            uicolumns.setRowIndex(-1);
+                        }
+                        else {
+                            boolean value = visitColumnContent(context, callback, kid);
+                            if(value) {
+                                return true;
+                            }
+                        } 
                     }
                     else {
                         if(kid.visitTree(context, callback)) {
@@ -778,6 +815,18 @@ public class UIData extends javax.faces.component.UIData {
 
         }
 
+        return false;
+    }
+    
+    protected boolean visitColumnContent(VisitContext context, VisitCallback callback, UIComponent component) {
+        if(component.getChildCount() > 0) {
+            for(UIComponent grandkid : component.getChildren()) {
+                if(grandkid.visitTree(context, callback)) {
+                    return true;
+                }
+            }
+        }  
+        
         return false;
     }
     
