@@ -61,6 +61,7 @@ public class UIData extends javax.faces.component.UIData {
     private String clientId = null;
     private StringBuilder idBuilder = new StringBuilder();
     private DataModel model = null;
+    private Object oldVar = null;
     
     protected enum PropertyKeys {
         paginator
@@ -428,7 +429,13 @@ public class UIData extends javax.faces.component.UIData {
             String rowIndexVar = this.getRowIndexVar();
             Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
             
-            if(isRowAvailable()) {
+            if(rowIndex == -1) {
+                oldVar = requestMap.remove(var);
+                
+                if(rowIndexVar != null)
+                    requestMap.remove(rowIndexVar);
+            }
+            else if(isRowAvailable()) {
                 requestMap.put(var, getRowData());
                 
                 if(rowIndexVar != null)
@@ -438,7 +445,12 @@ public class UIData extends javax.faces.component.UIData {
                 requestMap.remove(var);
                 
                 if(rowIndexVar != null)
-                    requestMap.remove(rowIndexVar);
+                    requestMap.put(rowIndexVar, rowIndex);
+                
+                if(oldVar != null) {
+                    requestMap.put(var, oldVar);
+                    oldVar = null;
+                }
             }
         }
     }
