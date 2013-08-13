@@ -999,7 +999,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     
     selectRowsInRange: function(row) {
         var rows = this.tbody.children(),
-        _self = this;
+        rowMeta = this.getRowMeta(row);
+        $this = this;
        
         //unselect previously selected rows with shift
         if(this.cursorIndex) {
@@ -1007,7 +1008,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             rowsToUnselect = oldCursorIndex > this.originRowIndex ? rows.slice(this.originRowIndex, oldCursorIndex + 1) : rows.slice(oldCursorIndex, this.originRowIndex + 1);
 
             rowsToUnselect.each(function(i, item) {
-                _self.unselectRow($(item), true);
+                $this.unselectRow($(item), true);
             });
         }
 
@@ -1017,8 +1018,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         var rowsToSelect = this.cursorIndex > this.originRowIndex ? rows.slice(this.originRowIndex, this.cursorIndex + 1) : rows.slice(this.cursorIndex, this.originRowIndex + 1);
 
         rowsToSelect.each(function(i, item) {
-            _self.selectRow($(item), true);
+            $this.selectRow($(item), true);
         });
+        
+        this.fireRowSelectEvent(rowMeta.key, 'rowSelect');
     },
     
     selectRow: function(r, silent) {
