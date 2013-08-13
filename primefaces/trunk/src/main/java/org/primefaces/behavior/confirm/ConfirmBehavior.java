@@ -20,7 +20,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.BehaviorListener;
 import org.primefaces.component.api.Confirmable;
 
 public class ConfirmBehavior extends ClientBehaviorBase {
@@ -36,11 +35,7 @@ public class ConfirmBehavior extends ClientBehaviorBase {
         String source = component.getClientId(context);
         
         if(component instanceof Confirmable) {
-            String header = this.getHeader();
-            String message = this.getMessage();
-            String icon = this.getIcon();
-            String script = "PrimeFaces.confirm({source:'" + source + "',header:'" + header + "',message:'" + message + "',icon:'" + icon  + "'});return false;";
-            
+            String script = "PrimeFaces.confirm({source:'" + source + "',header:'" + getHeader() + "',message:'" + getMessage() + "',icon:'" + getIcon()  + "'});return false;";
             ((Confirmable) component).setConfirmationScript(script);
             
             return null;
