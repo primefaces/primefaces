@@ -70,6 +70,11 @@
         <validator-class>org.primefaces.validate.DoubleRangeValidator</validator-class>
     </validator>
     
+    <validator>
+        <validator-id>javax.faces.RegularExpression</validator-id>
+        <validator-class>org.primefaces.validate.RegexValidator</validator-class>
+    </validator>
+    
     <converter>
         <converter-id>javax.faces.Integer</converter-id>
         <converter-class>org.primefaces.convert.IntegerConverter</converter-class>
