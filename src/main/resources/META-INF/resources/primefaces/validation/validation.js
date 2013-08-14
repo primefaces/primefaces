@@ -25,6 +25,8 @@
             'javax.faces.converter.CharacterConverter.CHARACTER_detail': '{1}: \'{0}\' must be a valid ASCII character.',
             'javax.faces.converter.ShortConverter.SHORT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
             'javax.faces.converter.ShortConverter.SHORT_detail': '{2}: \'{0}\' must be a number between -32768 and 32767 Example: {1}',
+            'javax.faces.converter.BooleanConverter.BOOLEAN': '{1}: \'{0}\' must be \'true\' or \'false\'',
+            'javax.faces.converter.BooleanConverter.BOOLEAN_detail': '{1}: \'{0}\' must be \'true\' or \'false\'.  Any value other than \'true\' will evaluate to \'false\'.',
             'javax.faces.validator.LongRangeValidator.MAXIMUM': '{1}: Validation Error: Value is greater than allowable maximum of \'{0}\'',
             'javax.faces.validator.LongRangeValidator.MINIMUM': '{1}: Validation Error: Value is less than allowable minimum of \'{0}\'',
             'javax.faces.validator.LongRangeValidator.NOT_IN_RANGE': '{2}: Validation Error: Specified attribute is not between the expected values of {0} and {1}.',
@@ -330,6 +332,29 @@
                 
                 try {
                     return value.charAt(0);
+                }
+                catch(exception) {
+                    throw mf.getMessage(this.MESSAGE_ID, value, mf.getLabel(element));
+                }
+            }
+        },
+                
+        'javax.faces.Boolean': {
+            
+            regex: /^[-+]?\d+$/,
+                    
+            MESSAGE_ID: 'javax.faces.converter.BooleanConverter.BOOLEAN',
+            
+            convert: function(element) {
+                var value = element.val(),
+                mf = PrimeFaces.util.MessageFactory;
+        
+                if($.trim(value).length === 0) {
+                    return null;
+                }
+                
+                try {
+                    return (value === 'true' ? true : false);  
                 }
                 catch(exception) {
                     throw mf.getMessage(this.MESSAGE_ID, value, mf.getLabel(element));

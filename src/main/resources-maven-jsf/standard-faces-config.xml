@@ -120,3 +120,9 @@
         <converter-for-class>java.lang.Character</converter-for-class>
         <converter-class>org.primefaces.convert.CharacterConverter</converter-class>
     </converter>
+    
+    <converter>
+        <converter-id>javax.faces.Boolean</converter-id>
+        <converter-for-class>java.lang.Boolean</converter-for-class>
+        <converter-class>org.primefaces.convert.BooleanConverter</converter-class>
+    </converter>
