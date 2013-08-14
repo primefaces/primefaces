@@ -71,13 +71,20 @@ public class ComponentUtils {
             
             //format the value as string
             if(value != null) {
-                Converter converter = getConverter(context, component);
+                Converter converter = valueHolder.getConverter();
+                if(converter == null) {
+                    Class valueType = value.getClass();
+                    if(valueType == String.class && !RequestContext.getCurrentInstance().getApplicationContext().getConfig().isStringConverterAvailable()) {
+                        return (String) value;
+                    }
+                    
+                    converter = context.getApplication().createConverter(valueType);
+                }
                 
                 if(converter != null)
                     return converter.getAsString(context, component, value);
                 else
                     return value.toString();    //Use toString as a fallback if there is no explicit or implicit converter
-                
             }
             else {
                 //component is a value holder but has no value
