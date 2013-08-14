@@ -11,7 +11,6 @@
     PrimeFaces.locales['en_US'] = {
         messages: {
             'javax.faces.component.UIInput.REQUIRED': '{0}: Validation Error: Value is required.',
-            
             'javax.faces.converter.IntegerConverter.INTEGER': '{2}: \'{0}\' must be a number consisting of one or more digits.',
             'javax.faces.converter.IntegerConverter.INTEGER_detail': '{2}: \'{0}\' must be a number between -2147483648 and 2147483647 Example: {1}',
             'javax.faces.converter.DoubleConverter.DOUBLE': '{2}: \'{0}\' must be a number consisting of one or more digits.',
@@ -24,6 +23,8 @@
             'javax.faces.validator.DoubleRangeValidator.MINIMUM': '{1}: Validation Error: Value is less than allowable minimum of \'{0}\'',
             'javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE': '{2}: Validation Error: Specified attribute is not between the expected values of {0} and {1}',
             'javax.faces.validator.DoubleRangeValidator.TYPE={0}': 'Validation Error: Value is not of the correct type',
+            'javax.faces.converter.FloatConverter.FLOAT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
+            'javax.faces.converter.FloatConverter.FLOAT_detail': '{2}: \'{0}\' must be a number between 1.4E-45 and 3.4028235E38  Example: {1}',
             'javax.faces.validator.LengthValidator.MINIMUM': '{1}: Validation Error: Length is less than allowable minimum of \'{0}\'',
             'javax.faces.validator.LengthValidator.MAXIMUM': '{1}: Validation Error: Length is greater than allowable maximum of \'{0}\'',
             'javax.faces.validator.RegexValidator.PATTERN_NOT_SET': 'Regex pattern must be set.',
@@ -94,7 +95,7 @@
             MAXIMUM_MESSAGE_ID: 'javax.faces.validator.DoubleRangeValidator.MAXIMUM',
             NOT_IN_RANGE_MESSAGE_ID: 'javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE',
             TYPE_MESSAGE_ID: 'javax.faces.validator.DoubleRangeValidator.TYPE',
-            regex: /^[-+]?\d+(\.\d+)?$/,
+            regex: /^[-+]?\d+(\.\d+)?[d]?$/,
             
             validate: function(element, value) {
                 var min = element.data('p-minvalue'),
@@ -169,7 +170,7 @@
                 
         'javax.faces.Double': {
             
-            regex: /^[-+]?\d+(\.\d+)?$/,
+            regex: /^[-+]?\d+(\.\d+)?[d]?$/,
                     
             MESSAGE_ID: 'javax.faces.converter.DoubleConverter.DOUBLE',
             
@@ -183,6 +184,28 @@
                 
                 if(!this.regex.test(value)) {
                     throw mf.getMessage(this.MESSAGE_ID, value, 1999999, mf.getLabel(element));
+                }
+                
+                return parseFloat(value);
+            }
+        },
+                
+        'javax.faces.Float': {
+            
+            regex: /^[-+]?\d+(\.\d+)?[f]?$/,
+                    
+            MESSAGE_ID: 'javax.faces.converter.FloatConverter.FLOAT',
+            
+            convert: function(element) {
+                var value = element.val(),
+                mf = PrimeFaces.util.MessageFactory;
+        
+                if($.trim(value).length === 0) {
+                    return null;
+                }
+                
+                if(!this.regex.test(value)) {
+                    throw mf.getMessage(this.MESSAGE_ID, value, 2000000000, mf.getLabel(element));
                 }
                 
                 return parseFloat(value);

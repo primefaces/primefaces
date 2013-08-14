@@ -77,10 +77,18 @@
     
     <converter>
         <converter-id>javax.faces.Integer</converter-id>
+        <converter-for-class>java.lang.Integer</converter-for-class>
         <converter-class>org.primefaces.convert.IntegerConverter</converter-class>
     </converter>
 
     <converter>
         <converter-id>javax.faces.Double</converter-id>
+        <converter-for-class>java.lang.Double</converter-for-class>
         <converter-class>org.primefaces.convert.DoubleConverter</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-id>javax.faces.Float</converter-id>
+        <converter-for-class>java.lang.Float</converter-for-class>
+        <converter-class>org.primefaces.convert.FloatConverter</converter-class>
     </converter>
