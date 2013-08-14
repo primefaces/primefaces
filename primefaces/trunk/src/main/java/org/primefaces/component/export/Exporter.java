@@ -119,11 +119,16 @@ public abstract class Exporter {
 			if(value == null)
 				return "";
 			
-			Converter converter = ComponentUtils.getConverter(context, component);
-			if (converter != null) {
-				return converter.getAsString(context, component, value);
-			}
-
+            Converter converter = valueHolder.getConverter();
+            if(converter == null) {
+                Class valueType = value.getClass();
+                converter = context.getApplication().createConverter(valueType);
+            }
+            
+            if(converter != null) {
+                return converter.getAsString(context, component, value);
+            }
+			
 			//No converter found just return the value as string
 			return value.toString();
 		} 
