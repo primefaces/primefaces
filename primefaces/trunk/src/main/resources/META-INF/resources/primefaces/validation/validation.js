@@ -15,6 +15,12 @@
             'javax.faces.converter.IntegerConverter.INTEGER_detail': '{2}: \'{0}\' must be a number between -2147483648 and 2147483647 Example: {1}',
             'javax.faces.converter.DoubleConverter.DOUBLE': '{2}: \'{0}\' must be a number consisting of one or more digits.',
             'javax.faces.converter.DoubleConverter.DOUBLE_detail': '{2}: \'{0}\' must be a number between 4.9E-324 and 1.7976931348623157E308  Example: {1}',
+            'javax.faces.converter.BigDecimalConverter.DECIMAL': '{2}: \'{0}\' must be a signed decimal number.',
+            'javax.faces.converter.BigDecimalConverter.DECIMAL_detail': '{2}: \'{0}\' must be a signed decimal number consisting of zero or more digits, that may be followed by a decimal point and fraction.  Example: {1}',
+            'javax.faces.converter.BigIntegerConverter.BIGINTEGER': '{2}: \'{0}\' must be a number consisting of one or more digits.',
+            'javax.faces.converter.BigIntegerConverter.BIGINTEGER_detail': '{2}: \'{0}\' must be a number consisting of one or more digits. Example: {1}',
+            'javax.faces.converter.ShortConverter.SHORT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
+            'javax.faces.converter.ShortConverter.SHORT_detail': '{2}: \'{0}\' must be a number between -32768 and 32767 Example: {1}',
             'javax.faces.validator.LongRangeValidator.MAXIMUM': '{1}: Validation Error: Value is greater than allowable maximum of \'{0}\'',
             'javax.faces.validator.LongRangeValidator.MINIMUM': '{1}: Validation Error: Value is less than allowable minimum of \'{0}\'',
             'javax.faces.validator.LongRangeValidator.NOT_IN_RANGE': '{2}: Validation Error: Specified attribute is not between the expected values of {0} and {1}.',
@@ -206,6 +212,72 @@
                 
                 if(!this.regex.test(value)) {
                     throw mf.getMessage(this.MESSAGE_ID, value, 2000000000, mf.getLabel(element));
+                }
+                
+                return parseFloat(value);
+            }
+        },
+                
+        'javax.faces.Short': {
+            
+            regex: /^[-+]?\d+$/,
+                    
+            MESSAGE_ID: 'javax.faces.converter.ShortConverter.SHORT',
+            
+            convert: function(element) {
+                var value = element.val(),
+                mf = PrimeFaces.util.MessageFactory;
+        
+                if($.trim(value).length === 0) {
+                    return null;
+                }
+                
+                if(!this.regex.test(value)) {
+                    throw mf.getMessage(this.MESSAGE_ID, value, 32456, mf.getLabel(element));
+                }
+                
+                return parseInt(value);
+            }
+        },
+                
+        'javax.faces.BigInteger': {
+            
+            regex: /^[-+]?\d+$/,
+                    
+            MESSAGE_ID: 'javax.faces.converter.BigIntegerConverter.BIGINTEGER',
+            
+            convert: function(element) {
+                var value = element.val(),
+                mf = PrimeFaces.util.MessageFactory;
+        
+                if($.trim(value).length === 0) {
+                    return null;
+                }
+                
+                if(!this.regex.test(value)) {
+                    throw mf.getMessage(this.MESSAGE_ID, value, 9876, mf.getLabel(element));
+                }
+                
+                return parseInt(value);
+            }
+        },
+                
+        'javax.faces.BigDecimal': {
+            
+            regex: /^[-+]?\d+(\.\d+)?[d]?$/,
+                    
+            MESSAGE_ID: 'javax.faces.converter.BigDecimalConverter.DECIMAL',
+            
+            convert: function(element) {
+                var value = element.val(),
+                mf = PrimeFaces.util.MessageFactory;
+        
+                if($.trim(value).length === 0) {
+                    return null;
+                }
+                
+                if(!this.regex.test(value)) {
+                    throw mf.getMessage(this.MESSAGE_ID, value, 198.23, mf.getLabel(element));
                 }
                 
                 return parseFloat(value);

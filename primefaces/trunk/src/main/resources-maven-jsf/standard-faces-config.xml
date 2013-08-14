@@ -92,3 +92,19 @@
         <converter-for-class>java.lang.Float</converter-for-class>
         <converter-class>org.primefaces.convert.FloatConverter</converter-class>
     </converter>
+    
+    <converter>
+        <converter-id>javax.faces.Short</converter-id>
+        <converter-for-class>java.lang.Short</converter-for-class>
+        <converter-class>org.primefaces.convert.ShortConverter</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-for-class>java.math.BigInteger</converter-for-class>
+        <converter-class>org.primefaces.convert.BigIntegerConverter</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-for-class>java.math.BigDecimal</converter-for-class>
+        <converter-class>org.primefaces.convert.BigDecimalConverter</converter-class>
+    </converter>
