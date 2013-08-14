@@ -19,6 +19,10 @@
             'javax.faces.converter.BigDecimalConverter.DECIMAL_detail': '{2}: \'{0}\' must be a signed decimal number consisting of zero or more digits, that may be followed by a decimal point and fraction.  Example: {1}',
             'javax.faces.converter.BigIntegerConverter.BIGINTEGER': '{2}: \'{0}\' must be a number consisting of one or more digits.',
             'javax.faces.converter.BigIntegerConverter.BIGINTEGER_detail': '{2}: \'{0}\' must be a number consisting of one or more digits. Example: {1}',
+            'javax.faces.converter.ByteConverter.BYTE': '{2}: \'{0}\' must be a number between 0 and 255.',
+            'javax.faces.converter.ByteConverter.BYTE_detail': '{2}: \'{0}\' must be a number between 0 and 255.  Example: {1}',
+            'javax.faces.converter.CharacterConverter.CHARACTER': '{1}: \'{0}\' must be a valid character.',
+            'javax.faces.converter.CharacterConverter.CHARACTER_detail': '{1}: \'{0}\' must be a valid ASCII character.',
             'javax.faces.converter.ShortConverter.SHORT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
             'javax.faces.converter.ShortConverter.SHORT_detail': '{2}: \'{0}\' must be a number between -32768 and 32767 Example: {1}',
             'javax.faces.validator.LongRangeValidator.MAXIMUM': '{1}: Validation Error: Value is greater than allowable maximum of \'{0}\'',
@@ -281,6 +285,55 @@
                 }
                 
                 return parseFloat(value);
+            }
+        },
+                
+        'javax.faces.Byte': {
+            
+            regex: /^\d+$/,
+                    
+            MESSAGE_ID: 'javax.faces.converter.ByteConverter.BYTE',
+            
+            convert: function(element) {
+                var value = element.val(),
+                mf = PrimeFaces.util.MessageFactory;
+        
+                if($.trim(value).length === 0) {
+                    return null;
+                }
+                
+                if(!this.regex.test(value)) {
+                    throw mf.getMessage(this.MESSAGE_ID, value, 9346, mf.getLabel(element));
+                }
+                else {
+                    var byteValue = parseInt(value);
+                    
+                    if(byteValue < 0 || byteValue > 255)
+                        throw mf.getMessage(this.MESSAGE_ID, value, 9346, mf.getLabel(element));
+                    else
+                        return byteValue;
+                }
+            }
+        },
+                
+        'javax.faces.Character': {
+                                
+            MESSAGE_ID: 'javax.faces.converter.CharacterConverter.CHARACTER',
+            
+            convert: function(element) {
+                var value = element.val(),
+                mf = PrimeFaces.util.MessageFactory;
+        
+                if($.trim(value).length === 0) {
+                    return null;
+                }
+                
+                try {
+                    return value.charAt(0);
+                }
+                catch(exception) {
+                    throw mf.getMessage(this.MESSAGE_ID, value, mf.getLabel(element));
+                }
             }
         }
     };

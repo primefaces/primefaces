@@ -108,3 +108,15 @@
         <converter-for-class>java.math.BigDecimal</converter-for-class>
         <converter-class>org.primefaces.convert.BigDecimalConverter</converter-class>
     </converter>
+    
+    <converter>
+        <converter-id>javax.faces.Byte</converter-id>
+        <converter-for-class>java.lang.Byte</converter-for-class>
+        <converter-class>org.primefaces.convert.ByteConverter</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-id>javax.faces.Character</converter-id>
+        <converter-for-class>java.lang.Character</converter-for-class>
+        <converter-class>org.primefaces.convert.CharacterConverter</converter-class>
+    </converter>
