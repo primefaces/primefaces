@@ -26,6 +26,12 @@
             'javax.faces.validator.DoubleRangeValidator.TYPE={0}': 'Validation Error: Value is not of the correct type',
             'javax.faces.validator.LengthValidator.MINIMUM': '{1}: Validation Error: Length is less than allowable minimum of \'{0}\'',
             'javax.faces.validator.LengthValidator.MAXIMUM': '{1}: Validation Error: Length is greater than allowable maximum of \'{0}\'',
+            'javax.faces.validator.RegexValidator.PATTERN_NOT_SET': 'Regex pattern must be set.',
+            'javax.faces.validator.RegexValidator.PATTERN_NOT_SET_detail': 'Regex pattern must be set to non-empty value.',
+            'javax.faces.validator.RegexValidator.NOT_MATCHED': 'Regex Pattern not matched',
+            'javax.faces.validator.RegexValidator.NOT_MATCHED_detail': 'Regex pattern of \'{0}\' not matched',
+            'javax.faces.validator.RegexValidator.MATCH_EXCEPTION': 'Error in regular expression.',
+            'javax.faces.validator.RegexValidator.MATCH_EXCEPTION_detail': 'Error in regular expression, \'{0}\''
         }
     };
    
@@ -107,6 +113,31 @@
                 }
                 else if((min !== undefined && max === undefined) && (value < min)) {
                     throw mf.getMessage(this.MINIMUM_MESSAGE_ID, min, mf.getLabel(element));
+                }
+            }
+        },
+                
+        'javax.faces.RegularExpression': {
+            
+            PATTERN_NOT_SET_MESSAGE_ID: 'javax.faces.validator.RegexValidator.PATTERN_NOT_SET',
+            NOT_MATCHED_MESSAGE_ID: 'javax.faces.validator.RegexValidator.NOT_MATCHED',
+            MATCH_EXCEPTION_MESSAGE_ID: 'javax.faces.validator.RegexValidator.MATCH_EXCEPTION',
+            
+            validate: function(element, value) {
+                if(!value) {
+                    return;
+                }
+        
+                var pattern = element.data('p-regex'),
+                mf = PrimeFaces.util.MessageFactory;
+                
+                if(!pattern) {
+                    throw mf.getMessage(this.PATTERN_NOT_SET_MESSAGE_ID);
+                }
+                
+                var regex = new RegExp(pattern);
+                if(!regex.test(value)) {
+                    throw mf.getMessage(this.NOT_MATCHED_MESSAGE_ID, pattern);
                 }
             }
         }

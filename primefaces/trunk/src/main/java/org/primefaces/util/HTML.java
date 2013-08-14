@@ -193,5 +193,6 @@ public class HTML {
         public static final String MAX_VALUE = "data-p-maxvalue";
         public static final String VALIDATOR_IDS = "data-p-val";
         public static final String CONVERTER = "data-p-con";
+        public static final String REGEX = "data-p-regex";
     }
 }
