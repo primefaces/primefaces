@@ -17,11 +17,9 @@ package org.primefaces.component.export;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.el.MethodExpression;
-import javax.el.ValueExpression;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
@@ -32,7 +30,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.util.ComponentUtils;
 
 public abstract class Exporter {
 	    
