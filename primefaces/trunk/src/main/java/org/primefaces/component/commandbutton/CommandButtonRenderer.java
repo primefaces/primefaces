@@ -22,8 +22,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+import org.primefaces.context.RequestContext;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -59,6 +61,8 @@ public class CommandButtonRenderer extends CoreRenderer {
 		String type = button.getType();
         Object value = button.getValue();
         String icon = button.resolveIcon();
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled();
         
         StringBuilder onclick = new StringBuilder();
         if(button.getOnclick() != null) {
@@ -77,8 +81,9 @@ public class CommandButtonRenderer extends CoreRenderer {
 
 		if(!type.equals("reset") && !type.equals("button")) {
             String request;
+            boolean ajax = button.isAjax();
 			
-            if(button.isAjax()) {
+            if(ajax) {
                  request = buildAjaxRequest(context, button, null);
             }
             else {
@@ -88,6 +93,11 @@ public class CommandButtonRenderer extends CoreRenderer {
                 }
                 
                 request = buildNonAjaxRequest(context, button, form, null, false);
+            }
+            
+            if(csvEnabled) {
+                CSVBuilder csvb = requestContext.getCSVBuilder();
+                request = csvb.init().source("this").ajax(ajax).process(button, button.getProcess()).command(request).build();
             }
 			
             onclick.append(request);

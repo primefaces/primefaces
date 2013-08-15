@@ -409,68 +409,28 @@
     }
        
     PrimeFaces.validate = function(cfg) {
-        var exceptions = [],
-        mf = PrimeFaces.util.MessageFactory;
+        var exceptions,
+        form = $(cfg.s).closest('form');
         
-        if(cfg.ajax) {
-            
-        }
-        else {
-            var form = $(cfg.source).closest('form');
-            
-            if(form.length) {
-                var inputs = form.find(':input:visible:enabled:not(:button)'),
-                valid = true;
-                
-                for(var i = 0; i < inputs.length; i++) {
-                    var inputElement = inputs.eq(i),
-                    submittedValue = inputElement.val(),
-                    value = submittedValue,
-                    valid = true,
-                    converterId = inputElement.data('p-con');
-                    
-                    if(converterId) {
-                        try {
-                            value = PrimeFaces.converter[converterId].convert(inputElement);
-                        }
-                        catch(ce) {
-                            valid = false;
-                            exceptions.push(ce);
-                        }
-                    }
-                    
-                    if(valid && inputElement.data('p-required') && submittedValue === '') {
-                        exceptions.push(mf.getMessage('javax.faces.component.UIInput.REQUIRED', mf.getLabel(inputElement)));
-                        valid = false;
-                    }
-                                        
-                    if(valid && ((submittedValue !== '')||PrimeFaces.settings.validateEmptyFields)) {
-                        var validatorIds = inputElement.data('p-val');
-                        if(validatorIds) {
-                            validatorIds = validatorIds.split(',');
-
-                            for(var j = 0; j < validatorIds.length; j++) {
-                                var validatorId = validatorIds[j],
-                                validator = PrimeFaces.validator[validatorId];
-
-                                if(validator) {
-                                    try {
-                                        validator.validate(inputElement, value);
-                                    }
-                                    catch(ve) {
-                                        valid = false;
-                                        exceptions.push(ve);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    
-                    if(!valid) {
-                        inputElement.addClass('ui-state-error');
-                    }
+        if(cfg.a && cfg.p) {
+            var clientIds = PrimeFaces.Expressions.resolveComponents(cfg.p),
+            inputs = $();
+    
+            for(var i = 0; i < clientIds.length; i++) {
+                if(clientIds[i]) {
+                    var component = $(PrimeFaces.escapeClientId(clientIds[i]));
+                    if(component.is(':input'))
+                        inputs = inputs.add(component);
+                    else
+                        inputs = inputs.add(component.find(':input:visible:enabled:not(:button)'));
                 }
             }
+            
+            exceptions = this.validateInputs(inputs);
+        }
+        else {
+            var inputs = form.find(':input:visible:enabled:not(:button)');
+            exceptions = this.validateComponents(inputs);
         }
         
         if(exceptions.length === 0) {
@@ -484,6 +444,62 @@
             
             return false;
         }
+    }
+    
+    PrimeFaces.validateInputs = function(inputs) {
+        var exceptions = [],
+        mf = PrimeFaces.util.MessageFactory;
+
+        for(var i = 0; i < inputs.length; i++) {
+            var inputElement = inputs.eq(i),
+            submittedValue = inputElement.val(),
+            value = submittedValue,
+            valid = true,
+            converterId = inputElement.data('p-con');
+
+            if(converterId) {
+                try {
+                    value = PrimeFaces.converter[converterId].convert(inputElement);
+                }
+                catch(ce) {
+                    valid = false;
+                    exceptions.push(ce);
+                }
+            }
+
+            if(valid && inputElement.data('p-required') && submittedValue === '') {
+                exceptions.push(mf.getMessage('javax.faces.component.UIInput.REQUIRED', mf.getLabel(inputElement)));
+                valid = false;
+            }
+
+            if(valid && ((submittedValue !== '')||PrimeFaces.settings.validateEmptyFields)) {
+                var validatorIds = inputElement.data('p-val');
+                if(validatorIds) {
+                    validatorIds = validatorIds.split(',');
+
+                    for(var j = 0; j < validatorIds.length; j++) {
+                        var validatorId = validatorIds[j],
+                        validator = PrimeFaces.validator[validatorId];
+
+                        if(validator) {
+                            try {
+                                validator.validate(inputElement, value);
+                            }
+                            catch(ve) {
+                                valid = false;
+                                exceptions.push(ve);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(!valid) {
+                inputElement.addClass('ui-state-error');
+            }
+        }
+        
+        return exceptions;
     }
     
     PrimeFaces.util.MessageRenderer = {
