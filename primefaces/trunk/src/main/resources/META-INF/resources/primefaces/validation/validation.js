@@ -462,13 +462,18 @@
                     value = PrimeFaces.converter[converterId].convert(inputElement);
                 }
                 catch(ce) {
+                    var converterMessageStr = inputElement.data('p-cmsg'),
+                    converterMsg = (converterMessageStr) ? {summary:converterMessageStr,detail:converterMessageStr} : ce;
                     valid = false;
-                    exceptions.push(ce);
+                    exceptions.push(converterMsg);
                 }
             }
 
             if(valid && inputElement.data('p-required') && submittedValue === '') {
-                exceptions.push(mf.getMessage('javax.faces.component.UIInput.REQUIRED', mf.getLabel(inputElement)));
+                var requiredMessageStr = inputElement.data('p-rmsg'),
+                requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : mf.getMessage('javax.faces.component.UIInput.REQUIRED', mf.getLabel(inputElement));
+                exceptions.push(requiredMsg);
+
                 valid = false;
             }
 
@@ -486,8 +491,10 @@
                                 validator.validate(inputElement, value);
                             }
                             catch(ve) {
+                                var validatorMessageStr = inputElement.data('p-vmsg'),
+                                validatorMsg = (validatorMessageStr) ? {summary:validatorMessageStr,detail:validatorMessageStr} : ve;
                                 valid = false;
-                                exceptions.push(ve);
+                                exceptions.push(validatorMsg);
                             }
                         }
                     }
