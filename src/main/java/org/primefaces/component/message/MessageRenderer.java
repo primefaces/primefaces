@@ -39,6 +39,7 @@ public class MessageRenderer extends UINotificationRenderer {
         String display = uiMessage.getDisplay();
         boolean iconOnly = display.equals("icon");
         boolean escape = uiMessage.isEscape();
+        String styleClass = "ui-message";
 			
 		Iterator<FacesMessage> msgs = context.getMessages(targetClientId);
 
@@ -56,6 +57,7 @@ public class MessageRenderer extends UINotificationRenderer {
             String severityName = getSeverityName(msg);
 			
 			if(!shouldRender(uiMessage, msg, severityName)) {
+                writer.writeAttribute("class", styleClass, null);
 				writer.endElement("div");
                 
 				return;
@@ -69,12 +71,13 @@ public class MessageRenderer extends UINotificationRenderer {
 				else if(severity.equals(FacesMessage.SEVERITY_WARN)) severityKey = "warn";
 				else if(severity.equals(FacesMessage.SEVERITY_FATAL))  severityKey = "fatal";
 
-                String styleClass = "ui-message-" + severityKey + " ui-widget ui-corner-all";
+                styleClass += " ui-message-" + severityKey + " ui-widget ui-corner-all";
+                
                 if(iconOnly) {
-                    styleClass = styleClass + " ui-message-icon-only ui-helper-clearfix";
+                    styleClass +=  " ui-message-icon-only ui-helper-clearfix";
                 }
 					
-				writer.writeAttribute("class",styleClass , null);
+				writer.writeAttribute("class", styleClass , null);
 
                 if(!display.equals("text")) {
                     encodeIcon(writer, severityKey, msg.getDetail(), iconOnly);
@@ -90,6 +93,9 @@ public class MessageRenderer extends UINotificationRenderer {
 				msg.rendered();
 			}
 		}
+        else {
+            writer.writeAttribute("class", styleClass, null);
+        }
 		
 		writer.endElement("div");
 	}

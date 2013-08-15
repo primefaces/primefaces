@@ -433,14 +433,11 @@
             this.validateInputs(inputs);
         }
         
-        if(mc.isEmpty() === 0) {
+        if(mc.isEmpty()) {
             return true;
         }
         else {
-            var uimessages = form.find('.ui-messages');
-            if(uimessages.length) {
-                mc.renderMessages(uimessages);
-            }
+            mc.renderMessages(form.find('div.ui-messages'), form.find('div.ui-message'));
             
             return false;
         }
@@ -501,9 +498,10 @@
                 }
             }
 
-            if(!valid) {
+            if(!valid)
                 inputElement.addClass('ui-state-error');
-            }
+            else
+                inputElement.removeClass('ui-state-error');
         }
     }
     
@@ -555,31 +553,50 @@
             return (element.data('p-label')||element.attr('id'))
         },
         
-        renderMessages: function(element) {
-            if(!element.data('global')) {        
-                element.html('');
-                element.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
-                
-                var messageList = element.find('> .ui-messages-error > ul'),
-                showSummary = element.data('summary'),
-                showDetail = element.data('detail');
-        
-                for(var clientId in this.messages) {
-                    var msgs = this.messages[clientId];
-                    
-                    for(var i = 0; i < msgs.length; i++) {
+        renderMessages: function(uiMessages, uiMessageCollection) {
+            var shouldRenderUIMessages = uiMessages.length&&!uiMessages.data('global');
+            if(shouldRenderUIMessages) {
+                uiMessages.html('');
+                uiMessages.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
+            }
+
+            var messageList = uiMessages.find('> .ui-messages-error > ul'),
+            showSummary = uiMessages.data('summary'),
+            showDetail = uiMessages.data('detail');
+
+            for(var clientId in this.messages) {
+                var msgs = this.messages[clientId],
+                uiMessage = this.findUIMessage(clientId, uiMessageCollection);
+
+                for(var i = 0; i < msgs.length; i++) {
+                    if(shouldRenderUIMessages) {        
                         var msg = msgs[i],
-                        message = $('<li></li>');
+                        msgItem = $('<li></li>');
 
-                        if(showSummary) {
-                            message.append('<span class="ui-messages-error-summary">' + msg.summary + '</span>');
+                        if(showSummary)
+                            msgItem.append('<span class="ui-messages-error-summary">' + msg.summary + '</span>');
+
+                        if(showDetail)
+                            msgItem.append('<span class="ui-messages-error-detail">' + msg.detail + '</span>');
+
+                        messageList.append(msgItem);                    
+                    }
+                    
+                    if(uiMessage.length) {
+                        uiMessage.html('').addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
+                        var display = uiMessage.data('display');
+                        
+                        if(display === 'both') {
+                            uiMessage.append('<span class="ui-message-error-icon"></span>')
+                                .append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
+                        } 
+                        else if(display === 'text') {
+                            uiMessage.append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
+                        } 
+                        else if(display === 'icon') {
+                            uiMessage.addClass('ui-message-icon-only')
+                                    .append('<span class="ui-message-error-icon" title="' + msg.detail + '"></span>');
                         }
-
-                        if(showDetail) {
-                            message.append('<span class="ui-messages-error-detail">' + msg.detail + '</span>');
-                        }
-
-                        messageList.append(message);
                     }
                 }
             }
@@ -587,30 +604,14 @@
             this.clear();
         },
                 
-        renderUIMessage: function(element, exceptions) {
-            if(!element.data('global')) {        
-                element.html('');
-                element.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
-                
-                var messageList = element.find('> .ui-messages-error > ul'),
-                showSummary = element.data('summary'),
-                showDetail = element.data('detail');
-
-                for(var i = 0; i < exceptions.length; i++) {
-                    var exception = exceptions[i],
-                    message = $('<li></li>');
-                    
-                    if(showSummary) {
-                        message.append('<span class="ui-messages-error-summary">' + exception.summary + '</span>');
-                    }
-                    
-                    if(showDetail) {
-                        message.append('<span class="ui-messages-error-detail">' + exception.detail + '</span>');
-                    }
-
-                    messageList.append(message);
-                }
+        findUIMessage: function(clientId, uiMessageCollection) {
+            for(var i = 0; i < uiMessageCollection.length; i++) {
+                var uiMessage = uiMessageCollection.eq(i);
+                if(uiMessage.data('target') === clientId)
+                    return uiMessage;
             }
+            
+            return null;
         },
                 
         getMessagesLength: function() {
