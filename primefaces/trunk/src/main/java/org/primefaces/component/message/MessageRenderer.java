@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.context.RequestContext;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.UINotificationRenderer;
@@ -34,15 +35,21 @@ public class MessageRenderer extends UINotificationRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		Message uiMessage = (Message) component;
 		UIComponent target = SearchExpressionFacade.resolveComponent(context, uiMessage, uiMessage.getFor());
+        String targetClientId = target.getClientId(context);
         String display = uiMessage.getDisplay();
         boolean iconOnly = display.equals("icon");
         boolean escape = uiMessage.isEscape();
 			
-		Iterator<FacesMessage> msgs = context.getMessages(target.getClientId(context));
+		Iterator<FacesMessage> msgs = context.getMessages(targetClientId);
 
 		writer.startElement("div", uiMessage);
 		writer.writeAttribute("id", uiMessage.getClientId(context), null);
         writer.writeAttribute("aria-live", "polite", null);
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            writer.writeAttribute("data-display", display, null);
+            writer.writeAttribute("data-target", targetClientId, null);
+        }
 		
 		if(msgs.hasNext()) {
 			FacesMessage msg = msgs.next();

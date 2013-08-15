@@ -67,14 +67,14 @@
                 var length = element.val().length,
                 min = element.data('p-minlength'),
                 max = element.data('p-maxlength'),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
                 
                 if(max !== undefined && length > max) {
-                    throw mf.getMessage(this.MAXIMUM_MESSAGE_ID, max, mf.getLabel(element));
+                    throw mc.getMessage(this.MAXIMUM_MESSAGE_ID, max, mc.getLabel(element));
                 }
                 
                 if(min !== undefined && length < min) {
-                    throw mf.getMessage(this.MINIMUM_MESSAGE_ID, min, mf.getLabel(element));
+                    throw mc.getMessage(this.MINIMUM_MESSAGE_ID, min, mc.getLabel(element));
                 }
             }
         },
@@ -90,20 +90,20 @@
             validate: function(element, value) {
                 var min = element.data('p-minvalue'),
                 max = element.data('p-maxvalue'),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
         
                 if(!this.regex.test(element.val())) {
-                    throw mf.getMessage(this.TYPE_MESSAGE_ID, mf.getLabel(element));
+                    throw mc.getMessage(this.TYPE_MESSAGE_ID, mc.getLabel(element));
                 }
         
                 if((max !== undefined && min !== undefined) && (value < min || value > max)) {
-                    throw mf.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, mf.getLabel(element));
+                    throw mc.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, mc.getLabel(element));
                 }
                 else if((max !== undefined && min === undefined) && (value > max)) {
-                    throw mf.getMessage(this.MAXIMUM_MESSAGE_ID, max, mf.getLabel(element));
+                    throw mc.getMessage(this.MAXIMUM_MESSAGE_ID, max, mc.getLabel(element));
                 }
                 else if((min !== undefined && max === undefined) && (value < min)) {
-                    throw mf.getMessage(this.MINIMUM_MESSAGE_ID, min, mf.getLabel(element));
+                    throw mc.getMessage(this.MINIMUM_MESSAGE_ID, min, mc.getLabel(element));
                 }
             }
         },
@@ -119,20 +119,20 @@
             validate: function(element, value) {
                 var min = element.data('p-minvalue'),
                 max = element.data('p-maxvalue'),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
         
                 if(!this.regex.test(element.val())) {
-                    throw mf.getMessage(this.TYPE_MESSAGE_ID, mf.getLabel(element));
+                    throw mc.getMessage(this.TYPE_MESSAGE_ID, mc.getLabel(element));
                 }
         
                 if((max !== undefined && min !== undefined) && (value < min || value > max)) {
-                    throw mf.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, mf.getLabel(element));
+                    throw mc.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, mc.getLabel(element));
                 }
                 else if((max !== undefined && min === undefined) && (value > max)) {
-                    throw mf.getMessage(this.MAXIMUM_MESSAGE_ID, max, mf.getLabel(element));
+                    throw mc.getMessage(this.MAXIMUM_MESSAGE_ID, max, mc.getLabel(element));
                 }
                 else if((min !== undefined && max === undefined) && (value < min)) {
-                    throw mf.getMessage(this.MINIMUM_MESSAGE_ID, min, mf.getLabel(element));
+                    throw mc.getMessage(this.MINIMUM_MESSAGE_ID, min, mc.getLabel(element));
                 }
             }
         },
@@ -149,15 +149,15 @@
                 }
         
                 var pattern = element.data('p-regex'),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
                 
                 if(!pattern) {
-                    throw mf.getMessage(this.PATTERN_NOT_SET_MESSAGE_ID);
+                    throw mc.getMessage(this.PATTERN_NOT_SET_MESSAGE_ID);
                 }
                 
                 var regex = new RegExp(pattern);
                 if(!regex.test(value)) {
-                    throw mf.getMessage(this.NOT_MATCHED_MESSAGE_ID, pattern);
+                    throw mc.getMessage(this.NOT_MATCHED_MESSAGE_ID, pattern);
                 }
             }
         }
@@ -173,14 +173,14 @@
             
             convert: function(element) {
                 var value = element.val(),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
         
                 if($.trim(value).length === 0) {
                     return null;
                 }
                 
                 if(!this.regex.test(value)) {
-                    throw mf.getMessage(this.MESSAGE_ID, value, 9346, mf.getLabel(element));
+                    throw mc.getMessage(this.MESSAGE_ID, value, 9346, mc.getLabel(element));
                 }
                 
                 return parseInt(value);
@@ -195,14 +195,14 @@
             
             convert: function(element) {
                 var value = element.val(),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
         
                 if($.trim(value).length === 0) {
                     return null;
                 }
                 
                 if(!this.regex.test(value)) {
-                    throw mf.getMessage(this.MESSAGE_ID, value, 1999999, mf.getLabel(element));
+                    throw mc.getMessage(this.MESSAGE_ID, value, 1999999, mc.getLabel(element));
                 }
                 
                 return parseFloat(value);
@@ -217,14 +217,14 @@
             
             convert: function(element) {
                 var value = element.val(),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
         
                 if($.trim(value).length === 0) {
                     return null;
                 }
                 
                 if(!this.regex.test(value)) {
-                    throw mf.getMessage(this.MESSAGE_ID, value, 2000000000, mf.getLabel(element));
+                    throw mc.getMessage(this.MESSAGE_ID, value, 2000000000, mc.getLabel(element));
                 }
                 
                 return parseFloat(value);
@@ -239,14 +239,14 @@
             
             convert: function(element) {
                 var value = element.val(),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
         
                 if($.trim(value).length === 0) {
                     return null;
                 }
                 
                 if(!this.regex.test(value)) {
-                    throw mf.getMessage(this.MESSAGE_ID, value, 32456, mf.getLabel(element));
+                    throw mc.getMessage(this.MESSAGE_ID, value, 32456, mc.getLabel(element));
                 }
                 
                 return parseInt(value);
@@ -261,14 +261,14 @@
             
             convert: function(element) {
                 var value = element.val(),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
         
                 if($.trim(value).length === 0) {
                     return null;
                 }
                 
                 if(!this.regex.test(value)) {
-                    throw mf.getMessage(this.MESSAGE_ID, value, 9876, mf.getLabel(element));
+                    throw mc.getMessage(this.MESSAGE_ID, value, 9876, mc.getLabel(element));
                 }
                 
                 return parseInt(value);
@@ -283,14 +283,14 @@
             
             convert: function(element) {
                 var value = element.val(),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
         
                 if($.trim(value).length === 0) {
                     return null;
                 }
                 
                 if(!this.regex.test(value)) {
-                    throw mf.getMessage(this.MESSAGE_ID, value, 198.23, mf.getLabel(element));
+                    throw mc.getMessage(this.MESSAGE_ID, value, 198.23, mc.getLabel(element));
                 }
                 
                 return parseFloat(value);
@@ -305,20 +305,20 @@
             
             convert: function(element) {
                 var value = element.val(),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
         
                 if($.trim(value).length === 0) {
                     return null;
                 }
                 
                 if(!this.regex.test(value)) {
-                    throw mf.getMessage(this.MESSAGE_ID, value, 9346, mf.getLabel(element));
+                    throw mc.getMessage(this.MESSAGE_ID, value, 9346, mc.getLabel(element));
                 }
                 else {
                     var byteValue = parseInt(value);
                     
                     if(byteValue < 0 || byteValue > 255)
-                        throw mf.getMessage(this.MESSAGE_ID, value, 9346, mf.getLabel(element));
+                        throw mc.getMessage(this.MESSAGE_ID, value, 9346, mc.getLabel(element));
                     else
                         return byteValue;
                 }
@@ -331,7 +331,7 @@
             
             convert: function(element) {
                 var value = element.val(),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
         
                 if($.trim(value).length === 0) {
                     return null;
@@ -341,7 +341,7 @@
                     return value.charAt(0);
                 }
                 catch(exception) {
-                    throw mf.getMessage(this.MESSAGE_ID, value, mf.getLabel(element));
+                    throw mc.getMessage(this.MESSAGE_ID, value, mc.getLabel(element));
                 }
             }
         },
@@ -354,7 +354,7 @@
             
             convert: function(element) {
                 var value = element.val(),
-                mf = PrimeFaces.util.MessageFactory;
+                mc = PrimeFaces.util.MessageContext;
         
                 if($.trim(value).length === 0) {
                     return null;
@@ -364,7 +364,7 @@
                     return (value === 'true' ? true : false);  
                 }
                 catch(exception) {
-                    throw mf.getMessage(this.MESSAGE_ID, value, mf.getLabel(element));
+                    throw mc.getMessage(this.MESSAGE_ID, value, mc.getLabel(element));
                 }
             }
         },
@@ -377,7 +377,7 @@
             
             convert: function(element) {
                 var value = element.val(),
-                mf = PrimeFaces.util.MessageFactory,
+                mc = PrimeFaces.util.MessageContext,
                 pattern = element.data('p-pattern'),
                 type = element.data('p-dttype');
         
@@ -394,11 +394,11 @@
                     var now = $.datepicker.formatDate(pattern, new Date(), locale);
                     
                     if(type === 'date')
-                        throw mf.getMessage(this.DATE_ID, value, now, mf.getLabel(element));
+                        throw mc.getMessage(this.DATE_ID, value, now, mc.getLabel(element));
                     else if(type === 'time')
-                        throw mf.getMessage(this.TIME_ID, value, now, mf.getLabel(element));
+                        throw mc.getMessage(this.TIME_ID, value, now, mc.getLabel(element));
                     else if(type === 'both')
-                        throw mf.getMessage(this.DATETIME_ID, value, now, mf.getLabel(element));
+                        throw mc.getMessage(this.DATETIME_ID, value, now, mc.getLabel(element));
                 }
             }
         }
@@ -409,7 +409,7 @@
     }
        
     PrimeFaces.validate = function(cfg) {
-        var exceptions,
+        var mc = PrimeFaces.util.MessageContext,
         form = $(cfg.s).closest('form');
         
         if(cfg.a && cfg.p) {
@@ -426,20 +426,20 @@
                 }
             }
             
-            exceptions = this.validateInputs(inputs);
+            this.validateInputs(inputs);
         }
         else {
             var inputs = form.find(':input:visible:enabled:not(:button)');
-            exceptions = this.validateInputs(inputs);
+            this.validateInputs(inputs);
         }
         
-        if(exceptions.length === 0) {
+        if(mc.isEmpty() === 0) {
             return true;
         }
         else {
             var uimessages = form.find('.ui-messages');
             if(uimessages.length) {
-                PrimeFaces.util.MessageRenderer.render(uimessages, exceptions);
+                mc.renderMessages(uimessages);
             }
             
             return false;
@@ -447,12 +447,12 @@
     }
     
     PrimeFaces.validateInputs = function(inputs) {
-        var exceptions = [],
-        mf = PrimeFaces.util.MessageFactory;
+        var mc = PrimeFaces.util.MessageContext;
 
         for(var i = 0; i < inputs.length; i++) {
             var inputElement = inputs.eq(i),
             submittedValue = inputElement.val(),
+            clientId = inputElement.attr('id'),
             value = submittedValue,
             valid = true,
             converterId = inputElement.data('p-con');
@@ -465,14 +465,14 @@
                     var converterMessageStr = inputElement.data('p-cmsg'),
                     converterMsg = (converterMessageStr) ? {summary:converterMessageStr,detail:converterMessageStr} : ce;
                     valid = false;
-                    exceptions.push(converterMsg);
+                    mc.addMessage(clientId, converterMsg);
                 }
             }
 
             if(valid && inputElement.data('p-required') && submittedValue === '') {
                 var requiredMessageStr = inputElement.data('p-rmsg'),
-                requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : mf.getMessage('javax.faces.component.UIInput.REQUIRED', mf.getLabel(inputElement));
-                exceptions.push(requiredMsg);
+                requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : mc.getMessage('javax.faces.component.UIInput.REQUIRED', mc.getLabel(inputElement));
+                mc.addMessage(clientId, requiredMsg);
 
                 valid = false;
             }
@@ -494,7 +494,7 @@
                                 var validatorMessageStr = inputElement.data('p-vmsg'),
                                 validatorMsg = (validatorMessageStr) ? {summary:validatorMessageStr,detail:validatorMessageStr} : ve;
                                 valid = false;
-                                exceptions.push(validatorMsg);
+                                mc.addMessage(clientId, validatorMsg);
                             }
                         }
                     }
@@ -505,40 +505,19 @@
                 inputElement.addClass('ui-state-error');
             }
         }
-        
-        return exceptions;
     }
     
-    PrimeFaces.util.MessageRenderer = {
+    PrimeFaces.util.MessageContext = {
         
-        render: function(element, exceptions) {
-            if(!element.data('global')) {        
-                element.html('');
-                element.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
-                
-                var messageList = element.find('> .ui-messages-error > ul'),
-                showSummary = element.data('summary'),
-                showDetail = element.data('detail');
-
-                for(var i = 0; i < exceptions.length; i++) {
-                    var exception = exceptions[i],
-                    message = $('<li></li>');
-                    
-                    if(showSummary) {
-                        message.append('<span class="ui-messages-error-summary">' + exception.summary + '</span>');
-                    }
-                    
-                    if(showDetail) {
-                        message.append('<span class="ui-messages-error-detail">' + exception.detail + '</span>');
-                    }
-
-                    messageList.append(message);
-                }
+        messages: {},
+       
+        addMessage: function(id, msg) {
+            if(!this.messages[id]) {
+                this.messages[id] = [];
             }
-        }
-    }
-    
-    PrimeFaces.util.MessageFactory = {
+
+            this.messages[id].push(msg);
+        },
         
         getMessage: function(key) {
             var bundle = PrimeFaces.locales[PrimeFaces.settings.locale];
@@ -574,7 +553,84 @@
                 
         getLabel: function(element) {
             return (element.data('p-label')||element.attr('id'))
+        },
+        
+        renderMessages: function(element) {
+            if(!element.data('global')) {        
+                element.html('');
+                element.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
+                
+                var messageList = element.find('> .ui-messages-error > ul'),
+                showSummary = element.data('summary'),
+                showDetail = element.data('detail');
+        
+                for(var clientId in this.messages) {
+                    var msgs = this.messages[clientId];
+                    
+                    for(var i = 0; i < msgs.length; i++) {
+                        var msg = msgs[i],
+                        message = $('<li></li>');
+
+                        if(showSummary) {
+                            message.append('<span class="ui-messages-error-summary">' + msg.summary + '</span>');
+                        }
+
+                        if(showDetail) {
+                            message.append('<span class="ui-messages-error-detail">' + msg.detail + '</span>');
+                        }
+
+                        messageList.append(message);
+                    }
+                }
+            }
+            
+            this.clear();
+        },
+                
+        renderUIMessage: function(element, exceptions) {
+            if(!element.data('global')) {        
+                element.html('');
+                element.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
+                
+                var messageList = element.find('> .ui-messages-error > ul'),
+                showSummary = element.data('summary'),
+                showDetail = element.data('detail');
+
+                for(var i = 0; i < exceptions.length; i++) {
+                    var exception = exceptions[i],
+                    message = $('<li></li>');
+                    
+                    if(showSummary) {
+                        message.append('<span class="ui-messages-error-summary">' + exception.summary + '</span>');
+                    }
+                    
+                    if(showDetail) {
+                        message.append('<span class="ui-messages-error-detail">' + exception.detail + '</span>');
+                    }
+
+                    messageList.append(message);
+                }
+            }
+        },
+                
+        getMessagesLength: function() {
+            var length = 0, key;
+            
+            for(key in this.messages) {
+                if(this.messages.hasOwnProperty(key)) 
+                    length++;
+            }
+            
+            return length;
+        },
+                
+        isEmpty: function() {
+            return this.getMessagesLength() === 0;
+        },
+                
+        clear: function() {
+            this.messages = {};
         }
-    };
+    }
 
 })(PrimeFaces);
