@@ -567,12 +567,13 @@
             for(var clientId in this.messages) {
                 var msgs = this.messages[clientId],
                 uiMessage = this.findUIMessage(clientId, uiMessageCollection);
-                uiMessage.html('');
+                uiMessage.html('').removeClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
 
                 for(var i = 0; i < msgs.length; i++) {
+                    var msg = msgs[i];
+                    
                     if(shouldRenderUIMessages) {        
-                        var msg = msgs[i],
-                        msgItem = $('<li></li>');
+                        var msgItem = $('<li></li>');
 
                         if(showSummary)
                             msgItem.append('<span class="ui-messages-error-summary">' + msg.summary + '</span>');
