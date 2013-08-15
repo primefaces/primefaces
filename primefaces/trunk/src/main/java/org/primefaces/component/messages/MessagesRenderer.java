@@ -26,6 +26,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.UINotificationRenderer;
 
 public class MessagesRenderer extends UINotificationRenderer {
@@ -36,6 +37,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         String clientId = uiMessages.getClientId(context);	
 		Map<String, List<FacesMessage>> messagesMap = new HashMap<String, List<FacesMessage>>();
+        boolean globalOnly = uiMessages.isGlobalOnly();
         
         String _for = uiMessages.getFor();
         Iterator<FacesMessage> messages;
@@ -64,6 +66,12 @@ public class MessagesRenderer extends UINotificationRenderer {
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("class", "ui-messages ui-widget", null);
         writer.writeAttribute("aria-live", "polite", null);
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            writer.writeAttribute("data-global", globalOnly, null);
+            writer.writeAttribute("data-summary", uiMessages.isShowSummary(), null);
+            writer.writeAttribute("data-detail", uiMessages.isShowDetail(), null);
+        }
         
 		for(String severity : messagesMap.keySet()) {
 			List<FacesMessage> severityMessages = messagesMap.get(severity);
