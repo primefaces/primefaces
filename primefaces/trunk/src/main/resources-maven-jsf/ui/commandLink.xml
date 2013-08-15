@@ -21,6 +21,9 @@
 		<interface>
 			<name>org.primefaces.component.api.AjaxSource</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.Confirmable</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&command_component_attributes;
