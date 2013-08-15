@@ -430,7 +430,7 @@
         }
         else {
             var inputs = form.find(':input:visible:enabled:not(:button)');
-            exceptions = this.validateComponents(inputs);
+            exceptions = this.validateInputs(inputs);
         }
         
         if(exceptions.length === 0) {
@@ -505,13 +505,28 @@
     PrimeFaces.util.MessageRenderer = {
         
         render: function(element, exceptions) {
-            element.html('');
-            element.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
-            var messageList = element.find('> .ui-messages-error > ul');
-            
-            for(var i = 0; i < exceptions.length; i++) {
-                var msg = exceptions[i];
-                messageList.append('<li><span class="ui-messages-error-summary">' + msg.summary + '</span><span class="ui-messages-error-detail">' + msg.detail + '</span></li>');
+            if(!element.data('global')) {        
+                element.html('');
+                element.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
+                
+                var messageList = element.find('> .ui-messages-error > ul'),
+                showSummary = element.data('summary'),
+                showDetail = element.data('detail');
+
+                for(var i = 0; i < exceptions.length; i++) {
+                    var exception = exceptions[i],
+                    message = $('<li></li>');
+                    
+                    if(showSummary) {
+                        message.append('<span class="ui-messages-error-summary">' + exception.summary + '</span>');
+                    }
+                    
+                    if(showDetail) {
+                        message.append('<span class="ui-messages-error-detail">' + exception.detail + '</span>');
+                    }
+
+                    messageList.append(message);
+                }
             }
         }
     }
