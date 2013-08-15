@@ -196,5 +196,8 @@ public class HTML {
         public static final String REGEX = "data-p-regex";
         public static final String PATTERN = "data-p-pattern";
         public static final String DATETIME_TYPE = "data-p-dttype";
+        public static final String REQUIRED_MESSAGE = "data-p-rmsg";
+        public static final String VALIDATOR_MESSAGE = "data-p-vmsg";
+        public static final String CONVERTER_MESSAGE = "data-p-cmsg";
     }
 }

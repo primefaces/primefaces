@@ -499,7 +499,16 @@ public abstract class CoreRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent comp = (UIComponent) component;
         Converter converter = ComponentUtils.getConverter(context, comp);
-        Object label = comp.getAttributes().get("label");
+        Map<String,Object> attrs = comp.getAttributes();
+        Object label = attrs.get("label");
+        Object requiredMessage = attrs.get("requiredMessage");
+        Object validatorMessage = attrs.get("validatorMessage");
+        Object converterMessage = attrs.get("converterMessage");
+        
+        if(label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
+        if(requiredMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
+        if(validatorMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_MESSAGE, validatorMessage, null);
+        if(converterMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
 
         if(converter != null && converter instanceof ClientConverter) {
             ClientConverter clientConverter = (ClientConverter) converter;
@@ -511,11 +520,7 @@ public abstract class CoreRenderer extends Renderer {
                 renderValidationMetadataMap(context, metadata);
             }
         }
-        
-        if(label != null) {
-            writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
-        }
-        
+                
         if(component.isRequired()) {
             writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED, "true", null);
         }
