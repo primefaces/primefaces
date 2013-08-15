@@ -567,6 +567,7 @@
             for(var clientId in this.messages) {
                 var msgs = this.messages[clientId],
                 uiMessage = this.findUIMessage(clientId, uiMessageCollection);
+                uiMessage.html('');
 
                 for(var i = 0; i < msgs.length; i++) {
                     if(shouldRenderUIMessages) {        
@@ -583,7 +584,7 @@
                     }
                     
                     if(uiMessage.length) {
-                        uiMessage.html('').addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
+                        uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
                         var display = uiMessage.data('display');
                         
                         if(display === 'both') {
