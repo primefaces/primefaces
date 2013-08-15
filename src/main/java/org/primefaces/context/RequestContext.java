@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.StringEncrypter;
 import org.primefaces.util.WidgetBuilder;
 
@@ -115,6 +116,11 @@ public abstract class RequestContext {
      * @return Shared AjaxRequestBuilder instance of the current request
      */
     public abstract AjaxRequestBuilder getAjaxRequestBuilder();
+    
+    /**
+     * @return Shared Client Side Validation builder instance of the current request
+     */
+    public abstract CSVBuilder getCSVBuilder();
     
     /**
      * @return Attributes map in RequestContext scope

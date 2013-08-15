@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.StringEncrypter;
@@ -47,6 +48,7 @@ public class DefaultRequestContext extends RequestContext {
     private Map<Object, Object> attributes;
     private WidgetBuilder widgetBuilder;
     private AjaxRequestBuilder ajaxRequestBuilder;
+    private CSVBuilder csvBuilder;
     private FacesContext context;
     private StringEncrypter encrypter;
     private ApplicationContext applicationContext;
@@ -105,6 +107,15 @@ public class DefaultRequestContext extends RequestContext {
 		}
 
 		return ajaxRequestBuilder;
+	}
+    
+    @Override
+	public CSVBuilder getCSVBuilder() {
+		if (this.csvBuilder == null) {
+			this.csvBuilder = new CSVBuilder(context);
+		}
+
+		return csvBuilder;
 	}
     
     @Override
