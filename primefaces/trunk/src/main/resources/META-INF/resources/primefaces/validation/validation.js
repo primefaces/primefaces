@@ -37,6 +37,13 @@
             'javax.faces.validator.DoubleRangeValidator.TYPE={0}': 'Validation Error: Value is not of the correct type',
             'javax.faces.converter.FloatConverter.FLOAT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
             'javax.faces.converter.FloatConverter.FLOAT_detail': '{2}: \'{0}\' must be a number between 1.4E-45 and 3.4028235E38  Example: {1}',
+            'javax.faces.converter.DateTimeConverter.DATE': '{2}: \'{0}\' could not be understood as a date.',
+            'javax.faces.converter.DateTimeConverter.DATE_detail': '{2}: \'{0}\' could not be understood as a date. Example: {1}',
+            'javax.faces.converter.DateTimeConverter.TIME': '{2}: \'{0}\' could not be understood as a time.',
+            'javax.faces.converter.DateTimeConverter.TIME_detail': '{2}: \'{0}\' could not be understood as a time. Example: {1}',
+            'javax.faces.converter.DateTimeConverter.DATETIME': '{2}: \'{0}\' could not be understood as a date and time.',
+            'javax.faces.converter.DateTimeConverter.DATETIME_detail': '{2}: \'{0}\' could not be understood as a date and time. Example: {1}',
+            'javax.faces.converter.DateTimeConverter.PATTERN_TYPE': '{1}: A \'pattern\' or \'type\' attribute must be specified to convert the value \'{0}\'',                
             'javax.faces.validator.LengthValidator.MINIMUM': '{1}: Validation Error: Length is less than allowable minimum of \'{0}\'',
             'javax.faces.validator.LengthValidator.MAXIMUM': '{1}: Validation Error: Length is greater than allowable maximum of \'{0}\'',
             'javax.faces.validator.RegexValidator.PATTERN_NOT_SET': 'Regex pattern must be set.',
@@ -358,6 +365,40 @@
                 }
                 catch(exception) {
                     throw mf.getMessage(this.MESSAGE_ID, value, mf.getLabel(element));
+                }
+            }
+        },
+                
+        'javax.faces.DateTime': {
+                                
+            DATE_ID: 'javax.faces.converter.DateTimeConverter.DATE',
+            TIME_ID: 'javax.faces.converter.DateTimeConverter.TIME',
+            DATETIME_ID: 'javax.faces.converter.DateTimeConverter.DATETIME',
+            
+            convert: function(element) {
+                var value = element.val(),
+                mf = PrimeFaces.util.MessageFactory,
+                pattern = element.data('p-pattern'),
+                type = element.data('p-dttype');
+        
+                if($.trim(value).length === 0) {
+                    return null;
+                }
+                
+                var locale = PrimeFaces.locales[PrimeFaces.settings.locale];
+                
+                try {
+                    return $.datepicker.parseDate(pattern, value, locale);
+                }
+                catch(exception) {
+                    var now = $.datepicker.formatDate(pattern, new Date(), locale);
+                    
+                    if(type === 'date')
+                        throw mf.getMessage(this.DATE_ID, value, now, mf.getLabel(element));
+                    else if(type === 'time')
+                        throw mf.getMessage(this.TIME_ID, value, now, mf.getLabel(element));
+                    else if(type === 'both')
+                        throw mf.getMessage(this.DATETIME_ID, value, now, mf.getLabel(element));
                 }
             }
         }

@@ -502,7 +502,14 @@ public abstract class CoreRenderer extends Renderer {
         Object label = comp.getAttributes().get("label");
 
         if(converter != null && converter instanceof ClientConverter) {
+            ClientConverter clientConverter = (ClientConverter) converter;
+            Map<String,Object> metadata = clientConverter.getMetadata();
+            
             writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER, ((ClientConverter) converter).getConverterId(), null);
+            
+            if(metadata != null && !metadata.isEmpty()) {
+                renderValidationMetadataMap(context, metadata);
+            }
         }
         
         if(label != null) {
@@ -526,14 +533,7 @@ public abstract class CoreRenderer extends Renderer {
                     Map<String,Object> metadata = clientValidator.getMetadata();
                                         
                     if(metadata != null && !metadata.isEmpty()) {
-                        for(Map.Entry<String, Object> entry : metadata.entrySet()) {
-                            String key = entry.getKey();
-                            Object value = entry.getValue();
-                            
-                            if(value != null) {
-                                writer.writeAttribute(key, value, null);
-                            }
-                        }
+                        renderValidationMetadataMap(context, metadata);
                     }
                 }
             }
@@ -550,6 +550,19 @@ public abstract class CoreRenderer extends Renderer {
                 }
                 
                 writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_IDS, builder.toString(), null);
+            }
+        }
+    }
+    
+    private void renderValidationMetadataMap(FacesContext context, Map<String,Object> metadata) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        for(Map.Entry<String, Object> entry : metadata.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+
+            if(value != null) {
+                writer.writeAttribute(key, value, null);
             }
         }
     }
