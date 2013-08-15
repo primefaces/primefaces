@@ -55,6 +55,16 @@ public class CommandLinkRenderer extends CoreRenderer {
             String styleClass = link.getStyleClass();
             styleClass = styleClass == null ? CommandLink.STYLE_CLASS : CommandLink.STYLE_CLASS + " " + styleClass;
 
+            StringBuilder onclick = new StringBuilder();
+            if(link.getOnclick() != null) {
+                onclick.append(link.getOnclick()).append(";");
+            }
+            
+            String onclickBehaviors = getOnclickBehaviors(context, link);
+            if(onclickBehaviors != null) {
+                onclick.append(onclickBehaviors);
+            }
+            
 			writer.startElement("a", link);
 			writer.writeAttribute("id", clientId, "id");
 			writer.writeAttribute("href", "#", null);
@@ -74,9 +84,17 @@ public class CommandLinkRenderer extends CoreRenderer {
                 
                 request = buildNonAjaxRequest(context, link, form, clientId, true);
             }
+            
+            onclick.append(request);
 
-			String onclick = link.getOnclick() != null ? link.getOnclick() + ";" + request : request;
-			writer.writeAttribute("onclick", onclick, "onclick");
+            if(onclick.length() > 0) {
+                if(link.requiresConfirmation()) {
+                    writer.writeAttribute("data-pfconfirmcommand", onclick.toString(), null);
+                    writer.writeAttribute("onclick", link.getConfirmationScript(), "onclick");
+                }
+                else
+                    writer.writeAttribute("onclick", onclick.toString(), "onclick");
+            }
 			
 			renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);
 
