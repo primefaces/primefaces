@@ -73,11 +73,9 @@ public class TooltipRenderer extends CoreRenderer {
             .attr("showEvent", tooltip.getShowEvent(), null)
             .attr("hideEvent", tooltip.getHideEvent(), null)
             .attr("showEffect", tooltip.getShowEffect(), null)
-            .attr("hideEffect", tooltip.getHideEffect(), null);
-        
-        if(target != null) {
-            wb.attr("target", target);
-        }
+            .attr("hideEffect", tooltip.getHideEffect(), null)
+            .attr("global", tooltip.isGlobal())
+            .attr("target", target, null);
 
 		wb.finish();
 	}

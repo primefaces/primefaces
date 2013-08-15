@@ -10,10 +10,10 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.showEffect = this.cfg.showEffect ? this.cfg.showEffect : 'fade';
         this.cfg.hideEffect = this.cfg.hideEffect ? this.cfg.hideEffect : 'fade';
         
-        if(this.cfg.target)
-            this.bindTarget();
-        else
+        if(this.cfg.global)
             this.bindGlobal();
+        else
+            this.bindTarget();
         
         $(this.jqId + '_s').remove();
     },
@@ -21,8 +21,10 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         if(cfg.target) {
             $(document.body).children(PrimeFaces.escapeClientId(cfg.id)).remove();
+            this.cfg.global = true;
         } else {
             $(document.body).children('.ui-tooltip-global').remove();
+            this.cfg.global = false;
         }
         
         this._super(cfg);
@@ -30,7 +32,8 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     
     bindGlobal: function() {
         this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-widget-content ui-corner-all ui-shadow" />').appendTo('body');
-        this.globalSelector = 'a,:input,:button';
+        this.target = this.cfg.target;
+        this.globalSelector = this.target.substring(2, this.target.length - 1) || 'a,:input,:button';
         var $this = this;
         
         $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.globalSelector)
