@@ -67,11 +67,10 @@
             <description>Style class of the tooltip.</description>
 		</attribute>
         <attribute>
-			<name>global</name>
+			<name>globalSelector</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>State(global or local) of the tooltip</description>
+			<type>java.lang.String</type>
+            <description>jquery selector for global tooltip, default is "a,:input,:button".</description>
 		</attribute>
 	</attributes>
     <resources>
