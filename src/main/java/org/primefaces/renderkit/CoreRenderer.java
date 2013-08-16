@@ -45,6 +45,8 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.ClientValidator;
+import org.primefaces.validate.bean.BeanValidationMetadata;
+import org.primefaces.validate.bean.BeanValidationResolver;
 
 public abstract class CoreRenderer extends Renderer {
 	
@@ -505,11 +507,13 @@ public abstract class CoreRenderer extends Renderer {
         Object validatorMessage = attrs.get("validatorMessage");
         Object converterMessage = attrs.get("converterMessage");
         
+        //messages
         if(label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
         if(requiredMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
         if(validatorMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_MESSAGE, validatorMessage, null);
         if(converterMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
 
+        //converter
         if(converter != null && converter instanceof ClientConverter) {
             ClientConverter clientConverter = (ClientConverter) converter;
             Map<String,Object> metadata = clientConverter.getMetadata();
@@ -520,46 +524,49 @@ public abstract class CoreRenderer extends Renderer {
                 renderValidationMetadataMap(context, metadata);
             }
         }
-                
-        if(component.isRequired()) {
-            writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED, "true", null);
-        }
         
-        Validator[] validators = component.getValidators();
-        if(validators != null) {
-            List<String> validatorIds = new ArrayList<String>();
-                    
-            for(int i = 0; i < validators.length; i++) {
-                Validator validator = validators[i];
-                
-                if(validator instanceof ClientValidator) {
-                    ClientValidator clientValidator = (ClientValidator) validator;
-                    validatorIds.add(clientValidator.getValidatorId());
-                    Map<String,Object> metadata = clientValidator.getMetadata();
-                                        
-                    if(metadata != null && !metadata.isEmpty()) {
-                        renderValidationMetadataMap(context, metadata);
-                    }
-                }
+        //bean validation
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isBeanValidationAvailable()) {
+            BeanValidationMetadata beanValidationMetadata = BeanValidationResolver.resolveValidationMetadata(context, comp);
+            renderValidationMetadataMap(context, beanValidationMetadata.getAttributes());
+            renderValidatorIds(context, beanValidationMetadata.getValidatorIds());
+        }
+        else {
+            //required validation
+            if(component.isRequired()) {
+                writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED, "true", null);
             }
-            
-            if(!validatorIds.isEmpty()) {
-                StringBuilder builder = new StringBuilder();
-                for(Iterator<String> it = validatorIds.iterator(); it.hasNext();) {
-                    String validatorId = it.next();
-                    builder.append(validatorId);
-                    
-                    if(it.hasNext()) {
-                        builder.append(",");
+
+            //validators
+            Validator[] validators = component.getValidators();
+            if(validators != null) {
+                List<String> validatorIds = new ArrayList<String>();
+
+                for(int i = 0; i < validators.length; i++) {
+                    Validator validator = validators[i];
+
+                    if(validator instanceof ClientValidator) {
+                        ClientValidator clientValidator = (ClientValidator) validator;
+                        validatorIds.add(clientValidator.getValidatorId());
+                        Map<String,Object> metadata = clientValidator.getMetadata();
+
+                        if(metadata != null && !metadata.isEmpty()) {
+                            renderValidationMetadataMap(context, metadata);
+                        }
                     }
                 }
-                
-                writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_IDS, builder.toString(), null);
+
+                renderValidatorIds(context, validatorIds);
             }
         }
+
     }
     
     private void renderValidationMetadataMap(FacesContext context, Map<String,Object> metadata) throws IOException {
+        if(metadata == null || metadata.isEmpty()) {
+            return;
+        }
+        
         ResponseWriter writer = context.getResponseWriter();
         
         for(Map.Entry<String, Object> entry : metadata.entrySet()) {
@@ -570,5 +577,24 @@ public abstract class CoreRenderer extends Renderer {
                 writer.writeAttribute(key, value, null);
             }
         }
+    }
+    
+    private void renderValidatorIds(FacesContext context, List<String> validatorIds) throws IOException {
+        if(validatorIds == null || validatorIds.isEmpty()) {
+            return;
+        }
+        
+        ResponseWriter writer = context.getResponseWriter();
+        StringBuilder builder = new StringBuilder();
+        for(Iterator<String> it = validatorIds.iterator(); it.hasNext();) {
+            String validatorId = it.next();
+            builder.append(validatorId);
+
+            if(it.hasNext()) {
+                builder.append(",");
+            }
+        }
+
+        writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_IDS, builder.toString(), null);
     }
 }
