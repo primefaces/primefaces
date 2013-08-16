@@ -296,3 +296,16 @@
 			<type>java.lang.String</type>
 		</attribute>
 	</tag>
+    
+    <tag>
+        <tag-name>clientValidator</tag-name>
+        <behavior>
+            <behavior-id>org.primefaces.behavior.ClientValidator</behavior-id>
+        </behavior>
+		<attribute>
+			<description>Event to trigger the validation.</description>
+			<name>event</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+    </tag>

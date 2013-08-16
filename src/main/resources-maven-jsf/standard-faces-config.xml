@@ -51,6 +51,11 @@
         <behavior-class>org.primefaces.behavior.confirm.ConfirmBehavior</behavior-class>
     </behavior>
     
+    <behavior>
+        <behavior-id>org.primefaces.behavior.ClientValidator</behavior-id>
+        <behavior-class>org.primefaces.behavior.validate.ClientValidator</behavior-class>
+    </behavior>
+    
     <factory>
     	<faces-context-factory>org.primefaces.context.PrimeFacesContextFactory</faces-context-factory>
     </factory>
