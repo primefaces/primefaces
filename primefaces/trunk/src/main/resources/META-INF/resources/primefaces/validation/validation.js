@@ -403,9 +403,13 @@
             }
         }
     };
-        
+      
     PrimeFaces.vb = function(cfg) {
         return this.validate(cfg);
+    }
+    
+    PrimeFaces.vi = function(element) {
+        this.validateInstant(element);
     }
        
     PrimeFaces.validate = function(cfg) {
@@ -438,71 +442,100 @@
         }
         else {
             mc.renderMessages(form.find('div.ui-messages'), form.find('div.ui-message'));
-            
             return false;
         }
     }
     
     PrimeFaces.validateInputs = function(inputs) {
-        var mc = PrimeFaces.util.MessageContext;
-
         for(var i = 0; i < inputs.length; i++) {
-            var inputElement = inputs.eq(i),
-            submittedValue = inputElement.val(),
-            clientId = inputElement.attr('id'),
-            value = submittedValue,
-            valid = true,
-            converterId = inputElement.data('p-con');
+            this.validateInput(inputs.eq(i));
+        }
+    }
+    
+    PrimeFaces.validateInput = function(element) {
+        var mc = PrimeFaces.util.MessageContext,
+        submittedValue = element.val(),
+        clientId = element.attr('id'),
+        value = submittedValue,
+        valid = true,
+        converterId = element.data('p-con');
 
-            if(converterId) {
-                try {
-                    value = PrimeFaces.converter[converterId].convert(inputElement);
-                }
-                catch(ce) {
-                    var converterMessageStr = inputElement.data('p-cmsg'),
-                    converterMsg = (converterMessageStr) ? {summary:converterMessageStr,detail:converterMessageStr} : ce;
-                    valid = false;
-                    mc.addMessage(clientId, converterMsg);
-                }
+        if(converterId) {
+            try {
+                value = PrimeFaces.converter[converterId].convert(element);
             }
-
-            if(valid && inputElement.data('p-required') && submittedValue === '') {
-                var requiredMessageStr = inputElement.data('p-rmsg'),
-                requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : mc.getMessage('javax.faces.component.UIInput.REQUIRED', mc.getLabel(inputElement));
-                mc.addMessage(clientId, requiredMsg);
-
+            catch(ce) {
+                var converterMessageStr = element.data('p-cmsg'),
+                converterMsg = (converterMessageStr) ? {summary:converterMessageStr,detail:converterMessageStr} : ce;
                 valid = false;
+                mc.addMessage(clientId, converterMsg);
             }
+        }
 
-            if(valid && ((submittedValue !== '')||PrimeFaces.settings.validateEmptyFields)) {
-                var validatorIds = inputElement.data('p-val');
-                if(validatorIds) {
-                    validatorIds = validatorIds.split(',');
+        if(valid && element.data('p-required') && submittedValue === '') {
+            var requiredMessageStr = element.data('p-rmsg'),
+            requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : mc.getMessage('javax.faces.component.UIInput.REQUIRED', mc.getLabel(element));
+            mc.addMessage(clientId, requiredMsg);
 
-                    for(var j = 0; j < validatorIds.length; j++) {
-                        var validatorId = validatorIds[j],
-                        validator = PrimeFaces.validator[validatorId];
+            valid = false;
+        }
 
-                        if(validator) {
-                            try {
-                                validator.validate(inputElement, value);
-                            }
-                            catch(ve) {
-                                var validatorMessageStr = inputElement.data('p-vmsg'),
-                                validatorMsg = (validatorMessageStr) ? {summary:validatorMessageStr,detail:validatorMessageStr} : ve;
-                                valid = false;
-                                mc.addMessage(clientId, validatorMsg);
-                            }
+        if(valid && ((submittedValue !== '')||PrimeFaces.settings.validateEmptyFields)) {
+            var validatorIds = element.data('p-val');
+            if(validatorIds) {
+                validatorIds = validatorIds.split(',');
+
+                for(var j = 0; j < validatorIds.length; j++) {
+                    var validatorId = validatorIds[j],
+                    validator = PrimeFaces.validator[validatorId];
+
+                    if(validator) {
+                        try {
+                            validator.validate(element, value);
+                        }
+                        catch(ve) {
+                            var validatorMessageStr = element.data('p-vmsg'),
+                            validatorMsg = (validatorMessageStr) ? {summary:validatorMessageStr,detail:validatorMessageStr} : ve;
+                            valid = false;
+                            mc.addMessage(clientId, validatorMsg);
                         }
                     }
                 }
             }
-
-            if(!valid)
-                inputElement.addClass('ui-state-error');
-            else
-                inputElement.removeClass('ui-state-error');
         }
+
+        if(!valid)
+            element.addClass('ui-state-error');
+        else
+            element.removeClass('ui-state-error');
+    }
+    
+    PrimeFaces.validateInstant = function(id) {
+        var mc = PrimeFaces.util.MessageContext,
+        element = $(PrimeFaces.escapeClientId(id)),
+        clientId = element.attr('id'),
+        uiMessageId = element.data('uiMessageId'),
+        uiMessage = null;
+        
+        if(uiMessageId) {
+            uiMessage = $(PrimeFaces.escapeClientId(uiMessageId));
+        }
+        else {
+            uiMessage = mc.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
+            element.data('uiMessageId', uiMessage.attr('id'));
+        }
+        
+        if(uiMessage) {
+            uiMessage.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
+        }
+        
+        this.validateInput(element);
+        
+        if(!mc.isEmpty()) {
+            mc.renderUIMessage(uiMessage, mc.messages[clientId][0]);
+        }
+        
+        mc.clear();
     }
     
     PrimeFaces.util.MessageContext = {
@@ -556,15 +589,15 @@
         renderMessages: function(uiMessages, uiMessageCollection) {
             uiMessageCollection.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
             
-            var shouldRenderUIMessages = uiMessages.length&&!uiMessages.data('global');
+            var shouldRenderUIMessages = uiMessages&&uiMessages.length&&!uiMessages.data('global');
             if(shouldRenderUIMessages) {
                 uiMessages.html('');
                 uiMessages.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
+                
+                var messageList = uiMessages.find('> .ui-messages-error > ul'),
+                showSummary = uiMessages.data('summary'),
+                showDetail = uiMessages.data('detail');
             }
-
-            var messageList = uiMessages.find('> .ui-messages-error > ul'),
-            showSummary = uiMessages.data('summary'),
-            showDetail = uiMessages.data('detail');
 
             for(var clientId in this.messages) {
                 var msgs = this.messages[clientId],
@@ -586,25 +619,29 @@
                     }
                     
                     if(uiMessage.length) {
-                        uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
-                        var display = uiMessage.data('display');
-                        
-                        if(display === 'both') {
-                            uiMessage.append('<span class="ui-message-error-icon"></span>')
-                                .append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
-                        } 
-                        else if(display === 'text') {
-                            uiMessage.append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
-                        } 
-                        else if(display === 'icon') {
-                            uiMessage.addClass('ui-message-icon-only')
-                                    .append('<span class="ui-message-error-icon" title="' + msg.detail + '"></span>');
-                        }
+                        this.renderUIMessage(uiMessage, msg);
                     }
                 }
             }
             
             this.clear();
+        },
+                
+        renderUIMessage: function(uiMessage, msg) {
+            uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
+            var display = uiMessage.data('display');
+
+            if(display === 'both') {
+                uiMessage.append('<span class="ui-message-error-icon"></span>')
+                    .append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
+            } 
+            else if(display === 'text') {
+                uiMessage.append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
+            } 
+            else if(display === 'icon') {
+                uiMessage.addClass('ui-message-icon-only')
+                        .append('<span class="ui-message-error-icon" title="' + msg.detail + '"></span>');
+            }
         },
                 
         findUIMessage: function(clientId, uiMessageCollection) {
