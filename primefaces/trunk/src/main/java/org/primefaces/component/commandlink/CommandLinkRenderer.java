@@ -22,8 +22,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+import org.primefaces.context.RequestContext;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
@@ -52,9 +54,12 @@ public class CommandLinkRenderer extends CoreRenderer {
 
 		if(!link.isDisabled()) {
             String request;
+            boolean ajax = link.isAjax();
             String styleClass = link.getStyleClass();
             styleClass = styleClass == null ? CommandLink.STYLE_CLASS : CommandLink.STYLE_CLASS + " " + styleClass;
-
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&link.isValidateClient();
+        
             StringBuilder onclick = new StringBuilder();
             if(link.getOnclick() != null) {
                 onclick.append(link.getOnclick()).append(";");
@@ -73,7 +78,7 @@ public class CommandLinkRenderer extends CoreRenderer {
                 writer.writeAttribute("aria-label", link.getTitle(), null);
             }
             
-            if(link.isAjax()) {
+            if(ajax) {
                 request = buildAjaxRequest(context, link, null);
             }
             else {
@@ -83,6 +88,11 @@ public class CommandLinkRenderer extends CoreRenderer {
                 }
                 
                 request = buildNonAjaxRequest(context, link, form, clientId, true);
+            }
+            
+            if(csvEnabled) {
+                CSVBuilder csvb = requestContext.getCSVBuilder();
+                request = csvb.init().source("this").ajax(ajax).process(link, link.getProcess()).command(request).build();
             }
             
             onclick.append(request);

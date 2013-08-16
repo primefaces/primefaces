@@ -62,7 +62,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         Object value = button.getValue();
         String icon = button.resolveIcon();
         RequestContext requestContext = RequestContext.getCurrentInstance();
-        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled();
+        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&button.isValidateClient();
         
         StringBuilder onclick = new StringBuilder();
         if(button.getOnclick() != null) {
