@@ -554,6 +554,8 @@
         },
         
         renderMessages: function(uiMessages, uiMessageCollection) {
+            uiMessageCollection.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
+            
             var shouldRenderUIMessages = uiMessages.length&&!uiMessages.data('global');
             if(shouldRenderUIMessages) {
                 uiMessages.html('');
@@ -567,8 +569,7 @@
             for(var clientId in this.messages) {
                 var msgs = this.messages[clientId],
                 uiMessage = this.findUIMessage(clientId, uiMessageCollection);
-                uiMessage.html('').removeClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
-
+        
                 for(var i = 0; i < msgs.length; i++) {
                     var msg = msgs[i];
                     
