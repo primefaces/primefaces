@@ -10,34 +10,30 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.showEffect = this.cfg.showEffect ? this.cfg.showEffect : 'fade';
         this.cfg.hideEffect = this.cfg.hideEffect ? this.cfg.hideEffect : 'fade';
         
-        if(this.cfg.global)
-            this.bindGlobal();
-        else
+        if(this.cfg.target)
             this.bindTarget();
+        else
+            this.bindGlobal();
         
         $(this.jqId + '_s').remove();
     },
     
     refresh: function(cfg) {
-        if(cfg.target) {
+        if(cfg.target)
             $(document.body).children(PrimeFaces.escapeClientId(cfg.id)).remove();
-            this.cfg.global = true;
-        } else {
+        else
             $(document.body).children('.ui-tooltip-global').remove();
-            this.cfg.global = false;
-        }
         
         this._super(cfg);
     },
     
     bindGlobal: function() {
         this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-widget-content ui-corner-all ui-shadow" />').appendTo('body');
-        this.target = this.cfg.target;
-        this.globalSelector = this.target.substring(2, this.target.length - 1) || 'a,:input,:button';
+        this.cfg.globalSelector = this.cfg.globalSelector||'a,:input,:button';
         var $this = this;
         
-        $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.globalSelector)
-                    .on(this.cfg.showEvent, this.globalSelector, function() {
+        $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.cfg.globalSelector)
+                    .on(this.cfg.showEvent, this.cfg.globalSelector, function() {
                         var element = $(this),
                         title = element.attr('title');
 
@@ -49,7 +45,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             $this.show();
                         }
                     })
-                    .on(this.cfg.hideEvent + '.tooltip', this.globalSelector, function() {
+                    .on(this.cfg.hideEvent + '.tooltip', this.cfg.globalSelector, function() {
                         var element = $(this);
 
                         if($this.globalTitle) {
