@@ -23,9 +23,14 @@ import javax.faces.context.FacesContext;
 public class ClientValidator extends ClientBehaviorBase {
     
     private String event;
+    private boolean disabled;
     
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
+        if(disabled) {
+           return null; 
+        }
+        
         FacesContext context = behaviorContext.getFacesContext();
         UIComponent component = behaviorContext.getComponent();
         String source = component.getClientId(context);
@@ -38,5 +43,12 @@ public class ClientValidator extends ClientBehaviorBase {
     }
     public void setEvent(String event) {
         this.event = event;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 }
