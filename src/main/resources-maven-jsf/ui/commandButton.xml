@@ -325,6 +325,13 @@
             <defaultValue>true</defaultValue>
             <description>Defines if label of the component is escaped or not.</description>
 		</attribute>
+        <attribute>
+			<name>validateClient</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When set to false, client side validation is disabled and overrides global setting.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

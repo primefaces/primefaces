@@ -296,6 +296,13 @@
 			<ignoreInComponent>true</ignoreInComponent>
             <description>Client side callback to execute when a pointer button is released over link.</description>
 		</attribute>
+        <attribute>
+			<name>validateClient</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When set to false, client side validation is disabled and overrides global setting.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
