@@ -28,6 +28,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -46,6 +48,8 @@ public class BeanValidationResolver {
         CONSTRAINT_MAPPER.put(Size.class, new SizeClientValidationConstraint());
         CONSTRAINT_MAPPER.put(Min.class, new MinClientValidationConstraint());
         CONSTRAINT_MAPPER.put(Max.class, new MaxClientValidationConstraint());
+        CONSTRAINT_MAPPER.put(DecimalMin.class, new DecimalMinClientValidationConstraint());
+        CONSTRAINT_MAPPER.put(DecimalMax.class, new DecimalMaxClientValidationConstraint());
     }
     
     public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component) throws IOException {
