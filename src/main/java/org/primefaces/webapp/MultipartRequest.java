@@ -169,11 +169,4 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 			return null;
 		}	
 	}
-    
-    public List<FileItem> getFileItems(String name) {
-		if(fileParams.containsKey(name))
-			return fileParams.get(name);
-        else
-			return null;
-	}
 }
