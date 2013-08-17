@@ -1726,9 +1726,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if($this.cfg.oncomplete) {
                     $this.cfg.oncomplete.call($this);
                 }
-                
-                //update reference to clone
-                $this.input = $($this.jqId + '_input');
             }
         };
 
