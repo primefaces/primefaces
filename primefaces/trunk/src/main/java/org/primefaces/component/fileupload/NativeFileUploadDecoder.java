@@ -61,32 +61,11 @@ public class NativeFileUploadDecoder {
     
     private static void decodeAdvanced(FacesContext context, FileUpload fileUpload, HttpServletRequest request) throws IOException, ServletException {
         String clientId = fileUpload.getClientId(context);
+        Part part = request.getPart(clientId);
 
-        if(fileUpload.isMerge()) {
-            Collection<Part> parts = request.getParts();
-
-            if(parts != null && !parts.isEmpty()) {
-                List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
-                
-                for(Part part : parts) {
-                    if(clientId.equals(part.getName())) {
-                        uploadedFiles.add(new NativeUploadedFile(part));
-                    }
-                }
-                
-                if(!uploadedFiles.isEmpty()) {
-                    fileUpload.setTransient(true);
-                    fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFiles));
-                }
-            }
-        }
-        else {
-            Part part = request.getPart(clientId);
-
-            if(part != null) {
-                fileUpload.setTransient(true);
-                fileUpload.queueEvent(new FileUploadEvent(fileUpload, new NativeUploadedFile(part)));
-            }
+        if(part != null) {
+            fileUpload.setTransient(true);
+            fileUpload.queueEvent(new FileUploadEvent(fileUpload, new NativeUploadedFile(part)));
         }
 	}
     

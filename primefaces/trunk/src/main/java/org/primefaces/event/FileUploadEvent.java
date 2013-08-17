@@ -25,17 +25,10 @@ import org.primefaces.model.UploadedFile;
 public class FileUploadEvent extends FacesEvent {
 
 	private UploadedFile file;
-    
-    private List<UploadedFile> files;
 
 	public FileUploadEvent(UIComponent component, UploadedFile file) {
 		super(component);
 		this.file = file;
-	}
-    
-    public FileUploadEvent(UIComponent component, List<UploadedFile> files) {
-		super(component);
-		this.files = files;
 	}
 
 	@Override
@@ -50,9 +43,5 @@ public class FileUploadEvent extends FacesEvent {
 	
 	public UploadedFile getFile() {
 		return file;
-	}
-    
-    public List<UploadedFile> getFiles() {
-		return files;
 	}
 }
