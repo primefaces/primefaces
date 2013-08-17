@@ -171,13 +171,6 @@
             <description>Disables fileupload user interface interaction.</description>
 		</attribute>
         <attribute>
-			<name>merge</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>By default, each file is uploaded with a separate request, set merge to true to merge all files in one request.</description>
-		</attribute>
-        <attribute>
 			<name>messageTemplate</name>
 			<required>false</required>
 			<type>java.lang.String</type>

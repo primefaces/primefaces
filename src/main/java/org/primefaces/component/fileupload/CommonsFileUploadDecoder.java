@@ -15,14 +15,11 @@
  */
 package org.primefaces.component.fileupload;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequestWrapper;
 import org.apache.commons.fileupload.FileItem;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultUploadedFile;
-import org.primefaces.model.UploadedFile;
 import org.primefaces.webapp.MultipartRequest;
 
 public class CommonsFileUploadDecoder{
@@ -63,30 +60,11 @@ public class CommonsFileUploadDecoder{
     
     private static void decodeAdvanced(FacesContext context, FileUpload fileUpload, MultipartRequest request) {
         String clientId = fileUpload.getClientId(context);
-        
-        if(fileUpload.isMerge()) {
-            List<FileItem> files = request.getFileItems(clientId);
+        FileItem file = request.getFileItem(clientId);
             
-            if(files != null && !files.isEmpty()) {
-                List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
-                
-                for(FileItem fileItem : files) {
-                    uploadedFiles.add(new DefaultUploadedFile(fileItem));
-                }
-                
-                if(!uploadedFiles.isEmpty()) {
-                    fileUpload.setTransient(true);
-                    fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFiles));
-                }
-            }
-        }
-        else {
-            FileItem file = request.getFileItem(clientId);
-            
-            if(file != null) {
-                fileUpload.setTransient(true);
-                fileUpload.queueEvent(new FileUploadEvent(fileUpload, new DefaultUploadedFile(file)));
-            }
+        if(file != null) {
+            fileUpload.setTransient(true);
+            fileUpload.queueEvent(new FileUploadEvent(fileUpload, new DefaultUploadedFile(file)));
         }
 	}
 }

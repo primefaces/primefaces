@@ -68,7 +68,6 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
                 .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
                 .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
-                .attr("merge", fileUpload.isMerge(), false)
                 .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
                 .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                 .attr("disabled", fileUpload.isDisabled(), false)
