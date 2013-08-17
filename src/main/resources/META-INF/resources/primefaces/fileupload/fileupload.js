@@ -1,4 +1,3 @@
-            //<![CDATA[
 /*
  * jQuery Iframe Transport Plugin 1.7
  * https://github.com/blueimp/jQuery-File-Upload
@@ -1156,6 +1155,7 @@
             // Replace the original file input element in the fileInput
             // elements set with the clone, which has been copied including
             // event handlers:
+
             this.options.fileInput = this.options.fileInput.map(function (i, el) {
                 if (el === input[0]) {
                     return inputClone[0];
@@ -1550,7 +1550,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         
         this.ucfg = {};
         this.form = this.jq.closest('form');
-        this.input = $(this.jqId + '_input');
         this.buttonBar = this.jq.children('.ui-fileupload-buttonbar');
         this.chooseButton = this.buttonBar.children('.ui-fileupload-choose');
         this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
@@ -1575,7 +1574,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         this.ucfg = {
             url: (encodedURLfield.length) ? encodedURLfield.val() : this.form.attr('action'),
-            fileInput: this.input,
             paramName: this.id,
             dataType: 'xml',
             dropZone: (this.cfg.dnd === false) ? null : this.jq,
@@ -1662,9 +1660,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             row.children('td.ui-fileupload-progress').append('<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>');
 
                             file.row = row;
+                            
+                            file.row.data('filedata', data);
 
                             $this.files.push(file);
-
+                            
                             if($this.cfg.auto) {
                                 $this.upload();
                             }
@@ -1726,6 +1726,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if($this.cfg.oncomplete) {
                     $this.cfg.oncomplete.call($this);
                 }
+                
+                //update reference to clone
+                $this.input = $($this.jqId + '_input');
             }
         };
 
@@ -1803,22 +1806,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
             
     upload: function() {
-        var cfg = {};
-        if(!($.support.xhrFileUpload&&$.support.xhrFormDataFileUpload)) {
-            cfg.fileInput = this.input;
-        }
-        
-        if(this.files.length) {
-            if(this.cfg.merge) {
-                cfg.files = this.files;
-                this.jq.fileupload('send', cfg);
-            }
-            else {
-                for(var i = 0; i < this.files.length; i++) {
-                    cfg.files = this.files[i];
-                    this.jq.fileupload('send', cfg);
-                }
-            }
+        for(var i = 0; i < this.files.length; i++) {
+            this.files[i].row.data('filedata').submit();
         }
     },
             
