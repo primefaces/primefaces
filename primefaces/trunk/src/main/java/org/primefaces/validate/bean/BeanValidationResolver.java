@@ -68,24 +68,30 @@ public class BeanValidationResolver {
                 
                 if(base != null && property != null) {
                     BeanDescriptor beanDescriptor = validator.getConstraintsForClass(base.getClass());
-                    PropertyDescriptor propertyDescriptor = beanDescriptor.getConstraintsForProperty(property.toString());
-                    Set<ConstraintDescriptor<?>> constraints = propertyDescriptor.getConstraintDescriptors();
                     
-                    if(constraints != null && !constraints.isEmpty()) {
-                        for(ConstraintDescriptor constraintDescriptor : constraints) {
-                            ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPER.get(constraintDescriptor.getAnnotation().annotationType());
-                            
-                            if(clientValidationConstraint != null) {
-                                String validatorId = clientValidationConstraint.getValidatorId();
-                                Map<String,Object> constraintMetadata = clientValidationConstraint.getMetadata(constraintDescriptor);
-                                
-                                if(constraintMetadata != null)
-                                    metadata.putAll(constraintMetadata);
-                                
-                                if(validatorId != null)
-                                    validatorIds.add(validatorId);
-                            }
-                        }
+                    if (beanDescriptor != null) {
+	                    PropertyDescriptor propertyDescriptor = beanDescriptor.getConstraintsForProperty(property.toString());
+	                    
+	                    if (propertyDescriptor != null) {
+		                    Set<ConstraintDescriptor<?>> constraints = propertyDescriptor.getConstraintDescriptors();
+		                    
+		                    if(constraints != null && !constraints.isEmpty()) {
+		                        for(ConstraintDescriptor constraintDescriptor : constraints) {
+		                            ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPER.get(constraintDescriptor.getAnnotation().annotationType());
+		                            
+		                            if(clientValidationConstraint != null) {
+		                                String validatorId = clientValidationConstraint.getValidatorId();
+		                                Map<String,Object> constraintMetadata = clientValidationConstraint.getMetadata(constraintDescriptor);
+		                                
+		                                if(constraintMetadata != null)
+		                                    metadata.putAll(constraintMetadata);
+		                                
+		                                if(validatorId != null)
+		                                    validatorIds.add(validatorId);
+		                            }
+		                        }
+		                    }
+	                    }
                     }
                 }
             }
