@@ -1,18 +1,13 @@
-/**
- @preserve CLEditor WYSIWYG HTML Editor v1.3.0
- http://premiumsoftware.net/cleditor
+﻿/*!
+ CLEditor WYSIWYG HTML Editor v1.4.2
+ http://premiumsoftware.net/CLEditor
  requires jQuery v1.4.2 or later
 
  Copyright 2010, Chris Landowski, Premium Software, LLC
  Dual licensed under the MIT or GPL Version 2 licenses.
 */
 
-// ==ClosureCompiler==
-// @compilation_level SIMPLE_OPTIMIZATIONS
-// @output_file_name jquery.cleditor.min.js
-// ==/ClosureCompiler==
-
-(function($) {
+(function ($) {
 
   //==============
   // jQuery Plugin
@@ -22,7 +17,7 @@
 
     // Define the defaults used for all new cleditor instances
     defaultOptions: {
-      width:        500, // width not including margins, borders or padding
+      width:        'auto', // width not including margins, borders or padding
       height:       250, // height not including margins, borders or padding
       controls:     // controls to add to the toolbar
                     "bold italic underline strikethrough subscript superscript | font size " +
@@ -36,7 +31,7 @@
                     "999 C00 F60 FC3 FC0 3C0 0CC 36F 63F C3C " +
                     "666 900 C60 C93 990 090 399 33F 60C 939 " +
                     "333 600 930 963 660 060 366 009 339 636 " +
-                    "000 300 630 633 330 030 033 006 309 303",
+                    "000 300 630 633 330 030 033 006 309 303",    
       fonts:        // font names in the font popup
                     "Arial,Arial Black,Comic Sans MS,Courier New,Narrow,Garamond," +
                     "Georgia,Impact,Sans Serif,Serif,Tahoma,Trebuchet MS,Verdana",
@@ -46,17 +41,17 @@
                     [["Paragraph", "<p>"], ["Header 1", "<h1>"], ["Header 2", "<h2>"],
                     ["Header 3", "<h3>"],  ["Header 4","<h4>"],  ["Header 5","<h5>"],
                     ["Header 6","<h6>"]],
-      useCSS:       false, // use CSS to style HTML when possible (not supported in ie)
+      useCSS:       true, // use CSS to style HTML when possible (not supported in ie)
       docType:      // Document type contained within the editor
                     '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">',
       docCSSFile:   // CSS file used to style the document contained within the editor
-                    "",
+                    "", 
       bodyStyle:    // style to assign to document body contained within the editor
                     "margin:4px; font:10pt Arial,Verdana; cursor:text"
     },
 
-    // Define all usable toolbar buttons - the init string property is
-    //   expanded during initialization back into the buttons object and
+    // Define all usable toolbar buttons - the init string property is 
+    //   expanded during initialization back into the buttons object and 
     //   seperate object properties are created for each button.
     //   e.g. buttons.size.title = "Font Size"
     buttons: {
@@ -97,7 +92,7 @@
     },
 
     // imagesPath - returns the path to the images folder
-    imagesPath: function() {return imagesPath();}
+    imagesPath: function() { return imagesPath(); }
 
   };
 
@@ -120,7 +115,7 @@
     return $result;
 
   };
-
+    
   //==================
   // Private Variables
   //==================
@@ -139,7 +134,7 @@
   TRANSPARENT      = "transparent",
   UNSELECTABLE     = "unselectable",
 
-  // Class name constants
+  // Class name constants  
   MAIN_CLASS       = "ui-editor ui-widget-content",    // main containing div
   TOOLBAR_CLASS    = "ui-editor-toolbar", // toolbar div inside main div
   GROUP_CLASS      = "ui-editor-group",   // group divs inside the toolbar div
@@ -152,12 +147,14 @@
   PROMPT_CLASS     = "ui-editor-prompt",  // prompt popup divs inside body
   MSG_CLASS        = "ui-editor-message", // message popup div inside body
 
-  // Test for ie
-  ie = $.browser.msie,
-  ie6 = /msie\s6/i.test(navigator.userAgent),
+  // Browser detection
+  ua = navigator.userAgent.toLowerCase(),
+  ie = /msie/.test(ua),
+  ie6 = /msie\s6/.test(ua),
+  webkit = /webkit/.test(ua),
 
   // Test for iPhone/iTouch/iPad
-  iOS = /(?!.*5).*(iphone|ipad|ipod)/i.test(navigator.userAgent),
+  iOS = /iphone|ipad|ipod/i.test(ua),
 
   // Popups are created once as needed and shared by all editor instances
   popups = {},
@@ -224,6 +221,9 @@
       .addClass(GROUP_CLASS)
       .appendTo($toolbar);
 
+    // Initialize the group width
+    var groupWidth = 0;
+    
     // Add the buttons to the toolbar
     $.each(options.controls.split(" "), function(idx, buttonName) {
       if (buttonName === "") return true;
@@ -236,6 +236,10 @@
           .addClass(DIVIDER_CLASS)
           .appendTo($group);
 
+        // Update the group width
+        $group.width(groupWidth + 1);
+        groupWidth = 0;
+
         // Create a new group
         $group = $(DIV_TAG)
           .addClass(GROUP_CLASS)
@@ -245,7 +249,7 @@
 
       // Button
       else {
-
+        
         // Get the button definition
         var button = buttons[buttonName];
 
@@ -257,6 +261,10 @@
           .bind(CLICK, $.proxy(buttonClick, editor))
           .appendTo($group)
           .hover(hoverEnter, hoverLeave);
+
+        // Update the group width
+        groupWidth += 24;
+        $group.width(groupWidth + 1);
 
         // Prepare the button image
         var map = {};
@@ -273,7 +281,7 @@
         if (button.popupName)
           createPopup(button.popupName, options, button.popupClass,
             button.popupContent, button.popupHover);
-
+        
       }
 
     });
@@ -295,7 +303,7 @@
 
     // Bind the window resize event when the width or height is auto or %
     if (/auto|%/.test("" + options.width + options.height))
-      $(window).resize(function() {refresh(editor);});
+      $(window).bind('resize.cleditor', function () { refresh(editor); });
 
     // Create the iframe and resize the controls
     refresh(editor);
@@ -465,7 +473,7 @@
           return false; // stop propagination to document click
         }
 
-        // propaginate to documnt click
+        // propaginate to document click
         return;
 
       }
@@ -562,6 +570,7 @@
   //==================
   // Private Functions
   //==================
+
   // checksum - returns a checksum using the Adler-32 method
   function checksum(text)
   {
@@ -622,7 +631,7 @@
     else if (popupName == "size")
       $.each(options.sizes.split(","), function(idx, size) {
         $(DIV_TAG).appendTo($popup)
-          .html("<font size=" + size + ">" + size + "</font>");
+          .html('<font size="' + size + '">' + size + '</font>');
       });
 
     // Style
@@ -634,13 +643,13 @@
 
     // URL
     else if (popupName == "url") {
-      $popup.html('Enter URL:<br /><input type=text value="http://" size=35><br /><input type=button value="Submit">');
+      $popup.html('Enter URL:<br /><input type="text" value="http://" size="35" /><br /><input type="button" value="Submit" />');
       popupTypeClass = PROMPT_CLASS;
     }
 
     // Paste as Text
     else if (popupName == "pastetext") {
-      $popup.html('Paste your content here and click submit.<br /><textarea cols=40 rows=3></textarea><br /><input type=button value=Submit>');
+      $popup.html('Paste your content here and click submit.<br /><textarea cols="40" rows="3"></textarea><br /><input type="button" value="Submit" />');
       popupTypeClass = PROMPT_CLASS;
     }
 
@@ -709,12 +718,12 @@
     }
 
     // Execute the command and check for error
-    var success = true, description;
+    var success = true, message;
     if (ie && command.toLowerCase() == "inserthtml")
       getRange(editor).pasteHTML(value);
     else {
-      try {success = editor.doc.execCommand(command, 0, value || null);}
-      catch (err) {description = err.description;success = false;}
+      try { success = editor.doc.execCommand(command, 0, value || null); }
+      catch (err) { message = err.message; success = false; }
       if (!success) {
         if ("cutcopypaste".indexOf(command) > -1)
           showMessage(editor, "For security reasons, your browser does not support the " +
@@ -722,13 +731,14 @@
             button);
         else
           showMessage(editor,
-            (description ? description : "Error executing the " + command + " command."),
+            (message ? message : "Error executing the " + command + " command."),
             button);
       }
     }
 
-    // Enable the buttons
+    // Enable the buttons and update the textarea
     refreshButtons(editor);
+    updateTextArea(editor, true);
     return success;
 
   }
@@ -754,19 +764,26 @@
     return editor.$frame[0].contentWindow.getSelection();
   }
 
-  // Returns the hex value for the passed in string.
-  //   hex("rgb(255, 0, 0)"); // #FF0000
-  //   hex("#FF0000"); // #FF0000
-  //   hex("#F00"); // #FF0000
+  // hex - returns the hex value for the passed in color string
   function hex(s) {
-    var m = /rgba?\((\d+), (\d+), (\d+)/.exec(s),
-      c = s.split("");
+
+    // hex("rgb(255, 0, 0)") returns #FF0000
+    var m = /rgba?\((\d+), (\d+), (\d+)/.exec(s);
     if (m) {
-      s = ( m[1] << 16 | m[2] << 8 | m[3] ).toString(16);
+      s = (m[1] << 16 | m[2] << 8 | m[3]).toString(16);
       while (s.length < 6)
         s = "0" + s;
+      return "#" + s;
     }
-    return "#" + (s.length == 6 ? s : c[1] + c[1] + c[2] + c[2] + c[3] + c[3]);
+
+    // hex("#F00") returns #FF0000
+    var c = s.split("");
+    if (s.length == 4)
+      return "#" + c[1] + c[1] + c[2] + c[2] + c[3] + c[3];
+
+    // hex("#FF0000") returns #FF0000
+    return s;
+
   }
 
   // hidePopups - hides all popups
@@ -781,9 +798,8 @@
 
   // imagesPath - returns the path to the images folder
   function imagesPath() {
-    var cssFile = "jquery.cleditor.css",
-        href = $("link[href$='" + cssFile +"']").attr("href");
-    return href.substr(0, href.length - cssFile.length) + "images/";
+    var href = $("link[href*=cleditor]").attr("href");
+    return href.replace(/^(.*\/)[^\/]+$/, '$1') + "images/";
   }
 
   // imageUrl - Returns the css url string for a filemane
@@ -798,7 +814,7 @@
       options = editor.options;
 
     // Remove the old iframe
-    if (editor.$frame)
+    if (editor.$frame) 
       editor.$frame.remove();
 
     // Create a new iframe
@@ -835,11 +851,11 @@
       // reset the selection just after the beforedeactivate event and just
       // before the beforeactivate event.
       $doc.bind("beforedeactivate beforeactivate selectionchange keypress", function(e) {
-
+        
         // Flag the editor as inactive
         if (e.type == "beforedeactivate")
           editor.inactive = true;
-
+        
         // Get rid of the bogus selection and flag the editor as active
         else if (e.type == "beforeactivate") {
           if (!editor.inactive && editor.range && editor.range.length > 1)
@@ -849,7 +865,7 @@
 
         // Save the selection when the editor is active
         else if (!editor.inactive) {
-          if (!editor.range)
+          if (!editor.range) 
             editor.range = [];
           editor.range.unshift(getRange(editor));
 
@@ -867,15 +883,11 @@
 
     }
 
-    // Update the textarea when the iframe loses focus
-    ($.browser.mozilla ? $doc : $(contentWindow)).blur(function() {
-      updateTextArea(editor, true);
-    });
-
-    // Enable the toolbar buttons as the user types or clicks
+    // Enable the toolbar buttons and update the textarea as the user types or clicks
     $doc.click(hidePopups)
       .bind("keyup mouseup", function() {
         refreshButtons(editor);
+        updateTextArea(editor, true);
       });
 
     // Show the textarea for iPhone/iTouch/iPad or
@@ -883,34 +895,40 @@
     if (iOS) editor.$area.show();
     else $frame.show();
 
-    var $toolbar = editor.$toolbar,
-        $group = $toolbar.children("div:last"),
-        wid = $main.width();
+    // Wait for the layout to finish - shortcut for $(document).ready()
+    $(function() {
 
-    // Resize the toolbar
-    var hgt = $group.offset().top + $group.outerHeight() - $toolbar.offset().top + 1;
-    $toolbar.height(hgt);
+      var $toolbar = editor.$toolbar,
+          $group = $toolbar.children("div:last"),
+          wid = $main.width();
 
-    // Resize the iframe
-    hgt = (/%/.test("" + options.height) ? $main.height() : parseInt(options.height)) - hgt;
-    $frame.width(wid).height(hgt);
+      // Resize the toolbar
+      var hgt = $group.offset().top + $group.outerHeight() - $toolbar.offset().top + 1;
+      $toolbar.height(hgt);
 
-    // Resize the textarea. IE6 textareas have a 1px top
-    // & bottom margin that cannot be removed using css.
-    editor.$area.width(wid).height(ie6 ? hgt - 2 : hgt);
+      // Resize the iframe
+      hgt = (/%/.test("" + options.height) ? $main.height() : parseInt(options.height)) - hgt;
+      $frame.width(wid).height(hgt);
 
-    // Switch the iframe into design mode if enabled
-    disable(editor, editor.disabled);
+      // Resize the textarea. IE6 textareas have a 1px top
+      // & bottom margin that cannot be removed using css.
+      editor.$area.width(wid).height(ie6 ? hgt - 2 : hgt);
 
-    // Enable or disable the toolbar buttons
-    refreshButtons(editor);
+      // Switch the iframe into design mode if enabled
+      disable(editor, editor.disabled);
+
+      // Enable or disable the toolbar buttons
+      refreshButtons(editor);
+
+    });
+
   }
 
   // refreshButtons - enables or disables buttons based on availability
   function refreshButtons(editor) {
 
     // Webkit requires focus before queryCommandEnabled will return anything but false
-    if (!iOS && $.browser.webkit && !editor.focused) {
+    if (!iOS && webkit && !editor.focused) {
       editor.$frame[0].contentWindow.focus();
       window.focus();
       editor.focused = true;
@@ -1057,7 +1075,7 @@
 
   // updateFrame - updates the iframe with the textarea contents
   function updateFrame(editor, checkForChange) {
-
+    
     var code = editor.$area.val(),
       options = editor.options,
       updateFrameCallback = options.updateFrame,
@@ -1123,26 +1141,6 @@
   }
 
 })(jQuery);
-
-/*
- CLEditor XHTML Plugin v1.0.0
- http://premiumsoftware.net/cleditor
- requires CLEditor v1.3.0 or later
-
- Copyright 2010, Chris Landowski, Premium Software, LLC
- Dual licensed under the MIT or GPL Version 2 licenses.
-
- Based on John Resig's HTML Parser Project (ejohn.org)
- http://ejohn.org/files/htmlparser.js
- Original code by Erik Arvidsson, Mozilla Public License
- http://erik.eae.net/simplehtmlparser/simplehtmlparser.js
-*/
-(function(k){var n=k.cleditor.defaultOptions.updateTextArea;k.cleditor.defaultOptions.updateTextArea=function(a){if(n)a=n(a);return k.cleditor.convertHTMLtoXHTML(a)};k.cleditor.convertHTMLtoXHTML=function(a){function i(e){var b={};e=e.split(",");for(var f=0;f<e.length;f++)b[e[f]]=true;return b}function v(e,b,f,h){b=b.toLowerCase();if(w[b])for(;c.last()&&x[c.last()];)j("",c.last());y[b]&&c.last()==b&&j("",b);(h=z[b]||!!h)||c.push(b);var l=[];f.replace(A,function(D,m,o,p,q){l.push({name:m,escaped:(o?
-o:p?p:q?q:B[m]?m:"").replace(/(^|[^\\])"/g,'$1\\"')})});g+="<"+b;for(e=0;e<l.length;e++)g+=" "+l[e].name+'="'+l[e].escaped+'"';g+=(h?"/":"")+">"}function j(e,b){if(b){b=b.toLowerCase();for(f=c.length-1;f>=0;f--)if(c[f]==b)break}else var f=0;if(f>=0){for(var h=c.length-1;h>=f;h--)g+="</"+c[h]+">";c.length=f}}function r(e,b){g=g.replace(e,b)}var s=/^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)>/,t=/^<\/(\w+)[^>]*>/,A=/(\w+)(?:\s*=\s*(?:(?:"((?:\\.|[^"])*)")|(?:'((?:\\.|[^'])*)')|([^>\s]+)))?/g,
-z=i("area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed"),w=i("address,applet,blockquote,button,center,dd,del,dir,div,dl,dt,fieldset,form,frameset,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,p,pre,script,table,tbody,td,tfoot,th,thead,tr,ul"),x=i("a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var"),y=i("colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr"),
-B=i("checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected"),C=i("script,style"),c=[];c.last=function(){return this[this.length-1]};for(var d,u=a,g="";a;){if(!c.last()||!C[c.last()])if(a.indexOf("<!--")==0){d=a.indexOf("--\>");if(d>=0){g+=a.substring(0,d+3);a=a.substring(d+3)}}else if(a.indexOf("</")==0){if(d=a.match(t)){a=a.substring(d[0].length);d[0].replace(t,j)}}else if(a.indexOf("<")==0){if(d=a.match(s)){a=a.substring(d[0].length);d[0].replace(s,
-v)}}else{d=a.indexOf("<");g+=d<0?a:a.substring(0,d);a=d<0?"":a.substring(d)}else{a=a.replace(RegExp("(.*)</"+c.last()+"[^>]*>"),function(e,b){b=b.replace(/<!--(.*?)--\>/g,"$1").replace(/<!\[CDATA\[(.*?)]]\>/g,"$1");g+=b;return""});j("",c.last())}if(a==u)throw"Parse Error: "+a;u=a}j();r(/<b>(.*?)<\/b>/g,"<strong>$1</strong>");r(/<i>(.*?)<\/i>/g,"<em>$1</em>");return g}})(jQuery);
-
 
 /**
  * PrimeFaces Editor Widget
