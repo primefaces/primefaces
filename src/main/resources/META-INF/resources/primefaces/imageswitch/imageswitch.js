@@ -1364,5 +1364,9 @@ $.fn.cycle.transitions.wipe = function($cont, $slides, opts) {
     
     previous: function() {
         this.jq.cycle('prev');
+    },
+    
+    switchTo: function(index) {
+        this.jq.cycle(index);
     }
 });
