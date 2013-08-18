@@ -108,7 +108,7 @@ public class GalleriaRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         
         if (context.isPostback()) {
-        	wb.init("Galleria", galleria.resolveWidgetVar(), clientId, "galleria");
+        	wb.initWithDomReady("Galleria", galleria.resolveWidgetVar(), clientId, "galleria");
         } else {
         	wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(), clientId, "galleria");
         }
