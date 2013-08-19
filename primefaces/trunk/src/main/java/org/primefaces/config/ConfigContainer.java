@@ -180,8 +180,7 @@ public class ConfigContainer {
 		return rightToLeft;
 	}
 
-	public boolean isStringConverterAvailable()
-	{
+	public boolean isStringConverterAvailable() {
 		return stringConverterAvailable;
 	}
 
