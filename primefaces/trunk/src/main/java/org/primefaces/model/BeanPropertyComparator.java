@@ -16,10 +16,10 @@
 package org.primefaces.model;
 
 import java.util.Comparator;
-import java.util.logging.Logger;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
 /**
@@ -31,7 +31,6 @@ public class BeanPropertyComparator implements Comparator {
     private boolean asc;
     private String var;
     private MethodExpression sortFunction;
-    private final static Logger logger = Logger.getLogger(BeanPropertyComparator.class.getName());
 
     public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction) {
         this.sortBy = sortBy;
@@ -50,17 +49,16 @@ public class BeanPropertyComparator implements Comparator {
             context.getExternalContext().getRequestMap().put(var, obj2);
             Object value2 = sortBy.getValue(context.getELContext());
 
+            int result;
+            
             //Empty check
             if (value1 == null && value2 == null) {
-                return 0;
+            	return 0;
             } else if (value1 == null) {
-                return 1;
+            	result = 1;
             } else if (value2 == null) {
-                return -1;
-            }
-
-            int result;
-            if (sortFunction == null) {
+            	result = -1;
+            } else if (sortFunction == null) {
                 result = ((Comparable) value1).compareTo(value2);
             } else {
                 result = (Integer) sortFunction.invoke(context.getELContext(), new Object[]{value1, value2});
@@ -69,9 +67,7 @@ public class BeanPropertyComparator implements Comparator {
             return asc ? result : -1 * result;
 
         } catch (Exception e) {
-            logger.severe("Error in sorting");
-
-            throw new RuntimeException(e);
+            throw new FacesException(e);
         }
     }
 }
