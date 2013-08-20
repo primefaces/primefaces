@@ -1267,6 +1267,15 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                     nextRadioInput.trigger('focus').trigger('change');
                     e.preventDefault();
                 break;
+                
+                case keyCode.SPACE:
+                    input.blur();
+                    if(!input.prop('checked')) {
+                        $this.select(currentRadio);
+                    }
+                    
+                    e.preventDefault();
+                break;
             }
         });
         
