@@ -5,6 +5,7 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
+        this.cfg.global = this.cfg.global||false;
         
         if(this.cfg.deferred) {
             if(this.cfg.deferredMode === 'load') {
@@ -24,7 +25,8 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            ignoreAutoUpdate: true
+            ignoreAutoUpdate: true,
+            global: this.cfg.global
         },
         $this = this;
 

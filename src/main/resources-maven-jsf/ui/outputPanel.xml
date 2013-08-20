@@ -55,6 +55,13 @@
             <defaultValue>load</defaultValue>
             <description>Defines deferred loading mode, valid values are "load" (after page load) and "visible" (once the panel is visible on scroll). Default value is "load".</description>
 		</attribute>
+        <attribute>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus on deferred loading. Default is false.</description>
+        </attribute>
 	</attributes>
     <resources>
 		<resource>
