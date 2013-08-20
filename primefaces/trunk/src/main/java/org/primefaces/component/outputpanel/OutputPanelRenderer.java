@@ -68,7 +68,9 @@ public class OutputPanelRenderer extends CoreRenderer {
         wb.initWithDomReady("OutputPanel", panel.resolveWidgetVar(), clientId);
         
         if(panel.isDeferred()) {
-            wb.attr("deferred", true).attr("deferredMode", panel.getDeferredMode());
+            wb.attr("deferred", true)
+                .attr("deferredMode", panel.getDeferredMode())
+                .attr("global", panel.isGlobal(), false);
         }
         
         wb.finish();
