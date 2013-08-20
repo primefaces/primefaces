@@ -67,22 +67,30 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
      */
     startAutoplay: function(){
         var $this = this;
-        if(this.cfg.autoplayInterval){
-            setInterval(function() {
+        if(this.cfg.autoplayInterval) {
+            this.slideshowInterval = setInterval(function() {
                 $this.next();
             }, this.cfg.autoplayInterval);
         }
+    },
+            
+    stopAutoplay: function() {
+        if(this.slideshowInterval) {
+            clearInterval(this.slideshowInterval);
+        }        
     },
     
     /**
      * Binds related mouse/key events.
      */
     bindEvents: function(){
-        var _self = this;
+        var $this = this;
 
         this.pageLinks.click(function(e) {
-            if(!_self.animating) {
-                _self.setPage($(this).index() + 1);
+            $this.stopAutoplay();
+            
+            if(!$this.animating) {
+                $this.setPage($(this).index() + 1);
             }
 
             e.preventDefault();
@@ -90,18 +98,24 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.skinSelect(this.dropdown);
         this.dropdown.change(function(e) {
-            if(!_self.animating)
-                _self.setPage(parseInt($(this).val()));
+            $this.stopAutoplay();
+            
+            if(!$this.animating)
+                $this.setPage(parseInt($(this).val()));
         });
 
         this.prevButton.click(function(e) {
-            if(!_self.prevButton.hasClass('ui-state-disabled') && !_self.animating)
-                _self.prev();
+            $this.stopAutoplay();
+            
+            if(!$this.prevButton.hasClass('ui-state-disabled') && !$this.animating)
+                $this.prev();
         });
 
-        this.nextButton.click(function(){
-            if(!_self.nextButton.hasClass('ui-state-disabled') && !_self.animating)
-                _self.next();
+        this.nextButton.click(function() {
+            $this.stopAutoplay();
+            
+            if(!$this.nextButton.hasClass('ui-state-disabled') && !$this.animating)
+                $this.next();
         });
     },
     
@@ -194,7 +208,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
         this.setPage(this.cfg.page - 1);
     },
     
-    setPage: function(index) {    
+    setPage: function(index) {  
         if(this.cfg.circular)
             this.cfg.page = index > this.cfg.pageCount ? 1 : index < 1 ? this.cfg.pageCount : index;
         else
