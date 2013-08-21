@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.el.ValueReference;
@@ -77,7 +79,8 @@ public class BeanValidationResolver {
 		                    
 		                    if(constraints != null && !constraints.isEmpty()) {
 		                        for(ConstraintDescriptor constraintDescriptor : constraints) {
-		                            ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPER.get(constraintDescriptor.getAnnotation().annotationType());
+                                    Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
+		                            ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPER.get(annotationType);
 		                            
 		                            if(clientValidationConstraint != null) {
 		                                String validatorId = clientValidationConstraint.getValidatorId();
@@ -89,6 +92,32 @@ public class BeanValidationResolver {
 		                                if(validatorId != null)
 		                                    validatorIds.add(validatorId);
 		                            }
+                                    else {
+                                        ClientConstraint clientConstraint = annotationType.getAnnotation(ClientConstraint.class);
+                                        if(clientConstraint != null) {
+                                            Class<?> resolvedBy = clientConstraint.resolvedBy();
+                                            
+                                            if(resolvedBy != null) {
+                                                try {
+                                                    ClientValidationConstraint customClientValidationConstraint = (ClientValidationConstraint) resolvedBy.newInstance();
+                                                    
+                                                    String validatorId = customClientValidationConstraint.getValidatorId();
+                                                    Map<String,Object> constraintMetadata = customClientValidationConstraint.getMetadata(constraintDescriptor);
+		                                
+                                                    if(constraintMetadata != null)
+                                                        metadata.putAll(constraintMetadata);
+
+                                                    if(validatorId != null)
+                                                        validatorIds.add(validatorId);
+                                                    
+                                                } catch (InstantiationException ex) {
+                                                    Logger.getLogger(BeanValidationResolver.class.getName()).log(Level.SEVERE, null, ex);
+                                                } catch (IllegalAccessException ex) {
+                                                    Logger.getLogger(BeanValidationResolver.class.getName()).log(Level.SEVERE, null, ex);
+                                                }
+                                            }
+                                        }
+                                    }
 		                        }
 		                    }
 	                    }

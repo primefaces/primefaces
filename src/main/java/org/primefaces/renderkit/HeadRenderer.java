@@ -85,7 +85,7 @@ public class HeadRenderer extends Renderer {
         }
         
         if(cc.isClientSideValidationEnabled()) {
-            encodeValidationResource(context);
+            encodeValidationResources(context, cc.isBeanValidationAvailable());
             
             writer.startElement("script", null);
             writer.writeAttribute("type", "text/javascript", null);
@@ -124,7 +124,7 @@ public class HeadRenderer extends Renderer {
         }
     }
     
-    protected void encodeValidationResource(FacesContext context) throws IOException {
+    protected void encodeValidationResources(FacesContext context, boolean beanValidationEnabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Resource resource = context.getApplication().getResourceHandler().createResource("validation/validation.js", "primefaces");
         
@@ -133,6 +133,17 @@ public class HeadRenderer extends Renderer {
             writer.writeAttribute("type", "text/javascript", null);
             writer.writeAttribute("src", resource.getRequestPath(), null);
             writer.endElement("script");
+        }
+        
+        if(beanValidationEnabled) {
+            resource = context.getApplication().getResourceHandler().createResource("validation/beanvalidation.js", "primefaces");
+        
+            if(resource != null) {
+                writer.startElement("script", null);
+                writer.writeAttribute("type", "text/javascript", null);
+                writer.writeAttribute("src", resource.getRequestPath(), null);
+                writer.endElement("script");
+            }
         }
     }
 }

@@ -15,17 +15,14 @@
  */
 package org.primefaces.validate.bean;
 
-import java.util.Map;
-import javax.validation.constraints.NotNull;
-import javax.validation.metadata.ConstraintDescriptor;
+import static java.lang.annotation.ElementType.*;
+import java.lang.annotation.Retention;
+import static java.lang.annotation.RetentionPolicy.*;
+import java.lang.annotation.Target;
 
-public class NotNullClientValidationConstraint implements ClientValidationConstraint {
-
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {      
-        return null;
-    }
-
-    public String getValidatorId() {
-        return NotNull.class.getSimpleName();
-    }
+@Target({ANNOTATION_TYPE})
+@Retention(RUNTIME)
+public @interface ClientConstraint {
+    
+    Class<?> resolvedBy();
 }
