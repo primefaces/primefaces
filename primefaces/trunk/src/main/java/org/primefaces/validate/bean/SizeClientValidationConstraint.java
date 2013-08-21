@@ -17,28 +17,30 @@ package org.primefaces.validate.bean;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.faces.validator.LengthValidator;
+import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.util.HTML;
 
 public class SizeClientValidationConstraint implements ClientValidationConstraint {
 
+    public static final String MESSAGE_METADATA = "data-p-size-msg";
+    
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
         Map<String,Object> metadata = new HashMap<String, Object>();
         Map attrs = constraintDescriptor.getAttributes();
-        Object min = attrs.get("min");
-        Object max = attrs.get("max");
+        Object message = attrs.get("message");
+
+        metadata.put(HTML.VALIDATION_METADATA.MIN_LENGTH, attrs.get("min"));
+        metadata.put(HTML.VALIDATION_METADATA.MAX_LENGTH, attrs.get("max"));
         
-        if(min != null)
-            metadata.put(HTML.VALIDATION_METADATA.MIN_LENGTH, min);
-        
-        if(max != null)
-            metadata.put(HTML.VALIDATION_METADATA.MAX_LENGTH, max);
+        if(message != null) {
+            metadata.put(MESSAGE_METADATA, message);
+        }
         
         return metadata;
     }
     
     public String getValidatorId() {
-        return LengthValidator.VALIDATOR_ID;
+        return Size.class.getSimpleName();
     }
 }
