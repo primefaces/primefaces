@@ -88,22 +88,24 @@
             regex: /^-?\d+$/,
             
             validate: function(element, value) {
-                var min = element.data('p-minvalue'),
-                max = element.data('p-maxvalue'),
-                mc = PrimeFaces.util.MessageContext;
-        
-                if(!this.regex.test(element.val())) {
-                    throw mc.getMessage(this.TYPE_MESSAGE_ID, mc.getLabel(element));
-                }
-        
-                if((max !== undefined && min !== undefined) && (value < min || value > max)) {
-                    throw mc.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, mc.getLabel(element));
-                }
-                else if((max !== undefined && min === undefined) && (value > max)) {
-                    throw mc.getMessage(this.MAXIMUM_MESSAGE_ID, max, mc.getLabel(element));
-                }
-                else if((min !== undefined && max === undefined) && (value < min)) {
-                    throw mc.getMessage(this.MINIMUM_MESSAGE_ID, min, mc.getLabel(element));
+                if(value !== null) {
+                    var min = element.data('p-minvalue'),
+                    max = element.data('p-maxvalue'),
+                    mc = PrimeFaces.util.MessageContext;
+
+                    if(!this.regex.test(element.val())) {
+                        throw mc.getMessage(this.TYPE_MESSAGE_ID, mc.getLabel(element));
+                    }
+
+                    if((max !== undefined && min !== undefined) && (value < min || value > max)) {
+                        throw mc.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, mc.getLabel(element));
+                    }
+                    else if((max !== undefined && min === undefined) && (value > max)) {
+                        throw mc.getMessage(this.MAXIMUM_MESSAGE_ID, max, mc.getLabel(element));
+                    }
+                    else if((min !== undefined && max === undefined) && (value < min)) {
+                        throw mc.getMessage(this.MINIMUM_MESSAGE_ID, min, mc.getLabel(element));
+                    }
                 }
             }
         },
@@ -117,22 +119,24 @@
             regex: /^[-+]?\d+(\.\d+)?[d]?$/,
             
             validate: function(element, value) {
-                var min = element.data('p-minvalue'),
-                max = element.data('p-maxvalue'),
-                mc = PrimeFaces.util.MessageContext;
-        
-                if(!this.regex.test(element.val())) {
-                    throw mc.getMessage(this.TYPE_MESSAGE_ID, mc.getLabel(element));
-                }
-        
-                if((max !== undefined && min !== undefined) && (value < min || value > max)) {
-                    throw mc.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, mc.getLabel(element));
-                }
-                else if((max !== undefined && min === undefined) && (value > max)) {
-                    throw mc.getMessage(this.MAXIMUM_MESSAGE_ID, max, mc.getLabel(element));
-                }
-                else if((min !== undefined && max === undefined) && (value < min)) {
-                    throw mc.getMessage(this.MINIMUM_MESSAGE_ID, min, mc.getLabel(element));
+                if(value !== null) {
+                    var min = element.data('p-minvalue'),
+                    max = element.data('p-maxvalue'),
+                    mc = PrimeFaces.util.MessageContext;
+
+                    if(!this.regex.test(element.val())) {
+                        throw mc.getMessage(this.TYPE_MESSAGE_ID, mc.getLabel(element));
+                    }
+
+                    if((max !== undefined && min !== undefined) && (value < min || value > max)) {
+                        throw mc.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, mc.getLabel(element));
+                    }
+                    else if((max !== undefined && min === undefined) && (value > max)) {
+                        throw mc.getMessage(this.MAXIMUM_MESSAGE_ID, max, mc.getLabel(element));
+                    }
+                    else if((min !== undefined && max === undefined) && (value < min)) {
+                        throw mc.getMessage(this.MINIMUM_MESSAGE_ID, min, mc.getLabel(element));
+                    }
                 }
             }
         },
@@ -480,7 +484,7 @@
             valid = false;
         }
 
-        if(valid && ((submittedValue !== '')||PrimeFaces.settings.validateEmptyFields)) {
+        if(valid && ((submittedValue !== null && $.trim(submittedValue).length > 0)||PrimeFaces.settings.validateEmptyFields)) {
             var validatorIds = element.data('p-val');
             if(validatorIds) {
                 validatorIds = validatorIds.split(',');

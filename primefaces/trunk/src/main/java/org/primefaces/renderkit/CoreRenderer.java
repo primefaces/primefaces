@@ -506,6 +506,7 @@ public abstract class CoreRenderer extends Renderer {
         Object requiredMessage = attrs.get("requiredMessage");
         Object validatorMessage = attrs.get("validatorMessage");
         Object converterMessage = attrs.get("converterMessage");
+        List<String> validatorIds = new ArrayList<String>();
         
         //messages
         if(label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
@@ -529,37 +530,33 @@ public abstract class CoreRenderer extends Renderer {
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isBeanValidationAvailable()) {
             BeanValidationMetadata beanValidationMetadata = BeanValidationResolver.resolveValidationMetadata(context, comp);
             renderValidationMetadataMap(context, beanValidationMetadata.getAttributes());
-            renderValidatorIds(context, beanValidationMetadata.getValidatorIds());
+            validatorIds.addAll(beanValidationMetadata.getValidatorIds());
         }
-        else {
-            //required validation
-            if(component.isRequired()) {
-                writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED, "true", null);
-            }
+        
+        //required validation
+        if(component.isRequired()) {
+            writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED, "true", null);
+        }
 
-            //validators
-            Validator[] validators = component.getValidators();
-            if(validators != null) {
-                List<String> validatorIds = new ArrayList<String>();
+        //validators
+        Validator[] validators = component.getValidators();
+        if(validators != null) {
+            for(int i = 0; i < validators.length; i++) {
+                Validator validator = validators[i];
 
-                for(int i = 0; i < validators.length; i++) {
-                    Validator validator = validators[i];
+                if(validator instanceof ClientValidator) {
+                    ClientValidator clientValidator = (ClientValidator) validator;
+                    validatorIds.add(clientValidator.getValidatorId());
+                    Map<String,Object> metadata = clientValidator.getMetadata();
 
-                    if(validator instanceof ClientValidator) {
-                        ClientValidator clientValidator = (ClientValidator) validator;
-                        validatorIds.add(clientValidator.getValidatorId());
-                        Map<String,Object> metadata = clientValidator.getMetadata();
-
-                        if(metadata != null && !metadata.isEmpty()) {
-                            renderValidationMetadataMap(context, metadata);
-                        }
+                    if(metadata != null && !metadata.isEmpty()) {
+                        renderValidationMetadataMap(context, metadata);
                     }
                 }
-
-                renderValidatorIds(context, validatorIds);
             }
         }
-
+        
+        renderValidatorIds(context, validatorIds);
     }
     
     private void renderValidationMetadataMap(FacesContext context, Map<String,Object> metadata) throws IOException {
