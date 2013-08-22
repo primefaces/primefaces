@@ -134,7 +134,6 @@
     
     <converter>
         <converter-id>javax.faces.DateTime</converter-id>
-        <converter-for-class>java.lang.Boolean</converter-for-class>
         <converter-class>org.primefaces.convert.DateTimeConverter</converter-class>
     </converter>
     
