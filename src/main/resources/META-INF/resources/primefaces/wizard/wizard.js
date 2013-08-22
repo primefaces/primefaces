@@ -83,7 +83,7 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
                 for(var i=0; i < updates.length; i++) {
                     var update = updates.eq(i),
                     id = update.attr('id'),
-                    content = update.text();
+                    content = update.get(0).childNodes[0].nodeValue;
 
                     if(id == _self.id){
                         //update content

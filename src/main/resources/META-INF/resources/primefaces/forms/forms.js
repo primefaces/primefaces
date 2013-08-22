@@ -353,7 +353,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                 for(var i=0; i < updates.length; i++) {
                     var update = updates.eq(i),
                     id = update.attr('id'),
-                    data = update.text();
+                    data = update.get(0).childNodes[0].nodeValue;
 
                     if(id == _self.id) {
                         _self.panel.html(data);
