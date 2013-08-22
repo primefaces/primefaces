@@ -94,6 +94,13 @@
     margin-top: 4px;
 }
 
+.ui-selectmanycheckbox.ui-widget td,
+.ui-selectoneradio.ui-widget td {
+    border:0 none;
+}
+
+/** RadioButton **/
+
 .ui-radiobutton {
     margin: 3px 0;
     width: 16px;
