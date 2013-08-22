@@ -69,13 +69,16 @@ public class CarouselRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Carousel carousel) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = carousel.getClientId(context);
+        String style = carousel.getStyle();
+        String styleClass = carousel.getStyleClass();
+        styleClass = (styleClass == null) ? Carousel.CONTAINER_CLASS : Carousel.CONTAINER_CLASS + " " + styleClass;
 
         //container
 		writer.startElement("div", null);
 		writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("class", Carousel.CONTAINER_CLASS, null);
-        if(carousel.getStyle() != null) 
-            writer.writeAttribute("style", carousel.getStyle(), "style");
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) 
+            writer.writeAttribute("style", style, "style");
 
         encodeHeader(context, carousel);
         encodeContent(context, carousel);
