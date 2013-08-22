@@ -5525,7 +5525,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.BaseWidget.extend({
                     for(var i=0; i < updates.length; i++) {
                         var update = updates.eq(i),
                         id = update.attr('id'),
-                        data = update.text();
+                        data = update.get(0).childNodes[0].nodeValue;
 
                         if(id == _self.id){
                             var events = $.parseJSON(data).events;

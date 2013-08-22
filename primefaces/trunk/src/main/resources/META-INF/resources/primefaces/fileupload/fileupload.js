@@ -1715,7 +1715,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 for (var i = 0; i < updates.length; i++) {
                     var update = updates.eq(i),
                     id = update.attr('id'),
-                    content = update.text();
+                    content = update.get(0).childNodes[0].nodeValue;
 
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
                 }
