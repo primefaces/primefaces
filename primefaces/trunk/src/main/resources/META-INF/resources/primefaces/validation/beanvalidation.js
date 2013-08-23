@@ -1,4 +1,5 @@
-                /**
+
+/**
  * Bean Validation Integration for PrimeFaces Client Side Validation Framework
  */
 PrimeFaces.locales['en_US'].messages['javax.validation.constraints.AssertFalse.message'] = 'must be false';
@@ -208,15 +209,6 @@ PrimeFaces.validator['Digits'] = {
                 if((valueSplitArray[0].length > digitsInteger)||(valueSplitArray[1].length > digitsFraction))
                     throw mc.getMessage(this.MESSAGE_ID, digitsInteger, digitsFraction);
             }
-        }
-    }
-};
-
-PrimeFaces.validator['PrimeFaces'] = {
-      
-    validate: function(element, value) {
-        if(value !== 'PrimeFaces') {
-            throw {summary: 'Must be PrimeFaces', detail: 'Must be PrimeFaces'};
         }
     }
 };

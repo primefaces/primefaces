@@ -201,5 +201,13 @@ public class HTML {
         public static final String CONVERTER_MESSAGE = "data-p-cmsg";
         public static final String DIGITS_INTEGER = "data-p-dintvalue";
         public static final String DIGITS_FRACTION = "data-p-dfracvalue";
+        public static final String MAX_FRACTION_DIGITS = "data-p-maxfrac";
+        public static final String MIN_FRACTION_DIGITS = "data-p-minfrac";
+        public static final String MAX_INTEGER_DIGITS = "data-p-maxint";
+        public static final String MIN_INTEGER_DIGITS = "data-p-minint";
+        public static final String INTEGER_ONLY = "data-p-intonly";
+        public static final String CURRENCY_SYMBOL = "data-p-curs";
+        public static final String CURRENCY_CODE = "data-p-curc";
+        public static final String NUMBER_TYPE = "data-p-notype";
     }
 }

@@ -137,3 +137,8 @@
         <converter-class>org.primefaces.convert.DateTimeConverter</converter-class>
     </converter>
     
+     <converter>
+        <converter-id>javax.faces.Number</converter-id>
+        <converter-class>org.primefaces.convert.NumberConverter</converter-class>
+    </converter>
+    
