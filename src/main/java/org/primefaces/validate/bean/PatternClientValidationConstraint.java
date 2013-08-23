@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 mrt_s_000.
+ * Copyright 2009-2013 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,13 +20,12 @@ import java.util.Map;
 import javax.validation.constraints.Pattern;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.util.HTML;
-import static org.primefaces.validate.bean.MaxClientValidationConstraint.MESSAGE_METADATA;
 
-/**
- *
- * @author mrt_s_000
- */
 public class PatternClientValidationConstraint implements ClientValidationConstraint {
+    
+    private static final String MESSAGE_METADATA = "data-p-pattern-msg";
+    private static final String MESSAGE_ID = "{javax.validation.constraints.Pattern.message}";
+    
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {      
         Map<String,Object> metadata = new HashMap<String, Object>();
         Map attrs = constraintDescriptor.getAttributes();
@@ -34,7 +33,7 @@ public class PatternClientValidationConstraint implements ClientValidationConstr
         
         metadata.put(HTML.VALIDATION_METADATA.PATTERN, attrs.get("regexp"));
         
-        if(message != null) {
+        if(!message.equals(MESSAGE_ID)) {
             metadata.put(MESSAGE_METADATA, message);
         }
         

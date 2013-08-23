@@ -15,15 +15,25 @@
  */
 package org.primefaces.validate.bean;
 
+import java.util.HashMap;
 import java.util.Map;
 import javax.validation.constraints.AssertFalse;
 import javax.validation.metadata.ConstraintDescriptor;
 
-
 public class AssertFalseClientValidationConstraint implements ClientValidationConstraint {
 
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {      
-        return null;
+    public static final String MESSAGE_METADATA = "data-p-afalse-msg";
+    
+    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
+        Map<String,Object> metadata = new HashMap<String, Object>();
+        Map attrs = constraintDescriptor.getAttributes();
+        Object message = attrs.get("message");
+        
+        if(message != null) {
+            metadata.put(MESSAGE_METADATA, message);
+        }
+        
+        return metadata;
     }
 
     public String getValidatorId() {

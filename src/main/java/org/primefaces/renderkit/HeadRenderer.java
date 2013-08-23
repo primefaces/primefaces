@@ -91,6 +91,7 @@ public class HeadRenderer extends Renderer {
             writer.writeAttribute("type", "text/javascript", null);
             writer.write("PrimeFaces.settings.locale = '" + context.getViewRoot().getLocale() + "';");
             writer.write("PrimeFaces.settings.validateEmptyFields = " + cc.isValidateEmptyFields() + ";");
+            writer.write("PrimeFaces.settings.considerEmptyStringNull = " + cc.isInterpretEmptyStringAsNull() + ";");
             writer.endElement("script");
         }
     }
