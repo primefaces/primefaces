@@ -1,4 +1,3 @@
-
 /**
  * Bean Validation Integration for PrimeFaces Client Side Validation Framework
  */
@@ -32,7 +31,7 @@ PrimeFaces.validator['Null'] = {
     MESSAGE_ID: 'javax.validation.constraints.Null.message',
   
     validate: function(element, value) {
-        if(value !== null || value !== undefined) {
+        if(value !== null) {
             throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID);
         }
     }
@@ -50,7 +49,7 @@ PrimeFaces.validator['Size'] = {
         
         if(length < min || length > max) {
             var msgStr = element.data('p-size-msg'),
-            msg = msgStr === null ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, min, max);
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, min, max);
             throw msg;
         }
     }
@@ -126,7 +125,10 @@ PrimeFaces.validator['AssertTrue'] = {
   
     validate: function(element, value) {
         if(value === false) {
-            throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID);
+            var mc = PrimeFaces.util.MessageContext,
+            msgStr = element.data('p-atrue-msg'),
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            throw msg;
         }
     }
 };
@@ -137,8 +139,10 @@ PrimeFaces.validator['AssertFalse'] = {
   
     validate: function(element, value) {
         if(value === true) {
-            throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID);
-            
+            var mc = PrimeFaces.util.MessageContext,
+            msgStr = element.data('p-afalse-msg'),
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            throw msg;
         }
     }
 };
@@ -148,12 +152,8 @@ PrimeFaces.validator['Past'] = {
     MESSAGE_ID: 'javax.validation.constraints.Past.message',
   
     validate: function(element, value) {
-        if(value !== null) {
-            value = $.datepicker.formatDate("yymmdd", value);
-            var now = $.datepicker.formatDate("yymmdd", new Date());
-
-            if(ParseInt(value)> ParseInt(now))
-                throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID);
+        if(value !== null && value >= new Date()) {
+            throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID);
         }
     }
 };
@@ -163,12 +163,8 @@ PrimeFaces.validator['Future'] = {
     MESSAGE_ID: 'javax.validation.constraints.Future.message',
   
     validate: function(element, value) {
-        if(value !== null) {
-            value = $.datepicker.formatDate("yymmdd", value);
-            var now = $.datepicker.formatDate("yymmdd", new Date());
-
-            if(ParseInt(value)<= ParseInt(now))
-                throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID);
+        if(value !== null && value <= new Date()) {
+            throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID);
         }
     }
 };
@@ -179,10 +175,16 @@ PrimeFaces.validator['Pattern'] = {
      
     validate: function(element, value) {
         if(value !== null) {
-            var pattern = element.data('p-pattern').val();
+            var pattern = element.data('p-pattern'),
+            pattern = pattern.substring(1, (pattern.length - 1)),
+            mc = PrimeFaces.util.MessageContext,
+            regex = new RegExp(pattern);
             
-            if(!pattern.test(value))
-                throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID, pattern);
+            if(!regex.test(value)) {
+                var msgStr = element.data('p-pattern-msg'),
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, pattern);
+                throw msg;
+            }
         }
     }
 };

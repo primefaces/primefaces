@@ -23,7 +23,8 @@ import org.primefaces.util.HTML;
 
 public class SizeClientValidationConstraint implements ClientValidationConstraint {
 
-    public static final String MESSAGE_METADATA = "data-p-size-msg";
+    private static final String MESSAGE_METADATA = "data-p-size-msg";
+    private static final String MESSAGE_ID = "{javax.validation.constraints.Size.message}";
     
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
         Map<String,Object> metadata = new HashMap<String, Object>();
@@ -33,7 +34,7 @@ public class SizeClientValidationConstraint implements ClientValidationConstrain
         metadata.put(HTML.VALIDATION_METADATA.MIN_LENGTH, attrs.get("min"));
         metadata.put(HTML.VALIDATION_METADATA.MAX_LENGTH, attrs.get("max"));
         
-        if(message != null) {
+        if(!message.equals(MESSAGE_ID)) {
             metadata.put(MESSAGE_METADATA, message);
         }
         
