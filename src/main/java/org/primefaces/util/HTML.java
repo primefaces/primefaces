@@ -199,5 +199,7 @@ public class HTML {
         public static final String REQUIRED_MESSAGE = "data-p-rmsg";
         public static final String VALIDATOR_MESSAGE = "data-p-vmsg";
         public static final String CONVERTER_MESSAGE = "data-p-cmsg";
+        public static final String DIGITS_INTEGER = "data-p-dintvalue";
+        public static final String DIGITS_FRACTION = "data-p-dfracvalue";
     }
 }

@@ -27,6 +27,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import org.primefaces.context.RequestContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
@@ -83,8 +84,9 @@ public class CalendarRenderer extends InputRenderer {
 
         //input
         encodeInput(context, calendar, inputId, value, popup);
-
+        
         writer.endElement("span");
+       
     }
     
     protected void encodeInput(FacesContext context, Calendar calendar, String id, String value, boolean popup) throws IOException {
@@ -113,7 +115,9 @@ public class CalendarRenderer extends InputRenderer {
             if(calendar.isReadonly()||calendar.isReadonlyInput()) writer.writeAttribute("readonly", "readonly", null);
             if(calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         }
-
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, calendar);
+        }
         writer.endElement("input");
     }
 

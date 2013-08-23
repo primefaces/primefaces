@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -80,7 +81,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         encodeInput(context, checkbox, clientId, checked, disabled);
         encodeOutput(context, checkbox, checked, disabled);
         encodeItemLabel(context, checkbox, clientId);
-
+        
         writer.endElement("div");
     }
 
@@ -100,7 +101,9 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(checkbox.getOnchange() != null) writer.writeAttribute("onchange", checkbox.getOnchange(), null);
         if(checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
-
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, checkbox);
+        }
         writer.endElement("input");
 
         writer.endElement("div");
