@@ -2,6 +2,7 @@
  * PrimeFaces Client Side Validation Framework
  */
 PrimeFaces.locales['en_US'] = {
+    decimalSeparator: '.',
     messages: {
         'javax.faces.component.UIInput.REQUIRED': '{0}: Validation Error: Value is required.',
         'javax.faces.converter.IntegerConverter.INTEGER': '{2}: \'{0}\' must be a number consisting of one or more digits.',
