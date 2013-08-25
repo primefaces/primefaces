@@ -15,13 +15,25 @@
  */
 package org.primefaces.validate.bean;
 
+import java.util.HashMap;
 import java.util.Map;
 import javax.validation.constraints.Past;
 import javax.validation.metadata.ConstraintDescriptor;
 
 public class PastClientValidationConstraint implements ClientValidationConstraint {
+    private static final String MESSAGE_METADATA = "data-p-past-msg";
+    private static final String MESSAGE_ID = "{javax.validation.constraints.Past.message}";
+    
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {      
-        return null;
+        Map<String,Object> metadata = new HashMap<String, Object>();
+        Map attrs = constraintDescriptor.getAttributes();
+        Object message = attrs.get("message");
+        
+        if(!message.equals(MESSAGE_ID)) {
+            metadata.put(MESSAGE_METADATA, message);
+        }
+        
+        return metadata;
     }
 
     public String getValidatorId() {

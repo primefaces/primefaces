@@ -24,6 +24,7 @@ import org.primefaces.util.HTML;
 public class MaxClientValidationConstraint implements ClientValidationConstraint {
 
     public static final String MESSAGE_METADATA = "data-p-max-msg";
+    private static final String MESSAGE_ID = "{javax.validation.constraints.Max.message}";
     
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
         Map<String,Object> metadata = new HashMap<String, Object>();
@@ -32,7 +33,7 @@ public class MaxClientValidationConstraint implements ClientValidationConstraint
         
         metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, attrs.get("value"));
         
-        if(message != null) {
+        if(!message.equals(MESSAGE_ID)) {
             metadata.put(MESSAGE_METADATA, message);
         }
         

@@ -23,7 +23,8 @@ import org.primefaces.util.HTML;
 
 public class DigitsClientValidationConstraint implements ClientValidationConstraint {
 
-    public static final String MESSAGE_METADATA = "data-p-digits-msg";
+    private static final String MESSAGE_METADATA = "data-p-digits-msg";
+    private static final String MESSAGE_ID = "{javax.validation.constraints.Digits.message}";
     
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
         Map<String,Object> metadata = new HashMap<String, Object>();
@@ -33,7 +34,7 @@ public class DigitsClientValidationConstraint implements ClientValidationConstra
         metadata.put(HTML.VALIDATION_METADATA.DIGITS_INTEGER, attrs.get("integer"));
         metadata.put(HTML.VALIDATION_METADATA.DIGITS_FRACTION, attrs.get("fraction"));
         
-        if(message != null) {
+        if(!message.equals(MESSAGE_ID)) {
             metadata.put(MESSAGE_METADATA, message);
         }
         
