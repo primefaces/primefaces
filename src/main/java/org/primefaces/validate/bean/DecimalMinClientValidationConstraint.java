@@ -23,7 +23,8 @@ import org.primefaces.util.HTML;
 
 public class DecimalMinClientValidationConstraint implements ClientValidationConstraint {
 
-    public static final String MESSAGE_METADATA = "data-p-decimalmin-msg";
+    private static final String MESSAGE_METADATA = "data-p-decimalmin-msg";
+    private static final String MESSAGE_ID = "{javax.validation.constraints.DecimalMin.message}";
     
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
         Map<String,Object> metadata = new HashMap<String, Object>();
@@ -32,7 +33,7 @@ public class DecimalMinClientValidationConstraint implements ClientValidationCon
         
         metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, attrs.get("value"));            
         
-        if(message != null) {
+        if(!message.equals(MESSAGE_ID)) {
             metadata.put(MESSAGE_METADATA, message);
         }
         

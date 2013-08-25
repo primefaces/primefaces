@@ -22,14 +22,15 @@ import javax.validation.metadata.ConstraintDescriptor;
 
 public class AssertFalseClientValidationConstraint implements ClientValidationConstraint {
 
-    public static final String MESSAGE_METADATA = "data-p-afalse-msg";
+    private static final String MESSAGE_METADATA = "data-p-afalse-msg";
+    private static final String MESSAGE_ID = "{javax.validation.constraints.AssertFalse.message}";
     
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
         Map<String,Object> metadata = new HashMap<String, Object>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get("message");
         
-        if(message != null) {
+        if(!message.equals(MESSAGE_ID)) {
             metadata.put(MESSAGE_METADATA, message);
         }
         

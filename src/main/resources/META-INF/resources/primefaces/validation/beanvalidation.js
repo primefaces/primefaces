@@ -21,7 +21,10 @@ PrimeFaces.validator['NotNull'] = {
   
     validate: function(element, value) {
         if(value === null || value === undefined) {
-            throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID);
+            var mc = PrimeFaces.util.MessageContext,
+            msgStr = element.data('p-notnull-msg'),
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            throw msg;
         }
     }
 };
@@ -32,7 +35,10 @@ PrimeFaces.validator['Null'] = {
   
     validate: function(element, value) {
         if(value !== null) {
-            throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID);
+            var mc = PrimeFaces.util.MessageContext,
+            msgStr = element.data('p-null-msg'),
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            throw msg;
         }
     }
 };
@@ -42,15 +48,17 @@ PrimeFaces.validator['Size'] = {
     MESSAGE_ID: 'javax.validation.constraints.Size.message',
   
     validate: function(element, value) {
-        var length = element.val().length,
-        min = element.data('p-minlength'),
-        max = element.data('p-maxlength'),
-        mc = PrimeFaces.util.MessageContext;
-        
-        if(length < min || length > max) {
-            var msgStr = element.data('p-size-msg'),
-            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, min, max);
-            throw msg;
+        if(value !== null){
+            var length = element.val().length,
+            min = element.data('p-minlength'),
+            max = element.data('p-maxlength'),
+            mc = PrimeFaces.util.MessageContext;
+
+            if(length < min || length > max) {
+                var msgStr = element.data('p-size-msg'),
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, min, max);
+                throw msg;
+            }
         }
     }
 };
@@ -65,7 +73,9 @@ PrimeFaces.validator['Min'] = {
             mc = PrimeFaces.util.MessageContext;
             
             if(value < min) {
-                throw mc.getMessage(this.MESSAGE_ID, min);
+                var msgStr = element.data('p-min-msg'),
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, min);
+                throw msg;
             }
         }
     }
@@ -81,7 +91,9 @@ PrimeFaces.validator['Max'] = {
             mc = PrimeFaces.util.MessageContext;
             
             if(value > max) {
-                throw mc.getMessage(this.MESSAGE_ID, max);
+                var msgStr = element.data('p-max-msg'),
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, max);
+                throw msg;
             }
         }
     }
@@ -97,7 +109,9 @@ PrimeFaces.validator['DecimalMin'] = {
             mc = PrimeFaces.util.MessageContext;
             
             if(value < min) {
-                throw mc.getMessage(this.MESSAGE_ID, min);
+                var msgStr = element.data('p-decimalmin-msg'),
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, min);
+                throw msg;
             }
         }
     }
@@ -113,7 +127,9 @@ PrimeFaces.validator['DecimalMax'] = {
             mc = PrimeFaces.util.MessageContext;
             
             if(value > max) {
-                throw mc.getMessage(this.MESSAGE_ID, max);
+                var msgStr = element.data('p-decimalmax-msg'),
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, max);
+                throw msg;
             }
         }
     }
@@ -153,7 +169,10 @@ PrimeFaces.validator['Past'] = {
   
     validate: function(element, value) {
         if(value !== null && value >= new Date()) {
-            throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID);
+            var msgStr = element.data('p-past-msg'),
+            mc = PrimeFaces.util.MessageContext,
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            throw msg;
         }
     }
 };
@@ -164,7 +183,10 @@ PrimeFaces.validator['Future'] = {
   
     validate: function(element, value) {
         if(value !== null && value <= new Date()) {
-            throw PrimeFaces.util.MessageContext.getMessage(this.MESSAGE_ID);
+            var msgStr = element.data('p-future-msg'),
+            mc = PrimeFaces.util.MessageContext,
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            throw msg;
         }
     }
 };
@@ -192,24 +214,22 @@ PrimeFaces.validator['Pattern'] = {
 PrimeFaces.validator['Digits'] = {
     
     MESSAGE_ID: 'javax.validation.constraints.Digits.message',
-    regex: /^[-+]?\d+(\.\d+)?[d]?$/,
+    regex: /^[-+]?\d+$/,
     
     validate: function(element, value) {
         if(value !== null) {
             var digitsInteger = element.data('p-dintvalue'),
             digitsFraction = element.data('p-dfracvalue'),
             mc = PrimeFaces.util.MessageContext,
-            bundle = PrimeFaces.locales['en_US'];
+            bundle = PrimeFaces.locales[PrimeFaces.settings.locale];
 
             if(bundle){
-                value = $.trim(value.replace(',', ''));
-                if(!this.regex.test(value))
-                    throw mc.getMessage(this.MESSAGE_ID, digitsInteger, digitsFraction);
-                
-                var valueSplitArray = value.split(bundle.decimalSeparator);
-                var a =(valueSplitArray[0].length > digitsInteger) || (valueSplitArray[1].length > digitsFraction);
-                if((valueSplitArray[0].length > digitsInteger)||(valueSplitArray[1].length > digitsFraction))
-                    throw mc.getMessage(this.MESSAGE_ID, digitsInteger, digitsFraction);
+                var valueSplitArray = $.trim(value.replace(bundle.groupingSeparator, '')).split(bundle.decimalSeparator);
+
+                if((valueSplitArray.length > 2) ||(!this.regex.test(valueSplitArray[0]))||(!this.regex.test(valueSplitArray[1]))||(valueSplitArray[0].length > digitsInteger)||(valueSplitArray[1].length > digitsFraction))
+                    var msgStr = element.data('p-digits-msg'),
+                    msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, digitsInteger, digitsFraction);
+                    throw msg;
             }
         }
     }
