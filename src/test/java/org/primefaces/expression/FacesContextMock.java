@@ -18,6 +18,9 @@ public class FacesContextMock extends FacesContext {
 
 	private Map<Object, Object> attributes;
 
+	public FacesContextMock() {
+    }
+	
 	public FacesContextMock(Map<Object, Object> attributes) {
 		this.attributes = attributes;
 
