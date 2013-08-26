@@ -15,6 +15,9 @@
  */
 package org.primefaces.context;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
@@ -30,6 +33,8 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
+    private static final Logger LOG = Logger.getLogger(PrimePartialViewContext.class.getName());
+    
     private PartialViewContext wrapped;
     private PartialResponseWriter writer = null;
 
@@ -96,7 +101,11 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
             
             for (String renderId : context.getPartialViewContext().getRenderIds()) {
                 UIComponent renderComponent = context.getViewRoot().findComponent(renderId);
-                renderComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+                if (renderComponent == null) {
+                    LOG.log(Level.WARNING, "Could not find component with ID: " + renderId);
+                } else {
+                    renderComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+                }
             }
         }
     }
