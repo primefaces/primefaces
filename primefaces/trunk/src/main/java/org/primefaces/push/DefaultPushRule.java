@@ -42,7 +42,6 @@ public class DefaultPushRule implements PushRule {
         }
 
         final Broadcaster b = BroadcasterFactory.getDefault().lookup(pathInfo, true);
-        b.setBroadcasterLifeCyclePolicy(EMPTY_DESTROY);
         b.addBroadcasterLifeCyclePolicyListener(new BroadcasterLifeCyclePolicyListener() {
 
             private final Logger logger = LoggerFactory.getLogger(BroadcasterLifeCyclePolicyListener.class);
