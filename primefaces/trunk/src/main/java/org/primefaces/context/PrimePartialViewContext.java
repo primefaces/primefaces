@@ -102,7 +102,8 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
             for (String renderId : context.getPartialViewContext().getRenderIds()) {
                 UIComponent renderComponent = context.getViewRoot().findComponent(renderId);
                 if (renderComponent == null) {
-                    LOG.log(Level.WARNING, "Could not find component with ID: " + renderId);
+                    LOG.log(Level.WARNING, "Could not find component with ID: " + renderId
+                    		+ ". This may occur if you use h:form with prependId=false, as findComponent does not consider it.");
                 } else {
                     renderComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
                 }
