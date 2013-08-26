@@ -45,39 +45,36 @@ public class FileUploadRenderer extends CoreRenderer {
 		FileUpload fileUpload = (FileUpload) component;
 		
 		encodeMarkup(context, fileUpload);
-		encodeScript(context, fileUpload);
+        
+        if(fileUpload.getMode().equals("advanced"))
+            encodeScript(context, fileUpload);
 	}
 
 	protected void encodeScript(FacesContext context, FileUpload fileUpload) throws IOException {
 		String clientId = fileUpload.getClientId(context);
-        String mode = fileUpload.getMode();
+        String update = fileUpload.getUpdate();
+        String process = fileUpload.getProcess();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("FileUpload", fileUpload.resolveWidgetVar(), clientId, "fileupload")
-            .attr("mode", mode);
+        wb.initWithDomReady("FileUpload", fileUpload.resolveWidgetVar(), clientId, "fileupload");
         
-        if(!mode.equals("simple")) {
-            String update = fileUpload.getUpdate();
-            String process = fileUpload.getProcess();
-            
-            wb.attr("auto", fileUpload.isAuto(), false)
-                .attr("dnd", fileUpload.isDragDropSupport(), true)
-                .attr("update", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, update), null)
-                .attr("process", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, process), null)
-                .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
-                .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
-                .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
-                .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
-                .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
-                .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
-                .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
-                .attr("disabled", fileUpload.isDisabled(), false)
-                .callback("onstart", "function()", fileUpload.getOnstart())
-                .callback("onerror", "function()", fileUpload.getOnerror())
-                .callback("oncomplete", "function()", fileUpload.getOncomplete());
-            
-            if(fileUpload.getAllowTypes() != null) {
-                wb.append(",allowTypes:").append(fileUpload.getAllowTypes());
-            }
+        wb.attr("auto", fileUpload.isAuto(), false)
+            .attr("dnd", fileUpload.isDragDropSupport(), true)
+            .attr("update", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, update), null)
+            .attr("process", SearchExpressionFacade.resolveComponentsForClient(context, fileUpload, process), null)
+            .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
+            .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
+            .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
+            .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
+            .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
+            .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
+            .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
+            .attr("disabled", fileUpload.isDisabled(), false)
+            .callback("onstart", "function()", fileUpload.getOnstart())
+            .callback("onerror", "function()", fileUpload.getOnerror())
+            .callback("oncomplete", "function()", fileUpload.getOncomplete());
+
+        if(fileUpload.getAllowTypes() != null) {
+            wb.append(",allowTypes:").append(fileUpload.getAllowTypes());
         }
         
         wb.finish();
