@@ -18,6 +18,8 @@ package org.primefaces.util;
 import java.io.IOException;
 
 import javax.faces.FacesException;
+import javax.faces.application.ProjectStage;
+import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 /**
@@ -28,9 +30,11 @@ public class WidgetBuilder {
     protected ResponseWriter writer;
     protected boolean endFunction = false;
     protected String resourcePath = null;
+    protected FacesContext context;
         
-    public WidgetBuilder(ResponseWriter writer) {
+    public WidgetBuilder(ResponseWriter writer, FacesContext context) {
     	this.writer = writer;
+    	this.context = context;
     }
     
     /**
@@ -43,7 +47,7 @@ public class WidgetBuilder {
      */
     private WidgetBuilder init(String widgetClass, String widgetVar, String id, String resourcePath, boolean endFunction) throws IOException {
 
-    	if(id.equals(widgetVar)) {
+    	if(context.isProjectStage(ProjectStage.Development) && id.equals(widgetVar)) {
         	throw new FacesException("WidgetVar and the generated ClientId should not be identical, " 
         			+ "as it may not work correctly in all browsers. ClientId: "
         			+ id
