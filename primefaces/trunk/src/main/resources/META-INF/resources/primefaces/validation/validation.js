@@ -542,7 +542,7 @@ PrimeFaces.validate = function(cfg) {
         return true;
     }
     else {
-        mc.renderMessages(form.find('div.ui-messages'), form.find('div.ui-message'));
+        mc.renderMessages(form);
         return false;
     }
 }
@@ -698,11 +698,15 @@ PrimeFaces.util.MessageContext = {
         return (element.data('p-label')||element.attr('id'))
     },
 
-    renderMessages: function(uiMessages, uiMessageCollection) {
-        uiMessageCollection.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
+    renderMessages: function(container) {
+        var uiMessages = container.find('div.ui-messages'),
+        uiMessageCollection = container.find('div.ui-message'),
+        growlPlaceholder = container.find('.ui-growl-pl'),
+        growlWidgetVar = growlPlaceholder.data('widget'),
+        hasUIMessages = uiMessages.length&&!uiMessages.data('global'),
+        hasGrowl = growlPlaceholder.length&&!growlPlaceholder.data('global');
 
-        var shouldRenderUIMessages = uiMessages&&uiMessages.length&&!uiMessages.data('global');
-        if(shouldRenderUIMessages) {
+        if(hasUIMessages) {
             uiMessages.html('');
             uiMessages.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
 
@@ -710,6 +714,12 @@ PrimeFaces.util.MessageContext = {
             showSummary = uiMessages.data('summary'),
             showDetail = uiMessages.data('detail');
         }
+        
+        if(hasGrowl) {
+            PF(growlWidgetVar).removeAll();
+        }
+        
+        uiMessageCollection.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
 
         for(var clientId in this.messages) {
             var msgs = this.messages[clientId],
@@ -718,7 +728,7 @@ PrimeFaces.util.MessageContext = {
             for(var i = 0; i < msgs.length; i++) {
                 var msg = msgs[i];
 
-                if(shouldRenderUIMessages) {        
+                if(hasUIMessages) {        
                     var msgItem = $('<li></li>');
 
                     if(showSummary)
@@ -729,7 +739,12 @@ PrimeFaces.util.MessageContext = {
 
                     messageList.append(msgItem);                    
                 }
-
+                
+                if(hasGrowl) {
+                    PF(growlWidgetVar).renderMessage(msg);
+                }
+                
+                
                 if(uiMessage.length) {
                     this.renderUIMessage(uiMessage, msg);
                 }
