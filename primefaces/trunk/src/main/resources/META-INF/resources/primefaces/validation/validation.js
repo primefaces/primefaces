@@ -422,7 +422,7 @@ PrimeFaces.converter = {
             pattern = element.data('p-pattern'),
             type = element.data('p-dttype');
 
-            var locale = PrimeFaces.locales[PrimeFaces.settings.locale];
+            var locale = mc.getLocaleSettings();
 
             try {
                 return $.datepicker.parseDate(pattern, submittedValue, locale);
@@ -458,7 +458,7 @@ PrimeFaces.converter = {
             }
             
             var mc = PrimeFaces.util.MessageContext,
-            locale = PrimeFaces.locales[PrimeFaces.settings.locale],
+            locale = mc.getLocaleSettings(),
             type = element.data('p-notype'),
             maxIntegerDigits = element.data('p-maxint'),
             minFractionDigits = element.data('p-minfrac'),
@@ -663,10 +663,10 @@ PrimeFaces.util.MessageContext = {
     },
 
     getMessage: function(key) {
-        var bundle = PrimeFaces.locales[PrimeFaces.settings.locale];
-        if(bundle) {
-            var s = bundle.messages[key],
-            d = bundle.messages[key + '_detail'];
+        var locale = this.getLocaleSettings();
+        if(locale) {
+            var s = locale.messages[key],
+            d = locale.messages[key + '_detail'];
 
             s = this.format(s, arguments);
 
@@ -798,6 +798,20 @@ PrimeFaces.util.MessageContext = {
 
     clear: function() {
         this.messages = {};
+    },
+            
+    getLocaleSettings: function() {
+        var localeKey = PrimeFaces.settings.locale,
+        localeSettings = PrimeFaces.locales[localeKey];
+
+        if(!localeSettings) {
+            localeSettings = PrimeFaces.locales[localeKey.split('_')[0]];
+            
+            if(!localeSettings)
+                localeSettings = PrimeFaces.locales['en_US'];
+        }
+        
+        return localeSettings;
     }
 }
 

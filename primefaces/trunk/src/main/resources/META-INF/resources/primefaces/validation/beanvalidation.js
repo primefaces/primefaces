@@ -220,7 +220,7 @@ PrimeFaces.validator['Digits'] = {
             var digitsInteger = element.data('p-dintvalue'),
             digitsFraction = element.data('p-dfracvalue'),
             mc = PrimeFaces.util.MessageContext,
-            locale = PrimeFaces.locales[PrimeFaces.settings.locale];
+            locale = mc.getLocaleSettings();
     
             var tokens = value.toString().split(locale.decimalSeparator),
             intValue = tokens[0].replace(new RegExp(locale.groupingSeparator, 'g'), ''),
