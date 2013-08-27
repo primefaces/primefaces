@@ -329,8 +329,8 @@
 			<name>validateClient</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>When set to false, client side validation is disabled and overrides global setting.</description>
+            <defaultValue>false</defaultValue>
+            <description>When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.</description>
 		</attribute>
 	</attributes>
 	<resources>
