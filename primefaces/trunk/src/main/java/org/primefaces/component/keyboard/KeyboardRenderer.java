@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.context.RequestContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -112,6 +113,10 @@ public class KeyboardRenderer extends InputRenderer {
         if(keyboard.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(keyboard.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
         if(keyboard.getStyle() != null) writer.writeAttribute("style", keyboard.getStyle(), "style");
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, keyboard);
+        }
 
 		writer.endElement("input");		
 	}

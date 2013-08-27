@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.context.RequestContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -101,6 +102,10 @@ public class PasswordRenderer extends InputRenderer {
 
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(password.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, password);
+        }
 
 		writer.endElement("input");
 	}

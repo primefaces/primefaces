@@ -30,6 +30,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.AutoCompleteEvent;
 
 import org.primefaces.renderkit.InputRenderer;
@@ -198,6 +199,10 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
 
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS);
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, ac);
+        }
 
         writer.endElement("input");
     }

@@ -833,5 +833,17 @@ PrimeFaces.validator.Highlighter = {
             element.parent().siblings('.ui-selectonemenu-trigger').removeClass('ui-state-error').parent().removeClass('ui-state-error');
         }
         
+    },
+    
+    'spinner': {
+        
+        highlight: function(element) {
+            element.parent().addClass('ui-state-error');
+        },
+        
+        unhighlight: function(element) {
+            element.removeClass('ui-state-error');
+        }
+        
     }
 };
