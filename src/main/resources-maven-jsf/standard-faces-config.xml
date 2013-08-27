@@ -10,29 +10,29 @@
     <application>
         <resource-handler>org.primefaces.application.PrimeResourceHandler</resource-handler>
         <system-event-listener>
-            <source-class>javax.faces.application.Application</source-class>
-            <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
             <system-event-listener-class>org.primefaces.webapp.PostConstructApplicationEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+            <source-class>javax.faces.application.Application</source-class>
         </system-event-listener>
         <system-event-listener>
+            <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
             <source-class>org.primefaces.component.messages.Messages</source-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
-            <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
         </system-event-listener>
         <system-event-listener>
-            <source-class>org.primefaces.component.growl.Growl</source-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
             <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>         
+            <source-class>org.primefaces.component.growl.Growl</source-class>               
         </system-event-listener>
         <system-event-listener>
+            <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
             <source-class>org.primefaces.component.outputpanel.OutputPanel</source-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
-            <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
         </system-event-listener>
         <system-event-listener>
-            <source-class>org.primefaces.component.columns.Columns</source-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
             <system-event-listener-class>org.primefaces.event.system.DynamicColumnsListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <source-class>org.primefaces.component.columns.Columns</source-class>
         </system-event-listener>
     </application>
     
@@ -82,54 +82,54 @@
     
     <converter>
         <converter-id>javax.faces.Integer</converter-id>
-        <converter-for-class>java.lang.Integer</converter-for-class>
         <converter-class>org.primefaces.convert.IntegerConverter</converter-class>
+        <converter-for-class>java.lang.Integer</converter-for-class>
     </converter>
 
     <converter>
         <converter-id>javax.faces.Double</converter-id>
+        <converter-class>org.primefaces.convert.DoubleConverter</converter-class> 
         <converter-for-class>java.lang.Double</converter-for-class>
-        <converter-class>org.primefaces.convert.DoubleConverter</converter-class>
     </converter>
     
     <converter>
         <converter-id>javax.faces.Float</converter-id>
-        <converter-for-class>java.lang.Float</converter-for-class>
         <converter-class>org.primefaces.convert.FloatConverter</converter-class>
+        <converter-for-class>java.lang.Float</converter-for-class>
     </converter>
     
-    <converter>
+    <converter>        
         <converter-id>javax.faces.Short</converter-id>
-        <converter-for-class>java.lang.Short</converter-for-class>
         <converter-class>org.primefaces.convert.ShortConverter</converter-class>
+        <converter-for-class>java.lang.Short</converter-for-class>
     </converter>
     
     <converter>
-        <converter-for-class>java.math.BigInteger</converter-for-class>
         <converter-class>org.primefaces.convert.BigIntegerConverter</converter-class>
+        <converter-for-class>java.math.BigInteger</converter-for-class>
     </converter>
     
     <converter>
-        <converter-for-class>java.math.BigDecimal</converter-for-class>
         <converter-class>org.primefaces.convert.BigDecimalConverter</converter-class>
+        <converter-for-class>java.math.BigDecimal</converter-for-class>
     </converter>
     
     <converter>
         <converter-id>javax.faces.Byte</converter-id>
-        <converter-for-class>java.lang.Byte</converter-for-class>
         <converter-class>org.primefaces.convert.ByteConverter</converter-class>
+        <converter-for-class>java.lang.Byte</converter-for-class>
     </converter>
     
     <converter>
         <converter-id>javax.faces.Character</converter-id>
-        <converter-for-class>java.lang.Character</converter-for-class>
         <converter-class>org.primefaces.convert.CharacterConverter</converter-class>
+        <converter-for-class>java.lang.Character</converter-for-class>
     </converter>
     
     <converter>
-        <converter-id>javax.faces.Boolean</converter-id>
-        <converter-for-class>java.lang.Boolean</converter-for-class>
+        <converter-id>javax.faces.Boolean</converter-id>        
         <converter-class>org.primefaces.convert.BooleanConverter</converter-class>
+        <converter-for-class>java.lang.Boolean</converter-for-class>
     </converter>
     
     <converter>
@@ -137,8 +137,10 @@
         <converter-class>org.primefaces.convert.DateTimeConverter</converter-class>
     </converter>
     
-     <converter>
+    <converter>
         <converter-id>javax.faces.Number</converter-id>
         <converter-class>org.primefaces.convert.NumberConverter</converter-class>
     </converter>
+    
+        
     
