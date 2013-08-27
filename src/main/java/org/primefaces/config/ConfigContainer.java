@@ -36,7 +36,6 @@ public class ConfigContainer {
 
 	// context params
 	private boolean validateEmptyFields = false;
-	private boolean beanValidationAvailable = false;
 	private boolean partialSubmitEnabled = false;
 	private boolean resetValuesEnabled = false;
 	private boolean interpretEmptyStringAsNull = false;
@@ -47,6 +46,7 @@ public class ConfigContainer {
     private boolean clientSideValidationEnabled = false;
 
 	// internal config
+    private boolean beanValidationAvailable = false;
 	private boolean stringConverterAvailable = false;
 	private boolean jsf22 = false;
 	
