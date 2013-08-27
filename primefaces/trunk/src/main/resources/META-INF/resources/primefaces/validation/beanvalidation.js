@@ -214,22 +214,23 @@ PrimeFaces.validator['Pattern'] = {
 PrimeFaces.validator['Digits'] = {
     
     MESSAGE_ID: 'javax.validation.constraints.Digits.message',
-    regex: /^[-+]?\d+$/,
     
     validate: function(element, value) {
         if(value !== null) {
             var digitsInteger = element.data('p-dintvalue'),
             digitsFraction = element.data('p-dfracvalue'),
             mc = PrimeFaces.util.MessageContext,
-            bundle = PrimeFaces.locales[PrimeFaces.settings.locale];
-
-            if(bundle){
-                var valueSplitArray = $.trim(value.replace(bundle.groupingSeparator, '')).split(bundle.decimalSeparator);
-
-                if((valueSplitArray.length > 2) ||(!this.regex.test(valueSplitArray[0]))||(!this.regex.test(valueSplitArray[1]))||(valueSplitArray[0].length > digitsInteger)||(valueSplitArray[1].length > digitsFraction))
-                    var msgStr = element.data('p-digits-msg'),
-                    msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, digitsInteger, digitsFraction);
-                    throw msg;
+            locale = PrimeFaces.locales[PrimeFaces.settings.locale];
+    
+            var tokens = value.toString().split(locale.decimalSeparator),
+            intValue = tokens[0].replace(new RegExp(locale.groupingSeparator, 'g'), ''),
+            decimalValue = tokens[1];
+    
+            if(digitsInteger !== undefined && intValue && digitsInteger < intValue.length 
+                    || digitsFraction !== undefined && decimalValue && decimalValue.length > digitsFraction) {
+                var msgStr = element.data('p-digits-msg'),
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, digitsInteger, digitsFraction);
+                throw msg;
             }
         }
     }
