@@ -21,9 +21,9 @@ PrimeFaces.validator['NotNull'] = {
   
     validate: function(element, value) {
         if(value === null || value === undefined) {
-            var mc = PrimeFaces.util.MessageContext,
+            var vc = PrimeFaces.util.ValidationContext,
             msgStr = element.data('p-notnull-msg'),
-            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID);
             throw msg;
         }
     }
@@ -35,9 +35,9 @@ PrimeFaces.validator['Null'] = {
   
     validate: function(element, value) {
         if(value !== null) {
-            var mc = PrimeFaces.util.MessageContext,
+            var vc = PrimeFaces.util.ValidationContext,
             msgStr = element.data('p-null-msg'),
-            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID);
             throw msg;
         }
     }
@@ -52,11 +52,11 @@ PrimeFaces.validator['Size'] = {
             var length = element.val().length,
             min = element.data('p-minlength'),
             max = element.data('p-maxlength'),
-            mc = PrimeFaces.util.MessageContext;
+            vc = PrimeFaces.util.ValidationContext;
 
             if(length < min || length > max) {
                 var msgStr = element.data('p-size-msg'),
-                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, min, max);
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID, min, max);
                 throw msg;
             }
         }
@@ -70,11 +70,11 @@ PrimeFaces.validator['Min'] = {
     validate: function(element, value) {
         if(value !== null) {
             var min = element.data('p-minvalue'),
-            mc = PrimeFaces.util.MessageContext;
+            vc = PrimeFaces.util.ValidationContext;
             
             if(value < min) {
                 var msgStr = element.data('p-min-msg'),
-                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, min);
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID, min);
                 throw msg;
             }
         }
@@ -88,11 +88,11 @@ PrimeFaces.validator['Max'] = {
     validate: function(element, value) {
         if(value !== null) {
             var max = element.data('p-maxvalue'),
-            mc = PrimeFaces.util.MessageContext;
+            vc = PrimeFaces.util.ValidationContext;
             
             if(value > max) {
                 var msgStr = element.data('p-max-msg'),
-                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, max);
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID, max);
                 throw msg;
             }
         }
@@ -106,11 +106,11 @@ PrimeFaces.validator['DecimalMin'] = {
     validate: function(element, value) {
         if(value !== null) {
             var min = element.data('p-minvalue'),
-            mc = PrimeFaces.util.MessageContext;
+            vc = PrimeFaces.util.ValidationContext;
             
             if(value < min) {
                 var msgStr = element.data('p-decimalmin-msg'),
-                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, min);
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID, min);
                 throw msg;
             }
         }
@@ -124,11 +124,11 @@ PrimeFaces.validator['DecimalMax'] = {
     validate: function(element, value) {
         if(value !== null) {
             var max = element.data('p-maxvalue'),
-            mc = PrimeFaces.util.MessageContext;
+            vc = PrimeFaces.util.ValidationContext;
             
             if(value > max) {
                 var msgStr = element.data('p-decimalmax-msg'),
-                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, max);
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID, max);
                 throw msg;
             }
         }
@@ -141,9 +141,9 @@ PrimeFaces.validator['AssertTrue'] = {
   
     validate: function(element, value) {
         if(value === false) {
-            var mc = PrimeFaces.util.MessageContext,
+            var vc = PrimeFaces.util.ValidationContext,
             msgStr = element.data('p-atrue-msg'),
-            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID);
             throw msg;
         }
     }
@@ -155,9 +155,9 @@ PrimeFaces.validator['AssertFalse'] = {
   
     validate: function(element, value) {
         if(value === true) {
-            var mc = PrimeFaces.util.MessageContext,
+            var vc = PrimeFaces.util.ValidationContext,
             msgStr = element.data('p-afalse-msg'),
-            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID);
             throw msg;
         }
     }
@@ -170,8 +170,8 @@ PrimeFaces.validator['Past'] = {
     validate: function(element, value) {
         if(value !== null && value >= new Date()) {
             var msgStr = element.data('p-past-msg'),
-            mc = PrimeFaces.util.MessageContext,
-            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            vc = PrimeFaces.util.ValidationContext,
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID);
             throw msg;
         }
     }
@@ -184,8 +184,8 @@ PrimeFaces.validator['Future'] = {
     validate: function(element, value) {
         if(value !== null && value <= new Date()) {
             var msgStr = element.data('p-future-msg'),
-            mc = PrimeFaces.util.MessageContext,
-            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID);
+            vc = PrimeFaces.util.ValidationContext,
+            msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID);
             throw msg;
         }
     }
@@ -199,12 +199,12 @@ PrimeFaces.validator['Pattern'] = {
         if(value !== null) {
             var pattern = element.data('p-pattern'),
             pattern = pattern.substring(1, (pattern.length - 1)),
-            mc = PrimeFaces.util.MessageContext,
+            vc = PrimeFaces.util.ValidationContext,
             regex = new RegExp(pattern);
             
             if(!regex.test(value)) {
                 var msgStr = element.data('p-pattern-msg'),
-                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, pattern);
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID, pattern);
                 throw msg;
             }
         }
@@ -219,8 +219,8 @@ PrimeFaces.validator['Digits'] = {
         if(value !== null) {
             var digitsInteger = element.data('p-dintvalue'),
             digitsFraction = element.data('p-dfracvalue'),
-            mc = PrimeFaces.util.MessageContext,
-            locale = mc.getLocaleSettings();
+            vc = PrimeFaces.util.ValidationContext,
+            locale = vc.getLocaleSettings();
     
             var tokens = value.toString().split(locale.decimalSeparator),
             intValue = tokens[0].replace(new RegExp(locale.groupingSeparator, 'g'), ''),
@@ -229,7 +229,7 @@ PrimeFaces.validator['Digits'] = {
             if(digitsInteger !== undefined && intValue && digitsInteger < intValue.length 
                     || digitsFraction !== undefined && decimalValue && decimalValue.length > digitsFraction) {
                 var msgStr = element.data('p-digits-msg'),
-                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : mc.getMessage(this.MESSAGE_ID, digitsInteger, digitsFraction);
+                msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID, digitsInteger, digitsFraction);
                 throw msg;
             }
         }
