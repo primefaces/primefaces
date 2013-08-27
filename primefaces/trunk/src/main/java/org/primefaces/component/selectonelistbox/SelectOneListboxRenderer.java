@@ -240,4 +240,9 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 	public boolean getRendersChildren() {
 		return true;
 	}
+    
+    @Override
+    public String getHighlighter() {
+        return "listbox";
+    }
 }

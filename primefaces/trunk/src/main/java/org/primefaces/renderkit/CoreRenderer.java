@@ -507,6 +507,7 @@ public abstract class CoreRenderer extends Renderer {
         Object validatorMessage = attrs.get("validatorMessage");
         Object converterMessage = attrs.get("converterMessage");
         List<String> validatorIds = new ArrayList<String>();
+        String highlighter = getHighlighter();
         
         //messages
         if(label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
@@ -557,6 +558,10 @@ public abstract class CoreRenderer extends Renderer {
         }
         
         renderValidatorIds(context, validatorIds);
+        
+        if(highlighter != null) {
+            writer.writeAttribute(HTML.VALIDATION_METADATA.HIGHLIGHTER, highlighter, null);
+        } 
     }
     
     private void renderValidationMetadataMap(FacesContext context, Map<String,Object> metadata) throws IOException {
@@ -593,5 +598,9 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_IDS, builder.toString(), null);
+    }
+    
+    protected String getHighlighter() {
+        return null;
     }
 }

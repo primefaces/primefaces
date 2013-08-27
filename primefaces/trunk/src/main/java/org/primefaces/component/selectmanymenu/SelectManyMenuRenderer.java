@@ -259,5 +259,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 		return true;
 	}
     
-    
+    @Override
+    public String getHighlighter() {
+        return "listbox";
+    }
 }

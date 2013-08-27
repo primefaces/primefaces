@@ -422,4 +422,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         writer.endElement("div");
     }
+    
+    @Override
+    public String getHighlighter() {
+        return "onemenu";
+    }
 }
