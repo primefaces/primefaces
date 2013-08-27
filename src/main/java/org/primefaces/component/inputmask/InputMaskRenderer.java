@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.context.RequestContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -96,6 +97,10 @@ public class InputMaskRenderer extends InputRenderer {
         if(inputMask.getStyle() != null) writer.writeAttribute("style", inputMask.getStyle(), "style");
 		
         writer.writeAttribute("class", styleClass, "styleClass");
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, inputMask);
+        }
 
         writer.endElement("input");
 	}

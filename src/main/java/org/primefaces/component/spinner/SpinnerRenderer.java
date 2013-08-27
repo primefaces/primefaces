@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.context.RequestContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -127,6 +128,10 @@ public class SpinnerRenderer extends InputRenderer {
 
         if(spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, spinner);
+        }
 
 		writer.endElement("input");
     }
@@ -147,5 +152,10 @@ public class SpinnerRenderer extends InputRenderer {
         writer.endElement("span");
 
         writer.endElement("a");
+    }
+    
+    @Override
+    public String getHighlighter() {
+        return "spinner";
     }
 }
