@@ -70,14 +70,14 @@ PrimeFaces.validator = {
             var length = element.val().length,
             min = element.data('p-minlength'),
             max = element.data('p-maxlength'),
-            mc = PrimeFaces.util.MessageContext;
+            vc = PrimeFaces.util.ValidationContext;
 
             if(max !== undefined && length > max) {
-                throw mc.getMessage(this.MAXIMUM_MESSAGE_ID, max, mc.getLabel(element));
+                throw vc.getMessage(this.MAXIMUM_MESSAGE_ID, max, vc.getLabel(element));
             }
 
             if(min !== undefined && length < min) {
-                throw mc.getMessage(this.MINIMUM_MESSAGE_ID, min, mc.getLabel(element));
+                throw vc.getMessage(this.MINIMUM_MESSAGE_ID, min, vc.getLabel(element));
             }
         }
     },
@@ -94,20 +94,20 @@ PrimeFaces.validator = {
             if(value !== null) {
                 var min = element.data('p-minvalue'),
                 max = element.data('p-maxvalue'),
-                mc = PrimeFaces.util.MessageContext;
+                vc = PrimeFaces.util.ValidationContext;
 
                 if(!this.regex.test(element.val())) {
-                    throw mc.getMessage(this.TYPE_MESSAGE_ID, mc.getLabel(element));
+                    throw vc.getMessage(this.TYPE_MESSAGE_ID, vc.getLabel(element));
                 }
 
                 if((max !== undefined && min !== undefined) && (value < min || value > max)) {
-                    throw mc.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, mc.getLabel(element));
+                    throw vc.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, vc.getLabel(element));
                 }
                 else if((max !== undefined && min === undefined) && (value > max)) {
-                    throw mc.getMessage(this.MAXIMUM_MESSAGE_ID, max, mc.getLabel(element));
+                    throw vc.getMessage(this.MAXIMUM_MESSAGE_ID, max, vc.getLabel(element));
                 }
                 else if((min !== undefined && max === undefined) && (value < min)) {
-                    throw mc.getMessage(this.MINIMUM_MESSAGE_ID, min, mc.getLabel(element));
+                    throw vc.getMessage(this.MINIMUM_MESSAGE_ID, min, vc.getLabel(element));
                 }
             }
         }
@@ -125,20 +125,20 @@ PrimeFaces.validator = {
             if(value !== null) {
                 var min = element.data('p-minvalue'),
                 max = element.data('p-maxvalue'),
-                mc = PrimeFaces.util.MessageContext;
+                vc = PrimeFaces.util.ValidationContext;
 
                 if(!this.regex.test(element.val())) {
-                    throw mc.getMessage(this.TYPE_MESSAGE_ID, mc.getLabel(element));
+                    throw vc.getMessage(this.TYPE_MESSAGE_ID, vc.getLabel(element));
                 }
 
                 if((max !== undefined && min !== undefined) && (value < min || value > max)) {
-                    throw mc.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, mc.getLabel(element));
+                    throw vc.getMessage(this.NOT_IN_RANGE_MESSAGE_ID, min, max, vc.getLabel(element));
                 }
                 else if((max !== undefined && min === undefined) && (value > max)) {
-                    throw mc.getMessage(this.MAXIMUM_MESSAGE_ID, max, mc.getLabel(element));
+                    throw vc.getMessage(this.MAXIMUM_MESSAGE_ID, max, vc.getLabel(element));
                 }
                 else if((min !== undefined && max === undefined) && (value < min)) {
-                    throw mc.getMessage(this.MINIMUM_MESSAGE_ID, min, mc.getLabel(element));
+                    throw vc.getMessage(this.MINIMUM_MESSAGE_ID, min, vc.getLabel(element));
                 }
             }
         }
@@ -156,15 +156,15 @@ PrimeFaces.validator = {
             }
 
             var pattern = element.data('p-regex'),
-            mc = PrimeFaces.util.MessageContext;
+            vc = PrimeFaces.util.ValidationContext;
 
             if(!pattern) {
-                throw mc.getMessage(this.PATTERN_NOT_SET_MESSAGE_ID);
+                throw vc.getMessage(this.PATTERN_NOT_SET_MESSAGE_ID);
             }
 
             var regex = new RegExp(pattern);
             if(!regex.test(value)) {
-                throw mc.getMessage(this.NOT_MATCHED_MESSAGE_ID, pattern);
+                throw vc.getMessage(this.NOT_MATCHED_MESSAGE_ID, pattern);
             }
         }
     }
@@ -187,10 +187,10 @@ PrimeFaces.converter = {
                 return null;
             }
             
-            var mc = PrimeFaces.util.MessageContext;
+            var vc = PrimeFaces.util.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
-                throw mc.getMessage(this.MESSAGE_ID, submittedValue, 9346, mc.getLabel(element));
+                throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9346, vc.getLabel(element));
             }
 
             return parseInt(submittedValue);
@@ -212,10 +212,10 @@ PrimeFaces.converter = {
                 return null;
             }
             
-            var mc = PrimeFaces.util.MessageContext;
+            var vc = PrimeFaces.util.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
-                throw mc.getMessage(this.MESSAGE_ID, submittedValue, 1999999, mc.getLabel(element));
+                throw vc.getMessage(this.MESSAGE_ID, submittedValue, 1999999, vc.getLabel(element));
             }
 
             return parseFloat(submittedValue);
@@ -237,10 +237,10 @@ PrimeFaces.converter = {
                 return null;
             }
             
-            var mc = PrimeFaces.util.MessageContext;
+            var vc = PrimeFaces.util.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
-                throw mc.getMessage(this.MESSAGE_ID, submittedValue, 2000000000, mc.getLabel(element));
+                throw vc.getMessage(this.MESSAGE_ID, submittedValue, 2000000000, vc.getLabel(element));
             }
 
             return parseFloat(submittedValue);
@@ -262,10 +262,10 @@ PrimeFaces.converter = {
                 return null;
             }
             
-            var mc = PrimeFaces.util.MessageContext;
+            var vc = PrimeFaces.util.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
-                throw mc.getMessage(this.MESSAGE_ID, submittedValue, 32456, mc.getLabel(element));
+                throw vc.getMessage(this.MESSAGE_ID, submittedValue, 32456, vc.getLabel(element));
             }
 
             return parseInt(submittedValue);
@@ -287,10 +287,10 @@ PrimeFaces.converter = {
                 return null;
             }
             
-            var mc = PrimeFaces.util.MessageContext;
+            var vc = PrimeFaces.util.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
-                throw mc.getMessage(this.MESSAGE_ID, submittedValue, 9876, mc.getLabel(element));
+                throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9876, vc.getLabel(element));
             }
 
             return parseInt(submittedValue);
@@ -312,10 +312,10 @@ PrimeFaces.converter = {
                 return null;
             }
             
-            var mc = PrimeFaces.util.MessageContext;
+            var vc = PrimeFaces.util.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
-                throw mc.getMessage(this.MESSAGE_ID, submittedValue, 198.23, mc.getLabel(element));
+                throw vc.getMessage(this.MESSAGE_ID, submittedValue, 198.23, vc.getLabel(element));
             }
 
             return parseFloat(submittedValue);
@@ -337,16 +337,16 @@ PrimeFaces.converter = {
                 return null;
             }
             
-            var mc = PrimeFaces.util.MessageContext;
+            var vc = PrimeFaces.util.ValidationContext;
 
             if(!this.regex.test(submittedValue)) {
-                throw mc.getMessage(this.MESSAGE_ID, submittedValue, 9346, mc.getLabel(element));
+                throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9346, vc.getLabel(element));
             }
             else {
                 var byteValue = parseInt(submittedValue);
 
                 if(byteValue < 0 || byteValue > 255)
-                    throw mc.getMessage(this.MESSAGE_ID, submittedValue, 9346, mc.getLabel(element));
+                    throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9346, vc.getLabel(element));
                 else
                     return byteValue;
             }
@@ -366,13 +366,13 @@ PrimeFaces.converter = {
                 return null;
             }
             
-            var mc = PrimeFaces.util.MessageContext;
+            var vc = PrimeFaces.util.ValidationContext;
 
             try {
                 return submittedValue.charAt(0);
             }
             catch(exception) {
-                throw mc.getMessage(this.MESSAGE_ID, submittedValue, mc.getLabel(element));
+                throw vc.getMessage(this.MESSAGE_ID, submittedValue, vc.getLabel(element));
             }
         }
     },
@@ -392,13 +392,13 @@ PrimeFaces.converter = {
                 return null;
             }
             
-            var mc = PrimeFaces.util.MessageContext;
+            var vc = PrimeFaces.util.ValidationContext;
 
             try {
                 return ((submittedValue === 'true' || submittedValue === 'on' || submittedValue === 'yes') ? true : false);  
             }
             catch(exception) {
-                throw mc.getMessage(this.MESSAGE_ID, submittedValue, mc.getLabel(element));
+                throw vc.getMessage(this.MESSAGE_ID, submittedValue, vc.getLabel(element));
             }
         }
     },
@@ -418,11 +418,11 @@ PrimeFaces.converter = {
                 return null;
             }
             
-            var mc = PrimeFaces.util.MessageContext,
+            var vc = PrimeFaces.util.ValidationContext,
             pattern = element.data('p-pattern'),
             type = element.data('p-dttype');
 
-            var locale = mc.getLocaleSettings();
+            var locale = vc.getLocaleSettings();
 
             try {
                 return $.datepicker.parseDate(pattern, submittedValue, locale);
@@ -431,11 +431,11 @@ PrimeFaces.converter = {
                 var now = $.datepicker.formatDate(pattern, new Date(), locale);
 
                 if(type === 'date')
-                    throw mc.getMessage(this.DATE_ID, submittedValue, now, mc.getLabel(element));
+                    throw vc.getMessage(this.DATE_ID, submittedValue, now, vc.getLabel(element));
                 else if(type === 'time')
-                    throw mc.getMessage(this.TIME_ID, submittedValue, now, mc.getLabel(element));
+                    throw vc.getMessage(this.TIME_ID, submittedValue, now, vc.getLabel(element));
                 else if(type === 'both')
-                    throw mc.getMessage(this.DATETIME_ID, submittedValue, now, mc.getLabel(element));
+                    throw vc.getMessage(this.DATETIME_ID, submittedValue, now, vc.getLabel(element));
             }
         }
     },
@@ -457,8 +457,8 @@ PrimeFaces.converter = {
                 return null;
             }
             
-            var mc = PrimeFaces.util.MessageContext,
-            locale = mc.getLocaleSettings(),
+            var vc = PrimeFaces.util.ValidationContext,
+            locale = vc.getLocaleSettings(),
             type = element.data('p-notype'),
             maxIntegerDigits = element.data('p-maxint'),
             minFractionDigits = element.data('p-minfrac'),
@@ -469,20 +469,20 @@ PrimeFaces.converter = {
         
                 if(currencySymbol) {
                     if(submittedValue.indexOf(currencySymbol) === -1)
-                        throw mc.getMessage(this.CURRENCY_ID, submittedValue, currencySymbol + '100', mc.getLabel(element));
+                        throw vc.getMessage(this.CURRENCY_ID, submittedValue, currencySymbol + '100', vc.getLabel(element));
                     else
                         submittedValue = submittedValue.substring(currencySymbol.length);
                 }
             }
             else if(type === 'percent') {
                 if(submittedValue.lastIndexOf('%') !== (submittedValue.length - 1))
-                    throw mc.getMessage(this.PERCENT_ID, submittedValue, '50%', mc.getLabel(element));
+                    throw vc.getMessage(this.PERCENT_ID, submittedValue, '50%', vc.getLabel(element));
                 else
                     submittedValue = submittedValue.replace(/%/g, '');
             }
             
             if(!this.REGEX.test(submittedValue)) {
-                throw mc.getMessage(this.NUMBER_ID, submittedValue, 50, mc.getLabel(element));
+                throw vc.getMessage(this.NUMBER_ID, submittedValue, 50, vc.getLabel(element));
             }
             
             var tokens = submittedValue.split(locale.decimalSeparator),
@@ -514,7 +514,7 @@ PrimeFaces.vi = function(element) {
 }
 
 PrimeFaces.validate = function(cfg) {
-    var mc = PrimeFaces.util.MessageContext,
+    var vc = PrimeFaces.util.ValidationContext,
     form = $(cfg.s).closest('form');
 
     if(cfg.a && cfg.p) {
@@ -538,11 +538,11 @@ PrimeFaces.validate = function(cfg) {
         this.validateInputs(inputs);
     }
 
-    if(mc.isEmpty()) {
+    if(vc.isEmpty()) {
         return true;
     }
     else {
-        mc.renderMessages(form);
+        vc.renderMessages(form);
         return false;
     }
 }
@@ -554,7 +554,7 @@ PrimeFaces.validateInputs = function(inputs) {
 }
 
 PrimeFaces.validateInput = function(element) {
-    var mc = PrimeFaces.util.MessageContext,
+    var vc = PrimeFaces.util.ValidationContext,
     submittedValue = element.is(':checkbox') ? String(element.prop('checked')) : element.val(),
     valid = true,
     converterId = element.data('p-con');
@@ -572,7 +572,7 @@ PrimeFaces.validateInput = function(element) {
             var converterMessageStr = element.data('p-cmsg'),
             converterMsg = (converterMessageStr) ? {summary:converterMessageStr,detail:converterMessageStr} : ce;
             valid = false;
-            mc.addMessage(element, converterMsg);
+            vc.addMessage(element, converterMsg);
         }
     }
     else {
@@ -581,8 +581,8 @@ PrimeFaces.validateInput = function(element) {
 
     if(valid && element.data('p-required') && (newValue === null || newValue === '')) {
         var requiredMessageStr = element.data('p-rmsg'),
-        requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : mc.getMessage('javax.faces.component.UIInput.REQUIRED', mc.getLabel(element));
-        mc.addMessage(element, requiredMsg);
+        requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : vc.getMessage('javax.faces.component.UIInput.REQUIRED', vc.getLabel(element));
+        vc.addMessage(element, requiredMsg);
 
         valid = false;
     }
@@ -604,7 +604,7 @@ PrimeFaces.validateInput = function(element) {
                         var validatorMessageStr = element.data('p-vmsg'),
                         validatorMsg = (validatorMessageStr) ? {summary:validatorMessageStr,detail:validatorMessageStr} : ve;
                         valid = false;
-                        mc.addMessage(element, validatorMsg);
+                        vc.addMessage(element, validatorMsg);
                     }
                 }
             }
@@ -621,7 +621,7 @@ PrimeFaces.validateInput = function(element) {
 }
 
 PrimeFaces.validateInstant = function(id) {
-    var mc = PrimeFaces.util.MessageContext,
+    var vc = PrimeFaces.util.ValidationContext,
     element = $(PrimeFaces.escapeClientId(id)),
     clientId = element.attr('id'),
     uiMessageId = element.data('uiMessageId'),
@@ -631,7 +631,7 @@ PrimeFaces.validateInstant = function(id) {
         uiMessage = $(PrimeFaces.escapeClientId(uiMessageId));
     }
     else {
-        uiMessage = mc.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
+        uiMessage = vc.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
         element.data('uiMessageId', uiMessage.attr('id'));
     }
 
@@ -641,14 +641,14 @@ PrimeFaces.validateInstant = function(id) {
 
     this.validateInput(element);
 
-    if(!mc.isEmpty()) {
-        mc.renderUIMessage(uiMessage, mc.messages[clientId][0]);
+    if(!vc.isEmpty()) {
+        vc.renderUIMessage(uiMessage, vc.messages[clientId][0]);
     }
 
-    mc.clear();
+    vc.clear();
 }
 
-PrimeFaces.util.MessageContext = {
+PrimeFaces.util.ValidationContext = {
 
     messages: {},
 
@@ -745,7 +745,7 @@ PrimeFaces.util.MessageContext = {
                 }
                 
                 
-                if(uiMessage.length) {
+                if(uiMessage) {
                     this.renderUIMessage(uiMessage, msg);
                 }
             }
