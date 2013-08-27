@@ -653,7 +653,7 @@ PrimeFaces.util.ValidationContext = {
     addMessage: function(element, msg) {
         var clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id');
         
-        if(!this.messages[clientId]) {
+        if(!this.messages[clientId]) {
             this.messages[clientId] = [];
         }
 
@@ -723,7 +723,7 @@ PrimeFaces.util.ValidationContext = {
             var msgs = this.messages[clientId],
             uiMessage = this.findUIMessage(clientId, uiMessageCollection);
 
-            for(var i = 0; i < msgs.length; i++) {
+            for(var i = 0; i < msgs.length; i++) {
                 var msg = msgs[i];
 
                 if(hasUIMessages) {        
@@ -742,8 +742,7 @@ PrimeFaces.util.ValidationContext = {
                     PF(growlWidgetVar).renderMessage(msg);
                 }
                 
-                
-                if(uiMessage) {
+                if(uiMessage) {
                     this.renderUIMessage(uiMessage, msg);
                 }
             }

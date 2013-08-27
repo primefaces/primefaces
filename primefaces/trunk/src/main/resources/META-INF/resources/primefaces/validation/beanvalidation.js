@@ -226,8 +226,8 @@ PrimeFaces.validator['Digits'] = {
             intValue = tokens[0].replace(new RegExp(locale.groupingSeparator, 'g'), ''),
             decimalValue = tokens[1];
     
-            if(digitsInteger !== undefined && intValue && digitsInteger < intValue.length 
-                    || digitsFraction !== undefined && decimalValue && decimalValue.length > digitsFraction) {
+            if(digitsInteger !== undefined && intValue && digitsInteger < intValue.length
+                    ||digitsFraction !== undefined && decimalValue && decimalValue.length > digitsFraction) {
                 var msgStr = element.data('p-digits-msg'),
                 msg = (msgStr) ? {summary:msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID, digitsInteger, digitsFraction);
                 throw msg;
