@@ -435,7 +435,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
 /**
  * PrimeFaces SelectOneMenu Widget
  */
-PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
@@ -500,22 +500,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         $(document.body).children(this.panelId).remove();
         this.panel.appendTo(document.body);
         
-        if(this.jq.is(':visible')) {
-            this.initWidths();
-        }
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return $this.initWidths();
-                });
-            }
-        }
-        
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+        
+        this.renderDeferred();
     },
         
     setupDialogSupport: function() {
@@ -526,31 +514,24 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         }
     },
        
-    initWidths: function() {
-        if(this.jq.is(':visible')) {
-            var userStyle = this.jq.attr('style');
+    _render: function() {
+        var userStyle = this.jq.attr('style');
             
-            //do not adjust width of container if there is user width defined
-            if(!userStyle||userStyle.indexOf('width') == -1) {
-                this.jq.width(this.input.outerWidth(true) + 5);  
-            }
-
-            //width of label
-            this.label.width(this.jq.width() - this.menuIcon.width());
-
-            //align panel and container
-            var jqWidth = this.jq.innerWidth();
-            if(this.panel.outerWidth() < jqWidth) {
-                this.panel.width(jqWidth);
-            }
-
-            this.input.parent().addClass('ui-helper-hidden').removeClass('ui-helper-hidden-accessible');
-            
-            return true;
+        //do not adjust width of container if there is user width defined
+        if(!userStyle||userStyle.indexOf('width') == -1) {
+            this.jq.width(this.input.outerWidth(true) + 5);  
         }
-        else {
-            return false;
+
+        //width of label
+        this.label.width(this.jq.width() - this.menuIcon.width());
+
+        //align panel and container
+        var jqWidth = this.jq.innerWidth();
+        if(this.panel.outerWidth() < jqWidth) {
+            this.panel.width(jqWidth);
         }
+
+        this.input.parent().addClass('ui-helper-hidden').removeClass('ui-helper-hidden-accessible');
     },
     
     bindEvents: function() {

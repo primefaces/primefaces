@@ -224,7 +224,7 @@
             PrimeFaces.createWidget(widgetConstructor, widgetVar, cfg, resource);
         },
 
-        createWidget : function(widgetConstructor, widgetVar, cfg, resource) {            
+        createWidget : function(widgetConstructor, widgetVar, cfg, resource) { 
             if(PrimeFaces.widget[widgetConstructor]) {
                 if(PrimeFaces.widgets[widgetVar])
                     PrimeFaces.widgets[widgetVar].refresh(cfg);                                                    //ajax spdate
@@ -1194,7 +1194,7 @@
             $(this.jqId + '_s').remove();
         },
 
-        //used mostly in ajax updates, reloads the widget configuration
+        //used in ajax updates, reloads the widget configuration
         refresh: function(cfg) {
             return this.init(cfg);
         },
@@ -1204,6 +1204,47 @@
             return this.jq;
         }
 
+    });
+    
+    /**
+     * Widgets that require to be visible to initialize properly for hidden container support
+     */
+    PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
+
+        renderDeferred: function() {     
+            if(this.jq.is(':visible')) {
+                this._render();
+            }
+            else {
+                var hiddenParent = this.jq.closest('.ui-hidden-container'),
+                hiddenParentWidgetVar = hiddenParent.data('widget'),
+                $this = this;
+
+                if(hiddenParentWidgetVar) {
+                    var hiddenParentWidget = PF(hiddenParentWidgetVar);
+                    
+                    if(hiddenParentWidget) {
+                        hiddenParentWidget.addOnshowHandler(function() {
+                            return $this.render();
+                        });
+                    }
+                }
+            }
+        },
+        
+        render: function() {
+            if(this.jq.is(':visible')) {
+                this._render();
+                return true;
+            }
+            else {
+                return false;
+            }
+        },
+        
+        _render: function() {
+            throw 'Unsupported Operation';
+        }
     });
     
     //expose globally

@@ -24,8 +24,6 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
                             .mousedown(function() {_self.legend.toggleClass('ui-state-active');})
                             .mouseup(function() {_self.legend.toggleClass('ui-state-active');})
         }
-        
-        this.jq.data('widget', this);
     },
     
     /**

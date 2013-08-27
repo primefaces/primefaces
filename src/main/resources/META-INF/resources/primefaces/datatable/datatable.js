@@ -1,7 +1,7 @@
 /**
  * PrimeFaces DataTable Widget
  */
-PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
@@ -41,44 +41,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             this.bindEditEvents();
         }
         
-        var $this = this;
-        if(this.jq.is(':visible')) {
-            this.setupDimensionalConfig();
-        }
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return $this.setupDimensionalConfig();
-                });
-            }
-        }
+        this.renderDeferred();
     },
     
-    setupDimensionalConfig: function() {
-        if(this.jq.is(':visible')) {
-            if(this.cfg.scrollable) {
-                this.setupScrolling();
-            }
+    _render: function() {
+        if(this.cfg.scrollable) {
+            this.setupScrolling();
+        }
 
-            if(this.cfg.resizableColumns) {
-                this.setupResizableColumns();
-            }
+        if(this.cfg.resizableColumns) {
+            this.setupResizableColumns();
+        }
 
-            if(this.cfg.draggableColumns) {
-                this.setupDraggableColumns();
-            }
-            
-            if(this.cfg.stickyHeader) {
-                this.setupStickyHeader();
-            }
-            
-            return true;
-        } 
-        else {
-            return false;
+        if(this.cfg.draggableColumns) {
+            this.setupDraggableColumns();
+        }
+
+        if(this.cfg.stickyHeader) {
+            this.setupStickyHeader();
         }
     },
 

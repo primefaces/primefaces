@@ -1145,56 +1145,36 @@
 /**
  * PrimeFaces Editor Widget
  */
-PrimeFaces.widget.Editor = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Editor = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
         
         this.jqInput = $(this.jqId + '_input');
-        var _self = this;
 
-        if(this.jq.is(':visible')) {
-            this.render();
-        } 
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.render();
-                });
-            }
-        }
+        this.renderDeferred();
     },
     
-    render: function() {
-        if(this.jq.is(':visible')) {
-            this.editor = this.jqInput.cleditor(this.cfg)[0];
+    _render: function() {
+        this.editor = this.jqInput.cleditor(this.cfg)[0];
 
-            if(this.cfg.disabled) {
-                this.disable();
-            }
-
-            if(this.cfg.invalid) {
-                this.invalidate();
-            }
-
-            if(this.cfg.change) {
-                this.editor.change(this.cfg.change);
-            }
-            
-            if(this.cfg.maxlength) {
-                this.bindMaxlength();
-            }
-
-            this.jq.css('visibility', '');
-            
-            return true;
-        } 
-        else {
-            return false;
+        if(this.cfg.disabled) {
+            this.disable();
         }
+
+        if(this.cfg.invalid) {
+            this.invalidate();
+        }
+
+        if(this.cfg.change) {
+            this.editor.change(this.cfg.change);
+        }
+
+        if(this.cfg.maxlength) {
+            this.bindMaxlength();
+        }
+
+        this.jq.css('visibility', '');
     },
     
     bindMaxlength: function() {

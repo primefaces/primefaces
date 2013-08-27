@@ -16,8 +16,6 @@
 package org.primefaces.component.inplace;
 
 import java.io.IOException;
-import java.util.Iterator;
-import javax.faces.component.EditableValueHolder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -46,6 +44,7 @@ public class InplaceRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext context, Inplace inplace) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inplace.getClientId(context);
+        String widgetVar = inplace.resolveWidgetVar();
         
 		String userStyleClass = inplace.getStyleClass();
         String userStyle = inplace.getStyle();
@@ -67,6 +66,8 @@ public class InplaceRenderer extends CoreRenderer {
         if(userStyle != null) {
             writer.writeAttribute("style", userStyle, "id");
         }
+        
+        writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
         //display
 		writer.startElement("span", null);

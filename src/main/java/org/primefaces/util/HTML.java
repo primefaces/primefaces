@@ -184,6 +184,8 @@ public class HTML {
     public final static String RADIOBUTTON_ICON_CLASS = "ui-radiobutton-icon";
     public final static String RADIOBUTTON_CHECKED_ICON_CLASS = "ui-icon ui-icon-bullet";
     
+    public final static String WIDGET_VAR = "data-widget";
+    
     public class VALIDATION_METADATA {
         public static final String LABEL = "data-p-label";
         public static final String REQUIRED = "data-p-required";

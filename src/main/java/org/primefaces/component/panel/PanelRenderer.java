@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelRenderer extends CoreRenderer {
@@ -87,6 +88,7 @@ public class PanelRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Panel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
+        String widgetVar = panel.resolveWidgetVar();
         Menu optionsMenu = panel.getOptionsMenu();
         boolean collapsed = panel.isCollapsed();
         boolean visible = panel.isVisible();
@@ -112,6 +114,8 @@ public class PanelRenderer extends CoreRenderer {
         if(panel.getStyle() != null) {
             writer.writeAttribute("style", panel.getStyle(), "style");
         }
+        
+        writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
         encodeHeader(context, panel);
         encodeContent(context, panel);

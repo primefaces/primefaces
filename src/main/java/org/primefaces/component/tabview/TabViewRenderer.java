@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class TabViewRenderer extends CoreRenderer {
@@ -100,6 +101,7 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tabView.getClientId(context);
+        String widgetVar = tabView.resolveWidgetVar();
         String orientation = tabView.getOrientation();
         String styleClass = tabView.getStyleClass();
         String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;
@@ -118,11 +120,13 @@ public class TabViewRenderer extends CoreRenderer {
         if(tabView.getStyle() != null) {
             writer.writeAttribute("style", tabView.getStyle(), "style");
         }
+        
+        writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
         if(orientation.equals("bottom")) {
             encodeContents(context, tabView);
             encodeHeaders(context, tabView);
-            
+
         }
         else {
             encodeHeaders(context, tabView);

@@ -1,7 +1,7 @@
 /**
  * PrimeFaces Galleria Widget
  */
-PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
@@ -21,59 +21,39 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.BaseWidget.extend({
         this.panelWrapper = this.jq.children('ul.ui-galleria-panel-wrapper');
         this.panels = this.panelWrapper.children('li.ui-galleria-panel');
         
-        var $this = this;
-        if(this.jq.is(':not(:visible)')) {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return $this.render();
-                });
-            }
-        } 
-        else {
-            this.render();
-        }
+        this.renderDeferred();
     },
     
-    render: function() {
-        if(this.jq.is(':visible')) {            
-            this.panelWrapper.width(this.cfg.panelWidth).height(this.cfg.panelHeight);
-            this.panels.width(this.cfg.panelWidth).height(this.cfg.panelHeight);
-            this.jq.width(this.cfg.panelWidth);
+    _render: function() {
+        this.panelWrapper.width(this.cfg.panelWidth).height(this.cfg.panelHeight);
+        this.panels.width(this.cfg.panelWidth).height(this.cfg.panelHeight);
+        this.jq.width(this.cfg.panelWidth);
 
-            if(this.cfg.showFilmstrip) {
-                this.renderStrip();
-                this.bindEvents();
-            }
-            
-            if(this.cfg.custom) {
-                this.panels.children('img').remove();
-            }
+        if(this.cfg.showFilmstrip) {
+            this.renderStrip();
+            this.bindEvents();
+        }
 
-            var activePanel = this.panels.eq(this.cfg.activeIndex);
-            activePanel.removeClass('ui-helper-hidden');
-            
-            if(this.cfg.showCaption) {
-                this.caption = $('<div class="ui-galleria-caption"></div>').css({
-                        'bottom': this.cfg.showFilmstrip ? this.stripWrapper.outerHeight(true) : 0,
-                        'width': this.panelWrapper.width()
-                        }).appendTo(this.jq);
-                        
-                this.showCaption(activePanel);
-            }
+        if(this.cfg.custom) {
+            this.panels.children('img').remove();
+        }
 
-            this.jq.css('visibility', 'visible');
+        var activePanel = this.panels.eq(this.cfg.activeIndex);
+        activePanel.removeClass('ui-helper-hidden');
 
-            if(this.cfg.autoPlay) {
-                this.startSlideshow();
-            }
+        if(this.cfg.showCaption) {
+            this.caption = $('<div class="ui-galleria-caption"></div>').css({
+                    'bottom': this.cfg.showFilmstrip ? this.stripWrapper.outerHeight(true) : 0,
+                    'width': this.panelWrapper.width()
+                    }).appendTo(this.jq);
 
-            return true;
-        } 
-        else {
-            return false;
+            this.showCaption(activePanel);
+        }
+
+        this.jq.css('visibility', 'visible');
+
+        if(this.cfg.autoPlay) {
+            this.startSlideshow();
         }
     },
                 

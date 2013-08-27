@@ -12,8 +12,6 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.onshowHandlers = [];
         
         this.bindEvents();
-        
-        this.jq.data('widget', this);
     },
     
     bindEvents: function() {

@@ -5937,7 +5937,7 @@ $.layout.onReady.push( $.layout.browserZoom._init );
 /**
  * PrimeFaces Layout Widget
  */
-PrimeFaces.widget.Layout = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
@@ -5954,56 +5954,34 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.BaseWidget.extend({
             this.jq = $(this.jqId);
         }
 
-        var _self = this;
-
-        if(this.jq.is(':visible')) {
-            this.render();
-        } 
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.render();
-                });
-            }
-        }
+        this.renderDeferred();
     },
 
-    render: function() {
-        if(this.jq.is(':visible')) {
-            var _self = this;
+    _render: function() {
+        var $this = this;
 
-            //defaults
-            this.cfg.defaults = {
-                onshow: function(location,pane,state,options) { _self.onshow(location,pane,state); },
-                onhide: function(location,pane,state,options) { _self.onhide(location,pane,state); },
-                onopen: function(location,pane,state,options) { _self.onopen(location,pane,state); },
-                onclose: function(location,pane,state,options) { _self.onclose(location,pane,state); },
-                onresize: function(location,pane,state,options) { _self.onresize(location,pane,state); },
-                contentSelector: '.ui-layout-unit-content',
-                slidable: false,
-                togglerLength_open: 0,
-                togglerLength_closed: 23,
-                togglerAlign_closed: 'top',
-                togglerContent_closed: '<a href="javascript:void(0)" class="ui-layout-unit-expand-icon ui-state-default ui-corner-all"><span class="ui-icon ui-icon-arrow-4-diag"></span></a>'
-            };
+        //defaults
+        this.cfg.defaults = {
+            onshow: function(location,pane,state,options) { $this.onshow(location,pane,state); },
+            onhide: function(location,pane,state,options) { $this.onhide(location,pane,state); },
+            onopen: function(location,pane,state,options) { $this.onopen(location,pane,state); },
+            onclose: function(location,pane,state,options) { $this.onclose(location,pane,state); },
+            onresize: function(location,pane,state,options) { $this.onresize(location,pane,state); },
+            contentSelector: '.ui-layout-unit-content',
+            slidable: false,
+            togglerLength_open: 0,
+            togglerLength_closed: 23,
+            togglerAlign_closed: 'top',
+            togglerContent_closed: '<a href="javascript:void(0)" class="ui-layout-unit-expand-icon ui-state-default ui-corner-all"><span class="ui-icon ui-icon-arrow-4-diag"></span></a>'
+        };
 
-            this.layout = this.jq.layout(this.cfg);
+        this.layout = this.jq.layout(this.cfg);
 
-            if(!this.cfg.full) {
-                this.jq.css('overflow','visible');
-            }
-
-            this.bindEvents();
-
-            return true;
-        }
-        else {
-            return false;
+        if(!this.cfg.full) {
+            this.jq.css('overflow','visible');
         }
 
+        this.bindEvents();
     },
 
     bindEvents: function() {

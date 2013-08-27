@@ -21,8 +21,6 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.dynamic && this.cfg.cache) {
             this.markLoadedPanels();
         }
-
-        this.jq.data('widget', this);
     },
             
     initActive: function() {

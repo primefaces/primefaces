@@ -1,26 +1,23 @@
 /**
  * PrimeFaces TreeTable Widget
  */
-PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);        
         this.thead = $(this.jqId + '_head');
         this.tbody = $(this.jqId + '_data');
 
-        var $this = this;
-        if(this.jq.is(':visible')) {
-            this.setupDimensionalConfig();
+        this.renderDeferred();
+    },
+            
+    _render: function() {
+        if(this.cfg.scrollable) {
+            this.setupScrolling();
         }
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
 
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return $this.setupDimensionalConfig();
-                });
-            }
+        if(this.cfg.resizableColumns) {
+            this.setupResizableColumns();
         }
         
         this.bindEvents();
@@ -29,23 +26,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
         this.init(cfg);
-    },
-    
-    setupDimensionalConfig: function() {
-        if(this.jq.is(':visible')) {
-            if(this.cfg.scrollable) {
-                this.setupScrolling();
-            }
-        
-            if(this.cfg.resizableColumns) {
-                this.setupResizableColumns();
-            }
-            
-            return true;
-        } 
-        else {
-            return false;
-        }
     },
     
     bindEvents: function() {

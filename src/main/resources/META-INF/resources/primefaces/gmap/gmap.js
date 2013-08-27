@@ -1,29 +1,15 @@
 /**
  * PrimeFaces Google Maps Widget
  */
-PrimeFaces.widget.GMap = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        
-        var _self = this;
-	
-        if(this.jq.is(':visible')) {
-            this.render();
-        }
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
 
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.render();
-                });
-            }
-        }
+        this.renderDeferred();
     },
     
-    render: function() {
+    _render: function() {
         this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
         this.cfg.fitBounds = !(this.cfg.fitBounds === false);
         this.viewport = this.map.getBounds();

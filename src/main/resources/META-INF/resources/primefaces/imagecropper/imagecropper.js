@@ -1603,7 +1603,7 @@
 /**
  * PrimeFaces ImageCropper Widget
  */
- PrimeFaces.widget.ImageCropper = PrimeFaces.widget.BaseWidget.extend({
+ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
@@ -1611,34 +1611,15 @@
         this.image = $(PrimeFaces.escapeClientId(this.cfg.image));
         this.jqCoords = $(this.jqId + '_coords');
 
-        var _self = this;
-        this.cfg.onSelect = function(c) {_self.saveCoords(c);};
-        this.cfg.onChange = function(c) {_self.saveCoords(c);};
+        var $this = this;
+        this.cfg.onSelect = function(c) {$this.saveCoords(c);};
+        this.cfg.onChange = function(c) {$this.saveCoords(c);};
 
-        if(this.jq.is(':visible')) {
-            this.render();
-        } 
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.render();
-                });
-            }
-        }
+        this.renderDeferred();
     },
     
-    render: function() {
-        if(this.jq.is(':visible')) {
-            this.image.Jcrop(this.cfg);
-
-            return true;
-        } 
-        else {
-            return false;
-        }
+    _render: function() {
+        this.image.Jcrop(this.cfg);
     },
     
     saveCoords: function(c) {
