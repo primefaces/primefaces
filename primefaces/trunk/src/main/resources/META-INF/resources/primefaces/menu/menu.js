@@ -305,7 +305,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
 /**
  * PrimeFaces SlideMenu Widget
  */
-PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
+PrimeFaces.widget.SlideMenu = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
@@ -322,25 +322,15 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         this.stack = [];
         this.jqWidth = this.jq.width();
                      
-        var _self = this;
+        this.renderDeferred();
+    },
+                       
+    _render: function() {
+        this.submenus.width(this.jq.width());
+        this.wrapper.height(this.rootList.outerHeight(true) + this.backward.outerHeight(true));
+        this.content.height(this.rootList.outerHeight(true));
+        this.rendered = true;
         
-        if(!this.jq.hasClass('ui-menu-dynamic')) {
-            
-            if(this.jq.is(':not(:visible)')) {
-                var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-                hiddenParentWidget = hiddenParent.data('widget');
-
-                if(hiddenParentWidget) {
-                    hiddenParentWidget.addOnshowHandler(function() {
-                        return _self.render();
-                    });
-                }
-            }
-            else {
-                this.render();
-            }
-        }
-                
         this.bindEvents();
     },
     
@@ -419,13 +409,6 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
     
     depth: function() {
         return this.stack.length;
-    },
-    
-    render: function() {
-        this.submenus.width(this.jq.width());
-        this.wrapper.height(this.rootList.outerHeight(true) + this.backward.outerHeight(true));
-        this.content.height(this.rootList.outerHeight(true));
-        this.rendered = true;
     },
     
     show: function() {                

@@ -20993,7 +20993,7 @@ $.jqplot.config.enablePlugins = true;
 /**
  * PrimeFaces Base Chart Widget
  */
-PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
@@ -21001,50 +21001,25 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
         
         this.configure();
         
-        //call extender
         if(this.cfg.extender) {
             this.cfg.extender.call(this);
         }
         
-        if(this.jq.is(':visible')) {
-            this.render();
-        } 
-        else {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget'),
-            _self = this;
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.render();
-                });
-            }
-        }
+        this.renderDeferred();
     },
     
     refresh: function(cfg) {
-        //release resources
         this.plot.destroy();
         
         this.init(cfg);
-    }
+    },
     
-    ,render: function(){
-        if(this.jq.is(':visible')) {
-            //events
-            this.bindItemSelect();
-
-            //render chart
-            this.plot = $.jqplot(this.jqpid, this.cfg.data, this.cfg);
-
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+    _render: function() {
+        this.bindItemSelect();
+        this.plot = $.jqplot(this.jqpid, this.cfg.data, this.cfg);
+    },
     
-    ,configure: function() {
+    configure: function() {
         //legend config
         if(this.cfg.legendPosition) {
             this.cfg.legend = {
@@ -21085,13 +21060,13 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         
-    }
+    },
     
-    ,exportAsImage: function() {
+    exportAsImage: function() {
         return this.jq.jqplotToImageElem();
-    }
+    },
     
-    ,bindItemSelect: function() {
+    bindItemSelect: function() {
         var _self = this;
         
         $(this.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {

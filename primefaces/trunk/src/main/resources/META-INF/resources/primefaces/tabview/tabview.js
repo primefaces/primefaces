@@ -30,13 +30,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.dynamic && this.cfg.cache) {
             this.markAsLoaded(this.panelContainer.children().eq(this.cfg.selected));
         }
-
-        this.jq.data('widget', this);
         
         if(this.cfg.scrollable) {
             var $this = this;
             if(this.jq.is(':not(:visible)')) {
-                var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
+                var hiddenParent = this.jq.parent().closest('.ui-hidden-container'),
                 hiddenParentWidget = hiddenParent.data('widget');
 
                 if(hiddenParentWidget) {
@@ -49,7 +47,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
                 this.initScrolling();
             }
         }
-        
     },
     
     bindEvents: function() {
@@ -140,14 +137,20 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
     },
         
     initScrolling: function() {
-        var overflown = (this.lastTab.position().left - this.firstTab.position().left) > this.navscroller.innerWidth();
-        if(overflown) {
-            this.navscroller.css('padding-left', '18px');
-            this.navcrollerLeft.show();
-            this.navcrollerRight.show();
-            this.restoreScrollState();
+        if(this.jq.is(':visible')) {
+            var overflown = (this.lastTab.position().left - this.firstTab.position().left) > this.navscroller.innerWidth();
+            if(overflown) {
+                this.navscroller.css('padding-left', '18px');
+                this.navcrollerLeft.show();
+                this.navcrollerRight.show();
+                this.restoreScrollState();
+            }
+            
+            return true;
         }
-        
+        else {
+            return false;
+        }
     },
         
     scroll: function(step) {

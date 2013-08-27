@@ -1,68 +1,28 @@
 /* 
  * PrimeFaces ScrollPanel Widget 
  */
-PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this.cfg = cfg;
         this.id = this.cfg.id;
+        
         if(this.id) {
             this.jqId = PrimeFaces.escapeClientId(this.id);
             this.jq = $(this.jqId);
-        } else {
+        } 
+        else {
             this.jq = this.cfg.jq;
         }
 
-        if(this.cfg.mode != 'native') {
-
-            var _self = this;
-
-            if(this.jq.is(':visible')) {
-                this.render();
-            } 
-            else {
-                var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-                hiddenParentWidget = hiddenParent.data('widget');
-
-                if(hiddenParentWidget) {
-                    hiddenParentWidget.addOnshowHandler(function() {
-                        return _self.render();
-                    });
-                }
-            }
+        if(this.cfg.mode !== 'native') {
+            this.renderDeferred();
         }
         
         $(this.jqId + '_s').remove();
     },
     
-    generateDOM: function() {
-        this.jq.wrapInner('<div class="ui-scrollpanel-container" />');
-        this.container = this.jq.children('.ui-scrollpanel-container');
-
-        this.container.wrapInner('<div class="ui-scrollpanel-wrapper" />');
-        this.wrapper = this.container.children('.ui-scrollpanel-wrapper');
-
-        this.content.removeAttr("style").addClass('ui-scrollpanel-content');
-
-        var hbarDOM = '<div class="ui-scrollpanel-hbar ui-widget-header ui-corner-bottom">';
-        hbarDOM += '<div class="ui-scrollpanel-handle ui-state-default ui-corner-all"><span class="ui-icon ui-icon-grip-solid-vertical"></span></div>';
-        hbarDOM += '<div class="ui-scrollpanel-bl ui-state-default ui-corner-bl"><span class="ui-icon ui-icon-triangle-1-w"></span></div>';
-        hbarDOM += '<div class="ui-scrollpanel-br ui-state-default ui-corner-br"><span class="ui-icon ui-icon-triangle-1-e"></span></div></div>';
-
-        var vbarDOM = '<div class="ui-scrollpanel-vbar ui-widget-header ui-corner-bottom">';
-        vbarDOM += '<div class="ui-scrollpanel-handle ui-state-default ui-corner-all"><span class="ui-icon ui-icon-grip-solid-horizontal"></span></div>';
-        vbarDOM += '<div class="ui-scrollpanel-bt ui-state-default ui-corner-bl"><span class="ui-icon ui-icon-triangle-1-n"></span></div>';
-        vbarDOM += '<div class="ui-scrollpanel-bb ui-state-default ui-corner-br"><span class="ui-icon ui-icon-triangle-1-s"></span></div></div>';
-
-        this.container.append(hbarDOM);
-        this.container.append(vbarDOM);
-    },
-    
-    render: function(){
-        if(this.jq.is(':hidden')) {
-            return false;
-        }
-
+    _render: function(){
         //look into
         this.jq.wrapInner('<div style="display:inline-block;"/>');
         this.content = this.jq.children('div');
@@ -123,6 +83,29 @@ PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return true;
+    },
+            
+    generateDOM: function() {
+        this.jq.wrapInner('<div class="ui-scrollpanel-container" />');
+        this.container = this.jq.children('.ui-scrollpanel-container');
+
+        this.container.wrapInner('<div class="ui-scrollpanel-wrapper" />');
+        this.wrapper = this.container.children('.ui-scrollpanel-wrapper');
+
+        this.content.removeAttr("style").addClass('ui-scrollpanel-content');
+
+        var hbarDOM = '<div class="ui-scrollpanel-hbar ui-widget-header ui-corner-bottom">';
+        hbarDOM += '<div class="ui-scrollpanel-handle ui-state-default ui-corner-all"><span class="ui-icon ui-icon-grip-solid-vertical"></span></div>';
+        hbarDOM += '<div class="ui-scrollpanel-bl ui-state-default ui-corner-bl"><span class="ui-icon ui-icon-triangle-1-w"></span></div>';
+        hbarDOM += '<div class="ui-scrollpanel-br ui-state-default ui-corner-br"><span class="ui-icon ui-icon-triangle-1-e"></span></div></div>';
+
+        var vbarDOM = '<div class="ui-scrollpanel-vbar ui-widget-header ui-corner-bottom">';
+        vbarDOM += '<div class="ui-scrollpanel-handle ui-state-default ui-corner-all"><span class="ui-icon ui-icon-grip-solid-horizontal"></span></div>';
+        vbarDOM += '<div class="ui-scrollpanel-bt ui-state-default ui-corner-bl"><span class="ui-icon ui-icon-triangle-1-n"></span></div>';
+        vbarDOM += '<div class="ui-scrollpanel-bb ui-state-default ui-corner-br"><span class="ui-icon ui-icon-triangle-1-s"></span></div></div>';
+
+        this.container.append(hbarDOM);
+        this.container.append(vbarDOM);
     },
     
     initScroll: function(s) {

@@ -5380,7 +5380,7 @@ function HorizontalPositionCache(getElement) {
 /**
  * PrimeFaces Schedule Widget
  */
-PrimeFaces.widget.Schedule = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
@@ -5396,30 +5396,11 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.BaseWidget.extend({
 
         this.setupEventHandlers();
 
-        if(this.jq.is(':not(:visible)')) {
-            var hiddenParent = this.jq.parents('.ui-hidden-container:first'),
-            hiddenParentWidget = hiddenParent.data('widget');
-
-            if(hiddenParentWidget) {
-                hiddenParentWidget.addOnshowHandler(function() {
-                    return _self.render();
-                });
-            }
-        } 
-        else {
-            this.render();
-        }
+        this.renderDeferred();
     },
     
-    render: function() {
-        if(this.jq.is(':visible')) {
-            this.jqc.fullCalendar(this.cfg);
-
-            return true;
-        } 
-        else {
-            return false;
-        }
+    _render: function() {
+        this.jqc.fullCalendar(this.cfg);
     },
     
     configureLocale: function() {

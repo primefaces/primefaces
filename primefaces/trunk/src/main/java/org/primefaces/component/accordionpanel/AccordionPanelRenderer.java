@@ -27,6 +27,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class AccordionPanelRenderer extends CoreRenderer {
@@ -80,6 +81,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext context, AccordionPanel acco) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = acco.getClientId(context);
+        String widgetVar = acco.resolveWidgetVar();
         String styleClass = acco.getStyleClass();
         styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
 		
@@ -95,6 +97,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         }
         
         writer.writeAttribute("role", "tablist", null);
+        
+        writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
 		encodeTabs(context, acco);
 

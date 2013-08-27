@@ -44,8 +44,6 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
                 cancelButton.click(function(e) {$this.cancel(e)});
             }
         }
-
-        this.jq.data('widget', this);
     },
     
     show: function() {    

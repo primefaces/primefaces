@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class FieldsetRenderer extends CoreRenderer {
@@ -50,6 +51,7 @@ public class FieldsetRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Fieldset fieldset) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fieldset.getClientId(context);
+        String widgetVar = fieldset.resolveWidgetVar();
         boolean toggleable = fieldset.isToggleable();
         
         String styleClass = toggleable ? Fieldset.TOGGLEABLE_FIELDSET_CLASS : Fieldset.FIELDSET_CLASS;
@@ -66,6 +68,8 @@ public class FieldsetRenderer extends CoreRenderer {
         if(fieldset.getStyle() != null) {
             writer.writeAttribute("style", fieldset.getStyle(), "style");
         }
+        
+        writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
         encodeLegend(context, fieldset);
 
