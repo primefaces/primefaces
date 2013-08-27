@@ -211,5 +211,6 @@ public class HTML {
         public static final String CURRENCY_SYMBOL = "data-p-curs";
         public static final String CURRENCY_CODE = "data-p-curc";
         public static final String NUMBER_TYPE = "data-p-notype";
+        public static final String HIGHLIGHTER = "data-p-hl";
     }
 }

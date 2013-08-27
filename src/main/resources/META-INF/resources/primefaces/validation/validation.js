@@ -611,10 +611,13 @@ PrimeFaces.validateInput = function(element) {
         }
     }
 
-    if(!valid)
-        element.addClass('ui-state-error');
+    var highlighterType = element.data('p-hl')||'default',
+    highlighter = PrimeFaces.validator.Highlighter[highlighterType];
+
+    if(valid)
+        highlighter.unhighlight(element);
     else
-        element.removeClass('ui-state-error');
+        highlighter.highlight(element);  
 }
 
 PrimeFaces.validateInstant = function(id) {
@@ -782,3 +785,53 @@ PrimeFaces.util.MessageContext = {
         this.messages = {};
     }
 }
+
+PrimeFaces.validator.Highlighter = {
+    
+    'default': {
+        
+        highlight: function(element) {
+            element.addClass('ui-state-error');
+        },
+        
+        unhighlight: function(element) {
+            element.removeClass('ui-state-error');
+        }
+    },
+    
+    'chkbox': {
+        
+        highlight: function(element) {
+            element.parent().next().addClass('ui-state-error');
+        },
+        
+        unhighlight: function(element) {
+            element.parent().next().removeClass('ui-state-error');
+        }
+        
+    },
+            
+    'listbox': {
+        
+        highlight: function(element) {
+            element.closest('.ui-inputfield').addClass('ui-state-error');
+        },
+        
+        unhighlight: function(element) {
+            element.closest('.ui-inputfield').removeClass('ui-state-error');
+        }
+        
+    },
+            
+    'onemenu': {
+        
+        highlight: function(element) {
+            element.parent().siblings('.ui-selectonemenu-trigger').addClass('ui-state-error').parent().addClass('ui-state-error');
+        },
+        
+        unhighlight: function(element) {
+            element.parent().siblings('.ui-selectonemenu-trigger').removeClass('ui-state-error').parent().removeClass('ui-state-error');
+        }
+        
+    }
+};

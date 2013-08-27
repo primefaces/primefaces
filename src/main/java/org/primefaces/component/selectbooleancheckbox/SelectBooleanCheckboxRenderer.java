@@ -156,4 +156,9 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         return ((submittedValue instanceof Boolean) ? submittedValue : Boolean.valueOf(submittedValue.toString()));
     }
+    
+    @Override
+    public String getHighlighter() {
+        return "chkbox";
+    }
 }
