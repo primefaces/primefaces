@@ -151,20 +151,18 @@ PrimeFaces.validator = {
         MATCH_EXCEPTION_MESSAGE_ID: 'javax.faces.validator.RegexValidator.MATCH_EXCEPTION',
 
         validate: function(element, value) {
-            if(!value) {
-                return;
-            }
+            if(value !== null) {
+                var pattern = element.data('p-regex'),
+                vc = PrimeFaces.util.ValidationContext;
 
-            var pattern = element.data('p-regex'),
-            vc = PrimeFaces.util.ValidationContext;
+                if(!pattern) {
+                    throw vc.getMessage(this.PATTERN_NOT_SET_MESSAGE_ID);
+                }
 
-            if(!pattern) {
-                throw vc.getMessage(this.PATTERN_NOT_SET_MESSAGE_ID);
-            }
-
-            var regex = new RegExp(pattern);
-            if(!regex.test(value)) {
-                throw vc.getMessage(this.NOT_MATCHED_MESSAGE_ID, pattern);
+                var regex = new RegExp(pattern);
+                if(!regex.test(value)) {
+                    throw vc.getMessage(this.NOT_MATCHED_MESSAGE_ID, pattern);
+                }
             }
         }
     }
