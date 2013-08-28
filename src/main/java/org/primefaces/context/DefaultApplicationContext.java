@@ -16,19 +16,32 @@
 package org.primefaces.context;
 
 import javax.faces.context.FacesContext;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 
 import org.primefaces.config.ConfigContainer;
 
 public class DefaultApplicationContext extends ApplicationContext {
 
 	private ConfigContainer config;
+	private ValidatorFactory validatorFactory;
 
     public DefaultApplicationContext(FacesContext context) {
     	this.config = new ConfigContainer(context);
+    	
+    	if (this.config.isBeanValidationAvailable()) {
+    	    this.validatorFactory = Validation.buildDefaultValidatorFactory();
+    	}
     }
 
 	@Override
 	public ConfigContainer getConfig() {
 		return config;
 	}
+
+    @Override
+    public ValidatorFactory getValidatorFactory()
+    {
+        return validatorFactory;
+    }
 }

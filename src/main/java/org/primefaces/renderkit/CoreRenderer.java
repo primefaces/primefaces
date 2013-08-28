@@ -509,6 +509,8 @@ public abstract class CoreRenderer extends Renderer {
         List<String> validatorIds = new ArrayList<String>();
         String highlighter = getHighlighter();
         
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        
         //messages
         if(label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
         if(requiredMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
@@ -528,8 +530,8 @@ public abstract class CoreRenderer extends Renderer {
         }
         
         //bean validation
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isBeanValidationAvailable()) {
-            BeanValidationMetadata beanValidationMetadata = BeanValidationResolver.resolveValidationMetadata(context, comp);
+        if(requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
+            BeanValidationMetadata beanValidationMetadata = BeanValidationResolver.resolveValidationMetadata(context, comp, requestContext);
             renderValidationMetadataMap(context, beanValidationMetadata.getAttributes());
             validatorIds.addAll(beanValidationMetadata.getValidatorIds());
         }

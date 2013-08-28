@@ -15,6 +15,8 @@
  */
 package org.primefaces.context;
 
+import javax.validation.ValidatorFactory;
+
 import org.primefaces.config.ConfigContainer;
 
 /**
@@ -29,4 +31,6 @@ import org.primefaces.config.ConfigContainer;
 public abstract class ApplicationContext {
 
 	public abstract ConfigContainer getConfig();
+	
+	public abstract ValidatorFactory getValidatorFactory();
 }
