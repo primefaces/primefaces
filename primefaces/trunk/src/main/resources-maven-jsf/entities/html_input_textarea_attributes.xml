@@ -183,3 +183,9 @@
 	<ignoreInComponent>true</ignoreInComponent>
     <description>Advisory tooltip information.</description>
 </attribute>
+<attribute>
+    <name>placeholder</name>
+    <required>false</required>
+    <type>java.lang.String</type>
+    <description>The placeholder attribute specifies a short hint that describes the expected value of an input field.</description>
+</attribute>
