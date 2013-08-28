@@ -68,6 +68,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, "style");
         }
         writer.writeAttribute("role", "menubar", null);
+        writer.writeAttribute("tabindex", menu.getTabindex(), null);
 
 		writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
@@ -133,6 +134,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "javascript:void(0)", null);
         writer.writeAttribute("class", Menu.MENUITEM_LINK_CLASS, null);
+        writer.writeAttribute("tabindex", "-1", null);
 
         if(icon != null) {
             writer.startElement("span", null);

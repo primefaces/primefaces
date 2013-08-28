@@ -43,7 +43,18 @@ public abstract class AbstractMenu extends UIComponentBase {
     public static final String SEPARATOR_CLASS = "ui-separator ui-state-default";
     public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
     
-	public List getElements() {
+    protected enum PropertyKeys {
+        tabindex
+    }
+        
+    public String getTabindex() {
+		return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+	}
+	public void setTabindex(String tabindex) {
+		getStateHelper().put(PropertyKeys.tabindex, tabindex);
+	}
+    
+    public List getElements() {
         MenuModel model = getModel();
         if(model != null)
             return model.getElements();
