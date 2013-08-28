@@ -578,23 +578,21 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             switch(e.which) {
                     case keyCode.UP:
                         var prevItem = currentLink.parent().prevAll('.ui-menuitem:first');
-                        if(prevItem.length === 0) {
-                            prevItem = $this.menuitemLinks.eq(($this.menuitemLinks.length - 1)).parent();
+                        if(prevItem.length) {
+                            currentLink.removeClass('ui-state-hover');
+                            prevItem.children('.ui-menuitem-link').addClass('ui-state-hover');
                         }
-                        
-                        currentLink.removeClass('ui-state-hover');
-                        prevItem.children('.ui-menuitem-link').addClass('ui-state-hover');
+
                         e.preventDefault();
                     break;
                     
                     case keyCode.DOWN:
                         var nextItem = currentLink.parent().nextAll('.ui-menuitem:first');
-                        if(nextItem.length === 0) {
-                            nextItem = $this.menuitemLinks.eq(0).parent();
+                        if(nextItem.length) {
+                            currentLink.removeClass('ui-state-hover');
+                            nextItem.children('.ui-menuitem-link').addClass('ui-state-hover');
                         }
                         
-                        currentLink.removeClass('ui-state-hover');
-                        nextItem.children('.ui-menuitem-link').addClass('ui-state-hover');
                         e.preventDefault();
                     break;
                     
