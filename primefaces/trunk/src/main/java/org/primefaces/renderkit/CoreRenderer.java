@@ -590,13 +590,14 @@ public abstract class CoreRenderer extends Renderer {
         
         ResponseWriter writer = context.getResponseWriter();
         StringBuilder builder = new StringBuilder();
-        for(Iterator<String> it = validatorIds.iterator(); it.hasNext();) {
-            String validatorId = it.next();
-            builder.append(validatorId);
-
-            if(it.hasNext()) {
-                builder.append(",");
+        
+        for(int i = 0; i < validatorIds.size(); i++) {
+            if (i != 0) {
+                builder.append(',');
             }
+            
+            String validatorId = validatorIds.get(i);
+            builder.append(validatorId);
         }
 
         writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_IDS, builder.toString(), null);
