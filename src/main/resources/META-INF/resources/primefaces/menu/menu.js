@@ -166,11 +166,11 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                 $this.highlight(menuitem);
             }
         });
-        
+                
         if(this.cfg.autoDisplay === false) {
             this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
             
-            this.rootLinks.data('primefaces-menubar', this.id).find('*').data('primefaces-menubar', this.id)
+            this.rootLinks.data('primefaces-menubar', this.id).find('*').data('primefaces-menubar', this.id);
             
             this.rootLinks.click(function(e) {
                 var link = $(this),
@@ -205,19 +205,15 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     },
     
     bindDocumentHandler: function() {
-        var _self = this;
+        var $this = this;
         
         $(document.body).click(function(e) {
             var target = $(e.target);
-            if(target.data('primefaces-menubar') == _self.id) {
+            if(target.data('primefaces-menubar') === $this.id) {
                 return;
             }
             
-            _self.active = false;
-
-            _self.jq.find('li.ui-menuitem-active').each(function() {
-                _self.deactivate($(this), true);
-            });
+            $this.reset();
         });
     },
     
@@ -267,6 +263,15 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         });
 
         submenu.show();
+    },
+            
+    reset: function() {
+        var $this = this;
+        this.active = false;
+
+        this.jq.find('li.ui-menuitem-active').each(function() {
+            $this.deactivate($(this), true);
+        });
     }
     
 });
@@ -307,17 +312,25 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
           
     //@Override
     bindKeyEvents: function() {
-        var $this = this;
+        var $this = this,
+        keyboardTarget = this.links.eq(0).parent();
+        
+        keyboardTarget.attr('tabindex', this.jq.attr('tabindex'));
+        this.jq.removeAttr('tabindex');
 
-        this.jq.on('focus.menubar', function() {
+        keyboardTarget.on('focus.menubar', function(e) {
             $this.highlight($this.links.eq(0).parent());
         })
         .on('blur.menubar', function() {
-            $this.links.filter('.ui-state-hover').removeClass('ui-state-hover');
+            $this.reset();
         })
         .on('keydown.menu', function(e) {
-            var currentitem = $this.activeitem,
-            isRootLink = !currentitem.closest('ul').hasClass('ui-menu-child'),
+            var currentitem = $this.activeitem;
+            if(!currentitem) {
+                return;
+            }
+            
+            var isRootLink = !currentitem.closest('ul').hasClass('ui-menu-child'),
             keyCode = $.ui.keyCode;
             
             switch(e.which) {
