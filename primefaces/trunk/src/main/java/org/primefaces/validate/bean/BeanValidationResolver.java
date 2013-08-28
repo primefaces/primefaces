@@ -46,10 +46,14 @@ import javax.validation.constraints.Size;
 import javax.validation.metadata.BeanDescriptor;
 import javax.validation.metadata.ConstraintDescriptor;
 import javax.validation.metadata.PropertyDescriptor;
+
+import org.primefaces.context.RequestContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 
 public class BeanValidationResolver {
- 
+
+    private static final Logger LOG = Logger.getLogger(BeanValidationResolver.class.getName());
+
     private static final Map<Class<?>, ClientValidationConstraint> CONSTRAINT_MAPPER = new HashMap<Class<?>, ClientValidationConstraint>();
     
     static {
@@ -68,7 +72,7 @@ public class BeanValidationResolver {
         CONSTRAINT_MAPPER.put(Pattern.class, new PatternClientValidationConstraint());
     }
     
-    public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component) throws IOException {
+    public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, RequestContext requestContext) throws IOException {
         ValueExpression ve = component.getValueExpression("value");
         ELContext elContext = context.getELContext();
         Map<String,Object> metadata = new HashMap<String, Object>();
@@ -78,7 +82,7 @@ public class BeanValidationResolver {
             ValueReference vr = ValueExpressionAnalyzer.getReference(elContext, ve);
             
             if(vr != null) {
-                Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+                Validator validator = requestContext.getApplicationContext().getValidatorFactory().getValidator();
                 Object base = vr.getBase();
                 Object property = vr.getProperty();
                 
@@ -92,7 +96,7 @@ public class BeanValidationResolver {
 		                    Set<ConstraintDescriptor<?>> constraints = propertyDescriptor.getConstraintDescriptors();
 		                    
 		                    if(constraints != null && !constraints.isEmpty()) {
-		                        for(ConstraintDescriptor constraintDescriptor : constraints) {
+		                        for(ConstraintDescriptor<?> constraintDescriptor : constraints) {
                                     Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
 		                            ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPER.get(annotationType);
 		                            
@@ -125,9 +129,9 @@ public class BeanValidationResolver {
                                                         validatorIds.add(validatorId);
                                                     
                                                 } catch (InstantiationException ex) {
-                                                    Logger.getLogger(BeanValidationResolver.class.getName()).log(Level.SEVERE, null, ex);
+                                                    LOG.log(Level.SEVERE, null, ex);
                                                 } catch (IllegalAccessException ex) {
-                                                    Logger.getLogger(BeanValidationResolver.class.getName()).log(Level.SEVERE, null, ex);
+                                                    LOG.log(Level.SEVERE, null, ex);
                                                 }
                                             }
                                         }
