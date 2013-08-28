@@ -124,16 +124,17 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     close: function() {
-        this.visibleStateHolder.val(false);
-
-        var _self = this;
-
-        $(this.jqId).fadeOut(this.cfg.closeSpeed,
+        if(this.visibleStateHolder) {
+            this.visibleStateHolder.val(false);
+        }
+        
+        var $this = this;
+        this.jq.fadeOut(this.cfg.closeSpeed,
             function(e) {
-                if(_self.cfg.behaviors) {
-                    var closeBehavior = _self.cfg.behaviors['close'];
+                if($this.cfg.behaviors) {
+                    var closeBehavior = $this.cfg.behaviors['close'];
                     if(closeBehavior) {
-                        closeBehavior.call(_self, e);
+                        closeBehavior.call($this, e);
                     }
                 }
             }
