@@ -124,6 +124,7 @@ public class HTML {
         "accesskey",
 		"alt",
         "autocomplete",
+        "placeholder",
 		"dir",
 		"lang",
 		"size",
