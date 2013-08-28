@@ -59,6 +59,7 @@ public class MenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, "style");
         }
         writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute("tabindex", menu.getTabindex(), null);
 
         if(menu.getElementsCount() > 0) {
             writer.startElement("ul", null);

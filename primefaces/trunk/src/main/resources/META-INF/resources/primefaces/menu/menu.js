@@ -52,7 +52,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 }
                 
                 e.preventDefault();
-            }
+            }   
         });
 
         //hide overlay on document click
@@ -437,19 +437,67 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
     }
     
     ,bindEvents: function() {  
-        var _self = this;
+        var $this = this;
 
-        this.menuitemLinks.mouseenter(function(e) {
+        $this.menuitemLinks.mouseenter(function(e) {
+            if($this.jq.is(':focus')) {
+                $this.jq.blur();
+            }
+            
             $(this).addClass('ui-state-hover');
-        }).mouseleave(function(e) {
+        })
+        .mouseleave(function(e) {
             $(this).removeClass('ui-state-hover');
         });
 
         if(this.cfg.overlay) {
             this.menuitemLinks.click(function() {
-                _self.hide();
+                $this.hide();
             });  
-        }   
+        }  
+        
+        this.jq.on('focus.menu', function() {
+            $this.menuitemLinks.eq(0).addClass('ui-state-hover');
+        })
+        .on('blur.menu', function() {
+            $this.menuitemLinks.filter('.ui-state-hover').removeClass('ui-state-hover');
+        })
+        .on('keydown.menu', function(e) {
+            var currentLink = $this.menuitemLinks.filter('.ui-state-hover'),
+            keyCode = $.ui.keyCode;
+            
+            switch(e.which) {
+                    case keyCode.UP:
+                        var prevItem = currentLink.parent().prevAll('.ui-menuitem:first');
+                        if(prevItem.length === 0) {
+                            prevItem = $this.menuitemLinks.eq(($this.menuitemLinks.length - 1)).parent();
+                        }
+                        
+                        currentLink.removeClass('ui-state-hover');
+                        prevItem.children('.ui-menuitem-link').addClass('ui-state-hover');
+                        e.preventDefault();
+                    break;
+                    
+                    case keyCode.DOWN:
+                        var nextItem = currentLink.parent().nextAll('.ui-menuitem:first');
+                        if(nextItem.length === 0) {
+                            nextItem = $this.menuitemLinks.eq(0).parent();
+                        }
+                        
+                        currentLink.removeClass('ui-state-hover');
+                        nextItem.children('.ui-menuitem-link').addClass('ui-state-hover');
+                        e.preventDefault();
+                    break;
+                    
+                    case keyCode.ENTER:
+                    case keyCode.NUMPAD_ENTER:
+                        currentLink.trigger('click');
+                        $this.jq.blur();
+                        e.preventDefault();
+                    break;
+                    
+            }        
+        });
     }
 });
             

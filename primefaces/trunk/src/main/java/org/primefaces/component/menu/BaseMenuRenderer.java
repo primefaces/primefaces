@@ -114,6 +114,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             boolean disabled = menuitem.isDisabled();
             
             writer.startElement("a", null);
+            writer.writeAttribute("tabindex", "-1", null);
             if(title != null) {
                 writer.writeAttribute("title", title, null);
             }
