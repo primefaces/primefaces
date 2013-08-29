@@ -143,6 +143,12 @@
 			<required>false</required>
 			<type>java.lang.Object</type>
 		</attribute>
+        <attribute>
+			<description>Checks for duplicate items on addition, default is true.</description>
+			<name>unique</name>
+			<required>true</required>
+			<type>java.lang.Object</type>
+		</attribute>
 	</tag>
 
     <tag>

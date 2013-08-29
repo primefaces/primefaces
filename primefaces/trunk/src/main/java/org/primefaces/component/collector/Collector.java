@@ -32,21 +32,25 @@ public class Collector implements ActionListener, StateHolder {
 	private ValueExpression removeFrom;
 	
 	private ValueExpression value;
+    
+    private ValueExpression unique;
 
 	private boolean _transient;
 
 	public Collector() {}
 
-	public Collector(ValueExpression addTo, ValueExpression removeFrom, ValueExpression value) {
+	public Collector(ValueExpression addTo, ValueExpression removeFrom, ValueExpression value, ValueExpression unique) {
 		this.addTo = addTo;
 		this.removeFrom = removeFrom;
 		this.value = value;
+        this.unique = unique;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
-		if (value == null)
-			throw new AbortProcessingException("@for has not been set");
+		if(value == null) {
+            throw new AbortProcessingException("Value has not been set");
+        }
 
 		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
 
@@ -54,22 +58,32 @@ public class Collector implements ActionListener, StateHolder {
 		
 		if(addTo != null) {
 			Collection collection = (Collection) addTo.getValue(elContext);
+            Object uniqueValue = (unique != null) ? unique.getValue(elContext) : null;
+            boolean checkUniqueness = (uniqueValue == null) ? true : (Boolean.valueOf(uniqueValue.toString())).booleanValue();
 			
-			if(!collection.contains(val))
-				collection.add(val);
+            if(checkUniqueness) {
+                if(!collection.contains(val))
+                    collection.add(val);
+            }
+            else {
+                collection.add(val);
+            }				
 		}
 		else if(removeFrom != null){
 			Collection collection = (Collection) removeFrom.getValue(elContext);
 			collection.remove(val);
-		} else
+		} 
+        else {
 			throw new IllegalArgumentException("Specify either addTo or removeFrom as collection reference");
+        }
 	}
 
 	public Object saveState(FacesContext context) {
-		Object[] state = new Object[3];
+		Object[] state = new Object[4];
 		state[0] = addTo;
 		state[1] = removeFrom;
 		state[2] = value;
+        state[3] = unique;
 		
 		return state;
 	}
@@ -79,6 +93,7 @@ public class Collector implements ActionListener, StateHolder {
 		addTo = (ValueExpression) values[0];
 		removeFrom = (ValueExpression) values[1];
 		value = (ValueExpression) values[2];
+        unique = (ValueExpression) values[3];
 	}
 
 	public boolean isTransient() {
@@ -112,4 +127,12 @@ public class Collector implements ActionListener, StateHolder {
 	public void setValue(ValueExpression value) {
 		this.value = value;
 	}
+
+    public ValueExpression getUnique() {
+        return unique;
+    }
+
+    public void setUnique(ValueExpression unique) {
+        this.unique = unique;
+    }
 }
