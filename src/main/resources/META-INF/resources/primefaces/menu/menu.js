@@ -9,6 +9,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.overlay) {
             this.initOverlay();
         }
+        
+        this.keyboardTarget = this.jq.children('.ui-helper-hidden-accessible');
     },
     
     initOverlay: function() {
@@ -315,13 +317,9 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
           
     //@Override
     bindKeyEvents: function() {
-        var $this = this,
-        keyboardTarget = this.links.eq(0).parent();
-        
-        keyboardTarget.attr('tabindex', this.jq.attr('tabindex'));
-        this.jq.removeAttr('tabindex');
+        var $this = this;
 
-        keyboardTarget.on('focus.menubar', function(e) {
+        this.keyboardTarget.on('focus.menubar', function(e) {
             $this.highlight($this.links.eq(0).parent());
         })
         .on('blur.menubar', function() {
@@ -581,7 +579,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             });  
         }  
         
-        this.jq.on('focus.menu', function() {
+        this.keyboardTarget.on('focus.menu', function() {
             $this.menuitemLinks.eq(0).addClass('ui-state-hover');
         })
         .on('blur.menu', function() {

@@ -303,4 +303,13 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 		
 		return request.toString();
 	}
+    
+    protected void encodeKeyboardTarget(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("tabindex", menu.getTabindex(), null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.endElement("div");
+    }
 }

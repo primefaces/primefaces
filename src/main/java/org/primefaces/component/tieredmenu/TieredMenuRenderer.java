@@ -68,7 +68,8 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, "style");
         }
         writer.writeAttribute("role", "menubar", null);
-        writer.writeAttribute("tabindex", menu.getTabindex(), null);
+       
+        encodeKeyboardTarget(context, menu);
 
 		writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
