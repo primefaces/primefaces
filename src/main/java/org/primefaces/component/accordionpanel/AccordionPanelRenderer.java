@@ -115,8 +115,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         wb.init("AccordionPanel", acco.resolveWidgetVar(), clientId);
          		
         if(acco.isDynamic()) {
-            wb.attr("dynamic", true, false);
-            wb.attr("cache", acco.isCache(), true);
+            wb.attr("dynamic", true, false).attr("cache", acco.isCache());
         }
         
         wb.attr("multiple", multiple, false)
