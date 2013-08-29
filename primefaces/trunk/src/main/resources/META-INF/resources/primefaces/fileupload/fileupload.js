@@ -1595,79 +1595,76 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     $this.enableButton($this.cancelButton);
                 }
 
-                var files = data.files;
-
-                if ($this.cfg.fileLimit && ($this.uploadedFileCount + files.length) > $this.cfg.fileLimit) {
+                if($this.cfg.fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > $this.cfg.fileLimit) {
+                    $this.clearMessages();
                     $this.showMessage({
                         summary: $this.cfg.fileLimitMessage
                     });
 
                     return;
                 }
+                
+                var file = data.files ? data.files[0] : null;
+                if(file) {
+                    var validMsg = $this.validate(file);
 
-                if (files && files.length) {
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i],
-                        validMsg = $this.validate(file);
+                    if(validMsg) {
+                        $this.showMessage({
+                            summary: validMsg,
+                            filename: file.name,
+                            filesize: file.size
+                        });
+                    }
+                    else {
+                        $this.clearMessages();
 
-                        if(validMsg) {
-                            $this.showMessage({
-                                summary: validMsg,
-                                filename: file.name,
-                                filesize: file.size
-                            });
-                        }
-                        else {
-                            $this.clearMessages();
+                        var row = $('<tr></tr>').append('<td class="ui-fileupload-preview"></td>')
+                                .append('<td>' + file.name + '</td>')
+                                .append('<td>' + $this.formatSize(file.size) + '</td>')
+                                .append('<td class="ui-fileupload-progress"></td>')
+                                .append('<td><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></td>')
+                                .appendTo($this.filesTbody);
 
-                            var row = $('<tr></tr>').append('<td class="ui-fileupload-preview"></td>')
-                                    .append('<td>' + file.name + '</td>')
-                                    .append('<td>' + $this.formatSize(file.size) + '</td>')
-                                    .append('<td class="ui-fileupload-progress"></td>')
-                                    .append('<td><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></td>')
-                                    .appendTo($this.filesTbody);
+                        //preview
+                        if($this.isCanvasSupported() && window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
+                            var imageCanvas = $('<canvas></canvas')
+                                                    .appendTo(row.children('td.ui-fileupload-preview')),
+                            context = imageCanvas.get(0).getContext('2d'),
+                            winURL = window.URL||window.webkitURL,
+                            url = winURL.createObjectURL(file),
+                            img = new Image();
 
-                            //preview
-                            if($this.isCanvasSupported() && window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
-                                var imageCanvas = $('<canvas></canvas')
-                                                        .appendTo(row.children('td.ui-fileupload-preview')),
-                                context = imageCanvas.get(0).getContext('2d'),
-                                winURL = window.URL||window.webkitURL,
-                                url = winURL.createObjectURL(file),
-                                img = new Image();
-                        
-                                img.onload = function() {
-                                    var imgWidth = null, imgHeight = null, scale = 1;
-                                    
-                                    if($this.cfg.previewWidth > this.width) {
-                                        imgWidth = this.width;
-                                    }
-                                    else {
-                                        imgWidth = $this.cfg.previewWidth;
-                                        scale = $this.cfg.previewWidth / this.width;
-                                    }
-                                    
-                                    var imgHeight = parseInt(this.height * scale);
-                                    
-                                    imageCanvas.attr({width:imgWidth, height: imgHeight});
-                                    context.drawImage(img, 0, 0, imgWidth, imgHeight);  
+                            img.onload = function() {
+                                var imgWidth = null, imgHeight = null, scale = 1;
+
+                                if($this.cfg.previewWidth > this.width) {
+                                    imgWidth = this.width;
                                 }
-                                
-                                img.src = url; 
+                                else {
+                                    imgWidth = $this.cfg.previewWidth;
+                                    scale = $this.cfg.previewWidth / this.width;
+                                }
+
+                                var imgHeight = parseInt(this.height * scale);
+
+                                imageCanvas.attr({width:imgWidth, height: imgHeight});
+                                context.drawImage(img, 0, 0, imgWidth, imgHeight);  
                             }
 
-                            //progress
-                            row.children('td.ui-fileupload-progress').append('<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>');
+                            img.src = url; 
+                        }
 
-                            file.row = row;
-                            
-                            file.row.data('filedata', data);
+                        //progress
+                        row.children('td.ui-fileupload-progress').append('<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>');
 
-                            $this.files.push(file);
-                            
-                            if($this.cfg.auto) {
-                                $this.upload();
-                            }
+                        file.row = row;
+
+                        file.row.data('filedata', data);
+
+                        $this.files.push(file);
+
+                        if($this.cfg.auto) {
+                            $this.upload();
                         }
                     }
                 }
@@ -1902,9 +1899,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             
     showMessage: function(msg) {
         var summary = msg.summary,
-                detail = '';
+        detail = '';
 
-        if (msg.filename && msg.filesize) {
+        if(msg.filename && msg.filesize) {
             detail = this.cfg.messageTemplate.replace('{name}', msg.filename).replace('{size}', this.formatSize(msg.filesize));
         }
 
