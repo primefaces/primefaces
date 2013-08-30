@@ -293,6 +293,10 @@
                     $(selector).eq(0).focus();
                 }
             }, 250);
+
+            // remember that a custom focus has been rendered
+            // this avoids to retain the last focus after ajax update
+            PrimeFaces.customFocus = true;
         },
 
         monitorDownload: function(start, complete) {
@@ -495,6 +499,8 @@
         locales : {},
 
         zindex : 1000,
+        
+        customFocus : false,
 
         PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 
@@ -1061,8 +1067,9 @@
     }
 
     PrimeFaces.ajax.AjaxResponse = function(responseXML) {
-        var xmlDoc = $(responseXML.documentElement),
-        updates = xmlDoc.find('update');
+    	var xmlDoc = $(responseXML.documentElement),
+    		activeElementId = $(document.activeElement).attr('id'),
+    		updates = xmlDoc.find('update');
 
         for(var i=0; i < updates.length; i++) {
             var update = updates.eq(i),
@@ -1073,6 +1080,21 @@
         }
 
         PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+
+        // re-focus element
+        if (PrimeFaces.customFocus == false && activeElementId) {
+        	var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));
+        	elementToFocus.focus();
+
+        	// double check it - required for IE
+        	setTimeout(function() {
+        		if (!elementToFocus.is(":focus")) {
+        			elementToFocus.focus();
+        		}
+        	}, 150);
+        }
+        
+        PrimeFaces.customFocus = false;
     }
 
     PrimeFaces.ajax.Queue = {
