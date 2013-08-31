@@ -15,15 +15,11 @@
  */
 package org.primefaces.model.menu;
 
-public interface Submenu extends MenuGroup {
+import java.util.List;
+
+public interface MenuGroup extends MenuElement {
     
-    public String getStyle();
+    public int getElementsCount();
     
-    public String getStyleClass();
-    
-    public String getIcon();
-    
-    public String getLabel();
-    
-    public Object getParent();
+    public List getElements();
 }

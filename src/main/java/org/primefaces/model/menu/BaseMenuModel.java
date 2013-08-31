@@ -53,10 +53,8 @@ public class BaseMenuModel implements MenuModel, Serializable {
             String id = (seed == null) ? String.valueOf(counter++) : seed + "_" + counter++;
             element.setId(id);
             
-            if(element instanceof Submenu) {
-                Submenu submenu = (Submenu) element;
-                
-                generateUniqueIds(submenu.getElements(), id);
+            if(element instanceof MenuGroup) {                
+                generateUniqueIds(((MenuGroup) element).getElements(), id);
             }
         }
     }
