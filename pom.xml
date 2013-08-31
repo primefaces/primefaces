@@ -255,7 +255,6 @@
                     <aggregations>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
-                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces.css</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/ui/jquery-ui.css</include>
@@ -297,15 +296,8 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.css</include>
                             </includes>
                         </aggregation>
-                        <aggregation> <!-- USED WITH MOBILE -->                            
-                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/core/primefaces-core.js</output>                            
-                            <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
-                            </includes>
-                        </aggregation>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
-                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces.js</output>
                             <includes>                                
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
@@ -507,7 +499,6 @@
                             <aggregations>
                                 <aggregation>
                                     <insertNewLine>true</insertNewLine>
-                                    <removeIncluded>true</removeIncluded>
                                     <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces.css</output>
                                     <includes>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/ui/jquery-ui.css</include>
@@ -551,7 +542,6 @@
                                 </aggregation>
                                 <aggregation>
                                     <insertNewLine>true</insertNewLine>
-                                    <removeIncluded>true</removeIncluded>
                                     <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces.js</output>
                                     <includes>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
