@@ -16,6 +16,7 @@
 package org.primefaces.component.menubutton;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -24,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
+import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.util.ComponentUtils;
@@ -104,23 +106,20 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
             writer.startElement("ul", null);
             writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
-            for(UIComponent child : button.getChildren()) {
-                if(child.isRendered()) {
-                    if(child instanceof MenuItem) {
-                        MenuItem item = (MenuItem) child;
-                        
+            if(button.getElementsCount() > 0) {
+                List<MenuElement> elements = (List<MenuElement>) button.getElements();
+                
+                for(MenuElement element : elements) {
+                    if(element.isRendered() && element instanceof MenuElement) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, button, item);
+                        encodeMenuItem(context, button, (MenuItem) element);
                         writer.endElement("li");
-                    }
-                    else if(child instanceof Separator) {
-                        encodeSeparator(context, (Separator) child);
                     }
                 }
             }
-
+            
             writer.endElement("ul");
             writer.endElement("div");
         
