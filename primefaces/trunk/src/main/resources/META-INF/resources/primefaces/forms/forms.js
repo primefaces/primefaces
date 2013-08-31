@@ -2756,23 +2756,23 @@ PrimeFaces.widget.ThemeSwitcher = PrimeFaces.widget.SelectOneMenu.extend({
         var _self = this;
         cfg.onchange = function() {
             var value = _self.options.filter(':selected').val();
-            
+
             PrimeFaces.changeTheme(value);
         };
-        
+
         this._super(cfg);
     }
 });
 
 /*
-* PrimeFaces MultiSelectListbox Widget
-*/
+ * PrimeFaces MultiSelectListbox Widget
+ */
 PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
 
-   init: function(cfg) {
+    init: function(cfg) {
        this._super(cfg);
 
-       this.root = this.jq.children('div.ui-multiselectlistbox-listcontainer:first');
+       this.root = this.jq.children('div.ui-multiselectlistbox-listcontainer');
        this.items = this.jq.find('li.ui-multiselectlistbox-item');
        this.input = $(this.jqId + '_input');
        this.cfg.disabled = this.jq.hasClass('ui-state-disabled');
@@ -2780,9 +2780,14 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
        if(!this.cfg.disabled) {
            this.bindEvents();
        }
-   },
 
-   bindEvents: function() {
+       var value = this.input.val();
+       if(value !== '') {
+           this.preselect(value);
+       }
+    },
+
+    bindEvents: function() {
        var $this = this;
 
        this.items.on('mouseover.multiSelectListbox', function() {
@@ -2803,13 +2808,13 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
            if(!item.hasClass('ui-state-highlight'))
                $this.showOptionGroup(item);
        })
-   },
+    },
 
-   unbindEvents: function() {
+    unbindEvents: function() {
        this.items.off('mouseover.multiSelectListbox mouseout.multiSelectListbox click.multiSelectListbox');
-   },
+    },
 
-   showOptionGroup: function(item) {
+    showOptionGroup: function(item) {
        item.addClass('ui-state-highlight').removeClass('ui-state-hover').siblings().filter('.ui-state-highlight').removeClass('ui-state-highlight');
        item.closest('.ui-multiselectlistbox-listcontainer').nextAll().remove();
        this.input.val(item.attr('data-value'));
@@ -2821,30 +2826,66 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
            childItemsContainer.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list').removeClass('ui-helper-hidden');
            this.jq.append(groupContainer);
 
-           if(this.cfg.effect) {
+           if(this.cfg.effect)
                groupContainer.show(this.cfg.effect);
-           }
-           else {
+           else
                groupContainer.show();
-           }
        }
-   },
+    },
 
-   enable: function() {
+    enable: function() {
        if(this.cfg.disabled) {
            this.cfg.disabled = false;
            this.jq.removeClass('ui-state-disabled');
            this.bindEvents();
        }
 
-   },
+    },
 
-   disable: function() {
+    disable: function() {
        if(!this.cfg.disabled) {
            this.cfg.disabled = true;
            this.jq.addClass('ui-state-disabled');
            this.unbindEvents();
            this.root.nextAll().remove();
        }                
-   }
+    },
+
+    preselect: function(value) {
+        var $this = this,
+        item = this.items.filter('[data-value="' + value + '"]');
+
+        if(item.length === 0) {
+            return;
+        }
+
+        var ancestors = item.parentsUntil('.ui-multiselectlistbox-list'),
+        selectedIndexMap = [];
+
+        for(var i = (ancestors.length - 1); i >= 0; i--) {
+            var ancestor = ancestors.eq(i);
+
+            if(ancestor.is('li')) {
+                selectedIndexMap.push(ancestor.index());
+            }
+            else if(ancestor.is('ul')) {
+                var groupContainer = $('<div class="ui-multiselectlistbox-listcontainer ui-inputfield ui-widget-content ui-corner-all" style="display:none"></div>');
+                ancestor.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list').removeClass('ui-helper-hidden');
+
+                $this.jq.append(groupContainer);
+            }
+        }
+
+        //highlight item
+        var lists = this.jq.children('div.ui-multiselectlistbox-listcontainer'),
+        clonedItem = lists.find(' > ul.ui-multiselectlistbox-list > li.ui-multiselectlistbox-item').filter('[data-value="' + value + '"]');
+        clonedItem.addClass('ui-state-highlight');
+
+        //highlight ancestors
+        for(var i = 0; i < selectedIndexMap.length; i++) {
+            lists.eq(i).find('> .ui-multiselectlistbox-list > li.ui-multiselectlistbox-item').eq(selectedIndexMap[i]).addClass('ui-state-highlight');
+        }
+
+        $this.jq.children('div.ui-multiselectlistbox-listcontainer:hidden').show();
+    }
 });
