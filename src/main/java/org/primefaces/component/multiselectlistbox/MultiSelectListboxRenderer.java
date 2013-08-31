@@ -25,6 +25,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class MultiSelectListboxRenderer extends SelectOneRenderer {
@@ -129,12 +130,16 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
     protected void encodeInput(FacesContext context, MultiSelectListbox listbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = listbox.getClientId(context) + "_input";
+        String valueToRender = ComponentUtils.getValueToRender(context, listbox);
 
 		writer.startElement("input", null);
 		writer.writeAttribute("type", "hidden", null);
 		writer.writeAttribute("id", inputId, null);
 		writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
+        if(valueToRender != null) {
+			writer.writeAttribute("value", valueToRender , null);
+		}
 		writer.endElement("input");
     }
     
