@@ -104,7 +104,6 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String icon = menuitem.getIcon();
         String title = menuitem.getTitle();
 
 		if(menuitem.shouldRenderChildren()) {
@@ -174,22 +173,29 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 }
             }
 
-            if(icon != null) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
-                writer.endElement("span");
-            }
-
-			if(menuitem.getValue() != null) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
-                writer.writeText((String) menuitem.getValue(), "value");
-                writer.endElement("span");
-            }
+            encodeMenuItemContent(context, menu, menuitem);
 
             writer.endElement("a");
 		}
 	}
+    
+    protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String icon = menuitem.getIcon();
+        
+        if(icon != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.endElement("span");
+        }
+
+        if(menuitem.getValue() != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
+            writer.writeText((String) menuitem.getValue(), "value");
+            writer.endElement("span");
+        }
+    }
 
     protected void encodeSeparator(FacesContext context, Separator separator) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
