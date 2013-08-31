@@ -31,6 +31,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuGroup;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Separator;
@@ -77,11 +78,11 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
             if(paths.length == 1) {
                 return (MenuItem) childElement;
-            } 
+            }
             else {
                 String relativeIndex = id.substring(id.indexOf(SEPARATOR) + 1);
 
-                return findMenuitem(((Submenu) childElement).getElements(), relativeIndex);
+                return findMenuitem(((MenuGroup) childElement).getElements(), relativeIndex);
             }
         }
     }

@@ -16,16 +16,15 @@
 package org.primefaces.component.megamenu;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.column.Column;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.separator.UISeparator;
+import org.primefaces.model.menu.MenuColumn;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
@@ -155,8 +154,8 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             writer.startElement("tr", null);
             
             for(MenuElement submenuElement : submenuElements) {
-                if(submenuElement.isRendered() && submenuElement instanceof Column) {
-                    encodeColumn(context, menu, (Column) submenuElement);
+                if(submenuElement.isRendered() && submenuElement instanceof MenuColumn) {
+                    encodeColumn(context, menu, (MenuColumn) submenuElement);
                 }
             }
             
@@ -170,26 +169,30 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.endElement("li");
     }
     
-    protected void encodeColumn(FacesContext context, MegaMenu menu, Column column) throws IOException {
+    protected void encodeColumn(FacesContext context, MegaMenu menu, MenuColumn column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("td", null);
         if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
         if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
         
-        for(Iterator<UIComponent> iterator = column.getChildren().iterator(); iterator.hasNext();) {
-            UIComponent child = (UIComponent) iterator.next();
-            
-            if(child.isRendered()) {
-                if(child instanceof Submenu) {
-                    encodeDescendantSubmenu(context, menu, (Submenu) child);
-                } 
-                else if(child instanceof Separator) {
-                    encodeSubmenuSeparator(context, (Separator) child);
-                } 
-                else {
-                    child.encodeAll(context);
+        if(column.getElementsCount() > 0) {
+            List columnElements = column.getElements();
+            for(Object element : columnElements) {
+                if(element instanceof MenuElement) {
+                    if(((MenuElement) element).isRendered()) {
+                        if(element instanceof Submenu) {
+                            encodeDescendantSubmenu(context, menu, (Submenu) element);
+                        } 
+                        else if(element instanceof Separator) {
+                            encodeSubmenuSeparator(context, (Separator) element);
+                        }
+                    }
                 }
+                else if(element instanceof UIComponent) {
+                    ((UIComponent) element).encodeAll(context);
+                }
+                
             }
         }
 

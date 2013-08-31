@@ -1,6 +1,8 @@
+import java.util.List;
 import org.primefaces.model.filter.*;
 import org.primefaces.component.celleditor.CellEditor;
 import javax.faces.component.UIComponent;
+import org.primefaces.model.menu.MenuModel;
 
     private CellEditor cellEditor = null;
 
@@ -22,4 +24,14 @@ import javax.faces.component.UIComponent;
 
     public String getColumnKey() {
         return this.getClientId();
+    }
+
+    @Override
+    public List getElements() {
+        return getChildren();
+    }
+
+    @Override
+    public int getElementsCount() {
+        return getChildCount();
     }
