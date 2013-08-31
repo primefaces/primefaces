@@ -27,13 +27,6 @@ import org.primefaces.model.menu.MenuItem;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
-    @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		BreadCrumb breadCrumb = (BreadCrumb) component;
-		
-		encodeMarkup(context, breadCrumb);
-	}
-
 	protected void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         BreadCrumb breadCrumb = (BreadCrumb) menu;
@@ -41,10 +34,11 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 		String styleClass = breadCrumb.getStyleClass();
 		styleClass = styleClass == null ? BreadCrumb.CONTAINER_CLASS : BreadCrumb.CONTAINER_CLASS + " " + styleClass;
         int elementCount = menu.getElementsCount();
+        List<MenuElement> menuElements = (List<MenuElement>) menu.getElements();
         
         //home icon for first item
-        if(breadCrumb.getChildCount() > 0) {
-            ((MenuItem) breadCrumb.getElements().get(0)).setStyleClass("ui-icon ui-icon-home");
+        if(elementCount > 0) {
+            ((MenuItem) menuElements.get(0)).setStyleClass("ui-icon ui-icon-home");
         }
 
 		writer.startElement("div", null);
@@ -55,9 +49,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", breadCrumb.getStyle(), null);
         }
 
-        if(elementCount > 0) {
-            List<MenuElement> menuElements = (List<MenuElement>) menu.getElements();
-            
+        if(elementCount > 0) {            
             writer.startElement("ul", null);
         
             for(int i = 0; i < elementCount; i++) {
