@@ -428,7 +428,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
 /**
  * PrimeFaces SlideMenu Widget
  */
-PrimeFaces.widget.SlideMenu = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
     
     init: function(cfg) {
         this._super(cfg);
@@ -445,15 +445,30 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.stack = [];
         this.jqWidth = this.jq.width();
                      
-        this.renderDeferred();
-    },
-                       
-    _render: function() {
-        this.submenus.width(this.jq.width());
-        this.wrapper.height(this.rootList.outerHeight(true) + this.backward.outerHeight(true));
-        this.content.height(this.rootList.outerHeight(true));
-        this.rendered = true;
+        var _self = this;
         
+        if(!this.jq.hasClass('ui-menu-dynamic')) {
+            
+            if(this.jq.is(':not(:visible)')) {
+                var hiddenParent = this.jq.closest('.ui-hidden-container'),
+                hiddenParentWidgetVar = hiddenParent.data('widget'),
+                $this = this;
+
+                if(hiddenParentWidgetVar) {
+                    var hiddenParentWidget = PF(hiddenParentWidgetVar);
+                    
+                    if(hiddenParentWidget) {
+                        hiddenParentWidget.addOnshowHandler(function() {
+                            return $this.render();
+                        });
+                    }
+                }
+            }
+            else {
+                this.render();
+            }
+        }
+                
         this.bindEvents();
     },
     
@@ -532,6 +547,13 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.DeferredWidget.extend({
     
     depth: function() {
         return this.stack.length;
+    },
+    
+    render: function() {
+        this.submenus.width(this.jq.width());
+        this.wrapper.height(this.rootList.outerHeight(true) + this.backward.outerHeight(true));
+        this.content.height(this.rootList.outerHeight(true));
+        this.rendered = true;
     },
     
     show: function() {                
