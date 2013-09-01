@@ -174,6 +174,7 @@ public class ComponentUtils {
         return null;
     }
 	
+    @Deprecated
 	public static void decorateAttribute(UIComponent component, String attribute, String value) {
 		String attributeValue = (String) component.getAttributes().get(attribute);
 		
@@ -334,6 +335,7 @@ public class ComponentUtils {
 
 	}
 	
+    @Deprecated
 	public static boolean isLiteralText(UIComponent component) {
 		return component.getFamily().equalsIgnoreCase("facelets.LiteralText");
 	}
