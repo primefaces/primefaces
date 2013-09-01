@@ -35,18 +35,18 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DataRenderer extends CoreRenderer {
     
-    protected Map<String,PaginatorElementRenderer> paginatorElements;
+    private static Map<String,PaginatorElementRenderer> PAGINATOR_ELEMENTS;
     
-    public DataRenderer() {
-        paginatorElements = new HashMap<String, PaginatorElementRenderer>();
-        paginatorElements.put("{CurrentPageReport}", new CurrentPageReportRenderer());
-        paginatorElements.put("{FirstPageLink}", new FirstPageLinkRenderer());
-        paginatorElements.put("{PreviousPageLink}", new PrevPageLinkRenderer());
-        paginatorElements.put("{NextPageLink}", new NextPageLinkRenderer());
-        paginatorElements.put("{LastPageLink}", new LastPageLinkRenderer());
-        paginatorElements.put("{PageLinks}", new PageLinksRenderer());
-        paginatorElements.put("{RowsPerPageDropdown}", new RowsPerPageDropdownRenderer());
-        paginatorElements.put("{JumpToPageDropdown}", new JumpToPageDropdownRenderer());
+    static {
+        PAGINATOR_ELEMENTS = new HashMap<String, PaginatorElementRenderer>();
+        PAGINATOR_ELEMENTS.put("{CurrentPageReport}", new CurrentPageReportRenderer());
+        PAGINATOR_ELEMENTS.put("{FirstPageLink}", new FirstPageLinkRenderer());
+        PAGINATOR_ELEMENTS.put("{PreviousPageLink}", new PrevPageLinkRenderer());
+        PAGINATOR_ELEMENTS.put("{NextPageLink}", new NextPageLinkRenderer());
+        PAGINATOR_ELEMENTS.put("{LastPageLink}", new LastPageLinkRenderer());
+        PAGINATOR_ELEMENTS.put("{PageLinks}", new PageLinksRenderer());
+        PAGINATOR_ELEMENTS.put("{RowsPerPageDropdown}", new RowsPerPageDropdownRenderer());
+        PAGINATOR_ELEMENTS.put("{JumpToPageDropdown}", new JumpToPageDropdownRenderer());
     }
 
     protected void encodePaginatorMarkup(FacesContext context, UIData uidata, String position) throws IOException {
@@ -74,7 +74,7 @@ public class DataRenderer extends CoreRenderer {
         
         String[] elements = uidata.getPaginatorTemplate().split(" ");
         for(String element : elements) {            
-            PaginatorElementRenderer renderer = paginatorElements.get(element);
+            PaginatorElementRenderer renderer = PAGINATOR_ELEMENTS.get(element);
             if(renderer != null)
                 renderer.render(context, uidata);
             else
