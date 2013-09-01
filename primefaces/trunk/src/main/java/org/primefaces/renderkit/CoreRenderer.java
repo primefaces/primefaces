@@ -74,6 +74,7 @@ public abstract class CoreRenderer extends Renderer {
 		child.encodeEnd(context);
 	}
 	
+	@Deprecated
 	protected String getActionURL(FacesContext context) {
 		String actionURL = context.getApplication().getViewHandler().getActionURL(context, context.getViewRoot().getViewId());
 		
@@ -95,15 +96,18 @@ public abstract class CoreRenderer extends Renderer {
 
         return resource.getRequestPath();
 	}
-    	
+
+    @Deprecated
 	public boolean isPostback(FacesContext context) {
 		return context.getRenderKit().getResponseStateManager().isPostback(context);
 	}
 
+    @Deprecated
     public boolean isAjaxRequest(FacesContext context) {
 		return context.getPartialViewContext().isAjaxRequest();
 	}
 
+    @Deprecated
 	protected void renderPassThruAttributes(FacesContext context, UIComponent component, String var, String[] attrs) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		
