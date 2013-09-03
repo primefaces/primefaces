@@ -752,19 +752,26 @@ PrimeFaces.util.ValidationContext = {
     },
 
     renderUIMessage: function(uiMessage, msg) {
-        uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
         var display = uiMessage.data('display');
-
-        if(display === 'both') {
-            uiMessage.append('<span class="ui-message-error-icon"></span>')
-                .append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
-        } 
-        else if(display === 'text') {
-            uiMessage.append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
-        } 
-        else if(display === 'icon') {
-            uiMessage.addClass('ui-message-icon-only')
-                    .append('<span class="ui-message-error-icon" title="' + msg.detail + '"></span>');
+        
+        if(display !== 'tooltip') {
+            uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
+            
+            if(display === 'both') {
+                uiMessage.append('<span class="ui-message-error-icon"></span>')
+                    .append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
+            } 
+            else if(display === 'text') {
+                uiMessage.append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
+            } 
+            else if(display === 'icon') {
+                uiMessage.addClass('ui-message-icon-only')
+                        .append('<span class="ui-message-error-icon" title="' + msg.detail + '"></span>');
+            }
+        }
+        else {
+            uiMessage.hide();
+            $(PrimeFaces.escapeClientId(uiMessage.data('target'))).attr('title', msg.detail);
         }
     },
 
