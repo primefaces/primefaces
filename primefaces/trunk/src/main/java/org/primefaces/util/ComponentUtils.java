@@ -35,6 +35,7 @@ import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
+import org.primefaces.expression.SearchExpressionFacade;
 
 public class ComponentUtils {
 
@@ -300,7 +301,7 @@ public class ComponentUtils {
 	    return component.getClientId(facesContext);
 	}
 	
-	//TODO perf
+	@Deprecated
 	public static UIComponent findComponent(UIComponent base, String id) {
 	    if (id.equals(base.getId()))
 	      return base;
@@ -322,19 +323,23 @@ public class ComponentUtils {
 	    return result;
 	}
 
-    public static String getWidgetVar(String id) {
-	    UIComponent component = findComponent(FacesContext.getCurrentInstance().getViewRoot(), id);
-
-        if(component == null) {
-            throw new FacesException("Cannot find component " + id + " in view.");
-        } else if(component instanceof Widget) {
-            return ((Widget) component).resolveWidgetVar();
-        } else {
-            throw new FacesException("Component with id " + id + " is not a Widget");
-        }
-
+    public static String resolveWidgetVar(String expression) {
+	    return resolveWidgetVar(expression, FacesContext.getCurrentInstance().getViewRoot());
 	}
 	
+    public static String resolveWidgetVar(String expression, UIComponent component) {
+    	UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(
+    			FacesContext.getCurrentInstance(),
+    			component,
+    			expression);
+
+        if(resolvedComponent instanceof Widget) {
+            return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar() + "')";
+        } else {
+            throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");
+        }
+	}
+    
     @Deprecated
 	public static boolean isLiteralText(UIComponent component) {
 		return component.getFamily().equalsIgnoreCase("facelets.LiteralText");
