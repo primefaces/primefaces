@@ -27,20 +27,27 @@ import org.primefaces.context.RequestContext;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class MessageRenderer extends UINotificationRenderer {
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
-		Message uiMessage = (Message) component;
-		UIComponent target = SearchExpressionFacade.resolveComponent(context, uiMessage, uiMessage.getFor());
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Message uiMessage = (Message) component;
+        UIComponent target = SearchExpressionFacade.resolveComponent(context, uiMessage, uiMessage.getFor());
         String targetClientId = target.getClientId(context);
+        
+        encodeMarkup(context, uiMessage, targetClientId);
+        encodeScript(context, uiMessage, targetClientId);            
+	}
+	
+    protected void encodeMarkup(FacesContext context, Message uiMessage, String targetClientId) throws IOException {        
+        ResponseWriter writer = context.getResponseWriter();
         String display = uiMessage.getDisplay();
         boolean iconOnly = display.equals("icon");
         boolean escape = uiMessage.isEscape();
-        String styleClass = "ui-message";
-			
+        String styleClass = display.equals("tooltip") ? "ui-message ui-helper-hidden" : "ui-message";
+        
 		Iterator<FacesMessage> msgs = context.getMessages(targetClientId);
 
 		writer.startElement("div", uiMessage);
@@ -98,9 +105,9 @@ public class MessageRenderer extends UINotificationRenderer {
         }
 		
 		writer.endElement("div");
-	}
-	
-	protected void encodeText(ResponseWriter writer, String text, String severity, boolean escape) throws IOException {
+    }
+    
+    protected void encodeText(ResponseWriter writer, String text, String severity, boolean escape) throws IOException {
 		writer.startElement("span", null);
 		writer.writeAttribute("class", "ui-message-" + severity, null);
         
@@ -120,4 +127,15 @@ public class MessageRenderer extends UINotificationRenderer {
         }
 		writer.endElement("span");
 	}
+
+    protected void encodeScript(FacesContext context, Message uiMessage, String targetClientId) throws IOException {
+        if(uiMessage.getDisplay().equals("tooltip")) {
+            String clientId = uiMessage.getClientId(context);
+            WidgetBuilder wb = getWidgetBuilder(context);
+
+            wb.initWithDomReady("Message", uiMessage.resolveWidgetVar(), clientId)
+                .attr("target", targetClientId)
+                .finish();
+        }
+    }    
 }

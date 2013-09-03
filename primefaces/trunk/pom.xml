@@ -320,6 +320,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
@@ -564,6 +565,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
