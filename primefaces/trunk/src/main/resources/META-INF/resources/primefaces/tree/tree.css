@@ -1,13 +1,13 @@
 .ui-tree {
     width: 300px;
+    position: relative;
 }
             
 .ui-tree .ui-tree-container {
-    height: 100%;
     margin: 0;
-    overflow: auto;
     padding: 3px;
     white-space: nowrap;
+    overflow: auto;
 }
 
 .ui-tree .ui-treenode-children {
@@ -183,4 +183,19 @@
 
 .ui-tree-draghelper.ui-state-highlight {
     background: none transparent;
+}
+
+.ui-tree .ui-tree-scrollertop,
+.ui-tree .ui-tree-scrollerbottom {
+    height: 10px;
+    background-color: yellow;
+    width: 100%;
+}
+
+.ui-tree .ui-tree-scrollertop {
+    top: 0;
+}
+
+.ui-tree .ui-tree-scrollerbottom {
+    bottom: 0;
 }
