@@ -7,9 +7,15 @@
     <function>
 		<function-name>widgetVar</function-name>
 		<function-class>org.primefaces.util.ComponentUtils</function-class>
-		<function-signature>java.lang.String getWidgetVar(java.lang.String)</function-signature>
+		<function-signature>java.lang.String resolveWidgetVar(java.lang.String)</function-signature>
 	</function>
-	
+
+    <function>
+		<function-name>widgetVarFromContext</function-name>
+		<function-class>org.primefaces.util.ComponentUtils</function-class>
+		<function-signature>java.lang.String resolveWidgetVar(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+	</function>
+
 	<function>
 		<function-name>ifGranted</function-name>
 		<function-class>org.primefaces.util.SecurityUtils</function-class>
