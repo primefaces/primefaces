@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.primefaces.util.Constants;
 import org.primefaces.webapp.MultipartRequest;
 
 public class FileUploadFilter implements Filter {
@@ -43,8 +45,19 @@ public class FileUploadFilter implements Filter {
 	private String thresholdSize;
 	
 	private String uploadDir;
+    
+    private boolean bypass;
 	
 	public void init(FilterConfig filterConfig) throws ServletException {
+        boolean isAtLeastJSF22 = detectJSF22();
+        String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
+        if(uploader == null || uploader.equals("auto"))
+            bypass = isAtLeastJSF22 ? true : false;
+        else if(uploader.equals("native"))
+            bypass = true;
+        else if(uploader.equals("commons"))
+            bypass = false;
+                        
 		thresholdSize = filterConfig.getInitParameter(THRESHOLD_SIZE_PARAM);
 		uploadDir = filterConfig.getInitParameter(UPLOAD_DIRECTORY_PARAM);
 		
@@ -53,7 +66,12 @@ public class FileUploadFilter implements Filter {
 	}
 	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        if(bypass) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
 		
 		if(isMultipart) {
@@ -75,7 +93,8 @@ public class FileUploadFilter implements Filter {
 				logger.fine("File upload request parsed succesfully, continuing with filter chain with a wrapped multipart request");
 			
 			filterChain.doFilter(multipartRequest, response);
-		} else {
+		} 
+        else {
 			filterChain.doFilter(request, response);
 		}
 	}
@@ -84,5 +103,23 @@ public class FileUploadFilter implements Filter {
 		if(logger.isLoggable(Level.FINE))
 			logger.fine("Destroying FileUploadFilter");
 	}
+    
+    private boolean detectJSF22() {
+        String version = FacesContext.class.getPackage().getImplementationVersion();
+        
+        if(version != null) {
+            return version.startsWith("2.2");
+        }
+        else {
+            //fallback
+            try {
+                Class.forName("javax.faces.flow.Flow");
+                return true;
+            } 
+            catch (ClassNotFoundException ex) {
+                return false;
+            }
+        }
+    }
 
 }

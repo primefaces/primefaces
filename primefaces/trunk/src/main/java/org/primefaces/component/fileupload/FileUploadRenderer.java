@@ -16,10 +16,12 @@
 package org.primefaces.component.fileupload;
 
 import java.io.IOException;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -33,10 +35,26 @@ public class FileUploadRenderer extends CoreRenderer {
 		FileUpload fileUpload = (FileUpload) component;
         
         if(!fileUpload.isDisabled()) {
-            if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22())
+            ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+            String uploader = cc.getUploader();
+            boolean isAtLeastJSF22 = cc.isAtLeastJSF22();
+            
+            if(uploader.equals("auto")) {
+                if(isAtLeastJSF22)
+                    NativeFileUploadDecoder.decode(context, fileUpload);
+                else
+                    CommonsFileUploadDecoder.decode(context, fileUpload);
+            }
+            else if(uploader.equals("native")) {
+                if(!isAtLeastJSF22) {
+                    throw new FacesException("native uploader requires at least a JSF 2.2 runtime");
+                }
+                
                 NativeFileUploadDecoder.decode(context, fileUpload);
-            else
+            }
+            else if(uploader.equals("commons")) {
                 CommonsFileUploadDecoder.decode(context, fileUpload);
+            }            
         }
     }
 

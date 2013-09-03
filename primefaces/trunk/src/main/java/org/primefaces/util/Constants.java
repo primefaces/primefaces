@@ -30,6 +30,7 @@ public class Constants {
         public static final String RESET_VALUES = "primefaces.RESET_VALUES";
         public static final String SECRET_KEY = "primefaces.SECRET";
         public static final String PFV_KEY = "primefaces.CLIENT_SIDE_VALIDATION";
+        public static final String UPLOADER = "primefaces.UPLOADER";
     }
 
     public class RequestParams {

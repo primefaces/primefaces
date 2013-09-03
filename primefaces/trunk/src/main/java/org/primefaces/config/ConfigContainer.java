@@ -44,6 +44,7 @@ public class ConfigContainer {
 	private String  pushServerURL = null;
 	private String  theme = null;
     private boolean clientSideValidationEnabled = false;
+    private String uploader = null;
 
 	// internal config
     private boolean beanValidationAvailable = false;
@@ -88,7 +89,10 @@ public class ConfigContainer {
         secretKey = (value == null) ? "primefaces" : value;
         
         value = externalContext.getInitParameter(Constants.ContextParams.PFV_KEY);
-        clientSideValidationEnabled = (value == null) ? false : Boolean.valueOf(value);;
+        clientSideValidationEnabled = (value == null) ? false : Boolean.valueOf(value);
+        
+        value = externalContext.getInitParameter(Constants.ContextParams.UPLOADER);
+        uploader = (value == null) ? "auto" : value;
         
         pushServerURL = externalContext.getInitParameter(Constants.ContextParams.PUSH_SERVER_URL);
         
@@ -198,6 +202,10 @@ public class ConfigContainer {
 
     public boolean isClientSideValidationEnabled() {
         return clientSideValidationEnabled;
+    }
+
+    public String getUploader() {
+        return uploader;
     }
 
     public String getPushServerURL() {
