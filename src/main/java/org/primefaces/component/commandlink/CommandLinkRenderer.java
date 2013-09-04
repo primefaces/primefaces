@@ -65,7 +65,7 @@ public class CommandLinkRenderer extends CoreRenderer {
                 onclick.append(link.getOnclick()).append(";");
             }
             
-            String onclickBehaviors = getOnclickBehaviors(context, link);
+            String onclickBehaviors = getEventBehaviors(context, link, "click");
             if(onclickBehaviors != null) {
                 onclick.append(onclickBehaviors);
             }
@@ -104,6 +104,11 @@ public class CommandLinkRenderer extends CoreRenderer {
                 }
                 else
                     writer.writeAttribute("onclick", onclick.toString(), "onclick");
+            }
+            
+            String dialogReturnBehavior = getEventBehaviors(context, link, "dialogReturn");
+            if(dialogReturnBehavior != null) {
+                writer.writeAttribute("data-dialogreturn", "function(event,ext){PrimeFaces.Behavior.chain(this,event,ext,[" + escapeJavaScriptForChain(dialogReturnBehavior) + "]", null);
             }
 			
 			renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);

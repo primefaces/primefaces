@@ -468,8 +468,8 @@ public abstract class CoreRenderer extends Renderer {
         return sb.toString();
     }
     
-    protected String getOnclickBehaviors(FacesContext context, ClientBehaviorHolder cbh) {
-        List<ClientBehavior> behaviors = cbh.getClientBehaviors().get("click");
+    protected String getEventBehaviors(FacesContext context, ClientBehaviorHolder cbh, String event) {
+        List<ClientBehavior> behaviors = cbh.getClientBehaviors().get(event);
         StringBuilder sb = new StringBuilder();
         
         if(behaviors != null && !behaviors.isEmpty()) {
@@ -479,7 +479,7 @@ public abstract class CoreRenderer extends Renderer {
 
             for (int i = 0; i < behaviors.size(); i++) {
                 ClientBehavior behavior = behaviors.get(i);
-                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, "click", clientId, params);
+                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, event, clientId, params);
                 String script = behavior.getScript(cbc);
 
                 if(script != null)
