@@ -111,7 +111,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                 
                 for(MenuElement element : elements) {
                     if(element.isRendered()) {
-                        if(element.isRendered() && element instanceof MenuElement) {
+                        if(element instanceof MenuItem) {
                             writer.startElement("li", null);
                             writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                             writer.writeAttribute("role", "menuitem", null);
@@ -121,8 +121,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                         else if(element instanceof Separator) {
                             encodeSeparator(context, (Separator) element);
                         }
-                    }
-                    
+                    }                    
                 }
             }
             
