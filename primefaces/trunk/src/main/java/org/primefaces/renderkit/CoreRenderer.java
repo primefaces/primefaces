@@ -297,7 +297,7 @@ public abstract class CoreRenderer extends Renderer {
                 writer.write(domEvent);
                 writer.write(':');
 
-                writer.write("function(event,ext){PrimeFaces.Behavior.chain(this,event,ext,[");
+                writer.write("function(event,ext){PrimeFaces.bc(this,event,ext,[");
                 List<ClientBehavior> behaviorsByEvent = behaviorEvents.get(event);
                 int renderedBehaviors = 0;
                 for (int i = 0; i < behaviorsByEvent.size(); i++) {

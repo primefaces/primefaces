@@ -537,6 +537,10 @@
         CLIENT_ID_DATA : "primefaces.clientid"
     };
 
+    PrimeFaces.bc = function(source, event, ext, behaviorsArray) {
+        PrimeFaces.Behavior.chain(source, event, ext, behaviorsArray);
+    },
+
     PrimeFaces.Behavior = {
     		
     	chain : function(source, event, ext, behaviorsArray) {
