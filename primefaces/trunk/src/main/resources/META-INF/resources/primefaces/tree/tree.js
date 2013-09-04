@@ -580,10 +580,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 var el = $('<div class="ui-tree-draghelper ui-state-highlight"></div>');
                 el.width($this.jq.width());
                 el.height(20);
-                el.appendTo(document.body);
                 
                 return el;
             },
+            appendTo: document.body,
             zIndex: ++PrimeFaces.zindex,
             revert: true,
             scope: dragdropScope
@@ -757,32 +757,20 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
 
-        this.jq.prepend('<div class="ui-tree-scrollertop"></div>').append('<div class="ui-tree-scrollerbottom"></div>');
+        this.jq.prepend('<div class="ui-tree-scroller ui-tree-scrollertop"></div>').append('<div class="ui-tree-scroller ui-tree-scrollerbottom"></div>');
         
-        this.jq.children('div.ui-tree-scrollertop').droppable({
+        this.jq.children('div.ui-tree-scroller').droppable({
             accept: '.ui-treenode-content',
             tolerance: 'pointer',
             scope: dragdropScope,
-            over: function(event, ui) {
+            over: function() {
+                var step = $(this).hasClass('ui-tree-scrollertop') ? -10 : 10;
+
                 $this.scrollInterval = setInterval(function() {
-                    $this.scroll(-10);
+                    $this.scroll(step);
                 }, 100);
             },
-            out: function(event, ui) {
-                clearInterval($this.scrollInterval);
-            }
-        });
-        
-        this.jq.children('div.ui-tree-scrollerbottom').droppable({
-            accept: '.ui-treenode-content',
-            tolerance: 'pointer',
-            scope: dragdropScope,
-            over: function(event, ui) {
-                $this.scrollInterval = setInterval(function() {
-                    $this.scroll(10);
-                }, 50);
-            },
-            out: function(event, ui) {
+            out: function() {
                 clearInterval($this.scrollInterval);
             }
         });
