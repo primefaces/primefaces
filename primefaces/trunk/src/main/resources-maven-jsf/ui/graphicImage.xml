@@ -77,7 +77,7 @@
 		<attribute>
 			<name>ismap</name>
 			<required>false</required>
-			<type>java.lang.String</type>
+			<type>java.lang.Boolean</type>
 			<ignoreInComponent>true</ignoreInComponent>
             <description>Specifies to use a server-side image map.</description>
 		</attribute>
