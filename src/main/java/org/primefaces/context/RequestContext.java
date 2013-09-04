@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
 
+import org.primefaces.component.api.AutoUpdatable;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.StringEncrypter;
@@ -172,4 +173,9 @@ public abstract class RequestContext {
      * Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
      */
     public abstract boolean isSecure();
+
+    /**
+     * @return <code>true</code> if {@link AutoUpdatable} components should not be updated automatically in this request.
+     */
+    public abstract boolean isIgnoreAutoUpdate();
 }
