@@ -182,7 +182,7 @@
 		<attribute>
 			<name>readonly</name>
 			<required>false</required>
-			<type>java.lang.String</type>
+			<type>java.lang.Boolean</type>
 			<ignoreInComponent>true</ignoreInComponent>
             <description>Flag indicating that this component will prevent changes by the user.</description>
 		</attribute>
