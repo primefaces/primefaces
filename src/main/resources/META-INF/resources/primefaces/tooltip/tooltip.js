@@ -36,6 +36,10 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     .on(this.cfg.showEvent, this.cfg.globalSelector, function() {
                         var element = $(this),
                         title = element.attr('title');
+                        
+                        if(element.hasClass('ui-state-error')) {
+                            $this.jq.addClass('ui-state-error');
+                        }
 
                         if(title) {
                             $this.jq.text(title);
@@ -53,6 +57,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             element.attr('title', $this.globalTitle);
                             $this.globalTitle = null;
                             $this.target = null;
+                            $this.jq.removeClass('ui-state-error');
                         }
                     });
                     
