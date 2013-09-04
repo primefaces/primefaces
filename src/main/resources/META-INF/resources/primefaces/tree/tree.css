@@ -188,8 +188,8 @@
 .ui-tree .ui-tree-scrollertop,
 .ui-tree .ui-tree-scrollerbottom {
     height: 10px;
-    background-color: yellow;
     width: 100%;
+    position: absolute;
 }
 
 .ui-tree .ui-tree-scrollertop {
