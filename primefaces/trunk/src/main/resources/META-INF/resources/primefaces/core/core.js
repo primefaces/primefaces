@@ -444,24 +444,31 @@
                 return $(this).data('pfdlgcid') === cfg.pfdlgcid;
             }),
             dlgWidget = parent.PF(dlg.data('widgetvar')),
-            sourceWidget = dlgWidget.cfg.sourceWidget;
-
-            dlgWidget.hide();
-            dlgWidget.jq.remove(); 
-            
+            sourceWidget = dlgWidget.cfg.sourceWidget,
+            sourceComponentId = dlgWidget.cfg.sourceComponentId,
+            dialogReturnBehavior = null;
+                        
             if(sourceWidget && sourceWidget.cfg.behaviors) {
-                var dialogReturnBehavior = sourceWidget.cfg.behaviors['dialogReturn'];
-
-                if(dialogReturnBehavior) {
-                    var ext = {
-                            params: [
-                                {name: dlgWidget.cfg.sourceComponentId + '_pfdlgcid', value: cfg.pfdlgcid}
-                            ]
-                        };
-
-                    dialogReturnBehavior.call(this, null, ext);
+                dialogReturnBehavior = sourceWidget.cfg.behaviors['dialogReturn'];
+            }
+            else if(sourceComponentId) {
+                var dialogReturnBehaviorStr = $(parent.document.getElementById(sourceComponentId)).data('dialogreturn');
+                if(dialogReturnBehaviorStr) {
+                    dialogReturnBehavior = eval('(function(){' + dialogReturnBehaviorStr + '})');
                 }
             }
+                        
+            if(dialogReturnBehavior) {
+                var ext = {
+                        params: [
+                            {name: sourceComponentId + '_pfdlgcid', value: cfg.pfdlgcid}
+                        ]
+                    };
+                dialogReturnBehavior.call(this, null, ext);
+            }
+            
+            dlgWidget.hide();
+            dlgWidget.jq.remove(); 
         },
                 
         showMessageInDialog: function(msg) {

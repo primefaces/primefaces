@@ -182,7 +182,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
             onclick.append(buildNonAjaxRequest(context, button, form, null, false));
         }
         
-        String onclickBehaviors = getOnclickBehaviors(context, button);
+        String onclickBehaviors = getEventBehaviors(context, button, "click");
         if(onclickBehaviors != null) {
             onclick.append(onclickBehaviors).append(";");
         }
