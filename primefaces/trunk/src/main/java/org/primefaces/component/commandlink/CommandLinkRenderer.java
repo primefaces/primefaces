@@ -43,6 +43,8 @@ public class CommandLinkRenderer extends CoreRenderer {
 		if(context.getExternalContext().getRequestParameterMap().containsKey(param)) {
 			component.queueEvent(new ActionEvent(component));
 		}
+        
+        decodeBehaviors(context, component);
 	}
 
     @Override
@@ -108,7 +110,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             
             String dialogReturnBehavior = getEventBehaviors(context, link, "dialogReturn");
             if(dialogReturnBehavior != null) {
-                writer.writeAttribute("data-dialogreturn", "function(event,ext){PrimeFaces.Behavior.chain(this,event,ext,[" + escapeJavaScriptForChain(dialogReturnBehavior) + "]", null);
+                writer.writeAttribute("data-dialogreturn", dialogReturnBehavior, null);
             }
 			
 			renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);

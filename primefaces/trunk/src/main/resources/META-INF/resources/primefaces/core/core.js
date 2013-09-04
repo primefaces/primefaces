@@ -440,22 +440,23 @@
         },
 
         closeDialog: function(cfg) {
-            var dlg = $(parent.document.body).children('div.ui-dialog').filter(function() {
+            var dlg = $(document.body).children('div.ui-dialog').filter(function() {
                 return $(this).data('pfdlgcid') === cfg.pfdlgcid;
             }),
-            dlgWidget = parent.PF(dlg.data('widgetvar')),
+            dlgWidget = PF(dlg.data('widgetvar')),
             sourceWidget = dlgWidget.cfg.sourceWidget,
             sourceComponentId = dlgWidget.cfg.sourceComponentId,
             dialogReturnBehavior = null;
-                        
+    
             if(sourceWidget && sourceWidget.cfg.behaviors) {
                 dialogReturnBehavior = sourceWidget.cfg.behaviors['dialogReturn'];
             }
             else if(sourceComponentId) {
-                var dialogReturnBehaviorStr = $(parent.document.getElementById(sourceComponentId)).data('dialogreturn');
+                var dialogReturnBehaviorStr = $(document.getElementById(sourceComponentId)).data('dialogreturn');
                 if(dialogReturnBehaviorStr) {
                     dialogReturnBehavior = eval('(function(){' + dialogReturnBehaviorStr + '})');
                 }
+
             }
                         
             if(dialogReturnBehavior) {
@@ -464,6 +465,7 @@
                             {name: sourceComponentId + '_pfdlgcid', value: cfg.pfdlgcid}
                         ]
                     };
+                
                 dialogReturnBehavior.call(this, null, ext);
             }
             
@@ -482,7 +484,7 @@
                 PrimeFaces.cw('Dialog', 'primefacesmessagedialog', {
                     id: 'primefacesmessagedlg', 
                     modal:true,
-                    draggable: false, 
+                    draggable: false,
                     resizable: false,
                     showEffect: 'fade',
                     hideEffect: 'fade'

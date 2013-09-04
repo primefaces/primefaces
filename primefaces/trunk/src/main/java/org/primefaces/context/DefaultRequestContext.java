@@ -185,7 +185,7 @@ public class DefaultRequestContext extends RequestContext {
             session.put(pfdlgcid, data);
         }
 
-        this.execute("PrimeFaces.closeDialog({pfdlgcid:'" + pfdlgcid + "'});");
+        this.execute("parent.PrimeFaces.closeDialog({pfdlgcid:'" + pfdlgcid + "'});");
     }
 
     @Override
