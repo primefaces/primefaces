@@ -753,7 +753,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         });
     },
     
-    initDropScrollers: function() {
+    initDropScrollers: function() {
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
 
