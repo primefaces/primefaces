@@ -226,10 +226,13 @@
 
         createWidget : function(widgetConstructor, widgetVar, cfg, resource) { 
             if(PrimeFaces.widget[widgetConstructor]) {
-                if(PrimeFaces.widgets[widgetVar])
-                    PrimeFaces.widgets[widgetVar].refresh(cfg);                                                    //ajax spdate
-                else
+                if(PrimeFaces.widgets[widgetVar]) {
+                    PrimeFaces.widgets[widgetVar].refresh(cfg);                                     //ajax update
+                }
+                else {
                     PrimeFaces.widgets[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);  //page init
+                    window[widgetVar] = PrimeFaces.widgets[widgetVar];                              //temporary backward compatibility
+                }
             }
             else {
                 var scriptURI = $('script[src*="/javax.faces.resource/primefaces.js"]').attr('src').replace('primefaces.js', resource + '/' + resource + '.js'),
