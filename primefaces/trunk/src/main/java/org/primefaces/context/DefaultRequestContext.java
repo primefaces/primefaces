@@ -52,6 +52,7 @@ public class DefaultRequestContext extends RequestContext {
     private FacesContext context;
     private StringEncrypter encrypter;
     private ApplicationContext applicationContext;
+    private Boolean ignoreAutoUpdate;
 
     public DefaultRequestContext(FacesContext context) {
     	this.context = context;
@@ -253,5 +254,15 @@ public class DefaultRequestContext extends RequestContext {
                 return false;
             }
         }
+    }
+
+    @Override
+    public boolean isIgnoreAutoUpdate() {
+        if (ignoreAutoUpdate == null) {
+            Object ignoreAutoUpdateObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.IGNORE_AUTO_UPDATE_PARAM);
+            ignoreAutoUpdate = (null != ignoreAutoUpdateObject && "true".equals(ignoreAutoUpdateObject)) ? true : false;
+        }
+
+        return ignoreAutoUpdate;
     }
 }

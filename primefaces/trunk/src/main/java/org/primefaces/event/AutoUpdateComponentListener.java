@@ -20,6 +20,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import org.primefaces.component.api.AutoUpdatable;
+import org.primefaces.context.RequestContext;
 import org.primefaces.util.Constants;
 
 /**
@@ -33,10 +34,7 @@ public class AutoUpdateComponentListener implements SystemEventListener {
 
         if(component.isAutoUpdate() && context.getRenderKit().getResponseStateManager().isPostback(context)) {
             
-            Object ignoreAutoUpdateObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.IGNORE_AUTO_UPDATE_PARAM);
-            boolean ignoreAutoUpdate = (null != ignoreAutoUpdateObject && "true".equals(ignoreAutoUpdateObject)) ? true : false;
-            
-        	if (!ignoreAutoUpdate) {
+            if (!RequestContext.getCurrentInstance().isIgnoreAutoUpdate()) {
         		context.getPartialViewContext().getRenderIds().add(component.getClientId(context));
         	}
         }
