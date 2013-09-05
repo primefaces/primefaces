@@ -838,33 +838,52 @@ import org.primefaces.component.datatable.feature.*;
     }
     
     @Override
-    protected void processChildrenFacets(FacesContext context, PhaseId phaseId) {        
-        for(UIComponent child : this.getChildren()) {
-            if(child.isRendered() && (child.getFacetCount() > 0)) {
-                if(child instanceof Column) {
-                    for(UIComponent facet : child.getFacets().values()) {
-                        process(context, facet, phaseId);
-                    }
-                } 
-                else if(child instanceof Columns) {
-                    Columns uicolumns = (Columns) child;
-                    int f = uicolumns.getFirst();
-                    int r = uicolumns.getRows();
-                    int l = (r == 0) ? uicolumns.getRowCount() : (f + r);
-                            
-                    for(int i = f; i < l; i++) {
-                        uicolumns.setRowIndex(i);
-                        
-                        if(!uicolumns.isRowAvailable()) {
-                            break;
+    protected void processColumnFacets(FacesContext context, PhaseId phaseId) {  
+        if(getChildCount() > 0) {
+            for(UIComponent child : this.getChildren()) {
+                if(child.isRendered()) {
+                    if(child instanceof UIColumn) {
+                        if(child instanceof Column) {
+                            for(UIComponent facet : child.getFacets().values()) {
+                                process(context, facet, phaseId);
+                            }
                         }
-                        
-                        for(UIComponent facet : child.getFacets().values()) {
-                            process(context, facet, phaseId);
+                        else if(child instanceof Columns) {
+                            Columns uicolumns = (Columns) child;
+                            int f = uicolumns.getFirst();
+                            int r = uicolumns.getRows();
+                            int l = (r == 0) ? uicolumns.getRowCount() : (f + r);
+
+                            for(int i = f; i < l; i++) {
+                                uicolumns.setRowIndex(i);
+
+                                if(!uicolumns.isRowAvailable()) {
+                                    break;
+                                }
+
+                                for(UIComponent facet : child.getFacets().values()) {
+                                    process(context, facet, phaseId);
+                                }
+                            }
+
+                            uicolumns.setRowIndex(-1);
                         }
                     }
-                    
-                    uicolumns.setRowIndex(-1);
+                    else if(child instanceof ColumnGroup) {
+                        if(child.getChildCount() > 0) {
+                            for(UIComponent row : child.getChildren()) {
+                                if(row.getChildCount() > 0) {
+                                    for(UIComponent col : row.getChildren()) {
+                                        if(col instanceof Column && col.getFacetCount() > 0) {
+                                            for(UIComponent facet : col.getFacets().values()) {
+                                                process(context, facet, phaseId);
+                                            }
+                                        }
+                                    }
+                                }            
+                            }
+                        }
+                    }
                 }
             }
         }
