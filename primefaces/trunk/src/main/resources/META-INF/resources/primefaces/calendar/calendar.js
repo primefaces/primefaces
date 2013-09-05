@@ -94,6 +94,14 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
+        
+    refresh: function(cfg) {
+        if(cfg.popup && $.datepicker._lastInput && (cfg.id + '_input') === $.datepicker._lastInput.id) {
+            $.datepicker._hideDatepicker();
+        }
+        
+        this.init(cfg);
+    },
     
     configureLocale: function() {
         var localeSettings = PrimeFaces.locales[this.cfg.locale];
