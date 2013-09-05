@@ -36,6 +36,7 @@ import javax.faces.event.PreValidateEvent;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.util.ComponentUtils;
 
@@ -680,7 +681,7 @@ public class UIData extends javax.faces.component.UIData {
                     return true;
                 }
 
-                if(visitColumnsAndColumnFacets(context, callback, visitRows)) {
+                if(requiresColumns() && visitColumnsAndColumnFacets(context, callback, visitRows)) {
                     return true;
                 }
 
@@ -723,37 +724,59 @@ public class UIData extends javax.faces.component.UIData {
         }
         
         if(getChildCount() > 0) {
-            for(UIComponent column : getChildren()) {
-                VisitResult result = context.invokeVisitCallback(column, callback); // visit the column directly
+            for(UIComponent child : getChildren()) {
+                VisitResult result = context.invokeVisitCallback(child, callback); // visit the column directly
                 if (result == VisitResult.COMPLETE) {
                     return true;
                 }
                     
-                if(column.getFacetCount() > 0) {
-                    if(column instanceof Columns) {
-                        Columns columns = (Columns) column;
-                        for(int i = 0; i < columns.getRowCount(); i++) {
-                            columns.setRowIndex(i);
-                            boolean value = visitColumnFacets(context, callback, column);
+                if(child instanceof UIColumn) {
+                    if(child.getFacetCount() > 0) {
+                        if(child instanceof Columns) {
+                            Columns columns = (Columns) child;
+                            for(int i = 0; i < columns.getRowCount(); i++) {
+                                columns.setRowIndex(i);
+                                boolean value = visitColumnFacets(context, callback, child);
+                                if(value) {
+                                    return true;
+                                }
+                            }
+                            columns.setRowIndex(-1);
+                        }
+                        else {
+                            boolean value = visitColumnFacets(context, callback, child);
                             if(value) {
                                 return true;
                             }
                         }
-                        
-                        columns.setRowIndex(-1);
-                    }
-                    else {
-                        boolean value = visitColumnFacets(context, callback, column);
-                        if(value) {
-                            return true;
-                        }
-                    }
 
+                    }
                 }
-                
+                else if(child instanceof ColumnGroup) {
+                    visitColumnGroup(context, callback, (ColumnGroup) child);
+                }                
             }
         }
 
+        return false;
+    }
+    
+    protected boolean visitColumnGroup(VisitContext context, VisitCallback callback, ColumnGroup group) {                
+        if(group.getChildCount() > 0) {
+            for(UIComponent row : group.getChildren()) {
+                if(row.getChildCount() > 0) {
+                    for(UIComponent col : row.getChildren()) {
+                        if(col instanceof Column && col.getFacetCount() > 0) {
+                            boolean value = visitColumnFacets(context, callback, (Column) col);
+                            if(value) {
+                                return true;
+                            }
+                        }
+                    }
+                }            
+            }
+        }
+        
         return false;
     }
     
