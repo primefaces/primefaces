@@ -22,8 +22,6 @@ import org.atmosphere.cpr.BroadcasterLifeCyclePolicyListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.atmosphere.cpr.BroadcasterLifeCyclePolicy.EMPTY_DESTROY;
-
 /**
  * The Default {@link PushRule} that creates channel based on the {@link org.atmosphere.cpr.AtmosphereRequest#getPathInfo()}.
  */
