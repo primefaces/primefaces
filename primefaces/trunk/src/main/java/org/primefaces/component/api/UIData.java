@@ -261,7 +261,9 @@ public class UIData extends javax.faces.component.UIData {
     protected void processPhase(FacesContext context, PhaseId phaseId) {        
         setRowIndex(-1);
         processFacets(context, phaseId);
-        processChildrenFacets(context, phaseId);
+        if(requiresColumns()) {
+            processColumnFacets(context, phaseId);
+        }
         processChildren(context, phaseId);
         setRowIndex(-1);
     }
@@ -274,7 +276,7 @@ public class UIData extends javax.faces.component.UIData {
         }
     }
     
-    protected void processChildrenFacets(FacesContext context, PhaseId phaseId) {
+    protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
         for(UIComponent child : this.getChildren()) {
             if(child.isRendered() && (child.getFacetCount() > 0)) {
                 for(UIComponent facet : child.getFacets().values()) {
