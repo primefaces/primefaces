@@ -418,6 +418,7 @@
                         sourceWidget: cfg.sourceWidget,
                         onHide: function() {
                             this.jq.remove();
+                            PF[dialogWidgetVar] = undefined;
                             window[dialogWidgetVar] = undefined;
                         },
                         modal: cfg.options.modal,
@@ -470,7 +471,6 @@
             }
             
             dlgWidget.hide();
-            dlgWidget.jq.remove(); 
         },
                 
         showMessageInDialog: function(msg) {

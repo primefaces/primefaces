@@ -214,19 +214,19 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             var $this = this;
 
             this.jq.hide(this.cfg.hideEffect, null, 'normal', function() {
+                if($this.cfg.modal) {
+                    $this.disableModality();
+                }
                 $this.onHide();
             });
         }
         else {
             this.jq.hide();
-
+            if(this.cfg.modal) {
+                this.disableModality();
+            }
             this.onHide();
-        }
-
-        if(this.cfg.modal) {
-            this.disableModality();
-        }
-       
+        }   
     },
     
     applyFocus: function() {
