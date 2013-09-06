@@ -398,13 +398,9 @@
             dialogFrame = dialogDOM.find('iframe'),
             symbol = cfg.url.indexOf('?') === -1 ? '?' : '&',
             frameURL = cfg.url + symbol + 'pfdlgcid=' + cfg.pfdlgcid,
-            frameWidth = cfg.options.contentWidth||640,
-            frameHeight = cfg.options.contentHeight||480;
-    
-            dialogFrame.css({
-               width: frameWidth + 'px',
-               height: frameHeight + 'px'
-            });
+            frameWidth = cfg.options.contentWidth||640;
+
+            dialogFrame.width(frameWidth);
     
             dialogFrame.on('load', function() {
                 var $frame = $(this),
@@ -432,6 +428,10 @@
                 if(titleElement.length > 0) {
                     PF(dialogWidgetVar).titlebar.children('span.ui-dialog-title').html(titleElement.text());
                 }
+                
+                //adjust height
+                var frameHeight = cfg.options.contentHeight||$frame.get(0).contentWindow.document.body.scrollHeight + 5;
+                $frame.height(frameHeight);
                 
                 PF(dialogWidgetVar).show();
                 
