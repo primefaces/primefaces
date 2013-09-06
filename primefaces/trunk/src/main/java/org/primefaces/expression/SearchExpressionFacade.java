@@ -278,7 +278,7 @@ public class SearchExpressionFacade {
 			String[] subExpressions = split(expression, separatorChar);
 
 			if (subExpressions != null) {
-				// checks for unnestable subexpresions (like @all or @none)
+				// checks for unnestable subexpressions (like @all or @none)
 				if (subExpressions.length > 1) {
 					for (int j = 0; j < subExpressions.length; j++) {
 						String subExpression = subExpressions[j].trim();
