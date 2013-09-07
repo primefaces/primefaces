@@ -16,7 +16,7 @@
 package org.primefaces.component.treetable;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -88,7 +88,7 @@ public class TreeTableRenderer extends CoreRenderer {
             TreeNode node = tt.getRowNode();
             node.setExpanded(true);
             
-            encodeNodeChildren(context, tt, node, nodeKey);
+            encodeNodeChildren(context, tt, node);
         } 
         else {
             encodeMarkup(context, tt);
@@ -117,6 +117,10 @@ public class TreeTableRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = tt.getClientId(context);
         boolean scrollable = tt.isScrollable();
+        TreeNode root = tt.getValue();
+        
+        tt.buildRowKeys(root);
+        tt.initPreselection();
         
         String containerClass = tt.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
         containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
@@ -312,7 +316,7 @@ public class TreeTableRenderer extends CoreRenderer {
         }
         
 		if(root != null) {
-            encodeNode(context, tt, root, null, null);
+            encodeNodeChildren(context, tt, root);
 		}
 
         tt.setRowKey(null);
@@ -320,113 +324,100 @@ public class TreeTableRenderer extends CoreRenderer {
 		writer.endElement("tbody");
 	}
     
-    protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode, String rowKey, String parentRowKey) throws IOException {
-        if(rowKey != null) {
-            ResponseWriter writer = context.getResponseWriter();
-            tt.setRowKey(rowKey);
-            String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
-            int depth = rowKey.split(UITree.SEPARATOR).length - 1;
-            String selectionMode = tt.getSelectionMode();
-            boolean selectionEnabled = selectionMode != null;
-            boolean selectable = treeNode.isSelectable() && selectionEnabled;
-            boolean checkboxSelection = selectionEnabled && selectionMode.equals("checkbox");            
-            boolean selected = treeNode.isSelected();
-            boolean partialSelected = treeNode.isPartialSelected();
-            
-            String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
-            rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
-            rowStyleClass = rowStyleClass + " " + treeNode.getType();
-            
-            if(partialSelected) {
-                rowStyleClass = rowStyleClass + " " + TreeTable.PARTIAL_SELECTED_CLASS;
-            }
-            
-            String userRowStyleClass = tt.getRowStyleClass();
-            if(userRowStyleClass != null) {
-                rowStyleClass = rowStyleClass + " " + userRowStyleClass;
-            }
-            
-            if(selected) {
-                tt.getSelectedRowKeys().add(rowKey);
-            }
+    protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String rowKey = treeNode.getRowKey();
+        String parentRowKey = treeNode.getParent().getRowKey();
+        tt.setRowKey(rowKey);
+        String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
+        int depth = rowKey.split(UITree.SEPARATOR).length - 1;
+        String selectionMode = tt.getSelectionMode();
+        boolean selectionEnabled = selectionMode != null;
+        boolean selectable = treeNode.isSelectable() && selectionEnabled;
+        boolean checkboxSelection = selectionEnabled && selectionMode.equals("checkbox");            
+        boolean selected = treeNode.isSelected();
+        boolean partialSelected = treeNode.isPartialSelected();
 
-            writer.startElement("tr", null);
-            writer.writeAttribute("id", tt.getClientId(context) + "_node_" + rowKey, null);
-            writer.writeAttribute("class", rowStyleClass, null);
-            writer.writeAttribute("role", "row", null);
-            writer.writeAttribute("aria-expanded", String.valueOf(treeNode.isExpanded()), null);
-            writer.writeAttribute("data-rk", rowKey, null);
-            
-            if(selectionEnabled) {
-                writer.writeAttribute("aria-selected", String.valueOf(selected), null);
-            }
-            
-            if(parentRowKey != null) {
-                writer.writeAttribute("data-prk", parentRowKey, null);
-            }
-            
-            for(int i=0; i < tt.getChildren().size(); i++) {
-                UIComponent kid = (UIComponent) tt.getChildren().get(i);
+        String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
+        rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
+        rowStyleClass = rowStyleClass + " " + treeNode.getType();
 
-                if(kid instanceof Column && kid.isRendered()) {
-                    Column column = (Column) kid;
-                    String columnStyleClass = column.getStyleClass();
-                    String columnStyle = column.getStyle();
-                    
-                    writer.startElement("td", null);
-                    writer.writeAttribute("role", "gridcell", null);
-                    if(columnStyle != null) writer.writeAttribute("style", columnStyle, null);
-                    if(columnStyleClass != null) writer.writeAttribute("class", columnStyleClass, null);
+        if(partialSelected) {
+            rowStyleClass = rowStyleClass + " " + TreeTable.PARTIAL_SELECTED_CLASS;
+        }
 
-                    if(i == 0) {
-                        for(int j = 0; j < depth; j++) {
-                            writer.startElement("span", null);
-                            writer.writeAttribute("class", TreeTable.INDENT_CLASS, null);
-                            writer.endElement("span");
-                        }
-                        
+        String userRowStyleClass = tt.getRowStyleClass();
+        if(userRowStyleClass != null) {
+            rowStyleClass = rowStyleClass + " " + userRowStyleClass;
+        }
+
+        writer.startElement("tr", null);
+        writer.writeAttribute("id", tt.getClientId(context) + "_node_" + rowKey, null);
+        writer.writeAttribute("class", rowStyleClass, null);
+        writer.writeAttribute("role", "row", null);
+        writer.writeAttribute("aria-expanded", String.valueOf(treeNode.isExpanded()), null);
+        writer.writeAttribute("data-rk", rowKey, null);
+
+        if(parentRowKey != null) {
+            writer.writeAttribute("data-prk", parentRowKey, null);
+        }
+
+        if(selectionEnabled) {
+            writer.writeAttribute("aria-selected", String.valueOf(selected), null);
+        }
+
+        for(int i=0; i < tt.getChildren().size(); i++) {
+            UIComponent kid = (UIComponent) tt.getChildren().get(i);
+
+            if(kid instanceof Column && kid.isRendered()) {
+                Column column = (Column) kid;
+                String columnStyleClass = column.getStyleClass();
+                String columnStyle = column.getStyle();
+
+                writer.startElement("td", null);
+                writer.writeAttribute("role", "gridcell", null);
+                if(columnStyle != null) writer.writeAttribute("style", columnStyle, null);
+                if(columnStyleClass != null) writer.writeAttribute("class", columnStyleClass, null);
+
+                if(i == 0) {
+                    for(int j = 0; j < depth; j++) {
                         writer.startElement("span", null);
-                        writer.writeAttribute("class", icon, null);
-                        if(treeNode.getChildCount() == 0) {
-                            writer.writeAttribute("style", "visibility:hidden", null);
-                        }
+                        writer.writeAttribute("class", TreeTable.INDENT_CLASS, null);
                         writer.endElement("span");
-                        
-                        if(selectable && checkboxSelection) {
-                            RendererUtils.encodeCheckbox(context, selected, partialSelected);
-                        }
                     }
 
-                    column.encodeAll(context);
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", icon, null);
+                    if(treeNode.getChildCount() == 0) {
+                        writer.writeAttribute("style", "visibility:hidden", null);
+                    }
+                    writer.endElement("span");
 
-                    writer.endElement("td");
+                    if(selectable && checkboxSelection) {
+                        RendererUtils.encodeCheckbox(context, selected, partialSelected);
+                    }
                 }
-            }
 
-            writer.endElement("tr");
+                column.encodeAll(context);
+
+                writer.endElement("td");
+            }
         }
-        
-        //render child nodes if node is expanded or node itself is the root
-        if(treeNode.isExpanded() || treeNode.getParent() == null) {
-            int childIndex = 0;
-            for(Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext();) {
-                String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
 
-                encodeNode(context, tt, iterator.next(), childRowKey, rowKey);
+        writer.endElement("tr");
 
-                childIndex++;
-            }
+        if(treeNode.isExpanded()) {
+            encodeNodeChildren(context, tt, treeNode);
         }
     }
     
-    protected void encodeNodeChildren(FacesContext context, TreeTable tt, TreeNode treeNode, String rowKey) throws IOException {
-        int childIndex = 0;
-        for(Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext();) {
-            String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
-
-            encodeNode(context, tt, iterator.next(), childRowKey, rowKey);
-
-            childIndex++;
+    protected void encodeNodeChildren(FacesContext context, TreeTable tt, TreeNode treeNode) throws IOException {
+        int childCount = treeNode.getChildCount();
+        if(childCount > 0) {
+            List<TreeNode> children = treeNode.getChildren();
+            for(int i = 0; i < childCount; i++) {
+                encodeNode(context, tt, children.get(i));
+            }
         }
     }
     

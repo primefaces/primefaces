@@ -15,9 +15,12 @@
  */
 package org.primefaces.component.api;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import javax.el.ValueExpression;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
@@ -30,7 +33,7 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseId;;
 import org.primefaces.model.TreeNode;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
@@ -42,9 +45,13 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     private TreeNode rowNode;
     
     private boolean rtl;
+    
+    private List<TreeNode> preselection;
             
     protected enum PropertyKeys {
 		var
+        ,selectionMode
+        ,selection
         ,saved
 		,value;
 
@@ -88,6 +95,14 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         restoreDescendantState();
     }
     
+    private void addToPreselection(TreeNode node) {
+        if(preselection == null) {
+            preselection = new ArrayList<TreeNode>();
+        }
+        
+        preselection.add(node);
+    }
+    
     public TreeNode getRowNode() {
         return rowNode;
     }
@@ -105,6 +120,24 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 	public void setValue(TreeNode _value) {
 		getStateHelper().put(PropertyKeys.value, _value);
 	}
+    
+    public java.lang.String getSelectionMode() {
+		return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
+	}
+	public void setSelectionMode(java.lang.String _selectionMode) {
+		getStateHelper().put(PropertyKeys.selectionMode, _selectionMode);
+	}
+    
+    public java.lang.Object getSelection() {
+		return (java.lang.Object) getStateHelper().eval(PropertyKeys.selection, null);
+	}
+	public void setSelection(java.lang.Object _selection) {
+		getStateHelper().put(PropertyKeys.selection, _selection);
+	}
+    
+    public Object getLocalSelectedNodes() {
+        return getStateHelper().get(PropertyKeys.selection);
+    }
     
     protected TreeNode findTreeNode(TreeNode searchRoot, String rowKey) {
         if(rowKey == null) {
@@ -135,6 +168,70 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 			return findTreeNode(searchRoot, relativeRowKey);
 		}
 	}
+        
+    public void buildRowKeys(TreeNode node) {
+        int childCount = node.getChildCount();
+        if(childCount > 0) {
+            for(int i = 0; i < childCount; i++) {
+                TreeNode childNode = node.getChildren().get(i);
+                if(childNode.isSelected()) {
+                    addToPreselection(childNode);
+                }
+                
+                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
+                childNode.setRowKey(childRowKey);
+                buildRowKeys(childNode);
+            }
+        }
+    }
+    
+    public void initPreselection() {
+        if(preselection != null) {
+            ValueExpression ve = this.getValueExpression("selection");
+            String selectionMode = this.getSelectionMode();
+            
+            if(ve != null && selectionMode != null) {
+                if(selectionMode.equals("single")) {
+                    if(this.preselection.size() > 0) {
+                        ve.setValue(FacesContext.getCurrentInstance().getELContext(), this.preselection.get(0));
+                    }
+                }
+                else {
+                    ve.setValue(FacesContext.getCurrentInstance().getELContext(), this.preselection.toArray(new TreeNode[0]));
+                }
+                
+                this.preselection = null;
+            }
+        }
+    }
+    
+    public String getSelectedRowKeysAsString() {
+        String value = null;
+        Object selection = this.getSelection();
+        String selectionMode = this.getSelectionMode();
+        
+        if(selection != null) { 
+            if(selectionMode.equals("single")) {
+                TreeNode node = (TreeNode) selection;
+                value = node.getRowKey();
+            }
+            else {
+                TreeNode[] nodes = (TreeNode[]) selection;
+                StringBuilder builder = new StringBuilder();
+                
+                for(int i = 0; i < nodes.length; i++) {
+                    builder.append(nodes[i].getRowKey());
+                    if(i != (nodes.length - 1)) {
+                        builder.append(",");
+                    }
+                }
+                
+                value = builder.toString();
+            }
+        }
+        
+        return value;
+    }
     
     @Override
     public String getContainerClientId(FacesContext context) {
@@ -201,15 +298,47 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         
         popComponentFromEL(context);
     }
-    
+      
     @Override
     public void processUpdates(FacesContext context) {
-        pushComponentToEL(context, this);
+		pushComponentToEL(context, this);
         
         processNodes(context, PhaseId.UPDATE_MODEL_VALUES);
         
+        String selectionMode = this.getSelectionMode();
+        ValueExpression selectionVE = this.getValueExpression("selection");
+
+        if(selectionMode != null && selectionVE != null) {
+            Object selection = this.getLocalSelectedNodes();
+            Object previousSelection = selectionVE.getValue(context.getELContext());
+
+            if(selectionMode.equals("single")) {
+                if(previousSelection != null)
+                    ((TreeNode) previousSelection).setSelected(false);
+                if(selection != null)
+                    ((TreeNode) selection).setSelected(true);
+            } 
+            else {
+                TreeNode[] previousSelections = (TreeNode[]) previousSelection;
+                TreeNode[] selections = (TreeNode[]) selection;
+
+                if(previousSelections != null) {
+                    for(TreeNode node : previousSelections)
+                        node.setSelected(false);
+                }
+
+                if(selections != null) {
+                    for(TreeNode node : selections)
+                        node.setSelected(true);
+                }
+            }
+
+			selectionVE.setValue(context.getELContext(), selection);
+			setSelection(null);
+		}
+        
         popComponentFromEL(context);
-    }
+	}
     
     protected void processNodes(FacesContext context, PhaseId phaseId) {
               

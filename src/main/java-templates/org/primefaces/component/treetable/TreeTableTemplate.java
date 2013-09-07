@@ -122,63 +122,6 @@ import java.lang.StringBuilder;
         }
     }
 
-    @Override
-    public void processUpdates(FacesContext context) {
-        super.processUpdates(context);
-        String selectionMode = this.getSelectionMode();
-
-        if(selectionMode != null) {
-            Object selection = this.getLocalSelectedNodes();
-            Object previousSelection = this.getValueExpression("selection").getValue(context.getELContext());
-
-            if(selectionMode.equals("single")) {
-                if(previousSelection != null)
-                    ((TreeNode) previousSelection).setSelected(false);
-                if(selection != null)
-                    ((TreeNode) selection).setSelected(true);
-            } 
-            else {
-                TreeNode[] previousSelections = (TreeNode[]) previousSelection;
-                TreeNode[] selections = (TreeNode[]) selection;
-
-                if(previousSelections != null) {
-                    for(TreeNode node : previousSelections)
-                        node.setSelected(false);
-                }
-
-                if(selections != null) {
-                    for(TreeNode node : selections)
-                        node.setSelected(true);
-                }
-            }
-
-            this.getValueExpression("selection").setValue(context.getELContext(), selection);
-            setSelection(null);
-        }
-	}
-
-    public Object getLocalSelectedNodes() {
-        return getStateHelper().get(PropertyKeys.selection);
-    }
-
-    public List<String> getSelectedRowKeys() {
-        return this.selectedRowKeys;
-    }
-
-    public String getSelectedRowKeysAsString() {
-        StringBuilder builder = new StringBuilder();
-
-        for(Iterator<String> iter = this.selectedRowKeys.iterator();iter.hasNext();) {
-            builder.append(iter.next());
-
-            if(iter.hasNext()) {
-                builder.append(',');
-            }
-        }
-
-        return builder.toString();
-    }
-
     public Column findColumn(String clientId) {
         for(UIComponent child : getChildren()) {
             if(child instanceof Column && child.getClientId().equals(clientId)) {

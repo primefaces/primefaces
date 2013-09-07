@@ -65,6 +65,7 @@
 			<name>selection</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>TreeNode array to reference the selections.</description>
 		</attribute>
 		<attribute>
@@ -83,6 +84,7 @@
 			<name>selectionMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Defines the selectionMode.</description>
 		</attribute>
         <attribute>

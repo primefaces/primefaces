@@ -48,4 +48,8 @@ public interface TreeNode {
     public boolean isPartialSelected();
     
     public void setPartialSelected(boolean value);
+    
+    public void setRowKey(String rowKey);
+    
+    public String getRowKey();
 }

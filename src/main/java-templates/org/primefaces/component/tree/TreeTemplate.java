@@ -22,8 +22,6 @@ import org.primefaces.model.TreeNode;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "dragdrop"));;;
 
-    private List<String> selectedRowKeys = new ArrayList<String>();
-
 	private Map<String,UITreeNode> nodes;
 
 	public UITreeNode getUITreeNodeByType(String type) {
@@ -38,51 +36,10 @@ import org.primefaces.model.TreeNode;
     private boolean isRequestSource(FacesContext context) {
         return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
-	
-	public void processUpdates(FacesContext context) {
-		super.processUpdates(context);
-        
-        String selectionMode = this.getSelectionMode();
-        ValueExpression selectionVE = this.getValueExpression("selection");
-
-        if(selectionMode != null && selectionVE != null) {
-
-            Object selection = this.getLocalSelectedNodes();
-            Object previousSelection = selectionVE.getValue(context.getELContext());
-
-            if(selectionMode.equals("single")) {
-                if(previousSelection != null)
-                    ((TreeNode) previousSelection).setSelected(false);
-                if(selection != null)
-                    ((TreeNode) selection).setSelected(true);
-            } 
-            else {
-                TreeNode[] previousSelections = (TreeNode[]) previousSelection;
-                TreeNode[] selections = (TreeNode[]) selection;
-
-                if(previousSelections != null) {
-                    for(TreeNode node : previousSelections)
-                        node.setSelected(false);
-                }
-
-                if(selections != null) {
-                    for(TreeNode node : selections)
-                        node.setSelected(true);
-                }
-            }
-
-			selectionVE.setValue(context.getELContext(), selection);
-			setSelection(null);
-		}
-	}
-	
+		
     public boolean isNodeExpandRequest(FacesContext context) {
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_expandNode");
 	}
-
-    public Object getLocalSelectedNodes() {
-        return getStateHelper().get(PropertyKeys.selection);
-    }
 
     public static String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
     public static String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
@@ -114,24 +71,6 @@ import org.primefaces.model.TreeNode;
 		}
 
         return nodes;
-    }
-
-    public List<String> getSelectedRowKeys() {
-        return this.selectedRowKeys;
-    }
-
-    public String getSelectedRowKeysAsString() {
-        StringBuilder builder = new StringBuilder();
-
-        for(Iterator<String> iter = this.selectedRowKeys.iterator();iter.hasNext();) {
-            builder.append(iter.next());
-
-            if(iter.hasNext()) {
-                builder.append(',');
-            }
-        }
-
-        return builder.toString();
     }
 
     @Override
