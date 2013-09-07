@@ -223,8 +223,11 @@ public class TreeRenderer extends CoreRenderer {
         boolean checkbox = selectable && selectionMode.equals("checkbox");
         boolean droppable = tree.isDroppable();
         
-        tree.buildRowKeys(root);
-        tree.initPreselection();
+        if(root.getRowKey() == null) {
+            root.setRowKey("root");
+            tree.buildRowKeys(root);
+            tree.initPreselection();
+        }
         
         //enable RTL
         if(ComponentUtils.isRTL(context, tree)) {
