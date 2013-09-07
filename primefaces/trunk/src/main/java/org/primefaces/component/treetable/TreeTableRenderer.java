@@ -119,8 +119,11 @@ public class TreeTableRenderer extends CoreRenderer {
         boolean scrollable = tt.isScrollable();
         TreeNode root = tt.getValue();
         
-        tt.buildRowKeys(root);
-        tt.initPreselection();
+        if(root.getRowKey() == null) {
+            root.setRowKey("root");
+            tt.buildRowKeys(root);
+            tt.initPreselection();
+        }
         
         String containerClass = tt.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
         containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;

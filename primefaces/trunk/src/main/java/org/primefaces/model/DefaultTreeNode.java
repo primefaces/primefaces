@@ -41,25 +41,31 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 	
 	public DefaultTreeNode() {
         this.type = DEFAULT_TYPE;
-        children = new ArrayList<TreeNode>();
+        this.children = new TreeNodeChildren(this);
+    }
+    
+    public DefaultTreeNode(Object data) {
+        this.type = DEFAULT_TYPE;
+        this.children = new TreeNodeChildren(this);
+        this.data = data;
     }
 
 	public DefaultTreeNode(Object data, TreeNode parent) {
 		this.type = DEFAULT_TYPE;
 		this.data = data;
-		children = new ArrayList<TreeNode>();
-		this.parent = parent;
-		if(this.parent != null)
-			this.parent.getChildren().add(this);
+		this.children = new TreeNodeChildren(this);
+		if(parent != null) {
+			parent.getChildren().add(this);
+        }
 	}
 	
 	public DefaultTreeNode(String type, Object data, TreeNode parent) {
 		this.type = type;
 		this.data = data;
-		children = new ArrayList<TreeNode>();
-		this.parent = parent;
-		if(this.parent != null)
-			this.parent.getChildren().add(this);
+		this.children = new TreeNodeChildren(this);
+		if(parent != null) {
+			parent.getChildren().add(this);
+        }
 	}
 	
 	public String getType() {
@@ -91,10 +97,6 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 	}
 	
 	public void setParent(TreeNode parent) {
-        if(this.parent != null) {
-            this.parent.getChildren().remove(this);
-        }
-        
         this.parent = parent;
 	}
 	
