@@ -43,25 +43,31 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
 	
 	public CheckboxTreeNode() {
         this.type = DEFAULT_TYPE;
-        children = new ArrayList<TreeNode>();
+        this.children = new TreeNodeChildren(this);
     }
+    
+    public CheckboxTreeNode(Object data) {
+		this.type = DEFAULT_TYPE;
+        this.children = new TreeNodeChildren(this);
+		this.data = data;
+	}
 
 	public CheckboxTreeNode(Object data, TreeNode parent) {
 		this.type = DEFAULT_TYPE;
 		this.data = data;
-		children = new ArrayList<TreeNode>();
-		this.parent = parent;
-		if(this.parent != null)
-			this.parent.getChildren().add(this);
+		this.children = new TreeNodeChildren(this);
+		if(parent != null) { 
+            parent.getChildren().add(this);
+        }
 	}
 	
 	public CheckboxTreeNode(String type, Object data, TreeNode parent) {
 		this.type = type;
 		this.data = data;
-		children = new ArrayList<TreeNode>();
-		this.parent = parent;
-		if(this.parent != null)
-			this.parent.getChildren().add(this);
+		this.children = new TreeNodeChildren(this);
+		if(parent != null) { 
+            parent.getChildren().add(this);
+        }
 	}
 	
 	public String getType() {
