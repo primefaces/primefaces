@@ -38,6 +38,8 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
     private boolean selectable = true;
     
     private boolean partialSelected;
+    
+    private String rowKey;
 	
 	public CheckboxTreeNode() {
         this.type = DEFAULT_TYPE;
@@ -163,7 +165,15 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
 	public int getChildCount() {
 		return children.size();
 	}
-	
+
+    public String getRowKey() {
+        return rowKey;
+    }
+
+    public void setRowKey(String rowKey) {
+        this.rowKey = rowKey;
+    }
+    
 	public boolean isLeaf() {
 		if(children == null)
 			return true;

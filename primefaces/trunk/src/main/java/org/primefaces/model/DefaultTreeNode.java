@@ -36,6 +36,8 @@ public class DefaultTreeNode implements TreeNode, Serializable {
     private boolean selected;
     
     private boolean selectable = true;
+    
+    private String rowKey;
 	
 	public DefaultTreeNode() {
         this.type = DEFAULT_TYPE;
@@ -130,6 +132,14 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 		
 		return children.isEmpty();
 	}
+
+    public String getRowKey() {
+        return rowKey;
+    }
+
+    public void setRowKey(String rowKey) {
+        this.rowKey = rowKey;
+    }
 
 	@Override
 	public int hashCode() {
