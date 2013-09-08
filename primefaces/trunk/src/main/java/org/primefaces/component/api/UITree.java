@@ -305,6 +305,12 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         
         processNodes(context, PhaseId.UPDATE_MODEL_VALUES);
         
+        updateSelection(context);
+        
+        popComponentFromEL(context);
+	}
+    
+    public void updateSelection(FacesContext context) {
         String selectionMode = this.getSelectionMode();
         ValueExpression selectionVE = this.getValueExpression("selection");
 
@@ -336,9 +342,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 			selectionVE.setValue(context.getELContext(), selection);
 			setSelection(null);
 		}
-        
-        popComponentFromEL(context);
-	}
+    }
     
     protected void processNodes(FacesContext context, PhaseId phaseId) {
               

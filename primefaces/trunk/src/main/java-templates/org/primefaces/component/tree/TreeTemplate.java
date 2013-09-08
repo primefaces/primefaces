@@ -87,14 +87,12 @@ import org.primefaces.model.TreeNode;
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
             FacesEvent wrapperEvent = null;
-
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if(eventName.equals("expand")) {
                 this.setRowKey(params.get(clientId + "_expandNode"));
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
-                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("collapse")) {
                 this.setRowKey(params.get(clientId + "_collapseNode"));
@@ -102,26 +100,24 @@ import org.primefaces.model.TreeNode;
                 collapsedNode.setExpanded(false);
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), collapsedNode);
-                wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else if(eventName.equals("select")) {
                 setRowKey(params.get(clientId + "_instantSelection"));
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
-                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if(eventName.equals("unselect")) {
                 setRowKey(params.get(clientId + "_instantUnselection"));
 
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
-                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if(eventName.equals("dragdrop")) {
                 int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
 
                 wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex);
-                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
+
+            wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             
             super.queueEvent(wrapperEvent);
             
@@ -151,10 +147,27 @@ import org.primefaces.model.TreeNode;
     public void processDecodes(FacesContext context) {
         if(isToggleRequest(context)) {
             this.decode(context);
-            context.renderResponse();
-        } else {
+        } 
+        else {
             super.processDecodes(context);
         }
+    }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        if(!isToggleRequest(context)) {
+            super.processValidators(context);
+        } 
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        if(isToggleRequest(context)) {
+            this.updateSelection(context);
+        }
+        else {
+            super.processUpdates(context);
+        }  
     }
 
     public boolean isCheckboxSelection() {
