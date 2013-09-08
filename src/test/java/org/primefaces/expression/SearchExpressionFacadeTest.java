@@ -1200,4 +1200,46 @@ public class SearchExpressionFacadeTest
 			assertEquals(FacesException.class, e.getClass());
 		}
 	}
+	
+	
+	@Test
+	public void resolveComponentWithParentFallback() {
+
+	    UIComponent root = new UIPanel();
+
+	    UIForm form = new UIForm();
+	    form.setId("form");
+	    root.getChildren().add(form);
+
+	    assertEquals(
+	    		root, 
+	    		SearchExpressionFacade.resolveComponentWithParentFallback(
+	    				FacesContext.getCurrentInstance(), form, null));
+
+	    assertEquals(
+	    		root, 
+	    		SearchExpressionFacade.resolveComponentWithParentFallback(
+	    				FacesContext.getCurrentInstance(), form, " "));
+	}
+	
+	@Test
+	public void resolveComponentsForClientWithParentFallback() {
+
+	    UIComponent root = new UIPanel();
+	    root.setId("test");
+
+	    UIForm form = new UIForm();
+	    form.setId("form");
+	    root.getChildren().add(form);
+
+	    assertEquals(
+	    		"test", 
+	    		SearchExpressionFacade.resolveComponentsForClientWithParentFallback(
+	    				FacesContext.getCurrentInstance(), form, null));
+
+	    assertEquals(
+	    		"test", 
+	    		SearchExpressionFacade.resolveComponentsForClientWithParentFallback(
+	    				FacesContext.getCurrentInstance(), form, " "));
+	}
 }

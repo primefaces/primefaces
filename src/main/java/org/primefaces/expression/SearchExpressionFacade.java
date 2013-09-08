@@ -141,6 +141,42 @@ public class SearchExpressionFacade {
 	}
 
     /**
+     * Resolves a list of {@link UIComponent} clientIds and/or passtrough expressions for the given expression or expressions.
+     * If the expressions are <code>null</code> or empty, the parent's clientId will be returned.
+     *
+     * @param context The {@link FacesContext}.
+     * @param source The source component. E.g. a button.
+     * @param expression The search expression.
+     * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
+     */
+	public static String resolveComponentsForClientWithParentFallback(FacesContext context, UIComponent source, String expressions) {
+	    if (ComponentUtils.isValueBlank(expressions)) {
+	    	return source.getParent().getClientId(context);
+	    }
+		
+		return resolveComponentsForClient(context, source, expressions, false);
+	}
+	
+    /**
+     * Resolves a list of {@link UIComponent} clientIds and/or passtrough expressions for the given expression or expressions.
+     * If the expressions are <code>null</code> or empty, the parent's clientId will be returned.
+     *
+     * @param context The {@link FacesContext}.
+     * @param source The source component. E.g. a button.
+     * @param expression The search expression.
+     * @param checkForRenderer Checks if the {@link UIComponent} has a renderer or not.
+     * 			This check is currently only useful for the update attributes, as a component without renderer can't be updated. 
+     * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
+     */
+	public static String resolveComponentsForClientWithParentFallback(FacesContext context, UIComponent source, String expressions, boolean checkForRenderer) {
+	    if (ComponentUtils.isValueBlank(expressions)) {
+	    	return source.getParent().getClientId(context);
+	    }
+	    
+	    return resolveComponentsForClient(context, source, expressions, checkForRenderer);
+	}
+	
+    /**
      * Resolves a {@link UIComponent} clientId and/or passtrough expression for the given expression.
      *
      * @param context The {@link FacesContext}.
@@ -196,6 +232,7 @@ public class SearchExpressionFacade {
 
     /**
      * Resolves a {@link UIComponent} for the given expression.
+     * If the expression is <code>null</code> or empty, the parent's clientId will be returned.
      *
      * @param context The {@link FacesContext}.
      * @param source The source component. E.g. a button.
@@ -203,8 +240,8 @@ public class SearchExpressionFacade {
      * @param fallbackToParent If the expression is null, the parent component will be used.
      * @return A resolved {@link UIComponent} or <code>null</code>.
      */
-	public static UIComponent resolveComponent(FacesContext context, UIComponent source, String expression, boolean fallbackToParent) {
-		if (fallbackToParent && expression == null) {
+	public static UIComponent resolveComponentWithParentFallback(FacesContext context, UIComponent source, String expression) {
+		if (ComponentUtils.isValueBlank(expression)) {
 			return source.getParent();
 		}
 

@@ -36,7 +36,7 @@ public class DroppableRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Droppable droppable = (Droppable) component;
         
-        UIComponent target = SearchExpressionFacade.resolveComponent(context, droppable, droppable.getFor(), true);
+        UIComponent target = SearchExpressionFacade.resolveComponentWithParentFallback(context, droppable, droppable.getFor());
 
         String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
