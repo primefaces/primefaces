@@ -518,6 +518,16 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             node.children('.ui-treenode-children').find('.ui-chkbox').each(function() {
                 $this.toggleCheckboxState($(this), checked);
             });
+            
+            if(this.cfg.dynamic) {
+                var rowKey = node.data('rowkey'),
+                newSelections = [];
+                for(var i = 0; i < this.selections.length; i++) {
+                    if(this.selections[i].indexOf(rowKey + '_') !== 0)
+                        newSelections.push(this.selections[i]);
+                }
+                this.selections = newSelections;
+            }
         }
 
         if(this.cfg.propagateUp) {
