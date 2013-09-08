@@ -33,7 +33,7 @@ public class DraggableRenderer extends CoreRenderer {
         Draggable draggable = (Draggable) component;
         String clientId = draggable.getClientId(context);
         
-        UIComponent target = SearchExpressionFacade.resolveComponent(context, draggable, draggable.getFor(), true);
+        UIComponent target = SearchExpressionFacade.resolveComponentWithParentFallback(context, draggable, draggable.getFor());
         
         String dashboard = draggable.getDashboard();
         WidgetBuilder wb = getWidgetBuilder(context);
