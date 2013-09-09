@@ -446,7 +446,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             
             if(this.hasBehavior('select')) {
                 var selectBehavior = this.cfg.behaviors['select'];
-                selectBehavior.call(this, node, options);
+                selectBehavior.call(this, nodeKey, options);
             }
             else {
                 PrimeFaces.ajax.AjaxRequest(options);
