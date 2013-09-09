@@ -48,7 +48,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.selectionMode) {
             this.jqSelection = $(this.jqId + '_selection');
             var selectionValue = this.jqSelection.val();
-            this.selection = selectionValue === "" ? [] : selectionValue.split(',');
+            this.selections = selectionValue === "" ? [] : selectionValue.split(',');
 
             this.bindSelectionEvents();
         }
@@ -209,7 +209,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var nodeKey = node.attr('data-rk');
 
         node.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
-        this.addSelection(nodeKey);
+        this.addToSelection(nodeKey);
         this.writeSelections();
         
         if(this.isCheckboxSelection()) {
@@ -266,17 +266,17 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     toggleCheckboxNode: function(node) {;
-        var selected = node.hasClass('ui-state-highlight');
+        var selected = node.hasClass('ui-state-highlight'),
+        rowKey = node.data('rk');
      
         //toggle itself
         if(selected)
-            this.unselectNode(node);
+            this.unselectNode(node, true);
         else
-            this.selectNode(node);
+            this.selectNode(node, true);
         
         //propagate down
         var descendants = this.getDescendants(node);
-
         for(var i = 0; i < descendants.length; i++) {
             var descendant = descendants[i];
 
@@ -285,13 +285,26 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             else
                 this.selectNode(descendant, true);
         }
+        
+        var newSelections = [];
+        for(var i = 0; i < this.selections.length; i++) {
+            if(this.selections[i].indexOf(rowKey + '_') !== 0)
+                newSelections.push(this.selections[i]);
+        }
+        this.selections = newSelections;
 
         //propagate up
         var parentNode = this.getParent(node);
         if(parentNode) {
             this.propagateUp(parentNode);
-            this.writeSelections();
         }
+        
+        this.writeSelections();
+        
+        if(selected)
+            this.fireUnselectNodeEvent(rowKey);
+        else
+            this.fireSelectNodeEvent(rowKey);
     },
     
     getDescendants: function(node) {
@@ -380,33 +393,19 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     removeSelection: function(nodeKey) {
-        this.selection = $.grep(this.selection, function(value) {
+        this.selections = $.grep(this.selections, function(value) {
             return value != nodeKey;
         });
     },
     
-    addSelection: function(nodeKey) {
-        if(!this.isSelected(nodeKey)) {
-            this.selection.push(nodeKey);
+    addToSelection: function(rowKey) {
+        if(!this.isSelected()) {
+            this.selections.push(rowKey);
         }
     },
     
     isSelected: function(nodeKey) {
-        var selection = this.selection,
-        selected = false;
-
-        $.each(selection, function(index, value) {
-            if(value === nodeKey) {
-                selected = true;
-
-                return false;
-            } 
-            else {
-                return true;
-            }
-        });
-
-        return selected;
+        return PrimeFaces.inArray(this.selections, nodeKey);
     },
     
     isSingleSelection: function() {
@@ -422,19 +421,48 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     writeSelections: function() {
-        this.jqSelection.val(this.selection.join(','));
+        this.jqSelection.val(this.selections.join(','));
     },
     
     fireSelectNodeEvent: function(nodeKey) {
-        if(this.hasBehavior('select')) {
-            var selectBehavior = this.cfg.behaviors['select'],
-            ext = {
-                params: [
-                    {name: this.id + '_instantSelect', value: nodeKey}
-                ]
+        if(this.isCheckboxSelection()) {
+            var $this = this,
+            options = {
+                source: this.id,
+                process: this.id
             };
-
-            selectBehavior.call(this, nodeKey, ext);
+            
+            options.params = [
+                {name: this.id + '_instantSelect', value: nodeKey}
+            ];
+            
+            options.oncomplete = function(xhr, status, args) {
+                var rowKeys = args.descendantRowKeys.split(',');
+                for(var i = 0; i < rowKeys.length; i++) {
+                    $this.addToSelection(rowKeys[i]);
+                }
+                $this.writeSelections();
+            }
+            
+            if(this.hasBehavior('select')) {
+                var selectBehavior = this.cfg.behaviors['select'];
+                selectBehavior.call(this, node, options);
+            }
+            else {
+                PrimeFaces.ajax.AjaxRequest(options);
+            }
+        }
+        else {
+            if(this.hasBehavior('select')) {
+                var selectBehavior = this.cfg.behaviors['select'],
+                ext = {
+                    params: [
+                        {name: this.id + '_instantSelection', value: nodeKey}
+                    ]
+                };
+                
+                selectBehavior.call(this, nodeKey, ext);
+            }
         }
     },
     

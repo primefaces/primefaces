@@ -16,6 +16,7 @@
 package org.primefaces.component.treetable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.UITree;
 
 import org.primefaces.component.column.Column;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
@@ -37,16 +39,16 @@ public class TreeTableRenderer extends CoreRenderer {
         TreeTable tt = (TreeTable) component;
         
         if(tt.getSelectionMode() != null) {
-            decodeSelection(context, component);
+            decodeSelection(context, tt);
         }
                     
         decodeBehaviors(context, component);
     }
 
-    protected void decodeSelection(FacesContext context, UIComponent component) {
+    protected void decodeSelection(FacesContext context, TreeTable tt) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        TreeTable tt = (TreeTable) component;
         String selectionMode = tt.getSelectionMode();
+        String clientId = tt.getClientId(context);
         
         //decode selection
         if(selectionMode != null) {
@@ -73,6 +75,27 @@ public class TreeTableRenderer extends CoreRenderer {
 
                 tt.setRowKey(null);     //cleanup
             }
+        }
+        
+        if(tt.isCheckboxSelection() && tt.isSelectionRequest(context)) {
+            String selectedNodeRowKey = params.get(clientId + "_instantSelection");
+            tt.setRowKey(selectedNodeRowKey);
+            TreeNode selectedNode = tt.getRowNode();
+            List<String> descendantRowKeys = new ArrayList<String>();
+            tt.populateRowKeys(selectedNode, descendantRowKeys);
+            int size = descendantRowKeys.size();
+            StringBuilder sb = new StringBuilder();
+            
+            for(int i = 0; i < size; i++) {
+                sb.append(descendantRowKeys.get(i));
+                if(i != (size - 1)) {
+                    sb.append(",");
+                }
+            }
+            
+            RequestContext.getCurrentInstance().addCallbackParam("descendantRowKeys", sb.toString());
+            sb.setLength(0);
+            descendantRowKeys = null;
         }
     }
 

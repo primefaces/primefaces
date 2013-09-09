@@ -54,6 +54,10 @@ import java.lang.StringBuilder;
         return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
+    public boolean isSelectionRequest(FacesContext context) {
+		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelect");
+	}
+
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
@@ -181,4 +185,10 @@ import java.lang.StringBuilder;
         String value = params.get(name);
         
         return value == null ? "0,0" : value;
+    }
+
+    public boolean isCheckboxSelection() {
+        String selectionMode = this.getSelectionMode();
+        
+        return selectionMode != null && selectionMode.equals("checkbox");
     }
