@@ -16,7 +16,9 @@
 package org.primefaces.component.tree;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -24,6 +26,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.UITree;
+import org.primefaces.context.RequestContext;
 
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.CoreRenderer;
@@ -88,6 +91,27 @@ public class TreeRenderer extends CoreRenderer {
             }
 
             tree.setRowKey(null);
+        }
+        
+        if(tree.isCheckboxSelection() && tree.isDynamic() && tree.isSelectionRequest(context)) {
+            String selectedNodeRowKey = params.get(clientId + "_instantSelection");
+            tree.setRowKey(selectedNodeRowKey);
+            TreeNode selectedNode = tree.getRowNode();
+            List<String> descendantRowKeys = new ArrayList<String>();
+            tree.populateRowKeys(selectedNode, descendantRowKeys);
+            int size = descendantRowKeys.size();
+            StringBuilder sb = new StringBuilder();
+            
+            for(int i = 0; i < size; i++) {
+                sb.append(descendantRowKeys.get(i));
+                if(i != (size - 1)) {
+                    sb.append(",");
+                }
+            }
+            
+            RequestContext.getCurrentInstance().addCallbackParam("descendantRowKeys", sb.toString());
+            sb.setLength(0);
+            descendantRowKeys = null;
         }
     }
     
