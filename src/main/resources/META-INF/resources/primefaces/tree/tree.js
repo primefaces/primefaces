@@ -151,16 +151,42 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     fireNodeSelectEvent: function(node) {
-        if(this.cfg.behaviors) {
-            var selectBehavior = this.cfg.behaviors['select'];
-
-            if(selectBehavior) {
-                var ext = {
+        if(this.isCheckboxSelection() && this.cfg.dynamic) {
+            var $this = this,
+            options = {
+                source: this.id,
+                process: this.id
+            };
+            
+            options.params = [
+                {name: this.id + '_instantSelection', value: this.getRowKey(node)}
+            ];
+            
+            options.oncomplete = function(xhr, status, args) {
+                var rowKeys = args.descendantRowKeys.split(',');
+                for(var i = 0; i < rowKeys.length; i++) {
+                    $this.addToSelection(rowKeys[i]);
+                }
+                $this.writeSelections();
+            }
+            
+            if(this.hasBehavior('select')) {
+                var selectBehavior = this.cfg.behaviors['select'];
+                selectBehavior.call(this, node, options);
+            }
+            else {
+                PrimeFaces.ajax.AjaxRequest(options);
+            }
+        }
+        else {
+            if(this.hasBehavior('select')) {
+                var selectBehavior = this.cfg.behaviors['select'],
+                ext = {
                     params: [
                         {name: this.id + '_instantSelection', value: this.getRowKey(node)}
                     ]
                 };
-
+                
                 selectBehavior.call(this, node, ext);
             }
         }

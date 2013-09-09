@@ -41,6 +41,10 @@ import org.primefaces.model.TreeNode;
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_expandNode");
 	}
 
+    public boolean isSelectionRequest(FacesContext context) {
+		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelection");
+	}
+
     public static String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
     public static String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
     public static String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content ui-corner-all";
