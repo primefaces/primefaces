@@ -18,6 +18,7 @@ package org.primefaces.component.datatable;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
+import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -629,6 +630,9 @@ public class DataTableRenderer extends DataRenderer {
         UIComponent emptyFacet = table.getFacet("emptyMessage");
         SubTable subTable = table.getSubTable();
         SummaryRow summaryRow = table.getSummaryRow();
+        ELContext eLContext = context.getELContext();
+        ValueExpression groupByVe = context.getApplication().getExpressionFactory().createValueExpression(
+                        eLContext, "#{" + table.getVar() + "." + table.getSortBy() + "}", Object.class);
                 
         if(table.isSelectionEnabled()) {
             table.findSelectedRowKeys();
@@ -659,7 +663,7 @@ public class DataTableRenderer extends DataRenderer {
                     
                     encodeRow(context, table, clientId, i, rowIndexVar);
                     
-                    if(summaryRow != null && !isInSameGroup(context, table, i)) {
+                    if(summaryRow != null && !isInSameGroup(context, table, i, groupByVe, eLContext)) {
                         table.setRowIndex(i);   //restore
                         encodeSummaryRow(context, table, summaryRow);
                     }
@@ -1001,16 +1005,15 @@ public class DataTableRenderer extends DataRenderer {
 		}
     }
     
-    boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex) {
-
-        table.setRowIndex(currentRowIndex);
-        Object currentGroupByData = table.getSortBy();
+    boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, ValueExpression groupByVE, ELContext eLContext) {
+        table.setRowIndex(currentRowIndex); 
+        Object currentGroupByData = groupByVE.getValue(eLContext);
 
         table.setRowIndex(currentRowIndex + 1);
         if(!table.isRowAvailable())
             return false;
         
-        Object nextGroupByData = table.getSortBy();
+        Object nextGroupByData = groupByVE.getValue(eLContext);
         if(currentGroupByData != null && nextGroupByData.equals(currentGroupByData)) {
             return true;
         }
