@@ -631,7 +631,7 @@ public class DataTableRenderer extends DataRenderer {
         SubTable subTable = table.getSubTable();
         SummaryRow summaryRow = table.getSummaryRow();
         ELContext eLContext = context.getELContext();
-        ValueExpression groupByVe = context.getApplication().getExpressionFactory().createValueExpression(
+        ValueExpression groupByVe = table.getSortBy() == null ? null : context.getApplication().getExpressionFactory().createValueExpression(
                         eLContext, "#{" + table.getVar() + "." + table.getSortBy() + "}", Object.class);
                 
         if(table.isSelectionEnabled()) {
@@ -663,8 +663,8 @@ public class DataTableRenderer extends DataRenderer {
                     
                     encodeRow(context, table, clientId, i, rowIndexVar);
                     
-                    if(summaryRow != null && !isInSameGroup(context, table, i, groupByVe, eLContext)) {
-                        table.setRowIndex(i);   //restore
+                    if(summaryRow != null && groupByVe != null && !isInSameGroup(context, table, i, groupByVe, eLContext)) {
+                        table.setRowIndex(i);
                         encodeSummaryRow(context, table, summaryRow);
                     }
                 }
