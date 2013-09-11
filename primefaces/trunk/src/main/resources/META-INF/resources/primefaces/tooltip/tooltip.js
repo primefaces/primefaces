@@ -5,6 +5,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this.cfg = cfg;
+        this.id = this.cfg.id;
         this.cfg.showEvent = this.cfg.showEvent ? this.cfg.showEvent + '.tooltip' : 'mouseover.tooltip';
         this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent + '.tooltip' : 'mouseout.tooltip';
         this.cfg.showEffect = this.cfg.showEffect ? this.cfg.showEffect : 'fade';
@@ -15,7 +16,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         else
             this.bindGlobal();
         
-        $(this.jqId + '_s').remove();
+        this.removeScriptElement(this.id);
     },
     
     refresh: function(cfg) {

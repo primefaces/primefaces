@@ -1240,8 +1240,11 @@
         //returns jquery object representing the main dom element related to the widget
         getJQ: function(){
             return this.jq;
-        }
+        },
 
+        removeScriptElement: function(clientId) {
+        	$(PrimeFaces.escapeClientId(clientId) + '_s').remove();
+        }
     });
     
     /**
