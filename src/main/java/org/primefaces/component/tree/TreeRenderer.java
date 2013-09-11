@@ -146,8 +146,6 @@ public class TreeRenderer extends CoreRenderer {
         tree.setDragNode(dragNode);
         tree.setDropNode(dropNode);
         
-        dragNode.setParent(dropNode);
-        
         if(dndIndex >= 0 && dndIndex < dropNode.getChildCount())
             dropNode.getChildren().add(dndIndex, dragNode);
         else
