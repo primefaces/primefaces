@@ -163,11 +163,13 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             ];
             
             options.oncomplete = function(xhr, status, args) {
-                var rowKeys = args.descendantRowKeys.split(',');
-                for(var i = 0; i < rowKeys.length; i++) {
-                    $this.addToSelection(rowKeys[i]);
-                }
-                $this.writeSelections();
+                if(args.descendantRowKeys && args.descendantRowKeys !== '') {
+                    var rowKeys = args.descendantRowKeys.split(',');
+                    for(var i = 0; i < rowKeys.length; i++) {
+                        $this.addToSelection(rowKeys[i]);
+                    }
+                    $this.writeSelections();
+                }     
             }
             
             if(this.hasBehavior('select')) {
