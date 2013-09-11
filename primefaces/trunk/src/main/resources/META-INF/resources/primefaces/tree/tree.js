@@ -236,8 +236,17 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     
     removeFromSelection: function(rowKey) {
         this.selections = $.grep(this.selections, function(r) {
-            return r != rowKey;
+            return r !== rowKey;
         });
+    },
+            
+    removeDescendantsFromSelection: function(rowKey) {
+        var newSelections = [];
+        for(var i = 0; i < this.selections.length; i++) {
+            if(this.selections[i].indexOf(rowKey + '_') !== 0)
+                newSelections.push(this.selections[i]);
+        }
+        this.selections = newSelections;
     },
     
     hasBehavior: function(event) {
@@ -259,7 +268,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 this.cfg.onNodeClick.call(this, node, event);
             }
             
-            if(nodeContent.hasClass('ui-tree-selectable') && (this.cfg.selectionMode||this.cfg.draggable)) {
+            if(selectable && (this.cfg.selectionMode||this.cfg.draggable)) {
                 var selected = this.isNodeSelected(node),
                 metaKey = event.metaKey||event.ctrlKey,
                 shiftKey = event.shiftKey;
@@ -276,13 +285,8 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                             this.unselectAllNodes();
                         }
 
-                        if(this.isMultipleSelection && shiftKey) {
-                            //TODO: Range selection
-                        }
-                        else {
-                            this.selectNode(node);
-                            this.cursorNode = node;
-                        }
+                        this.selectNode(node);
+                        this.cursorNode = node;
                     }
                 }
             }
@@ -340,7 +344,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
         box.removeClass('ui-state-hover');
         icon.removeClass('ui-icon ui-icon-minus').addClass('ui-icon ui-icon-check');
-        checkbox.siblings('span.ui-treenode-label').addClass('ui-state-highlight').removeClass('ui-state-hover');
         this.addToSelection(rowKey);
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-unselected').addClass('ui-treenode-selected').attr('aria-checked', true).attr('aria-selected', true);
     },
@@ -353,7 +356,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         
         box.removeClass('ui-state-hover');
         icon.removeClass('ui-icon ui-icon-minus ui-icon-check');
-        checkbox.siblings('span.ui-treenode-label').removeClass('ui-state-highlight');
         this.removeFromSelection(rowKey);
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-selected').addClass('ui-treenode-unselected').attr('aria-checked', false).attr('aria-selected', false);
     }
@@ -546,13 +548,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             });
             
             if(this.cfg.dynamic) {
-                var rowKey = node.data('rowkey'),
-                newSelections = [];
-                for(var i = 0; i < this.selections.length; i++) {
-                    if(this.selections[i].indexOf(rowKey + '_') !== 0)
-                        newSelections.push(this.selections[i]);
-                }
-                this.selections = newSelections;
+                this.removeDescendantsFromSelection(node.data('rowkey'));
             }
         }
 
@@ -595,6 +591,16 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 icon.addClass('ui-icon ui-icon-minus');
             }
         });
+    },
+            
+    check: function(checkbox) {
+        this._super(checkbox);
+        checkbox.siblings('span.ui-treenode-label').addClass('ui-state-highlight').removeClass('ui-state-hover');
+    },
+            
+    uncheck: function(checkbox) {
+        this._super(checkbox);
+        checkbox.siblings('span.ui-treenode-label').removeClass('ui-state-highlight');
     },
     
     initDraggable: function() {
@@ -1188,6 +1194,10 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
             node.next('.ui-treenode-children-container').find('.ui-chkbox').each(function() {
                 $this.toggleCheckboxState($(this), checked);
             });
+            
+            if(this.cfg.dynamic) {
+                this.removeDescendantsFromSelection(node.data('rowkey'));
+            }
         }
 
         if(this.cfg.propagateUp) {
@@ -1218,6 +1228,16 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
             this.fireNodeUnselectEvent(node);
         else
             this.fireNodeSelectEvent(node);
+    },
+        
+    check: function(checkbox) {
+        this._super(checkbox);
+        checkbox.parent('.ui-treenode-content').addClass('ui-state-highlight').removeClass('ui-state-hover');
+    },
+            
+    uncheck: function(checkbox) {
+        this._super(checkbox);
+        checkbox.parent('.ui-treenode-content').removeClass('ui-state-highlight');
     },
             
     drawConnectors: function() {
