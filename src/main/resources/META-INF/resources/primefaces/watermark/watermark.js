@@ -617,7 +617,7 @@ PrimeFaces.widget.Watermark = PrimeFaces.widget.BaseWidget.extend({
 
         this.target.watermark(this.cfg.value);
         
-        $(this.jqId + '_s').remove();
+        this.removeScriptElement(this.id);
     }
     
 });

@@ -2600,7 +2600,7 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
            }
         });
         
-        $(this.jqId + '_s').remove();
+        this.removeScriptElement(this.id);
     }
 });
 

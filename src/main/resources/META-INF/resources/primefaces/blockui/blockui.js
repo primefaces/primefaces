@@ -20,8 +20,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             this.show();
         }
 
-        //remove script tag
-        $(this.jqId + '_s').remove();
+        this.removeScriptElement(this.id);
     },
             
     refresh: function(cfg) {

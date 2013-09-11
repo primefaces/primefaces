@@ -19,7 +19,7 @@ PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.DeferredWidget.extend({
             this.renderDeferred();
         }
         
-        $(this.jqId + '_s').remove();
+        this.removeScriptElement(this.id);
     },
     
     _render: function(){
