@@ -53,7 +53,7 @@ public class RowEditFeature implements DataTableFeature {
         }
 
         if(table.isRowAvailable()) {
-            renderer.encodeRow(context, table, clientId, editedRowId, table.getRowIndexVar());
+            renderer.encodeRow(context, table, clientId, editedRowId);
         }
     }
 

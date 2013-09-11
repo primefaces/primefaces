@@ -32,7 +32,6 @@ public class ScrollFeature implements DataTableFeature {
         int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
         int scrollRows = table.getScrollRows();
         String clientId = table.getClientId(context);
-        String rowIndexVar = table.getRowIndexVar();
         
         if(table.isLazy()) {
             table.loadLazyScrollData(scrollOffset, scrollRows);
@@ -42,7 +41,7 @@ public class ScrollFeature implements DataTableFeature {
             table.setRowIndex(i);
             
             if(table.isRowAvailable()) {
-                renderer.encodeRow(context, table, clientId, i, rowIndexVar);
+                renderer.encodeRow(context, table, clientId, i);
             }
         }
     }
