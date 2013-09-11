@@ -32,15 +32,12 @@ public class SubTableRenderer extends CoreRenderer {
         SubTable table = (SubTable) component;
         int rowCount = table.getRowCount();
         
-        //header
         encodeHeader(context, table);
         
-        //rows
-        for(int i=0 ; i < rowCount; i++) {
+        for(int i=0; i < rowCount; i++) {
             encodeRow(context, table, i);
         }
         
-        //footer
         encodeFooter(context, table);
     }
     
