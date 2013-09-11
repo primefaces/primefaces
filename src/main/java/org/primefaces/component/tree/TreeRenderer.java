@@ -227,27 +227,31 @@ public class TreeRenderer extends CoreRenderer {
 	
 	protected void encodeMarkup(FacesContext context, Tree tree) throws IOException {
 		boolean vertical = tree.getOrientation().equals("vertical");
+        TreeNode root = (TreeNode) tree.getValue();
+        
+        if(root != null && root.getRowKey() == null) {
+            root.setRowKey("root");
+            tree.buildRowKeys(root);
+            tree.initPreselection();
+        }
 		
-        if(vertical) {
-            encodeVerticalTree(context, tree);
-        }
-        else {
-            encodeHorizontalTree(context, tree);
-        }
+        if(vertical)
+            encodeVerticalTree(context, tree, root);
+        else
+            encodeHorizontalTree(context, tree, root);
 	}
     
-    public void encodeVerticalTree(FacesContext context, Tree tree) throws IOException {
+    public void encodeVerticalTree(FacesContext context, Tree tree, TreeNode root) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tree.getClientId(context);
-        TreeNode root = (TreeNode) tree.getValue();
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
         boolean selectable = selectionMode != null;
         boolean multiselectable = selectable && selectionMode.equals("single");
         boolean checkbox = selectable && selectionMode.equals("checkbox");
         boolean droppable = tree.isDroppable();
-        
-        if(root.getRowKey() == null) {
+                
+        if(root != null && root.getRowKey() == null) {
             root.setRowKey("root");
             tree.buildRowKeys(root);
             tree.initPreselection();
@@ -289,10 +293,9 @@ public class TreeRenderer extends CoreRenderer {
 		writer.endElement("div");
     }
     
-    protected void encodeHorizontalTree(FacesContext context, Tree tree) throws IOException {
+    protected void encodeHorizontalTree(FacesContext context, Tree tree, TreeNode root) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tree.getClientId(context);
-        TreeNode root = (TreeNode) tree.getValue();
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
         boolean checkbox = (selectionMode != null) && selectionMode.equals("checkbox");
@@ -308,7 +311,7 @@ public class TreeRenderer extends CoreRenderer {
             encodeHorizontalTreeNode(context, tree, root, clientId, null, NodeOrder.NONE, dynamic, checkbox);
         }
         
-        if(tree.getSelectionMode() != null) {
+        if(selectionMode != null) {
             encodeSelectionHolder(context, tree);
         }
                
@@ -322,12 +325,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean leaf = node.isLeaf();
         boolean selectable = node.isSelectable();
         boolean partialSelected = node.isPartialSelected();
-
-        //preselection
         boolean selected = node.isSelected();
-        /*if(selected) {
-            tree.getSelectedRowKeys().add(rowKey);
-        }*/
         
         String nodeClass;
         if(leaf) {
