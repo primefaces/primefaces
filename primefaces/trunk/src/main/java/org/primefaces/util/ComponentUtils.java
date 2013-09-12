@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -449,5 +451,32 @@ public class ComponentUtils {
         String outcomeValue = (outcome == null) ? context.getViewRoot().getViewId() : outcome;
         
         return navHandler.getNavigationCase(context, null, outcomeValue);
+    }
+    
+    public static Map<String, List<String>> getUIParams(UIComponent component) {
+        List<UIComponent> children = component.getChildren();
+        Map<String, List<String>> params = null;
+
+        if(children != null && children.size() > 0) {
+            params = new LinkedHashMap<String, List<String>>();
+
+            for(UIComponent child : children) {
+                if(child.isRendered() && (child instanceof UIParameter)) {
+                    UIParameter uiParam = (UIParameter) child;
+
+                    if(!uiParam.isDisable()) {
+                        List<String> paramValues = params.get(uiParam.getName());
+                        if(paramValues == null) {
+                            paramValues = new ArrayList<String>();
+                            params.put(uiParam.getName(), paramValues);
+                        }
+
+                        paramValues.add(String.valueOf(uiParam.getValue()));
+                    }
+                }
+            }
+        }
+
+        return params;
     }
 }

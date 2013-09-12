@@ -35,7 +35,6 @@ import org.primefaces.model.menu.MenuGroup;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Separator;
-import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;

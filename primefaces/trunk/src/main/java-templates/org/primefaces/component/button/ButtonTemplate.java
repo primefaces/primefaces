@@ -1,5 +1,8 @@
+import java.util.List;
+import java.util.Map;
 import org.primefaces.util.HTML;
 import java.util.logging.Logger;
+import org.primefaces.util.ComponentUtils;
         
     private final static Logger logger = Logger.getLogger(Button.class.getName());
     
@@ -40,4 +43,8 @@ import java.util.logging.Logger;
         }
     
         return styleClass;
+    }
+    
+    public Map<String, List<String>> getParams() {
+        return ComponentUtils.getUIParams(this);
     }

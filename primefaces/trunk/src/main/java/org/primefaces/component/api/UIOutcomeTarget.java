@@ -16,6 +16,7 @@
 package org.primefaces.component.api;
 
 import java.util.List;
+import java.util.Map;
 import javax.faces.component.UIComponent;
 
 public interface UIOutcomeTarget {
@@ -27,6 +28,8 @@ public interface UIOutcomeTarget {
     public String getFragment();
     
     public List<UIComponent> getChildren();
+    
+    public Map<String, List<String>> getParams();
     
     public String getHref();
 }
