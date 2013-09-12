@@ -16,6 +16,7 @@
 package org.primefaces.util;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
@@ -203,16 +204,23 @@ public class AjaxRequestBuilder {
         return this;
     }
     
-    public AjaxRequestBuilder params(Map<String,Object> params) {
+    public AjaxRequestBuilder params(Map<String,List<String>> params) {
         if(params != null && !params.isEmpty()) {
             buffer.append(",params:[");
             
             for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String name = it.next();
-                Object value = params.get(name);
-                        
-                buffer.append("{name:").append("'").append(name).append("',value:'").append(value).append("'}");
-                
+                List<String> paramValues = params.get(name);
+                int size = paramValues.size();
+                for(int i = 0; i < size; i++) {
+                    String paramValue = paramValues.get(i);
+                    buffer.append("{name:").append("'").append(name).append("',value:'").append(paramValue).append("'}");
+                    
+                    if(i < (size - 1)) {
+                        buffer.append(",");
+                    }
+                }
+
                 if(it.hasNext()) {
                     buffer.append(",");
                 }
