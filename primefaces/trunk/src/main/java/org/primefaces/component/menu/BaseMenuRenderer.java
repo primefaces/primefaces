@@ -16,8 +16,10 @@
 package org.primefaces.component.menu;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.faces.FacesException;
@@ -156,8 +158,13 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                     String command;
                     if(menuitem.isDynamic()) {
                         String menuClientId = menu.getClientId(context);
-                        Map<String,Object> params = new HashMap<String,Object>();
-                        params.put(menuClientId + "_menuid", menuitem.getId());
+                        Map<String,List<String>> params = menuitem.getParams();
+                        if(params == null) {
+                            params = new LinkedHashMap<String, List<String>>();
+                        }
+                        List<String> idParams = new ArrayList<String>();
+                        idParams.add(menuitem.getId());
+                        params.put(menuClientId + "_menuid", idParams);
 
                         command = menuitem.isAjax() ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params) : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
                     } 
@@ -214,7 +221,6 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 	}
     
     protected void encodeOverlayConfig(FacesContext context, OverlayMenu menu, WidgetBuilder wb) throws IOException {
-
         wb.attr("overlay", true)
             .attr("my", menu.getMy())
             .attr("at", menu.getAt());
@@ -236,7 +242,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 		return true;
 	}
     
-    protected String buildAjaxRequest(FacesContext context, AbstractMenu menu, AjaxSource source, UIComponent form, Map<String,Object> params) {
+    protected String buildAjaxRequest(FacesContext context, AbstractMenu menu, AjaxSource source, UIComponent form, Map<String,List<String>> params) {
         String clientId = menu.getClientId(context);
         
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
@@ -265,7 +271,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         return builder.build();
     }
     
-    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, Map<String,Object> parameters, boolean submit) {		
+    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, Map<String,List<String>> parameters, boolean submit) {		
         StringBuilder request = new StringBuilder();
         String formId = form.getClientId(context);
         Map<String,Object> params = new HashMap<String, Object>();
@@ -275,15 +281,17 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         }
         
 		for(UIComponent child : component.getChildren()) {
-			if(child instanceof UIParameter) {
+			if(child instanceof UIParameter && child.isRendered()) {
                 UIParameter param = (UIParameter) child;
-
                 params.put(param.getName(), param.getValue());
 			}
 		}
         
         if(parameters != null && !parameters.isEmpty()) {
-            params.putAll(parameters);
+            for(Iterator<String> it = parameters.keySet().iterator(); it.hasNext();) {
+                String paramName = it.next();
+                params.put(paramName, parameters.get(paramName).get(0));                
+            }
         }
         
         //append params
