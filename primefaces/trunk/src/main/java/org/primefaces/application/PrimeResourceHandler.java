@@ -82,7 +82,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
                     externalContext.setResponseStatus(200);
                     externalContext.setResponseContentType(streamedContent.getContentType());
                     
-                    if(nocache == null) {
+                    if(nocache != null) {
                         externalContext.setResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
                         externalContext.setResponseHeader("Pragma", "no-cache");
                         externalContext.setResponseHeader("Expires", "Mon, 8 Aug 1980 10:00:00 GMT");
