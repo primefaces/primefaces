@@ -43,31 +43,16 @@ public class OutcomeTargetRenderer extends CoreRenderer {
      * Find all parameters to include by looking at nested uiparams and params of navigation case
      */
     protected Map<String, List<String>> getParams(NavigationCase navCase, UIOutcomeTarget outcomeTarget) {
-        Map<String, List<String>> params = new LinkedHashMap<String, List<String>>();
-        List<UIComponent> children = outcomeTarget.getChildren();
-
-        //UIParams
-        if(children != null) {
-            for(UIComponent child : outcomeTarget.getChildren()) {
-                if(child.isRendered() && (child instanceof UIParameter)) {
-                    UIParameter uiParam = (UIParameter) child;
-
-                    if(!uiParam.isDisable()) {
-                        List<String> paramValues = params.get(uiParam.getName());
-                        if(paramValues == null) {
-                            paramValues = new ArrayList<String>();
-                            params.put(uiParam.getName(), paramValues);
-                        }
-
-                        paramValues.add(String.valueOf(uiParam.getValue()));
-                    }
-                }
-            }
-        }
+        //UI Params
+        Map<String, List<String>> params = outcomeTarget.getParams();       
 
         //NavCase Params
         Map<String, List<String>> navCaseParams = navCase.getParameters();
         if(navCaseParams != null && !navCaseParams.isEmpty()) {
+            if(params == null) {
+                params = new LinkedHashMap<String, List<String>>();
+            }
+            
             for(Map.Entry<String,List<String>> entry : navCaseParams.entrySet()) {
                 String key = entry.getKey();
 
@@ -100,7 +85,6 @@ public class OutcomeTargetRenderer extends CoreRenderer {
 
             url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
 
-            //fragment
             if(outcomeTarget.getFragment() != null) {
                 url += "#" + outcomeTarget.getFragment();
             }

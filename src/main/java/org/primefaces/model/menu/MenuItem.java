@@ -52,6 +52,8 @@ public interface MenuItem extends MenuElement {
     
     public Map<String, List<String>> getParams();
     
+    public void setParam(String key, Object value);
+    
     public boolean isDynamic();
     
     public String getCommand();

@@ -1,9 +1,10 @@
 import java.util.List;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import java.util.Map;
 import javax.faces.event.ActionEvent;
 import javax.el.MethodExpression;
+import javax.faces.component.UIParameter;
+import org.primefaces.util.ComponentUtils;
 
 	public void decode(FacesContext facesContext) {
 		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
@@ -45,7 +46,7 @@ import javax.el.MethodExpression;
     }
 
     public Map<String, List<String>> getParams() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return ComponentUtils.getUIParams(this);
     }
 
     public String getCommand() {
@@ -55,4 +56,9 @@ import javax.el.MethodExpression;
     
     public boolean isAjaxified() {
     	return getUrl() == null && getOutcome() == null && isAjax();
+    }
+
+    @Override
+    public void setParam(String key, Object value) {
+        throw new UnsupportedOperationException("Use UIParameter component instead to add parameters.");
     }

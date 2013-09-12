@@ -16,6 +16,8 @@
 package org.primefaces.model.menu;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.faces.component.UIComponent;
@@ -184,6 +186,22 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     }
     public void setParams(Map<String, List<String>> params) {
         this.params = params;
+    }
+    
+    public void setParam(String key, Object value) {
+        if(value == null) {
+            throw new IllegalArgumentException("value cannot be null");
+        }
+        
+        if(params == null) {
+            params = new LinkedHashMap<String, List<String>>();
+        }
+        
+        if(!params.containsKey(key)) {
+            params.put(key, new ArrayList<String>());
+        }
+        
+        params.get(key).add(value.toString());
     }
 
     public boolean shouldRenderChildren() {
