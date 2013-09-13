@@ -122,6 +122,7 @@ import org.primefaces.component.datatable.feature.*;
         FEATURES.put(DataTableFeatureKey.RESIZABLE_COLUMNS, new ResizableColumnsFeature());
         FEATURES.put(DataTableFeatureKey.SELECT, new SelectionFeature());
         FEATURES.put(DataTableFeatureKey.ROW_EDIT, new RowEditFeature());
+        FEATURES.put(DataTableFeatureKey.CELL_EDIT, new CellEditFeature());
         FEATURES.put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature());
         FEATURES.put(DataTableFeatureKey.SCROLL, new ScrollFeature());
     }

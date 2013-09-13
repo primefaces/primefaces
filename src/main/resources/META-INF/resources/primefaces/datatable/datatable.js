@@ -1549,12 +1549,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             changed = (inputs.eq(0).val() != cell.data('old-value'));
         }
         
-        if(changed) {
+        if(changed)
             $this.doCellEditRequest(cell);
-        } 
-        else {
+        else
             $this.viewMode(cell);
-        }
         
         this.currentCell = null;
     },
@@ -1562,17 +1560,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     viewMode: function(cell) {
         var cellEditor = cell.children('div.ui-cell-editor'),
         editableContainer = cellEditor.children('div.ui-cell-editor-input'),
-        displayContainer = cellEditor.children('div.ui-cell-editor-output'),
-        inputs = editableContainer.find(':input:enabled');
-        
-        if(cell.data('multi-edit')) {
-            displayContainer.text(cell.data('old-value').join(this.cfg.cellSeparator)).show();
-        } 
-        else {
-            displayContainer.text(inputs.eq(0).val()).show();
-        }
+        displayContainer = cellEditor.children('div.ui-cell-editor-output');
         
         cell.removeClass('ui-cell-editing ui-state-error ui-state-highlight');
+        displayContainer.show();
         editableContainer.hide();
         cell.removeData('old-value').removeData('multi-edit');
     },
@@ -1588,17 +1579,36 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var options = {
             source: this.id,
             process: this.id,
+            update: this.id,
             params: [
-                        {name: this.id + '_cellInfo', value: cellInfo},
-                        {name: cellEditorId, value: cellEditorId}
-                    ]
+                    {name: this.id + '_encodeFeature', value: true},
+                    {name: this.id + '_cellInfo', value: cellInfo},
+                    {name: cellEditorId, value: cellEditorId}
+                ],
+            onsuccess: function(responseXML) {
+                var xmlDoc = $(responseXML.documentElement),
+                updates = xmlDoc.find("update");
+
+                for(var i=0; i < updates.length; i++) {
+                    var update = updates.eq(i),
+                    id = update.attr('id'),
+                    content = update.get(0).childNodes[0].nodeValue;
+
+                    if(id === $this.id)
+                        cellEditor.children('.ui-cell-editor-output').html(content);
+                    else
+                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
+                }
+
+                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+
+                return true;
+            }
             ,oncomplete: function(xhr, status, args) {                            
-                if(args.validationFailed) {
+                if(args.validationFailed)
                     cell.addClass('ui-state-error');
-                }
-                else {
+                else
                     $this.viewMode(cell);
-                }
             }
         };
 

@@ -22,6 +22,7 @@ public enum DataTableFeatureKey {
     RESIZABLE_COLUMNS,
     DRAGGABLE_COLUMNS,
     ROW_EDIT,
+    CELL_EDIT,
     ROW_EXPAND,
     SCROLL,
     SELECT;
