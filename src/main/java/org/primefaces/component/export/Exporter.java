@@ -16,7 +16,6 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,6 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import org.apache.poi.ss.usermodel.Sheet;
 
 import org.primefaces.component.datatable.DataTable;
 
