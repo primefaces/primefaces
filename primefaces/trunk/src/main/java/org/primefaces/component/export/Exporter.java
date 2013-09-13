@@ -16,8 +16,11 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.el.MethodExpression;
 import javax.faces.component.EditableValueHolder;
@@ -28,6 +31,7 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import org.apache.poi.ss.usermodel.Sheet;
 
 import org.primefaces.component.datatable.DataTable;
 
@@ -139,4 +143,92 @@ public abstract class Exporter {
 				return "";
 		}
     }
+    
+    protected void exportPageOnly(FacesContext context, DataTable table, Object document) {        
+        int first = table.getFirst();
+    	int rowsToExport = first + table.getRows();
+        
+        for(int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {                
+            exportRow(table, document, rowIndex);
+        }
+    }
+    
+    protected void exportAll(FacesContext context, DataTable table, Object document) {
+        int first = table.getFirst();
+    	int rowCount = table.getRowCount();
+        int rows = table.getRows();
+        boolean lazy = table.isLazy();
+        
+        if(lazy) {
+            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+                if(rowIndex % rows == 0) {
+                    table.setFirst(rowIndex);
+                    table.setRowIndex(-1);
+                    table.loadLazyData();
+                }
+
+                exportRow(table, document, rowIndex);
+            }
+     
+            //restore
+            table.setFirst(first);
+            table.setRowIndex(-1);
+            table.loadLazyData();
+        } 
+        else {
+            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {                
+                exportRow(table, document, rowIndex);
+            }
+            
+            //restore
+            table.setFirst(first);
+        }
+    }
+
+    protected void exportRow(DataTable table, Object document, int rowIndex) {
+        table.setRowIndex(rowIndex);
+        if(!table.isRowAvailable()) {
+            return;
+        }
+       
+        preRowExport(table, document);
+        exportCells(table, document);
+        postRowExport(table, document);
+    }
+    
+    protected void exportSelectionOnly(FacesContext context, DataTable table, Object document) {        
+        Object selection = table.getSelection();
+        String var = table.getVar();
+        
+        if(selection != null) {
+            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+
+            if(selection.getClass().isArray()) {
+                int size = Array.getLength(selection);
+                
+                for(int i = 0; i < size; i++) {
+                    requestMap.put(var, Array.get(selection, i));
+                    exportCells(table, document);
+                }
+            }
+            else if(List.class.isAssignableFrom(selection.getClass())) {
+                List<?> list = (List) selection;
+                
+                for(int i = 0; i < list.size(); i++) {
+                    requestMap.put(var, list.get(i));
+                    exportCells(table, document);
+                }
+            }
+            else {
+                requestMap.put(var, selection);
+                exportCells(table, document);
+            }
+        }
+    }
+    
+    protected void preRowExport(DataTable table, Object document) {}
+    
+    protected void postRowExport(DataTable table, Object document) {}
+    
+    protected abstract void exportCells(DataTable table, Object document);
 }

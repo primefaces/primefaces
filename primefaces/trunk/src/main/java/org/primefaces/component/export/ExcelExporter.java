@@ -17,10 +17,8 @@ package org.primefaces.component.export;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
@@ -74,82 +72,9 @@ public class ExcelExporter extends Exporter {
     	writeExcelToResponse(context.getExternalContext(), wb, filename);
 	}
 	
-    protected void exportPageOnly(FacesContext context, DataTable table, Sheet sheet) {        
-        int first = table.getFirst();
-    	int rowsToExport = first + table.getRows();
-        
-        for(int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {                
-            exportRow(table, sheet, rowIndex);
-        }
-    }
-    
-    protected void exportSelectionOnly(FacesContext context, DataTable table, Sheet sheet) {        
-        Object selection = table.getSelection();
-        String var = table.getVar();
-        
-        if(selection != null) {
-            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
-            
-            if(selection.getClass().isArray()) {
-                int size = Array.getLength(selection);
-                
-                for(int i = 0; i < size; i++) {
-                    requestMap.put(var, Array.get(selection, i));
-                    
-                    exportCells(table, sheet);
-                }
-            }
-            else {
-                requestMap.put(var, selection);
-                
-                exportCells(table, sheet);
-            }
-        }
-    }
-    
-    protected void exportAll(FacesContext context, DataTable table, Sheet sheet) {
-        int first = table.getFirst();
-    	int rowCount = table.getRowCount();
-        int rows = table.getRows();
-        boolean lazy = table.isLazy();
-        
-        if(lazy) {
-            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-                if(rowIndex % rows == 0) {
-                    table.setFirst(rowIndex);
-                    table.setRowIndex(-1);
-                    table.loadLazyData();
-                }
-
-                exportRow(table, sheet, rowIndex);
-            }
-     
-            //restore
-            table.setFirst(first);
-            table.setRowIndex(-1);
-            table.loadLazyData();
-        } 
-        else {
-            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {                
-                exportRow(table, sheet, rowIndex);
-            }
-            
-            //restore
-            table.setFirst(first);
-        }
-    }
-
-    protected void exportRow(DataTable table, Sheet sheet, int rowIndex) {
-        table.setRowIndex(rowIndex);
-        
-        if(!table.isRowAvailable()) {
-            return;
-        }
-       
-        exportCells(table, sheet);
-    }
-    
-    protected void exportCells(DataTable table, Sheet sheet) {
+    @Override
+    protected void exportCells(DataTable table, Object document) {
+        Sheet sheet = (Sheet) document;
         int sheetRowIndex = sheet.getLastRowNum() + 1;
         Row row = sheet.createRow(sheetRowIndex);
         
