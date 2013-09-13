@@ -16,11 +16,12 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
-import java.lang.reflect.Array;
 import java.util.*;
 
 import javax.el.MethodExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -85,84 +86,9 @@ public class CSVExporter extends Exporter {
 		writer.write("\n");
     }
     
-    protected void exportPageOnly(FacesContext context, DataTable table, Writer writer) throws IOException {
-        int first = table.getFirst();
-    	int rowsToExport = first + table.getRows();
-        
-        for(int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {                
-            exportRow(table, writer, rowIndex);
-        }
-    }
-    
-    protected void exportSelectionOnly(FacesContext context, DataTable table, Writer writer) throws IOException {
-        Object selection = table.getSelection();
-
-        if(selection != null) {
-        	String var = table.getVar();
-            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
-            
-            if(selection.getClass().isArray()) {
-                int size = Array.getLength(selection);
-                
-                for(int i = 0; i < size; i++) {
-                    requestMap.put(var, Array.get(selection, i));
-                    
-                    exportCells(table, writer);
-                }
-            }
-            else {
-                requestMap.put(var, selection);
-                
-                exportCells(table, writer);
-            }
-        }
-    }
-    
-    protected void exportAll(FacesContext context, DataTable table, Writer writer) throws IOException {
-        int first = table.getFirst();
-    	int rowCount = table.getRowCount();
-        int rows = table.getRows();
-        boolean lazy = table.isLazy();
-        
-        if(lazy) {
-            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-                if(rowIndex % rows == 0) {
-                    table.setFirst(rowIndex);
-                    table.setRowIndex(-1);
-                    table.loadLazyData();
-                }
-
-                exportRow(table, writer, rowIndex);
-            }
-     
-            //restore
-            table.setFirst(first);
-            table.setRowIndex(-1);
-            table.loadLazyData();
-        } 
-        else {
-            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {                
-                exportRow(table, writer, rowIndex);
-            }
-            
-            //restore
-            table.setFirst(first);
-        }
-    }
-    
-    protected void exportRow(DataTable table, Writer writer, int rowIndex) throws IOException {
-        table.setRowIndex(rowIndex);
-        
-        if(!table.isRowAvailable()) {
-            return;
-        }
-       
-        exportCells(table, writer);
-        
-        writer.write("\n");
-    }
-    
-    protected void exportCells(DataTable table, Writer writer) throws IOException {
+    @Override
+    protected void exportCells(DataTable table, Object document) {
+        PrintWriter writer = (PrintWriter) document;
         boolean firstCellWritten = false;
         
         for(UIColumn col : table.getColumns()) {
@@ -179,7 +105,12 @@ public class CSVExporter extends Exporter {
                     writer.write(",");
                 }
                 
-                addColumnValue(writer, col.getChildren());
+                try {
+                    addColumnValue(writer, col.getChildren());
+                } catch (IOException ex) {
+                    throw new FacesException(ex);
+                }
+                
                 firstCellWritten = true;
             }
         }
@@ -228,4 +159,9 @@ public class CSVExporter extends Exporter {
 		
 		writer.write("\"" + builder.toString() + "\"");
 	}
+
+    @Override
+    protected void postRowExport(DataTable table, Object document) {
+        ((PrintWriter) document).write("\n");
+    }
 }

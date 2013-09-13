@@ -35,8 +35,6 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import java.lang.reflect.Array;
-import java.util.Map;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
@@ -105,82 +103,9 @@ public class PDFExporter extends Exporter {
     	return pdfTable;
 	}
     
-    protected void exportPageOnly(FacesContext context, DataTable table, PdfPTable pdfTable) {
-        int first = table.getFirst();
-    	int rowsToExport = first + table.getRows();
-        
-        for(int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {                
-            exportRow(table, pdfTable, rowIndex);
-        }
-    }
-    
-    protected void exportSelectionOnly(FacesContext context, DataTable table, PdfPTable pdfTable) {
-        Object selection = table.getSelection();
-        String var = table.getVar();
-        
-        if(selection != null) {
-            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
-            
-            if(selection.getClass().isArray()) {
-                int size = Array.getLength(selection);
-                
-                for(int i = 0; i < size; i++) {
-                    requestMap.put(var, Array.get(selection, i));
-                    
-                    exportCells(table, pdfTable);
-                }
-            }
-            else {
-                requestMap.put(var, selection);
-                
-                exportCells(table, pdfTable);
-            }
-        }
-    }
-    
-    protected void exportAll(FacesContext context, DataTable table, PdfPTable pdfTable) {
-        int first = table.getFirst();
-    	int rowCount = table.getRowCount();
-        int rows = table.getRows();
-        boolean lazy = table.isLazy();
-        
-        if(lazy) {
-            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-                if(rowIndex % rows == 0) {
-                    table.setFirst(rowIndex);
-                    table.setRowIndex(-1);
-                    table.loadLazyData();
-                }
-
-                exportRow(table, pdfTable, rowIndex);
-            }
-     
-            //restore
-            table.setFirst(first);
-            table.setRowIndex(-1);
-            table.loadLazyData();
-        } 
-        else {
-            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {                
-                exportRow(table, pdfTable, rowIndex);
-            }
-            
-            //restore
-            table.setFirst(first);
-        }
-    }
-    
-    protected void exportRow(DataTable table, PdfPTable pdfTable, int rowIndex) {
-        table.setRowIndex(rowIndex);
-        
-        if(!table.isRowAvailable()) {
-            return;
-        }
-       
-        exportCells(table, pdfTable);
-    }
-    
-    protected void exportCells(DataTable table, PdfPTable pdfTable) {
+    @Override
+    protected void exportCells(DataTable table, Object document) {
+        PdfPTable pdfTable = (PdfPTable) document;
         for(UIColumn col : table.getColumns()) {
             if(!col.isRendered()) {
                 continue;

@@ -16,11 +16,8 @@
 package org.primefaces.component.export;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -28,7 +25,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.Constants;
 
@@ -46,13 +42,13 @@ public class XMLExporter extends Exporter {
     	writer.write("<" + table.getId() + ">\n");
     	
         if(pageOnly) {
-            exportPageOnly(table, writer);
+            exportPageOnly(context, table, writer);
         }
         else if(selectionOnly) {
             exportSelectionOnly(context, table, writer);
         }
         else {
-            exportAll(table, writer);
+            exportAll(context, table, writer);
         }
     	
     	writer.write("</" + table.getId() + ">");
@@ -64,86 +60,20 @@ public class XMLExporter extends Exporter {
         
         externalContext.responseFlushBuffer();
 	}
-	
-    public void exportPageOnly(DataTable table, Writer writer) throws IOException{
-        int first = table.getFirst();
-        int rowsToExport = first + table.getRows();
-
-        for(int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {                
-            exportRow(table, writer, rowIndex);
-        }
+    
+    @Override
+    protected void preRowExport(DataTable table, Object document) {
+        ((PrintWriter) document).write("\t<" + table.getVar() + ">\n");
     }
     
-    public void exportSelectionOnly(FacesContext context, DataTable table, Writer writer) throws IOException{
-        Object selection = table.getSelection();
-        String var = table.getVar();
-        
-        if(selection != null) {
-            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
-            
-            if(selection.getClass().isArray()) {
-                int size = Array.getLength(selection);
-                
-                for(int i = 0; i < size; i++) {
-                    requestMap.put(var, Array.get(selection, i));
-                    
-                    exportCells(table, writer);
-                }
-            }
-            else {
-                requestMap.put(var, selection);
-                
-                exportCells(table, writer);
-            }
-        }
+    @Override
+    protected void postRowExport(DataTable table, Object document) {
+        ((PrintWriter) document).write("\t</" + table.getVar() + ">\n");
     }
     
-    public void exportAll(DataTable table, Writer writer) throws IOException {
-        int first = table.getFirst();
-    	int rowCount = table.getRowCount();
-        int rows = table.getRows();
-        boolean lazy = table.isLazy();
-        
-        if(lazy) {
-            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-                if(rowIndex % rows == 0) {
-                    table.setFirst(rowIndex);
-                    table.setRowIndex(-1);
-                    table.loadLazyData();
-                }
-
-                exportRow(table, writer, rowIndex);
-            }
-     
-            //restore
-            table.setFirst(first);
-            table.setRowIndex(-1);
-            table.loadLazyData();
-        } 
-        else {
-            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {                
-                exportRow(table, writer, rowIndex);
-            }
-            
-            //restore
-            table.setFirst(first);
-        }
-    }
-    
-    protected void exportRow(DataTable table, Writer writer, int rowIndex) throws IOException {
-        String var = table.getVar().toLowerCase();
-        table.setRowIndex(rowIndex);
-        
-        if(!table.isRowAvailable()) {
-            return;
-        }
-        
-        writer.write("\t<" + var + ">\n");
-        exportCells(table, writer);
-        writer.write("\t</" + var + ">\n");
-    }
-    
-    protected void exportCells(DataTable table, Writer writer) throws IOException {
+    @Override
+    protected void exportCells(DataTable table, Object document) {
+        PrintWriter writer = (PrintWriter) document;
         for(UIColumn col : table.getColumns()) {
             if(!col.isRendered()) {
                 continue;
@@ -155,8 +85,12 @@ public class XMLExporter extends Exporter {
             
             if(col.isExportable()) {
                 String columnTag = getColumnTag(col);
-                
-                addColumnValue(writer, col.getChildren(), columnTag);
+                try {
+                    addColumnValue(writer, col.getChildren(), columnTag);
+                } 
+                catch (IOException ex) {
+                    throw new FacesException(ex);
+                }
             }
         }
     }
