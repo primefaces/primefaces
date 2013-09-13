@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
@@ -53,7 +54,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
         RemoteCommand command = (RemoteCommand) component;
         AjaxSource source = (AjaxSource) command;
         String clientId = command.getClientId(context);
-        String name = command.getName();
+        String name = resolveName(command, context);
         UIComponent form = (UIComponent) ComponentUtils.findParentForm(context, command);
         if(form == null) {
             throw new FacesException("RemoteCommand '" + name + "'must be inside a form.");
@@ -94,4 +95,13 @@ public class RemoteCommandRenderer extends CoreRenderer {
 
         writer.endElement("script");
     }
+    
+    protected String resolveName(RemoteCommand command, FacesContext context) {
+    	String userName = command.getName();
+    
+		if(userName != null)
+			return userName;
+		 else
+			return "command_" + command.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
+	}
 }
