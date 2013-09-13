@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import javax.faces.FacesException;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -259,4 +261,37 @@ import javax.faces.component.visit.VisitResult;
 
     public boolean isRTL() {
         return this.getDir().equalsIgnoreCase("rtl");
+    }
+
+    @Override
+    public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback) throws FacesException {
+        if(this.getVar() == null) {
+            if (null == context || null == clientId || null == callback) {
+                throw new NullPointerException();
+            }
+
+            boolean found = false;
+            if (clientId.equals(this.getClientId(context))) {
+                try {
+                    this.pushComponentToEL(context, this);
+                    callback.invokeContextCallback(context, this);
+                    return true;
+                } catch (Exception e) {
+                    throw new FacesException(e);
+                } finally {
+                    this.popComponentFromEL(context);
+                }
+            } else {
+                Iterator<UIComponent> itr = this.getFacetsAndChildren();
+
+                while (itr.hasNext() && !found) {
+                    found = itr.next().invokeOnComponent(context, clientId,
+                            callback);
+                }
+            }
+            return found;
+        }
+        else {
+            return super.invokeOnComponent(context, clientId, callback);
+        }
     }
