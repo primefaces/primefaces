@@ -2021,11 +2021,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             var iconClass = checked ? 'ui-chkbox-icon ui-icon ui-icon-check' : 'ui-chkbox-icon',
             itemClass = checked ? itemClass + ' ui-selectcheckboxmenu-checked' : itemClass + ' ui-selectcheckboxmenu-unchecked';
 
-            var dom = '<li class="' + itemClass + '">';
-            dom += '<div class="ui-chkbox ui-widget"><div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>';
-            dom += '<label>' + label.text() +  '</label></li>';
+            var item = $('<li class="' + itemClass + '"></li>');
+            item.append('<div class="ui-chkbox ui-widget"><div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>')
+                .append('<label></label>').children('label').text(label.text());
 
-            _self.itemContainer.append(dom);
+            _self.itemContainer.append(item);
         });
     },
     
