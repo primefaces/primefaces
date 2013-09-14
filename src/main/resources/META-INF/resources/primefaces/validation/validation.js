@@ -516,12 +516,12 @@ PrimeFaces.validate = function(cfg) {
     form = $(cfg.s).closest('form');
 
     if(cfg.a && cfg.p) {
-        var clientIds = PrimeFaces.Expressions.resolveComponents(cfg.p),
+        var processIds = PrimeFaces.Expressions.resolveComponents(cfg.p),
         inputs = $();
 
-        for(var i = 0; i < clientIds.length; i++) {
-            if(clientIds[i]) {
-                var component = $(PrimeFaces.escapeClientId(clientIds[i]));
+        for(var i = 0; i < processIds.length; i++) {
+            if(processIds[i]) {
+                var component = $(PrimeFaces.escapeClientId(processIds[i]));
                 if(component.is(':input'))
                     inputs = inputs.add(component);
                 else
@@ -540,7 +540,21 @@ PrimeFaces.validate = function(cfg) {
         return true;
     }
     else {
-        vc.renderMessages(form);
+        if(cfg.a && cfg.u) {
+            var updateIds = PrimeFaces.Expressions.resolveComponents(cfg.u);
+            for(var i = 0; i < updateIds.length; i++) {
+                if(updateIds[i]) {
+                    var component = $(PrimeFaces.escapeClientId(updateIds[i]));
+                    vc.renderMessages(component);
+                }
+            }
+        }
+        else {
+            vc.renderMessages(form);
+        }
+        
+        vc.clear();
+        
         return false;
     }
 }
@@ -697,9 +711,9 @@ PrimeFaces.util.ValidationContext = {
     },
 
     renderMessages: function(container) {
-        var uiMessages = container.find('div.ui-messages'),
+        var uiMessages = container.is('div.ui-messages') ? container : container.find('div.ui-messages'),
         uiMessageCollection = container.find('div.ui-message'),
-        growlPlaceholder = container.find('.ui-growl-pl'),
+        growlPlaceholder = container.is('.ui-growl-pl') ? container : container.find('.ui-growl-pl'),
         growlWidgetVar = growlPlaceholder.data('widget'),
         hasUIMessages = uiMessages.length&&!uiMessages.data('global'),
         hasGrowl = growlPlaceholder.length&&!growlPlaceholder.data('global');
@@ -747,8 +761,6 @@ PrimeFaces.util.ValidationContext = {
                 }
             }
         }
-
-        this.clear();
     },
 
     renderUIMessage: function(uiMessage, msg) {
