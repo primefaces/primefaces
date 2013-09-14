@@ -94,7 +94,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             
             if(csvEnabled) {
                 CSVBuilder csvb = requestContext.getCSVBuilder();
-                request = csvb.init().source("this").ajax(ajax).process(link, link.getProcess()).command(request).build();
+                request = csvb.init().source("this").ajax(ajax).process(link, link.getProcess()).update(link, link.getUpdate()).command(request).build();
             }
             
             onclick.append(request);

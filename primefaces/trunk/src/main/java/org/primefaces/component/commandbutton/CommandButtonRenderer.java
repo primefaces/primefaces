@@ -97,7 +97,7 @@ public class CommandButtonRenderer extends CoreRenderer {
             
             if(csvEnabled) {
                 CSVBuilder csvb = requestContext.getCSVBuilder();
-                request = csvb.init().source("this").ajax(ajax).process(button, button.getProcess()).command(request).build();
+                request = csvb.init().source("this").ajax(ajax).process(button, button.getProcess()).update(button, button.getUpdate()).command(request).build();
             }
 			
             onclick.append(request);
