@@ -392,7 +392,7 @@
                     .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span>' +
                     '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' + 
                     '<div class="ui-dialog-content ui-widget-content" style="height: auto;">' +
-                    '<iframe style="border:0 none"/>' + 
+                    '<iframe style="border:0 none" frameborder="0"/>' + 
                     '</div>')
                     .appendTo(document.body),
             dialogFrame = dialogDOM.find('iframe'),
