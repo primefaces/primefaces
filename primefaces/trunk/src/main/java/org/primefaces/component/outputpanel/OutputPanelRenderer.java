@@ -26,6 +26,9 @@ import org.primefaces.util.WidgetBuilder;
 
 public class OutputPanelRenderer extends CoreRenderer {
 
+    private final static String BLOCK = "div";
+    private final static String INLINE = "span";
+    
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		OutputPanel panel = (OutputPanel) component;
@@ -43,12 +46,13 @@ public class OutputPanelRenderer extends CoreRenderer {
     
 	public void encodeMarkup(FacesContext context, OutputPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String tag = panel.getLayout().equals("block") ? BLOCK : INLINE;
         String clientId = panel.getClientId(context);
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
         styleClass = (styleClass == null) ? OutputPanel.CONTAINER_CLASS : OutputPanel.CONTAINER_CLASS + " " + styleClass;
 		
-		writer.startElement("div", panel);
+		writer.startElement(tag, panel);
 		writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
 		if(style != null) 
@@ -59,7 +63,7 @@ public class OutputPanelRenderer extends CoreRenderer {
         else
             renderChildren(context, panel);
 		
-		writer.endElement("div");
+		writer.endElement(tag);
     }
     
     protected void encodeScript(FacesContext context, OutputPanel panel) throws IOException {
