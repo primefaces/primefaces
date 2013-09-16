@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>sticky</tag>
+	<tagClass>org.primefaces.component.sticky.StickyTag</tagClass>
+	<componentClass>org.primefaces.component.sticky.Sticky</componentClass>
+	<componentType>org.primefaces.component.Sticky</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.StickyRenderer</rendererType>
+	<rendererClass>org.primefaces.component.sticky.StickyRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+    <description>Sticky component positions other components as fixed so that these components stay in window viewport during scrolling.</description>
+    <interfaces>
+        <interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+    <attributes>
+		&standard_uicomponent_attributes;
+        &widget_var_attribute;
+		<attribute>
+			<name>target</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Identifier of the component(s) to make sticky.</description>
+		</attribute>
+        <attribute>
+			<name>margin</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Margin to the top of the page during fixed scrolling, default is 0.</description>
+		</attribute>
+	</attributes>
+    <resources>
+		<resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

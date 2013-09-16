@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>messages</tag>
+	<tagClass>org.primefaces.component.messages.MessagesTag</tagClass>
+	<componentClass>org.primefaces.component.messages.Messages</componentClass>
+	<componentType>org.primefaces.component.Messages</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.MessagesRenderer</rendererType>
+	<rendererClass>org.primefaces.component.messages.MessagesRenderer</rendererClass>
+	<parent>javax.faces.component.UIMessages</parent>
+    <description>Message is a pre-skinned extended version of the standard JSF message component with extensions.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.AutoUpdatable</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.UINotification</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>showSummary</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Specifies if the summary of the FacesMessage should be displayed. Default is true.</description>
+		</attribute>
+		<attribute>
+			<name>showDetail</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Specifies if the detail of the FacesMessage should be displayed. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>globalOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>When true, only facesmessages with no clientIds are displayed. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>redisplay</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Defines if already rendered messages should be displayed. Default is true.</description>
+		</attribute>
+        <attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Identifier of the component whose messages to display only, takes precendence when used
+            with globalOnly.</description>
+		</attribute>
+        <attribute>
+			<name>autoUpdate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description></description>
+		</attribute>
+        <attribute>
+			<name>escape</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether html would be escaped or not, defaults to true.</description>
+		</attribute>
+        <attribute>
+			<name>severity</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Comma seperated list of severities to display only.</description>
+		</attribute>
+        <attribute>
+			<name>closable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Adds a close icon to hide the messages.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>primefaces.css</name>
+		</resource>
+	</resources>
+</component>
