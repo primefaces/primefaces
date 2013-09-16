@@ -16,7 +16,6 @@
 package org.primefaces.event.system;
 
 import java.util.List;
-import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
