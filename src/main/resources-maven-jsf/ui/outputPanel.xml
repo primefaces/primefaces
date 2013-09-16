@@ -62,6 +62,13 @@
             <defaultValue>false</defaultValue>
             <description>Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus on deferred loading. Default is false.</description>
         </attribute>
+        <attribute>
+            <name>layout</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>block</defaultValue>
+            <description>Shortcut for the css display property, valid values are block (default) and inline.</description>
+        </attribute>
 	</attributes>
     <resources>
 		<resource>
