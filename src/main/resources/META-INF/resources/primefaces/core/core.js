@@ -802,6 +802,8 @@
         send: function(cfg) {
             PrimeFaces.debug('Initiating ajax request.');
             
+            PrimeFaces.customFocus = false;
+
             var global = (cfg.global === true || cfg.global === undefined) ? true : false,
             form = null,
             sourceId = null;
