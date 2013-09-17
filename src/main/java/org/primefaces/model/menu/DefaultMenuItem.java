@@ -56,6 +56,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean resetValues;
     private boolean resetValuesSet;
     private boolean ignoreAutoUpdate;
+    private boolean immediate;
     
     public DefaultMenuItem() {}
     
@@ -330,6 +331,14 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.ignoreAutoUpdate = ignoreAutoUpdate;
     }
 
+    public boolean isImmediate() {
+        return immediate;
+    }
+
+    public void setImmediate(boolean immediate) {
+        this.immediate = immediate;
+    }
+    
     public boolean isAjaxified() {
         return getUrl() == null && isAjax();
     }

@@ -57,4 +57,6 @@ public interface MenuItem extends MenuElement {
     public boolean isDynamic();
     
     public String getCommand();
+    
+    public boolean isImmediate();
 }
