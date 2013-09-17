@@ -213,12 +213,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.hideEffect) {
             var $this = this;
 
-            this.jq.hide(this.cfg.hideEffect, null, 'normal', function() {
-                if($this.cfg.modal) {
-                    $this.disableModality();
-                }
-                $this.onHide();
-            });
+            this.jq.hide(this.cfg.hideEffect, null, 'normal');
+            if(this.cfg.modal) {
+                this.disableModality();
+            }
+            this.onHide();
         }
         else {
             this.jq.hide();
