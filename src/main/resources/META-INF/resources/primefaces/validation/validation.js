@@ -571,7 +571,7 @@ PrimeFaces.validateInput = function(element) {
     valid = true,
     converterId = element.data('p-con');
         
-    if(PrimeFaces.settings.considerEmptyStringNull && $.submittedValue.length === 0) {
+    if(PrimeFaces.settings.considerEmptyStringNull && submittedValue.length === 0) {
         submittedValue = null;
     }
     
