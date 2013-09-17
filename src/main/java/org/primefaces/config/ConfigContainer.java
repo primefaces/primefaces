@@ -16,6 +16,7 @@
 package org.primefaces.config;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -112,12 +113,19 @@ public class ConfigContainer {
 	private void initBuildProperties() {
 		
 		Properties buildProperties = new Properties();
+		InputStream is = null;
 		try {
-			buildProperties.load(
-					getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties"));
+		    is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
+			buildProperties.load(is);
 			buildVersion = buildProperties.getProperty("version");
 		} catch (IOException e) {
 			LOG.log(Level.SEVERE, "Could not load pom.properties", e);
+		}
+		
+		if (is != null) {
+		    try {
+                is.close();
+            } catch (IOException e) { }
 		}
 	}
 	
