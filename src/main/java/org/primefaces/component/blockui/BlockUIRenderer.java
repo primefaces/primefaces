@@ -43,6 +43,7 @@ public class BlockUIRenderer extends CoreRenderer {
         wb.attr("block", SearchExpressionFacade.resolveComponentsForClient(context, blockUI, blockUI.getBlock()));
         wb.attr("triggers", SearchExpressionFacade.resolveComponentsForClient(context, blockUI, blockUI.getTrigger()), null);
         wb.attr("blocked", blockUI.isBlocked(), false);
+        wb.attr("animate", blockUI.isAnimate(), true);
         
         wb.finish();
     }

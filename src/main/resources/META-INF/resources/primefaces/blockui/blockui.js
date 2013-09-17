@@ -9,7 +9,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.block = PrimeFaces.Expressions.resolveComponentsAsSelector(this.cfg.block);
         this.content = $(this.jqId);
-
+        this.cfg.animate = (this.cfg.animate === false)? false : true;
+        
         this.render();
 
         if(this.cfg.triggers) {
@@ -64,7 +65,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             'top': (blockHeight - this.content.outerHeight()) / 2
         });
 
-        this.blocker.fadeIn();
+        if(this.cfg.animate)
+            this.blocker.fadeIn();    
+        else
+            this.blocker.show();
 
         if(this.hasContent()) {
             this.content.fadeIn();
@@ -72,7 +76,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function() {
-        this.blocker.fadeOut();
+        if(this.cfg.animate)
+            this.blocker.fadeOut();
+        else
+            this.blocker.hide();
 
         if(this.hasContent()) {
             this.content.fadeOut();
