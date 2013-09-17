@@ -27,6 +27,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.PhaseId;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.context.RequestContext;
@@ -56,6 +57,11 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             String menuid = params.get(clientId + "_menuid");
             MenuItem menuitem = findMenuitem(menu.getElements(), menuid);
             MenuActionEvent event = new MenuActionEvent(menu, menuitem);
+
+            if(menuitem.isImmediate())
+                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            else
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
             
             menu.queueEvent(event);
         }
