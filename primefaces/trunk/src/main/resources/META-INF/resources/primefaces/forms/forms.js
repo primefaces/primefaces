@@ -679,9 +679,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     
     highlightItem: function(item) {
         this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
-        item.addClass('ui-state-highlight');
         
-        this.setLabel(item.data('label'));
+        if(item.length > 0) {
+            item.addClass('ui-state-highlight');
+            this.setLabel(item.data('label'));
+        }
     },
     
     triggerChange: function(edited) {
