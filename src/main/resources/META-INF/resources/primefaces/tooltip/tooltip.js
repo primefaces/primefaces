@@ -36,7 +36,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.cfg.globalSelector)
                     .on(this.cfg.showEvent, this.cfg.globalSelector, function() {
                         var element = $(this),
-                        title = element.attr('title');
+                        title = element.attr('data-tooltip');
                         
                         if(element.hasClass('ui-state-error')) {
                             $this.jq.addClass('ui-state-error');
@@ -46,7 +46,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             $this.jq.text(title);
                             $this.globalTitle = title;
                             $this.target = element;
-                            element.attr('title','');
+                            element.attr('data-tooltip','');
                             $this.show();
                         }
                     })
@@ -55,7 +55,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
                         if($this.globalTitle) {
                             $this.jq.hide();
-                            element.attr('title', $this.globalTitle);
+                            element.attr('data-tooltip', $this.globalTitle);
                             $this.globalTitle = null;
                             $this.target = null;
                             $this.jq.removeClass('ui-state-error');
