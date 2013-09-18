@@ -40,14 +40,7 @@ import org.primefaces.util.StringEncrypter;
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
     
     private final static Logger logger = Logger.getLogger(PrimeResourceHandler.class.getName());
-    
-    private final static DateFormat httpDateFormat;
-    
-    static {
-        httpDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
-        httpDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-    }
-    
+        
     private ResourceHandler wrapped;
 
     public PrimeResourceHandler(ResourceHandler wrapped) {
@@ -95,6 +88,8 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
                     externalContext.setResponseContentType(streamedContent.getContentType());
                     
                     if(cache) {
+                        DateFormat httpDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+                        httpDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
                         Calendar calendar = Calendar.getInstance();
                         calendar.add(Calendar.YEAR, 1);
                         externalContext.setResponseHeader("Cache-Control", "max-age:29030400");
