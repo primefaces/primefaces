@@ -36,26 +36,26 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.cfg.globalSelector)
                     .on(this.cfg.showEvent, this.cfg.globalSelector, function() {
                         var element = $(this),
-                        title = element.attr('data-tooltip');
+                        title = element.attr('title');
+                        if(title) {
+                            element.data('tooltip', title).removeAttr('title');
+                        }
                         
                         if(element.hasClass('ui-state-error')) {
                             $this.jq.addClass('ui-state-error');
                         }
 
-                        if(title) {
-                            $this.jq.text(title);
-                            $this.globalTitle = title;
+                        var text = element.data('tooltip');
+                        if(text) {
+                            $this.jq.text(text);
+                            $this.globalTitle = text;
                             $this.target = element;
-                            element.attr('data-tooltip','');
                             $this.show();
                         }
                     })
                     .on(this.cfg.hideEvent + '.tooltip', this.cfg.globalSelector, function() {
-                        var element = $(this);
-
                         if($this.globalTitle) {
                             $this.jq.hide();
-                            element.attr('data-tooltip', $this.globalTitle);
                             $this.globalTitle = null;
                             $this.target = null;
                             $this.jq.removeClass('ui-state-error');
