@@ -17,7 +17,12 @@ package org.primefaces.application;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ELContext;
@@ -35,6 +40,13 @@ import org.primefaces.util.StringEncrypter;
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
     
     private final static Logger logger = Logger.getLogger(PrimeResourceHandler.class.getName());
+    
+    private final static DateFormat httpDateFormat;
+    
+    static {
+        httpDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+        httpDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
     
     private ResourceHandler wrapped;
 
@@ -64,11 +76,11 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");
         String dynamicContentId = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
-        String nocache = params.get(Constants.DYNAMIC_CONTENT_NOCACHE_PARAM);
         StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
         
         if(dynamicContentId != null && library != null && library.equals("primefaces")) {
             StreamedContent streamedContent = null;
+            boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
             
             try {
                 String dynamicContentEL = strEn.decrypt(dynamicContentId);                
@@ -82,7 +94,13 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
                     externalContext.setResponseStatus(200);
                     externalContext.setResponseContentType(streamedContent.getContentType());
                     
-                    if(nocache != null) {
+                    if(cache) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.YEAR, 1);
+                        externalContext.setResponseHeader("Cache-Control", "max-age:29030400");
+                        externalContext.setResponseHeader("Expires", httpDateFormat.format(calendar.getTime()));
+                    }
+                    else {
                         externalContext.setResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
                         externalContext.setResponseHeader("Pragma", "no-cache");
                         externalContext.setResponseHeader("Expires", "Mon, 8 Aug 1980 10:00:00 GMT");

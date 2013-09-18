@@ -168,10 +168,9 @@ public class MediaRenderer extends CoreRenderer {
                 }
             }
             
-            if(!media.isCache()) {
-                src += src.contains("?") ? "&" : "?";
-                src += Constants.DYNAMIC_CONTENT_NOCACHE_PARAM + "=" + URLEncoder.encode(UUID.randomUUID().toString(), "UTF-8");
-            }
+            //cache
+            src += src.contains("?") ? "&" : "?";
+            src += Constants.DYNAMIC_CONTENT_CACHE_PARAM + "=" + media.isCache();
         }
 
 		return src;
