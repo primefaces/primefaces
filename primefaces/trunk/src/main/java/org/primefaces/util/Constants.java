@@ -55,7 +55,7 @@ public class Constants {
     public final static String PUSH_PATH = "/primepush";
     
     public static final String DYNAMIC_CONTENT_PARAM = "pfdrid";
-    public static final String DYNAMIC_CONTENT_NOCACHE_PARAM = "pfdrid_nc";
+    public static final String DYNAMIC_CONTENT_CACHE_PARAM = "pfdrid_c";
 
     public final static String FRAGMENT_ID = "primefaces.fragment";
     public final static String FRAGMENT_AUTO_RENDERED = "primefaces.fragment.autorendered";
