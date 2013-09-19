@@ -21009,7 +21009,9 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     refresh: function(cfg) {
-        this.plot.destroy();
+        if(this.plot) {
+            this.plot.destroy();
+        }
         
         this.init(cfg);
     },

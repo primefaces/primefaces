@@ -1272,7 +1272,7 @@
                     var hiddenParentWidget = PF(hiddenParentWidgetVar);
                     
                     if(hiddenParentWidget) {
-                        hiddenParentWidget.addOnshowHandler(function() {
+                        hiddenParentWidget.addOnshowHandler(this.id, function() {
                             return $this.render();
                         });
                     }
@@ -1290,11 +1290,14 @@
             }
         },
         
+        /**
+         * Must be overriden
+         */
         _render: function() {
             throw 'Unsupported Operation';
         }
     });
-    
+        
     //expose globally
     window.PrimeFaces = PrimeFaces;
 

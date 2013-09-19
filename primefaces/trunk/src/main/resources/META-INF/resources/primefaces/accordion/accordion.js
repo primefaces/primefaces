@@ -10,7 +10,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         this.headers = this.jq.children('.ui-accordion-header');
         this.panels = this.jq.children('.ui-accordion-content');
         this.headers.children('a').disableSelection();
-        this.onshowHandlers = [];
+        this.onshowHandlers = this.onshowHandlers||{};
         this.cfg.rtl = this.jq.hasClass('ui-accordion-rtl');
         this.cfg.expandedIcon = 'ui-icon-triangle-1-s';
         this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
@@ -266,8 +266,8 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             this.stateHolder.val(this.cfg.active);
     },
 
-    addOnshowHandler : function(fn) {
-        this.onshowHandlers.push(fn);
+    addOnshowHandler: function(id, fn) {
+        this.onshowHandlers[id] = fn;
     },
 
     postTabShow: function(newPanel) {            
@@ -277,9 +277,15 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //execute onshowHandlers and remove successful ones
-        this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
-            return !fn.call();
-        });
+        for(var id in this.onshowHandlers) {
+            if(this.onshowHandlers.hasOwnProperty(id)) {
+                var fn = this.onshowHandlers[id];
+                
+                if(fn.call()) {
+                    delete this.onshowHandlers[id];
+                }
+            }
+        }
     }
     
 });
