@@ -92,7 +92,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
                         httpDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
                         Calendar calendar = Calendar.getInstance();
                         calendar.add(Calendar.YEAR, 1);
-                        externalContext.setResponseHeader("Cache-Control", "max-age:29030400");
+                        externalContext.setResponseHeader("Cache-Control", "max-age=29030400");
                         externalContext.setResponseHeader("Expires", httpDateFormat.format(calendar.getTime()));
                     }
                     else {
