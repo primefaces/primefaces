@@ -8,8 +8,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.header = this.jq.children('div.ui-panel-titlebar');
         this.title = this.header.children('span.ui-panel-title');
         this.content = $(this.jqId + '_content');
-        
-        this.onshowHandlers = [];
+        this.onshowHandlers = this.onshowHandlers||{};
         
         this.bindEvents();
     },
@@ -142,9 +141,9 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
-        var _self = this;
+        var $this = this;
         $(this.jqId).fadeIn(this.cfg.closeSpeed, function() {
-            _self.invokeOnshowHandlers();
+            $this.invokeOnshowHandlers();
         });
 
         this.visibleStateHolder.val(true);
@@ -168,14 +167,20 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.closer.click(function() {_self.close();});
     },
         
-    addOnshowHandler: function(fn) {
-        this.onshowHandlers.push(fn);
+    addOnshowHandler: function(id, fn) {
+        this.onshowHandlers[id] = fn;
     },
     
     invokeOnshowHandlers: function() {
-        this.onshowHandlers = $.grep(this.onshowHandlers, function(fn) {
-            return !fn.call();
-        });
+        for(var id in this.onshowHandlers) {
+            if(this.onshowHandlers.hasOwnProperty(id)) {
+                var fn = this.onshowHandlers[id];
+                
+                if(fn.call()) {
+                    delete this.onshowHandlers[id];
+                }
+            }
+        }
     }
 
 });
