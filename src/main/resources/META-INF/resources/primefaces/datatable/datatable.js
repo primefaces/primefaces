@@ -251,22 +251,26 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Applies events related to selection in a non-obstrusive way
      */
     bindSelectionEvents: function() {
-        var $this = this;
+        var $this = this,
+        checkboxSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-chkbox .ui-chkbox-box',
+        box = $(checkboxSelector).hasClass('ui-state-disabled');
         this.rowSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)';
-
+        
         //row events
-        if(this.cfg.selectionMode != 'radio') {
-            this.bindRowHover();
+        if(this.cfg.selectionMode !== 'radio') {
+            if(!box){
+                this.bindRowHover();
             
-            $(document).off('click.datatable', this.rowSelector).on('click.datatable', this.rowSelector, null, function(e) {
-                $this.onRowClick(e, this);
-            });
+                $(document).off('click.datatable', this.rowSelector).on('click.datatable', this.rowSelector, null, function(e) {
+                    $this.onRowClick(e, this);
+                });
+            }
         }
         else {
             this.bindRadioEvents();
         }
         
-        if(this.isCheckboxSelectionEnabled()) {
+        if(this.isCheckboxSelectionEnabled() && !box) {
             this.bindCheckboxEvents();
             this.updateHeaderCheckbox();
         }
