@@ -401,7 +401,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         
         if(selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
-            encodeCheckbox(context, table, false, column.isDisabledSelection(), HTML.CHECKBOX_ALL_CLASS);
+            encodeCheckbox(context, table, false, false, HTML.CHECKBOX_ALL_CLASS);
         }
         
         writer.endElement("th");
@@ -737,11 +737,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        
+        ResponseWriter writer = context.getResponseWriter();        
         boolean selectionEnabled = table.isSelectionEnabled();
-        
         Object rowKey = null;
+        
         if(selectionEnabled) {
             //try rowKey attribute
             rowKey = table.getRowKey();
@@ -756,18 +755,17 @@ public class DataTableRenderer extends DataRenderer {
 
         String userRowStyleClass = table.getRowStyleClass();
         String rowStyleClass = rowIndex % 2 == 0 ? DataTable.ROW_CLASS + " " + DataTable.EVEN_ROW_CLASS : DataTable.ROW_CLASS + " " + DataTable.ODD_ROW_CLASS;
+        if(selectionEnabled && !table.isDisabledSelection())
+            rowStyleClass = rowStyleClass + " " + DataTable.SELECTABLE_ROW_CLASS;
         
-        if(selected) {
+        if(selected)
             rowStyleClass = rowStyleClass + " ui-state-highlight";
-        }
 
-        if(userRowStyleClass != null) {
-            rowStyleClass = rowStyleClass + " " + userRowStyleClass;
-        }
-        
-        if(table.isEditingRow()) {
+        if(table.isEditingRow())
             rowStyleClass = rowStyleClass + " " + DataTable.EDITING_ROW_CLASS;
-        }
+            
+        if(userRowStyleClass != null)
+            rowStyleClass = rowStyleClass + " " + userRowStyleClass;
 
         writer.startElement("tr", null);
         writer.writeAttribute("data-ri", rowIndex, null);
@@ -912,7 +910,7 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, UIColumn column, boolean selected) throws IOException {
         String selectionMode = column.getSelectionMode();
-        boolean disabled = column.isDisabledSelection();
+        boolean disabled = table.isDisabledSelection();
 
         if(selectionMode.equalsIgnoreCase("single")) {
             encodeRadio(context, table, selected, disabled);
@@ -971,6 +969,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("name", table.getClientId(context) + "_checkbox", null);
+        if(disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
         writer.endElement("input");
         writer.endElement("div");
         
