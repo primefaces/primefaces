@@ -1100,7 +1100,11 @@
         PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
 
         // re-focus element
-        if (PrimeFaces.customFocus == false && activeElementId) {
+        if (PrimeFaces.customFocus == false
+                && activeElementId
+                // do we really need to refocus? we just check the current activeElement here
+                && activeElementId != $(document.activeElement).attr('id')) {
+
         	var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));
         	elementToFocus.focus();
 
