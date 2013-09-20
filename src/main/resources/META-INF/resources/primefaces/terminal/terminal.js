@@ -98,6 +98,10 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.ajax.AjaxRequest(options);
     },
             
+    focus: function() {
+        this.input.trigger('focus');
+    },
+            
     clear: function() {
         this.content.html('');
         this.input.val('');
