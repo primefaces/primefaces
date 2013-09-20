@@ -9,7 +9,7 @@ PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
         var text = this.jq.children('.ui-message-error-detail').text();
         
         if(text) {
-           $(PrimeFaces.escapeClientId(this.cfg.target)).attr('title', text);
+           $(PrimeFaces.escapeClientId(this.cfg.target)).data('tooltip', text);
         }
     }
 });
