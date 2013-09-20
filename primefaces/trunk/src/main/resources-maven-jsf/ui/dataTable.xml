@@ -316,6 +316,13 @@
             <defaultValue>false</defaultValue>
             <description>Defines if row should be rendered as expanded by default.</description>
 		</attribute>
+        <attribute>
+			<name>disabledSelection</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Disables row selection when true.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
