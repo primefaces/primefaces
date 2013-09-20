@@ -16,6 +16,7 @@
 package org.primefaces.renderkit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +83,11 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             String toViewId = navCase.getToViewId(context);
             boolean isIncludeViewParams = isIncludeViewParams(outcomeTarget, navCase);
             Map<String, List<String>> params = getParams(navCase, outcomeTarget);
+
+            if (params == null)
+            {
+                params = Collections.emptyMap();
+            }
 
             url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
 
