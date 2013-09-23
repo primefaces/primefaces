@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+]>
+<component>
+	<tag>watermark</tag>
+	<tagClass>org.primefaces.component.watermark.WatermarkTag</tagClass>
+	<componentClass>org.primefaces.component.watermark.Watermark</componentClass>
+	<componentType>org.primefaces.component.Watermark</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.WatermarkRenderer</rendererType>
+	<rendererClass>org.primefaces.component.watermark.WatermarkRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Watermark displays a hint on an input field.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+        &widget_var_attribute;
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Text of watermark. Required.</description>
+		</attribute>
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Id of the component to attach the watermark.</description>
+		</attribute>
+		<attribute>
+			<name>forElement</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>jQuery selector to attach the watermark.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>watermark/watermark.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+        <resource>
+			<name>watermark/watermark.js</name>
+		</resource>
+	</resources>
+</component>
