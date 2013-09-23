@@ -21,7 +21,6 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import org.primefaces.component.api.AutoUpdatable;
 import org.primefaces.context.RequestContext;
-import org.primefaces.util.Constants;
 
 /**
  * Registers components to auto update before rendering
@@ -32,7 +31,7 @@ public class AutoUpdateComponentListener implements SystemEventListener {
         AutoUpdatable component = (AutoUpdatable) cse.getSource();
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if(component.isAutoUpdate() && context.getRenderKit().getResponseStateManager().isPostback(context)) {
+        if(component.isAutoUpdate() && context.isPostback()) {
             
             if (!RequestContext.getCurrentInstance().isIgnoreAutoUpdate()) {
         		context.getPartialViewContext().getRenderIds().add(component.getClientId(context));
