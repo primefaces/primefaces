@@ -127,6 +127,7 @@ public class DataTableRenderer extends DataRenderer {
         
         //Selection
         wb.attr("selectionMode", selectionMode, null);
+        wb.attr("rowSelectMode", table.getRowSelectMode(), "new");
         
         //Filtering
         if(table.isFilteringEnabled()) {
