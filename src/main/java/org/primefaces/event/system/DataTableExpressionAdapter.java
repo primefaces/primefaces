@@ -28,7 +28,7 @@ import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
 
 /**
- * DataTableExpressionAdapter converts old sortBy-filterBy syntax of 3.x to new syntax of 4.x for backward compatibility
+ * DataTableExpressionAdapter for backward compatibility
  */
 public class DataTableExpressionAdapter implements SystemEventListener {
         
@@ -47,12 +47,16 @@ public class DataTableExpressionAdapter implements SystemEventListener {
                     if(child instanceof Column) {
                         String sortByProperty = convertStaticExpression(var, child.getValueExpression("sortBy"));
                         String filterByProperty = convertStaticExpression(var, child.getValueExpression("filterBy"));
+                        ValueExpression disabledSelectionVE = child.getValueExpression("disabledSelection");
                         
                         if(sortByProperty != null)
                             ((Column) child).setSortBy(sortByProperty);
                         
                         if(filterByProperty != null)
                             ((Column) child).setFilterBy(filterByProperty);
+                        
+                        if(disabledSelectionVE != null)
+                            dt.setValueExpression("disabledSelection", disabledSelectionVE);
                     }
                     else if(child instanceof Columns) {
                         String sortByExpression = convertDynamicExpression(var, child.getValueExpression("sortBy"));
