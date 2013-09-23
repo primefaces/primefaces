@@ -252,6 +252,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindSelectionEvents: function() {
         var $this = this;
+        this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
         this.rowSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content.ui-datatable-selectable';
 
         //row events
@@ -358,7 +359,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindCheckboxEvents: function() {
         var checkAllTogglerSelector = this.jqId + ' table thead th.ui-selection-column .ui-chkbox.ui-chkbox-all .ui-chkbox-box',
         $this = this;
-        
         this.checkAllToggler = $(checkAllTogglerSelector);
         
         //check-uncheck all
@@ -933,7 +933,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
             else {
                 //unselect previous selection if this is single selection or multiple one with no keys
-                if(this.isSingleSelection() || (this.isMultipleSelection() && event && !metaKey && !shiftKey)) {
+                if(this.isSingleSelection() || (this.isMultipleSelection() && event && !metaKey && !shiftKey && this.cfg.rowSelectMode === 'new' )) {
                     this.unselectAllRows();
                 }
                 

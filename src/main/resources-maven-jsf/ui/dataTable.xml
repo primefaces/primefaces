@@ -323,6 +323,13 @@
             <defaultValue>false</defaultValue>
             <description>Disables row selection when true.</description>
 		</attribute>
+        <attribute>
+			<name>rowSelectMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>new</defaultValue>
+            <description>Defines row select mode for checkbox based selection, valid values are new (default) and add.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
