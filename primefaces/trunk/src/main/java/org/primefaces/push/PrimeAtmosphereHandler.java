@@ -19,11 +19,14 @@ import org.atmosphere.cpr.AtmosphereRequest;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.MetaBroadcaster;
 import org.atmosphere.handler.AbstractReflectorAtmosphereHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 
 /**
@@ -37,6 +40,8 @@ import java.util.List;
  */
 public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
 
+    private final Logger logger = LoggerFactory.getLogger(PrimeAtmosphereHandler.class);
+
     private final List<PushRule> rules;
 
     public PrimeAtmosphereHandler(List<PushRule> rules) {
@@ -49,29 +54,7 @@ public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
         if (r.getMethod().equalsIgnoreCase("GET")) {
             applyRules(resource);
         } else {
-            StringBuilder stringBuilder = new StringBuilder();
-            BufferedReader bufferedReader = null;
-            try {
-                InputStream inputStream = r.getRequest().getInputStream();
-                if (inputStream != null) {
-                    bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    char[] charBuffer = new char[8192];
-                    int bytesRead = -1;
-                    while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
-                        stringBuilder.append(charBuffer, 0, bytesRead);
-                    }
-                } else {
-                    stringBuilder.append("");
-                }
-            } catch (IOException ex) {
-            } finally {
-                if (bufferedReader != null) {
-                    try {
-                        bufferedReader.close();
-                    } catch (IOException ex) {
-                    }
-                }
-            }
+            StringBuilder stringBuilder = read(resource);
             MetaBroadcaster.getDefault().broadcastTo("/*", stringBuilder.toString());
         }
     }
@@ -84,6 +67,43 @@ public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
         }
     }
 
-    public void destroy() {
+    public StringBuilder read(AtmosphereResource r) {
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = null;
+        try {
+            try {
+                InputStream inputStream = r.getRequest().getInputStream();
+                if (inputStream != null) {
+                    bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                }
+            } catch (IllegalStateException ex) {
+                logger.trace("", ex);
+                Reader reader = r.getRequest().getReader();
+                if (reader != null) {
+                    bufferedReader = new BufferedReader(reader);
+                }
+            }
+
+            if (bufferedReader != null) {
+                char[] charBuffer = new char[8192];
+                int bytesRead = -1;
+                while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
+                    stringBuilder.append(charBuffer, 0, bytesRead);
+                }
+            } else {
+                stringBuilder.append("");
+            }
+        } catch (IOException ex) {
+            logger.warn("", ex);
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ex) {
+                    logger.warn("", ex);
+                }
+            }
+        }
+        return stringBuilder;
     }
 }

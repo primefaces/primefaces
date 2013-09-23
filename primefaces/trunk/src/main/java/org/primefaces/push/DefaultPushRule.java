@@ -18,9 +18,6 @@ package org.primefaces.push;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.cpr.BroadcasterFactory;
-import org.atmosphere.cpr.BroadcasterLifeCyclePolicyListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The Default {@link PushRule} that creates channel based on the {@link org.atmosphere.cpr.AtmosphereRequest#getPathInfo()}.
@@ -40,22 +37,6 @@ public class DefaultPushRule implements PushRule {
         }
 
         final Broadcaster b = BroadcasterFactory.getDefault().lookup(pathInfo, true);
-        b.addBroadcasterLifeCyclePolicyListener(new BroadcasterLifeCyclePolicyListener() {
-
-            private final Logger logger = LoggerFactory.getLogger(BroadcasterLifeCyclePolicyListener.class);
-
-            public void onEmpty() {
-                logger.trace("onEmpty {}", b.getID());
-            }
-
-            public void onIdle() {
-                logger.trace("onIdle {}", b.getID());
-            }
-
-            public void onDestroy() {
-                logger.trace("onDestroy {}", b.getID());
-            }
-        });
         resource.setBroadcaster(b);
 
         return true;

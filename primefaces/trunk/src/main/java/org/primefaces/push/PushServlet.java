@@ -15,9 +15,11 @@
  */
 package org.primefaces.push;
 
-import org.atmosphere.cpr.ApplicationConfig;
+import org.atmosphere.client.TrackMessageSizeInterceptor;
 import org.atmosphere.cpr.AtmosphereServlet;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
+import org.atmosphere.interceptor.HeartbeatInterceptor;
+import org.atmosphere.interceptor.SuspendTrackerInterceptor;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -33,11 +35,6 @@ public class PushServlet extends AtmosphereServlet {
 
     @Override
     public void init(final ServletConfig sc) throws ServletException {
-
-        // Shareable ThreadPool amongst all created Broadcasters.
-        // This behavior can be changed using a PushRule.
-        framework().addInitParameter(ApplicationConfig.BROADCASTER_SHARABLE_THREAD_POOLS, "true");
-
         PushContext c = PushContextFactory.getDefault().getPushContext();
         if (PushContextImpl.class.isAssignableFrom(c.getClass())) {
             framework().asyncSupportListener(PushContextImpl.class.cast(c));
@@ -45,7 +42,11 @@ public class PushServlet extends AtmosphereServlet {
 
         super.init(sc);
 
-        framework.interceptor(new AtmosphereResourceLifecycleInterceptor())
+        framework
+                .interceptor(new AtmosphereResourceLifecycleInterceptor())
+                .interceptor(new HeartbeatInterceptor())
+                .interceptor(new TrackMessageSizeInterceptor())
+                .interceptor(new SuspendTrackerInterceptor())
                 .addAtmosphereHandler("/*", new PrimeAtmosphereHandler(configureRules(sc)))
                 .initAtmosphereHandler(sc);
     }
