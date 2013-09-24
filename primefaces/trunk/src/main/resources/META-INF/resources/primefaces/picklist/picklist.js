@@ -30,8 +30,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             $(this.jqId + ' ul').sortable({
                 cancel: '.ui-state-disabled,.ui-chkbox-box',
                 connectWith: this.jqId + ' .ui-picklist-list',
-                revert: true,
-                containment: this.jq,
+                revert: 1,
                 update: function(event, ui) {
                     $this.unselectItem(ui.item);
 
