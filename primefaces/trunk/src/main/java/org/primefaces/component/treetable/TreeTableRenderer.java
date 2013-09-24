@@ -76,7 +76,7 @@ public class TreeTableRenderer extends CoreRenderer {
                 tt.setRowKey(null);     //cleanup
             }
         }
-        
+
         if(tt.isCheckboxSelection() && tt.isSelectionRequest(context)) {
             String selectedNodeRowKey = params.get(clientId + "_instantSelection");
             tt.setRowKey(selectedNodeRowKey);
