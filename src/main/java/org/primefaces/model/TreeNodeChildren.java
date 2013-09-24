@@ -61,6 +61,7 @@ public class TreeNodeChildren extends ArrayList<TreeNode> {
             eraseParent(node);
             super.add(index, node);
             node.setParent(parent);
+            updateRowKeys(parent);
         }
     }
     
