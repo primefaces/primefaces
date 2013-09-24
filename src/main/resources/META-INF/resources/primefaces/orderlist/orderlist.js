@@ -22,7 +22,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
 
             //Enable dnd
             this.list.sortable({
-                revert: true,
+                revert: 1,
                 start: function(event, ui) {
                     PrimeFaces.clearSelection();
                 } 
