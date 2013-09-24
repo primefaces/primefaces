@@ -239,11 +239,13 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     unselectAllNodes: function() {
-        var selectedNodes = this.tbody.children('tr.ui-state-highlight');
-        
+        var selectedNodes = this.tbody.children('tr.ui-state-highlight'); 
         for(var i = 0; i < selectedNodes.length; i++) {
             this.unselectNode(selectedNodes.eq(i), true);
         }
+        
+        this.selections = [];
+        this.writeSelections();
     },
     
     selectNodesInRange: function(node) {
