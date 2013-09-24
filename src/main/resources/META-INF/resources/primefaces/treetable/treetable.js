@@ -404,7 +404,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     addToSelection: function(rowKey) {
-        if(!this.isSelected()) {
+        if(!this.isSelected(rowKey)) {
             this.selections.push(rowKey);
         }
     },
