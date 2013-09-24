@@ -155,7 +155,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
     
     unselectItem: function(item) {
-        item.removeClass('ui-state-highlight');
+        item.removeClass('ui-state-hover ui-state-highlight');
         
         if(this.cfg.showCheckbox) {
             this.unselectCheckbox(item.find('div.ui-chkbox-box'));
