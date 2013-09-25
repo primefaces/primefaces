@@ -710,7 +710,18 @@
     PrimeFaces.widgets = {};
     
     PF = function(widgetVar) {
-        return PrimeFaces.widgets[widgetVar];
+    	
+    	var widgetInstance = PrimeFaces.widgets[widgetVar];
+    	
+    	if (!widgetInstance) {
+	        if (window.console && console.log) { 
+	            console.log("Widget for var '" + widgetVar + "' not available!");
+	        }
+	        
+	        PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
+    	}
+    	
+        return widgetInstance;
     };
 
     PrimeFaces.ajax.AjaxUtils = {
