@@ -617,7 +617,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         hideNS = 'mousedown.' + this.id;
         
         //hide overlay when outside is clicked
-        $(document).off(hideNS).on('mousedown.ui-selectonemenu', function (e) {
+        $(document).off(hideNS).on(hideNS, function (e) {
             if($this.panel.is(":hidden")) {
                 return;
             }
