@@ -613,29 +613,30 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     bindConstantEvents: function() {
-        var _self = this;
+        var $this = this,
+        hideNS = 'mousedown.' + this.id;
         
         //hide overlay when outside is clicked
-        $(document.body).bind('mousedown.ui-selectonemenu', function (e) {
-            if(_self.panel.is(":hidden")) {
+        $(document).off(hideNS).on('mousedown.ui-selectonemenu', function (e) {
+            if($this.panel.is(":hidden")) {
                 return;
             }
             
-            var offset = _self.panel.offset();
-            if (e.target === _self.label.get(0) ||
-                e.target === _self.menuIcon.get(0) ||
-                e.target === _self.menuIcon.children().get(0)) {
+            var offset = $this.panel.offset();
+            if (e.target === $this.label.get(0) ||
+                e.target === $this.menuIcon.get(0) ||
+                e.target === $this.menuIcon.children().get(0)) {
                 return;
             }
             
             if (e.pageX < offset.left ||
-                e.pageX > offset.left + _self.panel.width() ||
+                e.pageX > offset.left + $this.panel.width() ||
                 e.pageY < offset.top ||
-                e.pageY > offset.top + _self.panel.height()) {
+                e.pageY > offset.top + $this.panel.height()) {
 
-                _self.hide();
+                $this.hide();
                 
-                _self.revert();
+                $this.revert();
             }
         });
 
