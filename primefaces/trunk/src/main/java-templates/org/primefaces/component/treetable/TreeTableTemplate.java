@@ -55,7 +55,7 @@ import java.lang.StringBuilder;
     }
 
     public boolean isSelectionRequest(FacesContext context) {
-		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelect");
+		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelection");
 	}
 
     @Override
