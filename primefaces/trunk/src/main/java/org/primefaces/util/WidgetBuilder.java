@@ -53,8 +53,6 @@ public class WidgetBuilder {
         			+ "; See: http://stackoverflow.com/questions/9158238/why-js-function-name-conflicts-with-element-id");
         }
 
-    	// get the ResponseWriter on each #init because some components may switch the ResponseWriter in the FacesContext
-    	this.writer = context.getResponseWriter();
     	this.resourcePath = resourcePath;
     	this.endFunction = endFunction;
     	
@@ -139,6 +137,9 @@ public class WidgetBuilder {
     }
     
     private void renderScriptBlock(String id) throws IOException {
+        // get the ResponseWriter on each #init because some components may switch the ResponseWriter in the FacesContext
+        this.writer = context.getResponseWriter();
+
         writer.startElement("script", null);
         writer.writeAttribute("id", id + "_s", null);
         writer.writeAttribute("type", "text/javascript", null);
