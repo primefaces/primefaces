@@ -27,13 +27,12 @@ import javax.faces.context.ResponseWriter;
  */
 public class WidgetBuilder {
 	
-    protected ResponseWriter writer;
+    protected ResponseWriter writer = null;
     protected boolean endFunction = false;
     protected String resourcePath = null;
     protected FacesContext context;
         
-    public WidgetBuilder(ResponseWriter writer, FacesContext context) {
-    	this.writer = writer;
+    public WidgetBuilder(FacesContext context) {
     	this.context = context;
     }
     
@@ -54,6 +53,8 @@ public class WidgetBuilder {
         			+ "; See: http://stackoverflow.com/questions/9158238/why-js-function-name-conflicts-with-element-id");
         }
 
+    	// get the ResponseWriter on each #init because some components may switch the ResponseWriter in the FacesContext
+    	this.writer = context.getResponseWriter();
     	this.resourcePath = resourcePath;
     	this.endFunction = endFunction;
     	
