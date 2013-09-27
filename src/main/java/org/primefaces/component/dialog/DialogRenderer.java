@@ -157,7 +157,7 @@ public class DialogRenderer extends CoreRenderer {
         String footer = dialog.getFooter();
         UIComponent footerFacet = dialog.getFacet("footer");
         
-        if(footer == null && footerFacet == null)
+        if(footer == null && (footerFacet == null || !footerFacet.isRendered()))
             return;
         
         writer.startElement("div", null);
