@@ -17,9 +17,16 @@ import javax.faces.render.RenderKit;
 public class FacesContextMock extends FacesContext {
 
 	private Map<Object, Object> attributes;
+	private ResponseWriter writer;
 
 	public FacesContextMock() {
     }
+	
+	public FacesContextMock(ResponseWriter writer) {
+		this.writer = writer;
+
+		setCurrentInstance(this);
+	}
 	
 	public FacesContextMock(Map<Object, Object> attributes) {
 		this.attributes = attributes;
@@ -94,7 +101,7 @@ public class FacesContextMock extends FacesContext {
 
 	@Override
 	public ResponseWriter getResponseWriter() {
-		return null;
+		return writer;
 	}
 
 	@Override
