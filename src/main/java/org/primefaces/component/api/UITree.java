@@ -33,7 +33,7 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;;
+import javax.faces.event.PhaseId;
 import org.primefaces.model.TreeNode;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {

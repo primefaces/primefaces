@@ -28,7 +28,7 @@ public class WidgetBuilderTest {
     public void shouldBuildBasicWidget() throws IOException {
     	CollectingResponseWriter writer = new CollectingResponseWriter();
 
-    	WidgetBuilder builder = new WidgetBuilder(writer, new FacesContextMock());
+    	WidgetBuilder builder = new WidgetBuilder(new FacesContextMock(writer));
         builder.init("AccordionPanel", "acco", "accoId");
         builder.finish();
 
@@ -41,7 +41,7 @@ public class WidgetBuilderTest {
     public void initWithWindowLoad() throws IOException {
     	CollectingResponseWriter writer = new CollectingResponseWriter();
 
-    	WidgetBuilder builder = new WidgetBuilder(writer, new FacesContextMock());
+    	WidgetBuilder builder = new WidgetBuilder(new FacesContextMock(writer));
         builder.initWithWindowLoad("AccordionPanel", "acco", "accoId");
         builder.finish();
 
@@ -54,7 +54,7 @@ public class WidgetBuilderTest {
     public void initWithComponentLoad() throws IOException {
     	CollectingResponseWriter writer = new CollectingResponseWriter();
 
-    	WidgetBuilder builder = new WidgetBuilder(writer, new FacesContextMock());
+    	WidgetBuilder builder = new WidgetBuilder(new FacesContextMock(writer));
         builder.initWithComponentLoad("AccordionPanel", "acco", "accoId", "test");
         builder.finish();
 
@@ -67,7 +67,7 @@ public class WidgetBuilderTest {
     public void shouldBuildWithAttributes() throws IOException {
     	CollectingResponseWriter writer = new CollectingResponseWriter();
 
-    	WidgetBuilder builder = new WidgetBuilder(writer, new FacesContextMock());
+    	WidgetBuilder builder = new WidgetBuilder(new FacesContextMock(writer));
         builder.initWithDomReady("DataTable", "dt", "dt1");
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
@@ -84,7 +84,7 @@ public class WidgetBuilderTest {
     public void shouldBuildWithCallbacks() throws IOException {
     	CollectingResponseWriter writer = new CollectingResponseWriter();
 
-        WidgetBuilder builder = new WidgetBuilder(writer, new FacesContextMock());
+        WidgetBuilder builder = new WidgetBuilder(new FacesContextMock(writer));
         builder.init("DataTable", "dt", "dt1");
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
@@ -100,7 +100,7 @@ public class WidgetBuilderTest {
     public void shouldBuildWithResourcePath() throws IOException {
     	CollectingResponseWriter writer = new CollectingResponseWriter();
 
-        WidgetBuilder builder = new WidgetBuilder(writer, new FacesContextMock());
+        WidgetBuilder builder = new WidgetBuilder(new FacesContextMock(writer));
         builder.init("AccordionPanel", "acco", "accoId", "accordion");
         builder.finish();
         
