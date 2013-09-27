@@ -163,7 +163,7 @@ public class UIData extends javax.faces.component.UIData {
             if(rowCount > 0 && first >= rowCount) {
                 int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
                 
-                this.setFirst((numberOfPages-1) * rows);
+                this.setFirst(Math.max((numberOfPages-1) * rows, 0));
             }
         }
     }
