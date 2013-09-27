@@ -385,8 +385,12 @@
         },
                 
         openDialog: function(cfg) {
-            var dialogId = cfg.sourceComponentId + '_dlg',
-            dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
+            var dialogId = cfg.sourceComponentId + '_dlg';
+            if(document.getElementById(dialogId)) {
+                return;
+            }
+
+            var dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
             dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-overlay-hidden"' + 
                     ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widgetvar="' + dialogWidgetVar + '"/>')
                     .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span>' +
