@@ -3,6 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+    
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
@@ -21,8 +27,9 @@
     </licenses>
     
     <scm>
-        <url>http://primefaces.googlecode.com/svn/</url>
-        <connection>http://primefaces.googlecode.com/svn/</connection>
+        <connection>scm:svn:http://primefaces.googlecode.com/svn/primefaces/trunk</connection>
+        <developerConnection>scm:svn:https://primefaces.googlecode.com/svn/primefaces/trunk</developerConnection>
+        <url>http://primefaces.googlecode.com/svn/primefaces/trunk</url>
     </scm>
     
     <developers>
@@ -376,66 +383,8 @@
             </plugin>
  
         </plugins>
-        
-        <!-- Deployment -->
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh</artifactId>
-                <version>1.0</version>
-            </extension>
-        </extensions>
 
     </build>
-    
-    <distributionManagement>
-        <repository>
-            <id>prime-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>sftp://primefaces.org/var/www/repository</url>
-        </repository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>prime-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>http://repository.primefaces.org</url>
-        </repository>
-        <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
-            <url>http://download.java.net/maven/2/</url>
-        </repository>
-        <repository>
-            <id>oss-snapshot</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>prime-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>http://repository.primefaces.org</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>oss.sonatype.org-github-releases</id>
-            <name>oss.sonatype.org - github-releases</name>
-            <url>http://oss.sonatype.org/content/repositories/github-releases</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>codehaus</id>
-            <name>Codehaus Release Repo</name>
-            <url>http://repository.codehaus.org</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <profiles>
         <profile>
