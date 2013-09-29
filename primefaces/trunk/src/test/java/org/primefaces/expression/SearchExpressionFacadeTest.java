@@ -1242,4 +1242,62 @@ public class SearchExpressionFacadeTest
 	    		SearchExpressionFacade.resolveComponentsForClientWithParentFallback(
 	    				FacesContext.getCurrentInstance(), form, " "));
 	}
+	
+	@Test
+	public void resolveComponent_Next() {
+
+	    UIComponent root = new UIPanel();
+	    root.setId("root");
+
+	    UIComponent command1 = new UICommand();
+	    command1.setId("command1");
+	    root.getChildren().add(command1);
+
+	    UIComponent command2 = new UICommand();
+	    command2.setId("command2");
+	    root.getChildren().add(command2);
+	    
+	    UIComponent command3 = new UICommand();
+	    command3.setId("command3");
+	    root.getChildren().add(command3);
+
+	    assertSame("Failed", command2, resolveComponent(command1, " @next "));
+	    assertSame("Failed", command3, resolveComponent(command2, " @next "));
+
+		try {
+			resolveComponent(command3, " @next");
+			Assert.fail("This should actually raise an exception");
+		} catch (Exception e) {
+			assertEquals(FacesException.class, e.getClass());
+		}
+	}
+
+	@Test
+	public void resolveComponent_Previous() {
+
+	    UIComponent root = new UIPanel();
+	    root.setId("root");
+
+	    UIComponent command1 = new UICommand();
+	    command1.setId("command1");
+	    root.getChildren().add(command1);
+
+	    UIComponent command2 = new UICommand();
+	    command2.setId("command2");
+	    root.getChildren().add(command2);
+	    
+	    UIComponent command3 = new UICommand();
+	    command3.setId("command3");
+	    root.getChildren().add(command3);
+
+	    assertSame("Failed", command1, resolveComponent(command2, " @previous "));
+	    assertSame("Failed", command2, resolveComponent(command3, " @previous "));
+
+		try {
+			resolveComponent(command1, " @previous");
+			Assert.fail("This should actually raise an exception");
+		} catch (Exception e) {
+			assertEquals(FacesException.class, e.getClass());
+		}
+	}
 }
