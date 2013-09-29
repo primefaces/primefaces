@@ -33,6 +33,9 @@ import org.primefaces.util.ComponentUtils;
 public class SearchExpressionFacade {
 
 	private static final Logger LOG = Logger.getLogger(SearchExpressionFacade.class.getName());
+
+	private static final String SHARED_EXPRESSION_BUFFER_KEY = "SearchExpressionFacade.SHARED_EXPRESSION_BUFFER";
+	private static final String SHARED_SPLIT_BUFFER_KEY = "SearchExpressionFacade.SHARED_SPLIT_BUFFER_KEY";
 	
     private static final char[] EXPRESSION_SEPARATORS = new char[] { ',', ' ' };
     
@@ -50,7 +53,7 @@ public class SearchExpressionFacade {
 
 		if (!ComponentUtils.isValueBlank(expressions)) {
 		    // split expressions by blank or comma (and ignore blank and commas inside brackets)
-			String[] splittedExpressions = split(expressions, EXPRESSION_SEPARATORS);
+			String[] splittedExpressions = split(context, expressions, EXPRESSION_SEPARATORS);
 
 			if (splittedExpressions != null) {
 				
@@ -104,14 +107,14 @@ public class SearchExpressionFacade {
 		}
 		
 		// split expressions by blank or comma (and ignore blank and commas inside brackets)
-		String[] splittedExpressions = split(expressions, EXPRESSION_SEPARATORS);
+		String[] splittedExpressions = split(context, expressions, EXPRESSION_SEPARATORS);
 
 		String buildedExpressions = "";
 
 		if (splittedExpressions != null) {
 			validateExpressions(context, source, expressions, splittedExpressions);
 			
-			StringBuilder expressionsBuilder = new StringBuilder();
+			StringBuilder expressionsBuffer = getSharedBuffer(context, SHARED_EXPRESSION_BUFFER_KEY);
 			
 			for (int i = 0; i < splittedExpressions.length; i++) {
 				String expression = splittedExpressions[i].trim();
@@ -120,17 +123,17 @@ public class SearchExpressionFacade {
 					continue;
 				}
 				
-				if (i != 0 && expressionsBuilder.length() > 0) {
-					expressionsBuilder.append(" ");
+				if (i != 0 && expressionsBuffer.length() > 0) {
+					expressionsBuffer.append(" ");
 				}
 	
 				String component = resolveComponentForClient(context, source, expression, checkForRenderer);
 				if (component != null) {
-					expressionsBuilder.append(component);
+					expressionsBuffer.append(component);
 				}
 			}
 			
-			buildedExpressions = expressionsBuilder.toString();
+			buildedExpressions = expressionsBuffer.toString();
 		}
 
 		if (ComponentUtils.isValueBlank(buildedExpressions)) {
@@ -312,7 +315,7 @@ public class SearchExpressionFacade {
 			}
 
 			// Pattern to split expressions by the separator but not inside parenthesis
-			String[] subExpressions = split(expression, separatorChar);
+			String[] subExpressions = split(context, expression, separatorChar);
 
 			if (subExpressions != null) {
 				// checks for unnestable subexpressions (like @all or @none)
@@ -380,7 +383,7 @@ public class SearchExpressionFacade {
 
 				UIComponent last = source;
 
-				String[] subExpressions = split(expression, separatorChar);
+				String[] subExpressions = split(context, expression, separatorChar);
 				if (subExpressions != null) {
 					for (int j = 0; j < subExpressions.length; j++) {
 	
@@ -441,18 +444,19 @@ public class SearchExpressionFacade {
 	/**
 	 * Splits the given string by the given separator, but ignoring separator inside parenthese.
      *
+     * @param context The current {@link FacesContext}.
 	 * @param value The string value.
 	 * @param separators The separators.
 	 * @return The splitted string.
 	 */
-	private static String[] split(String value, char... separators) {
+	private static String[] split(FacesContext context, String value, char... separators) {
 
 		if (value == null) {
 			return null;
 		}
 
 		List<String> tokens = new ArrayList<String>();
-		StringBuilder buffer = new StringBuilder();
+		StringBuilder buffer = getSharedBuffer(context, SHARED_SPLIT_BUFFER_KEY);
 
 		int parenthesesCounter = 0;
 
@@ -531,5 +535,27 @@ public class SearchExpressionFacade {
      */
 	private static boolean isNestable(String expression) {
 		return !isPassTroughExpression(expression);
+	}
+
+	/**
+	 * Get a shared {@link StringBuilder} instance.
+	 * This is required as e.g. 100 #resolveComponentsForClient calls would create 
+	 * 200 {@link StringBuilder} instances!
+	 *
+	 * @param context The {@link FacesContext}
+	 * @param key The key for the {@link FacesContext} attributes.
+	 * @return The shared {@link StringBuilder} instance
+	 */
+	private static StringBuilder getSharedBuffer(FacesContext context, String key) {
+		StringBuilder buffer = (StringBuilder) context.getAttributes().get(key);
+
+		if (buffer == null) {
+			buffer = new StringBuilder();
+			context.getAttributes().put(key, buffer);
+		} else {
+			buffer.setLength(0);
+		}
+
+		return buffer;
 	}
 }
