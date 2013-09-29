@@ -540,7 +540,7 @@ public class SearchExpressionFacade {
 	/**
 	 * Get a shared {@link StringBuilder} instance.
 	 * This is required as e.g. 100 #resolveComponentsForClient calls would create 
-	 * 200 {@link StringBuilder} instances!
+	 * 300 {@link StringBuilder} instances!
 	 *
 	 * @param context The {@link FacesContext}
 	 * @param key The key for the {@link FacesContext} attributes.
