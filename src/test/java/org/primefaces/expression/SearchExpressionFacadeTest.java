@@ -1373,7 +1373,7 @@ public class SearchExpressionFacadeTest
 	}
 	
 	@Test
-	public void resolveComponent_FromChildNextNext() {
+	public void resolveComponent_FormChildNextNext() {
 
 	    UIForm root = new UIForm();
 	    root.setId("form");
