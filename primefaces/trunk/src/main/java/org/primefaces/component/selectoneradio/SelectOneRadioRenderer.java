@@ -18,6 +18,7 @@ package org.primefaces.component.selectoneradio;
 import java.io.IOException;
 import java.util.List;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
@@ -53,11 +54,11 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String style = radio.getStyle();
         String styleClass = radio.getStyleClass();
         styleClass = styleClass == null ? SelectOneRadio.STYLE_CLASS : SelectOneRadio.STYLE_CLASS + " " + styleClass;
-        String layout = radio.getLayout();
-        boolean custom = layout != null && layout.equals("custom");
+        String layout = radio.getLayout() != null ? radio.getLayout(): "lineDirection";
+        boolean custom = layout.equals("custom");
         
         List<SelectItem> selectItems = getSelectItems(context, radio);
-                
+        
         if(custom) {
             //populate selectitems for radiobutton access
             radio.setSelectItems(getSelectItems(context, radio));
@@ -74,7 +75,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             if(style != null) {
                 writer.writeAttribute("style", style, "style");
             }
-
+            
             encodeSelectItems(context, radio, selectItems, layout);
 
             writer.endElement("table");
@@ -96,34 +97,101 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
     
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout) throws IOException {
+        
+        if(layout.equals("lineDirection") || layout.length() == 0)
+            encodeLineLayout(context, radio, selectItems);
+        else if(layout.equals("pageDirection"))
+            encodePageLayout(context, radio, selectItems);
+        else if(layout.equals("grid"))
+            encodeGridLayout(context, radio, selectItems);
+        else 
+            throw new FacesException("Invalid '" + layout + "'" + " for the value of layout attribute");    
+    }
+    
+    protected void encodeLineLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException{
         ResponseWriter writer = context.getResponseWriter();
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
-        boolean pageDirection = layout != null && layout.equals("pageDirection");
         Object value = radio.getSubmittedValue();
+        
         if(value == null) {
             value = radio.getValue();
         }
         Class type = value == null ? String.class : value.getClass();
         
-        int idx = -1;
+        writer.startElement("tr", null);
+        int idx = 0;
         for(SelectItem selectItem : selectItems) {
-            idx++;
             boolean disabled = selectItem.isDisabled() || radio.isDisabled();
             String id = name + UINamingContainer.getSeparatorChar(context) + idx;
             Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
             boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
             
-            if(pageDirection) {
-                writer.startElement("tr", null);
-            }
-
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
+            idx++;
+        }
+        writer.endElement("tr");
+    }
+    
+    protected void encodePageLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException{
+        ResponseWriter writer = context.getResponseWriter();
+        Converter converter = radio.getConverter();
+        String name = radio.getClientId(context);
+        Object value = radio.getSubmittedValue();
+        
+        if(value == null) {
+            value = radio.getValue();
+        }
+        Class type = value == null ? String.class : value.getClass();
+        
+        int idx = 0;
+        for(SelectItem selectItem : selectItems) {
+            boolean disabled = selectItem.isDisabled() || radio.isDisabled();
+            String id = name + UINamingContainer.getSeparatorChar(context) + idx;
+            Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
+            boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
+            
+            writer.startElement("tr", null);  
+            encodeOption(context, radio, selectItem, id, name, converter, selected, disabled); 
+            writer.endElement("tr");
+            idx++;        
+        }           
+    }
+    
+    protected void encodeGridLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException{
+        ResponseWriter writer = context.getResponseWriter();
+        Converter converter = radio.getConverter();
+        String name = radio.getClientId(context);
+        Object value = radio.getSubmittedValue();
+        int columns = radio.getColumns();
+        
+        if(value == null) {
+            value = radio.getValue();
+        }
+        Class type = value == null ? String.class : value.getClass();
+        
+        if(columns != 0){
+            int idx = 0, colMod;
+            for(SelectItem selectItem : selectItems) {
+                boolean disabled = selectItem.isDisabled() || radio.isDisabled();
+                String id = name + UINamingContainer.getSeparatorChar(context) + idx;
+                Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
+                boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
+                
+                colMod = idx % columns;
+                if(colMod == 0)
+                    writer.startElement("tr", null);
+            
+                    encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
 
-            if(pageDirection) {
-                writer.endElement("tr");
+                    idx++;
+                    colMod = idx % columns;
+                    if(colMod == 0)
+                        writer.endElement("tr");
             }
         }
+        else
+            throw new FacesException("The value of columns attribute cannot be zero");
     }
     
     protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name, Converter converter, boolean selected, boolean disabled) throws IOException {

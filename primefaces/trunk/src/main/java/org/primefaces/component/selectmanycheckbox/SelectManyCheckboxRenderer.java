@@ -17,6 +17,9 @@ package org.primefaces.component.selectmanycheckbox;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
@@ -26,6 +29,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import javax.xml.bind.ParseConversionEvent;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -129,30 +133,80 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
+    protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox) throws IOException{
+        String layout = checkbox.getLayout() !=null ? checkbox.getLayout() : "lineDirection";
+
+        if(layout.equals("lineDirection"))
+            encodeLineLayout(context, checkbox);
+        else if(layout.equals("pageDirection"))
+            encodePageLayout(context, checkbox);
+        else if(layout.equals("grid"))
+            encodeGridLayout(context, checkbox);
+        else 
+            throw new FacesException("Invalid '" + layout + "'" + " for the value of layout attribute");   
+    }
+    
+    protected void encodeLineLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException{
         ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
         Converter converter = checkbox.getConverter();
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
-        String layout = checkbox.getLayout();
-        boolean pageDirection = layout != null && layout.equals("pageDirection");
-
-        int idx = -1;
+        
+        writer.startElement("tr", null);
+        int idx = 0;
         for(SelectItem selectItem : selectItems) {
-            idx++;
-            if(pageDirection) {
-                writer.startElement("tr", null);
-            }
-
             encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+            idx++;
+        }
+        writer.endElement("tr");
+    }
+    
+    protected void encodePageLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException{
+        ResponseWriter writer = context.getResponseWriter();
+        List<SelectItem> selectItems = getSelectItems(context, checkbox);
+        Converter converter = checkbox.getConverter();
+        Object values = getValues(checkbox);
+        Object submittedValues = getSubmittedValues(checkbox);
+        
+        int idx = 0;
+        for(SelectItem selectItem : selectItems) {
+            writer.startElement("tr", null);
+            
+            encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+            
+            writer.endElement("tr");
+            idx++;        
+        }           
+    }
+    
+    protected void encodeGridLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException{
+        ResponseWriter writer = context.getResponseWriter();
+        List<SelectItem> selectItems = getSelectItems(context, checkbox);
+        Converter converter = checkbox.getConverter();
+        Object values = getValues(checkbox);
+        Object submittedValues = getSubmittedValues(checkbox);
+        int columns = checkbox.getColumns();
+        
+        if(columns != 0){
+            int idx = 0, colMod;
+            for(SelectItem selectItem : selectItems) {
+                colMod = idx % columns;
+                if(colMod == 0)
+                    writer.startElement("tr", null);
+            
+                    encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
 
-            if(pageDirection) {
-                writer.endElement("tr");
+                    idx++;
+                    colMod = idx % columns;
+                    if(colMod == 0)
+                        writer.endElement("tr");
             }
         }
+        else
+            throw new FacesException("The value of columns attribute cannot be zero");
     }
-
+    
     protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter, SelectItem option, int idx) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
