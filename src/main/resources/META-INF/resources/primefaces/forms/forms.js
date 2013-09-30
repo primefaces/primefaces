@@ -2262,7 +2262,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             
             if(updateInput) {
                 var input = this.inputs.eq(checkbox.parents('li:first').index());
-                input.attr('checked', 'checked').change();
+                input.prop('checked', true).change();
                 
                 this.updateToggler();
             }
@@ -2276,7 +2276,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             if(updateInput) {
                 var input = this.inputs.eq(checkbox.parents('li:first').index());
-                input.removeAttr('checked').change();
+                input.prop('checked', false).change();
                 
                 this.updateToggler();
             }
