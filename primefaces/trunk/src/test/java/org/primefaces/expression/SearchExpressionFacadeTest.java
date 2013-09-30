@@ -1273,6 +1273,42 @@ public class SearchExpressionFacadeTest
 	}
 
 	@Test
+	public void resolveComponent_NextNext() {
+
+	    UIComponent root = new UIPanel();
+	    root.setId("root");
+
+	    UIComponent command1 = new UICommand();
+	    command1.setId("command1");
+	    root.getChildren().add(command1);
+
+	    UIComponent command2 = new UICommand();
+	    command2.setId("command2");
+	    root.getChildren().add(command2);
+	    
+	    UIComponent command3 = new UICommand();
+	    command3.setId("command3");
+	    root.getChildren().add(command3);
+
+	    assertSame("Failed", command3, resolveComponent(command1, " @next:@next "));
+	    
+		try {
+			resolveComponent(command2, " @next:@next");
+			Assert.fail("This should actually raise an exception");
+		} catch (Exception e) {
+			assertEquals(FacesException.class, e.getClass());
+		}
+	    
+	    
+		try {
+			resolveComponent(command3, " @next:@next");
+			Assert.fail("This should actually raise an exception");
+		} catch (Exception e) {
+			assertEquals(FacesException.class, e.getClass());
+		}
+	}
+	
+	@Test
 	public void resolveComponent_Previous() {
 
 	    UIComponent root = new UIPanel();
@@ -1295,6 +1331,41 @@ public class SearchExpressionFacadeTest
 
 		try {
 			resolveComponent(command1, " @previous");
+			Assert.fail("This should actually raise an exception");
+		} catch (Exception e) {
+			assertEquals(FacesException.class, e.getClass());
+		}
+	}
+	
+	@Test
+	public void resolveComponent_PreviousPrevious() {
+
+	    UIComponent root = new UIPanel();
+	    root.setId("root");
+
+	    UIComponent command1 = new UICommand();
+	    command1.setId("command1");
+	    root.getChildren().add(command1);
+
+	    UIComponent command2 = new UICommand();
+	    command2.setId("command2");
+	    root.getChildren().add(command2);
+	    
+	    UIComponent command3 = new UICommand();
+	    command3.setId("command3");
+	    root.getChildren().add(command3);
+
+	    assertSame("Failed", command1, resolveComponent(command3, " @previous:@previous "));
+
+		try {
+			resolveComponent(command2, " @previous:@previous");
+			Assert.fail("This should actually raise an exception");
+		} catch (Exception e) {
+			assertEquals(FacesException.class, e.getClass());
+		}
+	    
+		try {
+			resolveComponent(command1, " @previous:@previous");
 			Assert.fail("This should actually raise an exception");
 		} catch (Exception e) {
 			assertEquals(FacesException.class, e.getClass());
