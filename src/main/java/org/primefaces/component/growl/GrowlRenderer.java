@@ -68,13 +68,12 @@ public class GrowlRenderer extends UINotificationRenderer {
     protected void encodeMessages(FacesContext context, Growl growl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String _for = growl.getFor();
+        boolean first = true;
         Iterator<FacesMessage> messages;
-        if(_for != null) {
+        if(_for != null)
             messages = context.getMessages(_for);
-        }
-        else {
+        else
             messages = growl.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
-        }
         
         writer.write("[");
 
@@ -83,6 +82,11 @@ public class GrowlRenderer extends UINotificationRenderer {
             String severityName = getSeverityName(message);
             
             if(shouldRender(growl, message, severityName)) {
+                if(!first)
+                    writer.write(",");
+                else
+                    first = false;
+                
                 String summary = escapeText(message.getSummary());
                 String detail = escapeText(message.getDetail());
             
@@ -98,9 +102,6 @@ public class GrowlRenderer extends UINotificationRenderer {
                 writer.write(",severity:'" + severityName + "'");
 
                 writer.write("}");
-
-                if(messages.hasNext())
-                    writer.write(",");
 
                 message.rendered();
             }
