@@ -1371,4 +1371,25 @@ public class SearchExpressionFacadeTest
 			assertEquals(FacesException.class, e.getClass());
 		}
 	}
+	
+	@Test
+	public void resolveComponent_FromChildNextNext() {
+
+	    UIForm root = new UIForm();
+	    root.setId("form");
+
+	    UIComponent command1 = new UICommand();
+	    command1.setId("command1");
+	    root.getChildren().add(command1);
+
+	    UIComponent command2 = new UICommand();
+	    command2.setId("command2");
+	    root.getChildren().add(command2);
+	    
+	    UIComponent command3 = new UICommand();
+	    command3.setId("command3");
+	    root.getChildren().add(command3);
+
+	    assertSame("Failed", command3, resolveComponent(command1, " @form:@child(0):@next:@next "));
+	}
 }
