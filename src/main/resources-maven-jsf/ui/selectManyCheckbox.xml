@@ -41,6 +41,13 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
+			<name>columns</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Defines the number of columns the column spans.</description>
+		</attribute>
+        <attribute>
             <name>onchange</name>
             <required></required>
             <type>java.lang.String</type>
