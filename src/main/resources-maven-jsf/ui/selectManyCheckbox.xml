@@ -45,7 +45,7 @@
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
-            <description>Defines the number of columns the column spans.</description>
+            <description>Defines the number of columns in grid layout.</description>
 		</attribute>
         <attribute>
             <name>onchange</name>
