@@ -31,6 +31,10 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
         },
         $this = this;
 
+        options.onerror = function(xhr, status, errorThrown) {
+            $this.jq.html('');
+        };
+
         options.onsuccess = function(responseXML) {
             var xmlDoc = $(responseXML.documentElement),
             updates = xmlDoc.find("update");
