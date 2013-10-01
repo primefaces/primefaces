@@ -17,8 +17,6 @@ package org.primefaces.component.selectmanycheckbox;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -29,7 +27,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
-import javax.xml.bind.ParseConversionEvent;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -133,8 +130,11 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox) throws IOException{
-        String layout = checkbox.getLayout() !=null ? checkbox.getLayout() : "lineDirection";
+    protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
+        String layout = checkbox.getLayout();
+        if(layout == null) {
+            layout = "lineDirection";
+        }
 
         if(layout.equals("lineDirection"))
             encodeLineLayout(context, checkbox);
@@ -143,7 +143,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         else if(layout.equals("grid"))
             encodeGridLayout(context, checkbox);
         else 
-            throw new FacesException("Invalid '" + layout + "'" + " for the value of layout attribute");   
+            throw new FacesException("Invalid '" + layout + "' type for component '" + checkbox.getClientId(context) + "'.");  
     }
     
     protected void encodeLineLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException{
@@ -195,16 +195,18 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 if(colMod == 0)
                     writer.startElement("tr", null);
             
-                    encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
 
-                    idx++;
-                    colMod = idx % columns;
-                    if(colMod == 0)
-                        writer.endElement("tr");
+                idx++;
+                colMod = idx % columns;
+                
+                if(colMod == 0)
+                    writer.endElement("tr");
             }
         }
-        else
-            throw new FacesException("The value of columns attribute cannot be zero");
+        else {
+            throw new FacesException("The value of columns attribute must be greater than zero.");
+        }
     }
     
     protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter, SelectItem option, int idx) throws IOException {

@@ -54,7 +54,10 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String style = radio.getStyle();
         String styleClass = radio.getStyleClass();
         styleClass = styleClass == null ? SelectOneRadio.STYLE_CLASS : SelectOneRadio.STYLE_CLASS + " " + styleClass;
-        String layout = radio.getLayout() != null ? radio.getLayout(): "lineDirection";
+        String layout = radio.getLayout();
+        if(layout == null) {
+            layout = "lineDirection";
+        }
         boolean custom = layout.equals("custom");
         
         List<SelectItem> selectItems = getSelectItems(context, radio);
@@ -97,15 +100,14 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
     
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout) throws IOException {
-        
-        if(layout.equals("lineDirection") || layout.length() == 0)
+        if(layout.equals("lineDirection"))
             encodeLineLayout(context, radio, selectItems);
         else if(layout.equals("pageDirection"))
             encodePageLayout(context, radio, selectItems);
         else if(layout.equals("grid"))
             encodeGridLayout(context, radio, selectItems);
         else 
-            throw new FacesException("Invalid '" + layout + "'" + " for the value of layout attribute");    
+            throw new FacesException("Invalid '" + layout + "' type for component '" + radio.getClientId(context) + "'.");    
     }
     
     protected void encodeLineLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException{
@@ -113,7 +115,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
         Object value = radio.getSubmittedValue();
-        
         if(value == null) {
             value = radio.getValue();
         }
@@ -138,7 +139,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
         Object value = radio.getSubmittedValue();
-        
         if(value == null) {
             value = radio.getValue();
         }
@@ -155,7 +155,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled); 
             writer.endElement("tr");
             idx++;        
-        }           
+        }
     }
     
     protected void encodeGridLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException{
@@ -164,14 +164,14 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String name = radio.getClientId(context);
         Object value = radio.getSubmittedValue();
         int columns = radio.getColumns();
-        
         if(value == null) {
             value = radio.getValue();
         }
         Class type = value == null ? String.class : value.getClass();
         
-        if(columns != 0){
+        if(columns > 0){
             int idx = 0, colMod;
+            
             for(SelectItem selectItem : selectItems) {
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
                 String id = name + UINamingContainer.getSeparatorChar(context) + idx;
@@ -182,16 +182,17 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 if(colMod == 0)
                     writer.startElement("tr", null);
             
-                    encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
-
-                    idx++;
-                    colMod = idx % columns;
-                    if(colMod == 0)
-                        writer.endElement("tr");
+                encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
+                idx++;
+                colMod = idx % columns;
+                
+                if(colMod == 0)
+                    writer.endElement("tr");
             }
         }
-        else
-            throw new FacesException("The value of columns attribute cannot be zero");
+        else {
+            throw new FacesException("The value of columns attribute must be greater than zero.");
+        }
     }
     
     protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name, Converter converter, boolean selected, boolean disabled) throws IOException {
