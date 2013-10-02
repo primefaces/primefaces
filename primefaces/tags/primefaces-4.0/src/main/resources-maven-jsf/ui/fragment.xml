@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>fragment</tag>
+    <tagClass>org.primefaces.component.fragment.FragmentTag</tagClass>
+    <componentClass>org.primefaces.component.fragment.Fragment</componentClass>
+    <componentType>org.primefaces.component.Fragment</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.FragmentRenderer</rendererType>
+    <rendererClass>org.primefaces.component.fragment.FragmentRenderer</rendererClass>
+    <parent>javax.faces.component.UIPanel</parent>
+    <description>Fragment component is used to define automatically partially processed and updated sections.</description>
+    <attributes>
+        <attribute>
+			<name>autoUpdate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description></description>
+		</attribute>
+    </attributes>
+</component>

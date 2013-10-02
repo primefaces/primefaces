@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>spacer</tag>
+	<tagClass>org.primefaces.component.spacer.SpacerTag</tagClass>
+	<componentClass>org.primefaces.component.spacer.Spacer</componentClass>
+	<componentType>org.primefaces.component.Spacer</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.SpacerRenderer</rendererType>
+	<rendererClass>org.primefaces.component.spacer.SpacerRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>Spacer is used to put spaces between elements.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Width of the space.</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Height of the space.</description>
+		</attribute>
+        <attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Advisory tooltip informaton.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the spacer.</description>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the spacer.</description>
+		</attribute>
+	</attributes>
+</component>
