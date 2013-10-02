@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -13,7 +11,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>4.0-SNAPSHOT</version>
+    <version>4.0</version>
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
     
@@ -27,9 +25,9 @@
     </licenses>
     
     <scm>
-        <connection>scm:svn:http://primefaces.googlecode.com/svn/primefaces/trunk</connection>
-        <developerConnection>scm:svn:https://primefaces.googlecode.com/svn/primefaces/trunk</developerConnection>
-        <url>http://primefaces.googlecode.com/svn/primefaces/trunk</url>
+        <connection>scm:svn:http://primefaces.googlecode.com/svn/primefaces/tags/primefaces-4.0</connection>
+        <developerConnection>scm:svn:https://primefaces.googlecode.com/svn/primefaces/tags/primefaces-4.0</developerConnection>
+        <url>http://primefaces.googlecode.com/svn/primefaces/tags/primefaces-4.0</url>
     </scm>
     
     <developers>
