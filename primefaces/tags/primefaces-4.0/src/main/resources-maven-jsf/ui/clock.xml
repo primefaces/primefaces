@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>clock</tag>
+    <tagClass>org.primefaces.component.clock.Clock</tagClass>
+    <componentClass>org.primefaces.component.clock.Clock</componentClass>
+    <componentType>org.primefaces.component.Clock</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.ClockRenderer</rendererType>
+    <rendererClass>org.primefaces.component.clock.ClockRenderer</rendererClass>
+    <parent>javax.faces.component.UIOutput</parent>
+    <description>Clock displays server or client datetime live.</description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        <attribute>
+            <name>pattern</name>
+            <required>false</required>
+            <type>String</type>
+            <description>Datetime format.</description>
+        </attribute>
+        <attribute>
+            <name>mode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>client</defaultValue>
+            <description>Mode of the client, valid values are client and server.</description>
+        </attribute>
+        <attribute>
+            <name>autoSync</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Syncs time periodically in server mode.</description>
+        </attribute>
+        <attribute>
+            <name>syncInterval</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>60000</defaultValue>
+            <description>Defines the sync interval in autoSync mode, default is 60000 milliseconds.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>clock/clock.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+        <resource>
+            <name>clock/clock.js</name>
+        </resource>
+    </resources>
+</component>

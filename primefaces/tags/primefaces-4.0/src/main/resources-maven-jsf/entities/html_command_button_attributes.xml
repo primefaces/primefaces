@@ -1,0 +1,186 @@
+<!-- Components having these attributes must extend from HtmlInputText so all the attributes are defined as ignoreInComponet 
+	which will ignore code generation in component class since they are already defined in parent HtmlInputText
+-->
+<attribute>
+	<name>accesskey</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Access key to transfer focus to the button.</description>
+</attribute>
+<attribute>
+	<name>alt</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Alternate textual description of the button.</description>
+</attribute>
+<attribute>
+	<name>dir</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Direction indication for text that does not inherit directionality.</description>
+</attribute>
+<attribute>
+	<name>disabled</name>
+	<required>false</required>
+	<type>boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Disables the button, default is false.</description>
+</attribute>
+<attribute>
+	<name>image</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Style class representing the button icon.</description>
+</attribute>
+<attribute>
+	<name>lang</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>A localized user presentable name.</description>
+</attribute>
+<attribute>
+	<name>onblur</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when button loses focus.</description>
+</attribute>
+<attribute>
+	<name>onchange</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when button loses focus and its value has been modified since gaining focus.</description>
+</attribute>
+<attribute>
+	<name>onclick</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when button is clicked.</description>
+</attribute>
+<attribute>
+	<name>ondblclick</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when button is double clicked.</description>
+</attribute>
+<attribute>
+	<name>onfocus</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when button receives focus.</description>
+</attribute>
+<attribute>
+	<name>onkeydown</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a key is pressed down over button.</description>
+</attribute>
+<attribute>
+	<name>onkeypress</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a key is pressed and released over button.</description>
+</attribute>
+<attribute>
+	<name>onkeyup</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a key is released over button.</description>
+</attribute>
+<attribute>
+	<name>onmousedown</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a pointer button is pressed down over button.</description>
+</attribute>
+<attribute>
+	<name>onmousemove</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a pointer button is moved within button.</description>
+</attribute>
+<attribute>
+	<name>onmouseout</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a pointer button is moved away from button.</description>
+</attribute>
+<attribute>
+	<name>onmouseover</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a pointer button is moved onto button.</description>
+</attribute>
+<attribute>
+	<name>onmouseup</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when a pointer button is released over button.</description>
+</attribute>
+<attribute>
+	<name>onselect</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Client side callback to execute when text within button is selected by user.</description>
+</attribute>
+<attribute>
+	<name>readonly</name>
+	<required>false</required>
+	<type>boolean</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Flag indicating that this button will prevent changes by the user.</description>
+</attribute>
+<attribute>
+	<name>style</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Inline style of the button.</description>
+</attribute>
+<attribute>
+	<name>styleClass</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Style class of the button.</description>
+</attribute>
+<attribute>
+	<name>tabindex</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Position of the button in the tabbing order.</description>
+</attribute>
+<attribute>
+	<name>title</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+    <description>Advisory tooltip information.</description>
+</attribute>
+<attribute>
+	<name>type</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>true</ignoreInComponent>
+	<defaultValue>submit</defaultValue>
+    <description>Defines the behavior of the button, default is "submit".</description>
+</attribute>

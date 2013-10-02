@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>terminal</tag>
+	<tagClass>org.primefaces.component.terminal.TerminalTag</tagClass>
+    <componentHandlerClass>org.primefaces.component.terminal.TerminalHandler</componentHandlerClass>
+	<componentClass>org.primefaces.component.terminal.Terminal</componentClass>
+	<componentType>org.primefaces.component.Terminal</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TerminalRenderer</rendererType>
+	<rendererClass>org.primefaces.component.terminal.TerminalRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+    <description>Terminal is an ajax powered component bringing desktop command-line tools to the web.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the component.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the component.</description>
+		</attribute>
+        <attribute>
+			<name>welcomeMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Welcome message to be displayed on initial load.</description>
+		</attribute>
+        <attribute>
+			<name>prompt</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>prime $</defaultValue>
+            <description>Primary prompt text.</description>
+		</attribute>
+        <attribute>
+			<name>commandHandler</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+            <description>Method to execute by passing command and the arguments.</description>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>terminal/terminal.css</name>
+		</resource>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+        <resource>
+			<name>terminal/terminal.js</name>
+		</resource>
+	</resources>
+</component>
