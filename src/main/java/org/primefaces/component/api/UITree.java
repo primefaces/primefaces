@@ -140,7 +140,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
     
     protected TreeNode findTreeNode(TreeNode searchRoot, String rowKey) {
-        if(rowKey == null) {
+        if(rowKey == null || searchRoot == null) {
             return null;
         }
         
