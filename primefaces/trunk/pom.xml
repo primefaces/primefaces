@@ -11,7 +11,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>4.0-SNAPSHOT</version>
+    <version>4.0</version>
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
     
@@ -25,9 +25,9 @@
     </licenses>
     
     <scm>
-        <connection>scm:svn:http://primefaces.googlecode.com/svn/primefaces/trunk</connection>
-        <developerConnection>scm:svn:https://primefaces.googlecode.com/svn/primefaces/trunk</developerConnection>
-        <url>http://primefaces.googlecode.com/svn/primefaces/trunk</url>
+        <connection>scm:svn:http://primefaces.googlecode.com/svn/primefaces/tags/primefaces-4.0</connection>
+        <developerConnection>scm:svn:https://primefaces.googlecode.com/svn/primefaces/tags/primefaces-4.0</developerConnection>
+        <url>http://primefaces.googlecode.com/svn/primefaces/tags/primefaces-4.0</url>
     </scm>
     
     <developers>
