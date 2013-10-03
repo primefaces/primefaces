@@ -233,7 +233,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.focus)
         	PrimeFaces.Expressions.resolveComponentsAsSelector(this.cfg.focus).focus();
         else
-            this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').focus();
+            this.jq.find(':not(:submit):not(:button):not(:radio):not(:checkbox):input:visible:enabled:first').focus();
     },
     
     bindEvents: function() {   
