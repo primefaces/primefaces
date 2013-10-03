@@ -28,6 +28,8 @@ import org.primefaces.util.ComponentUtils;
 
 public class SelectionFeature implements DataTableFeature {
 
+    private final static String ALL_SELECTOR = "@all";
+    
     public void decode(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
@@ -64,14 +66,22 @@ public class SelectionFeature implements DataTableFeature {
             }
 		}
         else {
-            String[] rowKeys = selection.split(",");
             List selectionList = new ArrayList();
             
-            for(int i = 0; i < rowKeys.length; i++) {
-                Object rowData = table.getRowData(rowKeys[i]);
-                
-                if(rowData != null)
-                    selectionList.add(rowData);
+            if(selection.equals(ALL_SELECTOR)) {
+                for(int i = 0; i < table.getRowCount(); i++) {
+                    table.setRowIndex(i);
+                    selectionList.add(table.getRowData());
+                }
+            }
+            else {
+                String[] rowKeys = selection.split(",");
+                for(int i = 0; i < rowKeys.length; i++) {
+                    Object rowData = table.getRowData(rowKeys[i]);
+
+                    if(rowData != null)
+                        selectionList.add(rowData);
+                }
             }
 
             if(isArray) {
