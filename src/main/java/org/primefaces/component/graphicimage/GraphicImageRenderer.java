@@ -119,6 +119,10 @@ public class GraphicImageRenderer extends CoreRenderer {
             if(src != null) {
                 src += src.contains("?") ? "&" : "?";
                 src += Constants.DYNAMIC_CONTENT_CACHE_PARAM + "=" + image.isCache();
+                
+                if (!image.isCache()) {
+                	src += "&uid=" + UUID.randomUUID().toString();
+                }
             }
             
             src = context.getExternalContext().encodeResourceURL(src);

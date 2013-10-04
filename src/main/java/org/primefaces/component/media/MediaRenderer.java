@@ -171,6 +171,10 @@ public class MediaRenderer extends CoreRenderer {
             //cache
             src += src.contains("?") ? "&" : "?";
             src += Constants.DYNAMIC_CONTENT_CACHE_PARAM + "=" + media.isCache();
+
+            if (!media.isCache()) {
+            	src += "&uid=" + UUID.randomUUID().toString();
+            }
         }
 
 		return src;
