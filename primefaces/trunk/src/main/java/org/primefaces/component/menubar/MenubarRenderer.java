@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
+import org.primefaces.model.menu.BaseMenuModel;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 
@@ -52,7 +53,13 @@ public class MenubarRenderer extends TieredMenuRenderer {
     @Override
     protected void encodeSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String icon = submenu.getParent() instanceof Menubar ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+        Object parent = submenu.getParent();
+        String icon = null;
+        
+        if(parent == null)
+            icon = (submenu.getId().indexOf(BaseMenuModel.ID_SEPARATOR) == -1) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+        else
+            icon = (parent instanceof Menubar) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
         
         writer.startElement("span", null);
         writer.writeAttribute("class", icon, null);

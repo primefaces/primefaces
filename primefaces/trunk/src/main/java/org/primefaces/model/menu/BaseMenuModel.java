@@ -24,6 +24,8 @@ import java.util.List;
  */
 public class BaseMenuModel implements MenuModel, Serializable {
     
+    public final static String ID_SEPARATOR = "_";
+    
     private List<MenuElement> elements;
 
     public BaseMenuModel() {
@@ -50,7 +52,7 @@ public class BaseMenuModel implements MenuModel, Serializable {
         int counter = 0;
         
         for(MenuElement element : elements) {
-            String id = (seed == null) ? String.valueOf(counter++) : seed + "_" + counter++;
+            String id = (seed == null) ? String.valueOf(counter++) : seed + ID_SEPARATOR + counter++;
             element.setId(id);
             
             if(element instanceof MenuGroup) {                
