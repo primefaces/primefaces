@@ -12,6 +12,11 @@ public class PrimeFacesContextFactory extends FacesContextFactory {
 
 	private FacesContextFactory wrapped;
 	
+	// #6212 - don't remove it 
+	public PrimeFacesContextFactory() {
+		
+	}
+	
 	public PrimeFacesContextFactory(FacesContextFactory wrapped) {
 		this.wrapped = wrapped;
 	}
