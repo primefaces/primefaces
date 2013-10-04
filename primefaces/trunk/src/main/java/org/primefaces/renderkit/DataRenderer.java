@@ -71,6 +71,7 @@ public class DataRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("role", "navigation", null);
         
         String[] elements = uidata.getPaginatorTemplate().split(" ");
         for(String element : elements) {            

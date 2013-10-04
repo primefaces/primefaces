@@ -28,6 +28,9 @@ public class PageLinkRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("class", styleClass, null);
+        if(!disabled) {
+            writer.writeAttribute("tabindex", 0, null);
+        }
         
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
