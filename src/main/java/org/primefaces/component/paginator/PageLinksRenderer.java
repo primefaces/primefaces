@@ -45,6 +45,7 @@ public class PageLinksRenderer implements PaginatorElementRenderer {
             
             writer.startElement("span", null);
             writer.writeAttribute("class", styleClass, null);
+            writer.writeAttribute("tabindex", 0, null);
             writer.writeText((i + 1), null);
             writer.endElement("span");
         }

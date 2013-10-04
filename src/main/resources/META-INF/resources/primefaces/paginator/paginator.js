@@ -31,16 +31,32 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     },
             
     bindEvents: function(){
-        var _self = this;
+        var $this = this;
 
         //visuals for first,prev,next,last buttons
-        this.jq.children('span.ui-state-default').mouseover(function(){
+        this.jq.children('span.ui-state-default').on('mouseover.paginator', function(){
             var item = $(this);
             if(!item.hasClass('ui-state-disabled')) {
                 item.addClass('ui-state-hover');
             }
-        }).mouseout(function(){
+        })
+        .on('mouseout.paginator', function() {
             $(this).removeClass('ui-state-hover');
+        })
+        .on('focus.paginator', function() {
+            $(this).addClass('ui-state-focus');
+        })
+        .on('blur.paginator', function() {
+            $(this).removeClass('ui-state-focus');
+        })
+        .on('keydown.paginator', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                $(this).trigger('click');
+                e.preventDefault();
+            }
         });
 
         //page links
@@ -50,7 +66,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.skinSelect(this.rppSelect);
         this.rppSelect.change(function(e) {
             if(!$(this).hasClass("ui-state-disabled")){
-                _self.setRowsPerPage(parseInt($(this).val()));
+                $this.setRowsPerPage(parseInt($(this).val()));
             }
         });
 
@@ -58,7 +74,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.skinSelect(this.jtpSelect);
         this.jtpSelect.change(function(e) {
             if(!$(this).hasClass("ui-state-disabled")){
-                _self.setPage(parseInt($(this).val()));
+                $this.setPage(parseInt($(this).val()));
             }
         });
 
@@ -67,7 +83,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
-                _self.setPage(0);
+                $this.setPage(0);
             }
         });
 
@@ -76,7 +92,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
-                _self.setPage(_self.cfg.page - 1);
+                $this.setPage($this.cfg.page - 1);
             }
         });
 
@@ -85,7 +101,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
-                _self.setPage(_self.cfg.page + 1);
+                $this.setPage($this.cfg.page + 1);
             }
         });
 
@@ -94,48 +110,65 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
-                _self.setPage(_self.cfg.pageCount - 1);
+                $this.setPage($this.cfg.pageCount - 1);
             }
         });
     },
             
     bindPageLinkEvents: function(){
-        var _self = this;
+        var $this = this;
 
-        this.pagesContainer.children('.ui-paginator-page').bind('click', function(e){
+        this.pagesContainer.children('.ui-paginator-page').on('click.paginator', function(e) {
             var link = $(this);
 
             if(!link.hasClass('ui-state-disabled')&&!link.hasClass('ui-state-active')) {
-                _self.setPage(parseInt(link.text()) - 1);
+                $this.setPage(parseInt(link.text()) - 1);
             }
-        }).mouseover(function(){
+        })
+        .on('mouseover.paginator', function() {
             var item = $(this);
             if(!item.hasClass('ui-state-disabled')&&!item.hasClass('ui-state-active')) {
                 item.addClass('ui-state-hover');
             }
-        }).mouseout(function(){
+        })
+        .on('mouseout.paginator', function() {
             $(this).removeClass('ui-state-hover');
+        })
+        .on('focus.paginator', function() {
+            $(this).addClass('ui-state-focus');
+        })
+        .on('blur.paginator', function() {
+            $(this).removeClass('ui-state-focus');
+        })
+        .on('keydown.paginator', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                $(this).trigger('click');
+                e.preventDefault();
+            }
         });
     },
     
     updateUI: function() {  
         //boundaries
-        if(this.cfg.page == 0) {
-            this.firstLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
-            this.prevLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
+        if(this.cfg.page === 0) {
+            this.disableElement(this.firstLink);
+            this.disableElement(this.prevLink);
         }
         else {
-            this.firstLink.removeClass('ui-state-disabled');
-            this.prevLink.removeClass('ui-state-disabled');
+            this.enableElement(this.firstLink);
+            this.enableElement(this.prevLink);
         }
 
-        if(this.cfg.page == (this.cfg.pageCount - 1)){
-            this.nextLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
-            this.endLink.removeClass('ui-state-hover').addClass('ui-state-disabled');
+        if(this.cfg.page === (this.cfg.pageCount - 1)) {
+            this.disableElement(this.nextLink);
+            this.disableElement(this.endLink);
         }
         else {
-            this.nextLink.removeClass('ui-state-disabled');
-            this.endLink.removeClass('ui-state-disabled');
+            this.enableElement(this.nextLink);
+            this.enableElement(this.endLink);
         }
 
         //current page report
@@ -171,7 +204,17 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     },
             
     updatePageLinks: function() {
-        var start, end, delta;
+        var start, end, delta,
+        focusedElement = $(document.activeElement),
+        focusContainer, tabindex;
+
+        if(focusedElement.hasClass('ui-paginator-page')) {
+            var pagesContainerIndex = this.pagesContainer.index(focusedElement.parent());
+            if(pagesContainerIndex >= 0) {
+                focusContainer = this.pagesContainer.eq(pagesContainerIndex);
+                tabindex = focusedElement.index();
+            }
+        }
 
         //calculate visible page links
         this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows)||1;
@@ -193,7 +236,11 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
                 styleClass += " ui-state-active";
             }
 
-            this.pagesContainer.append('<span class="' + styleClass + '">' + (i + 1) + '</span>')   
+            this.pagesContainer.append('<span class="' + styleClass + '" tabindex="0">' + (i + 1) + '</span>')   
+        }
+        
+        if(focusContainer) {
+            focusContainer.children().eq(tabindex).trigger('focus');
         }
 
         this.bindPageLinkEvents();
@@ -248,5 +295,14 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         }
         
         return height;
+    },
+            
+    disableElement: function(element) {
+        element.removeClass('ui-state-hover ui-state-focus ui-state-active').addClass('ui-state-disabled').attr('tabindex', -1);
+        element.removeClass('ui-state-hover ui-state-focus ui-state-active').addClass('ui-state-disabled').attr('tabindex', -1);
+    },
+            
+    enableElement: function(element) {
+        element.removeClass('ui-state-disabled').attr('tabindex', 0);
     }
 });
