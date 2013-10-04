@@ -23,6 +23,11 @@ public class PrimePartialViewContextFactory extends PartialViewContextFactory {
 
     private PartialViewContextFactory parent;
     
+	// #6212 - don't remove it
+    public PrimePartialViewContextFactory() {
+    	
+    }
+    
     public PrimePartialViewContextFactory(PartialViewContextFactory parent) {
         this.parent = parent;
     }
