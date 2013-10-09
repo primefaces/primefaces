@@ -897,19 +897,28 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     
     bindTree: function() {
         var nodeContentSelector = this.jqTargetId + ' .ui-tree-selectable',
-        event = this.cfg.nodeType ? this.cfg.event + '.tree.' + this.cfg.nodeType : this.cfg.event + '.tree',
-        _self = this;
+        nodeEvent = this.cfg.nodeType ? this.cfg.event + '.treenode.' + this.cfg.nodeType : this.cfg.event + '.treenode',
+        containerEvent = this.cfg.event + '.tree',
+        $this = this;
                 
-        $(document).off(event, nodeContentSelector)
-                    .on(event, nodeContentSelector, null, function(e) {
+        $(document).off(nodeEvent, nodeContentSelector)
+                    .on(nodeEvent, nodeContentSelector, null, function(e) {
                         var nodeContent = $(this);
                         
-                        if(_self.cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === _self.cfg.nodeType) {
-                        	PrimeFaces.widgets[_self.cfg.targetWidgetVar].nodeClick(e, nodeContent);
-                            _self.show(e);
+                        if($this.cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === $this.cfg.nodeType) {
+                        	PrimeFaces.widgets[$this.cfg.targetWidgetVar].nodeClick(e, nodeContent);
+                            $this.show(e);
                             e.preventDefault();
                         }
                     });
+                                    
+        $(document).off(containerEvent, this.jqTargetId)
+                    .on(containerEvent, this.jqTargetId, null, function(e) {
+                if(PrimeFaces.widgets[$this.cfg.targetWidgetVar].isEmpty()) {
+                    $this.show(e);
+                    e.preventDefault();
+                }
+        });
     },
     
     refresh: function(cfg) {
