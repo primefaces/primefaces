@@ -318,6 +318,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     toggleCheckboxNode: function(node) {
         throw "Unsupported Operation";
     },
+            
+    isEmpty: function() {
+        throw "Unsupported Operation";
+    },
     
     toggleCheckboxState: function(checkbox, checked) {
         if(checked)
@@ -1032,6 +1036,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         else {
             PrimeFaces.ajax.AjaxRequest(options);
         }
+    },
+            
+    isEmpty: function() {
+        return (this.container.children().length === 0);
     }
 });
 
@@ -1255,6 +1263,10 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
 
             table.height(0).height(table.parent().height());
         });
+    },
+            
+    isEmpty: function() {
+        return this.jq.children('table').length === 0;
     }
     
 });
