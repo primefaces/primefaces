@@ -56,7 +56,7 @@ public class CSVBuilder {
     
     public CSVBuilder process(UIComponent component, String expressions) {        
         if(expressions != null && expressions.trim().length() > 0) {
-        	String resolvedExpressions = SearchExpressionFacade.resolveComponentsForClient(context, component, expressions, true);
+        	String resolvedExpressions = SearchExpressionFacade.resolveComponentsForClient(context, component, expressions, false);
             buffer.append(",p:'").append(resolvedExpressions).append("'");
         }
         
