@@ -209,6 +209,19 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
+            
+    fireContextMenuEvent: function(node) {
+        if(this.hasBehavior('contextMenu')) {
+            var contextMenuBehavior = this.cfg.behaviors['contextMenu'],
+            ext = {
+                params: [
+                    {name: this.id + '_contextMenuNode', value: this.getRowKey(node)}
+                ]
+            };
+
+            contextMenuBehavior.call(this, node, ext);
+        }
+    },
     
     getRowKey: function(node) {
         return node.attr('data-rowkey');
@@ -294,16 +307,35 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
+            
+    nodeRightClick: function(event, nodeContent) {
+        PrimeFaces.clearSelection();
+        
+        if($(event.target).is(':not(.ui-tree-toggler)')) {
+            var node = nodeContent.parent(),
+            selectable = nodeContent.hasClass('ui-tree-selectable');
+    
+            if(selectable) {
+                var selected = this.isNodeSelected(node);
+                if(!selected) {
+                    this.unselectAllNodes();                        
+                    this.selectNode(node, true);
+                }
+            }
+            
+            this.fireContextMenuEvent(node);
+        }
+    },
     
     bindEvents: function() {
         throw "Unsupported Operation";
     },
     
-    selectNode: function(node) {        
+    selectNode: function(node, silent) {        
         throw "Unsupported Operation";
     },
     
-    unselectNode: function(node) {        
+    unselectNode: function(node, silent) {        
         throw "Unsupported Operation";
     },
     
@@ -519,26 +551,28 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         });
     },
     
-    selectNode: function(node) {        
+    selectNode: function(node, silent) {        
         node.attr('aria-selected', true)
             .find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
         this.addToSelection(this.getRowKey(node));
-        this.writeSelections();        
-        this.fireNodeSelectEvent(node);
+        this.writeSelections(); 
+        
+        if(!silent)
+            this.fireNodeSelectEvent(node);
     },
     
-    unselectNode: function(node) {
+    unselectNode: function(node, silent) {
         var rowKey = this.getRowKey(node);
            
         node.attr('aria-selected', false).
             find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-highlight ui-state-hover');
 
         this.removeFromSelection(rowKey);
-
         this.writeSelections();
 
-        this.fireNodeUnselectEvent(node);
+        if(!silent)
+            this.fireNodeUnselectEvent(node);
     },
 
     toggleCheckboxNode: function(node) {
@@ -1157,26 +1191,26 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         return node.next('.ui-treenode-children-container').children('.ui-treenode-children');
     },
     
-    selectNode: function(node) {        
+    selectNode: function(node, silent) {        
         node.removeClass('ui-treenode-unselected').addClass('ui-treenode-selected').children('.ui-treenode-content').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
         this.addToSelection(this.getRowKey(node));
-
         this.writeSelections();
 
-        this.fireNodeSelectEvent(node);
+        if(!silent)
+            this.fireNodeSelectEvent(node);
     },
     
-    unselectNode: function(node) {
+    unselectNode: function(node, silent) {
         var rowKey = this.getRowKey(node);
            
         node.removeClass('ui-treenode-selected').addClass('ui-treenode-unselected').children('.ui-treenode-content').removeClass('ui-state-highlight');
 
         this.removeFromSelection(rowKey);
-
         this.writeSelections();
 
-        this.fireNodeUnselectEvent(node);
+        if(!silent)
+            this.fireNodeUnselectEvent(node);
     },
     
     unselectAllNodes: function() {

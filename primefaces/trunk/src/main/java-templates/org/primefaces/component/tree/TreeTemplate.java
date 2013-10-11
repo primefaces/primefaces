@@ -20,7 +20,7 @@ import javax.faces.event.PhaseId;
 import org.primefaces.util.Constants;
 import org.primefaces.model.TreeNode;
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "dragdrop"));;;
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "dragdrop", "contextMenu"));
 
 	private Map<String,UITreeNode> nodes;
 
@@ -119,6 +119,11 @@ import org.primefaces.model.TreeNode;
                 int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
 
                 wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex);
+            }
+            else if(eventName.equals("contextMenu")) {
+                setRowKey(params.get(clientId + "_contextMenuNode"));
+
+                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
