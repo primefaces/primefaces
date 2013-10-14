@@ -318,12 +318,17 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             if(selectable) {
                 var selected = this.isNodeSelected(node);
                 if(!selected) {
-                    this.unselectAllNodes();                        
-                    this.selectNode(node, true);
+                    if(this.isCheckboxSelection()) {
+                        this.toggleCheckboxNode(node);
+                    }
+                    else {
+                        this.unselectAllNodes();                        
+                        this.selectNode(node, true);
+                    }
                 }
+                
+                this.fireContextMenuEvent(node);
             }
-            
-            this.fireContextMenuEvent(node);
         }
     },
     
