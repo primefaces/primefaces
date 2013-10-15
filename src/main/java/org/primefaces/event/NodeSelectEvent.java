@@ -26,10 +26,18 @@ import org.primefaces.model.TreeNode;
 public class NodeSelectEvent extends AjaxBehaviorEvent {
 
 	private TreeNode treeNode;
+    
+    private boolean contextMenu;
 	
-	public NodeSelectEvent(UIComponent component, Behavior behavior, TreeNode treeNode) {
+    public NodeSelectEvent(UIComponent component, Behavior behavior, TreeNode treeNode) {
 		super(component, behavior);
 		this.treeNode = treeNode;
+	}
+    
+	public NodeSelectEvent(UIComponent component, Behavior behavior, TreeNode treeNode, boolean contextMenu) {
+		super(component, behavior);
+		this.treeNode = treeNode;
+        this.contextMenu = contextMenu;
 	}
 
 	@Override
@@ -46,7 +54,7 @@ public class NodeSelectEvent extends AjaxBehaviorEvent {
 		return treeNode;
 	}
 
-	public void setTreeNode(TreeNode treeNode) {
-		this.treeNode = treeNode;
-	}
+    public boolean isContextMenu() {
+        return contextMenu;
+    }
 }
