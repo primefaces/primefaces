@@ -123,7 +123,7 @@ import org.primefaces.model.TreeNode;
             else if(eventName.equals("contextMenu")) {
                 setRowKey(params.get(clientId + "_contextMenuNode"));
 
-                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
+                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), this.getRowNode(), true);
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
