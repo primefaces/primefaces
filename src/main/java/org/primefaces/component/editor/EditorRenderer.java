@@ -17,7 +17,7 @@ package org.primefaces.component.editor;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.el.ValueExpression;
+import javax.faces.application.Resource;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -26,6 +26,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.AgentUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -93,6 +94,11 @@ public class EditorRenderer extends CoreRenderer{
                 .attr("height", editor.getHeight(), Integer.MIN_VALUE)
                 .attr("maxlength", editor.getMaxlength(), Integer.MAX_VALUE)
                 .callback("change", "function(e)", editor.getOnchange());
+        
+        if(AgentUtils.isIE(context)) {
+            Resource resource = context.getApplication().getResourceHandler().createResource("editor/editor-ie.css", "primefaces");
+            wb.attr("docCSSFile", resource.getRequestPath());
+        }
 
         wb.finish();
 	}
