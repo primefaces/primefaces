@@ -34,12 +34,6 @@
 			<type>java.lang.String</type>
             <description>Id of the component to attach the watermark.</description>
 		</attribute>
-		<attribute>
-			<name>forElement</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>jQuery selector to attach the watermark.</description>
-		</attribute>
 	</attributes>
 	<resources>
 		<resource>

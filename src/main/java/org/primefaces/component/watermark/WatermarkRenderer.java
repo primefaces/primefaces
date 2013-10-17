@@ -39,12 +39,8 @@ public class WatermarkRenderer extends CoreRenderer {
 		if(_for != null) {
 			target = SearchExpressionFacade.resolveComponentsForClient(context, watermark, _for);
 		} 
-        else if(watermark.getForElement() != null) {
-        	LOG.warning("The attribute 'forElement' will be removed in the future. Please use the 'for' attribute with PrimeFaces Selectors");
-			target = "@(" + watermark.getForElement() + ")";
-		} 
         else {
-			throw new FacesException("Either for or forElement options must be used to define a watermark.");
+			throw new FacesException("\"For\" option must be used to define a watermark.");
 		}
 
         WidgetBuilder wb = getWidgetBuilder(context);
