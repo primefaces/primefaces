@@ -26,12 +26,10 @@ import org.primefaces.model.menu.MenuModel;
         return this.getClientId();
     }
 
-    @Override
     public List getElements() {
         return getChildren();
     }
 
-    @Override
     public int getElementsCount() {
         return getChildCount();
     }
