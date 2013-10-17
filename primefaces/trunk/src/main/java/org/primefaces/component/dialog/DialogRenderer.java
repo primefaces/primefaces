@@ -54,10 +54,6 @@ public class DialogRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Dialog", dialog.resolveWidgetVar(), clientId);
 
-        if (dialog.isAppendToBody()) {
-        	LOG.warning("The appendToBody attribute of the Dialog will be deprecated in future versions. Please use appendTo=\"@(body)\" now");
-        }
-        
         wb.attr("visible", dialog.isVisible(), false)
             .attr("draggable", dialog.isDraggable(), true)
             .attr("resizable", dialog.isResizable(), true)
@@ -66,7 +62,6 @@ public class DialogRenderer extends CoreRenderer {
             .attr("height", dialog.getHeight(), null)
             .attr("minWidth", dialog.getMinWidth(), Integer.MIN_VALUE)
             .attr("minHeight", dialog.getMinHeight(), Integer.MIN_VALUE)
-            .attr("appendToBody", dialog.isAppendToBody(), false)
             .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, dialog, dialog.getAppendTo()), null)
             .attr("dynamic", dialog.isDynamic(), false)
             .attr("showEffect", dialog.getShowEffect(), null)

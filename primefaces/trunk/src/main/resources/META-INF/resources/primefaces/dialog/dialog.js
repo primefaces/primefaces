@@ -51,9 +51,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.appendTo) {
         	this.jq.appendTo(PrimeFaces.Expressions.resolveComponentsAsSelector(this.cfg.appendTo));
         }
-        else if(this.cfg.appendToBody) {
-            this.jq.appendTo('body');
-        }
 
         //docking zone
         if($(document.body).children('.ui-dialog-docking-zone').length === 0) {
@@ -85,12 +82,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             var jqs = $(this.jqId);
             if(jqs.length > 1) {
             	PrimeFaces.Expressions.resolveComponentsAsSelector(cfg.appendTo).children(this.jqId).remove();
-            }
-        }
-        else if(cfg.appendToBody) {
-            var jqs = $(this.jqId);
-            if(jqs.length > 1) {
-                $(document.body).children(this.jqId).remove();
             }
         }
         
@@ -566,7 +557,10 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         cfg.draggable = false;
         cfg.resizable = false;
         cfg.modal = true;
-        cfg.appendToBody = cfg.appendToBody||cfg.global;
+
+        if (!cfg.appendTo && cfg.global) {
+        	cfg.appendTo = '@(body)';
+        }
 
         this._super(cfg);
         

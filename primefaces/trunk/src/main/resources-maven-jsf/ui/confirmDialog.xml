@@ -78,13 +78,6 @@
             <description>Defines if close icon should be displayed or not. Default is true.</description>
 		</attribute>
         <attribute>
-            <name>appendToBody</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Appends dialog as a child of document body. Default is false.</description>
-        </attribute>
-        <attribute>
             <name>appendTo</name>
             <required>false</required>
             <type>java.lang.String</type>

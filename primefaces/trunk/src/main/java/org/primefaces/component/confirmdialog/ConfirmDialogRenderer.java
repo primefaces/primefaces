@@ -69,16 +69,11 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, ConfirmDialog dialog) throws IOException {
 		String clientId = dialog.getClientId();
         WidgetBuilder wb = getWidgetBuilder(context);
-        
-        if (dialog.isAppendToBody()) {
-        	LOG.warning("The appendToBody attribute of the ConfirmDialog will be deprecated in future versions. Please use appendTo=\"@(body)\" now");
-        }
-        
+
         wb.initWithDomReady("ConfirmDialog", dialog.resolveWidgetVar(), clientId)
             .attr("visible", dialog.isVisible(), false)
             .attr("width", dialog.getWidth(), null)
             .attr("height", dialog.getHeight(), null)
-            .attr("appendToBody", dialog.isAppendToBody(), false)
             .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, dialog, dialog.getAppendTo()), null)
             .attr("showEffect", dialog.getShowEffect(), null)
             .attr("hideEffect", dialog.getHideEffect(), null)
