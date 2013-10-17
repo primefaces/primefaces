@@ -58,7 +58,6 @@ import org.primefaces.util.ComponentUtils;
     	return getUrl() == null && getOutcome() == null && isAjax();
     }
 
-    @Override
     public void setParam(String key, Object value) {
         throw new UnsupportedOperationException("Use UIParameter component instead to add parameters.");
     }
