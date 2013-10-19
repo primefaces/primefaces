@@ -13,6 +13,14 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
 
         //Visuals
         PrimeFaces.skinInput(this.jq);
+    },
+            
+    disable: function() {
+        this.jq.prop('disabled', true).addClass('ui-state-disabled');
+    },
+            
+    enable: function() {
+        this.jq.prop('disabled', false).removeClass('ui-state-disabled');
     }
 });
 
