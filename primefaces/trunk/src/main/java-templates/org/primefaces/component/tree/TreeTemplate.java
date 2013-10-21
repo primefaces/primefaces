@@ -206,6 +206,8 @@ import org.primefaces.model.TreeNode;
         this.dropNode = dropNode;
     }
 
-    
-
+    @Override
+    protected boolean shouldVisitNode(TreeNode node) {
+        return this.isDynamic() ? (node.isExpanded() || node.getParent() == null) : true;
+    }
     

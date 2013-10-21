@@ -372,7 +372,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         processColumnChildren(context, phaseId, rowKey);
         
         //process child nodes if node is expanded or node itself is the root
-        if(treeNode.isExpanded() || treeNode.getParent() == null) {
+        if(shouldVisitNode(treeNode)) {
             int childIndex = 0;
             for(Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext();) {
                 String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
@@ -625,7 +625,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
         
         //visit child nodes if node is expanded or node itself is the root
-        if((treeNode.isExpanded() || treeNode.getParent() == null)) {
+        if(shouldVisitNode(treeNode)) {
             int childIndex = 0;
             for(Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext();) {
                 String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
@@ -647,5 +647,9 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     public void setRTLRendering(boolean rtl) {
         this.rtl = rtl;
+    }
+    
+    protected boolean shouldVisitNode(TreeNode node) {
+        return (node.isExpanded() || node.getParent() == null);
     }
 }
