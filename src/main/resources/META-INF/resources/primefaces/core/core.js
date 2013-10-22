@@ -669,25 +669,29 @@
             return ids;
         },
         
-        splitExpressions: function(value) {
+        splitExpressions: function(expression) {
+
+            if ($.browser.msie && parseInt($.browser.version, 10) === 7) {
+                expression = expression.split('');
+            }
 
     		var expressions = [];
     		var buffer = '';
 
     		var parenthesesCounter = 0;
 
-    		for (var i = 0; i < value.length; i++) {
-    			var c = value[i];
+    		for (var i = 0; i < expression.length; i++) {
+    			var c = expression[i];
 
-    			if (c == '(') {
+    			if (c === '(') {
     				parenthesesCounter++;
     			}
 
-    			if (c == ')') {
+    			if (c === ')') {
     				parenthesesCounter--;
     			}
 
-    			if ((c == ' ' || c == ',') && parenthesesCounter == 0) {
+    			if ((c === ' ' || c === ',') && parenthesesCounter === 0) {
 					// lets add token inside buffer to our tokens
     				expressions.push(buffer);
 					// now we need to clear buffer
