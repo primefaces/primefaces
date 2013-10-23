@@ -161,7 +161,7 @@
         <tag-name>ajax</tag-name>
         <behavior>
             <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
-            <handler-class>org.primefaces.component.behavior.ajax.AjaxBehaviorHandler</handler-class>
+            <handler-class>org.primefaces.behavior.ajax.AjaxBehaviorHandler</handler-class>
         </behavior>
 		<attribute>
 			<description>Method to process in partial request.</description>
