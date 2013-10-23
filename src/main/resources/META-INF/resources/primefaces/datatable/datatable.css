@@ -111,6 +111,10 @@
     background-color: rgba(194,194,194,.5);
 }
 
+.ui-datatable .ui-datatable-scrollable-body  {
+    min-height: 0%;
+}
+
 .ui-datatable .ui-datatable-data tr.ui-state-hover {
     border-color: inherit;
     font-weight: inherit;
