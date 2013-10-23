@@ -4568,11 +4568,11 @@ if ( !getSetAttribute ) {
 				);
 			}
 
-			ret.value = value += "";
+			elem.setAttribute(name, value+"");
 
 			// Break association with cloned elements by also using setAttribute (#9646)
 			return name === "value" || value === elem.getAttribute( name ) ?
-				value :
+				ret.value :
 				undefined;
 		}
 	};
