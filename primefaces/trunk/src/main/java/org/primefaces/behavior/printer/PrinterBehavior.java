@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.component.behavior.printer;
+package org.primefaces.behavior.printer;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;

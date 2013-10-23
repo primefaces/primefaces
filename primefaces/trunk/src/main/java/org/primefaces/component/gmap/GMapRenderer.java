@@ -24,7 +24,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.behavior.ajax.AjaxBehavior;
+
+import org.primefaces.behavior.ajax.AjaxBehavior;
 
 import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.LatLng;

@@ -6,5 +6,5 @@
         
         <client-behavior-renderer>
             <client-behavior-renderer-type>org.primefaces.component.AjaxBehaviorRenderer</client-behavior-renderer-type>
-            <client-behavior-renderer-class>org.primefaces.component.behavior.ajax.AjaxBehaviorRenderer</client-behavior-renderer-class>
+            <client-behavior-renderer-class>org.primefaces.behavior.ajax.AjaxBehaviorRenderer</client-behavior-renderer-class>
         </client-behavior-renderer>
