@@ -25,7 +25,6 @@ import org.primefaces.behavior.base.AbstractBehaviorHandler;
 
 public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior>  {
 
-    private final TagAttribute event;
     private final TagAttribute process;
     private final TagAttribute update;
     private final TagAttribute onstart;
@@ -43,7 +42,6 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior>  
     
     public AjaxBehaviorHandler(BehaviorConfig config) {
         super(config);
-        this.event = this.getAttribute("event");
         this.process = this.getAttribute(AjaxBehavior.PropertyKeys.process.name());
         this.update = this.getAttribute(AjaxBehavior.PropertyKeys.update.name());
         this.onstart = this.getAttribute(AjaxBehavior.PropertyKeys.onstart.name());
@@ -87,9 +85,5 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior>  
         }
         
         return behavior;
-    }
-
-    public String getEventName() {
-        return (this.event != null) ? this.event.getValue() : null;
     }
 }
