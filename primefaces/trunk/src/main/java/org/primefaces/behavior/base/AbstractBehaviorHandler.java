@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -121,7 +122,17 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     }
 
     public String getEventName() {
-        return (this.event != null) ? this.event.getValue() : null;
+    	if (event == null) {
+    		return null;
+    	}
+
+    	if (event.isLiteral()) {
+    		return event.getValue();
+    	} else {
+    		FaceletContext faceletContext = getFaceletContext(FacesContext.getCurrentInstance());
+    		ValueExpression expression = event.getValueExpression(faceletContext, String.class);
+    		return (String) expression.getValue(faceletContext);
+    	}
     }
 
     protected abstract E createBehavior(FaceletContext ctx, String eventName);
