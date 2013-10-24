@@ -47,8 +47,12 @@ import org.primefaces.context.RequestContext;
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
 	extends TagHandler implements BehaviorHolderAttachedObjectHandler {
 
+	private final TagAttribute event;
+	
     public AbstractBehaviorHandler(TagConfig config) {
 		super(config);
+
+		this.event = this.getAttribute("event");
 	}
 
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException {
@@ -114,6 +118,10 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         else {
             throw new TagException(this.tag, "Unable to attach behavior to non-ClientBehaviorHolder parent");
         }
+    }
+
+    public String getEventName() {
+        return (this.event != null) ? this.event.getValue() : null;
     }
 
     protected abstract E createBehavior(FaceletContext ctx, String eventName);
