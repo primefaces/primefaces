@@ -150,7 +150,7 @@
 
 .ui-datatable .ui-row-editor span {
     cursor: pointer;
-    display: inline-block;
+    float: left;
 }
 
 .ui-datatable .ui-row-editor .ui-icon-pencil {
