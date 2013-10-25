@@ -4559,7 +4559,7 @@ if ( !getSetAttribute ) {
 	// Use this for any attribute in IE6/7
 	// This fixes almost every IE6/7 issue
 	nodeHook = {
-		set: function( elem, value, name ) {
+		/*set: function( elem, value, name ) {
 			// Set the existing or create a new attribute node
 			var ret = elem.getAttributeNode( name );
 			if ( !ret ) {
@@ -4574,6 +4574,20 @@ if ( !getSetAttribute ) {
 			return name === "value" || value === elem.getAttribute( name ) ?
 				value :
 				undefined;
+		}*/
+        set: function( elem, value, name ) {
+		     if (navigator.userAgent.toLowerCase().indexOf('msie') != -1 && document.documentMode <= 7) {
+		          elem.setAttribute(name, value);
+			  return elem.getAttributeNode(name);
+		     } else {
+		          // Set the existing or create a new attribute node
+			  var ret = elem.getAttributeNode( name );
+			  if ( !ret ) {
+			       ret = document.createAttribute( name );
+			       elem.setAttributeNode( ret );
+			  }
+		          return ( ret.nodeValue = value + "" );
+		     }
 		}
 	};
 	jQuery.expr.attrHandle.id = jQuery.expr.attrHandle.name = jQuery.expr.attrHandle.coords =
