@@ -88,7 +88,7 @@ import org.primefaces.component.datatable.feature.*;
     public static final String CELL_EDITOR_INPUT_CLASS = "ui-cell-editor-input";
     public static final String CELL_EDITOR_OUTPUT_CLASS = "ui-cell-editor-output";
     public static final String ROW_EDITOR_COLUMN_CLASS = "ui-row-editor-column";
-    public static final String ROW_EDITOR_CLASS = "ui-row-editor";
+    public static final String ROW_EDITOR_CLASS = "ui-row-editor ui-helper-clearfix";
     public static final String SELECTION_COLUMN_CLASS = "ui-selection-column";
     public static final String EVEN_ROW_CLASS = "ui-datatable-even";
     public static final String ODD_ROW_CLASS = "ui-datatable-odd";
