@@ -586,15 +586,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
         
         if(!this.columnWidthsFixed) {
+            if(PrimeFaces.isIE(7)) {
+                this.bodyTable.css('width', 'auto');
+            }
+            
             if(this.cfg.scrollable) {
                 this.scrollHeader.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
                     var headerCol = $(this),
                     colIndex = headerCol.index(),
                     width = headerCol.width(),
-                    innerWidth = headerCol.innerWidth();
-                    
+                    innerWidth = headerCol.innerWidth(),
+                    cellWidth = PrimeFaces.isIE(7) ? width: innerWidth + 1;
+
                     headerCol.width(width);
-                    $this.colgroup.children().eq(colIndex).width(innerWidth + 1);
+                    $this.colgroup.children().eq(colIndex).width(cellWidth);
                     if($this.footerCols.length > 0) {
                         var footerCol = $this.footerCols.eq(colIndex);
                         footerCol.width(width);
@@ -607,7 +612,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     col.width(col.width());
                 });
             }
-            
+
             this.columnWidthsFixed = true;
         }
     },
