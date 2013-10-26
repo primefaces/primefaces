@@ -79,9 +79,11 @@
 
             //aria
             input.attr('role', 'textbox').attr('aria-disabled', input.is(':disabled'))
-            .attr('aria-readonly', input.prop('readonly'))
-            .attr('aria-multiline', input.is('textarea'));
-
+                    .attr('aria-readonly', input.prop('readonly'));
+    
+            if(input.is('textarea')) {
+                input.attr('aria-multiline', true);
+            }
 
             return this;
         },
