@@ -2331,7 +2331,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     alignPanel: function() {
         var fixedPosition = this.panel.css('position') == 'fixed',
         win = $(window),
-        positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
+        positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null,
+        panelStyle = this.panel.attr('style');
 
         this.panel.css({left:'', top:''}).position({
                                         my: 'left top'
@@ -2339,6 +2340,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                                         ,of: this.jq
                                         ,offset : positionOffset
                                     });
+                                    
+        if(!this.widthAligned && (this.panel.width() < this.jq.width()) && (!panelStyle||panelStyle.toLowerCase().indexOf('width') === -1)) {
+            this.panel.width(this.jq.width());
+            this.widthAligned = true;
+        }
                                     
         this.panel.css('z-index', ++PrimeFaces.zindex);
     },
