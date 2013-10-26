@@ -30,6 +30,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             'width': this.cfg.width,
             'height': 'auto'
         });
+        
+        //ie7 width auto width bug workaround
+        if(this.cfg.width === 'auto' && PrimeFaces.isIE(7)) {
+            this.jq.width(this.content.outerWidth());
+        }
 
         this.content.height(this.cfg.height);
 
