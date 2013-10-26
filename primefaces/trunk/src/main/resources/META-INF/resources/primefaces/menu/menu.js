@@ -228,9 +228,9 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         menuitem.removeClass('ui-menuitem-active');
         
         if(animate)
-            menuitem.children('ul.ui-menu-child:visible').fadeOut('fast');
+            menuitem.children('ul.ui-menu-child').fadeOut('fast');
         else
-            menuitem.children('ul.ui-menu-child:visible').hide();
+            menuitem.children('ul.ui-menu-child').hide();
     },
     
     activate: function(menuitem) {
