@@ -686,7 +686,7 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = table.getClientId(context);
         SummaryRow summaryRow = table.getSummaryRow();
         ELContext eLContext = context.getELContext();
-        ValueExpression groupByVe = table.getSortBy() == null ? null : context.getApplication().getExpressionFactory().createValueExpression(
+        ValueExpression groupByVe = (table.getSortBy() == null || table.isMultiSort()) ? null : context.getApplication().getExpressionFactory().createValueExpression(
                         eLContext, "#{" + table.getVar() + "." + table.getSortBy() + "}", Object.class);
         boolean encodeSummaryRow = (summaryRow != null && groupByVe != null);
         
