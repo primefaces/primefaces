@@ -900,3 +900,11 @@ import org.primefaces.component.datatable.feature.*;
 		getStateHelper().put("expressionsAdapted", true);
 	}
     
+    private ValueExpression sortByVE;
+    public void setSortByVE(ValueExpression ve) {
+        this.sortByVE = ve;
+    }
+    public ValueExpression getSortByVE() {
+        return this.sortByVE;
+    }
+    
