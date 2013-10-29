@@ -347,8 +347,10 @@ public class DataTableRenderer extends DataRenderer {
                     
                     if(sortMeta != null) {
                         for(SortMeta meta : sortMeta) {
-                            //sortIcon = resolveDefaultSortIcon(columnSortBy, meta.getColumn().getSortBy(), meta.getSortOrder().name());
-                            
+                            UIColumn sortColumn = meta.getColumn();
+                            sortIcon = resolveDefaultSortIcon(columnSortByVE, columnSortBy, 
+                                    sortColumn.getValueExpression("sortBy"), sortColumn.getSortBy(), meta.getSortOrder().name());
+
                             if(sortIcon != null) {
                                 break;
                             }

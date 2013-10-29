@@ -176,11 +176,17 @@ public class SortFeature implements DataTableFeature {
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
         for(SortMeta meta : sortMeta) { 
-            BeanPropertyComparator comparator = null;
             UIColumn sortColumn = meta.getColumn();
-            ValueExpression sortByVe = createValueExpression(context, table.getVar(), meta.getSortField());            
-            comparator = new BeanPropertyComparator(sortByVe, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction());
-            chainedComparator.addComparator(comparator);
+            ValueExpression sortByVe;
+            ValueExpression columnSortByVE = sortColumn.getValueExpression("sortBy");
+            if(columnSortByVE != null) {
+                sortByVe = columnSortByVE;
+            }
+            else {
+                sortByVe = createValueExpression(context, table.getVar(), sortColumn.getSortBy());
+            }
+                    
+            chainedComparator.addComparator(new BeanPropertyComparator(sortByVe, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction()));
         }
         
         Collections.sort(list, chainedComparator);
