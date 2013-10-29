@@ -70,12 +70,15 @@ public class SortFeature implements DataTableFeature {
         }
         else {
             UIColumn sortColumn = table.findColumn(sortKey);
-            if(sortColumn.isDynamic()) {
-                ((DynamicColumn) sortColumn).applyStatelessModel();
-            }
-            table.setSortBy(sortColumn.getSortBy());
+            ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
+            
+            if(sortByVE != null)
+                table.setValueExpression("sortBy", sortByVE);
+            else
+                table.setSortBy(sortColumn.getSortBy());
+            
             table.setSortFunction(sortColumn.getSortFunction());
-            table.setSortOrder(sortDir);            
+            table.setSortOrder(sortDir); 
         }
     }
     
@@ -115,8 +118,8 @@ public class SortFeature implements DataTableFeature {
         if(value == null)
             return;
         
-        Object sortBy = table.getSortBy();        
-        ValueExpression sortByVe = createValueExpression(context, table.getVar(), sortBy);
+        ValueExpression tableSortByVE = table.getValueExpression("sortBy");
+        ValueExpression sortByVe = tableSortByVE != null ? tableSortByVE : createValueExpression(context, table.getVar(), table.getSortBy());
         SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
         MethodExpression sortFunction = table.getSortFunction();
         List list = null;
