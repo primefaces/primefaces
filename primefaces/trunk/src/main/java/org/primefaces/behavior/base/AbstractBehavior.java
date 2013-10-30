@@ -95,6 +95,11 @@ public abstract class AbstractBehavior extends ClientBehaviorBase
     	return eval(property.name(), unspecifiedValue);
     }
 
+    protected boolean isAttributeSet(Enum<?> property) {
+    	String attr = property.name();
+    	return literals.containsKey(attr) || bindings.containsKey(attr);
+    }
+    
     @Override
     public Object saveState(FacesContext context) {
         if (context == null) {

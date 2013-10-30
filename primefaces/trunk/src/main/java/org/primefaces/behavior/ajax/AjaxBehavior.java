@@ -190,15 +190,15 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
 
     public boolean isImmediateSet() {
-        return literals.containsKey(PropertyKeys.immediate) || bindings.containsKey(PropertyKeys.immediate);
+        return isAttributeSet(PropertyKeys.immediate);
     }
     
     public boolean isPartialSubmitSet() {
-    	return literals.containsKey(PropertyKeys.partialSubmit) || bindings.containsKey(PropertyKeys.partialSubmit);
+    	return isAttributeSet(PropertyKeys.partialSubmit);
     }
 
     public boolean isResetValuesSet() {
-    	return literals.containsKey(PropertyKeys.resetValues) || bindings.containsKey(PropertyKeys.resetValues);
+    	return isAttributeSet(PropertyKeys.resetValues);
     }
     
 
