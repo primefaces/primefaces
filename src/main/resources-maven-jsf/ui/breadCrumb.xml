@@ -39,6 +39,13 @@
 			<type>java.lang.String</type>
             <description>Style class of main container.</description>
 		</attribute>
+        <attribute>
+			<name>homeDisplay</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>icon</defaultValue>
+            <description>Defines display mode of root link, valid values are "icon" default and "text".</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
