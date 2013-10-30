@@ -29,8 +29,27 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             ResponseWriter writer = context.getResponseWriter();
             int actualRows = uidata.getRows();
             String[] options = uidata.getRowsPerPageTemplate().split("[,\\s]+");
+            String label = uidata.getRowsPerPageLabel();
+            String clientId = uidata.getClientId(context);
+            String ddId = clientId + "_rppDD";
+            String labelId = null;
+            
+            if(label != null) {
+                labelId = clientId + "_rppLabel";
+                
+                writer.startElement("label", null);
+                writer.writeAttribute("id", labelId, null);
+                writer.writeAttribute("for", ddId, null);
+                writer.writeAttribute("class", UIData.PAGINATOR_RPP_LABEL_CLASS, null);
+                writer.writeText(label, null);
+                writer.endElement("label");
+            }
         
             writer.startElement("select", null);
+            writer.writeAttribute("id", ddId, template);
+            if(label != null) {
+                writer.writeAttribute("aria-labelledby", labelId, null);
+            }
             writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
             writer.writeAttribute("value", uidata.getRows(), null);
 
