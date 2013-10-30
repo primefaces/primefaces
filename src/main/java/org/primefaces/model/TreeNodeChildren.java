@@ -122,7 +122,10 @@ public class TreeNodeChildren extends ArrayList<TreeNode> {
             throw new IndexOutOfBoundsException();
         } 
         else {
-            eraseParent(node);
+            if(!parent.equals(node.getParent())) {
+                eraseParent(node);
+            }
+            
             TreeNode previous = get(index);
             super.set(index, node);
             previous.setParent(null);
