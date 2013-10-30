@@ -49,6 +49,7 @@ public class UIData extends javax.faces.component.UIData {
     public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "ui-paginator-page ui-state-default ui-state-active ui-corner-all"; 
     public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current"; 
     public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options ui-widget ui-state-default ui-corner-left"; 
+    public static final String PAGINATOR_RPP_LABEL_CLASS = "ui-paginator-rpp-label"; 
     public static final String PAGINATOR_JTP_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default ui-corner-left"; 
     public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "ui-paginator-first ui-state-default ui-corner-all"; 
     public static final String PAGINATOR_FIRST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-first"; 
@@ -68,6 +69,7 @@ public class UIData extends javax.faces.component.UIData {
         paginator
 		,paginatorTemplate
 		,rowsPerPageTemplate
+        ,rowsPerPageLabel
 		,currentPageReportTemplate
 		,pageLinks
 		,paginatorPosition
@@ -109,6 +111,13 @@ public class UIData extends javax.faces.component.UIData {
 	}
 	public void setRowsPerPageTemplate(java.lang.String _rowsPerPageTemplate) {
 		getStateHelper().put(PropertyKeys.rowsPerPageTemplate, _rowsPerPageTemplate);
+	}
+    
+    public java.lang.String getRowsPerPageLabel() {
+		return (java.lang.String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
+	}
+	public void setRowsPerPageLabel(java.lang.String _rowsPerPageLabel) {
+		getStateHelper().put(PropertyKeys.rowsPerPageLabel, _rowsPerPageLabel);
 	}
 
 	public java.lang.String getCurrentPageReportTemplate() {

@@ -61,6 +61,13 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
+			<name>rowsPerPageLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label for rowsPerPage dropdown.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
             <name>currentPageReportTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
