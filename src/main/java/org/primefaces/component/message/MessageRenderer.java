@@ -34,13 +34,48 @@ public class MessageRenderer extends UINotificationRenderer {
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Message uiMessage = (Message) component;
-        UIComponent target = SearchExpressionFacade.resolveComponent(context, uiMessage, uiMessage.getFor());
-        String targetClientId = target.getClientId(context);
-        
-        encodeMarkup(context, uiMessage, targetClientId);
-        encodeScript(context, uiMessage, targetClientId);            
+
+        if (uiMessage.isStaticMode()) {
+        	encodeStaticMarkup(context, uiMessage);
+        } else {
+            UIComponent target = SearchExpressionFacade.resolveComponent(context, uiMessage, uiMessage.getFor());
+            String targetClientId = target.getClientId(context);
+        	
+        	encodeMarkup(context, uiMessage, targetClientId);
+        	encodeScript(context, uiMessage, targetClientId);
+        }
 	}
 	
+    protected void encodeStaticMarkup(FacesContext context, Message uiMessage) throws IOException {
+    	ResponseWriter writer = context.getResponseWriter();
+
+    	boolean escape = uiMessage.isEscape();
+    	String severity = uiMessage.getSeverity();
+    	String display = uiMessage.getDisplay();
+    	String message = uiMessage.getMessage();
+    	boolean iconOnly = display.equals("icon");
+
+    	String styleClass = "ui-message ui-message-" + severity + " ui-widget ui-corner-all";
+        if(iconOnly) {
+            styleClass +=  " ui-message-icon-only ui-helper-clearfix";
+        }
+    	
+		writer.startElement("div", uiMessage);
+		writer.writeAttribute("id", uiMessage.getClientId(context), null);
+        writer.writeAttribute("aria-live", "polite", null);
+        writer.writeAttribute("class", styleClass , null);
+    	
+        if(!display.equals("text")) {
+            encodeIcon(writer, severity, message, iconOnly);
+        }
+
+        if(!iconOnly) {
+        	encodeText(writer, message, severity + "-summary", escape);
+        }
+        
+        writer.endElement("div");
+    }
+    
     protected void encodeMarkup(FacesContext context, Message uiMessage, String targetClientId) throws IOException {        
         ResponseWriter writer = context.getResponseWriter();
         String display = uiMessage.getDisplay();
