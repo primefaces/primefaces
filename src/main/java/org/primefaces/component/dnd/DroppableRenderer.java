@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -36,7 +35,8 @@ public class DroppableRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Droppable droppable = (Droppable) component;
         
-        UIComponent target = SearchExpressionFacade.resolveComponentWithParentFallback(context, droppable, droppable.getFor());
+        UIComponent target = SearchExpressionFacade.resolveComponent(
+        		context, droppable, droppable.getFor(), SearchExpressionFacade.PARENT_FALLBACK);
 
         String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);

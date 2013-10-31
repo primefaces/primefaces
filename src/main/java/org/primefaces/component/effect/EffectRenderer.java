@@ -20,7 +20,6 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -36,7 +35,8 @@ public class EffectRenderer extends CoreRenderer {
         String event = effect.getEvent();
         int delay = effect.getDelay();
 		
-        UIComponent targetComponent = SearchExpressionFacade.resolveComponentWithParentFallback(context, effect, effect.getFor());
+        UIComponent targetComponent = SearchExpressionFacade.resolveComponent(
+        		context, effect, effect.getFor(), SearchExpressionFacade.PARENT_FALLBACK);
         String target = targetComponent.getClientId(context);
 		
 		String animation = getEffectBuilder(effect, target).build();
