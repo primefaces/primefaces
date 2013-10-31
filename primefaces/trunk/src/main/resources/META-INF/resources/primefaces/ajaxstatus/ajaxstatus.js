@@ -40,9 +40,9 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
          
     bindToStandard: function() {
         if(window.jsf && window.jsf.ajax) {
-            jsf.ajax.addOnEvent(function(data) {
-                var doc = $(document);
+        	var doc = $(document);
 
+        	jsf.ajax.addOnEvent(function(data) {
                 if(data.status === 'begin') {
                     doc.trigger('pfAjaxStart');
                 }
