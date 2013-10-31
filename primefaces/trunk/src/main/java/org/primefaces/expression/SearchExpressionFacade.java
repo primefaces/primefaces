@@ -32,6 +32,20 @@ import org.primefaces.util.ComponentUtils;
  */
 public class SearchExpressionFacade {
 
+	public static final int NONE = 0x0;
+	
+	/**
+	 * Checks if the {@link UIComponent} has a renderer or not.
+	 * This check is currently only useful for the update attributes, as a component without renderer can't be updated.
+	 */
+	public static final int VALIDATE_RENDERER = 0x1;
+
+	public static final int IGNORE_NO_RESULT = 0x2;
+	
+	public static final int PARENT_FALLBACK = 0x3;
+	
+	
+	
 	private static final Logger LOG = Logger.getLogger(SearchExpressionFacade.class.getName());
 
 	private static final String SHARED_EXPRESSION_BUFFER_KEY = "SearchExpressionFacade.SHARED_EXPRESSION_BUFFER";
@@ -87,7 +101,7 @@ public class SearchExpressionFacade {
      */
 	public static String resolveComponentsForClient(FacesContext context, UIComponent source, String expressions) {
 	    
-		return resolveComponentsForClient(context, source, expressions, false);
+		return resolveComponentsForClient(context, source, expressions, NONE);
 	}
 	
     /**
@@ -96,13 +110,16 @@ public class SearchExpressionFacade {
      * @param context The {@link FacesContext}.
      * @param source The source component. E.g. a button.
      * @param expression The search expression.
-     * @param checkForRenderer Checks if the {@link UIComponent} has a renderer or not.
-     * 			This check is currently only useful for the update attributes, as a component without renderer can't be updated. 
+     * @param options The options. 
      * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
      */
-	public static String resolveComponentsForClient(FacesContext context, UIComponent source, String expressions, boolean checkForRenderer) {
+	public static String resolveComponentsForClient(FacesContext context, UIComponent source, String expressions, int options) {
 	    
-		if (ComponentUtils.isValueBlank(expressions)) {
+	    if (ComponentUtils.isValueBlank(expressions)) {
+	    	if (isOptionSet(options, PARENT_FALLBACK)) {
+	    		return source.getParent().getClientId(context);
+	    	}
+
 			return null;
 		}
 		
@@ -127,7 +144,7 @@ public class SearchExpressionFacade {
 					expressionsBuffer.append(" ");
 				}
 	
-				String component = resolveComponentForClient(context, source, expression, checkForRenderer);
+				String component = resolveComponentForClient(context, source, expression, options);
 				if (component != null) {
 					expressionsBuffer.append(component);
 				}
@@ -144,42 +161,6 @@ public class SearchExpressionFacade {
 	}
 
     /**
-     * Resolves a list of {@link UIComponent} clientIds and/or passtrough expressions for the given expression or expressions.
-     * If the expressions are <code>null</code> or empty, the parent's clientId will be returned.
-     *
-     * @param context The {@link FacesContext}.
-     * @param source The source component. E.g. a button.
-     * @param expression The search expression.
-     * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
-     */
-	public static String resolveComponentsForClientWithParentFallback(FacesContext context, UIComponent source, String expressions) {
-	    if (ComponentUtils.isValueBlank(expressions)) {
-	    	return source.getParent().getClientId(context);
-	    }
-		
-		return resolveComponentsForClient(context, source, expressions, false);
-	}
-	
-    /**
-     * Resolves a list of {@link UIComponent} clientIds and/or passtrough expressions for the given expression or expressions.
-     * If the expressions are <code>null</code> or empty, the parent's clientId will be returned.
-     *
-     * @param context The {@link FacesContext}.
-     * @param source The source component. E.g. a button.
-     * @param expression The search expression.
-     * @param checkForRenderer Checks if the {@link UIComponent} has a renderer or not.
-     * 			This check is currently only useful for the update attributes, as a component without renderer can't be updated. 
-     * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
-     */
-	public static String resolveComponentsForClientWithParentFallback(FacesContext context, UIComponent source, String expressions, boolean checkForRenderer) {
-	    if (ComponentUtils.isValueBlank(expressions)) {
-	    	return source.getParent().getClientId(context);
-	    }
-	    
-	    return resolveComponentsForClient(context, source, expressions, checkForRenderer);
-	}
-	
-    /**
      * Resolves a {@link UIComponent} clientId and/or passtrough expression for the given expression.
      *
      * @param context The {@link FacesContext}.
@@ -188,7 +169,7 @@ public class SearchExpressionFacade {
      * @return A resolved clientId and/or passtrough expression (like PFS, widgetVar).
      */
 	public static String resolveComponentForClient(FacesContext context, UIComponent source, String expression) {
-		return resolveComponentForClient(context, source, expression, false);
+		return resolveComponentForClient(context, source, expression, NONE);
 	}
 	
     /**
@@ -197,11 +178,10 @@ public class SearchExpressionFacade {
      * @param context The {@link FacesContext}.
      * @param source The source component. E.g. a button.
      * @param expression The search expression.
-     * @param checkForRenderer Checks if the {@link UIComponent} has a renderer or not.
-     * 			This check is currently only useful for the update attributes, as a component without renderer can't be updated. 
+     * @param options The options. 
      * @return A resolved clientId and/or passtrough expression (like PFS, widgetVar).
      */
-	public static String resolveComponentForClient(FacesContext context, UIComponent source, String expression, boolean checkForRenderer) {
+	public static String resolveComponentForClient(FacesContext context, UIComponent source, String expression, int options) {
 		if (ComponentUtils.isValueBlank(expression)) {
 			return null;
 		}
@@ -217,12 +197,12 @@ public class SearchExpressionFacade {
 			return expression;
 		}
 
-		UIComponent component = resolveComponentInternal(context, source, expression, separatorChar, separatorString);
+		UIComponent component = resolveComponentInternal(context, source, expression, separatorChar, separatorString, options);
 		if (component == null) {
 			return null;
 		} else {
 			
-			if (checkForRenderer && context.isProjectStage(ProjectStage.Development)) {
+			if (isOptionSet(options, VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
 				if (ComponentUtils.isValueBlank(component.getRendererType())) {
 					LOG.warning("Can not update component without a attached renderer. "
 							+ "Component class: \"" + component.getClass() + "\"");
@@ -235,24 +215,6 @@ public class SearchExpressionFacade {
 
     /**
      * Resolves a {@link UIComponent} for the given expression.
-     * If the expression is <code>null</code> or empty, the parent's clientId will be returned.
-     *
-     * @param context The {@link FacesContext}.
-     * @param source The source component. E.g. a button.
-     * @param expression The search expression.
-     * @param fallbackToParent If the expression is null, the parent component will be used.
-     * @return A resolved {@link UIComponent} or <code>null</code>.
-     */
-	public static UIComponent resolveComponentWithParentFallback(FacesContext context, UIComponent source, String expression) {
-		if (ComponentUtils.isValueBlank(expression)) {
-			return source.getParent();
-		}
-
-		return resolveComponent(context, source, expression);
-	}
-	
-    /**
-     * Resolves a {@link UIComponent} for the given expression.
      *
      * @param context The {@link FacesContext}.
      * @param source The source component. E.g. a button.
@@ -261,7 +223,25 @@ public class SearchExpressionFacade {
      */
 	public static UIComponent resolveComponent(FacesContext context, UIComponent source, String expression) {
 
+		return resolveComponent(context, source, expression, NONE);
+	}
+
+    /**
+     * Resolves a {@link UIComponent} for the given expression.
+     *
+     * @param context The {@link FacesContext}.
+     * @param source The source component. E.g. a button.
+     * @param expression The search expression.
+     * @param options The options.
+     * @return A resolved {@link UIComponent} or <code>null</code>.
+     */
+	public static UIComponent resolveComponent(FacesContext context, UIComponent source, String expression, int options) {
+
 		if (ComponentUtils.isValueBlank(expression)) {
+			if (isOptionSet(options, PARENT_FALLBACK)) {
+				return source.getParent();
+			}
+
 			return null;
 		}
 
@@ -281,9 +261,9 @@ public class SearchExpressionFacade {
 					"Client side expression (PFS and @widgetVar) are not supported... Expression: " + expression);
 		}
 
-		UIComponent component = resolveComponentInternal(context, source, expression, separatorChar, separatorString);
-		
-		if (component == null) {
+		UIComponent component = resolveComponentInternal(context, source, expression, separatorChar, separatorString, options);
+
+		if (component == null && !isOptionSet(options, IGNORE_NO_RESULT)) {
 			throw new FacesException("Cannot find component with expression \""
 					+ expression + "\" referenced from \""
 					+ source.getClientId(context) + "\".");
@@ -291,7 +271,7 @@ public class SearchExpressionFacade {
 
 		return component;
 	}
-
+	
 	/**
 	 * Validates the given search expression.
 	 * We only validate it, for performance reasons, if the current {@link ProjectStage} is {@link ProjectStage#Development}.
@@ -359,7 +339,7 @@ public class SearchExpressionFacade {
 	}
 	
 	private static UIComponent resolveComponentInternal(FacesContext context, UIComponent source,
-			String expression, char separatorChar, String separatorString) {
+			String expression, char separatorChar, String separatorString, int options) {
 
 		if (ComponentUtils.isValueBlank(expression)) {
 			return null;
@@ -404,13 +384,18 @@ public class SearchExpressionFacade {
 						SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
 						UIComponent temp = resolver.resolve(source, last, subExpression);
 	
+						
 						if (temp == null) {
-							throw new FacesException("Cannot find component for subexpression \"" + subExpression
-									+ "\" from component with id \"" + last.getClientId(context)
-									+ "\" in full expression \"" + expression
-									+ "\" referenced from \"" + source.getClientId(context) + "\".");
+							if (!isOptionSet(options, IGNORE_NO_RESULT)) {
+								throw new FacesException("Cannot find component for subexpression \"" + subExpression
+										+ "\" from component with id \"" + last.getClientId(context)
+										+ "\" in full expression \"" + expression
+										+ "\" referenced from \"" + source.getClientId(context) + "\".");
+							} 
+
+							return null;
 						}
-	
+
 						last = temp;
 					}
 				}
@@ -420,8 +405,8 @@ public class SearchExpressionFacade {
 				// it's a keyword and not nested, just ask our resolvers
 				SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
 				component = resolver.resolve(source, source, expression);
-
-				if (component == null) {
+				
+				if (component == null && !isOptionSet(options, IGNORE_NO_RESULT)) {
 					throw new FacesException("Cannot find component for expression \""
 							+ expression + "\" referenced from \""
 							+ source.getClientId(context) + "\".");
@@ -431,7 +416,7 @@ public class SearchExpressionFacade {
 		    // default ID case
 			component = source.findComponent(expression);
 
-			if (component == null) {
+			if (component == null && !isOptionSet(options, IGNORE_NO_RESULT)) {
 				throw new FacesException("Cannot find component with expression \""
 						+ expression + "\" referenced from \""
 						+ source.getClientId(context) + "\".");
@@ -557,5 +542,9 @@ public class SearchExpressionFacade {
 		}
 
 		return buffer;
+	}
+	
+	private static boolean isOptionSet(int options, int option) {
+		return (options & option) != 0;
 	}
 }

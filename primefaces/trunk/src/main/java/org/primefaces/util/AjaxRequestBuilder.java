@@ -71,20 +71,20 @@ public class AjaxRequestBuilder {
 	}
     
     public AjaxRequestBuilder process(UIComponent component, String expressions) {        
-        addExpressions(component, expressions, "process", false);
+        addExpressions(component, expressions, "process", SearchExpressionFacade.NONE);
         
         return this;
     }
     
     public AjaxRequestBuilder update(UIComponent component, String expressions) {        
-        addExpressions(component, expressions, "update", true);
+        addExpressions(component, expressions, "update", SearchExpressionFacade.VALIDATE_RENDERER);
         
         return this;
     }
     
-    private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, boolean checkForRenderer) {        
+    private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, int options) {        
         if(!isValueBlank(expressions)) {
-        	String resolvedExpressions = SearchExpressionFacade.resolveComponentsForClient(context, component, expressions, checkForRenderer);
+        	String resolvedExpressions = SearchExpressionFacade.resolveComponentsForClient(context, component, expressions, options);
             buffer.append(",").append(key).append(":'").append(resolvedExpressions).append("'");
         }
         

@@ -42,6 +42,12 @@ public class SearchExpressionFacadeTest
 		return SearchExpressionFacade.resolveComponent(context, source, expression);
 	}
 
+	private UIComponent resolveComponent(UIComponent source, String expression, int options)
+	{
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		return SearchExpressionFacade.resolveComponent(context, source, expression, options);
+	}
 
 	private String resolveComponentForClient(UIComponent source, String expression)
 	{
@@ -1213,13 +1219,13 @@ public class SearchExpressionFacadeTest
 
 	    assertEquals(
 	    		root, 
-	    		SearchExpressionFacade.resolveComponentWithParentFallback(
-	    				FacesContext.getCurrentInstance(), form, null));
+	    		SearchExpressionFacade.resolveComponent(
+	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionFacade.PARENT_FALLBACK));
 
 	    assertEquals(
 	    		root, 
-	    		SearchExpressionFacade.resolveComponentWithParentFallback(
-	    				FacesContext.getCurrentInstance(), form, " "));
+	    		SearchExpressionFacade.resolveComponent(
+	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionFacade.PARENT_FALLBACK));
 	}
 	
 	@Test
@@ -1234,13 +1240,13 @@ public class SearchExpressionFacadeTest
 
 	    assertEquals(
 	    		"test", 
-	    		SearchExpressionFacade.resolveComponentsForClientWithParentFallback(
-	    				FacesContext.getCurrentInstance(), form, null));
+	    		SearchExpressionFacade.resolveComponentsForClient(
+	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionFacade.PARENT_FALLBACK));
 
 	    assertEquals(
 	    		"test", 
-	    		SearchExpressionFacade.resolveComponentsForClientWithParentFallback(
-	    				FacesContext.getCurrentInstance(), form, " "));
+	    		SearchExpressionFacade.resolveComponentsForClient(
+	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionFacade.PARENT_FALLBACK));
 	}
 	
 	@Test
@@ -1391,5 +1397,44 @@ public class SearchExpressionFacadeTest
 	    root.getChildren().add(command3);
 
 	    assertSame("Failed", command3, resolveComponent(command1, " @form:@child(0):@next:@next "));
+	}
+	
+	
+	@Test
+	public void resolveComponent_NoResult() {
+	    UIForm root = new UIForm();
+	    root.setId("form");
+
+	    UIComponent command1 = new UICommand();
+	    command1.setId("command1");
+	    root.getChildren().add(command1);
+
+	    UIComponent command2 = new UICommand();
+	    command2.setId("command2");
+	    root.getChildren().add(command2);
+
+	    try {
+	    	assertSame("Failed", root, resolveComponent(command1, " command1:@parent:command3 "));
+			Assert.fail("This should actually raise an exception");
+		} catch (Exception e) {
+			assertEquals(FacesException.class, e.getClass());
+		}
+	}
+
+	@Test
+	public void resolveComponent_IgnoreNoResult() {
+	    UIForm root = new UIForm();
+	    root.setId("form");
+
+	    UIComponent command1 = new UICommand();
+	    command1.setId("command1");
+	    root.getChildren().add(command1);
+
+	    UIComponent command2 = new UICommand();
+	    command2.setId("command2");
+	    root.getChildren().add(command2);
+
+	    assertSame("Failed", null,
+	    		resolveComponent(command1, " command3 ", SearchExpressionFacade.IGNORE_NO_RESULT));
 	}
 }
