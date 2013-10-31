@@ -125,6 +125,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", focusId, null);
         writer.writeAttribute("name", focusId, null);
         writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("readonly", "readonly", null);
         if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         
