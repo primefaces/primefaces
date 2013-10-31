@@ -34,6 +34,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.ChainedBeanPropertyComparator;
+import org.primefaces.model.DynamicChainedPropertyComparator;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
@@ -101,12 +102,10 @@ public class SortFeature implements DataTableFeature {
             table.loadLazyData();
         }
         else {
-            if(table.isMultiSort()) {
+            if(table.isMultiSort())
                 multiSort(context, table);
-            } 
-            else {
+            else
                 singleSort(context, table);
-            }
             
             if(table.isPaginator()) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -176,17 +175,23 @@ public class SortFeature implements DataTableFeature {
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
         for(SortMeta meta : sortMeta) { 
+            BeanPropertyComparator comparator;
             UIColumn sortColumn = meta.getColumn();
-            ValueExpression sortByVe;
+            ValueExpression sortByVE;
             ValueExpression columnSortByVE = sortColumn.getValueExpression("sortBy");
-            if(columnSortByVE != null) {
-                sortByVe = columnSortByVE;
+            
+            if(sortColumn.isDynamic()) {
+                ((DynamicColumn) sortColumn).applyStatelessModel();
+                Object sortByProperty = sortColumn.getSortBy();                
+                sortByVE = (sortByProperty == null) ? columnSortByVE : createValueExpression(context, table.getVar(), sortByProperty);
+                comparator = new DynamicChainedPropertyComparator((DynamicColumn) sortColumn, sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction());
             }
             else {
-                sortByVe = createValueExpression(context, table.getVar(), sortColumn.getSortBy());
+                sortByVE = (columnSortByVE != null) ? columnSortByVE : createValueExpression(context, table.getVar(), sortColumn.getSortBy());
+                comparator = new BeanPropertyComparator(sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction());
             }
-                    
-            chainedComparator.addComparator(new BeanPropertyComparator(sortByVe, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction()));
+                 
+            chainedComparator.addComparator(comparator);
         }
         
         Collections.sort(list, chainedComparator);

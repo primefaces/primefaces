@@ -323,8 +323,8 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = column.getContainerClientId(context);
 
         ValueExpression columnSortByVE = column.getValueExpression("sortBy");
-        Object columnSortBy = column.getSortBy();
-        boolean sortable = (columnSortByVE != null || columnSortBy != null);
+        Object columnSortByProperty = column.getSortBy();
+        boolean sortable = (columnSortByVE != null || columnSortByProperty != null);
         boolean hasFilter = (column.getValueExpression("filterBy") != null || column.getFilterBy() != null);
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
@@ -348,7 +348,7 @@ public class DataTableRenderer extends DataRenderer {
                     if(sortMeta != null) {
                         for(SortMeta meta : sortMeta) {
                             UIColumn sortColumn = meta.getColumn();
-                            sortIcon = resolveDefaultSortIcon(columnSortByVE, columnSortBy, 
+                            sortIcon = resolveDefaultSortIcon(columnSortByVE, columnSortByProperty, 
                                     sortColumn.getValueExpression("sortBy"), sortColumn.getSortBy(), meta.getSortOrder().name());
 
                             if(sortIcon != null) {
@@ -358,7 +358,7 @@ public class DataTableRenderer extends DataRenderer {
                     }
                 }
                 else {
-                    sortIcon = resolveDefaultSortIcon(columnSortByVE, columnSortBy, tableSortByVE, tableSortBy, table.getSortOrder());
+                    sortIcon = resolveDefaultSortIcon(columnSortByVE, columnSortByProperty, tableSortByVE, tableSortBy, table.getSortOrder());
                 }
             }
             
