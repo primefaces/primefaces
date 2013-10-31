@@ -325,7 +325,7 @@ public class DataTableRenderer extends DataRenderer {
         ValueExpression columnSortByVE = column.getValueExpression("sortBy");
         Object columnSortBy = column.getSortBy();
         boolean sortable = (columnSortByVE != null || columnSortBy != null);
-        boolean hasFilter = column.getFilterBy() != null;
+        boolean hasFilter = (column.getValueExpression("filterBy") != null || column.getFilterBy() != null);
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
