@@ -367,7 +367,7 @@ import org.primefaces.component.datatable.feature.*;
                 data = lazyModel.load(getFirst(), getRows(), getMultiSortMeta(), getFilters());
             }
             else {
-                data = lazyModel.load(getFirst(), getRows(), (String) getSortBy(), convertSortOrder(), getFilters());
+                data = lazyModel.load(getFirst(), getRows(),  resolveSortField(), convertSortOrder(), getFilters());
             }
             
             lazyModel.setPageSize(getRows());
@@ -396,7 +396,7 @@ import org.primefaces.component.datatable.feature.*;
                 data = lazyModel.load(offset, rows, getMultiSortMeta(), getFilters());
             }
             else {
-                data = lazyModel.load(offset, rows, (String) getSortBy(), convertSortOrder(), getFilters());
+                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilters());
             }
             
             lazyModel.setPageSize(rows);
@@ -416,20 +416,23 @@ import org.primefaces.component.datatable.feature.*;
     protected String resolveSortField() {
         UIColumn column = this.getSortColumn();
         String sortField = null;
-        ValueExpression sortVE = this.getValueExpression("sortBy");
+        ValueExpression tableSortByVE = this.getValueExpression("sortBy");
+        Object tableSortByProperty = this.getSortBy();
         
         if(column == null) {
-            sortField = resolveStaticField(sortVE);
+            sortField = (tableSortByVE == null) ? (String) tableSortByProperty : resolveStaticField(tableSortByVE);
         }
         else {
+            ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+            
             if(column.isDynamic()) {
-                ((DynamicColumn) column).applyStatelessModel();
-                sortField = resolveDynamicField(sortVE);
+                ((DynamicColumn) sortColumn).applyStatelessModel();
+                Object sortByProperty = sortColumn.getSortBy();
+                sortField = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
             }
             else {
-                sortField = resolveStaticField(sortVE);
+                sortField = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
             }
-            
         }
         
         return sortField;
