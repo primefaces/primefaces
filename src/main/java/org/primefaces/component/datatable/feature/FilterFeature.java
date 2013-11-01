@@ -197,11 +197,17 @@ public class FilterFeature implements DataTableFeature {
             String filterValue = params.get(filterParam);
             
             if(!ComponentUtils.isValueBlank(filterValue)) {
-                if(column instanceof DynamicColumn) {
-                    ((DynamicColumn) column).applyStatelessModel();
-                }
+                String filterField = null;
+                ValueExpression filterByVE = column.getValueExpression("filterBy");
                 
-                String filterField = String.valueOf(column.getFilterBy());
+                if(column.isDynamic()) {
+                    ((DynamicColumn) column).applyStatelessModel();
+                    Object filterByProperty = column.getSortBy();
+                    filterField = (filterByProperty == null) ? table.resolveDynamicField(filterByVE) : filterByProperty.toString();
+                }
+                else {
+                    filterField = (filterByVE == null) ? (String) column.getFilterBy(): table.resolveStaticField(filterByVE);
+                }
 
                 filterParameterMap.put(filterField, filterValue);
             }
