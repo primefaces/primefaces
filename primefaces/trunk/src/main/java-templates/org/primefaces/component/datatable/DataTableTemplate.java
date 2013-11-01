@@ -893,16 +893,7 @@ import org.primefaces.component.datatable.feature.*;
             }
         }
     }
-    
-    public boolean isExpressionsAdapted() {
-        Object value = getStateHelper().get("expressionsAdapted");
-
-        return value == null ? false : true;
-	}
-	public void setExpressionsAdapted() {
-		getStateHelper().put("expressionsAdapted", true);
-	}
-    
+        
     private ValueExpression sortByVE;
     public void setSortByVE(ValueExpression ve) {
         this.sortByVE = ve;
