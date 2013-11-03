@@ -81,25 +81,29 @@ public abstract class AbstractMenu extends UIComponentBase {
             ELContext eLContext = facesContext.getELContext();
             MenuActionEvent menuActionEvent = (MenuActionEvent) event;
             MenuItem menuItem = menuActionEvent.getMenuItem();
-            String actionExpressionString = menuItem.getCommand();
-            MethodExpression noArgExpr = facesContext.getApplication().getExpressionFactory().
-                            createMethodExpression(eLContext,actionExpressionString, 
-                                                        String.class, new Class[0]);
-            Object outcome = null;
+            String command = menuItem.getCommand();
             
-            try {
-                outcome = noArgExpr.invoke(eLContext, null);
-            } 
-            catch(MethodNotFoundException methodNotFoundException) {
-                MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
-                            createMethodExpression(eLContext, actionExpressionString, 
-                                                        String.class, new Class[]{ActionEvent.class});
-                
-                outcome = argExpr.invoke(eLContext, new Object[]{event});
-            }
-            finally {
-                if(outcome != null) {
-                    facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, actionExpressionString, outcome.toString());
+            if(command != null) {
+                String actionExpressionString = menuItem.getCommand();
+                MethodExpression noArgExpr = facesContext.getApplication().getExpressionFactory().
+                                createMethodExpression(eLContext,actionExpressionString, 
+                                                            String.class, new Class[0]);
+                Object outcome = null;
+
+                try {
+                    outcome = noArgExpr.invoke(eLContext, null);
+                } 
+                catch(MethodNotFoundException methodNotFoundException) {
+                    MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
+                                createMethodExpression(eLContext, actionExpressionString, 
+                                                            String.class, new Class[]{ActionEvent.class});
+
+                    outcome = argExpr.invoke(eLContext, new Object[]{event});
+                }
+                finally {
+                    if(outcome != null) {
+                        facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, actionExpressionString, outcome.toString());
+                    }
                 }
             }
             
