@@ -475,6 +475,7 @@ public class DataTableRenderer extends DataRenderer {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ResponseWriter writer = context.getResponseWriter();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+        boolean disableTabbing = table.getScrollWidth() != null;
 
         String filterId = column.getContainerClientId(context) + separator + "filter";
         String filterStyleClass = column.getFilterStyleClass();
@@ -507,6 +508,9 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", filterStyleClass, null);
             writer.writeAttribute("value", filterValue , null);
             writer.writeAttribute("autocomplete", "off", null);
+            
+            if(disableTabbing)
+                writer.writeAttribute("tabindex", "-1", null);
 
             if(column.getFilterStyle() != null)
                 writer.writeAttribute("style", column.getFilterStyle(), null);
@@ -523,6 +527,9 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("id", filterId, null);
             writer.writeAttribute("name", filterId, null);
             writer.writeAttribute("class", filterStyleClass, null);
+            
+            if(disableTabbing)
+                writer.writeAttribute("tabindex", "-1", null);
 
             SelectItem[] itemsArray = (SelectItem[]) getFilterOptions(column);
 
