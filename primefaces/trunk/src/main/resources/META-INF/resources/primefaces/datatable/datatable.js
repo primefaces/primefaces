@@ -636,7 +636,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             for(var i=0; i < updates.length; i++) {
                 var update = updates.eq(i),
                 id = update.attr('id'),
-                content = update.get(0).childNodes[0].nodeValue;
+                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
 
                 if(id == _self.id) {
                     var lastRow = $(_self.jqId + ' .ui-datatable-scrollable-body table tr:last');
@@ -701,7 +701,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             for(var i=0; i < updates.length; i++) {
                 var update = updates.eq(i),
                 id = update.attr('id'),
-                content = update.get(0).childNodes[0].nodeValue;
+                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
 
                 if(id == $this.id) {
                     $this.tbody.html(content);
@@ -783,7 +783,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             for(var i=0; i < updates.length; i++) {
                 var update = updates.eq(i),
                 id = update.attr('id'),
-                content = update.get(0).childNodes[0].nodeValue;
+                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
 
                 if(id == $this.id) {
                     $this.tbody.html(content);
@@ -881,7 +881,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             for(var i=0; i < updates.length; i++) {
                 var update = updates.eq(i),
                 id = update.attr('id'),
-                content = update.get(0).childNodes[0].nodeValue;
+                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
 
                 if(id == $this.id){
                     $this.tbody.html(content);
@@ -1318,7 +1318,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             for(var i=0; i < updates.length; i++) {
                 var update = updates.eq(i),
                 id = update.attr('id'),
-                content = update.get(0).childNodes[0].nodeValue;
+                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
 
                 if(id == _self.id){
                     row.after(content);
@@ -1619,7 +1619,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 for(var i=0; i < updates.length; i++) {
                     var update = updates.eq(i),
                     id = update.attr('id'),
-                    content = update.get(0).childNodes[0].nodeValue;
+                    content = PrimeFaces.ajax.AjaxUtils.getContent(update);
 
                     if(id === $this.id)
                         cellEditor.children('.ui-cell-editor-output').html(content);
@@ -1684,7 +1684,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             for(var i=0; i < updates.length; i++) {
                 var update = updates.eq(i),
                 id = update.attr('id'),
-                content = update.get(0).childNodes[0].nodeValue;
+                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
 
                 if(id == $this.id) {
                     if(this.args.validationFailed) {

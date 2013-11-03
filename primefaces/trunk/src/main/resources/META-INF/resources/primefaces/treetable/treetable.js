@@ -110,7 +110,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             for(var i=0; i < updates.length; i++) {
                 var update = updates.eq(i),
                 id = update.attr('id'),
-                content = update.get(0).childNodes[0].nodeValue;
+                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
 
                 if(id == $this.id){
                     node.after(content);
