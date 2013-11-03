@@ -315,7 +315,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             var node = nodeContent.parent(),
             selectable = nodeContent.hasClass('ui-tree-selectable');
     
-            if(selectable) {
+            if(selectable && this.cfg.selectionMode) {
                 var selected = this.isNodeSelected(node);
                 if(!selected) {
                     if(this.isCheckboxSelection()) {
