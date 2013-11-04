@@ -180,6 +180,11 @@
 		<component-type>org.primefaces.mobile.Header</component-type>
 		<component-class>org.primefaces.mobile.component.header.Header</component-class>
 	</component>
+    
+    <component>
+		<component-type>org.primefaces.mobile.Footer</component-type>
+		<component-class>org.primefaces.mobile.component.footer.Footer</component-class>
+	</component>
 
 	<component>
 		<component-type>org.primefaces.mobile.Page</component-type>
@@ -204,8 +209,8 @@
         
         <renderer>
 			<component-family>org.primefaces.mobile.component</component-family>
-			<renderer-type>org.primefaces.mobile.component.PageRenderer</renderer-type>
-			<renderer-class>org.primefaces.mobile.component.page.PageRenderer</renderer-class>
+			<renderer-type>org.primefaces.mobile.component.ContentRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.content.ContentRenderer</renderer-class>
 		</renderer>
         
         <renderer>
@@ -216,8 +221,8 @@
         
         <renderer>
 			<component-family>org.primefaces.mobile.component</component-family>
-			<renderer-type>org.primefaces.mobile.component.ContentRenderer</renderer-type>
-			<renderer-class>org.primefaces.mobile.component.content.ContentRenderer</renderer-class>
+			<renderer-type>org.primefaces.mobile.component.FooterRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.footer.FooterRenderer</renderer-class>
 		</renderer>
     </render-kit>   
     <!-- Mobile -->
