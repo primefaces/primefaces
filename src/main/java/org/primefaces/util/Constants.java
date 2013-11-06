@@ -66,4 +66,6 @@ public class Constants {
     public final static String DIALOG_SOURCE_COMPONENT = "dialog.source.component";
     public final static String DIALOG_SOURCE_WIDGET = "dialog.source.widget";
     public final static String DIALOG_CONVERSATION_PARAM = "pfdlgcid";
+    
+    public static final String EMPTY_STRING = "";
 }
