@@ -1023,20 +1023,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 	        this.bindEvents();
     	}
     },
-    
-    /**
-     * Positions overlay relative to the dropdown considering fixed positioning and #4231 IE8 bug
-     **/
-    alignPanel: function() {        
-        var fixedPosition = this.panel.css('position') == 'fixed',
-        win = $(window),
-        positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
 
+    alignPanel: function() {
         this.panel.css({left:'', top:''}).position({
                                         my: 'left top'
                                         ,at: 'left bottom'
                                         ,of: this.jq
-                                        ,offset : positionOffset
+                                        ,collision: 'flipfit'
                                     });
     },
             
