@@ -42,6 +42,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.convert.ClientConverter;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.ClientValidator;
@@ -82,9 +83,13 @@ public abstract class CoreRenderer extends Renderer {
 	}
 	
     protected String getResourceURL(FacesContext context, String value) {
-        if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
+        if(value.trim().equals(Constants.EMPTY_STRING)) {
+            return Constants.EMPTY_STRING;
+        }
+        else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
             return value;
-        } else {
+        } 
+        else {
             String url = context.getApplication().getViewHandler().getResourceURL(context, value);
 
             return context.getExternalContext().encodeResourceURL(url);
