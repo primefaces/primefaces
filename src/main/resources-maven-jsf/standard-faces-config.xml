@@ -224,5 +224,11 @@
 			<renderer-type>org.primefaces.mobile.component.FooterRenderer</renderer-type>
 			<renderer-class>org.primefaces.mobile.component.footer.FooterRenderer</renderer-class>
 		</renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.InputTextRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.InputTextRenderer</renderer-class>
+        </renderer>
     </render-kit>   
     <!-- Mobile -->
