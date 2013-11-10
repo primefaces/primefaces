@@ -514,9 +514,9 @@
             }
         },
         
-        bc: function(source, event, ext, behaviorsArray) {
+        /*bc: function(source, event, ext, behaviorsArray) {
             this.chainBehaviors(source, event, ext, behaviorsArray);
-        },
+        },*/
     
         bcn: function(element, event, functions) {
             if(functions) {
