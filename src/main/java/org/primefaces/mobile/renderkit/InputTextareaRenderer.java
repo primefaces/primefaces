@@ -64,7 +64,7 @@ public class InputTextareaRenderer extends InputRenderer {
 		if(valueToRender != null) writer.writeText(valueToRender, "value");  
         
         renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS);
-        renderEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS, inputTextarea.getClientBehaviors());
+        renderEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
 
         writer.endElement("textarea");
 	}
