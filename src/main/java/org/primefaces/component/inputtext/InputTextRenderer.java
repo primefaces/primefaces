@@ -74,7 +74,7 @@ public class InputTextRenderer extends InputRenderer {
 		}
 
 		renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
+        renderDomEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
 
         if(inputText.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(inputText.isReadonly()) writer.writeAttribute("readonly", "readonly", null);

@@ -129,7 +129,7 @@ public class InputTextareaRenderer extends InputRenderer {
 		writer.writeAttribute("name", clientId, null);
 
 		renderPassThruAttributes(context, inputTextarea, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
+        renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
         
         if(inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
