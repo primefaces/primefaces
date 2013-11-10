@@ -56,11 +56,7 @@ public class InputTextRenderer extends InputRenderer {
 	protected void encodeScript(FacesContext context, InputText inputText) throws IOException {
 		String clientId = inputText.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputText", inputText.resolveWidgetVar(), clientId);
-        
-        encodeClientBehaviors(context, inputText);
-
-        wb.finish();
+        wb.init("InputText", inputText.resolveWidgetVar(), clientId).finish();
 	}
 
 	protected void encodeMarkup(FacesContext context, InputText inputText) throws IOException {
@@ -77,7 +73,8 @@ public class InputTextRenderer extends InputRenderer {
 			writer.writeAttribute("value", valueToRender , null);
 		}
 
-		renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS);
+		renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
 
         if(inputText.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(inputText.isReadonly()) writer.writeAttribute("readonly", "readonly", null);

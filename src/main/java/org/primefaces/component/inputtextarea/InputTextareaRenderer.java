@@ -94,7 +94,6 @@ public class InputTextareaRenderer extends InputRenderer {
     }
 
 	protected void encodeScript(FacesContext context, InputTextarea inputTextarea) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
 		String clientId = inputTextarea.getClientId(context);
         boolean autoResize = inputTextarea.isAutoResize();
         String counter = inputTextarea.getCounter();
@@ -117,8 +116,6 @@ public class InputTextareaRenderer extends InputRenderer {
                 .attr("queryDelay", inputTextarea.getQueryDelay())
                 .attr("scrollHeight", inputTextarea.getScrollHeight(), Integer.MAX_VALUE);
         }
-        
-        encodeClientBehaviors(context, inputTextarea);
 
         wb.finish();
 	}
@@ -131,8 +128,9 @@ public class InputTextareaRenderer extends InputRenderer {
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
 
-		renderPassThruAttributes(context, inputTextarea, HTML.INPUT_TEXTAREA_ATTRS);
-
+		renderPassThruAttributes(context, inputTextarea, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
+        
         if(inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(inputTextarea.getStyle() != null) writer.writeAttribute("style", inputTextarea.getStyle(), null);
