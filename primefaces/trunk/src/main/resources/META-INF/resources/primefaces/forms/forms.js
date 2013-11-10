@@ -6,12 +6,6 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        //Client behaviors
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
-        }
-
-        //Visuals
         PrimeFaces.skinInput(this.jq);
     },
             
@@ -51,11 +45,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         //maxLength
         if(this.cfg.maxlength) {
             this.applyMaxlength();
-        }
-
-        //Client behaviors
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
         }
         
         //Counter
