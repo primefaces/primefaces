@@ -63,7 +63,7 @@ public class InputTextRenderer extends InputRenderer {
         if(valueToRender != null) writer.writeAttribute("value", valueToRender , null);
         
         renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderEvents(context, inputText, HTML.INPUT_TEXT_EVENTS, inputText.getClientBehaviors());
+        renderEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
         
         writer.endElement("input");
 	}

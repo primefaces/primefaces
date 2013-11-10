@@ -141,7 +141,14 @@ public abstract class CoreRenderer extends Renderer {
         }
 	}
     
-    protected void renderEvents(FacesContext context, UIComponent component, String[] eventAttrs, Map<String,List<ClientBehavior>> behaviors) throws IOException {
+    protected void renderEvents(FacesContext context, UIComponent component, String[] eventAttrs) throws IOException {
+		if(component instanceof ClientBehaviorHolder)
+            renderEvents(context, component, eventAttrs, ((ClientBehaviorHolder) component).getClientBehaviors());
+        else
+            renderPassThruAttributes(context, component, eventAttrs);
+	}
+    
+    private void renderEvents(FacesContext context, UIComponent component, String[] eventAttrs, Map<String,List<ClientBehavior>> behaviors) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		StringBuilder builder = null;
         
