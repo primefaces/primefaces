@@ -56,17 +56,14 @@ public class InputTextRenderer extends InputRenderer {
 		writer.writeAttribute("name", clientId, null);
 		writer.writeAttribute("type", inputText.getType(), null);           
       
-		renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderEvents(context, inputText, HTML.INPUT_TEXT_EVENTS, inputText.getClientBehaviors());
-
         if(inputText.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(inputText.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(style != null) writer.writeAttribute("style", style, null);  
         if(styleClass != null) writer.writeAttribute("class", styleClass, null);  
+        if(valueToRender != null) writer.writeAttribute("value", valueToRender , null);
         
-        if(valueToRender != null) {
-			writer.writeAttribute("value", valueToRender , null);
-		}
+        renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderEvents(context, inputText, HTML.INPUT_TEXT_EVENTS, inputText.getClientBehaviors());
         
         writer.endElement("input");
 	}
