@@ -513,6 +513,46 @@
                 PrimeFaces.warn('No global confirmation dialog available.');
             }
         },
+        
+        bc: function(source, event, ext, behaviorsArray) {
+            this.chainBehaviors(source, event, ext, behaviorsArray);
+        },
+    
+        bcn: function(element, event, functions) {
+            if(functions) {
+                for(var i = 0; i < functions.length; i++) {
+                    var retVal = functions[i].call(element, event);
+                    if(retVal === false) {
+                        break;
+                    }
+                } 
+            }
+        },
+        
+        chainBehaviors: function(source, event, ext, behaviorsArray) {
+
+    		for (var i = 0; i < behaviorsArray.length; ++i) {
+    			var behavior = behaviorsArray[i];
+    			var success;
+
+	            if (typeof behavior == 'function') {
+	            	success = behavior.call(source, event, ext);
+	            } else {	                
+	            	if (!ext) {
+	            		ext = { };
+	            	}
+
+	            	//either a function or a string can be passed in case of a string we have to wrap it into another function
+	            	success = new Function("event", behavior).call(source, event, ext);
+	            }
+
+	            if (success === false) {
+	                return false;
+	            }
+    		}
+    		
+    		return true;
+    	},
 
         locales : {},
 
@@ -541,38 +581,6 @@
         VIEW_ROOT : "javax.faces.ViewRoot",
 
         CLIENT_ID_DATA : "primefaces.clientid"
-    };
-
-    PrimeFaces.bc = function(source, event, ext, behaviorsArray) {
-        PrimeFaces.Behavior.chain(source, event, ext, behaviorsArray);
-    },
-
-    PrimeFaces.Behavior = {
-    		
-    	chain : function(source, event, ext, behaviorsArray) {
-
-    		for (var i = 0; i < behaviorsArray.length; ++i) {
-    			var behavior = behaviorsArray[i];
-    			var success;
-
-	            if (typeof behavior == 'function') {
-	            	success = behavior.call(source, event, ext);
-	            } else {	                
-	            	if (!ext) {
-	            		ext = { };
-	            	}
-
-	            	//either a function or a string can be passed in case of a string we have to wrap it into another function
-	            	success = new Function("event", behavior).call(source, event, ext);
-	            }
-
-	            if (success === false) {
-	                return false;
-	            }
-    		}
-    		
-    		return true;
-    	}
     };
     
     PrimeFaces.Expressions = {

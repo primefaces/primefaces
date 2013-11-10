@@ -140,6 +140,71 @@ public abstract class CoreRenderer extends Renderer {
             RendererUtils.renderPassThroughAttributes(context, component);
         }
 	}
+    
+    protected void renderEvents(FacesContext context, UIComponent component, String[] eventAttrs, Map<String,List<ClientBehavior>> behaviors) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		StringBuilder builder = null;
+        
+		for(String domEvent : eventAttrs) {
+			Object eventValue = component.getAttributes().get(domEvent);
+            String behaviorEvent = domEvent.substring(2, domEvent.length());
+            List<ClientBehavior> eventBehaviors = behaviors.get(behaviorEvent);
+            boolean hasEventValue = (eventValue != null);
+            boolean hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
+            
+            if(domEvent.equals("onchange") && !hasEventBehaviors) {
+                eventBehaviors = behaviors.get("valueChange");
+                hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
+                if(hasEventBehaviors)
+                    behaviorEvent = "valueChange";
+            }
+            
+            if(hasEventValue || hasEventBehaviors) {
+                if(builder == null) {
+                    builder = new StringBuilder();
+                }
+                
+                if(hasEventValue) {
+                    builder.append(eventValue).append(";");
+                }
+                
+                if(hasEventBehaviors) {
+                    String clientId = ((UIComponent) component).getClientId(context);
+                    List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEvent, clientId, params);
+                    int size = eventBehaviors.size();
+                    
+                    if(size > 1) {
+                        builder.append("PrimeFaces.bcn(this,event,[");
+                        for (int i = 0; i < size; i++) {
+                            ClientBehavior behavior = eventBehaviors.get(i);
+                            String script = behavior.getScript(cbc);
+                            if(script != null) {
+                                builder.append("function(event){").append(script).append("}");
+                            }
+                            
+                            if(i < (size - 1)) {
+                                builder.append(",");
+                            }
+                        }
+                        builder.append("])");
+                    }
+                    else {
+                        ClientBehavior behavior = eventBehaviors.get(0);
+                        String script = behavior.getScript(cbc);
+                        if(script != null) {
+                            builder.append(script);
+                        }
+                    }
+                }
+                
+                if(builder.length() > 0) {
+                    writer.writeAttribute(domEvent, builder.toString(), domEvent);
+                    builder.setLength(0);
+                }
+            }
+		}
+	}
 	
 	protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs, String[] ignoredAttrs) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
