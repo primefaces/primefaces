@@ -35,8 +35,12 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         
         $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.cfg.globalSelector)
                     .on(this.cfg.showEvent, this.cfg.globalSelector, function() {
-                        var element = $(this),
-                        title = element.attr('title');
+                        var element = $(this);
+                        if(element.prop('disabled')) {
+                            return;
+                        }
+                
+                        var title = element.attr('title');
                         if(title) {
                             element.data('tooltip', title).removeAttr('title');
                         }
