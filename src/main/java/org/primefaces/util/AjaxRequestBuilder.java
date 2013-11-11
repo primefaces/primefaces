@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
 
 import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
@@ -264,10 +265,13 @@ public class AjaxRequestBuilder {
         return request;
     }
     
-    public String buildBehavior() {
+    public String buildBehavior(ClientBehaviorRenderingMode mode) {
         addFragmentConfig();
         
-        buffer.append("}, arguments[1]);");
+        if(mode.equals(ClientBehaviorRenderingMode.UNOBSTRUSIVE))
+            buffer.append("},ext);");
+        else if(mode.equals(ClientBehaviorRenderingMode.OBSTRUSIVE))
+            buffer.append("});");
         
         if(preventDefault) {
             buffer.append("return false;");
