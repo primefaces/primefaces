@@ -15,6 +15,7 @@
  */
 package org.primefaces.behavior.ajax;
 
+import java.util.List;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -24,9 +25,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.render.ClientBehaviorRenderer;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.Constants;
 
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
@@ -51,14 +54,16 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         if(ajaxBehavior.isDisabled()) {
             return null;
         }
-
+        
         UIComponent component = behaviorContext.getComponent();
+        ClientBehaviorRenderingMode renderingMode = (ClientBehaviorRenderingMode) ((List<ClientBehaviorContext.Parameter>) 
+                                                                behaviorContext.getParameters()).get(0).getValue();
         String source = behaviorContext.getSourceId();
         String process = ajaxBehavior.getProcess();
         if(process == null) {
             process = "@this";
         }
-
+      
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
         
         String request = builder.init()
@@ -76,7 +81,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
                         .onsuccess(ajaxBehavior.getOnsuccess())
                         .oncomplete(ajaxBehavior.getOncomplete())
                         .params(component)
-                        .buildBehavior();
+                        .buildBehavior(renderingMode);
 
         return request;
     }

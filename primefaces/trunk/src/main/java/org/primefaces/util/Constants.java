@@ -68,4 +68,6 @@ public class Constants {
     public final static String DIALOG_CONVERSATION_PARAM = "pfdlgcid";
     
     public static final String EMPTY_STRING = "";
+    
+    public final static String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";
 }

@@ -39,6 +39,7 @@ import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
 
 import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.context.RequestContext;
 import org.primefaces.convert.ClientConverter;
@@ -179,7 +180,8 @@ public abstract class CoreRenderer extends Renderer {
                 
                 if(hasEventBehaviors) {
                     String clientId = ((UIComponent) component).getClientId(context);
-                    List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+                    List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+                    params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEvent, clientId, params);
                     int size = eventBehaviors.size();
                     
@@ -348,61 +350,6 @@ public abstract class CoreRenderer extends Renderer {
 		return request.toString();
 	}
 
-    /**
-     * Non-obstrusive way to apply client behaviors.
-     * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
-    protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        
-        //ClientBehaviors
-        Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
-
-        if(!behaviorEvents.isEmpty()) {
-            String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
-
-            writer.write(",behaviors:{");
-
-            for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
-                String event = eventIterator.next();
-                String domEvent = event;
-
-                if(event.equalsIgnoreCase("valueChange"))       //editable value holders
-                    domEvent = "change";
-                else if(event.equalsIgnoreCase("action"))       //commands
-                    domEvent = "click";
-
-                writer.write(domEvent);
-                writer.write(':');
-
-                writer.write("function(event,ext){PrimeFaces.bc(this,event,ext,[");
-                List<ClientBehavior> behaviorsByEvent = behaviorEvents.get(event);
-                int renderedBehaviors = 0;
-                for (int i = 0; i < behaviorsByEvent.size(); i++) {
-                    ClientBehavior behavior = behaviorsByEvent.get(i);
-                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
-                    String script = behavior.getScript(cbc);    //could be null if disabled
-
-                    if(script != null) {
-                        if (renderedBehaviors > 0) {
-                        	writer.write(',');
-                        }
-
-                    	writer.write('\'' + escapeJavaScriptForChain(script) + '\'');
-                        renderedBehaviors++;
-                    }
-                }
-                writer.write("]);}");
-
-                if(eventIterator.hasNext()) {
-                    writer.write(",");
-                }
-            }
-
-            writer.write("}");
-        }
-    }*/
-    
     protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String,List<ClientBehavior>> clientBehaviors = component.getClientBehaviors();
@@ -412,7 +359,8 @@ public abstract class CoreRenderer extends Renderer {
             Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder) ? 
                                 ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
             String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+            List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+            params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
 
             writer.write(",behaviors:{");
             for(Iterator<String> eventNameIterator = eventNames.iterator(); eventNameIterator.hasNext();) {
@@ -426,7 +374,7 @@ public abstract class CoreRenderer extends Renderer {
                         writer.write(",");
                     
                     writer.write(eventName + ":");
-                    writer.write("function(event) {");
+                    writer.write("function(ext) {");
                     for(Iterator<ClientBehavior> behaviorIter = eventBehaviors.iterator(); behaviorIter.hasNext();) {
                         ClientBehavior behavior = behaviorIter.next();
                         ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, eventName, clientId, params);
@@ -446,53 +394,8 @@ public abstract class CoreRenderer extends Renderer {
             writer.write("}");
         }
     }
-
-    // Original from MyFaces
-    protected String escapeJavaScriptForChain(String javaScript) {
-        // first replace \' with \\'
-        //String escaped = StringUtils.replace(javaScript, "\\'", "\\\\'");
-
-        // then replace ' with \'
-        // (this will replace every \' in the original to \\\')
-        //escaped = StringUtils.replace(escaped, '\'', "\\'");
-
-        //return escaped;
-
-        StringBuilder out = null;
-        for (int pos = 0; pos < javaScript.length(); pos++)
-        {
-            char c = javaScript.charAt(pos);
-
-            if (c == '\\' || c == '\'')
-            {
-                if (out == null)
-                {
-                    out = new StringBuilder(javaScript.length() + 8);
-                    if (pos > 0)
-                    {
-                        out.append(javaScript, 0, pos);
-                    }
-                }
-                out.append('\\');
-            }
-            if (out != null)
-            {
-                out.append(c);
-            }
-        }
-
-        if (out == null)
-        {
-            return javaScript;
-        }
-        else
-        {
-            return out.toString();
-        }
-    }
     
     protected void decodeBehaviors(FacesContext context, UIComponent component)  {
-
         if(!(component instanceof ClientBehaviorHolder)) {
             return;
         }
