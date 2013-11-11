@@ -23,6 +23,9 @@
         <interface>
 			<name>org.primefaces.component.api.InputHolder</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.MixedClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
     <attributes>
         &input_component_attributes;

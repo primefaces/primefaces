@@ -47,6 +47,11 @@ import javax.faces.component.behavior.Behavior;
     }
 
     @Override
+    public Collection<String> getUnobstrusiveEventNames() {
+        return Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect", "query"));
+    }
+
+    @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
