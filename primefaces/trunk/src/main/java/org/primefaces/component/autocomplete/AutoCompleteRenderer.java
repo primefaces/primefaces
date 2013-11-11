@@ -173,6 +173,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("autocomplete", "off", null);
         
+        renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
+        
         if(ac.getVar() == null) {
             itemLabel = ComponentUtils.getValueToRender(context, ac);
             
@@ -198,8 +201,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
 
-        renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS);
-        
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, ac);
         }

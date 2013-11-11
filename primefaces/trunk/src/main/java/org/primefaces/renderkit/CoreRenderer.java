@@ -17,6 +17,7 @@ package org.primefaces.renderkit;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,6 +39,7 @@ import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
 
 import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.context.RequestContext;
 import org.primefaces.convert.ClientConverter;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -349,7 +351,6 @@ public abstract class CoreRenderer extends Renderer {
     /**
      * Non-obstrusive way to apply client behaviors.
      * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
-     */
     protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
@@ -395,6 +396,50 @@ public abstract class CoreRenderer extends Renderer {
 
                 if(eventIterator.hasNext()) {
                     writer.write(",");
+                }
+            }
+
+            writer.write("}");
+        }
+    }*/
+    
+    protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Map<String,List<ClientBehavior>> clientBehaviors = component.getClientBehaviors();
+
+        if(clientBehaviors != null && !clientBehaviors.isEmpty()) {
+            boolean written = false;
+            Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder) ? 
+                                ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
+            String clientId = ((UIComponent) component).getClientId(context);
+            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+
+            writer.write(",behaviors:{");
+            for(Iterator<String> eventNameIterator = eventNames.iterator(); eventNameIterator.hasNext();) {
+                String eventName = eventNameIterator.next();
+                List<ClientBehavior> eventBehaviors = clientBehaviors.get(eventName);
+                
+                if(eventBehaviors != null && !eventBehaviors.isEmpty()) {
+                    if(!written)
+                        written = true;
+                    else
+                        writer.write(",");
+                    
+                    writer.write(eventName + ":");
+                    writer.write("function(event) {");
+                    for(Iterator<ClientBehavior> behaviorIter = eventBehaviors.iterator(); behaviorIter.hasNext();) {
+                        ClientBehavior behavior = behaviorIter.next();
+                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, eventName, clientId, params);
+                        String script = behavior.getScript(cbc);
+
+                        if(script != null)
+                            writer.write(script);
+                        
+                        if(behaviorIter.hasNext())
+                            writer.write(",");
+                    }
+                    writer.write("}");
+                    written = true;
                 }
             }
 

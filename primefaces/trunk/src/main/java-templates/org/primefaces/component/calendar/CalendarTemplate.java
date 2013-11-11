@@ -81,6 +81,11 @@ import javax.faces.event.PhaseId;
     }
 
     @Override
+    public Collection<String> getUnobstrusiveEventNames() {
+        return Collections.unmodifiableCollection(Arrays.asList("dateSelect"));
+    }
+
+    @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 

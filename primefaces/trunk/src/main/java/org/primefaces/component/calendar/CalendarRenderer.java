@@ -109,15 +109,18 @@ public class CalendarRenderer extends InputRenderer {
             if(!calendar.isValid()) inputStyleClass = inputStyleClass + " ui-state-error";
             
             writer.writeAttribute("class", inputStyleClass, null);
-            
-            renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS);
-  
+              
             if(calendar.isReadonly()||calendar.isReadonlyInput()) writer.writeAttribute("readonly", "readonly", null);
             if(calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        
+            renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+            renderDomEvents(context, calendar, HTML.INPUT_TEXT_EVENTS);
         }
+        
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, calendar);
         }
+        
         writer.endElement("input");
     }
 
