@@ -120,12 +120,14 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
-        var $this = this;
+        if(this.target) {
+            var $this = this;
 
-        this.timeout = setTimeout(function() {
-            $this.align();
-            $this.jq.show($this.cfg.showEffect, {}, 250);
-        }, 150);
+            this.timeout = setTimeout(function() {
+                $this.align();
+                $this.jq.show($this.cfg.showEffect, {}, 250);
+            }, 150);
+        }
     },
     
     hide: function() {
