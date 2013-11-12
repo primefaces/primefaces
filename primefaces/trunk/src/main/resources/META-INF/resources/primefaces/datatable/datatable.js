@@ -1278,8 +1278,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         //Run toggle expansion if row is not being toggled already to prevent conflicts
         if($.inArray(rowIndex, this.expansionProcess) === -1) {
-            if(expanded) {
-                this.expansionProcess.push(rowIndex);
+            this.expansionProcess.push(rowIndex);
+            
+            if(expanded) {   
                 toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
 
                 row.next().fadeOut(function() {
@@ -1293,7 +1294,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.fireRowCollapseEvent(row);
             }
             else {
-                this.expansionProcess.push(rowIndex);
+                if(this.cfg.rowExpandMode === 'single') {
+                    this.collapseAllRows();
+                }
+                
                 toggler.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
 
                 this.loadExpandedRowContent(row);
@@ -1365,7 +1369,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.hasBehavior('rowToggle')) {
             var rowToggleBehavior = this.cfg.behaviors['rowToggle'];
 
-            rowToggleBehavior.call(this, row, options);
+            rowToggleBehavior.call(this, options);
         } 
         else {
             PrimeFaces.ajax.AjaxRequest(options); 
@@ -1391,6 +1395,26 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         } 
     },
     
+    collapseAllRows: function() {
+        this.tbody.children('.ui-expanded-row-content').each(function() {
+                var expandedRowContent = $(this),
+                expandedRow = expandedRowContent.prev();
+
+                expandedRowContent.remove();
+                
+                var columns = expandedRow.children('td');
+                for(var i = 0; i < columns.length; i++) {
+                    var column = columns.eq(i),
+                    toggler = column.children('.ui-row-toggler');
+
+                    if(toggler.length > 0) {
+                        toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
+                        break;
+                    }
+                }
+            });
+    },
+        
     /**
      * Binds editor events non-obstrusively
      */

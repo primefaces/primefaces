@@ -138,7 +138,7 @@ public class DataTableRenderer extends DataRenderer {
         
         //Row expansion
         if(table.getRowExpansion() != null) {
-            wb.attr("expansion", true);
+            wb.attr("expansion", true).attr("rowExpandMode", table.getRowExpandMode());
         }
 
         //Scrolling

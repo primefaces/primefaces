@@ -337,6 +337,13 @@
             <defaultValue>new</defaultValue>
             <description>Defines row select mode for checkbox based selection, valid values are new (default) and add.</description>
 		</attribute>
+        <attribute>
+			<name>rowExpandMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>multiple</defaultValue>
+            <description>Defines row expand mode, valid values are "single" and "multiple" (default).</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
