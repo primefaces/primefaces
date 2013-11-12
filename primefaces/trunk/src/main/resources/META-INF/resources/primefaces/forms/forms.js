@@ -776,7 +776,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
                 
                 default:    
-                    var k = String.fromCharCode((96 <= key && key <= 105)? key-48 : key),
+                    var k = String.fromCharCode((96 <= key && key <= 105)? key-48 : key).toLowerCase(),
                     currentItem = $this.items.filter('.ui-state-highlight');
 
                     //Search items forward from current to end and on no result, search from start until current
@@ -923,7 +923,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         for(var i = start; i  < end; i++) {
             var option = this.options.eq(i);
 
-            if(option.text().indexOf(text) == 0) {
+            if(option.text().toLowerCase().indexOf(text) === 0) {
                 return this.items.eq(i);
             }
         }
