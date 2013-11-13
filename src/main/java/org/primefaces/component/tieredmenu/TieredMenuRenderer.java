@@ -133,8 +133,8 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
         //title
         writer.startElement("a", null);
-        writer.writeAttribute("href", "javascript:void(0)", null);
-        writer.writeAttribute("class", Menu.MENUITEM_LINK_CLASS, null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", Menu.SUBMENU_LINK_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
 
         if(icon != null) {
