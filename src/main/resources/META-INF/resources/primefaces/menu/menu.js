@@ -1066,6 +1066,13 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         _self.activate(menuitem);
                     }
                 }
+                
+                e.preventDefault();
+            });
+        }
+        else {
+            this.rootLinks.filter('.ui-submenu-link').click(function(e) {
+                e.preventDefault();
             });
         }
 
