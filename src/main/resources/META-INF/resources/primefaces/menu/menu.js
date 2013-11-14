@@ -979,7 +979,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         }
         
         if(this.cfg.beforeShow) {
-            this.cfg.beforeShow.call(this);
+            this.cfg.beforeShow.call(this, e);
         }
 
         this.jq.css({
