@@ -217,8 +217,13 @@
                 } else if(window.getSelection().removeAllRanges) {
                     window.getSelection().removeAllRanges();
                 }
-            } else if(document.selection && document.selection.empty) {
+            } 
+            else if(document.selection && document.selection.empty) {
+                try {
                     document.selection.empty();
+                } catch(error) {
+                    //ignore IE bug
+                }
             }
         },
 
