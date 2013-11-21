@@ -224,6 +224,7 @@ public class CalendarRenderer extends InputRenderer {
         
         //Use built-in converter
         format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
+        format.setLenient(false);
         format.setTimeZone(calendar.calculateTimeZone());
         try {
             return format.parse(submittedValue);
