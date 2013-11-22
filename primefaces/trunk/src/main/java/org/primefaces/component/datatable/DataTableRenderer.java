@@ -77,42 +77,12 @@ public class DataTableRenderer extends DataRenderer {
                 }
             }
         }
-        else {
-            preEncode(context, table);
-            
+        else {            
             encodeMarkup(context, table);
             encodeScript(context, table);
         }
 	}
-    
-    protected void preEncode(FacesContext context, DataTable table) {
-        if(table.isLazy()) {
-            if(table.isLiveScroll())
-                table.loadLazyScrollData(0, table.getScrollRows());
-            else
-                table.loadLazyData();
-        }
-        
-        boolean defaultSorted = (table.getValueExpression("sortBy") != null || table.getSortBy() != null);
-        if(defaultSorted && !table.isLazy()) {
-            SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
-            
-            if(table.isMultiSort())
-                sortFeature.multiSort(context, table);
-            else
-                sortFeature.singleSort(context, table);            
-        }
-
-        if(table.isPaginator()) {
-            table.calculateFirst();
-        }
-        
-        Columns dynamicCols = table.getDynamicColumns();
-        if(dynamicCols != null) {
-            dynamicCols.setRowIndex(-1);
-        }
-    }
-	
+    	
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
 		String clientId = table.getClientId(context);
         String selectionMode = table.resolveSelectionMode();
