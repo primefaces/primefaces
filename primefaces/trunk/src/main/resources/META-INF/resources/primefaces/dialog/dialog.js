@@ -13,7 +13,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.closeIcon = this.titlebar.children('.ui-dialog-titlebar-close');
         this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
         this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
-        this.blockEvents = 'focus.dialog mousedown.dialog mouseup.dialog';
+        this.blockEvents = 'focus.' + this.id + ' mousedown.' + this.id + ' mouseup.' + this.id;
 
         //configuration
         this.cfg.width = this.cfg.width||'auto';
@@ -94,17 +94,18 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     enableModality: function() {
-        var $this = this;
+        var $this = this,
+        doc = $(document);
 
         $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay"></div>')
                         .children(this.jqId + '_modal').css({
-                            'width' : $(document).width(),
-                            'height' : $(document).height(),
+                            'width' : doc.width(),
+                            'height' : doc.height(),
                             'z-index' : this.jq.css('z-index') - 1
                         });
 
         //Disable tabbing out of modal dialog and stop events from targets outside of dialog
-        $(document).on('keydown.dialog',
+        doc.on('keydown.' + this.id,
                 function(event) {
                     var target = $(event.target);
 
@@ -140,7 +141,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     
     disableModality: function(){
         $(document.body).children(this.jqId + '_modal').remove();
-        $(document).off(this.blockEvents).off('keydown.dialog');
+        $(document).off(this.blockEvents).off('keydown.' + this.id);
     },
     
     syncWindowResize: function() {
