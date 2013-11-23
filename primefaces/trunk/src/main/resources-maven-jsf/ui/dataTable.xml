@@ -344,6 +344,12 @@
             <defaultValue>multiple</defaultValue>
             <description>Defines row expand mode, valid values are "single" and "multiple" (default).</description>
 		</attribute>
+        <attribute>
+            <name>filterLocale</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Locale to be used in filtering, defaults to view locale.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>

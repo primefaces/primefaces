@@ -18,6 +18,6 @@ package org.primefaces.model.filter;
 public class EndsWithFilterConstraint implements FilterConstraint {
 
     public boolean applies(String value, String filter) {
-        return value.toLowerCase().endsWith(filter.toLowerCase());
+        return value.endsWith(filter);
     }
 }

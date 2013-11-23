@@ -107,7 +107,8 @@ public class FilterFeature implements DataTableFeature {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         List filteredData = new ArrayList();
         boolean hasGlobalFilter = params.containsKey(globalFilterParam);
-        String globalFilter = hasGlobalFilter ? params.get(globalFilterParam).toLowerCase() : null;
+        Locale filterLocale = resolveFilterLocale(context, table);
+        String globalFilter = hasGlobalFilter ? params.get(globalFilterParam).toLowerCase(filterLocale) : null;
         ELContext elContext = context.getELContext();
         
         for(int i = 0; i < table.getRowCount(); i++) {
@@ -119,7 +120,7 @@ public class FilterFeature implements DataTableFeature {
                 String filterParam = filterMeta.getFilterParam();
                 UIColumn column = filterMeta.getColumn();
                 ValueExpression filterByVE = filterMeta.getFilterByVE();
-                String filterParamValue = params.containsKey(filterParam) ? params.get(filterParam).toLowerCase() : null;
+                String filterParamValue = params.containsKey(filterParam) ? params.get(filterParam).toLowerCase(filterLocale) : null;
                 
                 if(column instanceof DynamicColumn) {
                     ((DynamicColumn) column).applyStatelessModel();
@@ -129,14 +130,14 @@ public class FilterFeature implements DataTableFeature {
                 FilterConstraint filterConstraint = this.getFilterConstraint(column);
 
                 if(hasGlobalFilter && !globalMatch) {
-                    if(columnValue != null && columnValue.toLowerCase().contains(globalFilter))
+                    if(columnValue != null && columnValue.toLowerCase(filterLocale).contains(globalFilter))
                         globalMatch = true;
                 }
 
                 if(ComponentUtils.isValueBlank(filterParamValue)) {
                     localMatch = true;
                 }
-                else if(columnValue == null || !filterConstraint.applies(columnValue.toLowerCase(), filterParamValue)) {
+                else if(columnValue == null || !filterConstraint.applies(columnValue.toLowerCase(filterLocale), filterParamValue)) {
                     localMatch = false;
                     break;
                 }
@@ -303,6 +304,22 @@ public class FilterFeature implements DataTableFeature {
     private ValueExpression createFilterByVE(FacesContext context, String var, Object filterBy) {
         ELContext elContext = context.getELContext();
         return context.getApplication().getExpressionFactory().createValueExpression(elContext, "#{" + var + "." + filterBy + "}", Object.class);
+    }
+    
+    private Locale resolveFilterLocale(FacesContext context, DataTable table) {
+        Object userLocale = table.getFilterLocale();
+        
+        if(userLocale != null) {
+            if(userLocale instanceof String)
+                return ComponentUtils.toLocale((String) userLocale);
+            else if(userLocale instanceof java.util.Locale)
+                return (java.util.Locale) userLocale;
+            else
+                throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for datatable:" + table.getClientId(context));
+        } 
+        else {
+            return context.getViewRoot().getLocale();
+        }
     }
     
     private class FilterMeta {
