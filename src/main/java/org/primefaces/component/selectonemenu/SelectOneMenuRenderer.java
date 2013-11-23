@@ -179,7 +179,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("class", iconClass, null);
 
         writer.startElement("span", menu);
-        writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s ui-c", null);
         writer.endElement("span");
 
         writer.endElement("div");
