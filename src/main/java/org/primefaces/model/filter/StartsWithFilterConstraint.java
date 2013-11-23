@@ -18,6 +18,6 @@ package org.primefaces.model.filter;
 public class StartsWithFilterConstraint implements FilterConstraint {
 
     public boolean applies(String value, String filter) {
-        return value.toLowerCase().startsWith(filter.toLowerCase());
+        return value.startsWith(filter);
     }
 }
