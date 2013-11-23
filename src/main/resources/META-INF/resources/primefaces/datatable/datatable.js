@@ -661,22 +661,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             return true;
         };
 
-        options.params = [
-        {
-            name: this.id + '_scrolling', 
-            value: true
-        },
-
-        {
-            name: this.id + '_scrollOffset', 
-            value: this.scrollOffset
-            },
-
-            {
-            name: this.id + '_encodeFeature', 
-            value: true
-        }
-        ];
+        options.params = [{name: this.id + '_scrolling', value: true},
+                            {name: this.id + '_skipChildren', value: true},
+                            {name: this.id + '_scrollOffset', value: this.scrollOffset},
+                            {name: this.id + '_encodeFeature', value: true}];
 
         PrimeFaces.ajax.AjaxRequest(options);
     },
