@@ -26,24 +26,6 @@ import org.junit.Test;
 import org.primefaces.component.commandlink.CommandLink;
 
 public class ComponentUtilsTest {
-
-	@Test
-	public void shouldDecorateAttribute() {
-		CommandLink link = new CommandLink();
-		ComponentUtils.decorateAttribute(link, "onclick", "alert('barca');");
-		
-		assertEquals("alert('barca');", link.getAttributes().get("onclick"));
-	}
-	
-	@Test
-	public void shouldNotDecorateAttributeForSameValue() {
-		CommandLink link = new CommandLink();
-		ComponentUtils.decorateAttribute(link, "onclick", "alert('barca');");
-		ComponentUtils.decorateAttribute(link, "onclick", "alert('barca');");
-		ComponentUtils.decorateAttribute(link, "onclick", "alert('barca');");
-		
-		assertEquals("alert('barca');", link.getAttributes().get("onclick"));
-	}
 	
 	@Test
 	public void shouldEscapeJQueryId() {
