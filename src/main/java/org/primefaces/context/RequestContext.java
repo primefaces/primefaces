@@ -178,4 +178,6 @@ public abstract class RequestContext {
      * @return <code>true</code> if {@link AutoUpdatable} components should not be updated automatically in this request.
      */
     public abstract boolean isIgnoreAutoUpdate();
+
+    public abstract boolean isRTL();
 }
