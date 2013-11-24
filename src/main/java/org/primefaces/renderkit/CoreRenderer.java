@@ -105,28 +105,6 @@ public abstract class CoreRenderer extends Renderer {
         return resource.getRequestPath();
 	}
 
-    @Deprecated
-	public boolean isPostback(FacesContext context) {
-		return context.getRenderKit().getResponseStateManager().isPostback(context);
-	}
-
-    @Deprecated
-    public boolean isAjaxRequest(FacesContext context) {
-		return context.getPartialViewContext().isAjaxRequest();
-	}
-
-    @Deprecated
-	protected void renderPassThruAttributes(FacesContext context, UIComponent component, String var, String[] attrs) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		
-		for(String event : attrs) {			
-			String eventHandler = (String) component.getAttributes().get(event);
-			
-			if(eventHandler != null)
-				writer.write(var + ".addListener(\"" + event.substring(2, event.length()) + "\", function(e){" + eventHandler + ";});\n");
-		}
-	}
-	
 	protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		
