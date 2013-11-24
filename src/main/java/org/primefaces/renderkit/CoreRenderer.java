@@ -77,14 +77,7 @@ public abstract class CoreRenderer extends Renderer {
 		}
 		child.encodeEnd(context);
 	}
-	
-	@Deprecated
-	protected String getActionURL(FacesContext context) {
-		String actionURL = context.getApplication().getViewHandler().getActionURL(context, context.getViewRoot().getViewId());
-		
-		return context.getExternalContext().encodeActionURL(actionURL);
-	}
-	
+
     protected String getResourceURL(FacesContext context, String value) {
         if(value.trim().equals(Constants.EMPTY_STRING)) {
             return Constants.EMPTY_STRING;
