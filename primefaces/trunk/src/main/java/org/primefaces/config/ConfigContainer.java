@@ -40,7 +40,6 @@ public class ConfigContainer {
 	private boolean partialSubmitEnabled = false;
 	private boolean resetValuesEnabled = false;
 	private boolean interpretEmptyStringAsNull = false;
-	private boolean rightToLeft = false;
 	private String  secretKey = null;
 	private String  pushServerURL = null;
 	private String  theme = null;
@@ -76,9 +75,6 @@ public class ConfigContainer {
 
         value = externalContext.getInitParameter(Constants.ContextParams.INTERPRET_EMPTY_STRING_AS_NULL);
         interpretEmptyStringAsNull = (value == null) ? false : Boolean.valueOf(value);
-
-        value = externalContext.getInitParameter(Constants.ContextParams.DIRECTION);
-        rightToLeft = (value == null) ? false : value.equalsIgnoreCase("rtl");
 
         value = externalContext.getInitParameter(Constants.ContextParams.SUBMIT);
         partialSubmitEnabled = (value == null) ? false : value.equalsIgnoreCase("partial");
@@ -186,10 +182,6 @@ public class ConfigContainer {
 
 	public boolean isInterpretEmptyStringAsNull() {
 		return interpretEmptyStringAsNull;
-	}
-
-	public boolean isRightToLeft() {
-		return rightToLeft;
 	}
 
 	public boolean isStringConverterAvailable() {

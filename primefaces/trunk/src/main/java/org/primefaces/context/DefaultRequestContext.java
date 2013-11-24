@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -53,6 +56,7 @@ public class DefaultRequestContext extends RequestContext {
     private StringEncrypter encrypter;
     private ApplicationContext applicationContext;
     private Boolean ignoreAutoUpdate;
+    private Boolean rtl;
 
     public DefaultRequestContext(FacesContext context) {
     	this.context = context;
@@ -265,4 +269,24 @@ public class DefaultRequestContext extends RequestContext {
 
         return ignoreAutoUpdate;
     }
+
+	@Override
+	public boolean isRTL()
+	{
+		if (rtl == null) {
+			String param = context.getExternalContext().getInitParameter(Constants.ContextParams.DIRECTION);
+	        if (param == null) {
+	        	rtl = false;
+	        } else {
+				ELContext elContext = context.getELContext();
+		        ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+		        ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
+		        String expressionValue = (String) expression.getValue(elContext);
+
+		        rtl = (expressionValue == null) ? false : expressionValue.equalsIgnoreCase("rtl");
+	        }
+		}
+
+		return rtl;
+	}
 }

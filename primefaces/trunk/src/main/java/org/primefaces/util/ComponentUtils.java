@@ -396,7 +396,7 @@ public class ComponentUtils {
     }
     
     public static boolean isRTL(FacesContext context, RTLAware component) {
-        boolean globalValue = RequestContext.getCurrentInstance().getApplicationContext().getConfig().isRightToLeft();
+        boolean globalValue = RequestContext.getCurrentInstance().isRTL();
         
         return globalValue||component.isRTL();
     }
