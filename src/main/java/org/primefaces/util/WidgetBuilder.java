@@ -44,14 +44,6 @@ public class WidgetBuilder {
      * @throws IOException 
      */
     private WidgetBuilder init(String widgetClass, String widgetVar, String id, String resourcePath, boolean endFunction) throws IOException {
-
-    	if(context.isProjectStage(ProjectStage.Development) && id.equals(widgetVar)) {
-        	throw new FacesException("WidgetVar and the generated ClientId should not be identical, " 
-        			+ "as it may not work correctly in all browsers. ClientId: "
-        			+ id
-        			+ "; See: http://stackoverflow.com/questions/9158238/why-js-function-name-conflicts-with-element-id");
-        }
-
     	this.resourcePath = resourcePath;
     	this.endFunction = endFunction;
     	
