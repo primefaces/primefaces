@@ -238,7 +238,6 @@
                 }
                 else {
                     PrimeFaces.widgets[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);  //page init
-                    window[widgetVar] = PrimeFaces.widgets[widgetVar];                              //temporary backward compatibility
                 }
             }
             else {
@@ -426,7 +425,6 @@
                         onHide: function() {
                             this.jq.remove();
                             PF[dialogWidgetVar] = undefined;
-                            window[dialogWidgetVar] = undefined;
                         },
                         modal: cfg.options.modal,
                         resizable: cfg.options.resizable,
