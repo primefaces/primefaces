@@ -81,8 +81,13 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 break;
             }
         })
-        .on('keyup.spinner', function () { 
+        .on('keyup.spinner', function (e) { 
             $this.updateValue();
+    
+            var keyCode = $.ui.keyCode;
+            if(e.which === keyCode.UP||e.which === keyCode.DOWN) {
+                $this.input.trigger('change');
+            }
         })
         .on('blur.spinner', function () { 
             $this.format();
