@@ -580,6 +580,8 @@
         IGNORE_AUTO_UPDATE_PARAM : "primefaces.ignoreautoupdate",
 
         VIEW_STATE : "javax.faces.ViewState",
+        
+        CLIENT_WINDOW : "javax.faces.ClientWindow",
 
         VIEW_ROOT : "javax.faces.ViewRoot",
 
@@ -747,35 +749,30 @@
 
     PrimeFaces.ajax.AjaxUtils = {
 
-        encodeViewState : function() {
-            var viewstateValue = document.getElementById(PrimeFaces.VIEW_STATE).value;
-            var re = new RegExp("\\+", "g");
-            var encodedViewState = viewstateValue.replace(re, "\%2B");
-
-            return encodedViewState;
-        },
-
-        updateState: function(value) {
-            var viewstateValue = $.trim(value),
-            forms = this.portletForms ? $(this.portletForms) : $('form');
+    	updateFormStateInput: function(name, value) {
+            var trimmedValue = $.trim(value);
+            var forms = this.portletForms ? $(this.portletForms) : $('form');
 
             forms.each(function() {
-                var form = $(this),
-                formViewStateElement = form.children("input[name='javax.faces.ViewState']").get(0);
+                var form = $(this);
+                var input = form.children("input[name='" + name + "']");
 
-                if(formViewStateElement) {
-                    $(formViewStateElement).val(viewstateValue);
+                if(input.length > 0) {
+                	input.val(trimmedValue);
                 }
                 else
                 {
-                    form.append('<input type="hidden" name="javax.faces.ViewState" value="' + viewstateValue + '" autocomplete="off" />');
+                    form.append('<input type="hidden" name="' + name + '" value="' + trimmedValue + '" autocomplete="off" />');
                 }
             });
         },
 
         updateElement: function(id, content) {        
             if(id.indexOf(PrimeFaces.VIEW_STATE) !== -1) {
-                PrimeFaces.ajax.AjaxUtils.updateState.call(this, content);
+                PrimeFaces.ajax.AjaxUtils.updateFormStateInput.call(this, PrimeFaces.VIEW_STATE, content);
+            }
+            else if(id.indexOf(PrimeFaces.CLIENT_WINDOW) !== -1) {
+            	PrimeFaces.ajax.AjaxUtils.updateFormStateInput.call(this, PrimeFaces.CLIENT_WINDOW, content);
             }
             else if(id === PrimeFaces.VIEW_ROOT) {
             	$.ajaxSetup({'cache' : true});
@@ -980,11 +977,11 @@
             }
 
             /**
-            * Only add params of process components and their children 
-            * if partial submit is enabled and there are components to process partially
-            */
+             * Only add params of process components and their children 
+             * if partial submit is enabled and there are components to process partially
+             */
             if(cfg.partialSubmit && processIds.indexOf('@all') == -1) {
-            	var hasViewstate = false;
+            	var formProcessed = false;
 
                 if(processIds.indexOf('@none') == -1) {
                 	for (var i = 0; i < processArray.length; i++) {
@@ -993,7 +990,7 @@
 
                         if(jqProcess.is('form')) {
                             componentPostParams = jqProcess.serializeArray();
-                            hasViewstate = true;
+                            formProcessed = true;
                         }
                         else if(jqProcess.is(':input')) {
                             componentPostParams = jqProcess.serializeArray();
@@ -1006,12 +1003,17 @@
                     }
                 }
 
-                //add viewstate if necessary
-                if(!hasViewstate) {
+                //add form state if necessary
+                if(!formProcessed) {
                     postParams.push({
                         name:PrimeFaces.VIEW_STATE, 
-                        value:form.children("input[name='javax.faces.ViewState']").val()
+                        value:form.children("input[name='" + PrimeFaces.VIEW_STATE + "']").val()
                     });
+                    
+                    var clientWindowInput = form.children("input[name='" + PrimeFaces.CLIENT_WINDOW + "']");
+                    if (clientWindowInput.length > 0) {
+	                    postParams.push({ name:PrimeFaces.CLIENT_WINDOW, value:clientWindowInput.val() });
+                    }
                 }
 
             }
