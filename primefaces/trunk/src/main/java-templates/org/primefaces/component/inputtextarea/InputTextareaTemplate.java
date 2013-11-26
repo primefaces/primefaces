@@ -28,7 +28,6 @@ import org.primefaces.util.Constants;
         return EVENT_NAMES;
     }
 
-    @Override
     public Collection<String> getUnobstrusiveEventNames() {
         return Collections.unmodifiableCollection(Arrays.asList("itemSelect"));
     }

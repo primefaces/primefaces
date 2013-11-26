@@ -80,7 +80,6 @@ import javax.faces.event.PhaseId;
         return EVENT_NAMES;
     }
 
-    @Override
     public Collection<String> getUnobstrusiveEventNames() {
         return Collections.unmodifiableCollection(Arrays.asList("dateSelect"));
     }
