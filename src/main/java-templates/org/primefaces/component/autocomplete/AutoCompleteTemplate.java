@@ -46,7 +46,6 @@ import javax.faces.component.behavior.Behavior;
         return EVENT_NAMES;
     }
 
-    @Override
     public Collection<String> getUnobstrusiveEventNames() {
         return Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect", "query"));
     }
