@@ -15,9 +15,6 @@
  */
 package org.primefaces.push;
 
-import java.util.List;
-import java.util.concurrent.*;
-
 import org.atmosphere.cpr.AsyncSupportListenerAdapter;
 import org.atmosphere.cpr.AtmosphereRequest;
 import org.atmosphere.cpr.AtmosphereResource;
@@ -28,6 +25,17 @@ import org.atmosphere.cpr.MetaBroadcaster;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+/**
+ * @deprecated With PrimeFaces 4.1 and up, it is recommended to use {@link EventBus}
+ */
 public class PushContextImpl extends AsyncSupportListenerAdapter implements PushContext {
 
     private final ConcurrentLinkedQueue<PushContextListener> listeners = new ConcurrentLinkedQueue<PushContextListener>();

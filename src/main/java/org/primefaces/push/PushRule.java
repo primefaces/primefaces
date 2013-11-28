@@ -2,8 +2,6 @@ package org.primefaces.push;
 
 import org.atmosphere.cpr.AtmosphereResource;
 
-import java.util.List;
-
 /**
  * A PushRule configure the <a href="http://github.com/Atmosphere/atmosphere">Atmosphere Framework</a> behavior. By default, the {@link DefaultPushRule} is used to creates
  * channel of communication based on the value of the request's pathInfo.
@@ -24,6 +22,7 @@ import java.util.List;
  *    <a href="">https://github.com/Atmosphere/atmosphere/wiki/Understanding-Broadcaster</a>Broadcaster</a>
  *    <a href="https://github.com/Atmosphere/atmosphere/wiki/Understanding-AtmosphereResource">AtmosphereResource</a>
  *
+ * @deprecated With PrimeFaces 4.1 and up, it is recommended to use {@link @PushEndpoint}
  */
 public interface PushRule {
     /**

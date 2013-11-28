@@ -16,72 +16,87 @@
 package org.primefaces.push;
 
 import org.atmosphere.client.TrackMessageSizeInterceptor;
+import org.atmosphere.cpr.ApplicationConfig;
+import org.atmosphere.cpr.AtmosphereFramework;
 import org.atmosphere.cpr.AtmosphereServlet;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
 import org.atmosphere.interceptor.HeartbeatInterceptor;
 import org.atmosphere.interceptor.SuspendTrackerInterceptor;
+import org.primefaces.push.impl.PushEndpointProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+// This class is a copy of AtmosphereServlet. It is here just to make hide Atmosphere***
+
+/**
+ *
+ */
 public class PushServlet extends AtmosphereServlet {
+    private final Logger logger = LoggerFactory.getLogger(PushServlet.class.getName());
 
-    private final Logger logger = Logger.getLogger(PushServlet.class.getName());
-    public final static String RULES = "org.primefaces.push.rules";
+    /**
+     * Create an Atmosphere Servlet.
+     */
+    public PushServlet() {
+        this(false);
+    }
 
-    @Override
-    public void init(final ServletConfig sc) throws ServletException {
+    /**
+     * Create an Atmosphere Servlet.
+     *
+     * @param isFilter true if this instance is used as an {@link org.atmosphere.cpr.AtmosphereFilter}
+     */
+    public PushServlet(boolean isFilter) {
+        super(isFilter, true);
+    }
+
+    /**
+     * Create an Atmosphere Servlet.
+     *
+     * @param isFilter           true if this instance is used as an {@link org.atmosphere.cpr.AtmosphereFilter}
+     * @param autoDetectHandlers
+     */
+    public PushServlet(boolean isFilter, boolean autoDetectHandlers) {
+        super(isFilter, autoDetectHandlers);
+    }
+
+    protected PushServlet configureFramework(ServletConfig sc) throws ServletException {
+        if (framework == null) {
+            framework = (AtmosphereFramework) sc.getServletContext().getAttribute(AtmosphereFramework.class.getName());
+            if (framework == null) {
+                framework = newAtmosphereFramework();
+            }
+        }
+
         PushContext c = PushContextFactory.getDefault().getPushContext();
         if (PushContextImpl.class.isAssignableFrom(c.getClass())) {
             framework().asyncSupportListener(PushContextImpl.class.cast(c));
         }
 
-        super.init(sc);
-
-        framework
-                .interceptor(new AtmosphereResourceLifecycleInterceptor())
+        framework.interceptor(new AtmosphereResourceLifecycleInterceptor())
                 .interceptor(new HeartbeatInterceptor())
                 .interceptor(new TrackMessageSizeInterceptor())
                 .interceptor(new SuspendTrackerInterceptor())
-                .addAtmosphereHandler("/*", new PrimeAtmosphereHandler(configureRules(sc)))
-                .initAtmosphereHandler(sc);
+                .addInitParameter(ApplicationConfig.CUSTOM_ANNOTATION_PACKAGE, PushEndpointProcessor.class.getPackage().getName());
+
+        framework.init(sc);
+        if (framework.getAtmosphereHandlers().size() == 0) {
+            logger.error("No Annotated class using @PushEndpoint found. Push will not work.");
+        }
+        return this;
     }
 
-    List<PushRule> configureRules(ServletConfig sc) {
-        List<PushRule> rules = new ArrayList<PushRule>();
-
-        String s = sc.getInitParameter(RULES);
-
-        if (s != null) {
-            String[] r = s.split(",");
-            for (String rule : r) {
-                try {
-                    rules.add(loadRule(rule));
-                    logger.log(Level.INFO, "PushRule " + rule + " loaded");
-                } catch (Throwable t) {
-                    logger.log(Level.WARNING, "Unable to load PushRule " + rule, t);
-                }
-            }
-        }
-
-        if (rules.isEmpty()) {
-            rules.add(new DefaultPushRule());
-        }
-
-        return rules;
+    protected AtmosphereFramework newAtmosphereFramework() {
+        return new AtmosphereFramework(isFilter, autoDetectHandlers);
     }
 
-    PushRule loadRule(String ruleName) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        try {
-            return (PushRule) Thread.currentThread().getContextClassLoader().loadClass(ruleName).newInstance();
-        } catch (Throwable t) {
-            return (PushRule) getClass().getClassLoader().loadClass(ruleName).newInstance();
+    public AtmosphereFramework framework() {
+        if (framework == null) {
+            framework = newAtmosphereFramework();
         }
+        return framework;
     }
-
-
 }

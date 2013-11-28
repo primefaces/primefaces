@@ -35,6 +35,8 @@ import java.util.concurrent.TimeUnit;
  * Using {@link #push(String, Object)}, you can asynchronous push message to one or more channel. You can also schedule periodic push
  * {@link #schedule(String, Object, int, java.util.concurrent.TimeUnit)}. You can also delay push operation by using the
  * {@link #delay(String, Object, int, java.util.concurrent.TimeUnit)}.
+ *
+ * @deprecated With PrimeFaces 4.1 and up, it is recommended to use {@link EventBus}
  */
 public interface PushContext {
 
