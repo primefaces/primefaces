@@ -17,6 +17,7 @@ package org.primefaces.push;
 
 /**
  * Factory for retrieving {@link PushContext}
+ * @deprecated With PrimeFaces 4.1 and up, it is recommended to use {@link EventBus}
  */
 public class PushContextFactory {
 
