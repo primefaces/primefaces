@@ -562,6 +562,8 @@
         zindex : 1000,
         
         customFocus : false,
+        
+        updatedWidgets : [],
 
         PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 
@@ -1160,8 +1162,25 @@
         		}
         	}, 150);
         }
-        
         PrimeFaces.customFocus = false;
+        
+        // detach widgets
+        for (var i = 0; i < PrimeFaces.updatedWidgets.length; i++) {
+        	var widgetVar = PrimeFaces.updatedWidgets[i];
+
+        	var widget = PF(widgetVar);
+        	if (widget) {
+    			if (widget.isDetached()) {
+    				widget.destroy();
+    				PrimeFaces.widgets[widgetVar] = null;
+
+    				try {
+    					delete widget;
+    				} catch (e) {}
+				}
+        	}
+        }
+        PrimeFaces.updatedWidgets = [];
     }
 
     PrimeFaces.ajax.Queue = {
@@ -1202,7 +1221,7 @@
         isEmpty : function() {
             return this.requests.length == 0;
         }
-};
+    };
 
     /* Simple JavaScript Inheritance
      * By John Resig http://ejohn.org/
@@ -1278,14 +1297,32 @@
             this.id = cfg.id;
             this.jqId = PrimeFaces.escapeClientId(this.id);
             this.jq = $(this.jqId);
-
+            this.widgetVar = cfg.widgetVar;
+            
             //remove script tag
             $(this.jqId + '_s').remove();
+            
+            if (this.widgetVar) {
+	            var $this = this;
+	            this.jq.on("remove", function() {
+	            	PrimeFaces.updatedWidgets.push($this.widgetVar);
+	            });
+            }
         },
 
         //used in ajax updates, reloads the widget configuration
         refresh: function(cfg) {
             return this.init(cfg);
+        },
+        
+        //will be called when the widget is detached
+        destroy: function() {
+        	console.log('widget destroyed: ' + this.id + " ; " + this.widgetVar);
+        },
+        
+        //checks if the given widget is detached
+        isDetached: function() {
+        	return $(PrimeFaces.escapeClientId(this.id)).length == 0;
         },
 
         //returns jquery object representing the main dom element related to the widget
