@@ -1322,7 +1322,7 @@
         
         //checks if the given widget is detached
         isDetached: function() {
-        	return $(PrimeFaces.escapeClientId(this.id)).length == 0;
+        	return document.getElementById(this.id);
         },
 
         //returns jquery object representing the main dom element related to the widget
