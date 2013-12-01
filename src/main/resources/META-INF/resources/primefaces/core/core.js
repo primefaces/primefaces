@@ -1185,13 +1185,34 @@
 
     PrimeFaces.ajax.Queue = {
 
+    	delayHandler : null,
+    		
         requests : new Array(),
 
         offer : function(request) {
-            this.requests.push(request);
+            if (this.delayHandler) {
+                clearTimeout(this.delayHandler);
+                this.delayHandler = null;
+            }
+            
+            if (request.delay && request.delay > 0) {
+            	var $this = this;
 
-            if(this.requests.length == 1) {
-                PrimeFaces.ajax.AjaxUtils.send(request);
+            	this.delayHandler = setTimeout(function() {
+            		$this.requests.push(request);
+
+                    if($this.requests.length == 1) {
+                        PrimeFaces.ajax.AjaxUtils.send(request);
+                    }
+	            }, request.delay);
+
+            } else {
+            	
+                this.requests.push(request);
+
+                if(this.requests.length == 1) {
+                    PrimeFaces.ajax.AjaxUtils.send(request);
+                }
             }
         },
 

@@ -48,4 +48,6 @@ public interface AjaxSource {
     public boolean isIgnoreAutoUpdate();
     
     public boolean isAjaxified();
+    
+    public String getDelay();
 }

@@ -57,6 +57,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean resetValuesSet;
     private boolean ignoreAutoUpdate;
     private boolean immediate;
+    private String delay;
     
     public DefaultMenuItem() {}
     
@@ -341,5 +342,13 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     
     public boolean isAjaxified() {
         return getUrl() == null && isAjax();
+    }
+
+	public String getDelay() {
+		return delay;
+	}
+
+    public void setDelay(String delay) {
+        this.delay = delay;
     }
 }

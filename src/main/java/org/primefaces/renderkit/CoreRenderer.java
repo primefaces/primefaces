@@ -262,6 +262,7 @@ public abstract class CoreRenderer extends Renderer {
                 .update(component, source.getUpdate())
                 .async(source.isAsync())
                 .global(source.isGlobal())
+                .delay(source.getDelay())
                 .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet())
                 .resetValues(source.isResetValues(), source.isResetValuesSet())
                 .ignoreAutoUpdate(source.isIgnoreAutoUpdate())

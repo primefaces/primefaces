@@ -52,7 +52,8 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     	disabled(Boolean.class),
     	partialSubmit(Boolean.class),
     	resetValues(Boolean.class),
-    	ignoreAutoUpdate(Boolean.class);
+    	ignoreAutoUpdate(Boolean.class),
+    	delay(String.class);
 
         final Class<?> expectedType;
 
@@ -148,6 +149,14 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     	setLiteral(PropertyKeys.update, update);
     }
 
+    public String getDelay() {
+    	return eval(PropertyKeys.delay, null);
+    }
+
+    public void setDelay(String delay) {
+    	setLiteral(PropertyKeys.delay, delay);
+    }
+
     public boolean isImmediate() {
     	return eval(PropertyKeys.immediate, Boolean.FALSE);
     }
@@ -208,8 +217,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
 
 	@Override
-	protected Enum<?>[] getAllProperties()
-	{
+	protected Enum<?>[] getAllProperties() {
 		return PropertyKeys.values();
 	}
 

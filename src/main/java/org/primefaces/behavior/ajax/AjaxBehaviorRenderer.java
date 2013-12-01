@@ -29,7 +29,6 @@ import org.primefaces.component.api.ClientBehaviorRenderingMode;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.Constants;
 
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
@@ -65,7 +64,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         }
       
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
-        
+
         String request = builder.init()
         				.source(source)
                         .event(behaviorContext.getEventName())
@@ -73,6 +72,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
                         .update(component, ajaxBehavior.getUpdate())
                         .async(ajaxBehavior.isAsync())
                         .global(ajaxBehavior.isGlobal())
+                        .delay(ajaxBehavior.getDelay())
                         .partialSubmit(ajaxBehavior.isPartialSubmit(), ajaxBehavior.isPartialSubmitSet())
                         .resetValues(ajaxBehavior.isResetValues(), ajaxBehavior.isResetValuesSet())
                         .ignoreAutoUpdate(ajaxBehavior.isIgnoreAutoUpdate())

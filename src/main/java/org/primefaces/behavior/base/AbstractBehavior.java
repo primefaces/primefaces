@@ -24,8 +24,8 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.context.FacesContext;
 
-public abstract class AbstractBehavior extends ClientBehaviorBase
-{
+public abstract class AbstractBehavior extends ClientBehaviorBase {
+
     protected Map<String, Object> literals;
     protected Map<String, ValueExpression> bindings;
 

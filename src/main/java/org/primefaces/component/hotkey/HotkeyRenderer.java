@@ -69,6 +69,7 @@ public class HotkeyRenderer extends CoreRenderer {
                 .update(component, hotkey.getUpdate())
                 .async(hotkey.isAsync())
                 .global(hotkey.isGlobal())
+                .delay(hotkey.getDelay())
                 .partialSubmit(hotkey.isPartialSubmit(), hotkey.isPartialSubmitSet())
                 .resetValues(hotkey.isResetValues(), hotkey.isResetValuesSet())
                 .ignoreAutoUpdate(hotkey.isIgnoreAutoUpdate())
