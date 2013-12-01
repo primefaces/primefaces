@@ -69,6 +69,12 @@
             <defaultValue>true</defaultValue>
             <description>Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.</description>
         </attribute>
+		<attribute>
+			<name>delay</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>If less than delay milliseconds elapses between calls to request() only the most recent one is sent and all other requests are discarded. The default value of this option is 300. If the value of delay is the literal string 'none' without the quotes, no delay is used.</description>
+		</attribute>
         <attribute>
             <name>async</name>
             <required>false</required>

@@ -23,7 +23,7 @@ import javax.faces.view.facelets.TagAttribute;
 
 import org.primefaces.behavior.base.AbstractBehaviorHandler;
 
-public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior>  {
+public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
 
     private final TagAttribute process;
     private final TagAttribute update;
@@ -39,6 +39,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior>  
     private final TagAttribute partialSubmit;
     private final TagAttribute resetValues;
     private final TagAttribute ignoreAutoUpdate;
+    private final TagAttribute delay;
     
     public AjaxBehaviorHandler(BehaviorConfig config) {
         super(config);
@@ -56,6 +57,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior>  
         this.partialSubmit = this.getAttribute(AjaxBehavior.PropertyKeys.partialSubmit.name());
         this.resetValues = this.getAttribute(AjaxBehavior.PropertyKeys.resetValues.name());
         this.ignoreAutoUpdate = this.getAttribute(AjaxBehavior.PropertyKeys.ignoreAutoUpdate.name());
+        this.delay = this.getAttribute(AjaxBehavior.PropertyKeys.delay.name());
     }
 
     @Override
@@ -77,6 +79,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior>  
         setBehaviorAttribute(ctx, behavior, this.listener, AjaxBehavior.PropertyKeys.listener.expectedType);
         setBehaviorAttribute(ctx, behavior, this.resetValues, AjaxBehavior.PropertyKeys.resetValues.expectedType);
         setBehaviorAttribute(ctx, behavior, this.ignoreAutoUpdate, AjaxBehavior.PropertyKeys.ignoreAutoUpdate.expectedType);
+        setBehaviorAttribute(ctx, behavior, this.delay, AjaxBehavior.PropertyKeys.delay.expectedType);
         
         if (listener != null) {
             behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(

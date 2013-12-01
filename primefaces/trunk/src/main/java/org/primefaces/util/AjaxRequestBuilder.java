@@ -18,9 +18,13 @@ package org.primefaces.util;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
+import javax.faces.view.facelets.FaceletException;
+
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 
 import org.primefaces.config.ConfigContainer;
@@ -109,6 +113,22 @@ public class AjaxRequestBuilder {
     public AjaxRequestBuilder global(boolean global) {
         if(!global) {
             buffer.append(",global:false");
+        }
+        
+        return this;
+    }
+
+    public AjaxRequestBuilder delay(String delay) {
+        if(!ComponentUtils.isValueBlank(delay) && !delay.equals("none")) {
+            buffer.append(",delay:" + delay);
+
+            if (context.isProjectStage(ProjectStage.Development)) {
+            	try {
+            		Integer.parseInt(delay);
+            	} catch (NumberFormatException e) {
+            		throw new FaceletException("Delay attribute should only take numbers or \"none\"");
+            	}
+            }
         }
         
         return this;
