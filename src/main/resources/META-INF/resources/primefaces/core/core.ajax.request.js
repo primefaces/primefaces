@@ -324,7 +324,7 @@ PrimeFaces.ajax.Request = {
                     return;
                 } 
                 else {
-                    PrimeFaces.ajax.Response.handleResponse(data, status, xhr, true);
+                    PrimeFaces.ajax.Response.handleResponse(data, status, xhr);
                 }
                 
                 PrimeFaces.debug('DOM is updated.');

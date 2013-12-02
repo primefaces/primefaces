@@ -69,7 +69,12 @@ PrimeFaces.ajax.AjaxUtils = {
 	},
 	
 	handleResponse: function(xml) {
-		PrimeFaces.ajax.Response.handleResponse(xml, null, null, false);
+		//just for backward compatibility
+		//we just always return true, so that no update will be processed
+		//it will actually be done in the widgets itself
+		PrimeFaces.ajax.Response.handleResponse(xml, null, null, function(id, content) {
+			return true;
+		});
 	}
 }
 
