@@ -360,6 +360,9 @@
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces.js</output>
                             <includes>                                
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.request.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.response.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/accordion/accordion.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/autocomplete/autocomplete.js</include>
