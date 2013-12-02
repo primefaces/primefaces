@@ -48,7 +48,7 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
 
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
                
                 return true;
             }

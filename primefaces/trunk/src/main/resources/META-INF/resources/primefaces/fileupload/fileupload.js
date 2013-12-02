@@ -1717,7 +1717,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
                 }
 
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
             },
             always: function(e, data) {
                 if($this.cfg.oncomplete) {

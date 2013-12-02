@@ -108,10 +108,12 @@ PrimeFaces.ajax.Request = {
         }
 
         if(cfg.formId) {
-            form = $(PrimeFaces.escapeClientId(cfg.formId));                         //Explicit form is defined
+        	//Explicit form is defined
+            form = $(PrimeFaces.escapeClientId(cfg.formId));
         }
         else {
-            form = $(PrimeFaces.escapeClientId(sourceId)).parents('form:first');     //look for a parent of source
+        	//look for a parent of source
+            form = $(PrimeFaces.escapeClientId(sourceId)).parents('form:first');
 
             //source has no parent form so use first form in document
             if(form.length == 0) {
@@ -322,7 +324,7 @@ PrimeFaces.ajax.Request = {
                     return;
                 } 
                 else {
-                    PrimeFaces.ajax.Response.handleResponse(data, status, xhr);
+                    PrimeFaces.ajax.Response.handleResponse(data, status, xhr, true);
                 }
                 
                 PrimeFaces.debug('DOM is updated.');

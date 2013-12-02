@@ -535,7 +535,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
 
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
 
             return true;
         };
