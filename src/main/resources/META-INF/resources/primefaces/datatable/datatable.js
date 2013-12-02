@@ -656,7 +656,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
 
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
 
             return true;
         };
@@ -707,7 +707,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
 
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
             
             return true;
         };
@@ -801,7 +801,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
 
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
             
             var paginator = $this.getPaginator();             
             if(paginator && this.args && paginator.cfg.rowCount !== this.args.totalRecords) {
@@ -879,7 +879,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
 
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
             
             var paginator = $this.getPaginator();
             if(paginator) {
@@ -1321,7 +1321,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
 
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
 
             return true;
         };
@@ -1639,7 +1639,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
                 }
 
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
 
                 return true;
             }
@@ -1691,7 +1691,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var xmlDoc = $(responseXML.documentElement),
             updates = xmlDoc.find("update");
 
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
 
             for(var i=0; i < updates.length; i++) {
                 var update = updates.eq(i),

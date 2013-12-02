@@ -122,7 +122,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
 
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
 
             return true;
         };

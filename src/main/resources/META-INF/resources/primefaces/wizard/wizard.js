@@ -76,7 +76,7 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
                 var xmlDoc = $(responseXML.documentElement),
                 updates = xmlDoc.find('update');
 
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
 
                 _self.currentStep = this.args.currentStep;
 

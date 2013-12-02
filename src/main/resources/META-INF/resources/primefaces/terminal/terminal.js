@@ -83,7 +83,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
 
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, xmlDoc);
+                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
                 
                 $this.jq.scrollTop($this.content.height());
 

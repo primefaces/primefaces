@@ -1,6 +1,7 @@
 PrimeFaces.ajax.Response = {
 
-	handleResponse: function(xml, status, xhr) {
+	// TODO provide handler function for custom widget handling when id == widgetId for update statement
+	handleResponse: function(xml, status, xhr, handleUpdates) {
         var partialResponseNode = xml.getElementsByTagName("partial-response")[0];
         var responseTypeNode = partialResponseNode.firstChild;
         
@@ -15,7 +16,9 @@ PrimeFaces.ajax.Response = {
             	var currentChangeNode = changesNode[i];
                 switch (currentChangeNode.nodeName) {
                     case "update":
-                    	PrimeFaces.ajax.ResponseProcessor.doUpdate(currentChangeNode);
+                    	if (handleUpdates) {
+                    		PrimeFaces.ajax.ResponseProcessor.doUpdate(currentChangeNode);
+                    	}
                         break;
                     case "delete":
                     	PrimeFaces.ajax.ResponseProcessor.doDelete(currentChangeNode);
@@ -104,8 +107,10 @@ PrimeFaces.ajax.ResponseProcessor = {
 	},
 	
 	doExtension : function(node, xhr) {
-		if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
-			xhr.pfArgs = $.parseJSON(node.textContent);
+		if (xhr) {
+			if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
+				xhr.pfArgs = $.parseJSON(node.textContent);
+			}
 		}
 	},
 	

@@ -66,6 +66,10 @@ PrimeFaces.ajax.AjaxUtils = {
 
 	updateElement : function(id, data) {
 		PrimeFaces.ajax.Utils.updateElement(id, data);
+	},
+	
+	handleResponse: function(xml) {
+		PrimeFaces.ajax.Response.handleResponse(xml, null, null, false);
 	}
 }
 
