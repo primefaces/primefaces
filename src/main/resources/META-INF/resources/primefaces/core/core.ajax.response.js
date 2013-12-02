@@ -90,6 +90,7 @@ PrimeFaces.ajax.ResponseProcessor = {
 
 	updateFormStateInput: function(name, value) {
         var trimmedValue = $.trim(value);
+        //TODO porletforms
         var forms = this.portletForms ? $(this.portletForms) : $('form');
 
         forms.each(function() {
@@ -104,6 +105,17 @@ PrimeFaces.ajax.ResponseProcessor = {
                 form.append('<input type="hidden" name="' + name + '" value="' + trimmedValue + '" autocomplete="off" />');
             }
         });
+    },
+    
+    getContent: function(update) {
+        var nodes = update.get(0).childNodes,
+        content = '';
+
+        for(var i = 0; i < nodes.length; i++) {
+            content += nodes[i].nodeValue;
+        }
+       
+        return content;
     },
 
     doRedirect : function(node) {

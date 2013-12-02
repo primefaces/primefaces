@@ -40,7 +40,7 @@ PrimeFaces.ajax.Queue = {
 		next = this.peek();
 
 		if(next != null) {
-			PrimeFaces.ajax.AjaxUtils.send(next);
+			PrimeFaces.ajax.Request.send(next);
 		}
 
 		return processed;
