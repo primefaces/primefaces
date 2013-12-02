@@ -34,38 +34,38 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
         this.body = body;
     }
 
-    @Override
+    //@Override
     public Map<String, String> headersMap(){
         return request.headersMap();
     }
 
-    @Override
+    //@Override
     public Map<String, String[]> queryStrings() {
         return request.queryStringsMap();
     }
 
-    @Override
+    //@Override
     public AtmosphereResource.TRANSPORT transport() {
         return request.resource().transport();
     }
 
-    @Override
+    //@Override
     public String path() {
         // WARNING, if this method returns null, that means Atmosphere 2.0.x is used.
         return (String) request.getAttribute(FrameworkConfig.MAPPED_PATH);
     }
 
-    @Override
+    //@Override
     public String uri() {
         return request.getRequestURI();
     }
 
-    @Override
+    //@Override
     public String body() {
         return body;
     }
 
-    @Override
+    //@Override
     public Status status() {
         return status;
     }

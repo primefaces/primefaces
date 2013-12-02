@@ -48,6 +48,7 @@ public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
         this.rules = rules;
     }
 
+    //@Override
     public void onRequest(AtmosphereResource resource) throws IOException {
         AtmosphereRequest r = resource.getRequest();
         // We only handle GET. POST are supported by PrimeFaces directly via the Broadcaster.
