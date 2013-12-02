@@ -36,7 +36,7 @@ public class PushEndpointProcessor implements Processor {
 
     private static final Logger logger = LoggerFactory.getLogger(PushEndpointProcessor.class);
 
-    @Override
+    //@Override
     public void handle(AtmosphereFramework framework, Class<?> annotatedClass) {
         try {
             Class<?> aClass = annotatedClass;

@@ -72,19 +72,19 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     final Map<Method, List<Decoder<?, ?>>> decoders = new HashMap<Method, List<Decoder<?, ?>>>();
 
     private final BroadcastFilter onMessageFilter = new BroadcastFilter() {
-        @Override
+        //@Override
         public BroadcastAction filter(Object originalMessage, Object message) {
             return invoke(null, originalMessage, message);
         }
     };
 
     private final BroadcastFilter onPerMessageFilter = new PerRequestBroadcastFilter() {
-        @Override
+        //@Override
         public BroadcastAction filter(Object originalMessage, Object message) {
             return invoke(null, originalMessage, message);
         }
 
-        @Override
+        //@Override
         public BroadcastAction filter(AtmosphereResource r, Object originalMessage, Object message) {
             RemoteEndpointImpl rm = (RemoteEndpointImpl) r.getRequest().getAttribute(RemoteEndpointImpl.class.getName());
             return invoke(rm, originalMessage, message);
@@ -120,7 +120,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
         return this;
     }
 
-    @Override
+    //@Override
     public void onRequest(final AtmosphereResource resource) throws IOException {
         final AtmosphereRequest request = resource.getRequest();
         String body = IOUtils.readEntirely(resource).toString();
@@ -317,7 +317,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     }
 
 
-    @Override
+    //@Override
     public Object target() {
         return proxiedInstance;
     }
