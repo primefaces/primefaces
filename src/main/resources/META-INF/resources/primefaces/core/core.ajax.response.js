@@ -88,66 +88,15 @@ PrimeFaces.ajax.Response = {
 
 PrimeFaces.ajax.ResponseProcessor = {
 
-	updateFormStateInput: function(name, value) {
-        var trimmedValue = $.trim(value);
-        //TODO porletforms
-        var forms = this.portletForms ? $(this.portletForms) : $('form');
-
-        forms.each(function() {
-            var form = $(this);
-            var input = form.children("input[name='" + name + "']");
-
-            if(input.length > 0) {
-            	input.val(trimmedValue);
-            }
-            else
-            {
-                form.append('<input type="hidden" name="' + name + '" value="' + trimmedValue + '" autocomplete="off" />');
-            }
-        });
-    },
-    
-    getContent: function(update) {
-        var nodes = update.get(0).childNodes,
-        content = '';
-
-        for(var i = 0; i < nodes.length; i++) {
-            content += nodes[i].nodeValue;
-        }
-       
-        return content;
-    },
-
     doRedirect : function(node) {
 		window.location = node.getAttribute('url');
 	},
 	
 	doUpdate : function(node) {
-        var id = node.getAttribute('id');
-        var content = '';
+		var id = node.getAttribute('id');
+		var content = PrimeFaces.ajax.Utils.getContent(node);
 
-        for(var i = 0; i < node.childNodes.length; i++) {
-            content += node.childNodes[i].nodeValue;
-        }
-
-        if(id.indexOf(PrimeFaces.VIEW_STATE) !== -1) {
-            PrimeFaces.ajax.ResponseProcessor.updateFormStateInput.call(this, PrimeFaces.VIEW_STATE, content);
-        }
-        else if(id.indexOf(PrimeFaces.CLIENT_WINDOW) !== -1) {
-        	PrimeFaces.ajax.ResponseProcessor.updateFormStateInput.call(this, PrimeFaces.CLIENT_WINDOW, content);
-        }
-        else if(id === PrimeFaces.VIEW_ROOT) {
-        	$.ajaxSetup({'cache' : true});
-            $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
-            $.ajaxSetup({'cache' : false});
-
-            var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
-            var bodyStartIndex = content.indexOf(bodyStartTag) + bodyStartTag.length;
-            $('body').html(content.substring(bodyStartIndex, content.lastIndexOf("</body>")));
-        }
-        else {
-            $(PrimeFaces.escapeClientId(id)).replaceWith(content);
-        }
+		PrimeFaces.ajax.Utils.updateElement(id, content);
 	},
 	
 	doEval : function(node) {
