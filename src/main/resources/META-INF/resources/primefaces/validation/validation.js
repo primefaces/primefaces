@@ -635,7 +635,7 @@ PrimeFaces.validateInput = function(element) {
 PrimeFaces.validateInstant = function(id) {
     var vc = PrimeFaces.util.ValidationContext,
     element = $(PrimeFaces.escapeClientId(id)),
-    clientId = element.attr('id'),
+    clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id'),
     uiMessageId = element.data('uiMessageId'),
     uiMessage = null;
 

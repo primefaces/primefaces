@@ -19,6 +19,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.InputHolder;
 
 public class ClientValidator extends ClientBehaviorBase {
     
@@ -33,9 +34,9 @@ public class ClientValidator extends ClientBehaviorBase {
         
         FacesContext context = behaviorContext.getFacesContext();
         UIComponent component = behaviorContext.getComponent();
-        String source = component.getClientId(context);
+        String target = (component instanceof InputHolder) ? ((InputHolder) component).getInputClientId() : component.getClientId(context);
         
-        return "PrimeFaces.vi('" + source + "')";
+        return "PrimeFaces.vi('" + target + "')";
     }
 
     public String getEvent() {
