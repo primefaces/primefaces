@@ -472,29 +472,22 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             process: this.id,
             update: this.id,
             formId: this.cfg.formId,
-            onsuccess: function(responseXML) {
-                var xmlDoc = $(responseXML.documentElement),
-                updates = xmlDoc.find("update");
-                for(var i=0; i < updates.length; i++) {
-                    var update = updates.eq(i),
-                    id = update.attr('id'),
-                    data = PrimeFaces.ajax.AjaxUtils.getContent(update);                    
+            onsuccess: function(responseXML, status, xhr) {
+            	PrimeFaces.ajax.Response.handleResponse(responseXML, status, xhr, function(id, content) {
+            		if(id === _self.id) {
+                        _self.panel.html(content);
 
-                    if(id === _self.id) {
-                        _self.panel.html(data);
-                        
                         if(_self.cfg.cache) {
-                            _self.cache[query] = data;
+                            _self.cache[query] = content;
                         }
-                        
-                        _self.showSuggestions(query);
-                    } 
-                    else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, data);
-                    }
-                }
 
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
+                        _self.showSuggestions(query);
+
+                        return true;
+            		}
+            		
+            		return false;
+            	});
 
                 return true;
             }
