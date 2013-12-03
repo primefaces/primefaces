@@ -516,7 +516,7 @@ PrimeFaces.validate = function(cfg) {
     form = $(cfg.s).closest('form');
 
     if(cfg.a && cfg.p) {
-        var processIds = PrimeFaces.Expressions.resolveComponents(cfg.p),
+        var processIds = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(cfg.p),
         inputs = $();
 
         for(var i = 0; i < processIds.length; i++) {
@@ -541,7 +541,7 @@ PrimeFaces.validate = function(cfg) {
     }
     else {
         if(cfg.a && cfg.u) {
-            var updateIds = PrimeFaces.Expressions.resolveComponents(cfg.u);
+            var updateIds = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(cfg.u);
             for(var i = 0; i < updateIds.length; i++) {
                 if(updateIds[i]) {
                     var component = $(PrimeFaces.escapeClientId(updateIds[i]));

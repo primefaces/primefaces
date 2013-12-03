@@ -79,7 +79,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.jq = $(this.jqId);
-        this.target = PrimeFaces.Expressions.resolveComponentsAsSelector(this.cfg.target);
+        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
         
         var $this = this;
         this.target.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent)

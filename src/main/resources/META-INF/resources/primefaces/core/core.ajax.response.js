@@ -83,7 +83,7 @@ PrimeFaces.ajax.Response = {
 
 	    PrimeFaces.updatedWidgets = [];
 	}
-}
+};
 
 
 PrimeFaces.ajax.ResponseProcessor = {
@@ -129,5 +129,5 @@ PrimeFaces.ajax.ResponseProcessor = {
 	doAttributes : function() {
 		
 	}
-}
+};
 

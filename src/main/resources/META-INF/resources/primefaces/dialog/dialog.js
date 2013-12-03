@@ -54,7 +54,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.cfg.appendTo) {
-        	this.jq.appendTo(PrimeFaces.Expressions.resolveComponentsAsSelector(this.cfg.appendTo));
+        	this.jq.appendTo(PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo));
         }
 
         //docking zone
@@ -86,7 +86,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(cfg.appendTo) {
             var jqs = $(this.jqId);
             if(jqs.length > 1) {
-            	PrimeFaces.Expressions.resolveComponentsAsSelector(cfg.appendTo).children(this.jqId).remove();
+            	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.appendTo).children(this.jqId).remove();
             }
         }
         
@@ -238,7 +238,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     
     applyFocus: function() {
         if(this.cfg.focus)
-        	PrimeFaces.Expressions.resolveComponentsAsSelector(this.cfg.focus).focus();
+        	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.focus).focus();
         else
             this.jq.find(':not(:submit):not(:button):not(:radio):not(:checkbox):input:visible:enabled:first').focus();
     },
