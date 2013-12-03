@@ -148,7 +148,7 @@ PrimeFaces.ajax.ResponseProcessor = {
                 attrValue = "";
             }
 
-            jq.attr(attrName, attrName);
+            jq.attr(attrName, attrValue);
         }
 	}
 };
