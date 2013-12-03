@@ -119,14 +119,15 @@ PrimeFaces.ajax.ResponseProcessor = {
 	},
 	
 	doDelete : function(node) {
-		
+		var id = node.getAttribute('id');
+		$(PrimeFaces.escapeClientId(id)).remove();
 	},
 	
 	doInsert : function(node) {
 		
 	},
 	
-	doAttributes : function() {
+	doAttributes : function(node) {
 		
 	}
 };
