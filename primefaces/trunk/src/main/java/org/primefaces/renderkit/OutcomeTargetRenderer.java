@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.faces.FacesException;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.context.FacesContext;
@@ -77,6 +79,11 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         }
         else {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);
+
+            if (navCase == null) {
+            	throw new FacesException("Could not resolve NavigationCase for outcome: " + outcomeTarget.getOutcome());
+            }
+
             String toViewId = navCase.getToViewId(context);
             boolean isIncludeViewParams = isIncludeViewParams(outcomeTarget, navCase);
             Map<String, List<String>> params = getParams(navCase, outcomeTarget);
