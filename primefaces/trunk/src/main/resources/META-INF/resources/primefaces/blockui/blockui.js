@@ -7,7 +7,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.cfg = cfg;
         this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
-        this.block = PrimeFaces.Expressions.resolveComponentsAsSelector(this.cfg.block);
+        this.block = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
         this.content = $(this.jqId);
         this.cfg.animate = (this.cfg.animate === false)? false : true;
         
@@ -32,7 +32,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     
     bindTriggers: function() {
         var $this = this,
-        triggers = PrimeFaces.Expressions.resolveComponents(this.cfg.triggers);
+        triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.triggers);
         
         //listen global ajax send and complete callbacks
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {

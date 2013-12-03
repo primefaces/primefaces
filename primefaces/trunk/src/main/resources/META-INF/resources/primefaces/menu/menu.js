@@ -16,7 +16,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     initOverlay: function() {
         var _self = this;
         
-        this.trigger = PrimeFaces.Expressions.resolveComponentsAsSelector(this.cfg.trigger);
+        this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.trigger);
 
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
         this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);

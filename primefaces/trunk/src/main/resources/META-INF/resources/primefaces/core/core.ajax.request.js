@@ -369,6 +369,6 @@ PrimeFaces.ajax.Request = {
             expressions += " " + cfg.ext[type];
         }
         
-        return PrimeFaces.Expressions.resolveComponents(expressions);
+        return PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(expressions);
     }
-}
+};

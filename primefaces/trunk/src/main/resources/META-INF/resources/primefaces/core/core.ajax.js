@@ -63,7 +63,7 @@ PrimeFaces.ajax.Utils = {
 //backward compatibility
 PrimeFaces.ajax.AjaxRequest = function(cfg, ext) {
 	return PrimeFaces.ajax.Request.handleRequest(cfg, ext);
-}
+};
 
 PrimeFaces.ajax.AjaxUtils = {
 	getContent : function(update) {
@@ -82,7 +82,7 @@ PrimeFaces.ajax.AjaxUtils = {
 			return true;
 		});
 	}
-}
+};
 
 
 
