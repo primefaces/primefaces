@@ -15,7 +15,7 @@ PrimeFaces.ajax.Response = {
             	var currentChangeNode = changesNode[i];
                 switch (currentChangeNode.nodeName) {
                     case "update":
-                		PrimeFaces.ajax.ResponseProcessor.doUpdate(currentChangeNode, updateHandler);
+                		PrimeFaces.ajax.ResponseProcessor.doUpdate(currentChangeNode, xhr, updateHandler);
                         break;
                     case "delete":
                     	PrimeFaces.ajax.ResponseProcessor.doDelete(currentChangeNode);
@@ -92,17 +92,17 @@ PrimeFaces.ajax.ResponseProcessor = {
 		window.location = node.getAttribute('url');
 	},
 	
-	doUpdate : function(node, handler) {
+	doUpdate : function(node, xhr, handler) {
 		var id = node.getAttribute('id');
 		var content = PrimeFaces.ajax.Utils.getContent(node);
 
 		if (handler) {
 			// if the handler returns "true", it handles the current id
 			if (handler.call(this, id, content) === false) {
-				PrimeFaces.ajax.Utils.updateElement(id, content);
+				PrimeFaces.ajax.Utils.updateElement(id, content, xhr);
 			}
 		} else {
-			PrimeFaces.ajax.Utils.updateElement(id, content);
+			PrimeFaces.ajax.Utils.updateElement(id, content, xhr);
 		}
 	},
 	

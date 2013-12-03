@@ -128,9 +128,9 @@ PrimeFaces.ajax.Request = {
         postParams = [];
 
         //portlet support
-        var pFormsSelector = null;
+        var porletFormsSelector = null;
         if(encodedURLfield.length > 0) {
-            pFormsSelector = 'form[action="' + postURL + '"]';
+        	porletFormsSelector = 'form[action="' + postURL + '"]';
             postURL = encodedURLfield.val();
         }
 
@@ -279,11 +279,12 @@ PrimeFaces.ajax.Request = {
             cache : false,
             dataType : "xml",
             data : postData,
-            portletForms: pFormsSelector,
+            portletForms: porletFormsSelector,
             source: cfg.source,
             global: false,
-            beforeSend: function(xhr) {
+            beforeSend: function(xhr, settings) {
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
+                xhr.pfSettings = settings;
                 
                 if(global) {
                     $(document).trigger('pfAjaxSend', [xhr, this]);

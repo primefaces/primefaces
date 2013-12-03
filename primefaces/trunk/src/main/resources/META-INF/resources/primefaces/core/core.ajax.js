@@ -12,10 +12,16 @@ PrimeFaces.ajax.Utils = {
         return content;
     },
 
-	updateFormStateInput: function(name, value) {
+	updateFormStateInput: function(name, value, xhr) {
         var trimmedValue = $.trim(value);
-        //TODO porletforms
-        var forms = this.portletForms ? $(this.portletForms) : $('form');
+
+        var forms = null;
+        if (xhr && xhr.pfSettings && xhr.pfSettings.portletForms) {
+        	forms = $(xhr.pfSettings.portletForms);
+        }
+        else {
+        	forms = $('form');
+        }
 
         forms.each(function() {
             var form = $(this);
@@ -31,12 +37,12 @@ PrimeFaces.ajax.Utils = {
         });
     },
 
-    updateElement: function(id, content) {
+    updateElement: function(id, content, xhr) {
         if(id.indexOf(PrimeFaces.VIEW_STATE) !== -1) {
-        	PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.VIEW_STATE, content);
+        	PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.VIEW_STATE, content, xhr);
         }
         else if(id.indexOf(PrimeFaces.CLIENT_WINDOW) !== -1) {
-        	PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.CLIENT_WINDOW, content);
+        	PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.CLIENT_WINDOW, content, xhr);
         }
         else if(id === PrimeFaces.VIEW_ROOT) {
         	$.ajaxSetup({'cache' : true});
@@ -64,8 +70,8 @@ PrimeFaces.ajax.AjaxUtils = {
 		return PrimeFaces.ajax.Utils.getContent(update.get(0));
 	},
 
-	updateElement : function(id, data) {
-		PrimeFaces.ajax.Utils.updateElement(id, data);
+	updateElement : function(id, data, xhr) {
+		PrimeFaces.ajax.Utils.updateElement(id, data, xhr);
 	},
 	
 	handleResponse: function(xml) {
