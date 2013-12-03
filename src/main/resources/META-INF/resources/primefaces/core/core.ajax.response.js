@@ -124,11 +124,32 @@ PrimeFaces.ajax.ResponseProcessor = {
 	},
 	
 	doInsert : function(node) {
-		
+
 	},
 	
 	doAttributes : function(node) {
-		
+		var id = node.getAttribute('id');
+		var jq = $(PrimeFaces.escapeClientId(id));
+
+        if (!node.childNodes) {
+            return false;
+        }
+        
+        for (var i = 0; i < childNodes.length; i++) {
+            var attrNode = childNodes.length[i];
+            var attrName = attrNode.getAttribute("name");
+            var attrValue = attrNode.getAttribute("value");
+
+            if (!attrName) {
+            	return;
+            }
+
+            if (!attrValue || attrValue === null) {
+                attrValue = "";
+            }
+
+            jq.attr(attrName, attrName);
+        }
 	}
 };
 
