@@ -135,8 +135,8 @@ PrimeFaces.ajax.ResponseProcessor = {
             return false;
         }
         
-        for (var i = 0; i < childNodes.length; i++) {
-            var attrNode = childNodes.length[i];
+        for (var i = 0; i < node.childNodes.length; i++) {
+            var attrNode = node.childNodes[i];
             var attrName = attrNode.getAttribute("name");
             var attrValue = attrNode.getAttribute("value");
 
