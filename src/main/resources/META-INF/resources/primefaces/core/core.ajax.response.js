@@ -107,13 +107,15 @@ PrimeFaces.ajax.ResponseProcessor = {
 	},
 	
 	doEval : function(node) {
-		$.globalEval(node.textContent);
+		var textContent = node.textContent || node.innerText || node.text;
+		$.globalEval(textContent);
 	},
 	
 	doExtension : function(node, xhr) {
 		if (xhr) {
 			if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
-				xhr.pfArgs = $.parseJSON(node.textContent);
+				var textContent = node.textContent || node.innerText || node.text;
+				xhr.pfArgs = $.parseJSON(textContent);
 			}
 		}
 	},
