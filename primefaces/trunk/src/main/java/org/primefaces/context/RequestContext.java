@@ -57,6 +57,8 @@ public abstract class RequestContext {
 
     /**
      * Add a parameter for ajax oncomplete client side callbacks. Value would be serialized to json.
+     * Currently supported values are plain objects, primitives, JSONObject and JSONArray.
+     * 
      * @param name name of the parameter.
      * @param object value of the parameter.
      */
