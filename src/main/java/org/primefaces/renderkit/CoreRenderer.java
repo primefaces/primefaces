@@ -387,7 +387,7 @@ public abstract class CoreRenderer extends Renderer {
                String behaviorSource = params.get("javax.faces.source");
                String clientId = component.getClientId();
 
-               if(behaviorSource != null && clientId.startsWith(behaviorSource)) {
+               if(behaviorSource != null && clientId.equals(behaviorSource)) {
                    for(ClientBehavior behavior: behaviorsForEvent) {
                        behavior.decode(context, component);
                    }
