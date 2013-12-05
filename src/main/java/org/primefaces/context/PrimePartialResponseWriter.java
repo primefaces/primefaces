@@ -23,6 +23,8 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.AbortProcessingException;
+
+import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 
@@ -58,7 +60,15 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 String paramName = it.next();
                 Object paramValue = params.get(paramName);
 
-                if(isBean(paramValue)) {
+                if (paramValue instanceof JSONObject) {
+                	String json = ((JSONObject) paramValue).toString();
+                	jsonBuilder.append("\"").append(paramName).append("\":{").append(json.substring(1, json.length() - 1) + "}");
+                }
+                else if (paramValue instanceof JSONArray) {
+                	String json = ((JSONArray) paramValue).toString();
+                	jsonBuilder.append("\"").append(paramName).append("\":[").append(json.substring(1, json.length() - 1) + "]");
+                }
+                else if(isBean(paramValue)) {
                     jsonBuilder.append("\"").append(paramName).append("\":").append(new JSONObject(paramValue).toString());
                 } 
                 else {
