@@ -15,7 +15,7 @@ PrimeFaces.ajax.Response = {
                 var currentChangeNode = changesNode[i];
                 switch (currentChangeNode.nodeName) {
                     case "update":
-                                PrimeFaces.ajax.ResponseProcessor.doUpdate(currentChangeNode, xhr, updateHandler);
+                        PrimeFaces.ajax.ResponseProcessor.doUpdate(currentChangeNode, xhr, updateHandler);
                         break;
                     case "delete":
                         PrimeFaces.ajax.ResponseProcessor.doDelete(currentChangeNode);
