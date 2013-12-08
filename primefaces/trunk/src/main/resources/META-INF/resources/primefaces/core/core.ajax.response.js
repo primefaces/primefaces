@@ -146,12 +146,12 @@ PrimeFaces.ajax.ResponseProcessor = {
     },
 
     doAttributes : function(node) {
-        var id = node.getAttribute('id');
-        var jq = $(PrimeFaces.escapeClientId(id));
-
         if (!node.childNodes) {
             return false;
         }
+
+        var id = node.getAttribute('id');
+        var jq = $(PrimeFaces.escapeClientId(id));
 
         for (var i = 0; i < node.childNodes.length; i++) {
             var attrNode = node.childNodes[i];
