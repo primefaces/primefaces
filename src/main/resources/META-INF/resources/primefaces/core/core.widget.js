@@ -92,11 +92,11 @@ PrimeFaces.widget.BaseWidget = Class.extend({
         return this.init(cfg);
     },
     
-    //will be called when the widget is detached
+    //will be called when the widget after a ajax request if the widget is detached
     destroy: function() {
-    	console.log('widget destroyed: ' + this.id + " ; " + this.widgetVar);
+    	PrimeFaces.debug("Destroyed detached widget: " + this.widgetVar);
     },
-    
+
     //checks if the given widget is detached
     isDetached: function() {
     	return document.getElementById(this.id) === null;
