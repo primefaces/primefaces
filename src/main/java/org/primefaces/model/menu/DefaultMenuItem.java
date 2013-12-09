@@ -58,6 +58,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean ignoreAutoUpdate;
     private boolean immediate;
     private String delay;
+    private boolean disableClientWindow;
     
     public DefaultMenuItem() {}
     
@@ -350,5 +351,13 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
     public void setDelay(String delay) {
         this.delay = delay;
+    }
+    
+    public boolean isDisableClientWindow() {
+        return disableClientWindow;
+    }
+    
+    public void setDisableClientWindow(boolean disableClientWindow) {
+        this.disableClientWindow = disableClientWindow;
     }
 }

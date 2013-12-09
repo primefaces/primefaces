@@ -177,5 +177,12 @@
 			<type>java.lang.String</type>
             <description>Identifier of the target page which should be scrolled to.</description>
 		</attribute>
+        <attribute>
+			<name>disableClientWindow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Disable appending the <code>ClientWindow</code> on the rendering of this element.</description>
+		</attribute>
 	</attributes>
 </component>
