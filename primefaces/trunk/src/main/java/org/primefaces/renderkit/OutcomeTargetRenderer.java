@@ -24,7 +24,9 @@ import javax.faces.FacesException;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.context.FacesContext;
+import javax.faces.lifecycle.ClientWindow;
 import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.context.RequestContext;
 
 public class OutcomeTargetRenderer extends CoreRenderer {
     
@@ -93,7 +95,24 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                 params = Collections.emptyMap();
             }
 
-            url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
+            boolean disableClientWindow = outcomeTarget.isDisableClientWindow();
+            boolean isJSF22 = RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22();
+            Object clientWindow = null;
+            try {
+                if (isJSF22 && disableClientWindow) {
+                    clientWindow = context.getExternalContext().getClientWindow();
+                    if (clientWindow != null) {
+                        ((ClientWindow) clientWindow).disableClientWindowRenderMode(context);
+                    }
+                }
+                
+                url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
+
+            } finally {
+                if (isJSF22 && disableClientWindow && clientWindow != null) {
+                    ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
+                }
+            }
 
             if(outcomeTarget.getFragment() != null) {
                 url += "#" + outcomeTarget.getFragment();

@@ -259,6 +259,13 @@
             <defaultValue>false</defaultValue>
             <description>Displays button inline instead of fitting the content width, only used by mobile.</description>
 		</attribute>
+        <attribute>
+			<name>disableClientWindow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Disable appending the <code>ClientWindow</code> on the rendering of this element.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>

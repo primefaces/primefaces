@@ -32,4 +32,6 @@ public interface UIOutcomeTarget {
     public Map<String, List<String>> getParams();
     
     public String getHref();
+    
+    public boolean isDisableClientWindow();
 }
