@@ -33,11 +33,16 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
-import javax.faces.model.*;
+import javax.faces.model.ArrayDataModel;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
+import javax.faces.model.ResultSetDataModel;
+import javax.faces.model.ScalarDataModel;
 import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.model.CollectionDataModel;
 import org.primefaces.util.ComponentUtils;
 
 public class UIData extends javax.faces.component.UIData {
@@ -630,13 +635,16 @@ public class UIData extends javax.faces.component.UIData {
         } 
         else if (current instanceof List) {
             setDataModel(new ListDataModel((List) current));
-        } 
+        }
         else if (Object[].class.isAssignableFrom(current.getClass())) {
             setDataModel(new ArrayDataModel((Object[]) current));
         } 
         else if (current instanceof ResultSet) {
             setDataModel(new ResultSetDataModel((ResultSet) current));
-        } 
+        }
+        else if (current instanceof Collection) {
+            setDataModel(new CollectionDataModel((Collection) current));
+        }
         else {
             setDataModel(new ScalarDataModel(current));
         }
