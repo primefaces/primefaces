@@ -57,8 +57,12 @@ public class TooltipRenderer extends CoreRenderer {
             }
             else {
                 String valueToRender = ComponentUtils.getValueToRender(context, tooltip);
-                if(valueToRender != null)
-                    writer.writeText(valueToRender, "value");
+                if(valueToRender != null) {
+                    if(tooltip.isEscape())
+                        writer.writeText(valueToRender, "value");
+                    else
+                        writer.write(valueToRender);
+                }
             }
 
 
@@ -75,7 +79,8 @@ public class TooltipRenderer extends CoreRenderer {
             .attr("showEffect", tooltip.getShowEffect(), null)
             .attr("hideEffect", tooltip.getHideEffect(), null)
             .attr("target", target, null)
-            .attr("globalSelector", tooltip.getGlobalSelector(), null);
+            .attr("globalSelector", tooltip.getGlobalSelector(), null)
+            .attr("escape", tooltip.isEscape(), true);
         
 		wb.finish();
 	}

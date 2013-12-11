@@ -31,6 +31,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     bindGlobal: function() {
         this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-widget-content ui-corner-all ui-shadow" />').appendTo('body');
         this.cfg.globalSelector = this.cfg.globalSelector||'a,:input,:button';
+        this.cfg.escape = (this.cfg.escape === undefined) ? true : this.cfg.escape;
         var $this = this;
         
         $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.cfg.globalSelector)
@@ -51,7 +52,11 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
                         var text = element.data('tooltip');
                         if(text) {
-                            $this.jq.text(text);
+                            if($this.cfg.escape)
+                                $this.jq.text(text);
+                            else
+                                $this.jq.html(text);
+                                
                             $this.globalTitle = text;
                             $this.target = element;
                             $this.show();
