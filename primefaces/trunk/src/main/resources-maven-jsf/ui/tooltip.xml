@@ -72,6 +72,13 @@
 			<type>java.lang.String</type>
             <description>jquery selector for global tooltip, default is "a,:input,:button".</description>
 		</attribute>
+        <attribute>
+			<name>escape</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether html would be escaped or not, defaults to true.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
