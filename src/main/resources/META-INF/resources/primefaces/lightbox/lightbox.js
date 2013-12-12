@@ -53,6 +53,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.caption = this.panel.children('.ui-lightbox-caption');
         this.captionText = this.caption.children('.ui-lightbox-caption-text');        
         this.closeIcon = this.caption.children('.ui-lightbox-close');
+        this.closeIcon.data('primefaces-lightbox-trigger', true).find('*').data('primefaces-lightbox-trigger', true);
     },
     
     setupImaging: function() {
@@ -234,7 +235,9 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindCommonEvents: function() {
-        var _self = this;
+        var $this = this,
+        hideNS = 'click.' + this.id,
+        resizeNS = 'resize.' + this.id;
         
         this.closeIcon.mouseover(function() {
             $(this).addClass('ui-state-hover');
@@ -244,13 +247,13 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         })
 
         this.closeIcon.click(function(e) {
-            _self.hide();
+            $this.hide();
             e.preventDefault();
         });
 
         //hide when outside is clicked
-        $(document.body).bind('click.ui-lightbox', function (e) {            
-            if(_self.isHidden()) {
+        $(document.body).off(hideNS).on(hideNS, function (e) {            
+            if($this.isHidden()) {
                 return;
             }
             
@@ -261,19 +264,19 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             }
 
             //hide if mouse is outside of lightbox
-            var offset = _self.panel.offset();
+            var offset = $this.panel.offset();
             if(e.pageX < offset.left ||
-                e.pageX > offset.left + _self.panel.width() ||
+                e.pageX > offset.left + $this.panel.width() ||
                 e.pageY < offset.top ||
-                e.pageY > offset.top + _self.panel.height()) {
+                e.pageY > offset.top + $this.panel.height()) {
 
-                _self.hide();
+                $this.hide();
             }
         });
         
         //sync window resize
-        $(window).resize(function() {
-            if(!_self.isHidden()) {
+        $(window).off(resizeNS).on(resizeNS, function() {
+            if(!$this.isHidden()) {
                 $(document.body).children('.ui-widget-overlay').css({
                     'width': $(document).width()
                     ,'height': $(document).height()
