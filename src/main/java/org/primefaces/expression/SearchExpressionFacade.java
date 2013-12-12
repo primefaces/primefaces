@@ -58,7 +58,7 @@ public class SearchExpressionFacade {
      *
      * @param context The {@link FacesContext}.
      * @param source The source component. E.g. a button.
-     * @param expression The search expression.
+     * @param expressions The search expressions.
      * @return A {@link List} with resolved {@link UIComponent}s.
      */
 	public static List<UIComponent> resolveComponents(FacesContext context, UIComponent source, String expressions) {
@@ -96,7 +96,7 @@ public class SearchExpressionFacade {
      *
      * @param context The {@link FacesContext}.
      * @param source The source component. E.g. a button.
-     * @param expression The search expression.
+     * @param expressions The search expressions.
      * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
      */
 	public static String resolveComponentsForClient(FacesContext context, UIComponent source, String expressions) {
@@ -109,7 +109,7 @@ public class SearchExpressionFacade {
      *
      * @param context The {@link FacesContext}.
      * @param source The source component. E.g. a button.
-     * @param expression The search expression.
+     * @param expressions The search expressions.
      * @param options The options. 
      * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
      */
@@ -204,8 +204,9 @@ public class SearchExpressionFacade {
 			
 			if (isOptionSet(options, VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
 				if (ComponentUtils.isValueBlank(component.getRendererType())) {
-					LOG.warning("Can not update component without a attached renderer. "
-							+ "Component class: \"" + component.getClass() + "\"");
+					LOG.warning("Can not update component \"" + component.getClass().getName()
+                            + "\" without a attached renderer. Expression \""
+                            + expression + "\" referenced from \"" + source.getClientId(context) + "\"");
 				}
 			}
 			
@@ -257,8 +258,8 @@ public class SearchExpressionFacade {
 		}
 
 		if (isClientExpressionOnly(expression)) {
-			throw new FacesException(
-					"Client side expression (PFS and @widgetVar) are not supported... Expression: " + expression);
+			throw new FacesException("Client side expression (PFS and @widgetVar) are not supported... expression \"" + expression
+                            + "\" referenced from \""+ source.getClientId(context) + "\".");
 		}
 
 		UIComponent component = resolveComponentInternal(context, source, expression, separatorChar, separatorString, options);
@@ -291,7 +292,7 @@ public class SearchExpressionFacade {
 		    // keywords are always related to the current component, not absolute or relative
 			if (expression.startsWith(separatorString + SearchExpressionConstants.KEYWORD_PREFIX)) {
 				throw new FacesException("A expression should not start with the separater char and a keyword. "
-						+ "Expression: \"" + expression + "\" from \"" + source.getClientId(context) + "\"");
+						+ "Expression: \"" + expression + "\" referenced from \"" + source.getClientId(context) + "\"");
 			}
 
 			// Pattern to split expressions by the separator but not inside parenthesis
@@ -345,7 +346,7 @@ public class SearchExpressionFacade {
 			return null;
 		}
 
-		UIComponent component = null;
+		UIComponent component;
 
 		// if the complete expression does not contain '@', just call #findComponent on the source component
 		if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
@@ -427,7 +428,7 @@ public class SearchExpressionFacade {
 	}
 	
 	/**
-	 * Splits the given string by the given separator, but ignoring separator inside parenthese.
+	 * Splits the given string by the given separator, but ignoring separators inside parentheses.
      *
      * @param context The current {@link FacesContext}.
 	 * @param value The string value.
