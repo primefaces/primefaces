@@ -205,8 +205,9 @@ public class SearchExpressionFacade {
 			if (isOptionSet(options, VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
 				if (ComponentUtils.isValueBlank(component.getRendererType())) {
 					LOG.warning("Can not update component \"" + component.getClass().getName()
-                            + "\" without a attached renderer. Expression \""
-                            + expression + "\" referenced from \"" + source.getClientId(context) + "\"");
+                            + "\" with id \"" + component.getClientId(context)
+                            + "\" without a attached renderer. Expression \"" + expression
+                            + "\" referenced from \"" + source.getClientId(context) + "\"");
 				}
 			}
 			
