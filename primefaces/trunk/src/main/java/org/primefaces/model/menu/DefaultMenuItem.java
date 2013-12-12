@@ -74,6 +74,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public DefaultMenuItem(Object value, String icon, String url) {
         this.value = value;
         this.icon = icon;
+        this.url = url;
     }
 
     public String getId() {
