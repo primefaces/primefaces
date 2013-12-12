@@ -36,7 +36,7 @@ public class CSVExporter extends Exporter {
     @Override
 	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
 		ExternalContext externalContext = context.getExternalContext();
-        configureResponse(externalContext, filename);
+        configureResponse(externalContext, filename, encodingType);
         Writer writer = externalContext.getResponseOutputWriter();
     	
     	addColumnFacets(writer, table, ColumnType.HEADER);
@@ -116,8 +116,8 @@ public class CSVExporter extends Exporter {
         }
     }
     
-    protected void configureResponse(ExternalContext externalContext, String filename) {
-        externalContext.setResponseContentType("text/csv");
+    protected void configureResponse(ExternalContext externalContext, String filename, String encodingType) {
+        externalContext.setResponseContentType("text/csv; charset=" + encodingType);
 		externalContext.setResponseHeader("Expires", "0");
 		externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
 		externalContext.setResponseHeader("Pragma", "public");
