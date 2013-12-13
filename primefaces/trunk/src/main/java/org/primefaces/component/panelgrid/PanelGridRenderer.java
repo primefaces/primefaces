@@ -82,15 +82,13 @@ public class PanelGridRenderer extends CoreRenderer {
             }
            
             if(child.isRendered()) {
+                String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
                 writer.startElement("td", null);
                 writer.writeAttribute("role", "gridcell", null);
-                if(colMod < columnClasses.length) {
-                    writer.writeAttribute("class", columnClasses[colMod].trim(), null);
-                }
-                
-                
+                writer.writeAttribute("class", columnClass, null);
                 child.encodeAll(context);
                 writer.endElement("td");
+                
                 i++;
                 colMod = i % columns;
             }
@@ -107,7 +105,7 @@ public class PanelGridRenderer extends CoreRenderer {
             String rowStyleClass = i % 2 == 0 ? PanelGrid.ROW_CLASS + " " + PanelGrid.EVEN_ROW_CLASS : PanelGrid.ROW_CLASS + " " + PanelGrid.ODD_ROW_CLASS;
 
             if(child instanceof Row && child.isRendered()) {
-                encodeRow(context, (Row) child, "gridcell", rowStyleClass, null);
+                encodeRow(context, (Row) child, "gridcell", rowStyleClass, PanelGrid.CELL_CLASS);
             }
             i++;
         }
@@ -127,21 +125,17 @@ public class PanelGridRenderer extends CoreRenderer {
         for(UIComponent child : row.getChildren()) {
             if(child instanceof Column && child.isRendered()) {
                 Column column = (Column) child;
-                String styleClass = null;
                 String userStyleClass = column.getStyleClass();
-                
-                if(userStyleClass != null && columnClass != null) styleClass = columnClass + " " + userStyleClass;
-                else if(userStyleClass != null && columnClass == null) styleClass = userStyleClass;
-                else if(userStyleClass == null && columnClass != null) styleClass = columnClass;
-                
+                String styleClass = (userStyleClass == null) ? columnClass : columnClass + " " + userStyleClass;
+                                
                 writer.startElement("td", null);
                 if(shouldWriteId(column)) {
                     writer.writeAttribute("id", column.getClientId(context), null);
                 }
                 writer.writeAttribute("role", columnRole, null);
+                writer.writeAttribute("class", styleClass, null);
                 
                 if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-                if(styleClass != null) writer.writeAttribute("class", styleClass, null);
                 if(column.getColspan() > 1) writer.writeAttribute("colspan", column.getColspan(), null);
                 if(column.getRowspan() > 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
                 
@@ -178,12 +172,12 @@ public class PanelGridRenderer extends CoreRenderer {
             }
             else {
                 if(component instanceof Row) {
-                    encodeRow(context, (Row) component, "columnheader", "ui-widget-header", "ui-widget-header");
+                    encodeRow(context, (Row) component, "columnheader", "ui-widget-header", PanelGrid.CELL_CLASS + " ui-widget-header");
                 }
                 else if(component instanceof UIPanel){
                     for(UIComponent row : component.getChildren()) {
                         if(row instanceof Row && row.isRendered()) {
-                            encodeRow(context, (Row) row, "columnheader", "ui-widget-header", "ui-widget-header");
+                            encodeRow(context, (Row) row, "columnheader", "ui-widget-header", PanelGrid.CELL_CLASS + " ui-widget-header");
                         }
                     }
                 }
