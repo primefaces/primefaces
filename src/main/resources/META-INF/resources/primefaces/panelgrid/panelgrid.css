@@ -12,7 +12,7 @@
     padding:2px 5px;
 }
 
-.ui-panelgrid td {
+.ui-panelgrid .ui-panelgrid-cell {
     border-width: 1px;
     border-style: solid;
     border-color: inherit;
