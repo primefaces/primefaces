@@ -48,6 +48,8 @@ public class DataScrollerRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, DataScroller ds, int chunkSize) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ds.getClientId(context);
+        UIComponent header = ds.getFacet("header");
+        String contentCornerClass = null;
         
         String style = ds.getStyle();
         String userStyleClass = ds.getStyleClass();
@@ -60,11 +62,28 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.writeAttribute("style", styleClass, null);
         }
         
+        if(header != null && header.isRendered()) {
+            writer.startElement("div", ds);
+            writer.writeAttribute("class", DataScroller.HEADER_CLASS, null);
+            header.encodeAll(context);
+            writer.endElement("div");
+            
+            contentCornerClass = "ui-corner-bottom";
+        }
+        else {
+            contentCornerClass = "ui-corner-all";
+        }
+        
+        writer.startElement("div", ds);
+        writer.writeAttribute("class", DataScroller.CONTENT_CLASS + " " + contentCornerClass, null);
+        
         writer.startElement("ul", ds);
         writer.writeAttribute("class", DataScroller.LIST_CLASS, null);
         loadChunk(context, ds, 0, chunkSize);
         ds.setRowIndex(-1);
         writer.endElement("ul");
+        
+        writer.endElement("div");
         
         writer.endElement("div");
     }

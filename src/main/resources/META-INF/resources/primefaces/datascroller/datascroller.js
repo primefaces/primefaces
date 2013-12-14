@@ -5,7 +5,8 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        this.list = this.jq.children('ul');
+        this.content = this.jq.children('div.ui-datascroller-content');
+        this.list = this.content.children('ul');
         this.loading = false;
         this.cfg.offset = this.cfg.chunkSize;
         
