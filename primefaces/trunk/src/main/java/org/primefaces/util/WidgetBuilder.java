@@ -17,10 +17,7 @@ package org.primefaces.util;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
-import javax.faces.application.ProjectStage;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 /**
  * Helper to generate javascript code of an ajax call
