@@ -26,6 +26,7 @@ import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.event.PhaseId;
+import org.primefaces.expression.SearchExpressionConstants;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -94,16 +95,20 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
 	 */
     private void resetValues(FacesContext context) {
         Object resetValuesObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.RESET_VALUES_PARAM);
-        boolean resetValues = (null != resetValuesObject && "true".equals(resetValuesObject)) ? true : false;
+        boolean resetValues = (null != resetValuesObject && "true".equals(resetValuesObject));
         
         if (resetValues) {
             VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
             
             for (String renderId : context.getPartialViewContext().getRenderIds()) {
+                if (ComponentUtils.isValueBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
+                    continue;
+                }
+    
                 UIComponent renderComponent = context.getViewRoot().findComponent(renderId);
                 if (renderComponent == null) {
                     LOG.log(Level.WARNING, "Could not find component with ID: " + renderId
-                    		+ ". This may occur if you use h:form with prependId=false, as findComponent does not consider it.");
+                            + ". This may occur if you use h:form with prependId=false, as findComponent does not consider it.");
                 } else {
                     renderComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
                 }
