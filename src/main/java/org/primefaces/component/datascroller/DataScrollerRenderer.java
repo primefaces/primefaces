@@ -27,14 +27,28 @@ public class DataScrollerRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DataScroller ds = (DataScroller) component;
+
+        if(ds.isLoadRequest()) {
+            String clientId = ds.getClientId(context);
+            int offset = Integer.parseInt(context.getExternalContext().getRequestParameterMap().get(clientId + "_offset"));
+            
+            loadChunk(context, ds, offset, ds.getChunkSize());
+        }
+        else {
+            int chunkSize = ds.getChunkSize();
+            if(chunkSize == 0) {
+                chunkSize = ds.getRowCount();
+            }
         
-        encodeMarkup(context, ds);
-        encodeScript(context, ds);
+            encodeMarkup(context, ds, chunkSize);
+            encodeScript(context, ds, chunkSize);
+        }
     }
     
-    protected void encodeMarkup(FacesContext context, DataScroller ds) throws IOException {
+    protected void encodeMarkup(FacesContext context, DataScroller ds, int chunkSize) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ds.getClientId(context);
+        
         String style = ds.getStyle();
         String userStyleClass = ds.getStyleClass();
         String styleClass = (userStyleClass == null) ? DataScroller.CONTAINER_CLASS : DataScroller.CONTAINER_CLASS + " " + userStyleClass;
@@ -46,15 +60,36 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.writeAttribute("style", styleClass, null);
         }
         
+        writer.startElement("ul", ds);
+        writer.writeAttribute("class", DataScroller.LIST_CLASS, null);
+        loadChunk(context, ds, 0, chunkSize);
+        ds.setRowIndex(-1);
+        writer.endElement("ul");
+        
         writer.endElement("div");
     }
     
-    protected void encodeScript(FacesContext context, DataScroller ds) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    protected void encodeScript(FacesContext context, DataScroller ds, int chunkSize) throws IOException {
         String clientId = ds.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataScroller", ds.resolveWidgetVar(), clientId).finish();
+        wb.init("DataScroller", ds.resolveWidgetVar(), clientId)
+            .attr("chunkSize", chunkSize)
+            .attr("totalSize", ds.getRowCount())
+            .finish();
+    }
+    
+    protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        for(int i = start; i < (start + size); i++) {
+            ds.setRowIndex(i);
+            writer.startElement("li", null);
+            writer.writeAttribute("class", DataScroller.ITEM_CLASS, null);
+            renderChildren(context, ds);
+            writer.endElement("li");
+        }
+        ds.setRowIndex(-1);
     }
 
     @Override
