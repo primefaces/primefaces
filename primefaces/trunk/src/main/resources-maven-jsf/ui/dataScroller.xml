@@ -34,6 +34,20 @@
             <type>java.lang.String</type>
             <description>Style class of the main container.</description>
         </attribute>
+        <attribute>
+            <name>chunkSize</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Number of items to fetch.</description>
+        </attribute>
+        <attribute>
+            <name>rowIndexVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Name of iterator to refer each row index.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
