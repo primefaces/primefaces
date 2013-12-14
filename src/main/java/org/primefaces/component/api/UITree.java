@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.el.ValueExpression;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
@@ -35,10 +36,13 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import org.primefaces.model.TreeNode;
+import org.primefaces.util.MessageFactory;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
     
     public final static String SEPARATOR = "_";
+    
+    public final static String REQUIRED_MESSAGE_ID = "primefaces.tree.REQUIRED";
     
     private String rowKey;
    
@@ -53,8 +57,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         ,selectionMode
         ,selection
         ,saved
-		,value;
-
+		,value
+        ,required
+        ,requiredMessage;
+            
 		String toString;
 
 		PropertyKeys(String toString) {
@@ -133,6 +139,20 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 	}
 	public void setSelection(java.lang.Object _selection) {
 		getStateHelper().put(PropertyKeys.selection, _selection);
+	}
+    
+    public boolean isRequired() {
+		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.required, false);
+	}
+	public void setRequired(boolean _required) {
+		getStateHelper().put(PropertyKeys.required, _required);
+	}
+
+	public java.lang.String getRequiredMessage() {
+		return (java.lang.String) getStateHelper().eval(PropertyKeys.requiredMessage, null);
+	}
+	public void setRequiredMessage(java.lang.String _requiredMessage) {
+		getStateHelper().put(PropertyKeys.requiredMessage, _requiredMessage);
 	}
     
     public Object getLocalSelectedNodes() {
@@ -304,10 +324,43 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     @Override
     public void processValidators(FacesContext context) {
         pushComponentToEL(context, this);
-        
         processNodes(context, PhaseId.PROCESS_VALIDATIONS);
-        
+        validateSelection(context);
         popComponentFromEL(context);
+    }
+    
+    protected void validateSelection(FacesContext context) {
+        String selectionMode = this.getSelectionMode();
+        if(selectionMode != null && this.isRequired()) {
+            boolean valid = true;
+            Object selection = this.getSelection();
+
+            if(selectionMode.equals("single")) {
+                if(selection == null) {
+                    valid = false;
+                }
+            }
+            else {
+                TreeNode[] selectionArray = (TreeNode[]) selection;
+                if(selectionArray.length == 0) {
+                    valid = false;
+                }
+            } 
+
+            if(!valid) {
+                String requiredMessage = this.getRequiredMessage();
+                FacesMessage msg;
+
+                if(requiredMessage != null)
+                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
+                else
+                    msg = MessageFactory.getMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[]{this.getClientId(context)});
+
+                context.addMessage(this.getClientId(context), msg);
+                context.validationFailed();
+                context.renderResponse();
+            }
+        }
     }
       
     @Override

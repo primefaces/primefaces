@@ -169,6 +169,21 @@
             <defaultValue>none</defaultValue>
             <description>Defines parent-child restrictions when a node is dropped valid values are none (default) and sibling.</description>
 		</attribute>
+        <attribute>
+			<name>required</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Validation constraint for selection.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>requiredMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Message for required selection validation.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
