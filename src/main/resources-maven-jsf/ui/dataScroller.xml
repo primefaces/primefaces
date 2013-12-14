@@ -48,6 +48,19 @@
             <ignoreInComponent>true</ignoreInComponent>
             <description>Name of iterator to refer each row index.</description>
         </attribute>
+        <attribute>
+            <name>mode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>document</defaultValue>
+            <description>Defines the target to listen for scroll event, valid values are "document" (default) and "inline".</description>
+        </attribute>
+        <attribute>
+            <name>scrollHeight</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Defines pixel height of the viewport in inline mode.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

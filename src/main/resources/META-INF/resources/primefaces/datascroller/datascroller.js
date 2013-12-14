@@ -9,18 +9,37 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         this.list = this.content.children('ul');
         this.loading = false;
         this.cfg.offset = this.cfg.chunkSize;
+        this.cfg.mode = this.cfg.mode||'document';
         
-        var win = $(window),
-        doc = $(document),
-        $this = this;
+        this.bindScrollListener();
+    },
+    
+    bindScrollListener: function() {
+        var $this = this;
+        
+        if(this.cfg.mode === 'document') {
+            var win = $(window),
+            doc = $(document),
+            $this = this,
+            NS = 'scroll.' + this.id;
 
-        this.shouldLoad();
+            win.off(NS).on(NS, function () {
+                if((win.scrollTop() === (doc.height() - win.height()) && $this.shouldLoad())) {
+                    $this.load();
+                }
+            });
+        }
+        else {
+            this.content.on('scroll', function () {
+                var scrollTop = this.scrollTop,
+                scrollHeight = this.scrollHeight,
+                viewportHeight = this.clientHeight;
 
-        win.scroll(function () {
-            if((win.scrollTop() === (doc.height() - win.height()) && $this.shouldLoad())) {
-                $this.load();
-            }
-        });
+                if(scrollTop >= (scrollHeight - (viewportHeight)) && $this.shouldLoad()) {
+                    $this.load();
+                }
+            });
+        }
     },
     
     load: function() {
