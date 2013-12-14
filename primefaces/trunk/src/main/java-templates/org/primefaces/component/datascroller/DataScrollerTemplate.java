@@ -1,5 +1,6 @@
 
     public final static String CONTAINER_CLASS = "ui-datascroller ui-widget";
+    public final static String INLINE_CONTAINER_CLASS = "ui-datascroller ui-datascroller-inline ui-widget";
     public final static String HEADER_CLASS = "ui-datascroller-header ui-widget-header ui-corner-top";
     public final static String CONTENT_CLASS = "ui-datascroller-content ui-widget-content";
     public final static String LIST_CLASS = "ui-datascroller-list";

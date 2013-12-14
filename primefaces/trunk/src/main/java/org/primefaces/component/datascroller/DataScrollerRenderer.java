@@ -48,12 +48,14 @@ public class DataScrollerRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, DataScroller ds, int chunkSize) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ds.getClientId(context);
+        boolean inline = ds.getMode().equals("inline");
         UIComponent header = ds.getFacet("header");
         String contentCornerClass = null;
+        String containerClass = inline ? DataScroller.INLINE_CONTAINER_CLASS : DataScroller.CONTAINER_CLASS;
         
         String style = ds.getStyle();
         String userStyleClass = ds.getStyleClass();
-        String styleClass = (userStyleClass == null) ? DataScroller.CONTAINER_CLASS : DataScroller.CONTAINER_CLASS + " " + userStyleClass;
+        String styleClass = (userStyleClass == null) ? containerClass : containerClass + " " + userStyleClass;
         
         writer.startElement("div", ds);
         writer.writeAttribute("id", clientId, null);
@@ -76,6 +78,9 @@ public class DataScrollerRenderer extends CoreRenderer {
         
         writer.startElement("div", ds);
         writer.writeAttribute("class", DataScroller.CONTENT_CLASS + " " + contentCornerClass, null);
+        if(inline) {
+            writer.writeAttribute("style", "height:" + ds.getScrollHeight() + "px", null);
+        }
         
         writer.startElement("ul", ds);
         writer.writeAttribute("class", DataScroller.LIST_CLASS, null);
@@ -95,6 +100,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         wb.init("DataScroller", ds.resolveWidgetVar(), clientId)
             .attr("chunkSize", chunkSize)
             .attr("totalSize", ds.getRowCount())
+            .attr("mode", ds.getMode(), "document")
             .finish();
     }
     
