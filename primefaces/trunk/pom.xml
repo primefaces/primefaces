@@ -325,6 +325,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dashboard/dashboard.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datagrid/datagrid.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/datascroller/datascroller.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datatable/datatable.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.css</include>
@@ -375,6 +376,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dashboard/dashboard.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datagrid/datagrid.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/datascroller/datascroller.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datatable/datatable.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dragdrop/dragdrop.js</include>
@@ -526,6 +528,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/dashboard/dashboard.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/datagrid/datagrid.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/datascroller/datascroller.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/datatable/datatable.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.css</include>
@@ -570,6 +573,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/dashboard/dashboard.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/datagrid/datagrid.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/datascroller/datascroller.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/datatable/datatable.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/dragdrop/dragdrop.js</include>
