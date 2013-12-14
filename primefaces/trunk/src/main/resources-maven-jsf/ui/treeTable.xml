@@ -121,6 +121,21 @@
             <defaultValue>false</defaultValue>
             <description>Columns are resized live in this mode without using a resize helper.</description>
 		</attribute>
+        <attribute>
+			<name>required</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Validation constraint for selection.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>requiredMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Message for required selection validation.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
