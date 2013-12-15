@@ -89,12 +89,12 @@ public class DataScrollerRenderer extends CoreRenderer {
         ds.setRowIndex(-1);
         writer.endElement("ul");
         
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
         if(loader != null && loader.isRendered()) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
             loader.encodeAll(context);
-            writer.endElement("div");
-        }
+        }     
+        writer.endElement("div");
         
         writer.endElement("div");
         
@@ -103,11 +103,13 @@ public class DataScrollerRenderer extends CoreRenderer {
     
     protected void encodeScript(FacesContext context, DataScroller ds, int chunkSize) throws IOException {
         String clientId = ds.getClientId(context);
+        String loadEvent = ds.getFacet("loader") == null ? "scroll" : "manual";
         
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DataScroller", ds.resolveWidgetVar(), clientId)
             .attr("chunkSize", chunkSize)
             .attr("totalSize", ds.getRowCount())
+            .attr("loadEvent", loadEvent)
             .attr("mode", ds.getMode(), "document")
             .finish();
     }

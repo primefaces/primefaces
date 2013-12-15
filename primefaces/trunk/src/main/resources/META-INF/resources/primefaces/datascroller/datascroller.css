@@ -29,3 +29,12 @@
     text-align: center;
     padding: 4px 10px;
 }
+
+.ui-datascroller .ui-datascroller-loading {
+    background: url("#{resource['primefaces:datascroller/images/loading.gif']}") center center no-repeat;
+    width: 220px;
+    height: 19px;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
