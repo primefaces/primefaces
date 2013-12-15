@@ -33,7 +33,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             NS = 'scroll.' + this.id;
 
             win.off(NS).on(NS, function () {
-                if((win.scrollTop() === (doc.height() - win.height()) && $this.shouldLoad())) {
+                if((win.scrollTop() === (doc.height() - win.height())) && $this.shouldLoad()) {
                     $this.load();
                 }
             });
@@ -44,7 +44,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                 scrollHeight = this.scrollHeight,
                 viewportHeight = this.clientHeight;
 
-                if(scrollTop >= (scrollHeight - (viewportHeight)) && $this.shouldLoad()) {
+                if((scrollTop >= (scrollHeight - (viewportHeight))) && $this.shouldLoad()) {
                     $this.load();
                 }
             });
