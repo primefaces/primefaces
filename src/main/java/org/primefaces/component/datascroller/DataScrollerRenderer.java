@@ -50,6 +50,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         String clientId = ds.getClientId(context);
         boolean inline = ds.getMode().equals("inline");
         UIComponent header = ds.getFacet("header");
+        UIComponent loader = ds.getFacet("loader");
         String contentCornerClass = null;
         String containerClass = inline ? DataScroller.INLINE_CONTAINER_CLASS : DataScroller.CONTAINER_CLASS;
         
@@ -88,6 +89,13 @@ public class DataScrollerRenderer extends CoreRenderer {
         ds.setRowIndex(-1);
         writer.endElement("ul");
         
+        if(loader != null && loader.isRendered()) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
+            loader.encodeAll(context);
+            writer.endElement("div");
+        }
+        
         writer.endElement("div");
         
         writer.endElement("div");
@@ -109,6 +117,10 @@ public class DataScrollerRenderer extends CoreRenderer {
         
         for(int i = start; i < (start + size); i++) {
             ds.setRowIndex(i);
+            if(!ds.isRowAvailable()) {
+                break;
+            }
+            
             writer.startElement("li", null);
             writer.writeAttribute("class", DataScroller.ITEM_CLASS, null);
             renderChildren(context, ds);

@@ -7,11 +7,16 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.content = this.jq.children('div.ui-datascroller-content');
         this.list = this.content.children('ul');
+        this.loaderContainer = this.content.children('div.ui-datascroller-loader');
         this.loading = false;
-        this.cfg.offset = this.cfg.chunkSize;
+        this.allLoaded = false;
+        this.cfg.offset = 0;
         this.cfg.mode = this.cfg.mode||'document';
         
-        this.bindScrollListener();
+        if(this.loaderContainer.length)
+            this.bindLoader();
+        else
+            this.bindScrollListener();
     },
     
     bindScrollListener: function() {
@@ -42,8 +47,18 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    bindLoader: function() {
+        var $this = this;
+        
+        this.loaderContainer.children().on('click.dataScroller', function(e) {
+            $this.load();
+            e.preventDefault();
+        });
+    },
+    
     load: function() {
         this.loading = true;
+        this.cfg.offset += this.cfg.chunkSize;
         
         var $this = this,
         options = {
@@ -73,8 +88,9 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                 return true;
             },
             oncomplete: function() {
-                $this.cfg.offset += $this.cfg.chunkSize;
                 $this.loading = false;
+                $this.allLoaded = ($this.cfg.offset + $this.cfg.chunkSize) >= $this.cfg.totalSize;
+                
             }
         };
         
@@ -82,6 +98,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
     },
     
     shouldLoad: function() {
-        return (!this.loading && ((this.cfg.offset + this.cfg.chunkSize) <= this.cfg.totalSize));
+        return (!this.loading && !this.allLoaded);
     }
+    
 });

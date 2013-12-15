@@ -5,6 +5,7 @@
     public final static String CONTENT_CLASS = "ui-datascroller-content ui-widget-content";
     public final static String LIST_CLASS = "ui-datascroller-list";
     public final static String ITEM_CLASS = "ui-datascroller-item";
+    public final static String LOADER_CLASS = "ui-datascroller-loader ui-widget-header ui-corner-all";
 
     public boolean isLoadRequest() {
         FacesContext context = getFacesContext();
