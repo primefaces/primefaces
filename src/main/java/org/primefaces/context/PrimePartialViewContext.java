@@ -106,16 +106,21 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
                     continue;
                 }
     
-                context.getViewRoot().invokeOnComponent(context, renderId, new ContextCallback() {
-                    public void invokeContextCallback(FacesContext fc, UIComponent component) {
-                        if (component instanceof EditableValueHolder) {
-                            ((EditableValueHolder)component).resetValue();
-                        } 
-                        else {
-                            component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+                if (renderId.equals(SearchExpressionConstants.ALL_KEYWORD)) {
+                    context.getViewRoot().visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+                }
+                else {
+                    context.getViewRoot().invokeOnComponent(context, renderId, new ContextCallback() {
+                        public void invokeContextCallback(FacesContext fc, UIComponent component) {
+                            if (component instanceof EditableValueHolder) {
+                                ((EditableValueHolder)component).resetValue();
+                            } 
+                            else {
+                                component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
     }
