@@ -8,15 +8,19 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         this.content = this.jq.children('div.ui-datascroller-content');
         this.list = this.content.children('ul');
         this.loaderContainer = this.content.children('div.ui-datascroller-loader');
+        this.loadStatus = $('<div class="ui-datascroller-loading"></div>');
         this.loading = false;
         this.allLoaded = false;
         this.cfg.offset = 0;
         this.cfg.mode = this.cfg.mode||'document';
         
-        if(this.loaderContainer.length)
-            this.bindLoader();
-        else
+        if(this.cfg.loadEvent === 'scroll') {
             this.bindScrollListener();
+        }
+        else {
+            this.loadTrigger = this.loaderContainer.children();
+            this.bindManualLoader();
+        }
     },
     
     bindScrollListener: function() {
@@ -47,10 +51,10 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    bindLoader: function() {
+    bindManualLoader: function() {
         var $this = this;
         
-        this.loaderContainer.children().on('click.dataScroller', function(e) {
+        this.loadTrigger.on('click.dataScroller', function(e) {
             $this.load();
             e.preventDefault();
         });
@@ -60,11 +64,17 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         this.loading = true;
         this.cfg.offset += this.cfg.chunkSize;
         
+        this.loadStatus.appendTo(this.loaderContainer);
+        if(this.loadTrigger) {
+            this.loadTrigger.hide();
+        }
+                        
         var $this = this,
         options = {
             source: this.id,
             process: this.id,
             update: this.id,
+            global: false,
             params: [{name: this.id + '_load', value: true},{name: this.id + '_offset', value: this.cfg.offset}],
             onsuccess: function(responseXML) {
                 var xmlDoc = $(responseXML.documentElement),
@@ -90,6 +100,11 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             oncomplete: function() {
                 $this.loading = false;
                 $this.allLoaded = ($this.cfg.offset + $this.cfg.chunkSize) >= $this.cfg.totalSize;
+                
+                $this.loadStatus.remove();
+                if($this.loadTrigger) {
+                    $this.loadTrigger.show();
+                }
                 
             }
         };
