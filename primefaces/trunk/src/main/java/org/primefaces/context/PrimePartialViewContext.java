@@ -17,6 +17,7 @@ package org.primefaces.context;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.component.ContextCallback;
 
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -98,20 +99,23 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
         boolean resetValues = (null != resetValuesObject && "true".equals(resetValuesObject));
         
         if (resetValues) {
-            VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+            final VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
             
             for (String renderId : context.getPartialViewContext().getRenderIds()) {
                 if (ComponentUtils.isValueBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
                     continue;
                 }
     
-                UIComponent renderComponent = context.getViewRoot().findComponent(renderId);
-                if (renderComponent == null) {
-                    LOG.log(Level.WARNING, "Could not find component with ID: " + renderId
-                            + ". This may occur if you use h:form with prependId=false, as findComponent does not consider it.");
-                } else {
-                    renderComponent.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
-                }
+                context.getViewRoot().invokeOnComponent(context, renderId, new ContextCallback() {
+                    public void invokeContextCallback(FacesContext fc, UIComponent component) {
+                        if (component instanceof EditableValueHolder) {
+                            ((EditableValueHolder)component).resetValue();
+                        } 
+                        else {
+                            component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+                        }
+                    }
+                });
             }
         }
     }
