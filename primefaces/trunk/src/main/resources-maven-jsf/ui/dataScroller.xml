@@ -61,6 +61,13 @@
             <type>java.lang.String</type>
             <description>Defines pixel height of the viewport in inline mode.</description>
         </attribute>
+        <attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <description>Defines if lazy loading is enabled for the data component.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
     </attributes>
     <resources>
         <resource>

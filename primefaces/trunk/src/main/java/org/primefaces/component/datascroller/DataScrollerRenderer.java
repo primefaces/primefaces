@@ -16,9 +16,11 @@
 package org.primefaces.component.datascroller;
 
 import java.io.IOException;
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -57,6 +59,10 @@ public class DataScrollerRenderer extends CoreRenderer {
         String style = ds.getStyle();
         String userStyleClass = ds.getStyleClass();
         String styleClass = (userStyleClass == null) ? containerClass : containerClass + " " + userStyleClass;
+        
+        if(ds.isLazy()) {
+            loadLazyData(ds, 0, chunkSize);
+        }
         
         writer.startElement("div", ds);
         writer.writeAttribute("id", clientId, null);
@@ -117,6 +123,10 @@ public class DataScrollerRenderer extends CoreRenderer {
     protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
+        if(ds.isLazy()) {
+            loadLazyData(ds, start, size);
+        }
+        
         for(int i = start; i < (start + size); i++) {
             ds.setRowIndex(i);
             if(!ds.isRowAvailable()) {
@@ -129,6 +139,16 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.endElement("li");
         }
         ds.setRowIndex(-1);
+    }
+    
+    protected void loadLazyData(DataScroller ds, int start, int size) {
+        LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
+        
+        if(lazyModel != null) {      
+            List<?> data = lazyModel.load(start, size, null, null, null);
+            lazyModel.setPageSize(size);
+            lazyModel.setWrappedData(data);
+        }
     }
 
     @Override
