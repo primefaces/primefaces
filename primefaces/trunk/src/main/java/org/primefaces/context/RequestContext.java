@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
+import org.primefaces.cache.CacheProvider;
 
 import org.primefaces.component.api.AutoUpdatable;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -182,4 +183,6 @@ public abstract class RequestContext {
     public abstract boolean isIgnoreAutoUpdate();
 
     public abstract boolean isRTL();
+    
+    public abstract CacheProvider getCacheProvider();
 }

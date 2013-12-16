@@ -31,6 +31,8 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.cache.CacheProvider;
+import org.primefaces.cache.DefaultCacheProvider;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -289,4 +291,16 @@ public class DefaultRequestContext extends RequestContext {
 
 		return rtl;
 	}
+
+    @Override
+    public CacheProvider getCacheProvider() {
+        Map<String,Object> appScope = context.getExternalContext().getApplicationMap();
+        CacheProvider cacheProvider = (CacheProvider) appScope.get("primefaces.cacheprovider");
+        if(cacheProvider == null) {
+            cacheProvider = new DefaultCacheProvider();
+            appScope.put("primefaces.cacheprovider", cacheProvider);
+        }
+        
+        return cacheProvider;
+    }
 }
