@@ -15,49 +15,44 @@
  */
 package org.primefaces.cache;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import com.hazelcast.config.Config;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
 
-/**
- * Basic cache provider for development purposes, should be avoided to use in production as there is no eviction and timeouts.
- */
-public class DefaultCacheProvider implements CacheProvider {
+public class HazelcastCacheProvider implements CacheProvider {
 
-    private ConcurrentMap<String,ConcurrentMap<String,Object>> cache;
+    private HazelcastInstance cache;
     
-    public DefaultCacheProvider() {
-        cache = new ConcurrentHashMap<String, ConcurrentMap<String, Object>>();
+    public HazelcastCacheProvider() {
+        Config config = new Config();
+        cache = Hazelcast.newHazelcastInstance(config);
     }
-
+    
     public Object get(String region, String key) {
-        Map<String,Object> cacheRegion = getRegion(region);
+        IMap<String,Object> cacheRegion = getRegion(region);
         
         return cacheRegion.get(key);
     }
 
     public void put(String region, String key, Object object) {
-        Map<String,Object> cacheRegion = getRegion(region);
+        IMap<String,Object> cacheRegion = getRegion(region);
         
         cacheRegion.put(key, object);
     }
 
     public void remove(String region, String key) {
-        Map<String,Object> cacheRegion = getRegion(region);
+        IMap<String,Object> cacheRegion = getRegion(region);
         
         cacheRegion.remove(key);
     }
 
     public void clear() {
-        cache.clear();
+        
     }
     
-    private Map<String,Object> getRegion(String name) {
-        ConcurrentMap<String,Object> region = cache.get(name);
-        if(region == null) {
-            region = new ConcurrentHashMap<String, Object>();
-            cache.put(name, region);
-        }
+    private IMap<String,Object> getRegion(String name) {
+        IMap<String,Object> region = cache.getMap(name);   
         
         return region;
     }

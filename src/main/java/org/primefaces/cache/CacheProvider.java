@@ -17,11 +17,11 @@ package org.primefaces.cache;
 
 public interface CacheProvider {
     
-    public Object get(String key);
+    public Object get(String region, String key);
     
-    public void put(String key, Object object);
+    public void put(String region, String key, Object object);
     
-    public void remove(String key);
+    public void remove(String region, String key);
     
     public void clear();
 }

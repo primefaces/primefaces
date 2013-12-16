@@ -21,11 +21,17 @@
             <defaultValue>false</defaultValue>
             <description>Disables caching.</description>
 		</attribute>
+        <attribute>
+			<name>region</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Unique id of the cache region, defaults to view id.</description>
+		</attribute>
 		<attribute>
 			<name>key</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Unique id of the cache, default is generated using view id and component client id.</description>
+            <description>Unique id of the cache entry in region, defaults to client id of component.</description>
 		</attribute>
 	</attributes>
 </component>

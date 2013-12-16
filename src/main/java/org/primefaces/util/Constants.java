@@ -31,6 +31,7 @@ public class Constants {
         public static final String SECRET_KEY = "primefaces.SECRET";
         public static final String PFV_KEY = "primefaces.CLIENT_SIDE_VALIDATION";
         public static final String UPLOADER = "primefaces.UPLOADER";
+        public static final String CACHE_PROVIDER = "primefaces.CACHE_PROVIDER";
     }
 
     public class RequestParams {
@@ -68,4 +69,6 @@ public class Constants {
     public static final String EMPTY_STRING = "";
     
     public final static String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";
+    
+    public final static String DEFAULT_CACHE_REGION = "primefaces.DEFAULT_CACHE_REGION";
 }

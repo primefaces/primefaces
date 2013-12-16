@@ -17,6 +17,7 @@ package org.primefaces.component.cache;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -25,7 +26,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class UICacheRenderer extends CoreRenderer {
-
+    
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         UICache uiCache = (UICache) component;
@@ -34,16 +35,26 @@ public class UICacheRenderer extends CoreRenderer {
             ResponseWriter writer = context.getResponseWriter();
             CacheProvider cacheProvider = RequestContext.getCurrentInstance().getCacheProvider();
             String key = uiCache.getKey();
-            String output = (String) cacheProvider.get(key);
+            String region = uiCache.getRegion();
+           
+            if(key == null) {
+                key = uiCache.getClientId(context);
+            }
             
+            if(region == null) {
+                region = context.getViewRoot().getViewId();
+            }
+            
+            String output = (String) cacheProvider.get(region, key);
             if(output == null) {
+                System.out.println("Loading from cache");
                 StringWriter stringWriter = new StringWriter();
                 ResponseWriter clonedWriter = writer.cloneWithWriter(stringWriter);
                 context.setResponseWriter(clonedWriter);
                 renderChildren(context, uiCache);
                 
                 output = stringWriter.getBuffer().toString();
-                cacheProvider.put(key, output);
+                cacheProvider.put(region, key, output);
                 context.setResponseWriter(writer);
             }
             
