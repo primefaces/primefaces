@@ -17,7 +17,6 @@ package org.primefaces.component.cache;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -47,7 +46,6 @@ public class UICacheRenderer extends CoreRenderer {
             
             String output = (String) cacheProvider.get(region, key);
             if(output == null) {
-                System.out.println("Loading from cache");
                 StringWriter stringWriter = new StringWriter();
                 ResponseWriter clonedWriter = writer.cloneWithWriter(stringWriter);
                 context.setResponseWriter(clonedWriter);
