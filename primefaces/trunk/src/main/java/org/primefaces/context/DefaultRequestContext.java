@@ -21,10 +21,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -295,10 +298,26 @@ public class DefaultRequestContext extends RequestContext {
     @Override
     public CacheProvider getCacheProvider() {
         Map<String,Object> appScope = context.getExternalContext().getApplicationMap();
-        CacheProvider cacheProvider = (CacheProvider) appScope.get("primefaces.cacheprovider");
+        CacheProvider cacheProvider = (CacheProvider) appScope.get(Constants.ContextParams.CACHE_PROVIDER);
+        
         if(cacheProvider == null) {
-            cacheProvider = new DefaultCacheProvider();
-            appScope.put("primefaces.cacheprovider", cacheProvider);
+            String cacheProviderConfigValue = context.getExternalContext().getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
+            if(cacheProviderConfigValue == null) {
+                cacheProvider = new DefaultCacheProvider();
+            }
+            else {
+                try {
+                    cacheProvider = (CacheProvider) Class.forName(cacheProviderConfigValue).newInstance();
+                } catch (ClassNotFoundException ex) {
+                    throw new FacesException(ex);
+                } catch (InstantiationException ex) {
+                    throw new FacesException(ex);
+                } catch (IllegalAccessException ex) {
+                    throw new FacesException(ex);
+                }
+            }
+                
+            appScope.put(Constants.ContextParams.CACHE_PROVIDER, cacheProvider);
         }
         
         return cacheProvider;
