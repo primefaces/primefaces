@@ -31,6 +31,7 @@ import org.primefaces.expression.SearchExpressionConstants;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.visit.ResetInputContextCallback;
 import org.primefaces.visit.ResetInputVisitCallback;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
@@ -99,27 +100,29 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
         boolean resetValues = (null != resetValuesObject && "true".equals(resetValuesObject));
         
         if (resetValues) {
-            final VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+            VisitContext visitContext = null;
+            ResetInputContextCallback contextCallback = null;
             
             for (String renderId : context.getPartialViewContext().getRenderIds()) {
                 if (ComponentUtils.isValueBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
                     continue;
                 }
-    
+
+                // lazy init
+                if (visitContext == null) {
+                    visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                }
+                
                 if (renderId.equals(SearchExpressionConstants.ALL_KEYWORD)) {
                     context.getViewRoot().visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
                 }
                 else {
-                    context.getViewRoot().invokeOnComponent(context, renderId, new ContextCallback() {
-                        public void invokeContextCallback(FacesContext fc, UIComponent component) {
-                            if (component instanceof EditableValueHolder) {
-                                ((EditableValueHolder)component).resetValue();
-                            } 
-                            else {
-                                component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
-                            }
-                        }
-                    });
+                    // lazy init
+                    if (contextCallback == null) {
+                        contextCallback = new ResetInputContextCallback(visitContext);
+                    }
+
+                    context.getViewRoot().invokeOnComponent(context, renderId, contextCallback);
                 }
             }
         }
