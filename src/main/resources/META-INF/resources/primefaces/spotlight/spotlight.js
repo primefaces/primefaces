@@ -6,6 +6,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
+        this.eventsToBlock = 'focus.' + this.id + ' mousedown.' + this.id + ' mouseup.' + this.id;
     
         if(!$(document.body).children('.ui-spotlight').length) {
             this.createMasks();
@@ -60,10 +61,58 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         bottomMask.appendTo(document.body).show();
         leftMask.appendTo(document.body).show();
         rightMask.appendTo(document.body).show();
+        
+        this.blockEvents();
+    },
+    
+    blockEvents: function() {
+        var $this = this;
+        
+        this.target.data('zindex',this.target.zIndex()).css('z-index', ++PrimeFaces.zindex);
+        
+        $(document).on('keydown.' + this.id,
+                function(event) {
+                    var target = $(event.target);
+
+                    if(event.keyCode === $.ui.keyCode.TAB) {
+                        var tabbables = $this.target.find(':tabbable');
+                        if(tabbables.length) {
+                            var first = tabbables.filter(':first'),
+                            last = tabbables.filter(':last');
+                    
+                            if(target.is(document.body)) {
+                                first.focus(1);
+                                event.preventDefault();
+                            }
+                            else if(event.target === last[0] && !event.shiftKey) {
+                                first.focus(1);
+                                event.preventDefault();
+                            } 
+                            else if (event.target === first[0] && event.shiftKey) {
+                                last.focus(1);
+                                event.preventDefault();
+                            }
+                        }
+                    }
+                    else if(!target.is(document.body) && (target.zIndex() < $this.target.zIndex())) {
+                        event.preventDefault();
+                    }
+                })
+                .on(this.eventsToBlock, function(event) {
+                    if ($(event.target).zIndex() < $this.target.zIndex()) {
+                        event.preventDefault();
+                    }
+                });
+    },
+    
+    unblockEvents: function() {
+        $(document).off(this.eventsToBlock).off('keydown.' + this.id);
     },
     
     hide: function() {
         $(document.body).children('.ui-spotlight').hide();
+        this.unblockEvents();
+        this.target.css('z-index', this.target.zIndex());
     }
 
 });
