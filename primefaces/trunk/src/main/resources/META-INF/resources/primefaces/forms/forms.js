@@ -2583,8 +2583,8 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         // container support - e.g. splitButton
-        if (this.jqTarget.is(':not(:button):not(:input)')) {
-        	this.jqTarget = this.jqTarget.find(':button:first');
+        if (this.jqTarget.is(':not(:button):not(:input):not(a)')) {
+        	this.jqTarget = this.jqTarget.find('button,a').filter(':visible').first();
         }
 
         //attach keypress listener to parent form
