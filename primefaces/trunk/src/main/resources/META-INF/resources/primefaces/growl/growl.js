@@ -17,6 +17,8 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
     	this.cfg = cfg;
         this.show(cfg.msgs);
+        
+        this.removeScriptElement(this.id);
     },
     
     show: function(msgs) {
