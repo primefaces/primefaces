@@ -136,6 +136,19 @@
             <description>Message for required selection validation.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>sortBy</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Expression for default sorting.</description>
+		</attribute>
+        <attribute>
+			<name>sortOrder</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>ascending</defaultValue>
+            <description>Defines default sorting order. Default is "ascending"</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

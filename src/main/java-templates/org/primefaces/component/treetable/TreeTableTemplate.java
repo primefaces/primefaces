@@ -17,6 +17,7 @@ import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.component.column.Column;
 import java.lang.StringBuilder;
+import org.primefaces.component.api.UIColumn;
 
 	public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
     public final static String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
@@ -24,6 +25,7 @@ import java.lang.StringBuilder;
 	public final static String DATA_CLASS = "ui-treetable-data ui-widget-content";
     public final static String FOOTER_CLASS = "ui-treetable-footer ui-widget-header ui-corner-bottom";
     public final static String COLUMN_HEADER_CLASS = "ui-state-default";
+    public static final String SORTABLE_COLUMN_HEADER_CLASS = "ui-state-default ui-sortable-column";
     public final static String ROW_CLASS = "ui-widget-content";
     public final static String SELECTED_ROW_CLASS = "ui-widget-content ui-state-highlight ui-selected";
     public final static String COLUMN_CONTENT_WRAPPER = "ui-tt-c";
@@ -40,6 +42,9 @@ import java.lang.StringBuilder;
     public static final String INDENT_CLASS = "ui-treetable-indent";
 	public static final String EMPTY_MESSAGE_ROW_CLASS = "ui-widget-content ui-treetable-empty-message";
     public final static String PARTIAL_SELECTED_CLASS = "ui-treetable-partialselected";
+    public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
+    public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
+    public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
     
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize"));
 
@@ -56,6 +61,10 @@ import java.lang.StringBuilder;
 
     public boolean isSelectionRequest(FacesContext context) {
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelection");
+	}
+
+    public boolean isSortRequest(FacesContext context) {
+		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_sorting");
 	}
 
     @Override
@@ -191,4 +200,13 @@ import java.lang.StringBuilder;
         String selectionMode = this.getSelectionMode();
         
         return selectionMode != null && selectionMode.equals("checkbox");
+    }
+
+    private UIColumn sortColumn;
+    
+    public void setSortColumn(UIColumn column) {
+        this.sortColumn = column;
+    }
+    public UIColumn getSortColumn() {
+        return this.sortColumn;
     }

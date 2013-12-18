@@ -116,3 +116,12 @@
     border: 1px solid white;
     background-color: rgba(194,194,194,.5);
 }
+
+.ui-treetable .ui-sortable-column {
+    cursor: pointer;
+}
+
+.ui-treetable .ui-sortable-column-icon {
+    display: inline-block;
+    margin: -3px 0px -3px 2px;
+}
