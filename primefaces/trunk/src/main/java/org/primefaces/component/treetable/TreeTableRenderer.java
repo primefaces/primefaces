@@ -17,17 +17,24 @@ package org.primefaces.component.treetable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import javax.el.ValueExpression;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.BeanPropertyComparator;
+import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
+import org.primefaces.model.TreeNodeComparator;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -40,6 +47,10 @@ public class TreeTableRenderer extends CoreRenderer {
         
         if(tt.getSelectionMode() != null) {
             decodeSelection(context, tt);
+        }
+        
+        if(tt.isSortRequest(context)) {
+            decodeSort(context, tt);
         }
                     
         decodeBehaviors(context, component);
@@ -112,7 +123,10 @@ public class TreeTableRenderer extends CoreRenderer {
             node.setExpanded(true);
             
             encodeNodeChildren(context, tt, node);
-        } 
+        }
+        else if(tt.isSortRequest(context)) {
+            encodeSort(context, tt);
+        }
         else {
             encodeMarkup(context, tt);
             encodeScript(context, tt); 
@@ -203,7 +217,7 @@ public class TreeTableRenderer extends CoreRenderer {
         if(tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);
         
         encodeColGroup(context, tt);
-        encodeTbody(context, tt);
+        encodeTbody(context, tt, false);
         
         writer.endElement("table");
         writer.endElement("div");
@@ -261,7 +275,7 @@ public class TreeTableRenderer extends CoreRenderer {
 
         encodeThead(context, tt);
         encodeTfoot(context, tt);
-		encodeTbody(context, tt);
+		encodeTbody(context, tt, false);
         
 		writer.endElement("table");
         
@@ -282,31 +296,7 @@ public class TreeTableRenderer extends CoreRenderer {
             UIComponent kid = tt.getChildren().get(i);
 			
 			if(kid instanceof Column && kid.isRendered()) {
-				Column column = (Column) kid;
-                UIComponent header = column.getFacet("header");
-                String headerText = column.getHeaderText();
-                String style = column.getStyle();
-                String styleClass = column.getStyleClass();
-                styleClass = styleClass == null ? TreeTable.COLUMN_HEADER_CLASS  : TreeTable.COLUMN_HEADER_CLASS  + " " + styleClass;
-                
-                if(column.isResizable()) {
-                    styleClass = styleClass + " " + TreeTable.RESIZABLE_COLUMN_CLASS;
-                }
-
-				writer.startElement("th", null);
-                writer.writeAttribute("id", column.getClientId(context), null);
-                writer.writeAttribute("class", styleClass, null);
-                writer.writeAttribute("role", "columnheader", null);
-                if(style != null) {
-                    writer.writeAttribute("style", style, null);
-                }
-
-                if(header != null) 
-                    header.encodeAll(context);
-                else if(headerText != null)
-                    writer.write(headerText);
-                				
-				writer.endElement("th");
+                encodeColumnHeader(context, tt, (UIColumn) kid);
 			}
 		}
         
@@ -314,16 +304,18 @@ public class TreeTableRenderer extends CoreRenderer {
 		writer.endElement("thead");
 	}
        
-    protected void encodeTbody(FacesContext context, TreeTable tt) throws IOException {
+    protected void encodeTbody(FacesContext context, TreeTable tt, boolean dataOnly) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		TreeNode root = (TreeNode) tt.getValue();
         String clientId = tt.getClientId(context);
 		boolean empty = (root == null || root.getChildCount() == 0);
         UIComponent emptyFacet = tt.getFacet("emptyMessage");
         
-		writer.startElement("tbody", null);
-        writer.writeAttribute("id", clientId + "_data", null);
-		writer.writeAttribute("class", TreeTable.DATA_CLASS, null);
+        if(!dataOnly) {
+            writer.startElement("tbody", null);
+            writer.writeAttribute("id", clientId + "_data", null);
+            writer.writeAttribute("class", TreeTable.DATA_CLASS, null);
+        }
         
         if(empty) {
             writer.startElement("tr", null);
@@ -347,7 +339,9 @@ public class TreeTableRenderer extends CoreRenderer {
 
         tt.setRowKey(null);
 		
-		writer.endElement("tbody");
+        if(!dataOnly) {
+            writer.endElement("tbody");
+        }
 	}
     
     protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode) throws IOException {
@@ -437,6 +431,57 @@ public class TreeTableRenderer extends CoreRenderer {
         }
     }
     
+    protected void encodeColumnHeader(FacesContext context, TreeTable tt, UIColumn column) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        UIComponent header = column.getFacet("header");
+        String headerText = column.getHeaderText();
+        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        boolean sortable = (columnSortByVE != null);
+        String sortIcon = null;
+        String style = column.getStyle();
+        String columnClass = sortable ? TreeTable.SORTABLE_COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS;
+        String userColumnClass = column.getStyleClass();
+        if(column.isResizable()) columnClass = columnClass + " " + TreeTable.RESIZABLE_COLUMN_CLASS;
+        if(userColumnClass != null) columnClass = columnClass + " " + userColumnClass;
+        
+        if(sortable) {
+            ValueExpression tableSortByVE = tt.getValueExpression("sortBy");
+            if(tableSortByVE != null) {
+                sortIcon = resolveSortIcon(columnSortByVE, tableSortByVE, tt.getSortOrder());
+            }
+            
+            if(sortIcon == null)
+                sortIcon = TreeTable.SORTABLE_COLUMN_ICON_CLASS;
+            else
+                columnClass += " ui-state-active";
+        }
+
+        writer.startElement("th", null);
+        writer.writeAttribute("id", column.getClientId(context), null);
+        writer.writeAttribute("class", columnClass, null);
+        writer.writeAttribute("role", "columnheader", null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+
+        writer.startElement("span", null);
+        
+        if(header != null) 
+            header.encodeAll(context);
+        else if(headerText != null)
+            writer.write(headerText);
+        
+        writer.endElement("span");
+        
+        if(sortable) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", sortIcon, null);
+            writer.endElement("span");
+        }
+
+        writer.endElement("th");
+    }
+        
     protected void encodeNodeChildren(FacesContext context, TreeTable tt, TreeNode treeNode) throws IOException {
         int childCount = treeNode.getChildCount();
         if(childCount > 0) {
@@ -520,5 +565,51 @@ public class TreeTableRenderer extends CoreRenderer {
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("value", value, null);
         writer.endElement("input");
+    }
+    
+    protected String resolveSortIcon(ValueExpression columnSortBy, ValueExpression ttSortBy, String sortOrder) {
+        String columnSortByExpression = columnSortBy.getExpressionString();
+        String ttSortByExpression = ttSortBy.getExpressionString();
+        String sortIcon = null;
+
+        if(ttSortByExpression != null && ttSortByExpression.equals(columnSortByExpression)) {
+            if(sortOrder.equalsIgnoreCase("ASCENDING"))
+                sortIcon = TreeTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
+            else if(sortOrder.equalsIgnoreCase("DESCENDING"))
+                sortIcon = TreeTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
+        }
+        
+        return sortIcon;
+    }
+    
+    protected void decodeSort(FacesContext context, TreeTable tt) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = tt.getClientId(context);
+        String sortKey = params.get(clientId + "_sortKey");
+		String sortDir  = params.get(clientId + "_sortDir");
+        
+        UIColumn sortColumn = tt.findColumn(sortKey);
+        ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
+        tt.setValueExpression("sortBy", sortByVE);
+        tt.setSortColumn(sortColumn);
+        //TODO: tt.setSortFunction(sortColumn.getSortFunction());
+        tt.setSortOrder(sortDir); 
+    }
+    
+    protected void encodeSort(FacesContext context, TreeTable tt) throws IOException {
+        TreeNode root = tt.getValue();
+        if(root == null)
+            return;
+        
+        ValueExpression sortByVE = tt.getValueExpression("sortBy");
+        SortOrder sortOrder = SortOrder.valueOf(tt.getSortOrder().toUpperCase(Locale.ENGLISH));
+        
+        Collections.sort(root.getChildren(), new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, null));
+        
+        System.out.println(root.getChildren().get(0).getData());
+        System.out.println(root.getChildren().get(1).getData());
+        System.out.println(root.getChildren().get(2).getData());
+        
+        encodeTbody(context, tt, true);
     }
 }

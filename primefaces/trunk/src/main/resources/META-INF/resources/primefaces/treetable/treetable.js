@@ -52,6 +52,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
             this.bindSelectionEvents();
         }
+        
+        //sorting
+        this.bindSortEvents();
     },
     
     bindSelectionEvents: function() {
@@ -91,6 +94,107 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                           var node = $(this).closest('tr.ui-treetable-selectable-node');
                           $this.toggleCheckboxNode(node);
                       });
+        }
+    },
+    
+    bindSortEvents: function() {
+        var $this = this,
+        sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
+                
+        sortableColumns.filter('.ui-state-active').each(function() {
+            var columnHeader = $(this),
+            sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
+            sortOrder = null;
+            
+            if(sortIcon.hasClass('ui-icon-triangle-1-n'))
+                sortOrder = 'ASCENDING';
+            else
+                sortOrder = 'DESCENDING';
+            
+            columnHeader.data('sortorder', sortOrder);       
+        });
+        
+        sortableColumns.on('mouseenter.treeTable', function() {
+            var column = $(this);
+            
+            if(!column.hasClass('ui-state-active'))
+                column.addClass('ui-state-hover');
+        })
+        .on('mouseleave.treeTable', function() {
+            var column = $(this);
+            
+            if(!column.hasClass('ui-state-active'))
+                column.removeClass('ui-state-hover');
+        })
+        .on('click.treeTable', function(e) {
+            //Check if event target is not a clickable element in header content
+            if($(e.target).is('th,span:not(.ui-c)')) {
+                PrimeFaces.clearSelection();
+
+                var columnHeader = $(this),
+                sortOrder = columnHeader.data('sortorder')||'DESCENDING';
+
+                if(sortOrder === 'ASCENDING')
+                    sortOrder = 'DESCENDING';
+                else if(sortOrder === 'DESCENDING')
+                    sortOrder = 'ASCENDING';
+
+                $this.sort(columnHeader, sortOrder);
+            }
+        });
+    },
+    
+    sort: function(columnHeader, order) {  
+        columnHeader.data('sortorder', order);
+    
+        var options = {
+            source: this.id,
+            update: this.id,
+            process: this.id
+        },
+        $this = this;
+        
+        options.onsuccess = function(responseXML) {
+            var xmlDoc = $(responseXML.documentElement),
+            updates = xmlDoc.find("update");
+
+            for(var i=0; i < updates.length; i++) {
+                var update = updates.eq(i),
+                id = update.attr('id'),
+                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
+
+                if(id === $this.id) {
+                    $this.tbody.html(content);
+                }
+                else {
+                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
+                }
+                                
+                columnHeader.removeClass('ui-state-hover').addClass('ui-state-active');
+                var sortIcon = columnHeader.find('.ui-sortable-column-icon');
+
+                if(order === 'DESCENDING')
+                    sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
+                else if(order === 'ASCENDING')
+                    sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+            }
+
+            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
+            
+            return true;
+        };
+                
+        options.params = [{name: this.id + '_sorting', value: true},
+                          {name: this.id + '_sortKey', value: columnHeader.attr('id')},
+                          {name: this.id + '_sortDir', value: order}];
+
+        if(this.hasBehavior('sort')) {
+            var sortBehavior = this.cfg.behaviors['sort'];
+
+            sortBehavior.call(this, options);
+        } 
+        else {
+            PrimeFaces.ajax.AjaxRequest(options); 
         }
     },
     
