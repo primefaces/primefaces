@@ -135,6 +135,12 @@ public class TreeNodeChildren extends ArrayList<TreeNode> {
         }
     }
     
+    /**
+     * Optimized set implementation to be used in sorting
+     * @param index index of the element to replace
+     * @param node node to be stored at the specified position
+     * @return the node previously at the specified position
+     */
     public TreeNode setSibling(int index, TreeNode node) {
         if(node == null) {
             throw new NullPointerException();
@@ -150,7 +156,6 @@ public class TreeNodeChildren extends ArrayList<TreeNode> {
             TreeNode previous = get(index);
             super.set(index, node);
             node.setParent(parent);
-            updateRowKeys(parent);
             return previous;
         }
     }
