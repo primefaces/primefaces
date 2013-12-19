@@ -32,7 +32,7 @@ public class UICacheRenderer extends CoreRenderer {
         
         if(!uiCache.isDisabled()) {
             ResponseWriter writer = context.getResponseWriter();
-            CacheProvider cacheProvider = RequestContext.getCurrentInstance().getCacheProvider();
+            CacheProvider cacheProvider = RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider();
             String key = uiCache.getKey();
             String region = uiCache.getRegion();
            
