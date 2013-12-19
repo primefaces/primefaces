@@ -15,6 +15,7 @@
  */
 package org.primefaces.model;
 
+import java.util.Comparator;
 import java.util.List;
 
 public interface TreeNode {
@@ -52,4 +53,6 @@ public interface TreeNode {
     public void setRowKey(String rowKey);
     
     public String getRowKey();
+    
+    public void sort(Comparator comparator);
 }

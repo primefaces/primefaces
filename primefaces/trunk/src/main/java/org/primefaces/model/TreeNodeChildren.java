@@ -117,7 +117,7 @@ public class TreeNodeChildren extends ArrayList<TreeNode> {
     public TreeNode set(int index, TreeNode node) {
         if(node == null) {
             throw new NullPointerException();
-        } 
+        }
         else if ((index < 0) || (index >= size())) {
             throw new IndexOutOfBoundsException();
         } 
@@ -129,6 +129,26 @@ public class TreeNodeChildren extends ArrayList<TreeNode> {
             TreeNode previous = get(index);
             super.set(index, node);
             previous.setParent(null);
+            node.setParent(parent);
+            updateRowKeys(parent);
+            return previous;
+        }
+    }
+    
+    public TreeNode setSibling(int index, TreeNode node) {
+        if(node == null) {
+            throw new NullPointerException();
+        }
+        else if ((index < 0) || (index >= size())) {
+            throw new IndexOutOfBoundsException();
+        } 
+        else {
+            if(!parent.equals(node.getParent())) {
+                eraseParent(node);
+            }
+            
+            TreeNode previous = get(index);
+            super.set(index, node);
             node.setParent(parent);
             updateRowKeys(parent);
             return previous;

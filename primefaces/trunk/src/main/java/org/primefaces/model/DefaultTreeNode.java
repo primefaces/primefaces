@@ -16,7 +16,8 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class DefaultTreeNode implements TreeNode, Serializable {
@@ -184,5 +185,18 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 
     public void setPartialSelected(boolean value) {
         //nothing
+    }
+
+    public void sort(Comparator comparator) {
+        TreeNodeChildren childrenList = (TreeNodeChildren) children;
+        
+        if(childrenList != null && !childrenList.isEmpty()) {
+            Object[] childrenArray = childrenList.toArray();
+            Arrays.sort(childrenArray, comparator);
+
+            for(int i = 0; i < childrenArray.length; i++) {
+                childrenList.setSibling(i, (TreeNode) childrenArray[i]);
+            }
+        }
     }
 }
