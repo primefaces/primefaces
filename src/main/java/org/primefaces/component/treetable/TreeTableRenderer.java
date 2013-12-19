@@ -17,8 +17,11 @@ package org.primefaces.component.treetable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import javax.el.ValueExpression;
@@ -31,9 +34,9 @@ import org.primefaces.component.api.UITree;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
+import org.primefaces.model.TreeNodeChildren;
 import org.primefaces.model.TreeNodeComparator;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
@@ -603,13 +606,19 @@ public class TreeTableRenderer extends CoreRenderer {
         
         ValueExpression sortByVE = tt.getValueExpression("sortBy");
         SortOrder sortOrder = SortOrder.valueOf(tt.getSortOrder().toUpperCase(Locale.ENGLISH));
-        
-        Collections.sort(root.getChildren(), new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, null));
-        
-        System.out.println(root.getChildren().get(0).getData());
-        System.out.println(root.getChildren().get(1).getData());
-        System.out.println(root.getChildren().get(2).getData());
-        
+        sort(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, null));
+                
         encodeTbody(context, tt, true);
+    }
+    
+    protected void sort(TreeNode node, Comparator comparator) {
+        node.sort(comparator);
+        
+        List<TreeNode> children = node.getChildren();
+        if(children != null && !children.isEmpty()) {
+            for (int i = 0; i < children.size(); i++) {
+                sort(children.get(i), comparator);
+            }
+        }
     }
 }
