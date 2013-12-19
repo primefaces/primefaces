@@ -7,6 +7,7 @@
 	<tag>treeTable</tag>
 	<tagClass>org.primefaces.component.treetable.TreeTableTag</tagClass>
 	<componentClass>org.primefaces.component.treetable.TreeTable</componentClass>
+    <componentHandlerClass>org.primefaces.component.treetable.TreeTableHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.TreeTable</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.TreeTableRenderer</rendererType>
@@ -148,6 +149,20 @@
 			<type>java.lang.String</type>
             <defaultValue>ascending</defaultValue>
             <description>Defines default sorting order. Default is "ascending"</description>
+		</attribute>
+        <attribute>
+			<name>sortFunction</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>java.lang.Integer sort(java.lang.Object, java.lang.Object)</method-signature>
+            <description>Custom pluggable sortFunction for default sorting.</description>
+		</attribute>
+        <attribute>
+			<name>sortRecursive</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines nodes to sort, in recursive mode all nodes are sorted within their parent. When set to false, only root nodes are sorted.</description>
 		</attribute>
 	</attributes>
     <resources>
