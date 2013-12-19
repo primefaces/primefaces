@@ -21,21 +21,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import org.primefaces.cache.CacheProvider;
-import org.primefaces.cache.DefaultCacheProvider;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -294,32 +289,4 @@ public class DefaultRequestContext extends RequestContext {
 
 		return rtl;
 	}
-
-    @Override
-    public CacheProvider getCacheProvider() {
-        Map<String,Object> appScope = context.getExternalContext().getApplicationMap();
-        CacheProvider cacheProvider = (CacheProvider) appScope.get(Constants.ContextParams.CACHE_PROVIDER);
-        
-        if(cacheProvider == null) {
-            String cacheProviderConfigValue = context.getExternalContext().getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
-            if(cacheProviderConfigValue == null) {
-                cacheProvider = new DefaultCacheProvider();
-            }
-            else {
-                try {
-                    cacheProvider = (CacheProvider) Class.forName(cacheProviderConfigValue).newInstance();
-                } catch (ClassNotFoundException ex) {
-                    throw new FacesException(ex);
-                } catch (InstantiationException ex) {
-                    throw new FacesException(ex);
-                } catch (IllegalAccessException ex) {
-                    throw new FacesException(ex);
-                }
-            }
-                
-            appScope.put(Constants.ContextParams.CACHE_PROVIDER, cacheProvider);
-        }
-        
-        return cacheProvider;
-    }
 }

@@ -15,16 +15,21 @@
  */
 package org.primefaces.context;
 
+import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
+import org.primefaces.cache.CacheProvider;
+import org.primefaces.cache.DefaultCacheProvider;
 
 import org.primefaces.config.ConfigContainer;
+import org.primefaces.util.Constants;
 
 public class DefaultApplicationContext extends ApplicationContext {
 
 	private ConfigContainer config;
 	private ValidatorFactory validatorFactory;
+    private CacheProvider cacheProvider;
 
     public DefaultApplicationContext(FacesContext context) {
     	this.config = new ConfigContainer(context);
@@ -32,6 +37,22 @@ public class DefaultApplicationContext extends ApplicationContext {
     	if (this.config.isBeanValidationAvailable()) {
     	    this.validatorFactory = Validation.buildDefaultValidatorFactory();
     	}
+        
+        String cacheProviderConfigValue = context.getExternalContext().getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
+        if(cacheProviderConfigValue == null) {
+            cacheProvider = new DefaultCacheProvider();
+        }
+        else {
+            try {
+                cacheProvider = (CacheProvider) Class.forName(cacheProviderConfigValue).newInstance();
+            } catch (ClassNotFoundException ex) {
+                throw new FacesException(ex);
+            } catch (InstantiationException ex) {
+                throw new FacesException(ex);
+            } catch (IllegalAccessException ex) {
+                throw new FacesException(ex);
+            }
+        }
     }
 
 	@Override
@@ -40,8 +61,12 @@ public class DefaultApplicationContext extends ApplicationContext {
 	}
 
     @Override
-    public ValidatorFactory getValidatorFactory()
-    {
+    public ValidatorFactory getValidatorFactory() {
         return validatorFactory;
+    }
+
+    @Override
+    public CacheProvider getCacheProvider() {
+        return cacheProvider;
     }
 }
