@@ -210,3 +210,13 @@ import org.primefaces.component.api.UIColumn;
     public UIColumn getSortColumn() {
         return this.sortColumn;
     }
+
+    public void clearDefaultSorted() {
+        getStateHelper().remove("defaultSorted");
+    }
+    public void setDefaultSorted() {
+        getStateHelper().put("defaultSorted", "defaultSorted");
+    }
+    public boolean isDefaultSorted() {
+        return getStateHelper().get("defaultSorted") != null;
+    }

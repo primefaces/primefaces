@@ -18,10 +18,8 @@ package org.primefaces.component.treetable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import javax.el.ValueExpression;
@@ -163,6 +161,11 @@ public class TreeTableRenderer extends CoreRenderer {
             root.setRowKey("root");
             tt.buildRowKeys(root);
             tt.initPreselection();
+        }
+        
+        //default sort
+        if(tt.getValueExpression("sortBy") != null && !tt.isDefaultSorted()) {
+            sort(tt);
         }
         
         String containerClass = tt.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
@@ -595,29 +598,40 @@ public class TreeTableRenderer extends CoreRenderer {
         ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
         tt.setValueExpression("sortBy", sortByVE);
         tt.setSortColumn(sortColumn);
-        //TODO: tt.setSortFunction(sortColumn.getSortFunction());
+        tt.setSortFunction(sortColumn.getSortFunction());
         tt.setSortOrder(sortDir); 
     }
     
     protected void encodeSort(FacesContext context, TreeTable tt) throws IOException {
+        sort(tt);
+                
+        encodeTbody(context, tt, true);
+    }
+    
+    public void sort(TreeTable tt) {
         TreeNode root = tt.getValue();
         if(root == null)
             return;
         
         ValueExpression sortByVE = tt.getValueExpression("sortBy");
         SortOrder sortOrder = SortOrder.valueOf(tt.getSortOrder().toUpperCase(Locale.ENGLISH));
-        sort(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, null));
-                
-        encodeTbody(context, tt, true);
+        sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction()), tt.isSortRecursive());
     }
     
-    protected void sort(TreeNode node, Comparator comparator) {
-        node.sort(comparator);
+    private void sortNode(TreeNode node, Comparator comparator, boolean recursive) {
+        TreeNodeChildren children = (TreeNodeChildren) node.getChildren();
         
-        List<TreeNode> children = node.getChildren();
         if(children != null && !children.isEmpty()) {
-            for (int i = 0; i < children.size(); i++) {
-                sort(children.get(i), comparator);
+            Object[] childrenArray = children.toArray();
+            Arrays.sort(childrenArray, comparator);
+            for(int i = 0; i < childrenArray.length; i++) {
+                children.setSibling(i, (TreeNode) childrenArray[i]);
+            }
+            
+            if(recursive) {
+                for(int i = 0; i < children.size(); i++) {
+                    sortNode(children.get(i), comparator, recursive);
+                }
             }
         }
     }
