@@ -615,11 +615,11 @@ public class TreeTableRenderer extends CoreRenderer {
         
         ValueExpression sortByVE = tt.getValueExpression("sortBy");
         SortOrder sortOrder = SortOrder.valueOf(tt.getSortOrder().toUpperCase(Locale.ENGLISH));
-        sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction()), tt.isSortRecursive());
+        sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction()));
         tt.updateRowKeys(root);
     }
     
-    private void sortNode(TreeNode node, Comparator comparator, boolean recursive) {
+    private void sortNode(TreeNode node, Comparator comparator) {
         TreeNodeChildren children = (TreeNodeChildren) node.getChildren();
         
         if(children != null && !children.isEmpty()) {
@@ -629,10 +629,8 @@ public class TreeTableRenderer extends CoreRenderer {
                 children.setSibling(i, (TreeNode) childrenArray[i]);
             }
             
-            if(recursive) {
-                for(int i = 0; i < children.size(); i++) {
-                    sortNode(children.get(i), comparator, recursive);
-                }
+            for(int i = 0; i < children.size(); i++) {
+                sortNode(children.get(i), comparator);
             }
         }
     }

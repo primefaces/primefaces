@@ -157,13 +157,6 @@
 			<method-signature>java.lang.Integer sort(java.lang.Object, java.lang.Object)</method-signature>
             <description>Custom pluggable sortFunction for default sorting.</description>
 		</attribute>
-        <attribute>
-			<name>sortRecursive</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>Defines nodes to sort, in recursive mode all nodes are sorted within their parent. When set to false, only root nodes are sorted.</description>
-		</attribute>
 	</attributes>
     <resources>
         <resource>
