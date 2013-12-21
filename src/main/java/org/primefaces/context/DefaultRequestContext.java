@@ -165,24 +165,24 @@ public class DefaultRequestContext extends RequestContext {
     
     @Override
     public void openDialog(String outcome) {
-        this.getAttributes().put(Constants.DIALOG_OUTCOME, outcome);
+        this.getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
     }
         
     @Override
     public void openDialog(String outcome, Map<String,Object> options, Map<String,List<String>> params) {
-        this.getAttributes().put(Constants.DIALOG_OUTCOME, outcome);
+        this.getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
         
         if(options != null)
-            this.getAttributes().put(Constants.DIALOG_OPTIONS, options);
+            this.getAttributes().put(Constants.DIALOG_FRAMEWORK.OPTIONS, options);
         
         if(params != null)
-            this.getAttributes().put(Constants.DIALOG_PARAMS, params);
+            this.getAttributes().put(Constants.DIALOG_FRAMEWORK.PARAMS, params);
     }
 
     @Override
     public void closeDialog(Object data) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String pfdlgcid = params.get(Constants.DIALOG_CONVERSATION_PARAM);
+        String pfdlgcid = params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
             
         if(data != null) {
             Map<String,Object> session = context.getExternalContext().getSessionMap();            
