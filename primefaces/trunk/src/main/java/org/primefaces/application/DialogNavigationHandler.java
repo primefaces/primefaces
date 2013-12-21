@@ -40,12 +40,12 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         Map<Object,Object> attrs = requestContext.getAttributes();
-        String dialogOutcome = (String) attrs.get(Constants.DIALOG_OUTCOME);
+        String dialogOutcome = (String) attrs.get(Constants.DIALOG_FRAMEWORK.OUTCOME);
         
         if(dialogOutcome != null) {
             NavigationCase navCase = getNavigationCase(context, fromAction, dialogOutcome);
             String toViewId = navCase.getToViewId(context);
-            Map<String,List<String>> params = (Map<String,List<String>>) attrs.get(Constants.DIALOG_PARAMS);
+            Map<String,List<String>> params = (Map<String,List<String>>) attrs.get(Constants.DIALOG_FRAMEWORK.PARAMS);
 
             if (params == null)
             {
@@ -53,12 +53,12 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             }
 
             String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, false);
-            Map<String,Object> options = (Map<String,Object>) attrs.get(Constants.DIALOG_OPTIONS);
+            Map<String,Object> options = (Map<String,Object>) attrs.get(Constants.DIALOG_FRAMEWORK.OPTIONS);
             
             StringBuilder sb = new StringBuilder();
             
-            String sourceComponentId = (String) attrs.get(Constants.DIALOG_SOURCE_COMPONENT);
-            String sourceWidget = (String) attrs.get(Constants.DIALOG_SOURCE_WIDGET);
+            String sourceComponentId = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_COMPONENT);
+            String sourceWidget = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_WIDGET);
             String pfdlgcid = UUID.randomUUID().toString();
                         
             sb.append("PrimeFaces.openDialog({url:'").append(url).append("',pfdlgcid:'").append(pfdlgcid)

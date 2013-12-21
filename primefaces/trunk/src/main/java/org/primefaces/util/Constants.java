@@ -59,12 +59,14 @@ public class Constants {
     public final static String FRAGMENT_ID = "primefaces.fragment";
     public final static String FRAGMENT_AUTO_RENDERED = "primefaces.fragment.autorendered";
     
-    public final static String DIALOG_OUTCOME = "dialog.outcome";
-    public final static String DIALOG_OPTIONS = "dialog.options";
-    public final static String DIALOG_PARAMS = "dialog.params";
-    public final static String DIALOG_SOURCE_COMPONENT = "dialog.source.component";
-    public final static String DIALOG_SOURCE_WIDGET = "dialog.source.widget";
-    public final static String DIALOG_CONVERSATION_PARAM = "pfdlgcid";
+    public class DIALOG_FRAMEWORK {
+        public final static String OUTCOME = "dialog.outcome";
+        public final static String OPTIONS = "dialog.options";
+        public final static String PARAMS = "dialog.params";
+        public final static String SOURCE_COMPONENT = "dialog.source.component";
+        public final static String SOURCE_WIDGET = "dialog.source.widget";
+        public final static String CONVERSATION_PARAM = "pfdlgcid";
+    }
     
     public static final String EMPTY_STRING = "";
     
