@@ -10,14 +10,21 @@ PrimeFaces.dialog.DialogHandler = {
 
         var dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
         dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-overlay-hidden"' + 
-                ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widgetvar="' + dialogWidgetVar + '"/>')
-                .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span>' +
-                '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' + 
-                '<div class="ui-dialog-content ui-widget-content" style="height: auto;">' +
+                ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widgetvar="' + dialogWidgetVar + '"></div>')
+                .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span></div>');
+        
+        if(cfg.options.closable !== false) {
+            dialogDOM.children('.ui-dialog-titlebar')
+                    .append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
+        }
+        
+        dialogDOM.append('<div class="ui-dialog-content ui-widget-content" style="height: auto;">' +
                 '<iframe style="border:0 none" frameborder="0"/>' + 
-                '</div>')
-                .appendTo(document.body),
-        dialogFrame = dialogDOM.find('iframe'),
+                '</div>');
+        
+        dialogDOM.appendTo(document.body);
+        
+        var dialogFrame = dialogDOM.find('iframe'),
         symbol = cfg.url.indexOf('?') === -1 ? '?' : '&',
         frameURL = cfg.url + symbol + 'pfdlgcid=' + cfg.pfdlgcid,
         frameWidth = cfg.options.contentWidth||640;
