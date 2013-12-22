@@ -61,12 +61,11 @@ public class TabViewRenderer extends CoreRenderer {
             } 
             else {
                 int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
-                tabView.setRowIndex(tabindex);
+                tabView.setIndex(tabindex);
                 tabToLoad = (Tab) tabView.getChildren().get(0);
                 tabToLoad.encodeAll(context);
-                tabView.setRowIndex(-1);
+                tabView.setIndex(-1);
             }
-            
         } 
         else {
             encodeMarkup(context, tabView);
@@ -193,12 +192,12 @@ public class TabViewRenderer extends CoreRenderer {
             Tab tab = (Tab) tabView.getChildren().get(0);
             
             for(int i = 0; i < dataCount; i++) {
-                tabView.setRowIndex(i);
+                tabView.setIndex(i);
                 
                 encodeTabHeader(context, tabView, tab, (i == activeIndex));
             }
             
-            tabView.setRowIndex(-1);
+            tabView.setIndex(-1);
         }
 
         writer.endElement("ul");
@@ -273,12 +272,12 @@ public class TabViewRenderer extends CoreRenderer {
             Tab tab = (Tab) tabView.getChildren().get(0);
             
             for(int i = 0; i < dataCount; i++) {
-                tabView.setRowIndex(i);
+                tabView.setIndex(i);
                 
                 encodeTabContent(context, tab, (i == activeIndex), dynamic);
             }
             
-            tabView.setRowIndex(-1);
+            tabView.setIndex(-1);
         }
         
         writer.endElement("div");
