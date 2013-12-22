@@ -96,8 +96,9 @@ public class DataTableRenderer extends DataRenderer {
         }
         
         //Selection
-        wb.attr("selectionMode", selectionMode, null);
-        wb.attr("rowSelectMode", table.getRowSelectMode(), "new");
+        wb.attr("selectionMode", selectionMode, null)
+            .attr("rowSelectMode", table.getRowSelectMode(), "new")
+            .attr("nativeElements", table.isNativeElements(), false);
         
         //Filtering
         if(table.isFilteringEnabled()) {
@@ -939,66 +940,103 @@ public class DataTableRenderer extends DataRenderer {
     
     protected void encodeRadio(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
-        String iconClass = HTML.RADIOBUTTON_ICON_CLASS;
-        boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
-        boxClass = checked ? boxClass + " ui-state-active" : boxClass;
-        iconClass = checked ? iconClass + " " + HTML.RADIOBUTTON_CHECKED_ICON_CLASS : iconClass;
         
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.RADIOBUTTON_CLASS, null);
+        if(table.isNativeElements()) {
+            encodeNativeRadio(context, table, checked, disabled);
+        }
+        else {
+            String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
+            String iconClass = HTML.RADIOBUTTON_ICON_CLASS;
+            boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
+            boxClass = checked ? boxClass + " ui-state-active" : boxClass;
+            iconClass = checked ? iconClass + " " + HTML.RADIOBUTTON_CHECKED_ICON_CLASS : iconClass;
 
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "radio", null);
-        writer.writeAttribute("name", table.getClientId(context) + "_radio", null);
-        writer.endElement("input");
-        writer.endElement("div");
-        
-        writer.startElement("div", null);
-        writer.writeAttribute("class", boxClass, null);
+            writer.startElement("div", null);
+            writer.writeAttribute("class", HTML.RADIOBUTTON_CLASS, null);
 
-        writer.startElement("span", null);
-        writer.writeAttribute("class", iconClass, null);
-        writer.endElement("span");
+            writer.startElement("div", null);
+            writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+            encodeNativeRadio(context, table, checked, disabled);
+            writer.endElement("div");
 
-        writer.endElement("div");
-        writer.endElement("div");
+            writer.startElement("div", null);
+            writer.writeAttribute("class", boxClass, null);
+
+            writer.startElement("span", null);
+            writer.writeAttribute("class", iconClass, null);
+            writer.endElement("span");
+
+            writer.endElement("div");
+            writer.endElement("div");
+        }        
     }
 
     protected void encodeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String boxClass = HTML.CHECKBOX_BOX_CLASS;
-        String iconClass = HTML.CHECKBOX_ICON_CLASS;
-        boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
-        boxClass = checked ? boxClass + " ui-state-active" : boxClass;
-        iconClass = checked ? iconClass + " " + HTML.CHECKBOX_CHECKED_ICON_CLASS : iconClass;
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", styleClass, "styleClass");
         
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        if(table.isNativeElements()) {
+            encodeNativeCheckbox(context, table, checked, disabled);
+        }
+        else {
+            String boxClass = HTML.CHECKBOX_BOX_CLASS;
+            String iconClass = HTML.CHECKBOX_ICON_CLASS;
+            boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
+            boxClass = checked ? boxClass + " ui-state-active" : boxClass;
+            iconClass = checked ? iconClass + " " + HTML.CHECKBOX_CHECKED_ICON_CLASS : iconClass;
+
+            writer.startElement("div", null);
+            writer.writeAttribute("class", styleClass, "styleClass");
+
+            writer.startElement("div", null);
+            writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+            encodeNativeCheckbox(context, table, checked, disabled);
+            writer.endElement("div");
+
+            writer.startElement("div", null);
+            writer.writeAttribute("class", boxClass, null);
+            writer.startElement("span", null);
+            writer.writeAttribute("class", iconClass, null);
+            writer.endElement("span");
+            writer.endElement("div");
+
+            writer.endElement("div"); 
+        }
+    }
+    
+    protected void encodeNativeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
         writer.startElement("input", null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("name", table.getClientId(context) + "_checkbox", null);
+        
+        if(checked) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        
         if(disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
+        
         writer.endElement("input");
-        writer.endElement("div");
+    }
+    
+    protected void encodeNativeRadio(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         
-        writer.startElement("div", null);
-        writer.writeAttribute("class", boxClass, null);
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", iconClass, null);
-        writer.endElement("span");
-
-        writer.endElement("div");
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "radio", null);
+        writer.writeAttribute("name", table.getClientId(context) + "_radio", null);
         
-        writer.endElement("div");
+        if(checked) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        
+        if(disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        
+        writer.endElement("input");
     }
         
     protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int first, int last) throws IOException {

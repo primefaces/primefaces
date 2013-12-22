@@ -350,6 +350,13 @@
             <type>java.lang.Object</type>
             <description>Locale to be used in filtering, defaults to view locale.</description>
         </attribute>
+        <attribute>
+            <name>nativeElements</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>In native mode, datatable uses native radio-checkbox elements for row selection instead of extended ones.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
