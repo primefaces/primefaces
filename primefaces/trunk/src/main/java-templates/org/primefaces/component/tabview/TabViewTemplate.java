@@ -37,6 +37,11 @@ import javax.faces.context.FacesContext;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("tabChange","tabClose"));
 
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
     }
@@ -52,24 +57,6 @@ import javax.faces.context.FacesContext;
         }
 
         return null;
-    }
-
-    List<Tab> loadedTabs;
-    public List<Tab> getLoadedTabs() {
-        if(loadedTabs == null) {
-            loadedTabs = new ArrayList<Tab>();
-
-            for(UIComponent component : getChildren()) {
-                if(component instanceof Tab) {
-                    Tab tab =  (Tab) component;
-                    
-                    if(tab.isLoaded())
-                        loadedTabs.add(tab);
-                }
-            }
-        }
-
-        return loadedTabs;
     }
 
     @Override
@@ -89,10 +76,10 @@ import javax.faces.context.FacesContext;
 
                 if(this.getVar() != null) {
                     int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
-                    setRowIndex(tabindex);
-                    changeEvent.setData(this.getRowData());
+                    setIndex(tabindex);
+                    changeEvent.setData(this.getIndexData());
                     changeEvent.setTab((Tab) getChildren().get(0));
-                    setRowIndex(-1);
+                    setIndex(-1);
                 }
 
                 changeEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -105,10 +92,10 @@ import javax.faces.context.FacesContext;
 
                 if(this.getVar() != null) {
                     int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
-                    setRowIndex(tabindex);
-                    closeEvent.setData(this.getRowData());
+                    setIndex(tabindex);
+                    closeEvent.setData(this.getIndexData());
                     closeEvent.setTab((Tab) getChildren().get(0));
-                    setRowIndex(-1);
+                    setIndex(-1);
                 }
 
                 closeEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -121,164 +108,10 @@ import javax.faces.context.FacesContext;
         }
     }
 
-    @Override
-    public void processDecodes(FacesContext context) {
-        if(!isRendered()) {
-            return;
-        }
-
-        //only process loaded tabs on dynamic case without tab model
-        if(isDynamic() && getVar() == null) {
-        	pushComponentToEL(context, null);
-            for(Tab tab : getLoadedTabs()) {
-                tab.processDecodes(context);
-            }
-            this.decode(context);
-            popComponentFromEL(context);
-        }
-        else {
-            if(this.getVar() == null) {
-            	pushComponentToEL(context, null);
-            	ComponentUtils.processDecodesOfFacetsAndChilds(this, context);
-                this.decode(context);
-                popComponentFromEL(context);
-            }
-            else {
-                super.processDecodes(context);
-            }
-        }
-    }
-
-    @Override
-    public void processValidators(FacesContext context) {
-        if(!isRendered()) {
-            return;
-        }
-
-        //only process loaded tabs on dynamic case without tab model
-        if(isDynamic() && getVar() == null) {
-            for(Tab tab : getLoadedTabs()) {
-                tab.processValidators(context);
-            }
-        }
-        else {
-            if(this.getVar() == null) {
-            	ComponentUtils.processValidatorsOfFacetsAndChilds(this, context);
-            }
-            else {
-                super.processValidators(context);
-            }
-        }
-    }
-
-    @Override
-    public void processUpdates(FacesContext context) {
-        if(!isRendered()) {
-            return;
-        }
-
-        ValueExpression expr = this.getValueExpression("activeIndex");
-        if(expr != null) {
-            expr.setValue(getFacesContext().getELContext(), getActiveIndex());
-            resetActiveIndex();
-        }
-
-        //only process loaded tabs on dynamic case without tab model
-        if(isDynamic() && getVar() == null) {
-            for(Tab tab : getLoadedTabs()) {
-                tab.processUpdates(context);
-            }
-        }
-        else {
-            if(this.getVar() == null) {
-            	ComponentUtils.processUpdatesOfFacetsAndChilds(this, context);
-            }
-            else {
-                super.processUpdates(context);
-            }  
-        }
-    }
-
     protected void resetActiveIndex() {
 		getStateHelper().remove(PropertyKeys.activeIndex);
     }
 
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public boolean visitTree(VisitContext context,  VisitCallback callback) {
-    
-        if(this.getVar() == null) {
-            if (!isVisitable(context))
-                return false;
-
-            FacesContext facesContext = context.getFacesContext();
-            pushComponentToEL(facesContext, null);
-
-            try {
-                VisitResult result = context.invokeVisitCallback(this, callback);
-
-                if (result == VisitResult.COMPLETE)
-                  return true;
-
-                if (result == VisitResult.ACCEPT) {
-                    Iterator<UIComponent> kids = this.getFacetsAndChildren();
-
-                    while(kids.hasNext()) {
-                        boolean done = kids.next().visitTree(context, callback);
-
-                        if (done)
-                            return true;
-                    }
-                }
-            }
-            finally {
-                popComponentFromEL(facesContext);
-            }
-
-            return false;
-        }
-        else {
-            return super.visitTree(context, callback);
-        }
-    }
-
     public boolean isRTL() {
         return this.getDir().equalsIgnoreCase("rtl");
-    }
-
-    @Override
-    public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback) throws FacesException {
-        if(this.getVar() == null) {
-            if (null == context || null == clientId || null == callback) {
-                throw new NullPointerException();
-            }
-
-            boolean found = false;
-            if (clientId.equals(this.getClientId(context))) {
-                try {
-                    this.pushComponentToEL(context, this);
-                    callback.invokeContextCallback(context, this);
-                    return true;
-                } catch (Exception e) {
-                    throw new FacesException(e);
-                } finally {
-                    this.popComponentFromEL(context);
-                }
-            } else {
-                Iterator<UIComponent> itr = this.getFacetsAndChildren();
-
-                while (itr.hasNext() && !found) {
-                    found = itr.next().invokeOnComponent(context, clientId,
-                            callback);
-                }
-            }
-            return found;
-        }
-        else {
-            return super.invokeOnComponent(context, clientId, callback);
-        }
     }

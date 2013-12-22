@@ -541,6 +541,15 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     public int getRowCount() {
         return getDataModel().getRowCount();
     }
+    
+    /**
+     * Returns the rowCount of the underlying DataModel.
+     *
+     * @return
+     */
+    public Object getIndexData() {
+        return getDataModel().getRowData();
+    }
 
     /**
      * Returns the current index.
@@ -549,7 +558,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         return _index;
     }
 
-    private void _setIndex(int index) {
+    public void setIndex(int index) {
         // save child state
         //_saveChildState();
         if (index < -1) {
@@ -700,7 +709,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
         // reset index
         _captureScopeValues();
-        _setIndex(-1);
+        setIndex(-1);
 
         try {
             // has children
@@ -719,7 +728,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
                 _count = 0;
 
-                _setIndex(i);
+                setIndex(i);
                 while (i <= end && _isIndexAvailable()) {
 
                     if (PhaseId.RENDER_RESPONSE.equals(phase) && renderer != null) {
@@ -743,13 +752,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
                     i += step;
 
-                    _setIndex(i);
+                    setIndex(i);
                 }
             }
         } catch (IOException e) {
             throw new FacesException(e);
         } finally {
-            _setIndex(-1);
+            setIndex(-1);
             _restoreScopeValues();
         }
     }
@@ -820,7 +829,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                                 // calculate count for RepeatStatus
                                 _count = _calculateCountForIndex(invokeIndex);
                             }
-                            _setIndex(invokeIndex);
+                            setIndex(invokeIndex);
 
                             if (!_isIndexAvailable()) {
                                 return false;
@@ -834,7 +843,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         } finally {
                             // restore the previous count, index and scope values
                             _count = prevCount;
-                            _setIndex(prevIndex);
+                            setIndex(prevIndex);
                             _restoreScopeValues();
                         }
                     } else {
@@ -904,7 +913,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
             // reset index and save scope values
             _captureScopeValues();
-            _setIndex(-1);
+            setIndex(-1);
 
             // push the Component to EL
             pushComponentToEL(context.getFacesContext(), this);
@@ -944,7 +953,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                                 end = (end >= 0) ? i + end : Integer.MAX_VALUE - 1;
                                 _count = 0;
 
-                                _setIndex(i);
+                                setIndex(i);
                                 while (i <= end && _isIndexAvailable()) {
                                     for (int j = 0, childCount = getChildCount(); j < childCount; j++) {
                                         UIComponent child = getChildren().get(j);
@@ -956,7 +965,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                                     _count++;
                                     i += step;
 
-                                    _setIndex(i);
+                                    setIndex(i);
                                 }
                             }
                         }
@@ -968,7 +977,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
                 // restore the previous count, index and scope values
                 _count = prevCount;
-                _setIndex(prevIndex);
+                setIndex(prevIndex);
                 _restoreScopeValues();
             }
         }
@@ -1141,14 +1150,14 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                     // calculate count for RepeatStatus
                     _count = _calculateCountForIndex(this._index);
                 }
-                owner._setIndex(this._index);
+                owner.setIndex(this._index);
                 if (owner._isIndexAvailable()) {
                     _target.processListener(listener);
                 }
             } finally {
                 // restore the previous count, index and scope values
                 owner._count = prevCount;
-                owner._setIndex(prevIndex);
+                owner.setIndex(prevIndex);
                 owner._restoreScopeValues();
             }
         }
@@ -1182,7 +1191,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         // calculate count for RepeatStatus
                         _count = _calculateCountForIndex(idxEvent.getIndex());
                     }
-                    _setIndex(idxEvent.getIndex());
+                    setIndex(idxEvent.getIndex());
                     if (_isIndexAvailable()) {
                         // get the target FacesEvent
                         FacesEvent target = idxEvent.getTarget();
@@ -1214,7 +1223,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 } finally {
                     // restore the previous count, index and scope values
                     _count = prevCount;
-                    _setIndex(prevIndex);
+                    setIndex(prevIndex);
                     _restoreScopeValues();
                 }
             } else {
