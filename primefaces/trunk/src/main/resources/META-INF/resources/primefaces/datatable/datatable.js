@@ -369,7 +369,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this,
         checkboxInputSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content.ui-datatable-selectable > td.ui-selection-column input';
 
-        //toggle all
         if(this.cfg.nativeElements) {
             this.checkAllToggler = this.thead.find('> tr > th.ui-selection-column > :checkbox');
             
@@ -405,7 +404,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
             
-            //row checkboxes
             var checkboxSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content.ui-datatable-selectable > td.ui-selection-column .ui-chkbox .ui-chkbox-box';
             $(document).off('mouseover.ui-chkbox mouseover.ui-chkbox click.ui-chkbox', checkboxSelector)
                         .on('mouseover.ui-chkbox', checkboxSelector, null, function() {
@@ -1204,20 +1202,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     unselectAllRows: function() {
-        var selectedRows = this.tbody.children('tr.ui-state-highlight');
+        var selectedRows = this.tbody.children('tr.ui-state-highlight'),
+        checkboxSelectionEnabled = this.isCheckboxSelectionEnabled();
+
         for(var i = 0; i < selectedRows.length; i++) {
             var row = selectedRows.eq(i);
             
             row.removeClass('ui-state-highlight').attr('aria-selected', false);
             
-            if(this.isCheckboxSelectionEnabled()) {
+            if(checkboxSelectionEnabled) {
                 if(this.cfg.nativeElements)
                     row.children('td.ui-selection-column').find(':checkbox').prop('checked', false);
                 else
                     this.unselectCheckbox(row.children('td.ui-selection-column').find('> div.ui-chkbox > div.ui-chkbox-box'));
-                
-                this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
             }
+        }
+        
+        if(checkboxSelectionEnabled) {
+            this.uncheckHeaderCheckbox();
         }
         
         this.selection = [];
