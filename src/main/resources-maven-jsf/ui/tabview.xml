@@ -53,6 +53,7 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Specifies the toggleMode. Default is false.</description>
+            <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
             <name>cache</name>
