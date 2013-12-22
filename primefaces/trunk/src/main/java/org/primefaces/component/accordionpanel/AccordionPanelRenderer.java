@@ -67,9 +67,9 @@ public class AccordionPanelRenderer extends CoreRenderer {
             }
             else {
                 int index = Integer.parseInt(params.get(clientId + "_tabindex"));
-                acco.setRowIndex(index);
+                acco.setIndex(index);
                 acco.getChildren().get(0).encodeAll(context);
-                acco.setRowIndex(-1);
+                acco.setIndex(-1);
             }
         }
         else {
@@ -164,13 +164,13 @@ public class AccordionPanelRenderer extends CoreRenderer {
             Tab tab = (Tab) acco.getChildren().get(0);
             
             for(int i = 0; i < dataCount; i++) {
-                acco.setRowIndex(i);
+                acco.setIndex(i);
                 boolean active = activeIndexes.indexOf(Integer.toString(i)) != -1;
                 
                 encodeTab(context, tab, active, dynamic, rtl);
             }
             
-            acco.setRowIndex(-1);
+            acco.setIndex(-1);
         }
 	}
  
