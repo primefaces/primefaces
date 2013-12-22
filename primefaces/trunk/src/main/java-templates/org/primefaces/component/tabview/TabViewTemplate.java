@@ -115,3 +115,18 @@ import javax.faces.context.FacesContext;
     public boolean isRTL() {
         return this.getDir().equalsIgnoreCase("rtl");
     }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+
+        super.processUpdates(context);
+
+        ValueExpression expr = this.getValueExpression("activeIndex");
+        if(expr != null) {
+            expr.setValue(getFacesContext().getELContext(), getActiveIndex());
+            resetActiveIndex();
+        }
+    }

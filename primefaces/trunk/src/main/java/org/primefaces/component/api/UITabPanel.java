@@ -28,6 +28,7 @@ import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
@@ -44,16 +45,20 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
+import javax.faces.event.PostValidateEvent;
+import javax.faces.event.PreValidateEvent;
 import javax.faces.model.ArrayDataModel;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.ResultSetDataModel;
 import javax.faces.model.ScalarDataModel;
 import javax.faces.render.Renderer;
-import org.primefaces.component.tabview.TabView;
+import org.primefaces.component.tabview.Tab;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 /**
- * UITabPanel is an specialized version of UIRepeat that focuses on components that generates tabs like tabView and accordionPanel. Most of the code is
+ * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel. Most of the code is
  * copied from MyFaces.
  */
 public class UITabPanel extends UIPanel implements NamingContainer {
@@ -984,55 +989,109 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     @Override
-    public void processDecodes(FacesContext faces) {
-        if  (!isRendered()) {
+    public void processDecodes(FacesContext context) {
+        if (!isRendered()) {
             return;
         }
         
-        if (this.isRepeating()) {
-            process(faces, PhaseId.APPLY_REQUEST_VALUES);
-            decode(faces);
+        pushComponentToEL(context, null);
+        
+        if (!this.isRequestSource(context)) { 
+            if (this.isRepeating()) {
+                process(context, PhaseId.APPLY_REQUEST_VALUES);
+            }
+            else {
+                if (this.isDynamic()) {
+                    for(Tab tab : getLoadedTabs()) {
+                        tab.processDecodes(context);
+                    }
+                }
+                else {
+                    ComponentUtils.processDecodesOfFacetsAndChilds(this, context);
+                }
+            }
         }
-        else {
-            super.processDecodes(faces);
+        
+        
+        try {
+            decode(context);
+        } catch (RuntimeException e) {
+            context.renderResponse();
+            throw e;
+        } finally {
+            popComponentFromEL(context);
         }
     }
     
     @Override
-    public void processValidators(FacesContext faces) {
+    public void processValidators(FacesContext context) {
         if (!isRendered()) {
             return;
         }
+        
+        if (this.isRequestSource(context)) {
+            return;
+        }
+        
+        pushComponentToEL(context, null);
+        
+        Application app = context.getApplication();
+        app.publishEvent(context, PreValidateEvent.class, this);
 
         if (this.isRepeating()) {
-            process(faces, PhaseId.PROCESS_VALIDATIONS);
+            process(context, PhaseId.PROCESS_VALIDATIONS);
         }
         else {
-            super.processValidators(faces);
+            if (this.isDynamic()) {
+                for(Tab tab : getLoadedTabs()) {
+                    tab.processValidators(context);
+                }
+            }
+            else {
+                ComponentUtils.processValidatorsOfFacetsAndChilds(this, context);
+            }
         }
 
         // check if an validation error forces the render response for our data
-        if (faces.getRenderResponse()) {
+        if (context.getRenderResponse()) {
             _isValidChilds = false;
         }
+        
+        app.publishEvent(context, PostValidateEvent.class, this);
+        popComponentFromEL(context);
     }
 
     @Override
-    public void processUpdates(FacesContext faces) {
+    public void processUpdates(FacesContext context) {
         if (!isRendered()) {
             return;
         }
-
-        if(this.isRepeating()) {
-            process(faces, PhaseId.UPDATE_MODEL_VALUES);
-        } 
-        else {
-            super.processUpdates(faces);
+        
+        if (this.isRequestSource(context)) {
+            return;
         }
         
-        if (faces.getRenderResponse()) {
+        pushComponentToEL(context, null);
+
+        if (this.isRepeating()) {
+            process(context, PhaseId.UPDATE_MODEL_VALUES);
+        } 
+        else {
+            if (this.isDynamic()) {
+                for(Tab tab : getLoadedTabs()) {
+                    tab.processUpdates(context);
+                }
+            }
+            else {
+                ComponentUtils.processUpdatesOfFacetsAndChilds(this, context);
+            }
+        }
+        
+        if (context.getRenderResponse()) {
             _isValidChilds = false;
         }
+        
+        popComponentFromEL(context);
     }
 
     // from RI
@@ -1344,5 +1403,27 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     
     public boolean isRepeating() {
         return (this.getVar() != null);
+    }
+    
+    List<Tab> loadedTabs;
+    public List<Tab> getLoadedTabs() {
+        if(loadedTabs == null) {
+            loadedTabs = new ArrayList<Tab>();
+
+            for(UIComponent component : getChildren()) {
+                if(component instanceof Tab) {
+                    Tab tab =  (Tab) component;
+                    
+                    if(tab.isLoaded())
+                        loadedTabs.add(tab);
+                }
+            }
+        }
+
+        return loadedTabs;
+    }
+    
+    private boolean isRequestSource(FacesContext context) {
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 }
