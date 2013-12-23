@@ -141,11 +141,6 @@
             return ($.browser.msie && parseInt($.browser.version, 10) == version);
         },
 
-        //ajax shortcut
-        ab: function(cfg, ext) {
-            return PrimeFaces.ajax.AjaxRequest(cfg, ext);
-        },
-
         info: function(log) {
             if(this.logger) {
                 this.logger.info(log);
