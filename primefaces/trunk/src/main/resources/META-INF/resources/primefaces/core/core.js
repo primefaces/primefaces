@@ -5,7 +5,7 @@
         return;
     }
     
-    PrimeFaces = {
+    var PrimeFaces = {
 
         escapeClientId : function(id) {
             return "#" + id.replace(/:/g,"\\:");
@@ -476,13 +476,9 @@
         CLIENT_ID_DATA : "primefaces.clientid"
     };
     
- 
-    
     /**
      * PrimeFaces Namespaces
      */
-    
-   
     PrimeFaces.settings = {};
     PrimeFaces.util = {};
     PrimeFaces.widgets = {};
@@ -502,10 +498,6 @@
         return widgetInstance;
     };
 
- 
-
- 
-        
     //expose globally
     window.PrimeFaces = PrimeFaces;
 
