@@ -84,7 +84,7 @@ PrimeFaces.ajax = {
                 this.delayHandler = setTimeout(function() {
                     $this.requests.push(request);
 
-                    if($this.requests.length == 1) {
+                    if($this.requests.length === 1) {
                         PrimeFaces.ajax.Request.send(request);
                     }
                 }, request.delay);
@@ -93,7 +93,7 @@ PrimeFaces.ajax = {
 
                 this.requests.push(request);
 
-                if(this.requests.length == 1) {
+                if(this.requests.length === 1) {
                     PrimeFaces.ajax.Request.send(request);
                 }
             }
@@ -107,7 +107,7 @@ PrimeFaces.ajax = {
             var processed = this.requests.shift(),
             next = this.peek();
 
-            if(next != null) {
+            if(next) {
                 PrimeFaces.ajax.Request.send(next);
             }
 
@@ -123,7 +123,7 @@ PrimeFaces.ajax = {
         },
 
         isEmpty : function() {
-            return this.requests.length == 0;
+            return this.requests.length === 0;
         }
     },
     
@@ -168,7 +168,7 @@ PrimeFaces.ajax = {
             }
 
             //source can be a client id or an element defined by this keyword
-            if(typeof(cfg.source) == 'string') {
+            if(typeof(cfg.source) === 'string') {
                 sourceId = cfg.source;
             } else {
                 sourceId = $(cfg.source).attr('id');
@@ -237,7 +237,7 @@ PrimeFaces.ajax = {
                 processArray.push(cfg.fragmentId);
             }
             var processIds = processArray.length > 0 ? processArray.join(' ') : '@all';
-            if (processIds != '@none') {
+            if (processIds !== '@none') {
                 postParams.push({
                     name:PrimeFaces.PARTIAL_PROCESS_PARAM, 
                     value:processIds
@@ -265,9 +265,9 @@ PrimeFaces.ajax = {
 
                 var domEvent = cfg.event;
 
-                if(cfg.event == 'valueChange')
+                if(cfg.event === 'valueChange')
                     domEvent = 'change';
-                else if(cfg.event == 'action')
+                else if(cfg.event === 'action')
                     domEvent = 'click';
 
                 postParams.push({
@@ -294,10 +294,10 @@ PrimeFaces.ajax = {
              * Only add params of process components and their children 
              * if partial submit is enabled and there are components to process partially
              */
-            if(cfg.partialSubmit && processIds.indexOf('@all') == -1) {
+            if(cfg.partialSubmit && processIds.indexOf('@all') === -1) {
                 var formProcessed = false;
 
-                if(processIds.indexOf('@none') == -1) {
+                if(processIds.indexOf('@none') === -1) {
                     for (var i = 0; i < processArray.length; i++) {
                         var jqProcess = $(PrimeFaces.escapeClientId(processArray[i]));
                         var componentPostParams = null;
@@ -421,9 +421,6 @@ PrimeFaces.ajax = {
             $.ajax(xhrOptions);
         },
 
-        /**
-         * Type: update/process
-         */
         resolveComponentsForAjaxCall: function(cfg, type) {
 
             var expressions = '';
@@ -486,10 +483,10 @@ PrimeFaces.ajax = {
             var activeElementId = $(document.activeElement).attr('id');
 
             // re-focus element
-            if (PrimeFaces.customFocus == false
+            if (PrimeFaces.customFocus === false
                     && activeElementId
                     // do we really need to refocus? we just check the current activeElement here
-                    && activeElementId != $(document.activeElement).attr('id')) {
+                    && activeElementId !== $(document.activeElement).attr('id')) {
 
                 var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));
                 elementToFocus.focus();
