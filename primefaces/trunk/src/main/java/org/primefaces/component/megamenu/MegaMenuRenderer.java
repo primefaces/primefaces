@@ -39,7 +39,8 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("MegaMenu", menu.resolveWidgetVar(), clientId)
-            .attr("autoDisplay", menu.isAutoDisplay());
+            .attr("autoDisplay", menu.isAutoDisplay())
+            .attr("activeIndex", menu.getActiveIndex(), Integer.MIN_VALUE);
 		
         wb.finish();
 	}
