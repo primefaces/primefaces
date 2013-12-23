@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ELException;
 import javax.faces.FacesException;
+import javax.faces.application.ProjectStage;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -40,12 +41,11 @@ import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.view.ViewDeclarationLanguage;
 import org.primefaces.component.ajaxexceptionhandler.UIAjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.UIAjaxExceptionHandlerVisitCallback;
+import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 
-// TODO log exception
 // TODO non-ajax
-// TODO parse web.xml
 // TODO render_response exception support
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -108,34 +108,57 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
     
     protected void handleException(FacesContext context, Throwable throwable) throws Exception {
-		if (!context.getExternalContext().isResponseCommitted()) {
-			context.getExternalContext().responseReset();
+		ExternalContext externalContext = context.getExternalContext();
+        
+        if (!externalContext.isResponseCommitted()) {
+            externalContext.responseReset();
 		}
 
+        // print exception in development stage
+        if (context.getApplication().getProjectStage() == ProjectStage.Development) {
+            throwable.printStackTrace();
+        }
+        
+        // always log the exception
+        LOG.log(Level.SEVERE, throwable.getMessage(), throwable);
+        
         Throwable rootCause = getRootCause(throwable);
         rootCause = buildView(context, throwable, rootCause);
 
         UIAjaxExceptionHandler handlerComponent = findHandlerComponent(context, rootCause);
 
-        ExternalContext externalContext = context.getExternalContext();
-        
         ExceptionInfo info = createExceptionInfo(rootCause);
         
+        // redirect if no UIAjaxExceptionHandler available
         if (handlerComponent == null) {
             externalContext.getFlash().put(ExceptionInfo.ATTRIBUTE_NAME, info);
+
+            Map<String, String> errorPages = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getErrorPages();
             
+            // get error page by exception type
+            String errorPage = errorPages.get(rootCause.getClass().getName());
             
-            String errorView = null; // TODO get from web.xml
-            externalContext.redirect(errorView);
-            context.renderResponse();
+            // get default error page
+            if (errorPage == null) {
+                errorPage = errorPages.get(null);
+            }
+            
+            if (errorPage == null) {
+                throw new IllegalArgumentException(
+                        "No default error page (Status 500 or java.lang.Throwable) and no error page for type \"" + rootCause.getClass() + "\" defined!");
+            }
+
+            externalContext.redirect(externalContext.getRequestContextPath() + errorPage);
+            context.responseComplete();
         }
+        // handle custom update / onexception callback
         else {
             context.getAttributes().put(ExceptionInfo.ATTRIBUTE_NAME, info);
             
-			externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getRequestCharacterEncoding());
-			externalContext.addResponseHeader("Cache-Control", "no-cache");
-			externalContext.setResponseCharacterEncoding(externalContext.getRequestCharacterEncoding());
-			externalContext.setResponseContentType("text/xml");
+            externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getRequestCharacterEncoding());
+            externalContext.addResponseHeader("Cache-Control", "no-cache");
+            externalContext.setResponseCharacterEncoding(externalContext.getRequestCharacterEncoding());
+            externalContext.setResponseContentType("text/xml");
 
 			PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
 
@@ -177,6 +200,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
             writer.endElement("changes");
 			writer.endDocument();
+
 			context.responseComplete();
         }   
     }

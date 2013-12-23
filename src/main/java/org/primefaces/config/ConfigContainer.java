@@ -17,6 +17,9 @@ package org.primefaces.config;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,9 +27,20 @@ import java.util.logging.Logger;
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.validation.Validation;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import org.primefaces.util.ComponentUtils;
 
 import org.primefaces.util.Constants;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Container for all config parameters.
@@ -53,11 +67,15 @@ public class ConfigContainer {
 	
 	// build properties
 	private String buildVersion = null;
+    
+    // web.xml
+    private Map<String, String> errorPages;
 
 	public ConfigContainer(FacesContext context) {
 		initConfig(context);
 		initConfigFromContextParams(context);
 		initBuildProperties();
+        initConfigFromWebXml(context);
 	}
 
 	private void initConfig(FacesContext context) {
@@ -168,6 +186,64 @@ public class ConfigContainer {
         }
     }
 
+    private void initConfigFromWebXml(FacesContext context) {
+        ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
+        
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setValidating(false);
+            factory.setNamespaceAware(false);
+            factory.setExpandEntityReferences(false);
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            Document document = builder.newDocument();
+            URL url = servletContext.getResource("/WEB-INF/web.xml");
+
+            // web.xml is optional
+            if (url != null) {
+                builder.parse(url.getFile());
+                
+                initErrorPages(document.getDocumentElement());
+            }
+        }
+        catch (Exception e) {
+            LOG.log(Level.SEVERE, "Could not load or parase web.xml", e);
+        }
+    }
+    
+    private void initErrorPages(Element webXml) throws Exception {
+        errorPages = new HashMap<String, String>();
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        NodeList exceptionTypes = (NodeList) xpath.compile("error-page/exception-type").evaluate(webXml, XPathConstants.NODESET);
+
+        for (int i = 0; i < exceptionTypes.getLength(); i++) {
+            Node node = exceptionTypes.item(i);
+            
+            String exceptionType = node.getTextContent().trim();
+            String key = Throwable.class.getName().equals(exceptionType) ? null : exceptionType;
+            
+            String location = xpath.compile("location").evaluate(node.getParentNode()).trim();
+
+            if (!errorPages.containsKey(key)) {
+                errorPages.put(key, location);
+            }
+        }
+
+        if (!errorPages.containsKey(null)) {
+            String defaultLocation = xpath.compile("error-page[error-code=500]/location").evaluate(webXml).trim();
+
+            if (ComponentUtils.isValueBlank(defaultLocation)) {
+                defaultLocation = xpath.compile("error-page[not(error-code) and not(exception-type)]/location").evaluate(webXml).trim();
+            }
+
+            if (!ComponentUtils.isValueBlank(defaultLocation)) {
+                errorPages.put(null, defaultLocation);
+            }
+        }
+    }
+    
 	public boolean isValidateEmptyFields() {
 		return validateEmptyFields;
 	}
@@ -219,4 +295,8 @@ public class ConfigContainer {
 	public String getBuildVersion() {
 		return buildVersion;
 	}
+
+    public Map<String, String> getErrorPages() {
+        return errorPages;
+    }
 }
