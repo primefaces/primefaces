@@ -47,6 +47,13 @@
             <description>Defines whether submenus will be displayed on mouseover or not. When
             set to false, click event is required to display.</description>
         </attribute>
+        <attribute>
+            <name>activeIndex</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Index of the active root menu to display as highlighted. By default no root is highlighted.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>

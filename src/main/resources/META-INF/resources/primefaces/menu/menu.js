@@ -1024,6 +1024,10 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         this.rootLinks = this.rootList.find('> li.ui-menuitem > a.ui-menuitem-link:not(.ui-state-disabled)');                  
         this.subLinks = this.jq.find('.ui-menu-child a.ui-menuitem-link:not(.ui-state-disabled)');
         
+        if(this.cfg.activeIndex !== undefined) {
+            this.rootLinks.eq(this.cfg.activeIndex).addClass('ui-state-active');
+        }
+        
         this.bindEvents();
     },
     
