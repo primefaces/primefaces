@@ -166,9 +166,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             externalContext.setResponseCharacterEncoding(externalContext.getRequestCharacterEncoding());
             externalContext.setResponseContentType("text/xml");
 
-			PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
+            PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
 
-			writer.startDocument();
+            writer.startDocument();
             writer.startElement("changes", null);
             
             if (!ComponentUtils.isValueBlank(handlerComponent.getUpdate())) {
