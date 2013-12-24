@@ -191,16 +191,15 @@ public class ConfigContainer {
         ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
         
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setValidating(false);
-            factory.setNamespaceAware(false);
-            factory.setExpandEntityReferences(false);
-            DocumentBuilder builder = factory.newDocumentBuilder();
-
             URL url = servletContext.getResource("/WEB-INF/web.xml");
 
             // web.xml is optional
             if (url != null) {
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                factory.setValidating(false);
+                factory.setNamespaceAware(false);
+                factory.setExpandEntityReferences(false);
+                DocumentBuilder builder = factory.newDocumentBuilder();
                 Document document = builder.parse(url.getFile());
                 
                 initErrorPages(document.getDocumentElement());
