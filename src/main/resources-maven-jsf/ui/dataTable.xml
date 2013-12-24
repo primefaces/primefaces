@@ -357,6 +357,13 @@
             <defaultValue>false</defaultValue>
             <description>In native mode, datatable uses native radio-checkbox elements for row selection instead of extended ones.</description>
         </attribute>
+        <attribute>
+			<name>frozenColumns</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <description>Number of columns to freeze from the start index 0.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

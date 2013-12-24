@@ -41,7 +41,7 @@ public class ScrollFeature implements DataTableFeature {
             table.setRowIndex(i);
             
             if(table.isRowAvailable()) {
-                renderer.encodeRow(context, table, clientId, i);
+                //renderer.encodeRow(context, table, clientId, i);
             }
         }
     }
