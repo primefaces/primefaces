@@ -76,10 +76,25 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
             if (unhandledExceptionQueuedEvents.hasNext()) {
                 try {
-                    Throwable exception = unhandledExceptionQueuedEvents.next().getContext().getException();
+                    Throwable throwable = unhandledExceptionQueuedEvents.next().getContext().getException();
                     unhandledExceptionQueuedEvents.remove();
+
+                    Throwable rootCause = getRootCause(throwable);
+                    ExceptionInfo info = createExceptionInfo(rootCause);
+
+                    // print exception in development stage
+                    if (context.getApplication().getProjectStage() == ProjectStage.Development) {
+                        rootCause.printStackTrace();
+                    }
+
+                    // always log the exception
+                    LOG.log(Level.SEVERE, rootCause.getMessage(), rootCause);
                     
-                    handleException(context, exception);
+                    if (context.getPartialViewContext().isAjaxRequest()) {
+                        handleAjaxException(context, rootCause, info);
+                    } else {
+                        handleRedirect(context, rootCause, info);
+                    }
                 } catch (Exception ex) {
                     LOG.log(Level.SEVERE, "Could not handle exception!", ex);
                 }
@@ -106,56 +121,20 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         return null;
     }
     
-    protected void handleException(FacesContext context, Throwable throwable) throws Exception {
+    protected void handleAjaxException(FacesContext context, Throwable rootCause, ExceptionInfo info) throws Exception {
         ExternalContext externalContext = context.getExternalContext();
         
-        if (context.getPartialViewContext().isAjaxRequest() && !externalContext.isResponseCommitted()) {
+        if (!externalContext.isResponseCommitted()) {
             externalContext.responseReset();
         }
 
-        // print exception in development stage
-        if (context.getApplication().getProjectStage() == ProjectStage.Development) {
-            throwable.printStackTrace();
-        }
-        
-        // always log the exception
-        LOG.log(Level.SEVERE, throwable.getMessage(), throwable);
-        
-        Throwable rootCause = getRootCause(throwable);
+        rootCause = buildView(context, rootCause, rootCause);
 
-        if (context.getPartialViewContext().isAjaxRequest()) {
-            rootCause = buildView(context, throwable, rootCause);
-        }
+        UIAjaxExceptionHandler handlerComponent = findHandlerComponent(context, rootCause);
 
-        UIAjaxExceptionHandler handlerComponent = null;
-        
-        if (context.getPartialViewContext().isAjaxRequest()) {
-            handlerComponent = findHandlerComponent(context, rootCause);
-        }
-
-        ExceptionInfo info = createExceptionInfo(rootCause);
-        
         // redirect if no UIAjaxExceptionHandler available
         if (handlerComponent == null) {
-            externalContext.getFlash().put(ExceptionInfo.ATTRIBUTE_NAME, info);
-
-            Map<String, String> errorPages = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getErrorPages();
-            
-            // get error page by exception type
-            String errorPage = errorPages.get(rootCause.getClass().getName());
-            
-            // get default error page
-            if (errorPage == null) {
-                errorPage = errorPages.get(null);
-            }
-            
-            if (errorPage == null) {
-                throw new IllegalArgumentException(
-                        "No default error page (Status 500 or java.lang.Throwable) and no error page for type \"" + rootCause.getClass() + "\" defined!");
-            }
-
-            externalContext.redirect(externalContext.getRequestContextPath() + errorPage);
-            context.responseComplete();
+            handleRedirect(context, rootCause, info);
         }
         // handle custom update / onexception callback
         else {
@@ -302,5 +281,27 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         }
 
         return viewId;
+    }
+
+    protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info) throws IOException {
+        context.getExternalContext().getFlash().put(ExceptionInfo.ATTRIBUTE_NAME, info);
+
+        Map<String, String> errorPages = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getErrorPages();
+
+        // get error page by exception type
+        String errorPage = errorPages.get(rootCause.getClass().getName());
+
+        // get default error page
+        if (errorPage == null) {
+            errorPage = errorPages.get(null);
+        }
+
+        if (errorPage == null) {
+            throw new IllegalArgumentException(
+                    "No default error page (Status 500 or java.lang.Throwable) and no error page for type \"" + rootCause.getClass() + "\" defined!");
+        }
+
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + errorPage);
+        context.responseComplete();
     }
 }
