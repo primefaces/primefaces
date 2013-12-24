@@ -31,11 +31,9 @@ import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.feature.DataTableFeature;
 import org.primefaces.component.datatable.feature.DataTableFeatureKey;
 import org.primefaces.component.datatable.feature.RowExpandFeature;
-import org.primefaces.component.datatable.feature.SortFeature;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
@@ -226,16 +224,53 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeScrollableTable(FacesContext context, DataTable table) throws IOException {
         String tableStyle = table.getTableStyle();
         String tableStyleClass = table.getTableStyleClass();
-                        
-        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-        encodeThead(context, table);
-        encodeScrollAreaEnd(context);
+        int frozenColumns = table.getFrozenColumns();
+        boolean hasFrozenColumns = (frozenColumns != Integer.MIN_VALUE);
+        ResponseWriter writer = context.getResponseWriter();
         
-        encodeScrollBody(context, table, tableStyle, tableStyleClass);
+        if(hasFrozenColumns) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", "ui-datatable-frozen-container", null);
+            encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
+            encodeThead(context, table, 0, frozenColumns);
+            encodeScrollAreaEnd(context);
+
+            encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns);
+
+            encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
+            encodeTFoot(context, table, 0, frozenColumns);
+            encodeScrollAreaEnd(context);
+            writer.endElement("div");
+            
+            writer.startElement("div", null);
+            writer.writeAttribute("class", "ui-datatable-scrollable-container", null);
+            
+            encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
+            encodeThead(context, table, frozenColumns, table.getColumnsCount());
+            encodeScrollAreaEnd(context);
+
+            encodeScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, table.getColumnsCount());
+
+            encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
+            encodeTFoot(context, table, frozenColumns, table.getColumnsCount());
+            encodeScrollAreaEnd(context);
+            writer.endElement("div");
+        }
+        else {
+            encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
+            encodeThead(context, table);
+            encodeScrollAreaEnd(context);
+
+            encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, table.getColumnsCount());
+
+            encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
+            encodeTFoot(context, table);
+            encodeScrollAreaEnd(context);
+        }
+    }
+    
+    protected void encodeFrozenScrollableTable(FacesContext context, DataTable table, int frozenColumns) throws IOException {
         
-        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-        encodeTFoot(context, table);
-        encodeScrollAreaEnd(context);
     }
     
     protected void encodeScrollAreaStart(FacesContext context, DataTable table, String containerClass, String containerBoxClass, 
@@ -263,7 +298,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
        
-    protected void encodeScrollBody(FacesContext context, DataTable table, String tableStyle, String tableStyleClass) throws IOException {
+    protected void encodeScrollBody(FacesContext context, DataTable table, String tableStyle, String tableStyleClass, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String scrollHeight = table.getScrollHeight();
 
@@ -278,8 +313,8 @@ public class DataTableRenderer extends DataRenderer {
         if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if(table.getTableStyleClass() != null) writer.writeAttribute("class", tableStyleClass, null);
         
-        encodeColGroup(context, table);
-        encodeTbody(context, table, false);
+        encodeColGroup(context, table, columnStart, columnEnd);
+        encodeTbody(context, table, false, columnStart, columnEnd);
         
         writer.endElement("table");
         writer.endElement("div");
@@ -562,13 +597,15 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.endElement("td");
     }
-
-    /**
-     * Render column headers either in single row or nested if a columnGroup is defined
-     */
+    
     protected void encodeThead(FacesContext context, DataTable table) throws IOException {
+        this.encodeThead(context, table, 0, table.getColumnsCount());
+    }
+
+    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ColumnGroup group = table.getColumnGroup("header");
+        List<UIColumn> columns = table.getColumns();
         
         writer.startElement("thead", null);
         writer.writeAttribute("id", table.getClientId(context) + "_head", null);
@@ -596,18 +633,20 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("tr", null);
             writer.writeAttribute("role", "row", null);
             
-            for(UIColumn column : table.getColumns()) {                
+            for(int i = columnStart; i < columnEnd; i++) {
+                UIColumn column = columns.get(i);
+
                 if(column instanceof Column) {
                     encodeColumnHeader(context, table, column);
                 }
                 else if(column instanceof DynamicColumn) {
                     DynamicColumn dynamicColumn = (DynamicColumn) column;
                     dynamicColumn.applyModel();
-                    
+
                     encodeColumnHeader(context, table, dynamicColumn);
                 }
             }
-
+            
             writer.endElement("tr");
         }
         
@@ -615,12 +654,14 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.endElement("thead");
     }
-    
-    public void encodeColGroup(FacesContext context, DataTable table) throws IOException {
+        
+    public void encodeColGroup(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        List<UIColumn> columns = table.getColumns();
         
         writer.startElement("colgroup", null);
-        for(UIColumn column : table.getColumns()) {
+        for(int i = columnStart; i < columnEnd; i++) {
+            UIColumn column = columns.get(i);
             if(column.isRendered()) {
                 writer.startElement("col", null);
                 writer.endElement("col");
@@ -628,8 +669,12 @@ public class DataTableRenderer extends DataRenderer {
         }
         writer.endElement("colgroup");
     }
-
+    
     public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly) throws IOException {
+        this.encodeTbody(context, table, dataOnly, 0, table.getColumnsCount());
+    }
+
+    public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
@@ -657,7 +702,7 @@ public class DataTableRenderer extends DataRenderer {
             if(subTable != null)
                 encodeSubTable(context, table, subTable, first, (first + rowCountToRender));
             else
-                encodeRows(context, table, first, (first + rowCountToRender));
+                encodeRows(context, table, first, (first + rowCountToRender), columnStart, columnEnd);
         }
         else {
             //Empty message
@@ -688,7 +733,7 @@ public class DataTableRenderer extends DataRenderer {
 		}
     }
     
-    protected void encodeRows(FacesContext context, DataTable table, int first, int last) throws IOException {
+    protected void encodeRows(FacesContext context, DataTable table, int first, int last, int columnStart, int columnEnd) throws IOException {
         String clientId = table.getClientId(context);
         SummaryRow summaryRow = table.getSummaryRow();
         ELContext eLContext = context.getELContext();
@@ -710,7 +755,7 @@ public class DataTableRenderer extends DataRenderer {
                 break;
             }
 
-            encodeRow(context, table, clientId, i);
+            encodeRow(context, table, clientId, i, columnStart, columnEnd);
 
             if(encodeSummaryRow && !isInSameGroup(context, table, i, groupByVE, eLContext)) {
                 table.setRowIndex(i);
@@ -736,7 +781,7 @@ public class DataTableRenderer extends DataRenderer {
         int index = 0;
         for(Iterator<? extends Object> it = frozenRows.iterator(); it.hasNext();) {
             requestMap.put(var, it.next());            
-            encodeRow(context, table, clientId, index);
+            encodeRow(context, table, clientId, index, 0, table.getColumnsCount());
         }
 
         writer.endElement("tbody");
@@ -751,10 +796,11 @@ public class DataTableRenderer extends DataRenderer {
         summaryRow.encodeAll(context);
     }
 
-    public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex) throws IOException {
+    public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();        
         boolean selectionEnabled = table.isSelectionEnabled();
         Object rowKey = null;
+        List<UIColumn> columns = table.getColumns();
         
         if(selectionEnabled) {
             //try rowKey attribute
@@ -793,7 +839,9 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("aria-selected", String.valueOf(selected), null);
         }
         
-        for(UIColumn column : table.getColumns()) {                
+        for(int i = columnStart; i < columnEnd; i++) {
+            UIColumn column = columns.get(i);
+            
             if(column instanceof Column) {
                 encodeCell(context, table, column, clientId, selected);
             }
@@ -838,9 +886,14 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.endElement("td");
     }
-
+    
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
+        this.encodeTFoot(context, table, 0, table.getColumnsCount());
+    }
+
+    protected void encodeTFoot(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        List<UIColumn> columns = table.getColumns();
         ColumnGroup group = table.getColumnGroup("footer");
 
         writer.startElement("tfoot", null);
@@ -867,7 +920,9 @@ public class DataTableRenderer extends DataRenderer {
         else if(table.hasFooterColumn()) {
             writer.startElement("tr", null);
             
-            for(UIColumn column : table.getColumns()) {                
+            for(int i = columnStart; i < columnEnd; i++) {
+                UIColumn column = columns.get(i);
+
                 if(column instanceof Column) {
                     encodeColumnFooter(context, table, column);
                 }
