@@ -39,8 +39,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.view.ViewDeclarationLanguage;
-import org.primefaces.component.ajaxexceptionhandler.UIAjaxExceptionHandler;
-import org.primefaces.component.ajaxexceptionhandler.UIAjaxExceptionHandlerVisitCallback;
+import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
+import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
@@ -130,7 +130,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         rootCause = buildView(context, rootCause, rootCause);
 
-        UIAjaxExceptionHandler handlerComponent = findHandlerComponent(context, rootCause);
+        AjaxExceptionHandler handlerComponent = findHandlerComponent(context, rootCause);
 
         // redirect if no UIAjaxExceptionHandler available
         if (handlerComponent == null) {
@@ -212,14 +212,14 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
     
     /**
-     * Finds the proper {@link UIAjaxExceptionHandler} for the given {@link Throwable}.
+     * Finds the proper {@link AjaxExceptionHandler} for the given {@link Throwable}.
      * 
      * @param context The {@link FacesContext}.
      * @param throwable The occurred {@link Throwable}.
      * @return The {@link UIAjaxExceptionHandler} or <code>null</code>.
      */
-    protected UIAjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable throwable) {
-        UIAjaxExceptionHandlerVisitCallback visitCallback = new UIAjaxExceptionHandlerVisitCallback(throwable);
+    protected AjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable throwable) {
+        AjaxExceptionHandlerVisitCallback visitCallback = new AjaxExceptionHandlerVisitCallback(throwable);
         
         context.getViewRoot().visitTree(VisitContext.createVisitContext(context), visitCallback);
         
