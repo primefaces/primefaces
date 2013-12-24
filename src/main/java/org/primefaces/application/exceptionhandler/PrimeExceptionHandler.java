@@ -45,7 +45,6 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 
-// TODO non-ajax
 // TODO render_response exception support
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -64,10 +63,10 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
     
     @Override
-	public void handle() throws FacesException {
+    public void handle() throws FacesException {
         FacesContext context = FacesContext.getCurrentInstance();
         
-        if (context.getPartialViewContext() == null || !context.getPartialViewContext().isAjaxRequest() || context.getResponseComplete()) {
+        if (context.getResponseComplete()) {
             return;
         }
         
@@ -108,11 +107,11 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
     
     protected void handleException(FacesContext context, Throwable throwable) throws Exception {
-		ExternalContext externalContext = context.getExternalContext();
+        ExternalContext externalContext = context.getExternalContext();
         
-        if (!externalContext.isResponseCommitted()) {
+        if (context.getPartialViewContext().isAjaxRequest() && !externalContext.isResponseCommitted()) {
             externalContext.responseReset();
-		}
+        }
 
         // print exception in development stage
         if (context.getApplication().getProjectStage() == ProjectStage.Development) {
@@ -123,9 +122,16 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         LOG.log(Level.SEVERE, throwable.getMessage(), throwable);
         
         Throwable rootCause = getRootCause(throwable);
-        rootCause = buildView(context, throwable, rootCause);
 
-        UIAjaxExceptionHandler handlerComponent = findHandlerComponent(context, rootCause);
+        if (context.getPartialViewContext().isAjaxRequest()) {
+            rootCause = buildView(context, throwable, rootCause);
+        }
+
+        UIAjaxExceptionHandler handlerComponent = null;
+        
+        if (context.getPartialViewContext().isAjaxRequest()) {
+            handlerComponent = findHandlerComponent(context, rootCause);
+        }
 
         ExceptionInfo info = createExceptionInfo(rootCause);
         
@@ -199,9 +205,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             }
 
             writer.endElement("changes");
-			writer.endDocument();
+            writer.endDocument();
 
-			context.responseComplete();
+            context.responseComplete();
         }   
     }
 
