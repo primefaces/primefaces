@@ -215,7 +215,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
      * Finds the proper {@link UIAjaxExceptionHandler} for the given {@link Throwable}.
      * 
      * @param context The {@link FacesContext}.
-     * @param throwable The occured {@link Throwable}.
+     * @param throwable The occurred {@link Throwable}.
      * @return The {@link UIAjaxExceptionHandler} or <code>null</code>.
      */
     protected UIAjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable throwable) {
@@ -231,7 +231,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
      * This is mostly required for ViewExpiredException's.
      *
      * @param context The {@link FacesContext}.
-     * @param throwable The occured {@link Throwable}.
+     * @param throwable The occurred {@link Throwable}.
      * @param rootCause The root cause.
      * @return The unwrapped {@link Throwable}.
      * @throws java.io.IOException If building the view fails.
