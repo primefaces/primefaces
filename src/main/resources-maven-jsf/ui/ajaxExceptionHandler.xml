@@ -5,14 +5,14 @@
 ]>
 <component>
     <tag>ajaxExceptionHandler</tag>
-    <tagClass>org.primefaces.component.ajaxexceptionhandler.UIAjaxExceptionHandler</tagClass>
-    <componentClass>org.primefaces.component.ajaxexceptionhandler.UIAjaxExceptionHandler</componentClass>
-    <componentType>org.primefaces.component.UIAjaxExceptionHandler</componentType>
+    <tagClass>org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler</tagClass>
+    <componentClass>org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler</componentClass>
+    <componentType>org.primefaces.component.AjaxExceptionHandler</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
     <parent>javax.faces.component.UIComponentBase</parent>
     <description></description>
     <attributes>
-		&standard_uicomponent_attributes;
+        &standard_uicomponent_attributes;
         <attribute>
             <name>onexception</name>
             <required>false</required>

@@ -22,26 +22,26 @@ import javax.faces.component.visit.VisitResult;
 import org.primefaces.util.ComponentUtils;
 
 /**
- * {@link VisitCallback} which collects all {@link UIAjaxExceptionHandler}s.
+ * {@link VisitCallback} which collects all {@link AjaxExceptionHandler}s.
  */
-public class UIAjaxExceptionHandlerVisitCallback implements VisitCallback {
+public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
 
     private final Throwable throwable;
     
-    private UIAjaxExceptionHandler handler;
-    private UIAjaxExceptionHandler defaultHandler;
+    private AjaxExceptionHandler handler;
+    private AjaxExceptionHandler defaultHandler;
 
-    public UIAjaxExceptionHandlerVisitCallback(Throwable throwable) {
+    public AjaxExceptionHandlerVisitCallback(Throwable throwable) {
         this.throwable = throwable;
         
         this.handler = null;
         this.defaultHandler = null;
     }
     
-	public VisitResult visit(VisitContext context, UIComponent target) {;
+    public VisitResult visit(VisitContext context, UIComponent target) {;
 
-        if (target instanceof UIAjaxExceptionHandler) {
-            UIAjaxExceptionHandler currentHandler = (UIAjaxExceptionHandler) target;
+        if (target instanceof AjaxExceptionHandler) {
+            AjaxExceptionHandler currentHandler = (AjaxExceptionHandler) target;
 
             if (ComponentUtils.isValueBlank(currentHandler.getType())) {
                 defaultHandler = currentHandler;
@@ -54,9 +54,9 @@ public class UIAjaxExceptionHandlerVisitCallback implements VisitCallback {
         }
         
         return VisitResult.ACCEPT;
-	}
+    }
     
-    public UIAjaxExceptionHandler getHandler() {
+    public AjaxExceptionHandler getHandler() {
         return handler == null ? defaultHandler : handler;
     }
 }
