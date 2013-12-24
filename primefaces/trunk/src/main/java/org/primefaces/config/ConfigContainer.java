@@ -47,47 +47,47 @@ import org.w3c.dom.NodeList;
  */
 public class ConfigContainer {
 
-	private static final Logger LOG = Logger.getLogger(ConfigContainer.class.getName());
+    private static final Logger LOG = Logger.getLogger(ConfigContainer.class.getName());
 
-	// context params
-	private boolean validateEmptyFields = false;
-	private boolean partialSubmitEnabled = false;
-	private boolean resetValuesEnabled = false;
-	private boolean interpretEmptyStringAsNull = false;
-	private String  secretKey = null;
-	private String  pushServerURL = null;
-	private String  theme = null;
+    // context params
+    private boolean validateEmptyFields = false;
+    private boolean partialSubmitEnabled = false;
+    private boolean resetValuesEnabled = false;
+    private boolean interpretEmptyStringAsNull = false;
+    private String  secretKey = null;
+    private String  pushServerURL = null;
+    private String  theme = null;
     private boolean clientSideValidationEnabled = false;
     private String uploader = null;
 
-	// internal config
+    // internal config
     private boolean beanValidationAvailable = false;
-	private boolean stringConverterAvailable = false;
-	private boolean jsf22 = false;
+    private boolean stringConverterAvailable = false;
+    private boolean jsf22 = false;
 	
-	// build properties
-	private String buildVersion = null;
+    // build properties
+    private String buildVersion = null;
     
     // web.xml
     private Map<String, String> errorPages;
 
-	public ConfigContainer(FacesContext context) {
-		initConfig(context);
-		initConfigFromContextParams(context);
-		initBuildProperties();
+    public ConfigContainer(FacesContext context) {
+        initConfig(context);
+        initConfigFromContextParams(context);
+        initBuildProperties();
         initConfigFromWebXml(context);
-	}
+    }
 
-	private void initConfig(FacesContext context) {
-		beanValidationAvailable = checkIfBeanValidationIsAvailable();
-		
-		jsf22 = detectJSF22();
-		
-		stringConverterAvailable = null != context.getApplication().createConverter(String.class);
-	}
-	
-	private void initConfigFromContextParams(FacesContext context) {
-		ExternalContext externalContext = context.getExternalContext();
+    private void initConfig(FacesContext context) {
+        beanValidationAvailable = checkIfBeanValidationIsAvailable();
+
+        jsf22 = detectJSF22();
+
+        stringConverterAvailable = null != context.getApplication().createConverter(String.class);
+    }
+
+    private void initConfigFromContextParams(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
 
         String value = null;
 
@@ -118,39 +118,40 @@ public class ConfigContainer {
             value = (String) externalContext.getApplicationMap().get(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
         }
         if (value == null || value.equals("auto")) {
-        	validateEmptyFields = beanValidationAvailable;
+            validateEmptyFields = beanValidationAvailable;
         } else {
-        	validateEmptyFields = Boolean.valueOf(value);
+            validateEmptyFields = Boolean.valueOf(value);
         }
-	}
+    }
 
-	private void initBuildProperties() {
-		
-		Properties buildProperties = new Properties();
-		InputStream is = null;
-		try {
-		    is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
-			buildProperties.load(is);
-			buildVersion = buildProperties.getProperty("version");
-		} catch (IOException e) {
-			LOG.log(Level.SEVERE, "Could not load pom.properties", e);
-		}
-		
-		if (is != null) {
-		    try {
+    private void initBuildProperties() {
+
+        Properties buildProperties = new Properties();
+        InputStream is = null;
+        try {
+            is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
+            buildProperties.load(is);
+            buildVersion = buildProperties.getProperty("version");
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "Could not load pom.properties", e);
+        }
+
+        if (is != null) {
+            try {
                 is.close();
-            } catch (IOException e) { }
-		}
-	}
+            }
+            catch (IOException e) { }
+        }
+    }
 	
     private boolean checkIfBeanValidationIsAvailable() {
     	boolean available = false;
 
     	// check if class is available
         try {
-        	available = Class.forName("javax.validation.Validation") != null;
+            available = Class.forName("javax.validation.Validation") != null;
         } catch (ClassNotFoundException e) {
-        	available = false;
+            available = false;
         }
 
         if (available) {
@@ -196,12 +197,11 @@ public class ConfigContainer {
             factory.setExpandEntityReferences(false);
             DocumentBuilder builder = factory.newDocumentBuilder();
 
-            Document document = builder.newDocument();
             URL url = servletContext.getResource("/WEB-INF/web.xml");
 
             // web.xml is optional
             if (url != null) {
-                builder.parse(url.getFile());
+                Document document = builder.parse(url.getFile());
                 
                 initErrorPages(document.getDocumentElement());
             }
@@ -243,26 +243,26 @@ public class ConfigContainer {
             }
         }
     }
-    
-	public boolean isValidateEmptyFields() {
-		return validateEmptyFields;
-	}
 
-	public boolean isBeanValidationAvailable() {
-		return beanValidationAvailable;
-	}
+    public boolean isValidateEmptyFields() {
+            return validateEmptyFields;
+    }
 
-	public boolean isPartialSubmitEnabled() {
-		return partialSubmitEnabled;
-	}
+    public boolean isBeanValidationAvailable() {
+            return beanValidationAvailable;
+    }
 
-	public boolean isInterpretEmptyStringAsNull() {
-		return interpretEmptyStringAsNull;
-	}
+    public boolean isPartialSubmitEnabled() {
+            return partialSubmitEnabled;
+    }
 
-	public boolean isStringConverterAvailable() {
-		return stringConverterAvailable;
-	}
+    public boolean isInterpretEmptyStringAsNull() {
+            return interpretEmptyStringAsNull;
+    }
+
+    public boolean isStringConverterAvailable() {
+            return stringConverterAvailable;
+    }
 
     public String getSecretKey() {
         return secretKey;
@@ -292,9 +292,9 @@ public class ConfigContainer {
         return theme;
     }
 
-	public String getBuildVersion() {
-		return buildVersion;
-	}
+    public String getBuildVersion() {
+            return buildVersion;
+    }
 
     public Map<String, String> getErrorPages() {
         return errorPages;
