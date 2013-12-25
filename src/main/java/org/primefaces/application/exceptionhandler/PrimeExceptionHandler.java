@@ -124,7 +124,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         ExternalContext externalContext = context.getExternalContext();
         
         if (!externalContext.isResponseCommitted()) {
+            String characterEncoding = externalContext.getResponseCharacterEncoding();
             externalContext.responseReset();
+            externalContext.setResponseCharacterEncoding(characterEncoding);
         }
 
         rootCause = buildView(context, rootCause, rootCause);
@@ -139,9 +141,8 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         else {
             context.getAttributes().put(ExceptionInfo.ATTRIBUTE_NAME, info);
             
-            externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getRequestCharacterEncoding());
+            externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getResponseCharacterEncoding());
             externalContext.addResponseHeader("Cache-Control", "no-cache");
-            externalContext.setResponseCharacterEncoding(externalContext.getRequestCharacterEncoding());
             externalContext.setResponseContentType("text/xml");
 
             PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
