@@ -116,9 +116,10 @@ public class DataTableRenderer extends DataRenderer {
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
 		String clientId = table.getClientId(context);
         String selectionMode = table.resolveSelectionMode();
+        String widgetClass = (table.getFrozenColumns() == Integer.MIN_VALUE) ? "DataTable" : "FrozenDataTable";
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("DataTable", table.resolveWidgetVar(), clientId);
+        wb.initWithDomReady(widgetClass, table.resolveWidgetVar(), clientId);
         
         //Pagination
         if(table.isPaginator()) {

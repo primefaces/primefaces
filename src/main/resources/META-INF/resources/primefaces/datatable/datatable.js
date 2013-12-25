@@ -2263,3 +2263,170 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     }
 
 });
+
+/**
+ * PrimeFaces DataTable with Frozen Columns Widget
+ */
+PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+    },
+    
+    setupScrolling: function() {
+        this.scrollContainer = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-right > .ui-datatable-scrollable-container');
+        this.frozenContainer = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-left > .ui-datatable-frozen-container');
+        this.scrollHeader = this.scrollContainer.children('.ui-datatable-scrollable-header');
+        this.scrollHeaderBox = this.scrollHeader.children('div.ui-datatable-scrollable-header-box');
+        this.scrollBody = this.scrollContainer.children('.ui-datatable-scrollable-body');
+        this.scrollFooter = this.scrollContainer.children('.ui-datatable-scrollable-footer');
+        this.scrollFooterBox = this.scrollFooter.children('div.ui-datatable-scrollable-footer-box');
+        this.scrollStateHolder = $(this.jqId + '_scrollState');
+        this.scrollHeaderTable = this.scrollHeaderBox.children('table');
+        this.scrollBodyTable = this.scrollBody.children('table');
+        this.scrollFooterTable = this.scrollFooter.children('table');
+        this.scrollColgroup = this.scrollBody.find('> table > colgroup');
+        this.scrollFooterCols = this.scrollFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
+        this.frozenHeader = this.frozenContainer.children('.ui-datatable-scrollable-header');
+        this.frozenBody = this.frozenContainer.children('.ui-datatable-scrollable-body');
+        this.frozenBodyTable = this.frozenBody.children('table');
+        this.frozenFooter = this.frozenContainer.children('.ui-datatable-scrollable-footer');
+        this.frozenFooterCols = this.frozenFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
+        this.frozenColgroup = this.frozenBody.find('> table > colgroup');
+        this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
+        this.percentageScrollWidth = this.cfg.scrollWidth && (this.cfg.scrollWidth.indexOf('%') !== -1);
+        
+        var $this = this,
+        scrollBarWidth = this.getScrollbarWidth() + 'px';
+
+        if(this.percentageScrollHeight) {
+            this.adjustScrollHeight();
+        }
+
+        this.scrollHeaderBox.css('margin-right', scrollBarWidth);
+        this.scrollFooterBox.css('margin-right', scrollBarWidth);
+
+        this.alignScrollBody();
+        this.fixColumnWidths();
+
+        if(this.cfg.scrollWidth) {
+            if(this.percentageScrollWidth)
+                this.adjustScrollWidth();
+            else
+                this.setScrollWidth(this.cfg.scrollWidth);
+            
+            if(this.isScrollingVertical())
+                this.frozenBodyTable.css('margin-bottom', scrollBarWidth);
+            else
+                this.frozenFooter.css('padding-top', scrollBarWidth);
+        }
+
+        this.restoreScrollState();
+
+        if(this.cfg.liveScroll) {
+            this.scrollOffset = this.cfg.scrollStep;
+            this.shouldLiveScroll = true;       
+        }
+
+        this.scrollBody.scroll(function() {
+            var scrollLeft = $this.scrollBody.scrollLeft(),
+            scrollTop = $this.scrollBody.scrollTop();
+            $this.scrollHeaderBox.css('margin-left', -scrollLeft);
+            $this.scrollFooterBox.css('margin-left', -scrollLeft);
+            $this.frozenBody.scrollTop(scrollTop);
+
+            if($this.shouldLiveScroll) {
+                var scrollTop = this.scrollTop,
+                scrollHeight = this.scrollHeight,
+                viewportHeight = this.clientHeight;
+
+                if(scrollTop >= (scrollHeight - (viewportHeight))) {
+                    $this.loadLiveRows();
+                }
+            }
+
+            $this.saveScrollState();
+        });
+
+        var resizeNS = 'resize.' + this.id;
+        $(window).unbind(resizeNS).bind(resizeNS, function() {
+            if($this.jq.is(':visible')) {
+                if($this.percentageScrollHeight)
+                    $this.adjustScrollHeight();
+
+                if($this.percentageScrollWidth)
+                    $this.adjustScrollWidth();
+            }
+        });
+    },
+    
+    alignScrollBody: function() {
+        var marginRight = this.isScrollingVertical() ? '0px' : this.getScrollbarWidth() + 'px';
+
+        this.scrollBody.css('margin-right', marginRight);
+    },
+    
+    isScrollingVertical: function() {
+        return this.scrollBodyTable.outerHeight() > this.scrollBody.outerHeight();
+    },
+    
+    adjustScrollHeight: function() {
+        var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
+        scrollersHeight = (this.scrollHeader.innerHeight() + this.scrollFooter.innerHeight()),
+        paginatorsHeight = this.paginator ? this.paginator.getContainerHeight() : 0,
+        height = (relativeHeight - (scrollersHeight + paginatorsHeight));
+        
+        this.scrollBody.height(height);
+        this.frozenBody.height(height);
+    },
+    
+    adjustScrollWidth: function() {
+        var width = parseInt((this.jq.parent().innerWidth() * (parseInt(this.cfg.scrollWidth) / 100)));
+        this.setScrollWidth(width);
+    },
+    
+    setScrollWidth: function(width) {
+        this.scrollHeader.width(width);
+        this.scrollBody.css('margin-right', 0).width(width);
+        this.scrollFooter.width(width);
+    },
+    
+    fixColumnWidths: function() {        
+        if(!this.columnWidthsFixed) {
+            if(PrimeFaces.isIE(7)) {
+                this.bodyTable.css('width', 'auto');
+            }
+            
+            if(this.cfg.scrollable) {
+                this._fixColumnWidths(this.scrollHeader, this.scrollFooterCols, this.scrollColgroup);
+                this._fixColumnWidths(this.frozenHeader, this.frozenFooterCols, this.frozenColgroup);
+            }
+            else {
+                this.jq.find('> .ui-datatable-tablewrapper > table > thead > tr > th').each(function() {
+                    var col = $(this);
+                    col.width(col.width());
+                });
+            }
+
+            this.columnWidthsFixed = true;
+        }
+    },
+    
+    _fixColumnWidths: function(header, footerCols, colgroup) {
+        header.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
+            var headerCol = $(this),
+            colIndex = headerCol.index(),
+            width = headerCol.width(),
+            innerWidth = headerCol.innerWidth(),
+            cellWidth = PrimeFaces.isIE(7) ? width: innerWidth + 1;
+
+            headerCol.width(width);
+            colgroup.children().eq(colIndex).width(cellWidth);
+            if(footerCols.length > 0) {
+                var footerCol = footerCols.eq(colIndex);
+                footerCol.width(width);
+            }
+        });
+    }
+
+});

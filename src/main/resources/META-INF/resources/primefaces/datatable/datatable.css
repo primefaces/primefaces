@@ -222,6 +222,7 @@
     text-align: right;
 }
 
+/* Frozen Columns */
 .ui-datatable .ui-datatable-frozenlayout-left,
 .ui-datatable .ui-datatable-frozenlayout-right {
     padding: 0;
@@ -231,4 +232,8 @@
 
 .ui-datatable .ui-datatable-frozen-container {
     margin-right: -1px;
+}
+
+.ui-datatable-frozen-container .ui-datatable-scrollable-body {
+    overflow: hidden;
 }
