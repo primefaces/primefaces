@@ -38,6 +38,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.ExceptionQueuedEvent;
+import javax.faces.event.PhaseId;
 import javax.faces.view.ViewDeclarationLanguage;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
@@ -123,10 +124,12 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     protected void handleAjaxException(FacesContext context, Throwable rootCause, ExceptionInfo info) throws Exception {
         ExternalContext externalContext = context.getExternalContext();
         
-        if (!externalContext.isResponseCommitted()) {
-            String characterEncoding = externalContext.getResponseCharacterEncoding();
-            externalContext.responseReset();
-            externalContext.setResponseCharacterEncoding(characterEncoding);
+        if (context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
+            if (!externalContext.isResponseCommitted()) {
+                String characterEncoding = externalContext.getResponseCharacterEncoding();
+                externalContext.responseReset();
+                externalContext.setResponseCharacterEncoding(characterEncoding);
+            }
         }
 
         rootCause = buildView(context, rootCause, rootCause);
