@@ -34,11 +34,6 @@
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
             <source-class>org.primefaces.component.columns.Columns</source-class>
         </system-event-listener>
-        <system-event-listener>
-            <system-event-listener-class>org.primefaces.event.system.DataTablePreRenderListener</system-event-listener-class>
-            <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
-            <source-class>org.primefaces.component.datatable.DataTable</source-class>
-        </system-event-listener>
     </application>
     
     <behavior>

@@ -221,3 +221,14 @@
 .ui-datatable-rtl.ui-datatable tfoot td {
     text-align: right;
 }
+
+.ui-datatable .ui-datatable-frozenlayout-left,
+.ui-datatable .ui-datatable-frozenlayout-right {
+    padding: 0;
+    border: 0 none;
+    vertical-align: top;
+}
+
+.ui-datatable .ui-datatable-frozen-container {
+    margin-right: -1px;
+}

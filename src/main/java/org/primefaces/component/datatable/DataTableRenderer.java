@@ -31,9 +31,11 @@ import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.feature.DataTableFeature;
 import org.primefaces.component.datatable.feature.DataTableFeatureKey;
 import org.primefaces.component.datatable.feature.RowExpandFeature;
+import org.primefaces.component.datatable.feature.SortFeature;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
@@ -75,12 +77,42 @@ public class DataTableRenderer extends DataRenderer {
                 }
             }
         }
-        else {            
+        else {  
+            preRender(context, table);
+            
             encodeMarkup(context, table);
             encodeScript(context, table);
         }
 	}
-    	
+    
+    protected void preRender(FacesContext context, DataTable table) {
+        if(table.isLazy()) {
+            if(table.isLiveScroll())
+                table.loadLazyScrollData(0, table.getScrollRows());
+            else
+                table.loadLazyData();
+        }
+
+        boolean defaultSorted = (table.getValueExpression("sortBy") != null || table.getSortBy() != null);
+        if(defaultSorted && !table.isLazy()) {
+            SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
+
+            if(table.isMultiSort())
+                sortFeature.multiSort(context, table);
+            else
+                sortFeature.singleSort(context, table);            
+        }
+
+        if(table.isPaginator()) {
+            table.calculateFirst();
+        }
+
+        Columns dynamicCols = table.getDynamicColumns();
+        if(dynamicCols != null) {
+            dynamicCols.setRowIndex(-1);
+        }
+    }   
+    
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
 		String clientId = table.getClientId(context);
         String selectionMode = table.resolveSelectionMode();
@@ -229,6 +261,12 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         
         if(hasFrozenColumns) {
+            writer.startElement("table", null);
+            writer.startElement("tbody", null);
+            writer.startElement("tr", null);
+            
+            writer.startElement("td", null);
+            writer.writeAttribute("class", "ui-datatable-frozenlayout-left", null);
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-datatable-frozen-container", null);
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
@@ -241,7 +279,10 @@ public class DataTableRenderer extends DataRenderer {
             encodeTFoot(context, table, 0, frozenColumns);
             encodeScrollAreaEnd(context);
             writer.endElement("div");
+            writer.endElement("td");
             
+            writer.startElement("td", null);
+            writer.writeAttribute("class", "ui-datatable-frozenlayout-right", null);
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-datatable-scrollable-container", null);
             
@@ -255,6 +296,11 @@ public class DataTableRenderer extends DataRenderer {
             encodeTFoot(context, table, frozenColumns, table.getColumnsCount());
             encodeScrollAreaEnd(context);
             writer.endElement("div");
+            writer.endElement("td");
+            
+            writer.endElement("tr");
+            writer.endElement("tbody");
+            writer.endElement("table");
         }
         else {
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
