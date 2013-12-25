@@ -45,7 +45,6 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 
-// TODO render_response exception support
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
     private static final Logger LOG = Logger.getLogger(PrimeExceptionHandler.class.getName());
