@@ -110,15 +110,11 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
     @Override
     public Throwable getRootCause(Throwable throwable) {
-        while (throwable != null) {
-            if (!FacesException.class.equals(throwable.getClass()) && !ELException.class.isAssignableFrom(throwable.getClass())) {
-                return throwable;
-            }
-            
+        while ((ELException.class.isInstance(throwable) || FacesException.class.isInstance(throwable)) && throwable.getCause() != null) {
             throwable = throwable.getCause();
         }
 
-        return null;
+        return throwable;
     }
     
     protected void handleAjaxException(FacesContext context, Throwable rootCause, ExceptionInfo info) throws Exception {
