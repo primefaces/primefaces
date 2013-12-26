@@ -53,7 +53,7 @@ import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationResolver;
 
 public abstract class CoreRenderer extends Renderer {
-	
+
     protected void renderChildren(FacesContext context, UIComponent component) throws IOException {
         if (component.getChildCount() > 0) {
             for (int i = 0; i < component.getChildCount(); i++) {
@@ -121,7 +121,7 @@ public abstract class CoreRenderer extends Renderer {
         else
             renderPassThruAttributes(context, component, eventAttrs);
 	}
-    
+
     private void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs, Map<String,List<ClientBehavior>> behaviors) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         StringBuilder builder = null;
