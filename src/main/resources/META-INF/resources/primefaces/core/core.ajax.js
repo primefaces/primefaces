@@ -530,15 +530,12 @@ PrimeFaces.ajax = {
             window.location = node.getAttribute('url');
         },
 
-        doUpdate : function(node, xhr, handler) {
-            var id = node.getAttribute('id');
-            var content = PrimeFaces.ajax.Utils.getContent(node);
+        doUpdate : function(node, xhr, updateHandler) {
+            var id = node.getAttribute('id'),
+            content = PrimeFaces.ajax.Utils.getContent(node);
 
-            if (handler) {
-                // if the handler returns "true", it handles the current id
-                if (handler.call(this, id, content) === false) {
-                        PrimeFaces.ajax.Utils.updateElement(id, content, xhr);
-                }
+            if (updateHandler && updateHandler.widget.id === id) {
+                updateHandler.handle.call(updateHandler.widget, content);
             } else {
                 PrimeFaces.ajax.Utils.updateElement(id, content, xhr);
             }
