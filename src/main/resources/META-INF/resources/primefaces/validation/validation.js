@@ -505,11 +505,11 @@ PrimeFaces.converter = {
 
 PrimeFaces.vb = function(cfg) {
     return this.validate(cfg);
-}
+};
 
 PrimeFaces.vi = function(element) {
     this.validateInstant(element);
-}
+};
 
 PrimeFaces.validate = function(cfg) {
     var vc = PrimeFaces.util.ValidationContext,
@@ -557,13 +557,13 @@ PrimeFaces.validate = function(cfg) {
         
         return false;
     }
-}
+};
 
 PrimeFaces.validateInputs = function(inputs) {
     for(var i = 0; i < inputs.length; i++) {
         this.validateInput(inputs.eq(i));
     }
-}
+};
 
 PrimeFaces.validateInput = function(element) {
     var vc = PrimeFaces.util.ValidationContext,
@@ -630,7 +630,7 @@ PrimeFaces.validateInput = function(element) {
         highlighter.unhighlight(element);
     else
         highlighter.highlight(element);  
-}
+};
 
 PrimeFaces.validateInstant = function(id) {
     var vc = PrimeFaces.util.ValidationContext,
@@ -658,7 +658,7 @@ PrimeFaces.validateInstant = function(id) {
     }
 
     vc.clear();
-}
+};
 
 PrimeFaces.util.ValidationContext = {
 
@@ -690,7 +690,7 @@ PrimeFaces.util.ValidationContext = {
             return {
                 summary: s,
                 detail: d
-            }
+            };
         }
 
         return null;
@@ -707,7 +707,7 @@ PrimeFaces.util.ValidationContext = {
     },
 
     getLabel: function(element) {
-        return (element.data('p-label')||element.attr('id'))
+        return (element.data('p-label')||element.attr('id'));
     },
 
     renderMessages: function(container) {
@@ -829,7 +829,7 @@ PrimeFaces.util.ValidationContext = {
         
         return localeSettings;
     }
-}
+};
 
 PrimeFaces.validator.Highlighter = {
     
