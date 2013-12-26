@@ -54,29 +54,29 @@ import org.primefaces.validate.bean.BeanValidationResolver;
 
 public abstract class CoreRenderer extends Renderer {
 	
-	protected void renderChildren(FacesContext context, UIComponent component) throws IOException {
-		if (component.getChildCount() > 0) {
-			for (int i = 0; i < component.getChildCount(); i++) {
-				UIComponent child = (UIComponent) component.getChildren().get(i);
-				renderChild(context, child);
-			}
-		}
-	}
+    protected void renderChildren(FacesContext context, UIComponent component) throws IOException {
+        if (component.getChildCount() > 0) {
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent child = (UIComponent) component.getChildren().get(i);
+                renderChild(context, child);
+            }
+        }
+    }
 
-	protected void renderChild(FacesContext context, UIComponent child) throws IOException {
-		if (!child.isRendered()) {
-			return;
-		}
+    protected void renderChild(FacesContext context, UIComponent child) throws IOException {
+        if (!child.isRendered()) {
+            return;
+        }
 
-		child.encodeBegin(context);
-		
-		if (child.getRendersChildren()) {
-			child.encodeChildren(context);
-		} else {
-			renderChildren(context, child);
-		}
-		child.encodeEnd(context);
-	}
+        child.encodeBegin(context);
+
+        if (child.getRendersChildren()) {
+            child.encodeChildren(context);
+        } else {
+            renderChildren(context, child);
+        }
+        child.encodeEnd(context);
+    }
 
     protected String getResourceURL(FacesContext context, String value) {
         if(value.trim().equals(Constants.EMPTY_STRING)) {
@@ -93,41 +93,41 @@ public abstract class CoreRenderer extends Renderer {
     }
     
     protected String getResourceRequestPath(FacesContext context, String resourceName) {
-		Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
+        Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
 
         return resource.getRequestPath();
-	}
+    }
 
-	protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+    protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 		
         //pre-defined attributes
-		for(String attribute : attrs) {
-			Object value = component.getAttributes().get(attribute);
-			
-			if(shouldRenderAttribute(value))
-				writer.writeAttribute(attribute, value.toString(), attribute);
-		}
+        for(String attribute : attrs) {
+            Object value = component.getAttributes().get(attribute);
+
+            if(shouldRenderAttribute(value))
+                writer.writeAttribute(attribute, value.toString(), attribute);
+        }
         
         //dynamic attributes       
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
             RendererUtils.renderPassThroughAttributes(context, component);
         }
-	}
+    }
     
     protected void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs) throws IOException {
-		if(component instanceof ClientBehaviorHolder)
+        if(component instanceof ClientBehaviorHolder)
             renderDomEvents(context, component, eventAttrs, ((ClientBehaviorHolder) component).getClientBehaviors());
         else
             renderPassThruAttributes(context, component, eventAttrs);
 	}
     
     private void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs, Map<String,List<ClientBehavior>> behaviors) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		StringBuilder builder = null;
+        ResponseWriter writer = context.getResponseWriter();
+        StringBuilder builder = null;
         
-		for(String domEvent : eventAttrs) {
-			Object eventValue = component.getAttributes().get(domEvent);
+        for(String domEvent : eventAttrs) {
+            Object eventValue = component.getAttributes().get(domEvent);
             String behaviorEvent = domEvent.substring(2, domEvent.length());
             List<ClientBehavior> eventBehaviors = behaviors.get(behaviorEvent);
             boolean hasEventValue = (eventValue != null);
@@ -185,39 +185,39 @@ public abstract class CoreRenderer extends Renderer {
                     builder.setLength(0);
                 }
             }
-		}
-	}
+        }
+    }
 	
-	protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs, String[] ignoredAttrs) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+    protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs, String[] ignoredAttrs) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 		
         //pre-defined attributes
-		for(String attribute : attrs) {
-			if(isIgnoredAttribute(attribute, ignoredAttrs)) {
-				continue;
-			}
-			
-			Object value = component.getAttributes().get(attribute);
-			
-			if(shouldRenderAttribute(value))
-				writer.writeAttribute(attribute, value.toString(), attribute);
-		}
+        for(String attribute : attrs) {
+            if(isIgnoredAttribute(attribute, ignoredAttrs)) {
+                continue;
+            }
+
+            Object value = component.getAttributes().get(attribute);
+
+            if(shouldRenderAttribute(value))
+                writer.writeAttribute(attribute, value.toString(), attribute);
+        }
         
         //dynamic attributes       
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
             RendererUtils.renderPassThroughAttributes(context, component);
         }
-	}
+    }
 	
-	private boolean isIgnoredAttribute(String attribute, String[] ignoredAttrs) {
-		for(String ignoredAttribute : ignoredAttrs) {
-			if(attribute.equals(ignoredAttribute)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
+    private boolean isIgnoredAttribute(String attribute, String[] ignoredAttrs) {
+        for (String ignoredAttribute : ignoredAttrs) {
+            if (attribute.equals(ignoredAttribute)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 	
     protected boolean shouldRenderAttribute(Object value) {
         if(value == null)
@@ -227,7 +227,7 @@ public abstract class CoreRenderer extends Renderer {
             return ((Boolean) value).booleanValue();
         }
         else if(value instanceof Number) {
-        	Number number = (Number) value;
+            Number number = (Number) value;
         	
             if (value instanceof Integer)
                 return number.intValue() != Integer.MIN_VALUE;
@@ -246,9 +246,9 @@ public abstract class CoreRenderer extends Renderer {
         return true;
     }
 
-	public boolean isValueBlank(String value) {
-		return ComponentUtils.isValueBlank(value);
-	}
+    public boolean isValueBlank(String value) {
+            return ComponentUtils.isValueBlank(value);
+    }
     	    
     protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIComponent form) {
         UIComponent component = (UIComponent) source;
@@ -257,7 +257,7 @@ public abstract class CoreRenderer extends Renderer {
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
         
         builder.init()
-        		.source(clientId)
+                .source(clientId)
                 .process(component, source.getProcess())
                 .update(component, source.getUpdate())
                 .async(source.isAsync())
@@ -281,7 +281,7 @@ public abstract class CoreRenderer extends Renderer {
         return builder.build();
     }
 	
-	protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {		
+    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {		
         StringBuilder request = new StringBuilder();
         String formId = form.getClientId(context);
         Map<String,Object> params = new HashMap<String, Object>();
@@ -290,13 +290,13 @@ public abstract class CoreRenderer extends Renderer {
             params.put(decodeParam, decodeParam);
         }
         
-		for(UIComponent child : component.getChildren()) {
-			if(child instanceof UIParameter) {
+        for (UIComponent child : component.getChildren()) {
+            if (child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
 
                 params.put(param.getName(), param.getValue());
-			}
-		}
+            }
+        }
         
         //append params
         if(!params.isEmpty()) {
