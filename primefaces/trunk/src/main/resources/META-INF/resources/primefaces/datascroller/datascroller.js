@@ -76,25 +76,14 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             update: this.id,
             global: false,
             params: [{name: this.id + '_load', value: true},{name: this.id + '_offset', value: this.cfg.offset}],
-            onsuccess: function(responseXML) {
-                var xmlDoc = $(responseXML.documentElement),
-                updates = xmlDoc.find("update");
-
-                for(var i=0; i < updates.length; i++) {
-                    var update = updates.eq(i),
-                    id = update.attr('id'),
-                    content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                    if(id === $this.id) {
-                        $this.list.append(content);
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        this.list.append(content);
                     }
-                    else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                    }
-                }
-
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-
+                });
+                
                 return true;
             },
             oncomplete: function() {
