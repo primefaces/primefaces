@@ -78,67 +78,69 @@ public class BeanValidationResolver {
         Map<String,Object> metadata = new HashMap<String, Object>();
         List<String> validatorIds = new ArrayList<String>();
         
-        if(ve != null) {
+        if (ve != null) {
             ValueReference vr = ValueExpressionAnalyzer.getReference(elContext, ve);
             
-            if(vr != null) {
+            if (vr != null) {
                 Validator validator = requestContext.getApplicationContext().getValidatorFactory().getValidator();
                 Object base = vr.getBase();
                 Object property = vr.getProperty();
                 
-                if(base != null && property != null) {
+                if (base != null && property != null) {
                     BeanDescriptor beanDescriptor = validator.getConstraintsForClass(base.getClass());
                     
                     if (beanDescriptor != null) {
-	                    PropertyDescriptor propertyDescriptor = beanDescriptor.getConstraintsForProperty(property.toString());
-	                    
-	                    if (propertyDescriptor != null) {
-		                    Set<ConstraintDescriptor<?>> constraints = propertyDescriptor.getConstraintDescriptors();
-		                    
-		                    if(constraints != null && !constraints.isEmpty()) {
-		                        for(ConstraintDescriptor<?> constraintDescriptor : constraints) {
+                        PropertyDescriptor propertyDescriptor = beanDescriptor.getConstraintsForProperty(property.toString());
+
+                        if (propertyDescriptor != null) {
+                            Set<ConstraintDescriptor<?>> constraints = propertyDescriptor.getConstraintDescriptors();
+
+                            if (constraints != null && !constraints.isEmpty()) {
+                                for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                                     Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
-		                            ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPER.get(annotationType);
-		                            
-		                            if(clientValidationConstraint != null) {
-		                                String validatorId = clientValidationConstraint.getValidatorId();
-		                                Map<String,Object> constraintMetadata = clientValidationConstraint.getMetadata(constraintDescriptor);
-		                                
-		                                if(constraintMetadata != null)
-		                                    metadata.putAll(constraintMetadata);
-		                                
-		                                if(validatorId != null)
-		                                    validatorIds.add(validatorId);
-		                            }
+                                    ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPER.get(annotationType);
+
+                                    if (clientValidationConstraint != null) {
+                                        String validatorId = clientValidationConstraint.getValidatorId();
+                                        Map<String,Object> constraintMetadata = clientValidationConstraint.getMetadata(constraintDescriptor);
+
+                                        if(constraintMetadata != null)
+                                            metadata.putAll(constraintMetadata);
+
+                                        if(validatorId != null)
+                                            validatorIds.add(validatorId);
+                                    }
                                     else {
                                         ClientConstraint clientConstraint = annotationType.getAnnotation(ClientConstraint.class);
-                                        if(clientConstraint != null) {
+                                        if (clientConstraint != null) {
                                             Class<?> resolvedBy = clientConstraint.resolvedBy();
-                                            
-                                            if(resolvedBy != null) {
+
+                                            if (resolvedBy != null) {
                                                 try {
                                                     ClientValidationConstraint customClientValidationConstraint = (ClientValidationConstraint) resolvedBy.newInstance();
-                                                    
+
                                                     String validatorId = customClientValidationConstraint.getValidatorId();
                                                     Map<String,Object> constraintMetadata = customClientValidationConstraint.getMetadata(constraintDescriptor);
-		                                
-                                                    if(constraintMetadata != null)
+
+                                                    if (constraintMetadata != null)
                                                         metadata.putAll(constraintMetadata);
 
-                                                    if(validatorId != null)
+                                                    if (validatorId != null)
                                                         validatorIds.add(validatorId);
-                                                    
-                                                } catch (InstantiationException ex) {
+
+                                                }
+                                                catch (InstantiationException ex) {
                                                     LOG.log(Level.SEVERE, null, ex);
-                                                } catch (IllegalAccessException ex) {
+                                                }
+                                                catch (IllegalAccessException ex) {
                                                     LOG.log(Level.SEVERE, null, ex);
                                                 }
                                             }
                                         }
                                     }
-		                        }
-		                    }
-	                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
