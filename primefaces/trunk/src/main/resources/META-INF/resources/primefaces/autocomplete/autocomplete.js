@@ -473,22 +473,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             update: this.id,
             formId: this.cfg.formId,
             onsuccess: function(responseXML, status, xhr) {
-            	PrimeFaces.ajax.Response.handleResponse(responseXML, status, xhr, function(id, content) {
-            		if(id === _self.id) {
-                        _self.panel.html(content);
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: _self,
+                    handle: function(content) {
+                        this.panel.html(content);
 
-                        if(_self.cfg.cache) {
-                            _self.cache[query] = content;
+                        if(this.cfg.cache) {
+                            this.cache[query] = content;
                         }
 
-                        _self.showSuggestions(query);
-
-                        return true;
-            		}
-            		
-            		return false;
-            	});
-
+                        this.showSuggestions(query);
+                    }
+                });
+                
                 return true;
             }
         };
