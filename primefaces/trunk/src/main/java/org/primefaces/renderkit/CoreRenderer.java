@@ -79,7 +79,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected String getResourceURL(FacesContext context, String value) {
-        if(value.trim().equals(Constants.EMPTY_STRING)) {
+        if(isValueBlank(value)) {
             return Constants.EMPTY_STRING;
         }
         else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
