@@ -833,14 +833,30 @@ PrimeFaces.util.ValidationContext = {
 
 PrimeFaces.validator.Highlighter = {
     
+    highlightLabel: function(forElement) {
+        var label = $("label[for='" + forElement.attr('id') + "']");
+        if (label.hasClass('ui-outputlabel')) {
+            label.addClass('ui-state-error');
+        }
+    },
+    
+    unhighlightLabel: function(forElement) {
+        var label = $("label[for='" + forElement.attr('id') + "']");
+        if (label.hasClass('ui-outputlabel')) {
+            label.removeClass('ui-state-error');
+        }
+    },
+    
     'default': {
         
         highlight: function(element) {
             element.addClass('ui-state-error');
+            PrimeFaces.validator.Highlighter.highlightLabel(element);
         },
         
         unhighlight: function(element) {
             element.removeClass('ui-state-error');
+            PrimeFaces.validator.Highlighter.unhighlightLabel(element);
         }
     },
     
@@ -848,10 +864,12 @@ PrimeFaces.validator.Highlighter = {
         
         highlight: function(element) {
             element.parent().next().addClass('ui-state-error');
+            PrimeFaces.validator.Highlighter.highlightLabel(element.parent().parent());
         },
         
         unhighlight: function(element) {
             element.parent().next().removeClass('ui-state-error');
+            PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent().parent());
         }
         
     },
@@ -860,10 +878,12 @@ PrimeFaces.validator.Highlighter = {
         
         highlight: function(element) {
             element.closest('.ui-inputfield').addClass('ui-state-error');
+            PrimeFaces.validator.Highlighter.highlightLabel(element.closest('.ui-inputfield'));
         },
         
         unhighlight: function(element) {
             element.closest('.ui-inputfield').removeClass('ui-state-error');
+            PrimeFaces.validator.Highlighter.unhighlightLabel(element.closest('.ui-inputfield'));
         }
         
     },
@@ -872,10 +892,12 @@ PrimeFaces.validator.Highlighter = {
         
         highlight: function(element) {
             element.parent().siblings('.ui-selectonemenu-trigger').addClass('ui-state-error').parent().addClass('ui-state-error');
+            PrimeFaces.validator.Highlighter.highlightLabel(element.parent());
         },
         
         unhighlight: function(element) {
             element.parent().siblings('.ui-selectonemenu-trigger').removeClass('ui-state-error').parent().removeClass('ui-state-error');
+            PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent());
         }
         
     },
@@ -884,10 +906,12 @@ PrimeFaces.validator.Highlighter = {
         
         highlight: function(element) {
             element.parent().addClass('ui-state-error');
+            PrimeFaces.validator.Highlighter.highlightLabel(element.parent());
         },
         
         unhighlight: function(element) {
-            element.removeClass('ui-state-error');
+            element.parent().removeClass('ui-state-error');
+            PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent());
         }
         
     }
