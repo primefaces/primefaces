@@ -150,7 +150,8 @@ public class DataTableRenderer extends DataRenderer {
                 .attr("scrollStep", table.getScrollRows())
                 .attr("scrollLimit", table.getRowCount())
                 .attr("scrollWidth", table.getScrollWidth(), null)
-                .attr("scrollHeight", table.getScrollHeight(), null);
+                .attr("scrollHeight", table.getScrollHeight(), null)
+                .attr("frozenColumns", table.getFrozenColumns(), Integer.MIN_VALUE);
         }
 
         //Resizable/Draggable Columns
@@ -260,6 +261,7 @@ public class DataTableRenderer extends DataRenderer {
         int frozenColumns = table.getFrozenColumns();
         boolean hasFrozenColumns = (frozenColumns != Integer.MIN_VALUE);
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = table.getClientId(context);
         
         if(hasFrozenColumns) {
             writer.startElement("table", null);
@@ -271,10 +273,10 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-datatable-frozen-container", null);
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeThead(context, table, 0, frozenColumns);
+            encodeThead(context, table, 0, frozenColumns, clientId + "_frozenThead");
             encodeScrollAreaEnd(context);
 
-            encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns);
+            encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns, clientId + "_frozenTbody");
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
             encodeTFoot(context, table, 0, frozenColumns);
@@ -288,10 +290,10 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", "ui-datatable-scrollable-container", null);
             
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeThead(context, table, frozenColumns, table.getColumnsCount());
+            encodeThead(context, table, frozenColumns, table.getColumnsCount(), clientId + "_scrollableThead");
             encodeScrollAreaEnd(context);
 
-            encodeScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, table.getColumnsCount());
+            encodeScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, table.getColumnsCount(), clientId + "_scrollableTbody");
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
             encodeTFoot(context, table, frozenColumns, table.getColumnsCount());
@@ -308,7 +310,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeThead(context, table);
             encodeScrollAreaEnd(context);
 
-            encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, table.getColumnsCount());
+            encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, table.getColumnsCount(), null);
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
             encodeTFoot(context, table);
@@ -345,7 +347,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
        
-    protected void encodeScrollBody(FacesContext context, DataTable table, String tableStyle, String tableStyleClass, int columnStart, int columnEnd) throws IOException {
+    protected void encodeScrollBody(FacesContext context, DataTable table, String tableStyle, String tableStyleClass, int columnStart, int columnEnd, String tbodyId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String scrollHeight = table.getScrollHeight();
 
@@ -361,7 +363,7 @@ public class DataTableRenderer extends DataRenderer {
         if(table.getTableStyleClass() != null) writer.writeAttribute("class", tableStyleClass, null);
         
         encodeColGroup(context, table, columnStart, columnEnd);
-        encodeTbody(context, table, false, columnStart, columnEnd);
+        encodeTbody(context, table, false, columnStart, columnEnd, tbodyId);
         
         writer.endElement("table");
         writer.endElement("div");
@@ -646,16 +648,17 @@ public class DataTableRenderer extends DataRenderer {
     }
     
     protected void encodeThead(FacesContext context, DataTable table) throws IOException {
-        this.encodeThead(context, table, 0, table.getColumnsCount());
+        this.encodeThead(context, table, 0, table.getColumnsCount(), null);
     }
 
-    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
+    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd, String theadId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ColumnGroup group = table.getColumnGroup("header");
         List<UIColumn> columns = table.getColumns();
+        String theadClientId = (theadId == null) ? table.getClientId(context) + "_head" : theadId;
         
         writer.startElement("thead", null);
-        writer.writeAttribute("id", table.getClientId(context) + "_head", null);
+        writer.writeAttribute("id", theadClientId, null);
         
         if(group != null && group.isRendered()) {
 
@@ -718,16 +721,17 @@ public class DataTableRenderer extends DataRenderer {
     }
     
     public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly) throws IOException {
-        this.encodeTbody(context, table, dataOnly, 0, table.getColumnsCount());
+        this.encodeTbody(context, table, dataOnly, 0, table.getColumnsCount(), null);
     }
 
-    public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly, int columnStart, int columnEnd) throws IOException {
+    public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly, int columnStart, int columnEnd, String tbodyId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
         String emptyMessage = table.getEmptyMessage();
         UIComponent emptyFacet = table.getFacet("emptyMessage");
         SubTable subTable = table.getSubTable();
+        String tbodyClientId = (tbodyId == null) ? clientId + "_data" : tbodyId;
                 
         if(table.isSelectionEnabled()) {
             table.findSelectedRowKeys();
@@ -741,7 +745,7 @@ public class DataTableRenderer extends DataRenderer {
               
         if(!dataOnly) {
             writer.startElement("tbody", null);
-            writer.writeAttribute("id", clientId + "_data", null);
+            writer.writeAttribute("id", tbodyClientId, null);
             writer.writeAttribute("class", DataTable.DATA_CLASS, null);
         }
 
