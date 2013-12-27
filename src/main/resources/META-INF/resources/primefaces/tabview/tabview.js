@@ -281,49 +281,35 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
      * Loads tab contents with ajax
      */
     loadDynamicTab: function(newPanel) {
-        var _self = this,
+        var $this = this,
+        tabindex = newPanel.index(),
         options = {
             source: this.id,
             process: this.id,
-            update: this.id
-        },
-        tabindex = newPanel.index();
+            update: this.id,
+            params: [
+                {name: this.id + '_contentLoad', value: true},
+                {name: this.id + '_newTab', value: newPanel.attr('id')},
+                {name: this.id + '_tabindex', value: tabindex}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            newPanel.html(content);
 
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
+                            if(this.cfg.cache) {
+                                this.markAsLoaded(newPanel);
+                            }
+                        }
+                    });
 
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                if(id === _self.id){
-                    newPanel.html(content);
-
-                    if(_self.cfg.cache) {
-                        _self.markAsLoaded(newPanel);
-                    }
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
+                return true;
+            },
+            oncomplete: function() {
+                $this.show(newPanel);
             }
-
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-
-            return true;
         };
-
-        options.oncomplete = function() {
-            _self.show(newPanel);
-        };
-        
-        options.params = [
-            {name: this.id + '_contentLoad', value: true},
-            {name: this.id + '_newTab', value: newPanel.attr('id')},
-            {name: this.id + '_tabindex', value: tabindex}
-        ];
 
         if(this.hasBehavior('tabChange')) {
             var tabChangeBehavior = this.cfg.behaviors['tabChange'];
@@ -331,7 +317,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             tabChangeBehavior.call(this, newPanel, options);
         }
         else {
-            PrimeFaces.ajax.AjaxRequest(options);
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
     

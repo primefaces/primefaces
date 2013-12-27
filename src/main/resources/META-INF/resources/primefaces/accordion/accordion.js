@@ -160,44 +160,30 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         options = {
             source: this.id,
             process: this.id,
-            update: this.id
-        };
+            update: this.id,
+            params: [
+                {name: this.id + '_contentLoad', value: true},
+                {name: this.id + '_newTab', value: panel.attr('id')},
+                {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            panel.html(content);
 
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
+                            if(this.cfg.cache) {
+                                this.markAsLoaded(panel);
+                            }   
+                        }
+                    });
 
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                if(id === $this.id){
-                    $(panel).html(content);
-
-                    if($this.cfg.cache) {
-                        $this.markAsLoaded(panel);
-                    }
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
+                return true;
+            },
+            oncomplete: function() {
+                $this.show(panel);
             }
-
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-
-            return true;
         };
-
-        options.oncomplete = function() {
-            $this.show(panel);
-        };
-
-        options.params = [
-            {name: this.id + '_contentLoad', value: true},
-            {name: this.id + '_newTab', value: panel.attr('id')},
-            {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
-        ];
 
         if(this.hasBehavior('tabChange')) {
             var tabChangeBehavior = this.cfg.behaviors['tabChange'];
