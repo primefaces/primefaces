@@ -645,125 +645,79 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Loads rows on-the-fly when scrolling live
      */
     loadLiveRows: function() {
-        var options = {
+        var $this = this,
+        options = {
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId
-        },
-        _self = this;
-
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
-
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                if(id == _self.id) {
-                    var lastRow = $(_self.jqId + ' .ui-datatable-scrollable-body table tr:last');
-                    
-                    //insert new rows
-                    lastRow.after(content);
-
-                    _self.scrollOffset += _self.cfg.scrollStep;
-
-                    //Disable scroll if there is no more data left
-                    if(_self.scrollOffset == _self.cfg.scrollLimit) {
-                        _self.shouldLiveScroll = false;
-                    }
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
-            }
-
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-
-            return true;
-        };
-
-        options.params = [{name: this.id + '_scrolling', value: true},
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_scrolling', value: true},
                             {name: this.id + '_skipChildren', value: true},
                             {name: this.id + '_scrollOffset', value: this.scrollOffset},
-                            {name: this.id + '_encodeFeature', value: true}];
+                            {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        var lastRow = $(this.jqId + ' .ui-datatable-scrollable-body table tr:last');
 
-        PrimeFaces.ajax.AjaxRequest(options);
+                        //insert new rows
+                        lastRow.after(content);
+
+                        this.scrollOffset += this.cfg.scrollStep;
+
+                        //Disable scroll if there is no more data left
+                        if(this.scrollOffset === this.cfg.scrollLimit) {
+                            this.shouldLiveScroll = false;
+                        }
+                    }
+                });
+
+                return true;
+            }
+        };
+
+        PrimeFaces.ajax.Request.handle(options);
     },
     
     /**
      * Ajax pagination
      */
     paginate: function(newState) {
-        var options = {
+        var $this = this,
+        options = {
             source: this.id,
             update: this.id,
             process: this.id,
-            formId: this.cfg.formId
-        };
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_pagination', value: true},
+                    {name: this.id + '_first', value: newState.first},
+                    {name: this.id + '_rows', value: newState.rows},
+                    {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.tbody.html(content);
 
-        var $this = this;
+                            if(this.checkAllToggler) {
+                                this.updateHeaderCheckbox();
+                            }
 
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
+                            if(this.cfg.scrollable) {
+                                this.alignScrollBody();
+                            }
+                        }
+                    });
 
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                if(id == $this.id) {
-                    $this.tbody.html(content);
-
-                    if($this.checkAllToggler) {
-                        $this.updateHeaderCheckbox();
-                    }
-                    
-                    if($this.cfg.scrollable) {
-                        $this.alignScrollBody();
-                    }
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
-            }
-
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-            
-            return true;
-        };
-        
-        options.oncomplete = function() {
-            //update paginator state
-            $this.paginator.cfg.page = newState.page;
-            
-            $this.paginator.updateUI();
-        };
-
-        options.params = [
-        {
-            name: this.id + '_pagination', 
-            value: true
-        },
-
-        {
-            name: this.id + '_first', 
-            value: newState.first
+                return true;
             },
-
-            {
-            name: this.id + '_rows', 
-            value: newState.rows
+            oncomplete: function() {
+                $this.paginator.cfg.page = newState.page;
+                $this.paginator.updateUI();
             },
-
-            {
-            name: this.id + '_encodeFeature', 
-            value: true
-        }
-        ];
+            
+        };
 
         if(this.hasBehavior('page')) {
             var pageBehavior = this.cfg.behaviors['page'];
@@ -771,7 +725,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             pageBehavior.call(this, newState, options);
         } 
         else {
-            PrimeFaces.ajax.AjaxRequest(options); 
+            PrimeFaces.ajax.Request.handle(options); 
         }
     },
     
@@ -781,64 +735,52 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     sort: function(columnHeader, order, multi) {  
         columnHeader.data('sortorder', order);
     
-        var options = {
+        var $this = this,
+        options = {
             source: this.id,
             update: this.id,
-            process: this.id
-        },
-        $this = this;
-        
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
+            process: this.id,
+            params: [{name: this.id + '_sorting', value: true},
+                     {name: this.id + '_skipChildren', value: true},
+                     {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.tbody.html(content);
+                            
+                            var paginator = $this.getPaginator();
+                            if(paginator) {
+                                paginator.setPage(0, true);
+                            }
+                            
+                            if(!multi) {
+                                columnHeader.siblings('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
+                                            .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                            }
 
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
+                            columnHeader.removeClass('ui-state-hover').addClass('ui-state-active');
+                            var sortIcon = columnHeader.find('.ui-sortable-column-icon');
 
-                if(id == $this.id) {
-                    $this.tbody.html(content);
+                            if(order === 'DESCENDING') {
+                                sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
+                            }
+                            else if(order === 'ASCENDING') {
+                                sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                            }
+                        }
+                    });
 
-                    var paginator = $this.getPaginator();
-                    if(paginator) {
-                        paginator.setPage(0, true);
-                    }
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
-                
-                if(!multi) {
-                    columnHeader.siblings('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
-                                .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
-                }
-                
-                columnHeader.removeClass('ui-state-hover').addClass('ui-state-active');
-                var sortIcon = columnHeader.find('.ui-sortable-column-icon');
-
-                if(order === 'DESCENDING') {
-                    sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
-                }
-                else if(order === 'ASCENDING') {
-                    sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                var paginator = $this.getPaginator();             
+                if(paginator && args && paginator.cfg.rowCount !== args.totalRecords) {
+                    paginator.setTotalRecords(args.totalRecords);
                 }
             }
-
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-            
-            var paginator = $this.getPaginator();             
-            if(paginator && this.args && paginator.cfg.rowCount !== this.args.totalRecords) {
-                paginator.setTotalRecords(this.args.totalRecords);
-            }
-
-            return true;
         };
-                
-        options.params = [{name: this.id + '_sorting', value: true},
-                          {name: this.id + '_skipChildren', value: true},
-                          {name: this.id + '_encodeFeature', value: true}];
-
+        
         if(multi) {
             options.params.push({name: this.id + '_multiSorting', value: true});
             options.params.push({name: this.id + '_sortKey', value: $this.joinSortMetaOption('col')});
@@ -855,7 +797,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             sortBehavior.call(this, columnHeader, options);
         } 
         else {
-            PrimeFaces.ajax.AjaxRequest(options); 
+            PrimeFaces.ajax.Request.handle(options); 
         }
     },
     
@@ -877,54 +819,39 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Ajax filter
      */
     filter: function() {
-        var options = {
+        var $this = this,
+        options = {
             source: this.id,
             update: this.id,
             process: this.id,
-            formId: this.cfg.formId
-        };
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_filtering', value: true},
+                     {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.tbody.html(content);
+                            
+                            if(this.cfg.scrollable) {
+                                this.alignScrollBody();
+                            }
 
-        var $this = this;
+                            if(this.isCheckboxSelectionEnabled()) {
+                                this.updateHeaderCheckbox();
+                            }
+                        }
+                    });
 
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
-
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                if(id == $this.id){
-                    $this.tbody.html(content);
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                var paginator = $this.getPaginator();
+                if(paginator) {
+                    paginator.setTotalRecords(args.totalRecords);
                 }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
             }
-
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-            
-            var paginator = $this.getPaginator();
-            if(paginator) {
-                paginator.setTotalRecords(this.args.totalRecords);
-            }
-
-            if($this.cfg.scrollable) {
-                $this.alignScrollBody();
-            }
-
-            if($this.isCheckboxSelectionEnabled()) {
-                $this.updateHeaderCheckbox();
-            }
-            
-            return true;
         };
-
-        options.params = [
-                            {name: this.id + '_filtering', value: true},
-                            {name: this.id + '_encodeFeature', value: true}
-                        ];
 
         if(this.hasBehavior('filter')) {
             var filterBehavior = this.cfg.behaviors['filter'];
@@ -1362,66 +1289,35 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     loadExpandedRowContent: function(row) {
-        var options = {
+        var $this = this,
+        rowIndex = this.getRowMeta(row).index,
+        options = {
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId
-        },
-        rowIndex = this.getRowMeta(row).index,
-        _self = this;
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_rowExpansion', value: true},
+                     {name: this.id + '_expandedRowIndex', value: rowIndex},
+                     {name: this.id + '_encodeFeature', value: true},
+                     {name: this.id + '_skipChildren', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            row.after(content);
+                            row.next().fadeIn();
+                        }
+                    });
 
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
-
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                if(id == _self.id){
-                    row.after(content);
-                    row.next().fadeIn();
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
+                return true;
+            },
+            oncomplete: function() {
+                $this.expansionProcess = $.grep($this.expansionProcess, function(r) {
+                    return r !== rowIndex;
+                });
             }
-
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-
-            return true;
         };
 
-        options.oncomplete = function() {
-            _self.expansionProcess = $.grep(_self.expansionProcess, function(r) {
-                return r != rowIndex;
-            });
-        };
-
-        options.params = [
-        {
-            name: this.id + '_rowExpansion', 
-            value: true
-        },
-
-        {
-            name: this.id + '_expandedRowIndex', 
-            value: rowIndex
-        },
-
-        {
-            name: this.id + '_encodeFeature', 
-            value: true
-        },
-
-        {
-            name: this.id + '_skipChildren', 
-            value: true
-        }
-        ];
-        
         if(this.hasBehavior('rowToggle')) {
             var rowToggleBehavior = this.cfg.behaviors['rowToggle'];
 
@@ -1687,31 +1583,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            params: [
-                    {name: this.id + '_encodeFeature', value: true},
-                    {name: this.id + '_cellInfo', value: cellInfo},
-                    {name: cellEditorId, value: cellEditorId}
-                ],
-            onsuccess: function(responseXML) {
-                var xmlDoc = $(responseXML.documentElement),
-                updates = xmlDoc.find("update");
-
-                for(var i=0; i < updates.length; i++) {
-                    var update = updates.eq(i),
-                    id = update.attr('id'),
-                    content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                    if(id === $this.id)
-                        cellEditor.children('.ui-cell-editor-output').html(content);
-                    else
-                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
-
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
+            params: [{name: this.id + '_encodeFeature', value: true},
+                     {name: this.id + '_cellInfo', value: cellInfo},
+                     {name: cellEditorId, value: cellEditorId}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            cellEditor.children('.ui-cell-editor-output').html(content);
+                        }
+                    });
 
                 return true;
-            }
-            ,oncomplete: function(xhr, status, args) {                            
+            },
+            oncomplete: function(xhr, status, args) {                            
                 if(args.validationFailed)
                     cell.addClass('ui-state-error');
                 else
@@ -1723,7 +1608,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.behaviors['cellEdit'].call(this, cell, options);
         } 
         else {
-            PrimeFaces.ajax.AjaxRequest(options);
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
     
@@ -1746,52 +1631,37 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     doRowEditRequest: function(rowEditor, action) {
         var row = rowEditor.closest('tr'),
+        expanded = row.hasClass('ui-expanded-row'),
+        $this = this,
         options = {
             source: this.id,
             process: this.id,
             update: this.id,
-            formId: this.cfg.formId
-        },
-        expanded = row.hasClass('ui-expanded-row'),
-        $this = this;
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_rowEditIndex', value: this.getRowMeta(row).index},
+                     {name: this.id + '_rowEditAction', value: action},
+                     {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            if(expanded) {
+                                row.next().remove();
+                            }
 
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
+                            row.replaceWith(content);
+                        }
+                    });
 
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                if(id == $this.id) {
-                    if(this.args.validationFailed) {
-                        content = content.replace('ui-widget-content', 'ui-widget-content ui-row-editing ui-state-error');
-                    }
-                    
-                    //remove row expansion
-                    if(expanded) {
-                        row.next().remove();
-                    }
-
-                    row.replaceWith(content);
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                if(args.validationFailed) {
+                    row.addClass('ui-widget-content ui-row-editing ui-state-error');
                 }
             }
-
-            return true;
         };
-
-        options.params = [
-            {name: this.id + '_rowEditIndex', value: this.getRowMeta(row).index},
-            {name: this.id + '_rowEditAction', value: action},
-            {name: this.id + '_encodeFeature', value: true}
-        ];
-
+        
         if(action === 'save') {
             row.find('div.ui-cell-editor').each(function() {
                 options.params.push({name: this.id, value: this.id});
@@ -1805,7 +1675,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.behaviors['rowEditCancel'].call(this, row, options);
         }
         else {
-            PrimeFaces.ajax.AjaxRequest(options); 
+            PrimeFaces.ajax.Request.handle(options); 
         }
     },
 
