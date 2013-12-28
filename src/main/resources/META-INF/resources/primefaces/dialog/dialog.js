@@ -506,51 +506,37 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
         var win = $(window);
         this.jq.offset({
-        top: this.state.offset.top + (win.scrollTop() - this.state.windowScrollTop)
-        ,left: this.state.offset.left + (win.scrollLeft() - this.state.windowScrollLeft)
+                top: this.state.offset.top + (win.scrollTop() - this.state.windowScrollTop)
+                ,left: this.state.offset.left + (win.scrollLeft() - this.state.windowScrollLeft)
         });
     },
     
     loadContents: function() {
-        var options = {
+        var $this = this,
+        options = {
             source: this.id,
             process: this.id,
-            update: this.id
-        },
-        $this = this;
+            update: this.id,
+            params: [
+                {name: this.id + '_contentLoad', value: true}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.content.html(content);
+                        }
+                    });
 
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
-
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                if(id === $this.id){
-                    $this.content.html(content);
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
+                return true;
+            },
+            oncomplete: function() {
+                $this.loaded = true;
+                $this.show();
             }
-
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-
-            return true;
         };
-
-        options.oncomplete = function() {
-            $this.loaded = true;
-            $this.show();
-        };
-
-        options.params = [
-            {name: this.id + '_contentLoad', value: true}
-        ];
         
-        PrimeFaces.ajax.AjaxRequest(options);
+        PrimeFaces.ajax.Request.handle(options);
     },
     
     applyARIA: function() {
