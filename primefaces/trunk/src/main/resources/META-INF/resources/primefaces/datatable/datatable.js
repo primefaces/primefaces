@@ -1289,17 +1289,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if($.inArray(rowIndex, this.expansionProcess) === -1) {
             this.expansionProcess.push(rowIndex);
             
-            if(expanded) {   
+            if(expanded) {
                 toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
-
-                row.next().fadeOut(function() {
-                    $(this).remove();
-
-                    $this.expansionProcess = $.grep($this.expansionProcess, function(r) {
-                        return (r !== rowIndex);
-                    });
+                this.collapseRow(row);
+                $this.expansionProcess = $.grep($this.expansionProcess, function(r) {
+                    return (r !== rowIndex);
                 });
-                
                 this.fireRowCollapseEvent(row);
             }
             else {
@@ -1307,6 +1302,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     this.collapseAllRows();
                 }
                 
+                row.addClass('ui-expanded-row');
                 toggler.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
 
                 this.loadExpandedRowContent(row);
@@ -1330,8 +1326,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            row.after(content);
-                            row.next().fadeIn();
+                            this.displayExpandedRow(row, content);
                         }
                     });
 
@@ -1354,6 +1349,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
+    displayExpandedRow: function(row, content) {
+        row.after(content);
+        row.next().fadeIn();
+    },
+    
     fireRowCollapseEvent: function(row) {
         var rowIndex = this.getRowMeta(row).index;
         
@@ -1373,24 +1373,32 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         } 
     },
     
+    collapseRow: function(row) {
+        row.removeClass('ui-expanded-row').next().remove();
+    },
+    
     collapseAllRows: function() {
-        this.tbody.children('.ui-expanded-row-content').each(function() {
-                var expandedRowContent = $(this),
-                expandedRow = expandedRowContent.prev();
+        var $this = this;
+        
+        this.getExpandedRows().each(function() {
+            var expandedRow = $(this);
+            $this.collapseRow(expandedRow);
 
-                expandedRowContent.remove();
-                
-                var columns = expandedRow.children('td');
-                for(var i = 0; i < columns.length; i++) {
-                    var column = columns.eq(i),
-                    toggler = column.children('.ui-row-toggler');
+            var columns = expandedRow.children('td');
+            for(var i = 0; i < columns.length; i++) {
+                var column = columns.eq(i),
+                toggler = column.children('.ui-row-toggler');
 
-                    if(toggler.length > 0) {
-                        toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
-                        break;
-                    }
+                if(toggler.length > 0) {
+                    toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
+                    break;
                 }
-            });
+            }
+        });
+    },
+    
+    getExpandedRows: function() {
+        return this.tbody.children('.ui-expanded-row');
     },
         
     /**
@@ -2402,5 +2410,27 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this._super(row);
         this._super(this.getTwinRow(row));
     },
-
+    
+    //@Override
+    displayExpandedRow: function(row, content) {
+        var twinRow = this.getTwinRow(row);
+        row.after(content);
+        var expansionRow = row.next();
+        expansionRow.show();
+        
+        twinRow.after('<tr class="ui-expanded-row-content ui-widget-content"><td></td></tr>');       
+        twinRow.next().children('td').attr('colspan', twinRow.children('td').length).height(expansionRow.children('td').height());
+    },
+    
+    //@Override
+    collapseRow: function(row) {
+        this._super(row);
+        this._super(this.getTwinRow(row));
+    },
+    
+    //@Override
+    getExpandedRows: function() {
+        return this.frozenTbody.children('.ui-expanded-row');
+    }
+    
 });
