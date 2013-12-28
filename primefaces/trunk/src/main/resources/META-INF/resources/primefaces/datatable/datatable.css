@@ -237,3 +237,8 @@
 .ui-datatable-frozen-container .ui-datatable-scrollable-body {
     overflow: hidden;
 }
+
+.ui-datatable .ui-datatable-frozen-container .ui-row-toggler {
+    margin-top: -2px;
+    margin-bottom: -2px;
+}
