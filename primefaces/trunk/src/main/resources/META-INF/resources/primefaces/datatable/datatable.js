@@ -1417,7 +1417,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             row = element.closest('tr');
                             
                             if(element.hasClass('ui-icon-pencil')) {
-                                $this.showEditors(row);
+                                $this.switchToRowEdit(row);
                                 element.hide().siblings().show();
                             }
                             else if(element.hasClass('ui-icon-check')) {
@@ -1453,13 +1453,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
-    showEditors: function(row) {
-        row.addClass('ui-state-highlight ui-row-editing').children('td.ui-editable-column').each(function() {
-            var column = $(this);
-
-            column.find('.ui-cell-editor-output').hide();
-            column.find('.ui-cell-editor-input').show();
-        });
+    switchToRowEdit: function(row) {
+        this.showRowEditors(row);
         
         if(this.hasBehavior('rowEditInit')) {
             var rowEditInitBehavior = this.cfg.behaviors['rowEditInit'],
@@ -1471,6 +1466,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             rowEditInitBehavior.call(this, null, ext);
         }
+    },
+    
+    showRowEditors: function(row) {
+        row.addClass('ui-state-highlight ui-row-editing').children('td.ui-editable-column').each(function() {
+            var column = $(this);
+
+            column.find('.ui-cell-editor-output').hide();
+            column.find('.ui-cell-editor-input').show();
+        });
     },
     
     showCellEditor: function(c) {
@@ -1665,6 +1669,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     doRowEditRequest: function(rowEditor, action) {
         var row = rowEditor.closest('tr'),
+        rowIndex = this.getRowMeta(row).index,
         expanded = row.hasClass('ui-expanded-row'),
         $this = this,
         options = {
@@ -1680,24 +1685,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             if(expanded) {
-                                row.next().remove();
+                                this.collapseRow(row);
                             }
 
-                            row.replaceWith(content);
+                            this.updateRow(row, content);
                         }
                     });
 
                 return true;
             },
             oncomplete: function(xhr, status, args) {
-                if(args.validationFailed) {
-                    row.addClass('ui-widget-content ui-row-editing ui-state-error');
+                if(args && args.validationFailed) {
+                    $this.invalidateRow(rowIndex);
                 }
             }
         };
         
         if(action === 'save') {
-            row.find('div.ui-cell-editor').each(function() {
+            this.getRowEditors(row).each(function() {
                 options.params.push({name: this.id, value: this.id});
             });
         }
@@ -1711,6 +1716,27 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options); 
         }
+    },
+    
+    /*
+     * Updates row with given content
+     */
+    updateRow: function(row, content) {
+        row.replaceWith(content);
+    },
+    
+    /**
+     * Displays row editors in invalid format
+     */
+    invalidateRow: function(index) {
+        this.tbody.children('tr').eq(index).addClass('ui-widget-content ui-row-editing ui-state-error');
+    },
+    
+    /**
+     * Finds all editors of a row
+     */
+    getRowEditors: function(row) {
+        return row.find('div.ui-cell-editor');
     },
 
     /**
@@ -2431,6 +2457,39 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     //@Override
     getExpandedRows: function() {
         return this.frozenTbody.children('.ui-expanded-row');
+    },
+    
+    //@Override
+    showRowEditors: function(row) {
+        this._super(row);
+        this._super(this.getTwinRow(row));
+    },
+    
+    //@Override
+    updateRow: function(row, content) {
+        var table = $('<table><tbody>' + content + '</tbody></table>'),
+        newRow = table.find('> tbody > tr'),
+        columns = newRow.children('td'),
+        frozenRow = this.copyRow(newRow),
+        scrollableRow = this.copyRow(newRow),
+        twinRow = this.getTwinRow(row);
+    
+        frozenRow.append(columns.slice(0, this.cfg.frozenColumns));
+        scrollableRow.append(columns.slice(this.cfg.frozenColumns));
+
+        row.replaceWith(frozenRow);
+        twinRow.replaceWith(scrollableRow);
+   },
+    
+    //@Override
+    invalidateRow: function(index) {
+        this.frozenTbody.children('tr').eq(index).addClass('ui-widget-content ui-row-editing ui-state-error');
+        this.scrollableTbody.children('tr').eq(index).addClass('ui-widget-content ui-row-editing ui-state-error');
+    },
+    
+    //@Override
+    getRowEditors: function(row) {
+        return row.find('div.ui-cell-editor').add(this.getTwinRow(row).find('div.ui-cell-editor'));
     }
     
 });
