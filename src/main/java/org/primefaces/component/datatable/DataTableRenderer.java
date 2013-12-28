@@ -846,6 +846,10 @@ public class DataTableRenderer extends DataRenderer {
         
         summaryRow.encodeAll(context);
     }
+    
+    public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex) throws IOException {
+        return this.encodeRow(context, table, clientId, rowIndex, 0, table.getColumnsCount());
+    }
 
     public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();        
