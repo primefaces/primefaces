@@ -6,8 +6,8 @@ PrimeFaces.widget.DataGrid = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
-        this.content = this.jqId + '_content';
+        this.cfg.formId = $(this.jqId).closest('form').attr('id');
+        this.content = $(this.jqId + '_content');
 
         if(this.cfg.paginator) {
             this.setupPaginator();
@@ -15,9 +15,9 @@ PrimeFaces.widget.DataGrid = PrimeFaces.widget.BaseWidget.extend({
     },
     
     setupPaginator: function() {
-        var _self = this;
+        var $this = this;
         this.cfg.paginator.paginate = function(newState) {
-            _self.handlePagination(newState);
+            $this.handlePagination(newState);
         };
 
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
@@ -25,62 +25,46 @@ PrimeFaces.widget.DataGrid = PrimeFaces.widget.BaseWidget.extend({
             
     hasBehavior: function(event) {
         if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
+            return this.cfg.behaviors[event] !== undefined;
         }
     
         return false;
     },
             
     handlePagination: function(newState) {
-        var _self = this,
+        var $this = this,
         options = {
             source: this.id,
             update: this.id,
             process: this.id,
             formId: this.cfg.formId,
-            onsuccess: function(responseXML) {
-                var xmlDoc = $(responseXML.documentElement),
-                updates = xmlDoc.find("update");
+            params: [
+                {name: this.id + '_pagination', value: true},
+                {name: this.id + '_first', value: newState.first},
+                {name: this.id + '_rows', value: newState.rows}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.content.html(content);
+                        }
+                    });
 
-                for(var i=0; i < updates.length; i++) {
-                    var update = updates.eq(i),
-                    id = update.attr('id'),
-                    content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                    if(id == _self.id){
-                        $(_self.content).html(content);
-                    }
-                    else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                    }
-                }
-
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-                
                 return true;
+            },
+            oncomplete: function() {
+                $this.paginator.cfg.page = newState.page;
+                $this.paginator.updateUI();
             }
         };
-        
-        options.oncomplete = function() {
-            //update paginator state
-            _self.paginator.cfg.page = newState.page;
-            
-            _self.paginator.updateUI();
-        };
-
-        options.params = [
-            {name: this.id + '_pagination', value: true},
-            {name: this.id + '_first', value: newState.first},
-            {name: this.id + '_rows', value: newState.rows}
-        ];
 
         if(this.hasBehavior('page')) {
             var pageBehavior = this.cfg.behaviors['page'];
-
             pageBehavior.call(this, newState, options);
         }
         else {
-            PrimeFaces.ajax.AjaxRequest(options);
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
     
