@@ -964,8 +964,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var row = this.findRow(r),
         rowMeta = this.getRowMeta(row);
 
-        row.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
-        
+        this.highlightRow(row);
+
         if(this.isCheckboxSelectionEnabled()) {
             if(this.cfg.nativeElements)
                 row.children('td.ui-selection-column').find(':checkbox').prop('checked', true);
@@ -988,7 +988,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var row = this.findRow(r),
         rowMeta = this.getRowMeta(row);
 
-        row.removeClass('ui-state-highlight').attr('aria-selected', false);
+        this.unhighlightRow(row);
         
         if(this.isCheckboxSelectionEnabled()) {
             if(this.cfg.nativeElements)
@@ -1006,6 +1006,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(!silent) {
             this.fireRowUnselectEvent(rowMeta.key, "rowUnselect");
         }
+    },
+    
+    /*
+     * Highlights row as selected
+     */
+    highlightRow: function(row) {
+        row.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
+    },
+    
+    /*
+     * Clears selected visuals
+     */
+    unhighlightRow: function(row) {
+        row.removeClass('ui-state-highlight').attr('aria-selected', false);
     },
     
     /**
@@ -1063,7 +1077,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.selection = [];        
         if(this.currentRadio) {
             var activeRow = this.currentRadio.closest('tr.ui-state-highlight');
-            activeRow.removeClass('ui-state-highlight').attr('aria-selected', false);
+            this.unhighlightRow(activeRow);
             
             if(this.cfg.nativeElements) {
                 this.currentRadio.prop('checked', false);
@@ -1084,7 +1098,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             radio.children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
             radio.prev().children('input').attr('checked', 'checked');
         }
-        row.addClass('ui-state-highlight').attr('aria-selected', true); 
+        this.highlightRow(row);
         
         this.addSelection(rowMeta.key);
         
@@ -1100,7 +1114,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var row = checkbox.closest('tr'),
         rowMeta = this.getRowMeta(row);
 
-        row.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
+        this.highlightRow(row);
         
         if(!this.cfg.nativeElements) {
             this.selectCheckbox(checkbox);
@@ -1124,7 +1138,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var row = checkbox.closest('tr'),
         rowMeta = this.getRowMeta(row);
 
-        row.removeClass('ui-state-highlight').attr('aria-selected', false);
+        this.unhighlightRow(row);
         
         if(!this.cfg.nativeElements) {
             this.unselectCheckbox(checkbox);
@@ -2345,6 +2359,48 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     
     getTbody: function() {
         return this.tbody||$(this.jqId + '_frozenTbody,' + this.jqId + '_scrollableTbody');
-    }
+    },
+    
+    bindRowHover: function() {
+        var $this = this;
+        
+        $(document).off('mouseover.datatable mouseout.datatable', this.rowSelector)
+                    .on('mouseover.datatable', this.rowSelector, null, function() {
+                        var row = $(this),
+                        twinRow = $this.getTwinRow(row);
+                
+                        if(!row.hasClass('ui-state-highlight')) {
+                            row.addClass('ui-state-hover');
+                            twinRow.addClass('ui-state-hover');
+                        }
+                    })
+                    .on('mouseout.datatable', this.rowSelector, null, function() {
+                        var row = $(this),
+                        twinRow = $this.getTwinRow(row);
+
+                        if(!row.hasClass('ui-state-highlight')) {
+                            row.removeClass('ui-state-hover');
+                            twinRow.removeClass('ui-state-hover');
+                        }
+                    });
+    },
+    
+    getTwinRow: function(row) {
+        var twinTbody = (this.tbody.index(row.parent()) === 0) ? this.tbody.eq(1) : this.tbody.eq(0);
+        
+        return twinTbody.children().eq(row.index());
+    },
+    
+    //@Override
+    highlightRow: function(row) {
+        this._super(row);
+        this._super(this.getTwinRow(row));
+    },
+    
+    //@Override
+    unhighlightRow: function(row) {
+        this._super(row);
+        this._super(this.getTwinRow(row));
+    },
 
 });
