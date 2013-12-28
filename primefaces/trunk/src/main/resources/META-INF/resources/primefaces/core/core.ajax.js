@@ -551,6 +551,8 @@ PrimeFaces.ajax = {
                 if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
                     var textContent = node.textContent || node.innerText || node.text;
                     xhr.pfArgs = $.parseJSON(textContent);
+                } else {
+                    xhr.pfArgs = {};
                 }
             }
         },
