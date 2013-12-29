@@ -1,7 +1,35 @@
 /**
  * Ajax shortcut
  */
+PrimeFaces.AB_MAPPING = { 
+    "source"            :   "s",
+    "formId"            :   "f",
+    "process"           :   "p",
+    "update"            :   "u",
+    "event"             :   "e",
+    "async"             :   "a",
+    "global"            :   "g",
+    "delay"             :   "d",
+    "ignoreAutoUpdate"  :   "iau",
+    "partialSubmit"     :   "ps",
+    "resetValues"       :   "rv",
+    "fragmentId"        :   "fi",
+    "fragmentUpdate"    :   "fu",
+    "params"            :   "pa",
+    "onstart"           :   "ons",
+    "onerror"           :   "one",
+    "onsuccess"         :   "onsu",
+    "oncomplete"        :   "onc"
+};
+
 PrimeFaces.ab = function(cfg, ext) {
+    $.map(PrimeFaces.AB_MAPPING, function(value, key) {
+        if (cfg[value]) {
+            cfg[key] = cfg[value];
+            delete cfg[value];
+        }
+    });
+    
     PrimeFaces.ajax.Request.handle(cfg, ext);
 };
 
