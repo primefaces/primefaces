@@ -544,10 +544,8 @@ public abstract class CoreRenderer extends Renderer {
 
         //validators
         Validator[] validators = component.getValidators();
-        if(validators != null) {
-            for(int i = 0; i < validators.length; i++) {
-                Validator validator = validators[i];
-
+        if (validators != null) {
+            for (Validator validator : validators) {
                 if(validator instanceof ClientValidator) {
                     ClientValidator clientValidator = (ClientValidator) validator;
                     validatorIds.add(clientValidator.getValidatorId());
