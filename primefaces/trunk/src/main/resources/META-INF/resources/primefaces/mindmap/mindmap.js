@@ -277,59 +277,47 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     expandNode: function(node) {
-        var _self = this,
-        key = node.data('model').key;
-
-        var selectBehavior = this.cfg.behaviors['select'],
+        var $this = this,
+        key = node.data('model').key,
+        selectBehavior = this.cfg.behaviors['select'],
         ext = {
+            update: this.id,
             params: [
                 {name: this.id + '_nodeKey', value: key}
-            ]
-            ,update: this.id
-            ,onsuccess: function(responseXML) {
-                var xmlDoc = $(responseXML.documentElement),
-                updates = xmlDoc.find("update");
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            var nodeModel = $.parseJSON(content);
 
-                for(var i=0; i < updates.length; i++) {
-                    var update = updates.eq(i),
-                    id = update.attr('id'),
-                    content = PrimeFaces.ajax.AjaxUtils.getContent(update);
+                            //update model
+                            node.data('model', nodeModel);
 
-                    if(id == _self.id){
-                        var nodeModel = $.parseJSON(content);
+                            node.data('connections', []);
 
-                        //update model
-                        node.data('model', nodeModel);
-                        
-                        node.data('connections', []);
+                            //remove other nodes
+                            for(var j = 0; j < this.nodes.length; j++) {
+                                var otherNode = this.nodes[j],
+                                nodeKey = otherNode.data('model').key;
 
-                        //remove other nodes
-                        for(var j = 0; j < _self.nodes.length; j++) {
-                            var otherNode = _self.nodes[j],
-                            nodeKey = otherNode.data('model').key;
-
-                            if(nodeKey != key) {
-                                _self.removeNode(otherNode);
+                                if(nodeKey !== key) {
+                                    this.removeNode(otherNode);
+                                }
                             }
+
+                            this.nodes = [];
+                            this.nodes.push(node);
+
+                            this.centerNode(node);
                         }
-
-                        _self.nodes = [];
-                        _self.nodes.push(node);
-
-                        _self.centerNode(node);
-                    }
-                    else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                    }
-                }
-
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
+                    });
 
                 return true;
             }
         };
 
-        selectBehavior.call(_self, this, ext);      
+        selectBehavior.call(this, ext);      
     },
         
     removeNode: function(node) {

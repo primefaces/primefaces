@@ -5490,53 +5490,33 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     setupEventSource: function() {
-        var _self = this,
+        var $this = this,
         offset = new Date().getTimezoneOffset()*60000 + this.cfg.offset;
 
         this.cfg.events = function(start, end, callback) {
             var options = {
-                source: _self.id,
-                process: _self.id,
-                update: _self.id,
-                formId: _self.cfg.formId,
-                onsuccess: function(responseXML) {
-                    var xmlDoc = $(responseXML.documentElement),
-                    updates = xmlDoc.find("update");
-
-                    for(var i=0; i < updates.length; i++) {
-                        var update = updates.eq(i),
-                        id = update.attr('id'),
-                        data = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                        if(id == _self.id){
-                            var events = $.parseJSON(data).events;
-
-//                            for(var j=0; j < events.length; j++) {
-//                            	/* IGNORE THIS, Using UTC now */
-//                                events[j].start = new Date(events[j].start + offset);
-//                                events[j].end = new Date(events[j].end + offset);
-//                            }
-
-                            callback(events);
-                        }
-                        else {
-                            PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, data);
-                        }
-                    }
-
-                    PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
+                source: $this.id,
+                process: $this.id,
+                update: $this.id,
+                formId: $this.cfg.formId,
+                params: [
+                    {name: $this.id + '_start', value: start.getTime() + offset},
+                    {name: $this.id + '_end', value: end.getTime() + offset}
+                ],
+                onsuccess: function(responseXML, status, xhr) {
+                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                            widget: $this,
+                            handle: function(content) {
+                                callback($.parseJSON(content).events);
+                            }
+                        });
 
                     return true;
                 }
             };
 
-            options.params = [
-                {name: _self.id + '_start', value: start.getTime() + offset},
-                {name: _self.id + '_end', value: end.getTime() + offset}
-            ];
-
-            PrimeFaces.ajax.AjaxRequest(options);
-        }
+            PrimeFaces.ajax.Request.handle(options);
+        };
     },
     
     update: function() {

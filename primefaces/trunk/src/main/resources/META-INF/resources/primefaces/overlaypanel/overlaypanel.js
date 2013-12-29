@@ -230,45 +230,31 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     loadContents: function() {
-        var options = {
+        var $this = this,
+        options = {
             source: this.id,
             process: this.id,
-            update: this.id
-        },
-        $this = this;
+            update: this.id,
+            params: [
+                {name: this.id + '_contentLoad', value: true}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.content.html(content);
+                            this.loaded = true;
+                        }
+                    });
 
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
-
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                if(id == $this.id){
-                    $this.content.html(content);
-                    $this.loaded = true;
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
+                return true;
+            },
+            oncomplete: function() {
+                $this._show();
             }
-
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-
-            return true;
         };
 
-        options.oncomplete = function() {
-            $this._show();
-        };
-
-        options.params = [
-            {name: this.id + '_contentLoad', value: true}
-        ];
-
-        PrimeFaces.ajax.AjaxRequest(options);
+        PrimeFaces.ajax.Request.handle(options);
     },
     
     isVisible: function() {

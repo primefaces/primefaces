@@ -65,78 +65,59 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
     },
     
     loadStep: function(stepToGo, isBack) {
-        var _self = this;
-
-        var options = {
-            source:this.id,
-            process:this.id,
-            update:this.id,
-            formId:this.cfg.formId,
-            onsuccess: function(responseXML) {
-                var xmlDoc = $(responseXML.documentElement),
-                updates = xmlDoc.find('update');
-
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-
-                _self.currentStep = this.args.currentStep;
-
-                for(var i=0; i < updates.length; i++) {
-                    var update = updates.eq(i),
-                    id = update.attr('id'),
-                    content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                    if(id == _self.id){
-                        //update content
-                        _self.content.html(content);
-                        
-                        if(!this.args.validationFailed) {
-                            //update navigation controls
-                            var currentStepIndex = _self.getStepIndex(_self.currentStep);
-
-                            if(_self.cfg.showNavBar) {
-                                if(currentStepIndex == _self.cfg.steps.length - 1) {
-                                    _self.hideNextNav();
-                                    _self.showBackNav();
-                                } else if(currentStepIndex == 0) {
-                                    _self.hideBackNav();
-                                    _self.showNextNav();
-                                } else {
-                                    _self.showBackNav();
-                                    _self.showNextNav();
-                                }
-                            }
-
-                            //update step status
-                            if(_self.cfg.showStepStatus) {
-                                _self.stepControls.removeClass('ui-state-highlight');
-                                $(_self.stepControls.get(currentStepIndex)).addClass('ui-state-highlight');
-                            }
-
+        var $this = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            formId: this.cfg.formId,
+            params: [
+                {name: this.id + '_wizardRequest', value: true},
+                {name: this.id + '_stepToGo', value: stepToGo}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.content.html(content);
                         }
-
-                    }
-                    else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                    }
-                }
+                    });
 
                 return true;
             },
-            error: function() {
-                PrimeFaces.error('Error in loading dynamic tab content');
+            oncomplete: function(xhr, status, args) {
+                $this.currentStep = args.currentStep;
+                
+                if(!args.validationFailed) {
+                    var currentStepIndex = $this.getStepIndex($this.currentStep);
+
+                    if($this.cfg.showNavBar) {
+                        if(currentStepIndex === $this.cfg.steps.length - 1) {
+                            $this.hideNextNav();
+                            $this.showBackNav();
+                        } else if(currentStepIndex === 0) {
+                            $this.hideBackNav();
+                            $this.showNextNav();
+                        } else {
+                            $this.showBackNav();
+                            $this.showNextNav();
+                        }
+                    }
+
+                    //update step status
+                    if($this.cfg.showStepStatus) {
+                        $this.stepControls.removeClass('ui-state-highlight');
+                        $($this.stepControls.get(currentStepIndex)).addClass('ui-state-highlight');
+                    }
+                }
             }
         };
-
-        options.params = [
-            {name: this.id + '_wizardRequest', value: true},
-            {name: this.id + '_stepToGo', value: stepToGo}
-        ];
 
         if(isBack) {
             options.params.push({name: this.id + '_backRequest', value: true});
         }
 
-        PrimeFaces.ajax.AjaxRequest(options);
+        PrimeFaces.ajax.Request.handle(options);
     },
     
     getStepIndex: function(step) {

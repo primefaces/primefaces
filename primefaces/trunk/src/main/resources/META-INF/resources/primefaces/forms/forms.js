@@ -337,64 +337,52 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
     },
     
     search: function(query) {
-        var _self = this;
         this.query = query;
 
-        var options = {
+        var $this = this,
+        options = {
             source: this.id,
             update: this.id,
-            onsuccess: function(responseXML) {
-                var xmlDoc = $(responseXML.documentElement),
-                updates = xmlDoc.find("update");
+            process: this.id,
+            params: [
+                {name: this.id + '_query', value: query}  
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.panel.html(content);
+                            this.items = $this.panel.find('.ui-autocomplete-item');
 
-                for(var i=0; i < updates.length; i++) {
-                    var update = updates.eq(i),
-                    id = update.attr('id'),
-                    data = PrimeFaces.ajax.AjaxUtils.getContent(update);
+                            this.bindDynamicEvents();
 
-                    if(id == _self.id) {
-                        _self.panel.html(data);
-                        _self.items = _self.panel.find('.ui-autocomplete-item');
-                        
-                        _self.bindDynamicEvents();
-                        
-                        if(_self.items.length > 0) {                            
-                            //highlight first item
-                            _self.items.eq(0).addClass('ui-state-highlight');
-                            
-                            //adjust height
-                            if(_self.cfg.scrollHeight && _self.panel.height() > _self.cfg.scrollHeight) {
-                                _self.panel.height(_self.cfg.scrollHeight);
+                            if(this.items.length > 0) {                            
+                                //highlight first item
+                                this.items.eq(0).addClass('ui-state-highlight');
+
+                                //adjust height
+                                if(this.cfg.scrollHeight && this.panel.height() > this.cfg.scrollHeight) {
+                                    this.panel.height(this.cfg.scrollHeight);
+                                }
+
+                                if(this.panel.is(':hidden')) {
+                                    this.show();
+                                }  else {
+                                    this.alignPanel(); //with new items
+                                }
+
                             }
-
-                            if(_self.panel.is(':hidden')) {
-                                _self.show();
-                            } 
                             else {
-                                _self.alignPanel(); //with new items
+                                this.panel.hide();
                             }
-
                         }
-                        else {
-                            _self.panel.hide();
-                        }
-                    } 
-                    else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, data);
-                    }
-                }
-
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
+                    });
 
                 return true;
             }
         };
 
-        options.params = [
-          {name: this.id + '_query', value: query}  
-        ];
-        
-        PrimeFaces.ajax.AjaxRequest(options);
+        PrimeFaces.ajax.Request.handle(options);
     },
     
     alignPanel: function() {

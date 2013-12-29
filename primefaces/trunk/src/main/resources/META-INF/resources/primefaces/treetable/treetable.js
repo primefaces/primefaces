@@ -147,101 +147,75 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     sort: function(columnHeader, order) {  
         columnHeader.data('sortorder', order);
     
-        var options = {
+        var $this = this,
+        options = {
             source: this.id,
             update: this.id,
-            process: this.id
-        },
-        $this = this;
-        
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
+            process: this.id,
+            params: [
+                {name: this.id + '_sorting', value: true},
+                {name: this.id + '_sortKey', value: columnHeader.attr('id')},
+                {name: this.id + '_sortDir', value: order}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.tbody.html(content);
+                            
+                            columnHeader.removeClass('ui-state-hover').addClass('ui-state-active');
+                            var sortIcon = columnHeader.find('.ui-sortable-column-icon');
 
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
+                            if(order === 'DESCENDING')
+                                sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
+                            else if(order === 'ASCENDING')
+                                sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                        }
+                    });
 
-                if(id === $this.id) {
-                    $this.tbody.html(content);
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
-                                
-                columnHeader.removeClass('ui-state-hover').addClass('ui-state-active');
-                var sortIcon = columnHeader.find('.ui-sortable-column-icon');
-
-                if(order === 'DESCENDING')
-                    sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
-                else if(order === 'ASCENDING')
-                    sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                return true;
             }
-
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-            
-            return true;
         };
-                
-        options.params = [{name: this.id + '_sorting', value: true},
-                          {name: this.id + '_sortKey', value: columnHeader.attr('id')},
-                          {name: this.id + '_sortDir', value: order}];
-
+        
         if(this.hasBehavior('sort')) {
             var sortBehavior = this.cfg.behaviors['sort'];
-
             sortBehavior.call(this, options);
         } 
         else {
-            PrimeFaces.ajax.AjaxRequest(options); 
+            PrimeFaces.ajax.Request.handle(options); 
         }
     },
     
     expandNode: function(node) {
-        var options = {
+        var $this = this,
+        nodeKey = node.attr('data-rk'),
+        options = {
             source: this.id,
             process: this.id,
-            update: this.id
-        },
-        $this = this,
-        nodeKey = node.attr('data-rk');
+            update: this.id,
+            params: [
+                {name: this.id + '_expand', value: nodeKey}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            node.after(content);
+                            node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
+                            node.attr('aria-expanded', true);
+                        }
+                    });
 
-        options.onsuccess = function(responseXML) {
-            var xmlDoc = $(responseXML.documentElement),
-            updates = xmlDoc.find("update");
-
-            for(var i=0; i < updates.length; i++) {
-                var update = updates.eq(i),
-                id = update.attr('id'),
-                content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                if(id == $this.id){
-                    node.after(content);
-                    node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
-                    node.attr('aria-expanded', true);
-                }
-                else {
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
+                return true;
             }
-
-            PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-
-            return true;
         };
-
-        options.params = [
-            {name: this.id + '_expand', value: nodeKey}
-        ];
-
+        
         if(this.hasBehavior('expand')) {
             var expandBehavior = this.cfg.behaviors['expand'];
-
             expandBehavior.call(this, node, options);
         }
         else {
-            PrimeFaces.ajax.AjaxRequest(options);
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
     
@@ -253,7 +227,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             var nextNode = nextNodes.eq(i),
             nextNodeRowKey = nextNode.attr('data-rk');
             
-            if(nextNodeRowKey.indexOf(nodeKey) != -1) {
+            if(nextNodeRowKey.indexOf(nodeKey) !== -1) {
                nextNode.remove();
             } 
             else {

@@ -27,11 +27,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     expandNode: function(node) {    
-        var _self = this;
+        var $this = this;
 
         if(this.cfg.dynamic) {
-
-            if(this.cfg.cache && _self.getNodeChildrenContainer(node).children().length > 0) {
+            if(this.cfg.cache && $this.getNodeChildrenContainer(node).children().length > 0) {
                 this.showNodeChildren(node);
 
                 return;
@@ -48,58 +47,43 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 source: this.id,
                 process: this.id,
                 update: this.id,
-                formId: this.cfg.formId
-            };
+                formId: this.cfg.formId,
+                params: [
+                    {name: this.id + '_expandNode', value: $this.getRowKey(node)}
+                ],
+                onsuccess: function(responseXML, status, xhr) {
+                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                            widget: $this,
+                            handle: function(content) {
+                                var nodeChildrenContainer = this.getNodeChildrenContainer(node);
+                                nodeChildrenContainer.append(content);
 
-            options.onsuccess = function(responseXML) {
-                var xmlDoc = $(responseXML.documentElement),
-                updates = xmlDoc.find("update");
-                
-                for(var i=0; i < updates.length; i++) {
-                    var update = updates.eq(i),
-                    id = update.attr('id'),
-                    content = PrimeFaces.ajax.AjaxUtils.getContent(update);
+                                this.showNodeChildren(node);
 
-                    if(id === _self.id) {
-                        var nodeChildrenContainer = _self.getNodeChildrenContainer(node);
-                        nodeChildrenContainer.append(content);
+                                if(this.cfg.draggable) {                            
+                                    this.makeDraggable(nodeChildrenContainer.find('span.ui-treenode-content'));
+                                }
 
-                        _self.showNodeChildren(node);
-  
-                        if(_self.cfg.draggable) {                            
-                            _self.makeDraggable(nodeChildrenContainer.find('span.ui-treenode-content'));
-                        }
-                        
-                        if(_self.cfg.droppable) {
-                            _self.makeDropPoints(nodeChildrenContainer.find('li.ui-tree-droppoint'));
-                            _self.makeDropNodes(nodeChildrenContainer.find('span.ui-treenode-droppable'));
-                        }
-                    }
-                    else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                    }
+                                if(this.cfg.droppable) {
+                                    this.makeDropPoints(nodeChildrenContainer.find('li.ui-tree-droppoint'));
+                                    this.makeDropNodes(nodeChildrenContainer.find('span.ui-treenode-droppable'));
+                                }
+                            }
+                        });
+
+                    return true;
+                },
+                oncomplete: function() {
+                    node.removeData('processing');
                 }
-
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-
-                return true;
             };
-
-            options.oncomplete = function() {
-                node.removeData('processing');
-            }
-
-            options.params = [
-                {name: this.id + '_expandNode', value: _self.getRowKey(node)}
-            ];
 
             if(this.hasBehavior('expand')) {
                 var expandBehavior = this.cfg.behaviors['expand'];
-
                 expandBehavior.call(this, node, options);
             }
             else {
-                PrimeFaces.ajax.AjaxRequest(options);
+                PrimeFaces.ajax.Request.handle(options);
             }
         }
         else {
