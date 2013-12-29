@@ -62,40 +62,26 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
             source : this.id,
             update: this.id,
             process: this.id,
-            onsuccess: function(responseXML) {
-                var xmlDoc = $(responseXML.documentElement),
-                updates = xmlDoc.find("update");
-                
-                for(var i=0; i < updates.length; i++) {
-                    var update = updates.eq(i),
-                    id = update.attr('id'),
-                    content = PrimeFaces.ajax.AjaxUtils.getContent(update);            
-
-                    if(id === $this.id) {
-                       var commandResponseContainer = $('<div></div>');
-                       commandResponseContainer.append('<span>' + $this.cfg.prompt + '</span><span class="ui-terminal-command">' +  $this.input.val() + '</span>')
-                                                .append('<div>' + content + '</div>').appendTo($this.content);
+            params: [
+                {name: this.id + '_command', value: true}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            var commandResponseContainer = $('<div></div>');
+                            commandResponseContainer.append('<span>' + this.cfg.prompt + '</span><span class="ui-terminal-command">' + this.input.val() + '</span>')
+                                                .append('<div>' + content + '</div>').appendTo(this.content);
                                         
-                       $this.input.val('');
-                    } 
-                    else {
-                        PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                    }
-                }
-
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
-                
-                $this.jq.scrollTop($this.content.height());
+                            this.input.val('');
+                        }
+                    });
 
                 return true;
             }
         };
         
-        options.params = [
-          {name: this.id + '_command', value: true}
-        ];
-        
-        PrimeFaces.ajax.AjaxRequest(options);
+        PrimeFaces.ajax.Request.handle(options);
     },
             
     focus: function() {
