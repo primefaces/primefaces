@@ -72,19 +72,18 @@ public class SearchExpressionFacade {
 			if (splittedExpressions != null) {
 				
 				validateExpressions(context, source, expressions, splittedExpressions);
-				
-				for (int i = 0; i < splittedExpressions.length; i++) {
-					String expression = splittedExpressions[i].trim();
-		
-					if (ComponentUtils.isValueBlank(expression)) {
-						continue;
-					}
-		
-					UIComponent component = resolveComponent(context, source, expression);
-					if (component != null) {
-						components.add(component);
-					}
-				}
+
+                for (String splittedExpression : splittedExpressions) {
+                    String expression = splittedExpression.trim();
+                    if (ComponentUtils.isValueBlank(expression)) {
+                        continue;
+                    }
+
+                    UIComponent component = resolveComponent(context, source, expression);
+                    if (component != null) {
+                        components.add(component);
+                    }
+                }
 			}
 		}
 
@@ -302,15 +301,15 @@ public class SearchExpressionFacade {
 			if (subExpressions != null) {
 				// checks for unnestable subexpressions (like @all or @none)
 				if (subExpressions.length > 1) {
-					for (int j = 0; j < subExpressions.length; j++) {
-						String subExpression = subExpressions[j].trim();
-	
-						if (!isNestable(subExpression)) {
-							throw new FacesException("Subexpression \"" + subExpression
-									+ "\" in full expression \"" + expression
-									+ "\" from \"" + source.getClientId(context) + "\" can not be nested.");
-						}
-					}
+                    for (String subExpression : subExpressions) {
+                        subExpression = subExpression.trim();
+
+                        if (!isNestable(subExpression)) {
+                            throw new FacesException("Subexpression \"" + subExpression
+                                    + "\" in full expression \"" + expression
+                                    + "\" from \"" + source.getClientId(context) + "\" can not be nested.");
+                        }
+                    }
 				}
 			}
 		}
