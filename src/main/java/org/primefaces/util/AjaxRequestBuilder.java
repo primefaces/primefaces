@@ -120,7 +120,7 @@ public class AjaxRequestBuilder {
 
     public AjaxRequestBuilder delay(String delay) {
         if(!ComponentUtils.isValueBlank(delay) && !delay.equals("none")) {
-            buffer.append(",delay:" + delay);
+            buffer.append(",delay:").append(delay);
 
             if (context.isProjectStage(ProjectStage.Development)) {
             	try {
