@@ -1,5 +1,5 @@
 /**
- * Ajax shortcut
+ * AJAX paramter shortcut mapping for PrimeFaces.ab
  */
 PrimeFaces.AB_MAPPING = { 
     "source"            :   "s",
@@ -22,6 +22,9 @@ PrimeFaces.AB_MAPPING = {
     "oncomplete"        :   "onc"
 };
 
+/**
+ * Ajax shortcut
+ */
 PrimeFaces.ab = function(cfg, ext) {
     $.map(PrimeFaces.AB_MAPPING, function(value, key) {
         if (cfg[value]) {
