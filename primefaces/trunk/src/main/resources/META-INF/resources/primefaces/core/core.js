@@ -71,14 +71,15 @@
                 function() {
                     $(this).removeClass('ui-state-hover');
                 }
-                ).focus(function() {
+            ).focus(function() {
                 $(this).addClass('ui-state-focus');
             }).blur(function() {
                 $(this).removeClass('ui-state-focus');
             });
 
             //aria
-            input.attr('role', 'textbox').attr('aria-disabled', input.is(':disabled'))
+            input.attr('role', 'textbox')
+                    .attr('aria-disabled', input.is(':disabled'))
                     .attr('aria-readonly', input.prop('readonly'));
     
             if(input.is('textarea')) {
@@ -138,7 +139,7 @@
         },
 
         isIE: function(version) {
-            return ($.browser.msie && parseInt($.browser.version, 10) == version);
+            return ($.browser.msie && parseInt($.browser.version, 10) === version);
         },
 
         info: function(log) {
@@ -186,7 +187,7 @@
         },
 
         changeTheme: function(newTheme) {
-            if(newTheme && newTheme != '') {
+            if(newTheme && newTheme !== '') {
                 var themeLink = $('link[href*="javax.faces.resource/theme.css"]'),
                 themeURL = themeLink.attr('href'),
                 plainURL = themeURL.split('&')[0],
@@ -343,7 +344,7 @@
          *  Aligns container scrollbar to keep item in container viewport, algorithm copied from jquery-ui menu widget
          */
         scrollInView: function(container, item) { 
-            if(item.length == 0) {
+            if(item.length === 0) {
                 return;
             }
 
