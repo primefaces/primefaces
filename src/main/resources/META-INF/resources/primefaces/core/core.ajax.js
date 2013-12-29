@@ -1,37 +1,39 @@
 /**
- * AJAX paramter shortcut mapping for PrimeFaces.ab
+ * AJAX parameter shortcut mapping for PrimeFaces.ab
  */
 PrimeFaces.AB_MAPPING = { 
-    "source"            :   "s",
-    "formId"            :   "f",
-    "process"           :   "p",
-    "update"            :   "u",
-    "event"             :   "e",
-    "async"             :   "a",
-    "global"            :   "g",
-    "delay"             :   "d",
-    "ignoreAutoUpdate"  :   "iau",
-    "partialSubmit"     :   "ps",
-    "resetValues"       :   "rv",
-    "fragmentId"        :   "fi",
-    "fragmentUpdate"    :   "fu",
-    "params"            :   "pa",
-    "onstart"           :   "ons",
-    "onerror"           :   "one",
-    "onsuccess"         :   "onsu",
-    "oncomplete"        :   "onc"
+    's': 'source',
+    'f': 'formId',
+    'p': 'process',
+    'u': 'update',
+    'e': 'event',
+    'a': 'async',
+    'g': 'global',
+    'd': 'delay',
+    'iau': 'ignoreAutoUpdate',
+    'ps': 'partialSubmit',
+    'rv': 'resetValues',
+    'fi': 'fragmentId',
+    'fu': 'fragmentUpdate',
+    'pa': 'params',
+    'onst': 'onstart',
+    'oner': 'onerror',
+    'onsu': 'onsuccess',
+    'onco': 'oncomplete'
 };
 
 /**
  * Ajax shortcut
  */
 PrimeFaces.ab = function(cfg, ext) {
-    $.map(PrimeFaces.AB_MAPPING, function(value, key) {
-        if (cfg[value]) {
-            cfg[key] = cfg[value];
-            delete cfg[value];
+    for (var option in cfg) {
+        if (!cfg.hasOwnProperty(option)) {
+            continue;
         }
-    });
+        
+        cfg[this.AB_MAPPING[option]] = cfg[option];
+        delete cfg[option];
+    }
     
     PrimeFaces.ajax.Request.handle(cfg, ext);
 };
