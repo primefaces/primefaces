@@ -183,7 +183,7 @@ PrimeFaces.ajax = {
                 form = $(PrimeFaces.escapeClientId(sourceId)).parents('form:first');
 
                 //source has no parent form so use first form in document
-                if(form.length == 0) {
+                if (form.length === 0) {
                     form = $('form').eq(0);
                 }
             }
