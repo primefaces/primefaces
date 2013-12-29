@@ -53,16 +53,16 @@ public class AjaxRequestBuilder {
 
     public AjaxRequestBuilder source(String source) {
         if(source != null)
-            buffer.append("source:").append("'").append(source).append("'");
+            buffer.append("s:").append("'").append(source).append("'");
         else
-            buffer.append("source:").append("this");
+            buffer.append("s:").append("this");
         
         return this;
     }
     
     public AjaxRequestBuilder form(String form) {
         if(form != null) {
-            buffer.append(",formId:'").append(form).append("'");
+            buffer.append(",f:'").append(form).append("'");
         }
         
         return this;
@@ -76,13 +76,13 @@ public class AjaxRequestBuilder {
 	}
     
     public AjaxRequestBuilder process(UIComponent component, String expressions) {        
-        addExpressions(component, expressions, "process", SearchExpressionFacade.NONE);
+        addExpressions(component, expressions, "p", SearchExpressionFacade.NONE);
         
         return this;
     }
     
     public AjaxRequestBuilder update(UIComponent component, String expressions) {        
-        addExpressions(component, expressions, "update", SearchExpressionFacade.VALIDATE_RENDERER);
+        addExpressions(component, expressions, "u", SearchExpressionFacade.VALIDATE_RENDERER);
         
         return this;
     }
@@ -97,7 +97,7 @@ public class AjaxRequestBuilder {
     }
     
     public AjaxRequestBuilder event(String event) {
-        buffer.append(",event:'").append(event).append("'");
+        buffer.append(",e:'").append(event).append("'");
         
         return this;
     }
@@ -112,7 +112,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder global(boolean global) {
         if(!global) {
-            buffer.append(",global:false");
+            buffer.append(",g:false");
         }
         
         return this;
@@ -120,7 +120,7 @@ public class AjaxRequestBuilder {
 
     public AjaxRequestBuilder delay(String delay) {
         if(!ComponentUtils.isValueBlank(delay) && !delay.equals("none")) {
-            buffer.append(",delay:").append(delay);
+            buffer.append(",d:").append(delay);
 
             if (context.isProjectStage(ProjectStage.Development)) {
             	try {
@@ -136,7 +136,7 @@ public class AjaxRequestBuilder {
 
     public AjaxRequestBuilder ignoreAutoUpdate(boolean ignoreAutoUpdate) {
         if(ignoreAutoUpdate) {
-            buffer.append(",ignoreAutoUpdate:true");
+            buffer.append(",iau:true");
         }
         
         return this;
@@ -149,7 +149,7 @@ public class AjaxRequestBuilder {
         boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
         
         if(partialSubmit) {
-            buffer.append(",partialSubmit:true");
+            buffer.append(",ps:true");
         }
         
         return this;
@@ -162,7 +162,7 @@ public class AjaxRequestBuilder {
         boolean resetValues = resetValuesSet ? value : config.isResetValuesEnabled();
         
         if(resetValues) {
-            buffer.append(",resetValues:true");
+            buffer.append(",rv:true");
         }
         
         return this;
@@ -170,7 +170,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder onstart(String onstart) {
         if(onstart != null) {
-            buffer.append(",onstart:function(cfg){").append(onstart).append(";}");
+            buffer.append(",ons:function(cfg){").append(onstart).append(";}");
         }
     
         return this;
@@ -178,7 +178,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder onerror(String onerror) {
         if(onerror != null) {
-            buffer.append(",onerror:function(xhr,status,error){").append(onerror).append(";}");
+            buffer.append(",one:function(xhr,status,error){").append(onerror).append(";}");
         }
     
         return this;
@@ -186,7 +186,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder onsuccess(String onsuccess) {
         if(onsuccess != null) {
-            buffer.append(",onsuccess:function(data,status,xhr){").append(onsuccess).append(";}");
+            buffer.append(",onsu:function(data,status,xhr){").append(onsuccess).append(";}");
         }
     
         return this;
@@ -194,7 +194,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder oncomplete(String oncomplete) {
         if(oncomplete != null) {
-            buffer.append(",oncomplete:function(xhr,status,args){").append(oncomplete).append(";}");
+            buffer.append(",onc:function(xhr,status,args){").append(oncomplete).append(";}");
         }
     
         return this;
@@ -209,7 +209,7 @@ public class AjaxRequestBuilder {
 
                 if(!paramWritten) {
                     paramWritten = true;
-                    buffer.append(",params:[");
+                    buffer.append(",pa:[");
                 } else {
                     buffer.append(",");
                 }
@@ -227,7 +227,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder params(Map<String,List<String>> params) {
         if(params != null && !params.isEmpty()) {
-            buffer.append(",params:[");
+            buffer.append(",pa:[");
             
             for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String name = it.next();
@@ -254,7 +254,7 @@ public class AjaxRequestBuilder {
     }
     
     public AjaxRequestBuilder passParams() {
-        buffer.append(",params:arguments[0]");
+        buffer.append(",pa:arguments[0]");
         
         return this;
     }
@@ -313,10 +313,10 @@ public class AjaxRequestBuilder {
         Map<Object,Object> attrs = RequestContext.getCurrentInstance().getAttributes();
         Object fragmentId = attrs.get(Constants.FRAGMENT_ID);
         if(fragmentId != null) {
-            buffer.append(",fragmentId:'").append(fragmentId).append("'");
+            buffer.append(",fi:'").append(fragmentId).append("'");
             
             if(attrs.containsKey(Constants.FRAGMENT_AUTO_RENDERED))
-                buffer.append(",fragmentUpdate:true");
+                buffer.append(",fu:true");
         }
     }
 }
