@@ -170,7 +170,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder onstart(String onstart) {
         if(onstart != null) {
-            buffer.append(",ons:function(cfg){").append(onstart).append(";}");
+            buffer.append(",onst:function(cfg){").append(onstart).append(";}");
         }
     
         return this;
@@ -178,7 +178,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder onerror(String onerror) {
         if(onerror != null) {
-            buffer.append(",one:function(xhr,status,error){").append(onerror).append(";}");
+            buffer.append(",oner:function(xhr,status,error){").append(onerror).append(";}");
         }
     
         return this;
@@ -194,7 +194,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder oncomplete(String oncomplete) {
         if(oncomplete != null) {
-            buffer.append(",onc:function(xhr,status,args){").append(oncomplete).append(";}");
+            buffer.append(",onco:function(xhr,status,args){").append(oncomplete).append(";}");
         }
     
         return this;
