@@ -106,4 +106,14 @@ public class ContentFlowRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context)).finish();
     }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
 }
