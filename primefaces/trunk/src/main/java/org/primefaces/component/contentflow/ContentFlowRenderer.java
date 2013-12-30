@@ -75,7 +75,6 @@ public class ContentFlowRenderer extends CoreRenderer {
         writer.endElement("div");
         writer.endElement("div");
         
-        
         writer.endElement("div");
     }
     
