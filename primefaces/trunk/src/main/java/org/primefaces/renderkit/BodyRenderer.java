@@ -20,14 +20,26 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.Renderer;
 import org.primefaces.context.RequestContext;
+import org.primefaces.util.HTML;
 
-public class BodyRenderer extends Renderer {
+public class BodyRenderer extends CoreRenderer {
     
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = component.getClientId(context);
         writer.startElement("body", component);
+        
+        if(shouldWriteId(component)) {
+            writer.writeAttribute("id", clientId, "id");
+        }
+        
+        String styleClass = (String) component.getAttributes().get("styleClass");
+        if (styleClass != null && styleClass.length() != 0) {
+            writer.writeAttribute("class", styleClass, "styleClass");
+        }
+        
+        renderPassThruAttributes(context, component, HTML.BODY_ATTRS);
     }
     
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
