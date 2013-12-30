@@ -104,7 +104,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder async(boolean async) {
         if(async) {
-            buffer.append(",async:true");
+            buffer.append(",a:true");
         }
         
         return this;
