@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>contentFlow</tag>
+	<tagClass>org.primefaces.component.contentflow.ContenFlowTag</tagClass>
+	<componentClass>org.primefaces.component.contentflow.ContentFlow</componentClass>
+	<componentType>org.primefaces.component.ContentFlow</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.ContentFlowRenderer</rendererType>
+	<rendererClass>org.primefaces.component.contentflow.ContentFlowRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+    <description>ContentFlow is used to display a collection of items.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+            <type>java.lang.Object</type>
+            <description>Collection of items.</description>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+            <description>Name of the iterator to display an item.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the container element.</description>
+        </attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>contentflow/contentflow.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+        <resource>
+			<name>contentflow/contentflow.js</name>
+		</resource>
+	</resources>
+</component>

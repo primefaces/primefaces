@@ -1,0 +1,250 @@
+
+/* ========== ContentFlow ========== */
+/*
+ * default style to look nice
+ */
+
+.ContentFlow {
+}
+    .ContentFlow .flow {
+        /*border: 1px solid green;*/
+    }
+    .ContentFlow .flow * {
+    }
+
+    .ContentFlow .flow .item {
+            /*border: 1px solid red;*/
+    }
+        .ContentFlow .flow .item canvas.content {
+            height: 100%;
+            width: 100%;
+            /*border: 1px solid yellow;*/
+        }
+        .ContentFlow .flow .item img.content {
+            /*border: 1px solid yellow;*/
+            width: 100%;
+        }
+        .ContentFlow .flow .item img.reflection, 
+        .ContentFlow .flow .item canvas.reflection {
+            width: 100%;
+        }
+    /* ----- styling of items ----- */
+    .ContentFlow .flow .item.active {
+        cursor: pointer;
+    }
+        .ContentFlow .flow .item .caption {
+            font-size: 100%;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            max-height: 30%;
+            bottom: 10%;
+            background: url("#{resource['primefaces:contentflow/images/1x1_0.5_black.png']}");
+            width: 100%;
+        }
+        * html .ContentFlow .flow .item .caption {
+            background-image: none;
+            filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src="#{resource['primefaces:contentflow/images/1x1_0.5_black.png']}");
+        }
+            .ContentFlow .flow .item .caption a,
+            .ContentFlow .flow .item .caption a:link,
+            .ContentFlow .flow .item .caption a:visited,
+            .ContentFlow .flow .item .caption a:active,
+            .ContentFlow .flow .item .caption a:hover {
+                text-decoration: none;
+                color: white;
+                font-style: italic;
+                font-size: 0.8em;
+            }
+            .ContentFlow .flow .item .caption a:hover {
+                text-decoration: underline;
+            }
+        .ContentFlow .flow .item.active .caption {
+            /*display: block;*/ /* uncomment to show caption inside item */
+        }
+
+    /* ----- scrollbar ----- */
+    .ContentFlow .scrollbar {
+        width: 50%;
+        margin: 0px auto;
+        margin-top: 10px;
+        height: 16px;
+        background: url("#{resource['primefaces:contentflow/images/scrollbar_white.png']}") left center repeat-x;
+        position: relative;
+        overflow: visible;
+    }
+
+        .ContentFlow .scrollbar .slider {
+            width: 16px;
+            height: 16px;
+            background: url("#{resource['primefaces:contentflow/images/scrollbar_white.png']}") center center no-repeat;
+            cursor: move;
+        }
+        
+        /* only for IE <= 6 and a alphatransparent slider image */
+        * html .ContentFlow .scrollbar .slider { background-image: none; }
+        * html .ContentFlow .scrollbar .slider .virtualSlider {
+            filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=crop, src="#{resource['primefaces:contentflow/images/scrollbar_white.png']}");
+        }
+            .ContentFlow .scrollbar .slider .position {
+                top: 120%;
+                font-size: 16px;
+                font-weight: bold;
+                color: silver
+            }
+
+    /* ----- global caption ----- */
+    .ContentFlow .globalCaption {
+        text-align: center;
+        font-weight: bold;
+        color: white;
+        font-size: 14px;
+        height: 20px;
+        margin: 2em auto;
+    }
+        .ContentFlow .globalCaption .caption {
+        }
+            .ContentFlow .globalCaption .caption a,
+            .ContentFlow .globalCaption .caption a:link,
+            .ContentFlow .globalCaption .caption a:visited,
+            .ContentFlow .globalCaption .caption a:active,
+            .ContentFlow .globalCaption .caption a:hover {
+                text-decoration: none;
+                color: white;
+                font-style: italic;
+                font-size: 0.8em;
+            }
+
+            .ContentFlow .globalCaption .caption a:hover {
+                text-decoration: underline;
+            }
+
+    /* ----- load indicator ----- */
+    .ContentFlow .loadIndicator {
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+        background: black;
+    }
+        .ContentFlow .loadIndicator .indicator {
+            background: url("#{resource['primefaces:contentflow/images/loader.gif']}") center center no-repeat;
+            width: 100%;
+            height: 100%;
+        }
+        * html .ContentFlow .loadIndicator .indicator {
+            height: 100px;
+        }
+
+/* ================================= */
+
+
+
+
+/* ========== ContentFlow ========== */
+/* 
+ * This is the basic CSS file needed for the correct functioning of ContentFlow.
+ * DON'T CHANGE IT.
+ *
+ */
+.ContentFlow {
+    position: relative;  /* needed so overlay dimensions are constrained to the ContentFlow */
+    overflow: hidden;
+}
+.ContentFlow * {
+    margin: 0px;
+    padding: 0px;
+    /*border: none;*/
+}
+.ContentFlow img {
+    -ms-interpolation-mode: bicubic;
+}
+
+.ContentFlow .mouseoverCheckElement {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    left: 0px;
+    /*display: none;*/
+    visibility: hidden;
+}
+.ContentFlow:hover .mouseoverCheckElement {
+    left: 1px;
+    /*width: 1px;*/
+    /*left: -1px;*/
+    /*background-color: red;*/
+}
+.ContentFlow .flow {
+    position: relative; /* needed  so that items can be positioned relative to flow*/
+    z-index: 0;         /* need so every item has a z-index relative to the flow-box */
+    visibility: hidden; /* needed so that content is hidden while loading */
+    width: 100%;        /* needed for IE6 */
+    margin: 0 auto;
+}
+.ContentFlow .flow.hidden {
+    visibility: hidden;
+}
+
+.ContentFlow .flow .item {
+    position: absolute; /* needed */
+    visibility: hidden;
+    top: 0px;
+    left: 0px;
+}
+.ContentFlow .flow .item.active {
+}
+.ContentFlow .flow .item .content {
+    display: block;
+}
+.ContentFlow .flow .item div.content {
+    width: 100%;
+    height: 100%;
+}
+.ContentFlow .flow .item .label {
+    display: none;
+}
+.ContentFlow .flow .item .reflection {
+    display: block;
+}
+.ContentFlow .flow .item canvas.reflection {
+    margin-top: -1px; /* for FF */
+}
+.ContentFlow .flow .item .caption {
+    position: absolute; /* needed */
+    display: none;      /* needed to hide it on inactive items */
+}
+.ContentFlow .flow .item.active .caption {
+    /*display: block;*/ /* uncomment to show caption inside item */
+}
+
+/* ----- scrollbar ----- */
+
+.ContentFlow .scrollbar {
+    position: relative; /* needed for z-index */
+    z-index: 1;         /* set above flow */
+    visibility: hidden;
+}
+
+.ContentFlow .scrollbar .slider {
+    position: absolute; /* needed */
+}
+* html .ContentFlow .scrollbar .slider .virtualSlider {
+    height: 100%;
+}
+.ContentFlow .scrollbar .slider .position {
+    position: absolute; /* needed */
+    text-align: center;
+}
+
+/* ----- global caption ----- */
+.ContentFlow .globalCaption {
+    position: relative; /* needed for z-index */
+    z-index: 1;         /* set above flow */
+}
+/* ----- load indicator ----- */
+.ContentFlow .loadIndicator {
+    position: absolute; /* needed */
+    z-index: 65000;     /* set above everything */
+}
+
+
