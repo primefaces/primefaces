@@ -64,17 +64,6 @@ public class ContentFlowRenderer extends CoreRenderer {
         writer.writeAttribute("class", "globalCaption", null);
         writer.endElement("div");
         
-        //scrollbar
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "scrollbar", null);
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "slider", null);
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "position", null);
-        writer.endElement("div");
-        writer.endElement("div");
-        writer.endElement("div");
-        
         writer.endElement("div");
     }
     
