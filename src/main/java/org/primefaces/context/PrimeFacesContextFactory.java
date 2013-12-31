@@ -25,7 +25,13 @@ public class PrimeFacesContextFactory extends FacesContextFactory {
 	public FacesContext getFacesContext(Object context, Object request, Object response, Lifecycle lifecycle)
 			throws FacesException {
 
-		return new PrimeFacesContext(wrapped.getFacesContext(context, request, response, lifecycle));
+        FacesContext wrappedContext = wrapped.getFacesContext(context, request, response, lifecycle);
+
+        if (wrappedContext instanceof PrimeFacesContext) {
+            return wrappedContext;
+        }
+
+		return new PrimeFacesContext(wrappedContext);
 	}
 
     public FacesContextFactory getWrapped() {
