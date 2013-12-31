@@ -44,14 +44,17 @@ public class BodyRenderer extends CoreRenderer {
     
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        encodeOnloadScripts(context);
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        
+        if(!requestContext.isAjaxRequest()) {
+            encodeOnloadScripts(writer, requestContext);
+        }
+        
         writer.endElement("body");
     }
     
-    protected void encodeOnloadScripts(FacesContext context) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        List<String> scripts = requestContext.getScriptsToExecute();
+    protected void encodeOnloadScripts(ResponseWriter writer, RequestContext context) throws IOException {        
+        List<String> scripts = context.getScriptsToExecute();
         
         if(!scripts.isEmpty()) {
             writer.startElement("script", null);
