@@ -24,45 +24,45 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.util.HTML;
 
 public class BodyRenderer extends CoreRenderer {
-    
+
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
         writer.startElement("body", component);
-        
-        if(shouldWriteId(component)) {
+
+        if (shouldWriteId(component)) {
             writer.writeAttribute("id", clientId, "id");
         }
-        
+
         String styleClass = (String) component.getAttributes().get("styleClass");
         if (styleClass != null && styleClass.length() != 0) {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
-        
+
         renderPassThruAttributes(context, component, HTML.BODY_ATTRS);
     }
-    
+
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RequestContext requestContext = RequestContext.getCurrentInstance();
-        
-        if(!requestContext.isAjaxRequest()) {
+
+        if (!requestContext.isAjaxRequest()) {
             encodeOnloadScripts(writer, requestContext);
         }
-        
+
         writer.endElement("body");
     }
-    
-    protected void encodeOnloadScripts(ResponseWriter writer, RequestContext context) throws IOException {        
+
+    protected void encodeOnloadScripts(ResponseWriter writer, RequestContext context) throws IOException {
         List<String> scripts = context.getScriptsToExecute();
-        
-        if(!scripts.isEmpty()) {
+
+        if (!scripts.isEmpty()) {
             writer.startElement("script", null);
             writer.writeAttribute("type", "text/javascript", null);
-            
+
             writer.write("$(function(){");
 
-            for(int i = 0; i < scripts.size(); i++) {
+            for (int i = 0; i < scripts.size(); i++) {
                 writer.write(scripts.get(i));
                 writer.write(';');
             }
