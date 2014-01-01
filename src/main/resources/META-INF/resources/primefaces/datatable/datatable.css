@@ -242,3 +242,8 @@
     margin-top: -2px;
     margin-bottom: -2px;
 }
+
+.ui-datatable .ui-datatable-frozen-container .ui-row-editor {
+    margin-top: -2px;
+    margin-bottom: -2px;
+}
