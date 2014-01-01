@@ -17,7 +17,9 @@ package org.primefaces.renderkit;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ListIterator;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.context.RequestContext;
@@ -45,6 +47,8 @@ public class BodyRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RequestContext requestContext = RequestContext.getCurrentInstance();
+        
+        encodeResources(context);
 
         if (!requestContext.isAjaxRequest()) {
             encodeOnloadScripts(writer, requestContext);
@@ -69,6 +73,15 @@ public class BodyRenderer extends CoreRenderer {
 
             writer.write("});");
             writer.endElement("script");
+        }
+    }
+    
+    protected void encodeResources(FacesContext context) throws IOException {
+        UIViewRoot viewRoot = context.getViewRoot();
+        ListIterator iter = (viewRoot.getComponentResources(context, "body")).listIterator();
+        while (iter.hasNext()) {
+            UIComponent resource = (UIComponent) iter.next();
+            resource.encodeAll(context);
         }
     }
 }
