@@ -16,6 +16,7 @@
 package org.primefaces.context;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,11 @@ import org.primefaces.json.JSONObject;
 
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
+    private static final Map<String, String> CALLBACK_EXTENSION_PARAMS = Collections.unmodifiableMap(new HashMap<String, String>() {{
+        put("ln", "primefaces");
+        put("type", "args");
+    }});
+
     private PartialResponseWriter wrapped;
 
     public PrimePartialResponseWriter(PartialResponseWriter writer) {
@@ -38,23 +44,18 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     }
     
     private void encodeCallbackParams(RequestContext requestContext) throws IOException, JSONException {
-        //callback params
-        Map<String, Object> params = requestContext.getCallbackParams();
 
         boolean validationFailed = FacesContext.getCurrentInstance().isValidationFailed();
-        if(validationFailed) {
+        if (validationFailed) {
             requestContext.addCallbackParam("validationFailed", true);
         }
 
-        if(!params.isEmpty()) {
-            StringBuilder jsonBuilder = new StringBuilder();
-            Map<String, String> callbackParamExtension = new HashMap<String, String>();
-            callbackParamExtension.put("ln", "primefaces");
-            callbackParamExtension.put("type", "args");
+        Map<String, Object> params = requestContext.getCallbackParams();
 
-            startExtension(callbackParamExtension);
+        if (!params.isEmpty()) {
 
-            jsonBuilder.append("{");
+            startExtension(CALLBACK_EXTENSION_PARAMS);
+            write("{");
 
             for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String paramName = it.next();
@@ -62,40 +63,47 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
                 if (paramValue instanceof JSONObject) {
                 	String json = ((JSONObject) paramValue).toString();
-                	jsonBuilder.append("\"").append(paramName).append("\":{").append(json.substring(1, json.length() - 1) + "}");
+                	write("\"");
+                    write(paramName);
+                    write("\":{");
+                    write(json.substring(1, json.length() - 1));
+                    write("}");
                 }
                 else if (paramValue instanceof JSONArray) {
                 	String json = ((JSONArray) paramValue).toString();
-                	jsonBuilder.append("\"").append(paramName).append("\":[").append(json.substring(1, json.length() - 1) + "]");
+                	write("\"");
+                    write(paramName);
+                    write("\":[");
+                    write(json.substring(1, json.length() - 1));
+                    write("]");
                 }
-                else if(isBean(paramValue)) {
-                    jsonBuilder.append("\"").append(paramName).append("\":").append(new JSONObject(paramValue).toString());
+                else if (isBean(paramValue)) {
+                    write("\"");
+                    write(paramName);
+                    write("\":");
+                    write(new JSONObject(paramValue).toString());
                 } 
                 else {
                     String json = new JSONObject().put(paramName, paramValue).toString();
-                    jsonBuilder.append(json.substring(1, json.length() - 1));
+                    write(json.substring(1, json.length() - 1));
                 }
 
-                if(it.hasNext()) {
-                    jsonBuilder.append(",");
+                if (it.hasNext()) {
+                    write(",");
                 }
             }
 
-            jsonBuilder.append("}");
-
-            write(jsonBuilder.toString());
-            jsonBuilder.setLength(0);
-
+            write("}");
             endExtension();
         }
     }
     
     private void encodeScripts(RequestContext requestContext) throws IOException {
         List<String> scripts = requestContext.getScriptsToExecute();
-        if(!scripts.isEmpty()) {
+        if (!scripts.isEmpty()) {
             startEval();
 
-            for(int i = 0; i < scripts.size(); i++) {
+            for (int i = 0; i < scripts.size(); i++) {
                 write(scripts.get(i));
                 write(';');
             }
@@ -148,7 +156,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     public void endDocument() throws IOException {
         RequestContext requestContext = RequestContext.getCurrentInstance();
 
-        if(requestContext != null) {
+        if (requestContext != null) {
             try {
                 encodeCallbackParams(requestContext);
                 encodeScripts(requestContext);
@@ -197,11 +205,11 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     }
 
     private boolean isBean(Object value) {
-        if(value == null) {
+        if (value == null) {
             return false;
         }
 
-        if(value instanceof Boolean || value instanceof String || value instanceof Number) {
+        if (value instanceof Boolean || value instanceof String || value instanceof Number) {
             return false;
         }
 
