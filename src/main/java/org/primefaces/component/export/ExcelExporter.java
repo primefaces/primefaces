@@ -49,17 +49,17 @@ public class ExcelExporter extends Exporter {
 
         addColumnFacets(table, sheet, ColumnType.HEADER);
         
-        if(pageOnly) {
+        if (pageOnly) {
             exportPageOnly(context, table, sheet);
         }
-        else if(selectionOnly) {
+        else if (selectionOnly) {
             exportSelectionOnly(context, table, sheet);
         }
         else {
             exportAll(context, table, sheet);
         }
         
-        if(table.hasFooterColumn()) {
+        if (table.hasFooterColumn()) {
             addColumnFacets(table, sheet, ColumnType.FOOTER);
         }
     	
@@ -78,16 +78,16 @@ public class ExcelExporter extends Exporter {
         int sheetRowIndex = sheet.getLastRowNum() + 1;
         Row row = sheet.createRow(sheetRowIndex);
         
-        for(UIColumn col : table.getColumns()) {
-            if(!col.isRendered()) {
+        for (UIColumn col : table.getColumns()) {
+            if (!col.isRendered()) {
                 continue;
             }
             
-            if(col instanceof DynamicColumn) {
+            if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyModel();
             }
             
-            if(col.isExportable()) {
+            if (col.isExportable()) {
                 addColumnValue(row, col.getChildren());
             }
         }
@@ -97,16 +97,16 @@ public class ExcelExporter extends Exporter {
         int sheetRowIndex = columnType.equals(ColumnType.HEADER) ? 0 : (sheet.getLastRowNum() + 1);
         Row rowHeader = sheet.createRow(sheetRowIndex);
         
-        for(UIColumn col : table.getColumns()) {
-            if(!col.isRendered()) {
+        for (UIColumn col : table.getColumns()) {
+            if (!col.isRendered()) {
                 continue;
             }
             
-            if(col instanceof DynamicColumn) {
+            if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyModel();
             }
             
-            if(col.isExportable()) {
+            if (col.isExportable()) {
                 addColumnValue(rowHeader, col.getFacet(columnType.facet()));
             }
         }
@@ -126,11 +126,11 @@ public class ExcelExporter extends Exporter {
         StringBuilder builder = new StringBuilder();
         FacesContext context = FacesContext.getCurrentInstance();
         
-        for(UIComponent component : components) {
+        for (UIComponent component : components) {
         	if(component.isRendered()) {
                 String value = exportValue(context, component);
                 
-                if(value != null)
+                if (value != null)
                 	builder.append(value);
             }
 		}  
