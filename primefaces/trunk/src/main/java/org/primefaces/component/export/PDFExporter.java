@@ -53,11 +53,11 @@ public class PDFExporter extends Exporter {
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	        PdfWriter.getInstance(document, baos);
 	        
-	        if(preProcessor != null) {
+	        if (preProcessor != null) {
 	    		preProcessor.invoke(context.getELContext(), new Object[]{document});
 	    	}
 
-            if(!document.isOpen()) {
+            if (!document.isOpen()) {
                 document.open();
             }
 	        
@@ -84,17 +84,17 @@ public class PDFExporter extends Exporter {
     	
     	addColumnFacets(table, pdfTable, ColumnType.HEADER);
         
-        if(pageOnly) {
+        if (pageOnly) {
             exportPageOnly(context, table, pdfTable);
         }
-        else if(selectionOnly) {
+        else if (selectionOnly) {
             exportSelectionOnly(context, table, pdfTable);
         }
         else {
             exportAll(context, table, pdfTable);
         }
         
-        if(table.hasFooterColumn()) {
+        if (table.hasFooterColumn()) {
             addColumnFacets(table, pdfTable, ColumnType.FOOTER);
         }
     	
@@ -106,32 +106,32 @@ public class PDFExporter extends Exporter {
     @Override
     protected void exportCells(DataTable table, Object document) {
         PdfPTable pdfTable = (PdfPTable) document;
-        for(UIColumn col : table.getColumns()) {
-            if(!col.isRendered()) {
+        for (UIColumn col : table.getColumns()) {
+            if (!col.isRendered()) {
                 continue;
             }
             
-            if(col instanceof DynamicColumn) {
+            if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyModel();
             }
             
-            if(col.isExportable()) {
+            if (col.isExportable()) {
                 addColumnValue(pdfTable, col.getChildren(), this.cellFont);
             }
         }
     }
 	
 	protected void addColumnFacets(DataTable table, PdfPTable pdfTable, ColumnType columnType) {
-        for(UIColumn col : table.getColumns()) {
-            if(!col.isRendered()) {
+        for (UIColumn col : table.getColumns()) {
+            if (!col.isRendered()) {
                 continue;
             }
             
-            if(col instanceof DynamicColumn) {
+            if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyModel();
             }
             
-            if(col.isExportable()) {
+            if (col.isExportable()) {
                 addColumnValue(pdfTable, col.getFacet(columnType.facet()), this.facetFont);
             }
         }
@@ -147,11 +147,11 @@ public class PDFExporter extends Exporter {
         StringBuilder builder = new StringBuilder();
         FacesContext context = FacesContext.getCurrentInstance();
         
-        for(UIComponent component : components) {
+        for (UIComponent component : components) {
         	if(component.isRendered() ) {
         		String value = exportValue(context, component);
                 
-                if(value != null)
+                if (value != null)
                 	builder.append(value);
             }
 		}  
@@ -175,22 +175,22 @@ public class PDFExporter extends Exporter {
     protected int getColumnsCount(DataTable table) {
         int count = 0;
         
-        for(UIComponent child : table.getChildren()) {
-            if(!child.isRendered()) {
+        for (UIComponent child : table.getChildren()) {
+            if (!child.isRendered()) {
                 continue;
             }
 
-            if(child instanceof Column) {
+            if (child instanceof Column) {
                 Column column = (Column) child;
                 
-                if(column.isExportable()) {
+                if (column.isExportable()) {
                     count++;
                 }
             }
-            else if(child instanceof Columns) {
+            else if (child instanceof Columns) {
                 Columns columns = (Columns) child;
                 
-                if(columns.isExportable()) {
+                if (columns.isExportable()) {
                     count += columns.getRowCount();
                 }
             }

@@ -41,17 +41,17 @@ public class CSVExporter extends Exporter {
     	
     	addColumnFacets(writer, table, ColumnType.HEADER);
     	
-        if(pageOnly) {
+        if (pageOnly) {
             exportPageOnly(context, table, writer);
         }
-        else if(selectionOnly) {
+        else if (selectionOnly) {
             exportSelectionOnly(context, table, writer);
         }
         else {
             exportAll(context, table, writer);
         }
         
-        if(table.hasFooterColumn()) {
+        if (table.hasFooterColumn()) {
             addColumnFacets(writer, table, ColumnType.FOOTER);
         }
             	        
@@ -64,17 +64,17 @@ public class CSVExporter extends Exporter {
     protected void addColumnFacets(Writer writer, DataTable table, ColumnType columnType) throws IOException {
         boolean firstCellWritten = false;
         
-        for(UIColumn col : table.getColumns()) {
-            if(!col.isRendered()) {
+        for (UIColumn col : table.getColumns()) {
+            if (!col.isRendered()) {
                 continue;
             }
                         
-            if(col instanceof DynamicColumn) {
+            if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyModel();
             }
             
-            if(col.isExportable()) {
-                if(firstCellWritten) {
+            if (col.isExportable()) {
+                if (firstCellWritten) {
                     writer.write(",");
                 }
                 
@@ -91,17 +91,17 @@ public class CSVExporter extends Exporter {
         PrintWriter writer = (PrintWriter) document;
         boolean firstCellWritten = false;
         
-        for(UIColumn col : table.getColumns()) {
-            if(!col.isRendered()) {
+        for (UIColumn col : table.getColumns()) {
+            if (!col.isRendered()) {
                 continue;
             }
                         
-            if(col instanceof DynamicColumn) {
+            if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyModel();
             }
             
-            if(col.isExportable()) {
-                if(firstCellWritten) {
+            if (col.isExportable()) {
+                if (firstCellWritten) {
                     writer.write(",");
                 }
                 
@@ -129,7 +129,7 @@ public class CSVExporter extends Exporter {
 		for(Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
             addColumnValue(writer, iterator.next().getChildren());
 
-            if(iterator.hasNext())
+            if (iterator.hasNext())
                 writer.write(",");
 		}
 	}
@@ -144,20 +144,20 @@ public class CSVExporter extends Exporter {
 	}
 	
 	protected void addColumnValue(Writer writer, List<UIComponent> components) throws IOException {
-		StringBuilder builder = new StringBuilder();
-		
-		for(UIComponent component : components) {
-			if(component.isRendered()) {
+        writer.write("\"");
+        
+		for (UIComponent component : components) {
+			if (component.isRendered()) {
 				String value = exportValue(FacesContext.getCurrentInstance(), component);
 
                 //escape double quotes
                 value = value.replaceAll("\"", "\"\"");
                 
-				builder.append(value);
+				writer.write(value);
 			}
 		}
-		
-		writer.write("\"" + builder.toString() + "\"");
+
+		writer.write("\"");
 	}
 
     @Override

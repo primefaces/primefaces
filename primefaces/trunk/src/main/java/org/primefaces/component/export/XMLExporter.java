@@ -41,10 +41,10 @@ public class XMLExporter extends Exporter {
     	writer.write("<?xml version=\"1.0\"?>\n");
     	writer.write("<" + table.getId() + ">\n");
     	
-        if(pageOnly) {
+        if (pageOnly) {
             exportPageOnly(context, table, writer);
         }
-        else if(selectionOnly) {
+        else if (selectionOnly) {
             exportSelectionOnly(context, table, writer);
         }
         else {
@@ -74,16 +74,16 @@ public class XMLExporter extends Exporter {
     @Override
     protected void exportCells(DataTable table, Object document) {
         PrintWriter writer = (PrintWriter) document;
-        for(UIColumn col : table.getColumns()) {
-            if(!col.isRendered()) {
+        for (UIColumn col : table.getColumns()) {
+            if (!col.isRendered()) {
                 continue;
             }
             
-            if(col instanceof DynamicColumn) {
+            if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyModel();
             }
             
-            if(col.isExportable()) {
+            if (col.isExportable()) {
                 String columnTag = getColumnTag(col);
                 try {
                     addColumnValue(writer, col.getChildren(), columnTag);
@@ -99,10 +99,10 @@ public class XMLExporter extends Exporter {
         String headerText = column.getHeaderText();
         UIComponent facet = column.getFacet("header");
         
-        if(headerText != null) {
+        if (headerText != null) {
             return headerText.toLowerCase();
         }
-        else if(facet != null) {
+        else if (facet != null) {
             return exportValue(FacesContext.getCurrentInstance(), facet).toLowerCase();            
         }
         else {
@@ -112,19 +112,17 @@ public class XMLExporter extends Exporter {
     		
 	protected void addColumnValue(Writer writer, List<UIComponent> components, String tag) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-		StringBuilder builder = new StringBuilder();
+
 		writer.write("\t\t<" + tag + ">");
 
-		for(UIComponent component : components) {
+		for (UIComponent component : components) {
 			if(component.isRendered()) {
 				String value = exportValue(context, component);
 
-				builder.append(value);
+				writer.write(value);
 			}
 		}
 
-		writer.write(builder.toString());
-		
 		writer.write("</" + tag + ">\n");
 	}
 	    
