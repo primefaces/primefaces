@@ -63,18 +63,23 @@ public class OhlcChartRenderer extends BaseChartRenderer {
         ResponseWriter writer = context.getResponseWriter();
         OhlcChartModel model = (OhlcChartModel) chart.getValue();
         List<OhlcChartSeries> data = model.getData();
-        StringBuilder builder = new StringBuilder();
         
         writer.write(",data:[[");
-        for(Iterator<OhlcChartSeries> it = data.iterator(); it.hasNext();) {
+        for (Iterator<OhlcChartSeries> it = data.iterator(); it.hasNext();) {
             OhlcChartSeries s = it.next();
-            builder.append("[").append(s.getValue()).append(",").append(s.getOpen()).append(",").append(s.getHigh())
-                    .append(",").append(s.getLow()).append(",").append(s.getClose()).append("]");
-            
-            writer.write(builder.toString());
-            builder.setLength(0);
-            
-            if(it.hasNext()) {
+            writer.write("[");
+            writer.write(String.valueOf(s.getValue()));
+            writer.write(",");
+            writer.write(String.valueOf(s.getOpen()));
+            writer.write(",");
+            writer.write(String.valueOf(s.getHigh()));
+            writer.write(",");
+            writer.write(String.valueOf(s.getLow()));
+            writer.write(",");
+            writer.write(String.valueOf(s.getClose()));
+            writer.write("]");
+
+            if (it.hasNext()) {
                 writer.write(",");
             }
         }

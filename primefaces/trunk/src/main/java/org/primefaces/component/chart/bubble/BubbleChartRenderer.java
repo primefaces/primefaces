@@ -63,17 +63,20 @@ public class BubbleChartRenderer extends BaseChartRenderer {
         ResponseWriter writer = context.getResponseWriter();
         BubbleChartModel model = (BubbleChartModel) chart.getValue();
         List<BubbleChartSeries> data = model.getData();
-        StringBuilder builder = new StringBuilder();
-        
+
         writer.write(",data:[[");
         for(Iterator<BubbleChartSeries> it = data.iterator(); it.hasNext();) {
             BubbleChartSeries s = it.next();
-            builder.append("[").append(s.getX()).append(",").append(s.getY()).append(",")
-                    .append(s.getRadius()).append(",'").append(s.getLabel()).append("']");
-            
-            writer.write(builder.toString());
-            builder.setLength(0);
-            
+            writer.write("[");
+            writer.write(String.valueOf(s.getX()));
+            writer.write(",");
+            writer.write(String.valueOf(s.getY()));
+            writer.write(",");
+            writer.write(String.valueOf(s.getRadius()));
+            writer.write(",'");
+            writer.write(String.valueOf(s.getLabel()));
+            writer.write("']");
+
             if(it.hasNext()) {
                 writer.write(",");
             }
