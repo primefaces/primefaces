@@ -38,10 +38,13 @@ import org.primefaces.model.TreeNodeChildren;
 import org.primefaces.model.TreeNodeComparator;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class TreeTableRenderer extends CoreRenderer {
 
+    private static final String SB_DECODE_SELECTION = TreeTableRenderer.class.getName() + "#decodeSelection";
+    
     @Override
     public void decode(FacesContext context, UIComponent component) {
         TreeTable tt = (TreeTable) component;
@@ -96,7 +99,7 @@ public class TreeTableRenderer extends CoreRenderer {
             List<String> descendantRowKeys = new ArrayList<String>();
             tt.populateRowKeys(selectedNode, descendantRowKeys);
             int size = descendantRowKeys.size();
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = SharedStringBuilder.get(context, SB_DECODE_SELECTION);
             
             for(int i = 0; i < size; i++) {
                 sb.append(descendantRowKeys.get(i));

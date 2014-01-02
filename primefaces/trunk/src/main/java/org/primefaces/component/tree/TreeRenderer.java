@@ -33,10 +33,13 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class TreeRenderer extends CoreRenderer {
         
+    private static final String SB_DECODE_SELECTION = TreeRenderer.class.getName() + "#decodeSelection";
+    
     protected enum NodeOrder {
         FIRST,
         MIDDLE,
@@ -100,7 +103,7 @@ public class TreeRenderer extends CoreRenderer {
             List<String> descendantRowKeys = new ArrayList<String>();
             tree.populateRowKeys(selectedNode, descendantRowKeys);
             int size = descendantRowKeys.size();
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = SharedStringBuilder.get(context, SB_DECODE_SELECTION);
             
             for(int i = 0; i < size; i++) {
                 sb.append(descendantRowKeys.get(i));

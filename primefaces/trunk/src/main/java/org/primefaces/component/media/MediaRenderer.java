@@ -34,10 +34,14 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.StringEncrypter;
 
 public class MediaRenderer extends CoreRenderer {
 
+    private static final String SB_GET_MEDIA_SRC = MediaRenderer.class.getName() + "#getMediaSrc";
+    private static final String SB_GENERATE_KEY = MediaRenderer.class.getName() + "#generateKey";
+    
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Media media = (Media) component;
@@ -141,9 +145,9 @@ public class MediaRenderer extends CoreRenderer {
                 String resourcePath = resource.getRequestPath();
                 StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
                 String rid = strEn.encrypt(media.getValueExpression("value").getExpressionString());
-                StringBuilder builder = new StringBuilder(resourcePath);
-                
-                builder.append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid,"UTF-8"));
+                StringBuilder builder = SharedStringBuilder.get(context, SB_GET_MEDIA_SRC);
+                        
+                builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid,"UTF-8"));
 
                 for(UIComponent kid : media.getChildren()) {
                     if(kid instanceof UIParameter) {
@@ -182,7 +186,7 @@ public class MediaRenderer extends CoreRenderer {
     
 
     protected String generateKey() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = SharedStringBuilder.get(SB_GENERATE_KEY);
         
         return builder.append(Constants.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
     }

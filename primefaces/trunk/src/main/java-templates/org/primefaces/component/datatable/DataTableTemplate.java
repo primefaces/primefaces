@@ -55,9 +55,12 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortMeta;
 import org.primefaces.component.datatable.feature.*;
+import org.primefaces.util.SharedStringBuilder;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
+    private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = DataTableTemplate.class.getName() + "#getSelectedRowKeysAsString";
+            
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String TABLE_WRAPPER_CLASS = "ui-datatable-tablewrapper";
     public static final String RTL_CLASS = "ui-datatable-rtl";
@@ -679,7 +682,7 @@ import org.primefaces.component.datatable.feature.*;
     }
 
     protected String getSelectedRowKeysAsString() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = SharedStringBuilder.get(SB_GET_SELECTED_ROW_KEYS_AS_STRING);
         for(Iterator<Object> iter = getSelectedRowKeys().iterator(); iter.hasNext();) {
             builder.append(iter.next());
 

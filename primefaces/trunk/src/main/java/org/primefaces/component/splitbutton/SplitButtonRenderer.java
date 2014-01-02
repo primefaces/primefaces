@@ -31,9 +31,12 @@ import org.primefaces.component.separator.UISeparator;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class SplitButtonRenderer extends OutcomeTargetRenderer {
+    
+    private static final String SB_BUILD_ONCLICK = SplitButtonRenderer.class.getName() + "#buildOnclick";
     
     @Override
 	public void decode(FacesContext context, UIComponent component) {
@@ -165,7 +168,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     }
     
     protected String buildOnclick(FacesContext context, SplitButton button) throws IOException {
-        StringBuilder onclick = new StringBuilder();
+        StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
         if(button.getOnclick() != null) {
             onclick.append(button.getOnclick()).append(";");
         }

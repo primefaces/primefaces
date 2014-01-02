@@ -37,8 +37,12 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.MessageFactory;
+import org.primefaces.util.SharedStringBuilder;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
+    
+    private static final String SB_GET_CONTAINER_CLIENT_ID = UITree.class.getName() + "#getContainerClientId";
+    private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = UITree.class.getName() + "#getSelectedRowKeysAsString";
     
     public final static String SEPARATOR = "_";
     
@@ -261,7 +265,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             }
             else {
                 TreeNode[] nodes = (TreeNode[]) selection;
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = SharedStringBuilder.get(SB_GET_SELECTED_ROW_KEYS_AS_STRING);
                 
                 for(int i = 0; i < nodes.length; i++) {
                     builder.append(nodes[i].getRowKey());
@@ -286,7 +290,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             return clientId;
         } 
         else {
-            StringBuilder builder = new StringBuilder();
+            StringBuilder builder = SharedStringBuilder.get(context, SB_GET_CONTAINER_CLIENT_ID);
             
             return builder.append(clientId).append(UINamingContainer.getSeparatorChar(context)).append(rowKey).toString();
         }

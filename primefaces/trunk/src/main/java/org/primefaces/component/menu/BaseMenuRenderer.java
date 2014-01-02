@@ -41,9 +41,12 @@ import org.primefaces.model.menu.Separator;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
+    
+    private static final String SB_BUILD_NON_AJAX_REQUEST = BaseMenuRenderer.class.getName() + "#buildNonAjaxRequest";
     
     public final static String SEPARATOR = "_";
     
@@ -279,7 +282,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     }
     
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, Map<String,List<String>> parameters, boolean submit) {		
-        StringBuilder request = new StringBuilder();
+        StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
         Map<String,Object> params = new HashMap<String, Object>();
         

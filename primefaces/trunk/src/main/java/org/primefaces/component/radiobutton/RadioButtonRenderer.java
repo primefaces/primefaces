@@ -26,8 +26,11 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 
 public class RadioButtonRenderer extends InputRenderer {
+    
+    private static final String SB_ENCODE_OPTION_INPUT = RadioButtonRenderer.class.getName() + "#encodeOptionInput";
     
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -98,7 +101,7 @@ public class RadioButtonRenderer extends InputRenderer {
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         
         //onchange
-        StringBuilder onchangeBuilder = new StringBuilder();
+        StringBuilder onchangeBuilder = SharedStringBuilder.get(context, SB_ENCODE_OPTION_INPUT);
         if(radio.getOnchange() != null) onchangeBuilder.append(radio.getOnchange()).append(";");
         if(button.getOnchange() != null) onchangeBuilder.append(button.getOnchange()).append(";");
         if(onchangeBuilder.length() > 0) {  
