@@ -59,6 +59,7 @@ public abstract class CoreRenderer extends Renderer {
     private static final String SB_BUILD_NON_AJAX_REQUEST = CoreRenderer.class.getName() + "#buildNonAjaxRequest";
     private static final String SB_ESCAPE_TEXT = CoreRenderer.class.getName() + "#escapeText";
     private static final String SB_GET_EVENT_BEHAVIORS = CoreRenderer.class.getName() + "#getEventBehaviors";
+    private static final String SB_RENDER_VALIDATOR_IDS = CoreRenderer.class.getName() + "#renderValidatorIds";
     
     protected void renderChildren(FacesContext context, UIComponent component) throws IOException {
         if (component.getChildCount() > 0) {
@@ -594,7 +595,7 @@ public abstract class CoreRenderer extends Renderer {
         }
         
         ResponseWriter writer = context.getResponseWriter();
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = SharedStringBuilder.get(context, SB_RENDER_VALIDATOR_IDS);
         
         for(int i = 0; i < validatorIds.size(); i++) {
             if (i != 0) {
