@@ -104,7 +104,14 @@ public class ContentFlowRenderer extends CoreRenderer {
 
     protected void encodeScript(FacesContext context, ContentFlow cf) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context)).finish();
+        
+        if (context.isPostback()) {
+        	wb.initWithDomReady("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context), "contentflow");
+        }  else {
+        	wb.initWithWindowLoad("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context), "contentflow");
+        }
+        
+        wb.finish();
     }
     
     @Override

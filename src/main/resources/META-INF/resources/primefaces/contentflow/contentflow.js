@@ -109,24 +109,7 @@ var ContentFlowGlobal = {
     },
 
     init: function () {
-        /* add default stylesheets */
-        this.addStylesheet(this.CSSBaseDir+'contentflow.css');
-        this.addStylesheet(this.CSSBaseDir+'mycontentflow.css');    // FF2: without adding a css-file FF2 hangs on a reload.
-                                                                    //      I don't have the slidest idea why
-                                                                    //      Could be timing problem
         this.loadAddOns = new Array();
-        /* add AddOns scripts */
-        if (this.scriptElement.getAttribute('load')) {
-            var AddOns = this.loadAddOns = this.scriptElement.getAttribute('load').replace(/\ +/g,' ').split(' ');
-            for (var i=0; i<AddOns.length; i++) {
-                if (AddOns[i] == '') continue;
-                //if (AddOns[i] == 'myStyle') {
-                    //this.addStylesheet(this.BaseDir+'mycontentflow.css');
-                    //continue;
-                //}
-                this.addScript(this.AddOnBaseDir+'ContentFlowAddOn_'+AddOns[i]+'.js');
-            }
-        }
 
         /* ========== ContentFlow auto initialization on document load ==========
          * thanks to Dean Edwards
@@ -180,32 +163,9 @@ var ContentFlowGlobal = {
         // flag this function so we don't do the same thing twice
         arguments.callee.done = true;
         
-        /* fix for mootools */
-        if (window.Element && Element.implement && document.all && !window.opera) {
-            for (var prop in window.CFElement.prototype) {
-                if(!window.Element.prototype[prop]) {
-                    var implement = {};
-                    implement[prop] = window.CFElement.prototype[prop];
-                    Element.implement(implement);
-                }
-            }
-        }
-
         /* init all manualy created flows */
         for (var i=0; i< ContentFlowGlobal.Flows.length; i++) {
             ContentFlowGlobal.Flows[i].init(); 
-        }
-
-        /* init the rest */
-        var divs = document.getElementsByTagName('div');
-        DIVS: for (var i = 0; i < divs.length; i++) {
-            if (divs[i].className.match(/\bContentFlow\b/)) {
-                for (var j=0; j<ContentFlowGlobal.Flows.length; j++) {
-                    if (divs[i] == ContentFlowGlobal.Flows[j].Container) continue DIVS;
-                }
-                var CF = new ContentFlow(divs[i],{}, false);
-                CF.init();
-            }
         }
     }
 
@@ -668,6 +628,8 @@ var ContentFlow = function (container, config) {
         this._userConf = config?config:{};
         this.conf = {};
         this._loadedAddOns = new Array();
+        
+        ContentFlowGlobal.Flows[ContentFlowGlobal.Flows.length - 1].init();
     } else {
         throw ('ContentFlow ERROR: No flow container node or id given');
     }
@@ -1302,7 +1264,7 @@ ContentFlow.prototype = {
         
         /* ----------  reserve CSS namespace */
 
-        $CF(this.Container).addClassName('ContentFlow');
+        //$CF(this.Container).addClassName('ContentFlow');
 
         /* ---------- detect GUI elements */
         var flow = $CF(this.Container).getChildrenByClassName('flow')[0];
@@ -2580,7 +2542,7 @@ if (!window.removeEvent) {
 }
 
 /* ==================== start it all up ==================== */
-ContentFlowGlobal.init();
+//ContentFlowGlobal.init();
 
 /**
  * PrimeFaces ContentFlow Widget
