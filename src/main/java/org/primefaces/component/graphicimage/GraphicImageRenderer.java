@@ -33,11 +33,13 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.StringEncrypter;
 
 public class GraphicImageRenderer extends CoreRenderer {
     
-    private final static Logger logger = Logger.getLogger(GraphicImageRenderer.class.getName());
+    private static final String SB_GET_MEDIA_SRC = GraphicImageRenderer.class.getName() + "#getMediaSrc";
+    private static final String SB_GENERATE_KEY = GraphicImageRenderer.class.getName() + "#generateKey";
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -96,9 +98,9 @@ public class GraphicImageRenderer extends CoreRenderer {
                 String resourcePath = resource.getRequestPath();
                 StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
                 String rid = strEn.encrypt(image.getValueExpression("value").getExpressionString());
-                StringBuilder builder = new StringBuilder(resourcePath);
+                StringBuilder builder = SharedStringBuilder.get(context, SB_GET_MEDIA_SRC);
 
-                builder.append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid, "UTF-8"));
+                builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid, "UTF-8"));
 
                 for(UIComponent kid : image.getChildren()) {
                     if(kid instanceof UIParameter) {
@@ -132,7 +134,7 @@ public class GraphicImageRenderer extends CoreRenderer {
 	}
     
     protected String generateKey() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = SharedStringBuilder.get(SB_GENERATE_KEY);
         
         return builder.append(Constants.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
     }

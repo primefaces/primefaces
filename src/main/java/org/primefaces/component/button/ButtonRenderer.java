@@ -21,10 +21,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class ButtonRenderer extends OutcomeTargetRenderer {
 
+    private static final String SB_BUILD_ONCLICK = ButtonRenderer.class.getName() + "#buildOnclick";
+    
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Button button = (Button) component;
@@ -89,7 +92,7 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
 
     protected String buildOnclick(FacesContext context, Button button) {
         String userOnclick = button.getOnclick();
-        StringBuilder onclick = new StringBuilder();
+        StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
         String targetURL = getTargetURL(context, button);
         
         if(userOnclick != null) {

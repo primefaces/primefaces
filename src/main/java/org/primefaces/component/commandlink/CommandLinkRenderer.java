@@ -28,9 +28,12 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 
 public class CommandLinkRenderer extends CoreRenderer {
 
+    private static final String SB_BUILD_ONCLICK = CommandLinkRenderer.class.getName() + "#buildOnclick";
+    
     @Override
 	public void decode(FacesContext context, UIComponent component) {
         CommandLink link = (CommandLink) component;
@@ -62,7 +65,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             RequestContext requestContext = RequestContext.getCurrentInstance();
             boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&link.isValidateClient();
         
-            StringBuilder onclick = new StringBuilder();
+            StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
             if(link.getOnclick() != null) {
                 onclick.append(link.getOnclick()).append(";");
             }

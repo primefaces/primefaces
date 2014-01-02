@@ -28,10 +28,13 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class CommandButtonRenderer extends CoreRenderer {
 
+    private static final String SB_BUILD_ONCLICK = CommandButtonRenderer.class.getName() + "#buildOnclick";
+    
     @Override
 	public void decode(FacesContext context, UIComponent component) {
         CommandButton button = (CommandButton) component;
@@ -64,7 +67,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&button.isValidateClient();
         
-        StringBuilder onclick = new StringBuilder();
+        StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
         if(button.getOnclick() != null) {
             onclick.append(button.getOnclick()).append(";");
         }
