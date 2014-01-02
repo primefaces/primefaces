@@ -59,7 +59,7 @@ import org.primefaces.util.SharedStringBuilder;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
-    private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = DataTableTemplate.class.getName() + "#getSelectedRowKeysAsString";
+    private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = DataTable.class.getName() + "#getSelectedRowKeysAsString";
             
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String TABLE_WRAPPER_CLASS = "ui-datatable-tablewrapper";
