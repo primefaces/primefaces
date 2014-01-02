@@ -26,6 +26,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.SharedStringBuilder;
 
 /**
  * Simple facade for the whole Search Expression module.
@@ -48,8 +49,8 @@ public class SearchExpressionFacade {
 	
 	private static final Logger LOG = Logger.getLogger(SearchExpressionFacade.class.getName());
 
-	private static final String SHARED_EXPRESSION_BUFFER_KEY = "SearchExpressionFacade.SHARED_EXPRESSION_BUFFER";
-	private static final String SHARED_SPLIT_BUFFER_KEY = "SearchExpressionFacade.SHARED_SPLIT_BUFFER_KEY";
+	private static final String SHARED_EXPRESSION_BUFFER_KEY = SearchExpressionFacade.class.getName() + ".SHARED_EXPRESSION_BUFFER";
+	private static final String SHARED_SPLIT_BUFFER_KEY = SearchExpressionFacade.class.getName() +  ".SHARED_SPLIT_BUFFER_KEY";
 	
     private static final char[] EXPRESSION_SEPARATORS = new char[] { ',', ' ' };
     
@@ -130,7 +131,7 @@ public class SearchExpressionFacade {
 		if (splittedExpressions != null) {
 			validateExpressions(context, source, expressions, splittedExpressions);
 			
-			StringBuilder expressionsBuffer = getSharedBuffer(context, SHARED_EXPRESSION_BUFFER_KEY);
+			StringBuilder expressionsBuffer = SharedStringBuilder.get(context, SHARED_EXPRESSION_BUFFER_KEY);
 			
 			for (int i = 0; i < splittedExpressions.length; i++) {
 				String expression = splittedExpressions[i].trim();
@@ -442,7 +443,7 @@ public class SearchExpressionFacade {
 		}
 
 		List<String> tokens = new ArrayList<String>();
-		StringBuilder buffer = getSharedBuffer(context, SHARED_SPLIT_BUFFER_KEY);
+		StringBuilder buffer = SharedStringBuilder.get(context, SHARED_SPLIT_BUFFER_KEY);
 
 		int parenthesesCounter = 0;
 
@@ -523,28 +524,6 @@ public class SearchExpressionFacade {
 		return !isPassTroughExpression(expression);
 	}
 
-	/**
-	 * Get a shared {@link StringBuilder} instance.
-	 * This is required as e.g. 100 #resolveComponentsForClient calls would create 
-	 * 300 {@link StringBuilder} instances!
-	 *
-	 * @param context The {@link FacesContext}
-	 * @param key The key for the {@link FacesContext} attributes.
-	 * @return The shared {@link StringBuilder} instance
-	 */
-	private static StringBuilder getSharedBuffer(FacesContext context, String key) {
-		StringBuilder buffer = (StringBuilder) context.getAttributes().get(key);
-
-		if (buffer == null) {
-			buffer = new StringBuilder();
-			context.getAttributes().put(key, buffer);
-		} else {
-			buffer.setLength(0);
-		}
-
-		return buffer;
-	}
-	
 	private static boolean isOptionSet(int options, int option) {
 		return (options & option) != 0;
 	}

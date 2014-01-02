@@ -47,6 +47,7 @@ import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
@@ -54,6 +55,11 @@ import org.primefaces.validate.bean.BeanValidationResolver;
 
 public abstract class CoreRenderer extends Renderer {
 
+    private static final String SB_RENDER_DOM_EVENTS = CoreRenderer.class.getName() + "#renderDomEvents";
+    private static final String SB_BUILD_NON_AJAX_REQUEST = CoreRenderer.class.getName() + "#buildNonAjaxRequest";
+    private static final String SB_ESCAPE_TEXT = CoreRenderer.class.getName() + "#escapeText";
+    private static final String SB_GET_EVENT_BEHAVIORS = CoreRenderer.class.getName() + "#getEventBehaviors";
+    
     protected void renderChildren(FacesContext context, UIComponent component) throws IOException {
         if (component.getChildCount() > 0) {
             for (int i = 0; i < component.getChildCount(); i++) {
@@ -142,7 +148,7 @@ public abstract class CoreRenderer extends Renderer {
             
             if(hasEventValue || hasEventBehaviors) {
                 if(builder == null) {
-                    builder = new StringBuilder();
+                    builder = SharedStringBuilder.get(context, SB_RENDER_DOM_EVENTS);
                 }
                 
                 if(hasEventValue) {
@@ -282,7 +288,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 	
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {		
-        StringBuilder request = new StringBuilder();
+        StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
         Map<String,Object> params = new HashMap<String, Object>();
         
@@ -415,7 +421,7 @@ public abstract class CoreRenderer extends Renderer {
             return null;
         }
         
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE_TEXT);
         
         for (int i = 0; i < text.length(); i++) {
             char ch = text.charAt(i);
@@ -467,7 +473,7 @@ public abstract class CoreRenderer extends Renderer {
     
     protected String getEventBehaviors(FacesContext context, ClientBehaviorHolder cbh, String event) {
         List<ClientBehavior> behaviors = cbh.getClientBehaviors().get(event);
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = SharedStringBuilder.get(context, SB_GET_EVENT_BEHAVIORS);
         
         if(behaviors != null && !behaviors.isEmpty()) {
             UIComponent component = (UIComponent) cbh;
