@@ -15,6 +15,7 @@
  */
 package org.primefaces.behavior.ajax;
 
+import java.util.Collection;
 import java.util.List;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
@@ -55,8 +56,9 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         }
         
         UIComponent component = behaviorContext.getComponent();
-        ClientBehaviorRenderingMode renderingMode = (ClientBehaviorRenderingMode) ((List<ClientBehaviorContext.Parameter>) 
-                                                                behaviorContext.getParameters()).get(0).getValue();
+        Collection<ClientBehaviorContext.Parameter> behaviorParameters = behaviorContext.getParameters();
+        ClientBehaviorRenderingMode renderingMode = (behaviorParameters == null || behaviorParameters.isEmpty()) ? ClientBehaviorRenderingMode.OBSTRUSIVE : 
+                                    (ClientBehaviorRenderingMode) ((List<ClientBehaviorContext.Parameter>) behaviorParameters).get(0).getValue();
         String source = behaviorContext.getSourceId();
         String process = ajaxBehavior.getProcess();
         if(process == null) {
