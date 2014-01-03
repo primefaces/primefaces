@@ -80,7 +80,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
             if(this.hasBehavior('expand')) {
                 var expandBehavior = this.cfg.behaviors['expand'];
-                expandBehavior.call(this, node, options);
+                expandBehavior.call(this, options);
             }
             else {
                 PrimeFaces.ajax.Request.handle(options);
@@ -102,7 +102,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     ]
                 };
 
-                expandBehavior.call(this, node, ext);
+                expandBehavior.call(this, ext);
             }
         }
     },
@@ -117,7 +117,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     ]
                 };
 
-                collapseBehavior.call(this, node, ext);
+                collapseBehavior.call(this, ext);
             }
         }
     },
@@ -158,7 +158,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             
             if(this.hasBehavior('select')) {
                 var selectBehavior = this.cfg.behaviors['select'];
-                selectBehavior.call(this, node, options);
+                selectBehavior.call(this, options);
             }
             else {
                 PrimeFaces.ajax.AjaxRequest(options);
@@ -173,7 +173,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     ]
                 };
                 
-                selectBehavior.call(this, node, ext);
+                selectBehavior.call(this, ext);
             }
         }
     },
@@ -189,7 +189,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     ]
                 };
 
-                unselectBehavior.call(this, node, ext);
+                unselectBehavior.call(this, ext);
             }
         }
     },
@@ -203,7 +203,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            contextMenuBehavior.call(this, node, ext);
+            contextMenuBehavior.call(this, ext);
         }
     },
     
@@ -1054,7 +1054,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         if(this.hasBehavior('dragdrop')) {
             var dragdropBehavior = this.cfg.behaviors['dragdrop'];
 
-            dragdropBehavior.call(this, event, options);
+            dragdropBehavior.call(this, options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);

@@ -314,7 +314,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         if(this.hasBehavior('tabChange')) {
             var tabChangeBehavior = this.cfg.behaviors['tabChange'];
 
-            tabChangeBehavior.call(this, newPanel, options);
+            tabChangeBehavior.call(this, options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -359,7 +359,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             ]
         };
         
-        tabChangeBehavior.call(this, panel, ext);
+        tabChangeBehavior.call(this, ext);
     },
     
     fireTabCloseEvent: function(panel) {    
@@ -372,7 +372,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            tabCloseBehavior.call(this, null, ext);
+            tabCloseBehavior.call(this, ext);
         }
     },
     
