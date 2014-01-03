@@ -1234,7 +1234,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         if(!this.isRepeating()) {
-            super.queueEvent(event);
+            super.broadcast(event);
         }
         else {
             if (event instanceof IndexedEvent) {

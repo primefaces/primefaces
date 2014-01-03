@@ -188,7 +188,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         if(this.hasBehavior('tabChange')) {
             var tabChangeBehavior = this.cfg.behaviors['tabChange'];
 
-            tabChangeBehavior.call(this, null, options);
+            tabChangeBehavior.call(this, options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -204,7 +204,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             ]
         };
         
-        tabChangeBehavior.call(this, null, ext);
+        tabChangeBehavior.call(this, ext);
     },
 
     fireTabCloseEvent : function(panel) {
@@ -216,7 +216,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             ]
         };
         
-        tabCloseBehavior.call(this, null, ext);
+        tabCloseBehavior.call(this, ext);
     },
     
     markAsLoaded: function(panel) {
