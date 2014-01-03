@@ -212,7 +212,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         
         if(this.hasBehavior('expand')) {
             var expandBehavior = this.cfg.behaviors['expand'];
-            expandBehavior.call(this, node, options);
+            expandBehavior.call(this, options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -247,7 +247,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            collapseBehavior.call(this, node, ext);
+            collapseBehavior.call(this, ext);
         }
     },
     
@@ -532,7 +532,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             
             if(this.hasBehavior('select')) {
                 var selectBehavior = this.cfg.behaviors['select'];
-                selectBehavior.call(this, nodeKey, options);
+                selectBehavior.call(this, options);
             }
             else {
                 PrimeFaces.ajax.AjaxRequest(options);
@@ -547,7 +547,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     ]
                 };
                 
-                selectBehavior.call(this, nodeKey, ext);
+                selectBehavior.call(this, ext);
             }
         }
     },
@@ -561,7 +561,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
             
-            unselectBehavior.call(this, nodeKey, ext);
+            unselectBehavior.call(this, ext);
         }
     },
     
@@ -719,7 +719,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 
                 if($this.hasBehavior('colResize')) {
-                    $this.cfg.behaviors['colResize'].call($this, event, options);
+                    $this.cfg.behaviors['colResize'].call($this, options);
                 }
             },
             containment: this.jq
