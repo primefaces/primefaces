@@ -52,7 +52,7 @@ PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({
                         ]
                     };
 
-                    dropBehavior.call(_self, event, ext);
+                    dropBehavior.call(_self, ext);
                 }
             }
         };

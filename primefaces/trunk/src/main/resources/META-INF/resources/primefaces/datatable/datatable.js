@@ -734,7 +734,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.hasBehavior('page')) {
             var pageBehavior = this.cfg.behaviors['page'];
 
-            pageBehavior.call(this, newState, options);
+            pageBehavior.call(this, options);
         } 
         else {
             PrimeFaces.ajax.Request.handle(options); 
@@ -806,7 +806,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.hasBehavior('sort')) {
             var sortBehavior = this.cfg.behaviors['sort'];
 
-            sortBehavior.call(this, columnHeader, options);
+            sortBehavior.call(this, options);
         } 
         else {
             PrimeFaces.ajax.Request.handle(options); 
@@ -868,7 +868,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.hasBehavior('filter')) {
             var filterBehavior = this.cfg.behaviors['filter'];
 
-            filterBehavior.call(this, {}, options);
+            filterBehavior.call(this, options);
         } 
         else {
             PrimeFaces.ajax.AjaxRequest(options); 
@@ -1039,7 +1039,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     ]
                 };
 
-                selectBehavior.call(this, rowKey, ext);
+                selectBehavior.call(this, ext);
             }
         }
     },
@@ -1061,7 +1061,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     ]
                 };
 
-                unselectBehavior.call(this, rowKey, ext);
+                unselectBehavior.call(this, ext);
             }
         }
     },
@@ -1257,7 +1257,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     ]
                 };
                 
-                toggleSelectBehavior.call(this, null, ext);
+                toggleSelectBehavior.call(this, ext);
             }
         }
     },
@@ -1369,7 +1369,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         
             var rowToggleBehavior = this.cfg.behaviors['rowToggle'];
 
-            rowToggleBehavior.call(this, row, ext);
+            rowToggleBehavior.call(this, ext);
         } 
     },
     
@@ -1464,7 +1464,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
             };
 
-            rowEditInitBehavior.call(this, null, ext);
+            rowEditInitBehavior.call(this, ext);
         }
     },
     

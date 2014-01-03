@@ -133,7 +133,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
                 if($this.cfg.behaviors) {
                     var closeBehavior = $this.cfg.behaviors['close'];
                     if(closeBehavior) {
-                        closeBehavior.call($this, e);
+                        closeBehavior.call($this);
                     }
                 }
             }

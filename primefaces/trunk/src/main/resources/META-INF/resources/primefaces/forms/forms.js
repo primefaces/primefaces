@@ -315,7 +315,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                     ]
                 };
 
-                itemSelectBehavior.call(this, event, ext);
+                itemSelectBehavior.call(this, ext);
             }
         }
     },
@@ -2230,7 +2230,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     params: [{name: this.id + '_checked', value: checked}]
                 }
                 
-                toggleSelectBehavior.call(this, null, ext);
+                toggleSelectBehavior.call(this, ext);
             }
         }
     },

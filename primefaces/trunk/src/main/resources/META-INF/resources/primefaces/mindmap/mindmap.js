@@ -272,7 +272,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            dblselectBehavior.call(this, node, ext);
+            dblselectBehavior.call(this, ext);
         }
     },
     

@@ -61,7 +61,7 @@ PrimeFaces.widget.DataGrid = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.hasBehavior('page')) {
             var pageBehavior = this.cfg.behaviors['page'];
-            pageBehavior.call(this, newState, options);
+            pageBehavior.call(this, options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);

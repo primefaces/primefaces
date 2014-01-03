@@ -128,7 +128,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            markerDragBehavior.call(this, event, ext);
+            markerDragBehavior.call(this, ext);
         }
     },
     
@@ -160,7 +160,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            overlaySelectBehavior.call(this, event, ext);
+            overlaySelectBehavior.call(this, ext);
         }
     },
     
@@ -205,7 +205,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            stateChangeBehavior.call(this, event, ext);
+            stateChangeBehavior.call(this, ext);
         }
     },
     
@@ -227,7 +227,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            pointSelectBehavior.call(this, event, ext);
+            pointSelectBehavior.call(this, ext);
         }
     },
     

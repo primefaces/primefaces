@@ -92,7 +92,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
                     ]
                 };
 
-                slideEndBehavior.call(this, event, ext);
+                slideEndBehavior.call(this, ext);
             }
         }
     },
