@@ -95,7 +95,7 @@ PrimeFaces.dialog.DialogHandler = {
                     ]
                 };
             
-            dialogReturnBehavior.call(this, null, ext);
+            dialogReturnBehavior.call(this, ext);
         }
         
         dlgWidget.hide();

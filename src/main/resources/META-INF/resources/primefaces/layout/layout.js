@@ -6038,7 +6038,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            closeBehavior.call(this, location, ext);
+            closeBehavior.call(this, ext);
         }
     },
 
@@ -6089,7 +6089,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
                         ]
                     };
 
-                    resizeBehavior.call(this, location, ext);
+                    resizeBehavior.call(this, ext);
             }
         }
     },
@@ -6104,7 +6104,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
             ]
         };
 
-        toggleBehavior.call(this, location, ext);
+        toggleBehavior.call(this, ext);
     },
 
     hasBehavior: function(event) {

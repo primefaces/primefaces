@@ -397,31 +397,6 @@
             }
         },
         
-        chainBehaviors: function(source, event, ext, behaviorsArray) {
-
-    		for (var i = 0; i < behaviorsArray.length; ++i) {
-    			var behavior = behaviorsArray[i];
-    			var success;
-
-	            if (typeof behavior == 'function') {
-	            	success = behavior.call(source, event, ext);
-	            } else {	                
-	            	if (!ext) {
-	            		ext = { };
-	            	}
-
-	            	//either a function or a string can be passed in case of a string we have to wrap it into another function
-	            	success = new Function("event", behavior).call(source, event, ext);
-	            }
-
-	            if (success === false) {
-	                return false;
-	            }
-    		}
-    		
-    		return true;
-    	},
-
     	/**
     	 * moved to core.dialog.js
     	 */

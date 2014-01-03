@@ -526,7 +526,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 
                 ext.params.push({name:this.id + '_add', value:isAdd});
 
-                transferBehavior.call(this, null, ext);
+                transferBehavior.call(this, ext);
             }
         }
     },

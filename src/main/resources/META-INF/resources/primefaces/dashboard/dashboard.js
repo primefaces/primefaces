@@ -37,7 +37,7 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
                             ext.params.push({name: _self.id + '_senderColumnIndex', value: ui.sender.parent().children().index(ui.sender)});
                         }
 
-                        reorderBehavior.call(_self, e, ext);
+                        reorderBehavior.call(_self, ext);
                     }
 
                 };

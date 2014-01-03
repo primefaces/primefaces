@@ -496,7 +496,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         
         if(this.hasBehavior('query')) {
             var queryBehavior = this.cfg.behaviors['query'];
-            queryBehavior.call(this, query, options);
+            queryBehavior.call(this, options);
         } 
         else {
             PrimeFaces.ajax.AjaxRequest(options); 
@@ -532,7 +532,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     ]
                 };
 
-                itemSelectBehavior.call(this, event, ext);
+                itemSelectBehavior.call(this, ext);
             }
         }
     },
@@ -548,7 +548,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     ]
                 };
                 
-                itemUnselectBehavior.call(this, event, ext);
+                itemUnselectBehavior.call(this, ext);
             }
         }
     },

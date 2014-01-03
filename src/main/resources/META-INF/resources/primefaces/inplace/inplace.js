@@ -112,7 +112,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         if(this.hasBehavior('save')) {
             var saveBehavior = this.cfg.behaviors['save'];
 
-            saveBehavior.call(this, e, options);
+            saveBehavior.call(this, options);
         } 
         else {
             PrimeFaces.ajax.AjaxRequest(options); 
@@ -134,7 +134,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         if(this.hasBehavior('cancel')) {
             var saveBehavior = this.cfg.behaviors['cancel'];
 
-            saveBehavior.call(this, e, options);
+            saveBehavior.call(this, options);
         } 
         else {
             PrimeFaces.ajax.AjaxRequest(options); 

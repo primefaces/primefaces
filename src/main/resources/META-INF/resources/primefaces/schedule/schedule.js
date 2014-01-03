@@ -5434,7 +5434,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                         ]
                     };
 
-                    dateSelectBehavior.call(_self, dayDate, ext);
+                    dateSelectBehavior.call(_self, ext);
                 }
             }
         }
@@ -5449,7 +5449,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                         ]
                     };
 
-                    eventSelectBehavior.call(_self, calEvent, ext);
+                    eventSelectBehavior.call(_self, ext);
                 }
             }
         }
@@ -5466,7 +5466,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                         ]
                     };
                     
-                    eventMoveBehavior.call(_self, calEvent, ext);
+                    eventMoveBehavior.call(_self, ext);
                 }
             }
         }
@@ -5483,7 +5483,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                         ]
                     };
 
-                    eventResizeBehavior.call(_self, calEvent, ext);
+                    eventResizeBehavior.call(_self, ext);
                 }
             }
         }
