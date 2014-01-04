@@ -256,8 +256,9 @@ public class FilterFeature implements DataTableFeature {
                 
                 if(columnFilterByVE != null || filterByProperty != null) {
                     if(column instanceof Column) {
+                        UIComponent filterFacet = column.getFacet("filter");
                         ValueExpression filterByVE = (columnFilterByVE != null) ? columnFilterByVE : createFilterByVE(context, var, filterByProperty);
-                        String filterId = column.getClientId(context) + separator + "filter";
+                        String filterId = (filterFacet == null) ? column.getClientId(context) + separator + "filter" : filterFacet.getClientId(context);
                         filterMetadata.add(new FilterMeta(column, filterByVE, filterId));
                     }
                     else if(column instanceof DynamicColumn) {
