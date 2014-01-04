@@ -82,7 +82,8 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
-        if(button.getOnchange() != null) writer.writeAttribute("onchange", button.getOnchange(), null);
+        
+        renderOnchange(context, button);
 
         writer.endElement("input");
         
@@ -111,8 +112,6 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
             .attr("onIcon", button.getOnIcon(), null)
             .attr("offIcon", button.getOffIcon(), null);
         
-        encodeClientBehaviors(context, button);
-
         wb.finish();
     }
 }

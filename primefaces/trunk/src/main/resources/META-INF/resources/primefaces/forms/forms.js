@@ -1841,11 +1841,6 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
             }).click(function() {
                 _self.toggle();
             });
-
-            //Client Behaviors
-            if(this.cfg.behaviors) {
-                PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-            }
         }
         
         //pfs metadata
