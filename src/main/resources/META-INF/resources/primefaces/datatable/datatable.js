@@ -193,7 +193,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
       
     /**
-     * Binds filter events to filters
+     * Binds filter events to standard filters
      */
     setupFiltering: function() {
         var $this = this,
@@ -201,7 +201,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
         this.cfg.filterDelay = this.cfg.filterDelay||300;
 
-        //standard filters
         filterColumns.children('.ui-column-filter').each(function() {
             var filter = $(this);
 
@@ -213,23 +212,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.skinSelect(filter);
                 $this.bindChangeFilter(filter);
             }
-        });
-        
-        //custom filters
-        filterColumns.children('.ui-column-customfilter').each(function() {
-            var container = $(this),
-            filter = container.children().eq(0);
-            
-             if(filter.is(':text')) {
-                $this.bindTextFilter(filter);
-             }
-             else if(filter.is(':input')) {
-                 $this.bindChangeFilter(filter);
-             }
-             else {
-                 $this.bindTextFilter(filter.find(':text'));
-                 $this.bindChangeFilter(filter.find('select,:radio,:checkbox'));
-             }
         });
     },
     
