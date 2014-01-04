@@ -2393,12 +2393,6 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
                 this.setupFeedback();
             }
 
-            //Client Behaviors
-            if(this.cfg.behaviors) {
-                PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
-            }
-
-            //Visuals
             PrimeFaces.skinInput(this.jq);
         }
     },

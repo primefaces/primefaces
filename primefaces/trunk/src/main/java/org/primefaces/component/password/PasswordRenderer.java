@@ -69,8 +69,6 @@ public class PasswordRenderer extends InputRenderer {
                 .attr("strongLabel", escapeText(password.getStrongLabel()));
         }
 
-        encodeClientBehaviors(context, password);
-
         wb.finish();
 	}
 
@@ -98,7 +96,8 @@ public class PasswordRenderer extends InputRenderer {
 			writer.writeAttribute("value", valueToRender , null);
 		}
 		
-		renderPassThruAttributes(context, password, HTML.INPUT_TEXT_ATTRS);
+        renderPassThruAttributes(context, password, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, password, HTML.INPUT_TEXT_EVENTS);
 
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(password.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
