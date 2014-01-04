@@ -1826,20 +1826,20 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
         this.input = $(this.jqId + '_input');
         this.disabled = this.input.is(':disabled');
         this.icon = this.jq.children('.ui-button-icon-left');
-        var _self = this;
+        var $this = this;
 
         //bind events if not disabled
         if(!this.disabled) {
             this.jq.mouseover(function() {
-                if(!_self.jq.hasClass('ui-state-active')) {
-                    _self.jq.addClass('ui-state-hover');
+                if(!$this.jq.hasClass('ui-state-active')) {
+                    $this.jq.addClass('ui-state-hover');
                 }
             }).mouseout(function() {
-                if(!_self.jq.hasClass('ui-state-active')) {
-                    _self.jq.removeClass('ui-state-hover');
+                if(!$this.jq.hasClass('ui-state-active')) {
+                    $this.jq.removeClass('ui-state-hover');
                 }
             }).click(function() {
-                _self.toggle();
+                $this.toggle();
             });
         }
         
@@ -1865,7 +1865,7 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
                 this.icon.removeClass(this.cfg.offIcon).addClass(this.cfg.onIcon);
             }
 
-            this.input.change();
+            this.input.trigger('change');
         }
     },
     
@@ -1878,7 +1878,7 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
                 this.icon.removeClass(this.cfg.onIcon).addClass(this.cfg.offIcon);
             }
 
-            this.input.change();
+            this.input.trigger('change');
         }
     }
     
