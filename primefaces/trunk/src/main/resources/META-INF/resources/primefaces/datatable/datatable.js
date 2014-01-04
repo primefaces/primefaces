@@ -150,6 +150,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             PrimeFaces.clearSelection();
+            
+            if($this.isEmpty()) {
+                return;
+            }
                 
             var columnHeader = $(this),
             sortOrder = columnHeader.data('sortorder')||'DESCENDING',
