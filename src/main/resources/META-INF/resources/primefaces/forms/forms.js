@@ -2164,7 +2164,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         _self = this;
         
         visibleItems.each(function() {
-            _self.inputs.eq($(this).index()).attr('checked', true);
+            _self.inputs.eq($(this).index()).prop('checked', true);
             _self.check($(this).children('.ui-chkbox').children('.ui-chkbox-box'));
         });
         
@@ -2178,7 +2178,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         _self = this;
         
         visibleItems.each(function() {
-            _self.inputs.eq($(this).index()).attr('checked', false);
+            _self.inputs.eq($(this).index()).prop('checked', false);
             _self.uncheck($(this).children('.ui-chkbox').children('.ui-chkbox-box'));
         });
         
