@@ -92,11 +92,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
        
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("SelectOneRadio", radio.resolveWidgetVar(), clientId)
-            .attr("custom", custom, false);
-        
-        encodeClientBehaviors(context, radio);
-
-        wb.finish();
+            .attr("custom", custom, false).finish();
     }
     
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout) throws IOException {
@@ -228,11 +224,12 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", value, null);
 
+        renderOnchange(context, radio);
+        
         if(radio.getTabindex() != null) writer.writeAttribute("tabindex", radio.getTabindex(), null);
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
-        if(radio.getOnchange() != null) writer.writeAttribute("onchange", radio.getOnchange(), null);
-
+        
         writer.endElement("input");
 
         writer.endElement("div");

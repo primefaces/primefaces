@@ -1242,10 +1242,6 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 break;
             }
         });
-        
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
-        }
     },
     
     unselect: function(radio) {
