@@ -1861,7 +1861,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 
                 if($this.hasBehavior('colResize')) {
-                    $this.cfg.behaviors['colResize'].call($this, event, options);
+                    $this.cfg.behaviors['colResize'].call($this, options);
                 }
             },
             containment: this.jq
