@@ -1721,11 +1721,6 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
             else
                 _self.select(button);
         });
-
-        //Client behaviors
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
-        }
         
         //pfs metadata
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -1756,11 +1751,6 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
         this.inputs = this.jq.find(':radio:not(:disabled)');
 
         this.bindEvents();
-        
-        //Client behaviors
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
-        }
         
         //pfs metadata
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);

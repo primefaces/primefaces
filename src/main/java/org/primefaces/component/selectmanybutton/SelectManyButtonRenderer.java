@@ -126,9 +126,10 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("class", "ui-helper-hidden", null);
 
+        renderOnchange(context, button);
+        
         if(selected) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
-        if(button.getOnchange() != null) writer.writeAttribute("onchange", button.getOnchange(), null);
 
         writer.endElement("input");
         
@@ -144,10 +145,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
     protected void encodeScript(FacesContext context, SelectManyButton button) throws IOException {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectManyButton", button.resolveWidgetVar(), clientId);
-        encodeClientBehaviors(context, button);
-
-        wb.finish();
+        wb.init("SelectManyButton", button.resolveWidgetVar(), clientId).finish();
     }
     
     @Override
