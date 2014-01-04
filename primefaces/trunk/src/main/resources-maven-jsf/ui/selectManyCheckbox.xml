@@ -54,12 +54,6 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-            <name>ondblclick</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-            <ignoreInComponent>true</ignoreInComponent>
-        </attribute>
-        <attribute>
             <name>style</name>
             <required></required>
             <type>java.lang.String</type>
