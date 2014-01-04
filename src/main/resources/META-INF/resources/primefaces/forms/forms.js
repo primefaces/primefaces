@@ -2365,11 +2365,6 @@ PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
             this.jq.mask(this.cfg.mask, this.cfg);
         }
 
-        //Client behaviors
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
-        }
-
         //Visuals
         PrimeFaces.skinInput(this.jq);
     },
