@@ -99,11 +99,13 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
-        if(checkbox.getOnchange() != null) writer.writeAttribute("onchange", checkbox.getOnchange(), null);
         if(checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, checkbox);
         }
+        
+        renderOnchange(context, checkbox);
+        
         writer.endElement("input");
 
         writer.endElement("div");
@@ -145,11 +147,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
         String clientId = checkbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectBooleanCheckbox", checkbox.resolveWidgetVar(), clientId);
-        
-        encodeClientBehaviors(context, checkbox);
-
-        wb.finish();
+        wb.init("SelectBooleanCheckbox", checkbox.resolveWidgetVar(), clientId).finish();
     }
     
     @Override
