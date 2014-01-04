@@ -65,8 +65,6 @@ public class InputMaskRenderer extends InputRenderer {
             wb.attr("mask", mask)
                 .attr("placeholder", inputMask.getPlaceHolder(), null);
         }
-        
-        encodeClientBehaviors(context, inputMask);
 
         wb.finish();
 	}
@@ -90,7 +88,8 @@ public class InputMaskRenderer extends InputRenderer {
 			writer.writeAttribute("value", valueToRender , null);
 		}
 		
-		renderPassThruAttributes(context, inputMask, HTML.INPUT_TEXT_ATTRS);
+        renderPassThruAttributes(context, inputMask, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, inputMask, HTML.INPUT_TEXT_EVENTS);
 
         if(inputMask.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(inputMask.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
