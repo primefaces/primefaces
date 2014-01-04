@@ -215,6 +215,67 @@ public abstract class CoreRenderer extends Renderer {
             RendererUtils.renderPassThroughAttributes(context, component);
         }
     }
+    
+    protected void renderOnchange(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        StringBuilder builder = null;
+        Map<String,List<ClientBehavior>> behaviors = null;
+        if(component instanceof ClientBehaviorHolder) {
+            behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
+        }
+        Object eventValue = component.getAttributes().get("onchange");
+        String behaviorEvent = "valueChange";
+        if (behaviors != null && behaviors.containsKey("change")) {
+            behaviorEvent = "change";
+        }
+        
+        List<ClientBehavior> changeBehaviors = (behaviors == null) ? null : behaviors.get(behaviorEvent);
+        boolean hasEventValue = (eventValue != null);
+        boolean hasChangeBehaviors = (changeBehaviors != null && !changeBehaviors.isEmpty());
+        
+        if (hasEventValue || hasChangeBehaviors) {
+            if (builder == null) {
+                builder = SharedStringBuilder.get(context, SB_RENDER_DOM_EVENTS);
+            }
+
+            if (hasEventValue) {
+                builder.append(eventValue).append(";");
+            }
+            
+            if (hasChangeBehaviors) {
+                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEvent, component.getClientId(context), Collections.EMPTY_LIST);
+                int size = changeBehaviors.size();
+                    
+                if (size > 1) {
+                    builder.append("PrimeFaces.bcn(this,event,[");
+                    for (int i = 0; i < size; i++) {
+                        ClientBehavior behavior = changeBehaviors.get(i);
+                        String script = behavior.getScript(cbc);
+                        if(script != null) {
+                            builder.append("function(event){").append(script).append("}");
+                        }
+
+                        if (i < (size - 1)) {
+                            builder.append(",");
+                        }
+                    }
+                    builder.append("])");
+                }
+                else {
+                    ClientBehavior behavior = changeBehaviors.get(0);
+                    String script = behavior.getScript(cbc);
+                    if(script != null) {
+                        builder.append(script);
+                    }
+                }
+            }
+            
+            if(builder.length() > 0) {
+                writer.writeAttribute("onchange", builder.toString(), "onchange");
+                builder.setLength(0);
+            }
+        }
+    }
 	
     private boolean isIgnoredAttribute(String attribute, String[] ignoredAttrs) {
         for (String ignoredAttribute : ignoredAttrs) {
