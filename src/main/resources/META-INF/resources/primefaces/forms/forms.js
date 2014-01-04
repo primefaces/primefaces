@@ -1320,11 +1320,6 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
             this.itemLabel.click(function() {
                 $this.toggle();
             });
-
-            //Client Behaviors
-            if(this.cfg.behaviors) {
-                PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-            }
         }
         
         //pfs metadata
