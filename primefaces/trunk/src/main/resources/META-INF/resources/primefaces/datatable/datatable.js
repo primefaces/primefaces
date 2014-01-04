@@ -196,11 +196,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Binds filter events to filters
      */
     setupFiltering: function() {
-        var $this = this;
+        var $this = this,
+        filterColumns = this.thead.find('> tr > th.ui-filter-column');
         this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
         this.cfg.filterDelay = this.cfg.filterDelay||300;
 
-        this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').each(function() {
+        //standard filters
+        filterColumns.children('.ui-column-filter').each(function() {
             var filter = $(this);
 
             if(filter.is('input:text')) {
@@ -218,6 +220,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.filter();
                 });
             }
+        });
+        
+        //custom filters
+        filterColumns.children('.ui-column-customfilter').each(function() {
+            var filter = $(this).children().eq(0);
+            
+             if(filter.is('input:text')) {
+                if($this.cfg.filterEvent === 'enter')
+                    $this.bindEnterKeyFilter(filter);
+                else
+                    $this.bindFilterEvent(filter);
+             }
+             else {
+                 filter.change(function() {
+                    $this.filter();
+                });
+             }
         });
     },
     

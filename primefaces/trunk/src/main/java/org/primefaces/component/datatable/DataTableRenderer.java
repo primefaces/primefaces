@@ -529,80 +529,89 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeFilter(FacesContext context, DataTable table, UIColumn column) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ResponseWriter writer = context.getResponseWriter();
-        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-        boolean disableTabbing = table.getScrollWidth() != null;
+        UIComponent filterFacet = column.getFacet("filter");
+                
+        if (filterFacet == null) {
+            String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+            boolean disableTabbing = table.getScrollWidth() != null;
 
-        String filterId = column.getContainerClientId(context) + separator + "filter";
-        String filterStyleClass = column.getFilterStyleClass();
-        
-        String filterValue = null;
-        if(table.isReset()) {
-            filterValue = "";
-        }
-        else {
-            if(params.containsKey(filterId)) {
-                filterValue = params.get(filterId);
+            String filterId = column.getContainerClientId(context) + separator + "filter";
+            String filterStyleClass = column.getFilterStyleClass();
+
+            String filterValue = null;
+            if(table.isReset()) {
+                filterValue = "";
             }
             else {
-                ValueExpression filterValueVE = column.getValueExpression("filterValue");
-                if(filterValueVE != null) {
-                    filterValue = (String) filterValueVE.getValue(context.getELContext());
+                if(params.containsKey(filterId)) {
+                    filterValue = params.get(filterId);
                 }
                 else {
-                    filterValue = "";
+                    ValueExpression filterValueVE = column.getValueExpression("filterValue");
+                    if(filterValueVE != null) {
+                        filterValue = (String) filterValueVE.getValue(context.getELContext());
+                    }
+                    else {
+                        filterValue = "";
+                    }
                 }
             }
-        }
-        
-        if(column.getValueExpression("filterOptions") == null) {
-            filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_INPUT_FILTER_CLASS : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
-            
-            writer.startElement("input", null);
-            writer.writeAttribute("id", filterId, null);
-            writer.writeAttribute("name", filterId, null);
-            writer.writeAttribute("class", filterStyleClass, null);
-            writer.writeAttribute("value", filterValue , null);
-            writer.writeAttribute("autocomplete", "off", null);
-            
-            if(disableTabbing)
-                writer.writeAttribute("tabindex", "-1", null);
 
-            if(column.getFilterStyle() != null)
-                writer.writeAttribute("style", column.getFilterStyle(), null);
-            
-            if(column.getFilterMaxLength() != Integer.MAX_VALUE)
-                writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
+            if(column.getValueExpression("filterOptions") == null) {
+                filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_INPUT_FILTER_CLASS : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
 
-            writer.endElement("input");
+                writer.startElement("input", null);
+                writer.writeAttribute("id", filterId, null);
+                writer.writeAttribute("name", filterId, null);
+                writer.writeAttribute("class", filterStyleClass, null);
+                writer.writeAttribute("value", filterValue , null);
+                writer.writeAttribute("autocomplete", "off", null);
+
+                if(disableTabbing)
+                    writer.writeAttribute("tabindex", "-1", null);
+
+                if(column.getFilterStyle() != null)
+                    writer.writeAttribute("style", column.getFilterStyle(), null);
+
+                if(column.getFilterMaxLength() != Integer.MAX_VALUE)
+                    writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
+
+                writer.endElement("input");
+            }
+            else {
+                filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
+
+                writer.startElement("select", null);
+                writer.writeAttribute("id", filterId, null);
+                writer.writeAttribute("name", filterId, null);
+                writer.writeAttribute("class", filterStyleClass, null);
+
+                if(disableTabbing)
+                    writer.writeAttribute("tabindex", "-1", null);
+
+                SelectItem[] itemsArray = (SelectItem[]) getFilterOptions(column);
+
+                for(SelectItem item : itemsArray) {
+                    Object itemValue = item.getValue();
+
+                    writer.startElement("option", null);
+                    writer.writeAttribute("value", item.getValue(), null);
+                    if(itemValue != null && String.valueOf(itemValue).equals(filterValue)) {
+                        writer.writeAttribute("selected", "selected", null);
+                    }
+                    writer.writeText(item.getLabel(), null);
+                    writer.endElement("option");
+                }
+
+                writer.endElement("select");
+            }
         }
         else {
-            filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
-            
-            writer.startElement("select", null);
-            writer.writeAttribute("id", filterId, null);
-            writer.writeAttribute("name", filterId, null);
-            writer.writeAttribute("class", filterStyleClass, null);
-            
-            if(disableTabbing)
-                writer.writeAttribute("tabindex", "-1", null);
-
-            SelectItem[] itemsArray = (SelectItem[]) getFilterOptions(column);
-
-            for(SelectItem item : itemsArray) {
-                Object itemValue = item.getValue();
-                
-                writer.startElement("option", null);
-                writer.writeAttribute("value", item.getValue(), null);
-                if(itemValue != null && String.valueOf(itemValue).equals(filterValue)) {
-                    writer.writeAttribute("selected", "selected", null);
-                }
-                writer.writeText(item.getLabel(), null);
-                writer.endElement("option");
-            }
-
-            writer.endElement("select");
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.COLUMN_CUSTOM_FILTER_CLASS, null);
+            filterFacet.encodeAll(context);
+            writer.endElement("div");
         }
-        
     }
 
     protected SelectItem[] getFilterOptions(UIColumn column) {
