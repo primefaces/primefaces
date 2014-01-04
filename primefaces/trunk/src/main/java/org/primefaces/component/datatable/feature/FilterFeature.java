@@ -27,6 +27,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
@@ -254,11 +255,18 @@ public class FilterFeature implements DataTableFeature {
                 ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
                 Object filterByProperty = column.getFilterBy();
                 
-                if(columnFilterByVE != null || filterByProperty != null) {
+                if (columnFilterByVE != null || filterByProperty != null) {
                     if(column instanceof Column) {
-                        UIComponent filterFacet = column.getFacet("filter");
                         ValueExpression filterByVE = (columnFilterByVE != null) ? columnFilterByVE : createFilterByVE(context, var, filterByProperty);
-                        String filterId = (filterFacet == null) ? column.getClientId(context) + separator + "filter" : filterFacet.getClientId(context);
+                        UIComponent filterFacet = column.getFacet("filter");
+                        String filterId;
+                        
+                        if(filterFacet == null) {
+                            filterId = column.getClientId(context) + separator + "filter" ;
+                        } else {
+                            filterId = (filterFacet instanceof InputHolder) ? ((InputHolder) filterFacet).getInputClientId() : filterFacet.getClientId(context);
+                        }
+                     
                         filterMetadata.add(new FilterMeta(column, filterByVE, filterId));
                     }
                     else if(column instanceof DynamicColumn) {

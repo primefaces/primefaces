@@ -207,36 +207,44 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             if(filter.is('input:text')) {
                 PrimeFaces.skinInput(filter);
-
-                if($this.cfg.filterEvent === 'enter')
-                    $this.bindEnterKeyFilter(filter);
-                else
-                    $this.bindFilterEvent(filter);
+                $this.bindTextFilter(filter);
             } 
             else {
                 PrimeFaces.skinSelect(filter);
-                
-                filter.change(function(e) {
-                    $this.filter();
-                });
+                $this.bindChangeFilter(filter);
             }
         });
         
         //custom filters
         filterColumns.children('.ui-column-customfilter').each(function() {
-            var filter = $(this).children().eq(0);
+            var container = $(this),
+            filter = container.children().eq(0);
             
-             if(filter.is('input:text')) {
-                if($this.cfg.filterEvent === 'enter')
-                    $this.bindEnterKeyFilter(filter);
-                else
-                    $this.bindFilterEvent(filter);
+             if(filter.is(':text')) {
+                $this.bindTextFilter(filter);
+             }
+             else if(filter.is(':input')) {
+                 $this.bindChangeFilter(filter);
              }
              else {
-                 filter.change(function() {
-                    $this.filter();
-                });
+                 $this.bindTextFilter(filter.find(':text'));
+                 $this.bindChangeFilter(filter.find('select,:radio,:checkbox'));
              }
+        });
+    },
+    
+    bindTextFilter: function(filter) {
+        if(this.cfg.filterEvent === 'enter')
+            this.bindEnterKeyFilter(filter);
+        else
+            this.bindFilterEvent(filter);
+    },
+    
+    bindChangeFilter: function(filter) {
+        var $this = this;
+        
+        filter.change(function() {
+            $this.filter();
         });
     },
     
