@@ -80,9 +80,7 @@ public class KeyboardRenderer extends InputRenderer {
             .attr("backText", keyboard.getBackspaceLabel(), null)
             .attr("clearText", keyboard.getClearLabel(), null)
             .attr("closeText", keyboard.getCloseLabel(), null);
-        
-        encodeClientBehaviors(context, keyboard);
- 
+         
         wb.finish();
 	}
 
@@ -106,7 +104,8 @@ public class KeyboardRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, "value");
         }
 
-        renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS);
+        renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, keyboard, HTML.INPUT_TEXT_EVENTS);
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
