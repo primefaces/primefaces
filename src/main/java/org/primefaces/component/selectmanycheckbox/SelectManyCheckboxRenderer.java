@@ -67,10 +67,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     protected void encodeScript(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         String clientId = checkbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId);
-        encodeClientBehaviors(context, checkbox);
-
-        wb.finish();
+        wb.init("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId).finish();
     }
 
     protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked, boolean disabled, String value) throws IOException {
@@ -85,9 +82,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("value", value, null);
 
+        renderOnchange(context, checkbox);
+        
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
-        if(checkbox.getOnchange() != null) writer.writeAttribute("onchange", checkbox.getOnchange(), null);
 
         writer.endElement("input");
 

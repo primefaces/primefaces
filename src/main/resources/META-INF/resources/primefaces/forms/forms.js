@@ -1422,11 +1422,6 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 checkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
             }
         });
-
-        //Client Behaviors
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
-        }
     }
     
 });
