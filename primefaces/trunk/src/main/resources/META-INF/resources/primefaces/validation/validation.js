@@ -624,7 +624,7 @@ PrimeFaces.validateInput = function(element) {
     }
 
     var highlighterType = element.data('p-hl')||'default',
-    highlighter = PrimeFaces.validator.Highlighter[highlighterType];
+    highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
 
     if(valid)
         highlighter.unhighlight(element);
@@ -847,72 +847,75 @@ PrimeFaces.validator.Highlighter = {
         }
     },
     
-    'default': {
+    types : {
         
-        highlight: function(element) {
-            element.addClass('ui-state-error');
-            PrimeFaces.validator.Highlighter.highlightLabel(element);
+        'default': {
+
+            highlight: function(element) {
+                element.addClass('ui-state-error');
+                PrimeFaces.validator.Highlighter.highlightLabel(element);
+            },
+
+            unhighlight: function(element) {
+                element.removeClass('ui-state-error');
+                PrimeFaces.validator.Highlighter.unhighlightLabel(element);
+            }
         },
-        
-        unhighlight: function(element) {
-            element.removeClass('ui-state-error');
-            PrimeFaces.validator.Highlighter.unhighlightLabel(element);
-        }
-    },
-    
-    'chkbox': {
-        
-        highlight: function(element) {
-            element.parent().next().addClass('ui-state-error');
-            PrimeFaces.validator.Highlighter.highlightLabel(element.parent().parent());
+
+        'chkbox': {
+
+            highlight: function(element) {
+                element.parent().next().addClass('ui-state-error');
+                PrimeFaces.validator.Highlighter.highlightLabel(element.parent().parent());
+            },
+
+            unhighlight: function(element) {
+                element.parent().next().removeClass('ui-state-error');
+                PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent().parent());
+            }
+
         },
-        
-        unhighlight: function(element) {
-            element.parent().next().removeClass('ui-state-error');
-            PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent().parent());
-        }
-        
-    },
-            
-    'listbox': {
-        
-        highlight: function(element) {
-            element.closest('.ui-inputfield').addClass('ui-state-error');
-            PrimeFaces.validator.Highlighter.highlightLabel(element.closest('.ui-inputfield'));
+
+        'listbox': {
+
+            highlight: function(element) {
+                element.closest('.ui-inputfield').addClass('ui-state-error');
+                PrimeFaces.validator.Highlighter.highlightLabel(element.closest('.ui-inputfield'));
+            },
+
+            unhighlight: function(element) {
+                element.closest('.ui-inputfield').removeClass('ui-state-error');
+                PrimeFaces.validator.Highlighter.unhighlightLabel(element.closest('.ui-inputfield'));
+            }
+
         },
-        
-        unhighlight: function(element) {
-            element.closest('.ui-inputfield').removeClass('ui-state-error');
-            PrimeFaces.validator.Highlighter.unhighlightLabel(element.closest('.ui-inputfield'));
-        }
-        
-    },
-            
-    'onemenu': {
-        
-        highlight: function(element) {
-            element.parent().siblings('.ui-selectonemenu-trigger').addClass('ui-state-error').parent().addClass('ui-state-error');
-            PrimeFaces.validator.Highlighter.highlightLabel(element.parent());
+
+        'onemenu': {
+
+            highlight: function(element) {
+                element.parent().siblings('.ui-selectonemenu-trigger').addClass('ui-state-error').parent().addClass('ui-state-error');
+                PrimeFaces.validator.Highlighter.highlightLabel(element.parent());
+            },
+
+            unhighlight: function(element) {
+                element.parent().siblings('.ui-selectonemenu-trigger').removeClass('ui-state-error').parent().removeClass('ui-state-error');
+                PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent());
+            }
+
         },
-        
-        unhighlight: function(element) {
-            element.parent().siblings('.ui-selectonemenu-trigger').removeClass('ui-state-error').parent().removeClass('ui-state-error');
-            PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent());
+
+        'spinner': {
+
+            highlight: function(element) {
+                element.parent().addClass('ui-state-error');
+                PrimeFaces.validator.Highlighter.highlightLabel(element.parent());
+            },
+
+            unhighlight: function(element) {
+                element.parent().removeClass('ui-state-error');
+                PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent());
+            }
+
         }
-        
-    },
-    
-    'spinner': {
-        
-        highlight: function(element) {
-            element.parent().addClass('ui-state-error');
-            PrimeFaces.validator.Highlighter.highlightLabel(element.parent());
-        },
-        
-        unhighlight: function(element) {
-            element.parent().removeClass('ui-state-error');
-            PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent());
-        }
-        
     }
 };
