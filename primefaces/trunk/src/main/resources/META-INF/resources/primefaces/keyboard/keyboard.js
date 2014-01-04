@@ -904,11 +904,6 @@ $(function() {
 
         this.jq.keypad(this.cfg);
 
-        //Client Behaviors
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.jq, this.cfg.behaviors);
-        }
-
         //Visuals
         PrimeFaces.skinInput(this.jq);
 
