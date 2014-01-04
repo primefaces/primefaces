@@ -107,10 +107,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 return false;
             }
         });
-
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-        }
     },
     
     repeat: function(interval, dir) {

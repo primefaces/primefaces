@@ -77,8 +77,6 @@ public class SpinnerRenderer extends InputRenderer {
             .attr("max", spinner.getMax(), Double.MAX_VALUE)
             .attr("prefix", spinner.getPrefix(), null)
             .attr("suffix", spinner.getSuffix(), null);
-        
-        encodeClientBehaviors(context, spinner);
 
         wb.finish();
 	}
@@ -124,7 +122,8 @@ public class SpinnerRenderer extends InputRenderer {
 			writer.writeAttribute("value", valueToRender, null);
 		}
         
-		renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS);
+        renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, spinner, HTML.INPUT_TEXT_EVENTS);
 
         if(spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
