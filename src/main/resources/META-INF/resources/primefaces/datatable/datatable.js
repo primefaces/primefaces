@@ -145,16 +145,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 column.removeClass('ui-state-hover');
         })
         .on('click.dataTable', function(e) {
-            if($(e.target).is(':not(th,span)')) {
+            if($this.isEmpty()||$(e.target).is(':not(th,span)')) {
                 return;
             }
 
             PrimeFaces.clearSelection();
-            
-            if($this.isEmpty()) {
-                return;
-            }
-                
+                            
             var columnHeader = $(this),
             sortOrder = columnHeader.data('sortorder')||'DESCENDING',
             metaKey = e.metaKey||e.ctrlKey;
