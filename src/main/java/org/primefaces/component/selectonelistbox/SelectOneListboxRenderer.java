@@ -71,8 +71,6 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         wb.init("SelectOneListbox", listbox.resolveWidgetVar(), clientId)
             .attr("disabled", listbox.isDisabled(), false);
         
-        encodeClientBehaviors(context, listbox);
-
         wb.finish();
     }
 
@@ -88,10 +86,11 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
         
-        if(listbox.getTabindex() != null) writer.writeAttribute("tabindex", listbox.getTabindex(), null);
-        if(listbox.getOnchange() != null) writer.writeAttribute("onchange", listbox.getOnchange(), null);
-        if(listbox.getOnclick()!= null) writer.writeAttribute("onclick", listbox.getOnclick(), null);
-        if(listbox.getOndblclick()!= null) writer.writeAttribute("ondblclick", listbox.getOndblclick(), null);
+        renderDomEvents(context, listbox, SelectOneListbox.DOM_EVENTS);
+        
+        if(listbox.getTabindex() != null) {
+            writer.writeAttribute("tabindex", listbox.getTabindex(), null);
+        }
 
         encodeSelectItems(context, listbox, selectItems);
 

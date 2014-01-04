@@ -1461,11 +1461,6 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         }
         
         this.bindEvents();
-
-        //Client Behaviors
-        if(this.cfg.behaviors) {
-            PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-        }
         
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -1534,7 +1529,7 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
                 }
                 
                 $this.selectItem(item);
-                $this.input.change();
+                $this.input.trigger('change');
             }
             
             $this.input.trigger('click');

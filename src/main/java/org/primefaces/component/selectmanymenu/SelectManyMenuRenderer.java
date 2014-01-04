@@ -75,8 +75,6 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             .attr("disabled", menu.isDisabled(), false)
             .attr("showCheckbox", menu.isShowCheckbox(), false);
         
-        encodeClientBehaviors(context, menu);
-
         wb.finish();
     }
 
@@ -93,11 +91,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
         
-        if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
-        if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
-        if(menu.getOnclick()!= null) writer.writeAttribute("onclick", menu.getOnclick(), null);
-        if(menu.getOndblclick()!= null) writer.writeAttribute("ondblclick", menu.getOndblclick(), null);
-
+        renderDomEvents(context, menu, SelectManyMenu.DOM_EVENTS);
+        
+        if(menu.getTabindex() != null) {
+            writer.writeAttribute("tabindex", menu.getTabindex(), null);
+        }
+        
         encodeSelectItems(context, menu, selectItems);
 
         writer.endElement("select");

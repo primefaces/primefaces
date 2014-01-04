@@ -6,3 +6,9 @@ import javax.faces.component.UINamingContainer;
     public String getInputClientId() {
         return this.getClientId(getFacesContext()) + "_input";
     }
+
+    public static String[] DOM_EVENTS = {
+		"onchange",
+		"onclick",
+        "ondblclick"
+	};
