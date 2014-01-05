@@ -47,8 +47,7 @@ public abstract class InputRenderer extends CoreRenderer {
                 }
                 else {
                     selectItems.add((SelectItem) selectItemValue);
-                }
-				
+                }	
 			}
             else if(child instanceof UISelectItems) {
                 UISelectItems uiSelectItems = ((UISelectItems) child);
@@ -65,7 +64,7 @@ public abstract class InputRenderer extends CoreRenderer {
                             if(item instanceof SelectItem)
                                 selectItems.add((SelectItem) item);
                             else
-                                selectItems.add(createSelectItem(context, uiSelectItems, item));
+                                selectItems.add(createSelectItem(context, uiSelectItems, item, null));
                         }
                     }
                     else if(value instanceof Map) {
@@ -74,7 +73,7 @@ public abstract class InputRenderer extends CoreRenderer {
                         for(Iterator it = map.keySet().iterator(); it.hasNext();) {
                             Object key = it.next();
                             
-                            selectItems.add(createSelectItem(context, uiSelectItems,  String.valueOf(key), map.get(key)));
+                            selectItems.add(createSelectItem(context, uiSelectItems, map.get(key), String.valueOf(key)));
                         }
                     }
                     else if(value instanceof Collection) {
@@ -85,7 +84,7 @@ public abstract class InputRenderer extends CoreRenderer {
                             if(item instanceof SelectItem)
                                 selectItems.add((SelectItem) item);
                             else
-                                selectItems.add(createSelectItem(context, uiSelectItems, item));
+                                selectItems.add(createSelectItem(context, uiSelectItems, item, null));
                         }               
                     }
                 }
@@ -95,53 +94,42 @@ public abstract class InputRenderer extends CoreRenderer {
         return selectItems;
 	}
     
-    protected SelectItem createSelectItem(FacesContext context, UISelectItems uiSelectItems, Object object) {
+    protected SelectItem createSelectItem(FacesContext context, UISelectItems uiSelectItems, Object value, Object label) {
         String var = (String) uiSelectItems.getAttributes().get("var");
+        Map<String,Object> attrs = uiSelectItems.getAttributes();
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         
         if(var != null) {
-            context.getExternalContext().getRequestMap().put(var, object);
-
-            Object itemLabelAsObject = uiSelectItems.getAttributes().get("itemLabel");
-            Object itemValue = uiSelectItems.getAttributes().get("itemValue");
-            String description = (String) uiSelectItems.getAttributes().get("itemDescription");
-            Object itemDisabled = uiSelectItems.getAttributes().get("itemDisabled");
-            Object itemEscaped = uiSelectItems.getAttributes().get("itemLabelEscaped");
-            Object noSelection = uiSelectItems.getAttributes().get("noSelectionOption");
-            
-            if(itemValue == null) {
-                itemValue = object;
-            }
-            
-            String itemLabel = itemLabelAsObject == null ? String.valueOf(object) : String.valueOf(itemLabelAsObject);
-            boolean disabled = itemDisabled == null ? false : Boolean.valueOf(itemDisabled.toString());
-            boolean escaped = itemEscaped == null ? false : Boolean.valueOf(itemEscaped.toString());
-            boolean noSelectionOption = noSelection == null ? false : Boolean.valueOf(noSelection.toString());
-
-            return new SelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
+            requestMap.put(var, value);
         }
-        else {
-            return new SelectItem(object, String.valueOf(object));
+
+        Object itemLabelValue = attrs.get("itemLabel");
+        Object itemValue = attrs.get("itemValue");
+        String description = (String) attrs.get("itemDescription");
+        Object itemDisabled = attrs.get("itemDisabled");
+        Object itemEscaped = attrs.get("itemLabelEscaped");
+        Object noSelection = attrs.get("noSelectionOption");
+
+        if(itemValue == null) {
+            itemValue = value;
         }
+        
+        if(itemLabelValue == null) {
+            itemLabelValue = label;
+        }
+
+        String itemLabel = itemLabelValue == null ? String.valueOf(value) : String.valueOf(itemLabelValue);
+        boolean disabled = itemDisabled == null ? false : Boolean.valueOf(itemDisabled.toString());
+        boolean escaped = itemEscaped == null ? false : Boolean.valueOf(itemEscaped.toString());
+        boolean noSelectionOption = noSelection == null ? false : Boolean.valueOf(noSelection.toString());
+        
+        if(var != null) {
+            requestMap.remove(var);
+        }
+
+        return new SelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
     }
     
-    protected SelectItem createSelectItem(FacesContext context, UISelectItems uiSelectItems, String itemLabel, Object itemValue) {
-        String var = (String) uiSelectItems.getAttributes().get("var");
-        
-        if(var != null) {
-            context.getExternalContext().getRequestMap().put(var, itemValue);
-
-            String description = (String) uiSelectItems.getAttributes().get("itemDescription");
-            Boolean disabled = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemDisabled")));
-            Boolean escaped = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("itemLabelEscaped")));
-            Boolean noSelectionOption = Boolean.valueOf(((String) uiSelectItems.getAttributes().get("noSelectionOption")));
-            
-            return new SelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
-        }
-        else {
-            return new SelectItem(itemValue, itemLabel);
-        }
-    }
-
 	protected String getOptionAsString(FacesContext context, UIComponent component, Converter converter, Object value) throws ConverterException {
         if(!(component instanceof ValueHolder)) {
             return value == null ? null : value.toString();
