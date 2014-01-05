@@ -417,7 +417,7 @@ public class TreeTableRenderer extends CoreRenderer {
 
                     writer.startElement("span", null);
                     writer.writeAttribute("class", icon, null);
-                    if(treeNode.getChildCount() == 0) {
+                    if(treeNode.isLeaf()) {
                         writer.writeAttribute("style", "visibility:hidden", null);
                     }
                     writer.endElement("span");
