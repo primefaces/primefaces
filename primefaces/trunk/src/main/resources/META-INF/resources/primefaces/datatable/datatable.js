@@ -948,7 +948,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         $this = this;
        
         //unselect previously selected rows with shift
-        if(this.cursorIndex) {
+        if(this.cursorIndex !== null) {
             var oldCursorIndex = this.cursorIndex,
             rowsToUnselect = oldCursorIndex > this.originRowIndex ? rows.slice(this.originRowIndex, oldCursorIndex + 1) : rows.slice(oldCursorIndex, this.originRowIndex + 1);
 
