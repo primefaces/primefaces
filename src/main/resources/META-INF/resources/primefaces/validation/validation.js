@@ -508,7 +508,7 @@ PrimeFaces.vb = function(cfg) {
 };
 
 PrimeFaces.vi = function(element) {
-    this.validateInstant(element);
+    return this.validateInstant(element);
 };
 
 PrimeFaces.validate = function(cfg) {
@@ -655,9 +655,13 @@ PrimeFaces.validateInstant = function(id) {
 
     if(!vc.isEmpty()) {
         vc.renderUIMessage(uiMessage, vc.messages[clientId][0]);
+        vc.clear();
+        return false;
     }
-
-    vc.clear();
+    else {
+        vc.clear();
+        return true; 
+    } 
 };
 
 PrimeFaces.util.ValidationContext = {
