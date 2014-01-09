@@ -24,24 +24,28 @@ import org.primefaces.component.datatable.DataTableRenderer;
 public class ScrollFeature implements DataTableFeature {
 
     public void decode(FacesContext context, DataTable table) {
-        throw new RuntimeException("RowScrollFeature should not encode.");
+        throw new RuntimeException("RowScrollFeature should not decode.");
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
         int scrollRows = table.getScrollRows();
         String clientId = table.getClientId(context);
-        
-        if(table.isLazy()) {
+
+        if (table.isLazy()) {
             table.loadLazyScrollData(scrollOffset, scrollRows);
         }
+        
+        if (table.isSelectionEnabled()) {
+            table.findSelectedRowKeys();
+        }
 
-        for(int i = scrollOffset; i < (scrollOffset + table.getScrollRows()); i++) {
+        for (int i = scrollOffset; i < (scrollOffset + table.getScrollRows()); i++) {
             table.setRowIndex(i);
-            
-            if(table.isRowAvailable()) {
-                //renderer.encodeRow(context, table, clientId, i);
+
+            if (table.isRowAvailable()) {
+                renderer.encodeRow(context, table, clientId, i);
             }
         }
     }

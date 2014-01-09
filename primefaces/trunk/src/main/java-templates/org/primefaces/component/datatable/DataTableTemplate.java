@@ -639,7 +639,7 @@ import org.primefaces.util.SharedStringBuilder;
 
     private List<Object> selectedRowKeys = new ArrayList<Object>();
 
-    protected void findSelectedRowKeys() {
+    public void findSelectedRowKeys() {
         Object selection = this.getSelection();
         selectedRowKeys = new ArrayList<Object>();
         boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
