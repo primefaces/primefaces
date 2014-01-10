@@ -329,6 +329,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/autocomplete/autocomplete.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/blockui/blockui.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/carousel/carousel.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/columntoggler/columntoggler.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dashboard/dashboard.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.css</include>
@@ -379,6 +380,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/blockui/blockui.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/calendar/calendar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/carousel/carousel.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/columntoggler/columntoggler.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dashboard/dashboard.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datagrid/datagrid.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.js</include>
@@ -531,6 +533,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/autocomplete/autocomplete.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/blockui/blockui.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/carousel/carousel.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/columntoggler/columntoggler.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/dashboard/dashboard.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.css</include>
@@ -581,6 +584,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/blockui/blockui.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/calendar/calendar.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/carousel/carousel.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/columntoggler/columntoggler.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/dashboard/dashboard.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/datagrid/datagrid.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/datalist/datalist.js</include>
