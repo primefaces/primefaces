@@ -5,10 +5,12 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        this.table = $(PrimeFaces.escapeClientId(this.cfg.datasource));
-        this.thead = $(PrimeFaces.escapeClientId(this.cfg.datasource) + '_head');
-        this.tbody = $(PrimeFaces.escapeClientId(this.cfg.datasource) + '_data');
-        this.trigger = $(PrimeFaces.escapeClientId(this.cfg.trigger));
+        this.table = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.datasource);
+        this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.trigger);
+        this.tableId = this.table.attr('id');
+        this.thead = $(PrimeFaces.escapeClientId(this.tableId) + '_head');
+        this.tbody = $(PrimeFaces.escapeClientId(this.tableId) + '_data');
+        this.tfoot = $(PrimeFaces.escapeClientId(this.tableId) + '_foot');
         this.visible = false;
         
         this.render();
@@ -113,6 +115,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         this.thead.children('tr').find('th:nth-child(' + index + ')').show();
         this.tbody.children('tr').find('td:nth-child(' + index + ')').show();
+        this.tfoot.children('tr').find('td:nth-child(' + index + ')').show();
         
         this.fireToggleEvent(true, (index - 1));
     },
@@ -124,6 +127,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         
         this.thead.children('tr').find('th:nth-child(' + index + ')').hide();
         this.tbody.children('tr').find('td:nth-child(' + index + ')').hide();
+        this.tfoot.children('tr').find('td:nth-child(' + index + ')').hide();
         
         this.fireToggleEvent(false, (index - 1));
     },

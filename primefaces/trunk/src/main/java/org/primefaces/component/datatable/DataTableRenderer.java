@@ -963,6 +963,7 @@ public class DataTableRenderer extends DataRenderer {
         ColumnGroup group = table.getColumnGroup("footer");
 
         writer.startElement("tfoot", null);
+        writer.writeAttribute("id", table.getClientId(context) + "_foot", null);
 
         if(group != null && group.isRendered()) {
 
