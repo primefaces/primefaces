@@ -134,6 +134,11 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                             ,at: 'left bottom'
                             ,of: this.trigger
                         });
+                        
+        if(!this.widthAligned && (this.panel.width() < this.trigger.width())) {
+            this.panel.width(this.trigger.width());
+            this.widthAligned = true;
+        }
     },
     
     show: function() {
