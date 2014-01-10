@@ -515,6 +515,7 @@ public class DataTableRenderer extends DataRenderer {
         String headerText = column.getHeaderText();
         
         writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.COLUMN_TITLE_CLASS, null);
         
         if(header != null)
             header.encodeAll(context);
