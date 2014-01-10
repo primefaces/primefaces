@@ -1,5 +1,6 @@
 .ui-columntoggler {
     padding: 0;
+    position: absolute;
 }
 
 .ui-columntoggler .ui-columntoggler-items {
