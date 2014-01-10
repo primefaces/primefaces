@@ -108,8 +108,8 @@ public class PushEndpointInterceptor extends AtmosphereInterceptorAdapter {
                             try {
                                 boolean singleton = ap.target().getClass().getAnnotation(Singleton.class) != null;
                                 if (!singleton) {
-                                    PushEndpointHandlerProxy h = config.framework().newClassInstance(PushEndpointHandlerProxy.class);
-                                    h.configure(config, config.framework().newClassInstance(ap.target().getClass()));
+                                    PushEndpointHandlerProxy h = config.framework().newClassInstance(PushEndpointHandlerProxy.class, PushEndpointHandlerProxy.class);
+                                    h.configure(config, config.framework().newClassInstance(Object.class, ap.target().getClass()));
                                     config.framework().addAtmosphereHandler(path, h,
                                             config.getBroadcasterFactory().lookup(request.resource().getBroadcaster().getClass(), path, true), w.interceptors);
                                 } else {

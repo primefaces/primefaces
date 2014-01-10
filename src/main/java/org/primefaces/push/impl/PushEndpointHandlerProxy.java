@@ -248,7 +248,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
             List<Encoder<?, ?>> l = new CopyOnWriteArrayList<Encoder<?, ?>>();
             for (Class<? extends Encoder> s : m.getAnnotation(OnMessage.class).encoders()) {
                 try {
-                    l.add(config.framework().newClassInstance(s));
+                    l.add(config.framework().newClassInstance(Encoder.class, s));
                 } catch (Exception e) {
                     logger.error("Unable to load encoder {}", s);
                 }
@@ -262,7 +262,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
             List<Decoder<?, ?>> l = new CopyOnWriteArrayList<Decoder<?, ?>>();
             for (Class<? extends Decoder> s : m.getAnnotation(OnMessage.class).decoders()) {
                 try {
-                    l.add(config.framework().newClassInstance(s));
+                    l.add(config.framework().newClassInstance(Decoder.class, s));
                 } catch (Exception e) {
                     logger.error("Unable to load encoder {}", s);
                 }
