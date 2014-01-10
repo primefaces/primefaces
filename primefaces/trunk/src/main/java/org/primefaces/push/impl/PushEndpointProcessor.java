@@ -32,20 +32,20 @@ import java.util.List;
 import static org.atmosphere.annotation.AnnotationUtil.broadcaster;
 
 @AtmosphereAnnotation(PushEndpoint.class)
-public class PushEndpointProcessor implements Processor {
+public class PushEndpointProcessor implements Processor<Object> {
 
     private static final Logger logger = LoggerFactory.getLogger(PushEndpointProcessor.class);
 
     //@Override
-    public void handle(AtmosphereFramework framework, Class<?> annotatedClass) {
+    public void handle(AtmosphereFramework framework, Class<Object> annotatedClass) {
         try {
             Class<?> aClass = annotatedClass;
             PushEndpoint a = aClass.getAnnotation(PushEndpoint.class);
             List<AtmosphereInterceptor> l = new ArrayList<AtmosphereInterceptor>();
 
-            Object c = framework.newClassInstance(aClass);
-            AtmosphereHandler handler = framework.newClassInstance(PushEndpointHandlerProxy.class).configure(framework.getAtmosphereConfig(), c);
-            l.add(framework.newClassInstance(PushEndpointInterceptor.class));
+            Object c = framework.newClassInstance(Object.class, aClass);
+            AtmosphereHandler handler = framework.newClassInstance(PushEndpointHandlerProxy.class, PushEndpointHandlerProxy.class).configure(framework.getAtmosphereConfig(), c);
+            l.add(framework.newClassInstance(AtmosphereInterceptor.class, PushEndpointInterceptor.class));
 
             Class<? extends Broadcaster> b = (Class<? extends Broadcaster>) IOUtils.loadClass(this.getClass(), framework.getDefaultBroadcasterClassName());
 
