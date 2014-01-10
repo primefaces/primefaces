@@ -112,6 +112,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         
         this.thead.children('tr').find('th:nth-child(' + index + ')').show();
         this.tbody.children('tr').find('td:nth-child(' + index + ')').show();
+        
+        this.fireToggleEvent(true, (index - 1));
     },
     
     uncheck: function(chkbox) {
@@ -121,6 +123,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         
         this.thead.children('tr').find('th:nth-child(' + index + ')').hide();
         this.tbody.children('tr').find('td:nth-child(' + index + ')').hide();
+        
+        this.fireToggleEvent(false, (index - 1));
     },
     
     alignPanel: function() {
@@ -140,6 +144,24 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     hide: function() {
         this.panel.fadeOut('fast');
         this.visible = false;
+    },
+    
+    fireToggleEvent: function(visible, index) {
+        if(this.cfg.behaviors) {
+            var toggleBehavior = this.cfg.behaviors['toggle'];
+
+            if(toggleBehavior) {
+                var visibility = visible ? 'VISIBLE' : 'HIDDEN',
+                ext = {
+                    params: [
+                        {name: this.id + '_visibility', value: visibility},
+                        {name: this.id + '_index', value: index}
+                    ]
+                };
+
+                toggleBehavior.call(this, ext);
+            }
+        }
     }
 
 });

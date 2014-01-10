@@ -26,6 +26,11 @@ import org.primefaces.util.WidgetBuilder;
 public class ColumnTogglerRenderer extends CoreRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ColumnToggler columnToggler = (ColumnToggler) component;
         
@@ -47,6 +52,10 @@ public class ColumnTogglerRenderer extends CoreRenderer {
         
         wb.initWithDomReady("ColumnToggler", columnToggler.resolveWidgetVar(), columnToggler.getClientId(context));
         wb.attr("trigger", SearchExpressionFacade.resolveComponentsForClient(context, columnToggler, columnToggler.getTrigger()))
-            .attr("datasource", SearchExpressionFacade.resolveComponentsForClient(context, columnToggler, columnToggler.getDatasource())).finish();
+            .attr("datasource", SearchExpressionFacade.resolveComponentsForClient(context, columnToggler, columnToggler.getDatasource()));
+        
+        encodeClientBehaviors(context, columnToggler);
+        
+        wb.finish();
     }
 }
