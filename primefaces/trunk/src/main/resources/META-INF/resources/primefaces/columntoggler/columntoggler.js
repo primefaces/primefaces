@@ -9,21 +9,26 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.thead = $(PrimeFaces.escapeClientId(this.cfg.datasource) + '_head');
         this.tbody = $(PrimeFaces.escapeClientId(this.cfg.datasource) + '_data');
         this.trigger = $(PrimeFaces.escapeClientId(this.cfg.trigger));
+        this.visible = false;
         
         this.render();
         this.bindEvents();
     },
     
     bindEvents: function() {
-        var $this = this;
+        var $this = this,
+        hideNS = 'mousedown.' + this.id,
+        resizeNS = 'resize.' + this.id;
         
+        //trigger
         this.trigger.off('click.ui-columntoggler').on('click.ui-columntoggler', function(e) {
-            if($this.panel.is(':visible'))
+            if($this.visible)
                 $this.hide();
             else
                 $this.show();
         });
         
+        //checkboxes
         this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box').on('mouseover.columnToggler', function() {
                 var item = $(this);
                 if(!item.hasClass('ui-state-active')) {
@@ -37,6 +42,43 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 $this.toggle($(this));
                 e.preventDefault();
             });
+            
+        //labels
+        this.itemContainer.find('> .ui-columntoggler-item > label').on('click.selectCheckboxMenu', function(e) {
+            $this.toggle($(this).prev().children('.ui-chkbox-box'));
+            PrimeFaces.clearSelection();
+            e.preventDefault();
+        });
+            
+        //hide overlay when outside is clicked
+        $(document.body).off(hideNS).on(hideNS, function (e) {        
+            if(!$this.visible) {
+                return;
+            }
+
+            //do nothing on trigger mousedown
+            var target = $(e.target);
+            if($this.trigger.is(target)||$this.trigger.has(target).length) {
+                return;
+            }
+
+            //hide the panel and remove focus from label
+            var offset = $this.panel.offset();
+            if(e.pageX < offset.left ||
+                e.pageX > offset.left + $this.panel.width() ||
+                e.pageY < offset.top ||
+                e.pageY > offset.top + $this.panel.height()) {
+
+                $this.hide();
+            }
+        });
+
+        //Realign overlay on resize
+        $(window).off(resizeNS).on(resizeNS, function() {
+            if($this.visible) {
+                $this.alignPanel();
+            }
+        });
     },
     
     render: function() {
@@ -92,10 +134,12 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     show: function() {
         this.alignPanel();
         this.panel.show();
+        this.visible = true;
     },
     
     hide: function() {
-        this.panel.hide();
+        this.panel.fadeOut('fast');
+        this.visible = false;
     }
 
 });
