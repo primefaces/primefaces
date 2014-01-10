@@ -151,5 +151,12 @@
             <type>java.lang.String</type>
             <description>Width of the column in pixels or percentage.</description>
         </attribute>
+        <attribute>
+            <name>toggleable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.</description>
+        </attribute>
     </attributes>
 </component>

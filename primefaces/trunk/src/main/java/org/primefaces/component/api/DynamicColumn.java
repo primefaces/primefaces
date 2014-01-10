@@ -174,4 +174,8 @@ public class DynamicColumn implements UIColumn {
     public Object getFilterBy() {
         return this.columns.getFilterBy();
     }
+
+    public boolean isToggleable() {
+        return this.columns.isToggleable();
+    }
 }

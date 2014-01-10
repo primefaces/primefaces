@@ -86,4 +86,6 @@ public interface UIColumn {
     public void encodeAll(FacesContext context) throws IOException;
     
     public String getWidth();
+    
+    public boolean isToggleable();
 }
