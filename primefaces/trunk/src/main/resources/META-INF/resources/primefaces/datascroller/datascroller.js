@@ -13,7 +13,8 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         this.allLoaded = false;
         this.cfg.offset = 0;
         this.cfg.mode = this.cfg.mode||'document';
-        
+        this.cfg.buffer = (100 - this.cfg.buffer) / 100;
+                
         if(this.cfg.loadEvent === 'scroll') {
             this.bindScrollListener();
         }
@@ -33,7 +34,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             NS = 'scroll.' + this.id;
 
             win.off(NS).on(NS, function () {
-                if((win.scrollTop() === (doc.height() - win.height())) && $this.shouldLoad()) {
+                if(win.scrollTop() >= ((doc.height() * $this.cfg.buffer) - win.height()) && $this.shouldLoad()) {
                     $this.load();
                 }
             });
@@ -44,7 +45,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                 scrollHeight = this.scrollHeight,
                 viewportHeight = this.clientHeight;
 
-                if((scrollTop >= (scrollHeight - (viewportHeight))) && $this.shouldLoad()) {
+                if((scrollTop >= ((scrollHeight * $this.cfg.buffer) - (viewportHeight))) && $this.shouldLoad()) {
                     $this.load();
                 }
             });

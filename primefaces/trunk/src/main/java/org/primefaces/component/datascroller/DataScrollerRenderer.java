@@ -117,6 +117,7 @@ public class DataScrollerRenderer extends CoreRenderer {
             .attr("totalSize", ds.getRowCount())
             .attr("loadEvent", loadEvent)
             .attr("mode", ds.getMode(), "document")
+            .attr("buffer", ds.getBuffer())
             .finish();
     }
     
