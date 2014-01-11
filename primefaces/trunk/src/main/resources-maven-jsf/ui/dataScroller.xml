@@ -73,8 +73,8 @@
 			<required>false</required>
 			<type>java.lang.Integer</type>
             <defaultValue>10</defaultValue>
-            <description>Percentage of the buffer height between the bottom of the page and the scroll position to initiate
-            the load for the new chunk.</description>
+            <description>Percentage height of the buffer between the bottom of the page and the scroll position to initiate
+            the load for the new chunk. Value is defined in integer and default is 10 meaning load would happen after 90% of the viewport is scrolled down.</description>
 		</attribute>
     </attributes>
     <resources>
