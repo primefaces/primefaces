@@ -68,6 +68,14 @@
             <description>Defines if lazy loading is enabled for the data component.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>buffer</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>10</defaultValue>
+            <description>Percentage of the buffer height between the bottom of the page and the scroll position to initiate
+            the load for the new chunk.</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>
