@@ -206,7 +206,7 @@ public class ConfigContainer {
             }
         }
         catch (Exception e) {
-            LOG.log(Level.SEVERE, "Could not load or parase web.xml", e);
+            LOG.log(Level.SEVERE, "Could not load or parse web.xml", e);
         }
     }
     
