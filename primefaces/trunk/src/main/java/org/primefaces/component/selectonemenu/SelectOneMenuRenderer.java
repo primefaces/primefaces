@@ -111,6 +111,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if(menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
         if(menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
         
+        renderOnchange(context, menu);
+        
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 
         writer.endElement("select");
@@ -312,8 +314,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         wb.initWithDomReady("SelectOneMenu", menu.resolveWidgetVar(), clientId)
                 .attr("effect", menu.getEffect(), null)
                 .attr("effectSpeed", menu.getEffectSpeed(), null)
-                .attr("editable", menu.isEditable(), false)
-                .callback("onchange", "function()", menu.getOnchange());
+                .attr("editable", menu.isEditable(), false);
         
         if(menu.isFilter()) {
             wb.attr("filter", true)
@@ -321,9 +322,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("filterFunction", menu.getFilterFunction(), null)
                 .attr("caseSensitive", menu.isCaseSensitive(), false);
         }
-        
-        encodeClientBehaviors(context, menu);
-        
+                
         wb.finish();
     }
 

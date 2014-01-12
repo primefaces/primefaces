@@ -32,8 +32,6 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
         wb.initWithDomReady("ThemeSwitcher", ts.resolveWidgetVar(), clientId)
                 .attr("effect", ts.getEffect(), null)
                 .attr("effectSpeed", ts.getEffectSpeed(), null);
-        
-        encodeClientBehaviors(context, menu);
 
         wb.finish();
 	}

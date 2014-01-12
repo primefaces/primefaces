@@ -675,15 +675,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     triggerChange: function(edited) {
         this.changed = false;
         
-        var inputEl = this.input.get(0);
-        if(this.cfg.onchange) {
-            this.cfg.onchange.call(inputEl);
-        }
-        
-        if(this.cfg.behaviors && this.cfg.behaviors['change']) {
-            this.cfg.behaviors['change'].call(inputEl);
-        }
-        
+        this.input.trigger('change');
+                
         if(!edited) {
             this.value = this.options.filter(':selected').val();
         }
@@ -2696,15 +2689,13 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
  */
 PrimeFaces.widget.ThemeSwitcher = PrimeFaces.widget.SelectOneMenu.extend({
     
-    init: function(cfg) { 
-        var _self = this;
-        cfg.onchange = function() {
-            var value = _self.options.filter(':selected').val();
-
-            PrimeFaces.changeTheme(value);
-        };
-
+    init: function(cfg) {
         this._super(cfg);
+        
+        var $this = this;
+        this.input.on('change', function() {
+            PrimeFaces.changeTheme($this.getSelectedValue());
+        });
     }
 });
 
