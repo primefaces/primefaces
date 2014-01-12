@@ -80,6 +80,8 @@ public class MessagesRenderer extends UINotificationRenderer {
             writer.writeAttribute("data-global", globalOnly, null);
             writer.writeAttribute("data-summary", uiMessages.isShowSummary(), null);
             writer.writeAttribute("data-detail", uiMessages.isShowDetail(), null);
+
+            writer.writeAttribute("data-severity", getClientSideSeverity(uiMessages.getSeverity()), null);
         }
         
 		for(String severity : messagesMap.keySet()) {
@@ -92,7 +94,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 		
 		writer.endElement("div");
 	}
-    
+
     protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesMap, String severity) {
         if(shouldRender(uiMessages, message, severity)) {
             List<FacesMessage> severityMessages = messagesMap.get(severity);
