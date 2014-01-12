@@ -715,12 +715,14 @@ PrimeFaces.util.ValidationContext = {
     },
 
     renderMessages: function(container) {
-        var uiMessages = container.is('div.ui-messages') ? container : container.find('div.ui-messages'),
-        uiMessageCollection = container.find('div.ui-message'),
-        growlPlaceholder = container.is('.ui-growl-pl') ? container : container.find('.ui-growl-pl'),
-        growlWidgetVar = growlPlaceholder.data('widget'),
-        hasUIMessages = uiMessages.length&&!uiMessages.data('global'),
-        hasGrowl = growlPlaceholder.length&&!growlPlaceholder.data('global');
+        var uiMessagesAll = container.is('div.ui-messages') ? container : container.find('div.ui-messages'),
+            uiMessages = uiMessagesAll.filter(function(idx) { return $(uiMessagesAll[idx]).data('severity').indexOf('error') !== -1; }),
+            uiMessageCollection = container.find('div.ui-message'),
+            growlPlaceholderAll = container.is('.ui-growl-pl') ? container : container.find('.ui-growl-pl'),
+            growlPlaceholder = growlPlaceholderAll.filter(function(idx) { return $(growlPlaceholderAll[idx]).data('severity').indexOf('error') !== -1; }),
+            growlWidgetVar = growlPlaceholder.data('widget'),
+            hasUIMessages = uiMessages.length && !uiMessages.data('global'),
+            hasGrowl = growlPlaceholder.length && !growlPlaceholder.data('global');
 
         if(hasUIMessages) {
             uiMessages.html('');

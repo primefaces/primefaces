@@ -46,4 +46,12 @@ public class UINotificationRenderer extends CoreRenderer {
         
         return severity;
     }
+
+    protected String getClientSideSeverity(String severity) {
+        if (severity == null) {
+            return "all,error"; // validation.js checks if severity contains error.
+        }
+        return severity;
+    }
+
 }
