@@ -247,5 +247,11 @@
             <renderer-type>org.primefaces.component.InputTextareaRenderer</renderer-type>
             <renderer-class>org.primefaces.mobile.renderkit.InputTextareaRenderer</renderer-class>
         </renderer>
-    </render-kit>   
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectOneMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.SelectOneMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
     <!-- Mobile -->
