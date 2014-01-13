@@ -23,41 +23,42 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
-import org.primefaces.component.selectoneradio.SelectOneRadio;
+import org.primefaces.component.selectonebutton.SelectOneButton;
 
-public class SelectOneRadioRenderer extends org.primefaces.component.selectoneradio.SelectOneRadioRenderer {
+public class SelectOneButtonRenderer extends org.primefaces.component.selectoneradio.SelectOneRadioRenderer {
     
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        SelectOneRadio radio = (SelectOneRadio) component;
-        String clientId = radio.getClientId(context);
-        List<SelectItem> selectItems = getSelectItems(context, radio);
-        String style = radio.getStyle();
-        String styleClass = radio.getStyleClass();
-        Converter converter = radio.getConverter();
+        SelectOneButton button = (SelectOneButton) component;
+        String clientId = button.getClientId(context);
+        List<SelectItem> selectItems = getSelectItems(context, button);
+        String style = button.getStyle();
+        String styleClass = button.getStyleClass();
+        Converter converter = button.getConverter();
         
-        writer.startElement("div", radio);
+        writer.startElement("div", button);
         writer.writeAttribute("data-role", "controlgroup", null);
+        writer.writeAttribute("data-type", "horizontal", null);
         if (shouldWriteId(component)) writer.writeAttribute("id", clientId, "id");
         if (style != null) writer.writeAttribute("style", style, "style");
         if (styleClass != null) writer.writeAttribute("class", style, "styleClass");
         
         if (selectItems != null && !selectItems.isEmpty()) {
-            Object value = radio.getSubmittedValue();
+            Object value = button.getSubmittedValue();
             if(value == null) {
-                value = radio.getValue();
+                value = button.getValue();
             }
             Class type = value == null ? String.class : value.getClass();
         
             int idx = 0;
             for (SelectItem selectItem : selectItems) {
-                boolean disabled = selectItem.isDisabled() || radio.isDisabled();
+                boolean disabled = selectItem.isDisabled() || button.isDisabled();
                 String id = clientId + UINamingContainer.getSeparatorChar(context) + idx;
                 Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
                 boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
  
-                encodeOption(context, radio, selectItem, id, clientId, converter, selected, disabled); 
+                encodeOption(context, button, selectItem, id, clientId, converter, selected, disabled); 
                 idx++;
             }
         }
@@ -65,10 +66,9 @@ public class SelectOneRadioRenderer extends org.primefaces.component.selectonera
         writer.endElement("div");
     }
     
-    @Override
-    protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name, Converter converter, boolean selected, boolean disabled) throws IOException {
+    protected void encodeOption(FacesContext context, SelectOneButton button, SelectItem option, String id, String name, Converter converter, boolean selected, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String itemValueAsString = getOptionAsString(context, radio, converter, option.getValue());
+        String itemValueAsString = getOptionAsString(context, button, converter, option.getValue());
 
         //input
         writer.startElement("input", null);
@@ -77,9 +77,8 @@ public class SelectOneRadioRenderer extends org.primefaces.component.selectonera
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", itemValueAsString, null);
 
-        renderOnchange(context, radio);
-        
-        if (radio.getTabindex() != null) writer.writeAttribute("tabindex", radio.getTabindex(), null);
+        renderOnchange(context, button);
+
         if (selected) writer.writeAttribute("checked", "checked", null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
         
