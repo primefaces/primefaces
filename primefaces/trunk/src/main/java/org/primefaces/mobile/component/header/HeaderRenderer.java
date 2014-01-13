@@ -55,25 +55,11 @@ public class HeaderRenderer extends CoreRenderer {
         if(right != null) {
             right.getAttributes().put("styleClass", "ui-btn-right");
             right.encodeAll(context);
-        }    
-        
-        renderChildren(context, header);
+        }
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.endElement("div");
-    }   
-    
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //Rendering happens on begin
+        context.getResponseWriter().endElement("div");
     }
-    
-    @Override
-    public boolean getRendersChildren() {
-        return true;
-    }  
 }
