@@ -200,6 +200,11 @@
 		<component-type>org.primefaces.mobile.InputSlider</component-type>
 		<component-class>org.primefaces.mobile.component.inputslider.InputSlider</component-class>
 	</component>
+    
+    <component>
+		<component-type>org.primefaces.mobile.RangeSlider</component-type>
+		<component-class>org.primefaces.mobile.component.rangeslider.RangeSlider</component-class>
+	</component>
 
     <render-kit>
         <render-kit-id>PRIMEFACES_MOBILE</render-kit-id>
@@ -245,6 +250,12 @@
 			<component-family>org.primefaces.mobile.component</component-family>
 			<renderer-type>org.primefaces.mobile.component.InputSliderRenderer</renderer-type>
 			<renderer-class>org.primefaces.mobile.component.inputslider.InputSliderRenderer</renderer-class>
+		</renderer>
+        
+        <renderer>
+			<component-family>org.primefaces.mobile.component</component-family>
+			<renderer-type>org.primefaces.mobile.component.RangeSliderRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.rangeslider.RangeSliderRenderer</renderer-class>
 		</renderer>
         
         <renderer>
