@@ -27,19 +27,19 @@ public class ContentRenderer extends CoreRenderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Content content = (Content) component;
+        String style = content.getStyle();
+        String styleClass = content.getStyleClass();
 
         writer.startElement("div", content);
         writer.writeAttribute("role", "main", null);
         writer.writeAttribute("class", "ui-content", null);
         
-        if(content.getStyle() != null) writer.writeAttribute("style", content.getStyle(), null);
-        //if(content.getStyleClass() != null) writer.writeAttribute("class", content.getStyleClass(), null);
+        if(style != null) writer.writeAttribute("style", style, null);
+        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.endElement("div");
+        context.getResponseWriter().endElement("div");
     }
 }
