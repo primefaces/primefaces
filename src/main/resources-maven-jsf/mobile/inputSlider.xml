@@ -61,5 +61,12 @@
 			<type>java.lang.String</type>
             <description>User presentable name.</description>
 		</attribute>
+        <attribute>
+			<name>highlight</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <default>false</default>
+            <description>Highlights the value range when enabled.</description>
+		</attribute>
 	</attributes>
 </component>

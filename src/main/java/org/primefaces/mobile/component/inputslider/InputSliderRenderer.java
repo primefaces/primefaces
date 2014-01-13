@@ -53,14 +53,10 @@ public class InputSliderRenderer extends InputRenderer {
         writer.writeAttribute("max", inputSlider.getMaxValue(), null);
         writer.writeAttribute("step", inputSlider.getStep(), null);
         
-        if(inputSlider.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
+        if (inputSlider.isHighlight()) writer.writeAttribute("data-highlight", "true", null);
+        if (inputSlider.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if (valueToRender != null) writer.writeAttribute("value", valueToRender , null);
 
-        if(valueToRender != null) {
-			writer.writeAttribute("value", valueToRender , null);
-		}
-        
         renderDynamicPassThruAttributes(context, component);
 
         writer.endElement("input");
