@@ -22,7 +22,6 @@ import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 
@@ -52,6 +51,7 @@ public class SelectOneMenuRenderer extends org.primefaces.component.selectonemen
         if(menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
         
         renderOnchange(context, menu);
+        renderDynamicPassThruAttributes(context, component);
         
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 

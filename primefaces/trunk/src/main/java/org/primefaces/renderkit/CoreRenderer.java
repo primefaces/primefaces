@@ -109,14 +109,19 @@ public abstract class CoreRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
 		
         //pre-defined attributes
-        for(String attribute : attrs) {
-            Object value = component.getAttributes().get(attribute);
+        if(attrs != null && attrs.length > 0) {
+            for(String attribute : attrs) {
+                Object value = component.getAttributes().get(attribute);
 
-            if(shouldRenderAttribute(value))
-                writer.writeAttribute(attribute, value.toString(), attribute);
+                if(shouldRenderAttribute(value))
+                    writer.writeAttribute(attribute, value.toString(), attribute);
+            }
         }
         
-        //dynamic attributes       
+        renderDynamicPassThruAttributes(context, component);
+    }
+    
+    protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
             RendererUtils.renderPassThroughAttributes(context, component);
         }
