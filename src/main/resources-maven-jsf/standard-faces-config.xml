@@ -191,6 +191,11 @@
 		<component-class>org.primefaces.mobile.component.page.Page</component-class>
 	</component>
     
+    <component>
+		<component-type>org.primefaces.mobile.Field</component-type>
+		<component-class>org.primefaces.mobile.component.field.Field</component-class>
+	</component>
+
     <render-kit>
         <render-kit-id>PRIMEFACES_MOBILE</render-kit-id>
         <render-kit-class>org.primefaces.mobile.renderkit.MobileRenderKit</render-kit-class>
@@ -223,6 +228,12 @@
 			<component-family>org.primefaces.mobile.component</component-family>
 			<renderer-type>org.primefaces.mobile.component.FooterRenderer</renderer-type>
 			<renderer-class>org.primefaces.mobile.component.footer.FooterRenderer</renderer-class>
+		</renderer>
+        
+        <renderer>
+			<component-family>org.primefaces.mobile.component</component-family>
+			<renderer-type>org.primefaces.mobile.component.FieldRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.field.FieldRenderer</renderer-class>
 		</renderer>
         
         <renderer>
