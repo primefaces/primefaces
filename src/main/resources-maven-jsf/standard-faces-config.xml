@@ -205,6 +205,11 @@
 		<component-type>org.primefaces.mobile.RangeSlider</component-type>
 		<component-class>org.primefaces.mobile.component.rangeslider.RangeSlider</component-class>
 	</component>
+    
+    <component>
+		<component-type>org.primefaces.mobile.UISwitch</component-type>
+		<component-class>org.primefaces.mobile.component.uiswitch.UISwitch</component-class>
+	</component>
 
     <render-kit>
         <render-kit-id>PRIMEFACES_MOBILE</render-kit-id>
@@ -256,6 +261,12 @@
 			<component-family>org.primefaces.mobile.component</component-family>
 			<renderer-type>org.primefaces.mobile.component.RangeSliderRenderer</renderer-type>
 			<renderer-class>org.primefaces.mobile.component.rangeslider.RangeSliderRenderer</renderer-class>
+		</renderer>
+        
+        <renderer>
+			<component-family>org.primefaces.mobile.component</component-family>
+			<renderer-type>org.primefaces.mobile.component.UISwitchRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.uiswitch.UISwitchRenderer</renderer-class>
 		</renderer>
         
         <renderer>
