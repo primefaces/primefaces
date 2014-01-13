@@ -43,6 +43,8 @@ public class InputSliderRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         InputSlider inputSlider = (InputSlider) component;
         String clientId = inputSlider.getClientId(context);
+        String style = inputSlider.getStyle();
+        String styleClass = inputSlider.getStyleClass();
         String valueToRender = ComponentUtils.getValueToRender(context, inputSlider);
         
         writer.startElement("input", null);
@@ -53,6 +55,8 @@ public class InputSliderRenderer extends InputRenderer {
         writer.writeAttribute("max", inputSlider.getMaxValue(), null);
         writer.writeAttribute("step", inputSlider.getStep(), null);
         
+        if (style != null) writer.writeAttribute("style", style, null);  
+        if (styleClass != null) writer.writeAttribute("class", styleClass, null); 
         if (inputSlider.isHighlight()) writer.writeAttribute("data-highlight", "true", null);
         if (inputSlider.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if (valueToRender != null) writer.writeAttribute("value", valueToRender , null);
