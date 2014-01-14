@@ -78,6 +78,7 @@ public class SelectOneRadioRenderer extends org.primefaces.component.selectonera
         writer.writeAttribute("value", itemValueAsString, null);
 
         renderOnchange(context, radio);
+        renderDynamicPassThruAttributes(context, radio);
         
         if (radio.getTabindex() != null) writer.writeAttribute("tabindex", radio.getTabindex(), null);
         if (selected) writer.writeAttribute("checked", "checked", null);
