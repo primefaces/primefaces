@@ -190,23 +190,35 @@ public class ConfigContainer {
     private void initConfigFromWebXml(FacesContext context) {
         ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
         
+        InputStream is = null;
+        
         try {
-            URL url = servletContext.getResource("/WEB-INF/web.xml");
+            is = servletContext.getResourceAsStream("/WEB-INF/web.xml");
 
             // web.xml is optional
-            if (url != null) {
+            if (is != null) {
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 factory.setValidating(false);
                 factory.setNamespaceAware(false);
                 factory.setExpandEntityReferences(false);
                 DocumentBuilder builder = factory.newDocumentBuilder();
-                Document document = builder.parse(url.getFile());
+                Document document = builder.parse(is);
                 
                 initErrorPages(document.getDocumentElement());
             }
         }
         catch (Exception e) {
             LOG.log(Level.SEVERE, "Could not load or parse web.xml", e);
+        }
+        finally {
+            if (is != null) {
+                try {
+                    is.close();
+                }
+                catch (IOException e) {
+                    LOG.log(Level.INFO, "Could not close web.xml stream", e);
+                }
+            }
         }
     }
     
