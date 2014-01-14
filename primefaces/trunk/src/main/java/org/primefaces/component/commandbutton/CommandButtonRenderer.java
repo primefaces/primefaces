@@ -33,7 +33,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class CommandButtonRenderer extends CoreRenderer {
 
-    private static final String SB_BUILD_ONCLICK = CommandButtonRenderer.class.getName() + "#buildOnclick";
+    protected static final String SB_BUILD_ONCLICK = CommandButtonRenderer.class.getName() + "#buildOnclick";
     
     @Override
 	public void decode(FacesContext context, UIComponent component) {
