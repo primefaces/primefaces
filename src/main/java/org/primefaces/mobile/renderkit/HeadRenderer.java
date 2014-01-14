@@ -49,7 +49,7 @@ public class HeadRenderer extends Renderer {
         writer.endElement("script");
         
         renderResource(context, "mobile/jquery-mobile.js", "javax.faces.resource.Script", "primefaces");
-        renderResource(context, "core/core.js", "javax.faces.resource.Script", "primefaces");
+        renderResource(context, "primefaces-mobile.js", "javax.faces.resource.Script", "primefaces");
     }
 
     @Override
