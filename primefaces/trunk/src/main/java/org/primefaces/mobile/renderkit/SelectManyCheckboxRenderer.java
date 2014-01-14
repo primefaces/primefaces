@@ -89,6 +89,7 @@ public class SelectManyCheckboxRenderer extends org.primefaces.component.selectm
         writer.writeAttribute("value", itemValueAsString, null);
 
         renderOnchange(context, checkbox);
+        renderDynamicPassThruAttributes(context, checkbox);
         
         if (checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
         if (selected) writer.writeAttribute("checked", "checked", null);

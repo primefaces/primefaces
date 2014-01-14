@@ -89,6 +89,7 @@ public class SelectManyButtonRenderer extends org.primefaces.component.selectman
         writer.writeAttribute("value", itemValueAsString, null);
 
         renderOnchange(context, button);
+        renderDynamicPassThruAttributes(context, button);
         
         if (selected) writer.writeAttribute("checked", "checked", null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);

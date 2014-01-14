@@ -46,6 +46,7 @@ public class SelectBooleanCheckboxRenderer extends org.primefaces.component.sele
         if (checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
         
         renderOnchange(context, checkbox);
+        renderDynamicPassThruAttributes(context, checkbox);
         
         writer.endElement("input");
         
