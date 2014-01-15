@@ -139,7 +139,7 @@
         },
 
         isIE: function(version) {
-            return ($.browser.msie && parseInt($.browser.version, 10) === version);
+            return (this.browser.msie && parseInt(this.browser.version, 10) === version);
         },
 
         info: function(log) {
@@ -385,6 +385,35 @@
 
             return this.scrollbarWidth;
         },
+        
+        //adapted from jquery browser plugin
+        resolveUserAgent: function(ua) {
+            ua = ua.toLowerCase();
+
+            var match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
+                /(webkit)[ \/]([\w.]+)/.exec(ua) ||
+                /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
+                /(msie) ([\w.]+)/.exec(ua) ||
+                ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) || [],
+            userAgent =  {
+                browser: match[ 1 ] || "",
+                version: match[ 2 ] || "0"
+            },
+            browser = {};
+    
+            if(userAgent.browser) {
+                browser[userAgent.browser] = true;
+                browser.version = userAgent.version;
+            }
+
+            if (browser.chrome) {
+                browser.webkit = true;
+            } else if (browser.webkit) {
+                browser.safari = true;
+            }
+
+            this.browser = browser;
+        },
 
         bcn: function(element, event, functions) {
             if(functions) {
@@ -454,8 +483,7 @@
     PrimeFaces.util = {};
     PrimeFaces.widgets = {};
     
-    PF = function(widgetVar) {
-    	
+    PF = function(widgetVar) {    	
     	var widgetInstance = PrimeFaces.widgets[widgetVar];
     	
     	if (!widgetInstance) {
@@ -468,7 +496,9 @@
     	
         return widgetInstance;
     };
-
+    
+    PrimeFaces.resolveUserAgent(navigator.userAgent);
+   
     //expose globally
     window.PrimeFaces = PrimeFaces;
 
