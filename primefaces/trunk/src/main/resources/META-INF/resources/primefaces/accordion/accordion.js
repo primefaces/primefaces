@@ -9,7 +9,6 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         this.stateHolder = $(this.jqId + '_active');
         this.headers = this.jq.children('.ui-accordion-header');
         this.panels = this.jq.children('.ui-accordion-content');
-        this.headers.children('a').disableSelection();
         this.onshowHandlers = this.onshowHandlers||{};
         this.cfg.rtl = this.jq.hasClass('ui-accordion-rtl');
         this.cfg.expandedIcon = 'ui-icon-triangle-1-s';
@@ -50,7 +49,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
                 element.removeClass('ui-state-hover');
             }
-        }).click(function(e) {
+        }).click(function(e) {            
             var element = $(this);
             if(!element.hasClass('ui-state-disabled')) {
                 var tabIndex = element.index() / 2;

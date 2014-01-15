@@ -222,6 +222,23 @@
                 }
             }
         },
+        
+        getSelection: function() {
+            var text = '';
+            if (window.getSelection) {
+                text = window.getSelection();
+            } else if (document.getSelection) {
+                text = document.getSelection();
+            } else if (document.selection) {
+                text = document.selection.createRange().text;
+            }
+            
+            return text;
+        },
+        
+        hasSelection: function() {
+            return this.getSelection().length > 0;
+        },
 
         cw : function(widgetConstructor, widgetVar, cfg, resource) {
             PrimeFaces.createWidget(widgetConstructor, widgetVar, cfg, resource);
