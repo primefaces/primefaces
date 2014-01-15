@@ -98,7 +98,7 @@ PrimeFaces.expressions.SearchExpressionFacade = {
 
 	splitExpressions: function(expression) {
 
-		if ($.browser.msie && parseInt($.browser.version, 10) === 7) {
+		if (PrimeFaces.isIE(7)) {
 			expression = expression.split('');
 		}
 
