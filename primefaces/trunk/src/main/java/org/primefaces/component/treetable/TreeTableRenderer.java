@@ -39,6 +39,7 @@ import org.primefaces.model.TreeNodeComparator;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.TreeUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class TreeTableRenderer extends CoreRenderer {
@@ -618,23 +619,7 @@ public class TreeTableRenderer extends CoreRenderer {
         
         ValueExpression sortByVE = tt.getValueExpression("sortBy");
         SortOrder sortOrder = SortOrder.valueOf(tt.getSortOrder().toUpperCase(Locale.ENGLISH));
-        sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction()));
+        TreeUtils.sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction()));
         tt.updateRowKeys(root);
-    }
-    
-    private void sortNode(TreeNode node, Comparator comparator) {
-        TreeNodeChildren children = (TreeNodeChildren) node.getChildren();
-        
-        if(children != null && !children.isEmpty()) {
-            Object[] childrenArray = children.toArray();
-            Arrays.sort(childrenArray, comparator);
-            for(int i = 0; i < childrenArray.length; i++) {
-                children.setSibling(i, (TreeNode) childrenArray[i]);
-            }
-            
-            for(int i = 0; i < children.size(); i++) {
-                sortNode(children.get(i), comparator);
-            }
-        }
     }
 }

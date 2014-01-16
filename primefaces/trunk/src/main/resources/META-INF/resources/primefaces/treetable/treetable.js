@@ -98,10 +98,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     bindSortEvents: function() {
-        var $this = this,
-        sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
+        var $this = this;
+        this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
                 
-        sortableColumns.filter('.ui-state-active').each(function() {
+        this.sortableColumns.filter('.ui-state-active').each(function() {
             var columnHeader = $(this),
             sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
             sortOrder = null;
@@ -114,7 +114,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             columnHeader.data('sortorder', sortOrder);       
         });
         
-        sortableColumns.on('mouseenter.treeTable', function() {
+        this.sortableColumns.on('mouseenter.treeTable', function() {
             var column = $(this);
             
             if(!column.hasClass('ui-state-active'))
@@ -145,8 +145,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     sort: function(columnHeader, order) {  
-        columnHeader.data('sortorder', order);
-    
         var $this = this,
         options = {
             source: this.id,
@@ -163,7 +161,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                         handle: function(content) {
                             this.tbody.html(content);
                             
-                            columnHeader.removeClass('ui-state-hover').addClass('ui-state-active');
+                            columnHeader.siblings().filter('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
+                                            .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                            
+                            columnHeader.removeClass('ui-state-hover').addClass('ui-state-active').data('sortorder', order);
                             var sortIcon = columnHeader.find('.ui-sortable-column-icon');
 
                             if(order === 'DESCENDING')
