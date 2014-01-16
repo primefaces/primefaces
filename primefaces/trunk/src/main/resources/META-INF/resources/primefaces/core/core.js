@@ -382,7 +382,7 @@
         
         calculateScrollbarWidth: function() {
             if(!this.scrollbarWidth) {
-                if($.browser.msie) {
+                if(this.browser.msie) {
                     var $textarea1 = $('<textarea cols="10" rows="2"></textarea>')
                             .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body'),
                         $textarea2 = $('<textarea cols="10" rows="2" style="overflow: hidden;"></textarea>')
@@ -405,31 +405,36 @@
         
         //adapted from jquery browser plugin
         resolveUserAgent: function(ua) {
-            ua = ua.toLowerCase();
-
-            var match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
-                /(webkit)[ \/]([\w.]+)/.exec(ua) ||
-                /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
-                /(msie) ([\w.]+)/.exec(ua) ||
-                ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) || [],
-            userAgent =  {
-                browser: match[ 1 ] || "",
-                version: match[ 2 ] || "0"
-            },
-            browser = {};
-    
-            if(userAgent.browser) {
-                browser[userAgent.browser] = true;
-                browser.version = userAgent.version;
+            if($.browser) {
+                this.browser = $.browser;
             }
+            else {
+                ua = ua.toLowerCase();
 
-            if (browser.chrome) {
-                browser.webkit = true;
-            } else if (browser.webkit) {
-                browser.safari = true;
+                var match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
+                    /(webkit)[ \/]([\w.]+)/.exec(ua) ||
+                    /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
+                    /(msie) ([\w.]+)/.exec(ua) ||
+                    ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) || [],
+                userAgent =  {
+                    browser: match[ 1 ] || "",
+                    version: match[ 2 ] || "0"
+                },
+                browser = {};
+
+                if(userAgent.browser) {
+                    browser[userAgent.browser] = true;
+                    browser.version = userAgent.version;
+                }
+
+                if (browser.chrome) {
+                    browser.webkit = true;
+                } else if (browser.webkit) {
+                    browser.safari = true;
+                }
+
+                this.browser = browser;
             }
-
-            this.browser = browser;
         },
 
         bcn: function(element, event, functions) {
