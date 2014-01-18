@@ -17,8 +17,6 @@ package org.primefaces.component.treetable;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -34,7 +32,6 @@ import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
-import org.primefaces.model.TreeNodeChildren;
 import org.primefaces.model.TreeNodeComparator;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
@@ -148,7 +145,8 @@ public class TreeTableRenderer extends CoreRenderer {
             .attr("liveResize", tt.isLiveResize(), false)
             .attr("scrollable", tt.isScrollable(), false)
             .attr("scrollHeight", tt.getScrollHeight(), null)
-            .attr("scrollWidth", tt.getScrollWidth(), null);
+            .attr("scrollWidth", tt.getScrollWidth(), null)
+            .attr("nativeElements", tt.isNativeElements(), false);
         
         encodeClientBehaviors(context, tt);
 
@@ -367,6 +365,7 @@ public class TreeTableRenderer extends CoreRenderer {
         boolean checkboxSelection = selectionEnabled && selectionMode.equals("checkbox");            
         boolean selected = treeNode.isSelected();
         boolean partialSelected = treeNode.isPartialSelected();
+        boolean nativeElements = tt.isNativeElements();
 
         String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
         rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
@@ -424,7 +423,10 @@ public class TreeTableRenderer extends CoreRenderer {
                     writer.endElement("span");
 
                     if(selectable && checkboxSelection) {
-                        RendererUtils.encodeCheckbox(context, selected, partialSelected);
+                        if(!nativeElements)
+                            RendererUtils.encodeCheckbox(context, selected, partialSelected);
+                        else
+                            renderNativeCheckbox(context, tt, selected, partialSelected);
                     }
                 }
 
@@ -621,5 +623,23 @@ public class TreeTableRenderer extends CoreRenderer {
         SortOrder sortOrder = SortOrder.valueOf(tt.getSortOrder().toUpperCase(Locale.ENGLISH));
         TreeUtils.sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction()));
         tt.updateRowKeys(root);
+    }
+
+    protected void renderNativeCheckbox(FacesContext context, TreeTable tt, boolean checked, boolean partialSelected) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "checkbox", null);
+        writer.writeAttribute("name", tt.getContainerClientId(context) + "_checkbox", null);
+        
+        if(checked) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        
+        if(partialSelected) {
+            writer.writeAttribute("class", "ui-treetable-indeterminate", null);
+        }
+                
+        writer.endElement("input");
     }
 }

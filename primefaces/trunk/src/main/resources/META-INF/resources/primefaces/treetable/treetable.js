@@ -67,7 +67,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                         if(!element.hasClass('ui-state-highlight')) {
                             element.addClass('ui-state-hover');
                         
-                            if($this.isCheckboxSelection()) {
+                            if($this.isCheckboxSelection() && !$this.cfg.nativeElements) {
                                 element.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').addClass('ui-state-hover');
                             }
                         }
@@ -77,23 +77,30 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                         if(!element.hasClass('ui-state-highlight')) {
                             element.removeClass('ui-state-hover');
                             
-                            if($this.isCheckboxSelection()) {
+                            if($this.isCheckboxSelection() && !$this.cfg.nativeElements) {
                                 element.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-hover');
                             }
                         }
                     })
                     .on('click.treeTable', rowSelector, null, function(e) {
                         $this.onRowClick(e, $(this));
-                        e.preventDefault();
                     });
                     
         if(this.isCheckboxSelection()) {
-           var checkboxSelector = this.jqId + ' .ui-treetable-data tr.ui-treetable-selectable-node td:first-child div.ui-chkbox-box';
-           $(document).off('click.treeTable', checkboxSelector)
+           var checkboxSelector =  this.cfg.nativeElements ? this.jqId + ' .ui-treetable-data > tr.ui-treetable-selectable-node > td:first-child :checkbox':
+                    this.jqId + ' .ui-treetable-data > tr.ui-treetable-selectable-node > td:first-child div.ui-chkbox-box';
+                    
+                $(document).off('click.treeTable', checkboxSelector)
                       .on('click.treeTable', checkboxSelector, null, function(e) {
                           var node = $(this).closest('tr.ui-treetable-selectable-node');
                           $this.toggleCheckboxNode(node);
                       });
+                      
+                      
+                //initial partial selected visuals
+                if(this.cfg.nativeElements) {
+                    this.indeterminateNodes(this.tbody.children('tr.ui-treetable-partialselected'));
+                }
         }
     },
     
@@ -204,6 +211,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                             node.after(content);
                             node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
                             node.attr('aria-expanded', true);
+                            $this.indeterminateNodes($this.tbody.children('tr.ui-treetable-partialselected'));
                         }
                     });
 
@@ -292,10 +300,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.writeSelections();
         
         if(this.isCheckboxSelection()) {
-            node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-hover')
-                .children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-minus').addClass('ui-icon ui-icon-check');
+            if(this.cfg.nativeElements)
+                node.find('> td:first-child > :checkbox').prop('checked', true).prop('indeterminate', false);
+            else
+                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-hover').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-minus').addClass('ui-icon ui-icon-check');
         }
-
+        
         if(!silent) {
             this.fireSelectNodeEvent(nodeKey);
         }
@@ -309,7 +319,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.writeSelections();
         
         if(this.isCheckboxSelection()) {
-            node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check ui-icon-minus');
+            if(this.cfg.nativeElements)
+                node.find('> td:first-child > :checkbox').prop('checked', false).prop('indeterminate', false);
+            else
+                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check ui-icon-minus');
         }
 
         if(!silent) {
@@ -343,6 +356,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         } 
         else {
             this.selectNode(node);
+        }
+    },
+    
+    indeterminateNodes: function(nodes) {
+        for(var i = 0; i < nodes.length; i++) {
+            nodes.eq(i).find('> td:first-child > :checkbox').prop('indeterminate', true);
         }
     },
     
@@ -426,7 +445,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var children = this.getChildren(node),
         allSelected = true,
         partialSelected = false,
-        checkboxIcon = node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon');
+        checkbox = this.cfg.nativeElements ? node.find('> td:first-child > :checkbox') : 
+                            node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon');
 
         for(var i = 0; i < children.length; i++) {
             var child = children[i],
@@ -442,12 +462,22 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else if(partialSelected) {
             node.removeClass('ui-state-highlight').addClass('ui-treetable-partialselected');
-            checkboxIcon.removeClass('ui-icon ui-icon-check').addClass('ui-icon ui-icon-minus');
+            
+            if(this.cfg.nativeElements)
+                checkbox.prop('indeterminate', true);
+            else
+                checkbox.removeClass('ui-icon ui-icon-check').addClass('ui-icon ui-icon-minus');
+    
             this.removeSelection(node.attr('data-rk'));
         }
         else {
             node.removeClass('ui-state-highlight ui-treetable-partialselected');
-            checkboxIcon.removeClass('ui-icon ui-icon-check ui-icon-minus');
+            
+            if(this.cfg.nativeElements)
+                checkbox.prop('indeterminate', false).prop('checked', false);
+            else
+                checkbox.removeClass('ui-icon ui-icon-check ui-icon-minus');
+            
             this.removeSelection(node.attr('data-rk'));
         }
         
