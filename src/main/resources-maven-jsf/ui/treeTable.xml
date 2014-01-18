@@ -157,6 +157,13 @@
 			<method-signature>java.lang.Integer sort(java.lang.Object, java.lang.Object)</method-signature>
             <description>Custom pluggable sortFunction for default sorting.</description>
 		</attribute>
+        <attribute>
+            <name>nativeElements</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>In native mode, treetable uses native checkboxes.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
