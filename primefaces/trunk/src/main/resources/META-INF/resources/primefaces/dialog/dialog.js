@@ -491,8 +491,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     
     saveState: function() {
         this.state = {
-            width: this.jq.width()
-            ,height: this.jq.height()
+            width: this.jq.width(),
+            height: this.jq.height(),
+            contentWidth: this.content.width(),
+            contentHeight: this.content.height()
         };
 
         var win = $(window);
@@ -501,8 +503,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.state.windowScrollTop = win.scrollTop();
     },
     
-    restoreState: function(includeOffset) {
+    restoreState: function() {
         this.jq.width(this.state.width).height(this.state.height);
+        this.content.width(this.state.contentWidth).height(this.state.contentHeight);
 
         var win = $(window);
         this.jq.offset({
