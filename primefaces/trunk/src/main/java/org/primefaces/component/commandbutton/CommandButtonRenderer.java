@@ -61,31 +61,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 		String type = button.getType();
         Object value = button.getValue();
         String icon = button.resolveIcon();
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&button.isValidateClient();
-        String request = null;
-        
-        if(!type.equals("reset") && !type.equals("button")) {
-            boolean ajax = button.isAjax();
-			
-            if(ajax) {
-                 request = buildAjaxRequest(context, button, null);
-            }
-            else {
-                UIComponent form = ComponentUtils.findParentForm(context, button);
-                if(form == null) {
-                    throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
-                }
-                
-                request = buildNonAjaxRequest(context, button, form, null, false);
-            }
-            
-            if(csvEnabled) {
-                CSVBuilder csvb = requestContext.getCSVBuilder();
-                request = csvb.init().source("this").ajax(ajax).process(button, button.getProcess()).update(button, button.getUpdate()).command(request).build();
-            }
-		}
-        
+        String request = buildRequest(context, button, clientId, type);        
         String onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
         
 		writer.startElement("button", button);
@@ -93,7 +69,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 		writer.writeAttribute("name", clientId, "name");
         writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
-		if(onclick.length() > 0) {
+		if(onclick != null) {
             if(button.requiresConfirmation()) {
                 writer.writeAttribute("data-pfconfirmcommand", onclick, null);
                 writer.writeAttribute("onclick", button.getConfirmationScript(), "onclick");
@@ -135,6 +111,35 @@ public class CommandButtonRenderer extends CoreRenderer {
 			
 		writer.endElement("button");
 	}
+
+    protected String buildRequest(FacesContext context, CommandButton button, String type, String clientId) throws FacesException {
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&button.isValidateClient();
+        String request = null;
+        
+        if(!type.equals("reset") && !type.equals("button")) {
+            boolean ajax = button.isAjax();
+            
+            if(ajax) {
+                request = buildAjaxRequest(context, button, null);
+            }
+            else {
+                UIComponent form = ComponentUtils.findParentForm(context, button);
+                if(form == null) {
+                    throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
+                }
+                
+                request = buildNonAjaxRequest(context, button, form, null, false);
+            }
+            
+            if(csvEnabled) {
+                CSVBuilder csvb = requestContext.getCSVBuilder();
+                request = csvb.init().source("this").ajax(ajax).process(button, button.getProcess()).update(button, button.getUpdate()).command(request).build();
+            }
+        }
+        
+        return request;
+    }
 	
 	protected void encodeScript(FacesContext context, CommandButton button) throws IOException {
 		String clientId = button.getClientId(context);

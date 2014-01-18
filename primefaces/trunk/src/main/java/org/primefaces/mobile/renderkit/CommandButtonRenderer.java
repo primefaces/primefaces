@@ -35,7 +35,8 @@ public class CommandButtonRenderer extends org.primefaces.component.commandbutto
         String type = button.getType();
         String icon = button.getIcon();
         String iconPos = (value == null && icon != null) ? "notext" : button.getIconPos();
-        String request = null;
+        String request = buildRequest(context, button, clientId, type);        
+        String onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
         
 		writer.startElement("input", button);
 		writer.writeAttribute("id", clientId, null);
@@ -50,23 +51,8 @@ public class CommandButtonRenderer extends org.primefaces.component.commandbutto
             writer.writeAttribute("data-icon", icon, null);
             writer.writeAttribute("data-iconpos", iconPos, null);
         }
-                
-        if (!type.equals("reset") && !type.equals("button")) {
-            if(button.isAjax()) {
-                 request = buildAjaxRequest(context, button, null);
-            }
-            else {
-                UIComponent form = ComponentUtils.findParentForm(context, button);
-                if(form == null) {
-                    throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
-                }
-                
-                request = buildNonAjaxRequest(context, button, form, null, false);
-            };
-		}
-        
-        String onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
-		if (onclick.length() > 0) {
+
+		if (onclick != null) {
             writer.writeAttribute("onclick", onclick, "onclick");
 		}
 		
