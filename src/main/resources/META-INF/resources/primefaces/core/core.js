@@ -442,6 +442,13 @@
                 for(var i = 0; i < functions.length; i++) {
                     var retVal = functions[i].call(element, event);
                     if(retVal === false) {
+                        if(event.preventDefault) {
+                            event.preventDefault();
+                        }
+                        else {
+                            event.returnValue = false;
+                        }
+
                         break;
                     }
                 } 

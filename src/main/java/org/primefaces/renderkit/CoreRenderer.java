@@ -222,23 +222,38 @@ public abstract class CoreRenderer extends Renderer {
     }
     
     protected void renderOnchange(FacesContext context, UIComponent component) throws IOException {
+        this.renderDomEvent(context, component, "onchange", "change", "valueChange", null);
+    }
+    
+    protected void renderOnclick(FacesContext context, UIComponent component, String command) throws IOException {
+        this.renderDomEvent(context, component, "onclick", "click", "action", command);
+    }
+    
+    protected void renderDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent, String behaviorEventAlias, String command) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String callback = buildDomEvent(context, component, domEvent, behaviorEvent, behaviorEventAlias, command);
+        if (callback != null) {
+            writer.writeAttribute(domEvent, callback, domEvent);
+        }
+    }
+    
+    protected String buildDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent, String behaviorEventAlias, String command) {
         StringBuilder builder = null;
         Map<String,List<ClientBehavior>> behaviors = null;
         if(component instanceof ClientBehaviorHolder) {
             behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
         }
-        Object eventValue = component.getAttributes().get("onchange");
-        String behaviorEvent = "valueChange";
-        if (behaviors != null && behaviors.containsKey("change")) {
-            behaviorEvent = "change";
+        Object eventValue = component.getAttributes().get(domEvent);
+        String behaviorEventName = behaviorEventAlias;
+        if (behaviors != null && behaviors.containsKey(behaviorEvent)) {
+            behaviorEventName = behaviorEvent;
         }
         
-        List<ClientBehavior> changeBehaviors = (behaviors == null) ? null : behaviors.get(behaviorEvent);
+        List<ClientBehavior> eventBehaviors = (behaviors == null) ? null : behaviors.get(behaviorEventName);
         boolean hasEventValue = (eventValue != null);
-        boolean hasChangeBehaviors = (changeBehaviors != null && !changeBehaviors.isEmpty());
+        boolean hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
         
-        if (hasEventValue || hasChangeBehaviors) {
+        if (hasEventValue || hasEventBehaviors || command != null) {
             if (builder == null) {
                 builder = SharedStringBuilder.get(context, SB_RENDER_DOM_EVENTS);
             }
@@ -247,39 +262,45 @@ public abstract class CoreRenderer extends Renderer {
                 builder.append(eventValue).append(";");
             }
             
-            if (hasChangeBehaviors) {
-                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEvent, component.getClientId(context), Collections.EMPTY_LIST);
-                int size = changeBehaviors.size();
+            if (hasEventBehaviors) {
+                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
+                int eventBehaviorSize = eventBehaviors.size();
+                int commandSize = (command != null) ? (eventBehaviorSize + 1): eventBehaviorSize;
                     
-                if (size > 1) {
+                if (commandSize > 1) {
                     builder.append("PrimeFaces.bcn(this,event,[");
-                    for (int i = 0; i < size; i++) {
-                        ClientBehavior behavior = changeBehaviors.get(i);
+                    for (int i = 0; i < eventBehaviorSize; i++) {
+                        ClientBehavior behavior = eventBehaviors.get(i);
                         String script = behavior.getScript(cbc);
-                        if(script != null) {
+                        if (script != null) {
                             builder.append("function(event){").append(script).append("}");
                         }
 
-                        if (i < (size - 1)) {
+                        if (i < (eventBehaviorSize - 1)) {
                             builder.append(",");
                         }
                     }
-                    builder.append("])");
+                    
+                    if (command != null) {
+                        builder.append(",function(event){").append(command).append("}");
+                    } 
+                    
+                    builder.append("]);");
                 }
                 else {
-                    ClientBehavior behavior = changeBehaviors.get(0);
+                    ClientBehavior behavior = eventBehaviors.get(0);
                     String script = behavior.getScript(cbc);
-                    if(script != null) {
+                    if (script != null) {
                         builder.append(script);
                     }
                 }
             }
-            
-            if(builder.length() > 0) {
-                writer.writeAttribute("onchange", builder.toString(), "onchange");
-                builder.setLength(0);
+            else if (command != null) {
+                builder.append(command);
             }
         }
+        
+        return (builder == null) ? null : builder.toString();
     }
 	
     private boolean isIgnoredAttribute(String attribute, String[] ignoredAttrs) {

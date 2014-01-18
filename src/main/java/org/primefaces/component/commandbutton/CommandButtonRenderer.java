@@ -28,13 +28,10 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class CommandButtonRenderer extends CoreRenderer {
 
-    protected static final String SB_BUILD_ONCLICK = CommandButtonRenderer.class.getName() + "#buildOnclick";
-    
     @Override
 	public void decode(FacesContext context, UIComponent component) {
         CommandButton button = (CommandButton) component;
@@ -66,24 +63,9 @@ public class CommandButtonRenderer extends CoreRenderer {
         String icon = button.resolveIcon();
         RequestContext requestContext = RequestContext.getCurrentInstance();
         boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&button.isValidateClient();
+        String request = null;
         
-        StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
-        if(button.getOnclick() != null) {
-            onclick.append(button.getOnclick()).append(";");
-        }
-        
-        String onclickBehaviors = getEventBehaviors(context, button, "click");
-        if(onclickBehaviors != null) {
-            onclick.append(onclickBehaviors);
-        }
-
-		writer.startElement("button", button);
-		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("name", clientId, "name");
-        writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
-
-		if(!type.equals("reset") && !type.equals("button")) {
-            String request;
+        if(!type.equals("reset") && !type.equals("button")) {
             boolean ajax = button.isAjax();
 			
             if(ajax) {
@@ -102,17 +84,22 @@ public class CommandButtonRenderer extends CoreRenderer {
                 CSVBuilder csvb = requestContext.getCSVBuilder();
                 request = csvb.init().source("this").ajax(ajax).process(button, button.getProcess()).update(button, button.getUpdate()).command(request).build();
             }
-			
-            onclick.append(request);
 		}
+        
+        String onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
+        
+		writer.startElement("button", button);
+		writer.writeAttribute("id", clientId, "id");
+		writer.writeAttribute("name", clientId, "name");
+        writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
 		if(onclick.length() > 0) {
             if(button.requiresConfirmation()) {
-                writer.writeAttribute("data-pfconfirmcommand", onclick.toString(), null);
+                writer.writeAttribute("data-pfconfirmcommand", onclick, null);
                 writer.writeAttribute("onclick", button.getConfirmationScript(), "onclick");
             }
             else
-                writer.writeAttribute("onclick", onclick.toString(), "onclick");
+                writer.writeAttribute("onclick", onclick, "onclick");
 		}
 		
 		renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);

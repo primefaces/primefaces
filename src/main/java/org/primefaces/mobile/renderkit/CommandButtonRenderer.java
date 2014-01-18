@@ -23,7 +23,6 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
 
 public class CommandButtonRenderer extends org.primefaces.component.commandbutton.CommandButtonRenderer {
     
@@ -36,40 +35,24 @@ public class CommandButtonRenderer extends org.primefaces.component.commandbutto
         String type = button.getType();
         String icon = button.getIcon();
         String iconPos = (value == null && icon != null) ? "notext" : button.getIconPos();
-        StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
-
-        if (button.getOnclick() != null) {
-            onclick.append(button.getOnclick()).append(";");
-        }
-
-        String onclickBehaviors = getEventBehaviors(context, button, "click");
-        if (onclickBehaviors != null) {
-            onclick.append(onclickBehaviors);
-        }
+        String request = null;
         
 		writer.startElement("input", button);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", type, null);
         
-        if (icon != null) {
-            writer.writeAttribute("data-icon", icon, null);
-            writer.writeAttribute("data-iconpos", iconPos, null);
-        }
-        
-        if (icon != null) {
-            writer.writeAttribute("data-icon", icon, null);
-        }
-        
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
         
+        if (icon != null) {
+            writer.writeAttribute("data-icon", icon, null);
+            writer.writeAttribute("data-iconpos", iconPos, null);
+        }
+                
         if (!type.equals("reset") && !type.equals("button")) {
-            String request;
-            boolean ajax = button.isAjax();
-			
-            if(ajax) {
+            if(button.isAjax()) {
                  request = buildAjaxRequest(context, button, null);
             }
             else {
@@ -79,20 +62,19 @@ public class CommandButtonRenderer extends org.primefaces.component.commandbutto
                 }
                 
                 request = buildNonAjaxRequest(context, button, form, null, false);
-            }
-            			
-            onclick.append(request);
+            };
 		}
-
+        
+        String onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
 		if (onclick.length() > 0) {
-            writer.writeAttribute("onclick", onclick.toString(), "onclick");
+            writer.writeAttribute("onclick", onclick, "onclick");
 		}
 		
-		//renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
+        renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
         renderDynamicPassThruAttributes(context, component);
         
-        if(button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-        if(button.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
+        if (button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if (button.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
         
         writer.endElement("input");
 	}
