@@ -53,16 +53,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
-        var blockWidth = this.block.outerWidth(),
-        blockHeight = this.block.outerHeight();
-
-        //set dimensions of blocker to span the content
-        this.blocker.width(blockWidth).height(blockHeight);
-
         //center position of content
         this.content.css({
-            'left': (blockWidth - this.content.outerWidth()) / 2,
-            'top': (blockHeight - this.content.outerHeight()) / 2
+            'left': (this.blocker.width() - this.content.outerWidth()) / 2,
+            'top': (this.blocker.height() - this.content.outerHeight()) / 2
         });
 
         if(this.cfg.animate)
