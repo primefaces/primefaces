@@ -70,10 +70,6 @@ PrimeFaces.ajax = {
                 if(input.length > 0) {
                     input.val(trimmedValue);
                 }
-                else
-                {
-                    form.append('<input type="hidden" name="' + name + '" value="' + trimmedValue + '" autocomplete="off" />');
-                }
             });
         },
 
