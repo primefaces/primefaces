@@ -361,6 +361,12 @@ PrimeFaces.ajax = {
                     if (clientWindowInput.length > 0) {
                         postParams.push({ name:PrimeFaces.CLIENT_WINDOW, value:clientWindowInput.val() });
                     }
+                    
+                    var dsClientWindowInput = form.children("input[name='dsPostWindowId']");
+                    if (dsClientWindowInput.length > 0) {
+                        postParams.push({ name:'dsPostWindowId', value:dsClientWindowInput.val() });
+                    }
+                    
                 }
 
             }
