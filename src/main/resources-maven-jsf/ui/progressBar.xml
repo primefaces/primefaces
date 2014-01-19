@@ -77,6 +77,13 @@
             <defaultValue>false</defaultValue>
             <description>Enables static value display mode.</description>
         </attribute>
+        <attribute>
+			<name>global</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines whether to trigger ajaxStatus or not.</description>
+		</attribute>
     </attributes>
 	<resources>
 		<resource>

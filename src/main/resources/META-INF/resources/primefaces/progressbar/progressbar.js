@@ -9,9 +9,10 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
         this.jqValue = this.jq.children('.ui-progressbar-value');
         this.jqLabel = this.jq.children('.ui-progressbar-label');
         this.value = this.cfg.initialValue;
+        this.cfg.global = (this.cfg.global === false) ? false : true;
 
         if(this.cfg.ajax) {
-            this.cfg.formId = this.jq.parents('form:first').attr('id');
+            this.cfg.formId = this.jq.closest('form').attr('id');
         }
 
         this.enableARIA();
@@ -46,23 +47,24 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
     },
     
     start: function() {
-        var _self = this;
+        var $this = this;
 
         if(this.cfg.ajax) {
 
             this.progressPoll = setInterval(function() {
                 var options = {
-                    source: _self.id,
-                    process: _self.id,
-                    formId: _self.cfg._formId,
+                    source: $this.id,
+                    process: $this.id,
+                    formId: $this.cfg.formId,
+                    global: $this.cfg.global,
                     async: true,
                     oncomplete: function(xhr, status, args) {
-                        var value = args[_self.id + '_value'];
-                        _self.setValue(value);
+                        var value = args[$this.id + '_value'];
+                        $this.setValue(value);
 
                         //trigger complete listener
                         if(value === 100) {
-                            _self.fireCompleteEvent();
+                            $this.fireCompleteEvent();
                         }
                     }
                 };
