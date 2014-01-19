@@ -99,7 +99,8 @@ public class ProgressBarRenderer extends CoreRenderer {
         wb.initWithDomReady("ProgressBar", progressBar.resolveWidgetVar(), clientId)
             .attr("initialValue", progressBar.getValue())
             .attr("ajax", isAjax)
-            .attr("labelTemplate", progressBar.getLabelTemplate(), null);
+            .attr("labelTemplate", progressBar.getLabelTemplate(), null)
+            .attr("global", progressBar.isGlobal(), true);
         
         if(isAjax) {
             wb.attr("interval", progressBar.getInterval());
