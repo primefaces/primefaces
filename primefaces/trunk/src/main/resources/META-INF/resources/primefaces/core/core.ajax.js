@@ -62,19 +62,20 @@ PrimeFaces.ajax = {
             else {
                 forms = $('form');
             }
+            
+            for (var i = 0; i < forms.length; i++) {
+                var form = forms.eq(i);
 
-            forms.each(function() {
-                var form = $(this);
-                var input = form.children("input[name='" + name + "']");
+                if (form.attr('method') === 'post') {
+                    var input = form.children("input[name='" + name + "']");
 
-                if(input.length > 0) {
-                    input.val(trimmedValue);
+                    if (input.length > 0) {
+                        input.val(trimmedValue);
+                    } else {
+                        form.append('<input type="hidden" name="' + name + '" value="' + trimmedValue + '" autocomplete="off" />');
+                    }
                 }
-                else
-                {
-                    form.append('<input type="hidden" name="' + name + '" value="' + trimmedValue + '" autocomplete="off" />');
-                }
-            });
+            }
         },
 
         updateElement: function(id, content, xhr) {
