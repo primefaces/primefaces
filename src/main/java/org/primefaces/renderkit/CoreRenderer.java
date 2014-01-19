@@ -517,9 +517,6 @@ public abstract class CoreRenderer extends Renderer {
                 case '"':
                     sb.append("\\\"");
                     break;
-                case '\'':
-                    sb.append("\\\'");
-                    break;
                 case '\\':
                     sb.append("\\\\");
                     break;
