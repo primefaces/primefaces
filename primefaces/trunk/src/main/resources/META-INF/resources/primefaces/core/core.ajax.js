@@ -481,41 +481,52 @@ PrimeFaces.ajax = {
         
         handle: function(xml, status, xhr, updateHandler) {
             var partialResponseNode = xml.getElementsByTagName("partial-response")[0];
-            var responseTypeNode = partialResponseNode.firstChild;
 
-            if (responseTypeNode.nodeName === "redirect") {
-                PrimeFaces.ajax.ResponseProcessor.doRedirect(responseTypeNode);
-            }
+            for (var i = 0; i < partialResponseNode.childNodes.length; i++) {
+                var currentNode = partialResponseNode.childNodes[i];
+                
+                switch (currentNode.nodeName) {
+                    case "redirect":
+                        PrimeFaces.ajax.ResponseProcessor.doRedirect(currentNode);
+                        break;
 
-            if (responseTypeNode.nodeName === "changes") {
-                var changesNode = responseTypeNode.childNodes;
+                    case "changes":
+                        for (var j = 0; j < currentNode.childNodes.length; j++) {
+                            var currentChangeNode = currentNode.childNodes[j];
+                            switch (currentChangeNode.nodeName) {
+                                case "update":
+                                    PrimeFaces.ajax.ResponseProcessor.doUpdate(currentChangeNode, xhr, updateHandler);
+                                    break;
+                                case "delete":
+                                    PrimeFaces.ajax.ResponseProcessor.doDelete(currentChangeNode);
+                                    break;
+                                case "insert":
+                                    PrimeFaces.ajax.ResponseProcessor.doInsert(currentChangeNode);
+                                    break;
+                                case "attributes":
+                                    PrimeFaces.ajax.ResponseProcessor.doAttributes(currentChangeNode);
+                                    break;
+                                case "eval":
+                                    PrimeFaces.ajax.ResponseProcessor.doEval(currentChangeNode);
+                                    break;
+                                case "extension":
+                                    PrimeFaces.ajax.ResponseProcessor.doExtension(currentChangeNode, xhr);
+                                    break;
+                            }
+                        }
 
-                for (var i = 0; i < changesNode.length; i++) {
-                    var currentChangeNode = changesNode[i];
-                    switch (currentChangeNode.nodeName) {
-                        case "update":
-                            PrimeFaces.ajax.ResponseProcessor.doUpdate(currentChangeNode, xhr, updateHandler);
-                            break;
-                        case "delete":
-                            PrimeFaces.ajax.ResponseProcessor.doDelete(currentChangeNode);
-                            break;
-                        case "insert":
-                            PrimeFaces.ajax.ResponseProcessor.doInsert(currentChangeNode);
-                            break;
-                        case "attributes":
-                            PrimeFaces.ajax.ResponseProcessor.doAttributes(currentChangeNode);
-                            break;
-                        case "eval":
-                            PrimeFaces.ajax.ResponseProcessor.doEval(currentChangeNode);
-                            break;
-                        case "extension":
-                            PrimeFaces.ajax.ResponseProcessor.doExtension(currentChangeNode, xhr);
-                            break;
-                    }
+                        PrimeFaces.ajax.Response.handleReFocus();
+                        PrimeFaces.ajax.Response.destroyDetachedWidgets();
+                        break;
+
+                    case "eval":
+                        PrimeFaces.ajax.ResponseProcessor.doEval(currentNode);
+                        break;
+
+                    case "extension":
+                        PrimeFaces.ajax.ResponseProcessor.doExtension(currentNode, xhr);
+                        break;
                 }
-
-                PrimeFaces.ajax.Response.handleReFocus();
-                PrimeFaces.ajax.Response.destroyDetachedWidgets();
             }
         },
 
