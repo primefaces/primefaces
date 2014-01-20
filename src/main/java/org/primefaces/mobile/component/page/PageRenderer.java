@@ -29,16 +29,17 @@ public class PageRenderer extends CoreRenderer {
         Page page = (Page) component;
         String swatch = page.getSwatch();
         String title = page.getTitle();
+        String style = page.getStyle();
+        String styleClass = page.getStyleClass();
 
         writer.startElement("div", page);
         writer.writeAttribute("id", page.getId(), "id");
         writer.writeAttribute("data-role", "page", null);
 
-        if(swatch != null)
-            writer.writeAttribute("data-theme", swatch, null);
-        
-        if(title != null)
-            writer.writeAttribute("data-title", title, null);
+        if(style != null) writer.writeAttribute("style", style, null);
+        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
+        if(swatch != null) writer.writeAttribute("data-theme", swatch, null);
+        if(title != null) writer.writeAttribute("data-title", title, null);
     }
 
     @Override
