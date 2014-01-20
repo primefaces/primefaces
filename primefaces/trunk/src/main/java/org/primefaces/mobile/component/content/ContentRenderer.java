@@ -29,13 +29,15 @@ public class ContentRenderer extends CoreRenderer {
         Content content = (Content) component;
         String style = content.getStyle();
         String styleClass = content.getStyleClass();
+        styleClass = (styleClass == null) ? "ui-content" : "ui-content " + styleClass;
 
         writer.startElement("div", content);
         writer.writeAttribute("role", "main", null);
-        writer.writeAttribute("class", "ui-content", null);
+        writer.writeAttribute("class", styleClass, null);
         
-        if(style != null) writer.writeAttribute("style", style, null);
-        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
     }
 
     @Override
