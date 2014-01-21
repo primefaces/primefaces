@@ -25,6 +25,13 @@ import org.primefaces.component.panel.Panel;
 	public static final String PANEL_CONTENT_CLASS = "ui-panel-content ui-widget-content";
 	public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
 
+    public static final String MOBILE_CLASS = "ui-collapsible ui-collapsible-inset ui-corner-all ui-collapsible-themed-content";
+    public static final String MOBILE_CLASS_COLLAPSED = "ui-collapsible ui-collapsible-inset ui-corner-all ui-collapsible-themed-content ui-collapsible-collapsed";
+    public static final String MOBILE_TITLEBAR_CLASS = "ui-collapsible-heading";
+    public static final String MOBILE_TITLEBAR_CLASS_COLLAPSED = "ui-collapsible-heading ui-collapsible-heading-collapsed";
+    public static final String MOBILE_CONTENT_CLASS = "ui-collapsible-content ui-body-inherit";
+    public static final String MOBILE_CONTENT_CLASS_COLLAPSED = "ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed";
+
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("toggle","close"));
 	
 	private Menu optionsMenu;
