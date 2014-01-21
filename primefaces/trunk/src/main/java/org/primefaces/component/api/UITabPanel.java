@@ -76,7 +76,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         varStatus, 
         offset, 
         step,
-        dynamic
+        dynamic,
+        prependId
     }
 
     private Object _initialDescendantComponentState = null;
@@ -154,6 +155,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 	public void setDynamic(boolean _dynamic) {
 		getStateHelper().put(PropertyKeys.dynamic, _dynamic);
 	}
+    
+    public boolean isPrependId() {
+		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.prependId, true);
+	}
+	public void setPrependId(boolean _prependId) {
+		getStateHelper().put(PropertyKeys.prependId, _prependId);
+	}
 
     protected DataModel getDataModel() {
         DataModel dataModel;
@@ -214,16 +222,28 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public String getContainerClientId(FacesContext context) {
-        //MYFACES-2744 UIData.getClientId() should not append rowIndex, instead use UIData.getContainerClientId()
-        String clientId = super.getContainerClientId(context);
+        if(this.isPrependId() || this.isRepeating()) {
+            String clientId = super.getContainerClientId(context);
 
-        int index = getIndex();
-        if (index == -1) {
-            return clientId;
+            int index = getIndex();
+            if (index == -1) {
+                return clientId;
+            }
+
+            StringBuilder bld = _getBuffer(); //SharedStringBuilder(context);
+            return bld.append(clientId).append(UINamingContainer.getSeparatorChar(context)).append(index).toString();
         }
-
-        StringBuilder bld = _getBuffer(); //SharedStringBuilder(context);
-        return bld.append(clientId).append(UINamingContainer.getSeparatorChar(context)).append(index).toString();
+        else {
+            UIComponent parent = this.getParent();
+            while (parent != null) {
+                if (parent instanceof NamingContainer) {
+                    return parent.getContainerClientId(context);
+                }
+                parent = parent.getParent();
+            }
+            
+            return null;
+        }
     }
 
     private RepeatStatus _getRepeatStatus() {
