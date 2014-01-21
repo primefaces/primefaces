@@ -48,6 +48,6 @@ public class PrinterBehavior extends ClientBehaviorBase {
         String components = SearchExpressionFacade.resolveComponentForClient(
         		context, behaviorContext.getComponent(), target);
         
-        return "PrimeFaces.Expressions.resolveComponentsAsSelector('" + components + "').jqprint();return false;";
+        return "PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector('" + components + "').jqprint();return false;";
     }
 }
