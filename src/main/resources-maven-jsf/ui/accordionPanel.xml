@@ -103,6 +103,14 @@
             <defaultValue>ltr</defaultValue>
             <description>Defines text direction, valid values are "ltr" (default) and "rtl".</description>
         </attribute>
+        <attribute>
+            <name>prependId</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>AccordionPanel is a naming container thus prepends its id to its children by default, a false value turns this behavior off except for dynamic tabs.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
