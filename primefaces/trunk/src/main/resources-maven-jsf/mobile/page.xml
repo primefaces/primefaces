@@ -21,10 +21,10 @@
             <description>Title of the view.</description>
         </attribute>
         <attribute>
-            <name>swatch</name>
+            <name>theme</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Swatch of the view.</description>
+            <description>Theme of the view.</description>
         </attribute>
         <attribute>
             <name>style</name>

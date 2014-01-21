@@ -26,10 +26,10 @@
             <defaultValue>false</defaultValue>
 		</attribute>
         <attribute>
-            <name>swatch</name>
+            <name>theme</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Swatch of the footer</description>
+            <description>Theme of the view.</description>
         </attribute>
         <attribute>
             <name>style</name>

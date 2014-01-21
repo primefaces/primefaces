@@ -27,7 +27,7 @@ public class PageRenderer extends CoreRenderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Page page = (Page) component;
-        String swatch = page.getSwatch();
+        String theme = page.getTheme();
         String title = page.getTitle();
         String style = page.getStyle();
         String styleClass = page.getStyleClass();
@@ -38,7 +38,7 @@ public class PageRenderer extends CoreRenderer {
 
         if(style != null) writer.writeAttribute("style", style, null);
         if(styleClass != null) writer.writeAttribute("class", styleClass, null);
-        if(swatch != null) writer.writeAttribute("data-theme", swatch, null);
+        if(theme != null) writer.writeAttribute("data-theme", theme, null);
         if(title != null) writer.writeAttribute("data-title", title, null);
     }
 
