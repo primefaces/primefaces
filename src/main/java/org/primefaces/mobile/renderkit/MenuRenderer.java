@@ -16,10 +16,13 @@
 package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
+import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
 
@@ -82,6 +85,33 @@ public class MenuRenderer extends org.primefaces.component.menu.MenuRenderer {
                 
         writer.endElement("li");
 	}
+    
+    @Override
+    protected void encodeElements(FacesContext context, Menu menu, List<MenuElement> elements) throws IOException{
+		ResponseWriter writer = context.getResponseWriter();
+        
+        for(MenuElement element : elements) {
+            if(element.isRendered()) {
+                if(element instanceof MenuItem) {
+                    MenuItem item = (MenuItem) element;
+                    String icon = item.getIcon();
+                    
+                    writer.startElement("li", null);
+                    if(icon != null) {
+                        writer.writeAttribute("data-icon", icon, null);
+                    }
+                    encodeMenuItem(context, menu, (MenuItem) element);
+                    writer.endElement("li");
+                }
+                else if(element instanceof Submenu) {
+                    encodeSubmenu(context, menu, (Submenu) element);
+                }
+                else if(element instanceof Separator) {
+                    encodeSeparator(context, (Separator) element);
+                }
+            }
+        }
+    }
 
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
