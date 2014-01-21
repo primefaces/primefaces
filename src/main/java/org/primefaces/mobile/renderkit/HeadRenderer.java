@@ -46,7 +46,13 @@ public class HeadRenderer extends Renderer {
         writer.write("$(document).bind('mobileinit', function(){");
         writer.write("$.mobile.ajaxEnabled = false;");               
         writer.write("$.mobile.pushStateEnabled = false;");        
-        writer.write("$.mobile.page.prototype.options.domCache = true;");        
+        writer.write("$.mobile.page.prototype.options.domCache = true;");
+        
+        UIComponent init = component.getFacet("init");
+        if(init != null) {
+            init.encodeAll(context);
+        }
+        
         writer.write("});");        
         writer.endElement("script");
         
