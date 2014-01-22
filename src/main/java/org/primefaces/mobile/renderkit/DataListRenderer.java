@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.UIData;
 import org.primefaces.component.datalist.DataList;
 
 public class DataListRenderer extends org.primefaces.component.datalist.DataListRenderer {
@@ -46,6 +47,8 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
         if (styleClass != null)  writer.writeAttribute("class", styleClass, "styleClass");
         if(list.getItemType() != null) writer.writeAttribute("type", list.getItemType(), null);
         
+        encodeFacet(context, list, "header");
+        
         for (int i = first; i < rowCount; i++) {
             if(varStatus != null) {
                 requestMap.put(varStatus, new VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
@@ -66,6 +69,21 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
             requestMap.remove(varStatus);
         }
         
+        encodeFacet(context, list, "footer");
+        
         writer.endElement(listTag);
+    }
+    
+    public void encodeFacet(FacesContext context, UIData data, String facet) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        UIComponent component = data.getFacet(facet);
+        
+        if(component != null && component.isRendered()) {
+            writer.startElement("li", null);
+            writer.writeAttribute("data-role", "list-divider", null);
+            writer.writeAttribute("role", "heading", null);
+            component.encodeAll(context);
+            writer.endElement("li");
+        }
     }
 }
