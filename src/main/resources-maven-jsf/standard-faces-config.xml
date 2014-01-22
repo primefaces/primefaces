@@ -340,5 +340,11 @@
             <renderer-type>org.primefaces.component.PanelRenderer</renderer-type>
             <renderer-class>org.primefaces.mobile.renderkit.PanelRenderer</renderer-class>
         </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DataListRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.DataListRenderer</renderer-class>
+        </renderer>
     </render-kit>
     <!-- Mobile -->
