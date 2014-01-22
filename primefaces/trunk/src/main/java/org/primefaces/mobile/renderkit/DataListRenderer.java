@@ -22,13 +22,26 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.datalist.DataList;
+import org.primefaces.util.WidgetBuilder;
 
 public class DataListRenderer extends org.primefaces.component.datalist.DataListRenderer {
     
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    protected void encodeScript(FacesContext context, DataList list) throws IOException {
+        String clientId = list.getClientId();
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.initWithDomReady("DataList", list.resolveWidgetVar(), clientId);
+        
+        if(list.isPaginator()) {
+            encodePaginatorConfig(context, list, wb);
+        }
+
+        wb.finish();
+    }
+    
+    @Override
+    public void encodeMarkup(FacesContext context, DataList list) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        DataList list = (DataList) component;
         String clientId = list.getClientId(context);
         String style = list.getStyle();
         String styleClass = list.getStyleClass();
@@ -40,9 +53,8 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         String listTag = list.getListTag();
         
-        writer.startElement(listTag, component);
+        writer.startElement(listTag, list);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("data-role", "listview", "id");
         if (style != null) writer.writeAttribute("style", style, "style");
         if (styleClass != null)  writer.writeAttribute("class", styleClass, "styleClass");
         if(list.getItemType() != null) writer.writeAttribute("type", list.getItemType(), null);
@@ -58,7 +70,7 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
 
             if (list.isRowAvailable()) {
                 writer.startElement("li", null);
-                renderChildren(context, component);
+                renderChildren(context, list);
                 writer.endElement("li");
             }
         }
