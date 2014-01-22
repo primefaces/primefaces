@@ -945,10 +945,11 @@ public class DataTableRenderer extends DataRenderer {
         if(style != null) writer.writeAttribute("style", style, null);
         if(styleClass != null) writer.writeAttribute("class", styleClass, null);
 
-        if(selectionEnabled)
+        if(selectionEnabled) {
             encodeColumnSelection(context, table, clientId, column, selected);
-        else
-            column.encodeAll(context);            
+        }
+
+        column.encodeAll(context);         
 
         writer.endElement("td");
     }
