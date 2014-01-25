@@ -59,9 +59,10 @@ public class CommandButtonRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
 		String type = button.getType();
+        boolean pushButton = (type.equals("reset")||type.equals("button"));
         Object value = button.getValue();
         String icon = button.resolveIcon();
-        String request = buildRequest(context, button, clientId, type);        
+        String request = pushButton ? null: buildRequest(context, button, clientId);        
         String onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
         
 		writer.startElement("button", button);
@@ -112,30 +113,27 @@ public class CommandButtonRenderer extends CoreRenderer {
 		writer.endElement("button");
 	}
 
-    protected String buildRequest(FacesContext context, CommandButton button, String type, String clientId) throws FacesException {
+    protected String buildRequest(FacesContext context, CommandButton button, String clientId) throws FacesException {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&button.isValidateClient();
         String request = null;
-        
-        if(!type.equals("reset") && !type.equals("button")) {
-            boolean ajax = button.isAjax();
+        boolean ajax = button.isAjax();
             
-            if(ajax) {
-                request = buildAjaxRequest(context, button, null);
+        if(ajax) {
+            request = buildAjaxRequest(context, button, null);
+        }
+        else {
+            UIComponent form = ComponentUtils.findParentForm(context, button);
+            if(form == null) {
+                throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
             }
-            else {
-                UIComponent form = ComponentUtils.findParentForm(context, button);
-                if(form == null) {
-                    throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
-                }
-                
-                request = buildNonAjaxRequest(context, button, form, null, false);
-            }
-            
-            if(csvEnabled) {
-                CSVBuilder csvb = requestContext.getCSVBuilder();
-                request = csvb.init().source("this").ajax(ajax).process(button, button.getProcess()).update(button, button.getUpdate()).command(request).build();
-            }
+
+            request = buildNonAjaxRequest(context, button, form, null, false);
+        }
+
+        if(csvEnabled) {
+            CSVBuilder csvb = requestContext.getCSVBuilder();
+            request = csvb.init().source("this").ajax(ajax).process(button, button.getProcess()).update(button, button.getUpdate()).command(request).build();
         }
         
         return request;
