@@ -16,12 +16,10 @@
 package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.commandbutton.CommandButton;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class CommandButtonRenderer extends org.primefaces.component.commandbutton.CommandButtonRenderer {
@@ -31,11 +29,12 @@ public class CommandButtonRenderer extends org.primefaces.component.commandbutto
         ResponseWriter writer = context.getResponseWriter();
 		CommandButton button = (CommandButton) component;
         String clientId = button.getClientId(context);
-        Object value = button.getValue(); 
+        Object value = button.getValue();
         String type = button.getType();
+        boolean pushButton = (type.equals("reset")||type.equals("button"));
         String icon = button.getIcon();
         String iconPos = (value == null && icon != null) ? "notext" : button.getIconPos();
-        String request = buildRequest(context, button, clientId, type);        
+        String request = pushButton ? null: buildRequest(context, button, clientId);        
         String onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
         
 		writer.startElement("input", button);
