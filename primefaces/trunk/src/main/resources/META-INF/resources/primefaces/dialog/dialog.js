@@ -25,19 +25,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.position = this.cfg.position||'center';
         this.parent = this.jq.parent();
 
-        //size
-        this.jq.css({
-            'width': this.cfg.width,
-            'height': 'auto'
-        });
-        
-        //ie7 width auto width bug workaround
-        if(this.cfg.width === 'auto' && PrimeFaces.isIE(7)) {
-            this.jq.width(this.content.outerWidth());
-        }
-
-        this.content.height(this.cfg.height);
-
+        this.initSize();
+       
         //events
         this.bindEvents();
 
@@ -91,6 +80,31 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
         
         this.init(cfg);
+    },
+    
+    initSize: function() {
+        this.jq.css({
+            'width': this.cfg.width,
+            'height': 'auto'
+        });
+        
+        this.content.height(this.cfg.height);
+        
+        this.adjustViewport();
+        
+        //ie7 width auto width bug workaround
+        if(this.cfg.width === 'auto' && PrimeFaces.isIE(7)) {
+            this.jq.width(this.content.outerWidth());
+        }
+    },
+    
+    adjustViewport: function() {
+        var winHeight = $(window).height(),
+        contentPadding = this.content.innerHeight() - this.content.height();
+
+        if(this.jq.innerHeight() > winHeight) {
+            this.content.height(winHeight - this.titlebar.innerHeight() - contentPadding);
+        }
     },
     
     enableModality: function() {
