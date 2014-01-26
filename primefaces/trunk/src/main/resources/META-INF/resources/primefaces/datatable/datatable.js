@@ -40,6 +40,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.editable) {
             this.bindEditEvents();
         }
+
+        if(this.cfg.draggableRows) {
+            this.makeRowsDraggable();
+        }
         
         this.renderDeferred();
     },
@@ -2093,6 +2097,30 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         this.orderStateHolder.val(columnIds.join(','));
+    },
+    
+    makeRowsDraggable: function() {
+        this.tbody.sortable({
+            placeholder: 'ui-datatable-rowordering ui-state-active',
+            revert: true,
+            cursor: 'move',
+            handle: 'td,span:not(.ui-c)',
+            appendTo: document.body,
+            helper: function(event, ui) {
+                var cells = ui.children(),
+                helper = $('<div class="ui-datatable ui-widget"><table><tbody></tbody></table></div>'),
+                helperRow = ui.clone(),
+                helperCells = helperRow.children();
+
+                for(var i = 0; i < helperCells.length; i++) {
+                    helperCells.eq(i).width(cells.eq(i).width());
+                }
+                
+                helperRow.appendTo(helper.find('tbody'));
+
+                return helper;
+            }
+        });
     },
     
     /**
