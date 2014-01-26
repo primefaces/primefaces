@@ -163,6 +163,9 @@ public class DataTableRenderer extends DataRenderer {
             .attr("liveResize", table.isLiveResize(), false)
             .attr("draggableColumns", table.isDraggableColumns(), false);
         
+        //Draggable Rows
+        wb.attr("draggableRows", table.isDraggableRows(), false);
+        
         //Editing
         if(table.isEditable()) {
             wb.attr("editable", true).attr("editMode", table.getEditMode()).attr("cellSeparator", table.getCellSeparator(), null);

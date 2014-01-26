@@ -364,6 +364,13 @@
             <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
             <description>Number of columns to freeze from the start index 0.</description>
 		</attribute>
+        <attribute>
+			<name>draggableRows</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, rows can be reordered using dragdrop.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
