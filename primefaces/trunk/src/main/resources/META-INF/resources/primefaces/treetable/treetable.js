@@ -37,11 +37,15 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     .on('click.treeTable', togglerSelector, null, function(e) {
                         var toggler = $(this),
                         node = toggler.closest('tr');
-            
-                        if(toggler.hasClass('ui-icon-triangle-1-e'))
-                            $this.expandNode(node);
-                        else
-                            $this.collapseNode(node);
+                        
+                        if(!node.data('processing')) {
+                            node.data('processing', true);
+                            
+                            if(toggler.hasClass('ui-icon-triangle-1-e'))
+                                $this.expandNode(node);
+                            else
+                                $this.collapseNode(node);
+                        }
                     });
             
         //selection
@@ -216,6 +220,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     });
 
                 return true;
+            },
+            oncomplete: function() {
+                node.data('processing', false);
             }
         };
         
@@ -245,6 +252,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     
         node.attr('aria-expanded', false).find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+        node.data('processing', false);
 
         if(this.hasBehavior('collapse')) {
             var collapseBehavior = this.cfg.behaviors['collapse'],
