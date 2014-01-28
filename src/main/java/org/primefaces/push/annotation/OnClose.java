@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * An annotation to use with {@link PushEndpoint} annotated classes. A method annotated with @OnClose will be invoked
+ * An annotation to use with {@link PushEndpoint} annotated classes. A method annotated with {@code OnClose} will be invoked
  * when a {@link org.primefaces.push.RemoteEndpoint} is disconnected. An annotated method may define zero, one or two parameters. For example
  *
  * <blockquote>
@@ -35,7 +35,8 @@ import java.lang.annotation.Target;
  *     public void onClose(RemoteEndpoint r, EventBus e);
  * </blockquote>
  *
- * Only one method per {@link PushEndpoint} can be annotated with this annotation.
+ * Only one method per {@link PushEndpoint} can be annotated with this annotation. The {@link org.primefaces.push.EventBus} can always be
+ * passed and used for firing messages between {@link org.primefaces.push.annotation.PushEndpoint}.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

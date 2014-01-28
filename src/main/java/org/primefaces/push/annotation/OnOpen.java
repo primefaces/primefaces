@@ -34,8 +34,9 @@ import java.lang.annotation.Target;
  *     public void onOpen(RemoteEndpoint r, EventBus e);
  * </blockquote>
  *
- * Only one method per {@link PushEndpoint} can be annotated with this annotation.
- */
+ * Only one method per {@link PushEndpoint} can be annotated with this annotation. The {@link org.primefaces.push.EventBus} can always be
+ * passed and used for firing messages between {@link org.primefaces.push.annotation.PushEndpoint}.
+ * */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface OnOpen {
