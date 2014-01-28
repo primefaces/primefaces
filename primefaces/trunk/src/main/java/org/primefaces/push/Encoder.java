@@ -39,8 +39,8 @@ package org.primefaces.push;
  * </pre></blockquote>
  * You can chain Encoders by defining more than one. They will be invoked in the order they have been added and the last Encoder's value
  * will be used for the write operation.
- *
- * @author Jeanfrancois Arcand
+ * @param <U>
+ * @param <T>
  */
 public interface Encoder<U, T> extends org.atmosphere.config.managed.Encoder<U, T>{
    // Atmosphere Proxy

@@ -29,10 +29,9 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
-// This class is a copy of AtmosphereServlet. It is here just to make hide Atmosphere***
-
 /**
- *
+ * A {@link org.primefaces.push.PushServlet} is responsible for installing the {@link org.atmosphere.cpr.AtmosphereFramework} and bridge
+ * the PrimeFaces runtime with Atmosphere's components.
  */
 public class PushServlet extends AtmosphereServlet {
     private final Logger logger = LoggerFactory.getLogger(PushServlet.class.getName());

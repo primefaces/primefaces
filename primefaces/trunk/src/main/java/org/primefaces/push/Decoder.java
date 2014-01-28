@@ -40,7 +40,6 @@ package org.primefaces.push;
  * @Message annotated method.
  * @param <U>
  * @param <T>
- * @author Jeanfrancois Arcand
  */
 public interface Decoder<U, T> extends org.atmosphere.config.managed.Decoder<U, T>{
   // Atmosphere Proxy

@@ -58,7 +58,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     private Logger logger = LoggerFactory.getLogger(PushEndpointHandlerProxy.class);
     private final static List<Decoder<?, ?>> EMPTY = Collections.<Decoder<?, ?>>emptyList();
     private Object proxiedInstance;
-    private List<Method> onRuntimeMethod;
+    private List<Method> onMessageMethods;
     private Method onCloseMethod;
     private Method onTimeoutMethod;
     private Method onOpenMethod;
@@ -105,7 +105,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
 
     public PushEndpointHandlerProxy configure(AtmosphereConfig config, Object c) {
         this.proxiedInstance = c;
-        this.onRuntimeMethod = populateMessage(c, OnMessage.class);
+        this.onMessageMethods = populateMessage(c, OnMessage.class);
         this.onCloseMethod = populate(c, OnClose.class);
         this.onTimeoutMethod = populate(c, OnClose.class);
         this.onOpenMethod = populate(c, OnOpen.class);
@@ -113,7 +113,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
         this.config = config;
         this.eventBus = EventBusFactory.getDefault().eventBus();
 
-        if (onRuntimeMethod.size() > 0) {
+        if (onMessageMethods.size() > 0) {
             populateEncoders();
             populateDecoders();
         }
@@ -244,7 +244,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     }
 
     private void populateEncoders() {
-        for (Method m : onRuntimeMethod) {
+        for (Method m : onMessageMethods) {
             List<Encoder<?, ?>> l = new CopyOnWriteArrayList<Encoder<?, ?>>();
             for (Class<? extends Encoder> s : m.getAnnotation(OnMessage.class).encoders()) {
                 try {
@@ -258,7 +258,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     }
 
     private void populateDecoders() {
-        for (Method m : onRuntimeMethod) {
+        for (Method m : onMessageMethods) {
             List<Decoder<?, ?>> l = new CopyOnWriteArrayList<Decoder<?, ?>>();
             for (Class<? extends Decoder> s : m.getAnnotation(OnMessage.class).decoders()) {
                 try {
@@ -288,7 +288,8 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     private Object message(RemoteEndpoint resource, Object o) {
         try {
             // TODO: this code is hacky, but documentation will clarify what is supported.
-            for (Method m : onRuntimeMethod) {
+            // TODO: Improve Injection, allow EventBus without RemoteEndpoint Injection.
+            for (Method m : onMessageMethods) {
                 Object decoded = Invoker.decode(decoders.get(m), o);
                 if (decoded == null) {
                     decoded = o;

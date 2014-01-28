@@ -37,6 +37,7 @@ import java.util.List;
  * method and add your logic there.
  * <strong>This AtmosphereHandler doesn't invoke the {@link org.atmosphere.cpr.AtmosphereResource#suspend()}.
  * The {@link org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor} is taking care of it</strong>
+ *
  */
 public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
 
