@@ -1,5 +1,5 @@
-/**
- * Copyright 2013 Jeanfrancois Arcand
+/*
+ * Copyright 2014 Jeanfrancois Arcand
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Highly inspired by Portal v1.0
- * http://github.com/flowersinthesand/portal
- *
- * Copyright 2011-2013, Donghwan Kim
- * Licensed under the Apache License, Version 2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- */
 /**
- * Official documentation of this library: https://github.com/Atmosphere/atmosphere/wiki/jQuery.atmosphere.js-API
+ * Atmosphere.js
+ * https://github.com/Atmosphere/atmosphere-javascript
+ *
+ * API reference
+ * https://github.com/Atmosphere/atmosphere/wiki/jQuery.atmosphere.js-API
+ *
+ * Highly inspired by
+ * - Portal by Donghwan Kim http://flowersinthesand.github.io/portal/
  */
-(function () {
+(function(root, factory) {
+    if (typeof define === "function" && define.amd) {
+        // AMD
+        define(factory);
+    } else {
+        // Browser globals, Window
+        root.atmosphere = factory();
+    }
+}(this, function() {
 
     "use strict";
 
-    var version = "2.1.2-javascript",
+    var version = "2.1.4-javascript",
         atmosphere = {},
         guid,
         requests = [],
@@ -461,7 +468,11 @@
                 _request.firstMessage = uuid == 0 ? true : false;
                 _request.isOpen = false;
                 _request.ctime = atmosphere.util.now();
-                _request.uuid = uuid;
+
+                // We carry any UUID set by the user or from a previous connection.
+                if (_request.uuid === 0) {
+                    _request.uuid = uuid;
+                }
                 _response.closedByClientTimeout = false;
 
                 if (_request.transport !== 'websocket' && _request.transport !== 'sse') {
@@ -1546,7 +1557,8 @@
                 }
 
                 if (rq.contentType !== '') {
-                    url += "&Content-Type=" + encodeURIComponent(rq.contentType);
+                    //Eurk!
+                    url += "&Content-Type=" + (rq.transport === 'websocket' ? rq.contentType : encodeURIComponent(rq.contentType));
                 }
 
                 if (rq.enableProtocol) {
@@ -1711,7 +1723,7 @@
                             if (atmosphere.util.trim(responseText).length === 0 && rq.transport === 'long-polling') {
                                 // For browser that aren't support onabort
                                 if (!ajaxRequest.hasData) {
-                                    reconnectF();
+                                    _reconnect(ajaxRequest, rq, 0);
                                 } else {
                                     ajaxRequest.hasData = false;
                                 }
@@ -1875,7 +1887,7 @@
             function _reconnect(ajaxRequest, request, reconnectInterval) {
                 if (request.reconnect || (request.suspend && _subscribed)) {
                     var status = 0;
-                    if (ajaxRequest && ajaxRequest.readyState !== 0) {
+                    if (ajaxRequest && ajaxRequest.readyState > 1) {
                         status = ajaxRequest.status > 1000 ? 0 : ajaxRequest.status;
                     }
                     _response.status = status === 0 ? 204 : status;
@@ -2590,6 +2602,9 @@
             atmosphere.addCallback(callback);
         }
 
+        // https://github.com/Atmosphere/atmosphere-javascript/issues/58
+        uuid = 0;
+
         if (typeof (url) !== "string") {
             request = url;
         } else {
@@ -3008,7 +3023,7 @@
         // Trident is the layout engine of the Internet Explorer
         // IE 11 has no "MSIE: 11.0" token
         if (atmosphere.util.browser.trident) {
-        	atmosphere.util.browser.msie = true;
+            atmosphere.util.browser.msie = true;
         }
 
         // The storage event of Internet Explorer and Firefox 3 works strangely
@@ -3027,7 +3042,7 @@
     atmosphere.util.on(window, "keypress", function (event) {
         if (event.charCode === 27 || event.keyCode === 27) {
             if (event.preventDefault) {
-            	event.preventDefault();
+                event.preventDefault();
             }
         }
     });
@@ -3035,8 +3050,9 @@
     atmosphere.util.on(window, "offline", function () {
         atmosphere.unsubscribe();
     });
-    window.atmosphere = atmosphere;
-})();
+
+    return atmosphere;
+}));
 /* jshint eqnull:true, noarg:true, noempty:true, eqeqeq:true, evil:true, laxbreak:true, undef:true, browser:true, indent:false, maxerr:50 */
 
 /**
