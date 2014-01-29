@@ -260,8 +260,8 @@ import org.primefaces.util.SharedStringBuilder;
             }
             else if(eventName.equals("colResize")) {
                 String columnId = params.get(clientId + "_columnId");
-                int width = Integer.parseInt(params.get(clientId + "_width"));
-                int height = Integer.parseInt(params.get(clientId + "_height"));
+                int width = Double.valueOf(params.get(clientId + "_width")).intValue();
+                int height = Double.valueOf(params.get(clientId + "_height")).intValue();;
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
