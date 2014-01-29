@@ -103,6 +103,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", PanelMenu.ROOT_SUBMENU_CONTENT, null);
         writer.writeAttribute("role", "tabpanel", null);
+        writer.writeAttribute("id", menu.getClientId(context) + "_" + submenu.getId(), null);
         
         if(submenu.getElementsCount() > 0) {
             List<MenuElement> elements = submenu.getElements();
