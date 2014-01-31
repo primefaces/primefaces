@@ -526,6 +526,10 @@ PrimeFaces.ajax = {
                     case "extension":
                         PrimeFaces.ajax.ResponseProcessor.doExtension(currentNode, xhr);
                         break;
+                        
+                    case "error":
+                        PrimeFaces.ajax.ResponseProcessor.doError(currentNode, xhr);
+                        break;
                 }
             }
         },
@@ -606,6 +610,10 @@ PrimeFaces.ajax = {
                     xhr.pfArgs = {};
                 }
             }
+        },
+
+        doError : function(node, xhr) {
+            // currently nothing...
         },
 
         doDelete : function(node) {
