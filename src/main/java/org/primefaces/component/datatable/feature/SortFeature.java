@@ -49,7 +49,7 @@ public class SortFeature implements DataTableFeature {
         String clientId = table.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		String sortKey = params.get(clientId + "_sortKey");
-		String sortDir  = params.get(clientId + "_sortDir");
+		String sortDir = params.get(clientId + "_sortDir");
          
         if(table.isMultiSort()) {
             List<SortMeta> multiSortMeta = new ArrayList<SortMeta>();
@@ -70,7 +70,7 @@ public class SortFeature implements DataTableFeature {
                     sortField = (columnSortByVE == null) ? (String) sortColumn.getSortBy() : table.resolveStaticField(columnSortByVE);
                 }
                 
-                multiSortMeta.add(new SortMeta(sortColumn, sortField, SortOrder.valueOf(sortOrders[i]), sortColumn.getSortFunction()));
+                multiSortMeta.add(new SortMeta(sortColumn, sortField, SortOrder.valueOf(convertSortOrderParam(sortOrders[i])), sortColumn.getSortFunction()));
             }
             
             table.setMultiSortMeta(multiSortMeta);
@@ -97,7 +97,7 @@ public class SortFeature implements DataTableFeature {
             
             table.setSortColumn(sortColumn);
             table.setSortFunction(sortColumn.getSortFunction());
-            table.setSortOrder(sortDir); 
+            table.setSortOrder(convertSortOrderParam(sortDir)); 
         }
     }
     
@@ -217,4 +217,25 @@ public class SortFeature implements DataTableFeature {
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return isSortRequest(context, table);
     }    
+    
+    private String convertSortOrderParam(String order) {
+        String sortOrder = null;
+        int orderNumber = Integer.parseInt(order);
+        
+        switch (orderNumber) {
+            case 0:
+                sortOrder = "UNSORTED";
+            break;
+                
+            case 1:
+                sortOrder = "ASCENDING";
+            break;
+                    
+            case -1:
+                sortOrder = "DESCENDING";
+            break;
+        }
+        
+        return sortOrder;
+    } 
 }
