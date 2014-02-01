@@ -2758,9 +2758,14 @@ if (!document.createElement('canvas').getContext) {
         var d = this.data;
         var temp = [], i, l;
         for (i=0, l=d.length; i<l; i++) {
+            
             if (! this.breakOnNull) {
-                if (d[i] == null || d[i][0] == null || d[i][1] == null) {
+                if (d[i] == null || d[i][0] == null) {
                     continue;
+                }
+                else if (d[i][1] == null) {
+                    d[i][1] = "-";
+                    temp.push(d[i]);
                 }
                 else {
                     temp.push(d[i]);
