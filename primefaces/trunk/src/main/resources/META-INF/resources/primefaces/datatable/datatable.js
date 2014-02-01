@@ -3,6 +3,12 @@
  */
 PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
+    SORT_ORDER: {
+        ASCENDING: 1,
+        DESCENDING: -1,
+        UNSORTED: 0
+    },
+    
     init: function(cfg) {
         this._super(cfg);
         
@@ -115,26 +121,31 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.multiSort) {
             this.sortMeta = [];
         }
-        
-        this.sortableColumns.filter('.ui-state-active').each(function() {
-            var columnHeader = $(this),
+
+        for(var i = 0; i < this.sortableColumns.length; i++) {
+            var columnHeader = this.sortableColumns.eq(i),
             sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
             sortOrder = null;
-            
-            if(sortIcon.hasClass('ui-icon-triangle-1-n'))
-                sortOrder = 'ASCENDING';
-            else
-                sortOrder = 'DESCENDING';
+    
+            if(columnHeader.hasClass('ui-state-active')) {
+                if(sortIcon.hasClass('ui-icon-triangle-1-n'))
+                    sortOrder = this.SORT_ORDER.ASCENDING;
+                else
+                    sortOrder = this.SORT_ORDER.DESCENDING;
+                
+                if($this.cfg.multiSort) {
+                    $this.addSortMeta({
+                        col: columnHeader.attr('id'), 
+                        order: sortOrder
+                    });
+                }
+            }
+            else {
+                sortOrder = this.SORT_ORDER.UNSORTED;
+            }
             
             columnHeader.data('sortorder', sortOrder);
-            
-            if($this.cfg.multiSort) {
-                $this.addSortMeta({
-                    col: columnHeader.attr('id'), 
-                    order: sortOrder
-                });
-            }            
-        });
+        }
         
         this.sortableColumns.on('mouseenter.dataTable', function() {
             var column = $(this);
@@ -156,15 +167,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             PrimeFaces.clearSelection();
                             
             var columnHeader = $(this),
-            sortOrder = columnHeader.data('sortorder')||'DESCENDING',
+            sortOrderData = columnHeader.data('sortorder'),
+            sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING : -1 * sortOrderData,
             metaKey = e.metaKey||e.ctrlKey;
-                                
-            if(sortOrder === 'ASCENDING')
-                sortOrder = 'DESCENDING';
-            else if(sortOrder === 'DESCENDING')
-                sortOrder = 'ASCENDING';
-                
-            if($this.cfg.multiSort) {                      
+            
+            if($this.cfg.multiSort) {
                 if(metaKey) {
                     $this.addSortMeta({
                         col: columnHeader.attr('id'), 
@@ -758,8 +765,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Ajax sort
      */
     sort: function(columnHeader, order, multi) {  
-        columnHeader.data('sortorder', order);
-    
         var $this = this,
         options = {
             source: this.id,
@@ -780,17 +785,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             }
                             
                             if(!multi) {
-                                this.sortableColumns.filter('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
+                                this.sortableColumns.filter('.ui-state-active').data('sortorder', this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
                                             .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
                             }
 
-                            columnHeader.removeClass('ui-state-hover').addClass('ui-state-active');
+                            columnHeader.data('sortorder', order).removeClass('ui-state-hover').addClass('ui-state-active');
                             var sortIcon = columnHeader.find('.ui-sortable-column-icon');
-
-                            if(order === 'DESCENDING') {
+                            if(order === this.SORT_ORDER.DESCENDING) {
                                 sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
-                            }
-                            else if(order === 'ASCENDING') {
+                            } else if(order === this.SORT_ORDER.ASCENDING) {
                                 sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
                             }
                         }
