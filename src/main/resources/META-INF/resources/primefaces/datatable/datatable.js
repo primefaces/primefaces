@@ -2103,6 +2103,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     makeRowsDraggable: function() {
+        var $this = this;
+        
         this.tbody.sortable({
             placeholder: 'ui-datatable-rowordering ui-state-active',
             revert: true,
@@ -2122,8 +2124,52 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 helperRow.appendTo(helper.find('tbody'));
 
                 return helper;
+            },
+            start: function(event, ui) {
+                ui.item.data('rowindex', ui.item.index());
+            },
+            update: function(event, ui) {
+                var fromIndex = ui.item.data('rowindex'),
+                toIndex = ui.item.index();
+
+                ui.item.removeData('rowindex');
+                $this.syncRowParity();
+                
+                var options = {
+                    source: $this.id,
+                    process: $this.id,
+                    params: [
+                        {name: $this.id + '_rowreorder', value: true},
+                        {name: $this.id + '_fromIndex', value: fromIndex},
+                        {name: $this.id + '_toIndex', value: toIndex},
+                        {name: this.id + '_skipChildren', value: true}
+                    ]
+                }
+                
+                if($this.hasBehavior('rowReorder')) {
+                    $this.cfg.behaviors['rowReorder'].call($this, options);
+                } 
+                else {
+                    PrimeFaces.ajax.Request.handle(options);
+                }
             }
         });
+    },
+    
+    syncRowParity: function() {
+        var rows = this.tbody.children('tr.ui-widget-content');
+        
+        for(var i = 0; i < rows.length; i++) {
+            var row = rows.eq(i);
+            
+            row.removeClass('ui-datatable-even ui-datatable-odd');
+            
+            if(i % 2 === 0)
+                row.addClass('ui-datatable-even');
+            else
+                row.addClass('ui-datatable-odd');
+                
+        }
     },
     
     /**

@@ -40,6 +40,7 @@ import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.event.ToggleSelectEvent;
+import org.primefaces.event.ReorderEvent;
 import org.primefaces.model.Visibility;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.SelectableDataModel;
@@ -115,7 +116,7 @@ import org.primefaces.util.SharedStringBuilder;
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
                                                         "rowUnselect", "rowEdit", "rowEditInit", "rowEditCancel", "colResize", "toggleSelect", "colReorder", "contextMenu"
                                                         ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect", "rowToggle"
-                                                        ,"cellEdit"));
+                                                        ,"cellEdit", "rowReorder"));
 
                                                         
     static Map<DataTableFeatureKey,DataTableFeature> FEATURES;
@@ -132,6 +133,7 @@ import org.primefaces.util.SharedStringBuilder;
         FEATURES.put(DataTableFeatureKey.CELL_EDIT, new CellEditFeature());
         FEATURES.put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature());
         FEATURES.put(DataTableFeatureKey.SCROLL, new ScrollFeature());
+        FEATURES.put(DataTableFeatureKey.DRAGGABLE_ROWS, new DraggableRowsFeature());
     }
     
     public DataTableFeature getFeature(DataTableFeatureKey key) {
@@ -300,6 +302,12 @@ import org.primefaces.util.SharedStringBuilder;
                 }
 
                 wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), rowIndex, column);
+            }
+            else if(eventName.equals("rowReorder")) {
+                int fromIndex = Integer.parseInt(params.get(clientId + "_fromIndex"));
+                int toIndex = Integer.parseInt(params.get(clientId + "_toIndex"));
+                
+                wrapperEvent = new ReorderEvent(this, behaviorEvent.getBehavior(), fromIndex, toIndex);
             }
             
             wrapperEvent.setPhaseId(event.getPhaseId());
