@@ -65,15 +65,11 @@ public class CSVExporter extends Exporter {
         boolean firstCellWritten = false;
         
         for (UIColumn col : table.getColumns()) {
-            if (!col.isRendered()) {
-                continue;
-            }
-                        
             if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyModel();
+                ((DynamicColumn) col).applyStatelessModel();
             }
             
-            if (col.isExportable()) {
+            if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
                     writer.write(",");
                 }
@@ -92,15 +88,11 @@ public class CSVExporter extends Exporter {
         boolean firstCellWritten = false;
         
         for (UIColumn col : table.getColumns()) {
-            if (!col.isRendered()) {
-                continue;
-            }
-                        
             if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyModel();
+                ((DynamicColumn) col).applyStatelessModel();
             }
             
-            if (col.isExportable()) {
+            if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
                     writer.write(",");
                 }
