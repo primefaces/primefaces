@@ -75,22 +75,18 @@ public class XMLExporter extends Exporter {
     protected void exportCells(DataTable table, Object document) {
         PrintWriter writer = (PrintWriter) document;
         for (UIColumn col : table.getColumns()) {
-            if (!col.isRendered()) {
-                continue;
-            }
-            
             if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyModel();
+                ((DynamicColumn) col).applyStatelessModel();
             }
-            
-            if (col.isExportable()) {
+                        
+            if (col.isRendered() && col.isExportable()) {
                 String columnTag = getColumnTag(col);
                 try {
                     addColumnValue(writer, col.getChildren(), columnTag);
                 } 
                 catch (IOException ex) {
                     throw new FacesException(ex);
-                }
+                };
             }
         }
     }

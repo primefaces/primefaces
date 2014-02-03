@@ -79,15 +79,11 @@ public class ExcelExporter extends Exporter {
         Row row = sheet.createRow(sheetRowIndex);
         
         for (UIColumn col : table.getColumns()) {
-            if (!col.isRendered()) {
-                continue;
-            }
-            
             if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyModel();
+                ((DynamicColumn) col).applyStatelessModel();
             }
-            
-            if (col.isExportable()) {
+                        
+            if (col.isRendered() && col.isExportable()) {
                 addColumnValue(row, col.getChildren());
             }
         }
@@ -98,15 +94,11 @@ public class ExcelExporter extends Exporter {
         Row rowHeader = sheet.createRow(sheetRowIndex);
         
         for (UIColumn col : table.getColumns()) {
-            if (!col.isRendered()) {
-                continue;
-            }
-            
             if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyModel();
+                ((DynamicColumn) col).applyStatelessModel();
             }
-            
-            if (col.isExportable()) {
+                        
+            if (col.isRendered() && col.isExportable()) {
                 addColumnValue(rowHeader, col.getFacet(columnType.facet()));
             }
         }
