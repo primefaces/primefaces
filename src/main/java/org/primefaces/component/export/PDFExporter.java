@@ -37,8 +37,6 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columns.Columns;
 import org.primefaces.util.Constants;
 
 public class PDFExporter extends Exporter {
@@ -107,15 +105,11 @@ public class PDFExporter extends Exporter {
     protected void exportCells(DataTable table, Object document) {
         PdfPTable pdfTable = (PdfPTable) document;
         for (UIColumn col : table.getColumns()) {
-            if (!col.isRendered()) {
-                continue;
-            }
-            
             if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyModel();
+                ((DynamicColumn) col).applyStatelessModel();
             }
             
-            if (col.isExportable()) {
+            if (col.isRendered() && col.isExportable()) {
                 addColumnValue(pdfTable, col.getChildren(), this.cellFont);
             }
         }
@@ -123,15 +117,11 @@ public class PDFExporter extends Exporter {
 	
 	protected void addColumnFacets(DataTable table, PdfPTable pdfTable, ColumnType columnType) {
         for (UIColumn col : table.getColumns()) {
-            if (!col.isRendered()) {
-                continue;
-            }
-            
             if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyModel();
+                ((DynamicColumn) col).applyStatelessModel();
             }
             
-            if (col.isExportable()) {
+            if (col.isRendered() && col.isExportable()) {
                 addColumnValue(pdfTable, col.getFacet(columnType.facet()), this.facetFont);
             }
         }
@@ -175,25 +165,16 @@ public class PDFExporter extends Exporter {
     protected int getColumnsCount(DataTable table) {
         int count = 0;
         
-        for (UIComponent child : table.getChildren()) {
-            if (!child.isRendered()) {
+        for(UIColumn col : table.getColumns()) {
+            if(col instanceof DynamicColumn) {
+                ((DynamicColumn) col).applyStatelessModel();
+            }
+                        
+            if(!col.isRendered()||!col.isExportable()) {
                 continue;
             }
-
-            if (child instanceof Column) {
-                Column column = (Column) child;
-                
-                if (column.isExportable()) {
-                    count++;
-                }
-            }
-            else if (child instanceof Columns) {
-                Columns columns = (Columns) child;
-                
-                if (columns.isExportable()) {
-                    count += columns.getRowCount();
-                }
-            }
+            
+            count++;
         }
         
         return count;
