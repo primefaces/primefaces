@@ -159,6 +159,17 @@ public class WidgetBuilder {
         return this;
     }
     
+    public WidgetBuilder nativeAttr(String name, String value, String defaultValue) throws IOException {
+        if(value != null && !value.equals(defaultValue)) {
+            context.getResponseWriter().write(",");
+            context.getResponseWriter().write(name);
+            context.getResponseWriter().write(":");
+            context.getResponseWriter().write(value);
+        }
+        
+        return this;
+    }
+    
     public WidgetBuilder attr(String name, boolean value) throws IOException {
         context.getResponseWriter().write(",");
         context.getResponseWriter().write(name);
