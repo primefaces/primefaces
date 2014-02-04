@@ -361,4 +361,8 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public void setDisableClientWindow(boolean disableClientWindow) {
         this.disableClientWindow = disableClientWindow;
     }
+
+    public String getClientId() {
+        return this.id;
+    }
 }

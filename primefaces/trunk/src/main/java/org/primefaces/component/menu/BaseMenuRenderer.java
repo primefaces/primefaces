@@ -30,6 +30,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.component.menuitem.UIMenuItem;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -125,6 +126,9 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             
             writer.startElement("a", null);
             writer.writeAttribute("tabindex", "-1", null);
+            if(shouldRenderId(menuitem)) {
+                writer.writeAttribute("id", menuitem.getClientId(), null);
+            }
             if(title != null) {
                 writer.writeAttribute("title", title, null);
             }
@@ -194,6 +198,10 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             writer.endElement("a");
 		}
 	}
+    
+    protected boolean shouldRenderId(MenuItem item) {
+        return item.isDynamic() ? false: shouldWriteId((UIComponent) item);
+    }
     
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
