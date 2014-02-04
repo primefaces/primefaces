@@ -16,11 +16,13 @@
 package org.primefaces.component.tabmenu;
 
 import java.io.IOException;
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
+import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.WidgetBuilder;
 
@@ -43,6 +45,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
 		String styleClass = menu.getStyleClass();
 		styleClass = styleClass == null ? TabMenu.CONTAINER_CLASS : TabMenu.CONTAINER_CLASS + " " + styleClass;
         int activeIndex = menu.getActiveIndex();
+        List<MenuElement> elements = menu.getElements();
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, null);
@@ -56,10 +59,12 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("role", "tablist", null);
 
         int i = 0;
-        for(UIComponent kid : menu.getChildren()) {
-            if(kid.isRendered() && kid instanceof MenuItem) {
-                encodeItem(context, menu, (MenuItem) kid, (i == activeIndex));
-                i++;
+        if(elements != null && !elements.isEmpty()) {
+            for(MenuElement element : elements) {
+                if(element.isRendered() && (element instanceof MenuItem)) {
+                    encodeItem(context, menu, (MenuItem) element, (i == activeIndex));
+                    i++;
+                }
             }
         }
         
