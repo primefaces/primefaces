@@ -5,7 +5,15 @@
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
-    position:static;
+    position: relative;
+    display: inline-block;
+}
+
+.ui-autocomplete .ui-autocomplete-dropdown {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
 }
 
 .ui-autocomplete-query{
