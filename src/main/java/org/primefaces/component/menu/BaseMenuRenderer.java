@@ -30,7 +30,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.component.menuitem.UIMenuItem;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.expression.SearchExpressionFacade;
