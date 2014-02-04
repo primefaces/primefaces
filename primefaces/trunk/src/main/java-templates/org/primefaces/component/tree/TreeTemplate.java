@@ -95,8 +95,10 @@ import org.primefaces.model.TreeNode;
 
             if(eventName.equals("expand")) {
                 this.setRowKey(params.get(clientId + "_expandNode"));
+                TreeNode expandedNode = this.getRowNode();
+                expandedNode.setExpanded(true);
 
-                wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
+                wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), expandedNode);
             }
             else if(eventName.equals("collapse")) {
                 this.setRowKey(params.get(clientId + "_collapseNode"));
