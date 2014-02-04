@@ -28,10 +28,12 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
     private final AtmosphereRequest request;
     private final String body;
     private final Status status = new Status(Status.STATUS.OPEN);
+    private final String path;
 
     public RemoteEndpointImpl(AtmosphereRequest request, String body) {
         this.request = request;
         this.body = body;
+        this.path = (String) request.getAttribute(FrameworkConfig.MAPPED_PATH);
     }
 
     //@Override
@@ -51,8 +53,7 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
 
     //@Override
     public String path() {
-        // WARNING, if this method returns null, that means Atmosphere 2.0.x is used.
-        return (String) request.getAttribute(FrameworkConfig.MAPPED_PATH);
+        return path;
     }
 
     //@Override
