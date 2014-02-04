@@ -62,4 +62,10 @@ public interface RemoteEndpoint {
      * @return  {@link Status}
      */
     Status status();
+
+    /**
+     * Return the remote client IP
+     * @return the remote client IP
+     */
+    String address();
 }

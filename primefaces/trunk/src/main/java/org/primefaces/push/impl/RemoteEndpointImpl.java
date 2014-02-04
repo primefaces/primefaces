@@ -70,6 +70,10 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
         return status;
     }
 
+    public String address() {
+        return request.getRemoteAddr() + ":" + request.getRemotePort();
+    }
+
     public RemoteEndpoint write(String message) {
         request.resource().write(message);
         return this;
