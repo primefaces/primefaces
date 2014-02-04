@@ -93,7 +93,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
 
     private BroadcastFilter.BroadcastAction invoke(RemoteEndpoint r, Object originalMessage, Object message) {
         Object o;
-        o = message(null, message);
+        o = message(r, message);
         if (o != null) {
             return new BroadcastFilter.BroadcastAction(BroadcastFilter.BroadcastAction.ACTION.CONTINUE, o);
         }
@@ -295,9 +295,9 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                     decoded = o;
                 }
                 Object objectToEncode = null;
-                if (m.getParameterTypes().length == 3) {
+                if (m.getParameterTypes().length == 3 && resource !=null) {
                     objectToEncode = Invoker.invokeMethod(m, proxiedInstance, resource, eventBus, decoded);
-                } else if (m.getParameterTypes().length == 2) {
+                } else if (m.getParameterTypes().length == 2 && resource !=null) {
                     if (!injectEventBus) {
                         objectToEncode = Invoker.invokeMethod(m, proxiedInstance, resource, decoded);
                     } else if (objectToEncode == null) {
