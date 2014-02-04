@@ -59,4 +59,6 @@ public interface MenuItem extends MenuElement {
     public String getCommand();
     
     public boolean isImmediate();
+    
+    public String getClientId();
 }
