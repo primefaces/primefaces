@@ -510,9 +510,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindExpansionEvents: function() {
         var $this = this,
-        togglerSelector = this.jqId + ' tbody.ui-datatable-data > tr > td > div.ui-row-toggler';
-
-        $(document).off('click.datatable-expansion', togglerSelector)
+        togglerSelector = '> tr > td > div.ui-row-toggler';
+        
+        this.tbody.off('click.datatable-expansion', togglerSelector)
                     .on('click.datatable-expansion', togglerSelector, null, function() {
                         $this.toggleExpansion($(this));
                     });
