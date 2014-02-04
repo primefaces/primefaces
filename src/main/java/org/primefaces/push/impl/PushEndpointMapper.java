@@ -34,7 +34,7 @@ import java.util.Map;
 
 @EndpointMapperService
 public class PushEndpointMapper<U> extends DefaultEndpointMapper<U> {
-    private final Logger logger = LoggerFactory.getLogger(PushServlet.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(PushEndpointMapper.class.getName());
 
     private String servletPath = "";
     private AtmosphereConfig config;

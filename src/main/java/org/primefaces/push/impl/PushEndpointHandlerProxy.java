@@ -176,6 +176,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
 
         // Original Value
         AtmosphereResourceImpl r = AtmosphereResourceImpl.class.cast(event.getResource());
+        AtmosphereRequest request = r.getRequest(false);
         Boolean resumeOnBroadcast = r.resumeOnBroadcast();
         if (!resumeOnBroadcast) {
             // For legacy reason, check the attribute as well
@@ -188,19 +189,19 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
         // Disable resume so cached message can be send in one chunk.
         if (resumeOnBroadcast) {
             r.resumeOnBroadcast(false);
-            r.getRequest(false).setAttribute(ApplicationConfig.RESUME_ON_BROADCAST, false);
+            request.setAttribute(ApplicationConfig.RESUME_ON_BROADCAST, false);
         }
 
-        RemoteEndpointImpl remoteEndpoint = (RemoteEndpointImpl) r.getRequest().getAttribute(RemoteEndpointImpl.class.getName());
+        RemoteEndpointImpl remoteEndpoint = (RemoteEndpointImpl) request.getAttribute(RemoteEndpointImpl.class.getName());
 
         if (event.isCancelled() || event.isClosedByClient()) {
             remoteEndpoint.status().status(event.isCancelled() ? Status.STATUS.UNEXPECTED_CLOSE : Status.STATUS.CLOSED_BY_CLIENT);
-            r.getRequest().removeAttribute(RemoteEndpointImpl.class.getName());
+            request.removeAttribute(RemoteEndpointImpl.class.getName());
 
             invokeOpenOrClose(onCloseMethod, remoteEndpoint);
         } else if (event.isResumedOnTimeout() || event.isResuming()) {
             remoteEndpoint.status().status(Status.STATUS.CLOSED_BY_TIMEOUT);
-            r.getRequest().removeAttribute(RemoteEndpointImpl.class.getName());
+            request.removeAttribute(RemoteEndpointImpl.class.getName());
 
             invokeOpenOrClose(onTimeoutMethod, remoteEndpoint);
         } else {
