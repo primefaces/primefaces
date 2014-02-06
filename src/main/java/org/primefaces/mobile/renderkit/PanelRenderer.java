@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.panel.Panel;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer {
@@ -43,9 +44,13 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
         String clientId = panel.getClientId(context);
         boolean toggleable = panel.isToggleable();
         boolean collapsed = panel.isCollapsed();
+        String widgetVar = panel.resolveWidgetVar();
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
         styleClass = (styleClass == null) ? Panel.MOBILE_CLASS : Panel.MOBILE_CLASS + " " + styleClass;
+        if (collapsed) {
+            styleClass += " ui-hidden-container";
+        }
     
         writer.startElement("div", panel);
         writer.writeAttribute("id", clientId, "id");
@@ -53,11 +58,13 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
+        
+        writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
                 
         encodeHeader(context, panel, collapsed, toggleable);
         encodeContent(context, panel, collapsed);
         
-        if(toggleable) {
+        if (toggleable) {
             encodeStateHolder(context, panel, clientId + "_collapsed", String.valueOf(collapsed));
         }
         
@@ -80,7 +87,7 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
         }
         writer.endElement("h3");
         
-        if(toggleable) {
+        if (toggleable) {
             String toggleIconClass = collapsed ? Panel.MOBILE_TOGGLEICON_COLLAPSED_CLASS : Panel.MOBILE_TOGGLEICON_EXPANDED_CLASS;
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
@@ -96,6 +103,9 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
  
         writer.startElement("div", null);
         writer.writeAttribute("class", Panel.MOBILE_CONTENT_CLASS, null);
+        if (collapsed) {
+            writer.writeAttribute("style", "display:none", null);
+        }
         writer.startElement("p", null);
         renderChildren(context, panel);
         writer.endElement("p");
