@@ -1,3 +1,4 @@
+/** Panel **/
 .ui-panel-m .ui-panel-m-titlebar-icon {
     top: 50%;
     margin-top: -15px;
@@ -6,9 +7,14 @@
 .ui-panel-m .ui-panel-m-titlebar {
     border-top-left-radius: inherit;
     border-top-right-radius: inherit; 
+    border-style: solid;
+    border-width: 1px;
 }
 
 .ui-panel-m .ui-panel-m-content {
     border-bottom-left-radius: inherit;
-    border-bottom-right-radius: inherit; 
+    border-bottom-right-radius: inherit;
+    border-style: solid;
+    border-width: 1px;
+    border-top-width: 0;
 }
