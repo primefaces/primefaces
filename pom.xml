@@ -429,7 +429,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.mobile.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/primefaces-mobile-widgets.js</include>
                             </includes>
                         </aggregation>
                     </aggregations>
