@@ -19,6 +19,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.header = this.jq.children('.ui-panel-m-titlebar');
         this.content = this.jq.children('.ui-panel-m-content');
+        this.onshowHandlers = this.onshowHandlers||{};
         
         this.bindEvents();
     },
@@ -53,6 +54,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     expand: function() {
         this.toggleState(false, 'ui-icon-plus', 'ui-icon-minus');
         this.content.show();
+        this.invokeOnshowHandlers();
     },
     
     toggleState: function(collapsed, removeIcon, addIcon) {
@@ -68,6 +70,22 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
             
             if(toggleBehavior) {
                 toggleBehavior.call(this);
+            }
+        }
+    },
+    
+    addOnshowHandler: function(id, fn) {
+        this.onshowHandlers[id] = fn;
+    },
+    
+    invokeOnshowHandlers: function() {
+        for(var id in this.onshowHandlers) {
+            if(this.onshowHandlers.hasOwnProperty(id)) {
+                var fn = this.onshowHandlers[id];
+                
+                if(fn.call()) {
+                    delete this.onshowHandlers[id];
+                }
             }
         }
     }
