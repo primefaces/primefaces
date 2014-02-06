@@ -86,9 +86,10 @@ PrimeFaces.ajax = {
                 PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.CLIENT_WINDOW, content, xhr);
             }
             else if(id === PrimeFaces.VIEW_ROOT) {
-                $.ajaxSetup({'cache' : true});
+				var cache = $.ajaxSetup()['cache'];
+                $.ajaxSetup()['cache'] = true;
                 $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
-                $.ajaxSetup({'cache' : false});
+                $.ajaxSetup()['cache'] = cache;
 
                 var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
                 var bodyStartIndex = content.indexOf(bodyStartTag) + bodyStartTag.length;
