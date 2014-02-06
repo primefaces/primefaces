@@ -90,3 +90,15 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         }
     }
 });
+
+/**
+ * PrimeFaces Mobile AccordionPanel Widget
+ */
+PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        alert('x');
+    }
+    
+});
