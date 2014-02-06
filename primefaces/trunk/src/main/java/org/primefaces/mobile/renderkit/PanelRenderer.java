@@ -20,12 +20,21 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.panel.Panel;
+import org.primefaces.util.WidgetBuilder;
 
 public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer {
     
     @Override
     protected void encodeScript(FacesContext context, Panel panel) throws IOException {
-        //No widget
+        String clientId = panel.getClientId();
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.initWithDomReady("Panel", panel.resolveWidgetVar(), clientId);
+        
+        wb.attr("toggleable", panel.isToggleable(), false);
+        
+        encodeClientBehaviors(context, panel);
+
+        wb.finish();
     }
     
     @Override
@@ -34,26 +43,23 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
         String clientId = panel.getClientId(context);
         boolean toggleable = panel.isToggleable();
         boolean collapsed = panel.isCollapsed();
-        String containerClass = collapsed ? Panel.MOBILE_CLASS_COLLAPSED : Panel.MOBILE_CLASS;
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
-        styleClass = (styleClass == null) ? containerClass : containerClass + " " + styleClass;
+        styleClass = (styleClass == null) ? Panel.MOBILE_CLASS : Panel.MOBILE_CLASS + " " + styleClass;
     
         writer.startElement("div", panel);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("data-enhanced", "true", null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        
-        if (toggleable) {
-            writer.writeAttribute("data-role", "collapsible", null);
-            writer.writeAttribute("data-collapsed", String.valueOf("collapsed"), null);
-        }
-        
+                
         encodeHeader(context, panel, collapsed, toggleable);
         encodeContent(context, panel, collapsed);
+        
+        if(toggleable) {
+            encodeStateHolder(context, panel, clientId + "_collapsed", String.valueOf(collapsed));
+        }
         
         writer.endElement("div");
     }
@@ -62,37 +68,34 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
         ResponseWriter writer = context.getResponseWriter();
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
-        String titleBarClass = collapsed ? Panel.MOBILE_TITLEBAR_CLASS_COLLAPSED : Panel.MOBILE_TITLEBAR_CLASS;
-        String titleClass;
-        if(toggleable) {
-            titleClass = "ui-collapsible-heading-toggle ui-btn ui-btn-icon-left ui-icon-plus";
-            titleClass = collapsed ? titleClass + " ui-icon-plus" : titleClass + " ui-icon-collapsed";
-        }
-        else {
-            titleClass = "ui-btn";
-        }
-         
-        writer.startElement("h4", null);
-        writer.writeAttribute("class", titleBarClass, null);
-        writer.startElement("a", null);
-        writer.writeAttribute("class", titleClass, null);
         
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Panel.MOBILE_TITLE_CLASS, null);
+                 
+        writer.startElement("h3", null);
         if (header != null) {
             renderChild(context, header);
         } else if (headerText != null) {
             writer.write(headerText);
         }
+        writer.endElement("h3");
         
-        writer.endElement("a");
-        writer.endElement("h4");
+        if(toggleable) {
+            String toggleIconClass = collapsed ? Panel.MOBILE_TOGGLEICON_COLLAPSED_CLASS : Panel.MOBILE_TOGGLEICON_EXPANDED_CLASS;
+            writer.startElement("a", null);
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("class", toggleIconClass, null);
+            writer.endElement("a");
+        }
+        
+        writer.endElement("div");
     }
     
     protected void encodeContent(FacesContext context, Panel panel, boolean collapsed) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String contentClass = collapsed ? Panel.MOBILE_CONTENT_CLASS_COLLAPSED: Panel.MOBILE_CONTENT_CLASS;
-        
+ 
         writer.startElement("div", null);
-        writer.writeAttribute("class", contentClass, null);
+        writer.writeAttribute("class", Panel.MOBILE_CONTENT_CLASS, null);
         writer.startElement("p", null);
         renderChildren(context, panel);
         writer.endElement("p");

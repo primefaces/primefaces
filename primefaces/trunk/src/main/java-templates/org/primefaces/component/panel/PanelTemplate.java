@@ -25,12 +25,11 @@ import org.primefaces.component.panel.Panel;
 	public static final String PANEL_CONTENT_CLASS = "ui-panel-content ui-widget-content";
 	public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
 
-    public static final String MOBILE_CLASS = "ui-collapsible ui-collapsible-inset ui-corner-all ui-collapsible-themed-content";
-    public static final String MOBILE_CLASS_COLLAPSED = "ui-collapsible ui-collapsible-inset ui-corner-all ui-collapsible-themed-content ui-collapsible-collapsed";
-    public static final String MOBILE_TITLEBAR_CLASS = "ui-collapsible-heading";
-    public static final String MOBILE_TITLEBAR_CLASS_COLLAPSED = "ui-collapsible-heading ui-collapsible-heading-collapsed";
-    public static final String MOBILE_CONTENT_CLASS = "ui-collapsible-content ui-body-inherit";
-    public static final String MOBILE_CONTENT_CLASS_COLLAPSED = "ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed";
+    public static final String MOBILE_CLASS = "ui-panel-m ui-corner-all";
+    public static final String MOBILE_TITLE_CLASS = "ui-panel-m-titlebar ui-bar ui-bar-inherit";
+    public static final String MOBILE_CONTENT_CLASS = "ui-panel-m-content ui-body ui-body-inherit";
+    public static final String MOBILE_TOGGLEICON_EXPANDED_CLASS = "ui-panel-m-titlebar-icon ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext ui-btn-right";
+    public static final String MOBILE_TOGGLEICON_COLLAPSED_CLASS = "ui-panel-m-titlebar-icon ui-btn ui-shadow ui-corner-all ui-icon-plus ui-btn-icon-notext ui-btn-right";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("toggle","close"));
 	

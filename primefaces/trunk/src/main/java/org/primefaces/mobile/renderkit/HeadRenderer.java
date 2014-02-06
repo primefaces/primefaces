@@ -39,6 +39,7 @@ public class HeadRenderer extends Renderer {
         writer.write("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
         
         renderResource(context, "mobile/jquery-mobile.css", "javax.faces.resource.Stylesheet", "primefaces");
+        renderResource(context, "mobile/primefaces-mobile.css", "javax.faces.resource.Stylesheet", "primefaces");
         renderResource(context, "jquery/jquery.js", "javax.faces.resource.Script", "primefaces");
         
         writer.startElement("script", null);
