@@ -86,7 +86,7 @@ PrimeFaces.ajax = {
                 PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.CLIENT_WINDOW, content, xhr);
             }
             else if(id === PrimeFaces.VIEW_ROOT) {
-				var cache = $.ajaxSetup()['cache'];
+                var cache = $.ajaxSetup()['cache'];
                 $.ajaxSetup()['cache'] = true;
                 $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
                 $.ajaxSetup()['cache'] = cache;
