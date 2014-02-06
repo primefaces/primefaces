@@ -125,7 +125,6 @@ public class TabViewRenderer extends CoreRenderer {
         if(orientation.equals("bottom")) {
             encodeContents(context, tabView);
             encodeHeaders(context, tabView);
-
         }
         else {
             encodeHeaders(context, tabView);
