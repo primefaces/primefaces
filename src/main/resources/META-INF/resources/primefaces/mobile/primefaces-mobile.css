@@ -39,3 +39,8 @@
 .ui-growl-item.ui-grid-a > .ui-block-b {
     width: 80%;
 }
+
+/** Dialog **/
+.ui-dialog-container {
+    display: none;
+}

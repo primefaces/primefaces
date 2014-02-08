@@ -318,7 +318,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 });
 
 /**
- * PrimeFaces Growl Widget
+ * PrimeFaces Mobile Growl Widget
  */
 PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
     
@@ -444,3 +444,31 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         }, this.cfg.life);
     }
 });
+
+/**
+ * PrimeFaces Mobile Dialog Widget
+ */
+PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        this.initOptions(cfg);
+        
+        this.jq.popup({
+            positionTo: 'window'
+        });
+    },
+    
+    initOptions: function(cfg) {
+        this.cfg = cfg;
+    },
+    
+    show: function() {
+        this.jq.removeClass('ui-dialog-container').popup('open');
+    },
+    
+    hide: function() {
+        this.jq.popup('close');
+    }
+});
+    
