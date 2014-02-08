@@ -20,6 +20,11 @@ import javax.el.ELContext;
     public static final String CONTENT_CLASS = "ui-dialog-content ui-widget-content";
     public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-content";
 
+    public static final String MOBILE_CONTAINER_CLASS = "ui-dialog-container";
+    public static final String MOBILE_TITLE_BAR_CLASS = "ui-header ui-bar-inherit";
+    public static final String MOBILE_TITLE_CLASS = "ui-title";
+    public static final String MOBILE_CONTENT_CLASS = "ui-content";
+
     private final static String DEFAULT_EVENT = "close";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("close","minimize","maximize"));
