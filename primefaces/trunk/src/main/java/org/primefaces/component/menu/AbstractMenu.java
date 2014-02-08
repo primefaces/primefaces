@@ -19,7 +19,7 @@ import java.util.List;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
-import javax.faces.component.UIComponentBase;
+import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
@@ -29,7 +29,7 @@ import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.MenuItem;
 
-public abstract class AbstractMenu extends UIComponentBase {
+public abstract class AbstractMenu extends UIPanel {
 		
     public static final String LIST_CLASS = "ui-menu-list ui-helper-reset";
     public static final String MENUITEM_CLASS = "ui-menuitem ui-widget ui-corner-all";
