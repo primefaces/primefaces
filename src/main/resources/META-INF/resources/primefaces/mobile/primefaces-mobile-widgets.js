@@ -440,7 +440,6 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         }
         
         this.timeout = setTimeout(function() {
-            $this.removeAll();
             $this.jq.popup('close');
         }, this.cfg.life);
     }
