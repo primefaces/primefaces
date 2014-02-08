@@ -18,3 +18,24 @@
     border-width: 1px;
     border-top-width: 0;
 }
+
+/** Growl **/
+.ui-growl-message {
+    padding: 0.5em;
+}
+
+.ui-growl-summary {
+    font-weight: bold;
+}
+
+.ui-growl-detail {
+    font-weight: normal;
+}
+
+.ui-growl-item.ui-grid-a > .ui-block-a {
+    width: 20%;
+}
+
+.ui-growl-item.ui-grid-a > .ui-block-b {
+    width: 80%;
+}

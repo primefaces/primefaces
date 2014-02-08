@@ -337,20 +337,26 @@
         
         <renderer>
             <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.PanelRenderer</renderer-type>
-            <renderer-class>org.primefaces.mobile.renderkit.PanelRenderer</renderer-class>
-        </renderer>
-        
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.DataListRenderer</renderer-type>
             <renderer-class>org.primefaces.mobile.renderkit.DataListRenderer</renderer-class>
         </renderer>
         
         <renderer>
             <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PanelRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.PanelRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.AccordionPanelRenderer</renderer-type>
             <renderer-class>org.primefaces.mobile.renderkit.AccordionPanelRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.GrowlRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.GrowlRenderer</renderer-class>
         </renderer>
     </render-kit>
     <!-- Mobile -->
