@@ -24,6 +24,7 @@ import javax.el.ELContext;
     public static final String MOBILE_TITLE_BAR_CLASS = "ui-header ui-bar-inherit";
     public static final String MOBILE_TITLE_CLASS = "ui-title";
     public static final String MOBILE_CONTENT_CLASS = "ui-content";
+    public static final String MOBILE_CLOSE_ICON_CLASS = "ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext ui-btn-left";
 
     private final static String DEFAULT_EVENT = "close";
 

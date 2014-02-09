@@ -83,6 +83,12 @@ public class DialogRenderer extends org.primefaces.component.dialog.DialogRender
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.MOBILE_TITLE_BAR_CLASS, null);
         
+        //close
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", Dialog.MOBILE_CLOSE_ICON_CLASS, null);
+        writer.endElement("a");
+        
         //title
         writer.startElement("h1", null);
         writer.writeAttribute("class", Dialog.MOBILE_TITLE_CLASS, null);
