@@ -119,8 +119,8 @@ public class DataRenderer extends CoreRenderer {
         UIComponent component = data.getFacet(facet);
         
         if(component != null && component.isRendered()) {
-            writer.startElement("li", null);
-            writer.writeAttribute("d", styleClass, null);
+            writer.startElement("div", null);
+            writer.writeAttribute("class", styleClass, null);
             component.encodeAll(context);
             writer.endElement("div");
         }
