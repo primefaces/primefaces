@@ -35,6 +35,15 @@ import javax.faces.context.FacesContext;
     public static final String NAVIGATOR_RIGHT_ICON_CLASS = "ui-icon ui-icon-carat-1-e";
     public static final String SCROLLABLE_TABS_CLASS = "ui-tabs-scrollable";
 
+    public static final String MOBILE_CONTAINER_CLASS = "ui-tabs ui-widget ui-widget-content ui-corner-all";
+    public static final String MOBILE_NAVBAR_CLASS = "ui-navbar";
+    public static final String MOBILE_NAVIGATOR_CLASS = "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all";
+    public static final String MOBILE_INACTIVE_TAB_HEADER_CLASS = "ui-tabs-header";
+    public static final String MOBILE_ACTIVE_TAB_HEADER_CLASS = "ui-tabs-header ui-tabs-active";
+    public static final String MOBILE_INACTIVE_TAB_HEADER_TITLE_CLASS = "ui-link ui-btn ui-tabs-anchor";
+    public static final String MOBILE_ACTIVE_TAB_HEADER_TITLE_CLASS = "ui-link ui-btn ui-tabs-anchor ui-btn-active";
+    public static final String MOBILE_TAB_CONTENT_CLASS = "ui-content";
+
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("tabChange","tabClose"));
 
     @Override
