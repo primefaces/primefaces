@@ -679,25 +679,24 @@ PrimeFaces.util.ValidationContext = {
     },
 
     getMessage: function(key) {
-        var locale = this.getLocaleSettings();
-        if(locale) {
-            var s = locale.messages[key],
-            d = locale.messages[key + '_detail'];
+        var locale = this.getLocaleSettings(),
+        bundle = (locale.messages && locale.messages[key]) ? locale : PrimeFaces.locales['en_US'];
 
+        var s = bundle.messages[key],
+        d = bundle.messages[key + '_detail'];
+
+        if(s) {
             s = this.format(s, arguments);
-
-            if(d)
-                d = this.format(d, arguments);
-            else
-                d = s;
-
+            d = (d) ? this.format(d, arguments) : s;
+            
             return {
                 summary: s,
                 detail: d
             };
         }
-
-        return null;
+        else {
+            return null;
+        }
     },
 
     format: function(str, params) {
