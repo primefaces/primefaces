@@ -29,6 +29,7 @@ public class PanelGridRenderer extends org.primefaces.component.panelgrid.PanelG
     private static final HashMap<Integer, String> BLOCK_MAP = new HashMap<Integer, String>();
     
     static {
+        GRID_MAP.put(1, "ui-grid-solo");
 		GRID_MAP.put(2, "ui-grid-a");
         GRID_MAP.put(3, "ui-grid-b");
         GRID_MAP.put(4, "ui-grid-c");
