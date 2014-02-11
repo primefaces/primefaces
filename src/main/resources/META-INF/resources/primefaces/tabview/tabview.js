@@ -32,20 +32,25 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         }
         
         if(this.cfg.scrollable) {
-            var $this = this;
-            if(this.jq.is(':not(:visible)')) {
-                var hiddenParent = this.jq.parent().closest('.ui-hidden-container'),
-                hiddenParentWidget = hiddenParent.data('widget');
-
-                if(hiddenParentWidget) {
-                    hiddenParentWidget.addOnshowHandler(this.id, function() {
-                        return $this.initScrolling();
-                    });
-                }
-            } 
-            else {
+            if(this.jq.is(':visible')) {
                 this.initScrolling();
             }
+            else {
+                var hiddenParent = this.jq.parent().closest('.ui-hidden-container'),
+                hiddenParentWidgetVar = hiddenParent.data('widget'),
+                $this = this;
+
+                if(hiddenParentWidgetVar) {
+                    var hiddenParentWidget = PF(hiddenParentWidgetVar);
+                    
+                    if(hiddenParentWidget) {
+                        hiddenParentWidget.addOnshowHandler(this.id, function() {
+                            return $this.initScrolling();
+                        });
+                    }
+                    
+                }
+            } 
         }
     },
     
