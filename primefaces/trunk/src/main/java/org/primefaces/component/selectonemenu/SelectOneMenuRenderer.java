@@ -28,6 +28,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import org.primefaces.component.column.Column;
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -107,11 +108,16 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.startElement("select", menu);
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("tabindex", "-1", null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
         if(menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
         
         renderOnchange(context, menu);
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, menu);
+        }
         
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 

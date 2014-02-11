@@ -515,8 +515,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(this.panel.outerWidth() < jqWidth) {
             this.panel.width(jqWidth);
         }
-
-        this.input.parent().addClass('ui-helper-hidden').removeClass('ui-helper-hidden-accessible');
     },
     
     bindEvents: function() {
