@@ -789,4 +789,17 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.ajax.Request.handle(options);
     }
 });
+
+/**
+ * PrimeFaces Mobile Calendar Widget
+ */
+PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        this.input = $(this.jqId + '_input');
+        
+        this.input.date(this.cfg);
+    }
+}); 
     
