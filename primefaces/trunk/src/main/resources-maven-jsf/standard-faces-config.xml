@@ -376,5 +376,11 @@
             <renderer-type>org.primefaces.component.PanelGridRenderer</renderer-type>
             <renderer-class>org.primefaces.mobile.renderkit.PanelGridRenderer</renderer-class>
         </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.OverlayPanelRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.OverlayPanelRenderer</renderer-class>
+        </renderer>
     </render-kit>
     <!-- Mobile -->
