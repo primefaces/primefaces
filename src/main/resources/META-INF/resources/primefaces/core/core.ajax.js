@@ -40,6 +40,9 @@ PrimeFaces.ab = function(cfg, ext) {
 
 PrimeFaces.ajax = {
     
+    VIEW_HEAD : "javax.faces.ViewHead",
+    VIEW_BODY : "javax.faces.ViewBody",
+    
     Utils: {
  
         getContent: function(node) {
@@ -79,18 +82,29 @@ PrimeFaces.ajax = {
         },
 
         updateElement: function(id, content, xhr) {
-            if(id.indexOf(PrimeFaces.VIEW_STATE) !== -1) {
+            if (id.indexOf(PrimeFaces.VIEW_STATE) !== -1) {
                 PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.VIEW_STATE, content, xhr);
             }
-            else if(id.indexOf(PrimeFaces.CLIENT_WINDOW) !== -1) {
+            else if (id.indexOf(PrimeFaces.CLIENT_WINDOW) !== -1) {
                 PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.CLIENT_WINDOW, content, xhr);
             }
-            else if(id === PrimeFaces.VIEW_ROOT) {
+            else if (id === PrimeFaces.VIEW_ROOT) {
                 var cache = $.ajaxSetup()['cache'];
                 $.ajaxSetup()['cache'] = true;
                 $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
                 $.ajaxSetup()['cache'] = cache;
 
+                var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
+                var bodyStartIndex = content.indexOf(bodyStartTag) + bodyStartTag.length;
+                $('body').html(content.substring(bodyStartIndex, content.lastIndexOf("</body>")));
+            }
+            else if (id === PrimeFaces.ajax.VIEW_HEAD) {
+                var cache = $.ajaxSetup()['cache'];
+                $.ajaxSetup()['cache'] = true;
+                $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
+                $.ajaxSetup()['cache'] = cache;
+            }
+            else if (id === PrimeFaces.ajax.VIEW_BODY) {
                 var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
                 var bodyStartIndex = content.indexOf(bodyStartTag) + bodyStartTag.length;
                 $('body').html(content.substring(bodyStartIndex, content.lastIndexOf("</body>")));
