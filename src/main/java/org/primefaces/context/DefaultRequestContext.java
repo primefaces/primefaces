@@ -200,14 +200,14 @@ public class DefaultRequestContext extends RequestContext {
     
     @Override
     public void release() {
+        setCurrentInstance(null, context);
+        
         attributes = null;
         widgetBuilder = null;
         ajaxRequestBuilder = null;
         context = null;
         applicationContext = null;
         encrypter = null;
-
-    	setCurrentInstance(null);
     }
 
     @Override

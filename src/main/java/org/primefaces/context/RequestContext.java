@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
-import org.primefaces.cache.CacheProvider;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.AutoUpdatable;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -39,18 +39,42 @@ public abstract class RequestContext {
 
 	private static final ThreadLocal<RequestContext> INSTANCE = new ThreadLocal<RequestContext>();
 
+    private static final String INSTANCE_KEY = RequestContext.class.getName();
+    
     public static RequestContext getCurrentInstance() {
+        
+        RequestContext context = INSTANCE.get();
+
+        // #6503 - it's valid that a FacesContext can be released during the request
+        // Our PrimeFacesContext therefore will only release our ThreadLocal cache
+        // The RequestContext will be destroyed automatically if the FacesContext and it's attributes will be destroyed
+        if (context == null) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            if (facesContext != null && !facesContext.isReleased()) {
+                context = (RequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
+                if (context != null) {
+                    INSTANCE.set(context);
+                }
+            }
+        }
+
         return INSTANCE.get();
     }
 
-    public static void setCurrentInstance(final RequestContext context) {
+    public static void setCurrentInstance(final RequestContext context, final FacesContext facesContext) {
         if (context == null) {
         	INSTANCE.remove();
+            facesContext.getAttributes().remove(INSTANCE_KEY);
         } else {
         	INSTANCE.set(context);
+            facesContext.getAttributes().put(INSTANCE_KEY, context);
         }
     }
 
+    public static void releaseThreadLocalCache() {
+        INSTANCE.remove();
+    }
+    
     /**
      * @return true if request is an ajax request, otherwise return false.
      */
