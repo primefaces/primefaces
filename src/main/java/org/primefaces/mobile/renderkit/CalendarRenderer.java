@@ -32,17 +32,21 @@ public class CalendarRenderer extends org.primefaces.component.calendar.Calendar
         ResponseWriter writer = context.getResponseWriter();
         String clientId = calendar.getClientId(context);
         String inputId = clientId + "_input";
+        String containerClass = calendar.isPopup() ? Calendar.MOBILE_POPUP_CONTAINER_CLASS : Calendar.MOBILE_INLINE_CONTAINER_CLASS;
         String style = calendar.getStyle();
         String styleClass = calendar.getStyleClass();
+        styleClass = (styleClass == null) ? containerClass: containerClass + " " + styleClass;
 
-        writer.startElement("span", calendar);
+        writer.startElement("div", calendar);
         writer.writeAttribute("id", clientId, null);
-        if(style != null) writer.writeAttribute("style", style, null);
-        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
         encodeInput(context, calendar, inputId, value);
         
-        writer.endElement("span");
+        writer.endElement("div");
     }
     
     protected void encodeInput(FacesContext context, Calendar calendar, String id, String value) throws IOException {

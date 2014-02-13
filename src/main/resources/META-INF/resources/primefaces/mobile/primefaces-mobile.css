@@ -44,3 +44,8 @@
 .ui-dialog-container {
     display: none;
 }
+
+/** Calendar **/
+.ui-calendar-inline .ui-input-text {
+    display: none;
+}
