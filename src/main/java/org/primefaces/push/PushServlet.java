@@ -78,7 +78,6 @@ public class PushServlet extends AtmosphereServlet {
         framework.interceptor(new AtmosphereResourceLifecycleInterceptor())
                 .interceptor(new HeartbeatInterceptor())
                 .interceptor(new TrackMessageSizeInterceptor())
-                .interceptor(new SuspendTrackerInterceptor())
                 .addInitParameter(ApplicationConfig.CUSTOM_ANNOTATION_PACKAGE, PushEndpointProcessor.class.getPackage().getName());
 
         framework.init(sc);
