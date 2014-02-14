@@ -25,7 +25,7 @@ public interface EventBus {
      * @param o an Object
      * @return this
      */
-    EventBus fire(Object o);
+    EventBus publish(Object o);
 
     /**
      * Fire an object to {@link RemoteEndpoint} that connected using the path value.
@@ -33,20 +33,6 @@ public interface EventBus {
      * @param o an Object
      * @return this
      */
-    EventBus fire(String path, Object o);
+    EventBus publish(String path, Object o);
 
-    /**
-     * Encode to JSON String and then fire to all connected {@link RemoteEndpoint}
-     * @param o an Object
-     * @return this
-     */
-    EventBus encodeToJsonAndFire(Object o);
-
-    /**
-     * Encode to JSON String and then fire to {@link RemoteEndpoint} that connected using the path value.
-     * @param path A String starting with '/'
-     * @param o an Object
-     * @return this
-     */
-    EventBus encodeToJsonAndFire(String path, Object o);
 }
