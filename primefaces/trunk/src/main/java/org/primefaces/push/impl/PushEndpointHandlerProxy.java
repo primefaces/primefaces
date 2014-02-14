@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler implements AnnotatedProxy {
 
@@ -135,8 +136,11 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
             resource.addEventListener(new AtmosphereResourceEventListenerAdapter() {
                 @Override
                 public void onSuspend(AtmosphereResourceEvent event) {
-                    invokeOpenOrClose(onOpenMethod, remoteEndpoint);
-                    event.getResource().removeEventListener(this);
+                    try {
+                        invokeOpenOrClose(onOpenMethod, remoteEndpoint);
+                    } finally {
+                        event.getResource().removeEventListener(this);
+                    }
                 }
             });
         }
@@ -145,8 +149,11 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
             resource.addEventListener(new AtmosphereResourceEventListenerAdapter() {
                 @Override
                 public void onResume(AtmosphereResourceEvent event) {
-                    invoke(onResumeMethod, remoteEndpoint);
-                    resource.removeEventListener(this);
+                    try {
+                        invoke(onResumeMethod, remoteEndpoint);
+                    } finally {
+                        event.getResource().removeEventListener(this);
+                    }
                 }
             });
         }
@@ -162,7 +169,13 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                     logger.error("", e);
                 }
                 if (o != null) {
-                    resource.getBroadcaster().broadcast(o);
+                    try {
+                        resource.getBroadcaster().broadcast(o).get();
+                    } catch (InterruptedException e) {
+                        logger.trace("",e);
+                    } catch (ExecutionException e) {
+                        logger.trace("",e);
+                    }
                 }
             } else {
                 logger.warn("{} received an empty body", ManagedServiceInterceptor.class.getSimpleName());
