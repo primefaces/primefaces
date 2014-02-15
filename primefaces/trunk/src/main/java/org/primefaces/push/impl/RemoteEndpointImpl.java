@@ -30,16 +30,18 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
     private final Status status = new Status(Status.STATUS.OPEN);
     private final String path;
     private final String[] pathSegments;
+    private final AtmosphereResource resource;
 
     public RemoteEndpointImpl(AtmosphereRequest request, String body) {
         this.request = request;
         this.body = body;
         this.path = (String) request.getAttribute(FrameworkConfig.MAPPED_PATH);
         this.pathSegments = path.split("/");
+        this.resource = request.resource();
     }
 
     //@Override
-    public Map<String, String> headersMap(){
+    public Map<String, String> headersMap() {
         return request.headersMap();
     }
 
@@ -73,10 +75,12 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
         return status;
     }
 
+    //@Override
     public String address() {
         return request.getRemoteAddr() + ":" + request.getRemotePort();
     }
 
+    //@Override
     public String pathSegments(int position) {
         if (position < pathSegments.length) {
             return pathSegments[position];
@@ -84,13 +88,18 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
         return null;
     }
 
+    //@Override
+    public boolean isOpen() {
+        return resource.isSuspended();
+    }
+
     public RemoteEndpoint write(String message) {
-        request.resource().write(message);
+        resource.write(message);
         return this;
     }
 
     public RemoteEndpoint write(byte[] message) {
-        request.resource().write(message);
+        resource.write(message);
         return this;
     }
 
