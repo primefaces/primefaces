@@ -996,6 +996,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.bindDynamicEvents();
                 
         if(this.items.length) {
+            this.items.first().addClass('ui-first-child');
+            this.items.last().addClass('ui-last-child');
+            
             if(this.panel.is(':hidden')) {
                 this.show();
             }
