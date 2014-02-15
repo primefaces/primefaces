@@ -29,11 +29,13 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
     private final String body;
     private final Status status = new Status(Status.STATUS.OPEN);
     private final String path;
+    private final String[] pathSegments;
 
     public RemoteEndpointImpl(AtmosphereRequest request, String body) {
         this.request = request;
         this.body = body;
         this.path = (String) request.getAttribute(FrameworkConfig.MAPPED_PATH);
+        this.pathSegments = path.split("/");
     }
 
     //@Override
@@ -73,6 +75,13 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
 
     public String address() {
         return request.getRemoteAddr() + ":" + request.getRemotePort();
+    }
+
+    public String pathSegments(int position) {
+        if (position < pathSegments.length) {
+            return pathSegments[position];
+        }
+        return null;
     }
 
     public RemoteEndpoint write(String message) {
