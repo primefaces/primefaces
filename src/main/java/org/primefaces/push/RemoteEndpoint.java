@@ -75,4 +75,10 @@ public interface RemoteEndpoint {
      * @return the value, or null if not found.
      */
     String pathSegments(int position);
+
+    /**
+     * Is the underlying connection to the Browser still open.
+     * @return
+     */
+    boolean isOpen();
 }
