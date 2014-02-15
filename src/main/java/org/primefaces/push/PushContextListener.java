@@ -18,6 +18,7 @@ package org.primefaces.push;
 /**
  * Received {@link PushContext} notification when a message has been successfully pushed (@link PushContext#push) or
  * when a client disconnected (the connection has been closed).
+ * @deprecated
  */
 public interface PushContextListener {
 

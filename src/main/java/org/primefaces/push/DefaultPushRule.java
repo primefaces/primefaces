@@ -21,6 +21,7 @@ import org.atmosphere.cpr.BroadcasterFactory;
 
 /**
  * The Default {@link PushRule} that creates channel based on the {@link org.atmosphere.cpr.AtmosphereRequest#getPathInfo()}.
+ * @deprecated
  */
 public class DefaultPushRule implements PushRule {
 
