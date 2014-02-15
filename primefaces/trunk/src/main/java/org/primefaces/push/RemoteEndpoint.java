@@ -68,4 +68,11 @@ public interface RemoteEndpoint {
      * @return the remote client IP
      */
     String address();
+
+    /**
+     * Return the {@link #path()}'s segment value at the specified position, or null if there is no value at that position
+     * @param position the path segment
+     * @return the value, or null if not found.
+     */
+    String pathSegments(int position);
 }

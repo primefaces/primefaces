@@ -29,6 +29,8 @@ public class EventBusImpl implements EventBus {
 
     //@Override
     public EventBus publish(String path, Object o) {
+        if (!path.startsWith("/"))  path = "/" + path;
+
         MetaBroadcaster.getDefault().broadcastTo(path, o);
         return this;
     }
