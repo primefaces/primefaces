@@ -45,6 +45,7 @@ import javax.faces.component.behavior.Behavior;
     public final static String MOBILE_PANEL_CLASS = "ui-controlgroup ui-controlgroup-vertical ui-corner-all ui-screen-hidden";
     public final static String MOBILE_ITEM_CONTAINER_CLASS = "ui-controlgroup-controls";
     public final static String MOBILE_ITEM_CLASS = "ui-autocomplete-item ui-btn ui-corner-all ui-shadow";
+    public final static String MOBILE_CLEAR_ICON_CLASS = "ui-input-clear ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-input-clear-hidden";
 
     @Override
     public Collection<String> getEventNames() {

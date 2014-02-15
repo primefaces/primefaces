@@ -889,8 +889,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.cfg.minLength = (this.cfg.minLength !== undefined) ? this.cfg.minLength : 1;
         this.cfg.delay = (this.cfg.delay !== undefined) ? this.cfg.delay : 300;
+        this.inputContainer = this.jq.children('.ui-input-search');
         this.input = $(this.jqId + '_input');
         this.hinput = $(this.jqId + '_hinput');
+        this.clearIcon = this.inputContainer.children('.ui-input-clear');
         this.cfg.pojo = (this.hinput.length === 1);
         this.panel = this.jq.children('.ui-controlgroup');
         this.itemContainer = this.panel.children('.ui-controlgroup-controls');
@@ -908,8 +910,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.input.on('keyup.autoComplete', function(e) {
             var value = $this.input.val();
 
-            if(!value.length) {
+            if(value.length === 0) {
                 $this.hide();
+            }
+            else {
+                $this.showClearIcon();
             }
 
             if(value.length >= $this.cfg.minLength) {
@@ -922,6 +927,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     $this.search(value);
                 }, $this.cfg.delay);
             }
+        });
+        
+        this.clearIcon.on('click.autoComplete', function(e) {
+            $this.input.val('');
+            $this.hinput.val('');
+            $this.hide();
         });
     },
     
@@ -989,6 +1000,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     
     hide: function() {        
         this.panel.addClass('ui-screen-hidden');
+        this.hideClearIcon();
     },
     
     showSuggestions: function() {
@@ -1032,6 +1044,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     
         return false;
+    },
+    
+    showClearIcon: function() {
+        this.clearIcon.removeClass('ui-input-clear-hidden');
+    },
+    
+    hideClearIcon: function() {
+        this.clearIcon.addClass('ui-input-clear-hidden');
     }
     
 });
