@@ -164,17 +164,19 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
             resource.addEventListener(new AtmosphereResourceEventListenerAdapter() {
                 @Override
                 public void onResume(AtmosphereResourceEvent event) {
-                    try {
-                        invoke(onResumeMethod, remoteEndpoint);
-                    } finally {
-                        event.getResource().removeEventListener(this);
+                    if (event.isResumedOnTimeout()) {
+                        try {
+                            invokeOpenOrClose(onResumeMethod, remoteEndpoint);
+                        } finally {
+                            event.getResource().removeEventListener(this);
+                        }
                     }
                 }
 
                 @Override
                 public void onDisconnect(AtmosphereResourceEvent event) {
                     try {
-                        invoke(onResumeMethod, remoteEndpoint);
+                        invokeOpenOrClose(onResumeMethod, remoteEndpoint);
                     } finally {
                         event.getResource().removeEventListener(this);
                         trackedUUID.remove(resource.uuid());
@@ -194,13 +196,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                     logger.error("", e);
                 }
                 if (o != null) {
-                    try {
-                        resource.getBroadcaster().broadcast(o).get();
-                    } catch (InterruptedException e) {
-                        logger.trace("", e);
-                    } catch (ExecutionException e) {
-                        logger.trace("", e);
-                    }
+                    resource.getBroadcaster().broadcast(o);
                 }
             } else {
                 logger.warn("{} received an empty body", ManagedServiceInterceptor.class.getSimpleName());
