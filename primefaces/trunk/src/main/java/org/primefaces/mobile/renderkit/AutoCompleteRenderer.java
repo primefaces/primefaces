@@ -72,7 +72,7 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
         String valueToRender = ComponentUtils.getValueToRender(context, ac);
             
         writer.startElement("div", ac);
-        writer.writeAttribute("class", "ui-input-search ui-body-inherit ui-corner-all ui-shadow-inset ui-input-has-clear", null);
+        writer.writeAttribute("class", AutoComplete.MOBILE_INPUT_CONTAINER_CLASS, null);
         
         writer.startElement("input", ac);
         writer.writeAttribute("id", inputId, null);
@@ -98,11 +98,18 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
     @Override
     protected void encodePanel(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String panelStyle = ac.getPanelStyle();
+        String panelStyleClass = ac.getPanelStyleClass();
+        panelStyleClass = (panelStyleClass == null)? AutoComplete.MOBILE_PANEL_CLASS: AutoComplete.MOBILE_PANEL_CLASS + " " + panelStyleClass;
         
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-controlgroup ui-controlgroup-vertical ui-corner-all ui-screen-hidden", null);
+        writer.writeAttribute("class", panelStyleClass, null);
+        if(panelStyle != null) {
+            writer.writeAttribute("style", panelStyle, null);
+        }
+        
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-controlgroup-controls", null);
+        writer.writeAttribute("class", AutoComplete.MOBILE_ITEM_CONTAINER_CLASS, null);
         writer.endElement("div");
         writer.endElement("div");
     }
@@ -114,11 +121,12 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
         boolean pojo = (var != null);
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         Converter converter = ComponentUtils.getConverter(context, ac);
+        boolean hasContent = (ac.getChildCount() > 0);
         
         for(Object item : items) {
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
-            writer.writeAttribute("class", "ui-autocomplete-item ui-btn ui-corner-all ui-shadow", null);
+            writer.writeAttribute("class", AutoComplete.MOBILE_ITEM_CLASS, null);
             
             if(pojo) {
                 requestMap.put(var, item);
@@ -126,16 +134,23 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
                 writer.writeAttribute("data-item-value", value, null);
                 writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
                 
-                writer.writeText(ac.getItemLabel(), null);
+                if(hasContent)
+                    renderChildren(context, ac);
+                else
+                    writer.writeText(ac.getItemLabel(), null);
             }
             else {
                 writer.writeAttribute("data-item-label", item, null);
                 writer.writeAttribute("data-item-value", item, null);
                 
                 writer.writeText(item, null);
-            }            
-             
+            }
+
             writer.endElement("a");
+        }
+        
+        if(pojo) {
+            requestMap.remove(var);
         }
     }
 }

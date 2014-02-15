@@ -41,6 +41,11 @@ import javax.faces.component.behavior.Behavior;
     public final static String MULTIPLE_CONTAINER_CLASS = "ui-autocomplete-multiple-container ui-widget ui-inputfield ui-state-default ui-corner-all";
     public final static String ITEMTIP_CONTENT_CLASS = "ui-autocomplete-itemtip-content";
 
+    public final static String MOBILE_INPUT_CONTAINER_CLASS = "ui-input-search ui-body-inherit ui-corner-all ui-shadow-inset ui-input-has-clear";
+    public final static String MOBILE_PANEL_CLASS = "ui-controlgroup ui-controlgroup-vertical ui-corner-all ui-screen-hidden";
+    public final static String MOBILE_ITEM_CONTAINER_CLASS = "ui-controlgroup-controls";
+    public final static String MOBILE_ITEM_CLASS = "ui-autocomplete-item ui-btn ui-corner-all ui-shadow";
+
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
