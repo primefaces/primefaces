@@ -15,10 +15,15 @@
  */
 package org.primefaces.push.impl;
 
+import org.atmosphere.cpr.Broadcaster;
+import org.atmosphere.cpr.BroadcasterListenerAdapter;
 import org.atmosphere.cpr.MetaBroadcaster;
 import org.primefaces.push.EventBus;
 
 public class EventBusImpl implements EventBus {
+
+    public EventBusImpl() {
+    }
 
     // TODO: Add caching support here.
     //@Override
@@ -29,10 +34,24 @@ public class EventBusImpl implements EventBus {
 
     //@Override
     public EventBus publish(String path, Object o) {
-        if (!path.startsWith("/"))  path = "/" + path;
+        if (!path.startsWith("/")) path = "/" + path;
 
         MetaBroadcaster.getDefault().broadcastTo(path, o);
         return this;
+    }
+
+    //@Override
+    public EventBus publish(String path, Object o, final Reply r) {
+        MetaBroadcaster.getDefault().addBroadcasterListener(new BroadcasterListenerAdapter() {
+            public void onComplete(Broadcaster b) {
+                try {
+                    r.completed(b.getID());
+                } finally {
+                    MetaBroadcaster.getDefault().removeBroadcasterListener(this);
+                }
+            }
+        });
+        return null;
     }
 
 }
