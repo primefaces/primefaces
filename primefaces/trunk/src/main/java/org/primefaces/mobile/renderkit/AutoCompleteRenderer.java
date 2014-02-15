@@ -17,7 +17,7 @@ package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
 import java.util.List;
-import javax.faces.application.ProjectStage;
+import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -67,7 +67,8 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
 
     protected void encodeInput(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String inputId = ac.getClientId(context) + "_input";
+        String clientId = ac.getClientId(context);
+        String inputId = clientId + "_input";
         String valueToRender = ComponentUtils.getValueToRender(context, ac);
             
         writer.startElement("div", ac);
@@ -86,6 +87,11 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
         if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         
         writer.endElement("input");
+        
+        if(ac.getVar() != null) {
+            encodeHiddenInput(context, ac, clientId);
+        }
+        
         writer.endElement("div");
     }
     
@@ -104,14 +110,31 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
     @Override
     protected void encodeSuggestions(FacesContext context, AutoComplete ac, List items) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String var = ac.getVar();
+        boolean pojo = (var != null);
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        Converter converter = ComponentUtils.getConverter(context, ac);
         
         for(Object item : items) {
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("class", "ui-autocomplete-item ui-btn ui-corner-all ui-shadow", null);
-            writer.writeAttribute("data-item-label", item, null);
-            writer.writeAttribute("data-item-value", item, null);
-            writer.writeText(item, null);  
+            
+            if(pojo) {
+                requestMap.put(var, item);
+                String value = (converter == null) ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
+                writer.writeAttribute("data-item-value", value, null);
+                writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                
+                writer.writeText(ac.getItemLabel(), null);
+            }
+            else {
+                writer.writeAttribute("data-item-label", item, null);
+                writer.writeAttribute("data-item-value", item, null);
+                
+                writer.writeText(item, null);
+            }            
+             
             writer.endElement("a");
         }
     }
