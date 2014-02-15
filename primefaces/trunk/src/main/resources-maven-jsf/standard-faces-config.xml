@@ -394,5 +394,11 @@
             <renderer-type>org.primefaces.component.AutoCompleteRenderer</renderer-type>
             <renderer-class>org.primefaces.mobile.renderkit.AutoCompleteRenderer</renderer-class>
         </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ToolbarRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.ToolbarRenderer</renderer-class>
+        </renderer>
     </render-kit>
     <!-- Mobile -->
