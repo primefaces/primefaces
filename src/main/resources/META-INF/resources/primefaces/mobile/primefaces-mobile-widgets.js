@@ -890,10 +890,16 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.minLength = (this.cfg.minLength !== undefined) ? this.cfg.minLength : 1;
         this.cfg.delay = (this.cfg.delay !== undefined) ? this.cfg.delay : 300;
         this.input = $(this.jqId + '_input');
+        this.hinput = $(this.jqId + '_hinput');
+        this.cfg.pojo = (this.hinput.length === 1);
         this.panel = this.jq.children('.ui-controlgroup');
         this.itemContainer = this.panel.children('.ui-controlgroup-controls');
         
         this.bindEvents();
+        
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+        this.hinput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
     
     bindEvents: function() {
@@ -917,7 +923,25 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }, $this.cfg.delay);
             }
         });
-        this.input.trigger('click');
+    },
+    
+    bindDynamicEvents: function() {
+        var $this = this;
+
+        //visuals and click handler for items
+        this.items.on('click.autoComplete', function(event) {
+            var item = $(this),
+            itemValue = item.attr('data-item-value');
+
+            $this.input.val(item.attr('data-item-label')).focus();
+
+            if($this.cfg.pojo) {
+                $this.hinput.val(itemValue); 
+            }
+
+            $this.fireItemSelectEvent(event, itemValue);
+            $this.hide();
+        });
     },
     
     search: function(query) {
@@ -968,8 +992,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
     
     showSuggestions: function() {
-        this.items = this.itemContainer.find('.ui-autocomplete-item');                   
-        //this.bindDynamicEvents();
+        this.items = this.itemContainer.children('.ui-autocomplete-item');                   
+        this.bindDynamicEvents();
                 
         if(this.items.length) {
             if(this.panel.is(':hidden')) {
@@ -984,6 +1008,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             else {
                 this.hide();
             }
+        }
+    },
+    
+    fireItemSelectEvent: function(event, itemValue) {
+        if(this.hasBehavior('itemSelect')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_itemSelect', value: itemValue}
+                ]
+            };
+
+            this.cfg.behaviors['itemSelect'].call(this, ext);
         }
     },
     
