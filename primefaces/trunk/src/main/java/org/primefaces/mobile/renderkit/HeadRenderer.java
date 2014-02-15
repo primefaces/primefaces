@@ -44,7 +44,7 @@ public class HeadRenderer extends Renderer {
         
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
-        writer.write("$(document).bind('mobileinit', function(){");
+        writer.write("$(document).on('mobileinit', function(){");
         writer.write("$.mobile.ajaxEnabled = false;");               
         writer.write("$.mobile.pushStateEnabled = false;");        
         writer.write("$.mobile.page.prototype.options.domCache = true;");
