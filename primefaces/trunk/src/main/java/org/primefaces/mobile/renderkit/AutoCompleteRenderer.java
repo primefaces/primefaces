@@ -88,6 +88,11 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
         
         writer.endElement("input");
         
+        writer.startElement("a", ac);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", AutoComplete.MOBILE_CLEAR_ICON_CLASS, null);
+        writer.endElement("a");
+        
         if(ac.getVar() != null) {
             encodeHiddenInput(context, ac, clientId);
         }
