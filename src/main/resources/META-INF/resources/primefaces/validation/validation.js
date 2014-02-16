@@ -636,15 +636,19 @@ PrimeFaces.validateInstant = function(id) {
     var vc = PrimeFaces.util.ValidationContext,
     element = $(PrimeFaces.escapeClientId(id)),
     clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id'),
-    uiMessageId = element.data('uiMessageId'),
+    uiMessageId = element.data('uimessageid'),
     uiMessage = null;
 
     if(uiMessageId) {
-        uiMessage = $(PrimeFaces.escapeClientId(uiMessageId));
+        uiMessage = (uiMessageId === 'p-nouimessage') ? null: $(PrimeFaces.escapeClientId(uiMessageId));
     }
     else {
         uiMessage = vc.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
-        element.data('uiMessageId', uiMessage.attr('id'));
+        
+        if(uiMessage)
+            element.data('uimessageid', uiMessage.attr('id'));
+        else
+            element.data('uimessageid', 'p-nouimessage');
     }
 
     if(uiMessage) {
@@ -654,7 +658,10 @@ PrimeFaces.validateInstant = function(id) {
     this.validateInput(element);
 
     if(!vc.isEmpty()) {
-        vc.renderUIMessage(uiMessage, vc.messages[clientId][0]);
+        if(uiMessage) {
+            vc.renderUIMessage(uiMessage, vc.messages[clientId][0]);
+        }
+        
         vc.clear();
         return false;
     }
