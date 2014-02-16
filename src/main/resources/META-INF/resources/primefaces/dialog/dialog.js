@@ -90,7 +90,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         
         this.content.height(this.cfg.height);
         
-        this.adjustViewport();
+        if(this.cfg.fitViewport) {
+            this.fitViewport();
+        }
         
         //ie7 width auto width bug workaround
         if(this.cfg.width === 'auto' && PrimeFaces.isIE(7)) {
@@ -98,7 +100,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    adjustViewport: function() {
+    fitViewport: function() {
         var winHeight = $(window).height(),
         contentPadding = this.content.innerHeight() - this.content.height();
 

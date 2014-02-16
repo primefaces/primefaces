@@ -197,6 +197,14 @@
             <type>java.lang.String</type>
             <description>Defines which component to focus.</description>
         </attribute>
+        <attribute>
+            <name>fitViewport</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically
+            adjusts height to fit dialog within the viewport.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
