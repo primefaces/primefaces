@@ -78,7 +78,7 @@ public class SearchExpressionResolverFactory {
 	    }
 
 		if (resolver == null) {
-		    throw new FacesException("No SearchExpressionResolver avialable for expression \"" + expression + "\"");
+		    throw new FacesException("No SearchExpressionResolver available for expression \"" + expression + "\"");
 		}
 
 		return resolver;
