@@ -9,6 +9,8 @@ $(document).on('pfAjaxComplete', function() {
 PrimeFaces.Mobile = {
     
     navigate: function(to, cfg) {
+        cfg.changeHash = cfg.changeHash||false;
+        
         $('body').pagecontainer('change', to, cfg);
     }
     

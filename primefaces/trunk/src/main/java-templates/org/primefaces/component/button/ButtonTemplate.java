@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import org.primefaces.util.ComponentUtils;
         
     private final static Logger logger = Logger.getLogger(Button.class.getName());
-    
+                
     public String resolveIcon() {
         String icon = getIcon();
     
@@ -18,6 +18,7 @@ import org.primefaces.util.ComponentUtils;
     
         return icon;
     }
+    
     public String resolveStyleClass() {
         String icon = resolveIcon();
         Object value = getValue();
