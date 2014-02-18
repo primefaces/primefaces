@@ -28,9 +28,8 @@ public class HTML {
 		"onchange",
 		"onselect"
 	};
-	
-	public static String[] COMMON_EVENTS = {
-		"onclick",
+	    
+    public static String[] COMMON_EVENTS_WITHOUT_CLICK = {
 		"ondblclick",
 		"onkeydown",
 		"onkeypress",
@@ -150,9 +149,15 @@ public class HTML {
 		"onunload"
 	};
     
+    public static String[] COMMON_EVENTS = ArrayUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT);
+    
     public static String[] OUTPUT_EVENTS = ArrayUtils.concat(COMMON_EVENTS, BLUR_FOCUS_EVENTS);
+    
+    public static String[] OUTPUT_EVENTS_WITHOUT_CLICK = ArrayUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, BLUR_FOCUS_EVENTS);
 	
 	public static String[] BUTTON_EVENTS = ArrayUtils.concat(OUTPUT_EVENTS, CHANGE_SELECT_EVENTS);
+    
+    public static String[] BUTTON_EVENTS_WITHOUT_CLICK = ArrayUtils.concat(OUTPUT_EVENTS_WITHOUT_CLICK, CHANGE_SELECT_EVENTS);
 	
 	public static String[] IMG_ATTRS = ArrayUtils.concat(IMG_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS);
 	
