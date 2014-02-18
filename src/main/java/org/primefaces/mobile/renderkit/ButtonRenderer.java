@@ -28,7 +28,7 @@ public class ButtonRenderer extends org.primefaces.component.button.ButtonRender
     public void encodeMarkup(FacesContext context, Button button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = button.getClientId(context);
-        String value = (String) button.getValue();
+        Object value = (String) button.getValue();
         String icon = button.resolveIcon();
 
 		writer.startElement("button", button);
@@ -53,7 +53,7 @@ public class ButtonRenderer extends org.primefaces.component.button.ButtonRender
             if(button.isEscape())
                 writer.writeText(value, "value");
             else
-                writer.write(value);
+                writer.write(value.toString());
         }
 			
 		writer.endElement("button");

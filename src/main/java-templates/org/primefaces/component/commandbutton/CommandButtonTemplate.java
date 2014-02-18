@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Collection;
 import java.util.Arrays;
 import java.util.Map;
+import org.primefaces.component.button.Button;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.util.Constants;
 import org.primefaces.event.SelectEvent;
@@ -77,6 +78,30 @@ import org.primefaces.event.SelectEvent;
         }
         else if(value == null && icon != null) {
             styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
+        }
+    
+        if(isDisabled()) {
+            styleClass = styleClass + " ui-state-disabled";
+        } 
+    
+        String userStyleClass = getStyleClass();
+        if(userStyleClass != null) {
+            styleClass = styleClass + " " + userStyleClass;
+        }
+    
+        return styleClass;
+    }
+    
+    public String resolveMobileStyleClass() {
+        String icon = getIcon();
+        String iconPos = getIconPos();
+        Object value = getValue();
+        String styleClass = "ui-btn ui-shadow ui-corner-all";
+            
+        if(value != null && icon != null) {
+            styleClass = styleClass + " " + icon + " ui-btn-icon-" + iconPos;
+        } else if(value == null && icon != null) {
+            styleClass = styleClass + " " + icon + " ui-btn-icon-notext";
         }
     
         if(isDisabled()) {

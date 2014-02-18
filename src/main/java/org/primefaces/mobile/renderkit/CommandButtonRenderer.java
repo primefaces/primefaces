@@ -31,36 +31,34 @@ public class CommandButtonRenderer extends org.primefaces.component.commandbutto
         String clientId = button.getClientId(context);
         Object value = button.getValue();
         String type = button.getType();
-        boolean pushButton = (type.equals("reset")||type.equals("button"));
-        String icon = button.getIcon();
-        String iconPos = (value == null && icon != null) ? "notext" : button.getIconPos();
-        String request = pushButton ? null: buildRequest(context, button, clientId);        
+        String request = (type.equals("reset")||type.equals("button")) ? null: buildRequest(context, button, clientId);        
         String onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
         
-		writer.startElement("input", button);
+		writer.startElement("button", button);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", type, null);
+        writer.writeAttribute("class", button.resolveMobileStyleClass(), null);
         
-        if (value != null) {
-            writer.writeAttribute("value", value, null);
-        }
-        
-        if (icon != null) {
-            writer.writeAttribute("data-icon", icon, null);
-            writer.writeAttribute("data-iconpos", iconPos, null);
-        }
-
 		if (onclick != null) {
             writer.writeAttribute("onclick", onclick, "onclick");
 		}
 		
         renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
-        renderDynamicPassThruAttributes(context, component);
         
         if (button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if (button.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
         
-        writer.endElement("input");
+        if(value == null) {
+            writer.write("ui-button");
+        }
+        else {
+            if(button.isEscape())
+                writer.writeText(value, "value");
+            else
+                writer.write(value.toString());
+        }
+        
+        writer.endElement("button");
 	}
 }
