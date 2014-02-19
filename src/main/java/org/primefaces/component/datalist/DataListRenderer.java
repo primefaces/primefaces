@@ -156,11 +156,11 @@ public class DataListRenderer extends DataRenderer {
             if(rowIndexVar != null) {
                 requestMap.put(rowIndexVar, i);
             }
-            
-            String itemStyleClass = list.getItemStyleClass();
-            itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS: DataList.LIST_ITEM_CLASS + " " + itemStyleClass;
 
             if(list.isRowAvailable()) {
+                String itemStyleClass = list.getItemStyleClass();
+                itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS: DataList.LIST_ITEM_CLASS + " " + itemStyleClass;
+            
                 writer.startElement(listItemTag, null);
                 writer.writeAttribute("class", itemStyleClass, null);
                 renderChildren(context, list);
