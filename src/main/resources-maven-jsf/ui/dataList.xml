@@ -137,6 +137,12 @@
             <defaultValue>No records found.</defaultValue>
             <description>Text to display when there is no data to display. Default is "No records found."</description>
         </attribute>
+        <attribute>
+            <name>itemStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of an item in list. This option is useful to assign specific styles to certain items using an EL expression.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
