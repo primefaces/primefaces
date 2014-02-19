@@ -19,12 +19,11 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.component.inputtext.InputText;
 
-public class InputTextRenderer extends InputRenderer {
+public class InputTextRenderer extends org.primefaces.component.inputtext.InputTextRenderer {
 
     @Override
 	public void decode(FacesContext context, UIComponent component) {
@@ -35,36 +34,67 @@ public class InputTextRenderer extends InputRenderer {
         
         decodeBehaviors(context, inputText);
         
-        String clientId = inputText.getClientId(context);
-		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+        String inputId = inputText.getClientId(context) + "_input";
+		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(inputId);
         if(submittedValue != null) {
             inputText.setSubmittedValue(submittedValue);
         }
 	}
 
 	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+	public void encodeMarkup(FacesContext context, InputText inputText) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-		InputText inputText = (InputText) component;
         String clientId = inputText.getClientId(context);
-        String valueToRender = ComponentUtils.getValueToRender(context, inputText);
+        String inputId = clientId + "_input";
+        String type = inputText.getType();
+        boolean search = type.equals("search");
         String style = inputText.getStyle();
+        String defaultStyleClass = search ? InputText.MOBILE_SEARCH_STYLE_CLASS: InputText.MOBILE_STYLE_CLASS;
         String styleClass = inputText.getStyle();
+        styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        if(inputText.isDisabled()) {
+            styleClass = styleClass + " ui-state-disabled";
+        }
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) { 
+            writer.writeAttribute("style", style, null);
+        }
+
+        encodeInput(context, inputText, inputId);
+        encodeClearIcon(context, inputText);
+        
+        writer.endElement("div");
+	}
+    
+    protected void encodeInput(FacesContext context, InputText inputText, String inputId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String valueToRender = ComponentUtils.getValueToRender(context, inputText);
         
         writer.startElement("input", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("data-role", "none", null);
+        writer.writeAttribute("id", inputId, null);
+		writer.writeAttribute("name", inputId, null);
 		writer.writeAttribute("type", inputText.getType(), null);           
       
         if(inputText.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(inputText.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if(style != null) writer.writeAttribute("style", style, null);  
-        if(styleClass != null) writer.writeAttribute("class", styleClass, null);  
         if(valueToRender != null) writer.writeAttribute("value", valueToRender , null);
         
         renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
         
         writer.endElement("input");
-	}
+    }
+    
+    protected void encodeClearIcon(FacesContext context, InputText inputText) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", InputText.MOBILE_CLEAR_ICON_CLASS, null);
+        writer.endElement("a");
+    }
 }
