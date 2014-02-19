@@ -1055,3 +1055,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     }
     
 });
+
+/**
+ * PrimeFaces InputTextarea Widget
+ */
+PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        this.cfg.enhanced = true;
+        this.cfg.autogrow = false;
+        this.jq.textinput(this.cfg);
+    }
+    
+});
