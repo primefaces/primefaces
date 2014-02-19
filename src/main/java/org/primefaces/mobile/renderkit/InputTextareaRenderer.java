@@ -16,56 +16,48 @@
 package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.inputtextarea.InputTextarea;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
-public class InputTextareaRenderer extends InputRenderer {
-
-    @Override
-	public void decode(FacesContext context, UIComponent component) {
-		InputTextarea inputTextarea = (InputTextarea) component;
-        if(inputTextarea.isDisabled() || inputTextarea.isReadonly()) {
-            return;
-        }
-
-        decodeBehaviors(context, inputTextarea);
-        
-        String clientId = inputTextarea.getClientId(context);
-		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
-        if(submittedValue != null) {
-            inputTextarea.setSubmittedValue(submittedValue);
-        }
-	}
+public class InputTextareaRenderer extends org.primefaces.component.inputtextarea.InputTextareaRenderer {
 
 	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+	public void encodeMarkup(FacesContext context, InputTextarea inputTextarea) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        InputTextarea inputTextarea = (InputTextarea) component;
         String clientId = inputTextarea.getClientId(context);
         String valueToRender = ComponentUtils.getValueToRender(context, inputTextarea);
         String style = inputTextarea.getStyle();
         String styleClass = inputTextarea.getStyle();
+        styleClass = (styleClass == null) ? InputTextarea.MOBILE_STYLE_CLASS: InputTextarea.MOBILE_STYLE_CLASS + " " + styleClass;
 
 		writer.startElement("textarea", null);
+        writer.writeAttribute("data-role", "none", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("class", styleClass, null); 
 
 		renderPassThruAttributes(context, inputTextarea, HTML.INPUT_TEXTAREA_ATTRS);
 
         if(inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
         if(style != null) writer.writeAttribute("style", style, null);  
-        if(styleClass != null) writer.writeAttribute("class", styleClass, null); 
 		if(valueToRender != null) writer.writeText(valueToRender, "value");  
         
         renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS);
         renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
 
         writer.endElement("textarea");
+	}
+    
+    @Override
+	public void encodeScript(FacesContext context, InputTextarea inputTextarea) throws IOException {
+		String clientId = inputTextarea.getClientId(context);
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.initWithDomReady("InputTextarea", inputTextarea.resolveWidgetVar(), clientId).finish();
 	}
 }
