@@ -16,41 +16,21 @@
 package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
-import java.util.HashMap;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.panelgrid.PanelGrid;
+import org.primefaces.mobile.util.MobileUtils;
 
 public class PanelGridRenderer extends org.primefaces.component.panelgrid.PanelGridRenderer {
-    
-    private static final HashMap<Integer, String> GRID_MAP = new HashMap<Integer, String>();
-    
-    private static final HashMap<Integer, String> BLOCK_MAP = new HashMap<Integer, String>();
-    
-    static {
-        GRID_MAP.put(1, "ui-grid-solo");
-		GRID_MAP.put(2, "ui-grid-a");
-        GRID_MAP.put(3, "ui-grid-b");
-        GRID_MAP.put(4, "ui-grid-c");
-        GRID_MAP.put(5, "ui-grid-d");
-    }
-    
-    static {
-		BLOCK_MAP.put(0, "ui-block-a");
-        BLOCK_MAP.put(1, "ui-block-b");
-        BLOCK_MAP.put(2, "ui-block-c");
-        BLOCK_MAP.put(3, "ui-block-d");
-        BLOCK_MAP.put(4, "ui-block-e");
-    }
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         PanelGrid grid = (PanelGrid) component;
         String clientId = grid.getClientId(context);
         int columns = grid.getColumns();
-        String gridClass = GRID_MAP.get(columns);
+        String gridClass = MobileUtils.GRID_MAP.get(columns);
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass();
         styleClass = (styleClass == null) ? gridClass : gridClass + " " + styleClass;
@@ -66,7 +46,7 @@ public class PanelGridRenderer extends org.primefaces.component.panelgrid.PanelG
         for(UIComponent child : grid.getChildren()) {
             if(child.isRendered()) {
                 int blockKey = (i % columns);
-                String blockClass = BLOCK_MAP.get(blockKey);
+                String blockClass = MobileUtils.BLOCK_MAP.get(blockKey);
                 writer.startElement("div", null);
                 writer.writeAttribute("class", blockClass, null);
                 child.encodeAll(context);
