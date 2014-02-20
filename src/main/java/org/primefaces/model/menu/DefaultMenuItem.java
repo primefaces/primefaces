@@ -28,6 +28,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     
     private String id;
     private String icon;
+    private String iconPos;
     private String title;
     private boolean disabled;
     private String onclick;
@@ -86,6 +87,14 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     
     public String getIcon() {
         return icon;
+    }
+
+    public String getIconPos() {
+        return iconPos;
+    }
+
+    public void setIconPos(String iconPos) {
+        this.iconPos = iconPos;
     }
 
     public void setIcon(String icon) {

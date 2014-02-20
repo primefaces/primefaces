@@ -112,6 +112,10 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     protected abstract void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException;
 
     protected abstract void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException;
+    
+    protected String getLinkStyleClass(MenuItem menuItem) {
+        return AbstractMenu.MENUITEM_LINK_CLASS;
+    }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -132,9 +136,10 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 writer.writeAttribute("title", title, null);
             }
             
-            String styleClass = menuitem.getStyleClass();
-            styleClass = styleClass == null ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
-            styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+            String styleClass = this.getLinkStyleClass(menuitem);
+            if(disabled) {
+                styleClass = styleClass + " ui-state-disabled";
+            }
             
             writer.writeAttribute("class", styleClass, null);
             

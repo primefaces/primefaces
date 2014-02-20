@@ -22,6 +22,8 @@ public interface MenuItem extends MenuElement {
         
     public String getIcon();
     
+    public String getIconPos();
+    
     public String getTitle();
     
     public boolean shouldRenderChildren();
