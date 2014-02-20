@@ -131,6 +131,13 @@
             <description>Path of the menuitem image.</description>
 		</attribute>
         <attribute>
+			<name>iconPos</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>right</defaultValue>
+            <description>Position of the icon, default value is right.</description>
+		</attribute>
+        <attribute>
 			<name>partialSubmit</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
