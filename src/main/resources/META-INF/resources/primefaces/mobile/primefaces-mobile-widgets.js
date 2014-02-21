@@ -11,6 +11,18 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
 });
 
 /**
+ * PrimeFaces Mobile Menu Widget
+ */
+PrimeFaces.widget.PlainMenu = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.jq.listview();
+    }
+});
+
+/**
  * PrimeFaces Mobile Panel Widget
  */
 PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({

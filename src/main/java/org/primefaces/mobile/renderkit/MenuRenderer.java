@@ -25,8 +25,9 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.WidgetBuilder;
 
-public class MenuRenderer extends org.primefaces.component.menu.MenuRenderer {
+public class MenuRenderer extends BaseMenuRenderer {
     
     @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
@@ -38,7 +39,6 @@ public class MenuRenderer extends org.primefaces.component.menu.MenuRenderer {
         
         writer.startElement("ul", null);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("data-role", "listview", null);
         renderDynamicPassThruAttributes(context, menu);
         if (style != null) writer.writeAttribute("style", style, "style");
         if (styleClass != null)  writer.writeAttribute("class", styleClass, "styleClass");
@@ -50,7 +50,6 @@ public class MenuRenderer extends org.primefaces.component.menu.MenuRenderer {
         writer.endElement("ul");
     }
     
-    @Override
     protected void encodeSubmenu(FacesContext context, Menu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
@@ -86,7 +85,6 @@ public class MenuRenderer extends org.primefaces.component.menu.MenuRenderer {
         writer.endElement("li");
 	}
     
-    @Override
     protected void encodeElements(FacesContext context, Menu menu, List<MenuElement> elements) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
         
@@ -113,8 +111,12 @@ public class MenuRenderer extends org.primefaces.component.menu.MenuRenderer {
         }
     }
 
-    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        //no widget required
-    }
+        Menu menu = (Menu) abstractMenu;
+		String clientId = menu.getClientId(context);
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.initWithDomReady("PlainMenu", menu.resolveWidgetVar(), clientId);
+        wb.finish();
+	}
 }

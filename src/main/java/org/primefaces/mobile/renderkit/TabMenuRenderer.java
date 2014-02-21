@@ -25,7 +25,7 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.WidgetBuilder;
 
-public class TabMenuRenderer extends org.primefaces.component.tabmenu.TabMenuRenderer {
+public class TabMenuRenderer extends BaseMenuRenderer {
         
     @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu component) throws IOException {
@@ -66,24 +66,4 @@ public class TabMenuRenderer extends org.primefaces.component.tabmenu.TabMenuRen
         wb.init("TabMenu", menu.resolveWidgetVar(), clientId).attr("activeIndex", menu.getActiveIndex());
         wb.finish();
     }
-    
-    @Override
-    protected String getLinkStyleClass(MenuItem menuItem) {
-        String icon = menuItem.getIcon();
-        String iconPos = menuItem.getIconPos();
-        iconPos = (iconPos == null) ? "ui-btn-icon-top": "ui-btn-icon-" + iconPos;
-        
-        return (icon == null) ? AbstractMenu.MOBILE_MENUITEM_LINK_CLASS: AbstractMenu.MOBILE_MENUITEM_LINK_CLASS + " " + icon + " " + iconPos;
-    }
-
-    @Override
-    protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
-        Object value = menuitem.getValue();
-        
-        if(value != null) {
-            context.getResponseWriter().writeText(value, null);
-        }
-    }
-    
-
 }
