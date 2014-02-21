@@ -232,6 +232,19 @@
             <type>java.lang.String</type>
             <description>Callback to execute before displaying a date, used to customize date display.</description>
         </attribute>
+        <attribute>
+            <name>applyInputMask</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>If a mask should be applied to the input field.</description>
+        </attribute>
+        <attribute>
+            <name>inputMask</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Specifies the mask if applyInputMask is set to true. The default setting just replaces all letters of the pattern attribute with a '9'.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
