@@ -18,7 +18,9 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.jq.listview();
+        this.items = this.jq.children('li');
+        this.items.filter(':first-child').addClass('ui-first-child');
+        this.items.filter(':last-child').addClass('ui-last-child');
     }
 });
 

@@ -36,12 +36,16 @@ public class MenuRenderer extends BaseMenuRenderer {
 		String clientId = menu.getClientId(context);
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
+        styleClass = (styleClass == null) ? Menu.MOBILE_CONTAINER_CLASS: Menu.MOBILE_CONTAINER_CLASS + " " + styleClass;
         
         writer.startElement("ul", null);
         writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        
         renderDynamicPassThruAttributes(context, menu);
-        if (style != null) writer.writeAttribute("style", style, "style");
-        if (styleClass != null)  writer.writeAttribute("class", styleClass, "styleClass");
 
         if (menu.getElementsCount() > 0) {
             encodeElements(context, menu, menu.getElements());
@@ -55,11 +59,13 @@ public class MenuRenderer extends BaseMenuRenderer {
         String label = submenu.getLabel();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
+        styleClass = (styleClass == null) ? Menu.MOBILE_DIVIDER_CLASS: Menu.MOBILE_DIVIDER_CLASS + " " + styleClass;
         
         writer.startElement("li", null);
-        writer.writeAttribute("data-role", "list-divider", "style");
-        if(style != null)  writer.writeAttribute("style", style, "style");
-        if(styleClass != null)  writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
         
         if(label != null) {
             writer.writeText(label, "value");
@@ -75,29 +81,28 @@ public class MenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
         String styleClass = separator.getStyleClass();
+        styleClass = (styleClass == null) ? Menu.MOBILE_DIVIDER_CLASS: Menu.MOBILE_DIVIDER_CLASS + " " + styleClass;
 
         //title
         writer.startElement("li", null);
-        writer.writeAttribute("data-role", "list-divider", "style");
-        if(style != null)  writer.writeAttribute("style", style, "style");
-        if(styleClass != null)  writer.writeAttribute("class", styleClass, "styleClass");   
+        writer.writeAttribute("class", styleClass, "styleClass");   
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
                 
         writer.endElement("li");
 	}
     
     protected void encodeElements(FacesContext context, Menu menu, List<MenuElement> elements) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
+        int elementCount = elements.size();
         
-        for(MenuElement element : elements) {
-            if(element.isRendered()) {
+        for (int i = 0; i < elementCount; i++) {
+            MenuElement element = elements.get(i);
+            
+            if(element.isRendered()) {                
                 if(element instanceof MenuItem) {
-                    MenuItem item = (MenuItem) element;
-                    String icon = item.getIcon();
-                    
                     writer.startElement("li", null);
-                    if(icon != null) {
-                        writer.writeAttribute("data-icon", icon, null);
-                    }
                     encodeMenuItem(context, menu, (MenuItem) element);
                     writer.endElement("li");
                 }
@@ -119,4 +124,21 @@ public class MenuRenderer extends BaseMenuRenderer {
         wb.initWithDomReady("PlainMenu", menu.resolveWidgetVar(), clientId);
         wb.finish();
 	}
+    
+    @Override
+    protected String getLinkStyleClass(MenuItem menuitem) {
+        String icon = menuitem.getIcon();
+        if(icon == null) {
+            icon = "ui-icon-carat-r";
+        }
+        String iconPos = menuitem.getIconPos();
+        iconPos = (iconPos == null) ? "ui-btn-icon-right": "ui-btn-icon-" + iconPos;
+        String styleClass = AbstractMenu.MOBILE_MENUITEM_LINK_CLASS + " " + icon + " " + iconPos;
+        String userStyleClass = menuitem.getStyleClass();
+        if(userStyleClass != null) {
+            styleClass = styleClass + " " + userStyleClass;
+        }
+        
+        return styleClass;
+    }
 }
