@@ -66,4 +66,18 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         wb.init("TabMenu", menu.resolveWidgetVar(), clientId).attr("activeIndex", menu.getActiveIndex());
         wb.finish();
     }
+    
+    @Override
+    protected String getLinkStyleClass(MenuItem menuitem) {
+        String icon = menuitem.getIcon();
+        String iconPos = menuitem.getIconPos();
+        iconPos = (iconPos == null) ? "ui-btn-icon-top": "ui-btn-icon-" + iconPos;
+        String styleClass = (icon == null) ? AbstractMenu.MOBILE_MENUITEM_LINK_CLASS: AbstractMenu.MOBILE_MENUITEM_LINK_CLASS + " " + icon + " " + iconPos;
+        String userStyleClass = menuitem.getStyleClass();
+        if(userStyleClass != null) {
+            styleClass = styleClass + " " + userStyleClass;
+        }
+        
+        return styleClass;
+    }
 }
