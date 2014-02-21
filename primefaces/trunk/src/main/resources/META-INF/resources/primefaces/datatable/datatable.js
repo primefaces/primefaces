@@ -521,7 +521,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     setupScrolling: function() {
         this.scrollHeader = this.jq.children('.ui-datatable-scrollable-header');
         this.scrollBody = this.jq.children('.ui-datatable-scrollable-body');
-        this.scrollFooter = this.jq.children('.ui-datatable-scrollable-footer')
+        this.scrollFooter = this.jq.children('.ui-datatable-scrollable-footer');
         this.scrollStateHolder = $(this.jqId + '_scrollState');
         this.scrollHeaderBox = this.scrollHeader.children('div.ui-datatable-scrollable-header-box');
         this.scrollFooterBox = this.scrollFooter.children('div.ui-datatable-scrollable-footer-box');
@@ -535,23 +535,26 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this,
         scrollBarWidth = this.getScrollbarWidth() + 'px';
         
-        if(this.percentageScrollHeight) {
-            this.adjustScrollHeight();
+        if(this.cfg.scrollHeight) {
+            this.scrollHeaderBox.css('margin-right', scrollBarWidth);
+            this.scrollFooterBox.css('margin-right', scrollBarWidth);
+            
+            if(this.percentageScrollHeight) {
+                this.adjustScrollHeight();
+            }
         }
-
-        this.scrollHeaderBox.css('margin-right', scrollBarWidth);
-        this.scrollFooterBox.css('margin-right', scrollBarWidth);
         
         this.alignScrollBody();
-        this.fixColumnWidths();
         
+        this.fixColumnWidths();
+                
         if(this.cfg.scrollWidth) {
             if(this.percentageScrollWidth)
                 this.adjustScrollWidth();
             else
                 this.setScrollWidth(this.cfg.scrollWidth);
         }
-        
+              
         this.restoreScrollState();
 
         if(this.cfg.liveScroll) {
@@ -618,8 +621,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     alignScrollBody: function() {
-        var verticalScroll = this.bodyTable.outerHeight() > this.scrollBody.outerHeight(),
-        marginRight = verticalScroll ? '0px' : this.getScrollbarWidth() + 'px';
+        var verticalScrolling = (this.cfg.scrollHeight && this.bodyTable.outerHeight() > this.scrollBody.outerHeight()),
+        marginRight = verticalScrolling ? '0px' : this.getScrollbarWidth() + 'px';
 
         this.scrollBody.css('margin-right', marginRight);
     },
