@@ -42,6 +42,10 @@ public abstract class BaseMenuRenderer extends org.primefaces.component.menu.Bas
         String iconPos = menuitem.getIconPos();
         iconPos = (iconPos == null) ? "ui-btn-icon-top": "ui-btn-icon-" + iconPos;
         String styleClass = (icon == null) ? AbstractMenu.MOBILE_MENUITEM_LINK_CLASS: AbstractMenu.MOBILE_MENUITEM_LINK_CLASS + " " + icon + " " + iconPos;
+        String userStyleClass = menuitem.getStyleClass();
+        if(userStyleClass != null) {
+            styleClass = styleClass + " " + userStyleClass;
+        }
         if(disabled) {
             styleClass = styleClass + " ui-state-disabled";
         }
