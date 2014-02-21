@@ -93,6 +93,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+        
+        if (this.cfg.applyInputMask) {
+            this.input.mask(this.cfg.inputMask);
+        }
     },
         
     refresh: function(cfg) {

@@ -194,6 +194,11 @@ public class CalendarRenderer extends InputRenderer {
                 .attr("secondMax", calendar.getMaxSecond());
         }
         
+        if (calendar.isApplyInputMask()) {
+            wb.attr("applyInputMask", true);
+            wb.attr("inputMask", isValueBlank(calendar.getInputMask()) ? pattern.replaceAll("[a-zA-Z]", "9") : calendar.getInputMask());
+        }
+        
         encodeClientBehaviors(context, calendar);
         
         wb.finish();
