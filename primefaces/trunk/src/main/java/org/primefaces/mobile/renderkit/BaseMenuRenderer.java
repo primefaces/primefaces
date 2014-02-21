@@ -32,21 +32,7 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentUtils;
 
 public abstract class BaseMenuRenderer extends org.primefaces.component.menu.BaseMenuRenderer {
- 
-    @Override
-    protected String getLinkStyleClass(MenuItem menuitem) {
-        String icon = menuitem.getIcon();
-        String iconPos = menuitem.getIconPos();
-        iconPos = (iconPos == null) ? "ui-btn-icon-right": "ui-btn-icon-" + iconPos;
-        String styleClass = (icon == null) ? AbstractMenu.MOBILE_MENUITEM_LINK_CLASS: AbstractMenu.MOBILE_MENUITEM_LINK_CLASS + " " + icon + " " + iconPos;
-        String userStyleClass = menuitem.getStyleClass();
-        if(userStyleClass != null) {
-            styleClass = styleClass + " " + userStyleClass;
-        }
-        
-        return styleClass;
-    }
-    
+     
     @Override
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
