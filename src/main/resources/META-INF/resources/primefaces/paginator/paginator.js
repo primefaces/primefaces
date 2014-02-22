@@ -196,7 +196,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             for(var i=0; i < this.cfg.pageCount; i++) {
                 this.jtpSelect.append("<option value=" + i + ">" + (i + 1) + "</option>");
             }
-            this.jtpSelect.attr('value', this.cfg.page);
+            this.jtpSelect.children('option[value=' + (this.cfg.page) + ']').prop('selected','selected');
         }
 
         //page links
