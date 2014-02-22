@@ -152,7 +152,12 @@ public abstract class Exporter {
     
     protected void exportPageOnly(FacesContext context, DataTable table, Object document) {        
         int first = table.getFirst();
-    	int rowsToExport = first + table.getRows();
+        int rows = table.getRows();
+        if(rows == 0) {
+            rows = table.getRowCount();
+        }
+        
+    	int rowsToExport = first + rows;
         
         for(int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {                
             exportRow(table, document, rowIndex);
