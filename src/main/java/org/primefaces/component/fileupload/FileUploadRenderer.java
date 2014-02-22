@@ -194,8 +194,11 @@ public class FileUploadRenderer extends CoreRenderer {
         if(fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         
         if(mode.equals("simple")) {
-            if(fileUpload.getStyle() != null) writer.writeAttribute("style", fileUpload.getStyle(), "style");
-            if(fileUpload.getStyleClass() != null) writer.writeAttribute("class", fileUpload.getStyleClass(), "styleClass");
+            String style = fileUpload.getStyle();
+            String styleClass = fileUpload.getStyleClass();
+            
+            if(style != null) writer.writeAttribute("style", style, "style");
+            if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
         }
         
 		writer.endElement("input");
