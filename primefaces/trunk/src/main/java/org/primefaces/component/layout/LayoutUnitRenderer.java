@@ -39,9 +39,7 @@ public class LayoutUnitRenderer extends CoreRenderer {
         writer.writeAttribute("class", styleClass , "styleClass");
         if(unit.getStyle() != null) writer.writeAttribute("style", unit.getStyle() , "style");
         
-        if(unit.getHeader() != null) {
-            encodeHeader(context, unit);
-        }
+        encodeHeader(context, unit);
 
         if(!nesting) {
             writer.startElement("div", null);
@@ -54,9 +52,7 @@ public class LayoutUnitRenderer extends CoreRenderer {
             writer.endElement("div");
         }
 
-        if(unit.getFooter() != null) {
-            encodeFooter(context, unit);
-        }
+        encodeFooter(context, unit);
 		
 		writer.endElement("div");
 	}
@@ -74,13 +70,24 @@ public class LayoutUnitRenderer extends CoreRenderer {
     public void encodeHeader(FacesContext context, LayoutUnit unit) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         Layout layout = (Layout) unit.getParent();
+        String headerText = unit.getHeader();
+        UIComponent headerFacet = unit.getFacet("header");
+        
+        if(headerText == null && headerFacet == null) {
+            return;
+        }
 
 		writer.startElement("div", null);
         writer.writeAttribute("class", Layout.UNIT_HEADER_CLASS, null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", Layout.UNIT_HEADER_TITLE_CLASS, null);
-        writer.write(unit.getHeader());
+        
+        if(headerFacet != null)
+            headerFacet.encodeAll(context);
+        else if(headerText != null)
+            writer.writeText(headerText, null);
+        
         writer.endElement("span");
 
         if(unit.isClosable()) {
@@ -95,6 +102,13 @@ public class LayoutUnitRenderer extends CoreRenderer {
 	}
 
 	public void encodeFooter(FacesContext context, LayoutUnit unit) throws IOException {
+        String footerText = unit.getFooter();
+        UIComponent footerFacet = unit.getFacet("footer");
+        
+        if(footerText == null && footerFacet == null) {
+            return;
+        }
+        
 		ResponseWriter writer = context.getResponseWriter();
 
 		writer.startElement("div", null);
@@ -102,7 +116,12 @@ public class LayoutUnitRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Layout.UNIT_FOOTER_TITLE_CLASS, null);
-        writer.write(unit.getFooter());
+        
+        if(footerFacet != null)
+            footerFacet.encodeAll(context);
+        else if(footerText != null)
+            writer.writeText(footerText, null);
+        
         writer.endElement("div");
 
         writer.endElement("div");
