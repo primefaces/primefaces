@@ -34,13 +34,13 @@ public class ConfirmBehavior extends ClientBehaviorBase {
         FacesContext context = behaviorContext.getFacesContext();
         UIComponent component = behaviorContext.getComponent();
         String source = component.getClientId(context);
-        String header = JSONObject.quote(this.getHeader());
-        String message = JSONObject.quote(this.getMessage());
+        String headerText = JSONObject.quote(this.getHeader());
+        String messageText = JSONObject.quote(this.getMessage());
         
         if(component instanceof Confirmable) {
-            String script = "PrimeFaces.confirm({source:\"" + source + "\",header:" + header + ",message:" + message + ",icon:\"" + getIcon()  + "\"});return false;";
+            String script = "PrimeFaces.confirm({source:\"" + source + "\",header:" + headerText + ",message:" + messageText + ",icon:\"" + getIcon()  + "\"});return false;";
             ((Confirmable) component).setConfirmationScript(script);
-            System.out.println(script);
+
             return null;
         }
         else {
