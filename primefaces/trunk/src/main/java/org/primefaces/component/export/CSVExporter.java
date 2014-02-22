@@ -74,7 +74,30 @@ public class CSVExporter extends Exporter {
                     writer.write(",");
                 }
                 
-                addColumnValue(writer, col.getFacet(columnType.facet()));
+                UIComponent facet = col.getFacet(columnType.facet());
+                if(facet != null) {
+                    addColumnValue(writer, col.getFacet(columnType.facet()));
+                }
+                else {
+                    String textValue;
+                    switch(columnType) {
+                        case HEADER:
+                            textValue = col.getHeaderText();
+                        break;
+                            
+                        case FOOTER:
+                            textValue = col.getFooterText();
+                        break;
+                            
+                        default:
+                            textValue = "";
+                        break;
+                    }
+                    
+                    addColumnValue(writer, textValue);
+
+                }
+                
                 firstCellWritten = true;
             }
         }
@@ -129,6 +152,10 @@ public class CSVExporter extends Exporter {
 	protected void addColumnValue(Writer writer, UIComponent component) throws IOException {
 		String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
         
+        addColumnValue(writer, value);
+	}
+    
+    protected void addColumnValue(Writer writer, String value) throws IOException {        
         //escape double quotes
         value = value.replaceAll("\"", "\"\"");
         

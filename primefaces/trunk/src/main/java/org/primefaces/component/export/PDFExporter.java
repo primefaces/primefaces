@@ -122,7 +122,30 @@ public class PDFExporter extends Exporter {
             }
             
             if (col.isRendered() && col.isExportable()) {
-                addColumnValue(pdfTable, col.getFacet(columnType.facet()), this.facetFont);
+                UIComponent facet = col.getFacet(columnType.facet());
+                if(facet != null) {
+                    addColumnValue(pdfTable, col.getFacet(columnType.facet()), this.facetFont);
+                }
+                else {
+                    String textValue;
+                    switch(columnType) {
+                        case HEADER:
+                            textValue = col.getHeaderText();
+                        break;
+                            
+                        case FOOTER:
+                            textValue = col.getFooterText();
+                        break;
+                            
+                        default:
+                            textValue = "";
+                        break;
+                    }
+                    
+                    if(textValue != null) {
+                        pdfTable.addCell(new Paragraph(textValue, this.facetFont));
+                    }
+                }
             }
         }
 	}
