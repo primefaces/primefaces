@@ -68,14 +68,15 @@ public class LayoutUnitRenderer extends CoreRenderer {
     }
 
     public void encodeHeader(FacesContext context, LayoutUnit unit) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-        Layout layout = (Layout) unit.getParent();
         String headerText = unit.getHeader();
         UIComponent headerFacet = unit.getFacet("header");
         
         if(headerText == null && headerFacet == null) {
             return;
         }
+        
+        ResponseWriter writer = context.getResponseWriter();
+        Layout layout = (Layout) unit.getParent();
 
 		writer.startElement("div", null);
         writer.writeAttribute("class", Layout.UNIT_HEADER_CLASS, null);
