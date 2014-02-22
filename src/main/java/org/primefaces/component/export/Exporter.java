@@ -28,8 +28,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.html.HtmlCommandLink;
+import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import org.primefaces.component.celleditor.CellEditor;
 
 import org.primefaces.component.datatable.DataTable;
 
@@ -130,7 +132,13 @@ public abstract class Exporter {
 			
 			//No converter found just return the value as string
 			return value.toString();
-		} 
+		}
+        else if (component instanceof CellEditor) {
+            return exportValue(context, ((CellEditor) component).getFacet("output"));
+        }
+        else if (component instanceof HtmlGraphicImage) {
+            return (String) component.getAttributes().get("alt");
+        }
         else {
 			//This would get the plain texts on UIInstructions when using Facelets
 			String value = component.toString();
