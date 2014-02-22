@@ -366,6 +366,9 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         
         this.iframe.attr('src', opt.src); 
         
+        this.captionText.text(opt.title||'');
+        this.caption.slideDown();
+        
         this.show();
     }
     
