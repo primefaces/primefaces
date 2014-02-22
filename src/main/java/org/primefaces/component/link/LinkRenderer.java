@@ -45,7 +45,7 @@ public class LinkRenderer extends OutcomeTargetRenderer {
                 writer.writeAttribute("style", style, "style");
             }
 
-            renderValue(writer, link);
+            renderContent(context, link);
             writer.endElement("span");
         }
         else {
@@ -62,12 +62,13 @@ public class LinkRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("class", styleClass, "styleClass");
             renderPassThruAttributes(context, link, HTML.LINK_ATTRS_WITHOUT_EVENTS);
             renderDomEvents(context, link, HTML.COMMON_EVENTS);
-            renderValue(writer, link);
+            renderContent(context, link);
             writer.endElement("a");
         }
     }
     
-    protected void renderValue(ResponseWriter writer, Link link) throws IOException {
+    protected void renderContent(FacesContext context, Link link) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         Object value = link.getValue();
         
         if(value != null) {
@@ -76,5 +77,18 @@ public class LinkRenderer extends OutcomeTargetRenderer {
             else
                 writer.write(value.toString());
         }
+        else {
+            renderChildren(null, link);
+        }
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }

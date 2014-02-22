@@ -46,7 +46,7 @@ public class LinkRenderer extends org.primefaces.component.link.LinkRenderer {
                 writer.writeAttribute("style", style, "style");
             }
 
-            renderValue(writer, link);
+            renderContent(context, link);
             writer.endElement("span");
         }
         else {
@@ -77,8 +77,10 @@ public class LinkRenderer extends org.primefaces.component.link.LinkRenderer {
                 renderDomEvents(context, link, HTML.OUTPUT_EVENTS);
             }
 
-            renderValue(writer, link);
+            renderContent(context, link);
             writer.endElement("a");
         }
     }
+            
+
 }
