@@ -150,7 +150,7 @@ public class FileUploadRenderer extends CoreRenderer {
     }
 
     protected void encodeSimpleMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
-        encodeInputField(context, fileUpload, fileUpload.getClientId(context));
+        encodeInputField(context, fileUpload, fileUpload.getClientId(context), "simple");
     }
     
     protected void encodeChooseButton(FacesContext context, FileUpload fileUpload, boolean disabled) throws IOException {
@@ -176,13 +176,13 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if(!disabled) {
-            encodeInputField(context, fileUpload, clientId + "_input");
+            encodeInputField(context, fileUpload, clientId + "_input", "advanced");
         }
         
 		writer.endElement("span");
     }
 
-    protected void encodeInputField(FacesContext context, FileUpload fileUpload, String clientId) throws IOException {
+    protected void encodeInputField(FacesContext context, FileUpload fileUpload, String clientId, String mode) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("input", null);
@@ -191,9 +191,12 @@ public class FileUploadRenderer extends CoreRenderer {
 		writer.writeAttribute("name", clientId, null);
         
         if(fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
-        if(fileUpload.getStyle() != null) writer.writeAttribute("style", fileUpload.getStyle(), "style");
-        if(fileUpload.getStyleClass() != null) writer.writeAttribute("class", fileUpload.getStyleClass(), "styleClass");
         if(fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        
+        if(mode.equals("simple")) {
+            if(fileUpload.getStyle() != null) writer.writeAttribute("style", fileUpload.getStyle(), "style");
+            if(fileUpload.getStyleClass() != null) writer.writeAttribute("class", fileUpload.getStyleClass(), "styleClass");
+        }
         
 		writer.endElement("input");
     }
