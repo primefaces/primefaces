@@ -954,7 +954,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     selectRowsInRange: function(row) {
         var rows = this.tbody.children(),
-        rowMeta = this.getRowMeta(row);
+        rowMeta = this.getRowMeta(row),
         $this = this;
        
         //unselect previously selected rows with shift
