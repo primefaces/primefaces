@@ -98,16 +98,41 @@ public class ExcelExporter extends Exporter {
                 ((DynamicColumn) col).applyStatelessModel();
             }
                         
-            if (col.isRendered() && col.isExportable()) {
-                addColumnValue(rowHeader, col.getFacet(columnType.facet()));
+            if (col.isRendered() && col.isExportable()) {                
+                UIComponent facet = col.getFacet(columnType.facet());
+                if(facet != null) {
+                    addColumnValue(rowHeader, col.getFacet(columnType.facet()));
+                }
+                else {
+                    String textValue;
+                    switch(columnType) {
+                        case HEADER:
+                            textValue = col.getHeaderText();
+                        break;
+                            
+                        case FOOTER:
+                            textValue = col.getFooterText();
+                        break;
+                            
+                        default:
+                            textValue = "";
+                        break;
+                    }
+                    
+                    addColumnValue(rowHeader, textValue);
+                }
             }
         }
     }
 	
     protected void addColumnValue(Row row, UIComponent component) {
+        String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
+        addColumnValue(row, value);
+    }
+    
+    protected void addColumnValue(Row row, String value) {
         int cellIndex = row.getLastCellNum() == -1 ? 0 : row.getLastCellNum();
         Cell cell = row.createCell(cellIndex);
-        String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
 
         cell.setCellValue(new HSSFRichTextString(value));
     }
