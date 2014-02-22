@@ -210,6 +210,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = menuitem.getIcon();
+        Object value = menuitem.getValue();
         
         if(icon != null) {
             writer.startElement("span", null);
@@ -217,10 +218,10 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             writer.endElement("span");
         }
 
-        if(menuitem.getValue() != null) {
+        if(value != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
-            writer.writeText((String) menuitem.getValue(), "value");
+            writer.writeText(value, "value");
             writer.endElement("span");
         }
     }
