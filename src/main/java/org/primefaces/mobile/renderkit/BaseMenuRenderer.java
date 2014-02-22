@@ -119,7 +119,7 @@ public abstract class BaseMenuRenderer extends org.primefaces.component.menu.Bas
 
         Object value = menuitem.getValue();
         if(value != null) {
-            context.getResponseWriter().writeText(value, null);
+            writer.writeText(value, null);
         }
 
         writer.endElement("a");  
