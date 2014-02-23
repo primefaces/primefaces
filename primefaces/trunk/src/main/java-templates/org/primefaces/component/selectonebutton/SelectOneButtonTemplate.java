@@ -3,6 +3,9 @@ import java.util.Collections;
 import java.util.Arrays;
 
     public final static String STYLE_CLASS = "ui-selectonebutton ui-buttonset ui-widget ui-corner-all";
+    public final static String MOBILE_STYLE_CLASS = "ui-selectonebutton ui-controlgroup ui-controlgroup-horizontal ui-corner-all";
+    public final static String MOBILE_ITEMS_CLASS = "ui-controlgroup-controls";
+    public final static String MOBILE_LABEL_CLASS = "ui-btn ui-corner-all ui-btn-inherit";
 
     private final static String DEFAULT_EVENT = "change";
 
