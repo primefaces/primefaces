@@ -25,41 +25,48 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.selectmanybutton.SelectManyButton;
+import org.primefaces.component.selectonebutton.SelectOneButton;
 
 public class SelectManyButtonRenderer extends org.primefaces.component.selectmanybutton.SelectManyButtonRenderer {
     
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SelectManyButton button = (SelectManyButton) component;
+    public void encodeMarkup(FacesContext context, SelectManyButton button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, button);
         String style = button.getStyle();
         String styleClass = button.getStyleClass();
+        styleClass = (styleClass == null) ? SelectManyButton.MOBILE_STYLE_CLASS: SelectManyButton.MOBILE_STYLE_CLASS + " " + styleClass;
      
         writer.startElement("div", button);
-        writer.writeAttribute("data-role", "controlgroup", null);
-        writer.writeAttribute("data-type", "horizontal", null);
-        if (shouldWriteId(component)) writer.writeAttribute("id", clientId, "id");
-        if (style != null) writer.writeAttribute("style", style, "style");
-        if (styleClass != null) writer.writeAttribute("class", style, "styleClass");
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        
+        writer.startElement("div", button);
+        writer.writeAttribute("class", SelectManyButton.MOBILE_ITEMS_CLASS, "id");
         
         if (selectItems != null && !selectItems.isEmpty()) {
+            int itemCount = selectItems.size();
             Converter converter = button.getConverter();
             Object values = getValues(button);
             Object submittedValues = getSubmittedValues(button);
 
-            int idx = 0;
-            for (SelectItem selectItem : selectItems) {
-                encodeOption(context, button, values, submittedValues, converter, selectItem, idx);
-                idx++;        
-            }           
+            for (int idx = 0; idx < itemCount; idx++) {
+                SelectItem selectItem = selectItems.get(idx);
+                String labelClass = (idx == 0) ? "ui-first-child" : (idx == (itemCount - 1)) ? "ui-last-child" : null;
+ 
+                encodeOption(context, button, values, submittedValues, converter, selectItem, idx, labelClass);
+            }        
         }
         
         writer.endElement("div");
+        writer.endElement("div");
     }
     
-    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter, SelectItem option, int idx) throws IOException {
+    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter, SelectItem option, int idx, String labelClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         SelectManyButton button = (SelectManyButton) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
@@ -82,22 +89,22 @@ public class SelectManyButtonRenderer extends org.primefaces.component.selectman
             return;
         }
         
-        writer.startElement("input", null);
-        writer.writeAttribute("id", id, null);
-        writer.writeAttribute("name", name, null);
-        writer.writeAttribute("type", "checkbox", null);
-        writer.writeAttribute("value", itemValueAsString, null);
-
-        renderOnchange(context, button);
-        renderDynamicPassThruAttributes(context, button);
+        String labelStyleClass = (labelClass == null) ? SelectManyButton.MOBILE_LABEL_CLASS: SelectManyButton.MOBILE_LABEL_CLASS + " " + labelClass;
         
-        if (selected) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if(selected) {
+            labelStyleClass = labelStyleClass + " ui-btn-active";
+        }
         
-        writer.endElement("input");
-
+        if(disabled) {
+            labelStyleClass = labelStyleClass + " ui-state-disabled";
+        }
+        
+        writer.startElement("div", button);
+        writer.writeAttribute("class", "ui-checkbox", null);
+        
         //label
         writer.startElement("label", null);
+        writer.writeAttribute("class", labelStyleClass, null);
         writer.writeAttribute("for", id, null);
         
         if (option.isEscape())
@@ -106,5 +113,23 @@ public class SelectManyButtonRenderer extends org.primefaces.component.selectman
             writer.write(option.getLabel());
         
         writer.endElement("label");
+        
+        //input
+        writer.startElement("input", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", name, null);
+        writer.writeAttribute("type", "checkbox", null);
+        writer.writeAttribute("value", itemValueAsString, null);
+        writer.writeAttribute("data-role", "none", null);
+
+        renderOnchange(context, button);
+        renderDynamicPassThruAttributes(context, button);
+        
+        if (selected) writer.writeAttribute("checked", "checked", null);
+        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        
+        writer.endElement("input");
+        
+        writer.endElement("div");
     }
 }
