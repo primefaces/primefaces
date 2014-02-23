@@ -257,9 +257,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         boxClass = selected ? boxClass + " ui-state-active" : boxClass;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
         boxClass = !radio.isValid() ? boxClass + " ui-state-error" : boxClass;
-
-        String iconClass = HTML.RADIOBUTTON_ICON_CLASS;
-        iconClass = selected ? iconClass + " " + HTML.RADIOBUTTON_CHECKED_ICON_CLASS : iconClass;
+        String iconClass = selected ? HTML.RADIOBUTTON_CHECKED_ICON_CLASS: HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);

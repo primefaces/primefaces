@@ -196,8 +196,8 @@ public class HTML {
     public final static String RADIOBUTTON_NATIVE_CLASS = "ui-radiobutton ui-radiobutton-native ui-widget";
     public final static String RADIOBUTTON_BOX_CLASS = "ui-radiobutton-box ui-widget ui-corner-all ui-state-default";
     public final static String RADIOBUTTON_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
-    public final static String RADIOBUTTON_ICON_CLASS = "ui-radiobutton-icon";
-    public final static String RADIOBUTTON_CHECKED_ICON_CLASS = "ui-icon ui-icon-bullet";
+    public final static String RADIOBUTTON_UNCHECKED_ICON_CLASS = "ui-radiobutton-icon ui-icon ui-icon-blank";
+    public final static String RADIOBUTTON_CHECKED_ICON_CLASS = "ui-radiobutton-icon ui-icon ui-icon-bullet";
     
     public final static String WIDGET_VAR = "data-widget";
     

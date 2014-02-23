@@ -29,3 +29,7 @@ ui-overlay-visible * {
 .ui-datepicker .ui-datepicker-current.ui-priority-secondary {
     opacity: 1;
 }
+
+.ui-icon-blank { 
+    background-position: 16px 16px; 
+}
