@@ -332,10 +332,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     bindRadioEvents: function() {
         var $this = this,
-        radioInputSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column :radio';
+        radioInputSelector = '> tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column :radio';
         
         if(this.cfg.nativeElements) {
-            $(document).off('click.dataTable', radioInputSelector).on('click.dataTable', radioInputSelector, null, function(e) {
+            this.tbody.off('click.dataTable', radioInputSelector).on('click.dataTable', radioInputSelector, null, function(e) {
                 var radioButton = $(this);
 
                 if(!radioButton.prop('checked'))
@@ -343,19 +343,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             });
         }
         else {
-            var radioSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-radiobutton .ui-radiobutton-box';
-            $(document).off('click.ui-radiobutton mouseover.ui-radiobutton mouseout.ui-radiobutton', radioSelector)
-                .on('mouseover.ui-radiobutton', radioSelector, null, function() {
+            var radioSelector = '> tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column .ui-radiobutton .ui-radiobutton-box';
+            this.tbody.off('click.dataTable mouseover.dataTable mouseout.dataTable', radioSelector)
+                .on('mouseover.dataTable', radioSelector, null, function() {
                     var radio = $(this);
                     if(!radio.hasClass('ui-state-disabled')&&!radio.hasClass('ui-state-active')) {
                         radio.addClass('ui-state-hover');
                     }
                 })
-                .on('mouseout.ui-radiobutton', radioSelector, null, function() {
+                .on('mouseout.dataTable', radioSelector, null, function() {
                     var radio = $(this);
                     radio.removeClass('ui-state-hover');
                 })
-                .on('click.ui-radiobutton', radioSelector, null, function() {
+                .on('click.dataTable', radioSelector, null, function() {
                     var radio = $(this),
                     checked = radio.hasClass('ui-state-active'),
                     disabled = radio.hasClass('ui-state-disabled');
@@ -367,8 +367,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
                        
         //keyboard support
-        $(document).off('focus.ui-radiobutton blur.ui-radiobutton change.ui-radiobutton', radioInputSelector)
-            .on('focus.ui-radiobutton', radioInputSelector, null, function() {
+        this.tbody.off('focus.dataTable blur.dataTable change.dataTable', radioInputSelector)
+            .on('focus.dataTable', radioInputSelector, null, function() {
                 var input = $(this),
                 box = input.parent().next();
 
@@ -378,7 +378,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 box.addClass('ui-state-focus');
             })
-            .on('blur.ui-radiobutton', radioInputSelector, null, function() {
+            .on('blur.dataTable', radioInputSelector, null, function() {
                 var input = $(this),
                 box = input.parent().next();
 
@@ -388,7 +388,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 box.removeClass('ui-state-focus');
             })
-            .on('change.ui-radiobutton', radioInputSelector, null, function() {
+            .on('change.dataTable', radioInputSelector, null, function() {
                 var currentInput = $(radioInputSelector).filter(':checked'),
                 currentRadio = currentInput.parent().next();
 
@@ -399,7 +399,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     bindCheckboxEvents: function() {
         var $this = this,
-        checkboxInputSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content.ui-datatable-selectable > td.ui-selection-column input';
+        checkboxInputSelector = '> tr.ui-widget-content.ui-datatable-selectable > td.ui-selection-column :checkbox';
 
         if(this.cfg.nativeElements) {
             this.checkAllToggler = this.thead.find('> tr > th.ui-selection-column > :checkbox');
@@ -408,7 +408,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.toggleCheckAll();
             });
             
-            $(document).off('click.dataTable', checkboxInputSelector).on('click.dataTable', checkboxInputSelector, null, function(e) {
+            this.tbody.off('click.dataTable', checkboxInputSelector).on('click.dataTable', checkboxInputSelector, null, function(e) {
                 var checkbox = $(this);
 
                 if(checkbox.prop('checked'))
@@ -436,18 +436,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
             
-            var checkboxSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content.ui-datatable-selectable > td.ui-selection-column .ui-chkbox .ui-chkbox-box';
-            $(document).off('mouseover.ui-chkbox mouseover.ui-chkbox click.ui-chkbox', checkboxSelector)
-                        .on('mouseover.ui-chkbox', checkboxSelector, null, function() {
+            var checkboxSelector = '> tr.ui-widget-content.ui-datatable-selectable > td.ui-selection-column .ui-chkbox .ui-chkbox-box';
+            this.tbody.off('mouseover.dataTable mouseover.dataTable click.dataTable', checkboxSelector)
+                        .on('mouseover.dataTable', checkboxSelector, null, function() {
                             var box = $(this);
                             if(!box.hasClass('ui-state-active')) {
                                 box.addClass('ui-state-hover');
                             }
                         })
-                        .on('mouseout.ui-chkbox', checkboxSelector, null, function() {
+                        .on('mouseout.dataTable', checkboxSelector, null, function() {
                             $(this).removeClass('ui-state-hover');
                         })
-                        .on('click.ui-chkbox', checkboxSelector, null, function() {
+                        .on('click.dataTable', checkboxSelector, null, function() {
                             var checkbox = $(this),
                             checked = checkbox.hasClass('ui-state-active');
 
@@ -459,8 +459,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         
         //keyboard support
-        $(document).off('focus.ui-chkbox blur.ui-chkbox keydown.ui-chkbox keyup.ui-chkbox', checkboxInputSelector)
-                    .on('focus.ui-chkbox', checkboxInputSelector, null, function() {
+        this.tbody.off('focus.dataTable blur.dataTable keydown.dataTable keyup.dataTable', checkboxInputSelector)
+                    .on('focus.dataTable', checkboxInputSelector, null, function() {
                         var input = $(this),
                         box = input.parent().next();
 
@@ -470,7 +470,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                         box.addClass('ui-state-focus');
                     })
-                    .on('blur.ui-chkbox', checkboxInputSelector, null, function() {
+                    .on('blur.dataTable', checkboxInputSelector, null, function() {
                         var input = $(this),
                         box = input.parent().next();
 
@@ -480,16 +480,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                         box.removeClass('ui-state-focus');
                     })
-                    .on('keydown.ui-chkbox', checkboxInputSelector, null, function(e) {
+                    .on('keydown.dataTable', checkboxInputSelector, null, function(e) {
                         var keyCode = $.ui.keyCode;
-                        if(e.which == keyCode.SPACE) {
+                        if(e.which === keyCode.SPACE) {
                             e.preventDefault();
                         }
                     })
-                    .on('keyup.ui-chkbox', checkboxInputSelector, null, function(e) {
+                    .on('keyup.dataTable', checkboxInputSelector, null, function(e) {
                         var keyCode = $.ui.keyCode;
 
-                        if(e.which == keyCode.SPACE) {
+                        if(e.which === keyCode.SPACE) {
                             var input = $(this),
                             box = input.parent().next();
 
