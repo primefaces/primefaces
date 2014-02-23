@@ -111,10 +111,6 @@ public class DataTableRenderer extends DataRenderer {
         if(dynamicCols != null) {
             dynamicCols.setRowIndex(-1);
         }
-        
-        if(table.isSelectionEnabled()) {
-            table.findSelectedRowKeys();
-        }
     }   
     
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
@@ -750,6 +746,10 @@ public class DataTableRenderer extends DataRenderer {
         UIComponent emptyFacet = table.getFacet("emptyMessage");
         SubTable subTable = table.getSubTable();
         String tbodyClientId = (tbodyId == null) ? clientId + "_data" : tbodyId;
+        
+        if(table.isSelectionEnabled()) {
+            table.findSelectedRowKeys();
+        }
                
         int rows = table.getRows();
 		int first = table.getFirst();
