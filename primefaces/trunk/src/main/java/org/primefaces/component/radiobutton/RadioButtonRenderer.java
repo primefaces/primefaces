@@ -118,9 +118,7 @@ public class RadioButtonRenderer extends InputRenderer {
         String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
         boxClass = selected ? boxClass + " ui-state-active" : boxClass;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
-
-        String iconClass = HTML.RADIOBUTTON_ICON_CLASS;
-        iconClass = selected ? iconClass + " " + HTML.RADIOBUTTON_CHECKED_ICON_CLASS : iconClass;
+        String iconClass = selected ? HTML.RADIOBUTTON_CHECKED_ICON_CLASS: HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);

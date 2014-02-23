@@ -1072,7 +1072,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
-            String iconClass = HTML.RADIOBUTTON_ICON_CLASS;
+            String iconClass = checked ? HTML.RADIOBUTTON_CHECKED_ICON_CLASS: HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS;
             boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
             boxClass = checked ? boxClass + " ui-state-active" : boxClass;
             iconClass = checked ? iconClass + " " + HTML.RADIOBUTTON_CHECKED_ICON_CLASS : iconClass;

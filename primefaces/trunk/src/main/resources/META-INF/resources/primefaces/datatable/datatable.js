@@ -1103,7 +1103,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
             else {
                 activeRow.find('td.ui-selection-column .ui-radiobutton .ui-radiobutton-box').removeClass('ui-state-active')
-                                            .children('span.ui-radiobutton-icon').removeClass('ui-icon ui-icon-bullet');                   
+                                            .children('span.ui-radiobutton-icon').addClass('ui-icon-blank').removeClass('ui-icon-bullet');                  
                 this.currentRadio.prev().children('input').prop('checked', false);
             }    
         }
@@ -1114,7 +1114,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(!radio.hasClass('ui-state-focus')) {
                 radio.addClass('ui-state-active');
             }
-            radio.children('.ui-radiobutton-icon').addClass('ui-icon ui-icon-bullet');
+            radio.children('.ui-radiobutton-icon').addClass('ui-icon-bullet').removeClass('ui-icon-blank');
             radio.prev().children('input').attr('checked', 'checked');
         }
         this.highlightRow(row);
