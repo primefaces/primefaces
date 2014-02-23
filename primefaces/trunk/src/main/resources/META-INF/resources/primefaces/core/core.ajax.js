@@ -89,6 +89,9 @@ PrimeFaces.ajax = {
                 PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.CLIENT_WINDOW, content, xhr);
             }
             else if (id === PrimeFaces.VIEW_ROOT) {
+                // reset PrimeFaces JS state
+                window.PrimeFaces = null;
+                
                 var cache = $.ajaxSetup()['cache'];
                 $.ajaxSetup()['cache'] = true;
                 $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
@@ -99,6 +102,9 @@ PrimeFaces.ajax = {
                 $('body').html(content.substring(bodyStartIndex, content.lastIndexOf("</body>")));
             }
             else if (id === PrimeFaces.ajax.VIEW_HEAD) {
+                // reset PrimeFaces JS state
+                window.PrimeFaces = null;
+                
                 var cache = $.ajaxSetup()['cache'];
                 $.ajaxSetup()['cache'] = true;
                 $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
