@@ -429,7 +429,17 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.mobile.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/primefaces-mobile-widgets.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/accordion.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/autocomplete.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/calendar.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datalist.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/dialog.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/forms.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/growl.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/menu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/overlaypanel.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/panel.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/tabview.js</include>
                             </includes>
                         </aggregation>
                     </aggregations>
