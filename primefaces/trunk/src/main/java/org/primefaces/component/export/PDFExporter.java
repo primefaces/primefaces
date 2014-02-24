@@ -124,7 +124,7 @@ public class PDFExporter extends Exporter {
             if (col.isRendered() && col.isExportable()) {
                 UIComponent facet = col.getFacet(columnType.facet());
                 if(facet != null) {
-                    addColumnValue(pdfTable, col.getFacet(columnType.facet()), this.facetFont);
+                    addColumnValue(pdfTable, facet, this.facetFont);
                 }
                 else {
                     String textValue;
