@@ -1432,14 +1432,8 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         
         //scroll to selected
         var selected = this.options.filter(':selected:not(:disabled)');
-        if(selected.length > 0) {
-            var selectedItem = this.items.eq(selected.eq(0).index()),
-            itemBottom = selectedItem.position().top + selectedItem.height(),
-            scrollBottom = this.jq.scrollTop() + this.jq.height();
-
-            if(itemBottom > scrollBottom) {
-                this.jq.scrollTop(selectedItem.position().top);
-            }
+        if(selected.length) {
+            PrimeFaces.scrollInView(this.jq, this.items.eq(selected.eq(0).index()));
         }
         
         this.bindEvents();
