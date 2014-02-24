@@ -101,7 +101,7 @@ public class ExcelExporter extends Exporter {
             if (col.isRendered() && col.isExportable()) {                
                 UIComponent facet = col.getFacet(columnType.facet());
                 if(facet != null) {
-                    addColumnValue(rowHeader, col.getFacet(columnType.facet()));
+                    addColumnValue(rowHeader, facet);
                 }
                 else {
                     String textValue;

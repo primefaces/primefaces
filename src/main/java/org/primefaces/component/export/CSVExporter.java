@@ -76,7 +76,7 @@ public class CSVExporter extends Exporter {
                 
                 UIComponent facet = col.getFacet(columnType.facet());
                 if(facet != null) {
-                    addColumnValue(writer, col.getFacet(columnType.facet()));
+                    addColumnValue(writer, facet);
                 }
                 else {
                     String textValue;
