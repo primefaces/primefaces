@@ -119,6 +119,14 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
         button.addClass('ui-state-active').removeClass('ui-state-hover');
         this.severity = severity;
         event.preventDefault();
+    },
+    
+    show: function() {
+        this.jq.show();
+    },
+    
+    hide: function() {
+        this.jq.hide();
     }
     
 });
