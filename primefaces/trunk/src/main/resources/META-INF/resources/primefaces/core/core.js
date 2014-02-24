@@ -471,9 +471,6 @@
         	PrimeFaces.dialog.DialogHandler.confirm(msg);
         },
     	
-    	
-        locales : {},
-
         zindex : 1000,
         
         customFocus : false,
@@ -511,6 +508,40 @@
     PrimeFaces.settings = {};
     PrimeFaces.util = {};
     PrimeFaces.widgets = {};
+    
+    /**
+     * Locales
+     */
+    PrimeFaces.locales = {
+        
+        'en_US': {
+            closeText: 'Close',
+            prevText: 'Previous',
+            nextText: 'Next',
+            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
+            monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
+            dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Tue', 'Fri', 'Sat'],
+            dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
+            weekHeader: 'Week',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix:'',
+            timeOnlyTitle: 'Only Time',
+            timeText: 'Time',
+            hourText: 'Time',
+            minuteText: 'Minute',
+            secondText: 'Second',
+            currentText: 'Current Date',
+            ampm: false,
+            month: 'Month',
+            week: 'week',
+            day: 'Day',
+            allDayText: 'All Day'
+        }
+        
+    };
     
     PF = function(widgetVar) {    	
     	var widgetInstance = PrimeFaces.widgets[widgetVar];
