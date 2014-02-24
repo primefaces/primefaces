@@ -1,7 +1,7 @@
 /**
  * PrimeFaces Client Side Validation Framework
  */
-PrimeFaces.locales['en_US'] = {
+$.extend(PrimeFaces.locales['en_US'],{
     decimalSeparator: '.',
     groupingSeparator: ',',
     messages: {
@@ -56,7 +56,7 @@ PrimeFaces.locales['en_US'] = {
         'javax.faces.validator.RegexValidator.MATCH_EXCEPTION': 'Error in regular expression.',
         'javax.faces.validator.RegexValidator.MATCH_EXCEPTION_detail': 'Error in regular expression, \'{0}\''
     }
-};
+});
 
 PrimeFaces.validator = {
 
