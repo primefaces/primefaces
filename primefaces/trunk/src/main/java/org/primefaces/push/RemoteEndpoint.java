@@ -81,4 +81,11 @@ public interface RemoteEndpoint {
      * @return
      */
     boolean isOpen();
+    
+    /**
+     * Return a value in application scope map
+     * @param key of the value
+     * @return the value with given key
+     */
+    public Object getApplicationAttribute(String key);
 }
