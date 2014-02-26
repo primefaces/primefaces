@@ -38,5 +38,12 @@
             <type>java.lang.String</type>
             <description>Style class of the component.</description>
         </attribute>
+        <attribute>
+            <name>lazy</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Lazy loading views are not rendered on initial page load to improve performance and instead lazily loaded on demand when there are first navigated to.</description>
+        </attribute>
 	</attributes>
 </component>

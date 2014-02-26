@@ -22,30 +22,56 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class PageRenderer extends CoreRenderer {
-
+    
     @Override
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Page page = (Page) component;
+        
+        writer.startElement("div", page);
+        writer.writeAttribute("id", page.getClientId(context), "id");
+        
+        if(isLazyload(context, page)) {
+            encodeContent(context, page);
+        }
+        else {
+            if(page.isLazy())
+                writer.writeAttribute("class", "ui-lazypage", null);
+            else
+                encodeContent(context, page);
+        }
+        
+        writer.endElement("div");
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //do nothing
+    }
+    
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
+    
+    private void encodeContent(FacesContext context, Page page) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String theme = page.getTheme();
         String title = page.getTitle();
         String style = page.getStyle();
         String styleClass = page.getStyleClass();
 
-        writer.startElement("div", page);
-        writer.writeAttribute("id", page.getId(), "id");
         writer.writeAttribute("data-role", "page", null);
 
-        if(style != null) writer.writeAttribute("style", style, null);
-        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
         if(theme != null) writer.writeAttribute("data-theme", theme, null);
         if(title != null) writer.writeAttribute("data-title", title, null);
+        if(style != null) writer.writeAttribute("style", style, null);
+        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
+
+        renderChildren(context, page);
     }
-
-    @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.endElement("div");
+    
+    private boolean isLazyload(FacesContext context, Page page) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(page.getClientId(context) + "_lazyload");
     }
 }
