@@ -52,10 +52,10 @@ public @interface OnMessage {
     /**
      * A list of {@link Encoder} used to encode the method's return type into a response's String or bytes.
      */
-    Class<? extends Encoder>[] encoders() default {};
+    Class[] encoders() default {};
 
     /**
      * A list of {@link Decoder} used to decode the request's body String or bytes into an object.
      */
-    Class<? extends Decoder>[] decoders() default {};
+    Class[] decoders() default {};
 }

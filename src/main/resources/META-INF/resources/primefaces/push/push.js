@@ -3108,10 +3108,14 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
     },
 
     onMessage: function (response) {
-        var json = $.parseJSON(response.responseBody);
+        var value = $.parseJSON(response.responseBody);
+        
+        if(value.hasOwnProperty('pfpd')) {
+            value = value['pfpd'];
+        }
 
         if (this.cfg.onMessage) {
-            this.cfg.onMessage.call(this, json.data);
+            this.cfg.onMessage.call(this, value);
         }
 
         if (this.cfg.behaviors && this.cfg.behaviors['message']) {
