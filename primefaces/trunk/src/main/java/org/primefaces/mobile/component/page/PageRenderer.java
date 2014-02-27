@@ -31,7 +31,7 @@ public class PageRenderer extends CoreRenderer {
         writer.startElement("div", page);
         writer.writeAttribute("id", page.getClientId(context), "id");
         
-        if(isLazyload(context, page)) {
+        if(page.isLazyloadRequest(context)) {
             encodeContent(context, page);
         }
         else {
@@ -69,9 +69,5 @@ public class PageRenderer extends CoreRenderer {
         if(styleClass != null) writer.writeAttribute("class", styleClass, null);
 
         renderChildren(context, page);
-    }
-    
-    private boolean isLazyload(FacesContext context, Page page) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(page.getClientId(context) + "_lazyload");
     }
 }
