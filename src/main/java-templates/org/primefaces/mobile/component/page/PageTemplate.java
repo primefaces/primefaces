@@ -10,14 +10,14 @@ import javax.faces.context.FacesContext;
     @Override
     public void processValidators(FacesContext context) {
         if(!isLazyloadRequest(context)) {
-            super.processDecodes(context);
+            super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
         if(!isLazyloadRequest(context)) {
-            super.processDecodes(context);
+            super.processUpdates(context);
         }
     }
 
