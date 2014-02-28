@@ -39,6 +39,9 @@ public class MessagesRenderer extends UINotificationRenderer {
         String clientId = uiMessages.getClientId(context);	
 		Map<String, List<FacesMessage>> messagesMap = new HashMap<String, List<FacesMessage>>();
         boolean globalOnly = uiMessages.isGlobalOnly();
+        String style = uiMessages.getStyle();
+        String styleClass = uiMessages.getStyleClass();
+        styleClass = (styleClass == null) ? Messages.CONTAINER_CLASS: Messages.CONTAINER_CLASS + " " + styleClass;
         
         String _for = uiMessages.getFor();
         Iterator<FacesMessage> messages;
@@ -73,7 +76,10 @@ public class MessagesRenderer extends UINotificationRenderer {
 		
 		writer.startElement("div", uiMessages);
 		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("class", "ui-messages ui-widget", null);
+		writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
         writer.writeAttribute("aria-live", "polite", null);
         
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
@@ -110,7 +116,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
 	protected void encodeSeverityMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-		String styleClassPrefix = "ui-messages-" + severity;
+		String styleClassPrefix = Messages.SEVERITY_PREFIX_CLASS + severity;
         boolean escape = uiMessages.isEscape();
 		
 		writer.startElement("div", null);
@@ -171,11 +177,11 @@ public class MessagesRenderer extends UINotificationRenderer {
         
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", "ui-messages-close", null);
+        writer.writeAttribute("class", Messages.CLOSE_LINK_CLASS, null);
         writer.writeAttribute("onclick", "$(this).parent().slideUp();return false;", null);
         
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-close", null);
+        writer.writeAttribute("class", Messages.CLOSE_ICON_CLASS, null);
         writer.endElement("span");
         
         writer.endElement("a");

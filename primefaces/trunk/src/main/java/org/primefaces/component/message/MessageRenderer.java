@@ -48,22 +48,29 @@ public class MessageRenderer extends UINotificationRenderer {
 	
     protected void encodeStaticMarkup(FacesContext context, Message uiMessage) throws IOException {
     	ResponseWriter writer = context.getResponseWriter();
-
     	boolean escape = uiMessage.isEscape();
     	String severity = uiMessage.getSeverity();
     	String display = uiMessage.getDisplay();
     	String message = uiMessage.getMessage();
     	boolean iconOnly = display.equals("icon");
+        String userStyle = uiMessage.getStyle();
+        String userStyleClass = uiMessage.getStyleClass();
 
     	String styleClass = "ui-message ui-message-" + severity + " ui-widget ui-corner-all";
         if(iconOnly) {
             styleClass +=  " ui-message-icon-only ui-helper-clearfix";
+        }
+        if(userStyleClass != null) {
+            styleClass +=  " " + userStyleClass;
         }
     	
 		writer.startElement("div", uiMessage);
 		writer.writeAttribute("id", uiMessage.getClientId(context), null);
         writer.writeAttribute("aria-live", "polite", null);
         writer.writeAttribute("class", styleClass , null);
+        if(userStyle != null) {
+            writer.writeAttribute("style", userStyle , null);
+        }
     	
         if(!display.equals("text")) {
             encodeIcon(writer, severity, message, iconOnly);
