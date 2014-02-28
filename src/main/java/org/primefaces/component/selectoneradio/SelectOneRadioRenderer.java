@@ -53,7 +53,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String clientId = radio.getClientId(context);
         String style = radio.getStyle();
         String styleClass = radio.getStyleClass();
-        styleClass = styleClass == null ? SelectOneRadio.STYLE_CLASS : SelectOneRadio.STYLE_CLASS + " " + styleClass;
+        String defaultStyleClass = radio.isPlain() ? SelectOneRadio.NATIVE_STYLE_CLASS: SelectOneRadio.STYLE_CLASS;
+        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
         String layout = radio.getLayout();
         if(layout == null) {
             layout = "lineDirection";
