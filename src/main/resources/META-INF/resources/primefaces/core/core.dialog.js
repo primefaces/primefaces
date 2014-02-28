@@ -45,10 +45,11 @@ PrimeFaces.dialog.DialogHandler = {
                         var $dialogWidget = this;
                         
                         this.destroyIntervalId = setInterval(function() {
-                            if($frame.get(0).contentWindow.PrimeFaces.ajax.Queue.isEmpty()) {
-                                $dialogWidget.content.children('iframe').attr('src','about:blank');
-                                $dialogWidget.jq.remove();
+                            var dialogFrame = $dialogWidget.content.children('iframe');
+                            if(dialogFrame.get(0).contentWindow.PrimeFaces.ajax.Queue.isEmpty()) {
                                 clearInterval($dialogWidget.destroyIntervalId);
+                                dialogFrame.attr('src','about:blank');
+                                $dialogWidget.jq.remove();
                             }
                         }, 10);
                         
