@@ -3,6 +3,7 @@ import javax.faces.model.SelectItem;
 import javax.faces.component.UINamingContainer;
     
     public final static String STYLE_CLASS = "ui-selectoneradio ui-widget";
+    public final static String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
 
     private int index = -1;
 
