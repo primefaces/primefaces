@@ -42,7 +42,16 @@ PrimeFaces.dialog.DialogHandler = {
                     sourceComponentId: cfg.sourceComponentId,
                     sourceWidget: cfg.sourceWidget,
                     onHide: function() {
-                        this.jq.remove();
+                        var $dialogWidget = this;
+                        
+                        this.destroyIntervalId = setInterval(function() {
+                            if($frame.get(0).contentWindow.PrimeFaces.ajax.Queue.isEmpty()) {
+                                $dialogWidget.content.children('iframe').attr('src','about:blank');
+                                $dialogWidget.jq.remove();
+                                clearInterval($dialogWidget.destroyIntervalId);
+                            }
+                        }, 10);
+                        
                         PF[dialogWidgetVar] = undefined;
                     },
                     modal: cfg.options.modal,
