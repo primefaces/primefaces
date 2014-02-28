@@ -85,6 +85,18 @@
 			<type>java.lang.String</type>
             <description>The message to render if static mode is enabled.</description>
 		</attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the component.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the component.</description>
+        </attribute>
 	</attributes>
 	<resources>
 		<resource>
