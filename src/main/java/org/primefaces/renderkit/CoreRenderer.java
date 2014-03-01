@@ -268,21 +268,30 @@ public abstract class CoreRenderer extends Renderer {
                 int commandSize = (command != null) ? (eventBehaviorSize + 1): eventBehaviorSize;
                     
                 if (commandSize > 1) {
+                    boolean behaviorRendered = false;
                     builder.append("PrimeFaces.bcn(this,event,[");
+                    
                     for (int i = 0; i < eventBehaviorSize; i++) {
                         ClientBehavior behavior = eventBehaviors.get(i);
                         String script = behavior.getScript(cbc);
+                        
                         if (script != null) {
+                            if(!behaviorRendered) {
+                                behaviorRendered = true;
+                            } else {
+                                builder.append(",");
+                            }
+                            
                             builder.append("function(event){").append(script).append("}");
-                        }
-
-                        if (i < (eventBehaviorSize - 1)) {
-                            builder.append(",");
                         }
                     }
                     
                     if (command != null) {
-                        builder.append(",function(event){").append(command).append("}");
+                        if(behaviorRendered) {
+                            builder.append(",");
+                        }
+                        
+                        builder.append("function(event){").append(command).append("}");
                     } 
                     
                     builder.append("]);");
