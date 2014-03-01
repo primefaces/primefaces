@@ -27,14 +27,17 @@ import org.primefaces.util.WidgetBuilder;
 public class DataListRenderer extends org.primefaces.component.datalist.DataListRenderer {
     
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);        
+    }
+    
+    @Override
     protected void encodeScript(FacesContext context, DataList list) throws IOException {
         String clientId = list.getClientId();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("DataList", list.resolveWidgetVar(), clientId);
         
-        if(list.isPaginator()) {
-            encodePaginatorConfig(context, list, wb);
-        }
+        encodeClientBehaviors(context, list);
 
         wb.finish();
     }
