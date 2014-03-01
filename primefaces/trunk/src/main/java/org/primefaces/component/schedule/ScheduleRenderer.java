@@ -146,8 +146,13 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("disableDragging", !schedule.isDraggable(), false)
             .attr("disableResizing", !schedule.isResizable(), false)
             .attr("axisFormat", schedule.getAxisFormat(), null)
-            .attr("timeFormat", schedule.getTimeFormat(), null)
-            .attr("columnFormat", schedule.getColumnFormat(), null);
+            .attr("timeFormat", schedule.getTimeFormat(), null);
+                
+        String columnFormat = schedule.getColumnFormat();
+        if(columnFormat != null) {
+            wb.nativeAttr("columnFormat", "{" + columnFormat + "}");
+        }
+            
         
         encodeClientBehaviors(context, schedule);
 
