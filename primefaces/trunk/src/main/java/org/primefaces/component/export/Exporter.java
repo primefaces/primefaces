@@ -219,7 +219,7 @@ public abstract class Exporter {
                 
                 for(int i = 0; i < size; i++) {
                     requestMap.put(var, Array.get(selection, i));
-                    exportCells(table, document);
+                    exportRow(table, document,i);
                 }
             }
             else if(List.class.isAssignableFrom(selection.getClass())) {
@@ -227,7 +227,7 @@ public abstract class Exporter {
                 
                 for(int i = 0; i < list.size(); i++) {
                     requestMap.put(var, list.get(i));
-                    exportCells(table, document);
+                    exportRow(table, document,i);
                 }
             }
             else {
