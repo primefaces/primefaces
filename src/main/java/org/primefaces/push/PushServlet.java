@@ -23,6 +23,7 @@ import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
 import org.atmosphere.interceptor.HeartbeatInterceptor;
 import org.atmosphere.interceptor.SuspendTrackerInterceptor;
 import org.primefaces.push.impl.PushEndpointProcessor;
+import org.primefaces.push.impl.PushObjectFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +79,8 @@ public class PushServlet extends AtmosphereServlet {
         framework.interceptor(new AtmosphereResourceLifecycleInterceptor())
                 .interceptor(new HeartbeatInterceptor())
                 .interceptor(new TrackMessageSizeInterceptor())
-                .addInitParameter(ApplicationConfig.CUSTOM_ANNOTATION_PACKAGE, PushEndpointProcessor.class.getPackage().getName());
+                .addInitParameter(ApplicationConfig.CUSTOM_ANNOTATION_PACKAGE, PushEndpointProcessor.class.getPackage().getName())
+                .objectFactory(new PushObjectFactory());
 
         framework.init(sc);
         if (framework.getAtmosphereHandlers().size() == 0) {
