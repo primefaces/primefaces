@@ -153,7 +153,6 @@ public class ScheduleRenderer extends CoreRenderer {
             wb.nativeAttr("columnFormat", "{" + columnFormat + "}");
         }
             
-        
         encodeClientBehaviors(context, schedule);
 
         wb.finish();	
