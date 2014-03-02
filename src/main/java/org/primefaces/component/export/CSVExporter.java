@@ -157,7 +157,7 @@ public class CSVExporter extends Exporter {
     
     protected void addColumnValue(Writer writer, String value) throws IOException {        
         //escape double quotes
-        value = value.replaceAll("\"", "\"\"");
+         value = value == null ? "" : value.replaceAll("\"", "\"\"");
         
         writer.write("\"" + value + "\"");
 	}
@@ -170,7 +170,7 @@ public class CSVExporter extends Exporter {
 				String value = exportValue(FacesContext.getCurrentInstance(), component);
 
                 //escape double quotes
-                value = value.replaceAll("\"", "\"\"");
+                value = value == null ? "" : value.replaceAll("\"", "\"\"");
                 
 				writer.write(value);
 			}
