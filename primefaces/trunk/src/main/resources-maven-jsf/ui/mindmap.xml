@@ -7,8 +7,8 @@
     <tag>mindmap</tag>
     <tagClass>org.primefaces.component.mindmap.MindmapTag</tagClass>
     <componentClass>org.primefaces.component.mindmap.Mindmap</componentClass>
-    <componentType>org.primefaces.Mindmap</componentType>
-    <componentFamily>org.primefaces</componentFamily>
+    <componentType>org.primefaces.component.Mindmap</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.MindmapRenderer</rendererType>
     <rendererClass>org.primefaces.component.mindmap.MindmapRenderer</rendererClass>
     <parent>javax.faces.component.UIComponentBase</parent>

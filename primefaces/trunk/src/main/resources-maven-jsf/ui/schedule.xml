@@ -7,8 +7,8 @@
 	<tag>schedule</tag>
 	<tagClass>org.primefaces.component.schedule.ScheduleTag</tagClass>
 	<componentClass>org.primefaces.component.schedule.Schedule</componentClass>
-	<componentType>org.primefaces.Schedule</componentType>
-	<componentFamily>org.primefaces</componentFamily>
+	<componentType>org.primefaces.component.Schedule</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.ScheduleRenderer</rendererType>
 	<rendererClass>org.primefaces.component.schedule.ScheduleRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
