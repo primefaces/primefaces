@@ -41,6 +41,8 @@ public class HeaderRenderer extends CoreRenderer {
         if(header.getStyleClass() != null) writer.writeAttribute("class", header.getStyleClass(), null);
         if(theme != null) writer.writeAttribute("data-theme", theme, null);
         if(header.isFixed())  writer.writeAttribute("data-position", "fixed", null);
+        
+        renderDynamicPassThruAttributes(context, component);
 
         if(left != null) {
             left.encodeAll(context);

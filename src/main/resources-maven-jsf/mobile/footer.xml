@@ -29,7 +29,14 @@
             <name>theme</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Theme of the view.</description>
+            <description>Swatch of the footer</description>
+        </attribute>
+        <attribute>
+            <name>tapToggle</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>For fixed footers, sets whether the fixed toolbar's visibility can be toggled by tapping on the page.</description>
         </attribute>
         <attribute>
             <name>style</name>
