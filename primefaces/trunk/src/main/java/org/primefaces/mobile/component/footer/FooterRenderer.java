@@ -33,10 +33,18 @@ public class FooterRenderer extends CoreRenderer {
         writer.startElement("div", footer);
         writer.writeAttribute("data-role", "footer", null);
         
+        
         if(footer.getStyle() != null) writer.writeAttribute("style", footer.getStyle(), null);
         if(footer.getStyleClass() != null) writer.writeAttribute("class", footer.getStyleClass(), null);
         if(theme != null) writer.writeAttribute("data-theme", theme, null);        
-        if(footer.isFixed())  writer.writeAttribute("data-position", "fixed", null);
+        if(footer.isFixed()) {
+            writer.writeAttribute("data-position", "fixed", null);
+            
+            if(!footer.isTapToggle())
+                writer.writeAttribute("data-tap-toggle", "false", null);
+        }
+        
+        renderDynamicPassThruAttributes(context, component);
         
         if(title != null) {
              writer.startElement("h4", null);
