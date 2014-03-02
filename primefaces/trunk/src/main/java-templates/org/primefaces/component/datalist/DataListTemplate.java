@@ -9,6 +9,7 @@ import javax.faces.model.DataModel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.mobile.event.SwipeEvent;
+import org.primefaces.event.SelectEvent;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,7 +27,7 @@ import javax.faces.event.FacesEvent;
     public static final String FOOTER_CLASS = "ui-datalist-footer ui-widget-header ui-corner-bottom";
 	public static final String DATALIST_EMPTYMESSAGE_CLASS = "ui-datalist-empty-message";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("swipeleft","swiperight"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("swipeleft","swiperight","tap","taphold"));
 
     @Override
     public Collection<String> getEventNames() {
@@ -98,8 +99,20 @@ import javax.faces.event.FacesEvent;
                 SwipeEvent swipeEvent = new SwipeEvent(this, behaviorEvent.getBehavior(), this.getRowData());
                 swipeEvent.setPhaseId(behaviorEvent.getPhaseId());
 
-                super.queueEvent(swipeEvent);
                 this.setRowIndex(-1);
+                super.queueEvent(swipeEvent);
+            }
+            else if(eventName.equals("tap")||eventName.equals("taphold")) {
+                AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+                String clientId = this.getClientId(context);
+                int index = Integer.parseInt(params.get(clientId + "_item"));
+                this.setRowIndex(index);
+        
+                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData());
+                selectEvent.setPhaseId(behaviorEvent.getPhaseId());
+
+                this.setRowIndex(-1);
+                super.queueEvent(selectEvent);
             }
         }
         else {
