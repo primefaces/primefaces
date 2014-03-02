@@ -21074,11 +21074,11 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     bindItemSelect: function() {
-        var _self = this;
+        var $this = this;
         
         $(this.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
-            if(neighbor && _self.cfg.behaviors) {
-                var itemSelectCallback = _self.cfg.behaviors['itemSelect'];
+            if(neighbor && $this.cfg.behaviors) {
+                var itemSelectCallback = $this.cfg.behaviors['itemSelect'];
                 if(itemSelectCallback) {
                     var ext = {
                         params: [
@@ -21087,7 +21087,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
                         ]
                     };
                     
-                    itemSelectCallback.call(_self, ev, ext);
+                    itemSelectCallback.call($this, ext);
                 }
             }
         });
