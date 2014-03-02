@@ -17,11 +17,16 @@ package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+import javax.faces.application.Resource;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
+import org.primefaces.context.RequestContext;
 
 public class HeadRenderer extends Renderer {
 
@@ -35,12 +40,22 @@ public class HeadRenderer extends Renderer {
         if(first != null) {
             first.encodeAll(context);
         }
-        
+                
         writer.write("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
         
-        renderResource(context, "mobile/jquery-mobile.css", "javax.faces.resource.Stylesheet", "primefaces");
-        renderResource(context, "mobile/primefaces-mobile.css", "javax.faces.resource.Stylesheet", "primefaces");
-        renderResource(context, "jquery/jquery.js", "javax.faces.resource.Script", "primefaces");
+        String theme = resolveTheme(context);
+        if(theme == null) {
+            renderCSS(context, "mobile/jquery-mobile.css", "primefaces");
+        }
+        else {            
+            renderCSS(context, "theme.css", "primefaces-" + theme);
+            renderCSS(context, "mobile/jquery-mobile-icons.css", "primefaces");
+            renderCSS(context, "mobile/jquery-mobile-structure.css", "primefaces");
+        }
+        
+        renderCSS(context, "mobile/primefaces-mobile.css", "primefaces");
+        
+        renderJS(context, "jquery/jquery.js", "primefaces");
         
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
@@ -57,8 +72,8 @@ public class HeadRenderer extends Renderer {
         writer.write("});");        
         writer.endElement("script");
         
-        renderResource(context, "mobile/jquery-mobile.js", "javax.faces.resource.Script", "primefaces");
-        renderResource(context, "primefaces-mobile.js", "javax.faces.resource.Script", "primefaces");
+        renderJS(context, "mobile/jquery-mobile.js", "primefaces");
+        renderJS(context, "primefaces-mobile.js", "primefaces");
     }
 
     @Override
@@ -84,5 +99,45 @@ public class HeadRenderer extends Renderer {
         attrs.put("target", "head");        
 
         resource.encodeAll(context);
-    } 
+    }
+    
+    protected String resolveTheme(FacesContext context) {
+        String theme = null;
+        String themeConfigValue = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getMobileTheme();
+
+        if(themeConfigValue != null) {
+            ELContext elContext = context.getELContext();
+            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+            ValueExpression ve = expressionFactory.createValueExpression(elContext, themeConfigValue, String.class);
+
+            theme = ve.isLiteralText() ? themeConfigValue: (String) ve.getValue(elContext);
+        }
+        
+        return theme;
+    }
+    
+    private void renderJS(FacesContext context, String name, String library) throws IOException  {
+        ResponseWriter writer = context.getResponseWriter();
+        Resource resource = context.getApplication().getResourceHandler().createResource(name, library);
+        
+        if(resource != null) {
+            writer.startElement("script", null);
+            writer.writeAttribute("type", "text/javascript", null);
+            writer.writeAttribute("src", resource.getRequestPath(), null);
+            writer.endElement("script");
+        }
+    }
+    
+    private void renderCSS(FacesContext context, String name, String library) throws IOException  {
+        ResponseWriter writer = context.getResponseWriter();
+        Resource resource = context.getApplication().getResourceHandler().createResource(name, library);
+        
+        if(resource != null) {
+            writer.startElement("link", null);
+            writer.writeAttribute("type", "text/css", null);
+            writer.writeAttribute("rel", "stylesheet", null);
+            writer.writeAttribute("href", resource.getRequestPath(), null);
+            writer.endElement("link");
+        }
+    }
 }

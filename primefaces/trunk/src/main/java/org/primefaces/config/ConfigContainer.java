@@ -57,6 +57,7 @@ public class ConfigContainer {
     private String  secretKey = null;
     private String  pushServerURL = null;
     private String  theme = null;
+    private String  mobileTheme = null;
     private boolean clientSideValidationEnabled = false;
     private String uploader = null;
 
@@ -112,6 +113,8 @@ public class ConfigContainer {
         pushServerURL = externalContext.getInitParameter(Constants.ContextParams.PUSH_SERVER_URL);
         
         theme = externalContext.getInitParameter(Constants.ContextParams.THEME);
+        
+        mobileTheme = externalContext.getInitParameter(Constants.ContextParams.MOBILE_THEME);
 
         value = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
         if (null == value) {
@@ -301,6 +304,10 @@ public class ConfigContainer {
 
     public String getTheme() {
         return theme;
+    }
+    
+    public String getMobileTheme() {
+        return mobileTheme;
     }
 
     public String getBuildVersion() {
