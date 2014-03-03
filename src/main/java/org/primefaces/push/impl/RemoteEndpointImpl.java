@@ -106,10 +106,6 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
     AtmosphereResource resource() {
         return request.resource();
     }
-    
-    public Object getApplicationAttribute(String key) {
-        return request.getServletContext().getAttribute(key);
-    }
 
     @Override
     public String toString() {
