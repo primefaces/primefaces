@@ -171,7 +171,16 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-	
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>http://repository.primefaces.org</url>
+            <layout>default</layout>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <defaultGoal>install</defaultGoal>
 
