@@ -15,6 +15,7 @@
  */
 package org.primefaces.push.impl;
 
+import java.util.Map;
 import org.atmosphere.config.managed.Encoder;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -31,8 +32,11 @@ public class JSONEncoder implements Encoder<Object, String> {
         
         try {
             String json;
-
-            if (BeanUtils.isBean(object.getClass())) {
+            
+            if(object instanceof Map) {
+                json = new JSONObject((Map) object).toString();
+            }
+            else if (BeanUtils.isBean(object.getClass())) {
                 json = new JSONObject(object).toString();
             }  else {
                 json = new JSONObject().put(PRIMITIVE_DATA, object).toString();
