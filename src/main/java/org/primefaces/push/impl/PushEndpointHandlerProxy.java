@@ -172,16 +172,6 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                         }
                     }
                 }
-
-                @Override
-                public void onDisconnect(AtmosphereResourceEvent event) {
-                    try {
-                        invokeOpenOrClose(onResumeMethod, remoteEndpoint);
-                    } finally {
-                        event.getResource().removeEventListener(this);
-                        trackedUUID.remove(resource.uuid());
-                    }
-                }
             });
         }
 

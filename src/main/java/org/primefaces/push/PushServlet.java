@@ -17,8 +17,10 @@ package org.primefaces.push;
 
 import org.atmosphere.client.TrackMessageSizeInterceptor;
 import org.atmosphere.cpr.ApplicationConfig;
+import org.atmosphere.cpr.AtmosphereConfig;
 import org.atmosphere.cpr.AtmosphereFramework;
 import org.atmosphere.cpr.AtmosphereServlet;
+import org.atmosphere.cpr.MetaBroadcaster;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
 import org.atmosphere.interceptor.HeartbeatInterceptor;
 import org.atmosphere.interceptor.SuspendTrackerInterceptor;
@@ -82,11 +84,22 @@ public class PushServlet extends AtmosphereServlet {
                 .addInitParameter(ApplicationConfig.CUSTOM_ANNOTATION_PACKAGE, PushEndpointProcessor.class.getPackage().getName())
                 .objectFactory(new PushObjectFactory());
 
+        framework.getAtmosphereConfig().startupHook(new AtmosphereConfig.StartupHook() {
+            public void started(AtmosphereFramework framework) {
+                configureMetaBroadcasterCache(framework);
+            }
+        });
+
         framework.init(sc);
         if (framework.getAtmosphereHandlers().size() == 0) {
             logger.error("No Annotated class using @PushEndpoint found. Push will not work.");
         }
         return this;
+    }
+
+    protected void configureMetaBroadcasterCache(AtmosphereFramework framework){
+        MetaBroadcaster.getDefault().cache(new MetaBroadcaster.ThirtySecondsCache(MetaBroadcaster.getDefault(),
+                framework.getAtmosphereConfig()));
     }
 
     protected AtmosphereFramework newAtmosphereFramework() {
