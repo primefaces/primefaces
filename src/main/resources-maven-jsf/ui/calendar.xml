@@ -233,17 +233,12 @@
             <description>Callback to execute before displaying a date, used to customize date display.</description>
         </attribute>
         <attribute>
-            <name>applyInputMask</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>If a mask should be applied to the input field.</description>
-        </attribute>
-        <attribute>
-            <name>inputMask</name>
+            <name>mask</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Specifies the mask if applyInputMask is set to true. The default setting just replaces all letters of the pattern attribute with a '9'.</description>
+            <defaultValue>false</defaultValue>
+            <description>Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to
+            inputMask component for more information about custom templates.</description>
         </attribute>
     </attributes>
     <resources>
