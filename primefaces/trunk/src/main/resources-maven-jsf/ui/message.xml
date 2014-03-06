@@ -73,19 +73,6 @@
             <description>Comma separated list of severities to display only.</description>
 		</attribute>
         <attribute>
-			<name>staticMode</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Defines if a static message should be rendered.</description>
-		</attribute>
-        <attribute>
-			<name>message</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>The message to render if static mode is enabled.</description>
-		</attribute>
-        <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
