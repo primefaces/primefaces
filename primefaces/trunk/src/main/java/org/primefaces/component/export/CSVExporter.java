@@ -156,8 +156,7 @@ public class CSVExporter extends Exporter {
 	}
     
     protected void addColumnValue(Writer writer, String value) throws IOException {        
-        //escape double quotes
-         value = value == null ? "" : value.replaceAll("\"", "\"\"");
+         value = (value == null) ? "" : value.replaceAll("\"", "\"\"");
         
         writer.write("\"" + value + "\"");
 	}
