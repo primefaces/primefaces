@@ -128,6 +128,7 @@ public class CalendarRenderer extends InputRenderer {
         String clientId = calendar.getClientId(context);
         Locale locale = calendar.calculateLocale(context);
         String pattern = calendar.isTimeOnly() ? calendar.calculateTimeOnlyPattern() : calendar.calculatePattern();
+        String mask = calendar.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Calendar", calendar.resolveWidgetVar(), clientId);
         
@@ -194,9 +195,9 @@ public class CalendarRenderer extends InputRenderer {
                 .attr("secondMax", calendar.getMaxSecond());
         }
         
-        if (calendar.isApplyInputMask()) {
-            wb.attr("applyInputMask", true);
-            wb.attr("inputMask", isValueBlank(calendar.getInputMask()) ? pattern.replaceAll("[a-zA-Z]", "9") : calendar.getInputMask());
+        if(mask != null && !mask.equals("false")) {
+            String maskTemplate = (mask.equals("true")) ? pattern.replaceAll("[a-zA-Z]", "9"): mask;
+            wb.attr("mask", maskTemplate);
         }
         
         encodeClientBehaviors(context, calendar);
