@@ -80,6 +80,39 @@
             <type>java.lang.String</type>
             <description>Name of iterator to be used in custom content display.</description>
         </attribute>
+        <attribute>
+			<name>filter</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Displays an input filter for the list.</description>
+		</attribute>
+        <attribute>
+			<name>filterMatchMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.</description>
+		</attribute>
+        <attribute>
+			<name>filterFunction</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side function to use in custom filterMatchMode.</description>
+		</attribute>
+        <attribute>
+			<name>caseSensitive</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if filtering would be case sensitive. Default is false.</description>
+		</attribute>
+        <attribute>
+            <name>scrollHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Defines the height of the scrollable area.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
