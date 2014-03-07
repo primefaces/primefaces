@@ -1426,9 +1426,10 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         
         this.input = $(this.jqId + '_input'),
-        this.listContainer = this.jq.children('.ui-selectlistbox-list'),
+        this.listContainer = this.jq.children('.ui-selectlistbox-listcontainer');
+        this.listElement = this.listContainer.children('.ui-selectlistbox-list');
         this.options = $(this.input).children('option');
-        this.items = this.listContainer.find('.ui-selectlistbox-item:not(.ui-state-disabled)');
+        this.items = this.listElement.find('.ui-selectlistbox-item:not(.ui-state-disabled)');
         
         //scroll to selected
         var selected = this.options.filter(':selected:not(:disabled)');
@@ -1468,6 +1469,16 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         }).on('blur.selectListbox', function() {
             $this.jq.removeClass('ui-state-focus');
         });
+        
+        if(this.cfg.filter) {
+            this.filterInput = this.jq.find('> div.ui-selectlistbox-filter-container > input.ui-selectlistbox-filter');
+            PrimeFaces.skinInput(this.filterInput);        
+            this.filterInput.on('keyup.selectListbox', function(e) {
+                $this.filter(this.value);
+            });
+        
+            this.setupFilterMatcher();
+        }
     },
     
     unselectAll: function() {
@@ -1483,6 +1494,50 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
     unselectItem: function(item) {
         item.removeClass('ui-state-highlight');
         this.options.eq(item.index()).prop('selected', false);
+    },
+    
+    setupFilterMatcher: function() {
+        this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
+        this.filterMatchers = {
+            'startsWith': this.startsWithFilter
+            ,'contains': this.containsFilter
+            ,'endsWith': this.endsWithFilter
+            ,'custom': this.cfg.filterFunction
+        };
+                        
+        this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
+    },
+    
+    startsWithFilter: function(value, filter) {
+        return value.indexOf(filter) === 0;
+    },
+    
+    containsFilter: function(value, filter) {
+        return value.indexOf(filter) !== -1;
+    },
+    
+    endsWithFilter: function(value, filter) {
+        return value.indexOf(filter, value.length - filter.length) !== -1;
+    },
+    
+    filter: function(value) {      
+        var filterValue = this.cfg.caseSensitive ? $.trim(value) : $.trim(value).toLowerCase();
+
+        if(filterValue === '') {
+            this.items.filter(':hidden').show();
+        }
+        else {
+            for(var i = 0; i < this.options.length; i++) {
+                var option = this.options.eq(i),
+                itemLabel = this.cfg.caseSensitive ? option.text() : option.text().toLowerCase(),
+                item = this.items.eq(i);
+
+                if(this.filterMatcher(itemLabel, filterValue)) 
+                    item.show();
+                else 
+                    item.hide();   
+            }
+        }
     }
 });
 

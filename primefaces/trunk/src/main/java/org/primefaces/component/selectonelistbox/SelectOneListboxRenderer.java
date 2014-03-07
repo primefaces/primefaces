@@ -57,7 +57,13 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.startElement("div", listbox);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) writer.writeAttribute("style", style, "style");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        
+        if(listbox.isFilter()) {
+            encodeFilter(context, listbox);
+        }
 
         encodeInput(context, listbox, clientId, selectItems);
         encodeList(context, listbox, selectItems);
@@ -70,6 +76,13 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectOneListbox", listbox.resolveWidgetVar(), clientId)
             .attr("disabled", listbox.isDisabled(), false);
+        
+        if(listbox.isFilter()) {
+            wb.attr("filter", true)
+                .attr("filterMatchMode", listbox.getFilterMatchMode(), null)
+                .nativeAttr("filterFunction", listbox.getFilterFunction(), null)
+                .attr("caseSensitive", listbox.isCaseSensitive(), false);
+        }
         
         wb.finish();
     }
@@ -105,6 +118,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         Object values = getValues(listbox);
         Object submittedValues = getSubmittedValues(listbox);
         boolean customContent = listbox.getVar() != null;
+        
+        writer.startElement("div", listbox);
+        writer.writeAttribute("class", SelectOneListbox.LIST_CONTAINER_CLASS, null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(listbox, selectItems.size()), null);
 
         if(customContent) {
             writer.startElement("table", null);
@@ -124,6 +141,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             }
             writer.endElement("ul");
         }
+        
+        writer.endElement("div");
     }
     
     protected void encodeItem(FacesContext context, SelectOneListbox listbox, SelectItem option, Object values, Object submittedValues, Converter converter, boolean customContent) throws IOException {
@@ -223,6 +242,41 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.write(option.getLabel());
 
         writer.endElement("option");
+    }
+    
+    protected void encodeFilter(FacesContext context, SelectOneListbox listbox) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String id = listbox.getClientId(context) + "_filter";
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SelectOneListbox.FILTER_CONTAINER_CLASS, null);
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", SelectOneListbox.FILTER_ICON_CLASS, id);
+        writer.endElement("span");
+        
+        writer.startElement("input", null);
+        writer.writeAttribute("class", SelectOneListbox.FILTER_CLASS, null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("autocomplete", "off", null);
+
+        writer.endElement("input");
+        
+        writer.endElement("div");
+    }
+    
+    protected String calculateWrapperHeight(SelectOneListbox listbox, int itemSize) {
+        int height = listbox.getScrollHeight();
+        
+        if(height != Integer.MAX_VALUE) {
+            return height + "px";
+        } else if(itemSize > 10) {
+            return 200 + "px";
+        }
+        
+        return "auto";
     }
 
     @Override

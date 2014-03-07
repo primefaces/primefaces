@@ -18,9 +18,14 @@
 .ui-selectonelistbox, 
 .ui-selectmanymenu,
 .ui-multiselectlistbox-listcontainer {
+    padding: 2px;
+    width: 150px;
+}
+
+.ui-selectonelistbox .ui-selectlistbox-listcontainer, 
+.ui-selectmanymenu .ui-selectlistbox-listcontainer,
+.ui-multiselectlistbox-listcontainer {
     overflow:auto;
-    padding:2px;
-    width:125px;
 }
 
 .ui-selectonelistbox .ui-selectlistbox-list,
@@ -34,8 +39,8 @@
 .ui-selectonelistbox .ui-selectlistbox-item,
 .ui-selectmanymenu .ui-selectlistbox-item,
 .ui-multiselectlistbox .ui-multiselectlistbox-item {
-    margin:2px;
-    border:0 none;
+    margin: 2px;
+    border: 0 none;
     cursor: pointer;
     font-weight: normal;
 }
@@ -44,6 +49,25 @@
 .ui-selectmanymenu table.ui-selectlistbox-list {
     border-collapse:collapse;
     width:100%;
+}
+
+
+.ui-selectlistbox-filter {
+    padding-right: 12%;
+    padding-left: 2%;
+    width: 85%;
+}
+
+.ui-selectlistbox-filter-container {
+    position: relative;
+    margin: 0 0 0.1em 0;
+    padding: 0;
+}
+
+.ui-selectlistbox-filter-container .ui-icon {
+    position: absolute;
+    top: 5px;
+    right: 2px;
 }
 
 .ui-multiselectlistbox .ui-multiselectlistbox-listcontainer {
