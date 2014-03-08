@@ -1616,7 +1616,11 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                     endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
                     
                     for(var i = startIndex ; i < endIndex; i++) {
-                        $this.selectItem($this.items.eq(i));
+                        var it = $this.items.eq(i);
+                        
+                        if(it.is(':visible')) {
+                            $this.selectItem(it);
+                        }
                     }
                 } 
                 else {
