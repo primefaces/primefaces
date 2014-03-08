@@ -31,12 +31,14 @@ public class BeanPropertyComparator implements Comparator {
     private boolean asc;
     private String var;
     private MethodExpression sortFunction;
+    private boolean caseSensitive = false;
 
-    public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction) {
+    public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive) {
         this.sortBy = sortBy;
         this.var = var;
         this.asc = sortOrder.equals(SortOrder.ASCENDING);
         this.sortFunction = sortFunction;
+        this.caseSensitive = caseSensitive;
     }
 
     @SuppressWarnings("unchecked")
@@ -59,7 +61,11 @@ public class BeanPropertyComparator implements Comparator {
             } else if (value2 == null) {
             	result = -1;
             } else if (sortFunction == null) {
-                result = ((Comparable) value1).compareTo(value2);
+                if(value1 instanceof String && value2 instanceof String) {
+                    result = this.caseSensitive ? ((Comparable) value1).compareTo(value2): (((String) value1).toLowerCase()).compareTo(((String) value2).toLowerCase());
+                } else {
+                    result = ((Comparable) value1).compareTo(value2);
+                }
             } else {
                 result = (Integer) sortFunction.invoke(context.getELContext(), new Object[]{value1, value2});
             }

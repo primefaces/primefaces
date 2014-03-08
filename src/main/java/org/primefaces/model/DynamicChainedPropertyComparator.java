@@ -23,8 +23,8 @@ public class DynamicChainedPropertyComparator extends BeanPropertyComparator {
     
     private DynamicColumn column;
     
-    public DynamicChainedPropertyComparator(DynamicColumn column, ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction) {
-        super(sortBy, var, sortOrder, sortFunction);
+    public DynamicChainedPropertyComparator(DynamicColumn column, ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitiveSort) {
+        super(sortBy, var, sortOrder, sortFunction, caseSensitiveSort);
         this.column = column;
     } 
     
