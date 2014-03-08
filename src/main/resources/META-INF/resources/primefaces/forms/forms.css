@@ -51,15 +51,18 @@
     width:100%;
 }
 
-.ui-selectlistbox-filter {
+.ui-selectlistbox-filter.ui-inputfield {
     padding-right: 12%;
     padding-left: 2%;
     width: 85%;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
 .ui-selectlistbox-filter-container {
     position: relative;
-    margin: 0 0 0.1em 0;
+    margin: 0.1em 0 0.1em 0;
     padding: 0;
 }
 
