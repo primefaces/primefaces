@@ -56,6 +56,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortMeta;
 import org.primefaces.component.datatable.feature.*;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
@@ -914,5 +915,22 @@ import org.primefaces.util.SharedStringBuilder;
     }
     public ValueExpression getSortByVE() {
         return this.sortByVE;
+    }
+    
+    public Locale resolveDataLocale() {
+        FacesContext context = this.getFacesContext();
+        Object userLocale = this.getDataLocale();
+        
+        if(userLocale != null) {
+            if(userLocale instanceof String)
+                return ComponentUtils.toLocale((String) userLocale);
+            else if(userLocale instanceof java.util.Locale)
+                return (java.util.Locale) userLocale;
+            else
+                throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for datatable:" + this.getClientId(context));
+        } 
+        else {
+            return context.getViewRoot().getLocale();
+        }
     }
     
