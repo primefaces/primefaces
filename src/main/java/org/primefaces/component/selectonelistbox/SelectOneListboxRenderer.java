@@ -25,6 +25,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.column.Column;
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -103,6 +104,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         
         if(listbox.getTabindex() != null) {
             writer.writeAttribute("tabindex", listbox.getTabindex(), null);
+        }
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, listbox);
         }
 
         encodeSelectItems(context, listbox, selectItems);

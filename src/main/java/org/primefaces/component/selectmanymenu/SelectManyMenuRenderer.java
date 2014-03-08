@@ -25,6 +25,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.column.Column;
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -107,6 +108,10 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         
         if(menu.getTabindex() != null) {
             writer.writeAttribute("tabindex", menu.getTabindex(), null);
+        }
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, menu);
         }
         
         encodeSelectItems(context, menu, selectItems);
