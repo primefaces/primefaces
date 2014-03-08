@@ -345,10 +345,10 @@
             <description>Defines row expand mode, valid values are "single" and "multiple" (default).</description>
 		</attribute>
         <attribute>
-            <name>filterLocale</name>
+            <name>dataLocale</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>Locale to be used in filtering, defaults to view locale.</description>
+            <description>Locale to be used in features such as filtering and sorting, defaults to view locale.</description>
         </attribute>
         <attribute>
             <name>nativeElements</name>

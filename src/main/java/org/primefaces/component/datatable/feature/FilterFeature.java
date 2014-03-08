@@ -108,7 +108,7 @@ public class FilterFeature implements DataTableFeature {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         List filteredData = new ArrayList();
         boolean hasGlobalFilter = params.containsKey(globalFilterParam);
-        Locale filterLocale = resolveFilterLocale(context, table);
+        Locale filterLocale = table.resolveDataLocale();
         String globalFilter = hasGlobalFilter ? params.get(globalFilterParam).toLowerCase(filterLocale) : null;
         ELContext elContext = context.getELContext();
         
@@ -313,22 +313,6 @@ public class FilterFeature implements DataTableFeature {
     private ValueExpression createFilterByVE(FacesContext context, String var, Object filterBy) {
         ELContext elContext = context.getELContext();
         return context.getApplication().getExpressionFactory().createValueExpression(elContext, "#{" + var + "." + filterBy + "}", Object.class);
-    }
-    
-    private Locale resolveFilterLocale(FacesContext context, DataTable table) {
-        Object userLocale = table.getFilterLocale();
-        
-        if(userLocale != null) {
-            if(userLocale instanceof String)
-                return ComponentUtils.toLocale((String) userLocale);
-            else if(userLocale instanceof java.util.Locale)
-                return (java.util.Locale) userLocale;
-            else
-                throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for datatable:" + table.getClientId(context));
-        } 
-        else {
-            return context.getViewRoot().getLocale();
-        }
     }
     
     private class FilterMeta {
