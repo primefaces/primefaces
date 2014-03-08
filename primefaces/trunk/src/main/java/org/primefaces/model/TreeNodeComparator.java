@@ -16,6 +16,7 @@
 package org.primefaces.model;
 
 import java.util.Comparator;
+import java.util.Locale;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -26,12 +27,16 @@ public class TreeNodeComparator implements Comparator{
     private boolean asc;
     private String var;
     private MethodExpression sortFunction;
+    private boolean caseSensitive = false;
+    private Locale locale;
 
-    public TreeNodeComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction) {
+    public TreeNodeComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive, Locale locale) {
         this.sortBy = sortBy;
         this.var = var;
         this.asc = sortOrder.equals(SortOrder.ASCENDING);
         this.sortFunction = sortFunction;
+        this.caseSensitive = caseSensitive;
+        this.locale = locale;
     }
 
     @SuppressWarnings("unchecked")
@@ -54,7 +59,12 @@ public class TreeNodeComparator implements Comparator{
             } else if (value2 == null) {
             	result = -1;
             } else if (sortFunction == null) {
-                result = ((Comparable) value1).compareTo(value2);
+                if(value1 instanceof String && value2 instanceof String) {
+                    result = this.caseSensitive ? ((Comparable) value1).compareTo(value2):
+                                        (((String) value1).toLowerCase(locale)).compareTo(((String) value2).toLowerCase(locale));
+                } else {
+                    result = ((Comparable) value1).compareTo(value2);
+                }
             } else {
                 result = (Integer) sortFunction.invoke(context.getELContext(), new Object[]{value1, value2});
             }

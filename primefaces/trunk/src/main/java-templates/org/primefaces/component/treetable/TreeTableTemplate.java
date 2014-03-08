@@ -17,7 +17,10 @@ import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.component.column.Column;
 import java.lang.StringBuilder;
+import java.util.Locale;
+import javax.faces.context.FacesContext;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.util.ComponentUtils;
 
 	public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
     public final static String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
@@ -219,4 +222,21 @@ import org.primefaces.component.api.UIColumn;
     }
     public boolean isDefaultSorted() {
         return getStateHelper().get("defaultSorted") != null;
+    }
+
+    public Locale resolveDataLocale() {
+        FacesContext context = this.getFacesContext();
+        Object userLocale = this.getDataLocale();
+        
+        if(userLocale != null) {
+            if(userLocale instanceof String)
+                return ComponentUtils.toLocale((String) userLocale);
+            else if(userLocale instanceof java.util.Locale)
+                return (java.util.Locale) userLocale;
+            else
+                throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for datatable:" + this.getClientId(context));
+        } 
+        else {
+            return context.getViewRoot().getLocale();
+        }
     }
