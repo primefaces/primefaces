@@ -164,6 +164,19 @@
             <defaultValue>false</defaultValue>
             <description>In native mode, treetable uses native checkboxes.</description>
         </attribute>
+        <attribute>
+            <name>dataLocale</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Locale to be used in features such as sorting, defaults to view locale.</description>
+        </attribute>
+        <attribute>
+			<name>caseSensitiveSort</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Case sensitivity for sorting, insensitive by default.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

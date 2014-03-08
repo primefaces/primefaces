@@ -621,7 +621,7 @@ public class TreeTableRenderer extends CoreRenderer {
         
         ValueExpression sortByVE = tt.getValueExpression("sortBy");
         SortOrder sortOrder = SortOrder.valueOf(tt.getSortOrder().toUpperCase(Locale.ENGLISH));
-        TreeUtils.sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction()));
+        TreeUtils.sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction(), tt.isCaseSensitiveSort(), tt.resolveDataLocale()));
         tt.updateRowKeys(root);
     }
 
