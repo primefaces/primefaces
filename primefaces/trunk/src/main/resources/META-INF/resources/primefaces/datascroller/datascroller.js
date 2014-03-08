@@ -92,10 +92,10 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                 $this.allLoaded = ($this.cfg.offset + $this.cfg.chunkSize) >= $this.cfg.totalSize;
                 
                 $this.loadStatus.remove();
-                if($this.loadTrigger) {
+                
+                if($this.loadTrigger && !$this.allLoaded) {
                     $this.loadTrigger.show();
                 }
-                
             }
         };
         
