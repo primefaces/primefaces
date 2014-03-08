@@ -371,6 +371,13 @@
             <defaultValue>false</defaultValue>
             <description>When enabled, rows can be reordered using dragdrop.</description>
 		</attribute>
+        <attribute>
+			<name>caseSensitiveSort</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Case sensitivity for sorting, insensitive by default.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

@@ -160,13 +160,14 @@ public class SortFeature implements DataTableFeature {
         else
             throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
         
-        Collections.sort(list, new BeanPropertyComparator(sortByVE, table.getVar(), sortOrder, sortFunction));
+        Collections.sort(list, new BeanPropertyComparator(sortByVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort()));
     }
     
     public void multiSort(FacesContext context, DataTable table) {
         Object value = table.getValue();
         List<SortMeta> sortMeta = table.getMultiSortMeta();
         List list = null;
+        boolean caseSensitiveSort = table.isCaseSensitiveSort();
         
         if(value == null) {
             return;
@@ -192,16 +193,16 @@ public class SortFeature implements DataTableFeature {
                 
                 if(sortByProperty == null) {
                     sortByVE = columnSortByVE;
-                    comparator = new DynamicChainedPropertyComparator((DynamicColumn) sortColumn, sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction());
+                    comparator = new DynamicChainedPropertyComparator((DynamicColumn) sortColumn, sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort);
                 }
                 else {
                     sortByVE = createValueExpression(context, table.getVar(), sortByProperty);
-                    comparator = new BeanPropertyComparator(sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction());
+                    comparator = new BeanPropertyComparator(sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort);
                 }
             }
             else {
                 sortByVE = (columnSortByVE != null) ? columnSortByVE : createValueExpression(context, table.getVar(), sortColumn.getSortBy());
-                comparator = new BeanPropertyComparator(sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction());
+                comparator = new BeanPropertyComparator(sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort);
             }
                  
             chainedComparator.addComparator(comparator);
