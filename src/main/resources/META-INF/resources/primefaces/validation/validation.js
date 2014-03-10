@@ -566,8 +566,19 @@ PrimeFaces.validateInputs = function(inputs) {
 };
 
 PrimeFaces.validateInput = function(element) {
-    var vc = PrimeFaces.util.ValidationContext,
-    submittedValue = element.is(':checkbox') ? String(element.prop('checked')) : element.val(),
+    var vc = PrimeFaces.util.ValidationContext;
+
+    if(element.is(':checkbox,:radio') && element.data('p-grouped')) {
+        var groupName = element.attr('name');
+        
+        if(!vc.isGroupValidated(groupName)) {
+            vc.addElementGroup(groupName);
+        } else {
+            return;
+        }
+    }
+    
+    var submittedValue = vc.getSubmittedValue(element),
     valid = true,
     converterId = element.data('p-con');
         
@@ -674,6 +685,8 @@ PrimeFaces.validateInstant = function(id) {
 PrimeFaces.util.ValidationContext = {
 
     messages: {},
+    
+    elementGroups: [],
 
     addMessage: function(element, msg) {
         var clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id');
@@ -826,6 +839,7 @@ PrimeFaces.util.ValidationContext = {
 
     clear: function() {
         this.messages = {};
+        this.elementGroups = [];
     },
             
     getLocaleSettings: function() {
@@ -840,6 +854,35 @@ PrimeFaces.util.ValidationContext = {
         }
         
         return localeSettings;
+    },
+    
+    isGroupValidated: function(name) {
+        for(var i = 0; i < this.elementGroups.length; i++) {
+            if(this.elementGroups[i] === name) {
+                return true;
+            }
+        }
+        return false;
+    },
+    
+    addElementGroup: function(name) {
+        this.elementGroups.push(name);
+    },
+    
+    getSubmittedValue: function(element) {
+        var value;
+                
+        if(element.is(':radio')) {
+            value = $('input:radio[name="' + element.attr('name') + '"]:checked').val();
+        }
+        else if(element.is(':checkbox')) {
+            value = element.data('p-grouped') ? $('input:checkbox[name="' + element.attr('name') + '"]:checked').val(): element.prop('checked').toString();
+        }
+        else {
+            value = element.val();
+        }
+        
+        return (value === undefined) ? '': value;
     }
 };
 
@@ -874,7 +917,7 @@ PrimeFaces.validator.Highlighter = {
             }
         },
 
-        'chkbox': {
+        'booleanchkbox': {
 
             highlight: function(element) {
                 element.parent().next().addClass('ui-state-error');
@@ -884,6 +927,28 @@ PrimeFaces.validator.Highlighter = {
             unhighlight: function(element) {
                 element.parent().next().removeClass('ui-state-error');
                 PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent().parent());
+            }
+
+        },
+        
+        'manychkbox': {
+
+            highlight: function(element) {
+                var container = element.closest('.ui-selectmanycheckbox'),
+                chkboxes = container.find('div.ui-chkbox-box');
+        
+                for(var i = 0; i < chkboxes.length; i++) {
+                    chkboxes.eq(i).addClass('ui-state-error');
+                }
+            },
+
+            unhighlight: function(element) {
+                var container = element.closest('.ui-selectmanycheckbox'),
+                chkboxes = container.find('div.ui-chkbox-box');
+        
+                for(var i = 0; i < chkboxes.length; i++) {
+                    chkboxes.eq(i).removeClass('ui-state-error');
+                }
             }
 
         },
@@ -926,6 +991,28 @@ PrimeFaces.validator.Highlighter = {
             unhighlight: function(element) {
                 element.parent().removeClass('ui-state-error');
                 PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent());
+            }
+
+        },
+        
+        'oneradio': {
+
+            highlight: function(element) {
+                var container = element.closest('.ui-selectoneradio'),
+                radios = container.find('div.ui-radiobutton-box');
+        
+                for(var i = 0; i < radios.length; i++) {
+                    radios.eq(i).addClass('ui-state-error');
+                }
+            },
+
+            unhighlight: function(element) {
+                var container = element.closest('.ui-selectoneradio'),
+                radios = container.find('div.ui-radiobutton-box');
+        
+                for(var i = 0; i < radios.length; i++) {
+                    radios.eq(i).removeClass('ui-state-error');
+                }
             }
 
         }
