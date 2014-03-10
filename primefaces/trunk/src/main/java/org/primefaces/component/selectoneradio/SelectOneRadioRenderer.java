@@ -29,6 +29,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.radiobutton.RadioButton;
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -231,6 +232,10 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, radio);
+        }
+        
         writer.endElement("input");
 
         writer.endElement("div");
@@ -295,4 +300,15 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     public boolean getRendersChildren() {
         return true;
     }
+    
+    @Override
+    public String getHighlighter() {
+        return "oneradio";
+    }
+
+    @Override
+    protected boolean isGrouped() {
+        return true;
+    }
+    
 }

@@ -27,6 +27,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -86,6 +87,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, checkbox);
+        }
 
         writer.endElement("input");
 
@@ -249,5 +254,15 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     @Override
     protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
         return selectMany.getClientId(context);
+    }
+    
+    @Override
+    public String getHighlighter() {
+        return "manychkbox";
+    }
+    
+    @Override
+    protected boolean isGrouped() {
+        return true;
     }
 }

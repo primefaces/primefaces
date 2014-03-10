@@ -662,7 +662,11 @@ public abstract class CoreRenderer extends Renderer {
         
         if(highlighter != null) {
             writer.writeAttribute(HTML.VALIDATION_METADATA.HIGHLIGHTER, highlighter, null);
-        } 
+        }
+        
+        if(isGrouped()) {
+            writer.writeAttribute(HTML.VALIDATION_METADATA.GROUPED, "true", null);
+        }
     }
     
     private void renderValidationMetadataMap(FacesContext context, Map<String,Object> metadata) throws IOException {
@@ -704,5 +708,9 @@ public abstract class CoreRenderer extends Renderer {
     
     protected String getHighlighter() {
         return null;
+    }
+    
+    protected boolean isGrouped() {
+        return false;
     }
 }

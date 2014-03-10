@@ -157,6 +157,6 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     
     @Override
     public String getHighlighter() {
-        return "chkbox";
+        return "booleanchkbox";
     }
 }
