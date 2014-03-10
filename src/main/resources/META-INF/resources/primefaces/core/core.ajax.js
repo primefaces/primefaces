@@ -413,6 +413,7 @@ PrimeFaces.ajax = {
                 beforeSend: function(xhr, settings) {
                     xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                     xhr.pfSettings = settings;
+                    xhr.pfArgs = {}; // default should be an empty object
 
                     if(global) {
                         $(document).trigger('pfAjaxSend', [xhr, this]);
@@ -627,8 +628,6 @@ PrimeFaces.ajax = {
                 if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
                     var textContent = node.textContent || node.innerText || node.text;
                     xhr.pfArgs = $.parseJSON(textContent);
-                } else {
-                    xhr.pfArgs = {};
                 }
             }
         },
