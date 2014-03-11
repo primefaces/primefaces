@@ -104,7 +104,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     parentList = item.parent();
                     
                     for(var i = startIndex ; i < endIndex; i++) {
-                        $this.selectItem(parentList.children('li.ui-picklist-item').eq(i));
+                        var it = parentList.children('li.ui-picklist-item').eq(i);
+                        
+                        if(it.is(':visible')) {
+                            $this.selectItem(it);
+                        }
                     }
                 } 
                 else {
