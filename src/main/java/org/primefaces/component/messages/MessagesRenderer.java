@@ -39,9 +39,10 @@ public class MessagesRenderer extends UINotificationRenderer {
         String clientId = uiMessages.getClientId(context);	
 		Map<String, List<FacesMessage>> messagesMap = new HashMap<String, List<FacesMessage>>();
         boolean globalOnly = uiMessages.isGlobalOnly();
+        String containerClass = uiMessages.isShowIcon() ? Messages.CONTAINER_CLASS: Messages.ICONLESS_CONTAINER_CLASS;
         String style = uiMessages.getStyle();
         String styleClass = uiMessages.getStyleClass();
-        styleClass = (styleClass == null) ? Messages.CONTAINER_CLASS: Messages.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? containerClass: containerClass + " " + styleClass;
         
         String _for = uiMessages.getFor();
         Iterator<FacesMessage> messages;
@@ -126,9 +127,11 @@ public class MessagesRenderer extends UINotificationRenderer {
             encodeCloseIcon(context, uiMessages);
         }
 		
-		writer.startElement("span", null);
-		writer.writeAttribute("class", styleClassPrefix + "-icon", null);
-		writer.endElement("span");
+        if(uiMessages.isShowIcon()) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", styleClassPrefix + "-icon", null);
+            writer.endElement("span");
+        }
 		
 		writer.startElement("ul", null);
 		
