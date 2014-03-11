@@ -32,8 +32,13 @@
         /**
          * Submits a form and clears ui-submit-param after that to prevent dom caching issues
          */ 
-        submit : function(formId) {
-            $(this.escapeClientId(formId)).submit().children('input.ui-submit-param').remove();
+        submit : function(formId, target) {
+            var form = $(this.escapeClientId(formId));
+            if(target) {
+                form.attr('target', target);
+            }
+            
+            form.submit().children('input.ui-submit-param').remove();
         },
 
         attachBehaviors : function(element, behaviors) {

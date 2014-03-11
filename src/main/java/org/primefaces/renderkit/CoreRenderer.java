@@ -419,7 +419,14 @@ public abstract class CoreRenderer extends Renderer {
         }
         
         if(submit) {
-            request.append(".submit('").append(formId).append("');return false;");
+            Object target = component.getAttributes().get("target");
+            request.append(".submit('").append(formId).append("'");
+            
+            if(target != null) {
+                request.append(",'").append(target).append("'");
+            }
+            
+            request.append(");return false;");
         }
 		
 		return request.toString();
