@@ -101,6 +101,13 @@
             <type>java.lang.String</type>
             <description>Style class of the component.</description>
         </attribute>
+        <attribute>
+			<name>showIcon</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines if severity icons would be displayed. Default is true.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
