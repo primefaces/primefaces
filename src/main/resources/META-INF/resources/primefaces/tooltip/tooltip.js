@@ -35,10 +35,15 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         
         $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.cfg.globalSelector)
-                    .on(this.cfg.showEvent, this.cfg.globalSelector, function() {
+                    .on(this.cfg.showEvent, this.cfg.globalSelector, function(e) {
                         var element = $(this);
                         if(element.prop('disabled')) {
                             return;
+                        }
+                        
+                        if($this.cfg.trackMouse) {
+                            $this.pageX = e.pageX;
+                            $this.pageY = e.pageY;
                         }
                 
                         var title = element.attr('title');
@@ -88,7 +93,12 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         
         var $this = this;
         this.target.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent)
-                    .on(this.cfg.showEvent, function() {
+                    .on(this.cfg.showEvent, function(e) {
+                        if($this.cfg.trackMouse) {
+                            $this.pageX = e.pageX;
+                            $this.pageY = e.pageY;
+                        }
+                        
                         $this.show();
                     })
                     .on(this.cfg.hideEvent + '.tooltip', function() {
@@ -97,7 +107,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.appendTo(document.body);
 
-        if($.trim(this.jq.html()) == '') {
+        if($.trim(this.jq.html()) === '') {
             this.jq.html(this.target.attr('title'));
         }
 
@@ -112,16 +122,25 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     },
 
     align: function() {
-        this.jq.css({
+         this.jq.css({
             left:'', 
             top:'',
             'z-index': ++PrimeFaces.zindex
-        })
-        .position({
-            my: 'left top',
-            at: 'right bottom',
-            of: this.target
         });
+        
+        if(this.cfg.trackMouse && this.pageX && this.pageY) {
+            this.jq.css({
+                left: this.pageX,
+                top: (this.pageY + 15)
+            })
+        }
+        else {
+            this.jq.position({
+                my: 'left top',
+                at: 'right bottom',
+                of: this.target
+            });
+        }
     },
     
     show: function() {
@@ -130,17 +149,39 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
             this.timeout = setTimeout(function() {
                 $this.align();
+                if($this.cfg.trackMouse) {
+                    $this.followMouse();
+                }
                 $this.jq.show($this.cfg.showEffect, {}, 250);
             }, 150);
         }
     },
     
     hide: function() {
+        var $this = this;
         clearTimeout(this.timeout);
 
         this.jq.hide(this.cfg.hideEffect, {}, 250, function() {
             $(this).css('z-index', '');
+            if($this.cfg.trackMouse) {
+                $this.unfollowMouse();
+            }
         });
+    },
+    
+    followMouse: function() {
+        var $this = this;
+        
+        this.target.on('mousemove.tooltip-track', function(e) {
+            $this.jq.css({
+                left: e.pageX,
+                top: (e.pageY + 15)
+            });
+        });       
+    },
+    
+    unfollowMouse: function() {
+        this.target.off('mousemove.tooltip-track'); 
     }
     
 });
