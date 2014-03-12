@@ -79,6 +79,13 @@
             <defaultValue>true</defaultValue>
             <description>Defines whether html would be escaped or not, defaults to true.</description>
 		</attribute>
+        <attribute>
+			<name>trackMouse</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Tooltip position follows pointer on mousemove, default is false</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
