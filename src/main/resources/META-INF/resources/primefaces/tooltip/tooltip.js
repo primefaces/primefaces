@@ -132,7 +132,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             this.jq.css({
                 left: this.pageX,
                 top: (this.pageY + 15)
-            })
+            });
         }
         else {
             this.jq.position({
