@@ -191,12 +191,10 @@ public class ConfigContainer {
     }
 
     private void initConfigFromWebXml(FacesContext context) {
-        ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
-        
         InputStream is = null;
         
         try {
-            is = servletContext.getResourceAsStream("/WEB-INF/web.xml");
+            is = context.getExternalContext().getResourceAsStream("/WEB-INF/web.xml");
 
             // web.xml is optional
             if (is != null) {
