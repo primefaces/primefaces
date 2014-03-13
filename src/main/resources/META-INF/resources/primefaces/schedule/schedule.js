@@ -5384,11 +5384,9 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        
-        this.jqc = $(this.jqId + '_container');
-        this.cfg.formId = this.jq.parents('form:first').attr('id');
+        this.cfg.formId = this.jq.closest('form').attr('id');
         this.cfg.theme = true;
-        var _self = this;
+        this.jqc = $(this.jqId + '_container');
 
         this.setupEventSource();
 
@@ -5401,6 +5399,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     
     _render: function() {
         this.jqc.fullCalendar(this.cfg);
+        
+        this.bindViewChangeListener();
     },
     
     configureLocale: function() {
@@ -5429,7 +5429,6 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 if(dateSelectBehavior) {
                     var ext = {
                         params: [
-//                            {name: _self.id + '_selectedDate', value: dayDate.getTime() - new Date().getTimezoneOffset()*60000 - _self.cfg.offset}
 							{name: _self.id + '_selectedDate', value: dayDate.getTime() - dayDate.getTimezoneOffset()*60000 - _self.cfg.offset}
                         ]
                     };
@@ -5521,6 +5520,38 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     
     update: function() {
         this.jqc.fullCalendar('refetchEvents');
+    },
+    
+    bindViewChangeListener: function() {
+        if(this.cfg.behaviors) {
+            var viewChangeBehavior = this.cfg.behaviors['viewChange'];
+            if(viewChangeBehavior) {                
+                var viewButtons = this.jqc.find('> .fc-header span.fc-button:not(.fc-button-prev,.fc-button-next,.fc-button-today)'),
+                $this = this;
+        
+                viewButtons.each(function(i) {
+                    var viewButton = viewButtons.eq(i),
+                    buttonClasses = viewButton.attr('class').split(' ');
+                    for(var i = 0; i < buttonClasses.length; i++) {
+                        var buttonClass = buttonClasses[i];
+                        if(buttonClass.indexOf('fc-button-') !== -1) {
+                            viewButton.data('view', buttonClass.substring(10))
+                            break;
+                        }
+                    }
+                });
+                
+                viewButtons.on('click.schedule', function() {
+                    var ext = {
+                        params: [
+                            {name: $this.id + '_view', value: $(this).data('view')}
+                        ]
+                    };
+
+                    viewChangeBehavior.call($this, ext);
+                });
+            }
+        }
     }
 
 });

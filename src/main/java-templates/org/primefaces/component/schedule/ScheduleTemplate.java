@@ -17,7 +17,7 @@ import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","eventSelect", "eventMove", "eventResize"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","eventSelect", "eventMove", "eventResize", "viewChange"));
 
 	private java.util.Locale appropriateLocale;
 	
@@ -124,6 +124,9 @@ import org.primefaces.model.ScheduleEvent;
 				resizedEvent.getEndDate().setTime(calendar.getTimeInMillis());
 
                 wrapperEvent = new ScheduleEntryResizeEvent(this, behaviorEvent.getBehavior(), resizedEvent, dayDelta, minuteDelta);
+            }
+            else if(eventName.equals("viewChange")) {
+				wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), params.get(clientId + "_view"));
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
