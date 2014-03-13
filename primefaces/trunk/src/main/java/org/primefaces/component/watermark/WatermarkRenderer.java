@@ -42,10 +42,15 @@ public class WatermarkRenderer extends CoreRenderer {
         else {
 			throw new FacesException("\"For\" option must be used to define a watermark.");
 		}
+		
+		String watermarkValue = watermark.getValue();
+		if (watermarkValue != null) {
+		   watermarkValue = watermarkValue.replace("'", "\\'");
+		}
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Watermark", watermark.resolveWidgetVar(), watermark.getClientId(context), "watermark")
-            .attr("value", watermark.getValue())
+            .attr("value", watermarkValue)
             .attr("target", target);
 
 		wb.finish();
