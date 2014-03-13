@@ -5436,7 +5436,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     dateSelectBehavior.call(_self, ext);
                 }
             }
-        }
+        };
 
         this.cfg.eventClick = function(calEvent, jsEvent, view) {
             if(_self.cfg.behaviors) {
@@ -5451,7 +5451,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     eventSelectBehavior.call(_self, ext);
                 }
             }
-        }
+        };
 
         this.cfg.eventDrop = function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
             if(_self.cfg.behaviors) {
@@ -5468,7 +5468,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     eventMoveBehavior.call(_self, ext);
                 }
             }
-        }
+        };
 
         this.cfg.eventResize = function(calEvent, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
             if(_self.cfg.behaviors) {
@@ -5485,7 +5485,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     eventResizeBehavior.call(_self, ext);
                 }
             }
-        }
+        };
     },
     
     setupEventSource: function() {
