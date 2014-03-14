@@ -169,12 +169,14 @@ public class WidgetBuilder {
         
         return this;
     }
-    
-    public WidgetBuilder attr(String name, boolean value) throws IOException {
-        context.getResponseWriter().write(",");
-        context.getResponseWriter().write(name);
-        context.getResponseWriter().write(":");
-        context.getResponseWriter().write(Boolean.toString(value));
+
+    public WidgetBuilder attr(String name, Boolean value) throws IOException {
+        if (value != null) {
+            context.getResponseWriter().write(",");
+            context.getResponseWriter().write(name);
+            context.getResponseWriter().write(":");
+            context.getResponseWriter().write(Boolean.toString(value));
+        }
         
         return this;
     }
