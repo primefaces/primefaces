@@ -137,22 +137,22 @@ public class WidgetBuilder {
     }
 
     public WidgetBuilder attr(String name, String value) throws IOException {
-        context.getResponseWriter().write(",");
-        context.getResponseWriter().write(name);
-        context.getResponseWriter().write(":'");
         if (value != null) {
+            context.getResponseWriter().write(",");
+            context.getResponseWriter().write(name);
+            context.getResponseWriter().write(":'");
         	context.getResponseWriter().write(value);
+            context.getResponseWriter().write("'");
         }
-        context.getResponseWriter().write("'");
-        
+
         return this;
     }
     
     public WidgetBuilder nativeAttr(String name, String value) throws IOException {
-        context.getResponseWriter().write(",");
-        context.getResponseWriter().write(name);
-        context.getResponseWriter().write(":");
         if (value != null) {
+            context.getResponseWriter().write(",");
+            context.getResponseWriter().write(name);
+            context.getResponseWriter().write(":");
         	context.getResponseWriter().write(value);
         }
         
