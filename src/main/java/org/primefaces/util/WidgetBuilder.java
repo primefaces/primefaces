@@ -182,10 +182,10 @@ public class WidgetBuilder {
     }
     
     public WidgetBuilder attr(String name, Number value) throws IOException {
-        context.getResponseWriter().write(",");
-        context.getResponseWriter().write(name);
-        context.getResponseWriter().write(":");
         if (value != null) {
+            context.getResponseWriter().write(",");
+            context.getResponseWriter().write(name);
+            context.getResponseWriter().write(":");
         	context.getResponseWriter().write(value.toString());
         }
         
