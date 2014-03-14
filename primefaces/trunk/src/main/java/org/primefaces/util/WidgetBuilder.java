@@ -40,7 +40,7 @@ public class WidgetBuilder {
      * @param onload        Flag to define if widget should be created on document load
      * @throws IOException 
      */
-    private WidgetBuilder init(String widgetClass, String widgetVar, String id, String resourcePath, boolean endFunction) throws IOException {
+    protected WidgetBuilder init(String widgetClass, String widgetVar, String id, String resourcePath, boolean endFunction) throws IOException {
     	this.resourcePath = resourcePath;
     	this.endFunction = endFunction;
     	
