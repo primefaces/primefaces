@@ -581,8 +581,8 @@ PrimeFaces.ajax = {
 
         destroyDetachedWidgets : function() {
             // destroy detached widgets
-            for (var i = 0; i < PrimeFaces.updatedWidgets.length; i++) {
-                var widgetVar = PrimeFaces.updatedWidgets[i];
+            for (var i = 0; i < PrimeFaces.detachedWidgets.length; i++) {
+                var widgetVar = PrimeFaces.detachedWidgets[i];
 
                 var widget = PF(widgetVar);
                 if (widget) {
@@ -597,7 +597,7 @@ PrimeFaces.ajax = {
                 }
             }
 
-            PrimeFaces.updatedWidgets = [];
+            PrimeFaces.detachedWidgets = [];
         }
     },
     
