@@ -175,7 +175,14 @@
             <name>timeZone</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()</description>
+            <description>String or a java.util.TimeZone instance to specify the timezone used for date conversion to ISO_8601 format, defaults to "UTC".</description>
+        </attribute>
+        <attribute>
+            <name>ignoreTimezone</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When parsing dates, whether UTC offsets should be ignored while processing event data. Default is true</description>
         </attribute>
 	</attributes>
 	<resources>
