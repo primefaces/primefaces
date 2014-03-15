@@ -31,8 +31,11 @@ PrimeFaces.ab = function(cfg, ext) {
             continue;
         }
         
-        cfg[this.AB_MAPPING[option]] = cfg[option];
-        delete cfg[option];
+        // just pass though if no mapping is available
+        if (this.AB_MAPPING[option]) {
+            cfg[this.AB_MAPPING[option]] = cfg[option];
+            delete cfg[option];
+        }
     }
     
     PrimeFaces.ajax.Request.handle(cfg, ext);
