@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -74,36 +75,33 @@ public class ScheduleRenderer extends CoreRenderer {
 	
 	protected void encodeEventsAsJSON(FacesContext context, Schedule schedule, ScheduleModel model) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(schedule.calculateTimeZone());
+        TimeZone timeZone = schedule.calculateTimeZone();
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+        SimpleDateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        iso.setTimeZone(timeZone);
         writer.write("{");
         writer.write("\"events\" : [");
 		
         if(model != null) {
             for(Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext();) {
                 ScheduleEvent event = iterator.next();
-                calendar.setTime(event.getStartDate());
-                String startDateInMillis = df.format(calendar.getTime());
-                
-                calendar.setTime(event.getEndDate());
-                String endDateInMillis = df.format(calendar.getTimeInMillis());
 
                 writer.write("{");
                 writer.write("\"id\": \"" + event.getId() + "\"");	
                 writer.write(",\"title\": \"" + escapeText(event.getTitle()) + "\"");
-                writer.write(",\"start\": \"" + startDateInMillis + "\"");	
-                writer.write(",\"end\": \"" + endDateInMillis + "\"");	
+                writer.write(",\"start\": \"" + iso.format(event.getStartDate()) + "\"");	
+                writer.write(",\"end\": \"" + iso.format(event.getEndDate()) + "\"");
                 writer.write(",\"allDay\":" + event.isAllDay());
                 writer.write(",\"editable\":" + event.isEditable());
-                if(event.getStyleClass() != null)
+                if(event.getStyleClass() != null) {
                     writer.write(",\"className\":\"" + event.getStyleClass() + "\"");
+                }
 
                 writer.write("}");
 
-                if(iterator.hasNext())
+                if(iterator.hasNext()) {
                     writer.write(",");
+                }
             }
         }
 		
@@ -146,7 +144,8 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("disableDragging", !schedule.isDraggable(), false)
             .attr("disableResizing", !schedule.isResizable(), false)
             .attr("axisFormat", schedule.getAxisFormat(), null)
-            .attr("timeFormat", schedule.getTimeFormat(), null);
+            .attr("timeFormat", schedule.getTimeFormat(), null)
+            .attr("ignoreTimezone", schedule.isIgnoreTimezone(), true);
                 
         String columnFormat = schedule.getColumnFormat();
         if(columnFormat != null) {

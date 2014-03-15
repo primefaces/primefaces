@@ -17,6 +17,8 @@ import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 
+    private static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("UTC");
+
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","eventSelect", "eventMove", "eventResize", "viewChange"));
 
 	private java.util.Locale appropriateLocale;
@@ -41,7 +43,7 @@ import org.primefaces.model.ScheduleEvent;
 
     private TimeZone appropriateTimeZone;
 
-    public java.util.TimeZone calculateTimeZone() {
+    java.util.TimeZone calculateTimeZone() {
 		if(appropriateTimeZone == null) {
 			Object usertimeZone = getTimeZone();
 			if(usertimeZone != null) {
@@ -52,7 +54,7 @@ import org.primefaces.model.ScheduleEvent;
 				else
 					throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
 			} else {
-				appropriateTimeZone = TimeZone.getDefault();
+				appropriateTimeZone = DEFAULT_TIME_ZONE;
 			}
 		}
 		
