@@ -82,7 +82,7 @@ PrimeFaces.widget.BaseWidget = Class.extend({
         if (this.widgetVar) {
             var $this = this;
             this.jq.on("remove", function() {
-            	PrimeFaces.updatedWidgets.push($this.widgetVar);
+            	PrimeFaces.detachedWidgets.push($this.widgetVar);
             });
         }
     },

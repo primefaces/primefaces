@@ -480,7 +480,7 @@
         
         customFocus : false,
         
-        updatedWidgets : [],
+        detachedWidgets : [],
 
         PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 
