@@ -27,8 +27,6 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class WatermarkRenderer extends CoreRenderer {
-
-	private static final Logger LOG = Logger.getLogger(WatermarkRenderer.class.getName());
 	
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -43,14 +41,9 @@ public class WatermarkRenderer extends CoreRenderer {
 			throw new FacesException("\"For\" option must be used to define a watermark.");
 		}
 		
-		String watermarkValue = watermark.getValue();
-		if (watermarkValue != null) {
-		   watermarkValue = watermarkValue.replace("'", "\\'");
-		}
-
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Watermark", watermark.resolveWidgetVar(), watermark.getClientId(context), "watermark")
-            .attr("value", watermarkValue)
+            .attr("value", escapeText(watermark.getValue()))
             .attr("target", target);
 
 		wb.finish();

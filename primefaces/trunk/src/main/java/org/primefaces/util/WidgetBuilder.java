@@ -44,19 +44,19 @@ public class WidgetBuilder {
     	this.resourcePath = resourcePath;
     	this.endFunction = endFunction;
     	
-        context.getResponseWriter().write("PrimeFaces.cw('");
+        context.getResponseWriter().write("PrimeFaces.cw(\"");
         context.getResponseWriter().write(widgetClass);
-        context.getResponseWriter().write("','");
+        context.getResponseWriter().write("\",\"");
         context.getResponseWriter().write(widgetVar);
-        context.getResponseWriter().write("',{");
-        context.getResponseWriter().write("id:'");
+        context.getResponseWriter().write("\",{");
+        context.getResponseWriter().write("id:\"");
         context.getResponseWriter().write(id);
         if (widgetVar == null) {
-        	context.getResponseWriter().write("'");
+        	context.getResponseWriter().write("\"");
         } else {
-	        context.getResponseWriter().write("',widgetVar:'");
+	        context.getResponseWriter().write("\",widgetVar:\"");
 	        context.getResponseWriter().write(widgetVar);
-	        context.getResponseWriter().write("'");
+	        context.getResponseWriter().write("\"");
         }
 
         return this;
@@ -115,7 +115,7 @@ public class WidgetBuilder {
     public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId) throws IOException {
     	
     	this.renderScriptBlock(id);
-    	context.getResponseWriter().write("$(PrimeFaces.escapeClientId('" + targetId + "')).load(function(){");
+    	context.getResponseWriter().write("$(PrimeFaces.escapeClientId(\"" + targetId + "\")).load(function(){");
     	this.init(widgetClass, widgetVar, id, null, true);
         
         return this;
@@ -124,7 +124,7 @@ public class WidgetBuilder {
     public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId, String resourcePath) throws IOException {
     	
     	this.renderScriptBlock(id);
-    	context.getResponseWriter().write("$(PrimeFaces.escapeClientId('" + targetId + "')).load(function(){");
+    	context.getResponseWriter().write("$(PrimeFaces.escapeClientId(\"" + targetId + "\")).load(function(){");
     	this.init(widgetClass, widgetVar, id, resourcePath, true);
         
         return this;
@@ -140,9 +140,9 @@ public class WidgetBuilder {
         if (value != null) {
             context.getResponseWriter().write(",");
             context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":'");
+            context.getResponseWriter().write(":\"");
         	context.getResponseWriter().write(value);
-            context.getResponseWriter().write("'");
+            context.getResponseWriter().write("\"");
         }
 
         return this;
@@ -284,9 +284,9 @@ public class WidgetBuilder {
         context.getResponseWriter().write("}");
         
         if(this.resourcePath != null) {
-            context.getResponseWriter().write(",'");
+            context.getResponseWriter().write(",\"");
 	        context.getResponseWriter().write(this.resourcePath);
-	        context.getResponseWriter().write("'");
+	        context.getResponseWriter().write("\"");
         } 
         
         context.getResponseWriter().write(");");
