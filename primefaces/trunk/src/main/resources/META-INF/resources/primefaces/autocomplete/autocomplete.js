@@ -258,7 +258,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                 switch(e.which) {
                     case keyCode.UP:
-                    case keyCode.LEFT:
                         var prev = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.prevAll('.ui-autocomplete-item:first');
                         
                         if(prev.length == 1) {
@@ -278,7 +277,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
 
                     case keyCode.DOWN:
-                    case keyCode.RIGHT:
                         var next = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.nextAll('.ui-autocomplete-item:first');
                         
                         if(next.length == 1) {
