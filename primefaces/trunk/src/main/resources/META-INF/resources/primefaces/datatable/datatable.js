@@ -291,7 +291,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.selectionMode !== 'radio') {
             this.bindRowHover();
             
-            $(document).off('click.datatable', this.rowSelector).on('click.datatable', this.rowSelector, null, function(e) {
+            this.tbody.off('click.dataTable', this.rowSelector).on('click.dataTable', this.rowSelector, null, function(e) {
                 $this.onRowClick(e, this);
             });
         }
@@ -313,15 +313,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     bindRowHover: function() {
-        $(document).off('mouseover.datatable mouseout.datatable', this.rowSelector)
-                    .on('mouseover.datatable', this.rowSelector, null, function() {
+        this.tbody.off('mouseenter.dataTable mouseleave.dataTable', this.rowSelector)
+                    .on('mouseenter.dataTable', this.rowSelector, null, function() {
                         var element = $(this);
 
                         if(!element.hasClass('ui-state-highlight')) {
                             element.addClass('ui-state-hover');
                         }
                     })
-                    .on('mouseout.datatable', this.rowSelector, null, function() {
+                    .on('mouseleave.dataTable', this.rowSelector, null, function() {
                         var element = $(this);
 
                         if(!element.hasClass('ui-state-highlight')) {
