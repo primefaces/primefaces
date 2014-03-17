@@ -248,11 +248,12 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("for", containerClientId, null);
         if(disabled)
             writer.writeAttribute("class", "ui-state-disabled", null);
-        
+        if(option.getLabel() != null) {
         if(option.isEscape())
             writer.writeText(option.getLabel(),null);
         else
             writer.write(option.getLabel());
+        }
         
         writer.endElement("label");
     }
