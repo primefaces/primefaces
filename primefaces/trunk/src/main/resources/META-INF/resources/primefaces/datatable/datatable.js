@@ -285,7 +285,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindSelectionEvents: function() {
         var $this = this;
         this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
-        this.rowSelector = this.jqId + ' tbody.ui-datatable-data > tr.ui-widget-content.ui-datatable-selectable';
+        this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
 
         //row events
         if(this.cfg.selectionMode !== 'radio') {
