@@ -507,11 +507,11 @@ import org.primefaces.util.SharedStringBuilder;
         model.setWrappedData(null);
     }
 
-    public Map<String,String> getFilters() {
-        return (Map<String,String>) getStateHelper().eval("filters", new HashMap<String,String>());
+    public Map<String,Object> getFilters() {
+        return (Map<String,Object>) getStateHelper().eval("filters", new HashMap<String,Object>());
     }
 
-    public void setFilters(Map<String,String> filters) {
+    public void setFilters(Map<String,Object> filters) {
         getStateHelper().put("filters", filters);
     }
     
