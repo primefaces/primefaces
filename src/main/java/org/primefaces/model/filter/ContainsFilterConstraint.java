@@ -15,9 +15,19 @@
  */
 package org.primefaces.model.filter;
 
+import org.primefaces.util.Constants;
+
 public class ContainsFilterConstraint implements FilterConstraint {
 
     public boolean applies(Object value, Object filter) {
+        if(filter == null || filter.toString().trim().equals(Constants.EMPTY_STRING)) {
+            return true;
+        }
+        
+        if(value == null) {
+            return false;
+        }
+        
         return value.toString().contains(filter.toString());
     }
 }

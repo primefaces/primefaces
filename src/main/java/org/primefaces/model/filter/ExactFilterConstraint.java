@@ -15,9 +15,21 @@
  */
 package org.primefaces.model.filter;
 
+import org.primefaces.util.Constants;
+
 public class ExactFilterConstraint implements FilterConstraint {
 
     public boolean applies(Object value, Object filter) {
+        String filterText = (filter == null) ? null : filter.toString().trim();
+        
+        if(filterText == null||filterText.equals(Constants.EMPTY_STRING)) {
+            return true;
+        }
+        
+        if(value == null) {
+            return false;
+        }
+        
         return value.toString().equalsIgnoreCase(filter.toString());
     }
 }
