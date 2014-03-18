@@ -17,7 +17,7 @@ package org.primefaces.model.filter;
 
 public class ExactFilterConstraint implements FilterConstraint {
 
-    public boolean applies(String value, String filter) {
-        return value.equalsIgnoreCase(filter);
+    public boolean applies(Object value, Object filter) {
+        return value.toString().equalsIgnoreCase(filter.toString());
     }
 }

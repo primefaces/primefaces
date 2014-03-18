@@ -17,7 +17,7 @@ package org.primefaces.model.filter;
 
 public class ContainsFilterConstraint implements FilterConstraint {
 
-    public boolean applies(String value, String filter) {
-        return value.contains(filter);
+    public boolean applies(Object value, Object filter) {
+        return value.toString().contains(filter.toString());
     }
 }

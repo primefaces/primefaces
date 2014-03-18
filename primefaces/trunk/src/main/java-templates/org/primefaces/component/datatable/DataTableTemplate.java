@@ -193,7 +193,17 @@ import org.primefaces.util.SharedStringBuilder;
         else
             return false;
 	}
+    
+    @Override
+    public void processValidators(FacesContext context) {
+        super.processValidators(context);
 
+        if(this.isFilterRequest(context)) {
+            FEATURES.get(DataTableFeatureKey.FILTER).decode(context, this);
+        }
+	}
+
+    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
 
@@ -932,5 +942,9 @@ import org.primefaces.util.SharedStringBuilder;
         else {
             return context.getViewRoot().getLocale();
         }
+    }
+    
+    private boolean isFilterRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_filtering");
     }
     
