@@ -18,7 +18,11 @@ package org.primefaces.model.filter;
 public class GreaterThanEqualsFilterConstraint implements FilterConstraint {
 
     public boolean applies(Object value, Object filter) {
-        if(value instanceof Comparable) {
+        if(filter == null) {
+            return true;
+        }
+                
+        if(value instanceof Comparable) {            
             int compared = ((Comparable) value).compareTo(filter);
             
             return (compared == 0 || compared > 0);

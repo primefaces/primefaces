@@ -35,7 +35,6 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.filter.*;
-import org.primefaces.util.ComponentUtils;
 
 public class FilterFeature implements DataTableFeature {
     
@@ -143,10 +142,7 @@ public class FilterFeature implements DataTableFeature {
                         globalMatch = true;
                 }
 
-                if(filterValue == null || ComponentUtils.isValueBlank(filterValue.toString())) {
-                    localMatch = true;
-                }
-                else if(columnValue == null || !filterConstraint.applies(columnValue, filterValue)) {
+                if(!filterConstraint.applies(columnValue, filterValue)) {
                     localMatch = false;
                     break;
                 }
