@@ -97,11 +97,20 @@ public abstract class AbstractMenu extends UIPanel {
                     outcome = noArgExpr.invoke(eLContext, null);
                 } 
                 catch(MethodNotFoundException methodNotFoundException) {
-                    MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
+                    try {
+                        MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
                                 createMethodExpression(eLContext, actionExpressionString, 
                                                             String.class, new Class[]{ActionEvent.class});
-
-                    outcome = argExpr.invoke(eLContext, new Object[]{event});
+                        
+                        outcome = argExpr.invoke(eLContext, new Object[]{event});
+                    }
+                    catch(MethodNotFoundException methodNotFoundException2) {
+                        MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
+                                createMethodExpression(eLContext, actionExpressionString, 
+                                                            String.class, new Class[]{MenuActionEvent.class});
+                        
+                        outcome = argExpr.invoke(eLContext, new Object[]{event});
+                    }
                 }
                 finally {
                     if(outcome != null) {
