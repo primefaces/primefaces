@@ -129,23 +129,24 @@ public class FilterFeature implements DataTableFeature {
                 Object filterValue = filterMeta.getFilterValue();
                 UIColumn column = filterMeta.getColumn();
                 ValueExpression filterByVE = filterMeta.getFilterByVE();
+                Object columnValue = filterByVE.getValue(elContext);
                 
                 if(column instanceof DynamicColumn) {
                     ((DynamicColumn) column).applyStatelessModel();
                 }
                 
-                String columnValue = String.valueOf(filterByVE.getValue(elContext));
+                String columnValueAsString = String.valueOf(filterByVE.getValue(elContext));
                 FilterConstraint filterConstraint = this.getFilterConstraint(column);
 
                 if(hasGlobalFilter && !globalMatch) {
-                    if(columnValue != null && columnValue.toLowerCase(filterLocale).contains(globalFilter))
+                    if(columnValue != null && columnValueAsString.toLowerCase(filterLocale).contains(globalFilter))
                         globalMatch = true;
                 }
 
                 if(filterValue == null || ComponentUtils.isValueBlank(filterValue.toString())) {
                     localMatch = true;
                 }
-                else if(columnValue == null || !filterConstraint.applies(columnValue.toLowerCase(filterLocale), filterValue)) {
+                else if(columnValue == null || !filterConstraint.applies(columnValue, filterValue)) {
                     localMatch = false;
                     break;
                 }
