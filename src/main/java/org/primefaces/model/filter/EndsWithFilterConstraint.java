@@ -17,7 +17,7 @@ package org.primefaces.model.filter;
 
 public class EndsWithFilterConstraint implements FilterConstraint {
 
-    public boolean applies(String value, String filter) {
-        return value.endsWith(filter);
+    public boolean applies(Object value, Object filter) {
+        return value.toString().endsWith(filter.toString());
     }
 }

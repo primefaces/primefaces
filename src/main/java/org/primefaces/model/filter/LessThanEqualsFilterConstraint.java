@@ -15,9 +15,15 @@
  */
 package org.primefaces.model.filter;
 
-public class StartsWithFilterConstraint implements FilterConstraint {
+public class LessThanEqualsFilterConstraint implements FilterConstraint {
 
     public boolean applies(Object value, Object filter) {
-        return value.toString().startsWith(filter.toString());
+        if(value instanceof Comparable) {
+            int compared = ((Comparable) value).compareTo(filter);
+            
+            return (compared == 0 || compared < 0);
+        }
+        
+        return false;
     }
 }

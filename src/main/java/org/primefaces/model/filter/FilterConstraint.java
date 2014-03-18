@@ -17,5 +17,5 @@ package org.primefaces.model.filter;
 
 public interface FilterConstraint {
 
-    public boolean applies(String value, String filter);
+    public boolean applies(Object value, Object filter);
 }
