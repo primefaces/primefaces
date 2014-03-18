@@ -35,6 +35,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.filter.*;
+import org.primefaces.util.Constants;
 
 public class FilterFeature implements DataTableFeature {
     
@@ -78,8 +79,8 @@ public class FilterFeature implements DataTableFeature {
     public void decode(FacesContext context, DataTable table) {
         String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
         List<FilterMeta> filterMetadata = this.populateFilterMetaData(context, table);
-        //Map<String,String> filterParameterMap = this.populateFilterParameterMap(context, table, filterMetadata, globalFilterParam);
-        //table.setFilters(filterParameterMap);
+        Map<String,Object> filterParameterMap = this.populateFilterParameterMap(context, table, filterMetadata, globalFilterParam);
+        table.setFilters(filterParameterMap);
         table.setFilterMetadata(filterMetadata);
     }
             
@@ -193,16 +194,15 @@ public class FilterFeature implements DataTableFeature {
         }
     }
     
-    public Map<String,String> populateFilterParameterMap(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
-        /*Map<String,String> params = context.getExternalContext().getRequestParameterMap(); 
-        Map<String,String> filterParameterMap = new HashMap<String, String>();
+    public Map<String,Object> populateFilterParameterMap(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap(); 
+        Map<String,Object> filterParameterMap = new HashMap<String, Object>();
 
         for(FilterMeta filterMeta : filterMetadata) {
-            String filterParam = filterMeta.getFilterParam();
+            Object filterValue = filterMeta.getFilterValue();
             UIColumn column = filterMeta.getColumn();
-            String filterValue = params.get(filterParam);
             
-            if(!ComponentUtils.isValueBlank(filterValue)) {
+            if(filterValue != null && !filterValue.toString().trim().equals(Constants.EMPTY_STRING)) {
                 String filterField = null;
                 ValueExpression filterByVE = column.getValueExpression("filterBy");
                 
@@ -222,8 +222,8 @@ public class FilterFeature implements DataTableFeature {
         if(params.containsKey(globalFilterParam)) {
             filterParameterMap.put("globalFilter", params.get(globalFilterParam));
         }
-        */
-        return null;
+        
+        return filterParameterMap;
     }
     
     private List<FilterMeta> populateFilterMetaData(FacesContext context, DataTable table) {

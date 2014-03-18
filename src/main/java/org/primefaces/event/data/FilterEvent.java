@@ -27,9 +27,9 @@ public class FilterEvent extends AjaxBehaviorEvent {
 
 	private List<?> data;
     
-    private Map<String,String> filters;
+    private Map<String,Object> filters;
 	
-	public FilterEvent(UIComponent component, Behavior behavior, List<?> data, Map<String,String> filters) {
+	public FilterEvent(UIComponent component, Behavior behavior, List<?> data, Map<String,Object> filters) {
 		super(component, behavior);
 		this.data = data;
         this.filters = filters;
@@ -49,7 +49,7 @@ public class FilterEvent extends AjaxBehaviorEvent {
         return data;
     }
 
-    public Map<String, String> getFilters() {
+    public Map<String, Object> getFilters() {
         return filters;
     }
 }
