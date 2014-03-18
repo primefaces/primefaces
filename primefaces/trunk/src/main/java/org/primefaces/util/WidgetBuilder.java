@@ -196,9 +196,9 @@ public class WidgetBuilder {
         if(value != null && !value.equals(defaultValue)) {
             context.getResponseWriter().write(",");
 	        context.getResponseWriter().write(name);
-	        context.getResponseWriter().write(":'");
+	        context.getResponseWriter().write(":\"");
 	        context.getResponseWriter().write(value);
-	        context.getResponseWriter().write("'");
+	        context.getResponseWriter().write("\"");
         }
         
         return this;
