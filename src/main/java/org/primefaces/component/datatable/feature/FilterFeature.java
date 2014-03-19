@@ -195,7 +195,7 @@ public class FilterFeature implements DataTableFeature {
         }
     }
     
-    public Map<String,Object> populateFilterParameterMap(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
+    private Map<String,Object> populateFilterParameterMap(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap(); 
         Map<String,Object> filterParameterMap = new HashMap<String, Object>();
 
@@ -248,8 +248,15 @@ public class FilterFeature implements DataTableFeature {
                             
                             if(columnFilterByVE != null || filterByProperty != null) {
                                 ValueExpression filterByVE = (columnFilterByVE != null) ? columnFilterByVE : createFilterByVE(context, var, filterByProperty);
-                                String filterId = column.getClientId(context) + separator + "filter";
-                                filterMetadata.add(new FilterMeta(column, filterByVE, filterId));
+                                UIComponent filterFacet = column.getFacet("filter");
+                                Object filterValue;
+                                
+                                if(filterFacet == null)
+                                    filterValue = params.get(column.getClientId(context) + separator + "filter");
+                                else
+                                    filterValue = ((ValueHolder) filterFacet).getLocalValue();
+
+                                filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
                             }
                         }
                     }
@@ -262,25 +269,28 @@ public class FilterFeature implements DataTableFeature {
                 Object filterByProperty = column.getFilterBy();
                 
                 if (columnFilterByVE != null || filterByProperty != null) {
+                    UIComponent filterFacet = column.getFacet("filter");
+                    Object filterValue = null;
+                    ValueExpression filterByVE = null;
+                    String filterId = null;
+                    
                     if(column instanceof Column) {
-                        ValueExpression filterByVE = (columnFilterByVE != null) ? columnFilterByVE : createFilterByVE(context, var, filterByProperty);
-                        UIComponent filterFacet = column.getFacet("filter");
-                        Object filterValue = null;
-                        
-                        if(filterFacet == null)
-                            filterValue = params.get(column.getClientId(context) + separator + "filter");
-                        else
-                            filterValue = ((ValueHolder) filterFacet).getLocalValue();
-                     
-                        filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
+                        filterByVE = (columnFilterByVE != null) ? columnFilterByVE : createFilterByVE(context, var, filterByProperty);
+                        filterId = column.getClientId(context) + separator + "filter";
                     }
                     else if(column instanceof DynamicColumn) {
                         DynamicColumn dynamicColumn = (DynamicColumn) column;
                         dynamicColumn.applyStatelessModel();
-                        ValueExpression filterByVE = (filterByProperty == null) ? columnFilterByVE : createFilterByVE(context, var, filterByProperty);
-                        String filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
-                        filterMetadata.add(new FilterMeta(column, filterByVE, filterId));
-                    }                
+                        filterByVE = (filterByProperty == null) ? columnFilterByVE : createFilterByVE(context, var, filterByProperty);
+                        filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
+                    }  
+                    
+                    if(filterFacet == null)
+                        filterValue = params.get(filterId);
+                    else
+                        filterValue = ((ValueHolder) filterFacet).getLocalValue();
+
+                    filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
                 }
             }
         }
