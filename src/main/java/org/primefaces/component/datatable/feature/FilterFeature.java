@@ -49,6 +49,7 @@ public class FilterFeature implements DataTableFeature {
     private final static String LESS_THAN_EQUALS_MODE = "lte";
     private final static String GREATER_THAN_MODE = "gt";
     private final static String GREATER_THAN_EQUALS_MODE = "gte";
+    private final static String GLOBAL_MODE = "global";
   
     final static Map<String,FilterConstraint> FILTER_CONSTRAINTS;
     
@@ -62,6 +63,7 @@ public class FilterFeature implements DataTableFeature {
         FILTER_CONSTRAINTS.put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
         FILTER_CONSTRAINTS.put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
         FILTER_CONSTRAINTS.put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(GLOBAL_MODE, new GlobalFilterConstraint());
     }
     
     private boolean isFilterRequest(FacesContext context, DataTable table) {
@@ -115,9 +117,10 @@ public class FilterFeature implements DataTableFeature {
     private void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         List filteredData = new ArrayList();
-        boolean hasGlobalFilter = params.containsKey(globalFilterParam);
         Locale filterLocale = table.resolveDataLocale();
-        String globalFilter = hasGlobalFilter ? params.get(globalFilterParam).toLowerCase(filterLocale) : null;
+        boolean hasGlobalFilter = params.containsKey(globalFilterParam);
+        String globalFilterValue = hasGlobalFilter ? params.get(globalFilterParam): null;
+        GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(GLOBAL_MODE);
         ELContext elContext = context.getELContext();
         
         for(int i = 0; i < table.getRowCount(); i++) {
@@ -135,15 +138,13 @@ public class FilterFeature implements DataTableFeature {
                     ((DynamicColumn) column).applyStatelessModel();
                 }
                 
-                String columnValueAsString = String.valueOf(filterByVE.getValue(elContext));
                 FilterConstraint filterConstraint = this.getFilterConstraint(column);
 
                 if(hasGlobalFilter && !globalMatch) {
-                    if(columnValue != null && columnValueAsString.toLowerCase(filterLocale).contains(globalFilter))
-                        globalMatch = true;
+                    globalMatch = globalFilterConstraint.applies(columnValue, globalFilterValue, filterLocale);
                 }
 
-                if(!filterConstraint.applies(columnValue, filterValue)) {
+                if(!filterConstraint.applies(columnValue, filterValue, filterLocale)) {
                     localMatch = false;
                     break;
                 }

@@ -15,11 +15,12 @@
  */
 package org.primefaces.model.filter;
 
+import java.util.Locale;
 import org.primefaces.util.Constants;
 
 public class EndsWithFilterConstraint implements FilterConstraint {
 
-    public boolean applies(Object value, Object filter) {
+    public boolean applies(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim();
         
         if(filterText == null||filterText.equals(Constants.EMPTY_STRING)) {

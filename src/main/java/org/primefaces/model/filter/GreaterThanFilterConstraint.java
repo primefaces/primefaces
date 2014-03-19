@@ -15,9 +15,11 @@
  */
 package org.primefaces.model.filter;
 
+import java.util.Locale;
+
 public class GreaterThanFilterConstraint implements FilterConstraint {
 
-    public boolean applies(Object value, Object filter) {
+    public boolean applies(Object value, Object filter, Locale locale) {
         if(filter == null) {
             return true;
         }

@@ -16,20 +16,19 @@
 package org.primefaces.model.filter;
 
 import java.util.Locale;
+import org.primefaces.util.Constants;
 
-public class GreaterThanEqualsFilterConstraint implements FilterConstraint {
+public class GlobalFilterConstraint implements FilterConstraint {
 
     public boolean applies(Object value, Object filter, Locale locale) {
-        if(filter == null) {
+        if(filter == null || filter.toString().trim().equals(Constants.EMPTY_STRING)) {
             return true;
         }
-                
-        if(value instanceof Comparable) {            
-            int compared = ((Comparable) value).compareTo(filter);
-            
-            return (compared == 0 || compared > 0);
+        
+        if(value == null) {
+            return false;
         }
         
-        return false;
+        return value.toString().toLowerCase(locale).contains(filter.toString().toLowerCase(locale));
     }
 }
