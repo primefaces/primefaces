@@ -15,7 +15,9 @@
  */
 package org.primefaces.model.filter;
 
+import java.util.Locale;
+
 public interface FilterConstraint {
 
-    public boolean applies(Object value, Object filter);
+    public boolean applies(Object value, Object filter, Locale locale);
 }
