@@ -209,11 +209,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.endElement("div");
         writer.endElement("td");
 
-        if(option.getLabel() != null) {
         writer.startElement("td", null);
         encodeOptionLabel(context, radio, id, option, disabled);
         writer.endElement("td");
-        }
     }
 
     protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, String id, String name, boolean checked, boolean disabled, String value) throws IOException {
@@ -245,15 +243,21 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeOptionLabel(FacesContext context, SelectOneRadio radio, String containerClientId, SelectItem option, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String label = option.getLabel();
         
         writer.startElement("label", null);
         writer.writeAttribute("for", containerClientId, null);
-        if(disabled)
+        if(disabled) {
             writer.writeAttribute("class", "ui-state-disabled", null);
-        if(option.isEscape())
-            writer.writeText(option.getLabel(),null);
-        else
-            writer.write(option.getLabel());
+        }
+        
+        if(label != null) {
+            if(option.isEscape())
+                writer.writeText(label, null);
+            else
+                writer.write(label);
+        }
+        
         writer.endElement("label");
     }
 
