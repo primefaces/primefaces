@@ -1662,7 +1662,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEdit')) {
-            this.cfg.behaviors['cellEdit'].call(this, cell, options);
+            this.cfg.behaviors['cellEdit'].call(this, options);
         } 
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1727,10 +1727,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(action === 'save' && this.hasBehavior('rowEdit')) {
-            this.cfg.behaviors['rowEdit'].call(this, row, options);
+            this.cfg.behaviors['rowEdit'].call(this, options);
         }
         else if(action === 'cancel' && this.hasBehavior('rowEditCancel')) {
-            this.cfg.behaviors['rowEditCancel'].call(this, row, options);
+            this.cfg.behaviors['rowEditCancel'].call(this, options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options); 
