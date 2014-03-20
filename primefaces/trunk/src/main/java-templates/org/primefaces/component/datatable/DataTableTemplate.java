@@ -800,8 +800,8 @@ import org.primefaces.util.SharedStringBuilder;
     }
     
     @Override
-    protected boolean shouldProcessChildren(FacesContext context) {
-        return !context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_skipChildren");
+    protected boolean shouldSkipChildren(FacesContext context) {
+        return this.isSkipChildren() || context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_skipChildren");
     }
     
     private UIColumn sortColumn;
