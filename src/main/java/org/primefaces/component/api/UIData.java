@@ -328,7 +328,7 @@ public class UIData extends javax.faces.component.UIData {
     }
     
     protected void process(FacesContext context, UIComponent component, PhaseId phaseId) {
-        if(!shouldProcessChildren(context)) {
+        if(shouldSkipChildren(context)) {
             return;
         }
         
@@ -657,8 +657,8 @@ public class UIData extends javax.faces.component.UIData {
         this.model = dataModel;
     }
     
-    protected boolean shouldProcessChildren(FacesContext context) {
-        return true;
+    protected boolean shouldSkipChildren(FacesContext context) {
+        return false;
     }
     
     protected boolean shouldVisitChildren(VisitContext context, boolean visitRows) {
