@@ -23,13 +23,14 @@ import javax.el.ValueExpression;
 import javax.faces.application.Resource;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import org.primefaces.context.RequestContext;
 
 public class HeadRenderer extends Renderer {
-
+    
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -74,6 +75,25 @@ public class HeadRenderer extends Renderer {
         
         renderJS(context, "mobile/jquery-mobile.js", "primefaces");
         renderJS(context, "primefaces-mobile.js", "primefaces");
+        
+        //Registered Resources
+        UIViewRoot viewRoot = context.getViewRoot();
+        for(UIComponent resource : viewRoot.getComponentResources(context, "head")) {
+            boolean shouldRender = true;
+            Map<String,Object> attrs = resource.getAttributes();
+            String library = (String) attrs.get("library");
+            
+            if(library != null && library.equals("primefaces")) {
+                String resourceName = (String) attrs.get("name");
+                if(resourceName.startsWith("jquery")||resourceName.startsWith("primefaces")) {
+                    shouldRender = false;
+                }
+            }
+            
+            if(shouldRender) {
+                resource.encodeAll(context);
+            }
+        }
     }
 
     @Override
@@ -87,18 +107,6 @@ public class HeadRenderer extends Renderer {
         }
         
         writer.endElement("head");
-    }
-
-    protected void renderResource(FacesContext context, String resourceName, String renderer, String library) throws IOException {
-        UIComponent resource = context.getApplication().createComponent("javax.faces.Output");
-        resource.setRendererType(renderer);
-
-        Map<String, Object> attrs = resource.getAttributes();
-        attrs.put("name", resourceName);
-        attrs.put("library", library);
-        attrs.put("target", "head");        
-
-        resource.encodeAll(context);
     }
     
     protected String resolveTheme(FacesContext context) {
