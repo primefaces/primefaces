@@ -50,6 +50,7 @@ public class FilterFeature implements DataTableFeature {
     private final static String GREATER_THAN_MODE = "gt";
     private final static String GREATER_THAN_EQUALS_MODE = "gte";
     private final static String EQUALS_MODE = "equals";
+    private final static String IN_MODE = "in";
     private final static String GLOBAL_MODE = "global";
   
     final static Map<String,FilterConstraint> FILTER_CONSTRAINTS;
@@ -65,6 +66,7 @@ public class FilterFeature implements DataTableFeature {
         FILTER_CONSTRAINTS.put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
         FILTER_CONSTRAINTS.put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
         FILTER_CONSTRAINTS.put(EQUALS_MODE, new EqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(IN_MODE, new InFilterConstraint());
         FILTER_CONSTRAINTS.put(GLOBAL_MODE, new GlobalFilterConstraint());
     }
     
