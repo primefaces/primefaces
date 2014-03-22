@@ -85,7 +85,9 @@ public class ScheduleRenderer extends CoreRenderer {
         if(model != null) {
             for(Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext();) {
                 ScheduleEvent event = iterator.next();
-
+                String className = event.getStyleClass();
+                String description = event.getDescription();
+               
                 writer.write("{");
                 writer.write("\"id\": \"" + event.getId() + "\"");	
                 writer.write(",\"title\": \"" + escapeText(event.getTitle()) + "\"");
@@ -93,10 +95,13 @@ public class ScheduleRenderer extends CoreRenderer {
                 writer.write(",\"end\": \"" + iso.format(event.getEndDate()) + "\"");
                 writer.write(",\"allDay\":" + event.isAllDay());
                 writer.write(",\"editable\":" + event.isEditable());
-                if(event.getStyleClass() != null) {
-                    writer.write(",\"className\":\"" + event.getStyleClass() + "\"");
+                if(className != null) {
+                    writer.write(",\"className\":\"" + className + "\"");
                 }
-
+                if(description != null) {
+                    writer.write(",\"description\":\"" + escapeText(description) + "\"");
+                }
+                
                 writer.write("}");
 
                 if(iterator.hasNext()) {
@@ -114,7 +119,8 @@ public class ScheduleRenderer extends CoreRenderer {
         wb.initWithDomReady("Schedule", schedule.resolveWidgetVar(), clientId, "schedule")
             .attr("defaultView", schedule.getView())
             .attr("locale", schedule.calculateLocale(context).toString())
-            .attr("offset", schedule.calculateTimeZone().getRawOffset());
+            .attr("offset", schedule.calculateTimeZone().getRawOffset())
+            .attr("tooltip", schedule.isTooltip(), false);
         
         if(schedule.getInitialDate() != null) {
 			Calendar c = Calendar.getInstance();

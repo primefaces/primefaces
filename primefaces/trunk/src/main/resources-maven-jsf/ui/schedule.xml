@@ -184,6 +184,13 @@
             <defaultValue>true</defaultValue>
             <description>When parsing dates, whether UTC offsets should be ignored while processing event data. Default is true</description>
         </attribute>
+        <attribute>
+            <name>tooltip</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Displays description of events on a tooltip, default value is false.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>

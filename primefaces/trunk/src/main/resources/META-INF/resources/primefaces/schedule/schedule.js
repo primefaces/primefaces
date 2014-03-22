@@ -5391,6 +5391,10 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.setupEventSource();
 
         this.configureLocale();
+        
+        if(this.cfg.tooltip) {
+            this.tip = $('<div class="ui-tooltip ui-widget ui-widget-content ui-shadow ui-corner-all"></div>').appendTo(this.jq);
+        }
 
         this.setupEventHandlers();
 
@@ -5421,71 +5425,99 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     setupEventHandlers: function() {
-        var _self = this;
+        var $this = this;
 
         this.cfg.dayClick = function(dayDate, allDay, jsEvent, view) {
-            if(_self.cfg.behaviors) {
-                var dateSelectBehavior = _self.cfg.behaviors['dateSelect'];
+            if($this.cfg.behaviors) {
+                var dateSelectBehavior = $this.cfg.behaviors['dateSelect'];
                 if(dateSelectBehavior) {
                     var ext = {
                         params: [
-							{name: _self.id + '_selectedDate', value: dayDate.getTime() - dayDate.getTimezoneOffset()*60000 - _self.cfg.offset}
+							{name: $this.id + '_selectedDate', value: dayDate.getTime() - dayDate.getTimezoneOffset()*60000 - $this.cfg.offset}
                         ]
                     };
 
-                    dateSelectBehavior.call(_self, ext);
+                    dateSelectBehavior.call($this, ext);
                 }
             }
         };
 
         this.cfg.eventClick = function(calEvent, jsEvent, view) {
-            if(_self.cfg.behaviors) {
-                var eventSelectBehavior = _self.cfg.behaviors['eventSelect'];
+            if($this.cfg.behaviors) {
+                var eventSelectBehavior = $this.cfg.behaviors['eventSelect'];
                 if(eventSelectBehavior) {
                     var ext = {
                         params: [
-                            {name: _self.id + '_selectedEventId', value: calEvent.id}
+                            {name: $this.id + '_selectedEventId', value: calEvent.id}
                         ]
                     };
 
-                    eventSelectBehavior.call(_self, ext);
+                    eventSelectBehavior.call($this, ext);
                 }
             }
         };
 
         this.cfg.eventDrop = function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-            if(_self.cfg.behaviors) {
-                var eventMoveBehavior = _self.cfg.behaviors['eventMove'];
+            if($this.cfg.behaviors) {
+                var eventMoveBehavior = $this.cfg.behaviors['eventMove'];
                 if(eventMoveBehavior) {
                     var ext = {
                         params: [
-                            {name: _self.id + '_movedEventId', value: calEvent.id},
-                            {name: _self.id + '_dayDelta', value: dayDelta},
-                            {name: _self.id + '_minuteDelta', value: minuteDelta}
+                            {name: $this.id + '_movedEventId', value: calEvent.id},
+                            {name: $this.id + '_dayDelta', value: dayDelta},
+                            {name: $this.id + '_minuteDelta', value: minuteDelta}
                         ]
                     };
                     
-                    eventMoveBehavior.call(_self, ext);
+                    eventMoveBehavior.call($this, ext);
                 }
             }
         };
 
         this.cfg.eventResize = function(calEvent, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
-            if(_self.cfg.behaviors) {
-                var eventResizeBehavior = _self.cfg.behaviors['eventResize'];
+            if($this.cfg.behaviors) {
+                var eventResizeBehavior = $this.cfg.behaviors['eventResize'];
                 if(eventResizeBehavior) {
                     var ext = {
                         params: [
-                            {name: _self.id + '_resizedEventId', value: calEvent.id},
-                            {name: _self.id + '_dayDelta', value: dayDelta},
-                            {name: _self.id + '_minuteDelta', value: minuteDelta}
+                            {name: $this.id + '_resizedEventId', value: calEvent.id},
+                            {name: $this.id + '_dayDelta', value: dayDelta},
+                            {name: $this.id + '_minuteDelta', value: minuteDelta}
                         ]
                     };
 
-                    eventResizeBehavior.call(_self, ext);
+                    eventResizeBehavior.call($this, ext);
                 }
             }
         };
+        
+        if(this.cfg.tooltip) {
+            this.cfg.eventMouseover = function(event, jsEvent, view) {
+                if(event.description) {
+                    $this.tipTimeout = setTimeout(function() {
+                        $this.tip.css({
+                            'left': jsEvent.pageX,
+                            'top': jsEvent.pageY + 15,
+                            'z-index': ++PrimeFaces.zindex
+                        })
+                        .text(event.description)
+                        .show();
+                    }, 150);
+                }
+            };
+            
+            this.cfg.eventMouseout = function(event, jsEvent, view) {
+                if($this.tipTimeout) {
+                    clearTimeout($this.tipTimeout);
+                }
+                
+                if($this.tip.is(':visible')) {
+                    $this.tip.fadeOut('fast', function() {
+                        $(this).text('');
+                    });
+                }
+            };
+        }
     },
     
     setupEventSource: function() {
