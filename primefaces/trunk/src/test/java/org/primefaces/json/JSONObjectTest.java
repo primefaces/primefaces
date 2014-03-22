@@ -32,9 +32,13 @@ public class JSONObjectTest {
 	}
 	
 	@Test
-	public void testPojoToJSON() {
-		String json = new JSONObject(new Person("Cagatay", "Civici")).toString();
-		assertEquals("{\"lastname\":\"Civici\",\"firstname\":\"Cagatay\"}", json);
+	public void testPojoToJSON() throws JSONException {
+		JSONObject json = new JSONObject(new Person("Cagatay", "Civici"));
+        assertNotNull(json.get("firstname"));
+        assertEquals("Cagatay", json.get("firstname"));
+        assertNotNull(json.get("lastname"));
+		assertEquals("Civici", json.get("lastname"));
+        assertEquals(2, json.length());
 	}
 	
 	static public class Person {
