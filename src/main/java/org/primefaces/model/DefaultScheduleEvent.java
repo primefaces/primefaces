@@ -21,20 +21,14 @@ import java.util.Date;
 public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
 	private String id;
-	
 	private String title;
-	
 	private Date startDate;
-	
 	private Date endDate;
-	
 	private boolean allDay = false;
-	
 	private String styleClass;
-	
 	private Object data;
-    
     private boolean editable = true;
+    private String description;
 
 	public DefaultScheduleEvent() {}
 	
@@ -129,6 +123,14 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.editable = editable;
     }   
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

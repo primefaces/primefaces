@@ -36,4 +36,6 @@ public interface ScheduleEvent {
     public String getStyleClass();
     
     public boolean isEditable();
+        
+    public String getDescription();
 }
