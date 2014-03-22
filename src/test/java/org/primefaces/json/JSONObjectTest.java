@@ -34,7 +34,7 @@ public class JSONObjectTest {
 	@Test
 	public void testPojoToJSON() {
 		String json = new JSONObject(new Person("Cagatay", "Civici")).toString();
-		assertEquals("{\"firstname\":\"Cagatay\",\"lastname\":\"Civici\"}", json);
+		assertEquals("{\"lastname\":\"Civici\",\"firstname\":\"Cagatay\"}", json);
 	}
 	
 	static public class Person {
