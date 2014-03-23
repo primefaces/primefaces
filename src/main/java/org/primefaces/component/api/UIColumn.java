@@ -88,4 +88,6 @@ public interface UIColumn {
     public String getWidth();
     
     public boolean isToggleable();
+    
+    public MethodExpression getFilterFunction();
 }

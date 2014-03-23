@@ -158,5 +158,12 @@
             <defaultValue>true</defaultValue>
             <description>Defines if panel is toggleable by columnToggler component. Default value is true and a false value marks the column as static.</description>
         </attribute>
+        <attribute>
+			<name>filterFunction</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>java.lang.Boolean filter(java.lang.Object, java.lang.Object, java.util.Locale locale)</method-signature>
+            <description>Custom implementation to filter a value against a constraint.</description>
+		</attribute>
     </attributes>
 </component>

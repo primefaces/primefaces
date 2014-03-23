@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ELContext;
+import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import org.primefaces.component.api.UIColumn;
@@ -135,6 +136,7 @@ public class FilterFeature implements DataTableFeature {
             for(FilterMeta filterMeta : filterMetadata) {
                 Object filterValue = filterMeta.getFilterValue();
                 UIColumn column = filterMeta.getColumn();
+                MethodExpression filterFunction = column.getFilterFunction();
                 ValueExpression filterByVE = filterMeta.getFilterByVE();
                 Object columnValue = filterByVE.getValue(elContext);
                 
@@ -148,8 +150,14 @@ public class FilterFeature implements DataTableFeature {
                     globalMatch = globalFilterConstraint.applies(columnValue, globalFilterValue, filterLocale);
                 }
 
-                if(!filterConstraint.applies(columnValue, filterValue, filterLocale)) {
+                if(filterFunction != null) {
+                    localMatch = (Boolean) filterFunction.invoke(elContext, new Object[]{columnValue, filterValue, filterLocale});
+                }
+                else if(!filterConstraint.applies(columnValue, filterValue, filterLocale)) {
                     localMatch = false;
+                }
+                
+                if(!localMatch) {
                     break;
                 }
             }
