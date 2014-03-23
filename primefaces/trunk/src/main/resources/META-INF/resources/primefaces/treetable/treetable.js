@@ -30,11 +30,11 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     
     bindEvents: function() {
         var $this = this,
-        togglerSelector = this.jqId + ' .ui-treetable-toggler';
+        togglerSelector = '> tr > td:first > .ui-treetable-toggler';
         
         //expand and collapse
-        $(document).off('click.treeTable', togglerSelector)
-                    .on('click.treeTable', togglerSelector, null, function(e) {
+        this.tbody.off('click.treeTable-toggle', togglerSelector)
+                    .on('click.treeTable-toggle', togglerSelector, null, function(e) {
                         var toggler = $(this),
                         node = toggler.closest('tr');
                         
@@ -63,9 +63,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     
     bindSelectionEvents: function() {
         var $this = this,
-        rowSelector = this.jqId + ' .ui-treetable-data tr.ui-treetable-selectable-node';
+        rowSelector = '> tr.ui-treetable-selectable-node';
         
-        $(document).off('mouseover.treeTable mouseout.treeTable click.treeTable', rowSelector)
+        this.tbody.off('mouseover.treeTable mouseout.treeTable click.treeTable', rowSelector)
                     .on('mouseover.treeTable', rowSelector, null, function(e) {
                         var element = $(this);
                         if(!element.hasClass('ui-state-highlight')) {
@@ -91,11 +91,11 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     });
                     
         if(this.isCheckboxSelection()) {
-           var checkboxSelector =  this.cfg.nativeElements ? this.jqId + ' .ui-treetable-data > tr.ui-treetable-selectable-node > td:first-child :checkbox':
-                    this.jqId + ' .ui-treetable-data > tr.ui-treetable-selectable-node > td:first-child div.ui-chkbox-box';
+           var checkboxSelector =  this.cfg.nativeElements ? '> tr.ui-treetable-selectable-node > td:first :checkbox':
+                    '> tr.ui-treetable-selectable-node > td:first div.ui-chkbox-box';
                     
-                $(document).off('click.treeTable', checkboxSelector)
-                      .on('click.treeTable', checkboxSelector, null, function(e) {
+                this.tbody.off('click.treeTable-checkbox', checkboxSelector)
+                      .on('click.treeTable-checkbox', checkboxSelector, null, function(e) {
                           var node = $(this).closest('tr.ui-treetable-selectable-node');
                           $this.toggleCheckboxNode(node);
                       });

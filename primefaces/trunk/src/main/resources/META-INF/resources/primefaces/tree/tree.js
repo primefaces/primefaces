@@ -412,12 +412,12 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         
     bindEvents: function() {
         var $this = this,
-        togglerSelector = this.jqId + ' .ui-tree-toggler',
-        nodeLabelSelector = this.jqId  + ' .ui-tree-selectable .ui-treenode-label',
-        nodeContentSelector = this.jqId + ' .ui-treenode-content';
+        togglerSelector = '.ui-tree-toggler',
+        nodeLabelSelector = '.ui-tree-selectable .ui-treenode-label',
+        nodeContentSelector = '.ui-treenode-content';
 
-        $(document).off('click', togglerSelector)
-                    .on('click', togglerSelector, null, function(e) {
+        this.jq.off('click.tree-toggle', togglerSelector)
+                    .on('click.tree-toggle', togglerSelector, null, function(e) {
                         var toggleIcon = $(this),
                         node = toggleIcon.closest('li');
 
@@ -428,7 +428,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     });
 
         if(this.cfg.highlight && this.cfg.selectionMode) {
-            $(document).off('mouseout.tree mouseover.tree', nodeLabelSelector)
+            this.jq.off('mouseout.tree mouseover.tree', nodeLabelSelector)
                         .on('mouseout.tree', nodeLabelSelector, null, function() {
                             var label = $(this);
                             
@@ -450,9 +450,9 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
         
         if(this.isCheckboxSelection()) {       
-            var checkboxSelector = this.jqId + ' .ui-chkbox-box';
+            var checkboxSelector = '.ui-chkbox-box';
             
-            $(document).off('mouseout.tree-checkbox mouseover.tree-checkbox click.tree-checkbox', checkboxSelector)
+            this.jq.off('mouseout.tree-checkbox mouseover.tree-checkbox click.tree-checkbox', checkboxSelector)
                         .on('mouseout.tree-checkbox', checkboxSelector, null, function() {
                             $(this).removeClass('ui-state-hover').parent().siblings('span.ui-treenode-label').removeClass('ui-state-hover');
                         })
@@ -461,8 +461,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         });
         }
         
-        $(document).off('click.tree', nodeContentSelector)
-                        .on('click.tree', nodeContentSelector, null, function(e) {
+        this.jq.off('click.tree-content', nodeContentSelector)
+                        .on('click.tree-content', nodeContentSelector, null, function(e) {
                             $this.nodeClick(e, $(this));
                         });
     },
@@ -1074,7 +1074,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        if($.browser.msie) {
+        if(PrimeFaces.isIE()) {
             this.drawConnectors();
         }
     },
@@ -1083,11 +1083,11 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
     bindEvents: function() {
         var $this = this,
         selectionMode = this.cfg.selectionMode,
-        togglerSelector = this.jqId + ' .ui-tree-toggler',
-        nodeContentSelector = this.jqId + ' .ui-treenode-content.ui-tree-selectable';
+        togglerSelector = '.ui-tree-toggler',
+        nodeContentSelector = '.ui-treenode-content.ui-tree-selectable';
 
-        $(document).off('click.tree', togglerSelector)
-                    .on('click.tree', togglerSelector, null, function() {
+        this.jq.off('click.tree-toggle', togglerSelector)
+                    .on('click.tree-toggle', togglerSelector, null, function() {
                         var icon = $(this),
                         node = icon.closest('td.ui-treenode');
                         
@@ -1098,7 +1098,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
                     });
                     
         if(selectionMode && this.cfg.highlight) {
-            $(document).off('mouseout.tree mouseover.tree', nodeContentSelector)
+            this.jq.off('mouseout.tree mouseover.tree', nodeContentSelector)
                         .on('mouseover.tree', nodeContentSelector, null, function() {
                             var nodeContent = $(this);
                             if(!nodeContent.hasClass('ui-state-highlight')) {
@@ -1121,8 +1121,8 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
                         });
         }
         
-        $(document).off('click.tree', nodeContentSelector)
-                .on('click.tree', nodeContentSelector, null, function(e) {
+        this.jq.off('click.tree-content', nodeContentSelector)
+                .on('click.tree-content', nodeContentSelector, null, function(e) {
                     $this.nodeClick(e, $(this));
                 });
 
