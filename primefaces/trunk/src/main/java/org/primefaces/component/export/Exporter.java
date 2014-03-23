@@ -171,19 +171,22 @@ public abstract class Exporter {
         boolean lazy = table.isLazy();
         
         if(lazy) {
-            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-                if(rowIndex % rows == 0) {
-                    table.setFirst(rowIndex);
-                    table.setRowIndex(-1);
-                    table.loadLazyData();
-                }
+        	 if(rowCount > 0)
+             {
+                table.setFirst(0);
+                table.setRows(rowCount);
+                table.clearLazyCache();
+                table.loadLazyData();
+             }
 
+            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
                 exportRow(table, document, rowIndex);
             }
      
             //restore
             table.setFirst(first);
             table.setRowIndex(-1);
+            table.clearLazyCache();
             table.loadLazyData();
         } 
         else {
