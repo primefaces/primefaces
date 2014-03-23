@@ -27,6 +27,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
+import javax.faces.application.ResourceHandler;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
@@ -356,5 +357,19 @@ public class ComponentUtils {
         }
 
         return params;
+    }
+    
+    public static String getResourceURL(FacesContext context, String value) {
+        if (isValueBlank(value)) {
+            return Constants.EMPTY_STRING;
+        }
+        else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
+            return value;
+        } 
+        else {
+            String url = context.getApplication().getViewHandler().getResourceURL(context, value);
+
+            return context.getExternalContext().encodeResourceURL(url);
+        }
     }
 }
