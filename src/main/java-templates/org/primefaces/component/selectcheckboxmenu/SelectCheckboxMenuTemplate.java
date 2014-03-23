@@ -7,7 +7,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.util.Constants;
 
-    public final static String STYLE_CLASS = "ui-selectcheckboxmenu ui-widget ui-state-default ui-corner-all ui-helper-clearfix";
+    public final static String STYLE_CLASS = "ui-selectcheckboxmenu ui-widget ui-state-default ui-corner-all";
     public final static String LABEL_CONTAINER_CLASS = "ui-selectcheckboxmenu-label-container";
     public final static String LABEL_CLASS = "ui-selectcheckboxmenu-label ui-corner-all";
     public final static String TRIGGER_CLASS = "ui-selectcheckboxmenu-trigger ui-state-default ui-corner-right";
