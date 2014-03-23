@@ -412,6 +412,7 @@ button.ui-button::-moz-focus-inner {
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-items-wrapper {
     overflow: auto;
     position: relative;
+    padding: 0.1em 0;
 }
 
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list {
