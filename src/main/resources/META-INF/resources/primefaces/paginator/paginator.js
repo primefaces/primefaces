@@ -286,6 +286,10 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     getCurrentPage: function() {
         return this.cfg.page;
     },
+    
+    getFirst: function() {
+        return (this.cfg.rows * this.cfg.page);
+    },
             
     getContainerHeight: function() {
         var height = 0;
