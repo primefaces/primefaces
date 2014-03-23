@@ -82,8 +82,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         
     updateData: function(data) {
         this.tbody.html(data);
+        
+        this.postUpdateData();
     },
-
+    
+    postUpdateData: function() {
+        if(this.cfg.draggableRows) {
+            this.makeRowsDraggable();
+        } 
+    },
+ 
     /**
      * @Override
      */
@@ -2110,7 +2118,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         
         this.tbody.sortable({
             placeholder: 'ui-datatable-rowordering ui-state-active',
-            revert: true,
             cursor: 'move',
             handle: 'td,span:not(.ui-c)',
             appendTo: document.body,
@@ -2128,14 +2135,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return helper;
             },
-            start: function(event, ui) {
-                ui.item.data('rowindex', ui.item.index());
-            },
             update: function(event, ui) {
-                var fromIndex = ui.item.data('rowindex'),
-                toIndex = ui.item.index();
+                var fromIndex = ui.item.data('ri'),
+                toIndex = $this.paginator ? $this.paginator.getFirst() + ui.item.index(): ui.item.index();
 
-                ui.item.removeData('rowindex');
                 $this.syncRowParity();
                 
                 var options = {
@@ -2160,12 +2163,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     syncRowParity: function() {
-        var rows = this.tbody.children('tr.ui-widget-content');
+        var rows = this.tbody.children('tr.ui-widget-content'),
+        first = this.paginator ? this.paginator.getFirst(): 0;
         
-        for(var i = 0; i < rows.length; i++) {
+        for(var i = first; i < rows.length; i++) {
             var row = rows.eq(i);
             
-            row.removeClass('ui-datatable-even ui-datatable-odd');
+            row.data('ri', i).removeClass('ui-datatable-even ui-datatable-odd');
             
             if(i % 2 === 0)
                 row.addClass('ui-datatable-even');
@@ -2477,6 +2481,8 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             this.frozenTbody.append(frozenRow);
             this.scrollTbody.append(scrollableRow);
         }
+        
+        this.postUpdateData();
     },
     
     copyRow: function(original) {
