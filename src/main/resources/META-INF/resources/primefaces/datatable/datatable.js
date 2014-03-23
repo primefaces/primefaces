@@ -306,7 +306,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         
         //double click
         if(this.hasBehavior('rowDblselect')) {
-            $(document).off('dblclick.datatable', this.rowSelector).on('dblclick.datatable', this.rowSelector, null, function(e) {
+            this.tbody.off('dblclick.datatable', this.rowSelector).on('dblclick.datatable', this.rowSelector, null, function(e) {
                 $this.onRowDblclick(e, $(this));
             });
         };
@@ -1428,9 +1428,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.cellSeparator = this.cfg.cellSeparator||' ';
         
         if(this.cfg.editMode === 'row') {
-            var rowEditorSelector = this.jqId + ' tbody.ui-datatable-data > tr > td > div.ui-row-editor';
+            var rowEditorSelector = '> tr > td > div.ui-row-editor';
             
-            $(document).off('click.datatable', rowEditorSelector)
+            this.tbody.off('click.datatable', rowEditorSelector)
                         .on('click.datatable', rowEditorSelector, null, function(e) {
                             var element = $(e.target),
                             row = element.closest('tr');
@@ -1448,9 +1448,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         });
         }
         else if(this.cfg.editMode === 'cell') {
-            var cellSelector = this.jqId + ' tbody.ui-datatable-data tr td.ui-editable-column';
+            var cellSelector = '> tr > td.ui-editable-column';
             
-            $(document).off('click.datatable-cell', cellSelector)
+            this.tbody.off('click.datatable-cell', cellSelector)
                         .on('click.datatable-cell', cellSelector, null, function(e) {
                             $this.incellClick = true;
                             
@@ -2494,7 +2494,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     bindRowHover: function() {
         var $this = this;
         
-        $(document).off('mouseover.datatable mouseout.datatable', this.rowSelector)
+        this.tbody.off('mouseover.datatable mouseout.datatable', this.rowSelector)
                     .on('mouseover.datatable', this.rowSelector, null, function() {
                         var row = $(this),
                         twinRow = $this.getTwinRow(row);
