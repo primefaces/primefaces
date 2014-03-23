@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.UUID;
 import java.util.logging.Logger;
+import javax.el.ValueExpression;
+import javax.el.ValueReference;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
@@ -28,6 +30,7 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.context.RequestContext;
+import org.primefaces.el.ValueExpressionAnalyzer;
 
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
@@ -96,8 +99,11 @@ public class GraphicImageRenderer extends CoreRenderer {
                 StreamedContent streamedContent = (StreamedContent) value;
                 Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
                 String resourcePath = resource.getRequestPath();
-                StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
-                String rid = strEn.encrypt(image.getValueExpression("value").getExpressionString());
+                StringEncrypter encrypter = RequestContext.getCurrentInstance().getEncrypter();
+
+                ValueExpression expression = ValueExpressionAnalyzer.getExpression(context.getELContext(), image.getValueExpression("value"));
+                String rid = encrypter.encrypt(expression.getExpressionString());
+                
                 StringBuilder builder = SharedStringBuilder.get(context, SB_GET_MEDIA_SRC);
 
                 builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid, "UTF-8"));

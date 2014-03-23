@@ -13,16 +13,16 @@ public class ValueExpressionAnalyzer {
 
         try {
             expression.setValue(new InterceptingContext(elContext, resolver), null);
-        } catch(ELException ele) {
+        } catch (ELException ele) {
             return null;
         }
 
         ValueReference reference = resolver.getValueReference();
-        if(reference != null) {
+        if (reference != null) {
             Object base = reference.getBase();
-            if(base instanceof CompositeComponentExpressionHolder) {
+            if (base instanceof CompositeComponentExpressionHolder) {
                 ValueExpression ve = ((CompositeComponentExpressionHolder) base).getExpression((String) reference.getProperty());
-                if(ve != null)
+                if (ve != null)
                 {
                     reference = getReference(elContext, ve);
                 }
@@ -30,5 +30,29 @@ public class ValueExpressionAnalyzer {
         }
 
         return reference;
+    }
+    
+    public static ValueExpression getExpression(ELContext elContext, ValueExpression expression) {
+        InterceptingResolver resolver = new InterceptingResolver(elContext.getELResolver());
+
+        try {
+            expression.setValue(new InterceptingContext(elContext, resolver), null);
+        } catch (ELException ele) {
+            return null;
+        }
+
+        ValueReference reference = resolver.getValueReference();
+        if (reference != null) {
+            Object base = reference.getBase();
+            if (base instanceof CompositeComponentExpressionHolder) {
+                ValueExpression ve = ((CompositeComponentExpressionHolder) base).getExpression((String) reference.getProperty());
+                if (ve != null)
+                {
+                    return ve;
+                }
+            }
+        }
+
+        return expression;
     }
 }
