@@ -144,7 +144,7 @@
         },
 
         isIE: function(version) {
-            return (this.browser.msie && parseInt(this.browser.version, 10) === version);
+            return (version === undefined) ? this.browser.msie: (this.browser.msie && parseInt(this.browser.version, 10) === version);
         },
 
         info: function(log) {
