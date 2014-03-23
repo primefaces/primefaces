@@ -16,11 +16,7 @@
 package org.primefaces.component.media;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.Map;
-import java.util.UUID;
-import javax.el.ValueExpression;
-import javax.faces.application.Resource;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
@@ -29,20 +25,12 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
-import org.primefaces.context.RequestContext;
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
-import org.primefaces.util.Constants;
+import org.primefaces.util.DynamicResourceBuilder;
 import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.StringEncrypter;
 
 public class MediaRenderer extends CoreRenderer {
-
-    private static final String SB_GET_MEDIA_SRC = MediaRenderer.class.getName() + "#getMediaSrc";
-    private static final String SB_GENERATE_KEY = MediaRenderer.class.getName() + "#generateKey";
     
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -134,67 +122,8 @@ public class MediaRenderer extends CoreRenderer {
 	}
 
 	protected String getMediaSrc(FacesContext context, Media media) throws Exception {
-		String src;
-		Object value = media.getValue();
-        
-        if(value == null) {
-            src = null;
-        }
-        else {
-            if(value instanceof StreamedContent) {
-                StreamedContent streamedContent = (StreamedContent) value;
-                Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
-                String resourcePath = resource.getRequestPath();
-                StringEncrypter encrypter = RequestContext.getCurrentInstance().getEncrypter();
-                
-                ValueExpression expression = ValueExpressionAnalyzer.getExpression(context.getELContext(), media.getValueExpression("value"));
-                String rid = encrypter.encrypt(expression.getExpressionString());
-
-                StringBuilder builder = SharedStringBuilder.get(context, SB_GET_MEDIA_SRC);
-                        
-                builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid,"UTF-8"));
-
-                for(UIComponent kid : media.getChildren()) {
-                    if(kid instanceof UIParameter) {
-                        UIParameter param = (UIParameter) kid;
-                        Object paramValue = param.getValue();
-                        
-                        builder.append("&").append(param.getName()).append("=");
-                        
-                        if(paramValue != null){
-                            builder.append(URLEncoder.encode(param.getValue().toString(), "UTF-8"));
-                        }
-                    }
-                }
-
-                src = context.getExternalContext().encodeResourceURL(builder.toString());
-            }
-            else {
-                src = getResourceURL(context, (String) value);
-                
-                if(src.startsWith("/")) {
-                    src = context.getExternalContext().encodeResourceURL(src);
-                }
-            }
-            
-            //cache
-            src += src.contains("?") ? "&" : "?";
-            src += Constants.DYNAMIC_CONTENT_CACHE_PARAM + "=" + media.isCache();
-
-            if (!media.isCache()) {
-            	src += "&uid=" + UUID.randomUUID().toString();
-            }
-        }
-
-		return src;
+        return DynamicResourceBuilder.build(context, media.getValue(), media, media.isCache());
 	}
-    
-
-    protected String generateKey() {
-        StringBuilder builder = SharedStringBuilder.get(SB_GENERATE_KEY);
-        
-        return builder.append(Constants.DYNAMIC_CONTENT_PARAM).append("_").append(UUID.randomUUID().toString()).toString();
-    }
     
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {

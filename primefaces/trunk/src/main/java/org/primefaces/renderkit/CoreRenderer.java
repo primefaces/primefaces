@@ -86,17 +86,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected String getResourceURL(FacesContext context, String value) {
-        if(isValueBlank(value)) {
-            return Constants.EMPTY_STRING;
-        }
-        else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
-            return value;
-        } 
-        else {
-            String url = context.getApplication().getViewHandler().getResourceURL(context, value);
-
-            return context.getExternalContext().encodeResourceURL(url);
-        }
+        return ComponentUtils.getResourceURL(context, value);
     }
     
     protected String getResourceRequestPath(FacesContext context, String resourceName) {
