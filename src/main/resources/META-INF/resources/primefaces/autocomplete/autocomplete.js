@@ -109,8 +109,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.multiItemContainer.removeClass('ui-state-focus');
         });
 
-        var closeSelector = this.jqId + ' li.ui-autocomplete-token .ui-autocomplete-token-icon';
-        $(document).off('click', closeSelector).on('click', closeSelector, null, function(event) {
+        var closeSelector = '> li.ui-autocomplete-token > .ui-autocomplete-token-icon';
+        this.multiItemContainer.off('click', closeSelector).on('click', closeSelector, null, function(event) {
             $this.removeItem(event, $(this).parent());
         });
     },
