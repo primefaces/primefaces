@@ -9,6 +9,11 @@ import javax.faces.el.CompositeComponentExpressionHolder;
 public class ValueExpressionAnalyzer {
 
     public static ValueReference getReference(ELContext elContext, ValueExpression expression) {
+        
+        if (expression == null) {
+            return null;
+        }
+        
         InterceptingResolver resolver = new InterceptingResolver(elContext.getELResolver());
 
         try {
@@ -33,6 +38,11 @@ public class ValueExpressionAnalyzer {
     }
     
     public static ValueExpression getExpression(ELContext elContext, ValueExpression expression) {
+        
+        if (expression == null) {
+            return null;
+        }
+        
         InterceptingResolver resolver = new InterceptingResolver(elContext.getELResolver());
 
         try {
