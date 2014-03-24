@@ -41,28 +41,41 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.showEvent === this.cfg.hideEvent) {
             var event = this.cfg.showEvent;
             
-            $(document).off(event, this.targetId).on(event, this.targetId, this, function(e) {
-                e.data.toggle();
+            this.target.on(event, function(e) {
+                $this.toggle();
             });
         }
         else {
             var showEvent = this.cfg.showEvent + '.ui-overlaypanel',
             hideEvent = this.cfg.hideEvent + '.ui-overlaypanel';
             
-            $(document).off(showEvent + ' ' + hideEvent, this.targetId).on(showEvent, this.targetId, this, function(e) {
-                if(!e.data.isVisible()) {
-                    e.data.show();
+            this.target.off(showEvent + ' ' + hideEvent).on(showEvent, function(e) {
+                if(!$this.isVisible()) {
+                    $this.show();
                 }
             })
-            .on(hideEvent, this.targetId, this, function(e) {
-                if(e.data.isVisible()) {
-                    e.data.hide();
+            .on(hideEvent, function(e) {
+                if($this.isVisible()) {
+                    $this.hide();
                 }
             });
         }
         
-        //enter key support for mousedown event
-        this.bindKeyEvents();
+        $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel').on('keydown.ui-overlaypanel', function(e) {
+            var keyCode = $.ui.keyCode, key = e.which;
+            
+            if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
+                e.preventDefault();
+            }
+        })
+        .on('keyup.ui-overlaypanel', function(e) {
+            var keyCode = $.ui.keyCode, key = e.which;
+            
+            if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
+                $this.toggle();
+                e.preventDefault();
+            }
+        });
         
         if(this.cfg.showCloseIcon) {
             this.closerIcon.on('mouseover.ui-overlaypanel', function() {
@@ -79,7 +92,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
 
         //hide overlay when mousedown is at outside of overlay
         if(this.cfg.dismissable) {
-           $(document.body).bind('mousedown.ui-overlaypanel', function (e) {
+            var hideNS = 'mousedown.' + this.id;
+           $(document.body).off(hideNS).on(hideNS, function (e) {
                 if($this.jq.hasClass('ui-overlay-hidden')) {
                     return;
                 }
@@ -104,27 +118,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
 
         //Hide overlay on resize
         var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
+        $(window).off(resizeNS).on(resizeNS, function() {
             if($this.jq.hasClass('ui-overlay-visible')) {
                 $this.align();
-            }
-        });
-    },
-    
-    bindKeyEvents: function() {
-        $(document).off('keydown.ui-overlaypanel keyup.ui-overlaypanel', this.targetId).on('keydown.ui-overlaypanel', this.targetId, this, function(e) {
-            var keyCode = $.ui.keyCode, key = e.which;
-            
-            if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
-                e.preventDefault();
-            }
-        })
-        .on('keyup.ui-overlaypanel', this.targetId, this, function(e) {
-            var keyCode = $.ui.keyCode, key = e.which;
-            
-            if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
-                e.data.toggle();
-                e.preventDefault();
             }
         });
     },
@@ -211,8 +207,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this);
         }
-
-        
     },
     
     setupDialogSupport: function() {
