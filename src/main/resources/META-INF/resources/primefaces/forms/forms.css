@@ -178,7 +178,6 @@
     width: auto;
     zoom: 1;
     cursor: pointer;
-    overflow: hidden;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {
@@ -205,7 +204,6 @@
     overflow: hidden;
     font-weight: normal;
     width: 100%;
-    float: left;
     text-align: left;
 }
 
