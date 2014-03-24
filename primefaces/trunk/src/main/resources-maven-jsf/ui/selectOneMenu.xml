@@ -143,6 +143,12 @@
             <defaultValue>Integer.MAX_VALUE</defaultValue>
             <description>Maximum number of characters that may be entered in this field.</description>
         </attribute>
+        <attribute>
+            <name>appendTo</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Appends the overlay to the element defined by search expression. Defaults to document body.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>

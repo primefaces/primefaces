@@ -29,6 +29,7 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -320,7 +321,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         wb.initWithDomReady("SelectOneMenu", menu.resolveWidgetVar(), clientId)
                 .attr("effect", menu.getEffect(), null)
                 .attr("effectSpeed", menu.getEffectSpeed(), null)
-                .attr("editable", menu.isEditable(), false);
+                .attr("editable", menu.isEditable(), false)
+                .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, menu, menu.getAppendTo()), null);
         
         if(menu.isFilter()) {
             wb.attr("filter", true)
