@@ -33,6 +33,7 @@ public class Constants {
         public static final String PFV_KEY = "primefaces.CLIENT_SIDE_VALIDATION";
         public static final String UPLOADER = "primefaces.UPLOADER";
         public static final String CACHE_PROVIDER = "primefaces.CACHE_PROVIDER";
+        public static final String TRANSFORM_METADATA = "primefaces.TRANSFORM_METADATA";
     }
 
     public class RequestParams {
