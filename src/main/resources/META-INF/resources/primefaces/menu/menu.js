@@ -664,7 +664,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
 
         if(!this.cfg.disabled) {
             this.bindEvents();
-
             this.appendPanel();
         }
     },

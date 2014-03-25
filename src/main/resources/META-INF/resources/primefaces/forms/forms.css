@@ -491,6 +491,10 @@ button.ui-button::-moz-focus-inner {
     padding:0px;
 }
 
+.ui-splitbutton {
+    position: relative;
+}
+
 /** IE Hacks **/
 div.ui-button, .ui-splitbutton {
     display: inline-block;
