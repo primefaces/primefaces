@@ -39,7 +39,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
-import org.primefaces.metadata.BeanValidationComponentMetadataExtractor;
+import org.primefaces.metadata.BeanValidationMetadataExtractor;
 
 import org.primefaces.context.RequestContext;
 
@@ -71,7 +71,7 @@ public class BeanValidationMetadataMapper {
         Map<String,Object> metadata = new HashMap<String, Object>();
         List<String> validatorIds = new ArrayList<String>();
         
-        Set<ConstraintDescriptor<?>> constraints = BeanValidationComponentMetadataExtractor.extract(context, requestContext, component.getValueExpression("value"));
+        Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extract(context, requestContext, component.getValueExpression("value"));
 
         if (constraints != null && !constraints.isEmpty()) {
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
