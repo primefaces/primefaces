@@ -106,6 +106,12 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <name>appendTo</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Appends the overlay to the element defined by search expression. Defaults to document body.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
