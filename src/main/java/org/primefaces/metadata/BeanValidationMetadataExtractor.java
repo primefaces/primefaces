@@ -27,7 +27,7 @@ import javax.validation.metadata.PropertyDescriptor;
 import org.primefaces.context.RequestContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 
-public class BeanValidationComponentMetadataExtractor {
+public class BeanValidationMetadataExtractor {
 
     public static Set<ConstraintDescriptor<?>> extract(FacesContext context, RequestContext requestContext, ValueExpression ve) {
 

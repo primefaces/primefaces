@@ -33,7 +33,7 @@ public class ComponentMetadataTransformerListener implements SystemEventListener
 
             if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isTransformMetadataEnabled()) {
                 try {
-                    BeanValidationMetadataTransformer.getInstance().transform(FacesContext.getCurrentInstance(), postAddToViewEvent.getComponent());
+                    BeanValidationComponentMetadataTransformer.getInstance().transform(FacesContext.getCurrentInstance(), postAddToViewEvent.getComponent());
                 }
                 catch (IOException e) {
                     throw new FacesException(e);
