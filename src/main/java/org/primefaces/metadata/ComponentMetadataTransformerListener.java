@@ -28,17 +28,22 @@ import org.primefaces.context.RequestContext;
 public class ComponentMetadataTransformerListener implements SystemEventListener {
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        if (event instanceof PostAddToViewEvent) {
-            PostAddToViewEvent postAddToViewEvent = (PostAddToViewEvent) event;
-
-            if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isTransformMetadataEnabled()) {
-                try {
-                    BeanValidationComponentMetadataTransformer.getInstance().transform(FacesContext.getCurrentInstance(), postAddToViewEvent.getComponent());
-                }
-                catch (IOException e) {
-                    throw new FacesException(e);
+        try {
+            if (event instanceof PostAddToViewEvent) {
+                PostAddToViewEvent postAddToViewEvent = (PostAddToViewEvent) event;
+                
+                FacesContext context = FacesContext.getCurrentInstance();
+                RequestContext requestContext = RequestContext.getCurrentInstance();
+                
+                if (requestContext.getApplicationContext().getConfig().isTransformMetadataEnabled()) {
+                    if (requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
+                        BeanValidationComponentMetadataTransformer.getInstance().transform(context, requestContext, postAddToViewEvent.getComponent());
+                    }
                 }
             }
+        }
+        catch (IOException e) {
+            throw new FacesException(e);
         }
     }
 
