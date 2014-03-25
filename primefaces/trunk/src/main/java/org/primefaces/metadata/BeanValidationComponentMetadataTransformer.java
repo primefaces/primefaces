@@ -37,7 +37,7 @@ public class BeanValidationComponentMetadataTransformer extends ComponentMetadat
         return INSTANCE;
     }
     
-    public void transform(FacesContext context, UIComponent component) throws IOException {
+    public void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException {
         
         if (context.isPostback()) {
             return;
@@ -48,12 +48,6 @@ public class BeanValidationComponentMetadataTransformer extends ComponentMetadat
         }
 
         if (component.getAttributes().containsKey("maxlength") && component.getAttributes().containsKey("required")) {
-            return;
-        }
-        
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        
-        if (!requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
             return;
         }
 

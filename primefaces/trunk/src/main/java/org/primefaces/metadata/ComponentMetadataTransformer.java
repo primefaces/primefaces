@@ -21,10 +21,11 @@ import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlInputSecret;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 
 public abstract class ComponentMetadataTransformer {
     
-    public abstract void transform(FacesContext context, UIComponent component) throws IOException;
+    public abstract void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException;
     
     protected void applyMaxlength(UIInput input, int maxlength) {
         if (input instanceof HtmlInputText) {
