@@ -103,6 +103,8 @@
 
 .ui-menubutton {
     padding:0;
+    position: relative;
+    display: inline-block;
 }
 
 .ui-menubutton .ui-button {

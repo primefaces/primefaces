@@ -665,25 +665,21 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         if(!this.cfg.disabled) {
             this.bindEvents();
 
-            $(document.body).children(this.menuId).remove();
-            this.menu.appendTo(document.body);
-
-            //dialog support
-            this.setupDialogSupport();
+            this.appendPanel();
         }
     },
-    
+        
     bindEvents: function() {  
-        var _self = this;
+        var $this = this;
 
         //button visuals
         this.button.mouseover(function(){
-            if(!_self.button.hasClass('ui-state-focus')) {
-                _self.button.addClass('ui-state-hover');
+            if(!$this.button.hasClass('ui-state-focus')) {
+                $this.button.addClass('ui-state-hover');
             }
         }).mouseout(function() {
-            if(!_self.button.hasClass('ui-state-focus')) {
-                _self.button.removeClass('ui-state-hover ui-state-active');
+            if(!$this.button.hasClass('ui-state-focus')) {
+                $this.button.removeClass('ui-state-hover ui-state-active');
             }
         }).mousedown(function() {
             $(this).removeClass('ui-state-focus ui-state-hover').addClass('ui-state-active');
@@ -691,13 +687,13 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
             var el = $(this);
             el.removeClass('ui-state-active')
 
-            if(_self.menu.is(':visible')) {
+            if($this.menu.is(':visible')) {
                 el.addClass('ui-state-hover');
-                _self.hide();
+                $this.hide();
             } 
             else {
                 el.addClass('ui-state-focus');
-                _self.show();
+                $this.show();
             }
         }).focus(function() {
             $(this).addClass('ui-state-focus');
@@ -717,48 +713,42 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         }).mouseout(function(e) {
             $(this).removeClass('ui-state-hover');
         }).click(function() {
-            _self.button.removeClass('ui-state-focus');
-            _self.hide();
+            $this.button.removeClass('ui-state-focus');
+            $this.hide();
         });
-
-        this.cfg.position = {
-            my: 'left top'
-            ,at: 'left bottom'
-            ,of: this.button
-        }
 
         /**
         * handler for document mousedown to hide the overlay
         **/
         $(document.body).bind('mousedown.ui-menubutton', function (e) {
             //do nothing if hidden already
-            if(_self.menu.is(":hidden")) {
+            if($this.menu.is(":hidden")) {
                 return;
             }
 
             //do nothing if mouse is on button
             var target = $(e.target);
-            if(target.is(_self.button)||_self.button.has(target).length > 0) {
+            if(target.is($this.button)||$this.button.has(target).length > 0) {
                 return;
             }
 
             //hide overlay if mouse is outside of overlay except button
-            var offset = _self.menu.offset();
+            var offset = $this.menu.offset();
             if(e.pageX < offset.left ||
-                e.pageX > offset.left + _self.menu.width() ||
+                e.pageX > offset.left + $this.menu.width() ||
                 e.pageY < offset.top ||
-                e.pageY > offset.top + _self.menu.height()) {
+                e.pageY > offset.top + $this.menu.height()) {
 
-                _self.button.removeClass('ui-state-focus ui-state-hover');
-                _self.hide();
+                $this.button.removeClass('ui-state-focus ui-state-hover');
+                $this.hide();
             }
         });
 
         //Realign overlay on window resize
         var resizeNS = 'resize.' + this.id;
         $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if(_self.menu.is(':visible')) {
-                _self.alignPanel();
+            if($this.menu.is(':visible')) {
+                $this.alignPanel();
             }
         });
 
@@ -766,14 +756,15 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         this.button.attr('role', 'button').attr('aria-disabled', this.button.is(':disabled'));
     },
     
-    setupDialogSupport: function() {
-        var dialog = this.button.parents('.ui-dialog:first');
-
-        if(dialog.length == 1) {        
-            this.menu.css('position', 'fixed');
+    appendPanel: function() {
+        var container = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo): $(document.body);
+        
+        if(!container.is(this.jq)) {
+            container.children(this.menuId).remove();
+            this.menu.appendTo(container);
         }
     },
-    
+        
     show: function() {
         this.alignPanel();
 
@@ -785,13 +776,21 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
     },
     
     alignPanel: function() {
-        var fixedPosition = this.menu.css('position') == 'fixed',
-        win = $(window),
-        positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
-
-        this.cfg.position.offset = positionOffset;
-
-        this.menu.css({left:'', top:'','z-index': ++PrimeFaces.zindex}).position(this.cfg.position);
+        this.menu.css({left:'', top:'','z-index': ++PrimeFaces.zindex});
+        
+        if(this.menu.parent().is(this.jq)) {
+            this.menu.css({
+                left: 0,
+                top: this.jq.innerHeight()
+            });
+        }
+        else {
+            this.menu.position({
+                my: 'left top'
+                ,at: 'left bottom'
+                ,of: this.button
+            });
+        }
     }
     
 });
