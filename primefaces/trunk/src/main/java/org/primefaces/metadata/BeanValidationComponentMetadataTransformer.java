@@ -39,10 +39,6 @@ public class BeanValidationComponentMetadataTransformer extends ComponentMetadat
     
     public void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException {
         
-        if (context.isPostback()) {
-            return;
-        }
-        
         if (!(component instanceof EditableValueHolder) || !(component instanceof UIInput)) {
             return;
         }

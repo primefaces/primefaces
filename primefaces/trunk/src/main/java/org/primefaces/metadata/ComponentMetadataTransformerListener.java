@@ -35,7 +35,7 @@ public class ComponentMetadataTransformerListener implements SystemEventListener
                 FacesContext context = FacesContext.getCurrentInstance();
                 RequestContext requestContext = RequestContext.getCurrentInstance();
                 
-                if (requestContext.getApplicationContext().getConfig().isTransformMetadataEnabled()) {
+                if (!context.isPostback() && requestContext.getApplicationContext().getConfig().isTransformMetadataEnabled()) {
                     if (requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
                         BeanValidationComponentMetadataTransformer.getInstance().transform(context, requestContext, postAddToViewEvent.getComponent());
                     }
