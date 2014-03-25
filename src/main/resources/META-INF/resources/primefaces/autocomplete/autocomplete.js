@@ -676,7 +676,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         'z-index': ++PrimeFaces.zindex
                 });
         
-        if(this.panel.parent().attr('id') === this.id) {o
+        if(this.panel.parent().attr('id') === this.id) {
             this.panel.css({
                 left: 0,
                 top: this.jq.innerHeight()

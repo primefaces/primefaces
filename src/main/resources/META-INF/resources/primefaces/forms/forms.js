@@ -1949,22 +1949,24 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     refresh: function(cfg) {
-        this.panel.remove();
-        
+        $(this.panelId).remove();
+      
         this.init(cfg);
     },
-    
+        
     renderPanel: function() {
         this.panelId = this.id + '_panel';
-                
-        this.panel = $('<div id="' + this.panelId + '" class="ui-selectcheckboxmenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden"></div>')
-                        .appendTo(document.body);
-                                        
-        if(this.cfg.panelStyle) 
-            this.panel.attr('style', this.cfg.panelStyle);
+        this.panel = $('<div id="' + this.panelId + '" class="ui-selectcheckboxmenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden"></div>');
         
-        if(this.cfg.panelStyleClass) 
+        this.appendPanel();
+                                        
+        if(this.cfg.panelStyle) {
+            this.panel.attr('style', this.cfg.panelStyle);
+        }
+        
+        if(this.cfg.panelStyleClass) {
             this.panel.addClass(this.cfg.panelStyleClass);
+        }
                 
         this.renderHeader();
 
@@ -2038,6 +2040,15 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             _self.itemContainer.append(item);
         });
+    },
+    
+    appendPanel: function() {
+        if(this.cfg.appendTo) {
+            this.panel.appendTo(PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo));
+        }
+        else {
+            this.panel.appendTo(document.body);
+        }
     },
     
     bindEvents: function() {
@@ -2334,19 +2345,31 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null,
         panelStyle = this.panel.attr('style');
 
-        this.panel.css({left:'', top:''}).position({
-                                        my: 'left top'
-                                        ,at: 'left bottom'
-                                        ,of: this.jq
-                                        ,offset : positionOffset
-                                    });
+        this.panel.css({
+                'left':'',
+                'top':'',
+                'z-index': ++PrimeFaces.zindex
+        });
+
+        if(this.panel.parent().attr('id') === this.id) {
+            this.panel.css({
+                left: 0,
+                top: this.jq.innerHeight()
+            });
+        }
+        else {
+            this.panel.position({
+                                my: 'left top'
+                                ,at: 'left bottom'
+                                ,of: this.jq
+                                ,offset : positionOffset
+                            });
+        }
                                     
         if(!this.widthAligned && (this.panel.width() < this.jq.width()) && (!panelStyle||panelStyle.toLowerCase().indexOf('width') === -1)) {
             this.panel.width(this.jq.width());
             this.widthAligned = true;
         }
-                                    
-        this.panel.css('z-index', ++PrimeFaces.zindex);
     },
     
     toggleItem: function(checkbox) {

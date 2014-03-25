@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -180,7 +181,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         wb.initWithDomReady("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId)
             .callback("onShow", "function()", menu.getOnShow())
             .callback("onHide", "function()", menu.getOnHide())
-            .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE);
+            .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
+            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, menu, menu.getAppendTo()), null);
         
         if(menu.isFilter()) {
             wb.attr("filter", true)
