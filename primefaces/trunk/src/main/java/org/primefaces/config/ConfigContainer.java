@@ -57,7 +57,8 @@ public class ConfigContainer {
     private String  theme = null;
     private String  mobileTheme = null;
     private boolean clientSideValidationEnabled = false;
-    private String uploader = null;
+    private String  uploader = null;
+    private boolean transformMetadataEnabled = false;
 
     // internal config
     private boolean beanValidationAvailable = false;
@@ -123,6 +124,9 @@ public class ConfigContainer {
         } else {
             validateEmptyFields = Boolean.valueOf(value);
         }
+        
+        value = externalContext.getInitParameter(Constants.ContextParams.TRANSFORM_METADATA);
+        transformMetadataEnabled = (value == null) ? false : Boolean.valueOf(value);
     }
 
     private void initBuildProperties() {
@@ -255,23 +259,23 @@ public class ConfigContainer {
     }
 
     public boolean isValidateEmptyFields() {
-            return validateEmptyFields;
+        return validateEmptyFields;
     }
 
     public boolean isBeanValidationAvailable() {
-            return beanValidationAvailable;
+        return beanValidationAvailable;
     }
 
     public boolean isPartialSubmitEnabled() {
-            return partialSubmitEnabled;
+        return partialSubmitEnabled;
     }
 
     public boolean isInterpretEmptyStringAsNull() {
-            return interpretEmptyStringAsNull;
+        return interpretEmptyStringAsNull;
     }
 
     public boolean isStringConverterAvailable() {
-            return stringConverterAvailable;
+        return stringConverterAvailable;
     }
 
     public String getSecretKey() {
@@ -307,10 +311,14 @@ public class ConfigContainer {
     }
 
     public String getBuildVersion() {
-            return buildVersion;
+        return buildVersion;
     }
 
     public Map<String, String> getErrorPages() {
         return errorPages;
+    }
+
+    public boolean isTransformMetadataEnabled() {
+        return transformMetadataEnabled;
     }
 }

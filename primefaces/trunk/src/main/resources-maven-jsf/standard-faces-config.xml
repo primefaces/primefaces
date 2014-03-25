@@ -2,13 +2,15 @@
     <name>primefaces</name>
     
     <factory>
-        <partial-view-context-factory>
-            org.primefaces.context.PrimePartialViewContextFactory
-        </partial-view-context-factory>
+        <partial-view-context-factory>org.primefaces.context.PrimePartialViewContextFactory</partial-view-context-factory>
     </factory>
 
     <application>
         <resource-handler>org.primefaces.application.PrimeResourceHandler</resource-handler>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.metadata.ComponentMetadataTransformerListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+        </system-event-listener>
         <system-event-listener>
             <system-event-listener-class>org.primefaces.webapp.PostConstructApplicationEventListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>

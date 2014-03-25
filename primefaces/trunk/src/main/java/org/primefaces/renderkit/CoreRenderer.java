@@ -51,7 +51,7 @@ import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
-import org.primefaces.validate.bean.BeanValidationResolver;
+import org.primefaces.validate.bean.BeanValidationMetadataMapper;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -629,7 +629,7 @@ public abstract class CoreRenderer extends Renderer {
         
         //bean validation
         if(requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
-            BeanValidationMetadata beanValidationMetadata = BeanValidationResolver.resolveValidationMetadata(context, comp, requestContext);
+            BeanValidationMetadata beanValidationMetadata = BeanValidationMetadataMapper.resolveValidationMetadata(context, comp, requestContext);
             renderValidationMetadataMap(context, beanValidationMetadata.getAttributes());
             validatorIds.addAll(beanValidationMetadata.getValidatorIds());
         }
