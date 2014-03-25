@@ -475,13 +475,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(!this.disabled) {            
             this.bindEvents();
-            
             this.bindConstantEvents();
-            
-            this.setupDialogSupport();
+            this.appendPanel();
         }
-
-        this.appendPanel();
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -490,25 +486,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     appendPanel: function() {
-        if(this.cfg.appendTo) {
-            if(this.cfg.appendTo !== this.id) {
-                this.panel.appendTo(PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo));
-            }
-        }
-        else {
-            $(document.body).children(this.panelId).remove();
-            this.panel.appendTo(document.body);
-        }
-    },
+        var container = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo): $(document.body);
         
-    setupDialogSupport: function() {
-        var dialog = this.jq.parents('.ui-dialog:first');
-
-        if(dialog.length == 1) {
-            this.panel.css('position', 'fixed');
+        if(!container.is(this.jq)) {
+            container.children(this.panelId).remove();
+            this.panel.appendTo(container);
         }
     },
-       
+    
     _render: function() {
         var userStyle = this.jq.attr('style');
             
@@ -1003,7 +988,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     alignPanel: function() {
-        if(this.panel.parent().attr('id') === this.id) {
+        if(this.panel.parent().is(this.jq)) {
             this.panel.css({
                 left: 0,
                 top: this.jq.innerHeight()
