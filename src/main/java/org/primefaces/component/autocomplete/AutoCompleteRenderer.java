@@ -32,6 +32,7 @@ import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.AutoCompleteEvent;
+import org.primefaces.expression.SearchExpressionFacade;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -541,7 +542,8 @@ public class AutoCompleteRenderer extends InputRenderer {
             .attr("delay", ac.getQueryDelay(), 300)
             .attr("forceSelection", ac.isForceSelection(), false)
             .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
-            .attr("multiple", ac.isMultiple(), false);
+            .attr("multiple", ac.isMultiple(), false)
+            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, ac, ac.getAppendTo()), null);
         
         if(ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());            
