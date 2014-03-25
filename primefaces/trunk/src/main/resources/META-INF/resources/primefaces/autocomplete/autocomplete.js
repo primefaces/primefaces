@@ -54,8 +54,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
             //Panel management
-            $(document.body).children(this.panelId).remove();
-            this.panel.appendTo(document.body);
+            this.appendPanel();
 
             //itemtip
             if(this.cfg.itemtip) {
@@ -69,6 +68,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.setupDialogSupport();
         }
         
+    },
+    
+    appendPanel: function() {
+        if(this.cfg.appendTo) {
+            if(this.cfg.appendTo !== this.id) {
+                this.panel.appendTo(PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo));
+            }
+        }
+        else {
+            $(document.body).children(this.panelId).remove();
+            this.panel.appendTo(document.body);
+        }
     },
         
     initCache: function() {
@@ -657,19 +668,28 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             else
                 this.panel.css('height', 'auto');                                               
         }
-
+        
         this.panel.css({
                         'left':'',
                         'top':'',
                         'width': panelWidth,
                         'z-index': ++PrimeFaces.zindex
-                })
-                .position({
+                });
+        
+        if(this.panel.parent().attr('id') === this.id) {o
+            this.panel.css({
+                left: 0,
+                top: this.jq.innerHeight()
+            });
+        }
+        else {
+            this.panel.position({
                     my: 'left top'
                     ,at: 'left bottom'
                     ,of: this.input,
                     offset : positionOffset
                 });
+        }
     }
     
 }); 
