@@ -28,6 +28,7 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
 import org.primefaces.component.menuitem.UIMenuItem;
 import org.primefaces.component.separator.UISeparator;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -164,6 +165,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
 		String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("SplitButton", button.resolveWidgetVar(), clientId);
+        wb.attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, button, button.getAppendTo()), null);
         wb.finish();
     }
     
