@@ -14,7 +14,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     initOverlay: function() {
-        var _self = this;
+        var $this = this;
         
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.trigger);
 
@@ -43,11 +43,11 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         this.trigger.bind(this.cfg.triggerEvent + '.ui-menu', function(e) {
             var trigger = $(this);
             
-            if(_self.jq.is(':visible')) {
-                _self.hide();
+            if($this.jq.is(':visible')) {
+                $this.hide();
             }
             else {
-                _self.show();
+                $this.show();
                 
                 if(trigger.is(':button')) {
                     trigger.addClass('ui-state-focus');
@@ -58,33 +58,34 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //hide overlay on document click
-        $(document.body).bind('click.ui-menu', function (e) {            
-            if(_self.jq.is(":hidden")) {
+        var hideNS = 'mousedown.' + this.id;
+        $(document.body).off(hideNS).on(hideNS, function (e) {            
+            if($this.jq.is(":hidden")) {
                 return;
             }
 
             //do nothing if mousedown is on trigger
             var target = $(e.target);
-            if(target.is(_self.trigger.get(0))||_self.trigger.has(target).length > 0) {
+            if(target.is($this.trigger.get(0))||$this.trigger.has(target).length > 0) {
                 return;
             }
 
             //hide if mouse is outside of overlay except trigger
-            var offset = _self.jq.offset();
+            var offset = $this.jq.offset();
             if(e.pageX < offset.left ||
-                e.pageX > offset.left + _self.jq.width() ||
+                e.pageX > offset.left + $this.jq.width() ||
                 e.pageY < offset.top ||
-                e.pageY > offset.top + _self.jq.height()) {
+                e.pageY > offset.top + $this.jq.height()) {
                 
-                _self.hide(e);
+                $this.hide(e);
             }
         });
 
         //Hide overlay on resize
         var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if(_self.jq.is(':visible')) {
-                _self.align();
+        $(window).off(resizeNS).on(resizeNS, function() {
+            if($this.jq.is(':visible')) {
+                $this.align();
             }
         });
 
