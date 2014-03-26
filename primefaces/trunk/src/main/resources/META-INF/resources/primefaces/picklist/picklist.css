@@ -17,6 +17,10 @@
     margin-bottom:0.3em;
 }
 
+.ui-picklist .ui-button-text-icon-left {
+    width: 100%;
+}
+
 .ui-picklist .ui-picklist-item {
     cursor:pointer;
     border:0px none;
