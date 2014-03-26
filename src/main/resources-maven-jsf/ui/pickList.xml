@@ -199,6 +199,13 @@
 			<defaultValue>false</defaultValue>
             <description>When true, a checkbox is displayed next to each item.</description>
 		</attribute>
+        <attribute>
+			<name>labelDisplay</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>tooltip</defaultValue>
+            <description>Defines how the button labels displayed, valid values are "tooltip" (default) and "inline".</description>
+		</attribute>
 	</attributes>
 	    <resources>
         <resource>

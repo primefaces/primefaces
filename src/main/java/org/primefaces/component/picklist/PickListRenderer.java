@@ -66,6 +66,7 @@ public class PickListRenderer extends CoreRenderer {
 		DualListModel model = (DualListModel) pickList.getValue();
         String styleClass = pickList.getStyleClass();
         styleClass = styleClass == null ? PickList.CONTAINER_CLASS : PickList.CONTAINER_CLASS + " " + styleClass;
+        String labelDisplay = pickList.getLabelDisplay();
 
 		writer.startElement("table", pickList);
 		writer.writeAttribute("id", clientId, "id");
@@ -79,7 +80,7 @@ public class PickListRenderer extends CoreRenderer {
 
         //Target List Reorder Buttons
         if(pickList.isShowSourceControls()) {
-            encodeListControls(context, pickList, PickList.SOURCE_CONTROLS);
+            encodeListControls(context, pickList, PickList.SOURCE_CONTROLS, labelDisplay);
         }
  
 		//Source List
@@ -87,10 +88,10 @@ public class PickListRenderer extends CoreRenderer {
 
 		//Buttons
 		writer.startElement("td", null);
-        encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.ADD_BUTTON_ICON_CLASS);
-        encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.ADD_ALL_BUTTON_ICON_CLASS);
-        encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.REMOVE_BUTTON_ICON_CLASS);
-        encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.REMOVE_ALL_BUTTON_ICON_CLASS);
+        encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.ADD_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.REMOVE_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
 		writer.endElement("td");
 
 		//Target List
@@ -98,7 +99,7 @@ public class PickListRenderer extends CoreRenderer {
 
         //Target List Reorder Buttons
         if(pickList.isShowTargetControls()) {
-            encodeListControls(context, pickList, PickList.TARGET_CONTROLS);
+            encodeListControls(context, pickList, PickList.TARGET_CONTROLS, labelDisplay);
         }
 
 		writer.endElement("tr");
@@ -126,15 +127,15 @@ public class PickListRenderer extends CoreRenderer {
         wb.finish();
 	}
     
-    protected void encodeListControls(FacesContext context, PickList pickList, String styleClass) throws IOException {
+    protected void encodeListControls(FacesContext context, PickList pickList, String styleClass, String labelDisplay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("td", null);
         writer.writeAttribute("class", styleClass, null);
-        encodeButton(context, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS, PickList.MOVE_UP_BUTTON_ICON_CLASS);
-        encodeButton(context, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS, PickList.MOVE_TOP_BUTTON_ICON_CLASS);
-        encodeButton(context, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS, PickList.MOVE_DOWN_BUTTON_ICON_CLASS);
-        encodeButton(context, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS, PickList.MOVE_BOTTOM_BUTTON_ICON_CLASS);
+        encodeButton(context, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS, PickList.MOVE_UP_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS, PickList.MOVE_TOP_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS, PickList.MOVE_DOWN_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS, PickList.MOVE_BOTTOM_BUTTON_ICON_CLASS, labelDisplay);
         writer.endElement("td");
     }
 
@@ -147,13 +148,18 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 	
-	protected void encodeButton(FacesContext context, String title, String styleClass, String icon) throws IOException {
+	protected void encodeButton(FacesContext context, String title, String styleClass, String icon, String labelDisplay) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+        boolean tooltip = labelDisplay.equals("tooltip");
+        String buttonClass = tooltip ? HTML.BUTTON_ICON_ONLY_BUTTON_CLASS: HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS; 
         
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("class", HTML.BUTTON_ICON_ONLY_BUTTON_CLASS + " " + styleClass, null);
-        writer.writeAttribute("title", title, null);
+		writer.writeAttribute("class", buttonClass + " " + styleClass, null);
+        
+        if(tooltip) {
+            writer.writeAttribute("title", title, null);
+        }
         
         //icon
         writer.startElement("span", null);
@@ -163,7 +169,11 @@ public class PickListRenderer extends CoreRenderer {
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.write("ui-button");
+        if(tooltip) {
+            writer.write("ui-button");
+        } else {
+            writer.writeText(title, null);
+        }
         writer.endElement("span");
 
         writer.endElement("button");
