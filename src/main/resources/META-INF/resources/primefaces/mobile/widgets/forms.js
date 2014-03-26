@@ -98,3 +98,28 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
     }
     
 });
+
+/**
+ * PrimeFaces Mobile InputSlider Widget
+ */
+PrimeFaces.widget.InputSlider = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        this.jq.slider();
+    }
+    
+});
+
+/**
+ * PrimeFaces Mobile RangeSlider Widget
+ */
+PrimeFaces.widget.RangeSlider = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        this.jq.attr('data-role', 'rangeslider');
+        this.jq.rangeslider();
+    }
+    
+});

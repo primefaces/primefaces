@@ -19,8 +19,10 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.mobile.component.rangeslider.RangeSlider;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class InputSliderRenderer extends InputRenderer {
     
@@ -37,11 +39,20 @@ public class InputSliderRenderer extends InputRenderer {
             inputSlider.setSubmittedValue(submittedValue);
         }
 	}
-
+    
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         InputSlider inputSlider = (InputSlider) component;
+        
+        encodeMarkup(context, inputSlider);
+        
+        if(!(inputSlider.getParent() instanceof RangeSlider)) {
+            encodeScript(context, inputSlider);
+        }
+    }
+
+    protected void encodeMarkup(FacesContext context, InputSlider inputSlider) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String clientId = inputSlider.getClientId(context);
         String style = inputSlider.getStyle();
         String styleClass = inputSlider.getStyleClass();
@@ -50,10 +61,11 @@ public class InputSliderRenderer extends InputRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
-        writer.writeAttribute("type", "range", null);
+        writer.writeAttribute("type", "number", null);
         writer.writeAttribute("min", inputSlider.getMinValue(), null);
         writer.writeAttribute("max", inputSlider.getMaxValue(), null);
         writer.writeAttribute("step", inputSlider.getStep(), null);
+        writer.writeAttribute("data-role", "none", null);
         
         if (style != null) writer.writeAttribute("style", style, null);  
         if (styleClass != null) writer.writeAttribute("class", styleClass, null); 
@@ -61,8 +73,14 @@ public class InputSliderRenderer extends InputRenderer {
         if (inputSlider.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if (valueToRender != null) writer.writeAttribute("value", valueToRender , null);
 
-        renderDynamicPassThruAttributes(context, component);
+        renderDynamicPassThruAttributes(context, inputSlider);
 
         writer.endElement("input");
+    }
+
+    protected void encodeScript(FacesContext context, InputSlider inputSlider) throws IOException {
+        String clientId = inputSlider.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("InputSlider", inputSlider.resolveWidgetVar(), clientId).finish();
     }
 }
