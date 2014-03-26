@@ -194,7 +194,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             key = e.which,
             shouldSearch = true;
 
-            if (key === keyCode.ESCAPE) {
+            // Cancel a possible long running search when selecting an entry via enter
+            if (key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                if ($this.timeout) {
+                    clearTimeout($this.timeout);
+                }
+                shouldSearch = false;
+            }
+            else if (key === keyCode.ESCAPE) {
                 $this.hide();
                 shouldSearch = false;
             }
@@ -206,8 +213,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 || key === keyCode.RIGHT
                 || key === keyCode.TAB
                 || key === 16 // keyCode.SHIFT
-                || key === keyCode.ENTER
-                || key === keyCode.NUMPAD_ENTER
                 || key === keyCode.HOME
                 || key === keyCode.END
                 || key === 18 // keyCode.ALT
@@ -304,7 +309,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             else if (e.which == keyCode.TAB) {
                 // clear pending search before leaving the field
-                clearTimeout($this.timeout);
+                if ($this.timeout) {
+                    clearTimeout($this.timeout);
+                }
             }
         });
     },
