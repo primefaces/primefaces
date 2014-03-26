@@ -241,9 +241,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
         }).keydown(function(e) {
+            var keyCode = $.ui.keyCode;
+
             if($this.panel.is(':visible')) {
-                var keyCode = $.ui.keyCode,
-                highlightedItem = $this.items.filter('.ui-state-highlight');
+                var highlightedItem = $this.items.filter('.ui-state-highlight');
 
                 switch(e.which) {
                     case keyCode.UP:
@@ -301,7 +302,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
                 }
             }
-
+            else if (e.which == keyCode.TAB) {
+                // clear pending search before leaving the field
+                clearTimeout($this.timeout);
+            }
         });
     },
 
