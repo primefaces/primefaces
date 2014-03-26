@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class UISwitchRenderer extends CoreRenderer {
     
@@ -32,7 +33,7 @@ public class UISwitchRenderer extends CoreRenderer {
         }
              
         String clientId = uiswitch.getClientId(context);
-		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if(submittedValue != null && isChecked(submittedValue)) {
             uiswitch.setSubmittedValue(true);
@@ -48,25 +49,58 @@ public class UISwitchRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         UISwitch uiswitch = (UISwitch) component;
+        
+        encodeMarkup(context, uiswitch);
+        encodeScript(context, uiswitch);
+    }
+    
+    public void encodeMarkup(FacesContext context, UISwitch uiswitch) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String clientId = uiswitch.getClientId(context);
         boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, uiswitch));
+        String inputId = clientId + "_input";
         String onLabel = uiswitch.getOnLabel();
-        String offLabel = uiswitch.getOffLabel();        
-
-        writer.startElement("input", uiswitch);
+        String offLabel = uiswitch.getOffLabel();
+        String style = uiswitch.getStyle();
+        String styleClass = uiswitch.getStyleClass();
+        styleClass = (styleClass == null) ? UISwitch.CONTAINER_CLASS: UISwitch.CONTAINER_CLASS + " " + styleClass;
+        
+        writer.startElement("div", uiswitch);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("name", clientId, null);
-        writer.writeAttribute("data-role", "flipswitch", null);
+        if(style != null) writer.writeAttribute("style", style, "style");
+        if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+        
+        writer.startElement("span", uiswitch);
+        writer.writeAttribute("class", UISwitch.ON_CLASS, null);
+        writer.writeText(onLabel, null);
+        writer.endElement("span");
+        
+        writer.startElement("span", uiswitch);
+        writer.writeAttribute("class", UISwitch.OFF_CLASS, null);
+        writer.writeText(offLabel, null);
+        writer.endElement("span");
+        
+        writer.startElement("input", uiswitch);
+        writer.writeAttribute("id", inputId, "id");
+        writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("data-role", "none", null);
         writer.writeAttribute("type", "checkbox", null);
+        writer.writeAttribute("class", UISwitch.INPUT_CLASS, null);
+        
         if (checked) writer.writeAttribute("checked", "checked", null);
-        if (onLabel != null) writer.writeAttribute("data-on-text", onLabel, null);
-        if (offLabel != null) writer.writeAttribute("data-off-text", offLabel, null);
         if (uiswitch.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         
-        renderOnchange(context, component);
+        renderOnchange(context, uiswitch);
         
         writer.endElement("input");
+        
+        writer.endElement("div");
+    }
+    
+    public void encodeScript(FacesContext context, UISwitch uiswitch) throws IOException {
+        String clientId = uiswitch.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("UISwitch", uiswitch.resolveWidgetVar(), clientId).finish();
     }
 }

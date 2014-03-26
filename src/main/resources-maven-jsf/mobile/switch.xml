@@ -13,18 +13,25 @@
 	<rendererType>org.primefaces.mobile.component.UISwitchRenderer</rendererType>
 	<rendererClass>org.primefaces.mobile.component.uiswitch.UISwitchRenderer</rendererClass>
 	<parent>javax.faces.component.UIInput</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
 	<attributes>
 		&input_component_attributes;
         <attribute>
             <name>onLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <defaultValue>on</defaultValue>
             <description>Custom label for on state.</description>
         </attribute>
         <attribute>
             <name>offLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <defaultValue>off</defaultValue>
             <description>Custom label for off state.</description>
         </attribute>
         <attribute>
@@ -45,6 +52,18 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>Client side callback to execute on value change event.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the main container.</description>
         </attribute>
 	</attributes>
 </component>
