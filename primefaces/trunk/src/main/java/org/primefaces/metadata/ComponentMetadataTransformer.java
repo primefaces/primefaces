@@ -27,12 +27,23 @@ public abstract class ComponentMetadataTransformer {
     
     public abstract void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException;
     
-    protected void applyMaxlength(UIInput input, int maxlength) {
+    protected void setMaxlength(UIInput input, int maxlength) {
         if (input instanceof HtmlInputText) {
             ((HtmlInputText) input).setMaxlength(maxlength);
         }
         else if (input instanceof HtmlInputSecret) {
             ((HtmlInputSecret) input).setMaxlength(maxlength);
         }
+    }
+    
+    protected int getMaxlength(UIInput input) {
+        if (input instanceof HtmlInputText) {
+            return ((HtmlInputText) input).getMaxlength();
+        }
+        else if (input instanceof HtmlInputSecret) {
+            return ((HtmlInputSecret) input).getMaxlength();
+        }
+        
+        return Integer.MIN_VALUE;
     }
 }

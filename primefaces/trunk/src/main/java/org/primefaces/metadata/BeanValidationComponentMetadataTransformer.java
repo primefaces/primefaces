@@ -43,56 +43,55 @@ public class BeanValidationComponentMetadataTransformer extends ComponentMetadat
             return;
         }
 
-        if (component.getAttributes().containsKey("maxlength") && component.getAttributes().containsKey("required")) {
+        UIInput input = (UIInput) component;
+        EditableValueHolder editableValueHolder = (EditableValueHolder) component;
+       
+        if (editableValueHolder.isRequired() && getMaxlength(input) != Integer.MIN_VALUE) {
             return;
         }
-
-        UIInput input = (UIInput) component;
-        
+ 
         Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extract(context, requestContext, component.getValueExpression("value"));
         if (constraints != null && !constraints.isEmpty()) {
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                applyConstraint(constraintDescriptor, input);
+                applyConstraint(constraintDescriptor, input, editableValueHolder);
             }
         }
     }
     
-    protected void applyConstraint(ConstraintDescriptor constraintDescriptor, UIInput component) {
+    protected void applyConstraint(ConstraintDescriptor constraintDescriptor, UIInput input, EditableValueHolder editableValueHolder) {
         
         Annotation constraint = constraintDescriptor.getAnnotation();
         
-        EditableValueHolder valueHolder = (EditableValueHolder) component;
-
-        if (!component.getAttributes().containsKey("maxlength")) {
+        if (getMaxlength(input) == Integer.MIN_VALUE) {
             if (constraint.annotationType().equals(Max.class)) {
                 Max max = (Max) constraint;
                 if (max.value() > 0) {
-                    applyMaxlength(component, Long.valueOf(max.value()).intValue());
+                    setMaxlength(input, Long.valueOf(max.value()).intValue());
                 }
             }
             else if (constraint.annotationType().equals(Size.class)) {
                 Size size = (Size) constraint;
                 if (size.max() > 0) {
-                    applyMaxlength(component, size.max());
+                    setMaxlength(input, size.max());
                 }
             }
         }
         
-        if (!component.getAttributes().containsKey("required")) {
+        if (!editableValueHolder.isRequired()) {
             if (constraint.annotationType().equals(Min.class)) {
                 Min min = (Min) constraint;
                 if (min.value() > 0) {
-                    valueHolder.setRequired(true);
+                    editableValueHolder.setRequired(true);
                 }
             }
             else if (constraint.annotationType().equals(Size.class)) {
                 Size size = (Size) constraint;
                 if (size.min() > 0) {
-                    valueHolder.setRequired(true);
+                    editableValueHolder.setRequired(true);
                 }
             }
             else if (constraint.annotationType().equals(NotNull.class)) {
-                valueHolder.setRequired(true);
+                editableValueHolder.setRequired(true);
             }
         }
     }

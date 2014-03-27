@@ -23,6 +23,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
 
 public class ComponentMetadataTransformerListener implements SystemEventListener {
@@ -33,10 +34,12 @@ public class ComponentMetadataTransformerListener implements SystemEventListener
                 PostAddToViewEvent postAddToViewEvent = (PostAddToViewEvent) event;
                 
                 FacesContext context = FacesContext.getCurrentInstance();
-                RequestContext requestContext = RequestContext.getCurrentInstance();
-                
-                if (!context.isPostback() && requestContext.getApplicationContext().getConfig().isTransformMetadataEnabled()) {
-                    if (requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
+
+                if (!context.isPostback()) {
+                    RequestContext requestContext = RequestContext.getCurrentInstance();
+                    ConfigContainer config = requestContext.getApplicationContext().getConfig();
+                    
+                    if (config.isTransformMetadataEnabled() && config.isBeanValidationAvailable()) {
                         BeanValidationComponentMetadataTransformer.getInstance().transform(context, requestContext, postAddToViewEvent.getComponent());
                     }
                 }
