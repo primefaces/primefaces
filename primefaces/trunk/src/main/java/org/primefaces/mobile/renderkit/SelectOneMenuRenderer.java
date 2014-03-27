@@ -17,13 +17,13 @@ package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
 import java.util.List;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends org.primefaces.component.selectonemenu.SelectOneMenuRenderer {
     
@@ -33,9 +33,8 @@ public class SelectOneMenuRenderer extends org.primefaces.component.selectonemen
     }
         
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    protected void encodeMarkup(FacesContext context, SelectOneMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        SelectOneMenu menu = (SelectOneMenu) component;
         List<SelectItem> selectItems = getSelectItems(context, menu);
         Converter converter = menu.getConverter();
         Object values = getValues(menu);
@@ -45,16 +44,25 @@ public class SelectOneMenuRenderer extends org.primefaces.component.selectonemen
         writer.startElement("select", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("data-role", "none", null);
         
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
         if(menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
         
         renderOnchange(context, menu);
-        renderDynamicPassThruAttributes(context, component);
+        renderDynamicPassThruAttributes(context, menu);
         
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 
         writer.endElement("select");
+    }
+    
+    @Override
+    protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
+        String clientId = menu.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("SelectOneMenu", menu.resolveWidgetVar(), clientId);               
+        wb.finish();
     }
 }
