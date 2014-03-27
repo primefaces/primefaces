@@ -211,7 +211,7 @@ public class TabViewRenderer extends CoreRenderer {
         String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.INACTIVE_TAB_HEADER_CLASS;
         defaultStyleClass = defaultStyleClass + " ui-corner-" + tabView.getOrientation();   //cornering
         String styleClass = tab.getTitleStyleClass();
-        styleClass = tab.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
+        styleClass = tab.isDisabled() ? (styleClass == null ? "" : styleClass) + " ui-state-disabled" : styleClass;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
         UIComponent titleFacet = tab.getFacet("title");
         
