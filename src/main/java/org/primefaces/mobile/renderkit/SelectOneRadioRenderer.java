@@ -17,20 +17,25 @@ package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
 import java.util.List;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.selectoneradio.SelectOneRadio;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneRadioRenderer extends org.primefaces.component.selectoneradio.SelectOneRadioRenderer {
     
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("SelectOneRadio", radio.resolveWidgetVar(), radio.getClientId(context)).finish();
+    }
+    
+    @Override
+    protected void encodeMarkup(FacesContext context, SelectOneRadio radio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        SelectOneRadio radio = (SelectOneRadio) component;
         String clientId = radio.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, radio);
         String style = radio.getStyle();
@@ -38,8 +43,8 @@ public class SelectOneRadioRenderer extends org.primefaces.component.selectonera
         Converter converter = radio.getConverter();
         
         writer.startElement("div", radio);
-        writer.writeAttribute("data-role", "controlgroup", null);
-        if (shouldWriteId(component)) writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("id", clientId, "id");
+        
         if (style != null) writer.writeAttribute("style", style, "style");
         if (styleClass != null) writer.writeAttribute("class", style, "styleClass");
         

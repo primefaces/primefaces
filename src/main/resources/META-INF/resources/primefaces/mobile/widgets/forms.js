@@ -152,3 +152,43 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     }
     
 });
+
+/**
+ * PrimeFaces Mobile SelectOneRadio Widget
+ */
+PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.jq.controlgroup();
+    }
+    
+});
+
+/**
+ * PrimeFaces Mobile SelectManyCheckbox Widget
+ */
+PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.jq.controlgroup();
+    }
+    
+});
+
+/**
+ * PrimeFaces Mobile SelectBooleanCheckbox Widget
+ */
+PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.jq.controlgroup();
+    }
+    
+});
+

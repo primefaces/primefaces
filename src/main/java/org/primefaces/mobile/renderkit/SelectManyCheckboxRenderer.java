@@ -17,7 +17,6 @@ package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
 import java.util.List;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -25,12 +24,19 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyCheckboxRenderer extends org.primefaces.component.selectmanycheckbox.SelectManyCheckboxRenderer {
     
+    @Override    
+    protected void encodeScript(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
+        String clientId = checkbox.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId).finish();
+    }
+    
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
+    protected void encodeMarkup(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
@@ -38,8 +44,8 @@ public class SelectManyCheckboxRenderer extends org.primefaces.component.selectm
         String styleClass = checkbox.getStyleClass();
      
         writer.startElement("div", checkbox);
-        writer.writeAttribute("data-role", "controlgroup", null);
-        if (shouldWriteId(component)) writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("id", clientId, "id");
+        
         if (style != null) writer.writeAttribute("style", style, "style");
         if (styleClass != null) writer.writeAttribute("class", style, "styleClass");
         
