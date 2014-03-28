@@ -186,9 +186,35 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
+        this.label = this.jq.children('label');
+        this.input = this.jq.children(':checkbox');
         
-        this.jq.controlgroup();
-    }
+        this.bindEvents();
+    },
     
+    bindEvents: function() {
+        var $this = this;
+        
+        this.label.on('click.selectBooleanCheckbox', function() {
+            $this.toggle();
+        });
+    },
+    
+    toggle: function() {
+        if(this.input.prop('checked'))
+            this.uncheck();
+        else
+            this.check();
+        
+        this.input.trigger('change');
+    },
+    
+    check: function() {
+        this.label.removeClass('ui-checkbox-off').addClass('ui-checkbox-on');
+    },
+    
+    uncheck: function() {
+        this.label.removeClass('ui-checkbox-on').addClass('ui-checkbox-off');
+    }
 });
 
