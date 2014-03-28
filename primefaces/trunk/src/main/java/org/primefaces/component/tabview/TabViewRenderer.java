@@ -228,8 +228,9 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
         if(titleFacet == null) {
         	String tabTitle = tab.getTitle(); 
-        	tabTitle = tabTitle == null ? "" : tabTitle;
-            writer.write(tabTitle);
+        	if(tabTitle != null) {
+        	    writer.write(tabTitle);
+        	}
         }
         else {
             titleFacet.encodeAll(context);
