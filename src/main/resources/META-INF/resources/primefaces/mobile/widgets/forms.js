@@ -218,3 +218,18 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
     }
 });
 
+/**
+ * PrimeFaces Mobile SelectCheckboxMenu Widget
+ */
+PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        this.cfg.nativeMenu = false;
+        
+        this.jq.selectmenu(this.cfg).removeAttr('id');
+        this.jq.closest('.ui-select').attr('id', this.id);
+    }
+    
+});
+

@@ -17,20 +17,27 @@ package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
 import java.util.List;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectCheckboxMenuRenderer extends org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenuRenderer {
-            
+        
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    protected void encodeScript(FacesContext context, SelectCheckboxMenu menu) throws IOException {
+        String clientId = menu.getClientId(context);
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.initWithDomReady("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId).finish();        
+    }
+    
+    @Override
+    public void encodeMarkup(FacesContext context, SelectCheckboxMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        SelectCheckboxMenu menu = (SelectCheckboxMenu) component;
         List<SelectItem> selectItems = getSelectItems(context, menu);
         Converter converter = menu.getConverter();
         Object values = getValues(menu);
@@ -41,14 +48,14 @@ public class SelectCheckboxMenuRenderer extends org.primefaces.component.selectc
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("multiple", "multiple", null);
-        writer.writeAttribute("data-native-menu", "false", null);
+        writer.writeAttribute("data-role", "none", null);
         
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
         if(menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
         
         renderOnchange(context, menu);
-        renderDynamicPassThruAttributes(context, component);
+        renderDynamicPassThruAttributes(context, menu);
         
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 
