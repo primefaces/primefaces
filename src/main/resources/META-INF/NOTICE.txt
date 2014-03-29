@@ -25,3 +25,4 @@ This product includes software developed by Robert Eisele (http://www.xarg.org/p
 This product includes software developed by Jeffrey M. Hunter (http://www.idevelopment.info)
 This product includes software developed by Mikael Grev (http://sourceforge.net/projects/migbase64/)
 This product includes software developed by Sebastian Kutsch (http://jacksasylum.eu/ContentFlow/)
+This product includes software developed by Kelvin Luck (http://jscrollpane.kelvinluck.com)
