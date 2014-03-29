@@ -1,9 +1,9 @@
 /*!
-* jQuery Mobile 1.4.0
-* Git HEAD hash: f09aae0e035d6805e461a7be246d04a0dbc98f69 <> Date: Thu Dec 19 2013 17:34:22 UTC
+* jQuery Mobile 1.4.2
+* Git HEAD hash: 9d9a42a27d0c693e8b5569c3a10d771916af5045 <> Date: Fri Feb 28 2014 17:32:01 UTC
 * http://jquerymobile.com
 *
-* Copyright 2010, 2013 jQuery Foundation, Inc. and other contributors
+* Copyright 2010, 2014 jQuery Foundation, Inc. and other contributors
 * Released under the MIT license.
 * http://jquery.org/license
 *
@@ -1182,7 +1182,7 @@ button.ui-btn-icon-notext,
 	clear: both;
 	padding: .8em 0;
 }
-.ui-field-contain > label + [class*="ui-"],
+.ui-field-contain > label ~ [class*="ui-"],
 .ui-field-contain .ui-controlgroup-controls {
 	margin: 0;
 }
@@ -1218,7 +1218,7 @@ button.ui-btn-icon-notext,
 		width: auto;
 		margin: 0 0 .4em;
 	}
-	.ui-field-contain > label + [class*="ui-"],
+	.ui-field-contain > label ~ [class*="ui-"],
 	.ui-field-contain .ui-controlgroup-controls {
 		float: left;
 		width: 78%;
@@ -1228,14 +1228,14 @@ button.ui-btn-icon-notext,
 		box-sizing: border-box;
 	}
 	/* ui-hide-label deprecated in 1.4. TODO: Remove in 1.5 */
-	.ui-hide-label > label + [class*="ui-"],
+	.ui-hide-label > label ~ [class*="ui-"],
 	.ui-hide-label .ui-controlgroup-controls,
-	.ui-popup .ui-field-contain > label + [class*="ui-"],
+	.ui-popup .ui-field-contain > label ~ [class*="ui-"],
 	.ui-popup .ui-field-contain .ui-controlgroup-controls {
 		float: none;
 		width: 100%;
 	}
-	.ui-field-contain > label + .ui-btn-inline {
+	.ui-field-contain > label ~ .ui-btn-inline {
 		width: auto;
 		margin-right: .625em;
 	}
@@ -1282,8 +1282,7 @@ li.ui-block-e {
 	list-style: none;
 }
 /* No margin in grids for 100% width button elements until we can use max-width: fill-available; */
-[class*="ui-block-"] > button.ui-btn,
-.ui-grid-solo > button.ui-btn {
+[class*="ui-block-"] > button.ui-btn {
 	margin-right: 0;
 	margin-left: 0;
 }
@@ -1292,8 +1291,7 @@ li.ui-block-e {
 [class*="ui-block-"] > .ui-checkbox,
 [class*="ui-block-"] > .ui-radio,
 [class*="ui-block-"] > button.ui-btn-inline,
-[class*="ui-block-"] > button.ui-btn-icon-notext,
-.ui-grid-solo > [class*="ui-"] {
+[class*="ui-block-"] > button.ui-btn-icon-notext {
 	margin-right: .3125em;
 	margin-left: .3125em;
 }
@@ -1508,7 +1506,7 @@ li.ui-block-e {
 	border: 0;
 	outline: 0;
 	-webkit-border-radius: inherit;
-	border-bottom-radius: inherit;	
+	border-radius: inherit;	
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	cursor: pointer;
@@ -1790,7 +1788,7 @@ fieldset.ui-controlgroup {
 	position: absolute !important; /* See issues #4816, #4844 and #4874 and popup.js */
 }
 .ui-popup-screen {
-	background-image: url(data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==); /* Necessary to set some form of background to ensure element is clickable in IE6/7. While legacy IE won't understand the data-URI'd image, it ensures no additional requests occur in all other browsers with little overhead. */
+	background-image: url("data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="); /* Necessary to set some form of background to ensure element is clickable in IE6/7. While legacy IE won't understand the data-URI'd image, it ensures no additional requests occur in all other browsers with little overhead. */
 	top: 0;
 	left: 0;
 	right: 0;
@@ -1982,12 +1980,12 @@ fieldset.ui-controlgroup {
  * For each side, the arrow is twice the desired size and its corner is aligned
  * with the edge of the container:
  *                                           
- *           /\         /\                +----+	     /\
- *          /  \       /  \ 					    | /\ |top   /  \
+ *           /\         /\                +----+       /\
+ *          /  \       /  \               | /\ |top   /  \
  *      +----+  \     /  +----+       +-->|/  \|     /    \
  *  left| /  |   \   /   |  \ |right  |   |    |    /      \
- *      |/   |    \ /    |   \| 			|  /|    |\  /        \
- *      |\   |    / \    |   /| 			| / +----+ \ \ +----+ /
+ *      |/   |    \ /    |   \|       |  /|    |\  /        \
+ *      |\   |    / \    |   /|       | / +----+ \ \ +----+ /
  *      | \  |   /   \   |  / |       | \        /  \|    |/
  *      +----+  /     \  +----+       |  \      /    |    |
  *       ^  \  /       \  /  ^        |   \    /  +->|\  /|
@@ -2039,19 +2037,6 @@ fieldset.ui-controlgroup {
     margin-left: -4.142135623730951px;
     margin-top: -5.857864376269049px;
 }
-.ui-popup-arrow-background {
-	/* desired triangle height is used here */
-	width: 20px;
-	height: 20px;
-}
-.ui-popup-arrow-container.ui-popup-arrow-t .ui-popup-arrow-background
-.ui-popup-arrow-container.ui-popup-arrow-b .ui-popup-arrow-background {
-	background-position: 0 10px;
-}
-.ui-popup-arrow-container.ui-popup-arrow-l .ui-popup-arrow-background,
-.ui-popup-arrow-container.ui-popup-arrow-r .ui-popup-arrow-background {
-	background-position: 10px 0;
-}
 /* structure */
 .ui-popup > .ui-popup-arrow-guide {
 	position: absolute;
@@ -2081,49 +2066,6 @@ fieldset.ui-controlgroup {
         	M21=0.7071067811865477,
         	M22=0.7071067811865474,
         	SizingMethod='auto expand');
-}
-.ui-popup-arrow-background {
-	position: absolute;
-	border: 0;
-}
-.ui-popup-arrow-container.ie .ui-popup-arrow-background {
-	background: none;
-}
-.ui-popup-arrow-container.ui-popup-arrow-t .ui-popup-arrow-background,
-.ui-popup-arrow-container.ui-popup-arrow-b .ui-popup-arrow-background {
-	/* Undo rotation and reflect in x axis */
-	-webkit-transform: rotate(-45deg) scale(1, -1);
-	-moz-transform: rotate(-45deg) scale(1, -1);
-	-ms-transform: rotate(-45deg) scale(1, -1);
-	transform: rotate(-45deg) scale(1, -1);
-}
-.ui-popup-arrow-container.ui-popup-arrow-t.ie .ui-popup-arrow-background,
-.ui-popup-arrow-container.ui-popup-arrow-b.ie .ui-popup-arrow-background {
-   -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865483, M12=-0.7071067811865467, M21=-0.7071067811865467, M22=-0.7071067811865483, SizingMethod='auto expand')";
-   filter: progid:DXImageTransform.Microsoft.Matrix(
-            M11=0.7071067811865483,
-            M12=-0.7071067811865467,
-            M21=-0.7071067811865467,
-            M22=-0.7071067811865483,
-            SizingMethod='auto expand');
-}
-.ui-popup-arrow-container.ui-popup-arrow-l .ui-popup-arrow-background,
-.ui-popup-arrow-container.ui-popup-arrow-r .ui-popup-arrow-background {
-	/* Undo rotation and reflect in y axis */
-	-webkit-transform: rotate(-45deg) scale(-1, 1);
-	-moz-transform: rotate(-45deg) scale(-1, 1);
-	-ms-transform: rotate(-45deg) scale(-1, 1);
-	transform: rotate(-45deg) scale(-1, 1);
-}
-.ui-popup-arrow-container.ui-popup-arrow-l.ie .ui-popup-arrow-background,
-.ui-popup-arrow-container.ui-popup-arrow-r.ie .ui-popup-arrow-background {
-   -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=-0.7071067811865483, M12=0.7071067811865467, M21=0.7071067811865467, M22=0.7071067811865483, SizingMethod='auto expand')";
-   filter: progid:DXImageTransform.Microsoft.Matrix(
-            M11=-0.7071067811865483,
-            M12=0.7071067811865467,
-            M21=0.7071067811865467,
-            M22=0.7071067811865483,
-            SizingMethod='auto expand');
 }
 .ui-checkbox,
 .ui-radio {
@@ -2545,7 +2487,7 @@ ol.ui-listview > li > .ui-btn,
 ol.ui-listview > li.ui-li-static {
 	vertical-align: middle;
 }
-ol.ui-listview > li > .ui-btn:before,
+ol.ui-listview > li > .ui-btn:first-child:before,
 ol.ui-listview > li.ui-li-static:before,
 ol.ui-listview > li.ui-field-contain > label:before,
 ol.ui-listview > li.ui-field-contain > .ui-controlgroup-label:before {
@@ -2756,14 +2698,13 @@ div.ui-slider-switch.ui-mini {
 .ui-field-contain div.ui-slider-switch {
 	margin: 0;
 }
-@media (min-width: 28em) {
-	/* ui-hide-label deprecated in 1.4. TODO: Remove in 1.5 */
-	.ui-field-contain div.ui-slider-switch,
-	.ui-field-contain.ui-hide-label div.ui-slider-switch {
-		display: inline-block;
-		width: 5.8em;
-	}
-}	
+/* ui-hide-label deprecated in 1.4. TODO: Remove in 1.5 */
+.ui-field-contain div.ui-slider-switch,
+.ui-field-contain.ui-hide-label div.ui-slider-switch,
+html .ui-popup .ui-field-contain div.ui-slider-switch {
+	display: inline-block;
+	width: 5.8em;
+}
 /* slider tooltip
 -----------------------------------------------------------------------------------------------------------*/
 .ui-slider-popup {
@@ -2897,7 +2838,10 @@ textarea.ui-mini {
 }
 /* Padding on the div instead of input because of browser spinners etc. */
 .ui-input-has-clear {
-	padding-right: 2.25em;
+	padding-right: 2.375em;
+}
+.ui-mini.ui-input-has-clear {
+	padding-right: 2.923em;
 }
 .ui-input-has-clear input {
 	padding-right: 0;
@@ -2964,6 +2908,9 @@ for Android 4.1 */
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
+}
+textarea.ui-input-text.ui-textinput-autogrow {
+	overflow: hidden;
 }
 .ui-textinput-autogrow-resize {
 	-webkit-transition: height 0.25s;
@@ -3038,19 +2985,20 @@ for Android 4.1 */
 	padding: 1px;
 	text-indent: 1em; /* Override this to center text if you use a label other than "off" */
 }
-@media (min-width: 28em) {
-	.ui-field-contain > label + .ui-flipswitch {
-		display: inline-block;
-		width: 5.875em; /* If you override the width for .ui-flipswitch you should repeat the same value here */
-		-webkit-box-sizing: content-box;
-		-moz-box-sizing: content-box;
-		-ms-box-sizing: content-box;
-		box-sizing: content-box;
-	}
-	.ui-field-contain .ui-flipswitch.ui-flipswitch-active {
-		width: 1.875em;
-	}
-}	
+/* Override field container CSS to prevent the flipswitch from becomming full width */
+html .ui-field-contain > label + .ui-flipswitch,
+html .ui-popup .ui-field-contain > label + .ui-flipswitch {
+	display: inline-block;
+	width: 5.875em; /* If you override the width for .ui-flipswitch you should repeat the same value here */
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-ms-box-sizing: content-box;
+	box-sizing: content-box;
+}
+.ui-field-contain .ui-flipswitch.ui-flipswitch-active,
+.ui-popup .ui-field-contain .ui-flipswitch.ui-flipswitch-active {
+	width: 1.875em;
+}
 .ui-table {
 	border: 0;
 	border-collapse: collapse;
@@ -3309,6 +3257,7 @@ for Android 4.1 */
 /* Animate class is added to panel, wrapper and fixed toolbars */
 .ui-panel-animate {
 	-webkit-transition: -webkit-transform 300ms ease;
+	-webkit-transition-duration: 300ms;
 	-moz-transition: -moz-transform 300ms ease;
 	transition: transform 300ms ease;
 }
