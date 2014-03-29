@@ -41,6 +41,9 @@
         <resource>
 			<name>primefaces.css</name>
 		</resource>
+        <resource>
+			<name>scrollpanel/scrollpanel.css</name>
+		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
@@ -49,6 +52,9 @@
 		</resource>
         <resource>
 			<name>primefaces.js</name>
+		</resource>
+        <resource>
+			<name>scrollpanel/scrollpanel.js</name>
 		</resource>
 	</resources>
 </component>
