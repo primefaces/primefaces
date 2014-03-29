@@ -8,84 +8,110 @@
     overflow: auto;
 }
 
-.ui-scrollpanel-container {
-    overflow: hidden;
-    position: relative;
-    zoom:1;
+.ui-scrollpanel-container
+{
+	overflow: hidden;
+	position: relative;
 }
 
-.ui-scrollpanel-wrapper {
-    position: absolute;
-    overflow: hidden;
+.ui-scrollpanel-content
+{
+	position: absolute;
 }
 
-.ui-scrollpanel-content {
-    left: 0px; 
-    top: 0px; 
-    width: auto;
-    height: auto; 
-    display: block;
-    position: absolute; 
-    zoom: 1;
+.ui-scrollpanel-vbar
+{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 16px;
+	height: 100%;
 }
 
-.ui-scrollpanel-vbar {
-    width: 18px;
-    padding-top: 18px;
-    padding-bottom: 18px;
-    left: auto; right: 0px; top: 0px; bottom: auto;
+.ui-scrollpanel-hbar
+{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 16px;
 }
 
-.ui-scrollpanel-hbar {
-    height: 18px;
-    padding-left: 18px;
-    padding-right: 18px;
-    top: auto; 
-    right: auto; 
-    left: 0px; 
-    bottom: 0px;
+.ui-scrollpanel-cap
+{
+	display: none;
 }
 
-.ui-scrollpanel-hbar, .ui-scrollpanel-vbar {
-    display: none;
-    position: absolute;
-    font-size: 0px;
-    border:0;
+.ui-scrollpanel-hbar .ui-scrollpanel-cap
+{
+	float: left;
 }
 
-.ui-scrollpanel-hbar .ui-state-default, .ui-scrollpanel-vbar .ui-state-default {
-    width: 16px;
-    height: 16px;
-    position: absolute;
-}
-
-.ui-scrollpanel-hbar.ui-widget-header,
-.ui-scrollpanel-vbar.ui-widget-header {
+.ui-scrollpanel-track
+{
     background-image: none;
-}
-            
-.ui-scrollpanel-handle {
-    position: absolute;
-    font-size:0px;
-    overflow:hidden;
+	position: relative;
+    border: 0 none;
 }
 
-.ui-scrollpanel-handle * {
-    font-size:0px;
+.ui-scrollpanel-drag
+{
+	position: relative;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+    border: 0px none;
 }
 
-.ui-scrollpanel-bl {
-    left: 0;
+.ui-scrollpanel-hbar .ui-scrollpanel-track,
+.ui-scrollpanel-hbar .ui-scrollpanel-drag
+{
+	float: left;
+	height: 100%;
 }
 
-.ui-scrollpanel-br {
-    right: 0;
+.jspArrow
+{
+	background: #50506d;
+	text-indent: -20000px;
+	display: block;
+	cursor: pointer;
+	padding: 0;
+	margin: 0;
 }
 
-.ui-scrollpanel-bt {
-    top: 0;
+.jspArrow.jspDisabled
+{
+	cursor: default;
+	background: #80808d;
 }
 
-.ui-scrollpanel-bb {
-    bottom: 0;
+.ui-scrollpanel-vbar .jspArrow
+{
+	height: 16px;
+}
+
+.ui-scrollpanel-hbar .jspArrow
+{
+	width: 16px;
+	float: left;
+	height: 100%;
+}
+
+.ui-scrollpanel-vbar .jspArrow:focus
+{
+	outline: none;
+}
+
+.ui-scrollpanel-corner
+{
+	float: left;
+	height: 100%;
+    border: 0 none;
+}
+
+/* Yuk! CSS Hack for IE6 3 pixel bug :( */
+* html .ui-scrollpanel-corner
+{
+	margin: 0 -3px 0 0;
 }

@@ -51,18 +51,16 @@ public class ScrollPanelRenderer extends CoreRenderer {
         
         renderChildren(context, panel);
         
-        //scrollpanel
         writer.endElement("div");
     }
     
     protected void encodeScript(FacesContext context, ScrollPanel panel) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String clientId = panel.getClientId(context);
-        WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ScrollPanel", panel.resolveWidgetVar(), clientId)
-            .attr("mode", panel.getMode());
-
-        wb.finish();
+        boolean nativeMode = panel.getMode().equals("native");        
+        if(!nativeMode) {
+            String clientId = panel.getClientId(context);
+            WidgetBuilder wb = getWidgetBuilder(context);
+            wb.init("ScrollPanel", panel.resolveWidgetVar(), clientId).finish();
+        }
     }
 
     @Override
