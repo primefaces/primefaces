@@ -201,7 +201,7 @@
 						$('<div class="ui-scrollpanel-vbar" />').append(
 							$('<div class="ui-scrollpanel-cap ui-scrollpanel-captop" />'),
 							$('<div class="ui-scrollpanel-track ui-widget-header" />').append(
-								$('<div class="ui-scrollpanel-drag ui-state-default" />').append(
+								$('<div class="ui-scrollpanel-drag ui-state-highlight" />').append(
 									$('<div class="ui-scrollpanel-dragtop" />'),
 									$('<div class="ui-scrollpanel-dragbottom" />')
 								)
@@ -299,7 +299,7 @@
 						$('<div class="ui-scrollpanel-hbar" />').append(
 							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capleft" />'),
 							$('<div class="ui-scrollpanel-track ui-widget-header" />').append(
-								$('<div class="ui-scrollpanel-drag ui-state-default" />').append(
+								$('<div class="ui-scrollpanel-drag ui-state-highlight" />').append(
 									$('<div class="ui-scrollpanel-dragleft" />'),
 									$('<div class="ui-scrollpanel-dragright" />')
 								)
