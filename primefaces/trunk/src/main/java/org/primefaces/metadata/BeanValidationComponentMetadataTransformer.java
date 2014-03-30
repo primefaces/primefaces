@@ -46,7 +46,7 @@ public class BeanValidationComponentMetadataTransformer extends ComponentMetadat
         UIInput input = (UIInput) component;
         EditableValueHolder editableValueHolder = (EditableValueHolder) component;
        
-        if (editableValueHolder.isRequired() && getMaxlength(input) != Integer.MIN_VALUE) {
+        if (editableValueHolder.isRequired() && isMaxlenghtSet(input)) {
             return;
         }
  
@@ -62,7 +62,7 @@ public class BeanValidationComponentMetadataTransformer extends ComponentMetadat
         
         Annotation constraint = constraintDescriptor.getAnnotation();
         
-        if (getMaxlength(input) == Integer.MIN_VALUE) {
+        if (!isMaxlenghtSet(input)) {
             if (constraint.annotationType().equals(Max.class)) {
                 Max max = (Max) constraint;
                 if (max.value() > 0) {
