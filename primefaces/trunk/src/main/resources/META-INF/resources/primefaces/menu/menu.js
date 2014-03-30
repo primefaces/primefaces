@@ -445,6 +445,7 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         this.rootList = this.content.children('ul.ui-menu-list');
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
         this.backward = this.wrapper.children('div.ui-slidemenu-backward');
+        this.rendered = false;
                 
         //config
         this.stack = [];
