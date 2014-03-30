@@ -46,4 +46,8 @@ public abstract class ComponentMetadataTransformer {
         
         return Integer.MIN_VALUE;
     }
+    
+    protected boolean isMaxlenghtSet(UIInput input) {
+        return getMaxlength(input) != Integer.MIN_VALUE;
+    }
 }
