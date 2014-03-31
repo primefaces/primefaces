@@ -15,7 +15,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.active = true;
         this.cfg.pojo = this.hinput.length == 1;
         this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
-        this.cfg.delay = this.cfg.delay != undefined ? this.cfg.delay : 300;
         this.cfg.cache = this.cfg.cache||false;
 
         if(this.cfg.cache) {
@@ -238,10 +237,15 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         clearTimeout($this.timeout);
                     }
 
+                    var delay = $this.cfg.delay;
+
+                    if (value != '' && (key == keyCode.BACKSPACE || key == keyCode.DELETE)) {
+                        delay = $this.cfg.deletionDelay;
+                    }
+
                     $this.timeout = setTimeout(function() {
                         $this.search(value);
-                    },
-                    $this.cfg.delay);
+                    }, delay);
                 }
             }
 
