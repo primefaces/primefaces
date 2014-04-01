@@ -22,6 +22,11 @@ import java.util.Map;
 public class PieChartModel extends ChartModel implements Serializable {
 
     private Map<String,Number> data;
+    private Integer diameter;
+    private Integer sliceMargin;
+    private boolean fill = true;
+    private boolean showDataLabels = false;
+    private String dataFormat;
 
     public PieChartModel() {
         data = new LinkedHashMap<String, Number>();
@@ -45,5 +50,45 @@ public class PieChartModel extends ChartModel implements Serializable {
 
     public void clear() {
         this.data.clear();
+    }
+
+    public Integer getDiameter() {
+        return diameter;
+    }
+
+    public void setDiameter(Integer diameter) {
+        this.diameter = diameter;
+    }
+
+    public Integer getSliceMargin() {
+        return sliceMargin;
+    }
+
+    public void setSliceMargin(Integer sliceMargin) {
+        this.sliceMargin = sliceMargin;
+    }
+
+    public boolean isFill() {
+        return fill;
+    }
+
+    public void setFill(boolean fill) {
+        this.fill = fill;
+    }
+
+    public boolean isShowDataLabels() {
+        return showDataLabels;
+    }
+
+    public void setShowDataLabels(boolean showDataLabels) {
+        this.showDataLabels = showDataLabels;
+    }
+
+    public String getDataFormat() {
+        return dataFormat;
+    }
+
+    public void setDataFormat(String dataFormat) {
+        this.dataFormat = dataFormat;
     }
 }

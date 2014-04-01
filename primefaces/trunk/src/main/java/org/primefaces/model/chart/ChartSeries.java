@@ -24,13 +24,17 @@ public class ChartSeries implements Serializable {
     private String label;
 
     private Map<Object,Number> data = new LinkedHashMap<Object, Number>();
+    
+    private String xaxis;
+    
+    private String yaxis;
 
     public ChartSeries() {}
 
     public ChartSeries(String label) {
         this.label = label;
     }
-
+    
     public String getLabel() {
         return label;
     }
@@ -54,7 +58,24 @@ public class ChartSeries implements Serializable {
     public String getRenderer() {
         return null;
     }
+    
     public boolean isFill() {
         return false;
+    }
+
+    public String getXaxis() {
+        return xaxis;
+    }
+
+    public void setXaxis(String xaxis) {
+        this.xaxis = xaxis;
+    }
+
+    public String getYaxis() {
+        return yaxis;
+    }
+
+    public void setYaxis(String yaxis) {
+        this.yaxis = yaxis;
     }
 }

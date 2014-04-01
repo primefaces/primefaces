@@ -16,30 +16,40 @@
 package org.primefaces.model.chart;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class CartesianChartModel extends ChartModel implements Serializable {
-
-    private List<ChartSeries> series = new ArrayList<ChartSeries>();
+public class ChartAxis implements Serializable {
     
-    private Map<String,ChartAxis> axes = new HashMap<String, ChartAxis>();
+    private String label;
+    
+    private double min = java.lang.Double.MIN_VALUE;
+    
+    private double max = java.lang.Double.MAX_VALUE;
 
-    public List<ChartSeries> getSeries() {
-        return series;
+    public ChartAxis(String label) {
+        this.label = label;
     }
 
-    public void addSeries(ChartSeries chartSeries) {
-        this.series.add(chartSeries);
+    public String getLabel() {
+        return label;
     }
 
-    public void clear() {
-        this.series.clear();
+    public void setLabel(String label) {
+        this.label = label;
     }
 
-    public Map<String, ChartAxis> getAxes() {
-        return axes;
+    public double getMin() {
+        return min;
+    }
+
+    public void setMin(double min) {
+        this.min = min;
+    }
+
+    public double getMax() {
+        return max;
+    }
+
+    public void setMax(double max) {
+        this.max = max;
     }
 }
