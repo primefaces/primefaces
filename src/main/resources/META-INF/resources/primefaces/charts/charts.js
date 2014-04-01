@@ -21293,3 +21293,127 @@ PrimeFaces.widget.MeterGaugeChart = PrimeFaces.widget.Chart.extend({
     }
     
 });
+
+/**
+ * Configurators for specific chart types
+ */
+PrimeFaces.widget.ChartConfigurator = {
+    
+    pie: {
+        
+        configure: function(chart) {
+            chart.cfg.seriesDefaults = {
+                shadow : chart.cfg.shadow,
+                renderer: $.jqplot.PieRenderer,
+                rendererOptions: {
+                    fill: chart.cfg.fill,
+                    diameter : chart.cfg.diameter,
+                    sliceMargin : chart.cfg.sliceMargin,
+                    showDataLabels : chart.cfg.showDataLabels,
+                    dataLabels : chart.cfg.dataFormat||'percent'
+                }
+            };
+        }
+
+    }
+};
+
+/**
+ * PrimeFaces Chart Widget
+ */
+PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
+        
+    init: function(cfg) {
+        this._super(cfg);
+        this.jqpid = this.id.replace(/:/g,"\\:");
+        
+        this.configure();
+        
+        if(this.cfg.extender) {
+            this.cfg.extender.call(this);
+        }
+        
+        this.renderDeferred();
+    },
+    
+    refresh: function(cfg) {
+        if(this.plot) {
+            this.plot.destroy();
+        }
+        
+        this.init(cfg);
+    },
+    
+    _render: function() {
+        this.bindItemSelect();
+        this.plot = $.jqplot(this.jqpid, this.cfg.data, this.cfg);
+    },
+    
+    configure: function() {
+        //legend config
+        if(this.cfg.legendPosition) {
+            this.cfg.legend = {
+                renderer: $.jqplot.EnhancedLegendRenderer,
+                show: true,
+                location: this.cfg.legendPosition,
+                rendererOptions: {
+                    numberRows: this.cfg.legendRows||0,
+                    numberColumns: this.cfg.legendCols||0
+                }
+            };
+        }
+        
+        //zoom
+        if(this.cfg.zoom) {
+            this.cfg.cursor = {
+                show: true,
+                zoom: true,
+                showTooltip: false
+            };
+        }
+        else {
+            this.cfg.cursor = {
+                show: false
+            }
+        }
+        
+        //highlighter
+        if(this.cfg.datatip) {
+            this.cfg.highlighter = {
+                show: true,
+                formatString: this.cfg.datatipFormat
+            }
+        }
+        else {
+            this.cfg.highlighter = {
+                show: false
+            }
+        }
+        
+        PrimeFaces.widget.ChartConfigurator[this.cfg.type].configure(this);
+    },
+    
+    exportAsImage: function() {
+        return this.jq.jqplotToImageElem();
+    },
+    
+    bindItemSelect: function() {
+        var $this = this;
+        
+        $(this.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
+            if(neighbor && $this.cfg.behaviors) {
+                var itemSelectCallback = $this.cfg.behaviors['itemSelect'];
+                if(itemSelectCallback) {
+                    var ext = {
+                        params: [
+                            {name: 'itemIndex', value: neighbor.pointIndex}
+                            ,{name: 'seriesIndex', value: neighbor.seriesIndex}
+                        ]
+                    };
+                    
+                    itemSelectCallback.call($this, ext);
+                }
+            }
+        });
+    }
+});
