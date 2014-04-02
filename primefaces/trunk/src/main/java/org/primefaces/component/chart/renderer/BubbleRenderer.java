@@ -13,55 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.component.chart.bubble;
+package org.primefaces.component.chart.renderer;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.chart.BaseChartRenderer;
-import org.primefaces.component.chart.UIChart;
+import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.BubbleChartModel;
 import org.primefaces.model.chart.BubbleChartSeries;
 
-public class BubbleChartRenderer extends BaseChartRenderer {
+public class BubbleRenderer extends CartesianPlotRenderer {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        BubbleChart chart = (BubbleChart) component;
-
-        encodeMarkup(context, chart);
-        encodeScript(context, chart);
-    }
-
-    protected void encodeScript(FacesContext context, UIChart uichart) throws IOException{
+    protected void encodeData(FacesContext context, Chart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        BubbleChart chart = (BubbleChart) uichart;
-        String clientId = chart.getClientId(context);
-
-        startScript(writer, clientId);
-
-        writer.write("$(function(){");
-
-        writer.write("PrimeFaces.cw('BubbleChart','" + chart.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-
-        encodeData(context, chart);
-        
-        encodeOptions(context, chart);
-
-        encodeClientBehaviors(context, chart);
-
-        writer.write("},'charts');});");
-
-        endScript(writer);
-    }
-    
-    protected void encodeData(FacesContext context, BubbleChart chart) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        BubbleChartModel model = (BubbleChartModel) chart.getValue();
+        BubbleChartModel model = (BubbleChartModel) chart.getModel();
         List<BubbleChartSeries> data = model.getData();
 
         writer.write(",data:[[");
@@ -84,23 +52,26 @@ public class BubbleChartRenderer extends BaseChartRenderer {
         
         writer.write("]]");
     }
-
-    protected void encodeOptions(FacesContext context, BubbleChart chart) throws IOException {
+    
+    @Override
+    protected void encodeOptions(FacesContext context, Chart chart) throws IOException {
         super.encodeOptions(context, chart);
         
         ResponseWriter writer = context.getResponseWriter();
+        BubbleChartModel model = (BubbleChartModel) chart.getModel();
         
-        writer.write(",showLabels:" + chart.isShowLabels());
-        writer.write(",bubbleGradients:" + chart.isBubbleGradients());
-        writer.write(",bubbleAlpha:" + chart.getBubbleAlpha());
+        writer.write(",showLabels:" + model.isShowLabels());
+        writer.write(",bubbleGradients:" + model.isBubbleGradients());
+        writer.write(",bubbleAlpha:" + model.getBubbleAlpha());
         
-        if(chart.isZoom())
+        if(model.isZoom())
             writer.write(",zoom:true");
         
-        if(chart.isShowDatatip()) {
+        if(model.isShowDatatip()) {
             writer.write(",datatip:true");
-            if(chart.getDatatipFormat() != null)
-                writer.write(",datatipFormat:'" + chart.getDatatipFormat() + "'");
+            if(model.getDatatipFormat() != null)
+                writer.write(",datatipFormat:'" + model.getDatatipFormat() + "'");
         }
     }
+    
 }

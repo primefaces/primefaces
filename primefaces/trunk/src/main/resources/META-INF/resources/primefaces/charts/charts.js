@@ -21410,6 +21410,27 @@ PrimeFaces.widget.ChartConfigurator = {
             };
         }
         
+    },
+    
+    bubble: {
+        
+        configure: function(chart) {
+            chart.cfg.axesDefaults = {
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {enableFontSupport: !PrimeFaces.isIE(8)}
+            };
+            
+            chart.cfg.seriesDefaults = {
+                shadow : chart.cfg.shadow,
+                renderer: $.jqplot.BubbleRenderer,
+                rendererOptions: {
+                    showLabels: chart.cfg.showLabels,
+                    bubbleGradients: chart.cfg.bubbleGradients,
+                    bubbleAlpha: chart.cfg.bubbleAlpha
+                }
+            };
+        }
     }
 };
 
