@@ -22,8 +22,8 @@ import java.util.Map;
 public class PieChartModel extends ChartModel implements Serializable {
 
     private Map<String,Number> data;
-    private Integer diameter;
-    private Integer sliceMargin;
+    private int diameter;
+    private int sliceMargin;
     private boolean fill = true;
     private boolean showDataLabels = false;
     private String dataFormat;
@@ -52,19 +52,19 @@ public class PieChartModel extends ChartModel implements Serializable {
         this.data.clear();
     }
 
-    public Integer getDiameter() {
+    public int getDiameter() {
         return diameter;
     }
 
-    public void setDiameter(Integer diameter) {
+    public void setDiameter(int diameter) {
         this.diameter = diameter;
     }
 
-    public Integer getSliceMargin() {
+    public int getSliceMargin() {
         return sliceMargin;
     }
 
-    public void setSliceMargin(Integer sliceMargin) {
+    public void setSliceMargin(int sliceMargin) {
         this.sliceMargin = sliceMargin;
     }
 

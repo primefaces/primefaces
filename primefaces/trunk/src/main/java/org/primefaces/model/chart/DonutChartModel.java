@@ -23,6 +23,10 @@ import java.util.Map;
 public class DonutChartModel extends ChartModel implements Serializable {
 
     private List<Map<String,Number>> data;
+    private int sliceMargin;
+    private boolean fill = true;
+    private boolean showDataLabels = false;
+    private String dataFormat;
 
     public DonutChartModel() {
         data = new ArrayList<Map<String, Number>>();
@@ -46,5 +50,33 @@ public class DonutChartModel extends ChartModel implements Serializable {
 
     public void clear() {
         this.data.clear();
+    }
+
+    public int getSliceMargin() {
+        return sliceMargin;
+    }
+    public void setSliceMargin(int sliceMargin) {
+        this.sliceMargin = sliceMargin;
+    }
+
+    public boolean isFill() {
+        return fill;
+    }
+    public void setFill(boolean fill) {
+        this.fill = fill;
+    }
+
+    public boolean isShowDataLabels() {
+        return showDataLabels;
+    }
+    public void setShowDataLabels(boolean showDataLabels) {
+        this.showDataLabels = showDataLabels;
+    }
+
+    public String getDataFormat() {
+        return dataFormat;
+    }
+    public void setDataFormat(String dataFormat) {
+        this.dataFormat = dataFormat;
     }
 }

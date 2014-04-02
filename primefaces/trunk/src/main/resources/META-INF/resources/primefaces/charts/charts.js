@@ -21392,6 +21392,24 @@ PrimeFaces.widget.ChartConfigurator = {
                 }
             };
         }
+    },
+    
+    donut: {
+        
+        configure: function(chart) {
+            chart.cfg.seriesDefaults = {
+                shadow : chart.cfg.shadow,
+                renderer: $.jqplot.DonutRenderer,
+                rendererOptions: {
+                    fill: chart.cfg.fill,
+                    diameter : chart.cfg.diameter,
+                    sliceMargin : chart.cfg.sliceMargin,
+                    showDataLabels : chart.cfg.showDataLabels,
+                    dataLabels : chart.cfg.dataFormat||'percent'
+                }
+            };
+        }
+        
     }
 };
 
