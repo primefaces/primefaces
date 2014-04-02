@@ -21315,6 +21315,24 @@ PrimeFaces.widget.ChartConfigurator = {
             };
         }
 
+    },
+    
+    line: {
+        
+        configure: function(chart) {
+            chart.cfg.axesDefaults = {
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {enableFontSupport: !PrimeFaces.isIE(8)}
+            };
+            
+            chart.cfg.seriesDefaults = {
+                shadow: chart.cfg.shadow,
+                fill: chart.cfg.fill,
+                breakOnNull: chart.cfg.breakOnNull
+            };
+        }
+
     }
 };
 

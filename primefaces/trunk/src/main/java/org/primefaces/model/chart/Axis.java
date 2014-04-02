@@ -17,15 +17,18 @@ package org.primefaces.model.chart;
 
 import java.io.Serializable;
 
-public class ChartAxis implements Serializable {
+public class Axis implements Serializable {
     
-    private String label;
-    
+    private String label = "";
     private double min = java.lang.Double.MIN_VALUE;
-    
     private double max = java.lang.Double.MAX_VALUE;
+    private int tickAngle = 0;
 
-    public ChartAxis(String label) {
+    public Axis() {
+
+    }
+    
+    public Axis(String label) {
         this.label = label;
     }
 
@@ -51,5 +54,16 @@ public class ChartAxis implements Serializable {
 
     public void setMax(double max) {
         this.max = max;
+    }
+
+    public int getTickAngle() {
+        return tickAngle;
+    }
+    public void setTickAngle(int tickAngle) {
+        this.tickAngle = tickAngle;
+    }
+
+    public String getRenderer() {
+        return null;
     }
 }

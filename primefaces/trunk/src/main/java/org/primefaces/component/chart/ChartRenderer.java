@@ -22,18 +22,21 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.renderer.BasePlotRenderer;
+import org.primefaces.component.chart.renderer.LineRenderer;
 import org.primefaces.component.chart.renderer.PieRenderer;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class ChartRenderer extends CoreRenderer {
     
     private final static String TYPE_PIE = "pie";
+    private final static String TYPE_LINE = "line";
     
     final static Map<String,org.primefaces.component.chart.renderer.BasePlotRenderer> CHART_RENDERERS;
     
     static {
         CHART_RENDERERS = new HashMap<String, org.primefaces.component.chart.renderer.BasePlotRenderer>();
         CHART_RENDERERS.put(TYPE_PIE, new PieRenderer());
+        CHART_RENDERERS.put(TYPE_LINE, new LineRenderer());
     }
     
     @Override
