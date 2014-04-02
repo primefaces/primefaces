@@ -24,7 +24,7 @@ import java.util.Map;
 public class CartesianChartModel extends ChartModel implements Serializable {
 
     private List<ChartSeries> series;
-    private Map<AxisType,Axis> axes;
+    protected Map<AxisType,Axis> axes;
     private boolean stacked = false;
     private boolean breakOnNull = false;
     private boolean zoom = false;
@@ -35,6 +35,10 @@ public class CartesianChartModel extends ChartModel implements Serializable {
     
     public CartesianChartModel() {
         series = new ArrayList<ChartSeries>();
+        createAxes();
+    }
+    
+    protected void createAxes() {
         axes = new HashMap<AxisType, Axis>();
         axes.put(AxisType.X, new Axis());
         axes.put(AxisType.Y, new Axis());

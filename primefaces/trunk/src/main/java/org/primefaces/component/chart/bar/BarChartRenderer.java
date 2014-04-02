@@ -145,7 +145,8 @@ public class BarChartRenderer extends BaseChartRenderer {
                     writer.write("]");
 
                     i++;
-                } else {
+                } 
+                else {
                     writer.write(valueToRender);
                 }
 

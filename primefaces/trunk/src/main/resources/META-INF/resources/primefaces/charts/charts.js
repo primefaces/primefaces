@@ -21333,6 +21333,47 @@ PrimeFaces.widget.ChartConfigurator = {
             };
         }
 
+    },
+    
+    bar: {
+        
+        configure: function(chart) {
+            chart.cfg.axesDefaults = {
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {enableFontSupport: !PrimeFaces.isIE(8)}
+            };
+            
+            chart.cfg.seriesDefaults = {
+                shadow : chart.cfg.shadow,
+                renderer: $.jqplot.BarRenderer,
+                rendererOptions: {
+                    barDirection: chart.cfg.orientation,
+                    barPadding: chart.cfg.barPadding,
+                    barMargin: chart.cfg.barMargin,
+                    breakOnNull: chart.cfg.breakOnNull
+                },
+                fillToZero: true
+            };
+            
+            //transform
+            if(chart.cfg.orientation === 'horizontal') {
+                var data = chart.cfg.data,
+                ticks = [];
+                
+                for(var i = 0; i < data.length; i++) {
+                    var series = data[i];
+                    for(var j = 0; j < series.length; j++) {
+                        ticks[j] = series[j][0];
+                        series[j][0] = series[j][1];
+                        series[j][1] = j + 1;
+                    }
+                }
+                
+                chart.cfg.axes.yaxis.ticks = ticks;
+            }
+        }
+
     }
 };
 

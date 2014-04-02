@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.chart.renderer.BarRenderer;
 import org.primefaces.component.chart.renderer.BasePlotRenderer;
 import org.primefaces.component.chart.renderer.LineRenderer;
 import org.primefaces.component.chart.renderer.PieRenderer;
@@ -30,6 +31,7 @@ public class ChartRenderer extends CoreRenderer {
     
     private final static String TYPE_PIE = "pie";
     private final static String TYPE_LINE = "line";
+    private final static String TYPE_BAR = "bar";
     
     final static Map<String,org.primefaces.component.chart.renderer.BasePlotRenderer> CHART_RENDERERS;
     
@@ -37,6 +39,7 @@ public class ChartRenderer extends CoreRenderer {
         CHART_RENDERERS = new HashMap<String, org.primefaces.component.chart.renderer.BasePlotRenderer>();
         CHART_RENDERERS.put(TYPE_PIE, new PieRenderer());
         CHART_RENDERERS.put(TYPE_LINE, new LineRenderer());
+        CHART_RENDERERS.put(TYPE_BAR, new BarRenderer());
     }
     
     @Override
