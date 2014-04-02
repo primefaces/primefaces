@@ -20,6 +20,7 @@ import java.util.Iterator;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
+import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartSeries;
@@ -68,6 +69,8 @@ public class LineRenderer extends CartesianPlotRenderer {
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = (ChartSeries) it.next();
+            AxisType xAxis = series.getXaxis();
+            AxisType yAxis = series.getYaxis();
             String seriesRenderer = series.getRenderer();
             boolean fill = series.isFill();
             
@@ -80,13 +83,10 @@ public class LineRenderer extends CartesianPlotRenderer {
                 writer.write(",markerOptions:{show:" + lineChartSeries.isShowMarker()+ ", style:'" + lineChartSeries.getMarkerStyle() + "'}");
             }
             
-            if(seriesRenderer != null) {
-                writer.write(",renderer: $.jqplot." + seriesRenderer);
-            }
-            
-            if(fill) {
-                writer.write(",fill:true");
-            }
+            if(seriesRenderer != null) writer.write(",renderer: $.jqplot." + seriesRenderer);
+            if(fill) writer.write(",fill:true");
+            if(xAxis != null) writer.write(",xaxis:\"" + xAxis + "\"");
+            if(yAxis != null) writer.write(",yaxis:\"" + yAxis + "\"");
             
             writer.write("}");
 

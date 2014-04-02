@@ -25,9 +25,9 @@ public class ChartSeries implements Serializable {
 
     private Map<Object,Number> data = new LinkedHashMap<Object, Number>();
     
-    private String xaxis;
+    private AxisType xaxis;
     
-    private String yaxis;
+    private AxisType yaxis;
 
     public ChartSeries() {}
 
@@ -63,19 +63,17 @@ public class ChartSeries implements Serializable {
         return false;
     }
 
-    public String getXaxis() {
+    public AxisType getXaxis() {
         return xaxis;
     }
-
-    public void setXaxis(String xaxis) {
+    public void setXaxis(AxisType xaxis) {
         this.xaxis = xaxis;
     }
 
-    public String getYaxis() {
+    public AxisType getYaxis() {
         return yaxis;
     }
-
-    public void setYaxis(String yaxis) {
+    public void setYaxis(AxisType yaxis) {
         this.yaxis = yaxis;
     }
 }
