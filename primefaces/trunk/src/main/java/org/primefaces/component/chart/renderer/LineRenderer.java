@@ -43,7 +43,12 @@ public class LineRenderer extends CartesianPlotRenderer {
                 String yValueAsString = (yValue != null) ? yValue.toString() : "null";
 
                 writer.write("[");
-                writer.write(xValue + "," + yValueAsString);
+                
+                if(xValue instanceof String)
+                    writer.write("\"" + xValue + "\"," + yValueAsString);
+                else
+                    writer.write(xValue + "," + yValueAsString);
+                
                 writer.write("]");
 
                 if(x.hasNext()) {
