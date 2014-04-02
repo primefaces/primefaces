@@ -24,6 +24,13 @@ public class MeterGaugeChartModel extends ChartModel implements Serializable {
     private Number value;
     private List<Number> intervals;
     private List<Number> ticks;
+    private String gaugeLabel;
+    private String gaugeLabelPosition = "inside";
+    private double min = Double.MIN_VALUE;
+    private double max = Double.MAX_VALUE;
+    private boolean showTickLabels = true;
+    private int intervalOuterRadius = 85;
+    private int labelHeightAdjust = -25;
     
     public MeterGaugeChartModel() {
         intervals = new ArrayList<Number>();
@@ -67,4 +74,53 @@ public class MeterGaugeChartModel extends ChartModel implements Serializable {
         this.ticks = ticks;
     }
 
+    public String getGaugeLabel() {
+        return gaugeLabel;
+    }
+    public void setGaugeLabel(String gaugeLabel) {
+        this.gaugeLabel = gaugeLabel;
+    }
+
+    public String getGaugeLabelPosition() {
+        return gaugeLabelPosition;
+    }
+
+    public void setGaugeLabelPosition(String gaugeLabelPosition) {
+        this.gaugeLabelPosition = gaugeLabelPosition;
+    }
+
+    public double getMin() {
+        return min;
+    }
+    public void setMin(double min) {
+        this.min = min;
+    }
+
+    public double getMax() {
+        return max;
+    }
+    public void setMax(double max) {
+        this.max = max;
+    }
+
+    public boolean isShowTickLabels() {
+        return showTickLabels;
+    }
+    public void setShowTickLabels(boolean showTickLabels) {
+        this.showTickLabels = showTickLabels;
+    }
+
+    public int getIntervalOuterRadius() {
+        return intervalOuterRadius;
+    }
+    public void setIntervalOuterRadius(int intervalOuterRadius) {
+        this.intervalOuterRadius = intervalOuterRadius;
+    }
+
+    public int getLabelHeightAdjust() {
+        return labelHeightAdjust;
+    }
+    public void setLabelHeightAdjust(int labelHeightAdjust) {
+        this.labelHeightAdjust = labelHeightAdjust;
+    }
 }

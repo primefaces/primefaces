@@ -21431,6 +21431,27 @@ PrimeFaces.widget.ChartConfigurator = {
                 }
             };
         }
+    },
+    
+    metergauge: {
+        
+        configure: function(chart) {
+            chart.cfg.seriesDefaults = {
+                shadow : chart.cfg.shadow,
+                renderer: $.jqplot.MeterGaugeRenderer,
+                rendererOptions: {
+                    intervals: chart.cfg.intervals,
+                    intervalColors: chart.cfg.seriesColors,
+                    label: chart.cfg.gaugeLabel,
+                    showTickLabels: chart.cfg.showTickLabels,
+                    ticks: chart.cfg.ticks,
+                    labelHeightAdjust: chart.cfg.labelHeightAdjust,
+                    intervalOuterRadius: chart.cfg.intervalOuterRadius,
+                    min: chart.cfg.min,
+                    max: chart.cfg.max
+                }
+            }; 
+        }
     }
 };
 

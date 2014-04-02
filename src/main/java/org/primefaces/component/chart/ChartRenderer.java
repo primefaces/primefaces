@@ -28,6 +28,7 @@ import org.primefaces.component.chart.renderer.LineRenderer;
 import org.primefaces.component.chart.renderer.OhlcRenderer;
 import org.primefaces.component.chart.renderer.PieRenderer;
 import org.primefaces.component.chart.renderer.BubbleRenderer;
+import org.primefaces.component.chart.renderer.MeterGaugeRenderer;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class ChartRenderer extends CoreRenderer {
@@ -38,6 +39,7 @@ public class ChartRenderer extends CoreRenderer {
     private final static String TYPE_OHLC = "ohlc";
     private final static String TYPE_DONUT = "donut";
     private final static String TYPE_BUBBLE = "bubble";
+    private final static String TYPE_METERGAUGE = "metergauge";
     
     final static Map<String,org.primefaces.component.chart.renderer.BasePlotRenderer> CHART_RENDERERS;
     
@@ -49,6 +51,7 @@ public class ChartRenderer extends CoreRenderer {
         CHART_RENDERERS.put(TYPE_OHLC, new OhlcRenderer());
         CHART_RENDERERS.put(TYPE_DONUT, new DonutRenderer());
         CHART_RENDERERS.put(TYPE_BUBBLE, new BubbleRenderer());
+        CHART_RENDERERS.put(TYPE_METERGAUGE, new MeterGaugeRenderer());
     }
     
     @Override
