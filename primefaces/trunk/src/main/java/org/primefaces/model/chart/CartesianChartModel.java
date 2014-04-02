@@ -29,7 +29,7 @@ public class CartesianChartModel extends ChartModel implements Serializable {
     private boolean breakOnNull = false;
     private boolean zoom = false;
     private boolean animate = false;
-    private boolean showDatatip = false;
+    private boolean showDatatip = true;
     private String datatipFormat;
     private boolean fill = false;
     
