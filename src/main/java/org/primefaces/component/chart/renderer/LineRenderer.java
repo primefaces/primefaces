@@ -17,17 +17,14 @@ package org.primefaces.component.chart.renderer;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartSeries;
 
-public class LineRenderer extends BasePlotRenderer {
+public class LineRenderer extends CartesianPlotRenderer {
 
     @Override
     protected void encodeData(FacesContext context, Chart chart) throws IOException {
@@ -64,23 +61,9 @@ public class LineRenderer extends BasePlotRenderer {
     @Override
     protected void encodeOptions(FacesContext context, Chart chart) throws IOException {
         super.encodeOptions(context, chart);
-		
+        
         ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getModel();
-        Map<AxisType,Axis> axes = model.getAxes();
-        
-        writer.write(",axes:{");
-        for(Iterator<AxisType> it = axes.keySet().iterator(); it.hasNext();) {
-            AxisType axisType = it.next();
-            Axis axis = model.getAxes().get(axisType);
-            
-            encodeAxis(context, axisType, axis);
-            
-            if(it.hasNext()) {
-                writer.write(",");
-            }
-        }
-        writer.write("}");
         
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
@@ -126,25 +109,4 @@ public class LineRenderer extends BasePlotRenderer {
                 writer.write(",datatipFormat:'" + model.getDatatipFormat() + "'");
         }
     }
-
-    private void encodeAxis(FacesContext context, AxisType axisType, Axis axis) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String label = axis.getLabel();
-        double min = axis.getMin();
-        double max = axis.getMax();
-        String renderer = axis.getRenderer();
-        int tickAngle = axis.getTickAngle();
-        
-        writer.write(axisType.toString() + ": {");
-        
-        writer.write("label:'" + label + "'");
-        
-        if(min != Double.MIN_VALUE) writer.write(",min:" + min);
-        if(max != Double.MAX_VALUE) writer.write(",max:" + max);
-        if(renderer != null) writer.write(",renderer:$.jqplot." + renderer);
-        if(tickAngle != 0) writer.write(",tickOptions:{angle:" + tickAngle + "}");
-        
-        writer.write("}");
-    }
-    
 }
