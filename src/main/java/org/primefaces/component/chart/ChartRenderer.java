@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.renderer.BarRenderer;
 import org.primefaces.component.chart.renderer.BasePlotRenderer;
+import org.primefaces.component.chart.renderer.DonutRenderer;
 import org.primefaces.component.chart.renderer.LineRenderer;
 import org.primefaces.component.chart.renderer.OhlcRenderer;
 import org.primefaces.component.chart.renderer.PieRenderer;
@@ -34,6 +35,7 @@ public class ChartRenderer extends CoreRenderer {
     private final static String TYPE_LINE = "line";
     private final static String TYPE_BAR = "bar";
     private final static String TYPE_OHLC = "ohlc";
+    private final static String TYPE_DONUT = "donut";
     
     final static Map<String,org.primefaces.component.chart.renderer.BasePlotRenderer> CHART_RENDERERS;
     
@@ -43,6 +45,7 @@ public class ChartRenderer extends CoreRenderer {
         CHART_RENDERERS.put(TYPE_LINE, new LineRenderer());
         CHART_RENDERERS.put(TYPE_BAR, new BarRenderer());
         CHART_RENDERERS.put(TYPE_OHLC, new OhlcRenderer());
+        CHART_RENDERERS.put(TYPE_DONUT, new DonutRenderer());
     }
     
     @Override
