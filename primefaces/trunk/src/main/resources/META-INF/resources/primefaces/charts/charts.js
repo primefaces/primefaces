@@ -21552,5 +21552,9 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         });
+    },
+    
+    resetZoom: function() {
+        this.plot.resetZoom();
     }
 });
