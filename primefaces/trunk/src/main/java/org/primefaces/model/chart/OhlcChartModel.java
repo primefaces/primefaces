@@ -19,9 +19,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OhlcChartModel extends ChartModel implements Serializable {
+public class OhlcChartModel extends CartesianChartModel implements Serializable {
 
     private List<OhlcChartSeries> data;
+    
+    private boolean candleStick;
 
     public OhlcChartModel() {
         data = new ArrayList<OhlcChartSeries>();
@@ -51,4 +53,12 @@ public class OhlcChartModel extends ChartModel implements Serializable {
     public void clear() {
         this.data.clear();
     }
+
+    public boolean isCandleStick() {
+        return candleStick;
+    }
+    public void setCandleStick(boolean candleStick) {
+        this.candleStick = candleStick;
+    }
+
 }
