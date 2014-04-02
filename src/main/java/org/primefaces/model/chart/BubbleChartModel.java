@@ -19,9 +19,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BubbleChartModel extends ChartModel implements Serializable {
+public class BubbleChartModel extends CartesianChartModel implements Serializable {
 
     private List<BubbleChartSeries> data;
+    private boolean bubbleGradients = false;
+    private double bubbleAlpha = 1.0;
+    private boolean showLabels = true;
 
     public BubbleChartModel() {
         data = new ArrayList<BubbleChartSeries>();
@@ -50,5 +53,26 @@ public class BubbleChartModel extends ChartModel implements Serializable {
 
     public void clear() {
         this.data.clear();
+    }
+
+    public boolean isBubbleGradients() {
+        return bubbleGradients;
+    }
+    public void setBubbleGradients(boolean bubbleGradients) {
+        this.bubbleGradients = bubbleGradients;
+    }
+
+    public double getBubbleAlpha() {
+        return bubbleAlpha;
+    }
+    public void setBubbleAlpha(double bubbleAlpha) {
+        this.bubbleAlpha = bubbleAlpha;
+    }
+
+    public boolean isShowLabels() {
+        return showLabels;
+    }
+    public void setShowLabels(boolean showLabels) {
+        this.showLabels = showLabels;
     }
 }
