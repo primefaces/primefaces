@@ -27,7 +27,7 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.OhlcChartModel;
 import org.primefaces.model.chart.OhlcChartSeries;
 
-public class OhlcRenderer extends BasePlotRenderer {
+public class OhlcRenderer extends CartesianPlotRenderer {
 
     @Override
     protected void encodeData(FacesContext context, Chart chart) throws IOException {
@@ -64,21 +64,6 @@ public class OhlcRenderer extends BasePlotRenderer {
         
         ResponseWriter writer = context.getResponseWriter();
         OhlcChartModel model = (OhlcChartModel) chart.getModel();
-        Map<AxisType,Axis> axes = model.getAxes();
-        
-        //axes
-        writer.write(",axes:{");
-        for(Iterator<AxisType> it = axes.keySet().iterator(); it.hasNext();) {
-            AxisType axisType = it.next();
-            Axis axis = model.getAxes().get(axisType);
-            
-            encodeAxis(context, axisType, axis);
-            
-            if(it.hasNext()) {
-                writer.write(",");
-            }
-        }
-        writer.write("}");
         
         if(model.isCandleStick())
             writer.write(",candleStick:true");
@@ -94,28 +79,5 @@ public class OhlcRenderer extends BasePlotRenderer {
             if(model.getDatatipFormat() != null)
                 writer.write(",datatipFormat:'" + model.getDatatipFormat() + "'");
         }
-    }
-    
-    private void encodeAxis(FacesContext context, AxisType axisType, Axis axis) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String label = axis.getLabel();
-        double min = axis.getMin();
-        double max = axis.getMax();
-        String renderer = axis.getRenderer();
-        int tickAngle = axis.getTickAngle();
-        
-        writer.write(axisType.toString() + ": {");
-        
-        writer.write("label:'" + label + "'");
-        
-        if(min != Double.MIN_VALUE) writer.write(",min:" + min);
-        if(max != Double.MAX_VALUE) writer.write(",max:" + max);
-        if(renderer != null) writer.write(",renderer:$.jqplot." + renderer);
-        if(tickAngle != 0) writer.write(",tickOptions:{angle:" + tickAngle + "}");
-        
-        writer.write("}");
-    }
-    
-    
-    
+    }    
 }
