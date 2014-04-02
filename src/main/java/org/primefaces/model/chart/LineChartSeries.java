@@ -18,9 +18,8 @@ package org.primefaces.model.chart;
 public class LineChartSeries extends ChartSeries {
 
     private String markerStyle = "filledCircle";
-
     private boolean showLine = true;
-    
+    private boolean showMarker = true;
     private boolean fill = false;
 
     public LineChartSeries() {
@@ -45,12 +44,19 @@ public class LineChartSeries extends ChartSeries {
     public void setShowLine(boolean showLine) {
         this.showLine = showLine;
     }
+
+    public boolean isShowMarker() {
+        return showMarker;
+    }
+
+    public void setShowMarker(boolean showMarker) {
+        this.showMarker = showMarker;
+    }
     
     @Override
     public boolean isFill() {
         return fill;
     }
-
     public void setFill(boolean fill) {
         this.fill = fill;
     }
