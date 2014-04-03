@@ -26,7 +26,7 @@ public class BarChartModel extends CartesianChartModel {
     public void createAxes() {
         axes = new HashMap<AxisType, Axis>();
         axes.put(AxisType.X, new CategoryAxis());
-        axes.put(AxisType.Y, new Axis());
+        axes.put(AxisType.Y, new LinearAxis());
     }
 
     public String getOrientation() {
