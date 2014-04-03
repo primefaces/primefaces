@@ -57,6 +57,8 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
         String renderer = axis.getRenderer();
         int tickAngle = axis.getTickAngle();
         String tickFormat = axis.getTickFormat();
+        Object tickInterval = axis.getTickInterval();
+        int tickCount = axis.getTickCount();
         
         writer.write(axisType.toString() + ": {");        
         writer.write("label:'" + label + "'");
@@ -86,6 +88,9 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
         }
         writer.write("}");
         
+        if(tickInterval != null) writer.write(",tickInterval:\"" + tickInterval + "\"");
+        if(tickCount != 0) writer.write(",numberTicks:" + tickCount);
+                
         writer.write("}");
     }
 }
