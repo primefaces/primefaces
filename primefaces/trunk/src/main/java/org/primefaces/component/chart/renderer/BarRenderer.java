@@ -17,12 +17,9 @@ package org.primefaces.component.chart.renderer;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
@@ -74,16 +71,13 @@ public class BarRenderer extends CartesianPlotRenderer {
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = (ChartSeries) it.next();
             String seriesRenderer = series.getRenderer();
-            boolean fill = series.isFill();
 
             writer.write("{");
             writer.write("label:'" + series.getLabel() + "'");
             if(seriesRenderer != null) {
                 writer.write(",renderer: $.jqplot." + seriesRenderer);
             }
-            if(fill) {
-                writer.write(",fill:true");
-            }
+
             writer.write("}");
 
             if(it.hasNext()) {
@@ -98,7 +92,8 @@ public class BarRenderer extends CartesianPlotRenderer {
         if(model.isStacked()) writer.write(",stackSeries:true");       
         if(model.isBreakOnNull()) writer.write(",breakOnNull:true");
         if(model.isZoom()) writer.write(",zoom:true");        
-        if(model.isAnimate()) writer.write(",animate:true");        
+        if(model.isAnimate()) writer.write(",animate:true");  
+        if(model.isShowPointLabels()) writer.write(",showPointLabels:true");
         if(model.isShowDatatip()) {
             writer.write(",datatip:true");
             if(model.getDatatipFormat() != null)

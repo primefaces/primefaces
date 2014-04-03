@@ -77,7 +77,6 @@ public class LineRenderer extends CartesianPlotRenderer {
             AxisType xAxis = series.getXaxis();
             AxisType yAxis = series.getYaxis();
             String seriesRenderer = series.getRenderer();
-            boolean fill = series.isFill();
             
             writer.write("{");
             writer.write("label:'" + series.getLabel() + "'");
@@ -89,7 +88,6 @@ public class LineRenderer extends CartesianPlotRenderer {
             }
             
             if(seriesRenderer != null) writer.write(",renderer: $.jqplot." + seriesRenderer);
-            if(fill) writer.write(",fill:true");
             if(xAxis != null) writer.write(",xaxis:\"" + xAxis + "\"");
             if(yAxis != null) writer.write(",yaxis:\"" + yAxis + "\"");
             
@@ -107,6 +105,7 @@ public class LineRenderer extends CartesianPlotRenderer {
         if(model.isBreakOnNull()) writer.write(",breakOnNull:true");
         if(model.isZoom()) writer.write(",zoom:true");
         if(model.isAnimate()) writer.write(",animate:true");
+        if(model.isShowPointLabels()) writer.write(",showPointLabels:true");
         
         if(model.isShowDatatip()) {
             writer.write(",datatip:true");

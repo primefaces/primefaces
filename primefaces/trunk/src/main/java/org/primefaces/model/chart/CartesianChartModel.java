@@ -32,6 +32,7 @@ public class CartesianChartModel extends ChartModel implements Serializable {
     private boolean showDatatip = true;
     private String datatipFormat;
     private boolean fill = false;
+    private boolean showPointLabels = false;
     
     public CartesianChartModel() {
         series = new ArrayList<ChartSeries>();
@@ -111,5 +112,12 @@ public class CartesianChartModel extends ChartModel implements Serializable {
     }
     public void setFill(boolean fill) {
         this.fill = fill;
+    }
+
+    public boolean isShowPointLabels() {
+        return showPointLabels;
+    }
+    public void setShowPointLabels(boolean showPointLabels) {
+        this.showPointLabels = showPointLabels;
     }
 }
