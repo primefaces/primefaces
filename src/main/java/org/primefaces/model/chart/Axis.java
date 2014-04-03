@@ -20,9 +20,10 @@ import java.io.Serializable;
 public class Axis implements Serializable {
     
     private String label = "";
-    private double min = java.lang.Double.MIN_VALUE;
-    private double max = java.lang.Double.MAX_VALUE;
+    private Object min;
+    private Object max;
     private int tickAngle = 0;
+    private String tickFormat;
 
     public Axis() {
 
@@ -40,19 +41,19 @@ public class Axis implements Serializable {
         this.label = label;
     }
 
-    public double getMin() {
+    public Object getMin() {
         return min;
     }
 
-    public void setMin(double min) {
+    public void setMin(Object min) {
         this.min = min;
     }
 
-    public double getMax() {
+    public Object getMax() {
         return max;
     }
 
-    public void setMax(double max) {
+    public void setMax(Object max) {
         this.max = max;
     }
 
@@ -63,6 +64,13 @@ public class Axis implements Serializable {
         this.tickAngle = tickAngle;
     }
 
+    public String getTickFormat() {
+        return tickFormat;
+    }
+    public void setTickFormat(String tickFormat) {
+        this.tickFormat = tickFormat;
+    }
+    
     public String getRenderer() {
         return null;
     }
