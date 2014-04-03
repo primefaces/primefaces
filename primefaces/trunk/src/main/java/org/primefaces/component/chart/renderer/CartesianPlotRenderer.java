@@ -52,18 +52,39 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
     protected void encodeAxis(FacesContext context, AxisType axisType, Axis axis) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = axis.getLabel();
-        double min = axis.getMin();
-        double max = axis.getMax();
+        Object min = axis.getMin();
+        Object max = axis.getMax();
         String renderer = axis.getRenderer();
         int tickAngle = axis.getTickAngle();
+        String tickFormat = axis.getTickFormat();
         
         writer.write(axisType.toString() + ": {");        
         writer.write("label:'" + label + "'");
         
-        if(min != Double.MIN_VALUE) writer.write(",min:" + min);
-        if(max != Double.MAX_VALUE) writer.write(",max:" + max);
-        if(renderer != null) writer.write(",renderer:$.jqplot." + renderer);
-        if(tickAngle != 0) writer.write(",tickOptions:{angle:" + tickAngle + "}");
+        if(min != null) {
+            if(min instanceof String)
+                writer.write(",min:\"" + min + "\"");
+            else
+                writer.write(",min:" + min);
+        }
+        
+        if(max != null) {
+            if(max instanceof String)
+                writer.write(",max:\"" + max + "\"");
+            else
+                writer.write(",max:" + max);
+        }
+        
+        if(renderer != null) {
+            writer.write(",renderer:$.jqplot." + renderer);
+        }
+        
+        writer.write(",tickOptions:{");
+        writer.write("angle:\"" + tickAngle+ "\"");
+        if(tickFormat != null) {
+            writer.write(",formatString:\"" + tickFormat + "\"");
+        }
+        writer.write("}");
         
         writer.write("}");
     }
