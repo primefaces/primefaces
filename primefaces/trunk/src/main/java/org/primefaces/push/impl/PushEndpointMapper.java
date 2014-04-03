@@ -24,7 +24,6 @@ import org.atmosphere.util.IOUtils;
 import org.primefaces.push.DefaultPushRule;
 import org.primefaces.push.PrimeAtmosphereHandler;
 import org.primefaces.push.PushRule;
-import org.primefaces.push.PushServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +42,7 @@ public class PushEndpointMapper<U> extends DefaultEndpointMapper<U> {
 
     @Override
     public void configure(AtmosphereConfig config) {
-        servletPath = IOUtils.guestServletPath(config.framework(), PushServlet.class, getClass());
+        servletPath = IOUtils.guestServletPath(config);
         config.framework().getAtmosphereConfig().properties().put("servletPath", servletPath);
         this.config = config;
     }
