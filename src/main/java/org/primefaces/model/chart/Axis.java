@@ -22,8 +22,10 @@ public class Axis implements Serializable {
     private String label = "";
     private Object min;
     private Object max;
-    private int tickAngle = 0;
+    private int tickAngle;
     private String tickFormat;
+    private String tickInterval;
+    private int tickCount;
 
     public Axis() {
 
@@ -69,6 +71,21 @@ public class Axis implements Serializable {
     }
     public void setTickFormat(String tickFormat) {
         this.tickFormat = tickFormat;
+    }
+
+    public String getTickInterval() {
+        return tickInterval;
+    }
+    public void setTickInterval(String tickInterval) {
+        this.tickInterval = tickInterval;
+    }
+
+    public int getTickCount() {
+        return tickCount;
+    }
+
+    public void setTickCount(int tickCount) {
+        this.tickCount = tickCount;
     }
     
     public String getRenderer() {
