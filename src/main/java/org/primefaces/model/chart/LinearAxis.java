@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 jagatai.
+ * Copyright 2009-2013 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,19 +15,15 @@
  */
 package org.primefaces.model.chart;
 
-import java.util.HashMap;
-
-public class HorizontalBarChartModel extends BarChartModel {
+public class LinearAxis extends Axis {
+ 
+    public LinearAxis() {}
     
-    @Override
-    public void createAxes() {
-        axes = new HashMap<AxisType, Axis>();
-        axes.put(AxisType.X, new LinearAxis());
-        axes.put(AxisType.Y, new CategoryAxis());
+    public LinearAxis(String label) {
+        super(label);
     }
     
-    @Override
-    public String getOrientation() {
-        return "horizontal";
+    public String getRenderer() {
+        return "LinearAxisRenderer";
     }
 }

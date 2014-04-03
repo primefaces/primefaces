@@ -17,7 +17,7 @@ package org.primefaces.model.chart;
 
 import java.io.Serializable;
 
-public class Axis implements Serializable {
+public abstract class Axis implements Serializable {
     
     private String label = "";
     private Object min;

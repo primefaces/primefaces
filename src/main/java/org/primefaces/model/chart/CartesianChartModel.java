@@ -41,8 +41,8 @@ public class CartesianChartModel extends ChartModel implements Serializable {
     
     protected void createAxes() {
         axes = new HashMap<AxisType, Axis>();
-        axes.put(AxisType.X, new Axis());
-        axes.put(AxisType.Y, new Axis());
+        axes.put(AxisType.X, new LinearAxis());
+        axes.put(AxisType.Y, new LinearAxis());
     }
     
     public List<ChartSeries> getSeries() {

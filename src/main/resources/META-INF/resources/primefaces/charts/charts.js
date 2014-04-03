@@ -22433,7 +22433,7 @@ PrimeFaces.widget.ChartConfigurator = {
                 fill: chart.cfg.fill,
                 breakOnNull: chart.cfg.breakOnNull,
                 pointLabels: {
-                    show: chart.cfg.showPointLabels
+                    show: chart.cfg.showPointLabels ? true: false
                 }
             };
         }
@@ -22460,7 +22460,7 @@ PrimeFaces.widget.ChartConfigurator = {
                 },
                 fillToZero: true,
                 pointLabels: {
-                    show: chart.cfg.showPointLabels
+                    show: chart.cfg.showPointLabels ? true: false
                 }
             };
             
