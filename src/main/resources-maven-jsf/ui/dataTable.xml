@@ -292,8 +292,9 @@
         <attribute>
 			<name>frozenRows</name>
 			<required>false</required>
-			<type>java.util.Collection</type>
-            <description>Collection to display as fixed in scrollable mode.</description>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Number of rows to freeze starting from the beginning.</description>
 		</attribute>
         <attribute>
             <name>dir</name>

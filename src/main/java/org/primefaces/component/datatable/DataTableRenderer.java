@@ -755,7 +755,12 @@ public class DataTableRenderer extends DataRenderer {
 		int first = table.getFirst();
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? table.getScrollRows() : rowCount) : rows;
+        int frozenRows = table.getFrozenRows();
         boolean hasData = rowCount > 0;
+        
+        if(first == 0 && frozenRows > 0) {
+            first += frozenRows;
+        }
               
         if(!dataOnly) {
             writer.startElement("tbody", null);
@@ -830,23 +835,20 @@ public class DataTableRenderer extends DataRenderer {
     }
         
     protected void encodeFrozenRows(FacesContext context, DataTable table) throws IOException {
-        Collection<?> frozenRows = table.getFrozenRows();
-        if(frozenRows == null || frozenRows.isEmpty()) {
+        int frozenRows = table.getFrozenRows();
+        if(frozenRows == 0 ) {
             return;
         }
         
         ResponseWriter writer = context.getResponseWriter();
         String clientId = table.getClientId(context);
-        String var = table.getVar();
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         
         writer.startElement("tbody", null);
         writer.writeAttribute("class", DataTable.DATA_CLASS, null);
         
-        int index = 0;
-        for(Iterator<? extends Object> it = frozenRows.iterator(); it.hasNext();) {
-            requestMap.put(var, it.next());            
-            encodeRow(context, table, clientId, index, 0, table.getColumnsCount());
+        for (int i = 0; i < frozenRows; i++) {
+            table.setRowIndex(i);
+            encodeRow(context, table, clientId, i, 0, table.getColumnsCount());
         }
 
         writer.endElement("tbody");
