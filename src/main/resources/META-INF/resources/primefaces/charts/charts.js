@@ -22430,7 +22430,6 @@ PrimeFaces.widget.ChartConfigurator = {
             
             chart.cfg.seriesDefaults = {
                 shadow: chart.cfg.shadow,
-                fill: chart.cfg.fill,
                 breakOnNull: chart.cfg.breakOnNull,
                 pointLabels: {
                     show: chart.cfg.showPointLabels ? true: false
