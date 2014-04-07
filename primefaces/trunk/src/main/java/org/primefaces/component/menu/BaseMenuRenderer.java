@@ -114,7 +114,9 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     protected abstract void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException;
     
     protected String getLinkStyleClass(MenuItem menuItem) {
-        return AbstractMenu.MENUITEM_LINK_CLASS;
+        String styleClass = menuItem.getStyleClass();
+        
+        return (styleClass == null) ? AbstractMenu.MENUITEM_LINK_CLASS: AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
@@ -126,6 +128,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 		}
         else {
             boolean disabled = menuitem.isDisabled();
+            String style = menuitem.getStyle();
             
             writer.startElement("a", null);
             writer.writeAttribute("tabindex", "-1", null);
@@ -143,8 +146,8 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             
             writer.writeAttribute("class", styleClass, null);
             
-            if(menuitem.getStyle() != null) {
-                writer.writeAttribute("style", menuitem.getStyle(), null);
+            if(style != null) {
+                writer.writeAttribute("style", style, null);
             }
                   
             if(disabled) {
