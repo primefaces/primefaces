@@ -73,11 +73,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     getThead: function() {
-        return this.thead||$(this.jqId + '_head');
+        return $(this.jqId + '_head');
     },
     
     getTbody: function() {
-        return this.tbody||$(this.jqId + '_data');
+        return $(this.jqId + '_data');
     },
         
     updateData: function(data) {
@@ -2490,11 +2490,11 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
     
     getThead: function() {
-        return this.thead||$(this.jqId + '_frozenThead,' + this.jqId + '_scrollableThead');
+        return $(this.jqId + '_frozenThead,' + this.jqId + '_scrollableThead');
     },
     
     getTbody: function() {
-        return this.tbody||$(this.jqId + '_frozenTbody,' + this.jqId + '_scrollableTbody');
+        return $(this.jqId + '_frozenTbody,' + this.jqId + '_scrollableTbody');
     },
     
     bindRowHover: function() {
