@@ -83,6 +83,7 @@ public class LineRenderer extends CartesianPlotRenderer {
 
             if(series instanceof LineChartSeries) {
                 LineChartSeries  lineChartSeries = (LineChartSeries) series;
+                writer.write(",fill:" + lineChartSeries.isFill());
                 writer.write(",showLine:" + lineChartSeries.isShowLine());
                 writer.write(",markerOptions:{show:" + lineChartSeries.isShowMarker()+ ", style:'" + lineChartSeries.getMarkerStyle() + "'}");
             }
@@ -100,7 +101,6 @@ public class LineRenderer extends CartesianPlotRenderer {
 
         writer.write("]");
         
-        if(model.isFill()) writer.write(",fill:true");
         if(model.isStacked()) writer.write(",stackSeries:true");
         if(model.isBreakOnNull()) writer.write(",breakOnNull:true");
         if(model.isZoom()) writer.write(",zoom:true");
