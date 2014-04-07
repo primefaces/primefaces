@@ -60,6 +60,8 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean immediate;
     private String delay;
     private boolean disableClientWindow;
+    private String containerStyle;
+    private String containerStyleClass;
     
     public DefaultMenuItem() {}
     
@@ -371,6 +373,22 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.disableClientWindow = disableClientWindow;
     }
 
+    public String getContainerStyle() {
+        return containerStyle;
+    }
+
+    public void setContainerStyle(String containerStyle) {
+        this.containerStyle = containerStyle;
+    }
+
+    public String getContainerStyleClass() {
+        return containerStyleClass;
+    }
+
+    public void setContainerStyleClass(String containerStyleClass) {
+        this.containerStyleClass = containerStyleClass;
+    }
+    
     public String getClientId() {
         return this.id;
     }

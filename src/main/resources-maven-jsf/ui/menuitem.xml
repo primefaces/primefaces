@@ -191,5 +191,17 @@
             <defaultValue>false</defaultValue>
             <description>Disable appending the <code>ClientWindow</code> on the rendering of this element.</description>
 		</attribute>
+        <attribute>
+			<name>containerStyle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the menuitem container.</description>
+		</attribute>
+		<attribute>
+			<name>containerStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>StyleClass of the menuitem container.</description>
+		</attribute>
 	</attributes>
 </component>
