@@ -97,10 +97,18 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         for(MenuElement element : elements) {
             if(element.isRendered()) {
                 if(element instanceof MenuItem) {
+                    MenuItem menuItem = (MenuItem) element;
+                    String containerStyle = menuItem.getContainerStyle();
+                    String containerStyleClass = menuItem.getContainerStyleClass();
+                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS: Menu.MENUITEM_CLASS + " " + containerStyleClass; 
+                    
                     writer.startElement("li", null);
-                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                    writer.writeAttribute("class", containerStyleClass, null);
                     writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, menu, (MenuItem) element);
+                    if(containerStyle != null) {
+                        writer.writeAttribute("style", containerStyle, null);
+                    }
+                    encodeMenuItem(context, menu, menuItem);
                     writer.endElement("li");
                 }
                 else if(element instanceof Submenu) {

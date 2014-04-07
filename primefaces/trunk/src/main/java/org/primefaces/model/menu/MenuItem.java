@@ -63,4 +63,8 @@ public interface MenuItem extends MenuElement {
     public boolean isImmediate();
     
     public String getClientId();
+    
+    public String getContainerStyle();
+    
+    public String getContainerStyleClass();
 }

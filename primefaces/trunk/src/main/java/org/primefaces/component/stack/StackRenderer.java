@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
+import org.primefaces.component.menu.Menu;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.WidgetBuilder;
@@ -63,8 +64,15 @@ public class StackRenderer extends BaseMenuRenderer {
 		
             for(MenuElement element : elements) {
                 if(element.isRendered() && element instanceof MenuItem) {
+                    MenuItem menuItem = (MenuItem) element;
+                    String containerStyle = menuItem.getContainerStyle();
+                    String containerStyleClass = menuItem.getContainerStyleClass();
+ 
                     writer.startElement("li", null);
-                    encodeMenuItem(context, stack, (MenuItem) element);
+                    if(containerStyle != null) writer.writeAttribute("style", containerStyle, null);
+                    if(containerStyleClass != null) writer.writeAttribute("class", containerStyleClass, null);
+                    
+                    encodeMenuItem(context, stack, menuItem);
                     writer.endElement("li");
                 }
             }
