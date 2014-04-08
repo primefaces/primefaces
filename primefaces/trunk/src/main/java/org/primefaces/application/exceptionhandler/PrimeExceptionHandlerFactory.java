@@ -21,16 +21,14 @@ import javax.faces.context.ExceptionHandlerFactory;
 public class PrimeExceptionHandlerFactory extends ExceptionHandlerFactory {
 
 	private final ExceptionHandlerFactory wrapped;
-    private final PrimeExceptionHandler handler;
 
 	public PrimeExceptionHandlerFactory(final ExceptionHandlerFactory wrapped) {
 		this.wrapped = wrapped;
-        this.handler = new PrimeExceptionHandler(wrapped.getExceptionHandler());
 	}
 
 	@Override
 	public ExceptionHandler getExceptionHandler() {
-		return handler;
+		return new PrimeExceptionHandler(wrapped.getExceptionHandler());
 	}
 
 	@Override
