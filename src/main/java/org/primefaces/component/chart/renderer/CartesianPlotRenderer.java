@@ -34,6 +34,11 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
         ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getModel();
         Map<AxisType,Axis> axes = model.getAxes();
+        boolean stackSeries = model.isStacked();
+        
+        if(stackSeries) {
+            writer.write(",stackSeries:true");
+        }
         
         writer.write(",axes:{");
         for(Iterator<AxisType> it = axes.keySet().iterator(); it.hasNext();) {

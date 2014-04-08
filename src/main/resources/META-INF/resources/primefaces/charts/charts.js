@@ -22399,166 +22399,191 @@ PrimeFaces.widget.MeterGaugeChart = PrimeFaces.widget.Chart.extend({
 /**
  * Configurators for specific chart types
  */
-PrimeFaces.widget.ChartConfigurator = {
+PrimeFaces.widget.ChartUtils = {
     
-    pie: {
-        
-        configure: function(chart) {
-            chart.cfg.seriesDefaults = {
-                shadow : chart.cfg.shadow,
-                renderer: $.jqplot.PieRenderer,
-                rendererOptions: {
-                    fill: chart.cfg.fill,
-                    diameter : chart.cfg.diameter,
-                    sliceMargin : chart.cfg.sliceMargin,
-                    showDataLabels : chart.cfg.showDataLabels,
-                    dataLabels : chart.cfg.dataFormat||'percent'
-                }
-            };
-        }
+    CONFIGURATORS: {
+    
+        pie: {
 
-    },
-    
-    line: {
-        
-        configure: function(chart) {
-            chart.cfg.axesDefaults = {
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {enableFontSupport: !PrimeFaces.isIE(8)}
-            };
-            
-            chart.cfg.seriesDefaults = {
-                shadow: chart.cfg.shadow,
-                breakOnNull: chart.cfg.breakOnNull,
-                pointLabels: {
-                    show: chart.cfg.showPointLabels ? true: false
-                }
-            };
-        }
-
-    },
-    
-    bar: {
-        
-        configure: function(chart) {
-            chart.cfg.axesDefaults = {
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {enableFontSupport: !PrimeFaces.isIE(8)}
-            };
-            
-            chart.cfg.seriesDefaults = {
-                shadow : chart.cfg.shadow,
-                renderer: $.jqplot.BarRenderer,
-                rendererOptions: {
-                    barDirection: chart.cfg.orientation,
-                    barPadding: chart.cfg.barPadding,
-                    barMargin: chart.cfg.barMargin,
-                    breakOnNull: chart.cfg.breakOnNull
-                },
-                fillToZero: true,
-                pointLabels: {
-                    show: chart.cfg.showPointLabels ? true: false
-                }
-            };
-            
-            //transform
-            if(chart.cfg.orientation === 'horizontal') {
-                var data = chart.cfg.data,
-                ticks = [];
-                
-                for(var i = 0; i < data.length; i++) {
-                    var series = data[i];
-                    for(var j = 0; j < series.length; j++) {
-                        ticks[j] = series[j][0];
-                        series[j][0] = series[j][1];
-                        series[j][1] = j + 1;
+            configure: function(chart) {
+                chart.cfg.seriesDefaults = {
+                    shadow : chart.cfg.shadow,
+                    renderer: $.jqplot.PieRenderer,
+                    rendererOptions: {
+                        fill: chart.cfg.fill,
+                        diameter : chart.cfg.diameter,
+                        sliceMargin : chart.cfg.sliceMargin,
+                        showDataLabels : chart.cfg.showDataLabels,
+                        dataLabels : chart.cfg.dataFormat||'percent'
                     }
-                }
+                };
+            }
+
+        },
+
+        line: {
+
+            configure: function(chart) {
+                chart.cfg.axesDefaults = {
+                    labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                    tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                    tickOptions: {enableFontSupport: !PrimeFaces.isIE(8)}
+                };
+
+                chart.cfg.seriesDefaults = {
+                    shadow: chart.cfg.shadow,
+                    breakOnNull: chart.cfg.breakOnNull,
+                    pointLabels: {
+                        show: chart.cfg.showPointLabels ? true: false
+                    }
+                };
                 
-                chart.cfg.axes.yaxis.ticks = ticks;
+                if(chart.cfg.stackSeries) {
+                    PrimeFaces.widget.ChartUtils.transformStackedData(chart);
+                }
+            }
+
+        },
+
+        bar: {
+
+            configure: function(chart) {
+                chart.cfg.axesDefaults = {
+                    labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                    tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                    tickOptions: {enableFontSupport: !PrimeFaces.isIE(8)}
+                };
+
+                chart.cfg.seriesDefaults = {
+                    shadow : chart.cfg.shadow,
+                    renderer: $.jqplot.BarRenderer,
+                    rendererOptions: {
+                        barDirection: chart.cfg.orientation,
+                        barPadding: chart.cfg.barPadding,
+                        barMargin: chart.cfg.barMargin,
+                        breakOnNull: chart.cfg.breakOnNull
+                    },
+                    fillToZero: true,
+                    pointLabels: {
+                        show: chart.cfg.showPointLabels ? true: false
+                    }
+                };
+
+                if(chart.cfg.orientation === 'horizontal') {
+                    PrimeFaces.widget.ChartUtils.transformHorizontalData(chart);
+                }
+            }
+
+        },
+
+        ohlc: {
+            configure: function(chart) {
+                chart.cfg.axesDefaults = {
+                    labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                    tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                    tickOptions: {enableFontSupport: !PrimeFaces.isIE(8)}
+                };
+
+                chart.cfg.seriesDefaults = {
+                    shadow : chart.cfg.shadow,
+                    renderer: $.jqplot.OHLCRenderer,
+                    rendererOptions: {
+                        candleStick: chart.cfg.candleStick
+                    }
+                };
+            }
+        },
+
+        donut: {
+
+            configure: function(chart) {
+                chart.cfg.seriesDefaults = {
+                    shadow : chart.cfg.shadow,
+                    renderer: $.jqplot.DonutRenderer,
+                    rendererOptions: {
+                        fill: chart.cfg.fill,
+                        diameter : chart.cfg.diameter,
+                        sliceMargin : chart.cfg.sliceMargin,
+                        showDataLabels : chart.cfg.showDataLabels,
+                        dataLabels : chart.cfg.dataFormat||'percent'
+                    }
+                };
+            }
+
+        },
+
+        bubble: {
+
+            configure: function(chart) {
+                chart.cfg.axesDefaults = {
+                    labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                    tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                    tickOptions: {enableFontSupport: !PrimeFaces.isIE(8)}
+                };
+
+                chart.cfg.seriesDefaults = {
+                    shadow : chart.cfg.shadow,
+                    renderer: $.jqplot.BubbleRenderer,
+                    rendererOptions: {
+                        showLabels: chart.cfg.showLabels,
+                        bubbleGradients: chart.cfg.bubbleGradients,
+                        bubbleAlpha: chart.cfg.bubbleAlpha
+                    }
+                };
+            }
+        },
+
+        metergauge: {
+
+            configure: function(chart) {
+                chart.cfg.seriesDefaults = {
+                    shadow : chart.cfg.shadow,
+                    renderer: $.jqplot.MeterGaugeRenderer,
+                    rendererOptions: {
+                        intervals: chart.cfg.intervals,
+                        intervalColors: chart.cfg.seriesColors,
+                        label: chart.cfg.gaugeLabel,
+                        showTickLabels: chart.cfg.showTickLabels,
+                        ticks: chart.cfg.ticks,
+                        labelHeightAdjust: chart.cfg.labelHeightAdjust,
+                        intervalOuterRadius: chart.cfg.intervalOuterRadius,
+                        min: chart.cfg.min,
+                        max: chart.cfg.max
+                    }
+                }; 
+            }
+        }
+    },
+    
+    transformHorizontalData: function(chart) {
+        var data = chart.cfg.data,
+        ticks = [];
+
+        for(var i = 0; i < data.length; i++) {
+            var series = data[i];
+            for(var j = 0; j < series.length; j++) {
+                ticks[j] = series[j][0];
+                series[j][0] = series[j][1];
+                series[j][1] = j + 1;
             }
         }
 
+        chart.cfg.axes.yaxis.ticks = ticks;
     },
     
-    ohlc: {
-        configure: function(chart) {
-            chart.cfg.axesDefaults = {
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {enableFontSupport: !PrimeFaces.isIE(8)}
-            };
+    transformStackedData: function(chart) {
+        var data = chart.cfg.data,
+        ticks = [];
 
-            chart.cfg.seriesDefaults = {
-                shadow : chart.cfg.shadow,
-                renderer: $.jqplot.OHLCRenderer,
-                rendererOptions: {
-                    candleStick: chart.cfg.candleStick
-                }
-            };
-        }
-    },
-    
-    donut: {
-        
-        configure: function(chart) {
-            chart.cfg.seriesDefaults = {
-                shadow : chart.cfg.shadow,
-                renderer: $.jqplot.DonutRenderer,
-                rendererOptions: {
-                    fill: chart.cfg.fill,
-                    diameter : chart.cfg.diameter,
-                    sliceMargin : chart.cfg.sliceMargin,
-                    showDataLabels : chart.cfg.showDataLabels,
-                    dataLabels : chart.cfg.dataFormat||'percent'
-                }
-            };
+        for(var i = 0; i < data.length; i++) {
+            var series = data[i];
+            for(var j = 0; j < series.length; j++) {
+                ticks[j] = series[j][0];
+                series[j] = series[j][1];
+            }
         }
         
-    },
-    
-    bubble: {
-        
-        configure: function(chart) {
-            chart.cfg.axesDefaults = {
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {enableFontSupport: !PrimeFaces.isIE(8)}
-            };
-            
-            chart.cfg.seriesDefaults = {
-                shadow : chart.cfg.shadow,
-                renderer: $.jqplot.BubbleRenderer,
-                rendererOptions: {
-                    showLabels: chart.cfg.showLabels,
-                    bubbleGradients: chart.cfg.bubbleGradients,
-                    bubbleAlpha: chart.cfg.bubbleAlpha
-                }
-            };
-        }
-    },
-    
-    metergauge: {
-        
-        configure: function(chart) {
-            chart.cfg.seriesDefaults = {
-                shadow : chart.cfg.shadow,
-                renderer: $.jqplot.MeterGaugeRenderer,
-                rendererOptions: {
-                    intervals: chart.cfg.intervals,
-                    intervalColors: chart.cfg.seriesColors,
-                    label: chart.cfg.gaugeLabel,
-                    showTickLabels: chart.cfg.showTickLabels,
-                    ticks: chart.cfg.ticks,
-                    labelHeightAdjust: chart.cfg.labelHeightAdjust,
-                    intervalOuterRadius: chart.cfg.intervalOuterRadius,
-                    min: chart.cfg.min,
-                    max: chart.cfg.max
-                }
-            }; 
-        }
+        chart.cfg.axes.xaxis.ticks = ticks;
     }
 };
 
@@ -22634,7 +22659,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
         
-        PrimeFaces.widget.ChartConfigurator[this.cfg.type].configure(this);
+        PrimeFaces.widget.ChartUtils.CONFIGURATORS[this.cfg.type].configure(this);
     },
     
     exportAsImage: function() {
