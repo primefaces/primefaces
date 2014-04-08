@@ -22414,7 +22414,8 @@ PrimeFaces.widget.ChartUtils = {
                         diameter : chart.cfg.diameter,
                         sliceMargin : chart.cfg.sliceMargin,
                         showDataLabels : chart.cfg.showDataLabels,
-                        dataLabels : chart.cfg.dataFormat||'percent'
+                        dataLabels : chart.cfg.dataFormat||'percent',
+                        highlightMouseOver: chart.cfg.highlightMouseOver
                     }
                 };
             }
@@ -22435,6 +22436,9 @@ PrimeFaces.widget.ChartUtils = {
                     breakOnNull: chart.cfg.breakOnNull,
                     pointLabels: {
                         show: chart.cfg.showPointLabels ? true: false
+                    },
+                    rendererOptions: {
+                        highlightMouseOver: chart.cfg.highlightMouseOver
                     }
                 };
                 
@@ -22461,7 +22465,8 @@ PrimeFaces.widget.ChartUtils = {
                         barDirection: chart.cfg.orientation,
                         barPadding: chart.cfg.barPadding,
                         barMargin: chart.cfg.barMargin,
-                        breakOnNull: chart.cfg.breakOnNull
+                        breakOnNull: chart.cfg.breakOnNull,
+                        highlightMouseOver: chart.cfg.highlightMouseOver
                     },
                     fillToZero: true,
                     pointLabels: {
@@ -22488,7 +22493,8 @@ PrimeFaces.widget.ChartUtils = {
                     shadow : chart.cfg.shadow,
                     renderer: $.jqplot.OHLCRenderer,
                     rendererOptions: {
-                        candleStick: chart.cfg.candleStick
+                        candleStick: chart.cfg.candleStick,
+                        highlightMouseOver: chart.cfg.highlightMouseOver
                     }
                 };
             }
@@ -22505,7 +22511,8 @@ PrimeFaces.widget.ChartUtils = {
                         diameter : chart.cfg.diameter,
                         sliceMargin : chart.cfg.sliceMargin,
                         showDataLabels : chart.cfg.showDataLabels,
-                        dataLabels : chart.cfg.dataFormat||'percent'
+                        dataLabels : chart.cfg.dataFormat||'percent',
+                        highlightMouseOver: chart.cfg.highlightMouseOver
                     }
                 };
             }
@@ -22527,7 +22534,8 @@ PrimeFaces.widget.ChartUtils = {
                     rendererOptions: {
                         showLabels: chart.cfg.showLabels,
                         bubbleGradients: chart.cfg.bubbleGradients,
-                        bubbleAlpha: chart.cfg.bubbleAlpha
+                        bubbleAlpha: chart.cfg.bubbleAlpha,
+                        highlightMouseOver: chart.cfg.highlightMouseOver
                     }
                 };
             }

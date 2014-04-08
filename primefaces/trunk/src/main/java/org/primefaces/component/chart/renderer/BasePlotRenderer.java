@@ -57,6 +57,9 @@ public abstract class BasePlotRenderer {
                 writer.write(",legendRows:" + model.getLegendRows());
         }
         
+        if(!model.isMouseoverHighlight())
+            writer.write(",highlightMouseOver:" + false);
+        
         if(extender != null)
             writer.write(",extender:" + extender);
         
