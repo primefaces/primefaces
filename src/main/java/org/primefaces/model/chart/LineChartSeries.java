@@ -21,6 +21,7 @@ public class LineChartSeries extends ChartSeries {
     private boolean showLine = true;
     private boolean showMarker = true;
     private boolean fill = false;
+    private double fillAlpha = 1;
 
     public LineChartSeries() {
     }
@@ -60,7 +61,15 @@ public class LineChartSeries extends ChartSeries {
     public void setFill(boolean fill) {
         this.fill = fill;
     }
-    
+
+    public double getFillAlpha() {
+        return fillAlpha;
+    }
+
+    public void setFillAlpha(double fillAlpha) {
+        this.fillAlpha = fillAlpha;
+    }
+
     @Override
     public String getRenderer() {
         return "LineRenderer";
