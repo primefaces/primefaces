@@ -83,6 +83,12 @@ public class LineRenderer extends CartesianPlotRenderer {
 
             if(series instanceof LineChartSeries) {
                 LineChartSeries  lineChartSeries = (LineChartSeries) series;
+                boolean fill = lineChartSeries.isFill();
+                if(fill) {
+                    writer.write(",fill:true");
+                    writer.write(",fillAlpha:" + lineChartSeries.getFillAlpha());
+                }
+                
                 writer.write(",fill:" + lineChartSeries.isFill());
                 writer.write(",showLine:" + lineChartSeries.isShowLine());
                 writer.write(",markerOptions:{show:" + lineChartSeries.isShowMarker()+ ", style:'" + lineChartSeries.getMarkerStyle() + "'}");
