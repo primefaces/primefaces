@@ -172,7 +172,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //current page report
-        var startRecord = (this.cfg.page * this.cfg.rows) + 1,
+        var startRecord = (this.cfg.rowCount === 0) ? 0 : (this.cfg.page * this.cfg.rows) + 1,
         endRecord = (this.cfg.page * this.cfg.rows) + this.cfg.rows;
         if(endRecord > this.cfg.rowCount) {
             endRecord = this.cfg.rowCount;
