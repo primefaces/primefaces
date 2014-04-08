@@ -23,6 +23,7 @@ public class ChartModel {
     private String legendPosition;
     private int legendCols;
     private int legendRows;
+    private boolean mouseoverHighlight = true;
     private String extender;
 
     public String getTitle() {
@@ -73,6 +74,14 @@ public class ChartModel {
         this.legendRows = legendRows;
     }
 
+    public boolean isMouseoverHighlight() {
+        return mouseoverHighlight;
+    }
+
+    public void setMouseoverHighlight(boolean mouseoverHighlight) {
+        this.mouseoverHighlight = mouseoverHighlight;
+    }
+    
     public String getExtender() {
         return extender;
     }
