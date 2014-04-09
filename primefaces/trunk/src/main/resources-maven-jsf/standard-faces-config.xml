@@ -36,6 +36,11 @@
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
             <source-class>org.primefaces.component.columns.Columns</source-class>
         </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.mobile.event.system.CalendarResourceListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <source-class>org.primefaces.component.calendar.Calendar</source-class>
+        </system-event-listener>
     </application>
     
     <behavior>

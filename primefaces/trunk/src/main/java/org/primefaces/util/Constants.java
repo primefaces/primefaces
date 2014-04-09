@@ -75,4 +75,8 @@ public class Constants {
     public final static String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";
     
     public final static String DEFAULT_CACHE_REGION = "primefaces.DEFAULT_CACHE_REGION";
+    
+    public final static String MOBILE_RENDER_KIT_ID = "PRIMEFACES_MOBILE";
+    
+    
 }
