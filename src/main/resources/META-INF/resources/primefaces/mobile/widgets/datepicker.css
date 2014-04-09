@@ -1,0 +1,19 @@
+div.hasDatepicker{ display: block; padding: 0; overflow: visible;  margin: 8px 0; max-width:340px }
+.ui-datepicker {  overflow: visible; margin: 0;  }
+.ui-datepicker .ui-datepicker-header { position:relative; padding:.6em 0; border-bottom: 0; font-weight: bold; }
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { padding: 1px 0 1px 2px; position:absolute; top: .6em; margin-top: 0; text-indent: -9999px; }
+
+.ui-datepicker .ui-datepicker-prev { left:9px; }
+.ui-datepicker .ui-datepicker-next { right:2px; }
+.ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; }
+.ui-datepicker .ui-datepicker-title select { font-size:1em; margin:1px 0; }
+.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
+.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-year { width: 49%;}
+.ui-datepicker table {width: 100%; border-collapse: collapse; margin:0; }
+.ui-datepicker td { border-width: 1px; padding: 0; text-align: center; min-width: 41px; }
+.ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em 0; font-weight: bold; margin: 0; border-width: 0; text-align: center; text-decoration: none; }
+
+.ui-datepicker-calendar th { padding-top: .4em; padding-bottom: .4em; }
+.ui-datepicker-calendar th span, .ui-datepicker-calendar span.ui-state-default { opacity: .7; }
+.ui-datepicker-calendar td a, .ui-datepicker-calendar td span { padding: .6em .5em; }
