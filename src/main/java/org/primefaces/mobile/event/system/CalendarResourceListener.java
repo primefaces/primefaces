@@ -34,8 +34,8 @@ public class CalendarResourceListener implements SystemEventListener {
         String renderKitId = view.getRenderKitId();
         
         if(renderKitId.equals(Constants.MOBILE_RENDER_KIT_ID)) {
-            view.addComponentResource(context, createResource(context, "mobile/widgets/datepicker.css", "primefaces", "javax.faces.resource.Stylesheet"));
-            view.addComponentResource(context, createResource(context, "mobile/widgets/datepicker.js", "primefaces", "javax.faces.resource.Script"));
+            view.addComponentResource(context, createResource(context, "mobile/widgets/datepicker.css", Constants.LIBRARY, "javax.faces.resource.Stylesheet"));
+            view.addComponentResource(context, createResource(context, "mobile/widgets/datepicker.js", Constants.LIBRARY, "javax.faces.resource.Script"));
         }
     }
 
