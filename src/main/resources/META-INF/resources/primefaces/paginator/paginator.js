@@ -295,7 +295,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         var height = 0;
         
         for(var i = 0; i < this.jq.length; i++) {
-            height += this.jq.eq(i).innerHeight();
+            height += this.jq.eq(i).outerHeight();
         }
         
         return height;
