@@ -516,6 +516,8 @@ PrimeFaces.ajax = {
                         break;
 
                     case "changes":
+                        var activeElementId = $(document.activeElement).attr('id');
+                        
                         for (var j = 0; j < currentNode.childNodes.length; j++) {
                             var currentChangeNode = currentNode.childNodes[j];
                             switch (currentChangeNode.nodeName) {
@@ -540,7 +542,7 @@ PrimeFaces.ajax = {
                             }
                         }
 
-                        PrimeFaces.ajax.Response.handleReFocus();
+                        PrimeFaces.ajax.Response.handleReFocus(activeElementId);
                         PrimeFaces.ajax.Response.destroyDetachedWidgets();
                         break;
 
@@ -559,9 +561,7 @@ PrimeFaces.ajax = {
             }
         },
 
-        handleReFocus : function() {
-            var activeElementId = $(document.activeElement).attr('id');
-
+        handleReFocus : function(activeElementId) {
             // re-focus element
             if (PrimeFaces.customFocus === false
                     && activeElementId
