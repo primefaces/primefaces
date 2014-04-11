@@ -112,6 +112,12 @@
             <type>java.lang.String</type>
             <description>Appends the overlay to the element defined by search expression. Defaults to document body.</description>
         </attribute>
+        <attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Position of the element in the tabbing order.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

@@ -63,6 +63,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("style", style, "style");
         }
         
+        encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
         encodeLabel(context, menu, selectItems, valid);
         encodeMenuIcon(context, menu, valid);
@@ -201,5 +202,24 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     @Override
     protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
         return selectMany.getClientId(context);
+    }
+    
+    protected void encodeKeyboardTarget(FacesContext context, SelectCheckboxMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String inputId = menu.getClientId(context) + "_focus";
+        String tabindex = menu.getTabindex();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.startElement("input", menu);
+        writer.writeAttribute("id", inputId, null);
+        writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("readonly", "readonly", null);
+        if(tabindex != null) {
+            writer.writeAttribute("tabindex", tabindex, null);
+        }
+        writer.endElement("input");
+        writer.endElement("div");
     }
 }
