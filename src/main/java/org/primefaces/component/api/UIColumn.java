@@ -90,4 +90,6 @@ public interface UIColumn {
     public boolean isToggleable();
     
     public MethodExpression getFilterFunction();
+    
+    public String getField();
 }

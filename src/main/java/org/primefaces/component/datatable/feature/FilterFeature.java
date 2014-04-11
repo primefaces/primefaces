@@ -221,11 +221,19 @@ public class FilterFeature implements DataTableFeature {
                 
                 if(column.isDynamic()) {
                     ((DynamicColumn) column).applyStatelessModel();
-                    Object filterByProperty = column.getSortBy();
-                    filterField = (filterByProperty == null) ? table.resolveDynamicField(filterByVE) : filterByProperty.toString();
+                    Object filterByProperty = column.getFilterBy();
+                    String field = column.getField();
+                    if(field == null)
+                        filterField = (filterByProperty == null) ? table.resolveDynamicField(filterByVE) : filterByProperty.toString();
+                    else
+                        filterField = field;
                 }
                 else {
-                    filterField = (filterByVE == null) ? (String) column.getFilterBy(): table.resolveStaticField(filterByVE);
+                    String field = column.getField();
+                    if(field == null)
+                        filterField = (filterByVE == null) ? (String) column.getFilterBy(): table.resolveStaticField(filterByVE);
+                    else
+                        filterField = field;
                 }
 
                 filterParameterMap.put(filterField, filterValue);

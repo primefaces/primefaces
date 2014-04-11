@@ -453,10 +453,18 @@ import org.primefaces.util.SharedStringBuilder;
             if(column.isDynamic()) {
                 ((DynamicColumn) sortColumn).applyStatelessModel();
                 Object sortByProperty = sortColumn.getSortBy();
-                sortField = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
+                String field = column.getField();
+                if(field == null)
+                    sortField = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
+                else
+                    sortField = field;
             }
             else {
-                sortField = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
+                String field = column.getField();
+                if(field == null)
+                    sortField = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
+                else
+                    sortField = field;
             }
         }
         

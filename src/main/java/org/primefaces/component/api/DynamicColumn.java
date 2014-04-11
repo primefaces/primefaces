@@ -186,4 +186,8 @@ public class DynamicColumn implements UIColumn {
     public MethodExpression getFilterFunction() {
         return this.columns.getFilterFunction();
     }
+
+    public String getField() {
+        return this.columns.getField();
+    }
 }

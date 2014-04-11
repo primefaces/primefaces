@@ -170,5 +170,11 @@
 			<method-signature>java.lang.Boolean filter(java.lang.Object, java.lang.Object, java.util.Locale locale)</method-signature>
             <description>Custom implementation to filter a value against a constraint.</description>
 		</attribute>
+        <attribute>
+			<name>field</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the field to pass lazy load method for filtering and sorting. If not specified, filterBy-sortBy values are used to identify the field name.</description>
+		</attribute>
 	</attributes>
 </component>
