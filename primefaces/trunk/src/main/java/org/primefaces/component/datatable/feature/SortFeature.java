@@ -64,10 +64,18 @@ public class SortFeature implements DataTableFeature {
                 if(sortColumn.isDynamic()) {
                     ((DynamicColumn) sortColumn).applyStatelessModel();
                     Object sortByProperty = sortColumn.getSortBy();
-                    sortField = (sortByProperty == null) ? table.resolveDynamicField(columnSortByVE) : sortByProperty.toString();
+                    String field = sortColumn.getField();
+                    if(field == null)
+                        sortField = (sortByProperty == null) ? table.resolveDynamicField(columnSortByVE) : sortByProperty.toString();
+                    else
+                        sortField = field;
                 }
                 else {
-                    sortField = (columnSortByVE == null) ? (String) sortColumn.getSortBy() : table.resolveStaticField(columnSortByVE);
+                    String field = sortColumn.getField();
+                    if(field == null)
+                        sortField = (columnSortByVE == null) ? (String) sortColumn.getSortBy() : table.resolveStaticField(columnSortByVE);
+                    else
+                        sortField = field;
                 }
                 
                 multiSortMeta.add(new SortMeta(sortColumn, sortField, SortOrder.valueOf(convertSortOrderParam(sortOrders[i])), sortColumn.getSortFunction()));
