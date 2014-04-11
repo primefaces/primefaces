@@ -293,9 +293,11 @@ public class FilterFeature implements DataTableFeature {
                     else if(column instanceof DynamicColumn) {
                         DynamicColumn dynamicColumn = (DynamicColumn) column;
                         dynamicColumn.applyStatelessModel();
+                        filterByProperty = column.getFilterBy();
                         filterByVE = (filterByProperty == null) ? columnFilterByVE : createFilterByVE(context, var, filterByProperty);
                         filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
-                    }  
+                        dynamicColumn.cleanStatelessModel();
+                    }
                     
                     if(filterFacet == null)
                         filterValue = params.get(filterId);

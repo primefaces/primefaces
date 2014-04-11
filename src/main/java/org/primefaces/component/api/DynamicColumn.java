@@ -46,6 +46,10 @@ public class DynamicColumn implements UIColumn {
     public void applyStatelessModel() {
         this.columns.setRowModel(index);
     }
+    
+    public void cleanStatelessModel() {
+        this.columns.setRowModel(-1);
+    }
 
     public ValueExpression getValueExpression(String property) {
         return this.columns.getValueExpression(property);
