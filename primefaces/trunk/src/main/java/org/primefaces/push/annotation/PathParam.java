@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
  * Use this annotation with the {@link org.primefaces.push.annotation.PushEndpoint} annotation. Annotate a field which will get appropriate value when
  * the service is instantiated for given path. The syntax of the path is the following
  * /whatever/{varX}/.../whatever/.../{varY}/...
- * The @PathVariable annotation may be given a name, otherwise verbatim name of field is used
+ * The PathParam annotation may be given a name, otherwise verbatim name of field is used
  * The number of slashes in the matched and matching paths shall be equal, otherwise the result is undefined.
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface PathParam {
     /**
-	 * The URI template variable to bind to.
-	 */
-	String value() default "";
+     * The URI template variable to bind to.
+     */
+    String value() default "";
 }
