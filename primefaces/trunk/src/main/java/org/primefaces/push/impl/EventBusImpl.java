@@ -25,7 +25,6 @@ public class EventBusImpl implements EventBus {
     public EventBusImpl() {
     }
 
-    // TODO: Add caching support here.
     //@Override
     public EventBus publish(Object o) {
         MetaBroadcaster.getDefault().broadcastTo("/*", o);

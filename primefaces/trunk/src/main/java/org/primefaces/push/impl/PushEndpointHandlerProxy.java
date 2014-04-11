@@ -32,7 +32,6 @@ import org.atmosphere.handler.AbstractReflectorAtmosphereHandler;
 import org.atmosphere.handler.AnnotatedProxy;
 import org.atmosphere.util.IOUtils;
 import org.primefaces.push.EventBus;
-import org.primefaces.push.EventBusFactory;
 import org.primefaces.push.RemoteEndpoint;
 import org.primefaces.push.Status;
 import org.primefaces.push.annotation.OnClose;
@@ -135,7 +134,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
         this.onOpenMethod = populate(c, OnOpen.class);
         this.onResumeMethod = populate(c, OnClose.class);
         this.config = config;
-        this.eventBus = EventBusFactory.getDefault().eventBus();
+        this.eventBus = (EventBus) config.properties().get("evenBus");
         this.pathParams = pathParams(c);
 
         if (onMessageMethods.size() > 0) {

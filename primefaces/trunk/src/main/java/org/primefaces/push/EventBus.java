@@ -18,10 +18,10 @@ package org.primefaces.push;
 
 /**
  * A distributed lightweight event bus which can encompass multiple PushEndpoint instances. The event bus implements publish / subscribe and point to point messaging.
- * Messages sent over the event bus can be of any type. For publish / subscribe, messages can be published to a Java class annotated with the {@link PushEndpoint#value}
+ * Messages sent over the event bus can be of any type. For publish / subscribe, messages can be published to a Java class annotated with the {@link org.primefaces.push.annotation.PushEndpoint#value}
  * using one of the method annotated with {@link org.atmosphere.handler.OnMessage}.
  * <p/>
- * {@link PushEndpoint} are registered against a path, defined using the {@link PushEndpoint#value}. There can be multiple PushEndpoint registered against each path,
+ * {@link org.primefaces.push.annotation.PushEndpoint} are registered against a path, defined using the {@link org.primefaces.push.annotation.PushEndpoint#value}. There can be multiple PushEndpoint registered against each path,
  * and a particular PushEndpoint can be registered against multiple paths. The event bus will route a sent message to all PushEndpoint which are registered against that path.
  * When sending a message, a {@link Reply} can be provided. If so, it will be called when the reply from the receiver has been completed.
  * Instances of EventBus are thread-safe.
