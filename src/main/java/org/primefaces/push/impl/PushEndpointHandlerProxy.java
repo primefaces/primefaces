@@ -71,7 +71,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     private EventBus eventBus;
     private boolean injectEventBus = false;
     private boolean injectEndpoint = false;
-    private boolean pathParams = false;
+    private boolean pathParams;
 
     final Map<Method, List<Encoder<?, ?>>> encoders = new HashMap<Method, List<Encoder<?, ?>>>();
     final Map<Method, List<Decoder<?, ?>>> decoders = new HashMap<Method, List<Decoder<?, ?>>>();
@@ -223,6 +223,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
         if (event.isCancelled() || event.isClosedByClient()) {
             remoteEndpoint.status().status(event.isCancelled() ? Status.STATUS.UNEXPECTED_CLOSE : Status.STATUS.CLOSED_BY_CLIENT);
             request.removeAttribute(RemoteEndpointImpl.class.getName());
+            trackedUUID.remove(r.uuid());
 
             invokeOpenOrClose(onCloseMethod, remoteEndpoint);
         } else if (event.isResumedOnTimeout() || event.isResuming()) {
