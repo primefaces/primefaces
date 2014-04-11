@@ -45,7 +45,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +59,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler implements AnnotatedProxy{
 
     private Logger logger = LoggerFactory.getLogger(PushEndpointHandlerProxy.class);
-    private final static List<Decoder<?, ?>> EMPTY = Collections.<Decoder<?, ?>>emptyList();
     private Object proxiedInstance;
     private List<Method> onMessageMethods;
     private Method onCloseMethod;
@@ -79,14 +77,22 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     private final Set<String> trackedUUID = Collections.synchronizedSet(new HashSet<String>());
 
 
+    // Duplicate message because of Atmosphere 2.2.x API Changes from 2.1.x
     private final BroadcastFilter onMessageFilter = new BroadcastFilter() {
         //@Override
         public BroadcastAction filter(Object originalMessage, Object message) {
             return invoke(null, originalMessage, message);
+
+        }
+
+        public BroadcastAction filter(String broadccasterId, Object originalMessage, Object message) {
+            return filter(originalMessage, message);
         }
     };
 
+    // Duplicate message because of Atmosphere 2.2.x API Changes from 2.1.x
     private final BroadcastFilter onPerMessageFilter = new PerRequestBroadcastFilter() {
+
         //@Override
         public BroadcastAction filter(Object originalMessage, Object message) {
             return invoke(null, originalMessage, message);
@@ -96,6 +102,16 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
         public BroadcastAction filter(AtmosphereResource r, Object originalMessage, Object message) {
             RemoteEndpointImpl rm = (RemoteEndpointImpl) r.getRequest().getAttribute(RemoteEndpointImpl.class.getName());
             return invoke(rm, originalMessage, message);
+        }
+
+        //@Override
+        public BroadcastAction filter(String broadccasterId, Object originalMessage, Object message) {
+            return filter(originalMessage, message);
+        }
+
+        //@Override
+        public BroadcastAction filter(String broadccasterId, AtmosphereResource r, Object originalMessage, Object message) {
+            return filter(r, originalMessage, message);
         }
     };
 
@@ -206,7 +222,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
         Boolean resumeOnBroadcast = r.resumeOnBroadcast();
         if (!resumeOnBroadcast) {
             // For legacy reason, check the attribute as well
-            Object o = r.getRequest(false).getAttribute(ApplicationConfig.RESUME_ON_BROADCAST);
+            Object o = request.getAttribute(ApplicationConfig.RESUME_ON_BROADCAST);
             if (o != null && Boolean.class.isAssignableFrom(o.getClass())) {
                 resumeOnBroadcast = Boolean.class.cast(o);
             }
@@ -310,20 +326,6 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
             }
             decoders.put(m, l);
         }
-    }
-
-    private Object invoke(Method m, Object o) {
-        if (m != null) {
-            try {
-                return m.invoke(proxiedInstance, o == null ? new Object[]{} : new Object[]{o});
-            } catch (IllegalAccessException e) {
-                logger.debug("", e);
-            } catch (InvocationTargetException e) {
-                logger.debug("", e);
-            }
-        }
-        logger.trace("No Method Mapped for {}", o);
-        return null;
     }
 
     private Object message(RemoteEndpoint resource, Object o) {
