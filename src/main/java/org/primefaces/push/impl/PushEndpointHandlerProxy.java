@@ -30,20 +30,21 @@ import org.atmosphere.cpr.BroadcastFilter;
 import org.atmosphere.cpr.PerRequestBroadcastFilter;
 import org.atmosphere.handler.AbstractReflectorAtmosphereHandler;
 import org.atmosphere.handler.AnnotatedProxy;
-import org.atmosphere.interceptor.AllowInterceptor;
 import org.atmosphere.util.IOUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+import org.primefaces.push.RemoteEndpoint;
+import org.primefaces.push.Status;
 import org.primefaces.push.annotation.OnClose;
 import org.primefaces.push.annotation.OnMessage;
 import org.primefaces.push.annotation.OnOpen;
-import org.primefaces.push.RemoteEndpoint;
-import org.primefaces.push.Status;
+import org.primefaces.push.annotation.PathParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -55,9 +56,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
 
-public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler implements AnnotatedProxy {
+public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler implements AnnotatedProxy{
 
     private Logger logger = LoggerFactory.getLogger(PushEndpointHandlerProxy.class);
     private final static List<Decoder<?, ?>> EMPTY = Collections.<Decoder<?, ?>>emptyList();
@@ -71,6 +71,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     private EventBus eventBus;
     private boolean injectEventBus = false;
     private boolean injectEndpoint = false;
+    private boolean pathParams = false;
 
     final Map<Method, List<Encoder<?, ?>>> encoders = new HashMap<Method, List<Encoder<?, ?>>>();
     final Map<Method, List<Decoder<?, ?>>> decoders = new HashMap<Method, List<Decoder<?, ?>>>();
@@ -110,7 +111,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     public PushEndpointHandlerProxy() {
     }
 
-    public PushEndpointHandlerProxy configure(AtmosphereConfig config, Object c) {
+    public AnnotatedProxy configure(AtmosphereConfig config, Object c) {
         this.proxiedInstance = c;
         this.onMessageMethods = populateMessage(c, OnMessage.class);
         this.onCloseMethod = populate(c, OnClose.class);
@@ -119,6 +120,7 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
         this.onResumeMethod = populate(c, OnClose.class);
         this.config = config;
         this.eventBus = EventBusFactory.getDefault().eventBus();
+        this.pathParams = pathParams(c);
 
         if (onMessageMethods.size() > 0) {
             populateEncoders();
@@ -235,6 +237,19 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
         if (resumeOnBroadcast && r.isSuspended()) {
             r.resume();
         }
+    }
+
+    public boolean pathParams(){
+        return pathParams;
+    }
+
+    protected boolean pathParams(Object o){
+        for (Field field : o.getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(PathParam.class)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Object invoke(RemoteEndpointImpl resource, Object msg) throws IOException {
@@ -360,6 +375,6 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
 
     @Override
     public String toString() {
-        return "ManagedAtmosphereHandler proxy for " + proxiedInstance.getClass().getName();
+        return "PushEndpointHandlerProxy proxy for " + proxiedInstance.getClass().getName();
     }
 }
