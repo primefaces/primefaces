@@ -21,6 +21,7 @@ import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.AtmosphereResponse;
 import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.cpr.BroadcasterListener;
+import org.atmosphere.cpr.BroadcasterListenerAdapter;
 import org.atmosphere.cpr.MetaBroadcaster;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -210,7 +211,7 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
         }
     }
 
-    private final static class PushContextMetaListener<T> implements BroadcasterListener {
+    private final static class PushContextMetaListener<T> extends BroadcasterListenerAdapter {
         private final ConcurrentLinkedQueue<PushContextListener> listeners;
         private final String channel;
         private final T t;
@@ -245,13 +246,5 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
             	}
             }
         }
-
-		public void onAddAtmosphereResource(Broadcaster broadcaster, AtmosphereResource resource) {
-		
-		}
-
-		public void onRemoveAtmosphereResource(Broadcaster broadcaster, AtmosphereResource resource) {
-		
-		}
     }
 }
