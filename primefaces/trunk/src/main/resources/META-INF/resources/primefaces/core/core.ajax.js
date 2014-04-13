@@ -387,11 +387,15 @@ PrimeFaces.ajax = {
                         postParams.push({ name:PrimeFaces.CLIENT_WINDOW, value:clientWindowInput.val() });
                     }
                     
+                    // DS compatiblity
                     var dsClientWindowInput = form.children("input[name='dsPostWindowId']");
                     if (dsClientWindowInput.length > 0) {
                         postParams.push({ name:'dsPostWindowId', value:dsClientWindowInput.val() });
                     }
-                    
+                    dsClientWindowInput = form.children("input[name='dspwid']");
+                    if (dsClientWindowInput.length > 0) {
+                        postParams.push({ name:'dspwid', value:dsClientWindowInput.val() });
+                    }
                 }
 
             }
