@@ -82,7 +82,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         //label
         writer.startElement("div", progressBar);
         writer.writeAttribute("class", ProgressBar.LABEL_CLASS, null);
-        if(labelTemplate != null && value != 0) {
+        if(labelTemplate != null) {
             writer.writeAttribute("style", "display:block", style);
             writer.write(labelTemplate.replaceAll("\\{value\\}", String.valueOf(value)));
         }
