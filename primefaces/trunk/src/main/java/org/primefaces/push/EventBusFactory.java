@@ -22,18 +22,19 @@ import org.primefaces.push.impl.EventBusImpl;
  */
 public class EventBusFactory {
 
-    private static EventBusFactory p;
     private EventBus eventBus;
+    private static ThreadLocal<EventBusFactory> instance = new ThreadLocal<EventBusFactory>() {
+            protected EventBusFactory initialValue() { return (null); }
+        };
 
     protected EventBusFactory() {
-        eventBus = new EventBusImpl();
-        // Quite ugly
-        p = this;
+        this(new EventBusImpl());
     }
 
     protected EventBusFactory(EventBus eventBus) {
         this.eventBus = eventBus;
-        p = this;
+        // Quite ugly
+        instance.set(this);
     }
 
     /**
@@ -41,7 +42,7 @@ public class EventBusFactory {
      * @return the default factory
      */
     public final static EventBusFactory getDefault() {
-        return p;
+        return instance.get();
     }
 
     /**
