@@ -163,7 +163,7 @@ public class PanelRenderer extends CoreRenderer {
             renderChild(context, header);
         } 
         else if(headerText != null) {
-            writer.write(headerText);
+            writer.writeText(headerText, null);
         }
 
         writer.endElement("span");
@@ -219,7 +219,7 @@ public class PanelRenderer extends CoreRenderer {
             if (footer != null) {
                 renderChild(facesContext, footer);
             } else if (footerText != null) {
-                writer.write(footerText);
+                writer.writeText(footerText, null);
             }
 
             writer.endElement("div");
