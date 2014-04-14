@@ -256,7 +256,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     
     filter: function(value, list) {
         var filterValue = $.trim(value).toLowerCase(),
-        items = list.children('li.ui-picklist-item');
+        items = list.children('li.ui-picklist-item'),
+        animated = this.isAnimated();
         
         if(filterValue === '') {
             items.filter(':hidden').show();
@@ -264,13 +265,20 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < items.length; i++) {
                 var item = items.eq(i),
-                itemLabel = item.attr('data-item-label');
+                itemLabel = item.attr('data-item-label'),
+                matches = this.filterMatcher(itemLabel, filterValue);
 
-                if(this.filterMatcher(itemLabel, filterValue)) {
-                    item.fadeIn('fast');
+                if(matches) {
+                    if(animated)
+                        item.fadeIn('fast');
+                    else
+                        item.show();
                 }
                 else {
-                    item.fadeOut('fast');
+                    if(animated)
+                        item.fadeOut('fast');
+                    else
+                        item.hide();
                 }
             }
         }
