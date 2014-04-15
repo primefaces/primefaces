@@ -138,12 +138,12 @@ public class FilterFeature implements DataTableFeature {
                 UIColumn column = filterMeta.getColumn();
                 MethodExpression filterFunction = column.getFilterFunction();
                 ValueExpression filterByVE = filterMeta.getFilterByVE();
-                Object columnValue = filterByVE.getValue(elContext);
                 
                 if(column instanceof DynamicColumn) {
                     ((DynamicColumn) column).applyStatelessModel();
                 }
                 
+                Object columnValue = filterByVE.getValue(elContext);
                 FilterConstraint filterConstraint = this.getFilterConstraint(column);
 
                 if(hasGlobalFilter && !globalMatch) {
