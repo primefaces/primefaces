@@ -78,6 +78,8 @@ public class TooltipRenderer extends CoreRenderer {
             .attr("hideEvent", tooltip.getHideEvent(), null)
             .attr("showEffect", tooltip.getShowEffect(), null)
             .attr("hideEffect", tooltip.getHideEffect(), null)
+            .attr("showDelay", tooltip.getShowDelay(), 150)
+            .attr("hideDelay", tooltip.getHideDelay(), 0)
             .attr("target", target, null)
             .attr("globalSelector", tooltip.getGlobalSelector(), null)
             .attr("escape", tooltip.isEscape(), true)
