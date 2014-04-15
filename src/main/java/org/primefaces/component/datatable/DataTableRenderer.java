@@ -383,10 +383,15 @@ public class DataTableRenderer extends DataRenderer {
         ValueExpression columnSortByVE = column.getValueExpression("sortBy");
         Object columnSortByProperty = column.getSortBy();
         boolean sortable = (columnSortByVE != null || columnSortByProperty != null);
-        boolean hasFilter = (column.getValueExpression("filterBy") != null || column.getFilterBy() != null);
+        Object filterByProperty = column.getFilterBy();
+        boolean hasFilter = (column.getValueExpression("filterBy") != null || filterByProperty != null);
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
+        
+        if(columnSortByProperty != null || filterByProperty != null) {
+            logger.warning("Defining fields in sortBy-filterBy attributes is deprecated use a value expression instead. e.g. sortBy=\"#{user.name}\" instead of sortBy=\"name\"");
+        }
         
         String columnClass = sortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
         columnClass = hasFilter ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
