@@ -312,7 +312,7 @@ public class UIData extends javax.faces.component.UIData {
                 break;
             }
             
-            for(UIComponent child : this.getChildren()) {
+            for(UIComponent child : this.getIterableChildren()) {
                 if(child.isRendered()) {
                     if(child instanceof Column) {
                         for(UIComponent grandkid : child.getChildren()) {
@@ -899,6 +899,10 @@ public class UIData extends javax.faces.component.UIData {
     
     protected boolean requiresColumns() {
         return false;
+    }
+    
+    protected List<UIComponent> getIterableChildren() {
+        return this.getChildren();
     }
 }
 

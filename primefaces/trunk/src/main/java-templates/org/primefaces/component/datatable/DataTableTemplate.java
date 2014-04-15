@@ -956,3 +956,19 @@ import org.primefaces.util.SharedStringBuilder;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_filtering");
     }
     
+    private List<UIComponent> iterableChildren;
+    
+    @Override
+    protected List<UIComponent> getIterableChildren() {
+        if(iterableChildren == null) {
+            iterableChildren = new ArrayList<UIComponent>();
+            for(UIComponent child : this.getChildren()) {
+                if(!(child instanceof ColumnGroup)) {
+                    iterableChildren.add(child);
+                }
+            }
+        }
+        
+        return iterableChildren;
+    }
+    
