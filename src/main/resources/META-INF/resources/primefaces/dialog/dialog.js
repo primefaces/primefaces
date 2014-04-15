@@ -194,6 +194,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             ,'visibility':'visible'
         });
         
+        this.moveToTop();
+        
         if(this.cfg.showEffect) {
             var $this = this;
 
@@ -207,8 +209,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
             this.postShow();
         }
-
-        this.moveToTop();
 
         if(this.cfg.modal) {
             this.enableModality();
