@@ -10,6 +10,8 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent + '.tooltip' : 'mouseout.tooltip';
         this.cfg.showEffect = this.cfg.showEffect ? this.cfg.showEffect : 'fade';
         this.cfg.hideEffect = this.cfg.hideEffect ? this.cfg.hideEffect : 'fade';
+        this.cfg.showDelay = this.cfg.showDelay||150;
+        this.cfg.hideDelay = this.cfg.hideDelay||0;
         
         if(this.cfg.target)
             this.bindTarget();
@@ -69,7 +71,6 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     })
                     .on(this.cfg.hideEvent + '.tooltip', this.cfg.globalSelector, function() {
                         if($this.globalTitle) {
-                            clearTimeout($this.timeout);
                             $this.jq.hide();
                             $this.globalTitle = null;
                             $this.target = null;
@@ -146,6 +147,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     show: function() {
         if(this.target) {
             var $this = this;
+            this.clearTimeout();
 
             this.timeout = setTimeout(function() {
                 $this.align();
@@ -153,20 +155,39 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     $this.followMouse();
                 }
                 $this.jq.show($this.cfg.showEffect, {}, 250);
-            }, 150);
+            }, this.cfg.showDelay);
         }
     },
     
     hide: function() {
         var $this = this;
-        clearTimeout(this.timeout);
+        this.clearTimeout();
 
+        if(this.cfg.hideDelay) {
+            this.timeout = setTimeout(function() {
+                $this._hide();
+            }, this.cfg.hideDelay);
+        }
+        else {
+            this._hide();
+        }
+    },
+    
+    _hide: function() {
+        var $this = this;
+        
         this.jq.hide(this.cfg.hideEffect, {}, 250, function() {
             $(this).css('z-index', '');
             if($this.cfg.trackMouse) {
                 $this.unfollowMouse();
             }
         });
+    },
+    
+    clearTimeout: function() {
+        if(this.timeout) {
+            clearTimeout(this.timeout);
+        }
     },
     
     followMouse: function() {

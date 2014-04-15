@@ -35,6 +35,13 @@
 			<defaultValue>fade</defaultValue>
             <description>Effect to be used for displaying. Default is fade.</description>
 		</attribute>
+        <attribute>
+			<name>showDelay</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>150</defaultValue>
+            <description>Delay time to show tooltip in milliseconds. Default is 150.</description>
+		</attribute>
 		<attribute>
 			<name>hideEvent</name>
 			<required>false</required>
@@ -47,6 +54,13 @@
 			<type>java.lang.String</type>
 			<defaultValue>fade</defaultValue>
             <description>Effect to be used for hiding. Default is fade.</description>
+		</attribute>
+        <attribute>
+			<name>hideDelay</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Delay time to hide tooltip in milliseconds. Default is 0</description>
 		</attribute>
 		<attribute>
 			<name>for</name>
