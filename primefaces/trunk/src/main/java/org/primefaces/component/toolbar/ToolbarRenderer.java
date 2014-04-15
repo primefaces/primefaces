@@ -16,6 +16,8 @@
 package org.primefaces.component.toolbar;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -24,6 +26,8 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class ToolbarRenderer extends CoreRenderer {
 
+    private final static Logger logger = Logger.getLogger(ToolbarRenderer.class.getName());
+    
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Toolbar toolbar = (Toolbar) component;
@@ -40,6 +44,7 @@ public class ToolbarRenderer extends CoreRenderer {
         }
         
         if(toolbar.getChildCount() > 0) {
+            logger.log(Level.WARNING, "ToolbarGroup is deprecated, use \"left\" and \"right\" facets to define groups instead.");
             encodeCompatibleMode(context, toolbar);
         }
         else {
