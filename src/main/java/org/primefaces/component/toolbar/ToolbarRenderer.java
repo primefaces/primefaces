@@ -38,7 +38,21 @@ public class ToolbarRenderer extends CoreRenderer {
         if(style != null) {
             writer.writeAttribute("style", style, null);
         }
+        
+        if(toolbar.getChildCount() > 0) {
+            encodeCompatibleMode(context, toolbar);
+        }
+        else {
+            encodeFacet(context, toolbar, "left");
+            encodeFacet(context, toolbar, "right");
+        }
 
+        writer.endElement("div");
+    }
+    
+    protected void encodeCompatibleMode(FacesContext context, Toolbar toolbar) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
         for(UIComponent child : toolbar.getChildren()) {
             if(child.isRendered() && child instanceof ToolbarGroup) {
                 ToolbarGroup group = (ToolbarGroup) child;
@@ -49,7 +63,7 @@ public class ToolbarRenderer extends CoreRenderer {
                 groupClass = groupClass == null ? defaultGroupClass : defaultGroupClass + " " + groupClass;
 
                 writer.startElement("div", null);
-                writer.writeAttribute("class", groupClass, style);
+                writer.writeAttribute("class", groupClass, null);
                 if(groupStyle != null) {
                     writer.writeAttribute("style", groupStyle, null);
                 }
@@ -64,10 +78,20 @@ public class ToolbarRenderer extends CoreRenderer {
                 writer.endElement("div");
             }
         }
-
-        writer.endElement("div");
     }
     
+    protected void encodeFacet(FacesContext context, Toolbar toolbar, String facetName) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        UIComponent facet = toolbar.getFacet(facetName);
+        
+        if(facet != null) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", "ui-toolbar-group-" + facetName, null);
+            facet.encodeAll(context);
+            writer.endElement("div");
+        }
+    }
+        
     public void encodeSeparator(FacesContext context, UISeparator separator) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
