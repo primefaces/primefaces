@@ -1,0 +1,22 @@
+.ui-progressbar { 
+    height: 1.2em; 
+    text-align: left; 
+    position: relative;
+}
+
+.ui-progressbar .ui-progressbar-value {
+    margin: -1px; 
+    height: 100%;
+    width: 0%;
+    position: absolute;
+    display: none;
+}
+
+.ui-progressbar .ui-progressbar-label {
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: none;
+    font-weight: bold;
+}

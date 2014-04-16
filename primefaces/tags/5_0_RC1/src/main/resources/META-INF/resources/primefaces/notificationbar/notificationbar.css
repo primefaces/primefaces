@@ -1,0 +1,14 @@
+.ui-notificationbar {
+	position:fixed;
+	width:100%;
+	height:100px;
+	display:none;
+	padding:10px;
+}
+
+.ui-notificationbar-close {
+	position:absolute;
+	right:3em;
+	top:1em;
+	cursor:pointer;
+}
