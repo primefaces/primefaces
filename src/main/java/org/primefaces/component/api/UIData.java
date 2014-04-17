@@ -272,7 +272,11 @@ public class UIData extends javax.faces.component.UIData {
         popComponentFromEL(context);
     }
     
-    protected void processPhase(FacesContext context, PhaseId phaseId) {        
+    protected void processPhase(FacesContext context, PhaseId phaseId) {
+        if(shouldSkipChildren(context)) {
+            return;
+        }
+        
         setRowIndex(-1);
         processFacets(context, phaseId);
         if(requiresColumns()) {
@@ -328,10 +332,6 @@ public class UIData extends javax.faces.component.UIData {
     }
     
     protected void process(FacesContext context, UIComponent component, PhaseId phaseId) {
-        if(shouldSkipChildren(context)) {
-            return;
-        }
-        
         if(phaseId == PhaseId.APPLY_REQUEST_VALUES) {
             component.processDecodes(context);
         }
