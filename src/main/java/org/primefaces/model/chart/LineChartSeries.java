@@ -15,6 +15,9 @@
  */
 package org.primefaces.model.chart;
 
+import java.io.IOException;
+import java.io.Writer;
+
 public class LineChartSeries extends ChartSeries {
 
     private String markerStyle = "filledCircle";
@@ -22,9 +25,9 @@ public class LineChartSeries extends ChartSeries {
     private boolean showMarker = true;
     private boolean fill = false;
     private double fillAlpha = 1;
+    private boolean disableStack;
 
-    public LineChartSeries() {
-    }
+    public LineChartSeries() {}
 
     public LineChartSeries(String title) {
         super(title);
@@ -69,9 +72,43 @@ public class LineChartSeries extends ChartSeries {
     public void setFillAlpha(double fillAlpha) {
         this.fillAlpha = fillAlpha;
     }
+    
+    public boolean isDisableStack() {
+        return disableStack;
+    }
+
+    public void setDisableStack(boolean disableStack) {
+        this.disableStack = disableStack;
+    }
 
     @Override
     public String getRenderer() {
         return "LineRenderer";
     }
+
+    @Override
+    public void encode(Writer writer) throws IOException {
+        String renderer = this.getRenderer();
+        AxisType xaxis = this.getXaxis();
+        AxisType yaxis = this.getYaxis();
+        
+        writer.write("{");
+        writer.write("label:'" + this.getLabel() + "'");
+        writer.write(",renderer: $.jqplot." + renderer);
+        
+        if(xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
+        if(yaxis != null) writer.write(",yaxis:\"" + yaxis + "\"");
+        if(disableStack) writer.write(",disableStack:true");
+        
+        if(fill) {
+            writer.write(",fill:true");
+            writer.write(",fillAlpha:" + this.getFillAlpha());
+        }
+
+        writer.write(",showLine:" + this.isShowLine());
+        writer.write(",markerOptions:{show:" + this.isShowMarker()+ ", style:'" + this.getMarkerStyle() + "'}");
+
+        writer.write("}");
+    }
+
 }

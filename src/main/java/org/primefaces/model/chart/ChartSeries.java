@@ -15,7 +15,9 @@
  */
 package org.primefaces.model.chart;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -75,5 +77,17 @@ public class ChartSeries implements Serializable {
     }
     public void setYaxis(AxisType yaxis) {
         this.yaxis = yaxis;
+    }
+    
+    public void encode(Writer writer) throws IOException {
+        String renderer = this.getRenderer();
+        writer.write("{");
+        writer.write("label:'" + label + "'");
+
+        if(renderer != null) writer.write(",renderer: $.jqplot." + renderer);
+        if(xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
+        if(yaxis != null) writer.write(",yaxis:\"" + yaxis + "\"");
+
+        writer.write("}");
     }
 }
