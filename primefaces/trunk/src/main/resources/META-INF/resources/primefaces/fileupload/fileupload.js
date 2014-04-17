@@ -1706,18 +1706,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 $this.uploadedFileCount += data.files.length;
                 $this.removeFiles(data.files);
 
-                var xmlDoc = $(data.result.documentElement),
-                updates = xmlDoc.find('update');
-
-                for (var i = 0; i < updates.length; i++) {
-                    var update = updates.eq(i),
-                    id = update.attr('id'),
-                    content = PrimeFaces.ajax.AjaxUtils.getContent(update);
-
-                    PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-                }
-
-                PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, data.result);
+                PrimeFaces.ajax.Response.handle(data.result, null, null, null);
             },
             always: function(e, data) {
                 if($this.cfg.oncomplete) {
