@@ -15,13 +15,37 @@
  */
 package org.primefaces.model.chart;
 
+import java.io.IOException;
+import java.io.Writer;
+
 public class BarChartSeries extends ChartSeries {
 
-    public BarChartSeries() {
-    }
+    private boolean disableStack;
     
+    public BarChartSeries() {}
+
+    public boolean isDisableStack() {
+        return disableStack;
+    }
+
+    public void setDisableStack(boolean disableStack) {
+        this.disableStack = disableStack;
+    }
+
     @Override
     public String getRenderer() {
         return "BarRenderer";
+    }
+    
+    @Override
+    public void encode(Writer writer) throws IOException {
+        writer.write("{");
+        writer.write("label:'" + this.getLabel() + "'");
+
+        writer.write(",renderer: $.jqplot." + this.getRenderer());
+        
+        if(disableStack) writer.write(",disableStack:true");
+
+        writer.write("}");
     }
 }
