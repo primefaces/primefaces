@@ -697,26 +697,5 @@ PrimeFaces.ajax = {
     //Backward compatibility
     AjaxRequest: function(cfg, ext) {
         return PrimeFaces.ajax.Request.handle(cfg, ext);
-    },
-    
-    //Backward compatibility
-    AjaxUtils: {
-        
-        getContent : function(update) {
-            return PrimeFaces.ajax.Utils.getContent(update.get(0));
-        },
-
-        updateElement : function(id, data, xhr) {
-            PrimeFaces.ajax.Utils.updateElement(id, data, xhr);
-        },
-
-        handleResponse: function(xml) {
-            //just for backward compatibility
-            //we just always return true, so that no update will be processed
-            //it will actually be done in the widgets itself
-            PrimeFaces.ajax.Response.handle(xml, null, null, function(id, content) {
-                return true;
-            });
-        }
-    } 
+    }
 };

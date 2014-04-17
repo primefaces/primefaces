@@ -68,27 +68,18 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     openWindow: function(responseXML) {
-        var xmlDoc = $(responseXML.documentElement),
-        updates = xmlDoc.find("update"),
-        infoWindow = this.getInfoWindow();
+        var infoWindow = this.getInfoWindow();
+        var $this = this;
 
-        for(var i=0; i < updates.length; i++) {
-            var update = updates.eq(i),
-            id = update.attr('id'),
-            content = PrimeFaces.ajax.AjaxUtils.getContent(update);
+        PrimeFaces.ajax.Response.handle(responseXML, null, null, {
+            widget: infoWindow,
+            handle: function(content) {
+                $this.cfg.infoWindowContent = content;
+                infoWindow.setContent('<div id="' + infoWindow.id + '_content">' + content + '</div>');
 
-            if(id == infoWindow.id){
-                this.cfg.infoWindowContent = content;
-                infoWindow.setContent('<div id="' + id + '_content">' + content + '</div>');
-
-                infoWindow.open(this.getMap(), this.selectedOverlay);
+                infoWindow.open($this.getMap(), $this.selectedOverlay);
             }
-            else {
-                PrimeFaces.ajax.AjaxUtils.updateElement.call(this, id, content);
-            }
-        }
-
-        PrimeFaces.ajax.AjaxUtils.handleResponse.call(this, responseXML);
+        });
 
         return true;
     },
