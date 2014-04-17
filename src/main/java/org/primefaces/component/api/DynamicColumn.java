@@ -34,6 +34,12 @@ public class DynamicColumn implements UIColumn {
         this.index = index;
         this.columns = columns;
     }
+    
+    public DynamicColumn(int index, Columns columns, String columnKey) {
+        this.index = index;
+        this.columns = columns;
+        this.columnKey = columnKey;
+    }
 
     public int getIndex() {
         return index;
