@@ -43,12 +43,17 @@ public class DraggableColumnsFeature implements DataTableFeature {
                     orderedColumns.add(child);
                     break;
                 }
-                else if(child instanceof Columns && columnId.startsWith(child.getClientId(context))) {
-                    String[] ids = columnId.split(separator);
-                    int index = Integer.parseInt(ids[ids.length - 1]);
+                else if(child instanceof Columns) {
+                    String columnsClientId =  child.getClientId(context);
                     
-                    orderedColumns.add(new DynamicColumn(index, (Columns) child));
-                    break;
+                    if(columnId.startsWith(columnsClientId)) {
+                        String[] ids = columnId.split(separator);
+                        int index = Integer.parseInt(ids[ids.length - 1]);
+
+                        orderedColumns.add(new DynamicColumn(index, (Columns) child, (columnsClientId + separator + index)));
+                        break;
+                    }
+                    
                 }
             }
                         
