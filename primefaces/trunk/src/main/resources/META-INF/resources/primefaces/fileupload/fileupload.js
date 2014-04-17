@@ -1706,7 +1706,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 $this.uploadedFileCount += data.files.length;
                 $this.removeFiles(data.files);
 
-                PrimeFaces.ajax.Response.handle(data.result, null, null, null);
+                PrimeFaces.ajax.Response.handle(data.result, data.textStatus, data.jqXHR, null);
             },
             always: function(e, data) {
                 if($this.cfg.oncomplete) {
