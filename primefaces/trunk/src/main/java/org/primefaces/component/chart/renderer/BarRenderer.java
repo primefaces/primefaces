@@ -64,8 +64,8 @@ public class BarRenderer extends CartesianPlotRenderer {
         ResponseWriter writer = context.getResponseWriter();
         BarChartModel model = (BarChartModel) chart.getModel();
         String orientation = model.getOrientation();
-        int barPadding = 8;
-        int barMargin = 10;
+        int barPadding = model.getBarPadding();
+        int barMargin = model.getBarMargin();
         
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
