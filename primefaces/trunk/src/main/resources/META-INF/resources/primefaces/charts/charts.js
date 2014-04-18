@@ -22474,9 +22474,10 @@ PrimeFaces.widget.ChartUtils = {
                     }
                 };
 
-                if(chart.cfg.orientation === 'horizontal') {
-                    PrimeFaces.widget.ChartUtils.transformHorizontalData(chart);
-                }
+                if(chart.cfg.orientation === 'horizontal')
+                    chart.cfg.axes.yaxis.ticks = chart.cfg.ticks;
+                else
+                    chart.cfg.axes.xaxis.ticks = chart.cfg.ticks;
             }
 
         },
@@ -22562,23 +22563,7 @@ PrimeFaces.widget.ChartUtils = {
             }
         }
     },
-    
-    transformHorizontalData: function(chart) {
-        var data = chart.cfg.data,
-        ticks = [];
-
-        for(var i = 0; i < data.length; i++) {
-            var series = data[i];
-            for(var j = 0; j < series.length; j++) {
-                ticks[j] = series[j][0];
-                series[j][0] = series[j][1];
-                series[j][1] = j + 1;
-            }
-        }
-
-        chart.cfg.axes.yaxis.ticks = ticks;
-    },
-    
+        
     transformStackedData: function(chart) {
         var data = chart.cfg.data,
         ticks = [];

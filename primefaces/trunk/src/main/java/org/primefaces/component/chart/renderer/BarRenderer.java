@@ -17,6 +17,7 @@ package org.primefaces.component.chart.renderer;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
@@ -29,6 +30,7 @@ public class BarRenderer extends CartesianPlotRenderer {
     protected void encodeData(FacesContext context, Chart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         BarChartModel model = (BarChartModel) chart.getModel();
+        boolean horizontal = model.getOrientation().equals("horizontal");
         
         //data
 		writer.write(",data:[" );
@@ -38,11 +40,19 @@ public class BarRenderer extends CartesianPlotRenderer {
 
             writer.write("[");
             for(Iterator<Object> its = series.getData().keySet().iterator(); its.hasNext();) {
-                Object xValue = its.next();
-                Number value = series.getData().get(xValue);
+                Number value = series.getData().get(its.next());
                 String valueToRender = value != null ? value.toString() : "null";
 
-                writer.write("[\"" + xValue + "\"," + valueToRender + "]");
+                if(horizontal) {
+                    writer.write("[");
+                    writer.write(valueToRender + "," + i);
+                    writer.write("]");
+
+                    i++;
+                } 
+                else {
+                    writer.write(valueToRender);
+                }
 
                 if(its.hasNext()) {
                     writer.write(",");
@@ -66,6 +76,7 @@ public class BarRenderer extends CartesianPlotRenderer {
         String orientation = model.getOrientation();
         int barPadding = model.getBarPadding();
         int barMargin = model.getBarMargin();
+        List<String> ticks = model.getTicks();
         
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
@@ -73,6 +84,15 @@ public class BarRenderer extends CartesianPlotRenderer {
             series.encode(writer);
 
             if(it.hasNext()) {
+                writer.write(",");
+            }
+        }
+        writer.write("]");
+        
+        writer.write(",ticks:[");
+        for(Iterator<String> tickIt = ticks.iterator(); tickIt.hasNext();) {
+            writer.write("\"" + tickIt.next() + "\"");
+            if(tickIt.hasNext()) {
                 writer.write(",");
             }
         }
