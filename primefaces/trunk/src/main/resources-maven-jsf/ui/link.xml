@@ -53,15 +53,16 @@
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <ignoreInComponent>true</ignoreInComponent>
-            <description>Disables button.</description>
+            <description>Disables the element.</description>
 		</attribute>
         <attribute>
 			<name>disableClientWindow</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Disable appending the <code>ClientWindow</code> on the rendering of this element.</description>
-		</attribute>
+        </attribute>
         <attribute>
 			<name>accesskey</name>
 			<required>false</required>
@@ -91,18 +92,11 @@
             <description>Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.</description>
 		</attribute>
 		<attribute>
-			<name>disabled</name>
-			<required>false</required>
-			<defaultValue>false</defaultValue>
-			<type>java.lang.Boolean</type>
-            <description>Disables the link.</description>
-		</attribute>
-		<attribute>
 			<name>hreflang</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Languae code of the resource designated by the link.</description>
+            <description>Language code of the resource designated by the link.</description>
 		</attribute>
 		<attribute>
 			<name>rel</name>
