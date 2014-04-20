@@ -264,6 +264,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Disable appending the <code>ClientWindow</code> on the rendering of this element.</description>
 		</attribute>
 	</attributes>
