@@ -30,7 +30,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     
     bindEvents: function() {
         var $this = this,
-        togglerSelector = '> tr > td:first > .ui-treetable-toggler';
+        togglerSelector = '> tr > td:first-child > .ui-treetable-toggler';
         
         //expand and collapse
         this.tbody.off('click.treeTable-toggle', togglerSelector)
@@ -91,8 +91,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     });
                     
         if(this.isCheckboxSelection()) {
-           var checkboxSelector =  this.cfg.nativeElements ? '> tr.ui-treetable-selectable-node > td:first :checkbox':
-                    '> tr.ui-treetable-selectable-node > td:first div.ui-chkbox-box';
+           var checkboxSelector =  this.cfg.nativeElements ? '> tr.ui-treetable-selectable-node > td:first-child :checkbox':
+                    '> tr.ui-treetable-selectable-node > td:first-child div.ui-chkbox-box';
                     
                 this.tbody.off('click.treeTable-checkbox', checkboxSelector)
                       .on('click.treeTable-checkbox', checkboxSelector, null, function(e) {
