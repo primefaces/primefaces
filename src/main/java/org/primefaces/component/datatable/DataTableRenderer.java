@@ -561,8 +561,10 @@ public class DataTableRenderer extends DataRenderer {
                     if(filterValueVE != null) {
                         filterValue = (String) filterValueVE.getValue(context.getELContext());
                     }
-                    else {
-                    	filterValue = (String)((UIComponent)column).getAttributes().get("filterValue");
+                    else{
+                    	if(!(column instanceof DynamicColumn)) {
+                    		filterValue = (String)((UIComponent)column).getAttributes().get("filterValue");
+                    	}
                     }
                     if(filterValue == null) {
                     	filterValue = "";
