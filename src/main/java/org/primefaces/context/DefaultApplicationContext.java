@@ -37,22 +37,6 @@ public class DefaultApplicationContext extends ApplicationContext {
     	if (this.config.isBeanValidationAvailable()) {
     	    this.validatorFactory = Validation.buildDefaultValidatorFactory();
     	}
-        
-        String cacheProviderConfigValue = context.getExternalContext().getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
-        if(cacheProviderConfigValue == null) {
-            cacheProvider = new DefaultCacheProvider();
-        }
-        else {
-            try {
-                cacheProvider = (CacheProvider) Class.forName(cacheProviderConfigValue).newInstance();
-            } catch (ClassNotFoundException ex) {
-                throw new FacesException(ex);
-            } catch (InstantiationException ex) {
-                throw new FacesException(ex);
-            } catch (IllegalAccessException ex) {
-                throw new FacesException(ex);
-            }
-        }
     }
 
 	@Override
@@ -67,6 +51,34 @@ public class DefaultApplicationContext extends ApplicationContext {
 
     @Override
     public CacheProvider getCacheProvider() {
+        
+        if (cacheProvider == null) {
+            initCacheProvider();
+        }
+        
         return cacheProvider;
+    }
+    
+    /**
+     * Lazy init cache provider. Not required if no cache component is used in the application.
+     */
+    protected synchronized void initCacheProvider() {
+        if (cacheProvider == null) {
+            String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
+            if(cacheProviderConfigValue == null) {
+                cacheProvider = new DefaultCacheProvider();
+            }
+            else {
+                try {
+                    cacheProvider = (CacheProvider) Class.forName(cacheProviderConfigValue).newInstance();
+                } catch (ClassNotFoundException ex) {
+                    throw new FacesException(ex);
+                } catch (InstantiationException ex) {
+                    throw new FacesException(ex);
+                } catch (IllegalAccessException ex) {
+                    throw new FacesException(ex);
+                }
+            }
+        }
     }
 }
