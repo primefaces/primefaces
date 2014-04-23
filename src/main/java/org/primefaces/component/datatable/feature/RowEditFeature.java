@@ -19,11 +19,14 @@ import java.io.IOException;
 import java.util.Map;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.visit.ResetInputVisitCallback;
 
 public class RowEditFeature implements DataTableFeature {
 
@@ -38,21 +41,25 @@ public class RowEditFeature implements DataTableFeature {
         String action = params.get(clientId + "_rowEditAction");
         table.setRowIndex(editedRowId);
 
-        if(action.equals("cancel")) {
-            for(UIColumn column : table.getColumns()) {
-                for(UIComponent grandkid : column.getChildren()) {
-                    if(grandkid instanceof CellEditor) {
+        if (action.equals("cancel")) {
+            for (UIColumn column : table.getColumns()) {
+                for (UIComponent grandkid : column.getChildren()) {
+                    if (grandkid instanceof CellEditor) {
                         UIComponent inputFacet = grandkid.getFacet("input");
                         
-                        if(inputFacet instanceof EditableValueHolder) {
+                        if (inputFacet instanceof EditableValueHolder) {
                             ((EditableValueHolder) inputFacet).resetValue();
+                        }
+                        else if (UIComponent.isCompositeComponent(inputFacet)) {
+                            VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                            inputFacet.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
                         }
                     }
                 }
             }            
         }
 
-        if(table.isRowAvailable()) {
+        if (table.isRowAvailable()) {
             renderer.encodeRow(context, table, clientId, editedRowId);
         }
     }
