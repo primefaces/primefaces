@@ -28,7 +28,7 @@ public class HeaderRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Header header = (Header) component;
         String title = header.getTitle();
-        String theme = header.getTheme();
+        String swatch = header.getSwatch();
         UIComponent left = header.getFacet("left");
         UIComponent right = header.getFacet("right");
         
@@ -39,7 +39,7 @@ public class HeaderRenderer extends CoreRenderer {
         
         if(header.getStyle() != null) writer.writeAttribute("style", header.getStyle(), null);
         if(header.getStyleClass() != null) writer.writeAttribute("class", header.getStyleClass(), null);
-        if(theme != null) writer.writeAttribute("data-theme", theme, null);
+        if(swatch != null) writer.writeAttribute("data-theme", swatch, null);
         if(header.isFixed())  writer.writeAttribute("data-position", "fixed", null);
         
         renderDynamicPassThruAttributes(context, component);

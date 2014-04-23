@@ -26,7 +26,7 @@
             <defaultValue>false</defaultValue>
 		</attribute>
         <attribute>
-            <name>theme</name>
+            <name>swatch</name>
             <required>false</required>
             <type>java.lang.String</type>
             <description>Swatch of the footer</description>

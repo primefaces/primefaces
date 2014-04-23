@@ -26,10 +26,10 @@
             <defaultValue>false</defaultValue>
 		</attribute>
         <attribute>
-            <name>theme</name>
+            <name>swatch</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Theme of the header.</description>
+            <description>Swatch of the header.</description>
         </attribute>
         <attribute>
             <name>style</name>
