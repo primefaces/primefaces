@@ -42,6 +42,8 @@ public class RowEditFeature implements DataTableFeature {
         table.setRowIndex(editedRowId);
 
         if (action.equals("cancel")) {
+            VisitContext visitContext = null;
+
             for (UIColumn column : table.getColumns()) {
                 for (UIComponent grandkid : column.getChildren()) {
                     if (grandkid instanceof CellEditor) {
@@ -51,7 +53,9 @@ public class RowEditFeature implements DataTableFeature {
                             ((EditableValueHolder) inputFacet).resetValue();
                         }
                         else {
-                            VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                            if (visitContext == null) {
+                                visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                            }
                             inputFacet.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
                         }
                     }
