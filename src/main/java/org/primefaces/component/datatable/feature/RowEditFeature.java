@@ -46,17 +46,17 @@ public class RowEditFeature implements DataTableFeature {
                 for (UIComponent grandkid : column.getChildren()) {
                     if (grandkid instanceof CellEditor) {
                         UIComponent inputFacet = grandkid.getFacet("input");
-                        
+
                         if (inputFacet instanceof EditableValueHolder) {
                             ((EditableValueHolder) inputFacet).resetValue();
                         }
-                        else if (UIComponent.isCompositeComponent(inputFacet)) {
+                        else {
                             VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
                             inputFacet.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
                         }
                     }
                 }
-            }            
+            }
         }
 
         if (table.isRowAvailable()) {
