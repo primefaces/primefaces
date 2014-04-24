@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.ViewHandler;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
@@ -64,6 +65,7 @@ public class ConfigContainer {
     private boolean beanValidationAvailable = false;
     private boolean stringConverterAvailable = false;
     private boolean jsf22 = false;
+    private boolean jsf21 = false;
 	
     // build properties
     private String buildVersion = null;
@@ -82,6 +84,12 @@ public class ConfigContainer {
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
         jsf22 = detectJSF22();
+        if (jsf22) {
+            jsf21 = true;
+        }
+        else {
+            jsf21 = detectJSF21();
+        }
 
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
     }
@@ -192,6 +200,24 @@ public class ConfigContainer {
         }
     }
 
+    private boolean detectJSF21() {
+        String version = FacesContext.class.getPackage().getImplementationVersion();
+        
+        if(version != null) {
+            return version.startsWith("2.1");
+        }
+        else {
+            //fallback
+            try {
+                ViewHandler.class.getDeclaredMethod("deriveLogicalViewId", FacesContext.class, String.class);
+                return true;
+            } 
+            catch (NoSuchMethodException ex) {
+                return false;
+            }
+        }
+    }
+    
     private void initConfigFromWebXml(FacesContext context) {
         InputStream is = null;
         
@@ -284,6 +310,10 @@ public class ConfigContainer {
 
     public boolean isAtLeastJSF22() {
         return jsf22;
+    }
+    
+    public boolean isAtLeastJSF21() {
+        return jsf21;
     }
     
     public boolean isResetValuesEnabled() {

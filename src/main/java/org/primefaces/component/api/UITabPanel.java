@@ -919,9 +919,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             // override the behavior from UIComponent to visit
             // all children once per "row"
 
-            //(Boolean) context.getFacesContext().getAttributes().get(SKIP_ITERATION_HINT);
-            Boolean skipIterationHint = context.getHints().contains(VisitHint.SKIP_ITERATION);
-            if (skipIterationHint != null && skipIterationHint.booleanValue()) {
+            if (ComponentUtils.isSkipIteration(context)) {
                 return super.visitTree(context, callback);
             }
 
