@@ -618,7 +618,7 @@ PrimeFaces.ajax = {
             var id = node.getAttribute('id'),
             content = PrimeFaces.ajax.Utils.getContent(node);
 
-            if (updateHandler && updateHandler.widget.id === id) {
+            if (updateHandler && updateHandler.widget && updateHandler.widget.id === id) {
                 updateHandler.handle.call(updateHandler.widget, content);
             } else {
                 PrimeFaces.ajax.Utils.updateElement(id, content, xhr);
