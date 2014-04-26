@@ -253,14 +253,14 @@ import org.primefaces.util.SharedStringBuilder;
                     String[] sortDirs = params.get(clientId + "_sortDir").split(",");
                     String[] sortKeys = params.get(clientId + "_sortKey").split(",");
                     
-                    order = SortOrder.valueOf(sortDirs[sortDirs.length - 1]);
+                    order = SortOrder.valueOf(new SortFeature().convertSortOrderParam(sortDirs[sortDirs.length - 1]));
                     sortColumn = findColumn(sortKeys[sortKeys.length - 1]);
                 } 
                 else {
-                    order = SortOrder.valueOf(params.get(clientId + "_sortDir"));
+                    order = SortOrder.valueOf(new SortFeature().convertSortOrderParam(params.get(clientId + "_sortDir"));
                     sortColumn = findColumn(params.get(clientId + "_sortKey"));
                 }
-
+                
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order);
             }
             else if(eventName.equals("filter")) {
