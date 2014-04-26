@@ -228,7 +228,7 @@ public class SortFeature implements DataTableFeature {
         return isSortRequest(context, table);
     }    
     
-    private String convertSortOrderParam(String order) {
+    public String convertSortOrderParam(String order) {
         String sortOrder = null;
         int orderNumber = Integer.parseInt(order);
         
