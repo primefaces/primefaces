@@ -73,6 +73,10 @@ public class ConfigContainer {
     // web.xml
     private Map<String, String> errorPages;
 
+    protected ConfigContainer() {
+        
+    }
+    
     public ConfigContainer(FacesContext context) {
         initConfig(context);
         initConfigFromContextParams(context);
@@ -80,7 +84,7 @@ public class ConfigContainer {
         initConfigFromWebXml(context);
     }
 
-    private void initConfig(FacesContext context) {
+    protected void initConfig(FacesContext context) {
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
         jsf22 = detectJSF22();
@@ -94,7 +98,7 @@ public class ConfigContainer {
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
     }
 
-    private void initConfigFromContextParams(FacesContext context) {
+    protected void initConfigFromContextParams(FacesContext context) {
         ExternalContext externalContext = context.getExternalContext();
 
         String value = null;
@@ -137,7 +141,7 @@ public class ConfigContainer {
         transformMetadataEnabled = (value == null) ? false : Boolean.valueOf(value);
     }
 
-    private void initBuildProperties() {
+    protected void initBuildProperties() {
 
         Properties buildProperties = new Properties();
         InputStream is = null;
@@ -218,7 +222,7 @@ public class ConfigContainer {
         }
     }
     
-    private void initConfigFromWebXml(FacesContext context) {
+    protected void initConfigFromWebXml(FacesContext context) {
         InputStream is = null;
         
         try {
