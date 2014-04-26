@@ -257,7 +257,7 @@ import org.primefaces.util.SharedStringBuilder;
                     sortColumn = findColumn(sortKeys[sortKeys.length - 1]);
                 } 
                 else {
-                    order = SortOrder.valueOf(new SortFeature().convertSortOrderParam(params.get(clientId + "_sortDir"));
+                    order = SortOrder.valueOf(new SortFeature().convertSortOrderParam(params.get(clientId + "_sortDir")));
                     sortColumn = findColumn(params.get(clientId + "_sortKey"));
                 }
                 
