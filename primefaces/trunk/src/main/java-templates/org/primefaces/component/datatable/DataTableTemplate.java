@@ -253,11 +253,11 @@ import org.primefaces.util.SharedStringBuilder;
                     String[] sortDirs = params.get(clientId + "_sortDir").split(",");
                     String[] sortKeys = params.get(clientId + "_sortKey").split(",");
                     
-                    order = SortOrder.valueOf(new SortFeature().convertSortOrderParam(sortDirs[sortDirs.length - 1]));
+                    order = SortOrder.valueOf(((SortFeature) FEATURES.get(DataTableFeatureKey.SORT)).convertSortOrderParam(sortDirs[sortDirs.length - 1]));
                     sortColumn = findColumn(sortKeys[sortKeys.length - 1]);
                 } 
                 else {
-                    order = SortOrder.valueOf(new SortFeature().convertSortOrderParam(params.get(clientId + "_sortDir")));
+                    order = SortOrder.valueOf(((SortFeature) FEATURES.get(DataTableFeatureKey.SORT)).convertSortOrderParam(params.get(clientId + "_sortDir")));
                     sortColumn = findColumn(params.get(clientId + "_sortKey"));
                 }
                 
