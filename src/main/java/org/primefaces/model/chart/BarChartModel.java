@@ -25,7 +25,8 @@ public class BarChartModel extends CartesianChartModel {
     
     private int barPadding = 8;
     private int barMargin = 10;
-    
+    private boolean stacked = false;
+        
     @Override
     public void createAxes() {
         axes = new HashMap<AxisType, Axis>();
@@ -51,6 +52,13 @@ public class BarChartModel extends CartesianChartModel {
 
     public void setBarMargin(int barMargin) {
         this.barMargin = barMargin;
+    }
+    
+    public boolean isStacked() {
+        return stacked;
+    }
+    public void setStacked(boolean stacked) {
+        this.stacked = stacked;
     }
     
     public List<String> getTicks() {

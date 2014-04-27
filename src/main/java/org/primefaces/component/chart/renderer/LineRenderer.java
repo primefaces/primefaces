@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartModel;
 
 public class LineRenderer extends CartesianPlotRenderer {
 
@@ -67,7 +68,7 @@ public class LineRenderer extends CartesianPlotRenderer {
         super.encodeOptions(context, chart);
         
         ResponseWriter writer = context.getResponseWriter();
-        CartesianChartModel model = (CartesianChartModel) chart.getModel();
+        LineChartModel model = (LineChartModel) chart.getModel();
         
         writer.write(",series:[");
         for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
