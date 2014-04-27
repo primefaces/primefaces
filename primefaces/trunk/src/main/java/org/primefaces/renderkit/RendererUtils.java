@@ -50,9 +50,9 @@ public class RendererUtils {
         ResponseWriter writer = context.getResponseWriter();
         String icon;
         
-        if(checked)
+        if (checked)
             icon = HTML.CHECKBOX_CHECKED_ICON_CLASS;
-        else if(partialSelected)
+        else if (partialSelected)
             icon = HTML.CHECKBOX_PARTIAL_CHECKED_ICON_CLASS;
         else
             icon = HTML.CHECKBOX_ICON_CLASS;
@@ -76,18 +76,28 @@ public class RendererUtils {
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> passthroughAttributes = component.getPassThroughAttributes(false);
         
-        if(passthroughAttributes != null && !passthroughAttributes.isEmpty()) {
-            for(Map.Entry<String, Object> attribute : passthroughAttributes.entrySet()) {
-                String value;
-
-                if(attribute.getValue() instanceof ValueExpression)
-                    value = ((ValueExpression) attribute.getValue()).getValue(context.getELContext()).toString();
-                else
-                    value = attribute.getValue().toString();
-
-                writer.writeAttribute(attribute.getKey(), value, null);
+        if (passthroughAttributes != null && !passthroughAttributes.isEmpty()) {
+            for (Map.Entry<String, Object> attribute : passthroughAttributes.entrySet()) {
+               
+                Object attributeValue = attribute.getValue();
+                if (attributeValue != null) {
+                    String value = null;
+                    
+                    if (attributeValue instanceof ValueExpression) {
+                        Object expressionValue = ((ValueExpression) attributeValue).getValue(context.getELContext());
+                        if (expressionValue != null) {
+                            value = expressionValue.toString();
+                        }
+                    }
+                    else {
+                        value = attributeValue.toString();
+                    }
+                    
+                    if (value != null) {
+                        writer.writeAttribute(attribute.getKey(), value, null);
+                    }
+                }
             }
         }
-        
     }
 }
