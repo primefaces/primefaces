@@ -55,6 +55,8 @@ public interface UIColumn {
     
     public Object getFilterBy();
     
+    public Object getFilterValue();
+    
     public String getHeaderText();
     
     public String getFooterText();
@@ -68,7 +70,7 @@ public interface UIColumn {
     public int getFilterMaxLength();
     
     public Object getFilterOptions();
-    
+        
     public CellEditor getCellEditor();
     
     public boolean isDynamic();
