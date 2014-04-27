@@ -30,6 +30,9 @@ public class PanelGridRenderer extends org.primefaces.component.panelgrid.PanelG
         PanelGrid grid = (PanelGrid) component;
         String clientId = grid.getClientId(context);
         int columns = grid.getColumns();
+        if(columns == 0) {
+            columns = 1;
+        }
         String gridClass = MobileUtils.GRID_MAP.get(columns);
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass();
