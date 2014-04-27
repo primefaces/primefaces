@@ -25,8 +25,6 @@ public class CartesianChartModel extends ChartModel implements Serializable {
 
     private List<ChartSeries> series;
     protected Map<AxisType,Axis> axes;
-    private boolean stacked = false;
-    private boolean breakOnNull = false;
     private boolean zoom = false;
     private boolean animate = false;
     private boolean showDatatip = true;
@@ -63,20 +61,6 @@ public class CartesianChartModel extends ChartModel implements Serializable {
     public Axis getAxis(AxisType type) {
         return axes.get(type);
     } 
-
-    public boolean isStacked() {
-        return stacked;
-    }
-    public void setStacked(boolean stacked) {
-        this.stacked = stacked;
-    }
-
-    public boolean isBreakOnNull() {
-        return breakOnNull;
-    }
-    public void setBreakOnNull(boolean breakOnNull) {
-        this.breakOnNull = breakOnNull;
-    }
 
     public boolean isZoom() {
         return zoom;
