@@ -28,24 +28,21 @@ import org.primefaces.renderkit.CoreRenderer;
 public class SubTableRenderer extends CoreRenderer {
 
 	@Override
-	public void encodeEnd(FacesContext context, UIComponent component)
-			throws IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		SubTable table = (SubTable) component;
 		int rowCount = table.getRowCount();
 
 		encodeHeader(context, table);
 
 		for (int i = 0; i < rowCount; i++) {
-			encodeRow(context, table, i);
+            encodeRow(context, table, i);
 		}
 
 		encodeFooter(context, table);
 	}
 
-	public void encodeHeader(FacesContext context, SubTable table)
-			throws IOException {
+	public void encodeHeader(FacesContext context, SubTable table) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-
 		UIComponent header = table.getFacet("header");
 
 		if (header != null) {
@@ -72,10 +69,9 @@ public class SubTableRenderer extends CoreRenderer {
 					writer.writeAttribute("class", "ui-widget-header", null);
 
 					for (UIComponent headerRowChild : headerRow.getChildren()) {
-						if (headerRowChild.isRendered()
-								&& headerRowChild instanceof Column) {
-							encodeColumnHeader(context, table,
-									(Column) headerRowChild);
+						if (headerRowChild.isRendered() && headerRowChild instanceof Column) {
+							Column footerColumn = (Column) headerRowChild;
+                            encodeFacetColumn(context, table, footerColumn, "header", DataTable.COLUMN_HEADER_CLASS, footerColumn.getHeaderText());
 						}
 					}
 
@@ -83,45 +79,9 @@ public class SubTableRenderer extends CoreRenderer {
 				}
 			}
 		}
-
 	}
 
-	protected void encodeColumnHeader(FacesContext context, SubTable table,
-			Column column) throws IOException {
-		if (!column.isRendered()) {
-			return;
-		}
-		
-		ResponseWriter writer = context.getResponseWriter();
-
-		String style = column.getStyle();
-		String styleClass = column.getStyleClass();
-		styleClass = styleClass == null ? DataTable.COLUMN_HEADER_CLASS
-				: DataTable.COLUMN_HEADER_CLASS + " " + styleClass;
-
-		writer.startElement("td", null);
-		writer.writeAttribute("class", styleClass, null);
-		if (column.getRowspan() != 1)
-			writer.writeAttribute("rowspan", column.getRowspan(), null);
-		if (column.getColspan() != 1)
-			writer.writeAttribute("colspan", column.getColspan(), null);
-		if (style != null)
-			writer.writeAttribute("style", style, null);
-
-		// Header content
-		UIComponent facet = column.getFacet("header");
-		String text = column.getHeaderText();
-		if (facet != null) {
-			facet.encodeAll(context);
-		} else if (text != null) {
-			writer.write(text);
-		}
-
-		writer.endElement("td");
-	}
-
-	public void encodeRow(FacesContext context, SubTable table, int rowIndex)
-			throws IOException {
+	public void encodeRow(FacesContext context, SubTable table, int rowIndex) throws IOException {
 		table.setRowIndex(rowIndex);
 		if (!table.isRowAvailable()) {
 			return;
@@ -139,10 +99,8 @@ public class SubTableRenderer extends CoreRenderer {
 			String styleClass = column.getStyleClass();
 
 			writer.startElement("td", null);
-			if (style != null)
-				writer.writeAttribute("style", style, null);
-			if (styleClass != null)
-				writer.writeAttribute("class", styleClass, null);
+			if (style != null) writer.writeAttribute("style", style, null);
+			if (styleClass != null) writer.writeAttribute("class", styleClass, null);
 
 			column.encodeAll(context);
 
@@ -152,10 +110,8 @@ public class SubTableRenderer extends CoreRenderer {
 		writer.endElement("tr");
 	}
 
-	public void encodeFooter(FacesContext context, SubTable table)
-			throws IOException {
+	public void encodeFooter(FacesContext context, SubTable table) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-
 		UIComponent footer = table.getFacet("footer");
 
 		if (footer != null) {
@@ -185,10 +141,9 @@ public class SubTableRenderer extends CoreRenderer {
 				writer.writeAttribute("class", "ui-widget-header", null);
 
 				for (UIComponent footerRowChild : footerRow.getChildren()) {
-					if (footerRowChild.isRendered()
-							&& footerRowChild instanceof Column) {
-						encodeColumnFooter(context, table,
-								(Column) footerRowChild);
+					if (footerRowChild.isRendered() && footerRowChild instanceof Column) {
+                        Column footerColumn = (Column) footerRowChild;
+                        encodeFacetColumn(context, table, footerColumn, "footer", DataTable.COLUMN_FOOTER_CLASS, footerColumn.getFooterText());
 					}
 				}
 
@@ -196,32 +151,25 @@ public class SubTableRenderer extends CoreRenderer {
 			}
 		}
 	}
-
-	protected void encodeColumnFooter(FacesContext context, SubTable table,
-			Column column) throws IOException {
-		if (!column.isRendered()) {
+    
+    protected void encodeFacetColumn(FacesContext context, SubTable table, Column column, String facetName, String styleClass, String text) throws IOException {
+        if (!column.isRendered()) {
 			return;
 		}
 
 		ResponseWriter writer = context.getResponseWriter();
-
 		String style = column.getStyle();
-		String styleClass = column.getStyleClass();
-		styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS
-				: DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
+		String columnClass = column.getStyleClass();
+		columnClass = (columnClass == null) ? styleClass : styleClass + " " + columnClass;
 
 		writer.startElement("td", null);
-		writer.writeAttribute("class", styleClass, null);
-		if (column.getRowspan() != 1)
-			writer.writeAttribute("rowspan", column.getRowspan(), null);
-		if (column.getColspan() != 1)
-			writer.writeAttribute("colspan", column.getColspan(), null);
-		if (style != null)
-			writer.writeAttribute("style", style, null);
+		writer.writeAttribute("class", columnClass, null);
+		if (column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
+		if (column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
+		if (style != null) writer.writeAttribute("style", style, null);
 
 		// Footer content
-		UIComponent facet = column.getFacet("footer");
-		String text = column.getFooterText();
+		UIComponent facet = column.getFacet(facetName);
 		if (facet != null) {
 			facet.encodeAll(context);
 		} else if (text != null) {
@@ -229,11 +177,10 @@ public class SubTableRenderer extends CoreRenderer {
 		}
 
 		writer.endElement("td");
-	}
+    }
 
 	@Override
-	public void encodeChildren(FacesContext context, UIComponent component)
-			throws IOException {
+	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 		// Rendering happens on encodeEnd
 	}
 
