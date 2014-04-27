@@ -743,15 +743,9 @@ import org.primefaces.util.SharedStringBuilder;
             for(UIComponent kid : getChildren()) {
                 if(kid.isRendered()) {
                     if(kid instanceof Columns) {
-                        Columns uicolumns = (Columns) kid;
-                        Object columnsValue = uicolumns.getValue();
-                        if(columnsValue != null) {
-                        	if (columnsValue instanceof Object[]) {
-                        		columnsCount += ((Object[])columnsValue).length;
-                        	} 
-                        	else if (columnsValue instanceof Collection) {
-                        		columnsCount += ((Collection) columnsValue).size();
-                        	}
+                        int dynamicColumnsCount = ((Columns) kid).getRowCount();
+                        if(dynamicColumnsCount > 0) {
+                            columnsCount += dynamicColumnsCount;
                         }
                     }
                     else if(kid instanceof Column) {
