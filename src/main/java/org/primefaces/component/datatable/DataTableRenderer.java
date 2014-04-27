@@ -386,10 +386,9 @@ public class DataTableRenderer extends DataRenderer {
 
         ValueExpression columnSortByVE = column.getValueExpression("sortBy");
         Object columnSortByProperty = column.getSortBy();
-        boolean sortable = (columnSortByVE != null && columnSortByVE.getValue(context.getELContext()) != null || columnSortByProperty != null);
-        ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
+        boolean sortable = (columnSortByVE != null || columnSortByProperty != null);
         Object filterByProperty = column.getFilterBy();
-        boolean hasFilter = (columnFilterByVE != null && columnFilterByVE.getValue(context.getELContext()) != null || filterByProperty != null);
+        boolean hasFilter = (column.getValueExpression("filterBy") != null || filterByProperty != null);
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
