@@ -42,6 +42,7 @@ import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.model.SortMeta;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -561,18 +562,8 @@ public class DataTableRenderer extends DataRenderer {
                     filterValue = params.get(filterId);
                 }
                 else {
-                    ValueExpression filterValueVE = column.getValueExpression("filterValue");
-                    if(filterValueVE != null) {
-                        filterValue = (String) filterValueVE.getValue(context.getELContext());
-                    }
-                    else{
-                    	if(!(column instanceof DynamicColumn)) {
-                    		filterValue = (String)((UIComponent)column).getAttributes().get("filterValue");
-                    	}
-                    }
-                    if(filterValue == null) {
-                    	filterValue = "";
-                    }
+                    Object columnFilterValue = column.getFilterValue();
+                    filterValue = (columnFilterValue == null) ? Constants.EMPTY_STRING: columnFilterValue.toString();
                 }
             }
 

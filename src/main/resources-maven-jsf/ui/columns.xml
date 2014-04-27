@@ -92,6 +92,12 @@
             <description>Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.</description>
 		</attribute>
         <attribute>
+			<name>filterValue</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Value of the filter field.</description>
+		</attribute>
+        <attribute>
 			<name>rowspan</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
