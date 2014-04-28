@@ -34,7 +34,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         ConfigurableNavigationHandler navHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
         String outcome = outcomeTarget.getOutcome();
         
-        if(outcome == null) {
+        if (outcome == null) {
             outcome = context.getViewRoot().getViewId();
         }
         
@@ -50,16 +50,16 @@ public class OutcomeTargetRenderer extends CoreRenderer {
 
         //NavCase Params
         Map<String, List<String>> navCaseParams = navCase.getParameters();
-        if(navCaseParams != null && !navCaseParams.isEmpty()) {
-            if(params == null) {
+        if (navCaseParams != null && !navCaseParams.isEmpty()) {
+            if (params == null) {
                 params = new LinkedHashMap<String, List<String>>();
             }
             
-            for(Map.Entry<String,List<String>> entry : navCaseParams.entrySet()) {
+            for (Map.Entry<String,List<String>> entry : navCaseParams.entrySet()) {
                 String key = entry.getKey();
 
                 //UIParams take precedence
-                if(!params.containsKey(key)) {
+                if (!params.containsKey(key)) {
                     params.put(key, entry.getValue());
                 }
             }
@@ -76,7 +76,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         String url;
         String href = outcomeTarget.getHref();
         
-        if(href != null) {
+        if (href != null) {
             url = getResourceURL(context, href);
         }
         else {
@@ -95,26 +95,31 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                 params = Collections.emptyMap();
             }
 
-            boolean disableClientWindow = outcomeTarget.isDisableClientWindow();
-            boolean isJSF22 = RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22();
+            boolean clientWindowRenderingModeEnabled = false;
             Object clientWindow = null;
+            
             try {
-                if (isJSF22 && disableClientWindow) {
+                if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22() && outcomeTarget.isDisableClientWindow()) {
                     clientWindow = context.getExternalContext().getClientWindow();
+
                     if (clientWindow != null) {
-                        ((ClientWindow) clientWindow).disableClientWindowRenderMode(context);
+                        clientWindowRenderingModeEnabled = ((ClientWindow) clientWindow).isClientWindowRenderModeEnabled(context);
+                        
+                        if (clientWindowRenderingModeEnabled) {
+                            ((ClientWindow) clientWindow).disableClientWindowRenderMode(context);
+                        }
                     }
                 }
                 
                 url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
 
             } finally {
-                if (isJSF22 && disableClientWindow && clientWindow != null) {
+                if (clientWindowRenderingModeEnabled && clientWindow != null) {
                     ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
                 }
             }
 
-            if(outcomeTarget.getFragment() != null) {
+            if (outcomeTarget.getFragment() != null) {
                 url += "#" + outcomeTarget.getFragment();
             }
         }
