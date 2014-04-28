@@ -293,13 +293,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindSelectionEvents: function() {
         var $this = this;
         this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
+        this.cfg.rowSelectEvent = this.cfg.rowSelectEvent||'click';
         this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
 
         //row events
         if(this.cfg.selectionMode !== 'radio') {
             this.bindRowHover();
             
-            this.tbody.off('click.dataTable', this.rowSelector).on('click.dataTable', this.rowSelector, null, function(e) {
+            this.tbody.off(this.cfg.rowSelectEvent + '.dataTable', this.rowSelector).on(this.cfg.rowSelectEvent + '.dataTable', this.rowSelector, null, function(e) {
                 $this.onRowClick(e, this);
             });
         }
@@ -311,13 +312,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.bindCheckboxEvents();
             this.updateHeaderCheckbox();
         }
-        
-        //double click
-        if(this.hasBehavior('rowDblselect')) {
-            this.tbody.off('dblclick.datatable', this.rowSelector).on('dblclick.datatable', this.rowSelector, null, function(e) {
-                $this.onRowDblclick(e, $(this));
-            });
-        };
     },
     
     bindRowHover: function() {
@@ -937,21 +931,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             PrimeFaces.clearSelection();
         }
     },
-    
-    onRowDblclick: function(event, row) {
-        PrimeFaces.clearSelection();
         
-        //Check if rowclick triggered this event not a clickable element in row content
-        if($(event.target).is('td,span')) {
-            var rowMeta = this.getRowMeta(row);
-
-            this.fireRowSelectEvent(rowMeta.key, 'rowDblselect');
-        }
-    },
-    
     /**
-                 * @param r {Row Index || Row Element}
-                 */
+     * @param r {Row Index || Row Element}
+     */
     findRow: function(r) {
         var row = r;
 
