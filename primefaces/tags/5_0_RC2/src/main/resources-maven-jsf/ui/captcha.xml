@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+]>
+<component>
+	<tag>captcha</tag>
+	<tagClass>org.primefaces.component.captcha.CaptchaTag</tagClass>
+	<componentClass>org.primefaces.component.captcha.Captcha</componentClass>
+	<componentType>org.primefaces.component.Captcha</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.CaptchaRenderer</rendererType>
+	<rendererClass>org.primefaces.component.captcha.CaptchaRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <description>Captcha is a form validation component based on Recaptcha API.</description>
+	<attributes>
+		&input_component_attributes;
+		<attribute>
+			<name>theme</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>red</defaultValue>
+            <description>Theme of the captcha. Default is red.</description>
+		</attribute>
+		<attribute>
+			<name>language</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>en</defaultValue>
+            <description>Key of the supported languages. Default is "en".</description>
+		</attribute>
+		<attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Position of the input element in the tabbing order.</description>
+		</attribute>
+        <attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>A localized user presentable name.</description>
+		</attribute>
+        <attribute>
+			<name>secure</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Enables https support.</description>
+		</attribute>
+	</attributes>
+</component>

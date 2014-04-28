@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>layoutUnit</tag>
+	<tagClass>org.primefaces.component.layout.LayoutUnitTag</tagClass>
+	<componentClass>org.primefaces.component.layout.LayoutUnit</componentClass>
+	<componentType>org.primefaces.component.LayoutUnit</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.LayoutUnitRenderer</rendererType>
+	<rendererClass>org.primefaces.component.layout.LayoutUnitRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>LayoutUnit represents a region in the border layout model of the Layout component.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>position</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Position of the unit. Required.</description>
+		</attribute>
+		<attribute>
+			<name>size</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>auto</defaultValue>
+            <description></description>
+		</attribute>
+		<attribute>
+			<name>resizable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Makes the unit resizable. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>closable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Makes the unit closable. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>collapsible</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Makes the unit collapsible. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>header</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Text of header.</description>
+		</attribute>
+		<attribute>
+			<name>footer</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Text of footer.</description>
+		</attribute>
+		<attribute>
+			<name>minSize</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>50</defaultValue>
+            <description></description>
+		</attribute>
+		<attribute>
+			<name>maxSize</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description></description>
+		</attribute>
+		<attribute>
+			<name>gutter</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>6</defaultValue>
+            <description>Gutter size of layout unit. Default is 6.</description>
+		</attribute>
+		<attribute>
+			<name>visible</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Specifies default visibility. Default is true.</description>
+		</attribute>
+		<attribute>
+			<name>collapsed</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Specifies toggle status of unit. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>collapseSize</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>25</defaultValue>
+            <description>Size of the unit when collapsed. Default is 25.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style to apply to container element.</description>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class to apply to container element.</description>
+		</attribute>
+        <attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Effect name of the layout transitions.</description>
+		</attribute>
+        <attribute>
+			<name>effectSpeed</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Effect speeds of the layout transitions.</description>
+		</attribute>
+	</attributes>
+</component>
