@@ -24,7 +24,7 @@ public class EHCacheProvider implements CacheProvider {
     private CacheManager cacheManager;
     
     public EHCacheProvider() {
-        cacheManager = CacheManager.create();
+        cacheManager = new CacheManager();
     }
     
     public Object get(String region, String key) {
@@ -52,7 +52,7 @@ public class EHCacheProvider implements CacheProvider {
     }
 
     public void clear() {
-        String[] cacheNames = getCacheManager().getCacheNames();
+        String[] cacheNames = cacheManager.getCacheNames();
         if(cacheNames != null) {
             for(int i = 0; i < cacheNames.length; i++) {
                 Cache cache = getRegion(cacheNames[i]);
@@ -61,21 +61,13 @@ public class EHCacheProvider implements CacheProvider {
         }
     } 
     
-    protected Cache getRegion(String regionName) {
-        Cache region = getCacheManager().getCache(regionName);
+    private Cache getRegion(String regionName) {
+        Cache region = cacheManager.getCache(regionName);
         if(region == null) {
-            getCacheManager().addCache(regionName);
-            region = getCacheManager().getCache(regionName);
+            cacheManager.addCache(regionName);
+            region = cacheManager.getCache(regionName);
         }
         
         return region;
-    }
-    
-    public CacheManager getCacheManager() {
-        return cacheManager;
-    }
-    
-    public void setCacheManager(CacheManager cacheManager) {
-        this.cacheManager = cacheManager;
     }
 }

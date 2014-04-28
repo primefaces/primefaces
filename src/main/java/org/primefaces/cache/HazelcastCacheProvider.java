@@ -22,11 +22,11 @@ import com.hazelcast.core.IMap;
 
 public class HazelcastCacheProvider implements CacheProvider {
 
-    private HazelcastInstance hazelcastInstance;
+    private HazelcastInstance cache;
     
     public HazelcastCacheProvider() {
         Config config = new Config();
-        hazelcastInstance = Hazelcast.newHazelcastInstance(config);
+        cache = Hazelcast.newHazelcastInstance(config);
     }
     
     public Object get(String region, String key) {
@@ -51,17 +51,9 @@ public class HazelcastCacheProvider implements CacheProvider {
         
     }
     
-    protected IMap<String,Object> getRegion(String name) {
-        IMap<String,Object> region = getHazelcastInstance().getMap(name);   
+    private IMap<String,Object> getRegion(String name) {
+        IMap<String,Object> region = cache.getMap(name);   
         
         return region;
-    }
-
-    public HazelcastInstance getHazelcastInstance() {
-        return hazelcastInstance;
-    }
-    
-    public void setHazelcastInstance(HazelcastInstance hazelcastInstance) {
-        this.hazelcastInstance = hazelcastInstance;
     }
 }
