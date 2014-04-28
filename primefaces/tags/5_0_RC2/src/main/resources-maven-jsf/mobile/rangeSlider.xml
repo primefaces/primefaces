@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+]>
+<component>
+	<tag>rangeSlider</tag>
+    <tagClass>org.primefaces.mobile.component.rangeslider.RangeSliderTag</tagClass>
+	<componentClass>org.primefaces.mobile.component.rangeslider.RangeSlider</componentClass>
+	<componentType>org.primefaces.mobile.RangeSlider</componentType>
+	<componentFamily>org.primefaces.mobile.component</componentFamily>
+	<rendererType>org.primefaces.mobile.component.RangeSliderRenderer</rendererType>
+	<rendererClass>org.primefaces.mobile.component.rangeslider.RangeSliderRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
+		</attribute>
+        <attribute>
+			<name>highlight</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Highlights the value range when enabled.</description>
+		</attribute>
+	</attributes>
+</component>

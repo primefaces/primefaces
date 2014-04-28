@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>photoCam</tag>
+	<tagClass>org.primefaces.component.photocam.PhotoCamTag</tagClass>
+    <componentHandlerClass>org.primefaces.component.photocam.PhotoCamHandler</componentHandlerClass>
+	<componentClass>org.primefaces.component.photocam.PhotoCam</componentClass>
+	<componentType>org.primefaces.component.PhotoCam</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.PhotoCamRenderer</rendererType>
+	<rendererClass>org.primefaces.component.photocam.PhotoCamRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <description>.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+        &widget_var_attribute;
+		<attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style of the camera container.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the camera container.</description>
+        </attribute>
+        <attribute>
+            <name>process</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Identifiers of components to process during photo capture.</description>
+        </attribute>
+        <attribute>
+            <name>update</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Identifiers of components to update after photo capture.</description>
+        </attribute>
+        <attribute>
+			<name>listener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>void listener(org.primefaces.event.CaptureEvent)</method-signature>
+            <description>Method expression to listen capture events.</description>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+            <name>primefaces.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+        <resource>
+            <name>photocam/photocam.js</name>
+        </resource>
+	</resources>
+</component>

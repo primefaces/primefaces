@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+]>
+<component>
+	<tag>switch</tag>
+    <tagClass>org.primefaces.mobile.component.uiswitch.UISwitchTag</tagClass>
+	<componentClass>org.primefaces.mobile.component.uiswitch.UISwitch</componentClass>
+	<componentType>org.primefaces.mobile.UISwitch</componentType>
+	<componentFamily>org.primefaces.mobile.component</componentFamily>
+	<rendererType>org.primefaces.mobile.component.UISwitchRenderer</rendererType>
+	<rendererClass>org.primefaces.mobile.component.uiswitch.UISwitchRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+        <attribute>
+            <name>onLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>on</defaultValue>
+            <description>Custom label for on state.</description>
+        </attribute>
+        <attribute>
+            <name>offLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>off</defaultValue>
+            <description>Custom label for off state.</description>
+        </attribute>
+        <attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>User presentable name.</description>
+		</attribute>
+        <attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Disables or enables the switch.</description>
+		</attribute>
+        <attribute>
+            <name>onchange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute on value change event.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+        </attribute>
+	</attributes>
+</component>

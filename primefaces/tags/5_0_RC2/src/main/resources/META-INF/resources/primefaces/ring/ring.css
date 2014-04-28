@@ -1,0 +1,16 @@
+.ui-ring {
+    list-style: none;
+    width: 75%;
+    height: 10em;
+    margin: 1em auto;
+}
+
+.ui-ring-item {
+    height: 4em;
+    width: 8em;
+    cursor: pointer;
+}
+
+.ui-ring-item-focus {
+    cursor: auto;
+}

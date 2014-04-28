@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>field</tag>
+    <tagClass>org.primefaces.mobile.component.field.FieldTag</tagClass>
+	<componentClass>org.primefaces.mobile.component.field.Field</componentClass>
+	<componentType>org.primefaces.mobile.Field</componentType>
+	<componentFamily>org.primefaces.mobile.component</componentFamily>
+	<rendererType>org.primefaces.mobile.component.FieldRenderer</rendererType>
+	<rendererClass>org.primefaces.mobile.component.field.FieldRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+	</attributes>
+</component>
