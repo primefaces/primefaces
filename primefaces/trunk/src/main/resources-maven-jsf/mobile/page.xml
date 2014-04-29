@@ -12,6 +12,11 @@
 	<rendererType>org.primefaces.mobile.component.PageRenderer</rendererType>
 	<rendererClass>org.primefaces.mobile.component.page.PageRenderer</rendererClass>
 	<parent>javax.faces.component.UIPanel</parent>
+    <interfaces>
+        <interface>
+            <name>javax.faces.component.NamingContainer</name>
+        </interface>
+    </interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
         <attribute>
