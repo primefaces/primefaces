@@ -564,7 +564,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.shouldLiveScroll = true;       
         }
         
-        this.scrollBody.scroll(function() {
+        this.scrollBody.on('scroll.dataTable', function() {
             var scrollLeft = $this.scrollBody.scrollLeft();
             $this.scrollHeaderBox.css('margin-left', -scrollLeft);
             $this.scrollFooterBox.css('margin-left', -scrollLeft);
@@ -580,6 +580,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
             
             $this.saveScrollState();
+        });
+        
+        this.scrollHeader.on('scroll.dataTable', function() {
+            $this.scrollHeader.scrollLeft(0);
+        });
+        
+        this.scrollFooter.on('scroll.dataTable', function() {
+            $this.scrollFooter.scrollLeft(0);
         });
         
         var resizeNS = 'resize.' + this.id;
