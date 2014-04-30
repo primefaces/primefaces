@@ -101,15 +101,16 @@ public class RadioButtonRenderer extends InputRenderer {
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
 
         //onchange
+        String radioOnchange = buildDomEvent(context, radio, "onchange", "change", "valueChange", null);
+        String buttonOnchange = buildDomEvent(context, button, "onchange", "change", "valueChange", null);
         StringBuilder onchangeBuilder = SharedStringBuilder.get(context, SB_ENCODE_OPTION_INPUT);
-        if (radio.getOnchange() != null) onchangeBuilder.append(radio.getOnchange()).append(";");
-        if (button.getOnchange() != null) onchangeBuilder.append(button.getOnchange()).append(";");
+        if (radioOnchange != null) onchangeBuilder.append(radioOnchange);
+        if (buttonOnchange != null) onchangeBuilder.append(buttonOnchange);
         
         if (onchangeBuilder.length() > 0) {  
             writer.writeAttribute("onchange", onchangeBuilder.toString(), null);
         }
 
-        
         writer.endElement("input");
         writer.endElement("div");
     }
