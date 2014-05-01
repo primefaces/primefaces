@@ -215,6 +215,8 @@ public class WizardRenderer extends CoreRenderer {
         for(UIComponent child : wizard.getChildren()) {
             if(child instanceof Tab && child.isRendered()) {
                 Tab tab = (Tab) child;
+                String title = tab.getTitle();
+                UIComponent titleFacet = tab.getFacet("title");
                 boolean active = (!currentFound) && (currentStep == null || tab.getId().equals(currentStep));
                 String titleStyleClass = active ? Wizard.ACTIVE_STEP_CLASS : Wizard.STEP_CLASS;
                 if(tab.getTitleStyleClass() != null) {
@@ -230,7 +232,10 @@ public class WizardRenderer extends CoreRenderer {
                 if(tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
                 if(tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
                 
-                writer.write(tab.getTitle());
+                if(titleFacet != null)
+                    titleFacet.encodeAll(context);
+                else if(title != null)
+                    writer.writeText(title, null);
                 
                 writer.endElement("li");
             }
