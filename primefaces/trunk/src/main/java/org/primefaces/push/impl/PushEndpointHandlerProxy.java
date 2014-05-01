@@ -147,7 +147,9 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     //@Override
     public void onRequest(final AtmosphereResource resource) throws IOException {
         final AtmosphereRequest request = resource.getRequest();
-        String body = IOUtils.readEntirely(resource).toString();
+        Object b = IOUtils.readEntirely(resource).toString();
+        String body = b.toString();
+
         final RemoteEndpointImpl remoteEndpoint = new RemoteEndpointImpl(request, body);
         String method = request.getMethod();
 

@@ -16,14 +16,11 @@
 package org.primefaces.push;
 
 import org.atmosphere.client.TrackMessageSizeInterceptor;
-import org.atmosphere.cpr.ApplicationConfig;
 import org.atmosphere.cpr.AtmosphereConfig;
 import org.atmosphere.cpr.AtmosphereFramework;
 import org.atmosphere.cpr.AtmosphereServlet;
 import org.atmosphere.cpr.MetaBroadcaster;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
-import org.atmosphere.interceptor.HeartbeatInterceptor;
-import org.primefaces.push.impl.EventBusImpl;
 import org.primefaces.push.impl.PushEndpointProcessor;
 import org.primefaces.push.impl.PushObjectFactory;
 import org.slf4j.Logger;
@@ -79,14 +76,12 @@ public class PushServlet extends AtmosphereServlet {
         }
 
         framework.interceptor(new AtmosphereResourceLifecycleInterceptor())
-                .interceptor(new HeartbeatInterceptor())
                 .interceptor(new TrackMessageSizeInterceptor())
-                .addInitParameter(ApplicationConfig.CUSTOM_ANNOTATION_PACKAGE, PushEndpointProcessor.class.getPackage().getName())
+                .addAnnotationPackage(PushEndpointProcessor.class)
                 .objectFactory(new PushObjectFactory());
 
-        EventBus e = new EventBusImpl();
-        EventBusFactory f = new EventBusFactory(e);
-        framework.getAtmosphereConfig().properties().put("evenBus", e);
+        EventBusFactory f = new EventBusFactory();
+        framework.getAtmosphereConfig().properties().put("evenBus", f.eventBus());
 
         framework.getAtmosphereConfig().startupHook(new AtmosphereConfig.StartupHook() {
             public void started(AtmosphereFramework framework) {

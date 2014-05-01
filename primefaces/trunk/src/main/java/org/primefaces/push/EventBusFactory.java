@@ -22,18 +22,10 @@ import org.primefaces.push.impl.EventBusImpl;
  */
 public class EventBusFactory {
 
-    private static EventBusFactory p;
-    private EventBus eventBus;
+    private static EventBusFactory p = new EventBusFactory();
+    private EventBus eventBus = new EventBusImpl();
 
     protected EventBusFactory() {
-        eventBus = new EventBusImpl();
-        // Quite ugly
-        p = this;
-    }
-
-    protected EventBusFactory(EventBus eventBus) {
-        this.eventBus = eventBus;
-        p = this;
     }
 
     /**
