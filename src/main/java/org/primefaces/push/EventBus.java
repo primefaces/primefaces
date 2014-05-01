@@ -16,6 +16,9 @@
 package org.primefaces.push;
 
 
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
 /**
  * A distributed lightweight event bus which can encompass multiple PushEndpoint instances. The event bus implements publish / subscribe and point to point messaging.
  * Messages sent over the event bus can be of any type. For publish / subscribe, messages can be published to a Java class annotated with the {@link org.primefaces.push.annotation.PushEndpoint#value}
@@ -54,6 +57,17 @@ public interface EventBus {
      * @return this
      */
     EventBus publish(String path, Object o, Reply r);
+
+    /**
+     * Schedule a period push operation.
+     * @param path a channel of communication.
+     * @param t a message
+     * @param time the time
+     * @param unit the {@link @TimeUnit}
+     * @param <T> The type of the message
+     * @return a Future that can used to cancel the periodic push
+     */
+    <T> Future<T> schedule(String path, T t, int time, TimeUnit unit);
 
     public static interface Reply {
 
