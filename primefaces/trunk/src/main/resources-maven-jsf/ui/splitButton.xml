@@ -112,7 +112,7 @@
 		<attribute>
 			<name>disabled</name>
 			<required>false</required>
-			<type>java.lang.String</type>
+			<type>java.lang.Boolean</type>
 			<ignoreInComponent>true</ignoreInComponent>
             <description>Disables the button.</description>
 		</attribute>
