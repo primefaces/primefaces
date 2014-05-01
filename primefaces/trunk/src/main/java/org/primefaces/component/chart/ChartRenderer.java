@@ -85,7 +85,6 @@ public class ChartRenderer extends CoreRenderer {
         String type = chart.getType();
         BasePlotRenderer plotRenderer = CHART_RENDERERS.get(type);
 		String clientId = chart.getClientId(context);
-        String extender = chart.getExtender();
 				
         startScript(writer, clientId);
 		
@@ -94,9 +93,6 @@ public class ChartRenderer extends CoreRenderer {
         writer.write("id:'" + clientId + "'");
         writer.write(",type:'" + type + "'");
         plotRenderer.render(context, chart);
-        if(extender != null) {
-            writer.write(",extender:" + extender);
-        }
         encodeClientBehaviors(context, chart);
 		writer.write("},'charts');});");
         
