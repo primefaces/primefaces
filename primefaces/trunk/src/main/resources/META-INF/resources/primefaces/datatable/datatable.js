@@ -2397,9 +2397,11 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     
     adjustScrollHeight: function() {
         var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
+        tableHeaderHeight = this.jq.children('.ui-datatable-header').outerHeight(true),
+        tableFooterHeight = this.jq.children('.ui-datatable-footer').outerHeight(true),
         scrollersHeight = (this.scrollHeader.innerHeight() + this.scrollFooter.innerHeight()),
-        paginatorsHeight = this.paginator ? this.paginator.getContainerHeight() : 0,
-        height = (relativeHeight - (scrollersHeight + paginatorsHeight));
+        paginatorsHeight = this.paginator ? this.paginator.getContainerHeight(true) : 0,
+        height = (relativeHeight - (scrollersHeight + paginatorsHeight + tableHeaderHeight + tableFooterHeight));
         
         this.scrollBody.height(height);
         this.frozenBody.height(height);
