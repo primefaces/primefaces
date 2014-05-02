@@ -116,7 +116,7 @@ import org.primefaces.util.SharedStringBuilder;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
                                                         "rowUnselect", "rowEdit", "rowEditInit", "rowEditCancel", "colResize", "toggleSelect", "colReorder", "contextMenu"
-                                                        ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowToggle"
+                                                        ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect", "rowToggle"
                                                         ,"cellEdit", "rowReorder"));
 
                                                         
@@ -230,7 +230,7 @@ import org.primefaces.util.SharedStringBuilder;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if(eventName.equals("rowSelect")||eventName.equals("rowSelectRadio")||eventName.equals("contextMenu")
-                    ||eventName.equals("rowSelectCheckbox")) {
+                    ||eventName.equals("rowSelectCheckbox")||eventName.equals("rowDblselect")) {
                 String rowKey = params.get(clientId + "_instantSelectedRowKey");
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey)); 
             }

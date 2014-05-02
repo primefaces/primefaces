@@ -386,12 +386,6 @@
             <defaultValue>false</defaultValue>
             <description>Ignores processing of children during lifecycle, improves performance if table only has output components, default is false.</description>
 		</attribute>
-        <attribute>
-			<name>rowSelectEvent</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Client side event to select a row, defaults to "click".</description>
-		</attribute>
 	</attributes>
 	<resources>
         <resource>
