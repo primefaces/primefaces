@@ -130,7 +130,6 @@ public class DataTableRenderer extends DataRenderer {
         //Selection
         wb.attr("selectionMode", selectionMode, null)
             .attr("rowSelectMode", table.getRowSelectMode(), "new")
-            .attr("rowSelectEvent", table.getRowSelectEvent(), null)
             .attr("nativeElements", table.isNativeElements(), false);
         
         //Filtering
