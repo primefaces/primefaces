@@ -450,8 +450,6 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         //config
         this.stack = [];
         this.jqWidth = this.jq.width();
-                     
-        var _self = this;
         
         if(!this.jq.hasClass('ui-menu-dynamic')) {
             
@@ -479,7 +477,7 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
     },
     
     bindEvents: function() {
-        var _self = this;
+        var $this = this;
         
         this.links.mouseenter(function() {
            $(this).addClass('ui-state-hover'); 
@@ -487,17 +485,18 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         .mouseleave(function() {
            $(this).removeClass('ui-state-hover'); 
         })
-        .click(function() {
-           var link = $(this),
-           submenu = link.next();
+        .click(function(e) {
+            var link = $(this),
+            submenu = link.next();
            
-           if(submenu.length == 1) {
-               _self.forward(submenu)
-           }
+            if(submenu.length) {
+               $this.forward(submenu);
+               e.preventDefault();
+            }
         });
         
         this.backward.click(function() {
-            _self.back();
+            $this.back();
         });
     },
     
