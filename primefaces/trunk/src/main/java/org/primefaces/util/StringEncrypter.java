@@ -73,8 +73,8 @@ public class StringEncrypter {
             KeySpec keySpec = new PBEKeySpec(passPhrase.toCharArray(), salt, iterationCount);
             SecretKey key = SecretKeyFactory.getInstance("PBEWithMD5AndDES").generateSecret(keySpec);
 
-            ecipher = Cipher.getInstance(key.getAlgorithm());
-            dcipher = Cipher.getInstance(key.getAlgorithm());
+            ecipher = Cipher.getInstance("PBEWithMD5AndDES");
+            dcipher = Cipher.getInstance("PBEWithMD5AndDES");
 
             // Prepare the parameters to the cipthers
             AlgorithmParameterSpec paramSpec = new PBEParameterSpec(salt, iterationCount);
