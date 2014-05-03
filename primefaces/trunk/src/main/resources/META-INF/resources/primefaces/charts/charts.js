@@ -22095,8 +22095,6 @@ if (!document.createElement('canvas').getContext) {
     
 })(jQuery);
 
-$.jqplot.config.enablePlugins = true;
-
 /**
  * PrimeFaces Base Chart Widget
  */
