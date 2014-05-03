@@ -112,6 +112,8 @@ public class DataTableRenderer extends DataRenderer {
         if(dynamicCols != null) {
             dynamicCols.setRowIndex(-1);
         }
+        
+        table.setRowIndex(-1);
     }   
     
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
