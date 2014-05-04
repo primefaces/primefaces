@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+]>
+<component>
+	<tag>inputSlider</tag>
+    <tagClass>org.primefaces.mobile.component.inputslider.InputSliderTag</tagClass>
+	<componentClass>org.primefaces.mobile.component.inputslider.InputSlider</componentClass>
+	<componentType>org.primefaces.mobile.InputSlider</componentType>
+	<componentFamily>org.primefaces.mobile.component</componentFamily>
+	<rendererType>org.primefaces.mobile.component.InputSliderRenderer</rendererType>
+	<rendererClass>org.primefaces.mobile.component.inputslider.InputSliderRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+        <attribute>
+			<name>minValue</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Minimum value of the slider. Default is 0.</description>
+		</attribute>
+		<attribute>
+			<name>maxValue</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>100</defaultValue>
+            <description>Maximum value of the slider. Default is 100.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>step</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>1</defaultValue>
+            <description>Fixed pixel increments that the slider move in. Default is 1.</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Disables or enables the slider.</description>
+		</attribute>
+        <attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>User presentable name.</description>
+		</attribute>
+        <attribute>
+			<name>highlight</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Highlights the value range when enabled.</description>
+		</attribute>
+	</attributes>
+</component>
