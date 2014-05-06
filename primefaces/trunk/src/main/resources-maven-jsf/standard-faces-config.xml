@@ -8,7 +8,7 @@
     <application>
         <resource-handler>org.primefaces.application.PrimeResourceHandler</resource-handler>
         <system-event-listener>
-            <system-event-listener-class>org.primefaces.metadata.ComponentMetadataTransformerListener</system-event-listener-class>
+            <system-event-listener-class>org.primefaces.metadata.transformer.MetadataTransformerExecutor</system-event-listener-class>
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>

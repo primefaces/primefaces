@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.metadata;
+package org.primefaces.metadata.transformer.impl;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.validation.constraints.Max;
@@ -28,32 +27,23 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.context.RequestContext;
+import org.primefaces.metadata.BeanValidationMetadataExtractor;
+import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 
-public class BeanValidationComponentMetadataTransformer extends ComponentMetadataTransformer {
+public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
-    private static final BeanValidationComponentMetadataTransformer INSTANCE = new BeanValidationComponentMetadataTransformer();
-    
-    public static BeanValidationComponentMetadataTransformer getInstance() {
-        return INSTANCE;
-    }
-    
-    public void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException {
-        
-        if (!(component instanceof EditableValueHolder) || !(component instanceof UIInput)) {
-            return;
-        }
+    public void transformInput(FacesContext context, RequestContext requestContext, UIInput component) throws IOException {
 
-        UIInput input = (UIInput) component;
         EditableValueHolder editableValueHolder = (EditableValueHolder) component;
        
-        if (editableValueHolder.isRequired() && isMaxlenghtSet(input)) {
+        if (editableValueHolder.isRequired() && isMaxlenghtSet(component)) {
             return;
         }
  
         Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extract(context, requestContext, component.getValueExpression("value"));
         if (constraints != null && !constraints.isEmpty()) {
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                applyConstraint(constraintDescriptor, input, editableValueHolder);
+                applyConstraint(constraintDescriptor, component, editableValueHolder);
             }
         }
     }
