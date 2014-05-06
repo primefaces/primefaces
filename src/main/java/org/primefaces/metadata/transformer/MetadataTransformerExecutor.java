@@ -13,9 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.metadata;
+package org.primefaces.metadata.transformer;
 
+import org.primefaces.metadata.transformer.impl.BeanValidationInputMetadataTransformer;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -26,8 +30,16 @@ import javax.faces.event.SystemEventListener;
 import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
 
-public class ComponentMetadataTransformerListener implements SystemEventListener {
+public class MetadataTransformerExecutor implements SystemEventListener {
 
+    private final static List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<MetadataTransformer>();
+
+    private final static MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
+    
+    static {
+        
+    }
+    
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         try {
             if (event instanceof PostAddToViewEvent) {
@@ -40,7 +52,11 @@ public class ComponentMetadataTransformerListener implements SystemEventListener
                     ConfigContainer config = requestContext.getApplicationContext().getConfig();
                     
                     if (config.isTransformMetadataEnabled() && config.isBeanValidationAvailable()) {
-                        BeanValidationComponentMetadataTransformer.getInstance().transform(context, requestContext, postAddToViewEvent.getComponent());
+                        BV_INPUT_METADATA_TRANSFORMER.transform(context, requestContext, postAddToViewEvent.getComponent());
+                    }
+                    
+                    for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
+                        METADATA_TRANSFORMERS.get(i).transform(context, requestContext, postAddToViewEvent.getComponent());
                     }
                 }
             }
@@ -54,4 +70,20 @@ public class ComponentMetadataTransformerListener implements SystemEventListener
         return source instanceof UIComponent;
     }
     
+	public static void registerMetadataTransformer(final MetadataTransformer metadataTransformer) {
+        METADATA_TRANSFORMERS.add(metadataTransformer);
+	}
+
+	public static MetadataTransformer removeMetadataTransformer(final Class<? extends MetadataTransformer> clazz) {
+        Iterator<MetadataTransformer> iterator = METADATA_TRANSFORMERS.iterator();
+        while (iterator.hasNext()) {
+            MetadataTransformer metadataTransformer = iterator.next();
+            if (metadataTransformer.getClass().equals(clazz)) {
+                iterator.remove();
+                return metadataTransformer;
+            }
+        }
+        
+        return null;
+	} 
 }

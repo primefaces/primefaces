@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.metadata;
+package org.primefaces.metadata.transformer;
 
 import java.io.IOException;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlInputSecret;
@@ -23,9 +24,15 @@ import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
-public abstract class ComponentMetadataTransformer {
+public abstract class AbstractInputMetadataTransformer implements MetadataTransformer {
     
-    public abstract void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException;
+    public void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException {
+        if (component instanceof EditableValueHolder && component instanceof UIInput) {
+            transformInput(context, requestContext, (UIInput) component);
+        }
+    }
+    
+    protected abstract void transformInput(FacesContext context, RequestContext requestContext, UIInput component) throws IOException;
     
     protected void setMaxlength(UIInput input, int maxlength) {
         if (input instanceof HtmlInputText) {
