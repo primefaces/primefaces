@@ -29,4 +29,12 @@ public interface UploadedFile {
 	public byte[] getContents();
 	
 	public String getContentType();
+    
+    /**
+     * Writes the uploaded file to the given file path.
+     *
+     * @param filePath The target file path.
+     * @throws Exception If something went wrong.
+     */
+    public void write(String filePath) throws Exception;
 }

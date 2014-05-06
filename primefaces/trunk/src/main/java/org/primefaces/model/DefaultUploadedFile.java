@@ -15,6 +15,7 @@
  */
 package org.primefaces.model;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -54,5 +55,9 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
 	public String getContentType() {
 		return fileItem.getContentType();
 	}
+
+    public void write(String filePath) throws Exception {
+        fileItem.write(new File(filePath));
+    }
 
 }
