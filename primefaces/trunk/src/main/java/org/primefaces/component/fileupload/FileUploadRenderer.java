@@ -201,6 +201,8 @@ public class FileUploadRenderer extends CoreRenderer {
             if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
         }
         
+        renderDynamicPassThruAttributes(context, fileUpload);
+        
 		writer.endElement("input");
     }
     
