@@ -85,6 +85,11 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         
         renderOnchange(context, button);
 
+        // tabindex
+        if (button.getTabindex() != null) {
+            writer.writeAttribute("tabindex", button.getTabindex(), null);
+        }
+        
         writer.endElement("input");
         
         //icon
