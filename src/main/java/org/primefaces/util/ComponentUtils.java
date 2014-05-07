@@ -385,4 +385,16 @@ public class ComponentUtils {
             return skipIterationHint != null && skipIterationHint.booleanValue() == true;
         }
     }
+    
+	public static String resolveWidgetVar(FacesContext context, Widget widget) {
+        UIComponent component = (UICommand) widget;
+		String userWidgetVar = (String) component.getAttributes().get("widgetVar");
+
+		if (userWidgetVar != null) {
+			return userWidgetVar;
+        }
+        else {
+			return "widget_" + component.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
+        }
+	}
 }
