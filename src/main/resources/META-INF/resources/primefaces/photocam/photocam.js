@@ -149,7 +149,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
                 dataType : "xml",
                 data: this.createPostData(),
                 success : function(data, status, xhr) {
-                    PrimeFaces.ajax.AjaxResponse.call(this, data, status, xhr);
+                    PrimeFaces.ajax.Response.handle.call(this, data, status, xhr);
                 }
             });
 
