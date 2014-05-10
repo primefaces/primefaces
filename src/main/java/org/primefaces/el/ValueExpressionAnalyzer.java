@@ -58,7 +58,7 @@ public class ValueExpressionAnalyzer {
                 ValueExpression ve = ((CompositeComponentExpressionHolder) base).getExpression((String) reference.getProperty());
                 if (ve != null)
                 {
-                    return ve;
+                    return getExpression(elContext, ve);
                 }
             }
         }
