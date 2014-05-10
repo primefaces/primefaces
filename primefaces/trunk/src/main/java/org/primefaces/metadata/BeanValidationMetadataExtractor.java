@@ -29,7 +29,18 @@ import org.primefaces.el.ValueExpressionAnalyzer;
 
 public class BeanValidationMetadataExtractor {
 
-    public static Set<ConstraintDescriptor<?>> extract(FacesContext context, RequestContext requestContext, ValueExpression ve) {
+    public static Set<ConstraintDescriptor<?>> extractConstraintDescriptors(FacesContext context, RequestContext requestContext, ValueExpression ve) {
+
+        PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, requestContext, ve);
+
+        if (propertyDescriptor != null) {
+            return propertyDescriptor.getConstraintDescriptors();
+        }
+        
+        return null;
+    }
+    
+    public static PropertyDescriptor extractPropertyDescriptor(FacesContext context, RequestContext requestContext, ValueExpression ve) {
 
         if (ve != null) {
             ELContext elContext = context.getELContext();
@@ -44,11 +55,7 @@ public class BeanValidationMetadataExtractor {
                     BeanDescriptor beanDescriptor = validator.getConstraintsForClass(base.getClass());
                     
                     if (beanDescriptor != null) {
-                        PropertyDescriptor propertyDescriptor = beanDescriptor.getConstraintsForProperty(property.toString());
-
-                        if (propertyDescriptor != null) {
-                            return propertyDescriptor.getConstraintDescriptors();
-                        }
+                        return beanDescriptor.getConstraintsForProperty(property.toString());
                     }
                 }
             }
