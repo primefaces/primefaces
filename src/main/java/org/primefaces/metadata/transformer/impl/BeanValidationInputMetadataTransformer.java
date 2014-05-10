@@ -40,7 +40,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             return;
         }
  
-        Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extract(context, requestContext, component.getValueExpression("value"));
+        Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractConstraintDescriptors(context, requestContext, component.getValueExpression("value"));
         if (constraints != null && !constraints.isEmpty()) {
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                 applyConstraint(constraintDescriptor, component, editableValueHolder);
