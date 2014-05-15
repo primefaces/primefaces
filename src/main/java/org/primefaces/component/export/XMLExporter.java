@@ -80,7 +80,7 @@ public class XMLExporter extends Exporter {
             }
                         
             if (col.isRendered() && col.isExportable()) {
-                String columnTag = getColumnTag(col);
+                String columnTag = getColumnTag(col).replaceAll(" ", "_");
                 try {
                     addColumnValue(writer, col.getChildren(), columnTag);
                 } 
