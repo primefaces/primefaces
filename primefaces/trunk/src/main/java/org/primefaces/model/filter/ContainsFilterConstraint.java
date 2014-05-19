@@ -21,14 +21,16 @@ import org.primefaces.util.Constants;
 public class ContainsFilterConstraint implements FilterConstraint {
 
     public boolean applies(Object value, Object filter, Locale locale) {
-        if(filter == null || filter.toString().trim().equals(Constants.EMPTY_STRING)) {
+        String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase(locale);
+        
+        if(filterText == null || filterText.equals(Constants.EMPTY_STRING)) {
             return true;
         }
-        
+                
         if(value == null) {
             return false;
         }
         
-        return value.toString().contains(filter.toString());
+        return value.toString().toLowerCase(locale).contains(filterText);
     }
 }

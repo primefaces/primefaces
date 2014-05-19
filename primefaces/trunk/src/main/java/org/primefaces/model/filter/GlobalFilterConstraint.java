@@ -21,7 +21,9 @@ import org.primefaces.util.Constants;
 public class GlobalFilterConstraint implements FilterConstraint {
 
     public boolean applies(Object value, Object filter, Locale locale) {
-        if(filter == null || filter.toString().trim().equals(Constants.EMPTY_STRING)) {
+        String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase(locale);
+        
+        if(filterText == null || filterText.equals(Constants.EMPTY_STRING)) {
             return true;
         }
         
@@ -29,6 +31,6 @@ public class GlobalFilterConstraint implements FilterConstraint {
             return false;
         }
         
-        return value.toString().toLowerCase(locale).contains(filter.toString().toLowerCase(locale));
+        return value.toString().toLowerCase(locale).contains(filterText);
     }
 }
