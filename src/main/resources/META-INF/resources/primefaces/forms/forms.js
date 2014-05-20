@@ -893,18 +893,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-    search: function(text, start, end) {
-        for(var i = start; i  < end; i++) {
-            var option = this.options.eq(i);
-
-            if(option.text().toLowerCase().indexOf(text) === 0) {
-                return this.items.eq(i);
-            }
-        }
-
-        return null;
-    },
-
     show: function() {
         var $this = this;
         this.alignPanel();
