@@ -94,6 +94,13 @@ public class HeadRenderer extends Renderer {
             writer.write("PrimeFaces.settings.considerEmptyStringNull = " + cc.isInterpretEmptyStringAsNull() + ";");
             writer.endElement("script");
         }
+        
+        if(cc.isLegacyWidgetNamespace()) {
+            writer.startElement("script", null);
+            writer.writeAttribute("type", "text/javascript", null);
+            writer.write("PrimeFaces.settings.legacyWidgetNamespace = true;");
+            writer.endElement("script");
+        }
     }
 
     @Override

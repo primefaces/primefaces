@@ -256,6 +256,9 @@
                 }
                 else {
                     PrimeFaces.widgets[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);  //page init
+                    if(PrimeFaces.settings.legacyWidgetNamespace) {
+                        window[widgetVar] = PrimeFaces.widgets[widgetVar]; 
+                    }
                 }
             }
             else {
