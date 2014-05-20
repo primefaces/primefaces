@@ -298,6 +298,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         List values = (List) ac.getValue();
         List<String> stringValues = new ArrayList<String>();
         boolean disabled = ac.isDisabled();
+        String tabindex = ac.getTabindex();
         
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
@@ -361,14 +362,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
-        if(disabled) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
-        
-        if(ac.getMaxlength() != Integer.MIN_VALUE)
-        {
-            writer.writeAttribute("maxlength", ""+ac.getMaxlength(),null);
-        }
+        if(disabled) writer.writeAttribute("disabled", "disabled", "disabled");
+        if(tabindex != null) writer.writeAttribute("tabindex", ac.getTabindex(), null);
+        if(ac.getMaxlength() != Integer.MIN_VALUE)writer.writeAttribute("maxlength", ""+ac.getMaxlength(),null);
         
         writer.endElement("input");
         writer.endElement("li");
