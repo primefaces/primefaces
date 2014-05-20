@@ -27,6 +27,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
+import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
 
 public class HeadRenderer extends Renderer {
@@ -34,6 +35,7 @@ public class HeadRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
         writer.startElement("head", component);
         
         //First facet
@@ -93,6 +95,13 @@ public class HeadRenderer extends Renderer {
             if(shouldRender) {
                 resource.encodeAll(context);
             }
+        }
+        
+        if(cc.isLegacyWidgetNamespace()) {
+            writer.startElement("script", null);
+            writer.writeAttribute("type", "text/javascript", null);
+            writer.write("PrimeFaces.settings.legacyWidgetNamespace = true;");
+            writer.endElement("script");
         }
     }
 

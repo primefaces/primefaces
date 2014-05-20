@@ -60,6 +60,7 @@ public class ConfigContainer {
     private boolean clientSideValidationEnabled = false;
     private String  uploader = null;
     private boolean transformMetadataEnabled = false;
+    private boolean legacyWidgetNamespace = false;
 
     // internal config
     private boolean beanValidationAvailable = false;
@@ -130,6 +131,9 @@ public class ConfigContainer {
 
         value = externalContext.getInitParameter(Constants.ContextParams.TRANSFORM_METADATA);
         transformMetadataEnabled = (value == null) ? false : Boolean.valueOf(value);
+        
+        value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
+        legacyWidgetNamespace = (value == null) ? false : Boolean.valueOf(value);
     }
 
     protected void initValidateEmptyFields(FacesContext context) {
@@ -375,4 +379,8 @@ public class ConfigContainer {
     public boolean isTransformMetadataEnabled() {
         return transformMetadataEnabled;
     }
+
+    public boolean isLegacyWidgetNamespace() {
+        return legacyWidgetNamespace;
+    }    
 }
