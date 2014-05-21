@@ -49,8 +49,8 @@ public abstract class BasePlotRenderer {
         if(seriesColors != null)
             writer.write(",seriesColors:['#" +  seriesColors.replaceAll("[ ]*,[ ]*", "','#") + "']");
         
-        if(seriesColors != null)
-            writer.write(",negativeSeriesColors:['#" +  seriesColors.replaceAll("[ ]*,[ ]*", "','#") + "']");
+        if(negativeSeriesColors != null)
+            writer.write(",negativeSeriesColors:['#" +  negativeSeriesColors.replaceAll("[ ]*,[ ]*", "','#") + "']");
         
         if(legendPosition != null) {
             LegendPlacement legendPlacement = model.getLegendPlacement();
