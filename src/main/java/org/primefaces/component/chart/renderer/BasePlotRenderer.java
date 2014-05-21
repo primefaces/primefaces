@@ -37,6 +37,7 @@ public abstract class BasePlotRenderer {
         String legendPosition = model.getLegendPosition();
         String title = model.getTitle();
         String seriesColors = model.getSeriesColors();
+        String negativeSeriesColors = model.getNegativeSeriesColors();
         String extender = model.getExtender();
 
         if(title != null)
@@ -47,6 +48,9 @@ public abstract class BasePlotRenderer {
         
         if(seriesColors != null)
             writer.write(",seriesColors:['#" +  seriesColors.replaceAll("[ ]*,[ ]*", "','#") + "']");
+        
+        if(seriesColors != null)
+            writer.write(",negativeSeriesColors:['#" +  seriesColors.replaceAll("[ ]*,[ ]*", "','#") + "']");
         
         if(legendPosition != null) {
             LegendPlacement legendPlacement = model.getLegendPlacement();
