@@ -80,7 +80,7 @@ public class XMLExporter extends Exporter {
             }
                         
             if (col.isRendered() && col.isExportable()) {
-                String columnTag = getColumnTag(col).replaceAll(" ", "_");
+                String columnTag = getColumnTag(col);
                 try {
                     addColumnValue(writer, col.getChildren(), columnTag);
                 } 
@@ -94,16 +94,19 @@ public class XMLExporter extends Exporter {
     protected String getColumnTag(UIColumn column) {
         String headerText = column.getHeaderText();
         UIComponent facet = column.getFacet("header");
+        String columnTag;
         
         if (headerText != null) {
-            return headerText.toLowerCase();
+            columnTag = headerText.toLowerCase();
         }
         else if (facet != null) {
-            return exportValue(FacesContext.getCurrentInstance(), facet).toLowerCase();            
+            columnTag = exportValue(FacesContext.getCurrentInstance(), facet).toLowerCase();            
         }
         else {
             throw new FacesException("No suitable xml tag found for " + column);
         }
+        
+        return columnTag.replaceAll(" ", "_");
     }
     		
 	protected void addColumnValue(Writer writer, List<UIComponent> components, String tag) throws IOException {
