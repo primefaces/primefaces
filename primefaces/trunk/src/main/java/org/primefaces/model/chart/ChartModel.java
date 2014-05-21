@@ -23,6 +23,7 @@ public class ChartModel {
     private String legendPosition;
     private int legendCols;
     private int legendRows;
+    private LegendPlacement legendPlacement;
     private boolean mouseoverHighlight = true;
     private String extender;
 
@@ -74,6 +75,14 @@ public class ChartModel {
         this.legendRows = legendRows;
     }
 
+    public LegendPlacement getLegendPlacement() {
+        return legendPlacement;
+    }
+
+    public void setLegendPlacement(LegendPlacement legendPlacement) {
+        this.legendPlacement = legendPlacement;
+    }
+    
     public boolean isMouseoverHighlight() {
         return mouseoverHighlight;
     }

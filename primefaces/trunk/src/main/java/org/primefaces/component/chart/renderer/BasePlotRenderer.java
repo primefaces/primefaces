@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.ChartModel;
+import org.primefaces.model.chart.LegendPlacement;
 
 public abstract class BasePlotRenderer {
     
@@ -48,6 +49,7 @@ public abstract class BasePlotRenderer {
             writer.write(",seriesColors:['#" +  seriesColors.replaceAll("[ ]*,[ ]*", "','#") + "']");
         
         if(legendPosition != null) {
+            LegendPlacement legendPlacement = model.getLegendPlacement();
             writer.write(",legendPosition:'" + legendPosition + "'");
             
             if(model.getLegendCols() != 0)
@@ -55,6 +57,9 @@ public abstract class BasePlotRenderer {
             
             if(model.getLegendRows() != 0)
                 writer.write(",legendRows:" + model.getLegendRows());
+            
+            if(legendPlacement != null)
+                writer.write(",legendPlacement:'" + legendPlacement + "'");
         }
         
         if(!model.isMouseoverHighlight())

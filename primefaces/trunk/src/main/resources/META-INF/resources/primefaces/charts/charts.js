@@ -22615,6 +22615,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
                 renderer: $.jqplot.EnhancedLegendRenderer,
                 show: true,
                 location: this.cfg.legendPosition,
+                placement: this.cfg.legendPlacement,
                 rendererOptions: {
                     numberRows: this.cfg.legendRows||0,
                     numberColumns: this.cfg.legendCols||0
