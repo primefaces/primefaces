@@ -148,13 +148,21 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }).blur(function() {
             $(this).removeClass('ui-state-focus');
         }).keydown(function(e) {
-            var keyCode = $.ui.keyCode;
-
-            if(e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+            
+            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                $(this).addClass('ui-state-active');
+            }
+        }).keyup(function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+            
+            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                $(this).removeClass('ui-state-active');
                 $this.search('');
                 $this.input.focus();
-
-                e.preventDefault();
+                e.preventDefault(); 
             }
         });
 
