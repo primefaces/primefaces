@@ -44,8 +44,7 @@ public class ToolbarRenderer extends CoreRenderer {
         }
         
         if(toolbar.getChildCount() > 0) {
-            logger.log(Level.WARNING, "ToolbarGroup is deprecated, use \"left\" and \"right\" facets to define groups instead.");
-            encodeCompatibleMode(context, toolbar);
+            encodeToolbarGroups(context, toolbar);
         }
         else {
             encodeFacet(context, toolbar, "left");
@@ -55,7 +54,7 @@ public class ToolbarRenderer extends CoreRenderer {
         writer.endElement("div");
     }
     
-    protected void encodeCompatibleMode(FacesContext context, Toolbar toolbar) throws IOException {
+    protected void encodeToolbarGroups(FacesContext context, Toolbar toolbar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         for(UIComponent child : toolbar.getChildren()) {
