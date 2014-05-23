@@ -264,7 +264,7 @@ import org.primefaces.util.SharedStringBuilder;
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order);
             }
             else if(eventName.equals("filter")) {
-                wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredValue(), getFilters());
+                wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredValue());
             }
             else if(eventName.equals("rowEdit")||eventName.equals("rowEditCancel")||eventName.equals("rowEditInit")) {
                 int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
