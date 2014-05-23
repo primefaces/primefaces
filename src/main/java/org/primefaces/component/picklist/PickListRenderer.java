@@ -68,15 +68,12 @@ public class PickListRenderer extends CoreRenderer {
         styleClass = styleClass == null ? PickList.CONTAINER_CLASS : PickList.CONTAINER_CLASS + " " + styleClass;
         String labelDisplay = pickList.getLabelDisplay();
 
-		writer.startElement("table", pickList);
+		writer.startElement("div", pickList);
 		writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
 		if(pickList.getStyle() != null) {
             writer.writeAttribute("style", pickList.getStyle(), null);
         }
-
-		writer.startElement("tbody", null);
-		writer.startElement("tr", null);
 
         //Target List Reorder Buttons
         if(pickList.isShowSourceControls()) {
@@ -87,12 +84,16 @@ public class PickListRenderer extends CoreRenderer {
 		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(), pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter());
 
 		//Buttons
-		writer.startElement("td", null);
+		writer.startElement("div", null);
+        writer.writeAttribute("class", PickList.BUTTONS_CLASS, null);
+        writer.startElement("div", null);
+        writer.writeAttribute("class", PickList.BUTTONS_CELL_CLASS, null);
         encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.ADD_BUTTON_ICON_CLASS, labelDisplay);
         encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
         encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.REMOVE_BUTTON_ICON_CLASS, labelDisplay);
         encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
-		writer.endElement("td");
+		writer.endElement("div");
+        writer.endElement("div");
 
 		//Target List
 		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), pickList.getFacet("targetCaption"), pickList.isShowTargetFilter());
@@ -102,10 +103,7 @@ public class PickListRenderer extends CoreRenderer {
             encodeListControls(context, pickList, PickList.TARGET_CONTROLS, labelDisplay);
         }
 
-		writer.endElement("tr");
-		writer.endElement("tbody");
-
-		writer.endElement("table");
+		writer.endElement("div");
 	}
 	
 	protected void encodeScript(FacesContext context, PickList pickList) throws IOException {
@@ -130,13 +128,16 @@ public class PickListRenderer extends CoreRenderer {
     protected void encodeListControls(FacesContext context, PickList pickList, String styleClass, String labelDisplay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
-        writer.startElement("td", null);
+        writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
+        writer.startElement("div", null);
+        writer.writeAttribute("class", PickList.BUTTONS_CELL_CLASS, null);
         encodeButton(context, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS, PickList.MOVE_UP_BUTTON_ICON_CLASS, labelDisplay);
         encodeButton(context, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS, PickList.MOVE_TOP_BUTTON_ICON_CLASS, labelDisplay);
         encodeButton(context, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS, PickList.MOVE_DOWN_BUTTON_ICON_CLASS, labelDisplay);
         encodeButton(context, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS, PickList.MOVE_BOTTOM_BUTTON_ICON_CLASS, labelDisplay);
-        writer.endElement("td");
+        writer.endElement("div");
+        writer.endElement("div");
     }
 
     protected void encodeCaption(FacesContext context, UIComponent caption) throws IOException {
@@ -182,7 +183,7 @@ public class PickListRenderer extends CoreRenderer {
 	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption, boolean filter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
                 
-        writer.startElement("td", null);
+        writer.startElement("div", null);
         
         if(filter) {
             encodeFilter(context, pickList, listId + "_filter");
@@ -205,7 +206,7 @@ public class PickListRenderer extends CoreRenderer {
 		
 		encodeListInput(context, listId);
                 
-        writer.endElement("td");
+        writer.endElement("div");
 	}
     
     protected void encodeListInput(FacesContext context, String clientId) throws IOException {
