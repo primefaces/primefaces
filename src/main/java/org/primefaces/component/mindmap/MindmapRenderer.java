@@ -65,7 +65,7 @@ public class MindmapRenderer extends CoreRenderer {
         
         encodeClientBehaviors(context, map);
 
-        writer.write("});});");
+        writer.write("},'mindmap');});");
         endScript(writer);
     }
     
