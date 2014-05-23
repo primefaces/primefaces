@@ -1,3 +1,12 @@
+.ui-picklist > div {
+    float: left;
+}
+
+.ui-picklist .ui-picklist-buttons {
+    height: 200px;
+    padding: 0px 5px;
+}
+
 .ui-picklist .ui-picklist-list {
     list-style-type: none;
     margin: 0;

@@ -15,12 +15,14 @@ import javax.faces.convert.Converter;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 
-    public static final String CONTAINER_CLASS = "ui-picklist ui-widget";
+    public static final String CONTAINER_CLASS = "ui-picklist ui-widget ui-helper-clearfix";
     public static final String LIST_CLASS = "ui-widget-content ui-picklist-list";
     public static final String SOURCE_CLASS = LIST_CLASS + " ui-picklist-source";
     public static final String TARGET_CLASS = LIST_CLASS + " ui-picklist-target";
-    public static final String SOURCE_CONTROLS = "ui-picklist-source-controls";
-    public static final String TARGET_CONTROLS = "ui-picklist-target-controls";
+    public static final String BUTTONS_CLASS = "ui-picklist-buttons";
+    public static final String BUTTONS_CELL_CLASS = "ui-picklist-buttons-cell";
+    public static final String SOURCE_CONTROLS = "ui-picklist-source-controls ui-picklist-buttons";
+    public static final String TARGET_CONTROLS = "ui-picklist-target-controls ui-picklist-buttons";
     public static final String ITEM_CLASS = "ui-picklist-item ui-corner-all";
     public static final String ITEM_DISABLED_CLASS = "ui-state-disabled";
     public static final String CAPTION_CLASS = "ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr";
