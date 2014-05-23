@@ -22,17 +22,15 @@ import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.AjaxBehaviorListener;
 import javax.faces.event.FacesListener;
+import org.primefaces.component.datatable.DataTable;
 
 public class FilterEvent extends AjaxBehaviorEvent {
 
 	private List<?> data;
-    
-    private Map<String,Object> filters;
-	
-	public FilterEvent(UIComponent component, Behavior behavior, List<?> data, Map<String,Object> filters) {
+    	
+	public FilterEvent(UIComponent component, Behavior behavior, List<?> data) {
 		super(component, behavior);
 		this.data = data;
-        this.filters = filters;
 	}
 
 	@Override
@@ -45,11 +43,12 @@ public class FilterEvent extends AjaxBehaviorEvent {
 		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
+    @Deprecated
     public List<?> getData() {
-        return data;
+        return this.data;
     }
 
     public Map<String, Object> getFilters() {
-        return filters;
+        return ((DataTable) this.source).getFilters();
     }
 }
