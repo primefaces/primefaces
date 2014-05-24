@@ -387,20 +387,14 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = column.getContainerClientId(context);
 
         ValueExpression columnSortByVE = column.getValueExpression("sortBy");
-        Object columnSortByProperty = column.getSortBy();
-        boolean sortable = (columnSortByVE != null || columnSortByProperty != null);
-        Object filterByProperty = column.getFilterBy();
-        boolean hasFilter = (column.getValueExpression("filterBy") != null || filterByProperty != null);
+        boolean sortable = (columnSortByVE != null);
+        boolean filterable = (column.getValueExpression("filterBy") != null);
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
-        
-        if(columnSortByProperty != null || filterByProperty != null) {
-            logger.warning("Defining fields in sortBy-filterBy attributes is deprecated use a value expression instead. e.g. sortBy=\"#{user.name}\" instead of sortBy=\"name\"");
-        }
-        
+                
         String columnClass = sortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
-        columnClass = hasFilter ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
+        columnClass = filterable ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
         columnClass = resizable ? columnClass + " " + DataTable.RESIZABLE_COLUMN_CLASS : columnClass;
         columnClass = !column.isToggleable() ? columnClass + " " + DataTable.STATIC_COLUMN_CLASS : columnClass;
@@ -418,8 +412,7 @@ public class DataTableRenderer extends DataRenderer {
                     if(sortMeta != null) {
                         for(SortMeta meta : sortMeta) {
                             UIColumn sortColumn = meta.getColumn();
-                            sortIcon = resolveDefaultSortIcon(columnSortByVE, columnSortByProperty, 
-                                    sortColumn.getValueExpression("sortBy"), sortColumn.getSortBy(), meta.getSortOrder().name());
+                            sortIcon = resolveDefaultSortIcon(columnSortByVE, sortColumn.getValueExpression("sortBy"), meta.getSortOrder().name());
 
                             if(sortIcon != null) {
                                 break;
@@ -428,7 +421,7 @@ public class DataTableRenderer extends DataRenderer {
                     }
                 }
                 else {
-                    sortIcon = resolveDefaultSortIcon(columnSortByVE, columnSortByProperty, tableSortByVE, tableSortBy, table.getSortOrder());
+                    sortIcon = resolveDefaultSortIcon(columnSortByVE, tableSortByVE, table.getSortOrder());
                 }
             }
             
@@ -457,7 +450,7 @@ public class DataTableRenderer extends DataRenderer {
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
         
-        if(hasFilter) {
+        if(filterable) {
             table.enableFiltering();
 
             String filterPosition = column.getFilterPosition();
@@ -485,28 +478,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("th");
     }
     
-    protected String resolveDefaultSortIcon(ValueExpression columnSortByVE, Object columnSortBy, ValueExpression tableSortByVE, Object tableSortBy, String sortOrder) {
-        if(columnSortByVE != null && tableSortByVE != null)
-            return resolveDefaultSortIconFromExpression(columnSortByVE, tableSortByVE, sortOrder);
-        else 
-            return resolveDefaultSortIconFromProperty(columnSortBy, tableSortBy, sortOrder);
-    }
-    
-    protected String resolveDefaultSortIconFromProperty(Object columnSortBy, Object tableSortBy, String sortOrder) {
-        String sortIcon = null;         
-
-        if(tableSortBy != null && tableSortBy.equals(columnSortBy)) {
-            if(sortOrder.equalsIgnoreCase("ASCENDING"))
-                sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
-            else if(sortOrder.equalsIgnoreCase("DESCENDING"))
-                sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
-        }
-        return sortIcon;
-    }
-    
-    protected String resolveDefaultSortIconFromExpression(ValueExpression columnSortBy, ValueExpression tableSortBy, String sortOrder) {
-        String columnSortByExpression = columnSortBy.getExpressionString();
-        String tableSortByExpression = tableSortBy.getExpressionString();
+    protected String resolveDefaultSortIcon(ValueExpression columnSortByVE, ValueExpression tableSortByVE, String sortOrder) {
+        String columnSortByExpression = columnSortByVE.getExpressionString();
+        String tableSortByExpression = tableSortByVE.getExpressionString();
         String sortIcon = null;
 
         if(tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression)) {
@@ -518,7 +492,7 @@ public class DataTableRenderer extends DataRenderer {
         
         return sortIcon;
     }
-        
+            
     protected void encodeColumnHeaderContent(FacesContext context, UIColumn column, String sortIcon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
                         
