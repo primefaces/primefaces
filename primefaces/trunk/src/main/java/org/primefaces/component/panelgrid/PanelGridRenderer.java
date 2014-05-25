@@ -80,18 +80,18 @@ public class PanelGridRenderer extends CoreRenderer {
                 writer.writeAttribute("class", PanelGrid.ROW_CLASS, null);
                 writer.writeAttribute("role", "row", null);
             }
-           
+            
+            String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
+            writer.startElement("td", null);
+            writer.writeAttribute("role", "gridcell", null);
+            writer.writeAttribute("class", columnClass, null);
             if(child.isRendered()) {
-                String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
-                writer.startElement("td", null);
-                writer.writeAttribute("role", "gridcell", null);
-                writer.writeAttribute("class", columnClass, null);
                 child.encodeAll(context);
-                writer.endElement("td");
-                
-                i++;
-                colMod = i % columns;
             }
+            writer.endElement("td");
+
+            i++;
+            colMod = i % columns;
             
             if(colMod == 0) {
                 writer.endElement("tr");
