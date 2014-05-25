@@ -30,7 +30,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.FileCleanerCleanup;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileCleaningTracker;
 import org.primefaces.util.Constants;
 import org.primefaces.webapp.MultipartRequest;
 
@@ -85,6 +87,11 @@ public class FileUploadFilter implements Filter {
 			if(uploadDir != null) {
 				diskFileItemFactory.setRepository(new File(uploadDir));
 			}
+            
+            FileCleaningTracker fileCleaningTracker = FileCleanerCleanup.getFileCleaningTracker(request.getServletContext());
+            if(fileCleaningTracker != null) {
+                diskFileItemFactory.setFileCleaningTracker(fileCleaningTracker);
+            }
 				
 			ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
 			MultipartRequest multipartRequest = new MultipartRequest(httpServletRequest, servletFileUpload);
