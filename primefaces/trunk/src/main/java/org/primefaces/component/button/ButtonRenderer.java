@@ -99,7 +99,7 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
             onclick.append(userOnclick).append(";");
         }
         
-        String onclickBehaviors = getEventBehaviors(context, button, "click");
+        String onclickBehaviors = getEventBehaviors(context, button, "click", null);
         if(onclickBehaviors != null) {
             onclick.append(onclickBehaviors).append(";");
         }

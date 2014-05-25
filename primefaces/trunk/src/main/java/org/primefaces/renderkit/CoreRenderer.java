@@ -562,14 +562,19 @@ public abstract class CoreRenderer extends Renderer {
         return sb.toString();
     }
     
-    protected String getEventBehaviors(FacesContext context, ClientBehaviorHolder cbh, String event) {
+    protected String getEventBehaviors(FacesContext context, ClientBehaviorHolder cbh, String event, List<ClientBehaviorContext.Parameter> parameters) {
         List<ClientBehavior> behaviors = cbh.getClientBehaviors().get(event);
         StringBuilder sb = SharedStringBuilder.get(context, SB_GET_EVENT_BEHAVIORS);
         
         if(behaviors != null && !behaviors.isEmpty()) {
             UIComponent component = (UIComponent) cbh;
             String clientId = component.getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+            List<ClientBehaviorContext.Parameter> params;
+            if(parameters != null && !parameters.isEmpty()) {
+                params = parameters;
+            } else {
+               params = Collections.emptyList();
+            }
 
             for (int i = 0; i < behaviors.size(); i++) {
                 ClientBehavior behavior = behaviors.get(i);
