@@ -2547,11 +2547,15 @@ if (!window.removeEvent) {
 /**
  * PrimeFaces ContentFlow Widget
  */
-PrimeFaces.widget.ContentFlow = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.ContentFlow = PrimeFaces.widget.DeferredWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
         
+        this.renderDeferred();
+    },
+    
+     _render: function() {
         this.cf = new ContentFlow(this.id, this.cfg);
-    }    
+     }
 });
