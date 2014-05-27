@@ -544,8 +544,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         scrollBarWidth = this.getScrollbarWidth() + 'px';
         
         if(this.cfg.scrollHeight) {
-            this.scrollHeaderBox.css('margin-right', scrollBarWidth);
-            this.scrollFooterBox.css('margin-right', scrollBarWidth);
+            if(this.hasVerticalOverflow()) {
+                this.scrollHeaderBox.css('margin-right', scrollBarWidth);
+                this.scrollFooterBox.css('margin-right', scrollBarWidth);
+            }
             
             if(this.percentageScrollHeight) {
                 this.adjustScrollHeight();
@@ -639,10 +641,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     alignScrollBody: function() {
-        var verticalScrolling = (this.cfg.scrollHeight && this.bodyTable.outerHeight() > this.scrollBody.outerHeight()),
-        marginRight = verticalScrolling ? '0px' : this.getScrollbarWidth() + 'px';
+        var marginRight = this.hasVerticalOverflow() ? '0px' : this.getScrollbarWidth() + 'px';
 
         this.scrollBody.css('margin-right', marginRight);
+    },
+    
+    hasVerticalOverflow: function() {
+        return (this.cfg.scrollHeight && this.bodyTable.outerHeight() > this.scrollBody.outerHeight())
     },
     
     restoreScrollState: function() {
