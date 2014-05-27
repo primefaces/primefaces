@@ -1,0 +1,38 @@
+.ui-ribbon { 
+    position: relative; 
+    padding: .2em; 
+    zoom: 1; 
+} /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+
+.ui-ribbon .ui-ribbon-nav { 
+    margin: 0;
+}
+
+.ui-ribbon .ui-ribbon-nav li { 
+    list-style: none; 
+    float: left; 
+    position: relative; 
+    margin: 0 .2em 1px 0;  
+    padding: 0; 
+    white-space: nowrap; 
+    display: block;
+}
+
+.ui-ribbon .ui-ribbon-nav li a { 
+    float: left; 
+    padding: .5em 1em; 
+    text-decoration: none; 
+    cursor: pointer;
+}
+
+.ui-ribbon .ui-ribbon-nav li.ui-tabs-selected a, 
+.ui-ribbon .ui-ribbon-nav li.ui-state-disabled a, 
+.ui-ribbon .ui-ribbon-nav li.ui-state-processing a { 
+    cursor: text; 
+}
+
+.ui-ribbon .ui-ribbon-panel { 
+    border-width: 0; 
+    padding: 1em 1.4em; 
+    background: none; 
+}
