@@ -630,6 +630,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.scrollFooter.width(width);
     },
     
+    alignScrollBody: function() {
+        var marginRight = this.hasVerticalOverflow() ? '0px': this.getScrollbarWidth() + 'px';
+        this.scrollBody.css('margin-right', marginRight);
+    },
+    
     getScrollbarWidth: function() {
         if(!this.scrollbarWidth) {
             this.scrollbarWidth = $.browser.webkit ? '15' : PrimeFaces.calculateScrollbarWidth();
@@ -749,9 +754,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             this.updateData(content);
-
+                            
                             if(this.checkAllToggler) {
                                 this.updateHeaderCheckbox();
+                            }
+                            
+                            if(this.cfg.scrollable) {
+                                this.alignScrollBody();
                             }
                         }
                     });
@@ -874,6 +883,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             this.updateData(content);
+
+                            if(this.cfg.scrollable) {
+                                this.alignScrollBody();
+                            }
 
                             if(this.isCheckboxSelectionEnabled()) {
                                 this.updateHeaderCheckbox();
