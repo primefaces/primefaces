@@ -753,7 +753,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     var text = $(this).val(),
                     matchedOptions = null;
 
-                    clearTimeout(this.searchTimer);
+                    clearTimeout($this.searchTimer);
                                         
                     matchedOptions = $this.options.filter(function() {
                         return $(this).text().toLowerCase().indexOf(text.toLowerCase()) === 0;
@@ -761,11 +761,16 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     
                     if(matchedOptions.length) {
                         var highlightItem = $this.items.eq(matchedOptions.index());
-                        $this.highlightItem(highlightItem);
-                        PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
+                        if($this.panel.is(':hidden')) {
+                            $this.selectItem(highlightItem);
+                        }
+                        else {
+                            $this.highlightItem(highlightItem);
+                            PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
+                        }
                     }
                     
-                    this.searchTimer = setTimeout(function(){
+                    $this.searchTimer = setTimeout(function(){
                         $this.focusInput.val('');
                     }, 1000);
 
