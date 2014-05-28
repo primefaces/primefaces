@@ -76,10 +76,16 @@ public class DataRenderer extends CoreRenderer {
         String[] elements = uidata.getPaginatorTemplate().split(" ");
         for(String element : elements) {            
             PaginatorElementRenderer renderer = PAGINATOR_ELEMENTS.get(element);
-            if(renderer != null)
+            if(renderer != null) {
                 renderer.render(context, uidata);
-            else
-                writer.write(element + " ");
+            } 
+            else {
+                UIComponent elementFacet = uidata.getFacet(element);
+                if(elementFacet != null)
+                    elementFacet.encodeAll(context);
+                else
+                    writer.write(element + " ");
+            }
         }
 
         writer.endElement("div");
