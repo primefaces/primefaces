@@ -721,7 +721,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     bindKeyEvents: function() {
         var $this = this;
 
-        this.focusInput.on('keyup.ui-selectonemenu', function(e) {
+        this.focusInput.on('keydown.ui-selectonemenu', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
 
@@ -747,6 +747,22 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                 case keyCode.ESCAPE:
                     $this.handleEscapeKey(e);
+                break;
+            }
+        })
+        .on('keyup.ui-selectonemenu', function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+
+            switch(key) {
+                case keyCode.UP:
+                case keyCode.LEFT:
+                case keyCode.DOWN:
+                case keyCode.RIGHT:
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.TAB:
+                case keyCode.ESCAPE:
                 break;
 
                 default:
