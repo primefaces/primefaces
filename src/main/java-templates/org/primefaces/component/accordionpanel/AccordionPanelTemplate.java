@@ -78,38 +78,46 @@ import javax.faces.component.visit.VisitResult;
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
-
+            boolean repeating = this.isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if(eventName.equals("tabChange")) {
                 String tabClientId = params.get(clientId + "_newTab");
                 TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 
-                if(this.getVar() != null) {
+                if(repeating) {
                     int index = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(index);
                     changeEvent.setData(this.getIndexData());
                     changeEvent.setTab((Tab) getChildren().get(0));
-                    setIndex(-1);
                 }
 
                 changeEvent.setPhaseId(behaviorEvent.getPhaseId());
+
                 super.queueEvent(changeEvent);
+
+                if(repeating) {
+                    setIndex(-1);
+                }
             }
             else if(eventName.equals("tabClose")) {
                 String tabClientId = params.get(clientId + "_tabId");
                 TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 
-                if(this.getVar() != null) {
+                if(repeating) {
                     int index = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(index);
                     closeEvent.setData(this.getIndexData());
                     closeEvent.setTab((Tab) getChildren().get(0));
-                    setIndex(-1);
                 }
 
                 closeEvent.setPhaseId(behaviorEvent.getPhaseId());
+
                 super.queueEvent(closeEvent);
+
+                if(repeating) {
+                    setIndex(-1);
+                }
             }
         }
         else {
