@@ -136,21 +136,60 @@ public class RibbonRenderer extends CoreRenderer {
         writer.writeAttribute("class", contentClass, null);
         
         if(childCount > 0) {
+            writer.startElement("ul", ribbon);
+            writer.writeAttribute("class", Ribbon.GROUPS_CLASS, null);
+            
             List<UIComponent> children = tab.getChildren();
             for(int i = 0; i < childCount;i++) {
                 UIComponent child = children.get(i);
                 
-                if(child instanceof Submenu && child.isRendered()) {
-                    Submenu submenu = (Submenu) child;
-                    encodeSubmenu(context, submenu);
+                if(child instanceof RibbonGroup && child.isRendered()) {
+                    RibbonGroup group = (RibbonGroup) child;
+                    encodeGroup(context, group);
                 }
             }
+            
+            writer.endElement("ul");
         }
         
         writer.endElement("div");
     }
     
-    protected void encodeSubmenu(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeGroup(FacesContext context, RibbonGroup group) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String label = group.getLabel();
+        String groupClass = group.getStyleClass();
+        groupClass = (groupClass == null) ? Ribbon.GROUP_CLASS : Ribbon.GROUP_CLASS + " " + groupClass;
+        String style = group.getStyle();
         
+        writer.startElement("li", null);
+        writer.writeAttribute("class", groupClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Ribbon.GROUP_CONTENT_CLASS, null);
+        group.encodeAll(context);
+        writer.endElement("div");
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Ribbon.GROUP_LABEL_CLASS, null);
+        if(label != null) {
+            writer.writeText(label, null);
+        }
+        writer.endElement("div");
+        
+        writer.endElement("li");
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }
