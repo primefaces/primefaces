@@ -21,7 +21,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.tabview.Tab;
-import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -145,7 +144,7 @@ public class RibbonRenderer extends CoreRenderer {
                 
                 if(child instanceof RibbonGroup && child.isRendered()) {
                     RibbonGroup group = (RibbonGroup) child;
-                    encodeGroup(context, group);
+                    group.encodeAll(context);
                 }
             }
             
@@ -154,35 +153,7 @@ public class RibbonRenderer extends CoreRenderer {
         
         writer.endElement("div");
     }
-    
-    protected void encodeGroup(FacesContext context, RibbonGroup group) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String label = group.getLabel();
-        String groupClass = group.getStyleClass();
-        groupClass = (groupClass == null) ? Ribbon.GROUP_CLASS : Ribbon.GROUP_CLASS + " " + groupClass;
-        String style = group.getStyle();
         
-        writer.startElement("li", null);
-        writer.writeAttribute("class", groupClass, null);
-        if(style != null) {
-            writer.writeAttribute("style", style, null);
-        }
-        
-        writer.startElement("div", null);
-        writer.writeAttribute("class", Ribbon.GROUP_CONTENT_CLASS, null);
-        group.encodeAll(context);
-        writer.endElement("div");
-        
-        writer.startElement("div", null);
-        writer.writeAttribute("class", Ribbon.GROUP_LABEL_CLASS, null);
-        if(label != null) {
-            writer.writeText(label, null);
-        }
-        writer.endElement("div");
-        
-        writer.endElement("li");
-    }
-    
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing
