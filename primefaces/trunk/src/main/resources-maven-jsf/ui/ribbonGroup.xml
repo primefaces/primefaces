@@ -8,7 +8,9 @@
 	<componentClass>org.primefaces.component.ribbon.RibbonGroup</componentClass>
 	<componentType>org.primefaces.component.RibbonGroup</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
-	<parent>javax.faces.component.UIComponentBase</parent>
+    <rendererType>org.primefaces.component.RibbonGroupRenderer</rendererType>
+	<rendererClass>org.primefaces.component.ribbon.RibbonGroupRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
     <description>RibbonGroup is a helper component for Ribbon to define groups in a tab.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
