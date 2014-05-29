@@ -71,7 +71,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     })
                     .on(this.cfg.hideEvent + '.tooltip', this.cfg.globalSelector, function() {
                         if($this.globalTitle) {
-                            $this.jq.hide();
+                            $this.hide();
                             $this.globalTitle = null;
                             $this.target = null;
                             $this.jq.removeClass('ui-state-error');
