@@ -44,8 +44,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                         }
                         
                         if($this.cfg.trackMouse) {
-                            $this.pageX = e.pageX;
-                            $this.pageY = e.pageY;
+                            $this.mouseEvent = e;
                         }
                 
                         var title = element.attr('title');
@@ -96,8 +95,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.target.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent)
                     .on(this.cfg.showEvent, function(e) {
                         if($this.cfg.trackMouse) {
-                            $this.pageX = e.pageX;
-                            $this.pageY = e.pageY;
+                            $this.mouseEvent = e;
                         }
                         
                         $this.show();
@@ -129,11 +127,15 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             'z-index': ++PrimeFaces.zindex
         });
         
-        if(this.cfg.trackMouse && this.pageX && this.pageY) {
-            this.jq.css({
-                left: this.pageX,
-                top: (this.pageY + 15)
+        if(this.cfg.trackMouse && this.mouseEvent) {
+            this.jq.position({
+                my: 'left top+15',
+                at: 'right bottom',
+                of: this.mouseEvent,
+                collision: 'flipfit'
             });
+            
+            this.mouseEvent = null;
         }
         else {
             this.jq.position({
@@ -194,9 +196,11 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         
         this.target.on('mousemove.tooltip-track', function(e) {
-            $this.jq.css({
-                left: e.pageX,
-                top: (e.pageY + 15)
+            $this.jq.position({
+                my: 'left top+15',
+                at: 'right bottom',
+                of: e,
+                collision: 'flipfit'
             });
         });       
     },
