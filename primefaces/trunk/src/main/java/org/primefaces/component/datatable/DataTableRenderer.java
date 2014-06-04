@@ -734,7 +734,7 @@ public class DataTableRenderer extends DataRenderer {
         int rows = table.getRows();
 		int first = table.getFirst();
         int rowCount = table.getRowCount();
-        int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? table.getScrollRows() : rowCount) : rows;
+        int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? (table.getScrollRows() + table.getScrollOffset()) : rowCount) : rows;
         int frozenRows = table.getFrozenRows();
         boolean hasData = rowCount > 0;
         
