@@ -523,6 +523,14 @@ import org.primefaces.util.SharedStringBuilder;
         getStateHelper().put("filters", filters);
     }
     
+    public int getScrollOffset() {
+        return (java.lang.Integer) getStateHelper().eval("scrollOffset", 0);
+    }
+    
+    public void setScrollOffset(int scrollOffset) {
+        getStateHelper().put("scrollOffset", scrollOffset);
+    }
+    
     private List filterMetadata;
     public List getFilterMetadata() {
         return filterMetadata;

@@ -32,6 +32,7 @@ public class ScrollFeature implements DataTableFeature {
         int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
         int scrollRows = table.getScrollRows();
         String clientId = table.getClientId(context);
+        table.setScrollOffset(scrollOffset);
 
         if (table.isLazy()) {
             table.loadLazyScrollData(scrollOffset, scrollRows);
