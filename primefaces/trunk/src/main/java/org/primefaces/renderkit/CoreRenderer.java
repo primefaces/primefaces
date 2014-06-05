@@ -452,11 +452,9 @@ public abstract class CoreRenderer extends Renderer {
                         ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, eventName, clientId, params);
                         String script = behavior.getScript(cbc);
 
-                        if(script != null)
+                        if(script != null) {
                             writer.write(script);
-                        
-                        if(behaviorIter.hasNext())
-                            writer.write(",");
+                        }
                     }
                     writer.write("}");
                     written = true;
