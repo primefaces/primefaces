@@ -80,8 +80,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         return $(this.jqId + '_data');
     },
         
-    updateData: function(data) {
-        this.tbody.html(data);
+    updateData: function(data, clear) {
+        var empty = (clear === undefined) ? true: clear;
+        
+        if(empty)
+            this.tbody.html(data);
+        else
+            this.tbody.append(data);
         
         this.postUpdateData();
     },
@@ -714,10 +719,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
                     handle: function(content) {
-                        var lastRow = $(this.jqId + ' .ui-datatable-scrollable-body table tr:last');
-
                         //insert new rows
-                        lastRow.after(content);
+                        this.updateData(content, false);
 
                         this.scrollOffset += this.cfg.scrollStep;
 
@@ -2469,12 +2472,15 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
     
     //@Override
-    updateData: function(data) {
+    updateData: function(data, clear) {
         var table = $('<table><tbody>' + data + '</tbody></table>'),
-        rows = table.find('> tbody > tr');
+        rows = table.find('> tbody > tr'),
+        empty = (clear === undefined) ? true: clear; 
 
-        this.frozenTbody.children().remove();
-        this.scrollTbody.children().remove();
+        if(empty) {
+            this.frozenTbody.children().remove();
+            this.scrollTbody.children().remove();
+        }
 
         for(var i = 0; i < rows.length; i++) {
             var row = rows.eq(i),
