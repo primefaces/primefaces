@@ -1767,7 +1767,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     $(this).addClass('ui-state-hover').removeClass('ui-state-active');
                 })
                 .on('focus.fileupload', this.rowCancelActionSelector, null, function(e) {
-                    $(this).addclass('ui-state-focus');
+                    $(this).addClass('ui-state-focus');
                 })
                 .on('blur.fileupload', this.rowCancelActionSelector, null, function(e) {
                     $(this).removeClass('ui-state-focus');
