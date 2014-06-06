@@ -248,3 +248,7 @@
     margin-top: -2px;
     margin-bottom: -2px;
 }
+
+.ui-datatable-frozenlayout-right .ui-datatable-empty-message td {
+    visibility: hidden;
+}
