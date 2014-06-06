@@ -50,7 +50,7 @@ public class InputTextRenderer extends org.primefaces.component.inputtext.InputT
         boolean search = type.equals("search");
         String style = inputText.getStyle();
         String defaultStyleClass = search ? InputText.MOBILE_SEARCH_STYLE_CLASS: InputText.MOBILE_STYLE_CLASS;
-        String styleClass = inputText.getStyle();
+        String styleClass = inputText.getStyleClass();
         styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
         if(inputText.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
