@@ -44,8 +44,8 @@ public class GrowlRenderer extends UINotificationRenderer {
             writer.writeAttribute("data-global", growl.isGlobalOnly(), null);
             writer.writeAttribute("data-summary", growl.isShowSummary(), null);
             writer.writeAttribute("data-detail", growl.isShowDetail(), null);
-
             writer.writeAttribute("data-severity", getClientSideSeverity(growl.getSeverity()), null);
+            writer.writeAttribute("data-redisplay", String.valueOf(growl.isRedisplay()), null);
         }
         
 		writer.endElement("span");

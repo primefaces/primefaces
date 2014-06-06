@@ -58,6 +58,7 @@ public class MessageRenderer extends UINotificationRenderer {
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-display", display, null);
             writer.writeAttribute("data-target", targetClientId, null);
+            writer.writeAttribute("data-redisplay", String.valueOf(uiMessage.isRedisplay()), null);
         }
 		
 		if(msgs.hasNext()) {

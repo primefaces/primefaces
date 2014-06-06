@@ -738,51 +738,91 @@ PrimeFaces.util.ValidationContext = {
             uiMessages = uiMessagesAll.filter(function(idx) { return $(uiMessagesAll[idx]).data('severity').indexOf('error') !== -1; }),
             uiMessageCollection = container.find('div.ui-message'),
             growlPlaceholderAll = container.is('.ui-growl-pl') ? container : container.find('.ui-growl-pl'),
-            growlPlaceholder = growlPlaceholderAll.filter(function(idx) { return $(growlPlaceholderAll[idx]).data('severity').indexOf('error') !== -1; }),
-            growlWidgetVar = growlPlaceholder.data('widget'),
-            hasUIMessages = uiMessages.length && !uiMessages.data('global'),
-            hasGrowl = growlPlaceholder.length && !growlPlaceholder.data('global');
-
-        if(hasUIMessages) {
-            uiMessages.html('');
-            uiMessages.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
-
-            var messageList = uiMessages.find('> .ui-messages-error > ul'),
-            showSummary = uiMessages.data('summary'),
-            showDetail = uiMessages.data('detail');
-        }
-        
-        if(hasGrowl) {
-            PF(growlWidgetVar).removeAll();
-        }
+            growlComponents = growlPlaceholderAll.filter(function(idx) { return $(growlPlaceholderAll[idx]).data('severity').indexOf('error') !== -1; });
         
         uiMessageCollection.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
 
-        for(var clientId in this.messages) {
-            var msgs = this.messages[clientId],
-            uiMessage = this.findUIMessage(clientId, uiMessageCollection);
+        for(var i = 0; i < uiMessages.length; i++) {
+            var uiMessagesComponent = uiMessages.eq(i),
+            globalOnly = uiMessagesComponent.data('global'),
+            redisplay = uiMessagesComponent.data('redisplay'),
+            showSummary = uiMessagesComponent.data('summary'),
+            showDetail = uiMessagesComponent.data('detail');
+            
+            uiMessagesComponent.html('');
+            
+            for(var clientId in this.messages) {
+                var msgs = this.messages[clientId];
 
-            for(var i = 0; i < msgs.length; i++) {
-                var msg = msgs[i];
-
-                if(hasUIMessages) {        
+                for(var j = 0; j < msgs.length; j++) {
+                    var msg = msgs[j];
+                    
+                    if(globalOnly || (msg.rendered && !redisplay)) {
+                        continue;
+                    }
+                    
+                    if(uiMessagesComponent.children().length === 0) {
+                        uiMessagesComponent.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
+                    }
+                    
                     var msgItem = $('<li></li>');
 
-                    if(showSummary)
+                    if(showSummary) {
                         msgItem.append('<span class="ui-messages-error-summary">' + msg.summary + '</span>');
+                    }
 
-                    if(showDetail)
+                    if(showDetail) {
                         msgItem.append('<span class="ui-messages-error-detail">' + msg.detail + '</span>');
+                    }
 
-                    messageList.append(msgItem);                    
+                    uiMessagesComponent.find('> .ui-messages-error > ul').append(msgItem); 
+                    msg.rendered = true;
                 }
-                
-                if(hasGrowl) {
-                    PF(growlWidgetVar).renderMessage(msg);
+            }
+        }
+        
+        for(var i = 0; i < growlComponents.length; i++) {
+            var growl = growlComponents.eq(i),
+            redisplay = growl.data('redisplay'),
+            globalOnly = growl.data('global'),
+            growlWidget = PF(growl.data('widget'));
+    
+            growlWidget.removeAll();
+            
+            for(var clientId in this.messages) {
+                var msgs = this.messages[clientId];
+
+                for(var j = 0; j < msgs.length; j++) {
+                    var msg = msgs[j];
+                    
+                    if(globalOnly || (msg.rendered && !redisplay)) {
+                        continue;
+                    }
+                    
+                    growlWidget.renderMessage(msg);
+                    msg.rendered = true;
                 }
-                
-                if(uiMessage) {
-                    this.renderUIMessage(uiMessage, msg);
+            }
+        }
+        
+        for(var i = 0; i < uiMessageCollection.length; i++) {
+            var uiMessage = uiMessageCollection.eq(i),
+            target = uiMessage.data('target'),
+            redisplay = uiMessage.data('redisplay');
+            
+            for(var clientId in this.messages) {
+                if(target === clientId) {
+                    var msgs = this.messages[clientId];
+                    
+                    for(var j = 0; j < msgs.length; j++) {
+                        var msg = msgs[j];
+                        if(msg.rendered && !redisplay) {
+                            continue;
+                        }
+                        
+                        this.renderUIMessage(uiMessage, msg);
+                        msg.rendered = true;
+                    } 
                 }
             }
         }
