@@ -31,7 +31,7 @@ public class InputTextareaRenderer extends org.primefaces.component.inputtextare
         String clientId = inputTextarea.getClientId(context);
         String valueToRender = ComponentUtils.getValueToRender(context, inputTextarea);
         String style = inputTextarea.getStyle();
-        String styleClass = inputTextarea.getStyle();
+        String styleClass = inputTextarea.getStyleClass();
         styleClass = (styleClass == null) ? InputTextarea.MOBILE_STYLE_CLASS: InputTextarea.MOBILE_STYLE_CLASS + " " + styleClass;
 
 		writer.startElement("textarea", null);
