@@ -1,7 +1,9 @@
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import org.primefaces.event.CloseEvent;
+import org.primefaces.event.MoveEvent;
 import org.primefaces.util.Constants;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
@@ -28,7 +30,7 @@ import javax.el.ELContext;
 
     private final static String DEFAULT_EVENT = "close";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("close","minimize","maximize"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("close","minimize","maximize","move"));
 
     @Override
     public Collection<String> getEventNames() {
@@ -45,14 +47,23 @@ import javax.el.ELContext;
         FacesContext context = getFacesContext();
 
         if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
-            String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
+            String clientId = getClientId(context);
 
             if(eventName.equals("close")) {
                 setVisible(false);
                 CloseEvent closeEvent = new CloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
                 closeEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(closeEvent);
+            }
+            else if(eventName.equals("move")) {
+                int top = Double.valueOf(params.get(clientId + "_top")).intValue();
+                int left = Double.valueOf(params.get(clientId + "_left")).intValue();
+                MoveEvent moveEvent = new MoveEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), top, left);
+                moveEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
+                super.queueEvent(moveEvent);
             }
             else {
                 //minimize and maximize

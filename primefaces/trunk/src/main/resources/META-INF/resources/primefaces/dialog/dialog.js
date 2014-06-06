@@ -269,7 +269,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 $this.moveToTop();
             }
         });
-
+        
         this.icons.mouseover(function() {
             $(this).addClass('ui-state-hover');
         }).mouseout(function() {
@@ -303,11 +303,25 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    setupDraggable: function() {    
+    setupDraggable: function() {
+        var $this = this;
+        
         this.jq.draggable({
             cancel: '.ui-dialog-content, .ui-dialog-titlebar-close',
             handle: '.ui-dialog-titlebar',
-            containment : 'document'
+            containment : 'document',
+            stop: function( event, ui ) {
+                if($this.hasBehavior('move')) {
+                    var move = $this.cfg.behaviors['move'];
+                    var ext = {
+                        params: [
+                            {name: $this.id + '_top', value: ui.offset.top},
+                            {name: $this.id + '_left', value: ui.offset.left}
+                        ]
+                    };
+                    move.call($this, ext);
+                }
+            }
         });
     },
     
@@ -566,6 +580,14 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         });
         
         this.titlebar.children('a.ui-dialog-titlebar-icon').attr('role', 'button');
+    },
+    
+    hasBehavior: function(event) {
+        if(this.cfg.behaviors) {
+            return this.cfg.behaviors[event] != undefined;
+        }
+
+        return false;
     }
     
 });
