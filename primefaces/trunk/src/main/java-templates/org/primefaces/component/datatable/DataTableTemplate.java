@@ -555,6 +555,11 @@ import org.primefaces.util.SharedStringBuilder;
         resetValue();
         setFirst(0);
         this.reset = true;
+        this.setValueExpression("sortBy", this.getDefaultSortByVE());
+        this.setSortFunction(this.getDefaultSortFunction());
+        this.setSortOrder(this.getDefaultSortOrder());
+        this.setSortByVE(null);
+        this.setSortColumn(null);
     }
 
     public boolean isFilteringEnabled() {
@@ -940,6 +945,27 @@ import org.primefaces.util.SharedStringBuilder;
     }
     public ValueExpression getSortByVE() {
         return this.sortByVE;
+    }
+    
+    public void setDefaultSortByVE(ValueExpression ve) {
+        this.setValueExpression("defaultSortBy", ve);
+    }
+    public ValueExpression getDefaultSortByVE() {
+        return this.getValueExpression("defaultSortBy");
+    }
+        
+    public void setDefaultSortOrder(String val) {
+        this.getStateHelper().put("defaultSortOrder", val);
+    }
+    public String getDefaultSortOrder() {
+        return (String) this.getStateHelper().get("defaultSortOrder");
+    }
+    
+    public void setDefaultSortFunction(MethodExpression obj) {
+        this.getStateHelper().put("defaultSortFunction", obj);
+    }
+    public MethodExpression getDefaultSortFunction() {
+        return (MethodExpression) this.getStateHelper().get("defaultSortFunction");
     }
     
     public Locale resolveDataLocale() {
