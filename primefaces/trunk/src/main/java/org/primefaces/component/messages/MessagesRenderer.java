@@ -84,11 +84,11 @@ public class MessagesRenderer extends UINotificationRenderer {
         writer.writeAttribute("aria-live", "polite", null);
         
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
-            writer.writeAttribute("data-global", globalOnly, null);
+            writer.writeAttribute("data-global", String.valueOf(globalOnly), null);
             writer.writeAttribute("data-summary", uiMessages.isShowSummary(), null);
             writer.writeAttribute("data-detail", uiMessages.isShowDetail(), null);
-
             writer.writeAttribute("data-severity", getClientSideSeverity(uiMessages.getSeverity()), null);
+            writer.writeAttribute("data-redisplay", String.valueOf(uiMessages.isRedisplay()), null);
         }
         
 		for(String severity : messagesMap.keySet()) {
