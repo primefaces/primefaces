@@ -99,6 +99,7 @@ public class DataTableRenderer extends DataRenderer {
             table.setDefaultSortByVE(table.getValueExpression("sortBy"));
             table.setDefaultSortOrder(table.getSortOrder());
             table.setDefaultSortFunction(table.getSortFunction());
+            
             SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
 
             if(table.isMultiSort())
