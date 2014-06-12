@@ -928,9 +928,13 @@ public class DataTableRenderer extends DataRenderer {
         String styleClass = selectionEnabled ? DataTable.SELECTION_COLUMN_CLASS : (column.getCellEditor() != null) ? DataTable.EDITABLE_COLUMN_CLASS : null;
         String userStyleClass = column.getStyleClass();
         styleClass = userStyleClass == null ? styleClass : (styleClass == null) ? userStyleClass : styleClass + " " + userStyleClass;
+        int colspan = column.getColspan();
+        int rowspan = column.getRowspan();
         
         writer.startElement("td", null);
         writer.writeAttribute("role", "gridcell", null);
+        if(colspan != 1) writer.writeAttribute("colspan", colspan, null);
+        if(rowspan != 1) writer.writeAttribute("rowspan", rowspan, null);
         if(style != null) writer.writeAttribute("style", style, null);
         if(styleClass != null) writer.writeAttribute("class", styleClass, null);
 
