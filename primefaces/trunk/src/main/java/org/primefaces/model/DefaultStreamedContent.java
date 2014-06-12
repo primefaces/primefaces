@@ -32,12 +32,12 @@ public class DefaultStreamedContent implements StreamedContent {
 	
 	public DefaultStreamedContent() {}
 	
-	public DefaultStreamedContent(InputStream stream) {
+    public DefaultStreamedContent(InputStream stream) {
 		this.stream = stream;
 	}
 	
 	public DefaultStreamedContent(InputStream stream, String contentType) {
-        this();
+        this(stream);
 		this.contentType = contentType;
 	}
 	
