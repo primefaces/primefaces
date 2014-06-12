@@ -15,48 +15,46 @@
  */
 package org.primefaces.model;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.Serializable;
 
 /**
- * Default implementation of a StreamedContent
+ * Byte Array based implementation of a StreamedContent
  */
-public class DefaultStreamedContent implements StreamedContent {
-	
-	private InputStream stream;
-	
+public class ByteArrayContent implements StreamedContent, Serializable {
+		
+    private byte[] data;
+    
 	private String contentType;
     
 	private String name;
     
     private String contentEncoding;
 	
-	public DefaultStreamedContent() {}
+	public ByteArrayContent() {}
 	
-	public DefaultStreamedContent(InputStream stream) {
-		this.stream = stream;
+	public ByteArrayContent(byte[] data) {
+		this.data = data;
 	}
 	
-	public DefaultStreamedContent(InputStream stream, String contentType) {
-        this();
+	public ByteArrayContent(byte[] data, String contentType) {
+		this(data);
 		this.contentType = contentType;
 	}
 	
-	public DefaultStreamedContent(InputStream stream, String contentType, String name) {
-		this(stream, contentType);
+	public ByteArrayContent(byte[] data, String contentType, String name) {
+		this(data, contentType);
 		this.name = name;
 	}
     
-    public DefaultStreamedContent(InputStream stream, String contentType, String name, String contentEncoding) {
-		this(stream, contentType, name);
+    public ByteArrayContent(byte[] data, String contentType, String name, String contentEncoding) {
+		this(data, contentType, name);
         this.contentEncoding = contentEncoding;
 	}
 
 	public InputStream getStream() {
-		return stream;
-	}
-
-	public void setStream(InputStream stream) {
-		this.stream = stream;
+		return new ByteArrayInputStream(this.data);
 	}
 	
 	public String getContentType() {
