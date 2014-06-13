@@ -842,6 +842,7 @@ public class UIData extends javax.faces.component.UIData {
 
                                 boolean value = visitColumnContent(context, callback, uicolumns);
                                 if(value) {
+                                    uicolumns.setRowIndex(-1);
                                     return true;
                                 }
                             }
