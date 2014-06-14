@@ -388,6 +388,7 @@ public class TreeTableRenderer extends CoreRenderer {
         boolean selected = treeNode.isSelected();
         boolean partialSelected = treeNode.isPartialSelected();
         boolean nativeElements = tt.isNativeElements();
+        List<UIColumn> columns = tt.getColumns();
 
         String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
         rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
@@ -417,11 +418,10 @@ public class TreeTableRenderer extends CoreRenderer {
             writer.writeAttribute("aria-selected", String.valueOf(selected), null);
         }
 
-        for(int i=0; i < tt.getChildren().size(); i++) {
-            UIComponent kid = (UIComponent) tt.getChildren().get(i);
+        for(int i=0; i < columns.size(); i++) {
+            UIColumn column = columns.get(i);
 
-            if(kid instanceof Column && kid.isRendered()) {
-                Column column = (Column) kid;
+            if(column.isRendered()) {
                 String columnStyleClass = column.getStyleClass();
                 String columnStyle = column.getStyle();
                 int rowspan = column.getRowspan();
