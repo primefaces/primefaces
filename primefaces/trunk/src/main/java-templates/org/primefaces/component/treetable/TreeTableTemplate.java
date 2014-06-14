@@ -17,11 +17,16 @@ import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.component.column.Column;
 import java.lang.StringBuilder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.util.ComponentUtils;
 
 	public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
@@ -257,4 +262,20 @@ import org.primefaces.util.ComponentUtils;
         }
 
         return null;
+    }
+
+    private List<UIColumn> columns;
+    
+    public List<UIColumn> getColumns() {
+        if(columns == null) {
+            columns = new ArrayList<UIColumn>();
+            
+            for(UIComponent child : this.getChildren()) {
+                if(child instanceof Column) {
+                    columns.add((UIColumn) child);
+                }
+            }
+        }
+        
+        return columns;
     }
