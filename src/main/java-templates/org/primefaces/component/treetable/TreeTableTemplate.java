@@ -18,8 +18,10 @@ import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.component.column.Column;
 import java.lang.StringBuilder;
 import java.util.Locale;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.util.ComponentUtils;
 
 	public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
@@ -239,4 +241,20 @@ import org.primefaces.util.ComponentUtils;
         else {
             return context.getViewRoot().getLocale();
         }
+    }
+
+    public ColumnGroup getColumnGroup(String target) {
+        for(UIComponent child : this.getChildren()) {
+            if(child instanceof ColumnGroup) {
+                ColumnGroup colGroup = (ColumnGroup) child;
+                String type = colGroup.getType();
+
+                if(type != null && type.equals(target)) {
+                    return colGroup;
+                }
+
+            }
+        }
+
+        return null;
     }
