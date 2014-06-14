@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
@@ -88,12 +89,15 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
     protected void encodeListItems(FacesContext context, MultiSelectListbox listbox, SelectItem[] items) throws IOException {
         if(items != null && items.length > 0) {
             ResponseWriter writer = context.getResponseWriter();
+            Converter converter = ComponentUtils.getConverter(context, listbox);
+            String itemValue = null;
             
             for (int i = 0; i < items.length; i++) {
                 SelectItem item = items[i];
+                itemValue = converter != null ? converter.getAsString(context, listbox, item.getValue()) : String.valueOf(item.getValue());
                 writer.startElement("li", null);
                 writer.writeAttribute("class", MultiSelectListbox.ITEM_CLASS, null);
-                writer.writeAttribute("data-value", item.getValue(), null);
+                writer.writeAttribute("data-value", itemValue, null);
                 writer.writeText(item.getLabel(), null);
                 
                 if(item instanceof SelectItemGroup) {
