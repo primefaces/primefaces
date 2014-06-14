@@ -20,6 +20,7 @@ import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -145,14 +146,24 @@ import org.primefaces.util.ComponentUtils;
         }
     }
 
-    public Column findColumn(String clientId) {
-        for(UIComponent child : getChildren()) {
-            if(child instanceof Column && child.getClientId().equals(clientId)) {
-                return (Column) child;
+    public UIColumn findColumn(String clientId) {
+        for(UIColumn column : this.getColumns()) {
+            if(column.getColumnKey().equals(clientId)) {
+                return column;
             }
         }
         
-        return null;
+        FacesContext context = this.getFacesContext();
+        ColumnGroup headerGroup = this.getColumnGroup("header");
+        for(UIComponent row : headerGroup.getChildren()) {
+            for(UIComponent col : row.getChildren()) {
+                if(col.getClientId(context).equals(clientId)) {
+                    return (UIColumn) col;
+                }
+            }
+        }
+       
+        throw new FacesException("Cannot find column with key: " + clientId);
     }
 
     public boolean hasFooterColumn() {
