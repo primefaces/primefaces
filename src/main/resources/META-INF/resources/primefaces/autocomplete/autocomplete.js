@@ -11,7 +11,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.hinput = $(this.jqId + '_hinput');
         this.panel = this.jq.children(this.panelId);
         this.dropdown = this.jq.children('.ui-button');
-        this.disabled = this.input.is(':disabled');
         this.active = true;
         this.cfg.pojo = this.hinput.length == 1;
         this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
@@ -25,45 +24,42 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         this.hinput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
-        if(!this.disabled) {
-            if(this.cfg.multiple) {
-                this.setupMultipleMode();
+        if(this.cfg.multiple) {
+            this.setupMultipleMode();
 
-                this.multiItemContainer.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-            }
-            else {
-                //visuals
-                PrimeFaces.skinInput(this.input);
+            this.multiItemContainer.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+        }
+        else {
+            //visuals
+            PrimeFaces.skinInput(this.input);
 
-                this.input.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-                this.dropdown.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-            }
-
-            //core events
-            this.bindStaticEvents();
-
-            //client Behaviors
-            if(this.cfg.behaviors) {
-                PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
-            }
-
-            //force selection
-            if(this.cfg.forceSelection) {
-                this.setupForceSelection();
-            }
-
-            //Panel management
-            this.appendPanel();
-
-            //itemtip
-            if(this.cfg.itemtip) {
-                this.itemtip = $('<div id="' + this.id + '_itemtip" class="ui-autocomplete-itemtip ui-state-highlight ui-widget ui-corner-all ui-shadow"></div>').appendTo(document.body);
-                this.cfg.itemtipMyPosition = this.cfg.itemtipMyPosition||'left top';
-                this.cfg.itemtipAtPosition = this.cfg.itemtipAtPosition||'right bottom';
-                this.cfg.checkForScrollbar = (this.cfg.itemtipAtPosition.indexOf('right') !== -1);
-            }
+            this.input.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+            this.dropdown.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
         }
 
+        //core events
+        this.bindStaticEvents();
+
+        //client Behaviors
+        if(this.cfg.behaviors) {
+            PrimeFaces.attachBehaviors(this.input, this.cfg.behaviors);
+        }
+
+        //force selection
+        if(this.cfg.forceSelection) {
+            this.setupForceSelection();
+        }
+
+        //Panel management
+        this.appendPanel();
+
+        //itemtip
+        if(this.cfg.itemtip) {
+            this.itemtip = $('<div id="' + this.id + '_itemtip" class="ui-autocomplete-itemtip ui-state-highlight ui-widget ui-corner-all ui-shadow"></div>').appendTo(document.body);
+            this.cfg.itemtipMyPosition = this.cfg.itemtipMyPosition||'left top';
+            this.cfg.itemtipAtPosition = this.cfg.itemtipAtPosition||'right bottom';
+            this.cfg.checkForScrollbar = (this.cfg.itemtipAtPosition.indexOf('right') !== -1);
+        }
     },
 
     appendPanel: function() {
@@ -125,19 +121,15 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.bindKeyEvents();
 
         this.dropdown.mouseover(function() {
-            if(!$this.disabled) {
-                $(this).addClass('ui-state-hover');
-            }
+            $(this).addClass('ui-state-hover');
         }).mouseout(function() {
-            if(!$this.disabled) {
-                $(this).removeClass('ui-state-hover');
-            }
+            $(this).removeClass('ui-state-hover');
         }).mousedown(function() {
-            if(!$this.disabled && $this.active) {
+            if($this.active) {
                 $(this).addClass('ui-state-active');
             }
         }).mouseup(function() {
-            if(!$this.disabled && $this.active) {
+            if($this.active) {
                 $(this).removeClass('ui-state-active');
 
                 $this.search('');
@@ -608,15 +600,21 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     disable: function() {
-        this.disabled = true;
-        this.input.addClass('ui-state-disabled').attr('disabled', 'disabled');
+        this.input.addClass('ui-state-disabled').prop('disabled', true);
+        
+        if(this.dropdown.length) {
+            this.dropdown.addClass('ui-state-disabled').prop('disabled', true);
+        }
     },
 
     enable: function() {
-        this.disabled = false;
-        this.input.removeClass('ui-state-disabled').removeAttr('disabled');
+        this.input.removeClass('ui-state-disabled').prop('disabled', false);
+        
+        if(this.dropdown.length) {
+            this.dropdown.removeClass('ui-state-disabled').prop('disabled', false);
+        }
     },
-
+    
     close: function() {
         this.hide();
     },
