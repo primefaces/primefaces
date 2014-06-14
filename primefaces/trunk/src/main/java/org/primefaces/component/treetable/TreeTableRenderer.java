@@ -30,7 +30,6 @@ import org.primefaces.component.api.UITree;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.SortOrder;
@@ -329,10 +328,9 @@ public class TreeTableRenderer extends CoreRenderer {
                     encodeColumnHeader(context, tt, (UIColumn) kid);
                 }
             }
-
-            writer.endElement("tr");
         }
         
+        writer.endElement("tr");
 		writer.endElement("thead");
 	}
        
