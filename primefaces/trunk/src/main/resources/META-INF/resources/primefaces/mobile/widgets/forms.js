@@ -30,6 +30,22 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
 });
 
 /**
+ * PrimeFaces Mobile Password Widget
+ */
+PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        this.input = this.jq.children('input');
+        this.cfg.enhanced = true;
+        this.cfg.clearBtn = true;
+        
+        this.input.textinput(this.cfg);
+    }
+    
+});
+
+/**
  * PrimeFaces SelectOneButton Widget
  */
 PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
