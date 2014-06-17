@@ -290,6 +290,12 @@
         
         <renderer>
             <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PasswordRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.PasswordRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.SelectOneMenuRenderer</renderer-type>
             <renderer-class>org.primefaces.mobile.renderkit.SelectOneMenuRenderer</renderer-class>
         </renderer>
