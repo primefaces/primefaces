@@ -156,6 +156,7 @@ public class TreeNodeChildren extends ArrayList<TreeNode> {
             TreeNode previous = get(index);
             super.set(index, node);
             node.setParent(parent);
+            updateRowKeys(parent);
             return previous;
         }
     }
