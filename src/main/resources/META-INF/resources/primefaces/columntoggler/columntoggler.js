@@ -153,7 +153,11 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     hide: function() {
-        this.panel.fadeOut('fast');
+    	if (PrimeFaces.isIE(8)) {
+        	this.panel.hide();
+    	} else {
+			this.panel.fadeOut('fast');
+		}
         this.visible = false;
     },
     
