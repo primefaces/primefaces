@@ -7,10 +7,6 @@
     padding: 0;
 }
 
-.ui-ribbon .ui-ribbon-groups {
-    overflow: hidden;
-}
-
 .ui-ribbon .ui-ribbon-group {
     float: left;
     background: none;
@@ -24,7 +20,6 @@
 
 .ui-ribbon .ui-ribbon-group .ui-ribbon-group-content {
     height: 6em;
-    overflow: hidden;
     background: none;
     border: none;
     box-shadow: none;
