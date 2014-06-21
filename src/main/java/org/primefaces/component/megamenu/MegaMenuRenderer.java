@@ -48,11 +48,17 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         MegaMenu menu = (MegaMenu) abstractMenu;
+        String orientation = menu.getOrientation();
+        boolean vertical = orientation.equals("vertical");
 		String clientId = menu.getClientId(context);
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
         styleClass = styleClass == null ? MegaMenu.CONTAINER_CLASS : MegaMenu.CONTAINER_CLASS + " " + styleClass;
 
+        if(vertical) {
+            styleClass = styleClass + " " + MegaMenu.VERTICAL_CLASS;
+        }
+        
         writer.startElement("div", menu);
 		writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
@@ -107,6 +113,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeRootSubmenu(FacesContext context, MegaMenu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        boolean vertical = menu.getOrientation().equals("vertical");
         String icon = submenu.getIcon();
         String label = submenu.getLabel();
         String style = submenu.getStyle();
@@ -139,7 +146,11 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             writer.endElement("span");
         }
         
-        encodeSubmenuIcon(context, submenu);
+        //submenu icon
+        String submenuIcon = (vertical) ? Menu.SUBMENU_RIGHT_ICON_CLASS : Menu.SUBMENU_DOWN_ICON_CLASS;
+        writer.startElement("span", null);
+        writer.writeAttribute("class", submenuIcon, null);
+        writer.endElement("span");
 
         writer.endElement("a");
         
@@ -248,15 +259,6 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.endElement("ul");
     }
     
-    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String icon = submenu.getParent() instanceof MegaMenu ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
-        
-        writer.startElement("span", null);
-        writer.writeAttribute("class", icon, null);
-        writer.endElement("span");
-    }
-
 	protected void encodeSubmenuSeparator(FacesContext context, Separator separator) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String styleClass = separator.getStyleClass();
