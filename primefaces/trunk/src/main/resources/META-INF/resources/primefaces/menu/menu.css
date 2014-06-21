@@ -190,6 +190,18 @@
     width: 12.5em;
 }
 
+.ui-megamenu-vertical {
+    width: 12.5em;
+}
+.ui-megamenu-vertical .ui-menu-parent {
+    clear: both;
+    width: 100%;
+}
+
+.ui-megamenu-vertical .ui-submenu-link.ui-menuitem-link {
+    width: 92%;
+}
+
 /** Breadcrumb **/
 .ui-breadcrumb {
     margin: 0;
