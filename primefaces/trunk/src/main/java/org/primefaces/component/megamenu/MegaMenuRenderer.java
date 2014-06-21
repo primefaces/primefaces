@@ -48,8 +48,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         MegaMenu menu = (MegaMenu) abstractMenu;
-        String orientation = menu.getOrientation();
-        boolean vertical = orientation.equals("vertical");
+        boolean vertical = menu.getOrientation().equals("vertical");
 		String clientId = menu.getClientId(context);
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
