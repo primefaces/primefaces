@@ -428,7 +428,7 @@ PrimeFaces.ajax = {
                 },
                 error: function(xhr, status, errorThrown) {                    
                     if(cfg.onerror) {
-                        cfg.onerror.call(this, [xhr, status, errorThrown]);
+                        cfg.onerror.call(this, xhr, status, errorThrown);
                     }
 
                     if(global) {
