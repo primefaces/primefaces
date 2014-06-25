@@ -78,14 +78,6 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             $('#ui-datepicker-div').addClass('ui-shadow');
         }
         
-        //Hide overlay on resize
-        if(this.cfg.popup) {
-            var resizeNS = 'resize.' + this.id;
-            $(window).unbind(resizeNS).bind(resizeNS, function() {
-                _self.jqEl.datepicker('hide');
-            });
-        }
-        
         //mark target and descandants of target as a trigger for a primefaces overlay
         if(this.cfg.popup) {
             this.jq.data('primefaces-overlay-target', this.id).find('*').data('primefaces-overlay-target', this.id);
