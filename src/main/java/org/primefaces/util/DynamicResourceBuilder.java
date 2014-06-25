@@ -56,12 +56,14 @@ public class DynamicResourceBuilder {
             for (UIComponent kid : component.getChildren()) {
                 if (kid instanceof UIParameter) {
                     UIParameter param = (UIParameter) kid;
-                    Object paramValue = param.getValue();
+                    if (!param.isDisable()) {
+                        Object paramValue = param.getValue();
 
-                    builder.append("&").append(param.getName()).append("=");
+                        builder.append("&").append(param.getName()).append("=");
 
-                    if (paramValue != null) {
-                        builder.append(URLEncoder.encode(param.getValue().toString(), "UTF-8"));
+                        if (paramValue != null) {
+                            builder.append(URLEncoder.encode(param.getValue().toString(), "UTF-8"));
+                        }
                     }
                 }
             }
