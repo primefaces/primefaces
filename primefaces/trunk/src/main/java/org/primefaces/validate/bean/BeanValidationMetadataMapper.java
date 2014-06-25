@@ -16,6 +16,7 @@
 package org.primefaces.validate.bean;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,22 +48,23 @@ public class BeanValidationMetadataMapper {
 
     private static final Logger LOG = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
 
-    private static final Map<Class<?>, ClientValidationConstraint> CONSTRAINT_MAPPER = new HashMap<Class<?>, ClientValidationConstraint>();
+    private static final Map<Class<? extends Annotation>, ClientValidationConstraint> CONSTRAINT_MAPPING =
+            new HashMap<Class<? extends Annotation>, ClientValidationConstraint>();
     
     static {
-        CONSTRAINT_MAPPER.put(NotNull.class, new NotNullClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(Null.class, new NullClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(Size.class, new SizeClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(Min.class, new MinClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(Max.class, new MaxClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(DecimalMin.class, new DecimalMinClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(DecimalMax.class, new DecimalMaxClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(AssertTrue.class, new AssertTrueClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(AssertFalse.class, new AssertFalseClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(Digits.class, new DigitsClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(Past.class, new PastClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(Future.class, new FutureClientValidationConstraint());
-        CONSTRAINT_MAPPER.put(Pattern.class, new PatternClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(NotNull.class, new NotNullClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(Null.class, new NullClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(Size.class, new SizeClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(Min.class, new MinClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(Max.class, new MaxClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(DecimalMin.class, new DecimalMinClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(DecimalMax.class, new DecimalMaxClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(AssertTrue.class, new AssertTrueClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(AssertFalse.class, new AssertFalseClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(Digits.class, new DigitsClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(Past.class, new PastClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(Future.class, new FutureClientValidationConstraint());
+        CONSTRAINT_MAPPING.put(Pattern.class, new PatternClientValidationConstraint());
     }
     
     public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, RequestContext requestContext)
@@ -76,7 +78,7 @@ public class BeanValidationMetadataMapper {
         if (constraints != null && !constraints.isEmpty()) {
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                 Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
-                ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPER.get(annotationType);
+                ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType);
 
                 if (clientValidationConstraint != null) {
                     String validatorId = clientValidationConstraint.getValidatorId();
@@ -120,5 +122,13 @@ public class BeanValidationMetadataMapper {
         }
 
         return new BeanValidationMetadata(metadata, validatorIds);
+    }
+    
+    public static void registerConstraintMapping(Class<? extends Annotation> constraint, ClientValidationConstraint clientValidationConstraint) {
+        CONSTRAINT_MAPPING.put(constraint, clientValidationConstraint);
+    }
+    
+    public static void removeConstraintMapping(Class<? extends Annotation> constraint) {
+        CONSTRAINT_MAPPING.remove(constraint);
     }
 }
