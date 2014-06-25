@@ -90,7 +90,6 @@
  */
 .ui-chkbox {
     display: inline-block;
-	vertical-align: top;
 }
 
 .ui-chkbox .ui-chkbox-box {
@@ -100,7 +99,6 @@
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
-	vertical-align: top;
 }
 
 .ui-chkbox-icon.ui-icon {
