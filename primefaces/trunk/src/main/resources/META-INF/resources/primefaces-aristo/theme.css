@@ -1249,3 +1249,68 @@ a {
 .ui-datatable-odd {
     background: none repeat scroll 0 0 #F2F5F9;
 }
+
+/** Liferay Support **/
+.aui .ui-helper-hidden {
+    display: none;
+}
+
+/*Autocomplete*/
+.aui .ui-helper-reset {
+    margin: 0;
+}
+
+/*Menubar*/
+.aui .ui-widget-content .ui-widget a { 
+    color: #4f4f4f;
+}
+
+/*SelectOneMenu*/
+.aui .ui-selectonemenu .ui-widget {
+    font-size: 1.1em;
+}
+
+.aui .ui-selectonemenu-label .ui-inputfield {
+    color: #313131;
+}
+
+.aui .ui-selectonemenu-label {
+    margin-bottom: 0px;
+}
+
+/*Spinner*/
+.aui .ui-spinner .ui-corner-all {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.aui .ui-spinner .ui-inputfield {
+    -moz-box-shadow: inset 0 2px 2px #8f8f8f;
+    -webkit-box-shadow: inset 0 2px 2px #8f8f8f;
+    box-shadow: inset 0 2px 2px #8f8f8f;
+    color: #313131;
+    margin: 0;
+    padding: 4px;
+    font-weight: normal;
+}
+
+.aui .ui-spinner .ui-spinner-input {
+    vertical-align: middle;
+    padding-right: 20px;
+}
+
+.aui .ui-widget input {
+    font-size: 1em;
+}
+
+.aui .ui-spinner .ui-inputfield.ui-state-focus {
+    -moz-box-shadow: 0px 0px 5px #85b2cb, inset 0 2px 2px #8f8f8f;
+    -webkit-box-shadow: 0px 0px 5px #85b2cb, inset 0 2px 2px #8f8f8f;
+    box-shadow: 0px 0px 5px #85b2cb, inset 0 2px 2px #8f8f8f;
+}
+
+/*Tabs*/
+.aui .ui-tabs .ui-state-default a {
+	color: #4f4f4f;
+}
