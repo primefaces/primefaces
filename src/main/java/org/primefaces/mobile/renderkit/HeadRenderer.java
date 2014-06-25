@@ -44,7 +44,7 @@ public class HeadRenderer extends Renderer {
             first.encodeAll(context);
         }
                 
-        writer.write("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+        writer.write("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>");
         
         String theme = resolveTheme(context);
         if(theme == null) {
