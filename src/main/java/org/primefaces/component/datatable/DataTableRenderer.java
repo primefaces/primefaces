@@ -136,7 +136,8 @@ public class DataTableRenderer extends DataRenderer {
         //Selection
         wb.attr("selectionMode", selectionMode, null)
             .attr("rowSelectMode", table.getRowSelectMode(), "new")
-            .attr("nativeElements", table.isNativeElements(), false);
+            .attr("nativeElements", table.isNativeElements(), false)
+            .attr("disabledTextSelection", table.isDisabledTextSelection(), true);
         
         //Filtering
         if(table.isFilteringEnabled()) {
