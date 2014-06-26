@@ -41,39 +41,41 @@ import org.primefaces.expression.SearchExpressionFacade;
 
 public class ComponentUtils {
 
-	public static final EnumSet<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = EnumSet.of(VisitHint.SKIP_UNRENDERED);
-    
+    public static final EnumSet<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = EnumSet.of(VisitHint.SKIP_UNRENDERED);
+
     public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
 
-	/**
-	 * Algorithm works as follows;
-	 * - If it's an input component, submitted value is checked first since it'd be the value to be used in case validation errors
-	 * terminates jsf lifecycle
-	 * - Finally the value of the component is retrieved from backing bean and if there's a converter, converted value is returned
-	 *
-	 * @param context			FacesContext instance
-	 * @param component			UIComponent instance whose value will be returned
-	 * @return					End text
-	 */
-	public static String getValueToRender(FacesContext context, UIComponent component) {
-		if(component instanceof ValueHolder) {
-			
-			if(component instanceof EditableValueHolder) {
+    private static final String SB_ESCAPE_TEXT = ComponentUtils.class.getName() + "#escapeText";
+
+    /**
+     * Algorithm works as follows;
+     * - If it's an input component, submitted value is checked first since it'd be the value to be used in case validation errors
+     * terminates jsf lifecycle
+     * - Finally the value of the component is retrieved from backing bean and if there's a converter, converted value is returned
+     *
+     * @param context			FacesContext instance
+     * @param component			UIComponent instance whose value will be returned
+     * @return					End text
+     */
+    public static String getValueToRender(FacesContext context, UIComponent component) {
+        if(component instanceof ValueHolder) {
+
+            if(component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
                 ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
-                
+
                 if(config.isInterpretEmptyStringAsNull() && submittedValue == null && context.isValidationFailed() && !input.isValid()) {
                     return null;
                 }
                 else if(submittedValue != null) {
                     return submittedValue.toString();
                 }
-			}
+            }
 
-			ValueHolder valueHolder = (ValueHolder) component;
-			Object value = valueHolder.getValue();
-            
+            ValueHolder valueHolder = (ValueHolder) component;
+            Object value = valueHolder.getValue();
+
             //format the value as string
             if(value != null) {
                 Converter converter = valueHolder.getConverter();
@@ -82,10 +84,10 @@ public class ComponentUtils {
                     if(valueType == String.class && !RequestContext.getCurrentInstance().getApplicationContext().getConfig().isStringConverterAvailable()) {
                         return (String) value;
                     }
-                    
+
                     converter = context.getApplication().createConverter(valueType);
                 }
-                
+
                 if(converter != null)
                     return converter.getAsString(context, component, value);
                 else
@@ -95,19 +97,19 @@ public class ComponentUtils {
                 //component is a value holder but has no value
                 return null;
             }
-		}
-        
+        }
+
         //component it not a value holder
         return null;
-	}
-    
+    }
+
     /**
-	 * Finds appropriate converter for a given value holder
-	 * 
-	 * @param context			FacesContext instance
-	 * @param component			ValueHolder instance to look converter for
-	 * @return					Converter
-	 */
+     * Finds appropriate converter for a given value holder
+     *
+     * @param context			FacesContext instance
+     * @param component			ValueHolder instance to look converter for
+     * @return					Converter
+     */
     public static Converter getConverter(FacesContext context, UIComponent component) {
     	if (!(component instanceof ValueHolder)) {
     		return null;
@@ -136,7 +138,7 @@ public class ComponentUtils {
 
     	return context.getApplication().createConverter(converterType);
     }
-    
+
     // used by p:component
     public static String findComponentClientId(String id) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -165,7 +167,7 @@ public class ComponentUtils {
         }
         return result;
     }
-    
+
     public static UIComponent findParentForm(FacesContext context, UIComponent component) {
         UIComponent parent = component.getParent();
 
@@ -179,7 +181,7 @@ public class ComponentUtils {
 
         return null;
     }
-    
+
     public static UniqueIdVendor findParentUniqueIdVendor(UIComponent component) {
         UIComponent parent = component.getParent();
 
@@ -187,13 +189,13 @@ public class ComponentUtils {
             if(parent instanceof UniqueIdVendor) {
                 return (UniqueIdVendor) parent;
             }
-            
+
             parent = parent.getParent();
         }
-        
+
         return null;
     }
-    
+
     public static UIComponent findParentNamingContainer(UIComponent component) {
         UIComponent parent = component.getParent();
 
@@ -201,21 +203,21 @@ public class ComponentUtils {
             if(parent instanceof NamingContainer) {
                 return (UIComponent) parent;
             }
-            
+
             parent = parent.getParent();
         }
-        
+
         return null;
     }
 
-	public static String escapeJQueryId(String id) {
-		return "#" + id.replaceAll(":", "\\\\\\\\:");
-	}
+    public static String escapeJQueryId(String id) {
+        return "#" + id.replaceAll(":", "\\\\\\\\:");
+    }
 
     public static String resolveWidgetVar(String expression) {
-	    return resolveWidgetVar(expression, FacesContext.getCurrentInstance().getViewRoot());
-	}
-	
+        return resolveWidgetVar(expression, FacesContext.getCurrentInstance().getViewRoot());
+    }
+
     public static String resolveWidgetVar(String expression, UIComponent component) {
     	UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(
     			FacesContext.getCurrentInstance(),
@@ -227,8 +229,8 @@ public class ComponentUtils {
         } else {
             throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");
         }
-	}
-    
+    }
+
     /**
      * Implementation from Apache Commons Lang
      */
@@ -276,10 +278,10 @@ public class ComponentUtils {
 
 		return value.trim().equals("");
     }
-    
+
     public static boolean isRTL(FacesContext context, RTLAware component) {
         boolean globalValue = RequestContext.getCurrentInstance().isRTL();
-        
+
         return globalValue||component.isRTL();
     }
 
@@ -297,7 +299,7 @@ public class ComponentUtils {
 	    	}
     	}
     }
-    
+
     public static void processValidatorsOfFacetsAndChilds(UIComponent component, FacesContext context) {
     	if (component.getFacetCount() > 0) {
     		for (UIComponent facet : component.getFacets().values()) {
@@ -312,7 +314,7 @@ public class ComponentUtils {
 	    	}
     	}
     }
-    
+
     public static void processUpdatesOfFacetsAndChilds(UIComponent component, FacesContext context) {
     	if (component.getFacetCount() > 0) {
     		for (UIComponent facet : component.getFacets().values()) {
@@ -327,14 +329,14 @@ public class ComponentUtils {
 	    	}
     	}
     }
-    
+
     public static NavigationCase findNavigationCase(FacesContext context, String outcome) {
         ConfigurableNavigationHandler navHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
         String outcomeValue = (outcome == null) ? context.getViewRoot().getViewId() : outcome;
-        
+
         return navHandler.getNavigationCase(context, null, outcomeValue);
     }
-    
+
     public static Map<String, List<String>> getUIParams(UIComponent component) {
         List<UIComponent> children = component.getChildren();
         Map<String, List<String>> params = null;
@@ -361,21 +363,21 @@ public class ComponentUtils {
 
         return params;
     }
-    
+
     public static String getResourceURL(FacesContext context, String value) {
         if (isValueBlank(value)) {
             return Constants.EMPTY_STRING;
         }
         else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
             return value;
-        } 
+        }
         else {
             String url = context.getApplication().getViewHandler().getResourceURL(context, value);
 
             return context.getExternalContext().encodeResourceURL(url);
         }
     }
-    
+
     public static boolean isSkipIteration(VisitContext visitContext) {
         if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF21()) {
             return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
@@ -385,16 +387,72 @@ public class ComponentUtils {
             return skipIterationHint != null && skipIterationHint.booleanValue() == true;
         }
     }
-    
-	public static String resolveWidgetVar(FacesContext context, Widget widget) {
-        UIComponent component = (UICommand) widget;
-		String userWidgetVar = (String) component.getAttributes().get("widgetVar");
 
-		if (userWidgetVar != null) {
-			return userWidgetVar;
+    public static String resolveWidgetVar(FacesContext context, Widget widget) {
+        UIComponent component = (UICommand) widget;
+        String userWidgetVar = (String) component.getAttributes().get("widgetVar");
+
+        if (userWidgetVar != null) {
+            return userWidgetVar;
         }
         else {
-			return "widget_" + component.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
+            return "widget_" + component.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
         }
-	}
+    }
+
+    /**
+     * Duplicate code from json-simple project under apache license
+     * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
+     */
+    public static String escapeText(String text) {
+        if(text == null) {
+            return null;
+        }
+
+        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE_TEXT);
+
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            switch (ch) {
+                case '"':
+                    sb.append("\\\"");
+                    break;
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '\b':
+                    sb.append("\\b");
+                    break;
+                case '\f':
+                    sb.append("\\f");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
+                case '/':
+                    sb.append("\\/");
+                    break;
+                default:
+                    //Reference: http://www.unicode.org/versions/Unicode5.1.0/
+                    if((ch >= '\u0000' && ch <= '\u001F') || (ch >= '\u007F' && ch <= '\u009F') || (ch >= '\u2000' && ch <= '\u20FF')) {
+                        String ss = Integer.toHexString(ch);
+                        sb.append("\\u");
+                        for (int k = 0; k < 4 - ss.length(); k++) {
+                            sb.append('0');
+                        }
+                        sb.append(ss.toUpperCase());
+                    } else {
+                        sb.append(ch);
+                    }
+            }
+        }
+
+        return sb.toString();
+    }
 }
