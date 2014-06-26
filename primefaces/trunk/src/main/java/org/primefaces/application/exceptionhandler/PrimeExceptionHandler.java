@@ -37,6 +37,7 @@ import javax.faces.context.ExceptionHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.view.ViewDeclarationLanguage;
@@ -77,6 +78,11 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             if (unhandledExceptionQueuedEvents.hasNext()) {
                 try {
                     Throwable throwable = unhandledExceptionQueuedEvents.next().getContext().getException();
+
+                    if (throwable instanceof AbortProcessingException) {
+                        return;
+                    }
+
                     unhandledExceptionQueuedEvents.remove();
 
                     Throwable rootCause = getRootCause(throwable);
