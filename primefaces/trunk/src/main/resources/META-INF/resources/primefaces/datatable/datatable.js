@@ -23,6 +23,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.selectionMode) {
             this.selectionHolder = this.jqId + '_selection';
+            this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
 
             var preselection = $(this.selectionHolder).val();
             this.selection = preselection == "" ? [] : preselection.split(',');
@@ -947,12 +948,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             } 
 
-            PrimeFaces.clearSelection();
+            if(this.cfg.disabledTextSelection) {
+                PrimeFaces.clearSelection();
+            }
         }
     },
     
     onRowDblclick: function(event, row) {
-        PrimeFaces.clearSelection();
+        if(this.cfg.disabledTextSelection) {
+            PrimeFaces.clearSelection();
+        }
         
         //Check if rowclick triggered this event not a clickable element in row content
         if($(event.target).is('td,span:not(.ui-c)')) {
