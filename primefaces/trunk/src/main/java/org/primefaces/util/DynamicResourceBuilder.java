@@ -62,7 +62,7 @@ public class DynamicResourceBuilder {
                         builder.append("&").append(param.getName()).append("=");
 
                         if (paramValue != null) {
-                            builder.append(URLEncoder.encode(param.getValue().toString(), "UTF-8"));
+                            builder.append(URLEncoder.encode(paramValue.toString(), "UTF-8"));
                         }
                     }
                 }
