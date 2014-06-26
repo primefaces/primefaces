@@ -15,12 +15,13 @@
  */
 package org.primefaces.application.exceptionhandler;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ExceptionInfo {
-    
+public class ExceptionInfo implements Serializable {
+
     public static final String ATTRIBUTE_NAME = ExceptionInfo.class.getName();
-    
+
     private Throwable exception;
     private String type;
     private String message;

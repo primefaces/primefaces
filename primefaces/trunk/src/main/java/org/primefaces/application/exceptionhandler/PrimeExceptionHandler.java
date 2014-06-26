@@ -52,24 +52,24 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private final ExceptionHandler wrapped;
-    
+
     public PrimeExceptionHandler(ExceptionHandler wrapped) {
         this.wrapped = wrapped;
     }
-    
+
     @Override
     public ExceptionHandler getWrapped() {
         return wrapped;
     }
-    
+
     @Override
     public void handle() throws FacesException {
         FacesContext context = FacesContext.getCurrentInstance();
-        
+
         if (context.getResponseComplete()) {
             return;
         }
-        
+
         Iterable<ExceptionQueuedEvent> exceptionQueuedEvents = getUnhandledExceptionQueuedEvents();
         if (exceptionQueuedEvents != null && exceptionQueuedEvents.iterator() != null) {
             Iterator<ExceptionQueuedEvent> unhandledExceptionQueuedEvents = getUnhandledExceptionQueuedEvents().iterator();
@@ -89,11 +89,11 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
                     // always log the exception
                     LOG.log(Level.SEVERE, rootCause.getMessage(), rootCause);
-                    
+
                     if (context.getPartialViewContext().isAjaxRequest()) {
                         handleAjaxException(context, rootCause, info);
                     } else {
-                        handleRedirect(context, rootCause, info);
+                        handleRedirect(context, rootCause, info, false);
                     }
                 } catch (Exception ex) {
                     LOG.log(Level.SEVERE, "Could not handle exception!", ex);
@@ -116,15 +116,19 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         return throwable;
     }
-    
+
     protected void handleAjaxException(FacesContext context, Throwable rootCause, ExceptionInfo info) throws Exception {
         ExternalContext externalContext = context.getExternalContext();
-        
+
+        boolean responseResetted = false;
+
         if (context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
             if (!externalContext.isResponseCommitted()) {
                 String characterEncoding = externalContext.getResponseCharacterEncoding();
                 externalContext.responseReset();
                 externalContext.setResponseCharacterEncoding(characterEncoding);
+
+                responseResetted = true;
             }
         }
 
@@ -134,12 +138,12 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         // redirect if no UIAjaxExceptionHandler available
         if (handlerComponent == null) {
-            handleRedirect(context, rootCause, info);
+            handleRedirect(context, rootCause, info, responseResetted);
         }
         // handle custom update / onexception callback
         else {
             context.getAttributes().put(ExceptionInfo.ATTRIBUTE_NAME, info);
-            
+
             externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getResponseCharacterEncoding());
             externalContext.addResponseHeader("Cache-Control", "no-cache");
             externalContext.setResponseContentType("text/xml");
@@ -148,16 +152,16 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
             writer.startDocument();
             writer.startElement("changes", null);
-            
+
             if (!ComponentUtils.isValueBlank(handlerComponent.getUpdate())) {
                 List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
-                
+
                 if (updates != null && updates.size() > 0) {
                     context.setResponseWriter(writer);
 
                     for (int i = 0; i < updates.size(); i++) {
                         UIComponent component = updates.get(i);
-                        
+
                         writer.startElement("update", null);
                         writer.writeAttribute("id", component.getClientId(context), null);
                         writer.startCDATA();
@@ -177,7 +181,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 writer.write("var hf=function(type,message,timestampp){");
                 writer.write(handlerComponent.getOnexception());
                 writer.write("};hf.call(this,'" + info.getType() + "','" + info.getMessage() + "','" + info.getFormattedTimestamp() + "');");
-                
+
                 writer.endCDATA();
                 writer.endElement("eval");
             }
@@ -186,7 +190,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             writer.endDocument();
 
             context.responseComplete();
-        }   
+        }
     }
 
     protected ExceptionInfo createExceptionInfo(Throwable rootCause) throws IOException {
@@ -209,22 +213,22 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         return info;
     }
-    
+
     /**
      * Finds the proper {@link AjaxExceptionHandler} for the given {@link Throwable}.
-     * 
+     *
      * @param context The {@link FacesContext}.
      * @param throwable The occurred {@link Throwable}.
      * @return The {@link UIAjaxExceptionHandler} or <code>null</code>.
      */
     protected AjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable throwable) {
         AjaxExceptionHandlerVisitCallback visitCallback = new AjaxExceptionHandlerVisitCallback(throwable);
-        
+
         context.getViewRoot().visitTree(VisitContext.createVisitContext(context), visitCallback);
-        
+
         return visitCallback.getHandler();
     }
-    
+
     /**
      * Builds the view if not already available.
      * This is mostly required for ViewExpiredException's.
@@ -253,7 +257,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 rootCause = new javax.faces.application.ViewExpiredException(viewId);
             }
         }
-        
+
         return rootCause;
     }
 
@@ -282,8 +286,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         return viewId;
     }
 
-    protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info) throws IOException {
+    protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info, boolean responseResetted) throws IOException {
         context.getExternalContext().getFlash().put(ExceptionInfo.ATTRIBUTE_NAME, info);
+        context.getExternalContext().getFlash().setRedirect(true);
 
         Map<String, String> errorPages = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getErrorPages();
 
@@ -300,7 +305,27 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                     "No default error page (Status 500 or java.lang.Throwable) and no error page for type \"" + rootCause.getClass() + "\" defined!");
         }
 
-        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + errorPage);
+        String url = context.getExternalContext().getRequestContextPath() + errorPage;
+
+        // workaround for mojarra -> mojarra doesn't reset PartialResponseWriter#inChanges if we call externalContext#resetResponse
+        if (responseResetted && context.getPartialViewContext().isAjaxRequest()) {
+            ExternalContext externalContext = context.getExternalContext();
+            PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
+            externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getResponseCharacterEncoding());
+            externalContext.addResponseHeader("Cache-Control", "no-cache");
+            externalContext.setResponseContentType("text/xml");
+
+            writer.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+            writer.startElement("partial-response", null);
+            writer.startElement("redirect", null);
+            writer.writeAttribute("url", url, null);
+            writer.endElement("redirect");
+            writer.endElement("partial-response");
+        }
+        else {
+            context.getExternalContext().redirect(url);
+        }
+
         context.responseComplete();
     }
 }
