@@ -186,7 +186,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
                 writer.write("var hf=function(type,message,timestampp){");
                 writer.write(handlerComponent.getOnexception());
-                writer.write("};hf.call(this,'" + info.getType() + "','" + info.getMessage() + "','" + info.getFormattedTimestamp() + "');");
+                writer.write("};hf.call(this,\"" + info.getType() + "\",\"" + ComponentUtils.escapeText(info.getMessage()) + "\",\"" + info.getFormattedTimestamp() + "\");");
 
                 writer.endCDATA();
                 writer.endElement("eval");
