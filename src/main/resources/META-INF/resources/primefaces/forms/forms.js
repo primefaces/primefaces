@@ -2201,10 +2201,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         });
         
         this.closer.on('focus.selectCheckboxMenu', function(e) {
-            this.closer.addClass('ui-state-focus');
+            $this.closer.addClass('ui-state-focus');
         })
         .on('blur.selectCheckboxMenu', function(e) {
-            this.closer.removeClass('ui-state-focus');
+            $this.closer.removeClass('ui-state-focus');
         })
         .on('keydown.selectCheckboxMenu', function(e) {
             $this.hide(true);
