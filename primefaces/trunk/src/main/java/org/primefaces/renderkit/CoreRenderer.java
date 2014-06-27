@@ -144,11 +144,7 @@ public abstract class CoreRenderer extends Renderer {
                 if(builder == null) {
                     builder = SharedStringBuilder.get(context, SB_RENDER_DOM_EVENTS);
                 }
-
-                if(hasEventValue) {
-                    builder.append(eventValue).append(";");
-                }
-
+                
                 if(hasEventBehaviors) {
                     String clientId = ((UIComponent) component).getClientId(context);
                     List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
@@ -156,8 +152,13 @@ public abstract class CoreRenderer extends Renderer {
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEvent, clientId, params);
                     int size = eventBehaviors.size();
 
-                    if(size > 1) {
+                    if(size > 1 || hasEventValue) {
                         builder.append("PrimeFaces.bcn(this,event,[");
+                        
+                        if(hasEventValue) {
+                            builder.append("function(event){").append(eventValue).append("},");
+                        }
+                        
                         for (int i = 0; i < size; i++) {
                             ClientBehavior behavior = eventBehaviors.get(i);
                             String script = behavior.getScript(cbc);
@@ -179,6 +180,9 @@ public abstract class CoreRenderer extends Renderer {
                         }
                     }
                 }
+                else if(hasEventValue) {
+                    builder.append(eventValue);
+                }
 
                 if(builder.length() > 0) {
                     writer.writeAttribute(domEvent, builder.toString(), domEvent);
@@ -187,7 +191,7 @@ public abstract class CoreRenderer extends Renderer {
             }
         }
     }
-
+        
     protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs, String[] ignoredAttrs) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
