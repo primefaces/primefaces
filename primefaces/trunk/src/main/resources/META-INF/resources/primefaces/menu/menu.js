@@ -1143,22 +1143,28 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     showSubmenu: function(menuitem, submenu) {
-        submenu.css('z-index', ++PrimeFaces.zindex);
-
+        var pos = null;
+        
         if(this.cfg.vertical) {
-            submenu.css({
-                'left': menuitem.outerWidth()
-                ,'top': 0
-            });
+            pos = {
+                my: 'left top',
+                at: 'right top',
+                of: menuitem,
+                collision: 'flipfit'
+            };
         }
         else {
-            submenu.css({
-                'left': 0
-                ,'top': menuitem.outerHeight()
-            });
+            pos = {
+                my: 'left top',
+                at: 'left bottom',
+                of: menuitem,
+                collision: 'flipfit'
+            };
         }
 
-        submenu.show();
+        submenu.css('z-index', ++PrimeFaces.zindex)
+                .show()
+                .position(pos);
     }
     
 });
