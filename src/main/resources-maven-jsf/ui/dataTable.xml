@@ -336,7 +336,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>new</defaultValue>
-            <description>Defines row select mode for checkbox based selection, valid values are new (default) and add.</description>
+            <description>Defines row select mode for checkbox based selection, valid values are new (default), add and checkbox.</description>
 		</attribute>
         <attribute>
 			<name>rowExpandMode</name>
