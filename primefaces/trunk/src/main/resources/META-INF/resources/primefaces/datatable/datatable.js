@@ -22,17 +22,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.bindSortEvents();
 
         if(this.cfg.selectionMode) {
-            this.selectionHolder = this.jqId + '_selection';
-            this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
-
-            var preselection = $(this.selectionHolder).val();
-            this.selection = preselection == "" ? [] : preselection.split(',');
-            
-            //shift key based range selection
-            this.originRowIndex = 0;
-            this.cursorIndex = null;
-
-            this.bindSelectionEvents();
+            this.setupSelection();
         }
 
         if(this.cfg.filter) {
@@ -293,30 +283,50 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
     
+    setupSelection: function() {
+        this.selectionHolder = this.jqId + '_selection';
+        this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
+        this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
+        this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
+
+        var preselection = $(this.selectionHolder).val();
+        this.selection = (preselection === "") ? [] : preselection.split(',');
+
+        //shift key based range selection
+        this.originRowIndex = 0;
+        this.cursorIndex = null;
+
+        this.bindSelectionEvents();
+    },
+    
     /**
      * Applies events related to selection in a non-obstrusive way
      */
     bindSelectionEvents: function() {
-        var $this = this;
-        this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
-        this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
-
-        //row events
-        if(this.cfg.selectionMode !== 'radio') {
-            this.bindRowHover();
-            
-            this.tbody.off('click.dataTable', this.rowSelector).on('click.dataTable', this.rowSelector, null, function(e) {
-                $this.onRowClick(e, this);
-            });
-        }
-        else {
+        if(this.cfg.selectionMode === 'radio') {
             this.bindRadioEvents();
         }
-        
-        if(this.isCheckboxSelectionEnabled()) {
+        else if(this.cfg.selectionMode === 'checkbox') {
             this.bindCheckboxEvents();
             this.updateHeaderCheckbox();
+            
+            if(this.cfg.rowSelectMode !== 'checkbox') {
+                this.bindRowEvents();
+            }
         }
+        else {
+            this.bindRowEvents();
+        }
+    },
+    
+    bindRowEvents: function() {
+        var $this = this;
+        
+        this.bindRowHover();
+
+        this.tbody.off('click.dataTable', this.rowSelector).on('click.dataTable', this.rowSelector, null, function(e) {
+            $this.onRowClick(e, this);
+        });
         
         //double click
         if(this.hasBehavior('rowDblselect')) {
