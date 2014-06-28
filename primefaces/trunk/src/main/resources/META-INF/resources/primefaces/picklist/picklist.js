@@ -178,11 +178,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
    
     selectCheckbox: function(chkbox) {
-        chkbox.removeClass('ui-state-hover').addClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+        chkbox.removeClass('ui-state-hover').addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
     },
     
     unselectCheckbox: function(chkbox) {
-        chkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+        chkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
     },
         
     generateItems: function(list, input) {   

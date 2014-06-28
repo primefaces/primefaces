@@ -1095,10 +1095,9 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             String boxClass = HTML.CHECKBOX_BOX_CLASS;
-            String iconClass = HTML.CHECKBOX_ICON_CLASS;
             boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
             boxClass = checked ? boxClass + " ui-state-active" : boxClass;
-            iconClass = checked ? iconClass + " " + HTML.CHECKBOX_CHECKED_ICON_CLASS : iconClass;
+            String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 
             writer.startElement("div", null);
             writer.writeAttribute("class", styleClass, "styleClass");

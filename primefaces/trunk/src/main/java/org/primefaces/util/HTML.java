@@ -187,7 +187,7 @@ public class HTML {
     public final static String CHECKBOX_CLASS = "ui-chkbox ui-widget";
     public final static String CHECKBOX_BOX_CLASS = "ui-chkbox-box ui-widget ui-corner-all ui-state-default";
     public final static String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
-    public final static String CHECKBOX_ICON_CLASS = "ui-chkbox-icon ui-c";
+    public final static String CHECKBOX_UNCHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-blank ui-c";
     public final static String CHECKBOX_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-check ui-c";
     public final static String CHECKBOX_PARTIAL_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-minus ui-c";
     public final static String CHECKBOX_LABEL_CLASS = "ui-chkbox-label";

@@ -359,7 +359,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         this.removeFromSelection(rowKey);
         
         treeNode.find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-highlight');
-        icon.removeClass('ui-icon ui-icon-check').addClass('ui-icon ui-icon-minus');
+        icon.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus');
         treeNode.removeClass('ui-treenode-selected ui-treenode-unselected').addClass('ui-treenode-hasselected').attr('aria-checked', false).attr('aria-selected', false);
     },
         
@@ -370,7 +370,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         rowKey = this.getRowKey(treeNode);
 
         box.removeClass('ui-state-hover');
-        icon.removeClass('ui-icon ui-icon-minus').addClass('ui-icon ui-icon-check');
+        icon.removeClass('ui-icon-blank ui-icon-minus').addClass('ui-icon-check');
         this.addToSelection(rowKey);
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-unselected').addClass('ui-treenode-selected').attr('aria-checked', true).attr('aria-selected', true);
     },
@@ -382,7 +382,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         rowKey = this.getRowKey(treeNode);
         
         box.removeClass('ui-state-hover');
-        icon.removeClass('ui-icon ui-icon-minus ui-icon-check');
+        icon.removeClass('ui-icon-minus ui-icon-check').addClass('ui-icon-blank');
         this.removeFromSelection(rowKey);
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-selected').addClass('ui-treenode-unselected').attr('aria-checked', false).attr('aria-selected', false);
     }
@@ -617,7 +617,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
             if(node.children('.ui-treenode-children').find('.ui-chkbox-icon.ui-icon-check').length > 0) {
                 node.addClass('ui-treenode-hasselected');
-                icon.addClass('ui-icon ui-icon-minus');
+                icon.removeClass('ui-icon-blank').addClass('ui-icon-minus');
             }
         });
     },
@@ -1218,7 +1218,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
             childrenContainer = _self.getNodeChildrenContainer(node);
 
             if(childrenContainer.find('.ui-chkbox-icon.ui-icon-check').length > 0) {
-                icon.addClass('ui-icon ui-icon-minus');
+                icon.removeClass('ui-icon-blank').addClass('ui-icon-minus');
             }
         });
     },
