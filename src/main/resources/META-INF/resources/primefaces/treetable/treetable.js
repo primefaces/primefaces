@@ -311,7 +311,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.nativeElements)
                 node.find('> td:first-child > :checkbox').prop('checked', true).prop('indeterminate', false);
             else
-                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-hover').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-minus').addClass('ui-icon ui-icon-check');
+                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box').removeClass('ui-state-hover').children('span.ui-chkbox-icon').removeClass('ui-icon-blank ui-icon-minus').addClass('ui-icon-check');
         }
         
         if(!silent) {
@@ -330,7 +330,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.nativeElements)
                 node.find('> td:first-child > :checkbox').prop('checked', false).prop('indeterminate', false);
             else
-                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check ui-icon-minus');
+                node.find('> td:first-child > div.ui-chkbox > div.ui-chkbox-box > span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check ui-icon-minus');
         }
 
         if(!silent) {
@@ -474,7 +474,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.nativeElements)
                 checkbox.prop('indeterminate', true);
             else
-                checkbox.removeClass('ui-icon ui-icon-check').addClass('ui-icon ui-icon-minus');
+                checkbox.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus');
     
             this.removeSelection(node.attr('data-rk'));
         }
@@ -484,7 +484,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.nativeElements)
                 checkbox.prop('indeterminate', false).prop('checked', false);
             else
-                checkbox.removeClass('ui-icon ui-icon-check ui-icon-minus');
+                checkbox.addClass('ui-icon-blank').removeClass('ui-icon-check ui-icon-minus');
             
             this.removeSelection(node.attr('data-rk'));
         }

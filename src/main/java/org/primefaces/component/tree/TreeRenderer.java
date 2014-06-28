@@ -650,7 +650,7 @@ public class TreeRenderer extends CoreRenderer {
 
 	protected void encodeCheckbox(FacesContext context, Tree tree, TreeNode node, boolean selected) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        String iconClass = selected ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_ICON_CLASS;
+        String iconClass = selected ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);

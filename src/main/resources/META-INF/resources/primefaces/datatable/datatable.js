@@ -1282,14 +1282,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this = this;
 
             if(checked) {
-                this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+                this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
 
                 checkboxes.each(function() {
                     $this.unselectRowWithCheckbox($(this), true);
                 });
             } 
             else {
-                this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+                this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
 
                 checkboxes.each(function() {
                     $this.selectRowWithCheckbox($(this), true);
@@ -1319,13 +1319,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(!checkbox.hasClass('ui-state-focus')) {
             checkbox.addClass('ui-state-active');
         }
-        checkbox.children('span.ui-chkbox-icon:first').addClass('ui-icon ui-icon-check');
+        checkbox.children('span.ui-chkbox-icon:first').removeClass('ui-icon-blank').addClass(' ui-icon-check');
         checkbox.prev().children('input').prop('checked', true);
     },
     
     unselectCheckbox: function(checkbox) {
         checkbox.removeClass('ui-state-active');
-        checkbox.children('span.ui-chkbox-icon:first').removeClass('ui-icon ui-icon-check');
+        checkbox.children('span.ui-chkbox-icon:first').addClass('ui-icon-blank').removeClass('ui-icon-check');
         checkbox.prev().children('input').prop('checked', false); 
     },
     
@@ -2247,14 +2247,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.nativeElements)
             this.checkAllToggler.prop('checked', true);
         else
-            this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+            this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
     },
     
     uncheckHeaderCheckbox: function() {
         if(this.cfg.nativeElements)
             this.checkAllToggler.prop('checked', false);
         else
-            this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+            this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
     },
             
     setupStickyHeader: function() {

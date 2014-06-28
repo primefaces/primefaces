@@ -29,7 +29,7 @@ public class RendererUtils {
     
     public static void encodeCheckbox(FacesContext context, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String icon = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_ICON_CLASS;
+        String icon = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
@@ -55,7 +55,7 @@ public class RendererUtils {
         else if (partialSelected)
             icon = HTML.CHECKBOX_PARTIAL_CHECKED_ICON_CLASS;
         else
-            icon = HTML.CHECKBOX_ICON_CLASS;
+            icon = HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
         
         writer.startElement("div", null);
         writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
