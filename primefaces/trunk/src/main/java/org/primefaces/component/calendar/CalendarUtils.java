@@ -1,11 +1,11 @@
 /*
  * Copyright 2009-2014 PrimeTek.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under PrimeFaces Commercial License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.primefaces.org/elite/license.xhtml
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,15 +17,27 @@ package org.primefaces.component.calendar;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.HashMap;
+import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.calendar.converter.PatternConverter;
+import org.primefaces.component.calendar.converter.DateConverter;
+import org.primefaces.component.calendar.converter.TimeConverter;
 
 /**
  * Utility class for calendar component
  */
 public class CalendarUtils {
 
+    static Map<String,PatternConverter> CONVERTER;
+    
+    static {
+        CONVERTER = new HashMap<String,PatternConverter>();
+        CONVERTER.put("TIME", new TimeConverter());
+        CONVERTER.put("DATE", new DateConverter());
+    }
+    
 	public static String getValueAsString(FacesContext context, Calendar calendar) {
 		Object submittedValue = calendar.getSubmittedValue();
 		if(submittedValue != null) {
@@ -98,24 +110,17 @@ public class CalendarUtils {
 		if(pattern == null)
 			return null;
 		else {
-			//year
-			pattern = pattern.replaceAll("yy", "y");
-			
-			//month
-			if(pattern.indexOf("MMM") != -1)
-				pattern = pattern.replaceAll("MMM", "M");
-			else
-				pattern = pattern.replaceAll("M", "m");
-			
-			//day of week
-			pattern = pattern.replaceAll("EEE", "D");
-
-            //time
-            if(pattern.indexOf("H") != -1 || pattern.indexOf("h") != -1) {
-                pattern = pattern.replaceAll("a", "TT");
-            }
-			
+            //time            
+            if(pattern.indexOf("h") != -1 || pattern.indexOf("H") != -1 || pattern.indexOf("m") != -1 || pattern.indexOf("s") != -1 
+                 || pattern.indexOf("S") != -1  || pattern.indexOf("a") != -1)
+                pattern = CONVERTER.get("TIME").Convert(pattern);
+            
+			//year || month || day 
+            if(pattern.indexOf("y") != -1 || pattern.indexOf("E") != -1 || pattern.indexOf("D") != -1 || pattern.indexOf("M") != -1)
+                pattern = CONVERTER.get("DATE").Convert(pattern);
+            
 			return pattern;
 		}
 	}
+    
 }
