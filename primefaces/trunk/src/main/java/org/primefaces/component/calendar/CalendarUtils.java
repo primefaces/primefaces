@@ -16,26 +16,26 @@
 package org.primefaces.component.calendar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.calendar.converter.PatternConverter;
-import org.primefaces.component.calendar.converter.DateConverter;
-import org.primefaces.component.calendar.converter.TimeConverter;
+import org.primefaces.component.calendar.converter.DatePatternConverter;
+import org.primefaces.component.calendar.converter.TimePatternConverter;
 
 /**
  * Utility class for calendar component
  */
 public class CalendarUtils {
 
-    static Map<String,PatternConverter> CONVERTER;
+    private final static List<PatternConverter> PATTERN_CONVERTERS;
     
     static {
-        CONVERTER = new HashMap<String,PatternConverter>();
-        CONVERTER.put("TIME", new TimeConverter());
-        CONVERTER.put("DATE", new DateConverter());
+        PATTERN_CONVERTERS = new ArrayList<PatternConverter>();
+        PATTERN_CONVERTERS.add(new TimePatternConverter());
+        PATTERN_CONVERTERS.add(new DatePatternConverter());
     }
     
 	public static String getValueAsString(FacesContext context, Calendar calendar) {
@@ -107,19 +107,16 @@ public class CalendarUtils {
 	 * @return converted pattern
 	 */
 	public static String convertPattern(String pattern) {
-		if(pattern == null)
+		if(pattern == null) {
 			return null;
+        }
 		else {
-            //time            
-            if(pattern.indexOf("h") != -1 || pattern.indexOf("H") != -1 || pattern.indexOf("m") != -1 || pattern.indexOf("s") != -1 
-                 || pattern.indexOf("S") != -1  || pattern.indexOf("a") != -1)
-                pattern = CONVERTER.get("TIME").Convert(pattern);
-            
-			//year || month || day 
-            if(pattern.indexOf("y") != -1 || pattern.indexOf("E") != -1 || pattern.indexOf("D") != -1 || pattern.indexOf("M") != -1)
-                pattern = CONVERTER.get("DATE").Convert(pattern);
-            
-			return pattern;
+            String convertedPattern = pattern;
+            for (PatternConverter converter : PATTERN_CONVERTERS) {
+                convertedPattern = converter.convert(convertedPattern);
+            }
+
+            return convertedPattern;
 		}
 	}
     
