@@ -38,7 +38,6 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIPanel;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -70,11 +69,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     private static final Object[] LEAF_NO_STATE = new Object[]{null, null};
 
     protected enum PropertyKeys {
-        value, 
-        var, 
-        size, 
-        varStatus, 
-        offset, 
+        value,
+        var,
+        size,
+        varStatus,
+        offset,
         step,
         dynamic,
         prependId
@@ -148,14 +147,14 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     public void setVarStatus(String varStatus) {
         getStateHelper().put(PropertyKeys.varStatus, varStatus);
     }
-    
+
     public boolean isDynamic() {
 		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
 	}
 	public void setDynamic(boolean _dynamic) {
 		getStateHelper().put(PropertyKeys.dynamic, _dynamic);
 	}
-    
+
     public boolean isPrependId() {
 		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.prependId, true);
 	}
@@ -241,7 +240,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 }
                 parent = parent.getParent();
             }
-            
+
             return null;
         }
     }
@@ -566,13 +565,18 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     public int getRowCount() {
         return getDataModel().getRowCount();
     }
-    
+
     /**
      * Returns the rowCount of the underlying DataModel.
      *
      * @return
      */
     public Object getIndexData() {
+        if (!getDataModel().isRowAvailable())
+        {
+            return null;
+        }
+
         return getDataModel().getRowData();
     }
 
@@ -832,7 +836,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
                 // is the component an inner component?
                 if (clientId.startsWith(baseClientId)) {
-                    // Check if the clientId for the component, which we 
+                    // Check if the clientId for the component, which we
                     // are looking for, has a rowIndex attached
                     char separator = UINamingContainer.getSeparatorChar(context);
                     String subId = clientId.substring(baseClientId.length() + 1);
@@ -1011,10 +1015,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         if (!isRendered()) {
             return;
         }
-        
+
         pushComponentToEL(context, null);
-        
-        if (!this.isRequestSource(context)) { 
+
+        if (!this.isRequestSource(context)) {
             if (this.isRepeating()) {
                 process(context, PhaseId.APPLY_REQUEST_VALUES);
             }
@@ -1029,8 +1033,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 }
             }
         }
-        
-        
+
+
         try {
             decode(context);
         } catch (RuntimeException e) {
@@ -1040,19 +1044,19 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             popComponentFromEL(context);
         }
     }
-    
+
     @Override
     public void processValidators(FacesContext context) {
         if (!isRendered()) {
             return;
         }
-        
+
         if (this.isRequestSource(context)) {
             return;
         }
-        
+
         pushComponentToEL(context, null);
-        
+
         Application app = context.getApplication();
         app.publishEvent(context, PreValidateEvent.class, this);
 
@@ -1074,7 +1078,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         if (context.getRenderResponse()) {
             _isValidChilds = false;
         }
-        
+
         app.publishEvent(context, PostValidateEvent.class, this);
         popComponentFromEL(context);
     }
@@ -1084,16 +1088,16 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         if (!isRendered()) {
             return;
         }
-        
+
         if (this.isRequestSource(context)) {
             return;
         }
-        
+
         pushComponentToEL(context, null);
 
         if (this.isRepeating()) {
             process(context, PhaseId.UPDATE_MODEL_VALUES);
-        } 
+        }
         else {
             if (this.isDynamic()) {
                 for(Tab tab : getLoadedTabs()) {
@@ -1104,11 +1108,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 ComponentUtils.processUpdatesOfFacetsAndChilds(this, context);
             }
         }
-        
+
         if (context.getRenderResponse()) {
             _isValidChilds = false;
         }
-        
+
         popComponentFromEL(context);
     }
 
@@ -1276,7 +1280,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
                         // get the component associated with the target event and push
                         // it and its composite component parent, if available, to the
-                        // component stack to have them available while processing the 
+                        // component stack to have them available while processing the
                         // event (see also UIViewRoot._broadcastAll()).
                         UIComponent targetComponent = target.getComponent();
                         UIComponent compositeParent = UIComponent
@@ -1324,8 +1328,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     // because EditableValueHolder instances render the value into the
     // client and then this value are taken back at the beginning of the
     // next request. So, I just let this code in comments just in case
-    // somebody founds an issue with this.  
-    /* 
+    // somebody founds an issue with this.
+    /*
      @SuppressWarnings("unchecked")
      @Override
      public void restoreState(FacesContext facesContext, Object state)
@@ -1334,7 +1338,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      {
      return;
      }
-        
+
      Object[] values = (Object[])state;
      super.restoreState(facesContext,values[0]);
      if (values[1] == null)
@@ -1357,7 +1361,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      {
      //No values
      return null;
-     }   
+     }
      return new Object[]{parentSaved, saveAttachedState(facesContext, _rowStates)};
      }
      else
@@ -1366,7 +1370,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      values[0] = super.saveState(facesContext);
      values[1] = saveAttachedState(facesContext, _rowStates);
      return values;
-     } 
+     }
      }
      */
     @Override
@@ -1418,11 +1422,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
         return true;
     }
-    
+
     public boolean isRepeating() {
         return (this.getVar() != null);
     }
-    
+
     List<Tab> loadedTabs;
     public List<Tab> getLoadedTabs() {
         if(loadedTabs == null) {
@@ -1431,7 +1435,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             for(UIComponent component : getChildren()) {
                 if(component instanceof Tab) {
                     Tab tab =  (Tab) component;
-                    
+
                     if(tab.isLoaded())
                         loadedTabs.add(tab);
                 }
@@ -1440,7 +1444,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
         return loadedTabs;
     }
-    
+
     private boolean isRequestSource(FacesContext context) {
         return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
