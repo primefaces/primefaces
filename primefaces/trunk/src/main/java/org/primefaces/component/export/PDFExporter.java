@@ -35,11 +35,8 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.util.AgentUtils;
@@ -183,34 +180,14 @@ public class PDFExporter extends Exporter {
     	externalContext.setResponseHeader("Expires", "0");
     	externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
     	externalContext.setResponseHeader("Pragma", "public");
-    	externalContext.setResponseHeader("Content-disposition", "attachment;filename=" + this.getDispositionFilename(fileName) + ".pdf");
+    	externalContext.setResponseHeader("Content-disposition", "attachment;filename=" + fileName + ".pdf");
     	externalContext.setResponseContentLength(baos.size());
     	externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
     	OutputStream out = externalContext.getResponseOutputStream();
         baos.writeTo(out);
         externalContext.responseFlushBuffer();
     }
-    
-    protected String getDispositionFilename(String filename) throws IOException {        
-        if(AgentUtils.isIE(FacesContext.getCurrentInstance())) {
-            try {
-                return new URI(null, null, filename, null).toASCIIString();
-            }
-            catch(URISyntaxException e) {
-                throw new IOException(e);
-            }
-        }
-        else {
-            byte[] fileNameBytes = filename.getBytes(("utf-8"));
-            String dispositionFileName = "";
-            for (byte b: fileNameBytes) {
-                dispositionFileName += (char)(b & 0xff);
-            }
-
-            return dispositionFileName;
-        }
-    }
-    
+        
     protected int getColumnsCount(DataTable table) {
         int count = 0;
         
