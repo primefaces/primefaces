@@ -15,6 +15,7 @@
  */
 package org.primefaces.model;
 
+import java.text.Collator;
 import java.util.Comparator;
 import java.util.Locale;
 
@@ -34,6 +35,7 @@ public class BeanPropertyComparator implements Comparator {
     private MethodExpression sortFunction;
     private boolean caseSensitive = false;
     private Locale locale;
+    private Collator collator;
 
     public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive, Locale locale) {
         this.sortBy = sortBy;
@@ -42,6 +44,7 @@ public class BeanPropertyComparator implements Comparator {
         this.sortFunction = sortFunction;
         this.caseSensitive = caseSensitive;
         this.locale = locale;
+        this.collator = Collator.getInstance(locale);
     }
 
     @SuppressWarnings("unchecked")
@@ -65,8 +68,15 @@ public class BeanPropertyComparator implements Comparator {
             	result = -1;
             } else if (sortFunction == null) {
                 if(value1 instanceof String && value2 instanceof String) {
-                    result = this.caseSensitive ? ((Comparable) value1).compareTo(value2):
-                                        (((String) value1).toLowerCase(locale)).compareTo(((String) value2).toLowerCase(locale));
+                    if(this.caseSensitive) {
+                        return collator.compare(value1, value2);
+                    }
+                    else {
+                        String str1 = (((String) value1).toLowerCase(locale));
+                        String str2 = (((String) value1).toLowerCase(locale));
+                        
+                        return collator.compare(str1, str2);
+                    }
                 } else {
                     result = ((Comparable) value1).compareTo(value2);
                 }
