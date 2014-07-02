@@ -69,13 +69,13 @@ public class BeanPropertyComparator implements Comparator {
             } else if (sortFunction == null) {
                 if(value1 instanceof String && value2 instanceof String) {
                     if(this.caseSensitive) {
-                        return collator.compare(value1, value2);
+                        result = collator.compare(value1, value2);
                     }
                     else {
                         String str1 = (((String) value1).toLowerCase(locale));
-                        String str2 = (((String) value1).toLowerCase(locale));
+                        String str2 = (((String) value2).toLowerCase(locale));
                         
-                        return collator.compare(str1, str2);
+                        result = collator.compare(str1, str2);
                     }
                 } else {
                     result = ((Comparable) value1).compareTo(value2);
