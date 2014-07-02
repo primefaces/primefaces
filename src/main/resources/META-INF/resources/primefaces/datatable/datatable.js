@@ -322,6 +322,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindRowEvents: function() {
         var $this = this;
         
+        
+        
         this.bindRowHover();
 
         this.tbody.off('click.dataTable', this.rowSelector).on('click.dataTable', this.rowSelector, null, function(e) {
@@ -357,8 +359,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindRadioEvents: function() {
         var $this = this,
         radioInputSelector = '> tr.ui-widget-content:not(.ui-datatable-empty-message) > td.ui-selection-column :radio';
+
+        //preselect
+        this.currentRadioRow = this.tbody.children('tr.ui-state-highlight');
         
-        if(this.cfg.nativeElements) {
+        if(this.cfg.nativeElements) {            
             this.tbody.off('click.dataTable', radioInputSelector).on('click.dataTable', radioInputSelector, null, function(e) {
                 var radioButton = $(this);
 
@@ -1127,29 +1132,26 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         rowMeta = this.getRowMeta(row);
 
         //clean previous selection
-        this.selection = [];        
-        if(this.currentRadio) {
-            var activeRow = this.currentRadio.closest('tr.ui-state-highlight');
-            this.unhighlightRow(activeRow);
+        this.selection = [];     
+        if(this.currentRadioRow) {
+            this.unhighlightRow(this.currentRadioRow);
+            this.currentRadioRow.find('> td.ui-selection-column :radio').prop('checked', false);
             
-            if(this.cfg.nativeElements) {
-                this.currentRadio.prop('checked', false);
-            }
-            else {
-                activeRow.find('td.ui-selection-column .ui-radiobutton .ui-radiobutton-box').removeClass('ui-state-active')
-                                            .children('span.ui-radiobutton-icon').addClass('ui-icon-blank').removeClass('ui-icon-bullet');                  
-                this.currentRadio.prev().children('input').prop('checked', false);
-            }    
+            if(!this.cfg.nativeElements) {
+                this.currentRadioRow.find('> td.ui-selection-column .ui-radiobutton .ui-radiobutton-box').removeClass('ui-state-active')
+                                            .children('span.ui-radiobutton-icon').addClass('ui-icon-blank').removeClass('ui-icon-bullet');      
+            } 
         }
                
         //select current
-        this.currentRadio = radio;
+        this.currentRadioRow = row;
         if(!this.cfg.nativeElements) {
+            radio.removeClass('ui-state-hover');
             if(!radio.hasClass('ui-state-focus')) {
                 radio.addClass('ui-state-active');
             }
             radio.children('.ui-radiobutton-icon').addClass('ui-icon-bullet').removeClass('ui-icon-blank');
-            radio.prev().children('input').attr('checked', 'checked');
+            radio.prev().children('input').prop('checked', true);
         }
         this.highlightRow(row);
         
