@@ -44,7 +44,6 @@ import org.primefaces.event.ReorderEvent;
 import org.primefaces.model.Visibility;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.SelectableDataModel;
-import org.primefaces.model.SelectableDataModelWrapper;
 import java.lang.reflect.Array;
 import javax.el.ELContext;
 import javax.faces.model.DataModel;
@@ -578,37 +577,6 @@ import org.primefaces.util.SharedStringBuilder;
         }
 
         return null;
-    }
-
-    private SelectableDataModelWrapper selectableDataModelWrapper = null;
-
-    /**
-    * Override to support filtering, we return the filtered subset in getValue instead of actual data.
-    * In case selectableDataModel is bound, we wrap it with filtered data.
-    * 
-    */ 
-    @Override
-    public Object getValue() {
-        Object value = super.getValue();
-        List<?> filteredValue = this.getFilteredValue();
-        
-        if(filteredValue != null) {
-            if(value instanceof SelectableDataModel) {
-                return selectableDataModelWrapper == null 
-                                ? (selectableDataModelWrapper = new SelectableDataModelWrapper((SelectableDataModel) value, filteredValue))
-                                : selectableDataModelWrapper;
-            } 
-            else {
-                return filteredValue;
-            }
-        }
-        else {
-            return value;
-        }
-    }
-    
-    public void setSelectableDataModelWrapper(SelectableDataModelWrapper wrapper) {
-        this.selectableDataModelWrapper = wrapper;
     }
 
     public Object getLocalSelection() {

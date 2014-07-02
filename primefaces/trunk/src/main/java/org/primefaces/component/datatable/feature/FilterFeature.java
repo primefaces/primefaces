@@ -116,7 +116,11 @@ public class FilterFeature implements DataTableFeature {
             }
         }
                 
+        //render filtered data
+        Object filteredValue = table.getFilteredValue();
+        table.setValue(filteredValue);
         renderer.encodeTbody(context, table, true);
+        table.setValue(null);
     }
     
     private void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
