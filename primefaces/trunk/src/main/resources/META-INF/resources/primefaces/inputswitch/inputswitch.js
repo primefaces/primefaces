@@ -15,7 +15,9 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.BaseWidget.extend({
         
         this._draw();
         
-        this._bindEvents();
+        if(!this.input.prop('disabled')) {
+            this._bindEvents();
+        }
     },
     
     _draw: function() {
