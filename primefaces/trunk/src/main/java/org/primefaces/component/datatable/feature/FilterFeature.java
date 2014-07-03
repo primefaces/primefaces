@@ -192,7 +192,6 @@ public class FilterFeature implements DataTableFeature {
     }
     
     public void updateFilteredValue(FacesContext context, DataTable table, List<?> value) {
-        table.setSelectableDataModelWrapper(null);
         ValueExpression ve = table.getValueExpression("filteredValue");
         
         if(ve != null) {
