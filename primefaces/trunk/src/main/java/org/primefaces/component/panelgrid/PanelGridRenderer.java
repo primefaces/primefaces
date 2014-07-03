@@ -73,8 +73,11 @@ public class PanelGridRenderer extends CoreRenderer {
         
         int i = 0;
         for(UIComponent child : grid.getChildren()) {
+            if(!child.isRendered()) {
+                continue;
+            }
+            
             int colMod = i % columns;
-
             if(colMod == 0) {
                 writer.startElement("tr", null);
                 writer.writeAttribute("class", PanelGrid.ROW_CLASS, null);
@@ -85,9 +88,7 @@ public class PanelGridRenderer extends CoreRenderer {
             writer.startElement("td", null);
             writer.writeAttribute("role", "gridcell", null);
             writer.writeAttribute("class", columnClass, null);
-            if(child.isRendered()) {
-                child.encodeAll(context);
-            }
+            child.encodeAll(context);
             writer.endElement("td");
 
             i++;
