@@ -24,3 +24,7 @@
     padding: 4px 10px;
 }
 
+.ui-datalist .ui-datalist-nobullets {
+    list-style-type: none;
+}
+

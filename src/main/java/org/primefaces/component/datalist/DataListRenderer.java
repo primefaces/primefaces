@@ -126,6 +126,11 @@ public class DataListRenderer extends DataRenderer {
         boolean isDefinition = list.isDefinition();
         UIComponent definitionFacet = list.getFacet("description");
         boolean renderDefinition = isDefinition && definitionFacet != null;
+        String itemType = list.getItemType();
+        String listClass = DataList.LIST_CLASS;
+        if(itemType != null && itemType.equals("none")) {
+            listClass = listClass + " " + DataList.NO_BULLETS_CLASS;
+        }
         
         String listTag = list.getListTag();
         String listItemTag = isDefinition ? "dt" : "li";
@@ -141,7 +146,7 @@ public class DataListRenderer extends DataRenderer {
 
         writer.startElement(listTag, null);
         writer.writeAttribute("id", clientId + "_list", null);
-        writer.writeAttribute("class", DataList.LIST_CLASS, null);
+        writer.writeAttribute("class", listClass, null);
         if(list.getItemType() != null) {
             writer.writeAttribute("type", list.getItemType(), null);
         }
