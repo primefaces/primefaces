@@ -1,7 +1,7 @@
 /**
  * PrimeFaces InputSwitch Widget
  */
-PrimeFaces.widget.InputSwitch = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
@@ -12,15 +12,11 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.BaseWidget.extend({
         this.offLabel = this.offContainer.children('span');
         this.handle = this.jq.children('.ui-inputswitch-handle');
         this.input = $(this.jqId + '_input');
-        
-        this._draw();
-        
-        if(!this.input.prop('disabled')) {
-            this._bindEvents();
-        }
+                        
+        this.renderDeferred();
     },
     
-    _draw: function() {
+    _render: function() {
         var	onContainerWidth = this.onContainer.width(),
         offContainerWidth = this.offContainer.width(),
         spanPadding	= this.offLabel.innerWidth() - this.offLabel.width(),
@@ -52,6 +48,10 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.BaseWidget.extend({
         else {
             this.onContainer.css({ 'width': 0 });
             this.onLabel.css({'margin-left': -this.offset});
+        }
+        
+        if(!this.input.prop('disabled')) {
+            this._bindEvents();
         }
     },
     
