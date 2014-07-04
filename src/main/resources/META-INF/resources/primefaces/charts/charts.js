@@ -22141,7 +22141,7 @@ PrimeFaces.widget.ChartUtils = {
                     }
                 };
                 
-                if(chart.cfg.stackSeries) {
+                if(chart.cfg.stackSeries && chart.cfg.axes.xaxis.renderer !== $.jqplot.DateAxisRenderer) {
                     PrimeFaces.widget.ChartUtils.transformStackedData(chart);
                 }
             }
