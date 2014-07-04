@@ -76,6 +76,13 @@
             <type>java.lang.String</type>
             <description>The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.</description>
         </attribute>
+        <attribute>
+            <name>showLabels</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Controls the visibility of the labels, defaults to true.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
