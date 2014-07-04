@@ -59,6 +59,7 @@ public class InputSwitchRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, inputSwitch));
         boolean disabled = inputSwitch.isDisabled();
+        boolean showLabels = inputSwitch.isShowLabels();
         String clientId = inputSwitch.getClientId(context);
         String style = inputSwitch.getStyle();
         String styleClass = inputSwitch.getStyleClass();
@@ -74,21 +75,26 @@ public class InputSwitchRenderer extends InputRenderer {
             writer.writeAttribute("style", style, "style");
         }
         
-        encodeOption(context, inputSwitch.getOffLabel(), InputSwitch.OFF_LABEL_CLASS);
-        encodeOption(context, inputSwitch.getOnLabel(), InputSwitch.ON_LABEL_CLASS);
+        encodeOption(context, inputSwitch.getOffLabel(), InputSwitch.OFF_LABEL_CLASS, showLabels);
+        encodeOption(context, inputSwitch.getOnLabel(), InputSwitch.ON_LABEL_CLASS, showLabels);
         encodeHandle(context);
         encodeInput(context, inputSwitch, clientId, checked, disabled);
                 
         writer.endElement("div");
     }
     
-    protected void encodeOption(FacesContext context, String label, String styleClass) throws IOException {
+    protected void encodeOption(FacesContext context, String label, String styleClass, boolean showLabels) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
         writer.startElement("span", null);
-        writer.writeText(label, null);
+        
+        if(showLabels)
+            writer.writeText(label, null);
+        else
+            writer.write("&nbsp;");
+        
         writer.endElement("span");
         writer.endElement("div");
     }
