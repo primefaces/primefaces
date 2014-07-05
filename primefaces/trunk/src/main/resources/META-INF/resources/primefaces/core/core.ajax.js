@@ -152,7 +152,7 @@ PrimeFaces.ajax = {
                 else {
                     this.delays[sourceId] = {
                         timeout: createTimeout()
-                    }
+                    };
                 }
             } 
             else {
