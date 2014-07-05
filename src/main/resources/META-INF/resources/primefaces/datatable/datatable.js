@@ -641,7 +641,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
             
     adjustScrollWidth: function() {
-        var width = parseInt((this.jq.parent().innerWidth()* (parseInt(this.cfg.scrollWidth) / 100)));
+        var width = parseInt((this.jq.parent().innerWidth() * (parseInt(this.cfg.scrollWidth) / 100)));
         this.setScrollWidth(width);
     },
     
