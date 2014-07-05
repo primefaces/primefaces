@@ -581,7 +581,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.percentageScrollWidth)
                 this.adjustScrollWidth();
             else
-                this.setScrollWidth(this.cfg.scrollWidth);
+                this.setScrollWidth(parseInt(this.cfg.scrollWidth));
         }
               
         this.restoreScrollState();
@@ -641,11 +641,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
             
     adjustScrollWidth: function() {
-        var width = parseInt((this.jq.parent().innerWidth() * (parseInt(this.cfg.scrollWidth) / 100)));
+        var width = parseInt((this.jq.parent().innerWidth()* (parseInt(this.cfg.scrollWidth) / 100)));
         this.setScrollWidth(width);
+    },
+    
+    setOuterWidth: function(element, width) {
+        var diff = element.outerWidth() - element.width();
+        element.width(width - diff);
     },
             
     setScrollWidth: function(width) {
+        var $this = this;
+        this.jq.children('.ui-widget-header').each(function() {
+            $this.setOuterWidth($(this), width);
+        });
         this.scrollHeader.width(width);
         this.scrollBody.css('margin-right', 0).width(width);
         this.scrollFooter.width(width);
@@ -2376,7 +2385,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             if(this.percentageScrollWidth)
                 this.adjustScrollWidth();
             else
-                this.setScrollWidth(this.cfg.scrollWidth);
+                this.setScrollWidth(parseInt(this.cfg.scrollWidth));
             
             if(this.hasVerticalOverflow())
                 this.frozenBodyTable.css('margin-bottom', scrollBarWidth);
@@ -2445,6 +2454,12 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
     
     setScrollWidth: function(width) {
+        var $this = this,
+        headerWidth = width + this.frozenLayout.width();
+        
+        this.jq.children('.ui-widget-header').each(function() {
+            $this.setOuterWidth($(this), headerWidth);
+        });
         this.scrollHeader.width(width);
         this.scrollBody.css('margin-right', 0).width(width);
         this.scrollFooter.width(width);
