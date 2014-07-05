@@ -126,29 +126,36 @@ PrimeFaces.ajax = {
     
     Queue: {
 
-        delayHandler : null,
+        delays: {},
 
-        requests : new Array(),
+        requests: new Array(),
 
-        offer : function(request) {
-            if (this.delayHandler) {
-                clearTimeout(this.delayHandler);
-                this.delayHandler = null;
-            }
+        offer: function(request) {            
+            if(request.delay) {
+                var sourceId = null,
+                $this = this,
+                sourceId = (typeof(request.source) === 'string') ? request.source: $(request.source).attr('id'),
+                createTimeout = function() {
+                        return setTimeout(function() {
+                            $this.requests.push(request);
 
-            if (request.delay && request.delay > 0) {
-                var $this = this;
-
-                this.delayHandler = setTimeout(function() {
-                    $this.requests.push(request);
-
-                    if($this.requests.length === 1) {
-                        PrimeFaces.ajax.Request.send(request);
+                            if($this.requests.length === 1) {
+                                PrimeFaces.ajax.Request.send(request);
+                            }
+                        }, request.delay);
+                };
+                        
+                if(this.delays[sourceId]) {
+                    clearTimeout(this.delays[sourceId].timeout);
+                    this.delays[sourceId].timeout = createTimeout();
+                }
+                else {
+                    this.delays[sourceId] = {
+                        timeout: createTimeout()
                     }
-                }, request.delay);
-
-            } else {
-
+                }
+            } 
+            else {
                 this.requests.push(request);
 
                 if(this.requests.length === 1) {
@@ -157,7 +164,7 @@ PrimeFaces.ajax = {
             }
         },
 
-        poll : function() {
+        poll: function() {
             if(this.isEmpty()) {
                 return null;
             }
@@ -172,7 +179,7 @@ PrimeFaces.ajax = {
             return processed;
         },
 
-        peek : function() {
+        peek: function() {
             if(this.isEmpty()) {
                 return null;
             }
@@ -180,7 +187,7 @@ PrimeFaces.ajax = {
             return this.requests[0];
         },
 
-        isEmpty : function() {
+        isEmpty: function() {
             return this.requests.length === 0;
         }
     },
