@@ -129,6 +129,8 @@ PrimeFaces.ajax = {
         delays: {},
 
         requests: new Array(),
+        
+        xhrs: new Array(),
 
         offer: function(request) {            
             if(request.delay) {
@@ -189,6 +191,25 @@ PrimeFaces.ajax = {
 
         isEmpty: function() {
             return this.requests.length === 0;
+        },
+        
+        addXHR: function(xhr) {
+            this.xhrs.push(xhr);
+        },
+        
+        removeXHR: function(xhr) {
+            var index = $.inArray(xhr, this.xhrs);
+            if(index > -1) {
+                this.xhrs.splice(index, 1);
+            }
+        },
+        
+        abortAll: function() {
+            for(var i = 0; i < this.xhrs.length; i++) {
+                this.xhrs[i].abort();
+            }
+            
+            this.xhrs = new Array();
         }
     },
     
@@ -487,6 +508,8 @@ PrimeFaces.ajax = {
                     }
 
                     PrimeFaces.debug('Response completed.');
+                    
+                    PrimeFaces.ajax.Queue.removeXHR(xhr);
 
                     if(!cfg.async) {
                         PrimeFaces.ajax.Queue.poll();
@@ -494,7 +517,7 @@ PrimeFaces.ajax = {
                 }
             };
 
-            $.ajax(xhrOptions);
+            PrimeFaces.ajax.Queue.addXHR($.ajax(xhrOptions));
         },
 
         resolveComponentsForAjaxCall: function(cfg, type) {
