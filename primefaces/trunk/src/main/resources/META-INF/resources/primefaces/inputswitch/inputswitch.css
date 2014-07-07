@@ -11,10 +11,6 @@
     height: 24px;
 }
 
-.ui-inputswitch input {
-	display: none;
-}
-
 .ui-inputswitch .ui-inputswitch-on,
 .ui-inputswitch .ui-inputswitch-off {
 	white-space: nowrap;
