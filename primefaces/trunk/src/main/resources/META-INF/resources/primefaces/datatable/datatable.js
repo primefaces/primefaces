@@ -418,7 +418,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 box.removeClass('ui-state-focus');
             })
             .on('change.dataTable', radioInputSelector, null, function() {
-                var currentInput = $(radioInputSelector).filter(':checked'),
+                var currentInput = $this.tbody.find(radioInputSelector).filter(':checked'),
                 currentRadio = currentInput.parent().next();
 
                 $this.selectRowWithRadio(currentRadio);
