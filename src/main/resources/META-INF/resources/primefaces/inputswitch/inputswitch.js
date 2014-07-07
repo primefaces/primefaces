@@ -61,31 +61,61 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
         this.jq.on('click.inputSwitch', function(e) {
             $this.toggle();
         });
+
+        this.input.on('focus.inputSwitch', function(e) {
+            $this.handle.addClass('ui-state-focus');
+        })
+        .on('blur.inputSwitch', function(e) {
+            $this.handle.removeClass('ui-state-focus');
+        })
+        .on('keydown.inputSwitch', function(e) {
+            var keyCode = $.ui.keyCode;
+            if(e.which === keyCode.SPACE) {
+                e.preventDefault();
+            }
+        })
+        .on('keyup.inputSwitch', function(e) {
+            var keyCode = $.ui.keyCode;
+            if(e.which === keyCode.SPACE) {
+                $this.toggle();
+
+                e.preventDefault();
+            }
+        })
+        .on('change.inputSwitch', function(e) {
+            if($this.input.prop('checked'))
+                $this._checkUI();
+            else
+                $this._uncheckUI();
+        });
     },
     
     toggle: function() {
-        if(this.input.prop('checked')) {
+        if(this.input.prop('checked'))
             this.uncheck();
-        }
-        else {
+        else
             this.check();
-        }
     },
     
     check: function() {
-        this.onContainer.animate({width:this.offset}, 200);
-        this.onLabel.animate({marginLeft:0}, 200);
-        this.offLabel.animate({marginRight:-this.offset}, 200);
-        this.handle.animate({left:this.offset}, 200);
         this.input.prop('checked', true).trigger('change');
     },
     
     uncheck: function() {
+        this.input.prop('checked', false).trigger('change');
+    },
+    
+    _checkUI: function() {
+        this.onContainer.animate({width:this.offset}, 200);
+        this.onLabel.animate({marginLeft:0}, 200);
+        this.offLabel.animate({marginRight:-this.offset}, 200);
+        this.handle.animate({left:this.offset}, 200);
+    },
+    
+    _uncheckUI: function() {
         this.onContainer.animate({width:0}, 200);
         this.onLabel.animate({marginLeft:-this.offset}, 200);
         this.offLabel.animate({marginRight:0}, 200);
         this.handle.animate({left:0}, 200);
-        this.input.prop('checked', false).trigger('change');
-    }
-    
+    }    
 });
