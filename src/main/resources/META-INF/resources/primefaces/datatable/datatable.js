@@ -164,7 +164,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 column.removeClass('ui-state-hover');
         })
         .on('click.dataTable', function(e) {
-            if($this.isEmpty()||$(e.target).is(':not(th,span)')) {
+            if(!$this.shouldSort(e, this)) {
                 return;
             }
 
@@ -197,6 +197,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
         });
+    },
+    
+    shouldSort: function(event, column) {
+        if(this.isEmpty()) {
+            return false;
+        }
+        
+        var target = $(event.target);
+        if(target.closest('.ui-column-customfilter', column).length) {
+            return false;
+        }
+        
+        return target.is('th,span');
     },
     
     addSortMeta: function(meta) {
