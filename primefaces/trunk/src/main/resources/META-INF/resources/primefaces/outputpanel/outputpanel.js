@@ -47,7 +47,14 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
             }
         };
         
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.cfg.delay) {
+            setTimeout(function() {
+                PrimeFaces.ajax.Request.handle(options);
+            }, parseInt(this.cfg.delay));
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
             
     bindScrollMonitor: function() {

@@ -69,6 +69,12 @@
             <defaultValue>block</defaultValue>
             <description>Shortcut for the css display property, valid values are block (default) and inline.</description>
         </attribute>
+        <attribute>
+            <name>delay</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Delay in milliseconds to wait before initiating a deferred loading, default value is "none".</description>
+        </attribute>
 	</attributes>
     <resources>
 		<resource>
