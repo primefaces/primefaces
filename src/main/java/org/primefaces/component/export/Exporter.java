@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +37,6 @@ import javax.faces.convert.Converter;
 import org.primefaces.component.celleditor.CellEditor;
 
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.util.ComponentUtils;
 
 public abstract class Exporter {
 	    
@@ -127,7 +124,12 @@ public abstract class Exporter {
 				return "";
             }
 			
-            Converter converter = ComponentUtils.getConverter(context, component);
+            Converter converter = valueHolder.getConverter();
+            if(converter == null) {
+                Class valueType = value.getClass();
+                converter = context.getApplication().createConverter(valueType);
+            }
+            
             if(converter != null) {
                 if(component instanceof UISelectMany) {
                     StringBuilder builder = new StringBuilder();
