@@ -210,6 +210,7 @@ PrimeFaces.ajax = {
             }
             
             this.xhrs = new Array();
+            this.requests = new Array();
         }
     },
     
