@@ -1945,7 +1945,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     refresh: function(cfg) {
-        $(this.panelId).remove();
+        $(PrimeFaces.escapeClientId(this.panelId)).remove();
 
         this.init(cfg);
     },
