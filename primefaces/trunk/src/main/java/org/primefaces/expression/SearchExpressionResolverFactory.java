@@ -31,71 +31,70 @@ import org.primefaces.expression.impl.PreviousExpressionResolver;
 import org.primefaces.expression.impl.ThisExpressionResolver;
 
 /**
- * Factory for providing different {@link SearchExpressionResolver} for expressions.
+ * Factory for providing different {@link SearchExpressionResolver} for
+ * expressions.
  */
 public class SearchExpressionResolverFactory {
 
-	private static final HashMap<String, SearchExpressionResolver> RESOLVER_MAPPING = new HashMap<String, SearchExpressionResolver>();
+    private static final HashMap<String, SearchExpressionResolver> RESOLVER_MAPPING = new HashMap<String, SearchExpressionResolver>();
 
-	private static final IdExpressionResolver ID_EXPRESSION_RESOLVER = new IdExpressionResolver();
+    private static final IdExpressionResolver ID_EXPRESSION_RESOLVER = new IdExpressionResolver();
 
-	static {
-		RESOLVER_MAPPING.put(SearchExpressionConstants.THIS_KEYWORD, new ThisExpressionResolver());
-		RESOLVER_MAPPING.put(SearchExpressionConstants.COMPOSITE_KEYWORD, new CompositeExpressionResolver());
-		RESOLVER_MAPPING.put(SearchExpressionConstants.PARENT_KEYWORD, new ParentExpressionResolver());
-		RESOLVER_MAPPING.put(SearchExpressionConstants.FORM_KEYWORD, new FormExpressionResolver());
-		RESOLVER_MAPPING.put(SearchExpressionConstants.ALL_KEYWORD, new AllExpressionResolver());
-		RESOLVER_MAPPING.put(SearchExpressionConstants.NAMINGCONTAINER_KEYWORD, new NamingContainerExpressionResolver());
-		RESOLVER_MAPPING.put(SearchExpressionConstants.NONE_KEYWORD, new NamingContainerExpressionResolver());
-		RESOLVER_MAPPING.put(SearchExpressionConstants.NEXT_KEYWORD, new NextExpressionResolver());
-		RESOLVER_MAPPING.put(SearchExpressionConstants.PREVIOUS_KEYWORD, new PreviousExpressionResolver());
-		RESOLVER_MAPPING.put(SearchExpressionConstants.CHILD_KEYWORD, new ChildExpressionResolver());
-	}
+    static {
+        RESOLVER_MAPPING.put(SearchExpressionConstants.THIS_KEYWORD, new ThisExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.COMPOSITE_KEYWORD, new CompositeExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.PARENT_KEYWORD, new ParentExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.FORM_KEYWORD, new FormExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.ALL_KEYWORD, new AllExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.NAMINGCONTAINER_KEYWORD, new NamingContainerExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.NONE_KEYWORD, new NamingContainerExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.NEXT_KEYWORD, new NextExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.PREVIOUS_KEYWORD, new PreviousExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.CHILD_KEYWORD, new ChildExpressionResolver());
+    }
 
-	/**
+    /**
      * Finds a {@link SearchExpressionResolver} for the given expression.
      *
      * @param expression The search expression.
      * @return The {@link SearchExpressionResolver}.
      */
-	public static SearchExpressionResolver findResolver(final String expression) {
-		SearchExpressionResolver resolver = null;
+    public static SearchExpressionResolver findResolver(final String expression) {
+        SearchExpressionResolver resolver = null;
 
-	    if (expression.startsWith(SearchExpressionConstants.KEYWORD_PREFIX)) {
-	    	// check if it's an expression with parameter
-	    	int parenthesisPosition = expression.indexOf('(');
-	    	if (parenthesisPosition > 0) {
-	    		String expressionWithoutParam = expression.substring(0, parenthesisPosition);
-	    		resolver = RESOLVER_MAPPING.get(expressionWithoutParam);
-	    	}
-	    	else {
-	    		resolver = RESOLVER_MAPPING.get(expression);
-	    	}
-	    }
-	    else {
-	    	// if it's not a keyword, take it as id
-	    	resolver = ID_EXPRESSION_RESOLVER;
-	    }
+        if (expression.startsWith(SearchExpressionConstants.KEYWORD_PREFIX)) {
+            // check if it's an expression with parameter
+            int parenthesisPosition = expression.indexOf('(');
+            if (parenthesisPosition > 0) {
+                String expressionWithoutParam = expression.substring(0, parenthesisPosition);
+                resolver = RESOLVER_MAPPING.get(expressionWithoutParam);
+            } else {
+                resolver = RESOLVER_MAPPING.get(expression);
+            }
+        } else {
+            // if it's not a keyword, take it as id
+            resolver = ID_EXPRESSION_RESOLVER;
+        }
 
-		if (resolver == null) {
-		    throw new FacesException("No SearchExpressionResolver available for expression \"" + expression + "\"");
-		}
+        if (resolver == null) {
+            throw new FacesException("No SearchExpressionResolver available for expression \"" + expression + "\"");
+        }
 
-		return resolver;
-	}
+        return resolver;
+    }
 
-	public static void registerResolver(final String keyword, final SearchExpressionResolver resolver) {
-		RESOLVER_MAPPING.put(keyword, resolver);
-	}
+    public static void registerResolver(final String keyword, final SearchExpressionResolver resolver) {
+        RESOLVER_MAPPING.put(keyword, resolver);
+    }
 
-	public static SearchExpressionResolver removeResolver(final String keyword) {
-		return RESOLVER_MAPPING.remove(keyword);
-	}
+    public static SearchExpressionResolver removeResolver(final String keyword) {
+        return RESOLVER_MAPPING.remove(keyword);
+    }
 
-	/**
-	 * Prevent instantiation.
-	 */
-	private SearchExpressionResolverFactory() {
+    /**
+     * Prevent instantiation.
+     */
+    private SearchExpressionResolverFactory() {
 
-	}
+    }
 }
