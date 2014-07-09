@@ -2757,6 +2757,12 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menuButton.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
+    refresh: function(cfg) {
+        this.menu.remove();
+
+        this.init(cfg);
+    },
+
     bindEvents: function() {
         var $this = this;
 
