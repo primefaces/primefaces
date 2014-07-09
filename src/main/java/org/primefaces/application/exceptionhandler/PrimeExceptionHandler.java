@@ -142,14 +142,14 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         AjaxExceptionHandler handlerComponent = findHandlerComponent(context, rootCause);
 
+        context.getAttributes().put(ExceptionInfo.ATTRIBUTE_NAME, info);
+
         // redirect if no UIAjaxExceptionHandler available
         if (handlerComponent == null) {
             handleRedirect(context, rootCause, info, responseResetted);
         }
         // handle custom update / onexception callback
         else {
-            context.getAttributes().put(ExceptionInfo.ATTRIBUTE_NAME, info);
-
             externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getResponseCharacterEncoding());
             externalContext.addResponseHeader("Cache-Control", "no-cache");
             externalContext.setResponseContentType("text/xml");
