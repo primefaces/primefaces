@@ -389,7 +389,7 @@ public class ComponentUtils {
     }
 
     public static String resolveWidgetVar(FacesContext context, Widget widget) {
-        UIComponent component = (UICommand) widget;
+        UIComponent component = (UIComponent) widget;
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");
 
         if (userWidgetVar != null) {
