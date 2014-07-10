@@ -1,5 +1,6 @@
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
@@ -23,7 +24,7 @@ import javax.faces.event.PhaseId;
     public final static String MOBILE_POPUP_CONTAINER_CLASS = "ui-calendar ui-calendar-popup";
     public final static String MOBILE_INLINE_CONTAINER_CLASS = "ui-calendar ui-calendar-inline";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "dateSelect"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select","dateSelect","viewChange"));
 
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
 
@@ -83,7 +84,7 @@ import javax.faces.event.PhaseId;
     }
 
     public Collection<String> getUnobstrusiveEventNames() {
-        return Collections.unmodifiableCollection(Arrays.asList("dateSelect"));
+        return Collections.unmodifiableCollection(Arrays.asList("dateSelect","viewChange"));
     }
 
     @Override
@@ -91,12 +92,26 @@ import javax.faces.event.PhaseId;
         FacesContext context = getFacesContext();
 
         if(this.isRequestSource(context) && (event instanceof AjaxBehaviorEvent)) {
-            String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            String clientId = this.getClientId(context);
+            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName != null && eventName.equals("dateSelect"))
-                customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
-            else
-                super.queueEvent(event);        //regular events like change, click, blur
+            if(eventName != null) {
+                if(eventName.equals("dateSelect")) {
+                    customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
+                }
+                else if(eventName.equals("viewChange")) {
+                    int month = Integer.parseInt(params.get(clientId + "_month"));
+                    int year = Integer.parseInt(params.get(clientId + "_year"));
+                    DateViewChangeEvent dateViewChangeEvent = new DateViewChangeEvent(this, behaviorEvent.getBehavior(), month, year);
+                    dateViewChangeEvent.setPhaseId(behaviorEvent.getPhaseId());
+                    super.queueEvent(dateViewChangeEvent);
+                }
+                else {
+                    super.queueEvent(event);        //regular events like change, click, blur
+                }
+            } 
         }
         else {
             super.queueEvent(event);            //valueChange

@@ -13,8 +13,9 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         //i18n and l7n
         this.configureLocale();
 
-        //Select listener
+        //events
         this.bindDateSelectListener();
+        this.bindViewChangeListener();
 
         //disabled dates
         this.cfg.beforeShowDay = function(date) { 
@@ -135,6 +136,32 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    bindViewChangeListener: function() {
+        if(this.hasBehavior('viewChange')) {
+            var $this = this;
+            this.cfg.onChangeMonthYear = function(month, year) {
+                $this.fireViewChangeEvent(month, year);
+            };
+        }
+    },
+        
+    fireViewChangeEvent: function(month, year) {
+        if(this.cfg.behaviors) {
+            var viewChangeBehavior = this.cfg.behaviors['viewChange'];
+
+            if(viewChangeBehavior) {
+                var ext = {
+                        params: [
+                            {name: this.id + '_month', value: month},
+                            {name: this.id + '_year', value: year}
+                        ]
+                };
+
+                viewChangeBehavior.call(this, ext);
+            }
+        }
+    },
+    
     configureTimePicker: function() {
         var pattern = this.cfg.dateFormat,
         timeSeparatorIndex = pattern.toLowerCase().indexOf('h');
@@ -184,6 +211,14 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
     
     disable: function() {
         this.jqEl.datetimepicker('disable');
+    },
+    
+    hasBehavior: function(event) {
+        if(this.cfg.behaviors) {
+            return this.cfg.behaviors[event] !== undefined;
+        }
+    
+        return false;
     }
     
 });
