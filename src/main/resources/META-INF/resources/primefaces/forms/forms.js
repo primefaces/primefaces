@@ -1592,87 +1592,89 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         this._super();
         var $this = this;
 
-        this.items.on('click.selectListbox', function(e) {
-            //stop propagation
-            if($this.checkboxClick) {
-                $this.checkboxClick = false;
-                return;
-            }
-
-            var item = $(this),
-            selectedItems = $this.items.filter('.ui-state-highlight'),
-            metaKey = (e.metaKey||e.ctrlKey),
-            unchanged = (!metaKey && selectedItems.length === 1 && selectedItems.index() === item.index());
-
-            if(!e.shiftKey) {
-                if(!metaKey) {
-                    $this.unselectAll();
+        if(!this.cfg.disabled) {
+            this.items.on('click.selectListbox', function(e) {
+                //stop propagation
+                if($this.checkboxClick) {
+                    $this.checkboxClick = false;
+                    return;
                 }
 
-                if(metaKey && item.hasClass('ui-state-highlight')) {
-                    $this.unselectItem(item);
-                }
-                else {
-                    $this.selectItem(item);
-                    $this.cursorItem = item;
-                }
-            }
-            else {
-                //range selection
-                if($this.cursorItem) {
-                    $this.unselectAll();
+                var item = $(this),
+                selectedItems = $this.items.filter('.ui-state-highlight'),
+                metaKey = (e.metaKey||e.ctrlKey),
+                unchanged = (!metaKey && selectedItems.length === 1 && selectedItems.index() === item.index());
 
-                    var currentItemIndex = item.index(),
-                    cursorItemIndex = $this.cursorItem.index(),
-                    startIndex = (currentItemIndex > cursorItemIndex) ? cursorItemIndex : currentItemIndex,
-                    endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
+                if(!e.shiftKey) {
+                    if(!metaKey) {
+                        $this.unselectAll();
+                    }
 
-                    for(var i = startIndex ; i < endIndex; i++) {
-                        var it = $this.items.eq(i);
-
-                        if(it.is(':visible')) {
-                            $this.selectItem(it);
-                        }
+                    if(metaKey && item.hasClass('ui-state-highlight')) {
+                        $this.unselectItem(item);
+                    }
+                    else {
+                        $this.selectItem(item);
+                        $this.cursorItem = item;
                     }
                 }
                 else {
-                    $this.selectItem(item);
-                    $this.cursorItem = item;
+                    //range selection
+                    if($this.cursorItem) {
+                        $this.unselectAll();
+
+                        var currentItemIndex = item.index(),
+                        cursorItemIndex = $this.cursorItem.index(),
+                        startIndex = (currentItemIndex > cursorItemIndex) ? cursorItemIndex : currentItemIndex,
+                        endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
+
+                        for(var i = startIndex ; i < endIndex; i++) {
+                            var it = $this.items.eq(i);
+
+                            if(it.is(':visible')) {
+                                $this.selectItem(it);
+                            }
+                        }
+                    }
+                    else {
+                        $this.selectItem(item);
+                        $this.cursorItem = item;
+                    }
                 }
-            }
 
-            if(!unchanged) {
-                $this.input.trigger('change');
-            }
+                if(!unchanged) {
+                    $this.input.trigger('change');
+                }
 
-            $this.input.trigger('click');
-            PrimeFaces.clearSelection();
-            e.preventDefault();
-        });
-
-        if(this.cfg.showCheckbox) {
-            this.checkboxes = this.jq.find('div.ui-chkbox > div.ui-chkbox-box');
-
-            this.checkboxes.on('mouseover.selectManyMenu', function(e) {
-                var chkbox = $(this);
-
-                if(!chkbox.hasClass('ui-state-active'))
-                    chkbox.addClass('ui-state-hover');
-            })
-            .on('mouseout.selectManyMenu', function(e) {
-                $(this).removeClass('ui-state-hover');
-            })
-            .on('click.selectManyMenu', function(e) {
-                $this.checkboxClick = true;
-
-                var item = $(this).closest('.ui-selectlistbox-item');
-                if(item.hasClass('ui-state-highlight'))
-                    $this.unselectItem(item);
-                else
-                    $this.selectItem(item);
-
-                $this.input.trigger('change');
+                $this.input.trigger('click');
+                PrimeFaces.clearSelection();
+                e.preventDefault();
             });
+
+            if(this.cfg.showCheckbox) {
+                this.checkboxes = this.jq.find('div.ui-chkbox > div.ui-chkbox-box');
+
+                this.checkboxes.on('mouseover.selectManyMenu', function(e) {
+                    var chkbox = $(this);
+
+                    if(!chkbox.hasClass('ui-state-active'))
+                        chkbox.addClass('ui-state-hover');
+                })
+                .on('mouseout.selectManyMenu', function(e) {
+                    $(this).removeClass('ui-state-hover');
+                })
+                .on('click.selectManyMenu', function(e) {
+                    $this.checkboxClick = true;
+
+                    var item = $(this).closest('.ui-selectlistbox-item');
+                    if(item.hasClass('ui-state-highlight'))
+                        $this.unselectItem(item);
+                    else
+                        $this.selectItem(item);
+
+                    $this.input.trigger('change');
+                });
+            }
         }
     },
 
