@@ -33,13 +33,22 @@ public class SelectionFeature implements DataTableFeature {
     public void decode(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        
 		String selection = params.get(clientId + "_selection");
+        Object filteredValue = table.getFilteredValue();
+        boolean isFiltered = (filteredValue != null);
+        
+        if(isFiltered) {
+            table.setValue(null);
+        }
         
 		if(table.isSingleSelectionMode())
 			decodeSingleSelection(table, selection);
 		else
 			decodeMultipleSelection(context, table, selection);
+        
+        if(isFiltered) {
+            table.setValue(filteredValue);
+        }
     }
     
     void decodeSingleSelection(DataTable table, String selection) {
