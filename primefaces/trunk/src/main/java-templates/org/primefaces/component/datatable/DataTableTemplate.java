@@ -52,6 +52,9 @@ import javax.faces.component.UINamingContainer;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.DynamicColumn;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.PostRestoreStateEvent;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortMeta;
 import org.primefaces.component.datatable.feature.*;
@@ -971,5 +974,15 @@ import org.primefaces.util.SharedStringBuilder;
         }
         
         return iterableChildren;
+    }
+    
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+        if(event instanceof PostRestoreStateEvent && (this == event.getComponent())) {
+            Object filteredValue = this.getFilteredValue();
+            if(filteredValue != null) {
+                this.setValue(filteredValue);
+            }
+        }
     }
     

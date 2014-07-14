@@ -84,6 +84,10 @@ public class DataTableRenderer extends DataRenderer {
             encodeMarkup(context, table);
             encodeScript(context, table);
         }
+        
+        if(table.isFilteringEnabled()) {
+            table.setValue(null);
+        }
 	}
     
     protected void preRender(FacesContext context, DataTable table) {

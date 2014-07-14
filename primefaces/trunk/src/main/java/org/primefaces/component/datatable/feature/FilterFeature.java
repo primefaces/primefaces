@@ -94,6 +94,7 @@ public class FilterFeature implements DataTableFeature {
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         //reset state
         updateFilteredValue(context, table, null);
+        table.setValue(null);
         table.setFirst(0);
         table.setRowIndex(-1);
         
@@ -120,7 +121,6 @@ public class FilterFeature implements DataTableFeature {
         Object filteredValue = table.getFilteredValue();
         table.setValue(filteredValue);
         renderer.encodeTbody(context, table, true);
-        table.setValue(null);
     }
     
     private void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
