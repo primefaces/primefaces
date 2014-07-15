@@ -105,6 +105,9 @@ public class FilterFeature implements DataTableFeature {
             String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
             filter(context, table, table.getFilterMetadata(), globalFilterParam);
             
+            Object filteredValue = table.getFilteredValue();
+            table.setValue(filteredValue);
+            
             //sort new filtered data to restore sort state
             boolean sorted = (table.getValueExpression("sortBy") != null || table.getSortBy() != null);
             if(sorted) {
@@ -116,10 +119,7 @@ public class FilterFeature implements DataTableFeature {
                     sortFeature.singleSort(context, table);
             }
         }
-                
-        //render filtered data
-        Object filteredValue = table.getFilteredValue();
-        table.setValue(filteredValue);
+                        
         renderer.encodeTbody(context, table, true);
     }
     
