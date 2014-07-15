@@ -684,10 +684,16 @@ import org.primefaces.util.SharedStringBuilder;
     protected void addToSelectedRowKeys(Object object, Map<String,Object> map, String var, boolean hasRowKey) {
         if(hasRowKey) {
             map.put(var, object);
-            this.selectedRowKeys.add(this.getRowKey());
+            Object rowKey = this.getRowKey();
+            if (rowKey != null) {
+                this.selectedRowKeys.add(rowKey);
+            }
         }
         else {
-            this.selectedRowKeys.add(this.getRowKeyFromModel(object));
+            Object rowKey = this.getRowKeyFromModel(object);
+            if (rowKey != null) {
+                this.selectedRowKeys.add(rowKey);
+            }
         }
     }
 
