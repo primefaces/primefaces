@@ -114,7 +114,7 @@ public class SortFeature implements DataTableFeature {
             //save state
             Object filteredValue = table.getFilteredValue();
             if(!table.isLazy() && table.isFilteringEnabled() && filteredValue != null) {
-                table.setFilteredValue((List) table.getValue());
+                table.updateFilteredValue(context, (List) table.getValue());
             }
         }
    
