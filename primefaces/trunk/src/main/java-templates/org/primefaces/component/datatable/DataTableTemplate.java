@@ -390,6 +390,9 @@ import org.primefaces.util.SharedStringBuilder;
             
             List<?> data = null;
             
+			// #7176
+			calculateFirst();
+			
             if(this.isMultiSort()) {
                 data = lazyModel.load(getFirst(), getRows(), getMultiSortMeta(), getFilters());
             }
