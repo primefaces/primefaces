@@ -992,3 +992,14 @@ import org.primefaces.util.SharedStringBuilder;
         }
     }
     
+    public void updateFilteredValue(FacesContext context,  List<?> value) {
+        ValueExpression ve = this.getValueExpression("filteredValue");
+        
+        if(ve != null) {
+            ve.setValue(context.getELContext(), value);
+        }
+        else {            
+            this.setFilteredValue(value);
+        }
+    }
+    
