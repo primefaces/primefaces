@@ -978,7 +978,7 @@ import org.primefaces.util.SharedStringBuilder;
     
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         super.processEvent(event);
-        if(event instanceof PostRestoreStateEvent && (this == event.getComponent())) {
+        if(!this.isLazy() && event instanceof PostRestoreStateEvent && (this == event.getComponent())) {
             Object filteredValue = this.getFilteredValue();
             if(filteredValue != null) {
                 this.setValue(filteredValue);
