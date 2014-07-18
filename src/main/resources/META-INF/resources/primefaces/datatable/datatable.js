@@ -121,6 +121,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindSortEvents: function() {
         var $this = this;
         this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
+        this.sortableColumns.attr('tabindex', '0');
         
         if(this.cfg.multiSort) {
             this.sortMeta = [];
@@ -163,7 +164,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(!column.hasClass('ui-state-active'))
                 column.removeClass('ui-state-hover');
         })
-        .on('click.dataTable', function(e) {
+        .on('blur.dataTable', function() {
+            $(this).removeClass('ui-state-focus');
+        })
+        .on('focus.dataTable', function() {
+            $(this).addClass('ui-state-focus');
+        })
+        .on('keydown.paginator', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                $(this).trigger('click.dataTable', (e.metaKey||e.ctrlKey));
+                e.preventDefault();
+            }
+        })
+        .on('click.dataTable', function(e, metaKeyOn) {
             if(!$this.shouldSort(e, this)) {
                 return;
             }
@@ -173,7 +189,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var columnHeader = $(this),
             sortOrderData = columnHeader.data('sortorder'),
             sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING : -1 * sortOrderData,
-            metaKey = e.metaKey||e.ctrlKey;
+            metaKey = e.metaKey||e.ctrlKey||metaKeyOn;
             
             if($this.cfg.multiSort) {
                 if(metaKey) {
