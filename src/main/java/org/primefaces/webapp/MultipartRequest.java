@@ -25,6 +25,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,18 +38,18 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class MultipartRequest extends HttpServletRequestWrapper {
 
 	private static final Logger logger = Logger.getLogger(MultipartRequest.class.getName());
-	
+
 	private Map<String, List<String>> formParams;
-	
+
 	private Map<String, List<FileItem>> fileParams;
 
     private Map<String, String[]> parameterMap;
-	
+
 	public MultipartRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
 		super(request);
 		formParams = new LinkedHashMap<String, List<String>>();
 		fileParams = new LinkedHashMap<String, List<FileItem>>();
-		
+
 		parseRequest(request, servletFileUpload);
 	}
 
@@ -56,21 +57,21 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 	private void parseRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
 		try {
 			List<FileItem> fileItems = servletFileUpload.parseRequest(request);
-			
-			for(FileItem item : fileItems) {                
+
+			for(FileItem item : fileItems) {
 				if(item.isFormField())
 					addFormParam(item);
 				else
 					addFileParam(item);
 			}
-			
+
 		} catch (FileUploadException e) {
-			logger.severe("Error in parsing fileupload request");
-			
+			logger.log(Level.SEVERE, "Error in parsing fileupload request", e);
+
 			throw new IOException(e.getMessage(), e);
 		}
 	}
-	
+
 	private void addFileParam(FileItem item) {
 		if(fileParams.containsKey(item.getFieldName())) {
 			fileParams.get(item.getFieldName()).add(item);
@@ -80,7 +81,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 			fileParams.put(item.getFieldName(), items);
 		}
 	}
-	
+
 	private void addFormParam(FileItem item) {
 		if(formParams.containsKey(item.getFieldName())) {
 			formParams.get(item.getFieldName()).add(getItemString(item));
@@ -96,11 +97,11 @@ public class MultipartRequest extends HttpServletRequestWrapper {
             String characterEncoding = getRequest().getCharacterEncoding();
             return (characterEncoding == null) ? item.getString() : item.getString(characterEncoding);
         } catch (UnsupportedEncodingException e) {
-            logger.severe("Unsupported character encoding " + getRequest().getCharacterEncoding());
+            logger.log(Level.SEVERE, "Unsupported character encoding " + getRequest().getCharacterEncoding(), e);
             return item.getString();
         }
     }
-	
+
 	@Override
 	public String getParameter(String name) {
 		if(formParams.containsKey(name)) {
@@ -123,9 +124,9 @@ public class MultipartRequest extends HttpServletRequestWrapper {
             for(String formParam : formParams.keySet()) {
                 map.put(formParam, formParams.get(formParam).toArray(new String[0]));
             }
-            
+
             map.putAll(super.getParameterMap());
-            
+
             parameterMap = Collections.unmodifiableMap(map);
         }
 
@@ -136,12 +137,12 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 	public Enumeration getParameterNames() {
 		Set<String> paramNames = new LinkedHashSet<String>();
 		paramNames.addAll(formParams.keySet());
-        
+
         Enumeration<String> original = super.getParameterNames();
         while(original.hasMoreElements()) {
             paramNames.add(original.nextElement());
         }
-		
+
 		return Collections.enumeration(paramNames);
 	}
 
@@ -158,15 +159,15 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 			return super.getParameterValues(name);
 		}
 	}
-	
+
 	public FileItem getFileItem(String name) {
 		if(fileParams.containsKey(name)) {
 			List<FileItem> items = fileParams.get(name);
-			
+
 			return items.get(0);
-		} 
+		}
         else {
 			return null;
-		}	
+		}
 	}
 }
