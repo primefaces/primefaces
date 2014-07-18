@@ -37,60 +37,60 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class MultipartRequest extends HttpServletRequestWrapper {
 
-	private static final Logger logger = Logger.getLogger(MultipartRequest.class.getName());
+    private static final Logger logger = Logger.getLogger(MultipartRequest.class.getName());
 
-	private Map<String, List<String>> formParams;
-
-	private Map<String, List<FileItem>> fileParams;
-
+    private Map<String, List<String>> formParams;
+    private Map<String, List<FileItem>> fileParams;
     private Map<String, String[]> parameterMap;
 
-	public MultipartRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
-		super(request);
-		formParams = new LinkedHashMap<String, List<String>>();
-		fileParams = new LinkedHashMap<String, List<FileItem>>();
+    public MultipartRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
+        super(request);
+        formParams = new LinkedHashMap<String, List<String>>();
+        fileParams = new LinkedHashMap<String, List<FileItem>>();
 
-		parseRequest(request, servletFileUpload);
-	}
+        parseRequest(request, servletFileUpload);
+    }
 
-	@SuppressWarnings("unchecked")
-	private void parseRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
-		try {
-			List<FileItem> fileItems = servletFileUpload.parseRequest(request);
+    @SuppressWarnings("unchecked")
+    private void parseRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
+        try {
+            List<FileItem> fileItems = servletFileUpload.parseRequest(request);
 
-			for(FileItem item : fileItems) {
-				if(item.isFormField())
-					addFormParam(item);
-				else
-					addFileParam(item);
-			}
+            for(FileItem item : fileItems) {
+                if(item.isFormField())
+                    addFormParam(item);
+                else
+                    addFileParam(item);
+            }
 
-		} catch (FileUploadException e) {
-			logger.log(Level.SEVERE, "Error in parsing fileupload request", e);
+        } catch (FileUploadException e) {
+            logger.log(Level.SEVERE, "Error in parsing fileupload request", e);
 
-			throw new IOException(e.getMessage(), e);
-		}
-	}
+            throw new IOException(e.getMessage(), e);
+        }
+    }
 
-	private void addFileParam(FileItem item) {
-		if(fileParams.containsKey(item.getFieldName())) {
-			fileParams.get(item.getFieldName()).add(item);
-		} else {
-			List<FileItem> items = new ArrayList<FileItem>();
-			items.add(item);
-			fileParams.put(item.getFieldName(), items);
-		}
-	}
+    private void addFileParam(FileItem item) {
+        if(fileParams.containsKey(item.getFieldName())) {
+            fileParams.get(item.getFieldName()).add(item);
+        }
+        else {
+            List<FileItem> items = new ArrayList<FileItem>();
+            items.add(item);
+            fileParams.put(item.getFieldName(), items);
+        }
+    }
 
-	private void addFormParam(FileItem item) {
-		if(formParams.containsKey(item.getFieldName())) {
-			formParams.get(item.getFieldName()).add(getItemString(item));
-		} else {
-			List<String> items = new ArrayList<String>();
-			items.add(getItemString(item));
-			formParams.put(item.getFieldName(), items);
-		}
-	}
+    private void addFormParam(FileItem item) {
+        if(formParams.containsKey(item.getFieldName())) {
+            formParams.get(item.getFieldName()).add(getItemString(item));
+        }
+        else {
+            List<String> items = new ArrayList<String>();
+            items.add(getItemString(item));
+            formParams.put(item.getFieldName(), items);
+        }
+    }
 
     private String getItemString(FileItem item) {
         try {
@@ -102,22 +102,24 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         }
     }
 
-	@Override
-	public String getParameter(String name) {
-		if(formParams.containsKey(name)) {
-			List<String> values = formParams.get(name);
-			if(values.isEmpty())
-				return "";
-			else
-				return values.get(0);
-		}
-		else {
-			return super.getParameter(name);
-		}
-	}
+    @Override
+    public String getParameter(String name) {
+        if(formParams.containsKey(name)) {
+            List<String> values = formParams.get(name);
+            if(values.isEmpty()) {
+                return "";
+            }
+            else {
+                return values.get(0);
+            }
+        }
+        else {
+            return super.getParameter(name);
+        }
+    }
 
-	@Override
-	public Map getParameterMap() {
+    @Override
+    public Map getParameterMap() {
         if(parameterMap == null) {
             Map<String,String[]> map = new LinkedHashMap<String, String[]>();
 
@@ -130,44 +132,46 @@ public class MultipartRequest extends HttpServletRequestWrapper {
             parameterMap = Collections.unmodifiableMap(map);
         }
 
-		return parameterMap;
-	}
+        return parameterMap;
+    }
 
-	@Override
-	public Enumeration getParameterNames() {
-		Set<String> paramNames = new LinkedHashSet<String>();
-		paramNames.addAll(formParams.keySet());
+    @Override
+    public Enumeration getParameterNames() {
+        Set<String> paramNames = new LinkedHashSet<String>();
+        paramNames.addAll(formParams.keySet());
 
         Enumeration<String> original = super.getParameterNames();
         while(original.hasMoreElements()) {
             paramNames.add(original.nextElement());
         }
 
-		return Collections.enumeration(paramNames);
-	}
+        return Collections.enumeration(paramNames);
+    }
 
-	@Override
-	public String[] getParameterValues(String name) {
-		if(formParams.containsKey(name)) {
-			List<String> values = formParams.get(name);
-			if(values.isEmpty())
-				return new String[0];
-			else
-				return values.toArray(new String[values.size()]);
-		}
-		else {
-			return super.getParameterValues(name);
-		}
-	}
-
-	public FileItem getFileItem(String name) {
-		if(fileParams.containsKey(name)) {
-			List<FileItem> items = fileParams.get(name);
-
-			return items.get(0);
-		}
+    @Override
+    public String[] getParameterValues(String name) {
+        if(formParams.containsKey(name)) {
+            List<String> values = formParams.get(name);
+            if(values.isEmpty()) {
+                return new String[0];
+            }
+            else {
+                return values.toArray(new String[values.size()]);
+            }
+        }
         else {
-			return null;
-		}
-	}
+            return super.getParameterValues(name);
+        }
+    }
+
+    public FileItem getFileItem(String name) {
+        if(fileParams.containsKey(name)) {
+            List<FileItem> items = fileParams.get(name);
+
+            return items.get(0);
+        }
+        else {
+            return null;
+        }
+    }
 }
