@@ -15,6 +15,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.pojo = this.hinput.length == 1;
         this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
         this.cfg.cache = this.cfg.cache||false;
+        this.cfg.resultsMessage = this.cfg.resultsMessage||' results are available, use up and down arrow keys to navigate';
+        this.cfg.ariaEmptyMessage = this.cfg.emptyMessage||'No search results are available.';
 
         if(this.cfg.cache) {
             this.initCache();
@@ -60,6 +62,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.itemtipAtPosition = this.cfg.itemtipAtPosition||'right bottom';
             this.cfg.checkForScrollbar = (this.cfg.itemtipAtPosition.indexOf('right') !== -1);
         }
+        
+        //screenreader
+        this.jq.append('<span role="status" aria-live="polite" class="ui-autocomplete-status ui-helper-hidden-accessible"></span>');
+        this.status = this.jq.children('.ui-autocomplete-status');
     },
 
     appendPanel: function() {
@@ -435,6 +441,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.itemtip && firstItem.length === 1) {
                 this.showItemtip(firstItem);
             }
+            
+            this.status.text(this.items.length + this.cfg.resultsMessage);
         }
         else {
             if(this.cfg.emptyMessage) {
@@ -444,6 +452,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             else {
                 this.panel.hide();
             }
+            
+            this.status.text(this.cfg.ariaEmptyMessage);
         }
     },
 

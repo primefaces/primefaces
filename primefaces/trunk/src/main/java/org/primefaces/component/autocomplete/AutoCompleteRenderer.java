@@ -556,10 +556,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("effectDuration", ac.getEffectDuration(), Integer.MAX_VALUE);
         }
         
-        String emptyMessage = ac.getEmptyMessage();
-        if(emptyMessage != null) {
-            wb.attr("emptyMessage", emptyMessage, null);
-        }
+        wb.attr("emptyMessage", ac.getEmptyMessage(), null)
+            .attr("resultsMesage", ac.getResultsMessage(), null);
         
         if(ac.getFacet("itemtip") != null) {
             wb.attr("itemtip", true, false)
