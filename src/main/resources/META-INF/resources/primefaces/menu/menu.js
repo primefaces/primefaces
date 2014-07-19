@@ -722,7 +722,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         **/
         $(document.body).bind('mousedown.ui-menubutton', function (e) {
             //do nothing if hidden already
-            if($this.menu.is(":hidden")) {
+            if($this.menu.is(":hidden") || $this.cfg.disabled) {
                 return;
             }
 
