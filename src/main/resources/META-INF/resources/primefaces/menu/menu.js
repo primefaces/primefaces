@@ -530,7 +530,9 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         this.rootList.animate({
             left: rootLeft
         }, 500, 'easeInOutCirc', function() {
-            last.hide();
+            if(last !== null) {
+                last.hide();
+            }
             
             if(depth == 0) {
                 _self.backward.fadeOut('fast');
@@ -543,7 +545,7 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
     },
     
     pop: function() {
-        return this.stack.pop();
+        return this.stack.length !== 0 ? this.stack.pop() : null;
     },
     
     last: function() {
