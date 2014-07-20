@@ -387,7 +387,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeColumnHeader(FacesContext context, DataTable table, UIColumn column) throws IOException {
+    public void encodeColumnHeader(FacesContext context, DataTable table, UIColumn column) throws IOException {
         if(!column.isRendered()) {
             return;
         }
@@ -620,7 +620,7 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeColumnFooter(FacesContext context, DataTable table, UIColumn column) throws IOException {
+    public void encodeColumnFooter(FacesContext context, DataTable table, UIColumn column) throws IOException {
         if(!column.isRendered()) {
             return;
         }
@@ -664,23 +664,33 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("id", theadClientId, null);
         
         if(group != null && group.isRendered()) {
+            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
 
             for(UIComponent child : group.getChildren()) {
-                if(child.isRendered() && child instanceof Row) {
-                    Row headerRow = (Row) child;
+                if(child.isRendered()) {
+                    if(child instanceof Row) {
+                        Row headerRow = (Row) child;
 
-                    writer.startElement("tr", null);
+                        writer.startElement("tr", null);
 
-                    for(UIComponent headerRowChild : headerRow.getChildren()) {
-                        if(headerRowChild.isRendered() && headerRowChild instanceof Column) {
-                            encodeColumnHeader(context, table, (Column) headerRowChild);
+                        for(UIComponent headerRowChild: headerRow.getChildren()) {
+                            if(headerRowChild.isRendered()) {
+                                if(headerRowChild instanceof Column)
+                                    encodeColumnHeader(context, table, (Column) headerRowChild);
+                                else
+                                    headerRowChild.encodeAll(context);
+                            }
                         }
-                    }
 
-                    writer.endElement("tr");
+                        writer.endElement("tr");
+                    }
+                    else {
+                        child.encodeAll(context);
+                    }
                 }
             }
-
+            
+            context.getAttributes().remove(Constants.HELPER_RENDERER);
         } 
         else {
             writer.startElement("tr", null);
@@ -965,23 +975,28 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("id", table.getClientId(context) + "_foot", null);
 
         if(group != null && group.isRendered()) {
+            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
 
             for(UIComponent child : group.getChildren()) {
-                if(child.isRendered() && child instanceof Row) {
-                    Row footerRow = (Row) child;
+                if(child.isRendered()) {
+                    if(child instanceof Row) {
+                        Row footerRow = (Row) child;
 
-                    writer.startElement("tr", null);
-
-                    for(UIComponent footerRowChild : footerRow.getChildren()) {
-                        if(footerRowChild.isRendered() && footerRowChild instanceof Column) {
-                            encodeColumnFooter(context, table, (Column) footerRowChild);
+                        writer.startElement("tr", null);
+                        for(UIComponent footerRowChild : footerRow.getChildren()) {
+                            if(footerRowChild.isRendered() && footerRowChild instanceof Column) {
+                                encodeColumnFooter(context, table, (Column) footerRowChild);
+                            }
                         }
+                        writer.endElement("tr");
                     }
-
-                    writer.endElement("tr");
+                    else {
+                        child.encodeAll(context);
+                    }
                 }
             }
-
+            
+            context.getAttributes().remove(Constants.HELPER_RENDERER);
         }
         else if(table.hasFooterColumn()) {
             writer.startElement("tr", null);

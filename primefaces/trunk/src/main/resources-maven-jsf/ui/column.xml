@@ -9,6 +9,8 @@
 	<componentHandlerClass>org.primefaces.component.column.ColumnHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.Column</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.ColumnRenderer</rendererType>
+	<rendererClass>org.primefaces.component.column.ColumnRenderer</rendererClass>
 	<parent>javax.faces.component.UIColumn</parent>
     <description>Column is an extended version of the standard column used by various PrimeFaces components like datatable, treetable and more.</description>
 	<interfaces>
