@@ -147,7 +147,7 @@
             <name>appendTo</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Appends the Draggable to the element defined by search expression. Defaults to "parent".</description>
+            <description>A search expression to define which element to append the draggable helper to.</description>
         </attribute>
     </attributes>
     <resources>

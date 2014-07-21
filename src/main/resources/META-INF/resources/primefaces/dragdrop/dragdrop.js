@@ -10,7 +10,7 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
         this.jq = $(PrimeFaces.escapeClientId(this.cfg.target));
 
         if(this.cfg.appendTo) {
-            this.jq.appendTo(PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo));
+            this.cfg.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo);
         }
         
         this.jq.draggable(this.cfg);
