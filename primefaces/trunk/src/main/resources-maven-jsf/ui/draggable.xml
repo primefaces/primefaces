@@ -143,6 +143,12 @@
             <type>java.lang.String</type>
             <description>Id of the dashboard to connect with.</description>
         </attribute>
+        <attribute>
+            <name>appendTo</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Appends the Draggable to the element defined by search expression. Defaults to "parent".</description>
+        </attribute>
     </attributes>
     <resources>
 		<resource>
