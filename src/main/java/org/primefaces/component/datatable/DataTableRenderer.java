@@ -984,8 +984,11 @@ public class DataTableRenderer extends DataRenderer {
 
                         writer.startElement("tr", null);
                         for(UIComponent footerRowChild : footerRow.getChildren()) {
-                            if(footerRowChild.isRendered() && footerRowChild instanceof Column) {
-                                encodeColumnFooter(context, table, (Column) footerRowChild);
+                            if(footerRowChild.isRendered()) {
+                                if(footerRowChild instanceof Column)
+                                    encodeColumnFooter(context, table, (Column) footerRowChild);
+                                else
+                                    footerRowChild.encodeAll(context);
                             }
                         }
                         writer.endElement("tr");
