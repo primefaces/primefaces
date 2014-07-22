@@ -170,7 +170,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         .on('focus.dataTable', function() {
             $(this).addClass('ui-state-focus');
         })
-        .on('keydown.paginator', function(e) {
+        .on('keydown.dataTable', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
