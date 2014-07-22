@@ -722,7 +722,8 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         /**
         * handler for document mousedown to hide the overlay
         **/
-        $(document.body).bind('mousedown.ui-menubutton', function (e) {
+        var hideNS = 'mousedown.' + this.id;
+        $(document.body).off(hideNS).on(hideNS, function (e) {
             //do nothing if hidden already
             if($this.menu.is(":hidden") || $this.cfg.disabled) {
                 return;
