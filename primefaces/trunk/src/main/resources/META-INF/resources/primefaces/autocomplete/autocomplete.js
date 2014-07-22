@@ -1,4 +1,4 @@
-                /**
+/**
  * PrimeFaces AutoComplete Widget
  */
 PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
