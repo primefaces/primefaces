@@ -212,9 +212,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             else if ((e.ctrlKey && key === 65) // ctrl+a
                 || (e.ctrlKey && key === 67) // ctrl+c
-                || key === keyCode.UP
                 || key === keyCode.LEFT
-                || key === keyCode.DOWN
                 || key === keyCode.RIGHT
                 || key === keyCode.TAB
                 || key === 16 // keyCode.SHIFT
@@ -223,6 +221,16 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 || key === 18 // keyCode.ALT
                 || key === 17 // keyCode.CONTROL
                 || (key >= 112 && key <= 123)) { // F1-F12
+                shouldSearch = false;
+            }
+            else if(key === keyCode.UP || key === keyCode.DOWN) {
+                if($this.panel.is(':visible')) {
+                    var highlightedItem = $this.items.filter('.ui-state-highlight');
+                    if(highlightedItem.length) {
+                        $this.displayAriaStatus(highlightedItem.data('item-label'));
+                    }
+                }
+                
                 shouldSearch = false;
             }
             else if($this.cfg.pojo && !$this.cfg.multiple) {
@@ -400,6 +408,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     showSuggestions: function(query) {
         this.items = this.panel.find('.ui-autocomplete-item');
+        this.items.attr('role', 'option');
         this.bindDynamicEvents();
 
         var $this=this,
@@ -442,7 +451,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 this.showItemtip(firstItem);
             }
             
-            this.status.text(this.items.length + this.cfg.resultsMessage);
+            this.displayAriaStatus(this.items.length + this.cfg.resultsMessage);
         }
         else {
             if(this.cfg.emptyMessage) {
@@ -453,7 +462,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 this.panel.hide();
             }
             
-            this.status.text(this.cfg.ariaEmptyMessage);
+            this.displayAriaStatus(this.cfg.ariaEmptyMessage);
         }
     },
 
@@ -694,6 +703,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     ,of: this.input
                 });
         }
+    },
+    
+    displayAriaStatus: function(text) {
+        this.status.html('<div>' + text + '</div>');
     }
 
 });
