@@ -147,8 +147,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             label = "&nbsp;";
         }
         
-        writer.startElement("a", null);
-        writer.writeAttribute("href", "#", null);
+        writer.startElement("span", null);
         writer.writeAttribute("class", SelectCheckboxMenu.LABEL_CONTAINER_CLASS, null);
         if(menu.getTabindex() != null) {
             writer.writeAttribute("tabindex", menu.getTabindex(), null);
@@ -158,7 +157,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("class", labelClass, null);
         writer.write(label);
         writer.endElement("label");
-        writer.endElement("a");
+        writer.endElement("span");
     }
     
     protected void encodeMenuIcon(FacesContext context, SelectCheckboxMenu menu, boolean valid) throws IOException {

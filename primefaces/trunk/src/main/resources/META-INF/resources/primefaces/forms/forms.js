@@ -1929,7 +1929,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.inputs = this.jq.find(':checkbox');
         this.panelId = this.id + '_panel';
         this.keyboardTarget = $(this.jqId + '_focus');
-
+        
         if(!this.disabled) {
             this.renderPanel();
 
@@ -2209,8 +2209,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             $this.closer.removeClass('ui-state-focus');
         })
         .on('keydown.selectCheckboxMenu', function(e) {
-            $this.hide(true);
-            e.preventDefault();
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+            
+            if(key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                $this.hide(true);
+                e.preventDefault();
+            }
         });
         
         var togglerCheckboxInput = this.toggler.find('> div.ui-helper-hidden-accessible > input');
