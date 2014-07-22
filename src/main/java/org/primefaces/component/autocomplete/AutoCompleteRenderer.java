@@ -138,6 +138,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("role", "application", null);
         writer.writeAttribute("class", styleClass, null);
 
         if(ac.getStyle() != null) {
@@ -173,6 +174,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("aria-autocomplete", "list", null);
         
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
@@ -310,6 +312,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("role", "application", null);
         writer.writeAttribute("class", styleClass, null);
         if(ac.getStyle() != null) {
             writer.writeAttribute("style", ac.getStyle(), null);
