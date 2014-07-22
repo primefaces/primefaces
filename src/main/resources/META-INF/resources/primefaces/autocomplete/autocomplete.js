@@ -63,7 +63,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.checkForScrollbar = (this.cfg.itemtipAtPosition.indexOf('right') !== -1);
         }
         
-        //screenreader
+        //aria
+        this.input.attr('aria-autocomplete', 'listbox');
+        this.jq.attr('role', 'application');
         this.jq.append('<span role="status" aria-live="polite" class="ui-autocomplete-status ui-helper-hidden-accessible"></span>');
         this.status = this.jq.children('.ui-autocomplete-status');
     },
