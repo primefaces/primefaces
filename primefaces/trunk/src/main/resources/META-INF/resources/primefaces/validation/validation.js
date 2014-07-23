@@ -525,14 +525,14 @@ PrimeFaces.validate = function(cfg) {
                 if(component.is(':input'))
                     inputs = inputs.add(component);
                 else
-                    inputs = inputs.add(component.find(':input:visible:enabled:not(:button)'));
+                    inputs = inputs.add(component.find(':input:visible:enabled:not(:button)[name]'));
             }
         }
 
         this.validateInputs(inputs);
     }
     else {
-        var inputs = form.find(':input:visible:enabled:not(:button)');
+        var inputs = form.find(':input:visible:enabled:not(:button)[name]');
         this.validateInputs(inputs);
     }
 
