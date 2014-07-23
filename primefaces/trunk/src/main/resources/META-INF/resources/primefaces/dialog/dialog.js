@@ -129,7 +129,22 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                         var tabbables = $this.content.find(':tabbable').add($this.footer.find(':tabbable'));
                         if(tabbables.length) {
                             var first = tabbables.filter(':first'),
-                            last = tabbables.filter(':last');
+                            last = tabbables.filter(':last'),
+                            focusingRadioItem = null;
+
+                            if(first.is(':radio')) {                                
+                                focusingRadioItem = tabbables.filter('[name="' + first.attr('name') + '"]').filter(':checked');
+                                if(focusingRadioItem.length > 0) {
+                                    first = focusingRadioItem;
+                                }
+                            }
+                            
+                            if(last.is(':radio')) {
+                                focusingRadioItem = tabbables.filter('[name="' + last.attr('name') + '"]').filter(':checked');
+                                if(focusingRadioItem.length > 0) {
+                                    last = focusingRadioItem; 
+                                }
+                            }
                 
                             if(target.is(document.body)) {
                                 first.focus(1);
