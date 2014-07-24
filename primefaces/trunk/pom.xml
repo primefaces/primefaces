@@ -350,6 +350,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/grid/grid.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.css</include>
@@ -575,6 +576,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.css</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/grid/grid.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.css</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.css</include>
