@@ -61,8 +61,6 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             'top': (this.blocker.height() - this.content.outerHeight()) / 2,
             'z-index': ++PrimeFaces.zindex
         });
-        
-        
 
         if(this.cfg.animate)
             this.blocker.fadeIn();    
