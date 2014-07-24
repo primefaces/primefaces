@@ -31,6 +31,8 @@ public class GridLayoutUtils {
         COLUMN_MAP.put(12, "ui-grid-col-1");
     }
     
+    private GridLayoutUtils() {}
+    
     public static String getColumnClass(int columns) {
         return COLUMN_MAP.get(columns);
     }
