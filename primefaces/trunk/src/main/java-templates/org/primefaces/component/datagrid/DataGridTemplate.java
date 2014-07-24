@@ -15,11 +15,9 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.Constants;
 
 	public static final String DATAGRID_CLASS = "ui-datagrid ui-widget";
-    public static final String CONTENT_CLASS = "ui-datagrid-content ui-widget-content";
-    public static final String EMPTY_CONTENT_CLASS = "ui-datagrid-content  ui-datagrid-content-empty ui-widget-content";
-	public static final String TABLE_CLASS = "ui-datagrid-data";
-	public static final String TABLE_ROW_CLASS = "ui-datagrid-row";
-	public static final String TABLE_COLUMN_CLASS = "ui-datagrid-column";
+    public static final String CONTENT_CLASS = "ui-datagrid-content ui-widget-content ui-grid ui-grid-responsive";
+    public static final String EMPTY_CONTENT_CLASS = "ui-datagrid-content ui-datagrid-content-empty ui-widget-content ui-grid ui-grid-responsive";
+	public static final String COLUMN_CLASS = "ui-datagrid-column";
     public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header ui-corner-top";
     public static final String FOOTER_CLASS = "ui-datagrid-footer ui-widget-header ui-corner-bottom";
 

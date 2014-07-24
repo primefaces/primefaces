@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataGridRenderer extends DataRenderer {
@@ -41,7 +42,7 @@ public class DataGridRenderer extends DataRenderer {
                 grid.loadLazyData();
             }
             
-            encodeTable(context, grid);
+            encodeData(context, grid);
         } 
         else {
             encodeMarkup(context, grid);
@@ -84,7 +85,7 @@ public class DataGridRenderer extends DataRenderer {
             writer.write(grid.getEmptyMessage());
         } 
         else {
-            encodeTable(context, grid);
+            encodeData(context, grid);
         }
         
         writer.endElement("div");
@@ -112,7 +113,7 @@ public class DataGridRenderer extends DataRenderer {
         wb.finish();
     }
 
-    protected void encodeTable(FacesContext context, DataGrid grid) throws IOException {
+    protected void encodeData(FacesContext context, DataGrid grid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
                 
         int columns = grid.getColumns();
@@ -120,10 +121,7 @@ public class DataGridRenderer extends DataRenderer {
         int rows = grid.getRows();
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
-
-        writer.startElement("table", grid);
-        writer.writeAttribute("class", DataGrid.TABLE_CLASS, null);
-        writer.startElement("tbody", null);
+        String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
 
         for(int i = 0; i < numberOfRowsToRender; i++) {
             grid.setRowIndex(rowIndex);
@@ -131,12 +129,9 @@ public class DataGridRenderer extends DataRenderer {
                 break;
             }
             
-            writer.startElement("tr", null);
-            writer.writeAttribute("class", DataGrid.TABLE_ROW_CLASS, null);
-
             for(int j = 0; j < columns; j++) {
-                writer.startElement("td", null);
-                writer.writeAttribute("class", DataGrid.TABLE_COLUMN_CLASS, null);
+                writer.startElement("div", null);
+                writer.writeAttribute("class", columnClass, null);
                 
                 grid.setRowIndex(rowIndex);
                 if(grid.isRowAvailable()) {
@@ -144,15 +139,11 @@ public class DataGridRenderer extends DataRenderer {
                 }
                 rowIndex++;
                 
-                writer.endElement("td");
+                writer.endElement("div");
             }
-            writer.endElement("tr");
         }
 
         grid.setRowIndex(-1);	//cleanup
-
-        writer.endElement("tbody");
-        writer.endElement("table");
     }
     
     @Override
