@@ -5387,6 +5387,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.formId = this.jq.closest('form').attr('id');
         this.cfg.theme = true;
         this.jqc = $(this.jqId + '_container');
+        this.viewNameState = $(this.jqId + '_view');
 
         this.setupEventSource();
 
@@ -5555,35 +5556,37 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     bindViewChangeListener: function() {
-        if(this.cfg.behaviors) {
-            var viewChangeBehavior = this.cfg.behaviors['viewChange'];
-            if(viewChangeBehavior) {                
-                var viewButtons = this.jqc.find('> .fc-header span.fc-button:not(.fc-button-prev,.fc-button-next,.fc-button-today)'),
-                $this = this;
-        
-                viewButtons.each(function(i) {
-                    var viewButton = viewButtons.eq(i),
-                    buttonClasses = viewButton.attr('class').split(' ');
-                    for(var i = 0; i < buttonClasses.length; i++) {
-                        var buttonClass = buttonClasses[i];
-                        if(buttonClass.indexOf('fc-button-') !== -1) {
-                            viewButton.data('view', buttonClass.substring(10))
-                            break;
-                        }
-                    }
-                });
-                
-                viewButtons.on('click.schedule', function() {
-                    var ext = {
-                        params: [
-                            {name: $this.id + '_view', value: $(this).data('view')}
-                        ]
-                    };
+        var viewButtons = this.jqc.find('> .fc-header span.fc-button:not(.fc-button-prev,.fc-button-next,.fc-button-today)'),
+        $this = this;
 
-                    viewChangeBehavior.call($this, ext);
-                });
+        viewButtons.each(function(i) {
+            var viewButton = viewButtons.eq(i),
+            buttonClasses = viewButton.attr('class').split(' ');
+            for(var i = 0; i < buttonClasses.length; i++) {
+                var buttonClass = buttonClasses[i];
+                if(buttonClass.indexOf('fc-button-') !== -1) {
+                    viewButton.data('view', buttonClass.substring(10))
+                    break;
+                }
             }
-        }
+        });
+        
+        viewButtons.on('click.schedule', function() {
+            var viewName = $(this).data('view');
+            
+            $this.viewNameState.val(viewName);
+            
+            var viewChangeBehavior = $this.cfg.behaviors['viewChange'];
+            if(viewChangeBehavior) {             
+                var ext = {
+                    params: [
+                        {name: $this.id + '_view', value: viewName}
+                    ]
+                };
+
+                viewChangeBehavior.call($this, ext);
+            }
+        });
     }
 
 });

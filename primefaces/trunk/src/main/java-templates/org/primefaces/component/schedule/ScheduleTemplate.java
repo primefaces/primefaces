@@ -148,3 +148,18 @@ import org.primefaces.model.ScheduleEvent;
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
     }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+
+        super.processUpdates(context);
+
+        ValueExpression expr = this.getValueExpression("view");
+        if(expr != null) {
+            expr.setValue(getFacesContext().getELContext(), this.getView());
+            getStateHelper().remove(PropertyKeys.view);
+        }
+    }
