@@ -53,11 +53,16 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
+        this.blocker.css('z-index', ++PrimeFaces.zindex);
+        
         //center position of content
         this.content.css({
             'left': (this.blocker.width() - this.content.outerWidth()) / 2,
-            'top': (this.blocker.height() - this.content.outerHeight()) / 2
+            'top': (this.blocker.height() - this.content.outerHeight()) / 2,
+            'z-index': ++PrimeFaces.zindex
         });
+        
+        
 
         if(this.cfg.animate)
             this.blocker.fadeIn();    
