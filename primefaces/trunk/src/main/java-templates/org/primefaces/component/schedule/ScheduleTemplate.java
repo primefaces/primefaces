@@ -128,7 +128,7 @@ import org.primefaces.model.ScheduleEvent;
                 wrapperEvent = new ScheduleEntryResizeEvent(this, behaviorEvent.getBehavior(), resizedEvent, dayDelta, minuteDelta);
             }
             else if(eventName.equals("viewChange")) {
-				wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), params.get(clientId + "_view"));
+				wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getView());
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

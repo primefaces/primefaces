@@ -5578,13 +5578,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             
             var viewChangeBehavior = $this.cfg.behaviors['viewChange'];
             if(viewChangeBehavior) {             
-                var ext = {
-                    params: [
-                        {name: $this.id + '_view', value: viewName}
-                    ]
-                };
-
-                viewChangeBehavior.call($this, ext);
+                viewChangeBehavior.call($this);
             }
         });
     }
