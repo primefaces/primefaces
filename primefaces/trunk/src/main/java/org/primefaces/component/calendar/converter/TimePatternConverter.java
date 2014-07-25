@@ -50,6 +50,14 @@ public class TimePatternConverter implements PatternConverter {
         if(pattern.contains("a"))     
             pattern = pattern.replaceAll("a+", "TT");
         
+        //  TimeZone
+        if(pattern.contains("Z"))
+            pattern = pattern.replaceAll("Z+", "z");
+        else if(pattern.contains("XXX"))     
+            pattern = pattern.replaceAll("XXX*", "Z");
+        else if(pattern.contains("XX"))     
+            pattern = pattern.replaceAll("XX", "z");
+        
         return pattern;
     }
     
