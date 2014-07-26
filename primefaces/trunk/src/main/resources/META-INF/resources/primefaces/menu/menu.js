@@ -134,7 +134,8 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         this._super(cfg);
         
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
-        
+        this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
+                
         this.bindEvents();
     },
     
@@ -173,31 +174,28 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             }
         });
                 
-        if(this.cfg.autoDisplay === false) {
-            this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
+        this.rootLinks.click(function(e) {
+            var link = $(this),
+            menuitem = link.parent(),
+            submenu = menuitem.children('ul.ui-menu-child');
             
-            this.rootLinks.data('primefaces-menubar', this.id).find('*').data('primefaces-menubar', this.id);
-            
-            this.rootLinks.click(function(e) {
-                var link = $(this),
-                menuitem = link.parent(),
-                submenu = menuitem.children('ul.ui-menu-child');
+            $this.itemClick = true;
 
-                if(submenu.length === 1) {
-                    if(submenu.is(':visible')) {
-                        $this.active = false;
-                        $this.deactivate(menuitem);
-                    }
-                    else {                                        
-                        $this.active = true;
-                        $this.highlight(menuitem);
-                        $this.showSubmenu(menuitem, submenu);
-                    }
+            if(submenu.length === 1) {
+                if(submenu.is(':visible')) {
+                    $this.active = false;
+                    $this.deactivate(menuitem);
                 }
-            });
-        }
+                else {                     
+                    $this.active = true;
+                    $this.highlight(menuitem);
+                    $this.showSubmenu(menuitem, submenu);
+                }
+            }
+        });
         
         this.links.filter('.ui-submenu-link').click(function(e) {
+            $this.itemClick = true;
             e.preventDefault();
         });
         
@@ -215,11 +213,12 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     },
     
     bindDocumentHandler: function() {
-        var $this = this;
+        var $this = this,
+        clickNS = 'click.' + this.id;
         
-        $(document.body).click(function(e) {
-            var target = $(e.target);
-            if(target.data('primefaces-menubar') === $this.id) {
+        $(document).off(clickNS).on(clickNS, function(e) {
+            if($this.itemClick) {
+                $this.itemClick = false;
                 return;
             }
             
