@@ -954,7 +954,6 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                         
             $this.hide();
         });
-
     },
     
     show: function(e) {  
