@@ -216,7 +216,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         var $this = this,
         clickNS = 'click.' + this.id;
         
-        $(document).off(clickNS).on(clickNS, function(e) {
+        $(document.body).off(clickNS).on(clickNS, function(e) {
             if($this.itemClick) {
                 $this.itemClick = false;
                 return;
@@ -943,16 +943,18 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     },
     
     bindDocumentHandler: function() {
-        var _self = this;
-
+        var $this = this,
+        clickNS = 'click.' + this.id;
+        
         //hide overlay when document is clicked
-        $(document.body).bind('click.ui-contextmenu', function (e) {
-            if(_self.jq.is(":hidden")) {
+        $(document.body).off(clickNS).on(clickNS, function(e) {
+            if($this.jq.is(":hidden")) {
                 return;
             }
                         
-            _self.hide();
+            $this.hide();
         });
+
     },
     
     show: function(e) {  
