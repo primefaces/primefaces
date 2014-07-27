@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
 
 public class PanelGridRenderer extends CoreRenderer {
     
@@ -56,12 +57,10 @@ public class PanelGridRenderer extends CoreRenderer {
         
         writer.startElement("tbody", grid);
         
-        if(columns > 0) {
+        if(columns > 0)
             encodeDynamicBody(context, grid, grid.getColumns());
-        }
-        else {
+        else
             encodeStaticBody(context, grid);
-        }
 
         writer.endElement("tbody");
     }
@@ -100,16 +99,24 @@ public class PanelGridRenderer extends CoreRenderer {
         }
     }
     
-    public void encodeStaticBody(FacesContext context, PanelGrid grid) throws IOException { 
+    public void encodeStaticBody(FacesContext context, PanelGrid grid) throws IOException {
+        context.getAttributes().put(Constants.HELPER_RENDERER, "panelGridBody");
         int i=0;
-        for(UIComponent child : grid.getChildren()) {
-            String rowStyleClass = i % 2 == 0 ? PanelGrid.ROW_CLASS + " " + PanelGrid.EVEN_ROW_CLASS : PanelGrid.ROW_CLASS + " " + PanelGrid.ODD_ROW_CLASS;
-
-            if(child instanceof Row && child.isRendered()) {
-                encodeRow(context, (Row) child, "gridcell", rowStyleClass, PanelGrid.CELL_CLASS);
+        
+        for(UIComponent child : grid.getChildren()) {            
+            if(child.isRendered()) {
+                if(child instanceof Row) {
+                    String rowStyleClass = i % 2 == 0 ? PanelGrid.ROW_CLASS + " " + PanelGrid.EVEN_ROW_CLASS : PanelGrid.ROW_CLASS + " " + PanelGrid.ODD_ROW_CLASS;
+                    encodeRow(context, (Row) child, "gridcell", rowStyleClass, PanelGrid.CELL_CLASS);
+                    i++;
+                } 
+                else {                   
+                    child.encodeAll(context);
+                }
             }
-            i++;
-        }
+        }      
+        
+        context.getAttributes().remove(Constants.HELPER_RENDERER);
     }
     
     public void encodeRow(FacesContext context, Row row, String columnRole, String rowClass, String columnClass) throws IOException {
@@ -140,7 +147,7 @@ public class PanelGridRenderer extends CoreRenderer {
                 if(column.getColspan() > 1) writer.writeAttribute("colspan", column.getColspan(), null);
                 if(column.getRowspan() > 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
                 
-                column.encodeAll(context);
+                renderChildren(context, column);
                 
                 writer.endElement("td");
             }
@@ -172,16 +179,24 @@ public class PanelGridRenderer extends CoreRenderer {
                 writer.endElement("tr");
             }
             else {
+                context.getAttributes().put(Constants.HELPER_RENDERER, "panelGridFacet");
                 if(component instanceof Row) {
                     encodeRow(context, (Row) component, "columnheader", "ui-widget-header", PanelGrid.CELL_CLASS + " ui-widget-header");
                 }
-                else if(component instanceof UIPanel){
-                    for(UIComponent row : component.getChildren()) {
-                        if(row instanceof Row && row.isRendered()) {
-                            encodeRow(context, (Row) row, "columnheader", "ui-widget-header", PanelGrid.CELL_CLASS + " ui-widget-header");
+                else if(component instanceof UIPanel) {
+                    for(UIComponent child : component.getChildren()) {
+                        if(child.isRendered()) {
+                            if(child instanceof Row)
+                                encodeRow(context, (Row) child, "columnheader", "ui-widget-header", PanelGrid.CELL_CLASS + " ui-widget-header");
+                            else
+                                component.encodeAll(context);
                         }
                     }
                 }
+                else {
+                    component.encodeAll(context);
+                }
+                context.getAttributes().remove(Constants.HELPER_RENDERER);
             }
             
             writer.endElement(tag);

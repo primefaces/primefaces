@@ -22,6 +22,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.row.renderer.ColumnGroupHelperRenderer;
 import org.primefaces.component.row.renderer.HelperRowRenderer;
+import org.primefaces.component.row.renderer.PanelGridBodyRowRenderer;
+import org.primefaces.component.row.renderer.PanelGridFacetRowRenderer;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 
@@ -32,6 +34,8 @@ public class RowRenderer extends CoreRenderer {
     static {
         RENDERERS = new HashMap<String,HelperRowRenderer>();
         RENDERERS.put("columnGroup", new ColumnGroupHelperRenderer());
+        RENDERERS.put("panelGridBody", new PanelGridBodyRowRenderer());
+        RENDERERS.put("panelGridFacet", new PanelGridFacetRowRenderer());
     }
     
     @Override
