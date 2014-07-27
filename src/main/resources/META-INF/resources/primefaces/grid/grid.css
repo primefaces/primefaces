@@ -104,7 +104,7 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 35em) {
     .ui-grid-responsive .ui-grid-col-1,
     .ui-grid-responsive .ui-grid-col-2,
     .ui-grid-responsive .ui-grid-col-3,
@@ -118,6 +118,7 @@
     .ui-grid-responsive .ui-grid-col-11,
     .ui-grid-responsive .ui-grid-col-12 {
         width: 100%;
+        float: none;
     }
 }
 
