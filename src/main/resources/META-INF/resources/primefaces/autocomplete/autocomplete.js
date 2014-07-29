@@ -162,7 +162,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $(this).removeClass('ui-state-active');
                 $this.search('');
                 $this.input.focus();
-                e.preventDefault(); 
+                e.preventDefault();
+                e.stopPropagation();
             }
         });
 
@@ -315,6 +316,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         highlightedItem.click();
 
                         e.preventDefault();
+                        e.stopPropagation();
                         break;
 
                     case 18: //keyCode.ALT:
