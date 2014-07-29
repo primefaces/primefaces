@@ -36,11 +36,12 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         literals = new HashMap<String, Object>(propertiesCount);
         bindings = new HashMap<String, ValueExpression>(propertiesCount);
     }
-    
+
     public void setLiteral(String attr, Object val) {
     	if (val == null && literals.containsKey(attr)) {
     		literals.remove(attr);
-    	} else {
+    	}
+        else {
     		literals.put(attr, val);
     	}
     }
@@ -49,11 +50,12 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
     	String attr = property.name();
     	setLiteral(attr, val);
     }
-	
+
     public void setValueExpression(String attr, ValueExpression ve) {
     	if (ve == null && bindings.containsKey(attr)) {
     		bindings.remove(attr);
-    	} else {
+    	}
+        else {
     		bindings.put(attr, ve);
     	}
     }
@@ -66,9 +68,10 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
     public <T> T eval(String attr, T unspecifiedValue) {
         if (literals.containsKey(attr)) {
             Object val = literals.get(attr);
-            if(val == null){
+            if (val == null){
                 return unspecifiedValue;
-            } else {
+            }
+            else {
                 return (T) val;
             }
         }
@@ -81,8 +84,8 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         }
         return unspecifiedValue;
     }
-    
-    
+
+
     protected <T> T eval(Enum<?> property, T unspecifiedValue) {
     	return eval(property.name(), unspecifiedValue);
     }
@@ -95,12 +98,13 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
     	String attr = property.name();
     	return isAttributeSet(attr);
     }
-    
+
     @Override
     public Object saveState(FacesContext context) {
         if (context == null) {
             throw new NullPointerException();
         }
+
         Object[] values;
 
         Object superState = super.saveState(context);
@@ -108,7 +112,8 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         if (initialStateMarked()) {
             if (superState == null) {
                 values = null;
-            } else {
+            }
+            else {
                 values = new Object[] { superState };
             }
         } else {
@@ -116,7 +121,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
 
             values[0] = superState;
             values[1] = savePropertyMap(context, literals, false);
-			values[2] = savePropertyMap(context, bindings, true);
+            values[2] = savePropertyMap(context, bindings, true);
         }
 
         return values;
@@ -151,10 +156,14 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
 
         Object[] values = new Object[allProperties.length];
         for (int i = 0; i < allProperties.length; i++) {
-        	values[i] = map.get(allProperties[i].name());
+            Object val = map.get(allProperties[i].name());
 
             if (saveValuesAsAttachedState) {
-                values[i] = UIComponentBase.saveAttachedState(context, values[i]);
+                val = UIComponentBase.saveAttachedState(context, val);
+            }
+
+            if (val != null) {
+                values[i] = val;
             }
         }
 
@@ -176,7 +185,9 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
                 val = UIComponentBase.restoreAttachedState(context, val);
             }
 
-            map.put(allProperties[i].name(), val);
+            if (val != null) {
+                map.put(allProperties[i].name(), val);
+            }
         }
 
         return map;
