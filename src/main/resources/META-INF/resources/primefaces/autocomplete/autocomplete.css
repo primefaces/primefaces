@@ -25,6 +25,10 @@
     overflow: auto;
 }
 
+.ui-autocomplete-panel .ui-autocomplete-item {
+    cursor: pointer;
+}
+
 .ui-autocomplete-panel .ui-autocomplete-list {
     padding: 0.4em;
     border: 0 none;
@@ -32,7 +36,6 @@
 
 .ui-autocomplete-panel .ui-autocomplete-list-item {
     border:0px none;
-    cursor:pointer;
     font-weight:normal;
     margin:1px 0;
     padding:3px 5px;
@@ -121,4 +124,9 @@
 
 .ui-autocomplete-emptyMessage {
     padding:3px 5px;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-group {
+    font-weight: bold;
+    cursor: default;
 }

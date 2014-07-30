@@ -450,6 +450,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
                 writer.writeAttribute("data-item-value", value, null);
                 writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
             }
             
             for(Column column : ac.getColums()) {
@@ -497,6 +498,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
                 writer.writeAttribute("data-item-value", value, null);
                 writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
                 
                 writer.writeText(ac.getItemLabel(), null);
             }
@@ -544,7 +546,8 @@ public class AutoCompleteRenderer extends InputRenderer {
             .attr("forceSelection", ac.isForceSelection(), false)
             .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
             .attr("multiple", ac.isMultiple(), false)
-            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, ac, ac.getAppendTo()), null);
+            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, ac, ac.getAppendTo()), null)
+            .attr("grouping", ac.getValueExpression("groupBy") != null, false);
         
         if(ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());            
