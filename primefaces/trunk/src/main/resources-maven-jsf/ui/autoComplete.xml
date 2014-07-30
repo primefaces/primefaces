@@ -176,6 +176,12 @@
             <type>java.lang.String</type>
             <description>Hint text for screen readers to provide information about the search results. Default is "{0} results found, use arrow keys to navigate".</description>
         </attribute>
+        <attribute>
+            <name>groupBy</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Value to group items in categories.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
