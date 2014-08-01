@@ -39,10 +39,10 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
 
     public void setLiteral(String attr, Object val) {
     	if (val == null && literals.containsKey(attr)) {
-    		literals.remove(attr);
+            literals.remove(attr);
     	}
         else {
-    		literals.put(attr, val);
+            literals.put(attr, val);
     	}
     }
 
@@ -53,10 +53,10 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
 
     public void setValueExpression(String attr, ValueExpression ve) {
     	if (ve == null && bindings.containsKey(attr)) {
-    		bindings.remove(attr);
+            bindings.remove(attr);
     	}
         else {
-    		bindings.put(attr, ve);
+            bindings.put(attr, ve);
     	}
     }
 
