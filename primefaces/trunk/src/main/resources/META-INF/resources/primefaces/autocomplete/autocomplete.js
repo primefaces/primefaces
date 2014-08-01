@@ -168,15 +168,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //hide overlay when outside is clicked
-        var offset;
-        $(document.body).bind('mousedown.ui-autocomplete', function (e) {
+        this.hideNS = 'mousedown.' + this.id;
+        $(document.body).off(this.hideNS).on(this.hideNS, function (e) {
             if($this.panel.is(":hidden")) {
                 return;
             }
-            offset = $this.panel.offset();
+            
+            var offset = $this.panel.offset();
             if(e.target === $this.input.get(0)) {
                 return;
             }
+            
             if (e.pageX < offset.left ||
                 e.pageX > offset.left + $this.panel.width() ||
                 e.pageY < offset.top ||
