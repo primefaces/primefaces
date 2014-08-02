@@ -122,12 +122,15 @@ public class DataGridRenderer extends DataRenderer {
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
         String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
-
+        
         for(int i = 0; i < numberOfRowsToRender; i++) {
             grid.setRowIndex(rowIndex);
             if(!grid.isRowAvailable()) {
                 break;
             }
+            
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataGrid.ROW_CLASS, null);
             
             for(int j = 0; j < columns; j++) {
                 writer.startElement("div", null);
@@ -141,6 +144,8 @@ public class DataGridRenderer extends DataRenderer {
                 
                 writer.endElement("div");
             }
+            
+            writer.endElement("div");
         }
 
         grid.setRowIndex(-1);	//cleanup
