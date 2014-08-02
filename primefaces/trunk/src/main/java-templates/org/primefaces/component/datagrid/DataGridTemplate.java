@@ -18,6 +18,7 @@ import org.primefaces.util.Constants;
     public static final String CONTENT_CLASS = "ui-datagrid-content ui-widget-content ui-grid ui-grid-responsive";
     public static final String EMPTY_CONTENT_CLASS = "ui-datagrid-content ui-datagrid-content-empty ui-widget-content ui-grid ui-grid-responsive";
 	public static final String COLUMN_CLASS = "ui-datagrid-column";
+    public static final String ROW_CLASS = "ui-grid-row";
     public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header ui-corner-top";
     public static final String FOOTER_CLASS = "ui-datagrid-footer ui-widget-header ui-corner-bottom";
 
