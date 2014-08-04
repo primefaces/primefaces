@@ -1015,3 +1015,12 @@ import org.primefaces.util.SharedStringBuilder;
             this.setValue(value);
     }
     
+    @Override
+    public Object saveState(FacesContext context) {
+        if(this.isFilteringEnabled()) {
+            this.setValue(null);
+        }
+    
+        return super.saveState(context);
+    } 
+    
