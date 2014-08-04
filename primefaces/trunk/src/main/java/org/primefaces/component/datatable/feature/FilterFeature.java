@@ -115,8 +115,7 @@ public class FilterFeature implements DataTableFeature {
                     sortFeature.singleSort(context, table);
             }
             
-            Object filteredValue = table.getFilteredValue();
-            table.setValue(filteredValue);
+            table.updateValue(table.getFilteredValue());
         }
                         
         renderer.encodeTbody(context, table, true);
