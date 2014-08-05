@@ -717,6 +717,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.scrollStateHolder.val(scrollState);
     },
     
+    clearScrollState: function() {
+        this.scrollStateHolder.val('0,0');
+    },
+    
     fixColumnWidths: function() {
         var $this = this;
         
