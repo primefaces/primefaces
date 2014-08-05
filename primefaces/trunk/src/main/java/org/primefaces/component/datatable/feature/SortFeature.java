@@ -110,6 +110,12 @@ public class SortFeature implements DataTableFeature {
                     requestContext.addCallbackParam("totalRecords", table.getRowCount());
                 }
             }
+            
+            //save state
+            Object filteredValue = table.getFilteredValue();
+            if(!table.isLazy() && table.isFilteringEnabled() && filteredValue != null) {
+                table.updateFilteredValue(context, (List) filteredValue);
+            }
         }
    
         renderer.encodeTbody(context, table, true);
