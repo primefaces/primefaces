@@ -23,7 +23,7 @@ import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.HTML;
 
 public class LinkRenderer extends OutcomeTargetRenderer {
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -53,7 +53,7 @@ public class LinkRenderer extends OutcomeTargetRenderer {
             if(targetURL == null) {
                 targetURL = "#";
             }
-                
+
             writer.startElement("a", link);
             if(shouldWriteId) {
                 writer.writeAttribute("id", link.getClientId(context), "id");
@@ -66,11 +66,11 @@ public class LinkRenderer extends OutcomeTargetRenderer {
             writer.endElement("a");
         }
     }
-    
+
     protected void renderContent(FacesContext context, Link link) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object value = link.getValue();
-        
+
         if(value != null) {
             if(link.isEscape())
                 writer.writeText(value, "value");
@@ -78,10 +78,10 @@ public class LinkRenderer extends OutcomeTargetRenderer {
                 writer.write(value.toString());
         }
         else {
-            renderChildren(null, link);
+            renderChildren(context, link);
         }
     }
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing
