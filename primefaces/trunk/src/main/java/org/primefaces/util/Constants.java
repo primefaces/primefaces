@@ -58,6 +58,7 @@ public class Constants {
     
     public static final String DYNAMIC_CONTENT_PARAM = "pfdrid";
     public static final String DYNAMIC_CONTENT_CACHE_PARAM = "pfdrid_c";
+    public static final String DYNAMIC_CONTENT_TYPE_PARAM = "pfdrt";
 
     public final static String FRAGMENT_ID = "primefaces.fragment";
     public final static String FRAGMENT_AUTO_RENDERED = "primefaces.fragment.autorendered";

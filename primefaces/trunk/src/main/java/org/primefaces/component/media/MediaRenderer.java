@@ -122,7 +122,7 @@ public class MediaRenderer extends CoreRenderer {
 	}
 
 	protected String getMediaSrc(FacesContext context, Media media) throws Exception {
-        return DynamicResourceBuilder.build(context, media.getValue(), media, media.isCache());
+        return DynamicResourceBuilder.build(context, media.getValue(), media, media.isCache(), "sc");
 	}
     
     @Override
