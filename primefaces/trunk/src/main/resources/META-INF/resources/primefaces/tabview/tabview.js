@@ -143,7 +143,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         
     initScrolling: function() {
         if(this.jq.is(':visible')) {
-            var overflown = (this.lastTab.position().left - this.firstTab.position().left) > this.navscroller.innerWidth();
+            var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
             if(overflown) {
                 this.navscroller.css('padding-left', '18px');
                 this.navcrollerLeft.show();
