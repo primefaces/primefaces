@@ -68,19 +68,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         }
         
         if (!editableValueHolder.isRequired()) {
-            if (constraint.annotationType().equals(Min.class)) {
-                Min min = (Min) constraint;
-                if (min.value() > 0) {
-                    editableValueHolder.setRequired(true);
-                }
-            }
-            else if (constraint.annotationType().equals(Size.class)) {
-                Size size = (Size) constraint;
-                if (size.min() > 0) {
-                    editableValueHolder.setRequired(true);
-                }
-            }
-            else if (constraint.annotationType().equals(NotNull.class)) {
+            if (constraint.annotationType().equals(NotNull.class)) {
                 editableValueHolder.setRequired(true);
             }
         }
