@@ -42,6 +42,13 @@
 			<type>java.lang.String</type>
             <description>Comma separated list of column style classes.</description>
 		</attribute>
+        <attribute>
+			<name>layout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>table</defaultValue>
+            <description>Displays data in a 'table' layout or 'grid' layout. The grid layout is a responsive layout. Default value is 'table'.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
