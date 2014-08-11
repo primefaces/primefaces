@@ -61,9 +61,9 @@ public class SelectionFeature implements DataTableFeature {
 
 	void decodeMultipleSelection(FacesContext context, DataTable table, String selection) {
 		Class<?> clazz = table.getValueExpression("selection").getType(context.getELContext());
-        boolean isArray = clazz.isArray();
+        boolean isArray = clazz == null ? false : clazz.isArray();
         
-        if(!isArray && !List.class.isAssignableFrom(clazz)) {
+        if(clazz != null && !isArray && !List.class.isAssignableFrom(clazz)) {
             throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
         }
                 
