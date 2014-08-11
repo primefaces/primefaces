@@ -28,7 +28,7 @@ public class PanelGridBodyRowRenderer extends CoreRenderer implements HelperRowR
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("tr", row);
-        writer.writeAttribute("class", PanelGrid.ROW_CLASS, null);
+        writer.writeAttribute("class", PanelGrid.TABLE_ROW_CLASS, null);
         writer.writeAttribute("role", "row", null);
         renderChildren(context, row);
         writer.endElement("tr");

@@ -18,3 +18,45 @@
     border-color: inherit;
     padding:4px 10px;
 }
+
+.ui-panelgrid .ui-grid-row {
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0px;
+}
+
+.ui-panelgrid > div.ui-panelgrid-header {
+    padding: 0px; 
+}
+
+.ui-panelgrid > div.ui-panelgrid-footer {
+    padding: 0px; 
+}
+
+/* Border settings for Grid layout */
+.ui-grid-responsive .ui-grid-row {
+    border-width: 0px 0px 0px 1px;
+}
+
+.ui-grid-responsive .ui-panelgrid-cell {
+    border-width: 0px 1px 1px 0px;
+}
+
+.ui-grid-responsive .ui-grid-row:first-child {
+    border-top-width: 1px;
+}
+
+.ui-grid-responsive {
+    border-width: 0px;
+}
+
+/* Responsive */
+@media (max-width: 35em) {   
+    .ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
+        border-width: 0px;
+    }
+    
+    .ui-panelgrid .ui-grid-responsive .ui-grid-row {
+        border-width: 1px;
+    }
+}
