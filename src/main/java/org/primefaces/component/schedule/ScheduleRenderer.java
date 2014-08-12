@@ -43,10 +43,7 @@ public class ScheduleRenderer extends CoreRenderer {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         
         if(params.containsKey(viewId)) {
-            String view = params.get(viewId);
-            if(!view.equals("month")) {
-                schedule.setView(view);
-            }
+            schedule.setView(params.get(viewId));
         }
         
         decodeBehaviors(context, component);
