@@ -70,6 +70,7 @@ public class Constants {
         public final static String SOURCE_COMPONENT = "dialog.source.component";
         public final static String SOURCE_WIDGET = "dialog.source.widget";
         public final static String CONVERSATION_PARAM = "pfdlgcid";
+        public final static String INCLUDE_VIEW_PARAMS = "includeViewParams";
     }
     
     public static final String EMPTY_STRING = "";

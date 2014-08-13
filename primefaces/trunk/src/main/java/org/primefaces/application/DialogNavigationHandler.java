@@ -45,15 +45,19 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
         if(dialogOutcome != null) {
             NavigationCase navCase = getNavigationCase(context, fromAction, dialogOutcome);
             String toViewId = navCase.getToViewId(context);
+            Map<String,Object> options = (Map<String,Object>) attrs.get(Constants.DIALOG_FRAMEWORK.OPTIONS);
             Map<String,List<String>> params = (Map<String,List<String>>) attrs.get(Constants.DIALOG_FRAMEWORK.PARAMS);
 
-            if (params == null)
-            {
+            if (params == null) {
                 params = Collections.emptyMap();
             }
+            
+            boolean includeViewParams = false;
+            if (options.containsKey(Constants.DIALOG_FRAMEWORK.INCLUDE_VIEW_PARAMS)) {
+                includeViewParams = (Boolean) options.get(Constants.DIALOG_FRAMEWORK.INCLUDE_VIEW_PARAMS);
+            }
 
-            String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, false);
-            Map<String,Object> options = (Map<String,Object>) attrs.get(Constants.DIALOG_FRAMEWORK.OPTIONS);
+            String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, includeViewParams);
             
             StringBuilder sb = new StringBuilder();
             
