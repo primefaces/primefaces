@@ -13,10 +13,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.lang.StringBuilder;
+import javax.faces.context.FacesContext;
 import org.primefaces.model.TreeNode;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.PhaseId;
+import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.util.Constants;
 import org.primefaces.model.TreeNode;
 
@@ -211,5 +213,38 @@ import org.primefaces.model.TreeNode;
     @Override
     protected boolean shouldVisitNode(TreeNode node) {
         return this.isDynamic() ? (node.isExpanded() || node.getParent() == null) : true;
+    }
+
+    @Override
+    protected void processColumnChildren(FacesContext context, PhaseId phaseId, String nodeKey) {
+        setRowKey(nodeKey);
+        TreeNode treeNode = this.getRowNode();
+        String treeNodeType = treeNode.getType();
+        
+        if(nodeKey == null)
+            return;
+        
+        for(UIComponent child : getChildren()) {
+            if(child instanceof UITreeNode && child.isRendered()) {
+                UITreeNode uiTreeNode = (UITreeNode) child;
+
+                if(!treeNodeType.equals(uiTreeNode.getType()))
+                    continue;
+                
+                for(UIComponent grandkid : child.getChildren()) {
+                    if(!grandkid.isRendered())
+                        continue;
+                    
+                    if(phaseId == PhaseId.APPLY_REQUEST_VALUES)
+                        grandkid.processDecodes(context);
+                    else if(phaseId == PhaseId.PROCESS_VALIDATIONS)
+                        grandkid.processValidators(context);
+                    else if(phaseId == PhaseId.UPDATE_MODEL_VALUES)
+                        grandkid.processUpdates(context);
+                    else
+                        throw new IllegalArgumentException();
+                }
+            }
+        }
     }
     
