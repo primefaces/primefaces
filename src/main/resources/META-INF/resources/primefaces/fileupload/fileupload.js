@@ -1616,7 +1616,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                         });
                     }
                     else {
-                        $this.clearMessages();
+                        //$this.clearMessages();
 
                         var row = $('<tr></tr>').append('<td class="ui-fileupload-preview"></td>')
                                 .append('<td>' + file.name + '</td>')
