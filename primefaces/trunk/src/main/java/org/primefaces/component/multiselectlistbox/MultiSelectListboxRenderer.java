@@ -47,7 +47,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
     protected void encodeMarkup(FacesContext context, MultiSelectListbox listbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = listbox.getClientId(context);
-        List<SelectItem> selectItems = getSelectItems(context, listbox);      
+        List<SelectItem> selectItems = getSelectItems(context, listbox);     
         String style = listbox.getStyle();
         String styleClass = listbox.getStyleClass();
         styleClass = styleClass == null ? MultiSelectListbox.CONTAINER_CLASS : MultiSelectListbox.CONTAINER_CLASS + " " + styleClass;
@@ -70,12 +70,26 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
     protected void encodeLists(FacesContext context, MultiSelectListbox listbox, List<SelectItem> itemList) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         SelectItem[] items = (itemList == null) ? null : itemList.toArray(new SelectItem[itemList.size()]);
+        String header = listbox.getHeader();
+        String listStyleClass = MultiSelectListbox.LIST_CLASS;
         
         writer.startElement("div", listbox);
         writer.writeAttribute("class", MultiSelectListbox.LIST_CONTAINER_CLASS, null);
+                
+        if(header != null) {
+            listStyleClass = listStyleClass + " ui-corner-bottom";
+            
+            writer.startElement("div", listbox);
+            writer.writeAttribute("class", MultiSelectListbox.LIST_HEADER_CLASS, null);
+            writer.writeText(header, null);
+            writer.endElement("div");
+        } 
+        else {
+            listStyleClass = listStyleClass + " ui-corner-all";
+        }
         
         writer.startElement("ul", listbox);
-        writer.writeAttribute("class", MultiSelectListbox.LIST_CLASS, null);
+        writer.writeAttribute("class", listStyleClass, null);
         
         if(items != null) {
             encodeListItems(context, listbox, items);
@@ -98,7 +112,10 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
                 writer.startElement("li", null);
                 writer.writeAttribute("class", MultiSelectListbox.ITEM_CLASS, null);
                 writer.writeAttribute("data-value", itemValue, null);
+                
+                writer.startElement("span", listbox);
                 writer.writeText(item.getLabel(), null);
+                writer.endElement("span");
                 
                 if(item instanceof SelectItemGroup) {
                     SelectItemGroup group = (SelectItemGroup) item;
@@ -126,9 +143,10 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         String clientId = listbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         
-        wb.init("MultiSelectListbox", listbox.resolveWidgetVar(), clientId);
-        wb.attr("effect", listbox.getEffect(), null);
-        wb.finish();
+        wb.init("MultiSelectListbox", listbox.resolveWidgetVar(), clientId)
+            .attr("effect", listbox.getEffect(), null)
+            .attr("showHeaders", listbox.isShowHeaders(), false)
+            .finish();
     } 
     
     protected void encodeInput(FacesContext context, MultiSelectListbox listbox) throws IOException {

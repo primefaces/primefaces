@@ -85,6 +85,12 @@
     cursor: default;
 }
 
+.ui-multiselectlistbox .ui-multiselectlistbox-header {
+    text-align: center;
+    padding: 2px 10px;
+    border-bottom: 0px none;
+}
+
 /**
  * Checkbox
  */

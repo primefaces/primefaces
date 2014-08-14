@@ -51,6 +51,19 @@
 			<type>java.lang.String</type>
             <description>Effect to use when showing a group of items.</description>
 		</attribute>
+        <attribute>
+			<name>showHeaders</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Displays label of a group at header section of the children items. Defaults to false.</description>
+		</attribute>
+        <attribute>
+			<name>header</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label of the root group items.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
