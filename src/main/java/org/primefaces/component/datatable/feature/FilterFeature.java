@@ -34,6 +34,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.FilterMeta;
 import org.primefaces.model.filter.*;
 import org.primefaces.util.Constants;
 
@@ -322,31 +323,5 @@ public class FilterFeature implements DataTableFeature {
         }
 
         return filterConstraint;
-    }
-        
-    private class FilterMeta {
-        
-        private UIColumn column;
-        private ValueExpression filterByVE;
-        private Object filterValue;
-
-        public FilterMeta(UIColumn column, ValueExpression filterByVE, Object filterValue) {
-            this.column = column;
-            this.filterByVE = filterByVE;
-            this.filterValue = filterValue;
-        }
-
-        public UIColumn getColumn() {
-            return column;
-        }
-
-        public ValueExpression getFilterByVE() {
-            return filterByVE;
-        }
-
-        public Object getFilterValue() {
-            return filterValue;
-        }        
-        
     }
 }
