@@ -120,7 +120,7 @@ public class FilterFeature implements DataTableFeature {
         renderer.encodeTbody(context, table, true);
     }
     
-    private void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
+    public void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         List filteredData = new ArrayList();
         Locale filterLocale = table.resolveDataLocale();
