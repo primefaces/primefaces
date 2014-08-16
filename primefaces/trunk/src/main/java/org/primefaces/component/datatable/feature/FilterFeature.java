@@ -104,9 +104,7 @@ public class FilterFeature implements DataTableFeature {
         else {
             String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
             filter(context, table, table.getFilterMetadata(), globalFilterParam);
-                      
-            table.updateValue(table.getFilteredValue());
-            
+                                  
             //sort new filtered data to restore sort state
             boolean sorted = (table.getValueExpression("sortBy") != null || table.getSortBy() != null);
             if(sorted) {
@@ -186,6 +184,9 @@ public class FilterFeature implements DataTableFeature {
 
         //save filtered data
         table.updateFilteredValue(context, filteredData);
+        
+        //update value
+        table.updateValue(table.getFilteredValue());
 
         table.setRowIndex(-1);  //reset datamodel
     }
