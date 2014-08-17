@@ -2347,10 +2347,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
             
     setupStickyHeader: function() {
-        var offset = this.thead.parent().offset(),
+        var table = this.thead.parent(),
+        offset = table.offset(),
         win = $(window),
         $this = this,
-        stickyNamespace = 'scroll.' + this.id;
+        stickyNS = 'scroll.' + this.id,
+        resizeNS = 'resize.sticky-' + this.id; 
 
         this.cloneContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
         this.clone = this.thead.clone(true);
@@ -2358,50 +2360,33 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         
         this.cloneContainer.css({
             position: 'absolute',
-            width: this.thead.parent().width(),
+            width: table.outerWidth(),
             top: offset.top,
-            left: offset.left
+            left: offset.left,
+            'z-index': ++PrimeFaces.zindex
         })
         .appendTo(this.jq);
-
-        var cloneContainerOffset = this.cloneContainer.offset();
-        this.initialState = {
-            top: cloneContainerOffset.top,
-            bottom: cloneContainerOffset.top + this.tbody.height()
-        }
         
-        win.off(stickyNamespace).on(stickyNamespace, function() {
-            var scrollTop = win.scrollTop();
-            if(scrollTop > $this.initialState.top) {
-                if(!$this.fixed) {
-                    $this.cloneContainer.css({
-                        'position': 'fixed',
-                        'top': 0,
-                        'z-index': ++PrimeFaces.zindex
-                    })
-                    .addClass('ui-shadow ui-sticky');
-
-                    $this.fixed = true;
-                }
+        win.off(stickyNS).on(stickyNS, function() {
+            var scrollTop = win.scrollTop(),
+            tableOffset = table.offset();
+            
+            if(scrollTop > tableOffset.top) {
+                $this.cloneContainer.css('top', scrollTop)
+                                    .addClass('ui-shadow ui-sticky');
                 
-                if(scrollTop >= $this.initialState.bottom) {
+                if(scrollTop >= (tableOffset.top + $this.tbody.height()))
                     $this.cloneContainer.hide();
-                }
-                else {
+                else
                     $this.cloneContainer.show();
-                }
             }
             else {
-                if($this.fixed) {
-                    $this.cloneContainer.css({
-                        position: 'absolute',
-                        top: $this.initialState.top
-                    })
-                    .removeClass('ui-shadow ui-sticky');
-
-                    $this.fixed = false;
-                }
+                $this.cloneContainer.css('top', tableOffset.top)
+                                    .removeClass('ui-shadow ui-sticky');
             }
+        })
+        .off(resizeNS).on(resizeNS, function() {
+            $this.cloneContainer.width(table.outerWidth());
         });
     }
 
