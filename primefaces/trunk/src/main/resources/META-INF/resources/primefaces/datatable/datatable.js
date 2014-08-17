@@ -2362,7 +2362,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             top: offset.top,
             left: offset.left
         })
-        .appendTo(document.body);
+        .appendTo(this.jq);
 
         var cloneContainerOffset = this.cloneContainer.offset();
         this.initialState = {
