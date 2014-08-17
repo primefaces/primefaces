@@ -1990,6 +1990,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if($this.hasBehavior('colResize')) {
                     $this.cfg.behaviors['colResize'].call($this, options);
                 }
+                
+                if($this.cfg.stickyHeader) {
+                    $this.clone = $this.thead.clone(true);
+                    $this.cloneContainer.find('thead').remove();
+                    $this.cloneContainer.children('table').append($this.clone);
+                }
             },
             containment: this.jq
         });
