@@ -902,16 +902,22 @@ import org.primefaces.util.SharedStringBuilder;
                     }
                     else if(child instanceof ColumnGroup) {
                         if(child.getChildCount() > 0) {
-                            for(UIComponent row : child.getChildren()) {
-                                if(row.getChildCount() > 0) {
-                                    for(UIComponent col : row.getChildren()) {
-                                        if(col instanceof Column && col.getFacetCount() > 0) {
-                                            for(UIComponent facet : col.getFacets().values()) {
+                            for(UIComponent columnGroupChild : child.getChildren()) {
+                                if(columnGroupChild instanceof Row && columnGroupChild.getChildCount() > 0) {
+                                    for(UIComponent rowChild : columnGroupChild.getChildren()) {
+                                        if(rowChild instanceof Column && rowChild.getFacetCount() > 0) {
+                                            for(UIComponent facet : rowChild.getFacets().values()) {
                                                 process(context, facet, phaseId);
                                             }
                                         }
+                                        else {
+                                            process(context, rowChild, phaseId);        //e.g ui:repeat
+                                        }
                                     }
-                                }            
+                                }
+                                else {
+                                    process(context, columnGroupChild, phaseId);        //e.g ui:repeat
+                                }         
                             }
                         }
                     }
