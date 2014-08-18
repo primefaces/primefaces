@@ -2174,7 +2174,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }).on('blur.selectCheckboxMenu', function() {
             $this.jq.removeClass('ui-state-focus');
             $this.menuIcon.removeClass('ui-state-focus');
-        }).on('keydown.selectCheckboxMenu', function(e) {
+        }).on('keydown.selectCheckboxMenu', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
     
@@ -2210,7 +2210,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
             
-            if(key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
                 $this.hide(true);
                 e.preventDefault();
             }

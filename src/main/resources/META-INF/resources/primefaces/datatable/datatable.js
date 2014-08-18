@@ -63,11 +63,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
-    getThead: function() {
+    getThead: function() {
         return $(this.jqId + '_head');
     },
     
-    getTbody: function() {
+    getTbody: function() {
         return $(this.jqId + '_data');
     },
         
@@ -635,11 +635,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.saveScrollState();
         });
         
-        this.scrollHeader.on('scroll.dataTable', function() {
+        this.scrollHeader.on('scroll.dataTable', function() {
             $this.scrollHeader.scrollLeft(0);
         });
         
-        this.scrollFooter.on('scroll.dataTable', function() {
+        this.scrollFooter.on('scroll.dataTable', function() {
             $this.scrollFooter.scrollLeft(0);
         });
         
@@ -2399,7 +2399,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
  */
 PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         
-    setupScrolling: function() {
+    setupScrolling: function() {
         this.scrollLayout = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-right');
         this.frozenLayout = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-left');
         this.scrollContainer = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-right > .ui-datatable-scrollable-container');
@@ -2599,11 +2599,11 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         return $('<tr></tr>').data('ri', original.data('ri')).addClass(original.attr('class')).attr('role', 'row');
     },
     
-    getThead: function() {
+    getThead: function() {
         return $(this.jqId + '_frozenThead,' + this.jqId + '_scrollableThead');
     },
     
-    getTbody: function() {
+    getTbody: function() {
         return $(this.jqId + '_frozenTbody,' + this.jqId + '_scrollableTbody');
     },
     
