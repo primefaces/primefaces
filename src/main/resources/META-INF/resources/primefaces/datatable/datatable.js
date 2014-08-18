@@ -687,8 +687,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     alignScrollBody: function() {
-        var marginRight = this.hasVerticalOverflow() ? '0px': this.getScrollbarWidth() + 'px';
-        this.scrollBody.css('margin-right', marginRight);
+        var marginRight = this.hasVerticalOverflow() ? this.getScrollbarWidth() + 'px' : '0px';
+        
+        this.scrollHeaderBox.css('margin-right', marginRight);
+        this.scrollFooterBox.css('margin-right', marginRight);
     },
     
     getScrollbarWidth: function() {
