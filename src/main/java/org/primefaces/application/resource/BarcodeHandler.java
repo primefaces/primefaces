@@ -46,7 +46,6 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
             
             OutputStream out = externalContext.getResponseOutputStream();
             try {
-                
                 Code39Bean bean = new Code39Bean();
                 BitmapCanvasProvider canvas = new BitmapCanvasProvider(out, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, 0);
                 bean.generateBarcode(canvas, value);
