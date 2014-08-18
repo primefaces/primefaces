@@ -22254,6 +22254,7 @@ PrimeFaces.widget.ChartUtils = {
                         showTickLabels: chart.cfg.showTickLabels,
                         ticks: chart.cfg.ticks,
                         labelHeightAdjust: chart.cfg.labelHeightAdjust,
+                        intervalInnerRadius: chart.cfg.intervalInnerRadius,
                         intervalOuterRadius: chart.cfg.intervalOuterRadius,
                         min: chart.cfg.min,
                         max: chart.cfg.max
