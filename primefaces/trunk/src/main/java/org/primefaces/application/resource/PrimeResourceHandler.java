@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.application;
+package org.primefaces.application.resource;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,10 +23,6 @@ import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.FacesContext;
-import org.primefaces.application.resource.BarcodeHandler;
-import org.primefaces.application.resource.DynamicContentHandler;
-import org.primefaces.application.resource.QRCodeHandler;
-import org.primefaces.application.resource.StreamedContentHandler;
 import org.primefaces.util.Constants;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
@@ -37,7 +33,6 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         HANDLERS = new HashMap<String,DynamicContentHandler>();
         HANDLERS.put("sc", new StreamedContentHandler());
         HANDLERS.put("barcode", new BarcodeHandler());
-        HANDLERS.put("qr", new QRCodeHandler());
     }
     
     private final static Logger logger = Logger.getLogger(PrimeResourceHandler.class.getName());

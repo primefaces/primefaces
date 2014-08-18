@@ -125,12 +125,19 @@
             <version>2.0</version>
             <scope>provided</scope>
         </dependency>
-        
-        <!-- QRCode -->
+                
+        <!-- Barcode -->
         <dependency>
             <groupId>net.glxn</groupId>
             <artifactId>qrgen</artifactId>
             <version>1.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.barcode4j</groupId>
+            <artifactId>barcode4j</artifactId>
+            <version>2.1</version>
+            <scope>provided</scope>
         </dependency>
 		
         <!-- Test  -->
