@@ -33,6 +33,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         HANDLERS = new HashMap<String,DynamicContentHandler>();
         HANDLERS.put("sc", new StreamedContentHandler());
         HANDLERS.put("barcode", new BarcodeHandler());
+        HANDLERS.put("qr", new QRCodeHandler());
     }
     
     private final static Logger logger = Logger.getLogger(PrimeResourceHandler.class.getName());

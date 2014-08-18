@@ -41,6 +41,8 @@ public class BarcodeRenderer extends CoreRenderer {
         String styleClass = barcode.getStyleClass();
 		String src = null;
         Object value = barcode.getValue();
+        String type = barcode.getType();
+        String handlerType = type.equals("qr") ? "qr" : "barcode";
         
         if(value == null) {
             return;
@@ -54,7 +56,7 @@ public class BarcodeRenderer extends CoreRenderer {
             StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
 
             src = builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid, "UTF-8"))
-                    .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append("barcode").toString();
+                    .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(handlerType).toString();
         } 
         catch (UnsupportedEncodingException ex) {
             throw new IOException(ex);
