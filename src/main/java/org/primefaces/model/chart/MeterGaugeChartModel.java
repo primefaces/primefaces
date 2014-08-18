@@ -29,7 +29,8 @@ public class MeterGaugeChartModel extends ChartModel implements Serializable {
     private double min = Double.MIN_VALUE;
     private double max = Double.MAX_VALUE;
     private boolean showTickLabels = true;
-    private int intervalOuterRadius = 85;
+    private Integer intervalInnerRadius;
+    private Integer intervalOuterRadius;
     private int labelHeightAdjust = -25;
     
     public MeterGaugeChartModel() {
@@ -110,10 +111,19 @@ public class MeterGaugeChartModel extends ChartModel implements Serializable {
         this.showTickLabels = showTickLabels;
     }
 
-    public int getIntervalOuterRadius() {
+    public Integer getIntervalInnerRadius() {
+        return intervalInnerRadius;
+    }
+
+    public void setIntervalInnerRadius(Integer intervalInnerRadius) {
+        this.intervalInnerRadius = intervalInnerRadius;
+    }
+
+    public Integer getIntervalOuterRadius() {
         return intervalOuterRadius;
     }
-    public void setIntervalOuterRadius(int intervalOuterRadius) {
+
+    public void setIntervalOuterRadius(Integer intervalOuterRadius) {
         this.intervalOuterRadius = intervalOuterRadius;
     }
 
