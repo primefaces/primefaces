@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.application;
+package org.primefaces.application.resource;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Map;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import net.glxn.qrgen.QRCode;
-import net.glxn.qrgen.image.ImageType;
+import org.krysalis.barcode4j.impl.code39.Code39Bean;
+import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.Constants;
 import org.primefaces.util.StringEncrypter;
 
-public class QRCodeHandler extends BaseDynamicContentHandler {
+public class BarcodeHandler extends BaseDynamicContentHandler {
     
     public void handle(FacesContext context) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
@@ -42,11 +44,18 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
             
             handleCache(externalContext, cache);
             
-            QRCode.from(value).to(ImageType.PNG).withCharset("UTF-8").writeTo(externalContext.getResponseOutputStream());
-            
-            externalContext.responseFlushBuffer();
-            context.responseComplete();
+            OutputStream out = externalContext.getResponseOutputStream();
+            try {
+                
+                Code39Bean bean = new Code39Bean();
+                BitmapCanvasProvider canvas = new BitmapCanvasProvider(out, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, 0);
+                bean.generateBarcode(canvas, value);
+                canvas.finish();
+            }
+            finally {
+                externalContext.responseFlushBuffer();
+                context.responseComplete();
+            }            
         }
     }
-    
 }

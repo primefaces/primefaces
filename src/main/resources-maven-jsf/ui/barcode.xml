@@ -4,16 +4,16 @@
 <!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
 ]>
 <component>
-	<tag>qrCode</tag>
-	<tagClass>org.primefaces.component.qrcode.QRCodeTag</tagClass>
-	<componentClass>org.primefaces.component.qrcode.QRCode</componentClass>
-	<componentType>org.primefaces.component.QRCode</componentType>
+	<tag>barcode</tag>
+	<tagClass>org.primefaces.component.barcode.BarcodeTag</tagClass>
+	<componentClass>org.primefaces.component.barcode.Barcode</componentClass>
+	<componentType>org.primefaces.component.Barcode</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.QRCodeRenderer</rendererType>
-	<rendererClass>org.primefaces.component.qrcode.QRCodeRenderer</rendererClass>
+	<rendererType>org.primefaces.component.BarcodeRenderer</rendererType>
+	<rendererClass>org.primefaces.component.barcode.BarcodeRenderer</rendererClass>
 	<parent>javax.faces.component.html.HtmlGraphicImage</parent>
     <description>
-        QRCode component displays its value as a QR code.
+        Barcode component is used to display various barcode formats.
     </description>
 	<attributes>
 		&standard_uicomponent_attributes;
@@ -22,7 +22,7 @@
 			<required>false</required>
 			<type>java.lang.Object</type>
 			<ignoreInComponent>true</ignoreInComponent>
-            <description>Value to display.</description>
+            <description>Binary data to stream or context relative path.</description>
 		</attribute>
 		<attribute>
 			<name>alt</name>
@@ -32,10 +32,18 @@
             <description>Alternate text for the image.</description>
 		</attribute>
 		<attribute>
-			<name>size</name>
+			<name>width</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Value for width and height.</description>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Width of the image.</description>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Height of the image.</description>
 		</attribute>
 		<attribute>
 			<name>title</name>
