@@ -149,13 +149,13 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
     bindViewChangeListener: function() {
         if(this.hasBehavior('viewChange')) {
             var $this = this;
-            this.cfg.onChangeMonthYear = function(month, year) {
-                $this.fireViewChangeEvent(month, year);
+            this.cfg.onChangeMonthYear = function(year, month) {
+                $this.fireViewChangeEvent(year, month);
             };
         }
     },
 
-    fireViewChangeEvent: function(month, year) {
+    fireViewChangeEvent: function(year, month) {
         if(this.cfg.behaviors) {
             var viewChangeBehavior = this.cfg.behaviors['viewChange'];
 
