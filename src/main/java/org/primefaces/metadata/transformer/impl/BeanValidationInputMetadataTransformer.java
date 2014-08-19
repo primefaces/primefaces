@@ -26,6 +26,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
+import org.primefaces.component.spinner.Spinner;
 import org.primefaces.context.RequestContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
@@ -53,13 +54,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         Annotation constraint = constraintDescriptor.getAnnotation();
         
         if (!isMaxlenghtSet(input)) {
-            if (constraint.annotationType().equals(Max.class)) {
-                Max max = (Max) constraint;
-                if (max.value() > 0) {
-                    setMaxlength(input, Long.valueOf(max.value()).intValue());
-                }
-            }
-            else if (constraint.annotationType().equals(Size.class)) {
+            if (constraint.annotationType().equals(Size.class)) {
                 Size size = (Size) constraint;
                 if (size.max() > 0) {
                     setMaxlength(input, size.max());
@@ -70,6 +65,19 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         if (!editableValueHolder.isRequired()) {
             if (constraint.annotationType().equals(NotNull.class)) {
                 editableValueHolder.setRequired(true);
+            }
+        }
+        
+        if (input instanceof Spinner) {
+            Spinner spinner = (Spinner) input;
+
+            if (constraint.annotationType().equals(Max.class) && spinner.getMax() == Double.MAX_VALUE) {
+                Max max = (Max) constraint;
+                spinner.setMax(max.value());
+            }
+            if (constraint.annotationType().equals(Min.class) && spinner.getMin() == Double.MIN_VALUE) {
+                Min min = (Min) constraint;
+                spinner.setMin(min.value());
             }
         }
     }
