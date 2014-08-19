@@ -139,22 +139,11 @@ import javax.faces.event.PhaseId;
         }
     }
 
-    private String calculatedPattern = null;
-
     public String calculatePattern() {
-        if(calculatedPattern == null) {
-            String pattern = this.getPattern();
-            Locale locale = this.calculateLocale(getFacesContext());
-            if(pattern == null) {
-                calculatedPattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
-            }
-            else {
-                calculatedPattern = pattern;
-            }
-            
-        }
+        String pattern = this.getPattern();
+        Locale locale = this.calculateLocale(getFacesContext());
 
-        return calculatedPattern;
+        return pattern == null ? ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern() : pattern;
     }
 
     private String timeOnlyPattern = null;
