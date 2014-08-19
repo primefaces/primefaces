@@ -1994,9 +1994,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 
                 if($this.cfg.stickyHeader) {
+                    $this.thead.find('.ui-column-filter').prop('disabled', false);
                     $this.clone = $this.thead.clone(true);
                     $this.cloneContainer.find('thead').remove();
                     $this.cloneContainer.children('table').append($this.clone);
+                    $this.thead.find('.ui-column-filter').prop('disabled', true);
                 }
             },
             containment: this.jq
@@ -2368,7 +2370,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             'z-index': ++PrimeFaces.zindex
         })
         .appendTo(this.jq);
-        
+
         win.off(stickyNS).on(stickyNS, function() {
             var scrollTop = win.scrollTop(),
             tableOffset = table.offset();
@@ -2390,6 +2392,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         .off(resizeNS).on(resizeNS, function() {
             $this.cloneContainer.width(table.outerWidth());
         });
+        
+        //filter support
+        this.thead.find('.ui-column-filter').prop('disabled', true);
     }
 
 });
