@@ -15,7 +15,6 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -24,10 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import org.krysalis.barcode4j.impl.code39.Code39Bean;
-import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.primefaces.application.resource.BaseDynamicContentHandler;
-import org.primefaces.application.resource.StreamedContentHandler;
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.Constants;
 import org.primefaces.util.StringEncrypter;
@@ -40,8 +36,10 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
     
     static {
         GENERATORS = new HashMap<String,BarcodeGenerator>();
-        GENERATORS.put("code39", new Code39Generator());
         GENERATORS.put("int2of5", new Int2of5Generator());
+        GENERATORS.put("codabar", new CodabarGenerator());
+        GENERATORS.put("code39", new Code39Generator());
+        GENERATORS.put("code128", new Code128Generator());
     }
     
     public void handle(FacesContext context) throws IOException {
