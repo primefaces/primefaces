@@ -40,6 +40,13 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
         GENERATORS.put("codabar", new CodabarGenerator());
         GENERATORS.put("code39", new Code39Generator());
         GENERATORS.put("code128", new Code128Generator());
+        GENERATORS.put("ean8", new EAN8Generator());
+        GENERATORS.put("ean13", new EAN13Generator());
+        GENERATORS.put("upca", new UPCAGenerator());
+        GENERATORS.put("upce", new UPCEGenerator());
+        GENERATORS.put("postnet", new PostnetGenerator());
+        GENERATORS.put("pdf417", new PDF417Generator());
+        GENERATORS.put("datamatrix", new DataMatrixGenerator());
     }
     
     public void handle(FacesContext context) throws IOException {
