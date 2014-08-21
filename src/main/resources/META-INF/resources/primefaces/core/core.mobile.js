@@ -6,6 +6,10 @@ $(document).on('pfAjaxComplete', function() {
     $.mobile.loading('hide');
 });
 
+PrimeFaces.getCoreScriptName = function() {
+    return 'primefaces-mobile.js';
+};
+
 PrimeFaces.Mobile = {
     
     navigate: function(to, cfg) {
@@ -35,3 +39,5 @@ PrimeFaces.Mobile = {
     }
     
 };
+
+
