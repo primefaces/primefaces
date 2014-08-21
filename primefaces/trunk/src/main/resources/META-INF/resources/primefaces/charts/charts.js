@@ -22309,6 +22309,19 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
     _render: function() {
         this.bindItemSelect();
         this.plot = $.jqplot(this.jqpid, this.cfg.data, this.cfg);
+        
+        var tableLegend = this.jq.find('table.jqplot-table-legend'),
+            tr = tableLegend.find('tr.jqplot-table-legend');
+        
+        if(tr.size() > 1) {
+            var trFirst = tableLegend.find('tr.jqplot-table-legend:first'),
+                trLast = tableLegend.find('tr.jqplot-table-legend:last'),
+                length = trFirst.children('td').size() - trLast.children('td').size();
+
+            for(var i = 0; i < length; i++) {
+                trLast.append('<td></td>');
+            }       
+        }
     },
     
     configure: function() {
