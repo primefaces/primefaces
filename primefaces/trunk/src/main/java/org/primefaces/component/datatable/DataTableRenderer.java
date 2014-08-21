@@ -126,7 +126,7 @@ public class DataTableRenderer extends DataRenderer {
         String widgetClass = (table.getFrozenColumns() == Integer.MIN_VALUE) ? "DataTable" : "FrozenDataTable";
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady(widgetClass, table.resolveWidgetVar(), clientId);
+        wb.init(widgetClass, table.resolveWidgetVar(), clientId);
         
         //Pagination
         if(table.isPaginator()) {
