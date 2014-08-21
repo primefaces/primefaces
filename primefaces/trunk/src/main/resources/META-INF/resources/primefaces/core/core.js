@@ -261,21 +261,48 @@
                     }
                 }
             }
+            // widget script not loaded -> lazy load script + stylesheet
             else {
-                var scriptURI = $('script[src*="/javax.faces.resource/primefaces.js"]').attr('src').replace('primefaces.js', resource + '/' + resource + '.js'),
-                cssURI = $('link[href*="/javax.faces.resource/primefaces.css"]').attr('href').replace('primefaces.css', resource + '/' + resource + '.css'),
-                cssResource = '<link type="text/css" rel="stylesheet" href="' + cssURI + '" />';
+                var scriptURI = PrimeFaces.getFacesResource(resource + '/' + resource + '.js', 'primefaces');
+                var cssURI = PrimeFaces.getFacesResource(resource + '/' + resource + '.css', 'primefaces');
 
                 //load css
+                var cssResource = '<link type="text/css" rel="stylesheet" href="' + cssURI + '" />';      
                 $('head').append(cssResource);
 
                 //load script and initialize widget
-                PrimeFaces.getScript(location.protocol + '//' + location.host + scriptURI, function() {
+                PrimeFaces.getScript(scriptURI, function() {
                     setTimeout(function() {
                         PrimeFaces.widgets[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);
                     }, 100);
                 });
             }
+        },
+
+        /**
+         * Builds a resource URL for given parameters.
+         * 
+         * @param {string} name The name of the resource. For example: primefaces.js
+         * @param {string} library The library of the resource. For example: primefaces
+         * @param {string} version The version of the library. For example: 5.1
+         * @returns {string} The resource URL.
+         */
+	getFacesResource : function(name, library, version) {
+            var scriptURI = $('script[src*="/javax.faces.resource/' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
+        
+            scriptURI = scriptURI.replace(PrimeFaces.getCoreScriptName(), name);
+            scriptURI = scriptURI.replace('ln=primefaces', 'ln=' + library);
+
+            if (version) {
+                var extractedVersion = new RegExp('[?&]v=([^&]*)').exec(scriptURI)[1];
+                scriptURI = scriptURI.replace('v=' + extractedVersion, 'v=' + version);
+            }
+
+            return window.location.protocol + '//' + window.location.host + scriptURI;
+	},
+        
+        getCoreScriptName: function() {
+            return 'primefaces.js';
         },
 
         inArray: function(arr, item) {
