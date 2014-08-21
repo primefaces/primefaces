@@ -15,18 +15,14 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.OutputStream;
 import org.krysalis.barcode4j.impl.upcean.EAN8Bean;
-import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
+import org.krysalis.barcode4j.output.CanvasProvider;
 
 public class EAN8Generator implements BarcodeGenerator {
     
-    public void generate(OutputStream stream, String value) throws IOException {
+    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
         EAN8Bean bean = new EAN8Bean();
-        BitmapCanvasProvider canvas = new BitmapCanvasProvider(stream, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, 0);
-        bean.generateBarcode(canvas, value);
-        canvas.finish();
+        bean.generateBarcode(canvasProvider, value);
     }
 }

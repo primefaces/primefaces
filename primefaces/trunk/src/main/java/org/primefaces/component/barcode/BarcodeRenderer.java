@@ -58,7 +58,8 @@ public class BarcodeRenderer extends CoreRenderer {
             src = builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid, "UTF-8"))
                     .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(handlerType)
                     .append("&gen=").append(type)
-                    .append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(barcode.isCache()).toString();
+                    .append("&fmt=").append(barcode.getFormat())
+                    .append("&").append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(barcode.isCache()).toString();
         } 
         catch (UnsupportedEncodingException ex) {
             throw new IOException(ex);

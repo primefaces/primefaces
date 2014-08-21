@@ -16,9 +16,9 @@
 package org.primefaces.application.resource.barcode;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import org.krysalis.barcode4j.output.CanvasProvider;
 
 public interface BarcodeGenerator {
     
-    public void generate(OutputStream stream, String value) throws IOException;
+    public void generate(CanvasProvider canvasProvider, String value) throws IOException;
 }

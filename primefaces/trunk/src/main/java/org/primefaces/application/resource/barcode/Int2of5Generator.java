@@ -15,19 +15,15 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.OutputStream;
 import org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5Bean;
-import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
+import org.krysalis.barcode4j.output.CanvasProvider;
 
 public class Int2of5Generator implements BarcodeGenerator {
 
-    public void generate(OutputStream stream, String value) throws IOException {
+    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
         Interleaved2Of5Bean bean = new Interleaved2Of5Bean();
-        BitmapCanvasProvider canvas = new BitmapCanvasProvider(stream, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, 0);
-        bean.generateBarcode(canvas, value);
-        canvas.finish();
+        bean.generateBarcode(canvasProvider, value);
     }
     
 }
