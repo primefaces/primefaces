@@ -42,7 +42,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.makeRowsDraggable();
         }
         
-        this.renderDeferred();
+        var $this = this;
+        if(this.jq.is(':visible')) {
+            this._render();
+        } else {
+            $(function() {
+                $this.renderDeferred();
+            });
+        }
     },
     
     _render: function() {
