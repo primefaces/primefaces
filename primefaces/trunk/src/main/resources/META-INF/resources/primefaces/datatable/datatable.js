@@ -98,13 +98,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * @Override
      */
-    refresh: function(cfg) {
-        //remove arrows
-        if(cfg.draggableColumns) {
-            var jqId = PrimeFaces.escapeClientId(cfg.id);
-            $(jqId + '_dnd_top,' + jqId + '_dnd_bottom').remove();
-        }
-        
+    refresh: function(cfg) {        
         this.columnWidthsFixed = false;
         
         this.init(cfg);
@@ -2099,8 +2093,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.orderStateHolder = $(this.jqId + '_columnOrder');
         this.saveColumnOrder();
         
-        this.dragIndicatorTop = $('<div id="' + this.id + '_dnd_top" class="ui-column-dnd-top"><span class="ui-icon ui-icon-arrowthick-1-s" /></div>').appendTo(document.body);
-        this.dragIndicatorBottom = $('<div id="' + this.id + '_dnd_bottom" class="ui-column-dnd-bottom"><span class="ui-icon ui-icon-arrowthick-1-n" /></div>').appendTo(document.body);
+        this.dragIndicatorTop = $('<span class="ui-icon ui-icon-arrowthick-1-s" style="position:absolute"/></span>').hide().appendTo(this.jq);
+        this.dragIndicatorBottom = $('<span class="ui-icon ui-icon-arrowthick-1-n" style="position:absolute"/></span>').hide().appendTo(this.jq);
 
         var $this = this;
 
@@ -2136,12 +2130,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     
                     $this.dragIndicatorTop.offset({
                         'left': arrowX, 
-                        'top': topArrowY
+                        'top': topArrowY - 3
                     }).show();
                     
                     $this.dragIndicatorBottom.offset({
                         'left': arrowX, 
-                        'top': bottomArrowY
+                        'top': bottomArrowY - 3
                     }).show();
                 }
             },
