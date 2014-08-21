@@ -22309,7 +22309,10 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
     _render: function() {
         this.bindItemSelect();
         this.plot = $.jqplot(this.jqpid, this.cfg.data, this.cfg);
-        
+        this.adjustLegendTable();
+    },
+            
+    adjustLegendTable: function() {
         var tableLegend = this.jq.find('table.jqplot-table-legend'),
             tr = tableLegend.find('tr.jqplot-table-legend');
         
