@@ -30,6 +30,13 @@
 			<defaultValue>true</defaultValue>
             <description>Controls browser caching mode of the resource. Default is true.</description>
 		</attribute>
+        <attribute>
+			<name>format</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>png</defaultValue>
+            <description>Format of the generated barcode, valid values are png (default) and svg..</description>
+		</attribute>
 		<attribute>
 			<name>value</name>
 			<required>false</required>
