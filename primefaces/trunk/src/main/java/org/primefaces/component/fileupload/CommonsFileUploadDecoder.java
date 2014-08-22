@@ -52,10 +52,14 @@ public class CommonsFileUploadDecoder{
         String clientId = fileUpload.getClientId(context);
         FileItem file = request.getFileItem(clientId);
         
-		if(file != null) {
-            fileUpload.setTransient(true);
-            fileUpload.setSubmittedValue(new DefaultUploadedFile(file));
-        }   
+        if(file != null) {
+            if(file.getName().equals("")) {
+                fileUpload.setSubmittedValue("");
+            } else {
+                fileUpload.setTransient(true);
+                fileUpload.setSubmittedValue(new DefaultUploadedFile(file));
+            }
+        }  
 	}
     
     private static void decodeAdvanced(FacesContext context, FileUpload fileUpload, MultipartRequest request) {
