@@ -7,8 +7,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         
         this.content = this.jq.children('div.ui-overlaypanel-content')
-        this.targetId = PrimeFaces.escapeClientId(this.cfg.target);
-        this.target = $(this.targetId);
+        
+        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
     
         //configuration
         this.cfg.my = this.cfg.my||'left top';
