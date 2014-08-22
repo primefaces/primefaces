@@ -53,6 +53,9 @@ public class NativeFileUploadDecoder {
             fileUpload.setTransient(true);
             fileUpload.setSubmittedValue(new NativeUploadedFile(part));
         }
+        else {
+            fileUpload.setSubmittedValue("");
+        }
 	}
     
     private static void decodeAdvanced(FacesContext context, FileUpload fileUpload, HttpServletRequest request) throws IOException, ServletException {
