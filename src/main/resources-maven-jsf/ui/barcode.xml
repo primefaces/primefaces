@@ -34,7 +34,7 @@
 			<name>format</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>png</defaultValue>
+            <defaultValue>svg</defaultValue>
             <description>Format of the generated barcode, valid values are png (default) and svg..</description>
 		</attribute>
 		<attribute>
