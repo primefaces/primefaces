@@ -169,13 +169,15 @@
 
 /*resizer */
 .ui-datatable .ui-column-resizer {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 0;
     width:8px;
     height:20px;
     padding:0px;
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
-    margin: -4px -10px -4px 0px;
-    float: right;
 }
 
 .ui-datatable .ui-filter-column .ui-column-resizer {
@@ -202,6 +204,11 @@
 
 .ui-datatable-resizable table {
     table-layout: fixed;
+}
+
+.ui-datatable-resizable th.ui-resizable-column {
+    background-clip: padding-box;
+    position: relative;
 }
 
 .ui-datatable-rtl {

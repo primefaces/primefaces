@@ -1970,7 +1970,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             stop: function(event, ui) {
                 var columnHeader = ui.helper.parent();
-                ui.helper.css('left','');
+                ui.helper.css({
+                    'left': '',
+                    'top': '0px'
+                });
                 
                 if($this.cfg.liveResize) {
                     $this.jq.css('cursor', 'default');
