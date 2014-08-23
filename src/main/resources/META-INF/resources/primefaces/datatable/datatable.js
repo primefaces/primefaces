@@ -1230,11 +1230,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.addSelection(rowMeta.key);
 
-        this.updateHeaderCheckbox();
-
         this.writeSelections();
 
         if(!silent) {
+            this.updateHeaderCheckbox();
             this.fireRowSelectEvent(rowMeta.key, "rowSelectCheckbox");
         }
     },
@@ -1253,6 +1252,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.removeSelection(rowMeta.key);
+        
         this.uncheckHeaderCheckbox();
 
         this.writeSelections();
@@ -1358,7 +1358,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 });
             }
         }
-        
+                
         //save state
         this.writeSelections();
 
