@@ -59,31 +59,33 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
     
     public void handle(FacesContext context) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        ExternalContext externalContext = context.getExternalContext();
         String encryptedValue = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
 
         if(encryptedValue != null) {
-            BarcodeGenerator generator = GENERATORS.get(params.get("gen"));
-            String format = params.get("fmt");
-            boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
-            StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
-            String value = strEn.decrypt(encryptedValue);                
-            ExternalContext externalContext = context.getExternalContext();
-            OutputStream out = externalContext.getResponseOutputStream();
-
             try {
+                BarcodeGenerator generator = GENERATORS.get(params.get("gen"));
+                String format = params.get("fmt");
+                int orientation = Integer.parseInt(params.get("ori"));
+                boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+                StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
+                String value = strEn.decrypt(encryptedValue);                
+                
+                OutputStream out = externalContext.getResponseOutputStream();
+            
                 handleCache(externalContext, cache);
                 
                 if(format.equals("png")) {
                     externalContext.setResponseContentType("image/png");
                     
-                    BitmapCanvasProvider bitmapCanvasProvider = new BitmapCanvasProvider(out, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, 0);
+                    BitmapCanvasProvider bitmapCanvasProvider = new BitmapCanvasProvider(out, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, orientation);
                     generator.generate(bitmapCanvasProvider, value);
                     bitmapCanvasProvider.finish();
                 }
                 else if(format.equals("svg")) {
                     externalContext.setResponseContentType("image/svg+xml");
                     
-                    SVGCanvasProvider svgCanvasProvider = new SVGCanvasProvider(false, 0);
+                    SVGCanvasProvider svgCanvasProvider = new SVGCanvasProvider(false, orientation);
                     generator.generate(svgCanvasProvider, value);
                     DocumentFragment frag = svgCanvasProvider.getDOMFragment();
 

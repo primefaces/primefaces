@@ -35,7 +35,14 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>svg</defaultValue>
-            <description>Format of the generated barcode, valid values are png (default) and svg..</description>
+            <description>Format of the generated barcode, valid values are png (default) and svg.</description>
+		</attribute>
+        <attribute>
+			<name>orientation</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>The barcode orientation in terms of angle (0, 90, 180, 270).</description>
 		</attribute>
 		<attribute>
 			<name>value</name>
