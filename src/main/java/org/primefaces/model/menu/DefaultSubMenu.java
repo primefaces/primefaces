@@ -105,4 +105,8 @@ public class DefaultSubMenu implements Submenu, Serializable {
     public void addElement(MenuElement element) {
         elements.add(element);
     }
+
+    public String getClientId() {
+        return this.id;
+    }
 }

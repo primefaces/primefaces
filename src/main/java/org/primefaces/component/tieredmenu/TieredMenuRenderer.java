@@ -118,6 +118,9 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
         
                     writer.startElement("li", null);
+                    if(shouldRenderId(submenu)) {
+                        writer.writeAttribute("id", submenu.getClientId(), null);
+                    }
                     writer.writeAttribute("class", styleClass, null);
                     if(style != null) {
                         writer.writeAttribute("style", style, null);

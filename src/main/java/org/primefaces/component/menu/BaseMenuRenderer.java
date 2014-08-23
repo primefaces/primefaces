@@ -206,8 +206,11 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 		}
 	}
     
-    protected boolean shouldRenderId(MenuItem item) {
-        return item.isDynamic() ? false: shouldWriteId((UIComponent) item);
+    protected boolean shouldRenderId(MenuElement element) {
+        if(element instanceof UIComponent)
+            return shouldWriteId((UIComponent) element);
+        else
+            return false;
     }
     
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
