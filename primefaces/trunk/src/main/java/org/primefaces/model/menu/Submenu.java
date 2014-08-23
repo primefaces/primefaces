@@ -26,4 +26,6 @@ public interface Submenu extends MenuGroup {
     public String getLabel();
     
     public Object getParent();
+    
+    public String getClientId();
 }
