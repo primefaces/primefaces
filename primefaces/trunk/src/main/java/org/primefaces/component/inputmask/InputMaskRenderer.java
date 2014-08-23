@@ -16,6 +16,7 @@
 package org.primefaces.component.inputmask;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,6 +30,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class InputMaskRenderer extends InputRenderer {
 	
+    private final static Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
+    
 	@Override
 	public void decode(FacesContext context, UIComponent component) {
 		InputMask inputMask = (InputMask) component;
@@ -60,10 +63,20 @@ public class InputMaskRenderer extends InputRenderer {
         String mask = inputMask.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("InputMask", inputMask.resolveWidgetVar(), clientId);
+        String placeHolder = inputMask.getPlaceHolder();
+        String slotChar = inputMask.getSlotChar();
+
+        if(placeHolder != null) {
+            logger.warning("placeHolder attribute is deprecated, use slotChar instead.");
+        }
+        
+        if(slotChar == null) {
+            slotChar = placeHolder;
+        }
         
         if(mask != null) {
             wb.attr("mask", mask)
-                .attr("placeholder", inputMask.getPlaceHolder(), null);
+                .attr("placeholder", slotChar, null);
         }
 
         wb.finish();
