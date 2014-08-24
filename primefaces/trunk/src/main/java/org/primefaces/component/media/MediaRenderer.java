@@ -43,7 +43,7 @@ public class MediaRenderer extends CoreRenderer {
         } catch (Exception ex) {
            throw new IOException(ex);
         }
-        boolean isIE = AgentUtils.isIE(context.getExternalContext().getRequestHeaderMap().get("User-Agent"));
+        boolean isIE = AgentUtils.isIE(context);
         String sourceParam = player.getSourceParam();
 		
 		writer.startElement("object", media);
