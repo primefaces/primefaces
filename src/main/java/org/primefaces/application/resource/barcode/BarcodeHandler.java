@@ -32,6 +32,7 @@ import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.primefaces.application.resource.BaseDynamicContentHandler;
 import org.primefaces.context.RequestContext;
+import org.primefaces.util.AgentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.StringEncrypter;
 import org.w3c.dom.DocumentFragment;
@@ -61,7 +62,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ExternalContext externalContext = context.getExternalContext();
         String encryptedValue = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
-
+        
         if(encryptedValue != null) {
             try {
                 BarcodeGenerator generator = GENERATORS.get(params.get("gen"));
@@ -69,7 +70,11 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                 int orientation = Integer.parseInt(params.get("ori"));
                 boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
                 StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
-                String value = strEn.decrypt(encryptedValue);                
+                String value = strEn.decrypt(encryptedValue);
+                
+                if(AgentUtils.isLessThanIE(context, 9)) {
+                    format = "png";
+                }
                 
                 OutputStream out = externalContext.getResponseOutputStream();
             

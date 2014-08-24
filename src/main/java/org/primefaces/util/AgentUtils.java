@@ -44,7 +44,28 @@ public class AgentUtils {
             }
             else {
                 int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(";", index))).intValue();
+                
                 return version == value;
+            }
+        }
+	}
+    
+    public static boolean isLessThanIE(FacesContext context, int value) {
+        String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
+        
+		if(userAgent == null) {
+			return false;
+        }
+        else {
+            int index = userAgent.indexOf("MSIE");
+            
+            if(index == -1) {
+                return false;
+            }
+            else {
+                int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(";", index))).intValue();
+                
+                return version > value;
             }
         }
 	}
