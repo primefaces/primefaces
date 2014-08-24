@@ -49,7 +49,7 @@ public class PhotoCamRenderer extends CoreRenderer {
     
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        if(!AgentUtils.isIE(context)) {
+        if(!AgentUtils.isIE(context.getExternalContext().getRequestHeaderMap().get("User-Agent"))) {
             PhotoCam cam = (PhotoCam) component;
 
             encodeMarkup(context, cam);

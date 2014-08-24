@@ -21,12 +21,28 @@ public class AgentUtils {
 
 	private AgentUtils() {}
 	
-	public static boolean isIE(FacesContext facesContext) {
-		String userAgent = facesContext.getExternalContext().getRequestHeaderMap().get("User-Agent");
-		
+	public static boolean isIE(String userAgent) {
 		if(userAgent == null)
 			return false;
 		else
-			return (userAgent.indexOf("MSIE") != -1);
+			return userAgent.contains("MSIE");
+	}
+    
+    public static boolean isIE(String userAgent, int value) {
+		if(userAgent == null) {
+			return false;
+        }
+        else {
+            int index = userAgent.indexOf("MSIE");
+            
+            if(index == -1) {
+                return false;
+            }
+            else {
+                int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(";", index))).intValue();
+                return version == value;
+            }
+			
+        }
 	}
 }
