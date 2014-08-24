@@ -95,7 +95,7 @@ public class EditorRenderer extends CoreRenderer{
                 .attr("maxlength", editor.getMaxlength(), Integer.MAX_VALUE)
                 .callback("change", "function(e)", editor.getOnchange());
         
-        if(AgentUtils.isIE(context)) {
+        if(AgentUtils.isIE(context.getExternalContext().getRequestHeaderMap().get("User-Agent"))) {
             Resource resource = context.getApplication().getResourceHandler().createResource("editor/editor-ie.css", "primefaces");
             wb.attr("docCSSFile", resource.getRequestPath());
         }
