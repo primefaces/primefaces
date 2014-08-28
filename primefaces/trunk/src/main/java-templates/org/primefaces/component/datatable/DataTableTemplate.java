@@ -47,6 +47,7 @@ import org.primefaces.model.SelectableDataModel;
 import org.primefaces.model.SelectableDataModelWrapper;
 import java.lang.reflect.Array;
 import javax.el.ELContext;
+import javax.el.MethodExpression;
 import javax.faces.model.DataModel;
 import javax.faces.FacesException;
 import javax.faces.component.UINamingContainer;
@@ -566,6 +567,7 @@ import org.primefaces.util.SharedStringBuilder;
         this.setSortOrder(this.getDefaultSortOrder());
         this.setSortByVE(null);
         this.setSortColumn(null);
+        this.clearMultiSortMeta();
     }
 
     public boolean isFilteringEnabled() {
@@ -820,21 +822,53 @@ import org.primefaces.util.SharedStringBuilder;
         return (sortMode != null && sortMode.equals("multiple"));
     }
     
-    private List<SortMeta> multiSortMeta;
-    
+    private List<SortMeta> multiSortMeta = null;
+        
     public List<SortMeta> getMultiSortMeta() {
-        if(this.multiSortMeta == null) {
+        if(multiSortMeta != null) {
+            return multiSortMeta;
+        }
+        
+        List<MultiSortState> multiSortStateList = (List<MultiSortState>) this.getStateHelper().get("multiSortState");
+        if(multiSortStateList != null && !multiSortStateList.isEmpty()) {
+            multiSortMeta = new ArrayList<SortMeta>();
+            for(int i = 0; i < multiSortStateList.size(); i++) {
+                MultiSortState multiSortState = multiSortStateList.get(i);
+                SortMeta sortMeta = new SortMeta();
+                sortMeta.setSortBy(this.findColumn(multiSortState.getSortKey()));
+                sortMeta.setSortField(multiSortState.getSortField());
+                sortMeta.setSortOrder(multiSortState.getSortOrder());
+                sortMeta.setSortFunction(multiSortState.getSortFunction());
+
+                multiSortMeta.add(sortMeta);
+            }
+        }
+        else {
             ValueExpression ve = this.getValueExpression("sortBy");
             if(ve != null) {
-                this.multiSortMeta = (List<SortMeta>) ve.getValue(getFacesContext().getELContext());
+                multiSortMeta = (List<SortMeta>) ve.getValue(getFacesContext().getELContext());
             }
         }
         
-        return this.multiSortMeta;
+        return multiSortMeta;
     }
     
     public void setMultiSortMeta(List<SortMeta> value) {
         this.multiSortMeta = value;
+        
+        if(value != null && !value.isEmpty()) {
+            List<MultiSortState> multiSortStateList = new ArrayList<MultiSortState>();
+            for(int i = 0; i < value.size(); i++) {
+                multiSortStateList.add(new MultiSortState(value.get(i)));
+            }
+            
+            this.getStateHelper().put("multiSortState", multiSortStateList);
+        }
+    }
+    
+    private void clearMultiSortMeta() {
+        this.multiSortMeta = null;
+        this.getStateHelper().remove("multiSortState");
     }
     
     public boolean isRTL() {
@@ -1030,3 +1064,54 @@ import org.primefaces.util.SharedStringBuilder;
         return super.saveState(context);
     } 
     
+    private class MultiSortState implements java.io.Serializable {
+        
+        private String sortKey;
+        
+        private String sortField;
+    
+        private SortOrder sortOrder;
+    
+        private MethodExpression sortFunction;
+
+        public MultiSortState() {}
+        
+        public MultiSortState(SortMeta sortMeta) {
+            this.sortKey = sortMeta.getColumn().getClientId();
+            this.sortField = sortMeta.getSortField();
+            this.sortOrder = sortMeta.getSortOrder();
+            this.sortFunction = sortMeta.getSortFunction();
+        }
+
+        public String getSortKey() {
+            return this.sortKey;
+        }
+        
+        public void setSortKey(String sortKey) {
+            this.sortKey = sortKey;
+        }
+
+        public String getSortField() {
+            return sortField;
+        }
+
+        public void setSortField(String sortField) {
+            this.sortField = sortField;
+        }
+
+        public SortOrder getSortOrder() {
+            return sortOrder;
+        }
+
+        public void setSortOrder(SortOrder sortOrder) {
+            this.sortOrder = sortOrder;
+        }
+
+        public MethodExpression getSortFunction() {
+            return sortFunction;
+        }
+
+        public void setSortFunction(MethodExpression sortFunction) {
+            this.sortFunction = sortFunction;
+        } 
+    }
