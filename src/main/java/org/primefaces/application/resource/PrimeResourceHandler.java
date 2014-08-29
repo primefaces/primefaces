@@ -35,8 +35,14 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         this.wrapped = wrapped;
         handlers = new HashMap<String,DynamicContentHandler>();
         handlers.put("sc", new StreamedContentHandler());
-        handlers.put("barcode", new BarcodeHandler());
-        handlers.put("qr", new QRCodeHandler());
+        
+        if(isBarcodeHandlerAvailable()) {
+            handlers.put("barcode", new BarcodeHandler());
+        }
+        
+        if(isQRCodeHandlerAvailable()) {
+            handlers.put("qr", new QRCodeHandler());
+        }
     }
 
     @Override
@@ -66,6 +72,26 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             handler.handle(context);
         } else {
             super.handleResourceRequest(context);
+        }
+    }
+    
+    private boolean isBarcodeHandlerAvailable() {
+        try {
+            Class.forName("org.krysalis.barcode4j.output.AbstractCanvasProvider");
+            return true;
+        }
+        catch (ClassNotFoundException ex) {
+            return false;
+        }
+    }
+    
+    private boolean isQRCodeHandlerAvailable() {
+        try {
+            Class.forName("net.glxn.qrgen.QRCode");
+            return true;
+        }
+        catch (ClassNotFoundException ex) {
+            return false;
         }
     }
 }
