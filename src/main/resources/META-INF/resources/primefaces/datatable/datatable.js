@@ -299,8 +299,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     bindFilterEvent: function(filter) {
         var $this = this;
-    
-        filter.bind(this.cfg.filterEvent, function(e) {
+        
+        //prevent form submit on enter key
+        filter.on('keydown.dataTable-blockenter', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                e.preventDefault();
+            }
+        })
+        .on(this.cfg.filterEvent + '.dataTable', function(e) {
             if($this.filterTimeout) {
                 clearTimeout($this.filterTimeout);
             }
@@ -308,7 +317,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.filterTimeout = setTimeout(function() {
                 $this.filter();
                 $this.filterTimeout = null;
-            }, 
+            },
             $this.cfg.filterDelay);
         });
     },
