@@ -18,7 +18,6 @@ package org.primefaces.application.resource;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
@@ -28,19 +27,16 @@ import org.primefaces.util.Constants;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
     
-    private final static Map<String,DynamicContentHandler> HANDLERS;
+    private final Map<String,DynamicContentHandler> handlers;
     
     private final ResourceHandler wrapped;
     
-    static {
-        HANDLERS = new HashMap<String,DynamicContentHandler>();
-        HANDLERS.put("sc", new StreamedContentHandler());
-        HANDLERS.put("barcode", new BarcodeHandler());
-        HANDLERS.put("qr", new QRCodeHandler());
-    }
-            
     public PrimeResourceHandler(ResourceHandler wrapped) {
         this.wrapped = wrapped;
+        handlers = new HashMap<String,DynamicContentHandler>();
+        handlers.put("sc", new StreamedContentHandler());
+        handlers.put("barcode", new BarcodeHandler());
+        handlers.put("qr", new QRCodeHandler());
     }
 
     @Override
@@ -64,7 +60,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     public void handleResourceRequest(FacesContext context) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String handlerType = params.get(Constants.DYNAMIC_CONTENT_TYPE_PARAM);
-        DynamicContentHandler handler = HANDLERS.get(handlerType);
+        DynamicContentHandler handler = handlers.get(handlerType);
         
         if(handler != null) {
             handler.handle(context);
