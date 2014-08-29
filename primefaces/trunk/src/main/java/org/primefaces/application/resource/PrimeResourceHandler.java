@@ -28,7 +28,9 @@ import org.primefaces.util.Constants;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
     
-    static Map<String,DynamicContentHandler> HANDLERS;
+    private final static Map<String,DynamicContentHandler> HANDLERS;
+    
+    private final ResourceHandler wrapped;
     
     static {
         HANDLERS = new HashMap<String,DynamicContentHandler>();
@@ -36,11 +38,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         HANDLERS.put("barcode", new BarcodeHandler());
         HANDLERS.put("qr", new QRCodeHandler());
     }
-    
-    private final static Logger logger = Logger.getLogger(PrimeResourceHandler.class.getName());
-        
-    private ResourceHandler wrapped;
-
+            
     public PrimeResourceHandler(ResourceHandler wrapped) {
         this.wrapped = wrapped;
     }
