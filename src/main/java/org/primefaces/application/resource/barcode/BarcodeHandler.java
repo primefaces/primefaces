@@ -41,7 +41,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
     
     private final static Logger logger = Logger.getLogger(BarcodeHandler.class.getName());
     
-    final static Map<String,BarcodeGenerator> GENERATORS;
+    private final static Map<String,BarcodeGenerator> GENERATORS;
     
     static {
         GENERATORS = new HashMap<String,BarcodeGenerator>();
