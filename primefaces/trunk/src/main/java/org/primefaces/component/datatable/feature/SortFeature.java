@@ -84,7 +84,7 @@ public class SortFeature implements DataTableFeature {
         else {
             UIColumn sortColumn = table.findColumn(sortKey);
             ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
-                        
+            table.setValueExpression("sortBy", sortByVE);
             table.setSortColumn(sortColumn);
             table.setSortFunction(sortColumn.getSortFunction());
             table.setSortOrder(convertSortOrderParam(sortDir)); 
