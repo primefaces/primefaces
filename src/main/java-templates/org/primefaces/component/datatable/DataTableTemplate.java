@@ -811,9 +811,21 @@ import org.primefaces.util.SharedStringBuilder;
     
     public void setSortColumn(UIColumn column) {
         this.sortColumn = column;
+        
+        if(column == null)
+            getStateHelper().remove("sortColumnKey");
+        else
+            getStateHelper().put("sortColumnKey", column.getColumnKey());
     }
     public UIColumn getSortColumn() {
-        return this.sortColumn;
+        if(sortColumn == null) {
+            String sortColumnKey = (String) getStateHelper().get("sortColumnKey");
+            if(sortColumnKey != null) {
+                sortColumn = this.findColumn(sortColumnKey);
+            }
+        }
+        
+        return sortColumn;
     }
     
     public boolean isMultiSort() {
