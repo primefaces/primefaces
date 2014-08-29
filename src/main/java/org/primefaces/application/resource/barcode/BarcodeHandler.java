@@ -41,21 +41,21 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
     
     private final static Logger logger = Logger.getLogger(BarcodeHandler.class.getName());
     
-    private final static Map<String,BarcodeGenerator> GENERATORS;
+    private final Map<String,BarcodeGenerator> generators;
     
-    static {
-        GENERATORS = new HashMap<String,BarcodeGenerator>();
-        GENERATORS.put("int2of5", new Int2of5Generator());
-        GENERATORS.put("codabar", new CodabarGenerator());
-        GENERATORS.put("code39", new Code39Generator());
-        GENERATORS.put("code128", new Code128Generator());
-        GENERATORS.put("ean8", new EAN8Generator());
-        GENERATORS.put("ean13", new EAN13Generator());
-        GENERATORS.put("upca", new UPCAGenerator());
-        GENERATORS.put("upce", new UPCEGenerator());
-        GENERATORS.put("postnet", new PostnetGenerator());
-        GENERATORS.put("pdf417", new PDF417Generator());
-        GENERATORS.put("datamatrix", new DataMatrixGenerator());
+    public BarcodeHandler() {
+        generators = new HashMap<String,BarcodeGenerator>();
+        generators.put("int2of5", new Int2of5Generator());
+        generators.put("codabar", new CodabarGenerator());
+        generators.put("code39", new Code39Generator());
+        generators.put("code128", new Code128Generator());
+        generators.put("ean8", new EAN8Generator());
+        generators.put("ean13", new EAN13Generator());
+        generators.put("upca", new UPCAGenerator());
+        generators.put("upce", new UPCEGenerator());
+        generators.put("postnet", new PostnetGenerator());
+        generators.put("pdf417", new PDF417Generator());
+        generators.put("datamatrix", new DataMatrixGenerator());
     }
     
     public void handle(FacesContext context) throws IOException {
@@ -65,7 +65,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
         
         if(encryptedValue != null) {
             try {
-                BarcodeGenerator generator = GENERATORS.get(params.get("gen"));
+                BarcodeGenerator generator = generators.get(params.get("gen"));
                 String format = params.get("fmt");
                 int orientation = Integer.parseInt(params.get("ori"));
                 boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
