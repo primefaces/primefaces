@@ -219,10 +219,11 @@ import org.primefaces.model.TreeNode;
     protected void processColumnChildren(FacesContext context, PhaseId phaseId, String nodeKey) {
         setRowKey(nodeKey);
         TreeNode treeNode = this.getRowNode();
-        String treeNodeType = treeNode.getType();
-        
-        if(nodeKey == null)
+
+        if(nodeKey == null && treeNode == null)
             return;
+        
+        String treeNodeType = treeNode.getType();
         
         for(UIComponent child : getChildren()) {
             if(child instanceof UITreeNode && child.isRendered()) {
