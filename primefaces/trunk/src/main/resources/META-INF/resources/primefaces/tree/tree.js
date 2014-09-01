@@ -866,9 +866,11 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         subtreeDropNodeContents.droppable('destroy');
         this.makeDropNodes(subtreeDropNodeContents);
 
-        subtreeDropNodeContents.draggable('destroy');
         if(this.cfg.draggable) {
-            this.makeDraggable(subtreeDropNodeContents);
+            subtreeDropNodeContents.data({
+                'dragsourceid': this.jqId,
+                'dragmode': this.cfg.dragMode
+            });
         }
     },
     
