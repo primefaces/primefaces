@@ -2470,10 +2470,14 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             else
                 this.setScrollWidth(parseInt(this.cfg.scrollWidth));
             
-            if(this.hasVerticalOverflow())
-                this.frozenBodyTable.css('margin-bottom', scrollBarWidth);
-            else
-                this.frozenFooter.css('padding-top', scrollBarWidth);
+            if(this.hasVerticalOverflow()) {
+                if(PrimeFaces.browser.webkit === true)
+                    this.frozenBodyTable.css('margin-bottom', '16px');
+                else if(PrimeFaces.isIE(8))
+                    this.frozenBody.append('<div style="height:' + scrollBarWidth + '"></div>');
+                else
+                    this.frozenBodyTable.css('margin-bottom', scrollBarWidth);
+            }
         }
 
         this.restoreScrollState();
