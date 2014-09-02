@@ -27,31 +27,33 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.page = (this.cfg.firstVisible / this.cfg.numVisible) + 1;
         this.animating = false;
 
-        var firstItem  = this.items.filter(':first'),
-        firstItemNative = firstItem.get(0);
-        this.cfg.itemOuterWidth =  firstItem.innerWidth() + parseInt(this.getProperty(firstItemNative, 'margin-Left')) + parseInt(this.getProperty(firstItemNative, 'margin-Right')) +  ((parseInt(this.getProperty(firstItemNative, 'border-Left-Width')) + parseInt(this.getProperty(firstItemNative, 'border-Right-Width'))));
-        this.cfg.itemOuterHeight = firstItem.innerHeight() + Math.max(parseInt(this.getProperty(firstItemNative, 'margin-Top')), parseInt(this.getProperty(firstItemNative, 'margin-Bottom'))) + ((parseInt(this.getProperty(firstItemNative, 'border-Top-Width')) + parseInt(this.getProperty(firstItemNative, 'border-Bottom-Width'))));
+        if(this.items.length) {
+            var firstItem  = this.items.filter(':first'),
+            firstItemNative = firstItem.get(0);
+            this.cfg.itemOuterWidth =  firstItem.innerWidth() + parseInt(this.getProperty(firstItemNative, 'margin-Left')) + parseInt(this.getProperty(firstItemNative, 'margin-Right')) +  ((parseInt(this.getProperty(firstItemNative, 'border-Left-Width')) + parseInt(this.getProperty(firstItemNative, 'border-Right-Width'))));
+            this.cfg.itemOuterHeight = firstItem.innerHeight() + Math.max(parseInt(this.getProperty(firstItemNative, 'margin-Top')), parseInt(this.getProperty(firstItemNative, 'margin-Bottom'))) + ((parseInt(this.getProperty(firstItemNative, 'border-Top-Width')) + parseInt(this.getProperty(firstItemNative, 'border-Bottom-Width'))));
 
-        //viewport width/height
-        if(this.cfg.vertical) {
-            this.viewport.width(this.cfg.itemOuterWidth);
-            this.viewport.height(this.cfg.numVisible * this.cfg.itemOuterHeight);
-        }
-        else{
-            this.viewport.width(this.cfg.numVisible * this.cfg.itemOuterWidth);
-            this.viewport.height(this.cfg.itemOuterHeight);
-        }
-        this.jq.width(this.viewport.outerWidth(true));
+            //viewport width/height
+            if(this.cfg.vertical) {
+                this.viewport.width(this.cfg.itemOuterWidth);
+                this.viewport.height(this.cfg.numVisible * this.cfg.itemOuterHeight);
+            }
+            else{
+                this.viewport.width(this.cfg.numVisible * this.cfg.itemOuterWidth);
+                this.viewport.height(this.cfg.itemOuterHeight);
+            }
+            this.jq.width(this.viewport.outerWidth(true));
 
-        //set offset position
-        this.setOffset(this.getItemPosition(this.cfg.firstVisible));
+            //set offset position
+            this.setOffset(this.getItemPosition(this.cfg.firstVisible));
 
-        this.checkButtons();
+            this.checkButtons();
 
-        this.bindEvents();
+            this.bindEvents();
 
-        if(this.cfg.autoplayInterval) {
-            this.startAutoplay();
+            if(this.cfg.autoplayInterval) {
+                this.startAutoplay();
+            }
         }
     },
     
