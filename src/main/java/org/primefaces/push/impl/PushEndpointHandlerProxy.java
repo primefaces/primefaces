@@ -55,7 +55,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler implements AnnotatedProxy{
+public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler implements AnnotatedProxy {
 
     private Logger logger = LoggerFactory.getLogger(PushEndpointHandlerProxy.class);
     private Object proxiedInstance;
@@ -237,19 +237,21 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
 
         RemoteEndpointImpl remoteEndpoint = (RemoteEndpointImpl) request.getAttribute(RemoteEndpointImpl.class.getName());
 
-        if (event.isCancelled() || event.isClosedByClient()) {
-            remoteEndpoint.status().status(event.isCancelled() ? Status.STATUS.UNEXPECTED_CLOSE : Status.STATUS.CLOSED_BY_CLIENT);
-            request.removeAttribute(RemoteEndpointImpl.class.getName());
-            trackedUUID.remove(r.uuid());
+        if (remoteEndpoint != null) {
+            if (event.isCancelled() || event.isClosedByClient()) {
+                remoteEndpoint.status().status(event.isCancelled() ? Status.STATUS.UNEXPECTED_CLOSE : Status.STATUS.CLOSED_BY_CLIENT);
+                request.removeAttribute(RemoteEndpointImpl.class.getName());
+                trackedUUID.remove(r.uuid());
 
-            invokeOpenOrClose(onCloseMethod, remoteEndpoint);
-        } else if (event.isResumedOnTimeout() || event.isResuming()) {
-            remoteEndpoint.status().status(Status.STATUS.CLOSED_BY_TIMEOUT);
-            request.removeAttribute(RemoteEndpointImpl.class.getName());
+                invokeOpenOrClose(onCloseMethod, remoteEndpoint);
+            } else if (event.isResumedOnTimeout() || event.isResuming()) {
+                remoteEndpoint.status().status(Status.STATUS.CLOSED_BY_TIMEOUT);
+                request.removeAttribute(RemoteEndpointImpl.class.getName());
 
-            invokeOpenOrClose(onTimeoutMethod, remoteEndpoint);
-        } else {
-            super.onStateChange(event);
+                invokeOpenOrClose(onTimeoutMethod, remoteEndpoint);
+            } else {
+                super.onStateChange(event);
+            }
         }
 
         if (resumeOnBroadcast && r.isSuspended()) {
@@ -257,11 +259,11 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
         }
     }
 
-    public boolean pathParams(){
+    public boolean pathParams() {
         return pathParams;
     }
 
-    protected boolean pathParams(Object o){
+    protected boolean pathParams(Object o) {
         for (Field field : o.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(PathParam.class)) {
                 return true;
