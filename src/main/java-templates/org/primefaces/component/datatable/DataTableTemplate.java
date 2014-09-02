@@ -446,13 +446,17 @@ import org.primefaces.util.SharedStringBuilder;
     }
         
     protected String resolveSortField() {
-        UIColumn column = this.getSortColumn();
         String sortField = null;
+        UIColumn column = this.getSortColumn();
         ValueExpression tableSortByVE = this.getValueExpression("sortBy");
         Object tableSortByProperty = this.getSortBy();
         
         if(column == null) {
-            sortField = (tableSortByVE == null) ? (String) tableSortByProperty : resolveStaticField(tableSortByVE);
+            String field = this.getSortField();
+            if(field == null)
+                sortField = (tableSortByVE == null) ? (String) tableSortByProperty : resolveStaticField(tableSortByVE);
+            else
+                sortField = field;
         }
         else {
             ValueExpression columnSortByVE = column.getValueExpression("sortBy");
@@ -567,6 +571,7 @@ import org.primefaces.util.SharedStringBuilder;
         this.setSortOrder(this.getDefaultSortOrder());
         this.setSortByVE(null);
         this.setSortColumn(null);
+        this.setSortField(null);
         this.clearMultiSortMeta();
     }
 
