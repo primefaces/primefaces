@@ -684,8 +684,6 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dragNode = ui.draggable.closest('li.ui-treenode'),
                 targetDragNode = $this.findTargetDragNode(dragNode, dragMode),
                 dragNodeKey = $this.getRowKey(targetDragNode),
-                dragNodeContent = dragNode.children('span.ui-treenode-content'),
-                dragNodeLabel = dragNodeContent.children('span.ui-treenode-label'),
                 dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
                 oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent'),
                 transfer = (dragSource.id !== dropSource.id);
@@ -701,11 +699,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 targetDragNode.hide().insertAfter(dropPoint);
 
                 if(transfer) {
-                    if(dragSource.isCheckboxSelection()) {
+                    if(dragSource.cfg.selectionMode) {
                         dragSource.unselectSubtree(targetDragNode);
                     }
-                    
-                    dragNodeLabel.removeClass('ui-state-highlight');
+
                     dragNodeDropPoint.remove();
                     $this.updateDragDropBindings(targetDragNode);
                 }
@@ -763,8 +760,6 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dragNode = ui.draggable.closest('li.ui-treenode'),
                 targetDragNode = $this.findTargetDragNode(dragNode, dragMode),
                 dragNodeKey = $this.getRowKey(targetDragNode),
-                dragNodeContent = dragNode.children('span.ui-treenode-content'),
-                dragNodeLabel = dragNodeContent.children('span.ui-treenode-label'),
                 dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
                 oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent'),
                 childrenContainer = dropNode.children('.ui-treenode-children'),
@@ -790,11 +785,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 }
 
                 if(transfer) {
-                    if(dragSource.isCheckboxSelection()) {
+                    if(dragSource.cfg.selectionMode) {
                         dragSource.unselectSubtree(targetDragNode);
                     }
-                    
-                    dragNodeLabel.removeClass('ui-state-highlight');
+
                     dragNodeDropPoint.remove();
                     $this.updateDragDropBindings(targetDragNode);
                 }
@@ -1009,14 +1003,22 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     },
             
     unselectSubtree: function(node) {
-        var $this = this,
-        checkbox = node.find('> .ui-treenode-content > .ui-chkbox');
-
-        this.toggleCheckboxState(checkbox, true);
+        var $this = this;
         
-        node.children('.ui-treenode-children').find('.ui-chkbox').each(function() {
-            $this.toggleCheckboxState($(this), true);
-        });
+        if(this.isCheckboxSelection()) {
+            var checkbox = node.find('> .ui-treenode-content > .ui-chkbox');
+
+            this.toggleCheckboxState(checkbox, true);
+        
+            node.children('.ui-treenode-children').find('.ui-chkbox').each(function() {
+                $this.toggleCheckboxState($(this), true);
+            });
+        }
+        else {
+            node.find('.ui-treenode-label.ui-state-highlight').each(function() {
+                $(this).removeClass('ui-state-highlight').closest('li.ui-treenode').attr('aria-selected', false);
+            });
+        }
     },
             
     propagateDNDCheckbox: function(node) {
