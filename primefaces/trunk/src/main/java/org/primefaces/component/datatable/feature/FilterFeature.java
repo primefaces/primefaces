@@ -138,7 +138,7 @@ public class FilterFeature implements DataTableFeature {
                 Object filterValue = filterMeta.getFilterValue();
                 UIColumn column = filterMeta.getColumn();
                 MethodExpression filterFunction = column.getFilterFunction();
-                ValueExpression filterByVE = table.getValueExpression("filterBy");
+                ValueExpression filterByVE = filterMeta.getFilterByVE();
                 
                 if(column instanceof DynamicColumn) {
                     ((DynamicColumn) column).applyStatelessModel();
