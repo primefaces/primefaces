@@ -393,6 +393,12 @@
             <defaultValue>true</defaultValue>
             <description>Disables text selection on row click. Default is true.</description>
 		</attribute>
+        <attribute>
+			<name>sortField</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
