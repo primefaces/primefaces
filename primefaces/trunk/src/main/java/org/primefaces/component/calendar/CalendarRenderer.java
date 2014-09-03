@@ -192,7 +192,8 @@ public class CalendarRenderer extends InputRenderer {
                 .attr("minuteMin", calendar.getMinMinute())
                 .attr("minuteMax", calendar.getMaxMinute())
                 .attr("secondMin", calendar.getMinSecond())
-                .attr("secondMax", calendar.getMaxSecond());
+                .attr("secondMax", calendar.getMaxSecond())
+                .attr("controlType", calendar.getTimeControlType(), null);
         }
         
         if(mask != null && !mask.equals("false")) {

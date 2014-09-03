@@ -240,6 +240,12 @@
             <description>Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to
             inputMask component for more information about custom templates.</description>
         </attribute>
+        <attribute>
+            <name>timeControlType</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Defines the type of element to use for time picker, valid values are "slider" and "select".</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
