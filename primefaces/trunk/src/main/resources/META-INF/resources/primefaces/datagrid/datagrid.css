@@ -31,3 +31,8 @@
 .ui-datagrid .ui-paginator-bottom {
     border-top: 0px none;
 }
+
+/** Table Layout **/
+.ui-datagrid-data {
+	width: 100%;
+}
