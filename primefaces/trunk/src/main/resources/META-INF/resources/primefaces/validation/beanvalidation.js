@@ -198,7 +198,6 @@ PrimeFaces.validator['Pattern'] = {
     validate: function(element, value) {
         if(value !== null) {
             var pattern = element.data('p-pattern'),
-            pattern = pattern.substring(1, (pattern.length - 1)),
             vc = PrimeFaces.util.ValidationContext,
             regex = new RegExp(pattern);
             
