@@ -953,7 +953,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnSelection(context, table, clientId, column, selected);
         }
 
-        renderChildren(context, (UIComponent) column);         
+        column.renderChildren(context);       
 
         writer.endElement("td");
     }

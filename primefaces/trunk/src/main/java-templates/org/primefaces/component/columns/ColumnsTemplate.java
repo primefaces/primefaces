@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import javax.faces.component.UIComponent;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.celleditor.CellEditor;
 
@@ -29,5 +30,9 @@ import org.primefaces.component.celleditor.CellEditor;
 
     public String getColumnKey() {
         return this.getClientId();
+    }
+
+    public void renderChildren(FacesContext context) throws IOException {
+        this.encodeChildren(context);
     }
     
