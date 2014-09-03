@@ -35,3 +35,13 @@ import org.primefaces.model.menu.MenuModel;
     public int getElementsCount() {
         return getChildCount();
     }
+    
+    public void renderChildren(FacesContext context) throws IOException {
+        int childCount = this.getChildCount();
+        if(childCount > 0) {
+            for(int i = 0; i < childCount; i++) {
+                UIComponent child = this.getChildren().get(i);
+                child.encodeAll(context);
+            }
+        }
+    }

@@ -165,6 +165,10 @@ public class DynamicColumn implements UIColumn {
         this.columns.encodeAll(context);
     }
 
+    public void renderChildren(FacesContext context) throws IOException {
+        this.columns.encodeChildren(context);
+    }
+    
     public String getColumnKey() {
         return this.columnKey;
     }
