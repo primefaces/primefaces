@@ -29,9 +29,9 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SpinnerRenderer extends InputRenderer {
 
-	@Override
-	public void decode(FacesContext context, UIComponent component) {
-		Spinner spinner = (Spinner) component;
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        Spinner spinner = (Spinner) component;
 
         if(spinner.isDisabled() || spinner.isReadonly()) {
             return;
@@ -42,34 +42,32 @@ public class SpinnerRenderer extends InputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(spinner.getClientId(context) + "_input");
         String prefix = spinner.getPrefix();
         String suffix = spinner.getSuffix();
-        
+
         try {
-            
             if(prefix != null)
                 submittedValue = submittedValue.substring(prefix.length());
             else if(suffix != null)
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
-            
+
             }
         catch(Exception e) {
-            
+
         }
         finally {
             spinner.setSubmittedValue(submittedValue);
         }
+    }
 
-	}
-	
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		Spinner spinner = (Spinner) component;
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Spinner spinner = (Spinner) component;
 
-		encodeMarkup(context, spinner);
-		encodeScript(context, spinner);
-	}
-	
-	protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
-		String clientId = spinner.getClientId(context);
+        encodeMarkup(context, spinner);
+        encodeScript(context, spinner);
+    }
+
+    protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
+        String clientId = spinner.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Spinner", spinner.resolveWidgetVar(), clientId)
             .attr("step", spinner.getStepFactor(), 1.0)
@@ -79,11 +77,11 @@ public class SpinnerRenderer extends InputRenderer {
             .attr("suffix", spinner.getSuffix(), null);
 
         wb.finish();
-	}
-	
-	protected void encodeMarkup(FacesContext context, Spinner spinner) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = spinner.getClientId(context);
+    }
+
+    protected void encodeMarkup(FacesContext context, Spinner spinner) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = spinner.getClientId(context);
         String styleClass = spinner.getStyleClass();
         styleClass = styleClass == null ? Spinner.CONTAINER_CLASS : Spinner.CONTAINER_CLASS + " " + styleClass;
         styleClass = spinner.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
@@ -96,43 +94,43 @@ public class SpinnerRenderer extends InputRenderer {
             writer.writeAttribute("style", spinner.getStyle(), null);
         }
 
-		encodeInput(context, spinner);
+        encodeInput(context, spinner);
 
         encodeButton(context, Spinner.UP_BUTTON_CLASS, Spinner.UP_ICON_CLASS);
         encodeButton(context, Spinner.DOWN_BUTTON_CLASS, Spinner.DOWN_ICON_CLASS);
 
         writer.endElement("span");
-	}
+    }
 
     protected void encodeInput(FacesContext context, Spinner spinner) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = spinner.getClientId(context) + "_input";
-        
+
         writer.startElement("input", null);
-		writer.writeAttribute("id", inputId, null);
-		writer.writeAttribute("name", inputId, null);
-		writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("id", inputId, null);
+        writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("type", "text", null);
         writer.writeAttribute("class", Spinner.INPUT_CLASS, null);
         writer.writeAttribute("autocomplete", "off", null);
 
-		String valueToRender = ComponentUtils.getValueToRender(context, spinner);
+        String valueToRender = ComponentUtils.getValueToRender(context, spinner);
         if(valueToRender != null) {
             valueToRender = spinner.getPrefix() != null ? spinner.getPrefix() + valueToRender : valueToRender;
             valueToRender = spinner.getSuffix() != null ? valueToRender + spinner.getSuffix(): valueToRender;
-			writer.writeAttribute("value", valueToRender, null);
-		}
-        
+            writer.writeAttribute("value", valueToRender, null);
+        }
+
         renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, spinner, HTML.INPUT_TEXT_EVENTS);
 
         if(spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        
+
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, spinner);
         }
 
-		writer.endElement("input");
+        writer.endElement("input");
     }
 
     protected void encodeButton(FacesContext context, String styleClass, String iconClass) throws IOException {
@@ -152,7 +150,7 @@ public class SpinnerRenderer extends InputRenderer {
 
         writer.endElement("a");
     }
-    
+
     @Override
     public String getHighlighter() {
         return "spinner";
