@@ -188,7 +188,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             for(UIComponent child : listbox.getChildren()) {
                 if(child instanceof Column && child.isRendered()) {
                     writer.startElement("td", null);
-                    child.encodeAll(context);
+                    renderChildren(context, child);
                     writer.endElement("td");
                 }
             }
