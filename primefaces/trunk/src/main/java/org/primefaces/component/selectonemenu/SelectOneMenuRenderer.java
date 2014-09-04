@@ -263,7 +263,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             else {
                 for(Column column : columns) {
                     writer.startElement("td", null);
-                    column.encodeAll(context);
+                    renderChildren(context, column);
                     writer.endElement("td");
                 }
             }

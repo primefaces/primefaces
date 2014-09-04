@@ -170,7 +170,7 @@ public class OrderListRenderer extends CoreRenderer {
                          if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
                          if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
                          
-                         kid.encodeAll(context);
+                         renderChildren(context, column);
                          writer.endElement("td");
                      }
                  }

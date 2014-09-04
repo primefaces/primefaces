@@ -456,7 +456,7 @@ public class TreeTableRenderer extends CoreRenderer {
                     }
                 }
 
-                column.encodeAll(context);
+                column.renderChildren(context);
 
                 writer.endElement("td");
             }
