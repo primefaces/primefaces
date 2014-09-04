@@ -44,11 +44,11 @@ public class SpinnerRenderer extends InputRenderer {
         String suffix = spinner.getSuffix();
 
         try {
-            if(prefix != null)
+            if (prefix != null && submittedValue.startsWith(prefix)) {
                 submittedValue = submittedValue.substring(prefix.length());
-            else if(suffix != null)
+            }
+            if (suffix != null && submittedValue.endsWith(suffix))
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
-
             }
         catch(Exception e) {
 
