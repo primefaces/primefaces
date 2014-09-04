@@ -47,9 +47,10 @@ public class SpinnerRenderer extends InputRenderer {
             if (prefix != null && submittedValue.startsWith(prefix)) {
                 submittedValue = submittedValue.substring(prefix.length());
             }
-            if (suffix != null && submittedValue.endsWith(suffix))
+            if (suffix != null && submittedValue.endsWith(suffix)) {
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
             }
+        }
         catch(Exception e) {
 
         }
