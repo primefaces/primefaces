@@ -200,7 +200,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             for(UIComponent child : menu.getChildren()) {
                 if(child instanceof Column && child.isRendered()) {
                     writer.startElement("td", null);
-                    child.encodeAll(context);
+                    renderChildren(context, child);
                     writer.endElement("td");
                 }
             }
