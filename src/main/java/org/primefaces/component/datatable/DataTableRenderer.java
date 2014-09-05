@@ -376,7 +376,6 @@ public class DataTableRenderer extends DataRenderer {
         if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if(table.getTableStyleClass() != null) writer.writeAttribute("class", tableStyleClass, null);
         
-        encodeColGroup(context, table, columnStart, columnEnd);
         encodeTbody(context, table, false, columnStart, columnEnd, tbodyId);
         
         writer.endElement("table");
@@ -712,21 +711,6 @@ public class DataTableRenderer extends DataRenderer {
         encodeFrozenRows(context, table);
 
         writer.endElement("thead");
-    }
-        
-    public void encodeColGroup(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        List<UIColumn> columns = table.getColumns();
-        
-        writer.startElement("colgroup", null);
-        for(int i = columnStart; i < columnEnd; i++) {
-            UIColumn column = columns.get(i);
-            if(column.isRendered()) {
-                writer.startElement("col", null);
-                writer.endElement("col");
-            }
-        }
-        writer.endElement("colgroup");
     }
     
     public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly) throws IOException {
