@@ -835,8 +835,7 @@ PrimeFaces.util.ValidationContext = {
             uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
             
             if(display === 'both') {
-                uiMessage.append('<span class="ui-message-error-icon"></span>')
-                    .append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
+                uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + msg.detail + '</span></div>');
             } 
             else if(display === 'text') {
                 uiMessage.append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
