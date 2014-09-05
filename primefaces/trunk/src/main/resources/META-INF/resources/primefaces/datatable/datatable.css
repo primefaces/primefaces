@@ -77,6 +77,7 @@
     height: 16px;
 }
 
+/* Scrollable */
 .ui-datatable-scrollable table,
 .ui-datatable-sticky table{
     table-layout: fixed;
@@ -120,6 +121,27 @@
     border-color: inherit;
     font-weight: inherit;
     cursor: pointer;
+}
+
+.ui-datatable-scrollable-theadclone {
+    height:0px;
+}
+
+.ui-datatable-scrollable-theadclone tr {
+    height:0px;
+}
+
+.ui-datatable-scrollable-theadclone th.ui-state-default {
+    height:0px;
+    border-bottom-width: 0px;
+    border-top-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.ui-datatable-scrollable-theadclone th span.ui-column-title {
+  display: block;
+  height: 0px;
 }
 
 .ui-datatable .ui-paginator,
