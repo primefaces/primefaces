@@ -27,9 +27,14 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SocketRenderer extends CoreRenderer {
 
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		Socket socket = (Socket) component;
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+    
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Socket socket = (Socket) component;
         String channel = socket.getChannel();
         String channelUrl = Constants.PUSH_PATH + channel;
         String url = getResourceURL(context, channelUrl);
@@ -59,5 +64,5 @@ public class SocketRenderer extends CoreRenderer {
         encodeClientBehaviors(context, socket);
 
         wb.finish();
-	}
+    }
 }
