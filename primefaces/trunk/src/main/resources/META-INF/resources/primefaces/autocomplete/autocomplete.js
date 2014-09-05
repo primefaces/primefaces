@@ -197,13 +197,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     bindKeyEvents: function() {
         var $this = this;
+        
+        this.currentText = this.input.val();
+        this.previousText = this.input.val();
 
         //bind keyup handler
         this.input.keyup(function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which,
             shouldSearch = true;
-
+            
+            $this.previousText = $this.currentText;
+            $this.currentText = this.value;
+            
             // Cancel a possible long running search when selecting an entry via enter
             if (key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
                 if ($this.timeout) {
@@ -238,7 +244,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 
                 shouldSearch = false;
             }
-            else if($this.cfg.pojo && !$this.cfg.multiple) {
+            else if($this.cfg.pojo && !$this.cfg.multiple && ($this.previousText !== $this.currentText)) {
                 $this.hinput.val($(this).val());
             }
 
@@ -373,6 +379,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 $this.input.val(item.attr('data-item-label')).focus();
+
+                this.currentText = $this.input.val();
+                this.previousText = $this.input.val();
 
                 if($this.cfg.pojo) {
                     $this.hinput.val(itemValue);
