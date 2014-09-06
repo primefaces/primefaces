@@ -59,6 +59,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean ignoreAutoUpdate;
     private boolean immediate;
     private String delay;
+    private int timeout;
     private boolean disableClientWindow;
     private String containerStyle;
     private String containerStyleClass;
@@ -391,5 +392,13 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     
     public String getClientId() {
         return this.id;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }

@@ -63,13 +63,14 @@ public class RemoteCommandRenderer extends CoreRenderer {
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
         
         String request = builder.init()
-        				.source(clientId)
+                        .source(clientId)
                         .form(form.getClientId(context))
                         .process(component, source.getProcess())
                         .update(component, source.getUpdate())
                         .async(source.isAsync())
                         .global(source.isGlobal())
                         .delay(source.getDelay())
+                        .timeout(source.getTimeout())
                         .partialSubmit(source.isPartialSubmit(), command.isPartialSubmitSet())
                         .resetValues(source.isResetValues(), source.isResetValuesSet())
                         .ignoreAutoUpdate(source.isIgnoreAutoUpdate())

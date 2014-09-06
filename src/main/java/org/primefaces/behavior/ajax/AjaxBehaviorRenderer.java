@@ -68,13 +68,14 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
 
         String request = builder.init()
-        				.source(source)
+                        .source(source)
                         .event(behaviorContext.getEventName())
                         .process(component, process)
                         .update(component, ajaxBehavior.getUpdate())
                         .async(ajaxBehavior.isAsync())
                         .global(ajaxBehavior.isGlobal())
                         .delay(ajaxBehavior.getDelay())
+                        .timeout(ajaxBehavior.getTimeout())
                         .partialSubmit(ajaxBehavior.isPartialSubmit(), ajaxBehavior.isPartialSubmitSet())
                         .resetValues(ajaxBehavior.isResetValues(), ajaxBehavior.isResetValuesSet())
                         .ignoreAutoUpdate(ajaxBehavior.isIgnoreAutoUpdate())
