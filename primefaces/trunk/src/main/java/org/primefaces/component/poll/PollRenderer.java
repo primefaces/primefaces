@@ -59,13 +59,14 @@ public class PollRenderer extends CoreRenderer {
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
         
         String request = builder.init()
-        		.source(clientId)
+                .source(clientId)
                 .form(form.getClientId(context))
                 .process(component, poll.getProcess())
                 .update(component, poll.getUpdate())
                 .async(poll.isAsync())
                 .global(poll.isGlobal())
                 .delay(poll.getDelay())
+                .timeout(poll.getTimeout())
                 .partialSubmit(poll.isPartialSubmit(),poll.isPartialSubmitSet())
                 .resetValues(poll.isResetValues(), poll.isResetValuesSet())
                 .ignoreAutoUpdate(poll.isIgnoreAutoUpdate())

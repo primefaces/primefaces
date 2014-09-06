@@ -10,6 +10,7 @@ PrimeFaces.AB_MAPPING = {
     'a': 'async',
     'g': 'global',
     'd': 'delay',
+    't': 'timeout',
     'iau': 'ignoreAutoUpdate',
     'ps': 'partialSubmit',
     'rv': 'resetValues',
@@ -517,6 +518,10 @@ PrimeFaces.ajax = {
                     }
                 }
             };
+
+            if (cfg.timeout) {
+                xhrOptions['timeout'] = cfg.timeout;
+            }
 
             PrimeFaces.ajax.Queue.addXHR($.ajax(xhrOptions));
         },

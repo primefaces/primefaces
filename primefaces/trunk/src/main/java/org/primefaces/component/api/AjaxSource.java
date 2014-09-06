@@ -21,21 +21,21 @@ package org.primefaces.component.api;
  */
 public interface AjaxSource {
 
-	public String getOnstart();
-	
-	public String getOncomplete();
-	
-	public String getOnsuccess();
-	
-	public String getOnerror();
-	
-	public String getUpdate();
-	
-	public String getProcess();
-	
-	public boolean isGlobal();
-	
-	public boolean isAsync();
+    public String getOnstart();
+
+    public String getOncomplete();
+
+    public String getOnsuccess();
+
+    public String getOnerror();
+
+    public String getUpdate();
+
+    public String getProcess();
+
+    public boolean isGlobal();
+
+    public boolean isAsync();
     
     public boolean isPartialSubmit();
     
@@ -50,4 +50,6 @@ public interface AjaxSource {
     public boolean isAjaxified();
     
     public String getDelay();
+    
+    public int getTimeout();
 }

@@ -276,12 +276,13 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
         
         builder.init()
-        		.source(clientId)
+                .source(clientId)
                 .process(menu, source.getProcess())
                 .update(menu, source.getUpdate())
                 .async(source.isAsync())
                 .global(source.isGlobal())
                 .delay(source.getDelay())
+                .timeout(source.getTimeout())
                 .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet())
                 .resetValues(source.isResetValues(), source.isResetValuesSet())
                 .ignoreAutoUpdate(source.isIgnoreAutoUpdate())

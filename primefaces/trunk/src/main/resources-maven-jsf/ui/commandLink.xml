@@ -90,6 +90,13 @@
 			<type>java.lang.String</type>
             <description>If less than delay milliseconds elapses between calls to request() only the most recent one is sent and all other requests are discarded. The default value of this option is null. If the value of delay is the literal string 'none' without the quotes or the default, no delay is used.</description>
 		</attribute>
+		<attribute>
+			<name>timeout</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+                        <defaultValue>0</defaultValue>
+            <description>Defines the timeout for the ajax request.</description>
+		</attribute>
         <attribute>
 			<name>partialSubmit</name>
 			<required>false</required>

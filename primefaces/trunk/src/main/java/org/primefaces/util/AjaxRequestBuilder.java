@@ -134,6 +134,14 @@ public class AjaxRequestBuilder {
         return this;
     }
 
+    public AjaxRequestBuilder timeout(int timeout) {
+        if (timeout > 0) {
+            buffer.append(",t:").append(timeout);
+        }
+        
+        return this;
+    }
+    
     public AjaxRequestBuilder ignoreAutoUpdate(boolean ignoreAutoUpdate) {
         if(ignoreAutoUpdate) {
             buffer.append(",iau:true");

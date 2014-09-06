@@ -40,6 +40,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
     private final TagAttribute resetValues;
     private final TagAttribute ignoreAutoUpdate;
     private final TagAttribute delay;
+    private final TagAttribute timeout;
     
     public AjaxBehaviorHandler(BehaviorConfig config) {
         super(config);
@@ -58,6 +59,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         this.resetValues = this.getAttribute(AjaxBehavior.PropertyKeys.resetValues.name());
         this.ignoreAutoUpdate = this.getAttribute(AjaxBehavior.PropertyKeys.ignoreAutoUpdate.name());
         this.delay = this.getAttribute(AjaxBehavior.PropertyKeys.delay.name());
+        this.timeout = this.getAttribute(AjaxBehavior.PropertyKeys.timeout.name());
     }
 
     @Override
@@ -80,6 +82,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         setBehaviorAttribute(ctx, behavior, this.resetValues, AjaxBehavior.PropertyKeys.resetValues.expectedType);
         setBehaviorAttribute(ctx, behavior, this.ignoreAutoUpdate, AjaxBehavior.PropertyKeys.ignoreAutoUpdate.expectedType);
         setBehaviorAttribute(ctx, behavior, this.delay, AjaxBehavior.PropertyKeys.delay.expectedType);
+        setBehaviorAttribute(ctx, behavior, this.timeout, AjaxBehavior.PropertyKeys.timeout.expectedType);
         
         if (listener != null) {
             behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
