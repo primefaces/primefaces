@@ -1094,7 +1094,7 @@ import org.primefaces.util.SharedStringBuilder;
         public MultiSortState() {}
         
         public MultiSortState(SortMeta sortMeta) {
-            this.sortKey = sortMeta.getColumn().getClientId();
+            this.sortKey = sortMeta.getColumn().getColumnKey();
             this.sortField = sortMeta.getSortField();
             this.sortOrder = sortMeta.getSortOrder();
             this.sortFunction = sortMeta.getSortFunction();
