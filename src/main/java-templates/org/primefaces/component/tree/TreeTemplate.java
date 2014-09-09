@@ -220,7 +220,7 @@ import org.primefaces.model.TreeNode;
         setRowKey(nodeKey);
         TreeNode treeNode = this.getRowNode();
 
-        if(nodeKey == null && treeNode == null)
+        if(treeNode == null)
             return;
         
         String treeNodeType = treeNode.getType();

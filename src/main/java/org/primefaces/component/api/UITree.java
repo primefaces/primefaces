@@ -91,6 +91,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
         if(rowKey == null) {
             requestMap.remove(getVar());
+            this.rowNode = null;
         } 
         else {
             TreeNode root = getValue();
