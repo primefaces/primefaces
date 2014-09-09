@@ -16167,12 +16167,8 @@ if (!document.createElement('canvas').getContext) {
             for (i=0; i<nr; i++) {
                 tr = $(document.createElement('tr'));
                 tr.addClass('jqplot-table-legend');
-                if (reverse){
-                    tr.prependTo(this._elem);
-                }
-                else{
-                    tr.appendTo(this._elem);
-                }
+                tr.appendTo(this._elem);
+                
                 for (j=0; j<nc; j++) {
                     if (idx < series.length && (series[idx].show || series[idx].showLabel)){
                         s = series[idx];
