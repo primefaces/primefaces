@@ -12824,9 +12824,7 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 	 * @return {void}
 	 */
 	$.timepicker.log = function (err) {
-		if (window.console) {
-			window.console.log(err);
-		}
+
 	};
 
 	/*
