@@ -54,6 +54,12 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
+            <name>onclick</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
             <name>style</name>
             <required></required>
             <type>java.lang.String</type>

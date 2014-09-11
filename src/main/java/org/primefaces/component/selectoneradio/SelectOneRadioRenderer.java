@@ -226,7 +226,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", value, null);
 
-        renderOnchange(context, radio);
+        renderDomEvents(context, radio, SelectOneRadio.SUPPORTED_EVENTS);
         
         if(radio.getTabindex() != null) writer.writeAttribute("tabindex", radio.getTabindex(), null);
         if(checked) writer.writeAttribute("checked", "checked", null);
