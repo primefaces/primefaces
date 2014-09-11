@@ -2723,8 +2723,8 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
         this.jqTarget.closest('form').off('keydown.' + this.id).on('keydown.' + this.id, function(e) {
            var keyCode = $.ui.keyCode;
            if(e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
-                //do not proceed if event target is not in this scope or target is a textarea
-                if(($this.scope && $this.scope.find(e.target).length == 0)||$(e.target).is('textarea')) {
+                //do not proceed if event target is not in this scope or target is a textarea,button or link
+                if(($this.scope && $this.scope.find(e.target).length == 0)||$(e.target).is('textarea,button,input[type="submit"],a')) {
                     return true;
                 }
 
