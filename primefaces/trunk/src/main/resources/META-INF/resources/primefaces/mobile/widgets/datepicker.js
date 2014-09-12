@@ -2069,9 +2069,37 @@ $.datepicker.version = "1.10.3";
 		beforeShowDay: null, // Function that takes a date and returns an array with
 			// [0] = true if selectable, false if not, [1] = custom CSS class name(s) or "",
 			// [2] = cell title (optional), e.g. $.datepicker.noWeekends
-		onSelect: null, // Define a callback function when a date is selected
-		onChangeMonthYear: null, // Define a callback function when the month or year is changed
-		beforeShow: null, // Define a callback function when the calendar is shown
+		onSelect:  function(text,object){
+            var self = this;
+            setTimeout( function(){
+              if( !object.settings.inline ){
+                $(object.input)
+                  .date( "addMobileStyle" );
+              } else {
+                $(object.settings.altField)
+                  .date( "addMobileStyle" );
+              }
+            },0);
+          }, // Define a callback function when a date is selected
+		onChangeMonthYear: function(month,year,object){
+            var self = this;
+            setTimeout( function(){
+              if( !object.settings.inline ){
+                $(object.input)
+                  .date( "addMobileStyle" );
+              } else {
+                $(object.settings.altField)
+                  .date( "addMobileStyle" );
+              }
+            },0);
+          },
+    beforeShow: function( element ){
+          var self = this;
+            setTimeout( function(){
+                $(element)
+                  .data("mobileDate").addMobileStyle();
+            },0);
+        },// Define a callback function when the month or year is changed
 		numberOfMonths: 1, // Number of months to show at a time
 		showCurrentAtPos: 0, // The position in multipe months at which to show the current month (starting at 0)
 		stepMonths: 1, // Number of months to step back/forward
@@ -2082,28 +2110,11 @@ $.datepicker.version = "1.10.3";
 		showButtonPanel: false, // True to show button panel, false to not show it
 		autoSize: false, // True to size the input for the date format, false to leave as is
 		disabled: false, // The initial disabled state
-		inline: false, // True to set the calendar always visible
-    theme: "a",
-    dateFormat: "mm/dd/yy"
+    inline: false
       },
       _create:function(){
         var calendar, interval,
           that = this;
-        
-        $.each([ 'onSelect', 'onChangeMonthYear', 'beforeShow' ], function(key, val){
-			    that.options[ '_'+val ] = that.options[ val ];
-    			that.options[ val ] = function( date, inst ){
-    				var args = arguments;
-            that.element.trigger( "change" );
-    				setTimeout(function(){
-    					that.addMobileStyle();
-    					if (that.options[ '_'+val ]) {
-    						that.options[ '_'+val ].apply( null, args );
-    					}
-    				}, 0);
-    			}
-        });
-        
         if( this.options.inline ){
 	        this.options.altField = this.element;
           calendar = $("<div>").datepicker(this.options);
@@ -2158,18 +2169,17 @@ $.datepicker.version = "1.10.3";
       widget:function(){
        return this.element;
       },
-      theme: 'a',
       addMobileStyle: function(){
           this.calendar.addClass("ui-shadow")
           .find( ".ui-datepicker-calendar" ).addClass( "mobile-enhanced" ).end()
           .find(".ui-datepicker-calendar a,.ui-datepicker-prev,.ui-datepicker-next").addClass("ui-btn").end()
           .find(".ui-datepicker-prev").addClass("ui-btn-icon-notext ui-btn-inline ui-corner-all ui-icon-arrow-l ui-shadow").end()
           .find(".ui-datepicker-next").addClass("ui-btn-icon-notext ui-btn-inline ui-corner-all ui-icon-arrow-r ui-shadow").end()
-          .find(".ui-datepicker-header").addClass("ui-body-"+this.options.theme+" ui-corner-top").removeClass("ui-corner-all").end()
-          .find(".ui-datepicker-calendar th" ).addClass("ui-bar-"+this.options.theme).end()
-          .find(".ui-datepicker-calendar td" ).addClass("ui-body-"+this.options.theme).end()
+          .find(".ui-datepicker-header").addClass("ui-body-a ui-corner-top").removeClass("ui-corner-all").end()
+          .find(".ui-datepicker-calendar th" ).addClass("ui-bar-a").end()
+          .find(".ui-datepicker-calendar td" ).addClass("ui-body-a").end()
           .find(".ui-datepicker-calendar a.ui-state-active").addClass("ui-btn-active").end()
-          .find(".ui-datepicker-calendar a.ui-state-highlight").addClass("ui-btn-up-"+this.options.theme).end().find(".ui-state-disabled").css("opacity","1");
+          .find(".ui-datepicker-calendar a.ui-state-highlight").addClass("ui-btn-up-a").end().find(".ui-state-disabled").css("opacity","1");
       }
     });
 
