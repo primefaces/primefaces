@@ -49,8 +49,8 @@ public class MeterGaugeRenderer extends BasePlotRenderer {
         encodeNumberList(context, "ticks", model.getTicks());
 
         if(gaugeLabel != null) {
-            writer.write(",gaugeLabel:'" + gaugeLabel + "'");
-            writer.write(",gaugeLabelPosition:'" + model.getGaugeLabelPosition() + "'");
+            writer.write(",gaugeLabel:\"" + gaugeLabel + "\"");
+            writer.write(",gaugeLabelPosition:\"" + model.getGaugeLabelPosition() + "\"");
         }
               
         writer.write(",showTickLabels:" + model.isShowTickLabels());

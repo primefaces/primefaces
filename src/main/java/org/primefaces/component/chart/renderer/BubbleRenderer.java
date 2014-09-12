@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.BubbleChartModel;
 import org.primefaces.model.chart.BubbleChartSeries;
+import org.primefaces.util.ComponentUtils;
 
 public class BubbleRenderer extends CartesianPlotRenderer {
 
@@ -41,9 +42,9 @@ public class BubbleRenderer extends CartesianPlotRenderer {
             writer.write(String.valueOf(s.getY()));
             writer.write(",");
             writer.write(String.valueOf(s.getRadius()));
-            writer.write(",'");
-            writer.write(String.valueOf(s.getLabel()));
-            writer.write("']");
+            writer.write(",\"");
+            writer.write(ComponentUtils.escapeText(String.valueOf(s.getLabel())));
+            writer.write("\"]");
 
             if(it.hasNext()) {
                 writer.write(",");
@@ -70,7 +71,7 @@ public class BubbleRenderer extends CartesianPlotRenderer {
         if(model.isShowDatatip()) {
             writer.write(",datatip:true");
             if(model.getDatatipFormat() != null)
-                writer.write(",datatipFormat:'" + model.getDatatipFormat() + "'");
+                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
         }
     }
     
