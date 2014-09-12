@@ -151,23 +151,25 @@ public abstract class CoreRenderer extends Renderer {
                     params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEvent, clientId, params);
                     int size = eventBehaviors.size();
+                    boolean chained = false;
 
                     if(size > 1 || hasEventValue) {
                         builder.append("PrimeFaces.bcn(this,event,[");
                         
                         if(hasEventValue) {
-                            builder.append("function(event){").append(eventValue).append("},");
+                            builder.append("function(event){").append(eventValue).append("}");
+                            chained = true;
                         }
                         
                         for (int i = 0; i < size; i++) {
                             ClientBehavior behavior = eventBehaviors.get(i);
                             String script = behavior.getScript(cbc);
                             if(script != null) {
+                                if(chained) {
+                                    builder.append(",");
+                                }
                                 builder.append("function(event){").append(script).append("}");
-                            }
-
-                            if(i < (size - 1)) {
-                                builder.append(",");
+                                chained = true;
                             }
                         }
                         builder.append("])");
