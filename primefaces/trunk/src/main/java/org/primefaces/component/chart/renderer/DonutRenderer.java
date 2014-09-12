@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.DonutChartModel;
+import org.primefaces.util.ComponentUtils;
 
 public class DonutRenderer extends BasePlotRenderer {
     
@@ -44,7 +45,7 @@ public class DonutRenderer extends BasePlotRenderer {
                 String key = it.next();
                 Number value = map.get(key);
 
-                writer.write("['" + key + "'," + value + "]");
+                writer.write("[\"" + ComponentUtils.escapeText(key) + "\"," + value + "]");
 
                 if(it.hasNext()) {
                     writer.write(",");
@@ -70,6 +71,6 @@ public class DonutRenderer extends BasePlotRenderer {
         if(sliceMargin != 0) writer.write(",sliceMargin:" + sliceMargin);
         if(!fill) writer.write(",fill:false");
         if(showDataLabels) writer.write(",showDataLabels:true");
-        if(dataFormat != null) writer.write(",dataFormat:'" + dataFormat + "'");
+        if(dataFormat != null) writer.write(",dataFormat:\"" + dataFormat + "\"");
     }
 }

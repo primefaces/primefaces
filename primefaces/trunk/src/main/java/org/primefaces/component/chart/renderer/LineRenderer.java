@@ -23,6 +23,7 @@ import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
+import org.primefaces.util.ComponentUtils;
 
 public class LineRenderer extends CartesianPlotRenderer {
 
@@ -44,7 +45,7 @@ public class LineRenderer extends CartesianPlotRenderer {
                 writer.write("[");
                 
                 if(xValue instanceof String)
-                    writer.write("\"" + xValue + "\"," + yValueAsString);
+                    writer.write("\"" + ComponentUtils.escapeText(xValue.toString()) + "\"," + yValueAsString);
                 else
                     writer.write(xValue + "," + yValueAsString);
                 
@@ -91,7 +92,7 @@ public class LineRenderer extends CartesianPlotRenderer {
         if(model.isShowDatatip()) {
             writer.write(",datatip:true");
             if(model.getDatatipFormat() != null)
-                writer.write(",datatipFormat:'" + model.getDatatipFormat() + "'");
+                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
         }
     }
 }

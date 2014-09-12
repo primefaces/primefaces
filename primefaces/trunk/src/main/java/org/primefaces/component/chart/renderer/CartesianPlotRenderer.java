@@ -24,6 +24,7 @@ import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.CartesianChartModel;
+import org.primefaces.util.ComponentUtils;
 
 public abstract class CartesianPlotRenderer extends BasePlotRenderer {
     
@@ -61,7 +62,7 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
         int tickCount = axis.getTickCount();
         
         writer.write(axisType.toString() + ": {");        
-        writer.write("label:'" + label + "'");
+        writer.write("label:\"" + ComponentUtils.escapeText(label) + "\"");
         
         if(min != null) {
             if(min instanceof String)

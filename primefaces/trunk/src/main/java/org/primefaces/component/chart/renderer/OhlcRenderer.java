@@ -74,7 +74,7 @@ public class OhlcRenderer extends CartesianPlotRenderer {
         if(model.isShowDatatip()) {
             writer.write(",datatip:true");
             if(model.getDatatipFormat() != null)
-                writer.write(",datatipFormat:'" + model.getDatatipFormat() + "'");
+                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
         }
     }    
 }

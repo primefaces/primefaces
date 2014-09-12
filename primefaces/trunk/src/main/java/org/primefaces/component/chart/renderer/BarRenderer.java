@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.util.ComponentUtils;
 
 public class BarRenderer extends CartesianPlotRenderer {
     
@@ -91,14 +92,14 @@ public class BarRenderer extends CartesianPlotRenderer {
         
         writer.write(",ticks:[");
         for(Iterator<String> tickIt = ticks.iterator(); tickIt.hasNext();) {
-            writer.write("\"" + tickIt.next() + "\"");
+            writer.write("\"" + ComponentUtils.escapeText(tickIt.next()) + "\"");
             if(tickIt.hasNext()) {
                 writer.write(",");
             }
         }
         writer.write("]");
 
-        if(orientation != null) writer.write(",orientation:'" + orientation + "'");
+        if(orientation != null) writer.write(",orientation:\"" + orientation + "\"");
         if(barPadding != 8) writer.write(",barPadding:" + barPadding);
         if(barMargin != 10) writer.write(",barMargin:" + barMargin);        
         if(model.isStacked()) writer.write(",stackSeries:true");       
@@ -108,7 +109,7 @@ public class BarRenderer extends CartesianPlotRenderer {
         if(model.isShowDatatip()) {
             writer.write(",datatip:true");
             if(model.getDatatipFormat() != null)
-                writer.write(",datatipFormat:'" + model.getDatatipFormat() + "'");
+                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
         }
     }
 }
