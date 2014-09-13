@@ -83,6 +83,12 @@
             <defaultValue>click</defaultValue>
             <description>Event name of component that will show the dynamic positioned menu. Default is click.</description>
 		</attribute>
+        <attribute>
+			<name>toggleEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Event to toggle the submenus, default is hover. Valid values are "hover" and "click".</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

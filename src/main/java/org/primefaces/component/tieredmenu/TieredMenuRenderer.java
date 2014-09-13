@@ -38,7 +38,8 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("TieredMenu", menu.resolveWidgetVar(), clientId)
-            .attr("autoDisplay", menu.isAutoDisplay());
+            .attr("autoDisplay", menu.isAutoDisplay())                
+            .attr("toggleEvent", menu.getToggleEvent(), null);
         
         if(menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);
