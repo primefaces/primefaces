@@ -33,14 +33,14 @@ public class PanelGridRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         PanelGrid grid = (PanelGrid) component;
         
-        if(grid.getLayout().equals("table")) {
+        if(grid.getLayout().equals("tabular")) {
             encodeTableLayout(context, grid);
         }
         else if(grid.getLayout().equals("grid")){     
             encodeGridLayout(context, grid);
         }
         else {
-            throw new FacesException("The value of 'layout' attribute must be 'grid' or 'table'. Default value is 'table'.");
+            throw new FacesException("The value of 'layout' attribute must be 'grid' or 'tabular'. Default value is 'tabular'.");
         }   
     }
     
@@ -288,13 +288,8 @@ public class PanelGridRenderer extends CoreRenderer {
             ResponseWriter writer = context.getResponseWriter();
             
             writer.startElement("div", null);
-            writer.writeAttribute("class", styleClass, null);
-            
-            writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-widget-header", null);
+            writer.writeAttribute("class", styleClass + " ui-widget-header", null);
             component.encodeAll(context);
-            writer.endElement("div");
-            
             writer.endElement("div");
         }
     }
