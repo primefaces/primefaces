@@ -46,8 +46,8 @@
 			<name>layout</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <defaultValue>table</defaultValue>
-            <description>Displays data in a 'table' layout or 'grid' layout. The grid layout is a responsive layout. Default value is 'table'.</description>
+            <defaultValue>tabular</defaultValue>
+            <description>Displays data in a 'table' layout or 'grid' layout. The grid layout is a responsive layout. Default value is 'tabular'.</description>
 		</attribute>
 	</attributes>
 	<resources>
