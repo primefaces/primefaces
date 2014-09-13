@@ -30,6 +30,7 @@ import javax.faces.render.Renderer;
 import org.primefaces.config.ConfigContainer;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.util.ResourceUtils;
 
 /**
  * Renders head content based on the following order
@@ -45,11 +46,19 @@ public class HeadRenderer extends Renderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        
+        if (cc.isClientSideValidationEnabled()) {
+            ResourceUtils.addComponentResource(context, "validation/validation.js");
+            if (cc.isBeanValidationAvailable()) {
+                ResourceUtils.addComponentResource(context, "validation/beanvalidation.js");
+            }
+        }
+        
         writer.startElement("head", component);
         
         //First facet
         UIComponent first = component.getFacet("first");
-        if(first != null) {
+        if (first != null) {
             first.encodeAll(context);
         }
         
@@ -57,7 +66,7 @@ public class HeadRenderer extends Renderer {
         String theme;
         String themeParamValue = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getTheme();
 
-        if(themeParamValue != null) {
+        if (themeParamValue != null) {
             ELContext elContext = context.getELContext();
             ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
             ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
@@ -68,13 +77,13 @@ public class HeadRenderer extends Renderer {
             theme = "aristo";   //default
         }
 
-        if(theme != null && !theme.equals("none")) {
+        if (theme != null && !theme.equals("none")) {
             encodeTheme(context, "primefaces-" + theme, "theme.css");
         }
         
         //Middle facet
         UIComponent middle = component.getFacet("middle");
-        if(middle != null) {
+        if (middle != null) {
             middle.encodeAll(context);
         }
                 
@@ -84,21 +93,22 @@ public class HeadRenderer extends Renderer {
             resource.encodeAll(context);
         }
         
-        if(cc.isClientSideValidationEnabled()) {
-            encodeValidationResources(context, cc.isBeanValidationAvailable());
+        if (cc.isLegacyWidgetNamespace() || cc.isClientSideValidationEnabled()) {
             
             writer.startElement("script", null);
             writer.writeAttribute("type", "text/javascript", null);
-            writer.write("PrimeFaces.settings.locale = '" + context.getViewRoot().getLocale() + "';");
-            writer.write("PrimeFaces.settings.validateEmptyFields = " + cc.isValidateEmptyFields() + ";");
-            writer.write("PrimeFaces.settings.considerEmptyStringNull = " + cc.isInterpretEmptyStringAsNull() + ";");
-            writer.endElement("script");
-        }
-        
-        if(cc.isLegacyWidgetNamespace()) {
-            writer.startElement("script", null);
-            writer.writeAttribute("type", "text/javascript", null);
-            writer.write("PrimeFaces.settings.legacyWidgetNamespace = true;");
+            writer.write("if(window.PrimeFaces){");
+            
+            if (cc.isClientSideValidationEnabled()) {
+                writer.write("PrimeFaces.settings.locale = '" + context.getViewRoot().getLocale() + "';");
+                writer.write("PrimeFaces.settings.validateEmptyFields = " + cc.isValidateEmptyFields() + ";");
+                writer.write("PrimeFaces.settings.considerEmptyStringNull = " + cc.isInterpretEmptyStringAsNull() + ";");
+            }
+            if (cc.isLegacyWidgetNamespace()) {
+                writer.write("PrimeFaces.settings.legacyWidgetNamespace = true;");
+            }
+
+            writer.write("}");
             writer.endElement("script");
         }
     }
@@ -109,7 +119,7 @@ public class HeadRenderer extends Renderer {
         
         //Last facet
         UIComponent last = component.getFacet("last");
-        if(last != null) {
+        if (last != null) {
             last.encodeAll(context);
         }
         
@@ -120,7 +130,7 @@ public class HeadRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
 
         Resource themeResource = context.getApplication().getResourceHandler().createResource(resource, library);
-        if(themeResource == null) {
+        if (themeResource == null) {
             throw new FacesException("Error loading theme, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
         } 
         else {
@@ -129,29 +139,6 @@ public class HeadRenderer extends Renderer {
             writer.writeAttribute("rel", "stylesheet", null);
             writer.writeAttribute("href", themeResource.getRequestPath(), null);
             writer.endElement("link");
-        }
-    }
-    
-    protected void encodeValidationResources(FacesContext context, boolean beanValidationEnabled) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        Resource resource = context.getApplication().getResourceHandler().createResource("validation/validation.js", "primefaces");
-        
-        if(resource != null) {
-            writer.startElement("script", null);
-            writer.writeAttribute("type", "text/javascript", null);
-            writer.writeAttribute("src", resource.getRequestPath(), null);
-            writer.endElement("script");
-        }
-        
-        if(beanValidationEnabled) {
-            resource = context.getApplication().getResourceHandler().createResource("validation/beanvalidation.js", "primefaces");
-        
-            if(resource != null) {
-                writer.startElement("script", null);
-                writer.writeAttribute("type", "text/javascript", null);
-                writer.writeAttribute("src", resource.getRequestPath(), null);
-                writer.endElement("script");
-            }
         }
     }
 }
