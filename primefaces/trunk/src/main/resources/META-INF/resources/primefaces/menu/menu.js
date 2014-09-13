@@ -133,6 +133,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     init: function(cfg) {
         this._super(cfg);
         
+        this.cfg.toggleEvent = this.cfg.toggleEvent||'hover';
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
         this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
                 
@@ -145,14 +146,20 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         this.bindDocumentHandler();
     },
     
-    bindItemEvents: function() {
+    bindItemEvents: function() {        
+        if(this.cfg.toggleEvent === 'hover')
+            this.bindHoverModeEvents();
+        else if(this.cfg.toggleEvent === 'click')
+            this.bindClickModeEvents();
+    },
+    
+    bindHoverModeEvents: function() {
         var $this = this;
         
         this.links.mouseenter(function() {
             var link = $(this),
-            menuitem = link.parent(),
-            autoDisplay = $this.cfg.autoDisplay;
-            
+            menuitem = link.parent();
+
             var activeSibling = menuitem.siblings('.ui-menuitem-active');
             if(activeSibling.length === 1) {
                 activeSibling.find('li.ui-menuitem-active').each(function() {
@@ -160,25 +167,23 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                 });
                 $this.deactivate(activeSibling);
             }
-            
-            if(autoDisplay||$this.active) {
-                if(menuitem.hasClass('ui-menuitem-active')) {
+
+            if($this.cfg.autoDisplay||$this.active) {
+                if(menuitem.hasClass('ui-menuitem-active'))
                     $this.reactivate(menuitem);
-                }
-                else {
+                else
                     $this.activate(menuitem);
-                }  
             }
             else {
                 $this.highlight(menuitem);
             }
         });
-                
+
         this.rootLinks.click(function(e) {
             var link = $(this),
             menuitem = link.parent(),
             submenu = menuitem.children('ul.ui-menu-child');
-            
+
             $this.itemClick = true;
 
             if(submenu.length === 1) {
@@ -193,18 +198,66 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                 }
             }
         });
-        
+
         this.links.filter('.ui-submenu-link').click(function(e) {
             $this.itemClick = true;
             e.preventDefault();
         });
-        
+
         this.jq.find('ul.ui-menu-list').mouseleave(function(e) {
            if($this.activeitem) {
                $this.deactivate($this.activeitem);
            }
-           
+
            e.stopPropagation();
+        });
+    },
+    
+    bindClickModeEvents: function() {
+        var $this = this;
+        
+        this.links.mouseenter(function() {
+            var menuitem = $(this).parent();
+            
+            if(!menuitem.hasClass('ui-menuitem-active')) {
+                menuitem.addClass('ui-menuitem-highlight').children('a.ui-menuitem-link').addClass('ui-state-hover');
+            }
+        })
+        .mouseleave(function() {
+            var menuitem = $(this).parent();
+
+            if(!menuitem.hasClass('ui-menuitem-active')) {
+                menuitem.removeClass('ui-menuitem-highlight').children('a.ui-menuitem-link').removeClass('ui-state-hover');
+            }
+        });
+
+        this.links.filter('.ui-submenu-link').on('click.tieredMenu', function(e) {
+            var link = $(this),
+            menuitem = link.parent(),
+            submenu = menuitem.children('ul.ui-menu-child');
+
+            $this.itemClick = true;
+
+            var activeSibling = menuitem.siblings('.ui-menuitem-active');
+            if(activeSibling.length) {
+                activeSibling.find('li.ui-menuitem-active').each(function() {
+                    $this.deactivate($(this));
+                });
+                $this.deactivate(activeSibling);
+            }
+
+            if(submenu.length) {
+                if(submenu.is(':visible')) {
+                    $this.deactivate(menuitem);
+                    menuitem.addClass('ui-menuitem-highlight').children('a.ui-menuitem-link').addClass('ui-state-hover');
+                }
+                else {
+                    menuitem.addClass('ui-menuitem-active').children('a.ui-menuitem-link').removeClass('ui-state-hover').addClass('ui-state-active');
+                    $this.showSubmenu(menuitem, submenu);
+                }
+            }
+
+            e.preventDefault();
         });
     },
             
@@ -228,8 +281,8 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     
     deactivate: function(menuitem, animate) {
         this.activeitem = null;
-        menuitem.children('a.ui-menuitem-link').removeClass('ui-state-hover');
-        menuitem.removeClass('ui-menuitem-active');
+        menuitem.children('a.ui-menuitem-link').removeClass('ui-state-hover ui-state-active');
+        menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
         
         if(animate)
             menuitem.children('ul.ui-menu-child').fadeOut('fast');
