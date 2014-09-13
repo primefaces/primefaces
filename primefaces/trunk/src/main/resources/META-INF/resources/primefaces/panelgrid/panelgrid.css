@@ -3,85 +3,35 @@
 }
 
 .ui-panelgrid .ui-panelgrid-header {
-    text-align:center;
-    padding:4px 10px;
+    text-align: center;
+    padding: 4px 10px;
 }
 
 .ui-panelgrid .ui-panelgrid-footer {
     text-align: left;
-    padding:2px 5px;
+    padding: 2px 5px;
 }
 
 .ui-panelgrid .ui-panelgrid-cell {
     border-width: 1px;
     border-style: solid;
     border-color: inherit;
-    padding:4px 10px;
+    padding: 4px 10px;
 }
 
-.ui-panelgrid .ui-grid-row {
-    border-color: inherit;
-    border-style: solid;
-    border-width: 0px;
-}
-
-.ui-panelgrid > div.ui-panelgrid-header {
-    padding: 0px; 
-}
-
-.ui-panelgrid > div.ui-panelgrid-footer {
-    padding: 0px; 
-}
-
-/* Border settings for Grid layout */
-.ui-grid-responsive .ui-grid-row {
-    border-width: 0px 0px 0px 1px;
-}
-
-.ui-grid-responsive .ui-panelgrid-cell {
-    border-width: 0px 1px 1px 0px;
-    min-height: 40px;
-}
-
-.ui-grid-responsive .ui-grid-row:first-child {
-    border-top-width: 1px;
-}
-
-.ui-grid-responsive {
-    border-width: 0px;
-}
-
-.ui-panelgrid-form .ui-grid-responsive .ui-panelgrid-cell input[type="text"], 
-.ui-panelgrid-form .ui-grid-responsive .ui-panelgrid-cell button,
-.ui-panelgrid-form .ui-grid-responsive .ui-panelgrid-cell .ui-selectonemenu {
-    width: 100% !important;
-}
-
-.ui-panelgrid-form .ui-grid-responsive .ui-panelgrid-cell input[type="text"] {
-    margin-left: -4px;
-}
-
-.ui-panelgrid-form .ui-grid-responsive .ui-panelgrid-cell .ui-selectonemenu label {
-    width: 95% !important;
-}
-
-.ui-panelgrid-form > div.ui-panelgrid-header {
-    border-bottom: 0px;
+/* Grid CSS */
+.ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
+    border: 0 none;
 }
 
 /* Responsive */
-@media (max-width: 35em) {   
-    .ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
-        border-width: 0px;
-    }
-    
+@media (max-width: 35em) {       
     .ui-panelgrid .ui-grid-responsive .ui-grid-row {
-        border-width: 0px 1px 1px 1px;
-        border-style: inherit;
+        border-top: 1px solid;
+        border-top-color: inherit;
     }
     
     .ui-panelgrid .ui-grid-responsive .ui-grid-row:first-child {
-        border-top-width: 1px;
-        border-style: inherit;
+        border-top: 0 none;
     }
 }
