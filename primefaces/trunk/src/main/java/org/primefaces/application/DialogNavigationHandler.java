@@ -53,14 +53,13 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             }
             
             boolean includeViewParams = false;
-            if (options.containsKey(Constants.DIALOG_FRAMEWORK.INCLUDE_VIEW_PARAMS)) {
+            if (options != null && options.containsKey(Constants.DIALOG_FRAMEWORK.INCLUDE_VIEW_PARAMS)) {
                 includeViewParams = (Boolean) options.get(Constants.DIALOG_FRAMEWORK.INCLUDE_VIEW_PARAMS);
             }
 
             String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, includeViewParams);
             
             StringBuilder sb = new StringBuilder();
-            
             String sourceComponentId = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_COMPONENT);
             String sourceWidget = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_WIDGET);
             String pfdlgcid = UUID.randomUUID().toString();
