@@ -645,6 +645,7 @@ public class TreeRenderer extends CoreRenderer {
 		writer.writeAttribute("id", id, null);
 		writer.writeAttribute("name", id, null);
         writer.writeAttribute("value", tree.getSelectedRowKeysAsString(), null);
+        writer.writeAttribute("autocomplete", "off", null);
 		writer.endElement("input");
     }
 
