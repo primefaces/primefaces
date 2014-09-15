@@ -593,18 +593,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         scrollBarWidth = this.getScrollbarWidth() + 'px';
         
         if(this.cfg.scrollHeight) {
+            if(this.percentageScrollHeight) {
+                this.adjustScrollHeight();
+            }
+            
             if(this.hasVerticalOverflow()) {
                 this.scrollHeaderBox.css('margin-right', scrollBarWidth);
                 this.scrollFooterBox.css('margin-right', scrollBarWidth);
             }
-            
-            if(this.percentageScrollHeight) {
-                this.adjustScrollHeight();
-            }
         }
                 
         this.fixColumnWidths();
-        this.cloneHead();
                 
         if(this.cfg.scrollWidth) {
             if(this.percentageScrollWidth)
@@ -612,6 +611,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             else
                 this.setScrollWidth(parseInt(this.cfg.scrollWidth));
         }
+        
+        this.cloneHead();
               
         this.restoreScrollState();
 
@@ -2450,18 +2451,17 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         scrollBarWidth = this.getScrollbarWidth() + 'px';
 
         if(this.cfg.scrollHeight) {
+            if(this.percentageScrollHeight) {
+                this.adjustScrollHeight();
+            }
+            
             if(this.hasVerticalOverflow()) {
                 this.scrollHeaderBox.css('margin-right', scrollBarWidth);
                 this.scrollFooterBox.css('margin-right', scrollBarWidth);
             }
-            
-            if(this.percentageScrollHeight) {
-                this.adjustScrollHeight();
-            }
         }
 
-        this.fixColumnWidths();
-        this.cloneHead();        
+        this.fixColumnWidths();      
 
         if(this.cfg.scrollWidth) {
             if(this.percentageScrollWidth)
@@ -2478,6 +2478,8 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                     this.frozenBodyTable.css('margin-bottom', scrollBarWidth);
             }
         }
+        
+        this.cloneHead();  
         
         //match headers
         var frozenTheadHeight = this.frozenThead.height(),
