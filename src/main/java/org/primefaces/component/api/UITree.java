@@ -235,23 +235,48 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
         
     public void initPreselection() {
-        if(preselection != null) {
-            ValueExpression ve = this.getValueExpression("selection");
-            String selectionMode = this.getSelectionMode();
-            
-            if(ve != null && selectionMode != null) {
-                if(selectionMode.equals("single")) {
-                    if(this.preselection.size() > 0) {
-                        ve.setValue(FacesContext.getCurrentInstance().getELContext(), this.preselection.get(0));
+        ValueExpression ve = this.getValueExpression("selection");
+        if(ve != null) {
+            if(preselection != null) {
+                String selectionMode = this.getSelectionMode();
+                if(selectionMode != null) {
+                    if(selectionMode.equals("single")) {
+                        if(this.preselection.size() > 0) {
+                            ve.setValue(FacesContext.getCurrentInstance().getELContext(), this.preselection.get(0));
+                        }
                     }
+                    else {
+                        ve.setValue(FacesContext.getCurrentInstance().getELContext(), this.preselection.toArray(new TreeNode[0]));
+                    }
+
+                    this.preselection = null;
                 }
-                else {
-                    ve.setValue(FacesContext.getCurrentInstance().getELContext(), this.preselection.toArray(new TreeNode[0]));
-                }
-                
-                this.preselection = null;
+            }       
+            else {
+                ve.setValue(FacesContext.getCurrentInstance().getELContext(), null);
             }
         }
+    }
+    
+    private void updateSelectedNodes(TreeNode node) {
+        int childCount = node.getChildCount();
+        if(childCount > 0) {
+            for(int i = 0; i < childCount; i++) {
+                TreeNode childNode = node.getChildren().get(i);
+                if(childNode.isSelected()) {
+                    addToPreselection(childNode);
+                }
+
+                updateSelectedNodes(childNode);
+            }
+        }
+    }
+    
+    public void refreshSelectedNodeKeys() {
+        TreeNode root = this.getValue();
+        this.preselection = null;
+        updateSelectedNodes(root);
+        initPreselection();
     }
     
     public String getSelectedRowKeysAsString() {
