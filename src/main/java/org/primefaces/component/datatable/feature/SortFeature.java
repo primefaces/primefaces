@@ -172,15 +172,8 @@ public class SortFeature implements DataTableFeature {
             ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
             
             if(sortColumn.isDynamic()) {
-                ((DynamicColumn) sortColumn).applyStatelessModel();
-                Object sortByProperty = sortColumn.getSortBy();
-                
-                if(sortByProperty == null) {
-                    comparator = new DynamicChainedPropertyComparator((DynamicColumn) sortColumn, sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale);
-                }
-                else {
-                    comparator = new BeanPropertyComparator(sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale);
-                }
+                ((DynamicColumn) sortColumn).applyStatelessModel();                
+                comparator = new DynamicChainedPropertyComparator((DynamicColumn) sortColumn, sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale);
             }
             else {
                 comparator = new BeanPropertyComparator(sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale);
