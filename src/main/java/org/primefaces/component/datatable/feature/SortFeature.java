@@ -132,6 +132,11 @@ public class SortFeature implements DataTableFeature {
         MethodExpression sortFunction = table.getSortFunction();
         List list = null;
         
+        UIColumn sortColumn = table.getSortColumn();
+        if(sortColumn != null && sortColumn.isDynamic()) {
+            ((DynamicColumn) sortColumn).applyStatelessModel();
+        }
+        
         if(value instanceof List)
             list = (List) value;
         else if(value instanceof ListDataModel)
