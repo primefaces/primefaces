@@ -291,23 +291,32 @@ PrimeFaces.ajax = {
 
             PrimeFaces.debug('URL to post ' + postURL + '.');
 
-            // TODO - get paramter namespace from ViewState
-            var namespace = null;
-
             //partial ajax
-            PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_REQUEST_PARAM, true, namespace);
+            postParams.push({
+                name:PrimeFaces.PARTIAL_REQUEST_PARAM, 
+                value:true
+            });
 
             //source
-            PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_SOURCE_PARAM, sourceId, namespace);
+            postParams.push({
+                name:PrimeFaces.PARTIAL_SOURCE_PARAM, 
+                value:sourceId
+            });
 
             //resetValues
             if (cfg.resetValues) {
-                PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.RESET_VALUES_PARAM, true, namespace);
+                postParams.push({
+                    name:PrimeFaces.RESET_VALUES_PARAM, 
+                    value:true
+                });
             }
 
             //ignoreAutoUpdate
             if (cfg.ignoreAutoUpdate) {
-                PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, true, namespace);
+                postParams.push({
+                    name:PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, 
+                    value:true
+                });
             }
 
             //process
@@ -317,7 +326,10 @@ PrimeFaces.ajax = {
             }
             var processIds = processArray.length > 0 ? processArray.join(' ') : '@all';
             if (processIds !== '@none') {
-                PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_PROCESS_PARAM, processIds, namespace);
+                postParams.push({
+                    name:PrimeFaces.PARTIAL_PROCESS_PARAM, 
+                    value:processIds
+                });
             }
 
             //update
@@ -326,12 +338,18 @@ PrimeFaces.ajax = {
                 updateArray.push(cfg.fragmentId);
             }
             if(updateArray.length > 0) {
-                PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_UPDATE_PARAM, updateArray.join(' '), namespace);
+                postParams.push({
+                    name:PrimeFaces.PARTIAL_UPDATE_PARAM, 
+                    value:updateArray.join(' ')
+                });
             }
 
             //behavior event
             if(cfg.event) {
-                PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.BEHAVIOR_EVENT_PARAM, cfg.event, namespace);
+                postParams.push({
+                    name:PrimeFaces.BEHAVIOR_EVENT_PARAM, 
+                    value:cfg.event
+                });
 
                 var domEvent = cfg.event;
 
@@ -340,18 +358,24 @@ PrimeFaces.ajax = {
                 else if(cfg.event === 'action')
                     domEvent = 'click';
 
-                PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_EVENT_PARAM, domEvent, namespace);
+                postParams.push({
+                    name:PrimeFaces.PARTIAL_EVENT_PARAM, 
+                    value:domEvent
+                });
             } 
             else {
-                PrimeFaces.ajax.Request.addParam(postParams, sourceId, sourceId, namespace);
+                postParams.push({
+                    name:sourceId, 
+                    value:sourceId
+                });
             }
 
             //params
             if(cfg.params) {
-                PrimeFaces.ajax.Request.addParams(postParams, cfg.params, namespace);
+                $.merge(postParams, cfg.params);
             }
             if(cfg.ext && cfg.ext.params) {
-                PrimeFaces.ajax.Request.addParams(postParams, cfg.ext.params, namespace);
+                $.merge(postParams, cfg.ext.params);
             }
 
             /**
@@ -383,22 +407,24 @@ PrimeFaces.ajax = {
 
                 //add form state if necessary
                 if(!formProcessed) {
-                    var viewStateInput = form.children("input[name*='" + PrimeFaces.VIEW_STATE + "']");
-                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.VIEW_STATE, viewStateInput.val(), namespace);
+                    postParams.push({
+                        name:PrimeFaces.VIEW_STATE, 
+                        value:form.children("input[name='" + PrimeFaces.VIEW_STATE + "']").val()
+                    });
 
-                    var clientWindowInput = form.children("input[name*='" + PrimeFaces.CLIENT_WINDOW + "']");
+                    var clientWindowInput = form.children("input[name='" + PrimeFaces.CLIENT_WINDOW + "']");
                     if (clientWindowInput.length > 0) {
-                        PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.CLIENT_WINDOW, clientWindowInput.val(), namespace);
+                        postParams.push({ name:PrimeFaces.CLIENT_WINDOW, value:clientWindowInput.val() });
                     }
                     
                     // DS compatiblity
-                    var dsClientWindowInput = form.children("input[name*='dsPostWindowId']");
+                    var dsClientWindowInput = form.children("input[name='dsPostWindowId']");
                     if (dsClientWindowInput.length > 0) {
-                        PrimeFaces.ajax.Request.addParam(postParams, 'dsPostWindowId', dsClientWindowInput.val(), namespace);
+                        postParams.push({ name:'dsPostWindowId', value:dsClientWindowInput.val() });
                     }
-                    dsClientWindowInput = form.children("input[name*='dspwid']");
+                    dsClientWindowInput = form.children("input[name='dspwid']");
                     if (dsClientWindowInput.length > 0) {
-                        PrimeFaces.ajax.Request.addParam(postParams, 'dspwid', dsClientWindowInput.val(), namespace);
+                        postParams.push({ name:'dspwid', value:dsClientWindowInput.val() });
                     }
                 }
 
@@ -513,14 +539,6 @@ PrimeFaces.ajax = {
             }
 
             return PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(expressions);
-        },
-        
-        addParam: function(params, name, value, namespace) {
-            params.push({ name:name, value:value });
-        },
-        
-        addParams: function(params, paramsToAdd, namespace) {
-            $.merge(params, paramsToAdd);
         }
     },
     
