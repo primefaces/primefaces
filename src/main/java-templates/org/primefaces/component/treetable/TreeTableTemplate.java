@@ -107,7 +107,7 @@ import org.primefaces.util.ComponentUtils;
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             } 
             else if(eventName.equals("select")) {
-                String nodeKey = params.get(clientId + "_instantSelect");
+                String nodeKey = params.get(clientId + "_instantSelection");
                 this.setRowKey(nodeKey);
                 TreeNode node = this.getRowNode();
 
@@ -115,7 +115,7 @@ import org.primefaces.util.ComponentUtils;
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }  
             else if(eventName.equals("unselect")) {
-                String nodeKey = params.get(clientId + "_instantUnselect");
+                String nodeKey = params.get(clientId + "_instantUnselection");
                 this.setRowKey(nodeKey);
                 TreeNode node = this.getRowNode();
 
