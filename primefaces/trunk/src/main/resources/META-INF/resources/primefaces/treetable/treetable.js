@@ -596,7 +596,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             var unselectBehavior = this.cfg.behaviors['unselect'],
              ext = {
                 params: [
-                    {name: this.id + '_instantUnselect', value: nodeKey}
+                    {name: this.id + '_instantUnselection', value: nodeKey}
                 ]
             };
             
