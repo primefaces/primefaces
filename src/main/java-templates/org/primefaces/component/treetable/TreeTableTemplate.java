@@ -102,6 +102,7 @@ import org.primefaces.util.ComponentUtils;
                 String nodeKey = params.get(clientId + "_collapse");
                 this.setRowKey(nodeKey);
                 TreeNode node = this.getRowNode();
+                node.setExpanded(false);
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
