@@ -94,6 +94,27 @@
     position:relative;
 }
 
+/* Toggleable Menu */
+.ui-menu.ui-menu-toggleable li.ui-widget-header { 
+    position: relative; 
+    min-height: 0; 
+}
+
+.ui-menu.ui-menu-toggleable li.ui-widget-header h3 { 
+    padding-left: 2em;
+}
+
+.ui-menu.ui-menu-toggleable li.ui-widget-header.ui-state-hover { 
+    cursor: pointer; 
+}
+    
+.ui-menu.ui-menu-toggleable li.ui-widget-header .ui-icon { 
+    position: absolute; 
+    left: .5em; 
+    top: 50%; 
+    margin-top: -8px; 
+}
+
 .ui-menu .ui-menu-parent .ui-icon-triangle-1-e,
 .ui-menu .ui-menu-parent .ui-icon-triangle-1-s,
 .ui-menubar .ui-menu-child .ui-icon-triangle-1-s,

@@ -34,7 +34,8 @@ public class MenuRenderer extends BaseMenuRenderer {
 		String clientId = menu.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("PlainMenu", menu.resolveWidgetVar(), clientId);
+        wb.initWithDomReady("PlainMenu", menu.resolveWidgetVar(), clientId)
+            .attr("toggleable", menu.isToggleable(), false);
         
         if(menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);
@@ -50,7 +51,10 @@ public class MenuRenderer extends BaseMenuRenderer {
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
         String defaultStyleClass = menu.isOverlay() ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass+ " " + styleClass;
+        if(menu.isToggleable()) {
+            defaultStyleClass = defaultStyleClass + " " + Menu.TOGGLEABLE_MENU_CLASS;
+        }
+        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
         
         writer.startElement("div", menu);
 		writer.writeAttribute("id", clientId, "id");
@@ -108,22 +112,40 @@ public class MenuRenderer extends BaseMenuRenderer {
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
         styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : Menu.SUBMENU_TITLE_CLASS + " " + styleClass;
+        boolean toggleable = menu.isToggleable();
 
         //title
         writer.startElement("li", null);
+        if(toggleable) {
+            writer.writeAttribute("id", submenu.getClientId(), null);
+        }
         writer.writeAttribute("class", styleClass, null);
         if(style != null) {
             writer.writeAttribute("style", style, null);
         }
         
         writer.startElement("h3", null);
+
+        if(menu.isToggleable()) {
+            encodeIcon(context, label);
+        }
+        
         if(label != null) {
             writer.writeText(label, "value");
         }
+        
         writer.endElement("h3");
         
         writer.endElement("li");
 
-        encodeElements(context, menu, submenu.getElements());
+        encodeElements(context, menu, submenu.getElements());          
 	}
+    
+     protected void encodeIcon(FacesContext context, String label) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Menu.EXPANDED_SUBMENU_HEADER_ICON_CLASS, null);
+        writer.endElement("span");
+    }
 }
