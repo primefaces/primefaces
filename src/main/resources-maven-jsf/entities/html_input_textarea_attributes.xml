@@ -1,5 +1,5 @@
 <!-- Components having these attributes must extend from HtmlInputTextArea so all the attributes are defined as ignoreInComponet 
-	which will ignore code generation in component class since they are already defined in parent HtmlInputText
+	which will ignore code generation in component class since they are already defined in parent HtmlInputTextArea
 -->
 <attribute>
 	<name>accesskey</name>
