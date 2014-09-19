@@ -1,5 +1,5 @@
-<!-- Components having these attributes must extend from HtmlInputText so all the attributes are defined as ignoreInComponet 
-	which will ignore code generation in component class since they are already defined in parent HtmlInputText
+<!-- Components having these attributes must extend from HtmlCommandButton so all the attributes are defined as ignoreInComponet 
+	which will ignore code generation in component class since they are already defined in parent HtmlCommandButton
 -->
 <attribute>
 	<name>accesskey</name>
