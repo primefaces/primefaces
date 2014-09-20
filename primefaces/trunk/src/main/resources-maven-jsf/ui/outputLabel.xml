@@ -169,5 +169,12 @@
 			<ignoreInComponent>true</ignoreInComponent>
             <description>Client side callback to execute when a pointer button is released over component.</description>
 		</attribute>
+        <attribute>
+			<name>indicateRequired</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Displays * symbol if the input is required, default value is true.</description>
+		</attribute>
 	</attributes>
 </component>

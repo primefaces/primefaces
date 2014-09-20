@@ -92,7 +92,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         
         renderChildren(context, label);
         
-        if(input != null && input.isRequired()) {
+        if(input != null && input.isRequired() && label.isIndicateRequired()) {
             writer.startElement("span", label);
             writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
             writer.write("*");
