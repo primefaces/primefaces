@@ -116,6 +116,8 @@ public class PanelRenderer extends CoreRenderer {
         }
         
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
+        
+        renderDynamicPassThruAttributes(context, panel);
 
         encodeHeader(context, panel);
         encodeContent(context, panel);
