@@ -2326,27 +2326,33 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     updateHeaderCheckbox: function() {
         if(this.isEmpty()) {
             this.uncheckHeaderCheckbox();
+            this.disableHeaderCheckbox();
         }
         else {
-            var selectedCheckboxes = null;
+            var checkboxes, selectedCheckboxes, enabledCheckboxes, disabledCheckboxes;
             
             if(this.cfg.nativeElements) {
-                var selectableCheckboxes = this.tbody.find('> tr.ui-datatable-selectable > td.ui-selection-column > :checkbox');
-                selectedCheckboxes = $.grep(selectableCheckboxes, function(element) {
-                    return $(element).prop('checked');
-                });
+                checkboxes = this.tbody.find('> tr > td.ui-selection-column > :checkbox');
+                enabledCheckboxes = checkboxes.filter(':enabled');
+                disabledCheckboxes = checkboxes.filter(':disabled');
+                selectedCheckboxes = enabledCheckboxes.filter(':checked');
             }
             else {
-                var selectableCheckboxes = this.tbody.find('> tr.ui-datatable-selectable > td.ui-selection-column .ui-chkbox-box');
-                selectedCheckboxes = $.grep(selectableCheckboxes, function(element) {
-                    return $(element).hasClass('ui-state-active');
-                });
+                checkboxes = this.tbody.find('> tr > td.ui-selection-column .ui-chkbox-box');
+                enabledCheckboxes = checkboxes.filter(':not(.ui-state-disabled)');
+                disabledCheckboxes = checkboxes.filter('.ui-state-disabled');
+                selectedCheckboxes = enabledCheckboxes.filter('.ui-state-active');
             }
                         
-            if(selectableCheckboxes.length > 0 && selectableCheckboxes.length === selectedCheckboxes.length)
+            if(enabledCheckboxes.length && enabledCheckboxes.length === selectedCheckboxes.length)
                this.checkHeaderCheckbox();
             else
                this.uncheckHeaderCheckbox();
+               
+            if(checkboxes.length === disabledCheckboxes.length)
+               this.disableHeaderCheckbox();
+            else
+               this.enableHeaderCheckbox();
         }
     },
     
@@ -2362,6 +2368,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.checkAllToggler.prop('checked', false);
         else
             this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
+    },
+    
+    disableHeaderCheckbox: function() {
+        if(this.cfg.nativeElements)
+            this.checkAllToggler.prop('disabled', true);
+        else
+            this.checkAllToggler.addClass('ui-state-disabled');
+    },
+    
+    enableHeaderCheckbox: function() {
+        if(this.cfg.nativeElements)
+            this.checkAllToggler.prop('disabled', false);
+        else
+            this.checkAllToggler.removeClass('ui-state-disabled');
     },
             
     setupStickyHeader: function() {
