@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>columnToggler</tag>
+	<tagClass>org.primefaces.component.columntoggler.ColumnTogglerTag</tagClass>
+	<componentClass>org.primefaces.component.columntoggler.ColumnToggler</componentClass>
+	<componentType>org.primefaces.component.ColumnToggler</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.ColumnTogglerRenderer</rendererType>
+	<rendererClass>org.primefaces.component.columntoggler.ColumnTogglerRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>ColumnToggler is a helper component for datatable to toggle visibility of columns.</description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+    </interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+        <attribute>
+			<name>trigger</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>A search expression resolving to a component to get attached to.</description>
+		</attribute>
+        <attribute>
+			<name>datasource</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>A search expression resolving to a DataTable component whose columns to be toggled.</description>
+		</attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>
