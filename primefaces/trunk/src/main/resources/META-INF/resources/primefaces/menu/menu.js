@@ -935,6 +935,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     init: function(cfg) {
         cfg.autoDisplay = true;
         this._super(cfg);
+        this.cfg.selectionMode = this.cfg.selectionMode||'multiple';
         
         var _self = this,
         documentTarget = (this.cfg.target === undefined);
@@ -981,16 +982,16 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     bindDataTable: function() {
         var rowSelector = this.jqTargetId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)',
         event = this.cfg.event + '.datatable',
-        _self = this;
+        $this = this;
         
         $(document).off(event, rowSelector)
                     .on(event, rowSelector, null, function(e) {
-                        var widget = PrimeFaces.widgets[_self.cfg.targetWidgetVar];
+                        var widget = PrimeFaces.widgets[$this.cfg.targetWidgetVar];
                         
                         if(widget.cfg.selectionMode) {
-                            widget.onRowRightClick(e, this);
+                            widget.onRowRightClick(e, this, $this.cfg.selectionMode);
 
-                            _self.show(e);
+                            $this.show(e);
 
                             e.preventDefault();
                         }
@@ -1006,7 +1007,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                             widget.contextMenuCell = cell;
                             widget.contextMenuCell.addClass('ui-state-highlight');
                             
-                            _self.show(e);
+                            $this.show(e);
                         }
                     });
     },
