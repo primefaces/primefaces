@@ -50,6 +50,7 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         
         wb.attr("nodeType", menu.getNodeType(), null)
             .attr("event", menu.getEvent(), null)
+            .attr("selectionMode", menu.getSelectionMode(), "multiple")
             .callback("beforeShow", "function(event)", menu.getBeforeShow());
 
         wb.finish();

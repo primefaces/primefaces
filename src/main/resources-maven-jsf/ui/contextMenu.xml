@@ -63,6 +63,13 @@
 			<type>java.lang.String</type>
             <description>Client side callback to execute before context menu is shown.</description>
 		</attribute>
+        <attribute>
+			<name>selectionMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>multiple</defaultValue>
+            <description>Defines the selection behavior. Valid values are "single" and "multiple" (default).</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
