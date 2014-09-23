@@ -369,6 +369,10 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     }
 
     protected void invokeOpenOrClose(Method m, RemoteEndpointImpl r) {
+        if (m == null) {
+            return;
+        }
+
         Object objectToEncode = null;
         if (m.getParameterTypes().length == 2) {
             Invoker.invokeMethod(m, proxiedInstance, r, eventBus);
