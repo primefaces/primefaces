@@ -51,17 +51,30 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
     @Override
     public String getScript(ClientBehaviorContext behaviorContext, ClientBehavior behavior) {
         AjaxBehavior ajaxBehavior = (AjaxBehavior) behavior;
-        if(ajaxBehavior.isDisabled()) {
+        if (ajaxBehavior.isDisabled()) {
             return null;
         }
         
         UIComponent component = behaviorContext.getComponent();
+
+        ClientBehaviorRenderingMode renderingMode = ClientBehaviorRenderingMode.OBSTRUSIVE;
+        
         Collection<ClientBehaviorContext.Parameter> behaviorParameters = behaviorContext.getParameters();
-        ClientBehaviorRenderingMode renderingMode = (behaviorParameters == null || behaviorParameters.isEmpty()) ? ClientBehaviorRenderingMode.OBSTRUSIVE : 
-                                    (ClientBehaviorRenderingMode) ((List<ClientBehaviorContext.Parameter>) behaviorParameters).get(0).getValue();
+        if (behaviorParameters != null && !behaviorParameters.isEmpty()) {
+            for (Object param : behaviorParameters) {
+                if (param instanceof ClientBehaviorContext.Parameter) {
+                    ClientBehaviorContext.Parameter pam = (ClientBehaviorContext.Parameter) param;
+                    if (pam.getValue() != null && pam.getValue() instanceof ClientBehaviorRenderingMode) {
+                        renderingMode = (ClientBehaviorRenderingMode) pam.getValue();
+                        break;
+                    }
+                }
+            }
+        }
+
         String source = behaviorContext.getSourceId();
         String process = ajaxBehavior.getProcess();
-        if(process == null) {
+        if (process == null) {
             process = "@this";
         }
       
