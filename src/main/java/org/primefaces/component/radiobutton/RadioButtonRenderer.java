@@ -29,9 +29,9 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 
 public class RadioButtonRenderer extends InputRenderer {
-    
-    private static final String SB_ENCODE_OPTION_INPUT = RadioButtonRenderer.class.getName() + "#encodeOptionInput";
-    
+
+    private static final String SB_BUILD_EVENT = RadioButtonRenderer.class.getName() + "#buildEvent";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RadioButton radioButton = (RadioButton) component;
@@ -40,7 +40,7 @@ public class RadioButtonRenderer extends InputRenderer {
 
         encodeMarkup(context, radioButton, selectOneRadio);
     }
-    
+
     protected void encodeMarkup(FacesContext context, RadioButton radio, SelectOneRadio selectOneRadio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String masterClientId = selectOneRadio.getClientId(context);
@@ -51,7 +51,7 @@ public class RadioButtonRenderer extends InputRenderer {
         SelectItem selecItem = selectOneRadio.getSelectItems().get(radio.getItemIndex());
         Object itemValue = selecItem.getValue();
         String itemValueAsString = getOptionAsString(context, selectOneRadio, converter, itemValue);
-        
+
         //selected
         Object value = selectOneRadio.getSubmittedValue();
         if(value == null) {
@@ -66,7 +66,7 @@ public class RadioButtonRenderer extends InputRenderer {
         String defaultStyleClass = selectOneRadio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
         String styleClass = radio.getStyleClass();
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
@@ -79,7 +79,7 @@ public class RadioButtonRenderer extends InputRenderer {
 
         writer.endElement("div");
     }
-    
+
     protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name, boolean checked, boolean disabled, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = button.getTabindex();
@@ -100,19 +100,34 @@ public class RadioButtonRenderer extends InputRenderer {
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
 
-        //onchange
-        String radioOnchange = buildDomEvent(context, radio, "onchange", "change", "valueChange", null);
-        String buttonOnchange = buildDomEvent(context, button, "onchange", "change", "valueChange", null);
-        StringBuilder onchangeBuilder = SharedStringBuilder.get(context, SB_ENCODE_OPTION_INPUT);
-        if (radioOnchange != null) onchangeBuilder.append(radioOnchange);
-        if (buttonOnchange != null) onchangeBuilder.append(buttonOnchange);
-        
-        if (onchangeBuilder.length() > 0) {  
-            writer.writeAttribute("onchange", onchangeBuilder.toString(), null);
+        String onchange = buildEvent(context, radio, button, "onchange", "change", "valueChange");
+        if (!isValueBlank(onchange)) {
+            writer.writeAttribute("onchange", onchange, null);
+        }
+        String onclick = buildEvent(context, radio, button, "onclick", "click", "click");
+        if (!isValueBlank(onclick)) {
+            writer.writeAttribute("onclick", onclick, null);
         }
 
         writer.endElement("input");
         writer.endElement("div");
+    }
+
+    protected String buildEvent(FacesContext context, SelectOneRadio radio, RadioButton button, String domEvent, String behaviorEvent,
+            String behaviorEventAlias) {
+
+        String radioEvent = buildDomEvent(context, radio, domEvent, behaviorEvent, behaviorEventAlias, null);
+        String buttonEvent = buildDomEvent(context, button, domEvent, behaviorEvent, behaviorEventAlias, null);
+
+        StringBuilder eventBuilder = SharedStringBuilder.get(context, SB_BUILD_EVENT);
+        if (radioEvent != null) {
+            eventBuilder.append(radioEvent);
+        }
+        if (buttonEvent != null) {
+            eventBuilder.append(buttonEvent);
+        }
+
+        return eventBuilder.toString();
     }
 
     protected void encodeOptionOutput(FacesContext context, boolean selected, boolean disabled) throws IOException {
