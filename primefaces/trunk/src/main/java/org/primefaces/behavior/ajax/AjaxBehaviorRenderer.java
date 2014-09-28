@@ -61,13 +61,10 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         
         Collection<ClientBehaviorContext.Parameter> behaviorParameters = behaviorContext.getParameters();
         if (behaviorParameters != null && !behaviorParameters.isEmpty()) {
-            for (Object param : behaviorParameters) {
-                if (param instanceof ClientBehaviorContext.Parameter) {
-                    ClientBehaviorContext.Parameter pam = (ClientBehaviorContext.Parameter) param;
-                    if (pam.getValue() != null && pam.getValue() instanceof ClientBehaviorRenderingMode) {
-                        renderingMode = (ClientBehaviorRenderingMode) pam.getValue();
-                        break;
-                    }
+            for (ClientBehaviorContext.Parameter behaviorParameter : behaviorParameters) {
+                if (behaviorParameter.getValue() != null && behaviorParameter.getValue() instanceof ClientBehaviorRenderingMode) {
+                    renderingMode = (ClientBehaviorRenderingMode) behaviorParameter.getValue();
+                    break;
                 }
             }
         }
