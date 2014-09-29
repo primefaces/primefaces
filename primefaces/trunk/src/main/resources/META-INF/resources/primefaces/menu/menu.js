@@ -317,26 +317,16 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     },
     
     showSubmenu: function(menuitem, submenu) {
-        submenu.css('height', 'auto');
-        submenu.css('overflow', 'none');
-        
         var pos ={
             my: 'left top',
             at: 'right top',
             of: menuitem,
             collision: 'flipfit'
-        }
-        ,win = $(window);
+        };
 
         submenu.css('z-index', ++PrimeFaces.zindex)
             .show()
             .position(pos);
-
-        var offsetTop = submenu.offset().top;
-        if((offsetTop + submenu.outerHeight()) > win.height()) {
-            submenu.css('overflow', 'auto');
-            submenu.height(win.height() - (offsetTop - win.scrollTop() + 20));
-        }
     },
             
     reset: function() {
