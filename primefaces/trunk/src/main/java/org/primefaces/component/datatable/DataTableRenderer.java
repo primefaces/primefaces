@@ -606,7 +606,12 @@ public class DataTableRenderer extends DataRenderer {
                     if(itemValue != null && String.valueOf(itemValue).equals(filterValue)) {
                         writer.writeAttribute("selected", "selected", null);
                     }
-                    writer.writeText(item.getLabel(), null);
+                    
+                    if(item.isEscape())
+                        writer.writeText(item.getLabel(), "value");
+                    else
+                        writer.write(item.getLabel());
+                    
                     writer.endElement("option");
                 }
 
