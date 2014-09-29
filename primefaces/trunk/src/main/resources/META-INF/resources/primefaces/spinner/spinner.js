@@ -15,6 +15,11 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.precision = this.cfg.step.toString().split(/[,]|[.]/)[1].length;
         }
         
+        var maxlength = this.input.attr('maxlength');
+        if(maxlength) {
+            this.cfg.maxlength = parseInt(maxlength);
+        }
+        
         this.updateValue();
 
         this.addARIA();
@@ -132,6 +137,10 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         else
             newValue = parseInt(currentValue + step);
     
+        if(this.cfg.maxlength !== undefined && newValue.toString().length > this.cfg.maxlength) {
+            newValue = currentValue;
+        }
+    
         if(this.cfg.min !== undefined && newValue < this.cfg.min) {
             newValue = this.cfg.min;
         }
@@ -142,7 +151,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         this.value = newValue;
         this.format();
-        this.input.attr('aria-valuenow', newValue);
+        this.input.attr('aria-valuenow', newValue);        
     },
     
     updateValue: function() {
