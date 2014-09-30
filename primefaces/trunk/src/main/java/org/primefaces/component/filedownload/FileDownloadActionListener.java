@@ -36,79 +36,92 @@ import org.primefaces.util.Constants;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
 
-	private ValueExpression value;
-	
-	private ValueExpression contentDisposition;
-	
-	public FileDownloadActionListener() {}
-	
-	public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition) {
-		this.value = value;
-		this.contentDisposition = contentDisposition;
-	}
+    private ValueExpression value;
 
-	public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
+    private ValueExpression contentDisposition;
+
+    public FileDownloadActionListener() {
+
+    }
+
+    public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition) {
+        this.value = value;
+        this.contentDisposition = contentDisposition;
+    }
+
+    public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-		ELContext elContext = facesContext.getELContext();
+        ELContext elContext = facesContext.getELContext();
         StreamedContent content = (StreamedContent) value.getValue(elContext);
-        
-		if(content == null) {
+
+        if(content == null) {
             return;
         }
-        
-		ExternalContext externalContext = facesContext.getExternalContext();
-		String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";	
-		
-		try {
-			externalContext.setResponseContentType(content.getContentType());
-			externalContext.setResponseHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
-			externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
-            
+
+        ExternalContext externalContext = facesContext.getExternalContext();
+        String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";
+
+        InputStream inputStream = null;
+
+        try {
+            externalContext.setResponseContentType(content.getContentType());
+            externalContext.setResponseHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
+            externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+
             if(RequestContext.getCurrentInstance().isSecure()) {
                 externalContext.setResponseHeader("Cache-Control", "public");
                 externalContext.setResponseHeader("Pragma", "public");
             }
-            
-			byte[] buffer = new byte[2048];
-			int length;
-            InputStream inputStream = content.getStream();
+
+            byte[] buffer = new byte[2048];
+            int length;
+            inputStream = content.getStream();
             OutputStream outputStream = externalContext.getResponseOutputStream();
-            
-			while ((length = (inputStream.read(buffer))) != -1) {
-				outputStream.write(buffer, 0, length);
-			}
-			
-			externalContext.setResponseStatus(200);
-			externalContext.responseFlushBuffer();
-            inputStream.close();
-			facesContext.responseComplete();
-		}
-        catch(IOException e) {
-			throw new FacesException(e);
-		}
-	}
 
-	public boolean isTransient() {
-		return false;
-	}
+            while ((length = (inputStream.read(buffer))) != -1) {
+                outputStream.write(buffer, 0, length);
+            }
 
-	public void restoreState(FacesContext facesContext, Object state) {
-		Object values[] = (Object[]) state;
+            externalContext.setResponseStatus(200);
+            externalContext.responseFlushBuffer();
+            facesContext.responseComplete();
+        }
+        catch (IOException e) {
+            throw new FacesException(e);
+        }
+        finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                }
+                catch (IOException e) {
+                    // ignore
+                }
+            }
+        }
+    }
 
-		value = (ValueExpression) values[0];
-		contentDisposition = (ValueExpression) values[1];
-	}
+    public boolean isTransient() {
+        return false;
+    }
 
-	public Object saveState(FacesContext facesContext) {
-		Object values[] = new Object[2];
+    public void restoreState(FacesContext facesContext, Object state) {
+        Object values[] = (Object[]) state;
 
-		values[0] = value;
-		values[1] = contentDisposition;
-		
-		return ((Object[]) values);
-	}
+        value = (ValueExpression) values[0];
+        contentDisposition = (ValueExpression) values[1];
+    }
 
-	public void setTransient(boolean value) {
-		
-	}
+    public Object saveState(FacesContext facesContext) {
+        Object values[] = new Object[2];
+
+        values[0] = value;
+        values[1] = contentDisposition;
+
+        return ((Object[]) values);
+    }
+
+    public void setTransient(boolean value) {
+
+    }
 }
