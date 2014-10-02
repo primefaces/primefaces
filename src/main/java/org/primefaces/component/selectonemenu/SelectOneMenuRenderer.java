@@ -103,6 +103,23 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         String inputId = clientId + "_input";
         String focusId = clientId + "_focus";
         
+        //input for accessibility
+        writer.startElement("div", menu);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        
+        writer.startElement("input", menu);
+        writer.writeAttribute("id", focusId, null);
+        writer.writeAttribute("name", focusId, null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("autocomplete", "off", null);
+        if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
+        if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        
+        writer.endElement("input");
+        
+        writer.endElement("div");
+        
+        //hidden select
         writer.startElement("div", menu);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
@@ -126,21 +143,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         writer.endElement("div");
         
-        writer.startElement("div", menu);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         
-        //input for accessibility
-        writer.startElement("input", menu);
-        writer.writeAttribute("id", focusId, null);
-        writer.writeAttribute("name", focusId, null);
-        writer.writeAttribute("type", "text", null);
-        writer.writeAttribute("autocomplete", "off", null);
-        if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
-        if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        
-        writer.endElement("input");
-        
-        writer.endElement("div");
     }
 
     protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
