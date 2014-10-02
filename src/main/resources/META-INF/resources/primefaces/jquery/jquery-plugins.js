@@ -6467,6 +6467,10 @@ $.extend(Datepicker.prototype, {
 		}
 		this._notifyChange(inst);
 		this._adjustDate(target);
+        
+        if(inst.input) {
+            inst.input.trigger('blur');
+        }
 	},
 
 	/* Action for selecting a new month/year. */
