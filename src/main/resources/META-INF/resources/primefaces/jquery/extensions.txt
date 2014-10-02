@@ -22,3 +22,4 @@ Extensions
 - Remove change event trigger on timepicker _updateDateTime
 - Remove onChangeMonthYear override of timepicker to avoid updating the input
 - Remove window.console message on timepicker.log function
+- Add blur event trigger on datepicker _gotoToday
