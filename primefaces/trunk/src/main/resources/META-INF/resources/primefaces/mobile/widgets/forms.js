@@ -156,6 +156,21 @@ PrimeFaces.widget.UISwitch = PrimeFaces.widget.BaseWidget.extend({
 });
 
 /**
+ * PrimeFaces Mobile InputSwitch Widget
+ */
+PrimeFaces.widget.InputSwitch = PrimeFaces.widget.BaseWidget.extend({
+    
+    init: function(cfg) {
+        this._super(cfg);
+        this.input = this.jq.children('input');
+        this.cfg.enhanced = true;
+        
+        this.input.flipswitch(this.cfg);
+    }
+    
+});
+
+/**
  * PrimeFaces Mobile SelectOneMenu Widget
  */
 PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
