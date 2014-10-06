@@ -1,0 +1,25 @@
+List of Plugins
+- jQuery UI Core
+- jQuery UI Widget
+- jQuery UI Mouse
+- jQuery UI Draggable
+- jQuery UI Droppable
+- jQuery UI Resizable
+- jQuery UI Selectable
+- jQuery UI Sortable
+- jQuery UI Effects
+- jQuery UI Datepicker
+- jQuery UI Slider
+- jQuery UI Position
+- Timepicker
+- MouseWheel
+- Masked Input
+- Rangy Text
+- Cursor Position
+- Browser
+
+Extensions
+- Remove change event trigger on timepicker _updateDateTime
+- Remove onChangeMonthYear override of timepicker to avoid updating the input
+- Remove window.console message on timepicker.log function
+- Add blur event trigger on datepicker _gotoToday

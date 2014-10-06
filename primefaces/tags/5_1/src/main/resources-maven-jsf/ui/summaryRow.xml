@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>summaryRow</tag>
+	<tagClass>org.primefaces.component.summaryrow.SummaryRowTag</tagClass>
+	<componentClass>org.primefaces.component.summaryrow.SummaryRow</componentClass>
+    <componentHandlerClass>org.primefaces.component.summaryrow.SummaryRowHandler</componentHandlerClass>
+	<componentType>org.primefaces.component.SummaryRow</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.SummaryRowRenderer</rendererType>
+	<rendererClass>org.primefaces.component.summaryrow.SummaryRowRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>SummaryRow is a helper component for data grouping.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+        <attribute>
+			<name>listener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>void listener(Object groupBy)</method-signature>
+            <description>Method expression to execute before rendering summary row. (e.g. to calculate totals)</description>
+		</attribute>
+	</attributes>
+</component>

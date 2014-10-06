@@ -1,0 +1,28 @@
+.ui-editor {background: none #FFFFFF;}
+.ui-editor  iframe {border:none; margin:0; padding:0}
+.ui-editor  textarea {border:none; margin:0; padding:0; overflow-y:scroll; font:10pt Arial,Verdana; resize:none; outline:none; /* webkit grip focus */}
+.ui-editor-toolbar {background: url("#{resource['primefaces:editor/images/toolbar.gif']}") repeat}
+.ui-editor-group {float:left; height:26px}
+.ui-editor-button {float:left; width:24px; height:24px; margin:1px 0 1px 0; background: url("#{resource['primefaces:editor/images/buttons.gif']}")}
+.ui-editor-disabled {opacity:0.3; filter:alpha(opacity=30)}
+.ui-editor-divider {float:left; width:1px; height:23px; margin:1px 0 1px 0; background:#CCC}
+.ui-editor-popup {border:solid 1px #999; background-color:white; position:absolute; font:10pt Arial,Verdana; cursor:default; z-index:10000}
+.ui-editor-list div {padding:2px 4px 2px 4px}
+.ui-editor-list p,
+.ui-editor-list h1,
+.ui-editor-list h2,
+.ui-editor-list h3,
+.ui-editor-list h4,
+.ui-editor-list h5,
+.ui-editor-list h6,
+.ui-editor-list font {padding:0; margin:0; background-color:Transparent}
+.ui-editor-color {width:150px; padding:1px 0 0 1px}
+.ui-editor-color div {float:left; width:14px; height:14px; margin:0 1px 1px 0}
+.ui-editor-prompt {background-color:#F6F7F9; padding:4px; font-size:8.5pt}
+.ui-editor-prompt input,
+.ui-editor-prompt textarea {font:8.5pt Arial,Verdana;}
+.ui-editor-message {background-color:#FDFCEE; width:150px; padding:4px; font-size:8.5pt}
+
+/** IE fix within overlays **/
+.ui-overlay-hidden .ui-editor iframe{display: none !important;} 
+.ui-overlay-visible .ui-editor iframe{display: inline !important;} 
