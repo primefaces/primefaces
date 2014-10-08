@@ -97,7 +97,14 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
 
-        if(checked) writer.writeAttribute("checked", "checked", null);
+        if(checked) { 
+            writer.writeAttribute("checked", "checked", null);
+            writer.writeAttribute("aria-checked", "true", null);
+        }
+        else {
+            writer.writeAttribute("aria-checked", "false", null);
+        }
+        
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {

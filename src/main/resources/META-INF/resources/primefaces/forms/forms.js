@@ -1337,12 +1337,14 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
     check: function() {
         if(!this.isChecked()) {
             this.input.prop('checked', true).trigger('change');
+            this.input.attr('aria-checked', true);
         }
     },
 
     uncheck: function() {
         if(this.isChecked()) {
             this.input.prop('checked', false).trigger('change');
+            this.input.attr('aria-checked', false);
         }
     }
 
