@@ -119,11 +119,11 @@
             <description>Position of the element in the tabbing order.</description>
 		</attribute>
         <attribute>
-            <name>syncTooltip</name>
+            <name>tooltip</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Shows the description of the item.</description>
+            <description>Displays description of the item, default value is false.</description>
         </attribute>
 	</attributes>
     <resources>

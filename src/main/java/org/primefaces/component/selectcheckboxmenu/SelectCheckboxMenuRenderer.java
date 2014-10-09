@@ -182,7 +182,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             .callback("onHide", "function()", menu.getOnHide())
             .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
             .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, menu, menu.getAppendTo()), null)
-            .attr("syncTooltip", menu.isSyncTooltip(), false);
+            .attr("tooltip", menu.isTooltip(), false);
         
         if(menu.isFilter()) {
             wb.attr("filter", true)
