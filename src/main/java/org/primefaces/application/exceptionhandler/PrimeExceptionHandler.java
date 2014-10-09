@@ -293,8 +293,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
 
     protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info, boolean responseResetted) throws IOException {
-        context.getExternalContext().getFlash().put(ExceptionInfo.ATTRIBUTE_NAME, info);
-        context.getExternalContext().getFlash().setRedirect(true);
+        context.getExternalContext().getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
         Map<String, String> errorPages = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getErrorPages();
 

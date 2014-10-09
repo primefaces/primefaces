@@ -35,7 +35,7 @@ public class PrimeExceptionHandlerELResolver extends ELResolver {
             ExceptionInfo info = (ExceptionInfo) context.getAttributes().get(ExceptionInfo.ATTRIBUTE_NAME);
             
             if (info == null) {
-                info = (ExceptionInfo) context.getExternalContext().getFlash().get(ExceptionInfo.ATTRIBUTE_NAME);
+                info = (ExceptionInfo) context.getExternalContext().getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME);
             }
             
             return info;
