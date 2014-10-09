@@ -63,7 +63,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         ,saved
 		,value
         ,required
-        ,requiredMessage;
+        ,requiredMessage
+        ,skipChildren;
             
 		String toString;
 
@@ -158,6 +159,13 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 	}
 	public void setRequiredMessage(java.lang.String _requiredMessage) {
 		getStateHelper().put(PropertyKeys.requiredMessage, _requiredMessage);
+	}
+    
+	public boolean isSkipChildren() {
+		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
+	}
+	public void setSkipChildren(boolean _skipChildren) {
+		getStateHelper().put(PropertyKeys.skipChildren, _skipChildren);
 	}
     
     public Object getLocalSelectedNodes() {
@@ -452,7 +460,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
     
     protected void processNodes(FacesContext context, PhaseId phaseId) {
-              
+        if(this.isSkipChildren()) {
+            return;
+        }      
+        
         processFacets(context, phaseId);
         processColumnFacets(context, phaseId);
         
