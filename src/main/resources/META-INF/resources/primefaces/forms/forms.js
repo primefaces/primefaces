@@ -469,6 +469,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         else {
             this.highlightItem(this.items.eq(selectedOption.index()));
         }
+        
+        if(this.cfg.syncTooltip) {
+            this.syncTitle(selectedOption);
+        }
 
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
         this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
@@ -702,7 +706,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
             
             if(this.cfg.syncTooltip) {
-                this.jq.attr('title', this.items.eq(selectedOption.index()).attr('title'));
+                this.syncTitle(selectedOption);
             }
         }
 
@@ -713,6 +717,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(this.panel.is(':visible')) {
             this.hide();
         }
+    },
+    
+    syncTitle: function(option) {
+        var optionTitle = this.items.eq(option.index()).attr('title');
+        if(optionTitle)
+            this.jq.attr('title', this.items.eq(option.index()).attr('title'));
+        else
+            this.jq.removeAttr('title');
     },
 
     resolveItemIndex: function(item) {
