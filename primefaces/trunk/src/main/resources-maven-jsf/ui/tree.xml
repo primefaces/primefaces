@@ -184,7 +184,7 @@
             <description>Message for required selection validation.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
-            <attribute>
+        <attribute>
 			<name>skipChildren</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
