@@ -76,6 +76,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
         boolean valid = menu.isValid();
+        String title = menu.getTitle();
                 
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
@@ -86,9 +87,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleclass");
-        if(style != null) {
-            writer.writeAttribute("style", style, "style");
-        }
+        if(style != null) writer.writeAttribute("style", style, "style");
+        if(title != null) writer.writeAttribute("title", title, "title");
 
         encodeInput(context, menu, clientId, selectItems, values, submittedValues, converter);
         encodeLabel(context, menu, selectItems);
@@ -325,7 +325,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("effect", menu.getEffect(), null)
                 .attr("effectSpeed", menu.getEffectSpeed(), null)
                 .attr("editable", menu.isEditable(), false)
-                .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, menu, menu.getAppendTo()), null);
+                .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, menu, menu.getAppendTo()), null)
+                .attr("syncTooltip", menu.isSyncTooltip(), false);
         
         if(menu.isFilter()) {
             wb.attr("filter", true)

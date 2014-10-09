@@ -700,6 +700,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.editable) {
                 this.customInput = false;
             }
+            
+            if(this.cfg.syncTooltip) {
+                this.jq.attr('title', this.items.eq(selectedOption.index()).attr('title'));
+            }
         }
 
         if(!silent) {
