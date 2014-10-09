@@ -2054,7 +2054,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>')
                 .append('<label></label>').children('label').text(label.text());
         
-            if(title) {
+            if(title && $this.cfg.tooltip) {
                 item.attr('title', title);
             }
             item.find('> .ui-chkbox > .ui-helper-hidden-accessible > input').prop('checked', checked);
