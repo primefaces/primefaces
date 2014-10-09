@@ -49,6 +49,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String clientId = menu.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, menu);
         boolean valid = menu.isValid();
+        String title = menu.getTitle();
         
         String style = menu.getStyle();
         String styleclass = menu.getStyleClass();
@@ -60,6 +61,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleclass, "styleclass");
         if(style != null) writer.writeAttribute("style", style, "style");
+        if(title != null) writer.writeAttribute("title", title, "title");
         
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
@@ -181,8 +183,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             .callback("onShow", "function()", menu.getOnShow())
             .callback("onHide", "function()", menu.getOnHide())
             .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
-            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, menu, menu.getAppendTo()), null)
-            .attr("tooltip", menu.isTooltip(), false);
+            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, menu, menu.getAppendTo()), null);
         
         if(menu.isFilter()) {
             wb.attr("filter", true)

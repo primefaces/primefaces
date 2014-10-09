@@ -1950,7 +1950,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             this.renderPanel();
 
             this.checkboxes = this.itemContainer.find('.ui-chkbox-box:not(.ui-state-disabled)');
-            this.items = this.itemContainer.children('li.ui-selectcheckboxmenu-item');
             this.labels = this.itemContainer.find('label');
 
             this.bindEvents();
@@ -2054,9 +2053,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>')
                 .append('<label></label>').children('label').text(label.text());
         
-            if(title && $this.cfg.tooltip) {
+            if(title) {
                 item.attr('title', title);
             }
+
             item.find('> .ui-chkbox > .ui-helper-hidden-accessible > input').prop('checked', checked);
 
             $this.itemContainer.append(item);
