@@ -49,7 +49,7 @@ public class CommonsFileUploadDecoder{
     }
         
     private static void decodeSimple(FacesContext context, FileUpload fileUpload, MultipartRequest request) {
-        String clientId = fileUpload.getClientId(context);
+        String clientId = fileUpload.getClientId(context) + "_input";
         FileItem file = request.getFileItem(clientId);
         
         if(file != null) {

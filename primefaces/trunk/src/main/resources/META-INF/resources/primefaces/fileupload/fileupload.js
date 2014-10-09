@@ -1922,3 +1922,32 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     }
     
 });
+
+/**
+ * PrimeFaces Simple FileUpload Widget
+ */
+PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
+   
+    init: function(cfg) {
+        this._super(cfg);
+        this.button = this.jq.children('.ui-button');
+        this.input = $(this.jqId + '_input');
+        this.display = this.jq.children('.ui-fileupload-filename');
+        
+        if(!this.input.prop('disabled')) {
+            PrimeFaces.skinButton(this.button);
+            this.bindEvents();
+        }
+    },
+    
+    bindEvents: function() {
+        var $this = this;
+        
+        this.input.on('change.fileUpload', function() {
+            var filename = $this.input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            $this.display.text(filename);
+        });
+        
+    }
+        
+});

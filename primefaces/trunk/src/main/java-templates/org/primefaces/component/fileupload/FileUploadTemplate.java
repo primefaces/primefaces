@@ -7,6 +7,9 @@
     public final static String UPLOAD_BUTTON_CLASS = "ui-fileupload-upload";
     public final static String CANCEL_BUTTON_CLASS = "ui-fileupload-cancel";
     
+    public final static String CONTAINER_CLASS_SIMPLE = "ui-fileupload-simple ui-widget";
+    public final static String FILENAME_CLASS = "ui-fileupload-filename";
+    
     public final static String MOBILE_CONTAINER_CLASS = "ui-fileupload ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset";
 
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
