@@ -59,9 +59,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleclass, "styleclass");
-        if(style != null) {
-            writer.writeAttribute("style", style, "style");
-        }
+        if(style != null) writer.writeAttribute("style", style, "style");
         
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
@@ -96,7 +94,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String name = menu.getClientId(context);
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
         boolean disabled = option.isDisabled() || menu.isDisabled();
-
+        
         Object valuesArray;
         Object itemValue;
         if(submittedValues != null) {
@@ -121,6 +119,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        if(option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
         if(menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
 
         writer.endElement("input");
@@ -182,7 +181,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             .callback("onShow", "function()", menu.getOnShow())
             .callback("onHide", "function()", menu.getOnHide())
             .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
-            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, menu, menu.getAppendTo()), null);
+            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, menu, menu.getAppendTo()), null)
+            .attr("syncTooltip", menu.isSyncTooltip(), false);
         
         if(menu.isFilter()) {
             wb.attr("filter", true)

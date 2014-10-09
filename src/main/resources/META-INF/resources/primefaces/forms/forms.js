@@ -1950,6 +1950,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             this.renderPanel();
 
             this.checkboxes = this.itemContainer.find('.ui-chkbox-box:not(.ui-state-disabled)');
+            this.items = this.itemContainer.children('li.ui-selectcheckboxmenu-item');
             this.labels = this.itemContainer.find('label');
 
             this.bindEvents();
@@ -2033,6 +2034,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             label = input.next(),
             disabled = input.is(':disabled'),
             checked = input.is(':checked'),
+            title = input.attr('title'),
             boxClass = 'ui-chkbox-box ui-widget ui-corner-all ui-state-default',
             itemClass = 'ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all';
 
@@ -2052,6 +2054,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>')
                 .append('<label></label>').children('label').text(label.text());
         
+            if(title) {
+                item.attr('title', title);
+            }
             item.find('> .ui-chkbox > .ui-helper-hidden-accessible > input').prop('checked', checked);
 
             $this.itemContainer.append(item);
@@ -2266,7 +2271,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 });
     },
 
-    bindCheckboxHover: function(item) {
+    bindCheckboxHover: function(item) {       
         item.on('mouseenter.selectCheckboxMenu', function() {
             var item = $(this);
             if(!item.hasClass('ui-state-active')&&!item.hasClass('ui-state-disabled')) {
