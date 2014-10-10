@@ -183,6 +183,13 @@
             <defaultValue>80</defaultValue>
             <description>Width for image previews in pixels. Default value is 80.</description>
 		</attribute>
+        <attribute>
+			<name>skinSimple</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Applies theming to simple uploader, default is false.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

@@ -102,7 +102,8 @@ public class FileUploadRenderer extends CoreRenderer {
             }
         }
         else {
-            wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(), clientId);
+            wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(), clientId)
+               .attr("skinSimple", fileUpload.isSkinSimple(), false);
         }
 
         wb.finish();
@@ -164,42 +165,48 @@ public class FileUploadRenderer extends CoreRenderer {
         String clientId = fileUpload.getClientId();
         String style = fileUpload.getStyle();
         String styleClass = fileUpload.getStyleClass();
-        styleClass = (styleClass == null) ? FileUpload.CONTAINER_CLASS_SIMPLE : FileUpload.CONTAINER_CLASS_SIMPLE + " " + styleClass;
-        String buttonClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
-        if(fileUpload.isDisabled()) {
-            buttonClass += " ui-state-disabled";
-        }
         
-        writer.startElement("span", fileUpload);
-        writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, clientId);
-        if(style != null) {
-            writer.writeAttribute("style", style, "style");
-        }
-        
-        writer.startElement("span", fileUpload);
-        writer.writeAttribute("class", buttonClass, null);
-        
-        //button icon
-        writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-plusthick", null);
-        writer.endElement("span");
+        if(fileUpload.isSkinSimple()) {
+            styleClass = (styleClass == null) ? FileUpload.CONTAINER_CLASS_SIMPLE : FileUpload.CONTAINER_CLASS_SIMPLE + " " + styleClass;
+            String buttonClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
+            if(fileUpload.isDisabled()) {
+                buttonClass += " ui-state-disabled";
+            }
+            
+            writer.startElement("span", fileUpload);
+            writer.writeAttribute("id", clientId, "id");
+            writer.writeAttribute("class", styleClass, "styleClass");
+            if(style != null) {
+                writer.writeAttribute("style", style, "style");
+            }
+            
+            writer.startElement("span", null);
+            writer.writeAttribute("class", buttonClass, null);
 
-        //text
-        writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.writeText(fileUpload.getLabel(), "value");
-        writer.endElement("span");
-        
-        encodeInputField(context, fileUpload, fileUpload.getClientId(context) + "_input");
-        
-        writer.endElement("span");
-        
-        writer.startElement("span", fileUpload);
-        writer.writeAttribute("class", FileUpload.FILENAME_CLASS, null);
-        writer.endElement("span");
-        
-        writer.endElement("span");
+            //button icon
+            writer.startElement("span", null);
+            writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-plusthick", null);
+            writer.endElement("span");
+
+            //text
+            writer.startElement("span", null);
+            writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+            writer.writeText(fileUpload.getLabel(), "value");
+            writer.endElement("span");
+
+            encodeInputField(context, fileUpload, fileUpload.getClientId(context) + "_input");
+
+            writer.endElement("span");
+
+            writer.startElement("span", fileUpload);
+            writer.writeAttribute("class", FileUpload.FILENAME_CLASS, null);
+            writer.endElement("span");
+            
+            writer.endElement("span");
+        }
+        else {
+            encodeSimpleInputField(context, fileUpload, fileUpload.getClientId(context), style, styleClass);
+        }
     }
 
     protected void encodeChooseButton(FacesContext context, FileUpload fileUpload, boolean disabled) throws IOException {
@@ -241,6 +248,24 @@ public class FileUploadRenderer extends CoreRenderer {
 
         if(fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
         if(fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+
+        renderDynamicPassThruAttributes(context, fileUpload);
+
+        writer.endElement("input");
+    }
+    
+    protected void encodeSimpleInputField(FacesContext context, FileUpload fileUpload, String clientId, String style, String styleClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "file", null);
+        writer.writeAttribute("id", clientId , null);
+        writer.writeAttribute("name", clientId, null);
+
+        if(fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
+        if(fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if(style != null) writer.writeAttribute("style", style, "style");
+        if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
 
         renderDynamicPassThruAttributes(context, fileUpload);
 

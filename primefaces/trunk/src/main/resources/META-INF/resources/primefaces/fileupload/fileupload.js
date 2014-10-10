@@ -1930,13 +1930,16 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
    
     init: function(cfg) {
         this._super(cfg);
-        this.button = this.jq.children('.ui-button');
-        this.input = $(this.jqId + '_input');
-        this.display = this.jq.children('.ui-fileupload-filename');
         
-        if(!this.input.prop('disabled')) {
-            PrimeFaces.skinButton(this.button);
-            this.bindEvents();
+        if(this.cfg.skinSimple) {
+            this.button = this.jq.children('.ui-button');
+            this.input = $(this.jqId + '_input');
+            this.display = this.jq.children('.ui-fileupload-filename');
+
+            if(!this.input.prop('disabled')) {
+                PrimeFaces.skinButton(this.button);
+                this.bindEvents();
+            }
         }
     },
     
