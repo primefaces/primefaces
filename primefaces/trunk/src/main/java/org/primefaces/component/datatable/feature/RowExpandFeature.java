@@ -33,11 +33,11 @@ public class RowExpandFeature implements DataTableFeature {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
         
-        encodeExpansion(context, renderer, table, expandedRowIndex, true);
+        encodeExpansion(context, renderer, table, expandedRowIndex);
         table.setRowIndex(-1);
     }
     
-    public void encodeExpansion(FacesContext context, DataTableRenderer renderer, DataTable table, int rowIndex, boolean hidden) throws IOException {
+    public void encodeExpansion(FacesContext context, DataTableRenderer renderer, DataTable table, int rowIndex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         RowExpansion rowExpansion = table.getRowExpansion();
@@ -54,9 +54,6 @@ public class RowExpandFeature implements DataTableFeature {
         }
 
         writer.startElement("tr", null);
-        if(hidden) {
-            writer.writeAttribute("style", "display:none", null);
-        }
         writer.writeAttribute("class", styleClass, null);
 
         writer.startElement("td", null);

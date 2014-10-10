@@ -929,7 +929,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("tr");
         
         if(table.isExpandedRow()) {
-            ((RowExpandFeature) table.getFeature(DataTableFeatureKey.ROW_EXPAND)).encodeExpansion(context, this, table, rowIndex, false);
+            ((RowExpandFeature) table.getFeature(DataTableFeatureKey.ROW_EXPAND)).encodeExpansion(context, this, table, rowIndex);
         }
 
         return true;
