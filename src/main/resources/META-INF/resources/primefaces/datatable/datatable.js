@@ -1492,7 +1492,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     displayExpandedRow: function(row, content) {
         row.after(content);
-        row.next().fadeIn();
     },
     
     fireRowCollapseEvent: function(row) {
