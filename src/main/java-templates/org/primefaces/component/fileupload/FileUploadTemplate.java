@@ -22,3 +22,14 @@
 			me.invoke(facesContext.getELContext(), new Object[] {event});
 		}
 	}
+
+    public String getSimpleInputDecodeId(FacesContext context) {
+        String clientId = this.getClientId(context);
+    
+        if(this.getMode().equals("simple") && !this.isSkinSimple()) {
+            return clientId;
+        }
+        else {
+            return clientId + "_input";
+        }
+    }
