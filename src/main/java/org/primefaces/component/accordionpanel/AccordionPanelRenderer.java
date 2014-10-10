@@ -137,6 +137,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 		writer.writeAttribute("id", stateHolderId, null);
 		writer.writeAttribute("name", stateHolderId, null);
 		writer.writeAttribute("value", accordionPanel.getActiveIndex(), null);
+        writer.writeAttribute("autocomplete", "off", null);
 		writer.endElement("input");
 	}
 	
