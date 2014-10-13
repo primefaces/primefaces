@@ -399,6 +399,13 @@
 			<type>java.lang.String</type>
             <description>Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.</description>
 		</attribute>
+        <attribute>
+			<name>initMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>load</defaultValue>
+            <description>Defines when the datatable is initiated at client side, valid values are "load" (default) and "immediate".</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

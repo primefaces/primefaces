@@ -125,9 +125,16 @@ public class DataTableRenderer extends DataRenderer {
 		String clientId = table.getClientId(context);
         String selectionMode = table.resolveSelectionMode();
         String widgetClass = (table.getFrozenColumns() == Integer.MIN_VALUE) ? "DataTable" : "FrozenDataTable";
+        String initMode = table.getInitMode();
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady(widgetClass, table.resolveWidgetVar(), clientId);
+
+        if(initMode.equals("load"))
+            wb.initWithDomReady(widgetClass, table.resolveWidgetVar(), clientId);
+        else if(initMode.equals("immediate"))
+            wb.init(widgetClass, table.resolveWidgetVar(), clientId);
+        else
+            throw new FacesException(initMode + " is not a valid value for initMode, possible values are \"load\" and \"immediate.");
         
         //Pagination
         if(table.isPaginator()) {
