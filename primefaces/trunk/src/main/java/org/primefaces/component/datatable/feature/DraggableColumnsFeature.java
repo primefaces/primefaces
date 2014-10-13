@@ -32,7 +32,12 @@ public class DraggableColumnsFeature implements DataTableFeature {
 
     public void decode(FacesContext context, DataTable table) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String[] order = params.get(table.getClientId(context) + "_columnOrder").split(",");
+        String columnOrderParam = params.get(table.getClientId(context) + "_columnOrder");
+        if(columnOrderParam == null) {
+            return;
+        }
+        
+        String[] order = columnOrderParam.split(",");
         List orderedColumns = new ArrayList();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         
