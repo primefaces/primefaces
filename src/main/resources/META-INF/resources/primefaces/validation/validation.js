@@ -123,7 +123,7 @@ if (window.PrimeFaces) {
             MAXIMUM_MESSAGE_ID: 'javax.faces.validator.DoubleRangeValidator.MAXIMUM',
             NOT_IN_RANGE_MESSAGE_ID: 'javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE',
             TYPE_MESSAGE_ID: 'javax.faces.validator.DoubleRangeValidator.TYPE',
-            regex: /^[-+]?\d+(\.\d+)?[d]?$/,
+            regex: /^[-+]?\d*(\.\d+)?[d]?$/,
 
             validate: function(element, value) {
                 if(value !== null) {
@@ -201,7 +201,7 @@ if (window.PrimeFaces) {
 
         'javax.faces.Double': {
 
-            regex: /^[-+]?\d+(\.\d+)?[d]?$/,
+            regex: /^[-+]?\d*(\.\d+)?[d]?$/,
 
             MESSAGE_ID: 'javax.faces.converter.DoubleConverter.DOUBLE',
 
