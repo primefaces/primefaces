@@ -124,7 +124,7 @@ public class FilterFeature implements DataTableFeature {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         List filteredData = new ArrayList();
         Locale filterLocale = table.resolveDataLocale();
-        boolean hasGlobalFilter = params.containsKey(globalFilterParam);
+        boolean hasGlobalFilter = globalFilterParam != null ? params.containsKey(globalFilterParam) : false;
         String globalFilterValue = hasGlobalFilter ? params.get(globalFilterParam): null;
         GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(GLOBAL_MODE);
         ELContext elContext = context.getELContext();
@@ -231,7 +231,7 @@ public class FilterFeature implements DataTableFeature {
         return filterParameterMap;
     }
     
-    private List<FilterMeta> populateFilterMetaData(FacesContext context, DataTable table) {
+    public List<FilterMeta> populateFilterMetaData(FacesContext context, DataTable table) {
         List<FilterMeta> filterMetadata = new ArrayList<FilterMeta>();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         String var = table.getVar();
