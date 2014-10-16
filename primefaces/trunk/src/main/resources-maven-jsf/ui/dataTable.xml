@@ -406,6 +406,14 @@
             <defaultValue>load</defaultValue>
             <description>Defines when the datatable is initiated at client side, valid values are "load" (default) and "immediate".</description>
 		</attribute>
+        <attribute>
+			<name>nullSortOrder</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>1</defaultValue>
+            <description>Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
+            at beginning in descending mode. Set to "-1" for the opposite behavior.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
