@@ -182,6 +182,12 @@
             <type>java.lang.Object</type>
             <description>Value to group items in categories.</description>
         </attribute>
+        <attribute>
+            <name>queryEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Event to initiate the query, valid values are "keyup" and "enter".</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

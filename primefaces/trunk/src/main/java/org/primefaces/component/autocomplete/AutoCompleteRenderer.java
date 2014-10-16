@@ -530,15 +530,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         String clientId = ac.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("AutoComplete", ac.resolveWidgetVar(), clientId);
-
-        if (context.isProjectStage(ProjectStage.Development)) {
-	        if (ac.getAttributes().containsKey("process")
-	        		|| ac.getAttributes().containsKey("global")
-	        		|| ac.getAttributes().containsKey("onstart")
-	        		|| ac.getAttributes().containsKey("oncomplete")) {
-	        	LOG.warning("The process/global/onstart/oncomplete attribute of AutoComplete was removed. Please use p:ajax with the query event now");
-	        }
-        }
         
         wb.attr("minLength", ac.getMinQueryLength(), 1)
             .attr("delay", ac.getQueryDelay())
@@ -547,7 +538,8 @@ public class AutoCompleteRenderer extends InputRenderer {
             .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
             .attr("multiple", ac.isMultiple(), false)
             .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, ac, ac.getAppendTo()), null)
-            .attr("grouping", ac.getValueExpression("groupBy") != null, false);
+            .attr("grouping", ac.getValueExpression("groupBy") != null, false)
+            .attr("queryEvent", ac.getQueryEvent(), null);
         
         if(ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());            
