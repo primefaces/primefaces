@@ -202,7 +202,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.previousText = this.input.val();
 
         //bind keyup handler
-        this.input.keyup(function(e) {
+        this.input.on('keyup.autoComplete', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which,
             shouldSearch = true;
@@ -210,44 +210,52 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.previousText = $this.currentText;
             $this.currentText = this.value;
             
-            // Cancel a possible long running search when selecting an entry via enter
-            if (key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
-                if ($this.timeout) {
-                    clearTimeout($this.timeout);
+            if($this.cfg.queryEvent === 'enter') {
+                if((key !== keyCode.ENTER && key !== keyCode.NUMPAD_ENTER) || $this.itemSelectedWithEnter) {
+                    shouldSearch = false;
+                    $this.itemSelectedWithEnter = false;
                 }
-                shouldSearch = false;
             }
-            else if (key === keyCode.ESCAPE) {
-                $this.hide();
-                shouldSearch = false;
-            }
-            else if ((e.ctrlKey && key === 65) // ctrl+a
-                || (e.ctrlKey && key === 67) // ctrl+c
-                || key === keyCode.LEFT
-                || key === keyCode.RIGHT
-                || key === keyCode.TAB
-                || key === 16 // keyCode.SHIFT
-                || key === keyCode.HOME
-                || key === keyCode.END
-                || key === 18 // keyCode.ALT
-                || key === 17 // keyCode.CONTROL
-                || (key >= 112 && key <= 123)) { // F1-F12
-                shouldSearch = false;
-            }
-            else if(key === keyCode.UP || key === keyCode.DOWN) {
-                if($this.panel.is(':visible')) {
-                    var highlightedItem = $this.items.filter('.ui-state-highlight');
-                    if(highlightedItem.length) {
-                        $this.displayAriaStatus(highlightedItem.data('item-label'));
+            else {
+                 // Cancel a possible long running search when selecting an entry via enter
+                if (key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                    if ($this.timeout) {
+                        clearTimeout($this.timeout);
                     }
+                    shouldSearch = false;
                 }
-                
-                shouldSearch = false;
-            }
-            else if($this.cfg.pojo && !$this.cfg.multiple && ($this.previousText !== $this.currentText)) {
-                $this.hinput.val($(this).val());
-            }
+                else if (key === keyCode.ESCAPE) {
+                    $this.hide();
+                    shouldSearch = false;
+                }
+                else if ((e.ctrlKey && key === 65) // ctrl+a
+                    || (e.ctrlKey && key === 67) // ctrl+c
+                    || key === keyCode.LEFT
+                    || key === keyCode.RIGHT
+                    || key === keyCode.TAB
+                    || key === 16 // keyCode.SHIFT
+                    || key === keyCode.HOME
+                    || key === keyCode.END
+                    || key === 18 // keyCode.ALT
+                    || key === 17 // keyCode.CONTROL
+                    || (key >= 112 && key <= 123)) { // F1-F12
+                    shouldSearch = false;
+                }
+                else if(key === keyCode.UP || key === keyCode.DOWN) {
+                    if($this.panel.is(':visible')) {
+                        var highlightedItem = $this.items.filter('.ui-state-highlight');
+                        if(highlightedItem.length) {
+                            $this.displayAriaStatus(highlightedItem.data('item-label'));
+                        }
+                    }
 
+                    shouldSearch = false;
+                }
+                else if($this.cfg.pojo && !$this.cfg.multiple && ($this.previousText !== $this.currentText)) {
+                    $this.hinput.val($(this).val());
+                }
+            }
+            
             if(shouldSearch) {
                 var value = $this.input.val();
 
@@ -273,8 +281,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     }, delay);
                 }
             }
-
-        }).keydown(function(e) {
+            
+        }).on('keydown.autoComplete', function(e) {
             var keyCode = $.ui.keyCode;
 
             if($this.panel.is(':visible')) {
@@ -325,6 +333,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                         e.preventDefault();
                         e.stopPropagation();
+                        $this.itemSelectedWithEnter = true;
                         break;
 
                     case 18: //keyCode.ALT:
@@ -337,12 +346,23 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
                 }
             }
-            else if (e.which == keyCode.TAB) {
-                // clear pending search before leaving the field
-                if ($this.timeout) {
-                    clearTimeout($this.timeout);
-                }
+            else {
+                switch(e.which) {
+                    case keyCode.TAB:
+                        if ($this.timeout) {
+                            clearTimeout($this.timeout);
+                        }
+                    break;
+                    
+                    case keyCode.ENTER:
+                    case keyCode.NUMPAD_ENTER:
+                        if($this.cfg.queryEvent === 'enter') {
+                            e.preventDefault();
+                        }
+                    break;
+                };
             }
+            
         });
     },
 
