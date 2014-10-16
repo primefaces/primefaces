@@ -36,8 +36,9 @@ public class BeanPropertyComparator implements Comparator {
     private boolean caseSensitive = false;
     private Locale locale;
     private Collator collator;
+    private int nullSortOrder;
 
-    public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive, Locale locale) {
+    public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive, Locale locale, int nullSortOrder) {
         this.sortBy = sortBy;
         this.var = var;
         this.asc = sortOrder.equals(SortOrder.ASCENDING);
@@ -45,6 +46,7 @@ public class BeanPropertyComparator implements Comparator {
         this.caseSensitive = caseSensitive;
         this.locale = locale;
         this.collator = Collator.getInstance(locale);
+        this.nullSortOrder = nullSortOrder;
     }
 
     @SuppressWarnings("unchecked")
@@ -63,9 +65,9 @@ public class BeanPropertyComparator implements Comparator {
             if (value1 == null && value2 == null) {
             	return 0;
             } else if (value1 == null) {
-            	result = 1;
+            	result = 1 * nullSortOrder;
             } else if (value2 == null) {
-            	result = -1;
+            	result = -1 * nullSortOrder;
             } else if (sortFunction == null) {
                 if(value1 instanceof String && value2 instanceof String) {
                     if(this.caseSensitive) {
