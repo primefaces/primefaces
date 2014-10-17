@@ -81,6 +81,12 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.DOWN:
                     $this.spin(-1);
                 break;
+                
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:    
+                    $this.updateValue();
+                    $this.format();
+                break;
 
                 default:
                     //do nothing
