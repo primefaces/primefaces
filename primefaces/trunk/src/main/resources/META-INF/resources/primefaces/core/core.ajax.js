@@ -1,7 +1,7 @@
 /**
  * AJAX parameter shortcut mapping for PrimeFaces.ab
  */
-PrimeFaces.AB_MAPPING = { 
+PrimeFaces.AB_MAPPING = {
     's': 'source',
     'f': 'formId',
     'p': 'process',
@@ -31,24 +31,24 @@ PrimeFaces.ab = function(cfg, ext) {
         if (!cfg.hasOwnProperty(option)) {
             continue;
         }
-        
+
         // just pass though if no mapping is available
         if (this.AB_MAPPING[option]) {
             cfg[this.AB_MAPPING[option]] = cfg[option];
             delete cfg[option];
         }
     }
-    
+
     PrimeFaces.ajax.Request.handle(cfg, ext);
 };
 
 PrimeFaces.ajax = {
-    
+
     VIEW_HEAD : "javax.faces.ViewHead",
     VIEW_BODY : "javax.faces.ViewBody",
-    
+
     Utils: {
- 
+
         getContent: function(node) {
             var content = '';
 
@@ -69,7 +69,7 @@ PrimeFaces.ajax = {
             else {
                 forms = $('form');
             }
-            
+
             for (var i = 0; i < forms.length; i++) {
                 var form = forms.eq(i);
 
@@ -95,7 +95,7 @@ PrimeFaces.ajax = {
             else if (id === PrimeFaces.VIEW_ROOT) {
                 // reset PrimeFaces JS state
                 window.PrimeFaces = null;
-                
+
                 var cache = $.ajaxSetup()['cache'];
                 $.ajaxSetup()['cache'] = true;
                 $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
@@ -108,7 +108,7 @@ PrimeFaces.ajax = {
             else if (id === PrimeFaces.ajax.VIEW_HEAD) {
                 // reset PrimeFaces JS state
                 window.PrimeFaces = null;
-                
+
                 var cache = $.ajaxSetup()['cache'];
                 $.ajaxSetup()['cache'] = true;
                 $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
@@ -124,16 +124,16 @@ PrimeFaces.ajax = {
             }
         }
     },
-    
+
     Queue: {
 
         delays: {},
 
         requests: new Array(),
-        
+
         xhrs: new Array(),
 
-        offer: function(request) {            
+        offer: function(request) {
             if(request.delay) {
                 var sourceId = null,
                 $this = this,
@@ -147,7 +147,7 @@ PrimeFaces.ajax = {
                             }
                         }, request.delay);
                 };
-                        
+
                 if(this.delays[sourceId]) {
                     clearTimeout(this.delays[sourceId].timeout);
                     this.delays[sourceId].timeout = createTimeout();
@@ -157,7 +157,7 @@ PrimeFaces.ajax = {
                         timeout: createTimeout()
                     };
                 }
-            } 
+            }
             else {
                 this.requests.push(request);
 
@@ -193,28 +193,28 @@ PrimeFaces.ajax = {
         isEmpty: function() {
             return this.requests.length === 0;
         },
-        
+
         addXHR: function(xhr) {
             this.xhrs.push(xhr);
         },
-        
+
         removeXHR: function(xhr) {
             var index = $.inArray(xhr, this.xhrs);
             if(index > -1) {
                 this.xhrs.splice(index, 1);
             }
         },
-        
+
         abortAll: function() {
             for(var i = 0; i < this.xhrs.length; i++) {
                 this.xhrs[i].abort();
             }
-            
+
             this.xhrs = new Array();
             this.requests = new Array();
         }
     },
-    
+
     Request: {
 
         handle: function(cfg, ext) {
@@ -249,6 +249,9 @@ PrimeFaces.ajax = {
 
                     return false;  //cancel request
                 }
+            }
+            if(cfg.ext && cfg.ext.onstart) {
+                cfg.ext.onstart.call(this, cfg);
             }
 
             if(global) {
@@ -293,20 +296,20 @@ PrimeFaces.ajax = {
 
             //partial ajax
             postParams.push({
-                name:PrimeFaces.PARTIAL_REQUEST_PARAM, 
+                name:PrimeFaces.PARTIAL_REQUEST_PARAM,
                 value:true
             });
 
             //source
             postParams.push({
-                name:PrimeFaces.PARTIAL_SOURCE_PARAM, 
+                name:PrimeFaces.PARTIAL_SOURCE_PARAM,
                 value:sourceId
             });
 
             //resetValues
             if (cfg.resetValues) {
                 postParams.push({
-                    name:PrimeFaces.RESET_VALUES_PARAM, 
+                    name:PrimeFaces.RESET_VALUES_PARAM,
                     value:true
                 });
             }
@@ -314,7 +317,7 @@ PrimeFaces.ajax = {
             //ignoreAutoUpdate
             if (cfg.ignoreAutoUpdate) {
                 postParams.push({
-                    name:PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, 
+                    name:PrimeFaces.IGNORE_AUTO_UPDATE_PARAM,
                     value:true
                 });
             }
@@ -327,7 +330,7 @@ PrimeFaces.ajax = {
             var processIds = processArray.length > 0 ? processArray.join(' ') : '@all';
             if (processIds !== '@none') {
                 postParams.push({
-                    name:PrimeFaces.PARTIAL_PROCESS_PARAM, 
+                    name:PrimeFaces.PARTIAL_PROCESS_PARAM,
                     value:processIds
                 });
             }
@@ -339,7 +342,7 @@ PrimeFaces.ajax = {
             }
             if(updateArray.length > 0) {
                 postParams.push({
-                    name:PrimeFaces.PARTIAL_UPDATE_PARAM, 
+                    name:PrimeFaces.PARTIAL_UPDATE_PARAM,
                     value:updateArray.join(' ')
                 });
             }
@@ -347,7 +350,7 @@ PrimeFaces.ajax = {
             //behavior event
             if(cfg.event) {
                 postParams.push({
-                    name:PrimeFaces.BEHAVIOR_EVENT_PARAM, 
+                    name:PrimeFaces.BEHAVIOR_EVENT_PARAM,
                     value:cfg.event
                 });
 
@@ -359,13 +362,13 @@ PrimeFaces.ajax = {
                     domEvent = 'click';
 
                 postParams.push({
-                    name:PrimeFaces.PARTIAL_EVENT_PARAM, 
+                    name:PrimeFaces.PARTIAL_EVENT_PARAM,
                     value:domEvent
                 });
-            } 
+            }
             else {
                 postParams.push({
-                    name:sourceId, 
+                    name:sourceId,
                     value:sourceId
                 });
             }
@@ -379,7 +382,7 @@ PrimeFaces.ajax = {
             }
 
             /**
-             * Only add params of process components and their children 
+             * Only add params of process components and their children
              * if partial submit is enabled and there are components to process partially
              */
             if(cfg.partialSubmit && processIds.indexOf('@all') === -1) {
@@ -408,7 +411,7 @@ PrimeFaces.ajax = {
                 //add form state if necessary
                 if(!formProcessed) {
                     postParams.push({
-                        name:PrimeFaces.VIEW_STATE, 
+                        name:PrimeFaces.VIEW_STATE,
                         value:form.children("input[name='" + PrimeFaces.VIEW_STATE + "']").val()
                     });
 
@@ -416,7 +419,7 @@ PrimeFaces.ajax = {
                     if (clientWindowInput.length > 0) {
                         postParams.push({ name:PrimeFaces.CLIENT_WINDOW, value:clientWindowInput.val() });
                     }
-                    
+
                     // DS compatiblity
                     var dsClientWindowInput = form.children("input[name='dsPostWindowId']");
                     if (dsClientWindowInput.length > 0) {
@@ -454,11 +457,14 @@ PrimeFaces.ajax = {
 
                     if(global) {
                         $(document).trigger('pfAjaxSend', [xhr, this]);
-                    }       
+                    }
                 },
-                error: function(xhr, status, errorThrown) {                    
+                error: function(xhr, status, errorThrown) {
                     if(cfg.onerror) {
                         cfg.onerror.call(this, xhr, status, errorThrown);
+                    }
+                    if(cfg.ext && cfg.ext.onerror) {
+                        cfg.ext.onerror.call(this, xhr, status, errorThrown);
                     }
 
                     if(global) {
@@ -479,7 +485,7 @@ PrimeFaces.ajax = {
 
                     //extension callback that might parse response
                     if(cfg.ext && cfg.ext.onsuccess && !parsed) {
-                        parsed = cfg.ext.onsuccess.call(this, data, status, xhr); 
+                        parsed = cfg.ext.onsuccess.call(this, data, status, xhr);
                     }
 
                     if(global) {
@@ -489,7 +495,7 @@ PrimeFaces.ajax = {
                     //do not execute default handler as response already has been parsed
                     if(parsed) {
                         return;
-                    } 
+                    }
                     else {
                         PrimeFaces.ajax.Response.handle(data, status, xhr);
                     }
@@ -510,7 +516,7 @@ PrimeFaces.ajax = {
                     }
 
                     PrimeFaces.debug('Response completed.');
-                    
+
                     PrimeFaces.ajax.Queue.removeXHR(xhr);
 
                     if(!cfg.async) {
@@ -541,15 +547,15 @@ PrimeFaces.ajax = {
             return PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(expressions);
         }
     },
-    
+
     Response: {
-        
+
         handle: function(xml, status, xhr, updateHandler) {
             var partialResponseNode = xml.getElementsByTagName("partial-response")[0];
 
             for (var i = 0; i < partialResponseNode.childNodes.length; i++) {
                 var currentNode = partialResponseNode.childNodes[i];
-                
+
                 switch (currentNode.nodeName) {
                     case "redirect":
                         PrimeFaces.ajax.ResponseProcessor.doRedirect(currentNode);
@@ -557,7 +563,7 @@ PrimeFaces.ajax = {
 
                     case "changes":
                         var activeElementId = $(document.activeElement).attr('id');
-                        
+
                         for (var j = 0; j < currentNode.childNodes.length; j++) {
                             var currentChangeNode = currentNode.childNodes[j];
                             switch (currentChangeNode.nodeName) {
@@ -593,7 +599,7 @@ PrimeFaces.ajax = {
                     case "extension":
                         PrimeFaces.ajax.ResponseProcessor.doExtension(currentNode, xhr);
                         break;
-                        
+
                     case "error":
                         PrimeFaces.ajax.ResponseProcessor.doError(currentNode, xhr);
                         break;
@@ -643,9 +649,9 @@ PrimeFaces.ajax = {
             PrimeFaces.detachedWidgets = [];
         }
     },
-    
+
     ResponseProcessor: {
-        
+
         doRedirect : function(node) {
             window.location = node.getAttribute('url');
         },
@@ -729,7 +735,7 @@ PrimeFaces.ajax = {
             }
         }
     },
-    
+
     //Backward compatibility
     AjaxRequest: function(cfg, ext) {
         return PrimeFaces.ajax.Request.handle(cfg, ext);
