@@ -78,7 +78,11 @@ public class HeadRenderer extends Renderer {
         }
 
         if (theme != null && !theme.equals("none")) {
-            encodeTheme(context, "primefaces-" + theme, "theme.css");
+            encodeCSS(context, "primefaces-" + theme, "theme.css");
+        }
+        
+        if(cc.isFontAwesomeEnabled()) {
+            encodeCSS(context, "primefaces/fa", "font-awesome.css");
         }
         
         //Middle facet
@@ -126,7 +130,7 @@ public class HeadRenderer extends Renderer {
         writer.endElement("head");
     }
 
-    protected void encodeTheme(FacesContext context, String library, String resource) throws IOException {
+    protected void encodeCSS(FacesContext context, String library, String resource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         Resource themeResource = context.getApplication().getResourceHandler().createResource(resource, library);
