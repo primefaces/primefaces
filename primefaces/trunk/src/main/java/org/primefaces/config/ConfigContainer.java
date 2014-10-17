@@ -57,6 +57,7 @@ public class ConfigContainer {
     private String  pushServerURL = null;
     private String  theme = null;
     private String  mobileTheme = null;
+    private boolean fontAwesomeEnabled = false;
     private boolean clientSideValidationEnabled = false;
     private String  uploader = null;
     private boolean transformMetadataEnabled = false;
@@ -129,6 +130,9 @@ public class ConfigContainer {
 
         mobileTheme = externalContext.getInitParameter(Constants.ContextParams.MOBILE_THEME);
 
+        value = externalContext.getInitParameter(Constants.ContextParams.FONT_AWESOME);
+        fontAwesomeEnabled = (value == null) ? false : Boolean.valueOf(value);
+        
         value = externalContext.getInitParameter(Constants.ContextParams.TRANSFORM_METADATA);
         transformMetadataEnabled = (value == null) ? false : Boolean.valueOf(value);
         
@@ -382,5 +386,14 @@ public class ConfigContainer {
 
     public boolean isLegacyWidgetNamespace() {
         return legacyWidgetNamespace;
-    }    
+    } 
+
+    public boolean isFontAwesomeEnabled() {
+        return fontAwesomeEnabled;
+    }
+
+    public void setFontAwesomeEnabled(boolean fontAwesomeEnabled) {
+        this.fontAwesomeEnabled = fontAwesomeEnabled;
+    }
+    
 }

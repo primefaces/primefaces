@@ -24,6 +24,7 @@ public class Constants {
         // PF context params
         public static final String THEME = "primefaces.THEME";
         public static final String MOBILE_THEME = "primefaces.mobile.THEME";
+        public static final String FONT_AWESOME = "primefaces.FONT_AWESOME";
         public static final String AUTO_UPDATE = "primefaces.AUTO_UPDATE";
         public static final String PUSH_SERVER_URL = "primefaces.PUSH_SERVER_URL";
         public static final String SUBMIT = "primefaces.SUBMIT";
