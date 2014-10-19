@@ -309,7 +309,7 @@
 /*button text element */
 .ui-button .ui-button-text { 
     display: block; 
-    line-height: 1.4;  
+    line-height: normal;
 }
 
 .ui-button-text-only .ui-button-text { 
