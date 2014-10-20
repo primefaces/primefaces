@@ -48,8 +48,8 @@ PrimeFaces.expressions.SearchExpressionFacade = {
 	},
 
 	resolveComponents: function(expressions) {
-		var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions);
-		var ids = [];
+		var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions).
+		ids = [];
 
 		if (splittedExpressions) {
 			for (var i = 0; i < splittedExpressions.length; ++i) {
@@ -64,8 +64,8 @@ PrimeFaces.expressions.SearchExpressionFacade = {
 					}
 					// @widget
 					else if (expression.indexOf("@widgetVar(") == 0) {
-						var widgetVar = expression.substring(11, expression.length - 1);
-						var widget = PrimeFaces.widgets[widgetVar];
+						var widgetVar = expression.substring(11, expression.length - 1),
+						widget = PrimeFaces.widgets[widgetVar];
 
 						if (widget) {
 							if (!PrimeFaces.inArray(ids, widget.id)) {
@@ -81,8 +81,8 @@ PrimeFaces.expressions.SearchExpressionFacade = {
 						var elements = $(expression.substring(2, expression.length - 1));
 
 						for (var j = 0; j < elements.length; j++) {
-							var element = $(elements[j]);
-							var clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
+							var element = $(elements[j]),
+							clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
 
 							if (!PrimeFaces.inArray(ids, clientId)) {
 								ids.push(clientId);
