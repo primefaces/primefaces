@@ -122,6 +122,65 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
             markerDragBehavior.call(this, ext);
         }
     },
+            
+    geocode: function(address) {
+        var $this = this;
+        
+        if(this.hasBehavior('geocode')) {
+            var geocodeBehavior = this.cfg.behaviors['geocode'],
+                geocoder = new google.maps.Geocoder();
+            
+            geocoder.geocode({'address': address}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var location= results[0].geometry.location;
+
+                    var ext = {
+                        params: [
+                            {name: $this.id + '_lat', value: location.lat()},
+                            {name: $this.id + '_lng', value: location.lng()}
+                        ]
+                    }; 
+                    
+                    geocodeBehavior.call(this, ext);
+                } 
+                else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+      
+        }
+    },
+        
+    reverseGeocode: function(lat, lng) {
+        var $this = this;
+        
+        if(this.hasBehavior('reverseGeocode')) {
+            var reverseGeocoder = this.cfg.behaviors['reverseGeocode'],
+                geocoder = new google.maps.Geocoder(),
+                latlng = new google.maps.LatLng(lat, lng);
+
+            geocoder.geocode({'latLng': latlng}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        var ext = {
+                            params: [
+                                {name: $this.id + '_address', value: results[0].formatted_address}
+                            ]
+                        };
+                        
+                        reverseGeocoder.call(this, ext);
+                    } 
+                    else {
+                        alert('No results found');
+                    }     
+                } 
+                else {
+                  alert('Geocoder failed due to: ' + status);
+                }
+           });
+           
+        }
+    },            
     
     configurePolylines: function() {
         this.addOverlays(this.cfg.polylines);
