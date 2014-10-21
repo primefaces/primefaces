@@ -1,9 +1,9 @@
 /*!
-* jQuery Mobile 1.4.2
-* Git HEAD hash: 9d9a42a27d0c693e8b5569c3a10d771916af5045 <> Date: Fri Feb 28 2014 17:32:01 UTC
+* jQuery Mobile 1.4.4
+* Git HEAD hash: b4150fb1c561b614da796c210877fb25e74cf622 <> Date: Fri Sep 12 2014 16:43:26 UTC
 * http://jquerymobile.com
 *
-* Copyright 2010, 2014 jQuery Foundation, Inc. and other contributors
+* Copyright 2010, 2014 jQuery Foundation, Inc. and othercontributors
 * Released under the MIT license.
 * http://jquery.org/license
 *
@@ -369,359 +369,359 @@ html .ui-alt-icon .ui-btn.ui-checkbox-on:after {
 }
 /* PNG icons */
 .ui-nosvg .ui-icon-action:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/action-white.png']}");
+	background-image: url(images/icons-png/action-white.png);
 }
 .ui-nosvg .ui-icon-alert:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/alert-white.png']}");
+	background-image: url(images/icons-png/alert-white.png);
 }
 .ui-nosvg .ui-icon-arrow-d-l:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-d-l-white.png']}");
+	background-image: url(images/icons-png/arrow-d-l-white.png);
 }
 .ui-nosvg .ui-icon-arrow-d-r:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-d-r-white.png']}");
+	background-image: url(images/icons-png/arrow-d-r-white.png);
 }
 .ui-nosvg .ui-icon-arrow-d:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-d-white.png']}");
+	background-image: url(images/icons-png/arrow-d-white.png);
 }
 .ui-nosvg .ui-icon-arrow-l:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-l-white.png']}");
+	background-image: url(images/icons-png/arrow-l-white.png);
 }
 .ui-nosvg .ui-icon-arrow-r:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-r-white.png']}");
+	background-image: url(images/icons-png/arrow-r-white.png);
 }
 .ui-nosvg .ui-icon-arrow-u-l:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-u-l-white.png']}");
+	background-image: url(images/icons-png/arrow-u-l-white.png);
 }
 .ui-nosvg .ui-icon-arrow-u-r:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-u-r-white.png']}");
+	background-image: url(images/icons-png/arrow-u-r-white.png);
 }
 .ui-nosvg .ui-icon-arrow-u:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-u-white.png']}");
+	background-image: url(images/icons-png/arrow-u-white.png);
 }
 .ui-nosvg .ui-icon-audio:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/audio-white.png']}");
+	background-image: url(images/icons-png/audio-white.png);
 }
 .ui-nosvg .ui-icon-back:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/back-white.png']}");
+	background-image: url(images/icons-png/back-white.png);
 }
 .ui-nosvg .ui-icon-bars:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/bars-white.png']}");
+	background-image: url(images/icons-png/bars-white.png);
 }
 .ui-nosvg .ui-icon-bullets:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/bullets-white.png']}");
+	background-image: url(images/icons-png/bullets-white.png);
 }
 .ui-nosvg .ui-icon-calendar:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/calendar-white.png']}");
+	background-image: url(images/icons-png/calendar-white.png);
 }
 .ui-nosvg .ui-icon-camera:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/camera-white.png']}");
+	background-image: url(images/icons-png/camera-white.png);
 }
 .ui-nosvg .ui-icon-carat-d:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/carat-d-white.png']}");
+	background-image: url(images/icons-png/carat-d-white.png);
 }
 .ui-nosvg .ui-icon-carat-l:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/carat-l-white.png']}");
+	background-image: url(images/icons-png/carat-l-white.png);
 }
 .ui-nosvg .ui-icon-carat-r:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/carat-r-white.png']}");
+	background-image: url(images/icons-png/carat-r-white.png);
 }
 .ui-nosvg .ui-icon-carat-u:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/carat-u-white.png']}");
+	background-image: url(images/icons-png/carat-u-white.png);
 }
 .ui-nosvg .ui-icon-check:after,
 html.ui-nosvg .ui-btn.ui-checkbox-on:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/check-white.png']}");
+	background-image: url(images/icons-png/check-white.png);
 }
 .ui-nosvg .ui-icon-clock:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/clock-white.png']}");
+	background-image: url(images/icons-png/clock-white.png);
 }
 .ui-nosvg .ui-icon-cloud:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/cloud-white.png']}");
+	background-image: url(images/icons-png/cloud-white.png);
 }
 .ui-nosvg .ui-icon-comment:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/comment-white.png']}");
+	background-image: url(images/icons-png/comment-white.png);
 }
 .ui-nosvg .ui-icon-delete:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/delete-white.png']}");
+	background-image: url(images/icons-png/delete-white.png);
 }
 .ui-nosvg .ui-icon-edit:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/edit-white.png']}");
+	background-image: url(images/icons-png/edit-white.png);
 }
 .ui-nosvg .ui-icon-eye:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/eye-white.png']}");
+	background-image: url(images/icons-png/eye-white.png);
 }
 .ui-nosvg .ui-icon-forbidden:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/forbidden-white.png']}");
+	background-image: url(images/icons-png/forbidden-white.png);
 }
 .ui-nosvg .ui-icon-forward:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/forward-white.png']}");
+	background-image: url(images/icons-png/forward-white.png);
 }
 .ui-nosvg .ui-icon-gear:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/gear-white.png']}");
+	background-image: url(images/icons-png/gear-white.png);
 }
 .ui-nosvg .ui-icon-grid:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/grid-white.png']}");
+	background-image: url(images/icons-png/grid-white.png);
 }
 .ui-nosvg .ui-icon-heart:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/heart-white.png']}");
+	background-image: url(images/icons-png/heart-white.png);
 }
 .ui-nosvg .ui-icon-home:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/home-white.png']}");
+	background-image: url(images/icons-png/home-white.png);
 }
 .ui-nosvg .ui-icon-info:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/info-white.png']}");
+	background-image: url(images/icons-png/info-white.png);
 }
 .ui-nosvg .ui-icon-location:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/location-white.png']}");
+	background-image: url(images/icons-png/location-white.png);
 }
 .ui-nosvg .ui-icon-lock:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/lock-white.png']}");
+	background-image: url(images/icons-png/lock-white.png);
 }
 .ui-nosvg .ui-icon-mail:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/mail-white.png']}");
+	background-image: url(images/icons-png/mail-white.png);
 }
 .ui-nosvg .ui-icon-minus:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/minus-white.png']}");
+	background-image: url(images/icons-png/minus-white.png);
 }
 .ui-nosvg .ui-icon-navigation:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/navigation-white.png']}");
+	background-image: url(images/icons-png/navigation-white.png);
 }
 .ui-nosvg .ui-icon-phone:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/phone-white.png']}");
+	background-image: url(images/icons-png/phone-white.png);
 }
 .ui-nosvg .ui-icon-plus:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/plus-white.png']}");
+	background-image: url(images/icons-png/plus-white.png);
 }
 .ui-nosvg .ui-icon-power:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/power-white.png']}");
+	background-image: url(images/icons-png/power-white.png);
 }
 .ui-nosvg .ui-icon-recycle:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/recycle-white.png']}");
+	background-image: url(images/icons-png/recycle-white.png);
 }
 .ui-nosvg .ui-icon-refresh:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/refresh-white.png']}");
+	background-image: url(images/icons-png/refresh-white.png);
 }
 .ui-nosvg .ui-icon-search:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/search-white.png']}");
+	background-image: url(images/icons-png/search-white.png);
 }
 .ui-nosvg .ui-icon-shop:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/shop-white.png']}");
+	background-image: url(images/icons-png/shop-white.png);
 }
 .ui-nosvg .ui-icon-star:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/star-white.png']}");
+	background-image: url(images/icons-png/star-white.png);
 }
 .ui-nosvg .ui-icon-tag:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/tag-white.png']}");
+	background-image: url(images/icons-png/tag-white.png);
 }
 .ui-nosvg .ui-icon-user:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/user-white.png']}");
+	background-image: url(images/icons-png/user-white.png);
 }
 .ui-nosvg .ui-icon-video:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/video-white.png']}");
+	background-image: url(images/icons-png/video-white.png);
 }
 /* Alt icons */
 .ui-nosvg .ui-alt-icon.ui-icon-action:after,
 .ui-nosvg .ui-alt-icon .ui-icon-action:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/action-black.png']}");
+	background-image: url(images/icons-png/action-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-alert:after,
 .ui-nosvg .ui-alt-icon .ui-icon-alert:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/alert-black.png']}");
+	background-image: url(images/icons-png/alert-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-arrow-d:after,
 .ui-nosvg .ui-alt-icon .ui-icon-arrow-d:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-d-black.png']}");
+	background-image: url(images/icons-png/arrow-d-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-arrow-d-l:after,
 .ui-nosvg .ui-alt-icon .ui-icon-arrow-d-l:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-d-l-black.png']}");
+	background-image: url(images/icons-png/arrow-d-l-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-arrow-d-r:after,
 .ui-nosvg .ui-alt-icon .ui-icon-arrow-d-r:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-d-r-black.png']}");
+	background-image: url(images/icons-png/arrow-d-r-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-arrow-l:after,
 .ui-nosvg .ui-alt-icon .ui-icon-arrow-l:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-l-black.png']}");
+	background-image: url(images/icons-png/arrow-l-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-arrow-r:after,
 .ui-nosvg .ui-alt-icon .ui-icon-arrow-r:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-r-black.png']}");
+	background-image: url(images/icons-png/arrow-r-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-arrow-u:after,
 .ui-nosvg .ui-alt-icon .ui-icon-arrow-u:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-u-black.png']}");
+	background-image: url(images/icons-png/arrow-u-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-arrow-u-l:after,
 .ui-nosvg .ui-alt-icon .ui-icon-arrow-u-l:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-u-l-black.png']}");
+	background-image: url(images/icons-png/arrow-u-l-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-arrow-u-r:after,
 .ui-nosvg .ui-alt-icon .ui-icon-arrow-u-r:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/arrow-u-r-black.png']}");
+	background-image: url(images/icons-png/arrow-u-r-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-audio:after,
 .ui-nosvg .ui-alt-icon .ui-icon-audio:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/audio-black.png']}");
+	background-image: url(images/icons-png/audio-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-back:after,
 .ui-nosvg .ui-alt-icon .ui-icon-back:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/back-black.png']}");
+	background-image: url(images/icons-png/back-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-bars:after,
 .ui-nosvg .ui-alt-icon .ui-icon-bars:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/bars-black.png']}");
+	background-image: url(images/icons-png/bars-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-bullets:after,
 .ui-nosvg .ui-alt-icon .ui-icon-bullets:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/bullets-black.png']}");
+	background-image: url(images/icons-png/bullets-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-calendar:after,
 .ui-nosvg .ui-alt-icon .ui-icon-calendar:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/calendar-black.png']}");
+	background-image: url(images/icons-png/calendar-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-camera:after,
 .ui-nosvg .ui-alt-icon .ui-icon-camera:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/camera-black.png']}");
+	background-image: url(images/icons-png/camera-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-carat-d:after,
 .ui-nosvg .ui-alt-icon .ui-icon-carat-d:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/carat-d-black.png']}");
+	background-image: url(images/icons-png/carat-d-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-carat-l:after,
 .ui-nosvg .ui-alt-icon .ui-icon-carat-l:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/carat-l-black.png']}");
+	background-image: url(images/icons-png/carat-l-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-carat-r:after,
 .ui-nosvg .ui-alt-icon .ui-icon-carat-r:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/carat-r-black.png']}");
+	background-image: url(images/icons-png/carat-r-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-carat-u:after,
 .ui-nosvg .ui-alt-icon .ui-icon-carat-u:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/carat-u-black.png']}");
+	background-image: url(images/icons-png/carat-u-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-check:after,
 .ui-nosvg .ui-alt-icon .ui-icon-check:after,
 .ui-nosvg .ui-alt-icon.ui-btn.ui-checkbox-on:after,
 .ui-nosvg .ui-alt-icon .ui-btn.ui-checkbox-on:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/check-black.png']}");
+	background-image: url(images/icons-png/check-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-clock:after,
 .ui-nosvg .ui-alt-icon .ui-icon-clock:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/clock-black.png']}");
+	background-image: url(images/icons-png/clock-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-cloud:after,
 .ui-nosvg .ui-alt-icon .ui-icon-cloud:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/cloud-black.png']}");
+	background-image: url(images/icons-png/cloud-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-comment:after,
 .ui-nosvg .ui-alt-icon .ui-icon-comment:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/comment-black.png']}");
+	background-image: url(images/icons-png/comment-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-delete:after,
 .ui-nosvg .ui-alt-icon .ui-icon-delete:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/delete-black.png']}");
+	background-image: url(images/icons-png/delete-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-edit:after,
 .ui-nosvg .ui-alt-icon .ui-icon-edit:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/edit-black.png']}");
+	background-image: url(images/icons-png/edit-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-eye:after,
 .ui-nosvg .ui-alt-icon .ui-icon-eye:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/eye-black.png']}");
+	background-image: url(images/icons-png/eye-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-forbidden:after,
 .ui-nosvg .ui-alt-icon .ui-icon-forbidden:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/forbidden-black.png']}");
+	background-image: url(images/icons-png/forbidden-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-forward:after,
 .ui-nosvg .ui-alt-icon .ui-icon-forward:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/forward-black.png']}");
+	background-image: url(images/icons-png/forward-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-gear:after,
 .ui-nosvg .ui-alt-icon .ui-icon-gear:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/gear-black.png']}");
+	background-image: url(images/icons-png/gear-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-grid:after,
 .ui-nosvg .ui-alt-icon .ui-icon-grid:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/grid-black.png']}");
+	background-image: url(images/icons-png/grid-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-heart:after,
 .ui-nosvg .ui-alt-icon .ui-icon-heart:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/heart-black.png']}");
+	background-image: url(images/icons-png/heart-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-home:after,
 .ui-nosvg .ui-alt-icon .ui-icon-home:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/home-black.png']}");
+	background-image: url(images/icons-png/home-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-info:after,
 .ui-nosvg .ui-alt-icon .ui-icon-info:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/info-black.png']}");
+	background-image: url(images/icons-png/info-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-location:after,
 .ui-nosvg .ui-alt-icon .ui-icon-location:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/location-black.png']}");
+	background-image: url(images/icons-png/location-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-lock:after,
 .ui-nosvg .ui-alt-icon .ui-icon-lock:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/lock-black.png']}");
+	background-image: url(images/icons-png/lock-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-mail:after,
 .ui-nosvg .ui-alt-icon .ui-icon-mail:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/mail-black.png']}");
+	background-image: url(images/icons-png/mail-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-minus:after,
 .ui-nosvg .ui-alt-icon .ui-icon-minus:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/minus-black.png']}");
+	background-image: url(images/icons-png/minus-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-navigation:after,
 .ui-nosvg .ui-alt-icon .ui-icon-navigation:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/navigation-black.png']}");
+	background-image: url(images/icons-png/navigation-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-phone:after,
 .ui-nosvg .ui-alt-icon .ui-icon-phone:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/phone-black.png']}");
+	background-image: url(images/icons-png/phone-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-plus:after,
 .ui-nosvg .ui-alt-icon .ui-icon-plus:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/plus-black.png']}");
+	background-image: url(images/icons-png/plus-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-power:after,
 .ui-nosvg .ui-alt-icon .ui-icon-power:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/power-black.png']}");
+	background-image: url(images/icons-png/power-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-recycle:after,
 .ui-nosvg .ui-alt-icon .ui-icon-recycle:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/recycle-black.png']}");
+	background-image: url(images/icons-png/recycle-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-refresh:after,
 .ui-nosvg .ui-alt-icon .ui-icon-refresh:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/refresh-black.png']}");
+	background-image: url(images/icons-png/refresh-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-search:after,
 .ui-nosvg .ui-alt-icon .ui-icon-search:after,
 .ui-nosvg .ui-input-search:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/search-black.png']}");
+	background-image: url(images/icons-png/search-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-shop:after,
 .ui-nosvg .ui-alt-icon .ui-icon-shop:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/shop-black.png']}");
+	background-image: url(images/icons-png/shop-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-star:after,
 .ui-nosvg .ui-alt-icon .ui-icon-star:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/star-black.png']}");
+	background-image: url(images/icons-png/star-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-tag:after,
 .ui-nosvg .ui-alt-icon .ui-icon-tag:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/tag-black.png']}");
+	background-image: url(images/icons-png/tag-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-user:after,
 .ui-nosvg .ui-alt-icon .ui-icon-user:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/user-black.png']}");
+	background-image: url(images/icons-png/user-black.png);
 }
 .ui-nosvg .ui-alt-icon.ui-icon-video:after,
 .ui-nosvg .ui-alt-icon .ui-icon-video:after {
-	background-image: url("#{resource['primefaces:mobile/images/icons-png/video-black.png']}");
+	background-image: url(images/icons-png/video-black.png);
 }
 /* Globals */
 /* Font
@@ -790,7 +790,7 @@ label.ui-btn {
 	border-width: 1px;
 	border-style: solid;
 }
-.ui-btn:link {
+.ui-btn {
 	text-decoration: none !important;
 }
 .ui-btn-active {
@@ -873,7 +873,7 @@ html .ui-alt-icon.ui-radio-off:after,
 html .ui-alt-icon .ui-checkbox-off:after,
 html .ui-alt-icon .ui-radio-off:after {
 	background-color: 					#666 /*{global-icon-color}*/;
-	background-color: 					rgba(0,0,0,.15);
+	background-color: 					rgba(0,0,0,.15) /*{global-icon-disc}*/;
 }
 /* No disc */
 .ui-nodisc-icon.ui-btn:after,
@@ -907,6 +907,10 @@ html .ui-alt-icon .ui-radio-off:after {
 	-webkit-border-radius: .1875em;
 	border-radius: .1875em;
 }
+.ui-btn.ui-checkbox-off:after {
+	background-color: #666;
+	background-color: rgba(0,0,0,.3);
+}
 .ui-radio .ui-btn.ui-radio-on:after {
 	background-image: none;
 	background-color: #fff;
@@ -921,7 +925,7 @@ html .ui-alt-icon .ui-radio-off:after {
 }
 /* Loader */
 .ui-icon-loading {
-	background: url("#{resource['primefaces:mobile/images/ajax-loader.gif']}");
+	background: url(images/ajax-loader.gif);
 	background-size: 2.875em 2.875em;
 }
 /* Swatches */
@@ -1520,7 +1524,9 @@ div.ui-mobile-viewport {
 	-ms-user-select: none;
 	user-select: none;
 }
-.ui-btn-icon-notext {
+.ui-btn-icon-notext,
+.ui-header button.ui-btn.ui-btn-icon-notext,
+.ui-footer button.ui-btn.ui-btn-icon-notext {
 	padding: 0;
 	width: 1.75em;
 	height: 1.75em;
@@ -1539,6 +1545,10 @@ div.ui-mobile-viewport {
 	font-size: 12.5px;
 	display: inline-block;
 	vertical-align: middle;
+}
+.ui-header .ui-controlgroup .ui-btn-icon-notext,
+.ui-footer .ui-controlgroup .ui-btn-icon-notext {
+    font-size: 12.5px;
 }
 /* To ensure same top and left/right position when ui-btn-left/right are added to something other than buttons. */
 .ui-header .ui-btn-left,
@@ -1660,7 +1670,9 @@ button.ui-btn,
 	-moz-appearance: none;
 	width: 100%;
 }
-button.ui-btn-inline {
+button.ui-btn-inline,
+.ui-header button.ui-btn,
+.ui-footer button.ui-btn {
 	width: auto;
 }
 /* Firefox adds a 1px border in a button element. We negate this to make sure they have the same height as other buttons in controlgroups. */
@@ -2501,7 +2513,6 @@ button.ui-btn-icon-notext,
 		width: 78%;
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
-		-ms-box-sizing: border-box;
 		box-sizing: border-box;
 	}
 	/* ui-hide-label deprecated in 1.4. TODO: Remove in 1.5 */
@@ -2515,6 +2526,9 @@ button.ui-btn-icon-notext,
 	.ui-field-contain > label ~ .ui-btn-inline {
 		width: auto;
 		margin-right: .625em;
+	}
+	.ui-field-contain > label ~ .ui-btn-inline.ui-btn-icon-notext {
+		width: 1.75em;
 	}
 }
 /* content configurations. */
@@ -2568,7 +2582,9 @@ li.ui-block-e {
 [class*="ui-block-"] > .ui-checkbox,
 [class*="ui-block-"] > .ui-radio,
 [class*="ui-block-"] > button.ui-btn-inline,
-[class*="ui-block-"] > button.ui-btn-icon-notext {
+[class*="ui-block-"] > button.ui-btn-icon-notext,
+.ui-header [class*="ui-block-"] > button.ui-btn,
+.ui-footer [class*="ui-block-"] > button.ui-btn {
 	margin-right: .3125em;
 	margin-left: .3125em;
 }
@@ -2717,6 +2733,11 @@ li.ui-block-e {
 	display: block;
 	margin: 0;
 	border-right-width: 0;
+}
+.ui-header .ui-navbar li button.ui-btn,
+.ui-footer .ui-navbar li button.ui-btn {
+	margin: 0;
+	width: 100%;
 }
 .ui-navbar .ui-btn:focus {
 	z-index: 1;
@@ -3854,7 +3875,6 @@ input.ui-slider-input {
 	appearance: none;
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
-	-ms-box-sizing: content-box;
 	box-sizing: content-box;
 }
 .ui-slider-input::-webkit-outer-spin-button,
@@ -4077,7 +4097,6 @@ textarea.ui-input-text {
 	width: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	outline: 0;
 }
@@ -4251,7 +4270,6 @@ textarea.ui-input-text.ui-textinput-autogrow {
 	border-style: solid;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	border-radius: inherit;
 	overflow: visible;
@@ -4269,7 +4287,6 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 	width: 5.875em; /* If you override the width for .ui-flipswitch you should repeat the same value here */
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
-	-ms-box-sizing: content-box;
 	box-sizing: content-box;
 }
 .ui-field-contain .ui-flipswitch.ui-flipswitch-active,
@@ -4434,10 +4451,6 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 }
 /* Breakpoint to show as a standard table at 560px (35em x 16px) or wider */ 
 @media ( min-width: 35em ) {
-	/* Fixes table rendering when switching between breakpoints in Safari <= 5. See https://github.com/jquery/jquery-mobile/issues/5380 */
-	.ui-table-reflow.ui-responsive {
-		display: table-row-group;
-	}
 	/* Show the table header rows */ 
 	.ui-table-reflow.ui-responsive td,
 	.ui-table-reflow.ui-responsive th,

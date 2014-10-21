@@ -1,9 +1,9 @@
 /*!
-* jQuery Mobile 1.4.2
-* Git HEAD hash: 9d9a42a27d0c693e8b5569c3a10d771916af5045 <> Date: Fri Feb 28 2014 17:32:01 UTC
+* jQuery Mobile 1.4.4
+* Git HEAD hash: b4150fb1c561b614da796c210877fb25e74cf622 <> Date: Fri Sep 12 2014 16:43:26 UTC
 * http://jquerymobile.com
 *
-* Copyright 2010, 2014 jQuery Foundation, Inc. and other contributors
+* Copyright 2010, 2014 jQuery Foundation, Inc. and othercontributors
 * Released under the MIT license.
 * http://jquery.org/license
 *
@@ -243,7 +243,9 @@ div.ui-mobile-viewport {
 	-ms-user-select: none;
 	user-select: none;
 }
-.ui-btn-icon-notext {
+.ui-btn-icon-notext,
+.ui-header button.ui-btn.ui-btn-icon-notext,
+.ui-footer button.ui-btn.ui-btn-icon-notext {
 	padding: 0;
 	width: 1.75em;
 	height: 1.75em;
@@ -262,6 +264,10 @@ div.ui-mobile-viewport {
 	font-size: 12.5px;
 	display: inline-block;
 	vertical-align: middle;
+}
+.ui-header .ui-controlgroup .ui-btn-icon-notext,
+.ui-footer .ui-controlgroup .ui-btn-icon-notext {
+    font-size: 12.5px;
 }
 /* To ensure same top and left/right position when ui-btn-left/right are added to something other than buttons. */
 .ui-header .ui-btn-left,
@@ -383,7 +389,9 @@ button.ui-btn,
 	-moz-appearance: none;
 	width: 100%;
 }
-button.ui-btn-inline {
+button.ui-btn-inline,
+.ui-header button.ui-btn,
+.ui-footer button.ui-btn {
 	width: auto;
 }
 /* Firefox adds a 1px border in a button element. We negate this to make sure they have the same height as other buttons in controlgroups. */
@@ -1224,7 +1232,6 @@ button.ui-btn-icon-notext,
 		width: 78%;
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
-		-ms-box-sizing: border-box;
 		box-sizing: border-box;
 	}
 	/* ui-hide-label deprecated in 1.4. TODO: Remove in 1.5 */
@@ -1238,6 +1245,9 @@ button.ui-btn-icon-notext,
 	.ui-field-contain > label ~ .ui-btn-inline {
 		width: auto;
 		margin-right: .625em;
+	}
+	.ui-field-contain > label ~ .ui-btn-inline.ui-btn-icon-notext {
+		width: 1.75em;
 	}
 }
 /* content configurations. */
@@ -1291,7 +1301,9 @@ li.ui-block-e {
 [class*="ui-block-"] > .ui-checkbox,
 [class*="ui-block-"] > .ui-radio,
 [class*="ui-block-"] > button.ui-btn-inline,
-[class*="ui-block-"] > button.ui-btn-icon-notext {
+[class*="ui-block-"] > button.ui-btn-icon-notext,
+.ui-header [class*="ui-block-"] > button.ui-btn,
+.ui-footer [class*="ui-block-"] > button.ui-btn {
 	margin-right: .3125em;
 	margin-left: .3125em;
 }
@@ -1440,6 +1452,11 @@ li.ui-block-e {
 	display: block;
 	margin: 0;
 	border-right-width: 0;
+}
+.ui-header .ui-navbar li button.ui-btn,
+.ui-footer .ui-navbar li button.ui-btn {
+	margin: 0;
+	width: 100%;
 }
 .ui-navbar .ui-btn:focus {
 	z-index: 1;
@@ -2577,7 +2594,6 @@ input.ui-slider-input {
 	appearance: none;
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
-	-ms-box-sizing: content-box;
 	box-sizing: content-box;
 }
 .ui-slider-input::-webkit-outer-spin-button,
@@ -2800,7 +2816,6 @@ textarea.ui-input-text {
 	width: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	outline: 0;
 }
@@ -2974,7 +2989,6 @@ textarea.ui-input-text.ui-textinput-autogrow {
 	border-style: solid;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	border-radius: inherit;
 	overflow: visible;
@@ -2992,7 +3006,6 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 	width: 5.875em; /* If you override the width for .ui-flipswitch you should repeat the same value here */
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
-	-ms-box-sizing: content-box;
 	box-sizing: content-box;
 }
 .ui-field-contain .ui-flipswitch.ui-flipswitch-active,
@@ -3157,10 +3170,6 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 }
 /* Breakpoint to show as a standard table at 560px (35em x 16px) or wider */ 
 @media ( min-width: 35em ) {
-	/* Fixes table rendering when switching between breakpoints in Safari <= 5. See https://github.com/jquery/jquery-mobile/issues/5380 */
-	.ui-table-reflow.ui-responsive {
-		display: table-row-group;
-	}
 	/* Show the table header rows */ 
 	.ui-table-reflow.ui-responsive td,
 	.ui-table-reflow.ui-responsive th,

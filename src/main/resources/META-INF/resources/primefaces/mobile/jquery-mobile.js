@@ -1,9 +1,9 @@
 /*!
-* jQuery Mobile 1.4.2
-* Git HEAD hash: 9d9a42a27d0c693e8b5569c3a10d771916af5045 <> Date: Fri Feb 28 2014 17:32:01 UTC
+* jQuery Mobile 1.4.4
+* Git HEAD hash: b4150fb1c561b614da796c210877fb25e74cf622 <> Date: Fri Sep 12 2014 16:43:26 UTC
 * http://jquerymobile.com
 *
-* Copyright 2010, 2014 jQuery Foundation, Inc. and other contributors
+* Copyright 2010, 2014 jQuery Foundation, Inc. and othercontributors
 * Released under the MIT license.
 * http://jquery.org/license
 *
@@ -30,7 +30,7 @@
 	$.extend( $.mobile, {
 
 		// Version of the jQuery Mobile Framework
-		version: "1.4.2",
+		version: "1.4.4",
 
 		// Deprecated and no longer used in 1.4 remove in 1.5
 		// Define the url parameter used for referencing widget-generated sub-pages.
@@ -80,7 +80,7 @@
 		// Error response message - appears when an Ajax page request fails
 		pageLoadErrorMessage: "Error Loading Page",
 
-		// For error messages, which theme does the box uses?
+		// For error messages, which theme does the box use?
 		pageLoadErrorMessageTheme: "a",
 
 		// replace calls to window.history.back with phonegaps navigation helper
@@ -683,7 +683,13 @@ $.ui.plugin = {
 			height = compensateToolbars( page,
 				( typeof height === "number" ) ? height : $.mobile.getScreenHeight() );
 
-			page.css( "min-height", height - ( pageOuterHeight - pageHeight ) );
+			// Remove any previous min-height setting
+			page.css( "min-height", "" );
+
+			// Set the minimum height only if the height as determined by CSS is insufficient
+			if ( page.height() < height ) {
+				page.css( "min-height", height - ( pageOuterHeight - pageHeight ) );
+			}
 		},
 
 		loading: function() {
@@ -1886,7 +1892,7 @@ $.mobile.widget = $.Widget;
           iframe_doc.open();
           
           // Set document.domain for the Iframe document as well, if necessary.
-          domain && iframe_doc.write( '<script>document.domain="' + domain + '"</script>' );
+          domain && iframe_doc.write( '\x3cscript>document.domain="' + domain + '"\x3c/script>' );
           
           iframe_doc.close();
           
@@ -2357,19 +2363,34 @@ if ( !$.support.boxShadow ) {
 			urlParseRE: /^\s*(((([^:\/#\?]+:)?(?:(\/\/)((?:(([^:@\/#\?]+)(?:\:([^:@\/#\?]+))?)@)?(([^:\/#\?\]\[]+|\[[^\/\]@#?]+\])(?:\:([0-9]+))?))?)?)?((\/?(?:[^\/\?#]+\/+)*)([^\?#]*)))?(\?[^#]+)?)(#.*)?/,
 
 			// Abstraction to address xss (Issue #4787) by removing the authority in
-			// browsers that auto	decode it. All references to location.href should be
+			// browsers that auto-decode it. All references to location.href should be
 			// replaced with a call to this method so that it can be dealt with properly here
 			getLocation: function( url ) {
-				var uri = url ? this.parseUrl( url ) : location,
-					hash = this.parseUrl( url || location.href ).hash;
+				var parsedUrl = this.parseUrl( url || location.href ),
+					uri = url ? parsedUrl : location,
+
+					// Make sure to parse the url or the location object for the hash because using
+					// location.hash is autodecoded in firefox, the rest of the url should be from
+					// the object (location unless we're testing) to avoid the inclusion of the
+					// authority
+					hash = parsedUrl.hash;
 
 				// mimic the browser with an empty string when the hash is empty
 				hash = hash === "#" ? "" : hash;
 
-				// Make sure to parse the url or the location object for the hash because using location.hash
-				// is autodecoded in firefox, the rest of the url should be from the object (location unless
-				// we're testing) to avoid the inclusion of the authority
-				return uri.protocol + "//" + uri.host + uri.pathname + uri.search + hash;
+				return uri.protocol +
+					parsedUrl.doubleSlash +
+					uri.host +
+
+					// The pathname must start with a slash if there's a protocol, because you
+					// can't have a protocol followed by a relative path. Also, it's impossible to
+					// calculate absolute URLs from relative ones if the absolute one doesn't have
+					// a leading "/".
+					( ( uri.protocol !== "" && uri.pathname.substring( 0, 1 ) !== "/" ) ?
+						"/" : "" ) +
+					uri.pathname +
+					uri.search +
+					hash;
 			},
 
 			//return the original document url
@@ -2455,7 +2476,8 @@ if ( !$.support.boxShadow ) {
 
 			//Returns true if both urls have the same domain.
 			isSameDomain: function( absUrl1, absUrl2 ) {
-				return path.parseUrl( absUrl1 ).domain === path.parseUrl( absUrl2 ).domain;
+				return path.parseUrl( absUrl1 ).domain.toLowerCase() ===
+					path.parseUrl( absUrl2 ).domain.toLowerCase();
 			},
 
 			//Returns true for any relative variant.
@@ -2502,19 +2524,21 @@ if ( !$.support.boxShadow ) {
 			},
 
 			convertUrlToDataUrl: function( absUrl ) {
-				var u = path.parseUrl( absUrl );
+				var result = absUrl,
+					u = path.parseUrl( absUrl );
+
 				if ( path.isEmbeddedPage( u ) ) {
 					// For embedded pages, remove the dialog hash key as in getFilePath(),
 					// and remove otherwise the Data Url won't match the id of the embedded Page.
-					return u.hash
+					result = u.hash
 						.split( dialogHashKey )[0]
 						.replace( /^#/, "" )
 						.replace( /\?.*$/, "" );
 				} else if ( path.isSameDomain( u, this.documentBase ) ) {
-					return u.hrefNoHash.replace( this.documentBase.domain, "" ).split( dialogHashKey )[0];
+					result = u.hrefNoHash.replace( this.documentBase.domain, "" ).split( dialogHashKey )[0];
 				}
 
-				return window.decodeURIComponent(absUrl);
+				return window.decodeURIComponent( result );
 			},
 
 			//get path from current hash, or from a file path
@@ -2563,7 +2587,9 @@ if ( !$.support.boxShadow ) {
 			//could be mailto, etc
 			isExternal: function( url ) {
 				var u = path.parseUrl( url );
-				return u.protocol && u.domain !== this.documentUrl.domain ? true : false;
+
+				return !!( u.protocol &&
+					( u.domain.toLowerCase() !== this.documentUrl.domain.toLowerCase() ) );
 			},
 
 			hasProtocol: function( url ) {
@@ -2585,14 +2611,25 @@ if ( !$.support.boxShadow ) {
 			},
 
 			squash: function( url, resolutionUrl ) {
-				var href, cleanedUrl, search, stateIndex,
+				var href, cleanedUrl, search, stateIndex, docUrl,
 					isPath = this.isPath( url ),
 					uri = this.parseUrl( url ),
 					preservedHash = uri.hash,
 					uiState = "";
 
-				// produce a url against which we can resole the provided path
-				resolutionUrl = resolutionUrl || (path.isPath(url) ? path.getLocation() : path.getDocumentUrl());
+				// produce a url against which we can resolve the provided path
+				if ( !resolutionUrl ) {
+					if ( isPath ) {
+						resolutionUrl = path.getLocation();
+					} else {
+						docUrl = path.getDocumentUrl( true );
+						if ( path.isPath( docUrl.hash ) ) {
+							resolutionUrl = path.squash( docUrl.href );
+						} else {
+							resolutionUrl = docUrl.href;
+						}
+					}
+				}
 
 				// If the url is anything but a simple string, remove any preceding hash
 				// eg #foo/bar -> foo/bar
@@ -2639,7 +2676,8 @@ if ( !$.support.boxShadow ) {
 
 					// reconstruct each of the pieces with the new search string and hash
 					href = path.parseUrl( href );
-					href = href.protocol + "//" + href.host + href.pathname + search + preservedHash;
+					href = href.protocol + href.doubleSlash + href.host + href.pathname + search +
+						preservedHash;
 				} else {
 					href += href.indexOf( "#" ) > -1 ? uiState : "#" + uiState;
 				}
@@ -2660,11 +2698,10 @@ if ( !$.support.boxShadow ) {
 				return ( hasHash ? "#" : "" ) + hash.replace( /([!"#$%&'()*+,./:;<=>?@[\]^`{|}~])/g, "\\$1" );
 			},
 
-			// return the substring of a filepath before the sub-page key, for making
-			// a server request
+			// return the substring of a filepath before the dialogHashKey, for making a server
+			// request
 			getFilePath: function( path ) {
-				var splitkey = "&" + $.mobile.subPageUrlKey;
-				return path && path.split( splitkey )[0].split( dialogHashKey )[0];
+				return path && path.split( dialogHashKey )[0];
 			},
 
 			// check if the specified url refers to the first page in the main
@@ -3201,6 +3238,12 @@ if ( !$.support.boxShadow ) {
 	$.fn.animationComplete = function( callback, type, fallbackTime ) {
 		var timer, duration,
 			that = this,
+			eventBinding = function() {
+
+				// Clear the timer so we don't call callback twice
+				clearTimeout( timer );
+				callback.apply( this, arguments );
+			},
 			animationType = ( !type || type === "animation" ) ? "animation" : "transition";
 
 		// Make sure selected type is supported by browser
@@ -3228,17 +3271,12 @@ if ( !$.support.boxShadow ) {
 
 			// Sets up the fallback if event never comes
 			timer = setTimeout( function() {
-				$( that ).off( props[ animationType ].event );
+				$( that ).off( props[ animationType ].event, eventBinding );
 				callback.apply( that );
 			}, duration );
 
 			// Bind the event
-			return $( this ).one( props[ animationType ].event, function() {
-
-				// Clear the timer so we dont call callback twice
-				clearTimeout( timer );
-				callback.call( this, arguments );
-			});
+			return $( this ).one( props[ animationType ].event, eventBinding );
 		} else {
 
 			// CSS animation / transitions not supported
@@ -3867,7 +3905,7 @@ if ( eventCaptureSupported ) {
 					if ( !isTaphold && origTarget === event.target ) {
 						triggerCustomEvent( thisObject, "tap", event );
 					} else if ( isTaphold ) {
-						event.stopPropagation();
+						event.preventDefault();
 					}
 				}
 
@@ -4000,7 +4038,7 @@ if ( eventCaptureSupported ) {
 					emitted = false;
 
 				context.move = function( event ) {
-					if ( !start ) {
+					if ( !start || event.isDefaultPrevented() ) {
 						return;
 					}
 
@@ -4063,8 +4101,8 @@ if ( eventCaptureSupported ) {
 	$.each({
 		scrollstop: "scrollstart",
 		taphold: "tap",
-		swipeleft: "swipe",
-		swiperight: "swipe"
+		swipeleft: "swipe.left",
+		swiperight: "swipe.right"
 	}, function( event, sourceEvent ) {
 
 		$.event.special[ event ] = {
@@ -4300,13 +4338,14 @@ if ( eventCaptureSupported ) {
 			page.find( base.linkSelector ).each(function( i, link ) {
 				var thisAttr = $( link ).is( "[href]" ) ? "href" :
 					$( link ).is( "[src]" ) ? "src" : "action",
+				theLocation = $.mobile.path.parseLocation(),
 				thisUrl = $( link ).attr( thisAttr );
 
 				// XXX_jblas: We need to fix this so that it removes the document
 				//            base URL, and then prepends with the new page URL.
 				// if full path exists and is same, chop it - helps IE out
-				thisUrl = thisUrl.replace( location.protocol + "//" +
-					location.host + location.pathname, "" );
+				thisUrl = thisUrl.replace( theLocation.protocol + theLocation.doubleSlash +
+					theLocation.host + theLocation.pathname, "" );
 
 				if ( !/^(\w+:|#|\/)/.test( thisUrl ) ) {
 					$( link ).attr( thisAttr, newPath + thisUrl );
@@ -4506,6 +4545,7 @@ $.widget( "mobile.page", {
 		initSelector: false,
 
 		_create: function() {
+			this._trigger( "beforecreate" );
 			this.setLastScrollEnabled = true;
 
 			this._on( this.window, {
@@ -4645,9 +4685,8 @@ $.widget( "mobile.page", {
 			return $.mobile.navigate.history;
 		},
 
-		// TODO use _getHistory
 		_getActiveHistory: function() {
-			return $.mobile.navigate.history.getActive();
+			return this._getHistory().getActive();
 		},
 
 		// TODO the document base should be determined at creation
@@ -4707,20 +4746,15 @@ $.widget( "mobile.page", {
 				//
 				// TODO move check to history object or path object?
 				to = !$.mobile.path.isPath( to ) ? ( $.mobile.path.makeUrlAbsolute( "#" + to, this._getDocumentBase() ) ) : to;
-
-				// If we're about to go to an initial URL that contains a
-				// reference to a non-existent internal page, go to the first
-				// page instead. We know that the initial hash refers to a
-				// non-existent page, because the initial hash did not end
-				// up in the initial history entry
-				// TODO move check to history object?
-				if ( to === $.mobile.path.makeUrlAbsolute( "#" + history.initialDst, this._getDocumentBase() ) &&
-					history.stack.length &&
-					history.stack[0].url !== history.initialDst.replace( $.mobile.dialogHashKey, "" ) ) {
-					to = this._getInitialContent();
-				}
 			}
 			return to || this._getInitialContent();
+		},
+
+		_transitionFromHistory: function( direction, defaultTransition ) {
+			var history = this._getHistory(),
+				entry = ( direction === "back" ? history.getLast() : history.getActive() );
+
+			return ( entry && entry.transition ) || defaultTransition;
 		},
 
 		_handleDialog: function( changePageOptions, data ) {
@@ -4728,7 +4762,10 @@ $.widget( "mobile.page", {
 
 			// If current active page is not a dialog skip the dialog and continue
 			// in the same direction
-			if ( activeContent && !activeContent.hasClass( "ui-dialog" ) ) {
+			// Note: The dialog widget is deprecated as of 1.4.0 and will be removed in 1.5.0.
+			// Thus, as of 1.5.0 activeContent.data( "mobile-dialog" ) will always evaluate to
+			// falsy, so the second condition in the if-statement below can be removed altogether.
+			if ( activeContent && !activeContent.data( "mobile-dialog" ) ) {
 				// determine if we're heading forward or backward and continue
 				// accordingly past the current dialog
 				if ( data.direction === "back" ) {
@@ -4749,7 +4786,9 @@ $.widget( "mobile.page", {
 				// as most of this is lost by the domCache cleaning
 				$.extend( changePageOptions, {
 					role: active.role,
-					transition: active.transition,
+					transition: this._transitionFromHistory(
+						data.direction,
+						changePageOptions.transition ),
 					reverse: data.direction === "back"
 				});
 			}
@@ -4764,7 +4803,8 @@ $.widget( "mobile.page", {
 
 				// transition is false if it's the first page, undefined
 				// otherwise (and may be overridden by default)
-				transition = history.stack.length === 0 ? "none" : undefined,
+				transition = history.stack.length === 0 ? "none" :
+					this._transitionFromHistory( data.direction ),
 
 				// default options for the changPage calls made after examining
 				// the current state of the page and the hash, NOTE that the
@@ -4776,7 +4816,7 @@ $.widget( "mobile.page", {
 				};
 
 			$.extend( changePageOptions, data, {
-				transition: ( history.getLast() || {} ).transition || transition
+				transition: transition
 			});
 
 			// TODO move to _handleDestination ?
@@ -4784,8 +4824,7 @@ $.widget( "mobile.page", {
 			// key, and the initial destination isn't equal to the current target
 			// page, use the special dialog handling
 			if ( history.activeIndex > 0 &&
-				to.indexOf( $.mobile.dialogHashKey ) > -1 &&
-				history.initialDst !== to ) {
+				to.indexOf( $.mobile.dialogHashKey ) > -1 ) {
 
 				to = this._handleDialog( changePageOptions, data );
 
@@ -4836,7 +4875,8 @@ $.widget( "mobile.page", {
 			// NOTE do _not_ use the :jqmData pseudo selector because parenthesis
 			//      are a valid url char and it breaks on the first occurence
 			page = this.element
-				.children( "[data-" + this._getNs() +"url='" + dataUrl + "']" );
+				.children( "[data-" + this._getNs() +
+					"url='" + $.mobile.path.hashToSelector( dataUrl ) + "']" );
 
 			// If we failed to find the page, check to see if the url is a
 			// reference to an embedded page. If so, it may have been dynamically
@@ -4921,7 +4961,7 @@ $.widget( "mobile.page", {
 			// TODO tagging a page with external to make sure that embedded pages aren't
 			// removed by the various page handling code is bad. Having page handling code
 			// in many places is bad. Solutions post 1.0
-			page.attr( "data-" + this._getNs() + "url", $.mobile.path.convertUrlToDataUrl(fileUrl) )
+			page.attr( "data-" + this._getNs() + "url", this._createDataUrl( fileUrl ) )
 				.attr( "data-" + this._getNs() + "external-page", true );
 
 			return page;
@@ -4958,7 +4998,7 @@ $.widget( "mobile.page", {
 			( page || this.element ).trigger( deprecatedEvent, data );
 
 			// use the widget trigger method for the new content* event
-			this.element.trigger( newEvent, data );
+			this._trigger( name, newEvent, data );
 
 			return {
 				deprecatedEvent: deprecatedEvent,
@@ -4970,8 +5010,7 @@ $.widget( "mobile.page", {
 		//      or require ordering such that other bits are sprinkled in between parts that
 		//      could be abstracted out as a group
 		_loadSuccess: function( absUrl, triggerData, settings, deferred ) {
-			var fileUrl = this._createFileUrl( absUrl ),
-				dataUrl = this._createDataUrl( absUrl );
+			var fileUrl = this._createFileUrl( absUrl );
 
 			return $.proxy(function( html, textStatus, xhr ) {
 				//pre-parse html to check for a data-url,
@@ -4991,6 +5030,11 @@ $.widget( "mobile.page", {
 					dataUrlRegex.test( RegExp.$1 ) &&
 					RegExp.$1 ) {
 					fileUrl = $.mobile.path.getFilePath( $("<div>" + RegExp.$1 + "</div>").text() );
+
+					// We specify that, if a data-url attribute is given on the page div, its value
+					// must be given non-URL-encoded. However, in this part of the code, fileUrl is
+					// assumed to be URL-encoded, so we URL-encode the retrieved value here
+					fileUrl = this.window[ 0 ].encodeURIComponent( fileUrl );
 				}
 
 				//dont update the base tag if we are prefetching
@@ -5011,11 +5055,13 @@ $.widget( "mobile.page", {
 
 				triggerData.content = content;
 
+				triggerData.toPage = content;
+
 				// If the default behavior is prevented, stop here!
 				// Note that it is the responsibility of the listener/handler
 				// that called preventDefault(), to resolve/reject the
 				// deferred object within the triggerData.
-				if ( !this._trigger( "load", undefined, triggerData ) ) {
+				if ( this._triggerWithDeprecated( "load", triggerData ).event.isDefaultPrevented() ) {
 					return;
 				}
 
@@ -5026,22 +5072,10 @@ $.widget( "mobile.page", {
 
 				this._include( content, settings );
 
-				// Enhancing the content may result in new dialogs/sub content being inserted
-				// into the DOM. If the original absUrl refers to a sub-content, that is the
-				// real content we are interested in.
-				if ( absUrl.indexOf( "&" + $.mobile.subPageUrlKey ) > -1 ) {
-					content = this.element.children( "[data-" + this._getNs() +"url='" + dataUrl + "']" );
-				}
-
 				// Remove loading message.
 				if ( settings.showLoadMsg ) {
 					this._hideLoading();
 				}
-
-				// BEGIN DEPRECATED ---------------------------------------------------
-				// Let listeners know the content loaded successfully.
-				this.element.trigger( "pageload" );
-				// END DEPRECATED -----------------------------------------------------
 
 				deferred.resolve( absUrl, settings, content );
 			}, this);
@@ -5116,7 +5150,7 @@ $.widget( "mobile.page", {
 				$.mobile.path.isEmbeddedPage(fileUrl) &&
 				!$.mobile.path.isFirstPageUrl(fileUrl) ) {
 				deferred.reject( absUrl, settings );
-				return;
+				return deferred.promise();
 			}
 
 			// Reset base to the default document base
@@ -5137,12 +5171,14 @@ $.widget( "mobile.page", {
 					this._getBase().set(url);
 				}
 
-				return;
+				return deferred.promise();
 			}
 
 			triggerData = {
 				url: url,
 				absUrl: absUrl,
+				toPage: url,
+				prevPage: options ? options.fromPage : undefined,
 				dataUrl: dataUrl,
 				deferred: deferred,
 				options: settings
@@ -5154,7 +5190,7 @@ $.widget( "mobile.page", {
 			// If the default behavior is prevented, stop here!
 			if ( pblEvent.deprecatedEvent.isDefaultPrevented() ||
 				pblEvent.event.isDefaultPrevented() ) {
-				return;
+				return deferred.promise();
 			}
 
 			if ( settings.showLoadMsg ) {
@@ -5170,7 +5206,7 @@ $.widget( "mobile.page", {
 			if ( !( $.mobile.allowCrossDomainPages ||
 				$.mobile.path.isSameDomain($.mobile.path.documentUrl, absUrl ) ) ) {
 				deferred.reject( absUrl, settings );
-				return;
+				return deferred.promise();
 			}
 
 			// Load the new content.
@@ -5183,6 +5219,8 @@ $.widget( "mobile.page", {
 				success: this._loadSuccess( absUrl, triggerData, settings, deferred ),
 				error: this._loadError( absUrl, triggerData, settings, deferred )
 			});
+
+			return deferred.promise();
 		},
 
 		_loadError: function( absUrl, triggerData, settings, deferred ) {
@@ -5241,11 +5279,21 @@ $.widget( "mobile.page", {
 
 				//trigger before show/hide events
 				// TODO deprecate nextPage in favor of next
-				this._triggerWithDeprecated( prefix + "hide", { nextPage: to, samePage: samePage }, from );
+				this._triggerWithDeprecated( prefix + "hide", {
+
+					// Deprecated in 1.4 remove in 1.5
+					nextPage: to,
+					toPage: to,
+					prevPage: from,
+					samePage: samePage
+				}, from );
 			}
 
 			// TODO deprecate prevPage in favor of previous
-			this._triggerWithDeprecated( prefix + "show", { prevPage: from || $( "" ) }, to );
+			this._triggerWithDeprecated( prefix + "show", {
+				prevPage: from || $( "" ),
+				toPage: to
+			}, to );
 		},
 
 		// TODO make private once change has been defined in the widget
@@ -5265,14 +5313,14 @@ $.widget( "mobile.page", {
 
 			promise = ( new TransitionHandler( transition, reverse, to, from ) ).transition();
 
+			promise.done( $.proxy( function() {
+				this._triggerCssTransitionEvents( to, from );
+			}, this ));
+
 			// TODO temporary accomodation of argument deferred
 			promise.done(function() {
 				deferred.resolve.apply( deferred, arguments );
 			});
-
-			promise.done($.proxy(function() {
-				this._triggerCssTransitionEvents( to, from );
-			}, this));
 		},
 
 		_releaseTransitionLock: function() {
@@ -5317,9 +5365,13 @@ $.widget( "mobile.page", {
 		},
 
 		_triggerPageBeforeChange: function( to, triggerData, settings ) {
-			var pbcEvent = new $.Event( "pagebeforechange" );
+			var returnEvents;
 
-			$.extend(triggerData, { toPage: to, options: settings });
+			triggerData.prevPage = this.activePage;
+			$.extend( triggerData, {
+				toPage: to,
+				options: settings
+			});
 
 			// NOTE: preserve the original target as the dataUrl value will be
 			// simplified eg, removing ui-state, and removing query params from
@@ -5336,10 +5388,11 @@ $.widget( "mobile.page", {
 			}
 
 			// Let listeners know we're about to change the current page.
-			this.element.trigger( pbcEvent, triggerData );
+			returnEvents = this._triggerWithDeprecated( "beforechange", triggerData );
 
 			// If the default behavior is prevented, stop here!
-			if ( pbcEvent.isDefaultPrevented() ) {
+			if ( returnEvents.event.isDefaultPrevented() ||
+				returnEvents.deprecatedEvent.isDefaultPrevented() ) {
 				return false;
 			}
 
@@ -5412,6 +5465,7 @@ $.widget( "mobile.page", {
 				return;
 			}
 
+			triggerData.prevPage = settings.fromPage;
 			// if the (content|page)beforetransition default is prevented return early
 			// Note, we have to check for both the deprecated and new events
 			beforeTransition = this._triggerWithDeprecated( "beforetransition", triggerData );
@@ -5467,7 +5521,7 @@ $.widget( "mobile.page", {
 
 				isPageTransitioning = false;
 				this._triggerWithDeprecated( "transition", triggerData );
-				this.element.trigger( "pagechange", triggerData );
+				this._triggerWithDeprecated( "change", triggerData );
 
 				// Even if there is no page change to be done, we should keep the
 				// urlHistory in sync with the hash changes
@@ -5545,12 +5599,6 @@ $.widget( "mobile.page", {
 				} else {
 					url += "#" + $.mobile.dialogHashKey;
 				}
-
-				// tack on another dialogHashKey if this is the same as the initial hash
-				// this makes sure that a history entry is created for this dialog
-				if ( $.mobile.navigate.history.activeIndex === 0 && url === $.mobile.navigate.history.initialDst ) {
-					url += $.mobile.dialogHashKey;
-				}
 			}
 
 			// if title element wasn't found, try the page div data attr too
@@ -5593,7 +5641,7 @@ $.widget( "mobile.page", {
 				};
 
 				if ( settings.changeHash !== false && $.mobile.hashListeningEnabled ) {
-					$.mobile.navigate( url, params, true);
+					$.mobile.navigate( this.window[ 0 ].encodeURI( url ), params, true);
 				} else if ( toPage[ 0 ] !== $.mobile.firstPage[ 0 ] ) {
 					$.mobile.navigate.history.add( url, params );
 				}
@@ -5634,8 +5682,8 @@ $.widget( "mobile.page", {
 				}
 
 				this._releaseTransitionLock();
-				this.element.trigger( "pagechange", triggerData );
 				this._triggerWithDeprecated( "transition", triggerData );
+				this._triggerWithDeprecated( "change", triggerData );
 			}, this));
 		},
 
@@ -5667,6 +5715,15 @@ $.widget( "mobile.page", {
 
 		// resolved and nulled on window.load()
 		loadDeferred = $.Deferred(),
+
+		// function that resolves the above deferred
+		pageIsFullyLoaded = function() {
+
+			// Resolve and null the deferred
+			loadDeferred.resolve();
+			loadDeferred = null;
+		},
+
 		documentUrl = $.mobile.path.documentUrl,
 
 		// used to track last vclicked element to make sure its value is added to form data
@@ -5997,9 +6054,10 @@ $.widget( "mobile.page", {
 			//            lists and select dialogs, just write a hash in the link they
 			//            create. This means the actual URL path is based on whatever
 			//            the current value of the base tag is at the time this code
-			//            is called. For now we are just assuming that any url with a
-			//            hash in it is an application page reference.
-			if ( href.search( "#" ) !== -1 ) {
+			//            is called.
+			if ( href.search( "#" ) !== -1 &&
+				!( $.mobile.path.isExternal( href ) && $.mobile.path.isAbsoluteUrl( href ) ) ) {
+
 				href = href.replace( /[^#]*#/, "" );
 				if ( !href ) {
 					//link was an empty hash meant purely
@@ -6084,12 +6142,12 @@ $.widget( "mobile.page", {
 
 	$( function() { domreadyDeferred.resolve(); } );
 
-	$.mobile.window.load( function() {
-
-		// Resolve and null the deferred
-		loadDeferred.resolve();
-		loadDeferred = null;
-	});
+	// Account for the possibility that the load event has already fired
+	if ( document.readyState === "complete" ) {
+		pageIsFullyLoaded();
+	} else {
+		$.mobile.window.load( pageIsFullyLoaded );
+	}
 
 	$.when( domreadyDeferred, $.mobile.navreadyDeferred ).done( function() { $.mobile._registerInternalEvents(); } );
 })( jQuery );
@@ -6780,9 +6838,9 @@ $.widget( "mobile.collapsible", {
 		this._renderedOptions = this._getOptions( this.options );
 
 		if ( this.options.enhanced ) {
-			ui.heading = $( ".ui-collapsible-heading", this.element[ 0 ] );
+			ui.heading = this.element.children( ".ui-collapsible-heading" );
 			ui.content = ui.heading.next();
-			ui.anchor = $( "a", ui.heading[ 0 ] ).first();
+			ui.anchor = ui.heading.children();
 			ui.status = ui.anchor.children( ".ui-collapsible-heading-status" );
 		} else {
 			this._enhance( elem, ui );
@@ -7089,16 +7147,31 @@ $.mobile.collapsible.defaults = {
 
 (function( $, undefined ) {
 
+var uiScreenHiddenRegex = /\bui-screen-hidden\b/;
+function noHiddenClass( elements ) {
+	var index,
+		length = elements.length,
+		result = [];
+
+	for ( index = 0; index < length; index++ ) {
+		if ( !elements[ index ].className.match( uiScreenHiddenRegex ) ) {
+			result.push( elements[ index ] );
+		}
+	}
+
+	return $( result );
+}
+
 $.mobile.behaviors.addFirstLastClasses = {
 	_getVisibles: function( $els, create ) {
 		var visibles;
 
 		if ( create ) {
-			visibles = $els.not( ".ui-screen-hidden" );
+			visibles = noHiddenClass( $els );
 		} else {
 			visibles = $els.filter( ":visible" );
 			if ( visibles.length === 0 ) {
-				visibles = $els.not( ".ui-screen-hidden" );
+				visibles = noHiddenClass( $els );
 			}
 		}
 
@@ -7301,7 +7374,7 @@ $.widget( "mobile.navbar", {
 	_create: function() {
 
 		var $navbar = this.element,
-			$navbtns = $navbar.find( "a" ),
+			$navbtns = $navbar.find( "a, button" ),
 			iconpos = $navbtns.filter( ":jqmData(icon)" ).length ? this.options.iconpos : undefined;
 
 		$navbar.addClass( "ui-navbar" )
@@ -7492,11 +7565,15 @@ $.widget( "mobile.listview", $.extend( {
 							.attr( "title", $.trim( last.getEncodedText() ) )
 							.addClass( altButtonClass )
 							.empty();
+
+						// Reduce to the first anchor, because only the first gets the buttonClass
+						a = a.first();
 					} else if ( icon ) {
 						buttonClass += " ui-btn-icon-right ui-icon-" + icon;
 					}
 
-					a.first().addClass( buttonClass );
+					// Apply buttonClass to the (first) anchor
+					a.addClass( buttonClass );
 				} else if ( isDivider ) {
 					dividerTheme = ( getAttr( item[ 0 ], "theme" ) || o.dividerTheme || o.theme );
 
@@ -7539,7 +7616,7 @@ $.widget( "mobile.listview", $.extend( {
 			$( this ).closest( "li" ).addClass( "ui-li-has-count" );
 		});
 		if ( countThemeClass ) {
-			countBubbles.addClass( countThemeClass );
+			countBubbles.not( "[class*='ui-body-']" ).addClass( countThemeClass );
 		}
 
 		// Deprecated in 1.4. From 1.5 you have to add class ui-li-has-thumb or ui-li-has-icon to the LI.
@@ -7696,15 +7773,12 @@ $.widget( "mobile.checkboxradio", $.extend( {
 				return input.jqmData( dataAttr ) ||
 					input.closest( "form, fieldset" ).jqmData( dataAttr );
 			},
-			// NOTE: Windows Phone could not find the label through a selector
-			// filter works though.
-			parentLabel = input.closest( "label" ),
-			label = parentLabel.length ? parentLabel :
-				input
-					.closest( "form, fieldset, :jqmData(role='page'), :jqmData(role='dialog')" )
-					.find( "label" )
-					.filter( "[for='" + escapeId( input[0].id ) + "']" )
-					.first(),
+			label = this.options.enhanced ?
+				{
+					element: this.element.siblings( "label" ),
+					isParent: false
+				} :
+				this._findLabel(),
 			inputtype = input[0].type,
 			checkedClass = "ui-" + inputtype + "-on",
 			uncheckedClass = "ui-" + inputtype + "-off";
@@ -7717,7 +7791,8 @@ $.widget( "mobile.checkboxradio", $.extend( {
 			this.options.disabled = true;
 		}
 
-		o.iconpos = inheritAttr( input, "iconpos" ) || label.attr( "data-" + $.mobile.ns + "iconpos" ) || o.iconpos,
+		o.iconpos = inheritAttr( input, "iconpos" ) ||
+			label.element.attr( "data-" + $.mobile.ns + "iconpos" ) || o.iconpos,
 
 		// Establish options
 		o.mini = inheritAttr( input, "mini" ) || o.mini;
@@ -7725,8 +7800,8 @@ $.widget( "mobile.checkboxradio", $.extend( {
 		// Expose for other methods
 		$.extend( this, {
 			input: input,
-			label: label,
-			parentLabel: parentLabel,
+			label: label.element,
+			labelIsParent: label.isParent,
 			inputtype: inputtype,
 			checkedClass: checkedClass,
 			uncheckedClass: uncheckedClass
@@ -7736,7 +7811,7 @@ $.widget( "mobile.checkboxradio", $.extend( {
 			this._enhance();
 		}
 
-		this._on( label, {
+		this._on( label.element, {
 			vmouseover: "_handleLabelVMouseOver",
 			vclick: "_handleLabelVClick"
 		});
@@ -7752,10 +7827,36 @@ $.widget( "mobile.checkboxradio", $.extend( {
 		this.refresh();
 	},
 
+	_findLabel: function() {
+		var parentLabel, label, isParent,
+			input = this.element,
+			labelsList = input[ 0 ].labels;
+
+		if( labelsList && labelsList.length > 0 ) {
+			label = $( labelsList[ 0 ] );
+			isParent = $.contains( label[ 0 ], input[ 0 ] );
+		} else {
+			parentLabel = input.closest( "label" );
+			isParent = ( parentLabel.length > 0 );
+
+			// NOTE: Windows Phone could not find the label through a selector
+			// filter works though.
+			label = isParent ? parentLabel :
+				$( this.document[ 0 ].getElementsByTagName( "label" ) )
+					.filter( "[for='" + escapeId( input[ 0 ].id ) + "']" )
+					.first();
+		}
+
+		return {
+			element: label,
+			isParent: isParent
+		};
+	},
+
 	_enhance: function() {
 		this.label.addClass( "ui-btn ui-corner-all");
 
-		if ( this.parentLabel.length > 0 ) {
+		if ( this.labelIsParent ) {
 			this.input.add( this.label ).wrapAll( this._wrapper() );
 		} else {
 			//this.element.replaceWith( this.input.add( this.label ).wrapAll( this._wrapper() ) );
@@ -7792,7 +7893,7 @@ $.widget( "mobile.checkboxradio", $.extend( {
 		// Adds checked attribute to checked input when keyboard is used
 		this.element.prop( "checked", this.element.is( ":checked" ) );
 		this._getInputSet().not( this.element ).prop( "checked", false );
-		this._updateAll();
+		this._updateAll( true );
 	},
 
 	_handleLabelVMouseOver: function( event ) {
@@ -7854,7 +7955,7 @@ $.widget( "mobile.checkboxradio", $.extend( {
 
 			// If we're inside a form
 			if ( form ) {
-				formId = form.id;
+				formId = form.getAttribute( "id" );
 
 				// If the form has an ID, collect radios scattered throught the document which
 				// nevertheless are part of the form by way of the value of their form attribute
@@ -7882,13 +7983,13 @@ $.widget( "mobile.checkboxradio", $.extend( {
 		return radios;
 	},
 
-	_updateAll: function() {
+	_updateAll: function( changeTriggered ) {
 		var self = this;
 
 		this._getInputSet().each( function() {
 			var $this = $( this );
 
-			if ( this.checked || self.inputtype === "checkbox" ) {
+			if ( ( this.checked || self.inputtype === "checkbox" ) && !changeTriggered ) {
 				$this.trigger( "change" );
 			}
 		})
@@ -7929,14 +8030,13 @@ $.widget( "mobile.checkboxradio", $.extend( {
 	},
 
 	refresh: function() {
-		var hasIcon = this._hasIcon(),
-			isChecked = this.element[ 0 ].checked,
+		var isChecked = this.element[ 0 ].checked,
 			active = $.mobile.activeBtnClass,
 			iconposClass = "ui-btn-icon-" + this.options.iconpos,
 			addClasses = [],
 			removeClasses = [];
 
-		if ( hasIcon ) {
+		if ( this._hasIcon() ) {
 			removeClasses.push( active );
 			addClasses.push( iconposClass );
 		} else {
@@ -7951,6 +8051,8 @@ $.widget( "mobile.checkboxradio", $.extend( {
 			addClasses.push( this.uncheckedClass );
 			removeClasses.push( this.checkedClass );
 		}
+
+		this.widget().toggleClass( "ui-state-disabled", this.element.prop( "disabled" ) );
 
 		this.label
 			.addClass( addClasses.join( " " ) )
@@ -8067,8 +8169,8 @@ $.widget( "mobile.button", {
 	},
 
 	_destroy: function() {
-			this.element.insertBefore( this.button );
-			this.button.remove();
+			this.element.insertBefore( this.wrapper );
+			this.wrapper.remove();
 	},
 
 	_getIconClasses: function( options ) {
@@ -8865,7 +8967,7 @@ $.widget( "mobile.slider", $.extend( {
 
 			// update control"s value
 			if ( isInput ) {
-				valueChanged = control.val() !== newval;
+				valueChanged = parseFloat( control.val() ) !== newval;
 				control.val( newval );
 			} else {
 				valueChanged = control[ 0 ].selectedIndex !== newval;
@@ -8936,6 +9038,8 @@ $.widget( "mobile.slider", $.extend( {
 		this.slider
 			.toggleClass( "ui-state-disabled", value )
 			.attr( "aria-disabled", value );
+
+		this.element.toggleClass( "ui-state-disabled", value );
 	}
 
 }, $.mobile.behaviors.formReset ) );
@@ -9028,7 +9132,9 @@ $.widget( "mobile.slider", $.mobile.slider, {
 		if ( o.popupEnabled && this._popup ) {
 			this._positionPopup();
 			this._popup.html( newValue );
-		} else if ( o.showValue && !this.options.mini ) {
+		}
+
+		if ( o.showValue && !this.options.mini ) {
 			this.handle.html( newValue );
 		}
 	},
@@ -9357,6 +9463,7 @@ $.widget( "mobile.flipswitch", $.extend({
 			//if the first handle is dragged send the event to the first slider
 			$.data( this._inputFirst.get(0), "mobile-slider" ).dragging = true;
 			$.data( this._inputFirst.get(0), "mobile-slider" ).refresh( event );
+			$.data( this._inputFirst.get(0), "mobile-slider" )._trigger( "start" );
 			return false;
 		},
 
@@ -9409,6 +9516,11 @@ $.widget( "mobile.flipswitch", $.extend({
 			if ( options.highlight !== undefined ) {
 				this._setHighlight( options.highlight );
 			}
+
+			if ( options.disabled !== undefined ) {
+				this._setDisabled( options.disabled );
+			}
+
 			this._super( options );
 			this.refresh();
 		},
@@ -9515,6 +9627,11 @@ $.widget( "mobile.flipswitch", $.extend({
 			this._inputLast.slider( "option", "highlight", value );
 		},
 
+		_setDisabled: function( value ) {
+			this._inputFirst.prop( "disabled", value );
+			this._inputLast.prop( "disabled", value );
+		},
+
 		_destroy: function() {
 			this._label.prependTo( this.element );
 			this.element.removeClass( "ui-rangeslider ui-mini" );
@@ -9539,16 +9656,21 @@ $.widget( "mobile.flipswitch", $.extend({
 		_create: function() {
 			this._super();
 
-			if ( !!this.options.clearBtn || this.isSearch ) {
+			if ( this.isSearch ) {
+				this.options.clearBtn = true;
+			}
+
+			if ( !!this.options.clearBtn && this.inputNeedsWrap ) {
 				this._addClearBtn();
 			}
 		},
 
 		clearButton: function() {
-
-			return $( "<a href='#' class='ui-input-clear ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all" +
-    "' title='" + this.options.clearBtnText + "'>" + this.options.clearBtnText + "</a>" );
-
+			return $( "<a href='#' tabindex='-1' aria-hidden='true' " +
+				"class='ui-input-clear ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all'>" +
+				"</a>" )
+					.attr( "title", this.options.clearBtnText )
+					.text( this.options.clearBtnText );
 		},
 
 		_clearBtnClick: function( event ) {
@@ -9641,7 +9763,9 @@ $.widget( "mobile.flipswitch", $.extend({
 
 		_destroy: function() {
 			this._super();
-			this._destroyClear();
+			if ( this.options.clearBtn ) {
+				this._destroyClear();
+			}
 		}
 
 	});
@@ -9707,7 +9831,7 @@ $.widget( "mobile.flipswitch", $.extend({
 							}, this ),
 						"transition" );
 				}
-				this._timeout();
+				this._prepareHeightUpdate();
 			}
 		},
 
@@ -10175,6 +10299,14 @@ $.widget( "mobile.popup", {
 		history: !$.mobile.browser.oldIE
 	},
 
+	// When the user depresses the mouse/finger on an element inside the popup while the popup is
+	// open, we ignore resize events for a short while. This prevents #6961.
+	_handleDocumentVmousedown: function( theEvent ) {
+		if ( this._isOpen && $.contains( this._ui.container[ 0 ], theEvent.target ) ) {
+			this._ignoreResizeEvents();
+		}
+	},
+
 	_create: function() {
 		var theElement = this.element,
 			myId = theElement.attr( "id" ),
@@ -10184,6 +10316,10 @@ $.widget( "mobile.popup", {
 		// We can't do it in the option declarations because those are run before
 		// it is determined whether there shall be AJAX nav.
 		currentOptions.history = currentOptions.history && $.mobile.ajaxEnabled && $.mobile.hashListeningEnabled;
+
+		this._on( this.document, {
+			"vmousedown": "_handleDocumentVmousedown"
+		});
 
 		// Define instance variables
 		$.extend( this, {
@@ -10388,7 +10524,9 @@ $.widget( "mobile.popup", {
 			target = $( targetElement );
 			if ( 0 === target.parents().filter( ui.container[ 0 ] ).length ) {
 				$( this.document[ 0 ].activeElement ).one( "focus", function(/* theEvent */) {
-					target.blur();
+					if ( targetElement.nodeName.toLowerCase() !== "body" ) {
+				            target.blur();
+				        }
 				});
 				ui.focusElement.focus();
 				theEvent.preventDefault();
@@ -10992,11 +11130,6 @@ $.widget( "mobile.popup", {
 			url = $.mobile.path.parseLocation().hash + hashkey;
 		}
 
-		// Tack on an extra hashkey if this is the first page and we've just reconstructed the initial hash
-		if ( urlHistory.activeIndex === 0 && url === urlHistory.initialDst ) {
-			url += hashkey;
-		}
-
 		// swallow the the initial navigation event, and bind for the next
 		this.window.one( "beforenavigate", function( theEvent ) {
 			theEvent.preventDefault();
@@ -11109,7 +11242,7 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 	},
 
 	_handleButtonVclickKeydown: function( event ) {
-		if ( this.options.disabled || this.isOpen ) {
+		if ( this.options.disabled || this.isOpen || this.options.nativeMenu ) {
 			return;
 		}
 
@@ -11160,6 +11293,10 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 	},
 
 	_handleMenuPageHide: function() {
+
+		// After the dialog's done, we may want to trigger change if the value has actually changed
+		this._delayedTrigger();
+
 		// TODO centralize page removal binding / handling in the page plugin.
 		// Suggestion from @jblas to do refcounting
 		//
@@ -11182,18 +11319,55 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		}
 	},
 
+	_handleListItemClick: function( event ) {
+		var listItem = $( event.target ).closest( "li" ),
+
+			// Index of option tag to be selected
+			oldIndex = this.select[ 0 ].selectedIndex,
+			newIndex = $.mobile.getAttribute( listItem, "option-index" ),
+			option = this._selectOptions().eq( newIndex )[ 0 ];
+
+		// Toggle selected status on the tag for multi selects
+		option.selected = this.isMultiple ? !option.selected : true;
+
+		// Toggle checkbox class for multiple selects
+		if ( this.isMultiple ) {
+			listItem.find( "a" )
+				.toggleClass( "ui-checkbox-on", option.selected )
+				.toggleClass( "ui-checkbox-off", !option.selected );
+		}
+
+		// If it's not a multiple select, trigger change after it has finished closing
+		if ( !this.isMultiple && oldIndex !== newIndex ) {
+			this._triggerChange = true;
+		}
+
+		// Trigger change if it's a multiple select
+		// Hide custom select for single selects only - otherwise focus clicked item
+		// We need to grab the clicked item the hard way, because the list may have been rebuilt
+		if ( this.isMultiple ) {
+			this.select.trigger( "change" );
+			this.list.find( "li:not(.ui-li-divider)" ).eq( newIndex )
+				.find( "a" ).first().focus();
+		}
+		else {
+			this.close();
+		}
+
+		event.preventDefault();
+	},
+
 	build: function() {
 		var selectId, popupId, dialogId, label, thisPage, isMultiple, menuId,
 			themeAttr, overlayTheme, overlayThemeAttr, dividerThemeAttr,
 			menuPage, listbox, list, header, headerTitle, menuPageContent,
-			menuPageClose, headerClose, self,
+			menuPageClose, headerClose,
 			o = this.options;
 
 		if ( o.nativeMenu ) {
 			return this._super();
 		}
 
-		self = this;
 		selectId = this.selectId;
 		popupId = selectId + "-listbox";
 		dialogId = selectId + "-dialog";
@@ -11208,11 +11382,14 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		dividerThemeAttr = ( o.dividerTheme && isMultiple ) ? ( " data-" + $.mobile.ns + "divider-theme='" + o.dividerTheme + "'" ) : "";
 		menuPage = $( "<div data-" + $.mobile.ns + "role='dialog' class='ui-selectmenu' id='" + dialogId + "'" + themeAttr + overlayThemeAttr + ">" +
 			"<div data-" + $.mobile.ns + "role='header'>" +
-			"<div class='ui-title'>" + label.getEncodedText() + "</div>"+
+			"<div class='ui-title'></div>"+
 			"</div>"+
 			"<div data-" + $.mobile.ns + "role='content'></div>"+
 			"</div>" );
-		listbox = $( "<div id='" + popupId + "' class='ui-selectmenu'></div>" ).insertAfter( this.select ).popup({ theme: o.overlayTheme });
+		listbox = $( "<div" + themeAttr + overlayThemeAttr + " id='" + popupId +
+				"' class='ui-selectmenu'></div>" )
+			.insertAfter( this.select )
+			.popup();
 		list = $( "<ul class='ui-selectmenu-list' id='" + menuId + "' role='listbox' aria-labelledby='" + this.buttonId + "'" + themeAttr + dividerThemeAttr + "></ul>" ).appendTo( listbox );
 		header = $( "<div class='ui-header ui-bar-" + ( o.theme ? o.theme : "inherit" ) + "'></div>" ).prependTo( listbox );
 		headerTitle = $( "<h1 class='ui-title'></h1>" ).appendTo( header );
@@ -11268,52 +11445,18 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		// Events for list items
 		this.list.attr( "role", "listbox" );
 		this._on( this.list, {
-			focusin : "_handleListFocus",
-			focusout : "_handleListFocus",
-			keydown: "_handleListKeydown"
+			"focusin": "_handleListFocus",
+			"focusout": "_handleListFocus",
+			"keydown": "_handleListKeydown",
+			"click li:not(.ui-disabled,.ui-state-disabled,.ui-li-divider)": "_handleListItemClick"
 		});
-		this.list
-			.delegate( "li:not(.ui-disabled,.ui-state-disabled,.ui-li-divider)", "click", function( event ) {
-
-				// index of option tag to be selected
-				var oldIndex = self.select[ 0 ].selectedIndex,
-					newIndex = $.mobile.getAttribute( this, "option-index" ),
-					option = self._selectOptions().eq( newIndex )[ 0 ];
-
-				// toggle selected status on the tag for multi selects
-				option.selected = self.isMultiple ? !option.selected : true;
-
-				// toggle checkbox class for multiple selects
-				if ( self.isMultiple ) {
-					$( this ).find( "a" )
-						.toggleClass( "ui-checkbox-on", option.selected )
-						.toggleClass( "ui-checkbox-off", !option.selected );
-				}
-
-				// trigger change if value changed
-				if ( self.isMultiple || oldIndex !== newIndex ) {
-					self.select.trigger( "change" );
-				}
-
-				// hide custom select for single selects only - otherwise focus clicked item
-				// We need to grab the clicked item the hard way, because the list may have been rebuilt
-				if ( self.isMultiple ) {
-					self.list.find( "li:not(.ui-li-divider)" ).eq( newIndex )
-						.find( "a" ).first().focus();
-				}
-				else {
-					self.close();
-				}
-
-				event.preventDefault();
-			});
 
 		// button refocus ensures proper height calculation
 		// by removing the inline style and ensuring page inclusion
 		this._on( this.menuPage, { pagehide: "_handleMenuPageHide" } );
 
 		// Events on the popup
-		this._on( this.listbox, { popupafterclose: "close" } );
+		this._on( this.listbox, { popupafterclose: "_popupClosed" } );
 
 		// Close button on small overlays
 		if ( this.isMultiple ) {
@@ -11321,6 +11464,18 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		}
 
 		return this;
+	},
+
+	_popupClosed: function() {
+		this.close();
+		this._delayedTrigger();
+	},
+
+	_delayedTrigger: function() {
+		if ( this._triggerChange ) {
+			this.element.trigger( "change" );
+		}
+		this._triggerChange = false;
 	},
 
 	_isRebuildRequired: function() {
@@ -11444,7 +11599,9 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 
 			self.menuType = "page";
 			self.menuPageContent.append( self.list );
-			self.menuPage.find( "div .ui-title" ).text( self.label.text() );
+			self.menuPage
+				.find( "div .ui-title" )
+					.text( self.label.getEncodedText() || self.placeholder );
 		} else {
 			self.menuType = "overlay";
 
@@ -11486,10 +11643,15 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			}
 
 			parent = option.parentNode;
-			text = $option.text();
-			anchor  = document.createElement( "a" );
 			classes = [];
 
+			// Although using .text() here raises the risk that, when we later paste this into the
+			// list item we end up pasting possibly malicious things like <script> tags, that risk
+			// only arises if we do something like $( "<li><a href='#'>" + text + "</a></li>" ). We
+			// don't do that. We do document.createTextNode( text ) instead, which guarantees that
+			// whatever we paste in will end up as text, with characters like <, > and & escaped.
+			text = $option.text();
+			anchor = document.createElement( "a" );
 			anchor.setAttribute( "href", "#" );
 			anchor.appendChild( document.createTextNode( text ) );
 
@@ -11860,7 +12022,7 @@ $.fn.buttonMarkup.defaults = {
 };
 
 $.extend( $.fn.buttonMarkup, {
-	initSelector: "a:jqmData(role='button'), .ui-bar > a, .ui-bar > :jqmData(role='controlgroup') > a, button"
+	initSelector: "a:jqmData(role='button'), .ui-bar > a, .ui-bar > :jqmData(role='controlgroup') > a, button:not(:jqmData(role='navbar') button)"
 });
 
 })( jQuery );
@@ -12069,15 +12231,7 @@ $.widget( "mobile.controlgroup", $.extend( {
 		},
 		_setOptions: function( o ) {
 			if ( o.addBackBtn !== undefined ) {
-				if ( this.options.addBackBtn &&
-					this.role === "header" &&
-					$( ".ui-page" ).length > 1 &&
-					this.page[ 0 ].getAttribute( "data-" + $.mobile.ns + "url" ) !== $.mobile.path.stripHash( location.hash ) &&
-					!this.leftbtn ) {
-						this._addBackButton();
-				} else {
-					this.element.find( ".ui-toolbar-back-btn" ).remove();
-				}
+				this._updateBackButton();
 			}
 			if ( o.backBtnTheme != null ) {
 				this.element
@@ -12104,6 +12258,8 @@ $.widget( "mobile.controlgroup", $.extend( {
 				this._setRelative();
 				if ( this.role === "footer" ) {
 					this.element.appendTo( "body" );
+				} else if ( this.role === "header" ) {
+					this._updateBackButton();
 				}
 			}
 			this._addHeadingClasses();
@@ -12125,25 +12281,71 @@ $.widget( "mobile.controlgroup", $.extend( {
 		},
 		// Deprecated in 1.4. As from 1.5 ui-btn-left/right classes have to be present in the markup.
 		_addHeaderButtonClasses: function() {
-			var $headeranchors = this.element.children( "a, button" );
-			this.leftbtn = $headeranchors.hasClass( "ui-btn-left" );
-			this.rightbtn = $headeranchors.hasClass( "ui-btn-right" );
+			var headerAnchors = this.element.children( "a, button" );
 
-			this.leftbtn = this.leftbtn || $headeranchors.eq( 0 ).not( ".ui-btn-right" ).addClass( "ui-btn-left" ).length;
+			// Do not mistake a back button for a left toolbar button
+			this.leftbtn = headerAnchors.hasClass( "ui-btn-left" ) &&
+				!headerAnchors.hasClass( "ui-toolbar-back-btn" );
 
-			this.rightbtn = this.rightbtn || $headeranchors.eq( 1 ).addClass( "ui-btn-right" ).length;
+			this.rightbtn = headerAnchors.hasClass( "ui-btn-right" );
 
+			// Filter out right buttons and back buttons
+			this.leftbtn = this.leftbtn ||
+				headerAnchors.eq( 0 )
+					.not( ".ui-btn-right,.ui-toolbar-back-btn" )
+					.addClass( "ui-btn-left" )
+					.length;
+
+			this.rightbtn = this.rightbtn || headerAnchors.eq( 1 ).addClass( "ui-btn-right" ).length;
 		},
-		_addBackButton: function() {
-			var options = this.options,
+		_updateBackButton: function() {
+			var backButton,
+				options = this.options,
 				theme = options.backBtnTheme || options.theme;
 
-			$( "<a role='button' href='javascript:void(0);' " +
-				"class='ui-btn ui-corner-all ui-shadow ui-btn-left " +
-					( theme ? "ui-btn-" + theme + " " : "" ) +
-					"ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left' " +
-				"data-" + $.mobile.ns + "rel='back'>" + options.backBtnText + "</a>" )
-					.prependTo( this.element );
+			// Retrieve the back button or create a new, empty one
+			backButton = this._backButton = ( this._backButton || {} );
+
+			// We add a back button only if the option to do so is on
+			if ( this.options.addBackBtn &&
+
+					// This must also be a header toolbar
+					this.role === "header" &&
+
+					// There must be multiple pages in the DOM
+					$( ".ui-page" ).length > 1 &&
+					( this.page ?
+
+						// If the toolbar is internal the page's URL must differ from the hash
+						( this.page[ 0 ].getAttribute( "data-" + $.mobile.ns + "url" ) !==
+							$.mobile.path.stripHash( location.hash ) ) :
+
+						// Otherwise, if the toolbar is external there must be at least one
+						// history item to which one can go back
+						( $.mobile.navigate && $.mobile.navigate.history &&
+							$.mobile.navigate.history.activeIndex > 0 ) ) &&
+
+					// The toolbar does not have a left button
+					!this.leftbtn ) {
+
+				// Skip back button creation if one is already present
+				if ( !backButton.attached ) {
+					this.backButton = backButton.element = ( backButton.element ||
+						$( "<a role='button' href='javascript:void(0);' " +
+							"class='ui-btn ui-corner-all ui-shadow ui-btn-left " +
+								( theme ? "ui-btn-" + theme + " " : "" ) +
+								"ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left' " +
+							"data-" + $.mobile.ns + "rel='back'>" + options.backBtnText +
+							"</a>" ) )
+							.prependTo( this.element );
+					backButton.attached = true;
+				}
+
+			// If we are not adding a back button, then remove the one present, if any
+			} else if ( backButton.element ) {
+				backButton.element.detach();
+				backButton.attached = false;
+			}
 		},
 		_addHeadingClasses: function() {
 			this.element.children( "h1, h2, h3, h4, h5, h6" )
@@ -12153,6 +12355,27 @@ $.widget( "mobile.controlgroup", $.extend( {
 					"role": "heading",
 					"aria-level": "1"
 				});
+		},
+		_destroy: function() {
+			var currentTheme;
+
+			this.element.children( "h1, h2, h3, h4, h5, h6" )
+				.removeClass( "ui-title" )
+				.removeAttr( "role" )
+				.removeAttr( "aria-level" );
+
+			if ( this.role === "header" ) {
+				this.element.children( "a, button" )
+					.removeClass( "ui-btn-left ui-btn-right ui-btn ui-shadow ui-corner-all" );
+				if ( this.backButton) {
+					this.backButton.remove();
+				}
+			}
+
+			currentTheme = this.options.theme ? this.options.theme : "inherit";
+			this.element.removeClass( "ui-bar-" + currentTheme );
+
+			this.element.removeClass( "ui-" + this.role ).removeAttr( "role" );
 		}
 	});
 
@@ -12186,6 +12409,7 @@ $.widget( "mobile.controlgroup", $.extend( {
 
 		_create: function() {
 			this._super();
+			this.pagecontainer = $( ":mobile-pagecontainer" );
 			if ( this.options.position === "fixed" && !this.options.supportBlacklist() ) {
 				this._makeFixed();
 			}
@@ -12428,12 +12652,30 @@ $.widget( "mobile.controlgroup", $.extend( {
 		},
 
 		_destroy: function() {
-			var $el = this.element,
-				header = $el.hasClass( "ui-header" );
+			var pageClasses, toolbarClasses, hasFixed, header, hasFullscreen,
+				page = this.pagecontainer.pagecontainer( "getActivePage" );
 
-			$el.closest( ".ui-page" ).css( "padding-" + ( header ? "top" : "bottom" ), "" );
-			$el.removeClass( "ui-header-fixed ui-footer-fixed ui-header-fullscreen ui-footer-fullscreen in out fade slidedown slideup ui-fixed-hidden" );
-			$el.closest( ".ui-page" ).removeClass( "ui-page-header-fixed ui-page-footer-fixed ui-page-header-fullscreen ui-page-footer-fullscreen" );
+			this._super();
+			if ( this.options.position === "fixed" ) {
+				hasFixed = $(  "body>.ui-" + this.role + "-fixed" )
+							.add( page.find( ".ui-" + this.options.role + "-fixed" ) )
+							.not( this.element ).length > 0;
+				hasFullscreen = $(  "body>.ui-" + this.role + "-fixed" )
+							.add( page.find( ".ui-" + this.options.role + "-fullscreen" ) )
+							.not( this.element ).length > 0;
+				toolbarClasses =  "ui-header-fixed ui-footer-fixed ui-header-fullscreen in out" +
+					" ui-footer-fullscreen fade slidedown slideup ui-fixed-hidden";
+				this.element.removeClass( toolbarClasses );
+				if ( !hasFullscreen ) {
+					pageClasses = "ui-page-" + this.role + "-fullscreen";
+				}
+				if ( !hasFixed ) {
+					header = this.role === "header";
+					pageClasses += " ui-page-" + this.role + "-fixed";
+					page.css( "padding-" + ( header ? "top" : "bottom" ), "" );
+				}
+				page.removeClass( pageClasses );
+			}
 		}
 
 	});
@@ -12901,14 +13143,6 @@ $.widget( "mobile.panel", {
 		this.element.addClass( this._getPanelClasses() );
 	},
 
-	_handleCloseClickAndEatEvent: function( event ) {
-		if ( !event.isDefaultPrevented() ) {
-			event.preventDefault();
-			this.close();
-			return false;
-		}
-	},
-
 	_handleCloseClick: function( event ) {
 		if ( !event.isDefaultPrevented() ) {
 			this.close();
@@ -12995,7 +13229,6 @@ $.widget( "mobile.panel", {
 				});
 			}
 			this.toggle();
-			return false;
 		}
 	},
 
@@ -13065,7 +13298,7 @@ $.widget( "mobile.panel", {
 				o = self.options,
 
 				_openPanel = function() {
-					self.document.off( "panelclose" );
+					self._off( self.document , "panelclose" );
 					self._page().jqmData( "panel", "open" );
 
 					if ( $.support.cssTransform3d && !!o.animate && o.display !== "overlay" ) {
@@ -13074,7 +13307,8 @@ $.widget( "mobile.panel", {
 					}
 
 					if ( !immediate && $.support.cssTransform3d && !!o.animate ) {
-						self.element.animationComplete( complete, "transition" );
+						( self._wrapper || self.element )
+							.animationComplete( complete, "transition" );
 					} else {
 						setTimeout( complete, 0 );
 					}
@@ -13107,6 +13341,11 @@ $.widget( "mobile.panel", {
 				},
 				complete = function() {
 
+					// Bail if the panel was closed before the opening animation has completed
+					if ( !self._open ) {
+						return;
+					}
+
 					if ( o.display !== "overlay" ) {
 						self._wrapper.addClass( o.classes.pageContentPrefix + "-open" );
 						self._fixedToolbars().addClass( o.classes.pageContentPrefix + "-open" );
@@ -13122,8 +13361,8 @@ $.widget( "mobile.panel", {
 			self._trigger( "beforeopen" );
 
 			if ( self._page().jqmData( "panel" ) === "open" ) {
-				self.document.on( "panelclose", function() {
-					_openPanel();
+				self._on( self.document, {
+					"panelclose": _openPanel
 				});
 			} else {
 				_openPanel();
@@ -13148,13 +13387,16 @@ $.widget( "mobile.panel", {
 					}
 
 					if ( !immediate && $.support.cssTransform3d && !!o.animate ) {
-						self.element.animationComplete( complete, "transition" );
+						( self._wrapper || self.element )
+							.animationComplete( complete, "transition" );
 					} else {
 						setTimeout( complete, 0 );
 					}
 
 					if ( self._modal ) {
-						self._modal.removeClass( self._modalOpenClasses );
+						self._modal
+							.removeClass( self._modalOpenClasses )
+							.height( "" );
 					}
 				},
 				complete = function() {
@@ -13409,14 +13651,17 @@ $.widget( "mobile.table", $.mobile.table, {
 
 		// create the hide/show toggles
 		this.headers.not( "td" ).each( function() {
-			var header = $( this ),
-				priority = $.mobile.getAttribute( this, "priority" ),
-				cells = header.add( header.jqmData( "cells" ) );
+			var input, cells,
+				header = $( this ),
+				priority = $.mobile.getAttribute( this, "priority" );
 
 			if ( priority ) {
+				cells = header.add( header.jqmData( "cells" ) );
 				cells.addClass( opts.classes.priorityPrefix + priority );
 
-				( keep ? inputs.eq( checkboxIndex++ ) :
+				// Make sure the (new?) checkbox is associated with its header via .jqmData() and
+				// that, vice versa, the header is also associated with the checkbox
+				input = ( keep ? inputs.eq( checkboxIndex++ ) :
 					$("<label><input type='checkbox' checked />" +
 						( header.children( "abbr" ).first().attr( "title" ) ||
 							header.text() ) +
@@ -13426,7 +13671,13 @@ $.widget( "mobile.table", $.mobile.table, {
 						.checkboxradio( {
 							theme: opts.columnPopupTheme
 						}) )
-					.jqmData( "cells", cells );
+
+						// Associate the header with the checkbox
+						.jqmData( "header", header )
+						.jqmData( "cells", cells );
+
+				// Associate the checkbox with the header
+				header.jqmData( "input", input );
 			}
 		});
 
@@ -13443,14 +13694,6 @@ $.widget( "mobile.table", $.mobile.table, {
 		input.jqmData( "cells" )
 			.toggleClass( "ui-table-cell-hidden", !checked )
 			.toggleClass( "ui-table-cell-visible", checked );
-
-		if ( input[ 0 ].getAttribute( "locked" ) ) {
-			input.removeAttr( "locked" );
-
-			this._unlockCells( input.jqmData( "cells" ) );
-		} else {
-			input.attr( "locked", true );
-		}
 	},
 
 	_unlockCells: function( cells ) {
@@ -13500,9 +13743,33 @@ $.widget( "mobile.table", $.mobile.table, {
 	},
 
 	_refresh: function( create ) {
+		var headers, hiddenColumns, index;
+
+		// Calling _super() here updates this.headers
 		this._super( create );
 
 		if ( !create && this.options.mode === "columntoggle" ) {
+			headers = this.headers;
+			hiddenColumns = [];
+
+			// Find the index of the column header associated with each old checkbox among the
+			// post-refresh headers and, if the header is still there, make sure the corresponding
+			// column will be hidden if the pre-refresh checkbox indicates that the column is
+			// hidden by recording its index in the array of hidden columns.
+			this._menu.find( "input" ).each( function() {
+				var input = $( this ),
+					header = input.jqmData( "header" ),
+					index = headers.index( header[ 0 ] );
+
+				if ( index > -1 && !input.prop( "checked" ) ) {
+
+					// The column header associated with /this/ checkbox is still present in the
+					// post-refresh table and the checkbox is not checked, so the column associated
+					// with this column header is currently hidden. Let's record that.
+					hiddenColumns.push( index );
+				}
+			});
+
 			// columns not being replaced must be cleared from input toggle-locks
 			this._unlockCells( this.element.find( ".ui-table-cell-hidden, " +
 				".ui-table-cell-visible" ) );
@@ -13510,8 +13777,14 @@ $.widget( "mobile.table", $.mobile.table, {
 			// update columntoggles and cells
 			this._addToggles( this._menu, create );
 
-			// check/uncheck
-			this._setToggleState();
+			// At this point all columns are visible, so uncheck the checkboxes that correspond to
+			// those columns we've found to be hidden
+			for ( index = hiddenColumns.length - 1 ; index > -1 ; index-- ) {
+				headers.eq( hiddenColumns[ index ] ).jqmData( "input" )
+					.prop( "checked", false )
+					.checkboxradio( "refresh" )
+					.trigger( "change" );
+			}
 		}
 	},
 
@@ -13581,10 +13854,10 @@ $.widget( "mobile.table", $.mobile.table, {
 			var cells = $( this ).jqmData( "cells" ),
 				colstart = $.mobile.getAttribute( this, "colstart" ),
 				hierarchyClass = cells.not( this ).filter( "thead th" ).length && " ui-table-cell-label-top",
-				text = $( this ).text(),
+				contents = $( this ).clone().contents(),
 				iteration, filter;
 
-				if ( text !== ""  ) {
+				if ( contents.length > 0  ) {
 
 					if ( hierarchyClass ) {
 						iteration = parseInt( this.getAttribute( "colspan" ), 10 );
@@ -13594,18 +13867,24 @@ $.widget( "mobile.table", $.mobile.table, {
 							filter = "td:nth-child("+ iteration +"n + " + ( colstart ) +")";
 						}
 
-						table._addLabels( cells.filter( filter ), opts.classes.cellLabels + hierarchyClass, text );
+						table._addLabels( cells.filter( filter ),
+							opts.classes.cellLabels + hierarchyClass, contents );
 					} else {
-						table._addLabels( cells, opts.classes.cellLabels, text );
+						table._addLabels( cells, opts.classes.cellLabels, contents );
 					}
 
 				}
 		});
 	},
 
-	_addLabels: function( cells, label, text ) {
+	_addLabels: function( cells, label, contents ) {
+		if ( contents.length === 1 && contents[ 0 ].nodeName.toLowerCase() === "abbr" ) {
+			contents = contents.eq( 0 ).attr( "title" );
+		}
 		// .not fixes #6006
-		cells.not( ":has(b." + label + ")" ).prepend( "<b class='" + label + "'>" + text + "</b>"  );
+		cells
+			.not( ":has(b." + label + ")" )
+				.prepend( $( "<b class='" + label + "'></b>" ).append( contents ) );
 	}
 });
 
@@ -13664,7 +13943,9 @@ $.widget( "mobile.filterable", {
 			}
 
 			this._timer = this._delay( function() {
-				this._trigger( "beforefilter", null, { input: search } );
+				if ( this._trigger( "beforefilter", null, { input: search } ) === false ) {
+					return false;
+				}
 
 				// Change val as lastval for next execution
 				search[ 0 ].setAttribute( "data-" + $.mobile.ns + "lastval", val );
@@ -13712,7 +13993,8 @@ $.widget( "mobile.filterable", {
 		// If nothing is hidden, then the decision whether to hide or show the items
 		// is based on the "filterReveal" option.
 		if ( hide.length === 0 ) {
-			filterItems[ opts.filterReveal ? "addClass" : "removeClass" ]( "ui-screen-hidden" );
+			filterItems[ ( opts.filterReveal && val.length === 0 ) ?
+				"addClass" : "removeClass" ]( "ui-screen-hidden" );
 		} else {
 			$( hide ).addClass( "ui-screen-hidden" );
 			$( show ).removeClass( "ui-screen-hidden" );
@@ -13763,6 +14045,8 @@ $.widget( "mobile.filterable", {
 				this.document.find( selector );
 
 			this._on( search, {
+				keydown: "_onKeyDown",
+				keypress: "_onKeyPress",
 				keyup: "_onKeyUp",
 				change: "_onKeyUp",
 				input: "_onKeyUp"
@@ -13770,6 +14054,21 @@ $.widget( "mobile.filterable", {
 		}
 
 		this._search = search;
+	},
+
+	// Prevent form submission
+	_onKeyDown: function( event ) {
+		if ( event.keyCode === $.ui.keyCode.ENTER ) {
+			event.preventDefault();
+			this._preventKeyPress = true;
+		}
+	},
+
+	_onKeyPress: function( event ) {
+		if ( this._preventKeyPress ) {
+			event.preventDefault();
+			this._preventKeyPress = false;
+		}
 	},
 
 	_setOptions: function( options ) {
@@ -13875,7 +14174,9 @@ $.widget( "mobile.filterable", $.mobile.filterable, {
 			// Also trigger listviewbeforefilter if this widget is also a listview
 			this._widget._trigger( "beforefilter", event, data );
 		}
-		this._super( type, event, data );
+
+		// Passing back the response enables calling preventDefault()
+		return this._super( type, event, data );
 	},
 
 	_setWidget: function( widget ) {
@@ -13960,6 +14261,24 @@ $.widget( "mobile.filterable", $.mobile.filterable, {
 		return ret;
 	},
 
+	// The listview implementation accompanying this filterable backcompat layer will call
+	// filterable.refresh() after it's done refreshing the listview to make sure the filterable
+	// filters out any new items added. However, when the listview refresh has been initiated by
+	// the filterable itself, then such filtering has already taken place, and calling the
+	// filterable's refresh() method will cause an infinite recursion. We stop this by setting a
+	// flag that will cause the filterable's refresh() method to short-circuit.
+	_refreshChildWidget: function() {
+		this._refreshingChildWidget = true;
+		this._superApply( arguments );
+		this._refreshingChildWidget = false;
+	},
+
+	refresh: function() {
+		if ( !this._refreshingChildWidget ) {
+			this._superApply( arguments );
+		}
+	},
+
 	_destroy: function() {
 		if ( this._isSearchInternal() ) {
 			this._search.remove();
@@ -13986,6 +14305,38 @@ $.widget( "mobile.filterable", $.mobile.filterable, {
 				}
 			}
 			this._search.textinput( "option", textinputOptions );
+		}
+	}
+});
+
+// Instantiate a filterable on a listview that has the data-filter="true" attribute
+// This is not necessary for static content, because the auto-enhance takes care of instantiating
+// the filterable upon encountering data-filter="true". However, because of 1.3.x it is expected
+// that a listview with data-filter="true" will be filterable even if you just instantiate a
+// listview on it. The extension below ensures that this continues to happen in 1.4.x.
+$.widget( "mobile.listview", $.mobile.listview, {
+	options: {
+		filter: false
+	},
+	_create: function() {
+		if ( this.options.filter === true &&
+				!this.element.data( "mobile-filterable" ) ) {
+			this.element.filterable();
+		}
+		return this._super();
+	},
+
+	refresh: function() {
+		var filterable;
+
+		this._superApply( arguments );
+
+		if ( this.options.filter === true ) {
+			filterable = this.element.data( "mobile-filterable" );
+
+			if ( filterable ) {
+				filterable.refresh();
+			}
 		}
 	}
 });
@@ -14924,7 +15275,8 @@ $.widget( "ui.tabs", {
 			var path = $.mobile.path,
 				$pages = $( ":jqmData(role='page'), :jqmData(role='dialog')" ),
 				hash = path.stripHash( path.stripQueryParams(path.parseLocation().hash) ),
-				hashPage = document.getElementById( hash );
+				theLocation = $.mobile.path.parseLocation(),
+				hashPage = hash ? document.getElementById( hash ) : undefined;
 
 			// if no pages are found, create one with body's inner html
 			if ( !$pages.length ) {
@@ -14937,7 +15289,8 @@ $.widget( "ui.tabs", {
 
 				// unless the data url is already set set it to the pathname
 				if ( !$this[ 0 ].getAttribute( "data-" + $.mobile.ns + "url" ) ) {
-					$this.attr( "data-" + $.mobile.ns + "url", $this.attr( "id" ) || location.pathname + location.search );
+					$this.attr( "data-" + $.mobile.ns + "url", $this.attr( "id" ) ||
+						path.convertUrlToDataUrl( theLocation.pathname + theLocation.search ) );
 				}
 			});
 
@@ -14973,11 +15326,6 @@ $.widget( "ui.tabs", {
 				( $( hashPage ).is( ":jqmData(role='page')" ) ||
 					$.mobile.path.isPath( hash ) ||
 					hash === $.mobile.dialogHashKey ) ) ) {
-
-				// Store the initial destination
-				if ( $.mobile.path.isHashValid( location.hash ) ) {
-					$.mobile.navigate.history.initialDst = hash.replace( "#", "" );
-				}
 
 				// make sure to set initial popstate state if it exists
 				// so that navigation back to the initial page works properly
