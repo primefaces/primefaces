@@ -23,8 +23,11 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
+import org.primefaces.util.Constants;
 
 public class DataTableRenderer extends org.primefaces.component.datatable.DataTableRenderer {
  
@@ -62,6 +65,71 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         encodeTbody(context, table, false);
         
         writer.endElement("table");
+    }
+    
+    @Override
+    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd, String theadId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        ColumnGroup group = table.getColumnGroup("header");
+        List<UIColumn> columns = table.getColumns();
+        String theadClientId = (theadId == null) ? table.getClientId(context) + "_head" : theadId;
+        
+        writer.startElement("thead", null);
+        writer.writeAttribute("id", theadClientId, null);
+        
+        if(group != null && group.isRendered()) {
+            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
+
+            for(UIComponent child : group.getChildren()) {
+                if(child.isRendered()) {
+                    if(child instanceof Row) {
+                        Row headerRow = (Row) child;
+
+                        writer.startElement("tr", null);
+                        writer.writeAttribute("class", "ui-bar-b", null);
+                        
+                        for(UIComponent headerRowChild: headerRow.getChildren()) {
+                            if(headerRowChild.isRendered()) {
+                                if(headerRowChild instanceof Column)
+                                    encodeColumnHeader(context, table, (Column) headerRowChild);
+                                else
+                                    headerRowChild.encodeAll(context);
+                            }
+                        }
+
+                        writer.endElement("tr");
+                    }
+                    else {
+                        child.encodeAll(context);
+                    }
+                }
+            }
+            
+            context.getAttributes().remove(Constants.HELPER_RENDERER);
+        } 
+        else {
+            writer.startElement("tr", null);
+            writer.writeAttribute("class", "ui-bar-b", null);
+            writer.writeAttribute("role", "row", null);
+            
+            for(int i = columnStart; i < columnEnd; i++) {
+                UIColumn column = columns.get(i);
+
+                if(column instanceof Column) {
+                    encodeColumnHeader(context, table, column);
+                }
+                else if(column instanceof DynamicColumn) {
+                    DynamicColumn dynamicColumn = (DynamicColumn) column;
+                    dynamicColumn.applyModel();
+
+                    encodeColumnHeader(context, table, dynamicColumn);
+                }
+            }
+            
+            writer.endElement("tr");
+        }
+        
+        writer.endElement("thead");
     }
     
     @Override
