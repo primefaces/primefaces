@@ -2,6 +2,8 @@ import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.event.map.MarkerDragEvent;
+import org.primefaces.event.map.GeocodeEvent;
+import org.primefaces.event.map.ReverseGeocodeEvent;
 import org.primefaces.model.map.LatLngBounds;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -18,7 +20,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
 import org.primefaces.context.RequestContext;
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("overlaySelect","stateChange", "pointSelect", "markerDrag"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("overlaySelect","stateChange", "pointSelect", "markerDrag", "geocode", "reverseGeocode"));
 
     @Override
     public void queueEvent(FacesEvent event) {
@@ -67,7 +69,19 @@ import org.primefaces.context.RequestContext;
 
                 wrapperEvent = new MarkerDragEvent(this, behaviorEvent.getBehavior(), marker);
             }
-            
+            else if(eventName.equals("geocode")) {
+                double lat = Double.valueOf(params.get(clientId + "_lat"));
+                double lng = Double.valueOf(params.get(clientId + "_lng"));
+                LatLng position = new LatLng(lat, lng);
+
+                wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), position);
+            }
+            else if(eventName.equals("reverseGeocode")) {
+                String address = params.get(clientId + "_address");
+
+                wrapperEvent = new ReverseGeocodeEvent(this, behaviorEvent.getBehavior(), address);
+            }
+
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
 
             super.queueEvent(wrapperEvent);
