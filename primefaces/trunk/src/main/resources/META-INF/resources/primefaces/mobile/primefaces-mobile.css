@@ -49,3 +49,9 @@
 .ui-calendar-inline .ui-input-text {
     display: none;
 }
+
+/** DataTable **/
+.ui-table thead th, 
+.ui-table tbody td {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
