@@ -16,8 +16,6 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public class DefaultTreeNode implements TreeNode, Serializable {
@@ -90,7 +88,14 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 	}
 	
 	public void setChildren(List<TreeNode> children) {
-		this.children = children;
+        if(children instanceof TreeNodeChildren) {
+            this.children = children;
+        }
+        else {
+            TreeNodeChildren nodeChildren = new TreeNodeChildren(this);
+            nodeChildren.addAll(children);
+            this.children = nodeChildren;
+        }
 	}
 	
 	public TreeNode getParent() {
