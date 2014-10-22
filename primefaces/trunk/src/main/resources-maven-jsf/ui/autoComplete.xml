@@ -188,6 +188,13 @@
             <type>java.lang.String</type>
             <description>Event to initiate the query, valid values are "keyup" and "enter".</description>
         </attribute>
+        <attribute>
+            <name>dropdownMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Specifies the behavior dropdown button. Default "blank" mode
+            sends an empty string and "current" mode sends the input value.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
