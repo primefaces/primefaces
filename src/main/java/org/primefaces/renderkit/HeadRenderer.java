@@ -135,7 +135,7 @@ public class HeadRenderer extends Renderer {
 
         Resource themeResource = context.getApplication().getResourceHandler().createResource(resource, library);
         if (themeResource == null) {
-            throw new FacesException("Error loading theme, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
+            throw new FacesException("Error loading css, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
         } 
         else {
             writer.startElement("link", null);
