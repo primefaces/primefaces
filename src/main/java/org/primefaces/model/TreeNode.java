@@ -52,4 +52,6 @@ public interface TreeNode {
     public void setRowKey(String rowKey);
     
     public String getRowKey();
+    
+    public void clearParent();
 }

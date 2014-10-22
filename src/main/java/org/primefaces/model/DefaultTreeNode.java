@@ -100,6 +100,10 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 	public void setParent(TreeNode parent) {
         this.parent = parent;
 	}
+
+    public void clearParent() {
+        this.parent = null;
+    }
 	
 	public boolean isExpanded() {
 		return expanded;

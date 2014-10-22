@@ -100,4 +100,18 @@ public class CheckboxTreeNodeTest {
         assertFalse(document.isSelected());
     }
     
+    @Test
+    public void shouldDeleteNode() {
+        TreeNode work = root.getChildren().get(0).getChildren().get(0);
+        TreeNode expenses = root.getChildren().get(0).getChildren().get(0).getChildren().get(0);
+        
+        assertEquals("Expenses", expenses.getData());
+        
+        expenses.getChildren().clear();
+        expenses.getParent().getChildren().remove(expenses);
+        
+        assertNull(expenses.getParent());
+        assertEquals(1, work.getChildCount());
+    }
+    
 }

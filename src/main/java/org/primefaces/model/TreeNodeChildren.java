@@ -178,7 +178,7 @@ public class TreeNodeChildren extends ArrayList<TreeNode> {
         }
         
         if(super.indexOf(node) != -1) {
-            node.setParent(null);
+            node.clearParent();
         }
         
         if(super.remove(node)) {
