@@ -133,15 +133,15 @@ public class HeadRenderer extends Renderer {
     protected void encodeCSS(FacesContext context, String library, String resource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        Resource themeResource = context.getApplication().getResourceHandler().createResource(resource, library);
-        if (themeResource == null) {
+        Resource cssResource = context.getApplication().getResourceHandler().createResource(resource, library);
+        if (cssResource == null) {
             throw new FacesException("Error loading css, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
         } 
         else {
             writer.startElement("link", null);
             writer.writeAttribute("type", "text/css", null);
             writer.writeAttribute("rel", "stylesheet", null);
-            writer.writeAttribute("href", themeResource.getRequestPath(), null);
+            writer.writeAttribute("href", cssResource.getRequestPath(), null);
             writer.endElement("link");
         }
     }
