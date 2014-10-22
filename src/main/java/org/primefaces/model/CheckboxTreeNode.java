@@ -90,7 +90,14 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
 	}
 	
 	public void setChildren(List<TreeNode> children) {
-		this.children = children;
+        if(children instanceof TreeNodeChildren) {
+            this.children = children;
+        }
+        else {
+            TreeNodeChildren nodeChildren = new TreeNodeChildren(this);
+            nodeChildren.addAll(children);
+            this.children = nodeChildren;
+        }
 	}
 	
 	public TreeNode getParent() {
