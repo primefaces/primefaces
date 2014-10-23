@@ -36,6 +36,7 @@ public class PaginatorRenderer extends CoreRenderer {
         ELEMENTS.put("{PreviousPageLink}", new PrevPageLinkRenderer());
         ELEMENTS.put("{NextPageLink}", new NextPageLinkRenderer());
         ELEMENTS.put("{LastPageLink}", new LastPageLinkRenderer());
+        ELEMENTS.put("{PageLinks}", new PageLinksRenderer());
     }
 
     public void encodeMarkup(FacesContext context, UIData uidata, String position) throws IOException {

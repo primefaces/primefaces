@@ -136,6 +136,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             this.updateData(content);
+                            
+                            var paginator = this.getPaginator();
+                            if(paginator) {
+                                paginator.setPage(0, true);
+                            }
                                                         
                             this.sortableColumns.filter('.ui-column-sorted').data('sortorder', this.SORT_ORDER.UNSORTED).removeClass('ui-column-sorted')
                                             .find('.ui-sortable-column-icon').removeClass('ui-icon-arrow-d ui-icon-arrow-u').addClass('ui-icon-bars');
@@ -152,6 +157,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                     });
 
                 return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                var paginator = $this.getPaginator();             
+                if(paginator && args && paginator.cfg.rowCount !== args.totalRecords) {
+                    paginator.setTotalRecords(args.totalRecords);
+                }
             }
         };
         
