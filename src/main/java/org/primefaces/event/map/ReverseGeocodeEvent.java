@@ -15,6 +15,7 @@
  */
 package org.primefaces.event.map;
 
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -23,9 +24,9 @@ import javax.faces.event.FacesListener;
 
 public class ReverseGeocodeEvent extends AjaxBehaviorEvent {
 	
-	private String address;
+	private List<String> address;
 	
-	public ReverseGeocodeEvent(UIComponent component, Behavior behavior, String address) {
+	public ReverseGeocodeEvent(UIComponent component, Behavior behavior, List<String> address) {
 		super(component, behavior);
 		this.address = address;
 	}
@@ -40,7 +41,7 @@ public class ReverseGeocodeEvent extends AjaxBehaviorEvent {
 		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
-    public String getAddress() {
+    public List<String> getAddress() {
         return address;
     }
 

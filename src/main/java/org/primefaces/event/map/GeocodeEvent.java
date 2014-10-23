@@ -15,6 +15,7 @@
  */
 package org.primefaces.event.map;
 
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -25,9 +26,9 @@ import org.primefaces.model.map.LatLng;
 
 public class GeocodeEvent extends AjaxBehaviorEvent {
 	
-	private LatLng latlng;
+	private List<LatLng> latlng;
 	
-	public GeocodeEvent(UIComponent component, Behavior behavior, LatLng latlng) {
+	public GeocodeEvent(UIComponent component, Behavior behavior, List<LatLng> latlng) {
 		super(component, behavior);
 		this.latlng = latlng;
 	}
@@ -42,8 +43,8 @@ public class GeocodeEvent extends AjaxBehaviorEvent {
 		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
-    public LatLng getLatlng() {
+    public List<LatLng> getLatlng() {
         return latlng;
     }
-    
+
 }
