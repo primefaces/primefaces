@@ -19,6 +19,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     
     bindEvents: function() {
         this.bindSortEvents();
+        
+        if(this.cfg.selectionMode) {
+            this.setupSelection();
+        }
     },
     
     bindSortEvents: function() {
@@ -114,6 +118,163 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    setupSelection: function() {
+        var $this = this;
+        this.selectionHolder = $(this.jqId + '_selection');
+        this.rowSelector = '> tr.ui-datatable-selectable';
+
+        var preselection = this.selectionHolder.val();
+        this.selection = (preselection === "") ? [] : preselection.split(',');
+
+        this.tbody.off('click.dataTable', this.rowSelector).on('click.dataTable', this.rowSelector, null, function(e) {
+            $this.onRowClick(e, this);
+        });
+    },
+    
+    onRowClick: function(event, rowElement) { 
+        //Check if rowclick triggered this event not a clickable element in row content
+        if($(event.target).is('td,span:not(.ui-c)')) {
+            var row = $(rowElement),
+            selected = row.hasClass('ui-bar-b');
+    
+            if(selected) {
+                this.unselectRow(row);
+            }
+            else {
+                if(this.cfg.selectionMode === 'single') {
+                    this.unselectAllRows();
+                }
+                
+                this.selectRow(row);
+            }
+        }
+    },
+    
+    selectRow: function(r, silent) {
+        var row = this.findRow(r),
+        rowMeta = this.getRowMeta(row);
+
+        row.addClass('ui-bar-b');
+        
+        this.addSelection(rowMeta.key);
+
+        this.writeSelections();
+
+        if(!silent) {
+            this.fireRowSelectEvent(rowMeta.key, 'rowSelect');
+        }
+    },
+    
+    unselectRow: function(r, silent) {
+        var row = this.findRow(r),
+        rowMeta = this.getRowMeta(row);
+
+        row.removeClass('ui-bar-b');
+        
+        this.removeSelection(rowMeta.key);
+
+        this.writeSelections();
+
+        if(!silent) {
+            this.fireRowUnselectEvent(rowMeta.key, "rowUnselect");
+        }
+    },
+    
+    unselectAllRows: function() {
+        this.tbody.children('tr.ui-bar-b').removeClass('ui-bar-b');
+        
+        this.selection = [];
+        this.writeSelections();
+    },
+    
+    /**
+     * Sends a rowSelectEvent on server side to invoke a rowSelectListener if defined
+     */
+    fireRowSelectEvent: function(rowKey, behaviorEvent) {
+        if(this.cfg.behaviors) {
+            var selectBehavior = this.cfg.behaviors[behaviorEvent];
+
+            if(selectBehavior) {
+                var ext = {
+                        params: [{name: this.id + '_instantSelectedRowKey', value: rowKey}
+                    ]
+                };
+
+                selectBehavior.call(this, ext);
+            }
+        }
+    },
+    
+    /**
+     * Sends a rowUnselectEvent on server side to invoke a rowUnselectListener if defined
+     */
+    fireRowUnselectEvent: function(rowKey, behaviorEvent) {
+        if(this.cfg.behaviors) {
+            var unselectBehavior = this.cfg.behaviors[behaviorEvent];
+
+            if(unselectBehavior) {
+                var ext = {
+                    params: [
+                    {
+                        name: this.id + '_instantUnselectedRowKey', 
+                        value: rowKey
+                    }
+                    ]
+                };
+
+                unselectBehavior.call(this, ext);
+            }
+        }
+    },
+    
+    writeSelections: function() {
+        this.selectionHolder.val(this.selection.join(','));
+    },
+    
+    findRow: function(r) {
+        var row = r;
+
+        if(PrimeFaces.isNumber(r)) {
+            row = this.tbody.children('tr:eq(' + r + ')');
+        }
+
+        return row;
+    },
+    
+    /**
+     * Remove given rowIndex from selection
+     */
+    removeSelection: function(rowIndex) {        
+        this.selection = $.grep(this.selection, function(value) {
+            return value != rowIndex;
+        });
+    },
+    
+    /**
+     * Adds given rowIndex to selection if it doesn't exist already
+     */
+    addSelection: function(rowIndex) {
+        if(!this.isSelected(rowIndex)) {
+            this.selection.push(rowIndex);
+        }
+    },
+    
+    getRowMeta: function(row) {
+        var meta = {
+            index: row.data('ri'),
+            key:  row.attr('data-rk')
+        };
+
+        return meta;
+    },
+    
+    /**
+     * Finds if given rowIndex is in selection
+     */
+    isSelected: function(rowIndex) {
+        return PrimeFaces.inArray(this.selection, rowIndex);
+    },
+        
     isEmpty: function() {
         return this.tbody.children('tr.ui-datatable-empty-message').length === 1;
     },

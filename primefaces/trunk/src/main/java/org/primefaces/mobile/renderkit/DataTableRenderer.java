@@ -29,9 +29,23 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.util.Constants;
+import org.primefaces.util.WidgetBuilder;
 
 public class DataTableRenderer extends org.primefaces.component.datatable.DataTableRenderer {
  
+    @Override
+    protected void encodeScript(FacesContext context, DataTable table) throws IOException{
+		String clientId = table.getClientId(context);        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("DataTable", table.resolveWidgetVar(), clientId);
+                
+        wb.attr("selectionMode", table.getSelectionMode(), null);
+        
+        encodeClientBehaviors(context, table);
+
+        wb.finish();
+	}
+    
     @Override
     protected void encodeMarkup(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -45,6 +59,10 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
         
         encodeRegularTable(context, table);
+        
+        if(table.isSelectionEnabled()) {
+            encodeStateHolder(context, table, table.getClientId(context) + "_selection", table.getSelectedRowKeysAsString());
+        }
         
         writer.endElement("div");
     }
@@ -87,7 +105,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
                         Row headerRow = (Row) child;
 
                         writer.startElement("tr", null);
-                        writer.writeAttribute("class", "ui-bar-b", null);
+                        writer.writeAttribute("class", "ui-bar-a", null);
                         
                         for(UIComponent headerRowChild: headerRow.getChildren()) {
                             if(headerRowChild.isRendered()) {
@@ -110,7 +128,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         } 
         else {
             writer.startElement("tr", null);
-            writer.writeAttribute("class", "ui-bar-b", null);
+            writer.writeAttribute("class", "ui-bar-a", null);
             writer.writeAttribute("role", "row", null);
             
             for(int i = columnStart; i < columnEnd; i++) {
@@ -215,9 +233,12 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         String clientId = table.getClientId(context);
         String emptyMessage = table.getEmptyMessage();
         UIComponent emptyFacet = table.getFacet("emptyMessage");
-        SubTable subTable = table.getSubTable();
         String tbodyClientId = (tbodyId == null) ? clientId + "_data" : tbodyId;
                        
+        if(table.isSelectionEnabled()) {
+            table.findSelectedRowKeys();
+        }
+        
         int rows = table.getRows();
 		int first = table.getFirst();
         int rowCount = table.getRowCount();
@@ -278,13 +299,43 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
     @Override
     public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        boolean selectionEnabled = table.isSelectionEnabled();
+        Object rowKey = null;
         List<UIColumn> columns = table.getColumns();
-        String styleClass = table.getRowStyleClass();
+        
+        if(selectionEnabled) {
+            //try rowKey attribute
+            rowKey = table.getRowKey();
+            
+            //ask selectable datamodel
+            if(rowKey == null)
+                rowKey = table.getRowKeyFromModel(table.getRowData());
+        }
+        
+        //Preselection
+        
+        boolean selected = table.getSelectedRowKeys().contains(rowKey);
+        
+        String userRowStyleClass = table.getRowStyleClass();
+        String rowStyleClass = DataTable.MOBILE_ROW_CLASS;
+        if(selectionEnabled && !table.isDisabledSelection()) {
+            rowStyleClass = rowStyleClass + " " + DataTable.SELECTABLE_ROW_CLASS;
+        }
+            
+        if(selected) {
+            rowStyleClass = rowStyleClass + " ui-bar-b";
+        }
+            
+        if(userRowStyleClass != null) {
+            rowStyleClass = rowStyleClass + " " + userRowStyleClass;
+        }
         
         writer.startElement("tr", null);
-        if(styleClass != null) {
-            writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("data-ri", rowIndex, null);
+        if(rowKey != null) {
+            writer.writeAttribute("data-rk", rowKey, null);
         }
+        writer.writeAttribute("class", rowStyleClass, null);
         
         for(int i = columnStart; i < columnEnd; i++) {
             UIColumn column = columns.get(i);
