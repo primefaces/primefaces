@@ -120,6 +120,7 @@ import org.primefaces.util.SharedStringBuilder;
     
     public static final String MOBILE_TABLE_CLASS = "ui-responsive ui-shadow ui-table ui-table-reflow table-stripe";
     public static final String MOBILE_COLUMN_HEADER_CLASS = "ui-column-header";
+    public static final String MOBILE_ROW_CLASS = "ui-table-row";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
                                                         "rowUnselect", "rowEdit", "rowEditInit", "rowEditCancel", "colResize", "toggleSelect", "colReorder", "contextMenu"
@@ -711,11 +712,11 @@ import org.primefaces.util.SharedStringBuilder;
         }
     }
 
-    protected List<Object> getSelectedRowKeys() {
+    public List<Object> getSelectedRowKeys() {
         return selectedRowKeys;
     }
 
-    protected String getSelectedRowKeysAsString() {
+    public String getSelectedRowKeysAsString() {
         StringBuilder builder = SharedStringBuilder.get(SB_GET_SELECTED_ROW_KEYS_AS_STRING);
         for(Iterator<Object> iter = getSelectedRowKeys().iterator(); iter.hasNext();) {
             builder.append(iter.next());

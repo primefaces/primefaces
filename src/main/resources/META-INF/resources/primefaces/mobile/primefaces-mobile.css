@@ -54,3 +54,8 @@
 .ui-table th.ui-sortable-column {
     position: relative;
 }
+
+.ui-table tr.ui-bar-b {
+    border: 0 none;
+    font-weight: normal;
+}
