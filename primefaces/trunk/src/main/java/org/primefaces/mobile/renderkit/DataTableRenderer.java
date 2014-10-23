@@ -17,6 +17,7 @@ package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
 import java.util.List;
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -140,19 +141,40 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
+        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        boolean sortable = (columnSortByVE != null);
+        String sortIcon = null;
+        String defaultStyleClass = sortable ? DataTable.MOBILE_COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.MOBILE_COLUMN_HEADER_CLASS; 
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
+        styleClass = (styleClass == null) ? defaultStyleClass: defaultStyleClass + " " + styleClass;
+              
+        if(sortable) {
+            ValueExpression tableSortByVE = table.getValueExpression("sortBy");
+            boolean defaultSorted = (tableSortByVE != null);
+                    
+            if(defaultSorted) {
+                 sortIcon = resolveDefaultSortIcon(table, column, table.getSortOrder());
+            }
+            
+            if(sortIcon == null) {
+                sortIcon = "ui-sortable-column-icon ui-icon-bars ui-btn-icon-notext ui-btn-right";
+            }
+            else {
+                styleClass = styleClass + " ui-column-sorted";
+            }
+        }
         
         writer.startElement("th", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("role", "columnheader", null);
+        writer.writeAttribute("class", styleClass, null);
         
         if(style != null) writer.writeAttribute("style", style, null);
-        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
                 
-        encodeColumnHeaderContent(context, column, null);
+        encodeColumnHeaderContent(context, column, sortIcon);
         
         writer.endElement("th");
     }
@@ -305,5 +327,25 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         column.renderChildren(context);       
 
         writer.endElement("td");
+    }
+    
+    @Override
+    protected String resolveDefaultSortIcon(DataTable table, UIColumn column, String sortOrder) {
+        ValueExpression tableSortByVE = table.getValueExpression("sortBy");
+        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        String columnSortByExpression = columnSortByVE.getExpressionString();
+        String tableSortByExpression = tableSortByVE.getExpressionString();
+        String field = column.getField();
+        String sortField = table.getSortField();
+        String sortIcon = null;
+
+        if((sortField != null && field != null && sortField.equals(field)) || (tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression))) {
+            if(sortOrder.equalsIgnoreCase("ASCENDING"))
+                sortIcon = "ui-sortable-column-icon ui-icon-arrow-u ui-btn-icon-notext ui-btn-right";
+            else if(sortOrder.equalsIgnoreCase("DESCENDING"))
+                sortIcon = "ui-sortable-column-icon ui-icon-arrow-d ui-btn-icon-notext ui-btn-right";
+        }
+        
+        return sortIcon;
     }
 }

@@ -49,3 +49,8 @@
 .ui-calendar-inline .ui-input-text {
     display: none;
 }
+
+/** DataTable **/
+.ui-table th.ui-sortable-column {
+    position: relative;
+}
