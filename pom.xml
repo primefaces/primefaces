@@ -462,6 +462,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/forms.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/growl.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/menu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/paginator.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/overlaypanel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/panel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/tabview.js</include>
@@ -688,6 +689,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/forms.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/growl.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/menu.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/paginator.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/overlaypanel.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/panel.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/tabview.js</include>

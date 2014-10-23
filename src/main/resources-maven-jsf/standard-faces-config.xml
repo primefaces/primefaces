@@ -443,5 +443,11 @@
             <renderer-type>org.primefaces.component.InputSwitchRenderer</renderer-type>
             <renderer-class>org.primefaces.mobile.renderkit.InputSwitchRenderer</renderer-class>
         </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PaginatorRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.paginator.PaginatorRenderer</renderer-class>
+        </renderer>
     </render-kit>
     <!-- Mobile -->

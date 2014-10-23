@@ -18,11 +18,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindEvents: function() {
+        if(this.cfg.paginator) {
+            this.bindPaginator();
+        }
+        
         this.bindSortEvents();
         
         if(this.cfg.selectionMode) {
-            this.setupSelection();
+            this.bindSelection();
         }
+    },
+    
+    bindPaginator: function() {
+        var $this = this;
+        this.cfg.paginator.paginate = function(newState) {
+            $this.paginate(newState);
+        };
+
+        this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
     },
     
     bindSortEvents: function() {
@@ -68,6 +81,43 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
                 
         return $(event.target).is('th,span');
+    },
+    
+    paginate: function(newState) {
+        var $this = this,
+        options = {
+            source: this.id,
+            update: this.id,
+            process: this.id,
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_pagination', value: true},
+                    {name: this.id + '_first', value: newState.first},
+                    {name: this.id + '_rows', value: newState.rows},
+                    {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.updateData(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function() {
+                $this.paginator.cfg.page = newState.page;
+                $this.paginator.updateUI();
+            }
+        };
+
+        if(this.hasBehavior('page')) {
+            var pageBehavior = this.cfg.behaviors['page'];
+
+            pageBehavior.call(this, options);
+        } 
+        else {
+            PrimeFaces.ajax.Request.handle(options); 
+        }
     },
     
     sort: function(columnHeader, order) {  
@@ -118,7 +168,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    setupSelection: function() {
+    bindSelection: function() {
         var $this = this;
         this.selectionHolder = $(this.jqId + '_selection');
         this.rowSelector = '> tr.ui-datatable-selectable';
