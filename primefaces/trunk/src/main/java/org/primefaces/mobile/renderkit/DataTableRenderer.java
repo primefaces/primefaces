@@ -27,7 +27,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.row.Row;
-import org.primefaces.component.subtable.SubTable;
+import org.primefaces.mobile.renderkit.paginator.PaginatorRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
@@ -41,6 +41,11 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
                 
         wb.attr("selectionMode", table.getSelectionMode(), null);
         
+        if(table.isPaginator()) {
+            PaginatorRenderer paginatorRenderer = (PaginatorRenderer) context.getRenderKit().getRenderer("org.primefaces.component", "org.primefaces.component.PaginatorRenderer");
+            paginatorRenderer.encodeScript(context, table, wb);
+        }
+        
         encodeClientBehaviors(context, table);
 
         wb.finish();
@@ -51,14 +56,29 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
         String style = table.getStyle();
+        String defaultStyleClass = "ui-datatable ui-shadow";
         String styleClass = table.getStyleClass();
+        styleClass = (styleClass == null) ? defaultStyleClass: defaultStyleClass + " " + styleClass;
+        boolean hasPaginator = table.isPaginator();
+        String paginatorPosition = table.getPaginatorPosition();
+        PaginatorRenderer paginatorRenderer = (PaginatorRenderer) context.getRenderKit().getRenderer("org.primefaces.component", "org.primefaces.component.PaginatorRenderer");
         
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");
-        if(style != null) writer.writeAttribute("style", style, "style");
-        if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        
+        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+            paginatorRenderer.encodeMarkup(context, table, "top");
+        }
         
         encodeRegularTable(context, table);
+        
+        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+            paginatorRenderer.encodeMarkup(context, table, "top");
+        }
         
         if(table.isSelectionEnabled()) {
             encodeStateHolder(context, table, table.getClientId(context) + "_selection", table.getSelectedRowKeysAsString());

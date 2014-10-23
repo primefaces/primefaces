@@ -59,3 +59,9 @@
     border: 0 none;
     font-weight: normal;
 }
+
+.ui-datatable .ui-paginator .ui-controlgroup {
+    margin: 0;
+    padding: 0.4em 0.5em;
+    text-align: center;
+}

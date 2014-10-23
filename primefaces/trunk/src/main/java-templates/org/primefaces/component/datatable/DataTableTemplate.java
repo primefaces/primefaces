@@ -118,7 +118,7 @@ import org.primefaces.util.SharedStringBuilder;
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
     public static final String STICKY_HEADER_CLASS = "ui-datatable-sticky";
     
-    public static final String MOBILE_TABLE_CLASS = "ui-responsive ui-shadow ui-table ui-table-reflow table-stripe";
+    public static final String MOBILE_TABLE_CLASS = "ui-responsive ui-table ui-table-reflow table-stripe";
     public static final String MOBILE_COLUMN_HEADER_CLASS = "ui-column-header";
     public static final String MOBILE_ROW_CLASS = "ui-table-row";
 
