@@ -20,6 +20,8 @@ import java.util.List;
 public interface TreeNode {
 		
 	public String getType();
+    
+    public void setType(String type);
 
 	public Object getData();
 	
