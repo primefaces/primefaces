@@ -128,23 +128,32 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         
         if(this.hasBehavior('geocode')) {
             var geocodeBehavior = this.cfg.behaviors['geocode'],
-                geocoder = new google.maps.Geocoder();
+                geocoder = new google.maps.Geocoder(),
+                lats = [],
+                lngs = [];
             
             geocoder.geocode({'address': address}, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    var location= results[0].geometry.location;
-
-                    var ext = {
-                        params: [
-                            {name: $this.id + '_lat', value: location.lat()},
-                            {name: $this.id + '_lng', value: location.lng()}
-                        ]
-                    }; 
+                
+                if (status == google.maps.GeocoderStatus.OK) { 
+                    for(var i = 0; i < results.length; i++) {
+                        var location = results[i].geometry.location;
+                        lats[i] = location.lat();
+                        lngs[i] = location.lng();
+                    }
                     
-                    geocodeBehavior.call(this, ext);
+                    if(0 < lats.length && 0 < lngs.length) {
+                        var ext = {
+                            params: [
+                                {name: $this.id + '_lat', value: lats.join()},
+                                {name: $this.id + '_lng', value: lngs.join()}
+                            ]
+                        };
+                        
+                        geocodeBehavior.call(this, ext);
+                    }
                 } 
                 else {
-                    alert('Geocode was not successful for the following reason: ' + status);
+                    PrimeFaces.error('Geocode was not found');
                 }
             });
       
@@ -157,25 +166,33 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         if(this.hasBehavior('reverseGeocode')) {
             var reverseGeocoder = this.cfg.behaviors['reverseGeocode'],
                 geocoder = new google.maps.Geocoder(),
-                latlng = new google.maps.LatLng(lat, lng);
+                latlng = new google.maps.LatLng(lat, lng),
+                addresses = [];
 
             geocoder.geocode({'latLng': latlng}, function(results, status) {
+                
                 if (status == google.maps.GeocoderStatus.OK) {
-                    if (results[0]) {
+                    for(var i = 0; i < results.length; i++) {
+                        if (results[i]) {
+                            addresses[i] = results[i].formatted_address;
+                        } 
+                    }
+                    
+                    if(0 < addresses.length) {
                         var ext = {
                             params: [
-                                {name: $this.id + '_address', value: results[0].formatted_address}
+                                {name: $this.id + '_address', value: addresses.join(';')}
                             ]
                         };
-                        
+
                         reverseGeocoder.call(this, ext);
-                    } 
+                    }
                     else {
-                        alert('No results found');
-                    }     
+                        PrimeFaces.error('No results found');    
+                    }
                 } 
                 else {
-                  alert('Geocoder failed due to: ' + status);
+                    PrimeFaces.error('Geocoder failed');
                 }
            });
            

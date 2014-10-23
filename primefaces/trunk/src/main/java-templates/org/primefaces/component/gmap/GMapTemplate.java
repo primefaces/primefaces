@@ -70,14 +70,23 @@ import org.primefaces.context.RequestContext;
                 wrapperEvent = new MarkerDragEvent(this, behaviorEvent.getBehavior(), marker);
             }
             else if(eventName.equals("geocode")) {
-                double lat = Double.valueOf(params.get(clientId + "_lat"));
-                double lng = Double.valueOf(params.get(clientId + "_lng"));
-                LatLng position = new LatLng(lat, lng);
-
-                wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), position);
+                List<LatLng> positions = new ArrayList<LatLng>();
+                String[] lats = params.get(clientId + "_lat").split(",");
+                String[] lngs = params.get(clientId + "_lng").split(",");
+                for(int i = 0; i < lats.length; i++) {
+                    if(!lats[i].isEmpty() && !lngs[i].isEmpty()) {
+                        positions.add(new LatLng(Double.valueOf(lats[i]), Double.valueOf(lngs[i])));
+                    }
+                }
+                
+                wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), positions);
             }
             else if(eventName.equals("reverseGeocode")) {
-                String address = params.get(clientId + "_address");
+                List<String> address = new ArrayList<String>();
+                String[] addresses = params.get(clientId + "_address").split(";");
+                for (int i = 0; i < addresses.length; i++) {
+                    address.add(addresses[i]);
+                }
 
                 wrapperEvent = new ReverseGeocodeEvent(this, behaviorEvent.getBehavior(), address);
             }
