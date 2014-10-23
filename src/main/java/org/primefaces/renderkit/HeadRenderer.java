@@ -82,7 +82,7 @@ public class HeadRenderer extends Renderer {
         }
         
         if(cc.isFontAwesomeEnabled()) {
-            encodeCSS(context, "primefaces/fa", "font-awesome.css");
+            encodeCSS(context, "primefaces", "fa/font-awesome.css");
         }
         
         //Middle facet
