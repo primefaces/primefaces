@@ -355,25 +355,25 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         return this.cfg.selected;
     },
     
-    fireTabChangeEvent: function(id, index) {
+    fireTabChangeEvent: function(panel) {
         var tabChangeBehavior = this.cfg.behaviors['tabChange'],
         ext = {
             params: [
-                {name: this.id + '_newTab', value: id},
-                {name: this.id + '_tabindex', value: index}
+                {name: this.id + '_newTab', value: panel.attr('id')},
+                {name: this.id + '_tabindex', value: panel.index()}
             ]
         };
         
         tabChangeBehavior.call(this, ext);
     },
     
-    fireTabCloseEvent: function(panel) {    
+    fireTabCloseEvent: function(id, index) {    
         if(this.hasBehavior('tabClose')) {
             var tabCloseBehavior = this.cfg.behaviors['tabClose'],
             ext = {
                 params: [
-                    {name: this.id + '_closeTab', value: panel.attr('id')},
-                    {name: this.id + '_tabindex', value: panel.index()}
+                    {name: this.id + '_closeTab', value: id},
+                    {name: this.id + '_tabindex', value: index()}
                 ]
             };
 
