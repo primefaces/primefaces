@@ -373,7 +373,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             ext = {
                 params: [
                     {name: this.id + '_closeTab', value: id},
-                    {name: this.id + '_tabindex', value: index()}
+                    {name: this.id + '_tabindex', value: index}
                 ]
             };
 
