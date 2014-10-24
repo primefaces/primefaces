@@ -333,8 +333,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         var header = this.navContainer.children().eq(index),
         panel = this.panelContainer.children().eq(index);
 
-        this.fireTabCloseEvent(panel);
-
         header.remove();
         panel.remove();
         
@@ -345,6 +343,8 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             var newIndex = (this.cfg.selected === this.getLength()) ? this.cfg.selected - 1: this.cfg.selected;
             this.select(newIndex, true);
         }
+        
+        this.fireTabCloseEvent(panel.attr('id'), index);
     },
     
     getLength: function() {
@@ -355,12 +355,12 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         return this.cfg.selected;
     },
     
-    fireTabChangeEvent: function(panel) {
+    fireTabChangeEvent: function(id, index) {
         var tabChangeBehavior = this.cfg.behaviors['tabChange'],
         ext = {
             params: [
-                {name: this.id + '_newTab', value: panel.attr('id')},
-                {name: this.id + '_tabindex', value: panel.index()}
+                {name: this.id + '_newTab', value: id},
+                {name: this.id + '_tabindex', value: index}
             ]
         };
         
