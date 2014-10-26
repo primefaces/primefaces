@@ -157,10 +157,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             this.updateData(content);
-                            
-                            var paginator = this.getPaginator();
-                            if(paginator) {
-                                paginator.setPage(0, true);
+
+                            if(this.paginator) {
+                                this.paginator.setPage(0, true);
                             }
                                                         
                             this.sortableColumns.filter('.ui-column-sorted').data('sortorder', this.SORT_ORDER.UNSORTED).removeClass('ui-column-sorted')
@@ -179,10 +178,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
-                var paginator = $this.getPaginator();             
-                if(paginator && args && paginator.cfg.rowCount !== args.totalRecords) {
-                    paginator.setTotalRecords(args.totalRecords);
+            oncomplete: function(xhr, status, args) {           
+                if($this.paginator && args && $this.paginator.cfg.rowCount !== args.totalRecords) {
+                    $this.paginator.setTotalRecords(args.totalRecords);
                 }
             }
         };
