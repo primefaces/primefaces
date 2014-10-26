@@ -69,3 +69,11 @@
     padding: 0.1em 0em;
     text-align: center;
 }
+
+@media ( max-width: 35em ) {
+    
+    .ui-paginator .ui-paginator-page {
+        display: none;
+    }
+    
+}
