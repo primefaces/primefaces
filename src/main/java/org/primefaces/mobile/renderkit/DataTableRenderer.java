@@ -42,7 +42,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         wb.attr("selectionMode", table.getSelectionMode(), null);
         
         if(table.isPaginator()) {
-            PaginatorRenderer paginatorRenderer = (PaginatorRenderer) context.getRenderKit().getRenderer("org.primefaces.component", "org.primefaces.component.PaginatorRenderer");
+            PaginatorRenderer paginatorRenderer = getPaginatorRenderer(context);
             paginatorRenderer.encodeScript(context, table, wb);
         }
         
@@ -56,12 +56,12 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
         String style = table.getStyle();
-        String defaultStyleClass = "ui-datatable ui-shadow";
+        String defaultStyleClass = DataTable.MOBILE_CONTAINER_CLASS;
         String styleClass = table.getStyleClass();
         styleClass = (styleClass == null) ? defaultStyleClass: defaultStyleClass + " " + styleClass;
         boolean hasPaginator = table.isPaginator();
         String paginatorPosition = table.getPaginatorPosition();
-        PaginatorRenderer paginatorRenderer = (PaginatorRenderer) context.getRenderKit().getRenderer("org.primefaces.component", "org.primefaces.component.PaginatorRenderer");
+        PaginatorRenderer paginatorRenderer = getPaginatorRenderer(context);
         
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");
@@ -201,10 +201,10 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
             }
             
             if(sortIcon == null) {
-                sortIcon = "ui-sortable-column-icon ui-icon-bars ui-btn-icon-notext ui-btn-right";
+                sortIcon = DataTable.MOBILE_SORT_ICON_CLASS;
             }
             else {
-                styleClass = styleClass + " ui-column-sorted";
+                styleClass = styleClass + " " + DataTable.MOBILE_SORTED_COLUMN_CLASS;;
             }
         }
         
@@ -407,7 +407,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
 
         if(table.isReflow()) {
             writer.startElement("b", table);
-            writer.writeAttribute("class", "ui-table-cell-label", null);
+            writer.writeAttribute("class", DataTable.MOBILE_CELL_LABEL, null);
             writer.writeText(column.getHeaderText(), null);
             writer.endElement("b");
         }
@@ -429,11 +429,15 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
 
         if((sortField != null && field != null && sortField.equals(field)) || (tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression))) {
             if(sortOrder.equalsIgnoreCase("ASCENDING"))
-                sortIcon = "ui-sortable-column-icon ui-icon-arrow-u ui-btn-icon-notext ui-btn-right";
+                sortIcon = DataTable.MOBILE_SORT_ICON_ASC_CLASS;
             else if(sortOrder.equalsIgnoreCase("DESCENDING"))
-                sortIcon = "ui-sortable-column-icon ui-icon-arrow-d ui-btn-icon-notext ui-btn-right";
+                sortIcon = DataTable.MOBILE_SORT_ICON_DESC_CLASS;
         }
         
         return sortIcon;
+    }
+    
+    private PaginatorRenderer getPaginatorRenderer(FacesContext context) {
+        return (PaginatorRenderer) context.getRenderKit().getRenderer("org.primefaces.component", "org.primefaces.component.PaginatorRenderer");
     }
 }
