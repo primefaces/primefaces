@@ -204,4 +204,8 @@ public class DynamicColumn implements UIColumn {
     public Object getFilterValue() {
         return this.columns.getFilterValue();
     }
+    
+    public int getPriority() {
+        return this.columns.getPriority();
+    }
 }
