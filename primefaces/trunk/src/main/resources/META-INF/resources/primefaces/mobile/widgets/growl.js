@@ -9,7 +9,8 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         
         this.jq.popup({
             positionTo: 'window',
-            theme: 'b'
+            theme: 'b',
+            overlayTheme: 'b'
         });
         
         this.container = $(this.jqId + '-popup');
