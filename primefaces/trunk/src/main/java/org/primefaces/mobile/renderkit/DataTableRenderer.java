@@ -405,6 +405,13 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         if(style != null) writer.writeAttribute("style", style, null);
         if(styleClass != null) writer.writeAttribute("class", styleClass, null);
 
+        if(table.isReflow()) {
+            writer.startElement("b", table);
+            writer.writeAttribute("class", "ui-table-cell-label", null);
+            writer.writeText(column.getHeaderText(), null);
+            writer.endElement("b");
+        }
+        
         column.renderChildren(context);       
 
         writer.endElement("td");
