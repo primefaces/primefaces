@@ -27,6 +27,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.selectionMode) {
             this.bindSelection();
         }
+        
+        this.bindMobileEvents();
     },
     
     bindPaginator: function() {
@@ -73,6 +75,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             
             $this.sort(columnHeader, sortOrder);
         });
+    },
+    
+    bindMobileEvents: function() {
+        if(this.cfg.behaviors) {
+            var $this = this,
+            rowSelector = '> tr:not(.ui-datatable-empty-message)';
+            
+            $.each(this.cfg.behaviors, function(eventName, fn) {
+                $this.tbody.off(eventName, rowSelector).on(eventName, rowSelector, null, function() {
+                    var rowMeta = $this.getRowMeta($(this));
+        
+                    var ext = {
+                        params: [{name: $this.id + '_rowkey', value: rowMeta.key}]
+                    };
+                            
+                    fn.call($this, ext);
+                });
+            });
+        }
     },
     
     shouldSort: function(event) {
