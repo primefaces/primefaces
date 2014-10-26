@@ -1092,6 +1092,20 @@ import org.primefaces.util.SharedStringBuilder;
         }
     
         return super.saveState(context);
-    } 
+    }
+    
+    boolean reflow = false;
+    boolean reflowChecked = false;
+    
+    public boolean isReflow() {
+        if(!reflowChecked) {
+            String styleClass = this.getTableStyleClass();
+        
+            reflow = (styleClass != null && styleClass.contains("ui-table-reflow"));
+            reflowChecked = true;
+        }
+        
+        return reflow;
+    }
     
    
