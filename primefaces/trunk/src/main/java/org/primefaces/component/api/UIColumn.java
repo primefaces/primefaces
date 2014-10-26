@@ -96,4 +96,6 @@ public interface UIColumn {
     public MethodExpression getFilterFunction();
     
     public String getField();
+    
+    public int getPriority();
 }

@@ -177,5 +177,12 @@
 			<type>java.lang.String</type>
             <description>Name of the field to pass lazy load method for filtering and sorting. If not specified, filterBy-sortBy values are used to identify the field name.</description>
 		</attribute>
+        <attribute>
+			<name>priority</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Priority of the column defined as an integer, lower values have more priority.</description>
+		</attribute>
     </attributes>
 </component>

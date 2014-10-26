@@ -180,6 +180,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
         ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        int priority = column.getPriority();
         boolean sortable = (columnSortByVE != null);
         String sortIcon = null;
         String defaultStyleClass = sortable ? DataTable.MOBILE_COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.MOBILE_COLUMN_HEADER_CLASS; 
@@ -187,6 +188,10 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         String styleClass = column.getStyleClass();
         styleClass = (styleClass == null) ? defaultStyleClass: defaultStyleClass + " " + styleClass;
               
+        if(priority > 0) {
+            styleClass = styleClass + " ui-table-priority-" + priority;
+        }
+        
         if(sortable) {
             ValueExpression tableSortByVE = table.getValueExpression("sortBy");
             boolean defaultSorted = (tableSortByVE != null);
@@ -387,6 +392,11 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         String styleClass = column.getStyleClass();
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
+        int priority = column.getPriority();
+        
+        if(priority > 0) {
+            styleClass = (styleClass == null) ? "ui-table-priority-" + priority : styleClass + " ui-table-priority-" + priority;
+        }
         
         writer.startElement("td", null);
         writer.writeAttribute("role", "gridcell", null);
