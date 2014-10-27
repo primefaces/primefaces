@@ -71,7 +71,7 @@ public class HotkeyRenderer extends CoreRenderer {
                 .global(hotkey.isGlobal())
                 .delay(hotkey.getDelay())
                 .timeout(hotkey.getTimeout())
-                .partialSubmit(hotkey.isPartialSubmit(), hotkey.isPartialSubmitSet())
+                .partialSubmit(hotkey.isPartialSubmit(), hotkey.isPartialSubmitSet(), hotkey.getPartialSubmitFilter())
                 .resetValues(hotkey.isResetValues(), hotkey.isResetValuesSet())
                 .ignoreAutoUpdate(hotkey.isIgnoreAutoUpdate())
                 .onstart(hotkey.getOnstart())

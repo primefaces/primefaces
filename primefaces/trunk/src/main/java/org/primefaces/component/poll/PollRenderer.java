@@ -67,7 +67,7 @@ public class PollRenderer extends CoreRenderer {
                 .global(poll.isGlobal())
                 .delay(poll.getDelay())
                 .timeout(poll.getTimeout())
-                .partialSubmit(poll.isPartialSubmit(),poll.isPartialSubmitSet())
+                .partialSubmit(poll.isPartialSubmit(), poll.isPartialSubmitSet(), poll.getPartialSubmitFilter())
                 .resetValues(poll.isResetValues(), poll.isResetValuesSet())
                 .ignoreAutoUpdate(poll.isIgnoreAutoUpdate())
                 .onstart(poll.getOnstart())

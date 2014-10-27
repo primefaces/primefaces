@@ -332,6 +332,12 @@
             <type>java.lang.String</type>
             <description>Appends the overlay to the element defined by search expression. Defaults to document body.</description>
         </attribute>
+        <attribute>
+			<name>partialSubmitFilter</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Selector to use when partial submit is on, default is ":input" to select all descendant inputs of a partially processed components.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

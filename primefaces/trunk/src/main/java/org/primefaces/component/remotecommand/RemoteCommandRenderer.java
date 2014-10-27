@@ -71,7 +71,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
                         .global(source.isGlobal())
                         .delay(source.getDelay())
                         .timeout(source.getTimeout())
-                        .partialSubmit(source.isPartialSubmit(), command.isPartialSubmitSet())
+                        .partialSubmit(source.isPartialSubmit(), command.isPartialSubmitSet(), command.getPartialSubmitFilter())
                         .resetValues(source.isResetValues(), source.isResetValuesSet())
                         .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
                         .onstart(source.getOnstart())

@@ -16,7 +16,6 @@
 package org.primefaces.behavior.ajax;
 
 import java.util.Collection;
-import java.util.List;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -86,7 +85,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
                         .global(ajaxBehavior.isGlobal())
                         .delay(ajaxBehavior.getDelay())
                         .timeout(ajaxBehavior.getTimeout())
-                        .partialSubmit(ajaxBehavior.isPartialSubmit(), ajaxBehavior.isPartialSubmitSet())
+                        .partialSubmit(ajaxBehavior.isPartialSubmit(), ajaxBehavior.isPartialSubmitSet(), ajaxBehavior.getPartialSubmitFilter())
                         .resetValues(ajaxBehavior.isResetValues(), ajaxBehavior.isResetValuesSet())
                         .ignoreAutoUpdate(ajaxBehavior.isIgnoreAutoUpdate())
                         .onstart(ajaxBehavior.getOnstart())

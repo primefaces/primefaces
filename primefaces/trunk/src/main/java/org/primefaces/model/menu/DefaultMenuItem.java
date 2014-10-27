@@ -63,6 +63,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean disableClientWindow;
     private String containerStyle;
     private String containerStyleClass;
+    private String partialSubmitFilter;
     
     public DefaultMenuItem() {}
     
@@ -400,5 +401,13 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+    }
+    
+    public String getPartialSubmitFilter() {
+        return partialSubmitFilter;
+    }
+
+    public void setPartialSubmitFilter(String partialSubmitFilter) {
+        this.partialSubmitFilter = partialSubmitFilter;
     }
 }

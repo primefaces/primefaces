@@ -41,6 +41,8 @@ public interface AjaxSource {
     
     public boolean isPartialSubmitSet();
     
+    public String getPartialSubmitFilter();
+    
     public boolean isResetValues();
     
     public boolean isResetValuesSet();
