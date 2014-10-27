@@ -316,6 +316,12 @@
             <defaultValue>false</defaultValue>
             <description>When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.</description>
 		</attribute>
+        <attribute>
+			<name>partialSubmitFilter</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Selector to use when partial submit is on, default is ":input" to select all descendant inputs of a partially processed components.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>

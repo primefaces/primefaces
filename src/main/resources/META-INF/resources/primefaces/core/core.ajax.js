@@ -13,6 +13,7 @@ PrimeFaces.AB_MAPPING = {
     't': 'timeout',
     'iau': 'ignoreAutoUpdate',
     'ps': 'partialSubmit',
+    'psf': 'partialSubmitFilter',
     'rv': 'resetValues',
     'fi': 'fragmentId',
     'fu': 'fragmentUpdate',
@@ -386,7 +387,8 @@ PrimeFaces.ajax = {
              * if partial submit is enabled and there are components to process partially
              */
             if(cfg.partialSubmit && processIds.indexOf('@all') === -1) {
-                var formProcessed = false;
+                var formProcessed = false,  
+                partialSubmitFilter = cfg.partialSubmitFilter||':input';
 
                 if(processIds.indexOf('@none') === -1) {
                     for (var i = 0; i < processArray.length; i++) {
@@ -401,7 +403,7 @@ PrimeFaces.ajax = {
                             componentPostParams = jqProcess.serializeArray();
                         }
                         else {
-                            componentPostParams = jqProcess.find(':input').serializeArray();
+                            componentPostParams = jqProcess.find(partialSubmitFilter).serializeArray();
                         }
 
                         $.merge(postParams, componentPostParams);

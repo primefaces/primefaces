@@ -145,6 +145,12 @@
 			<defaultValue>false</defaultValue>
             <description>If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.</description>
 		</attribute>
+        <attribute>
+			<name>partialSubmitFilter</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Selector to use when partial submit is on, default is ":input" to select all descendant inputs of a partially processed components.</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>

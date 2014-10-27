@@ -283,7 +283,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 .global(source.isGlobal())
                 .delay(source.getDelay())
                 .timeout(source.getTimeout())
-                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet())
+                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet(), source.getPartialSubmitFilter())
                 .resetValues(source.isResetValues(), source.isResetValuesSet())
                 .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
                 .onstart(source.getOnstart())

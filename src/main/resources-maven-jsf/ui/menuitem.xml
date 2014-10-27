@@ -210,5 +210,11 @@
 			<type>java.lang.String</type>
             <description>StyleClass of the menuitem container.</description>
 		</attribute>
+        <attribute>
+			<name>partialSubmitFilter</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Selector to use when partial submit is on, default is ":input" to select all descendant inputs of a partially processed components.</description>
+		</attribute>
 	</attributes>
 </component>

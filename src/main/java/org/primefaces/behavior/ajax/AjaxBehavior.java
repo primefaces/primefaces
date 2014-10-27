@@ -54,7 +54,8 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     	resetValues(Boolean.class),
     	ignoreAutoUpdate(Boolean.class),
     	delay(String.class),
-        timeout(Integer.class);
+        timeout(Integer.class),
+        partialSubmitFilter(String.class);
 
         final Class<?> expectedType;
 
@@ -206,7 +207,13 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     	setLiteral(PropertyKeys.timeout, timeout);
     }
     
+    public String getPartialSubmitFilter() {
+        return eval(PropertyKeys.partialSubmitFilter, null);
+    }
     
+    public void setPartialSubmitFilter(String partialSubmitFilter) {
+        setLiteral(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
+    }
     
     public boolean isImmediateSet() {
         return isAttributeSet(PropertyKeys.immediate);

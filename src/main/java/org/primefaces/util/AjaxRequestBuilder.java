@@ -150,6 +150,7 @@ public class AjaxRequestBuilder {
         return this;
     }
 
+    @Deprecated
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet) {
         ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
     	
@@ -158,6 +159,23 @@ public class AjaxRequestBuilder {
         
         if(partialSubmit) {
             buffer.append(",ps:true");
+        }
+        
+        return this;
+    }
+
+    public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet, String partialSubmitFilter) {
+        ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+    	
+    	//component can override global setting
+        boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
+        
+        if(partialSubmit) {
+            buffer.append(",ps:true");
+            
+            if(partialSubmitFilter != null) {
+                buffer.append(",psf:\"").append(partialSubmitFilter).append("\"");
+            }
         }
         
         return this;
