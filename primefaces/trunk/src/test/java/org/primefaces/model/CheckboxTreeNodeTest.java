@@ -114,4 +114,51 @@ public class CheckboxTreeNodeTest {
         assertEquals(1, work.getChildCount());
     }
     
+    @Test
+    public void shouldUpdateSelectionStateWhenNodesAreAdded() {
+        TreeNode work = root.getChildren().get(0).getChildren().get(0);
+        assertEquals("Work", work.getData());
+        assertEquals(2, work.getChildCount());
+        
+        TreeNode unselectedNode = new CheckboxTreeNode("Unselected");
+        work.getChildren().add(unselectedNode);
+        
+        assertFalse(work.isSelected());
+        assertFalse(work.isPartialSelected());
+        
+        TreeNode selectedNode1 = new CheckboxTreeNode("Selected1");
+        selectedNode1.setSelected(true);
+        work.getChildren().add(selectedNode1);
+        
+        assertFalse(work.isSelected());
+        assertTrue(work.isPartialSelected());
+        
+        TreeNode unselectedNode2 = new CheckboxTreeNode("Unselected2");
+        work.getChildren().add(unselectedNode2);
+        
+        assertFalse(work.isSelected());
+        assertTrue(work.isPartialSelected());
+    }
+    
+    @Test
+    public void shouldUpdateSelectionStateWhenNodesAreRemoved() {
+        TreeNode work = root.getChildren().get(0).getChildren().get(0);
+        assertEquals("Work", work.getData());
+        assertEquals(2, work.getChildCount());
+        
+        TreeNode resume = work.getChildren().get(1);
+        assertEquals("Resume", resume.getData());
+        
+        work.getChildren().get(0).setSelected(true);
+
+        assertFalse(work.isSelected());
+        assertTrue(work.isPartialSelected()); 
+        
+        work.getChildren().remove(resume);
+        
+        assertTrue(work.isSelected());
+        assertFalse(work.isPartialSelected()); 
+    }
+    
+    
 }
