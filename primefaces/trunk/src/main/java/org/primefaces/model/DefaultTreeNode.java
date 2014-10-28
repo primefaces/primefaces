@@ -123,7 +123,9 @@ public class DefaultTreeNode implements TreeNode, Serializable {
     }
 
     public void setSelected(boolean value) {
-        this.selected = value;
+        if(this.isSelectable()) {
+            this.selected = value;
+        }
     }
 
     public boolean isSelectable() {
