@@ -216,14 +216,11 @@ public class CheckboxTreeNodeChildren extends ArrayList<TreeNode> {
         
         for(int i=0; i < node.getChildren().size(); i++) {
             TreeNode childNode = node.getChildren().get(i);
-            boolean childSelectable = childNode.isSelectable();
             
-            if(childSelectable) {
-                boolean childSelected = childNode.isSelected();
-                boolean childPartialSelected = childNode.isPartialSelected();
-                allChildrenSelected = allChildrenSelected && childSelected;
-                partialSelected = partialSelected||childSelected||childPartialSelected;
-            }
+            boolean childSelected = childNode.isSelected();
+            boolean childPartialSelected = childNode.isPartialSelected();
+            allChildrenSelected = allChildrenSelected && childSelected;
+            partialSelected = partialSelected||childSelected||childPartialSelected;
         }
         
         ((CheckboxTreeNode) node).setSelected(allChildrenSelected, false);
