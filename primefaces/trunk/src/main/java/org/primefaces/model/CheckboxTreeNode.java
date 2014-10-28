@@ -128,11 +128,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         return this.selected;
     }
 
-    public void setSelected(boolean value, boolean propagate) {
-        if(!this.isSelectable()) {
-            return;
-        }
-                
+    public void setSelected(boolean value, boolean propagate) {   
         if(propagate) {
             this.setSelected(value);
         } else {
@@ -140,11 +136,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         }
     }
 
-    public void setSelected(boolean value) {
-        if(!this.isSelectable()) {
-            return;
-        }
-                
+    public void setSelected(boolean value) {     
         this.selected = value;
         this.partialSelected = false;
         
@@ -174,24 +166,19 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         
         for(int i=0; i < this.getChildren().size(); i++) {
             TreeNode childNode = this.getChildren().get(i);
-            boolean childSelectable = childNode.isSelectable();
-            
-            if(childSelectable) {
-                boolean childSelected = childNode.isSelected();
-                boolean childPartialSelected = childNode.isPartialSelected();
-                allChildrenSelected = allChildrenSelected && childSelected;
-                this.partialSelected = partialSelected||childSelected||childPartialSelected;
-            }
+                
+            boolean childSelected = childNode.isSelected();
+            boolean childPartialSelected = childNode.isPartialSelected();
+            allChildrenSelected = allChildrenSelected && childSelected;
+            this.partialSelected = this.partialSelected||childSelected||childPartialSelected;
         }
         
         this.selected = allChildrenSelected;
-        
+
         if(allChildrenSelected) {
             this.setPartialSelected(false);
-        } else {
-            this.setPartialSelected(partialSelected);
         }
-        
+
         if(this.getParent() != null) {
             ((CheckboxTreeNode) this.getParent()).propagateSelectionUp();
         }
