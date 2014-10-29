@@ -223,7 +223,9 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if(childCount > 0) {
             for(int i = 0; i < childCount; i++) {
                 TreeNode childNode = node.getChildren().get(i);
-                keys.add(childNode.getRowKey());
+                if(childNode.isSelectable()) {
+                    keys.add(childNode.getRowKey());
+                }
                 populateRowKeys(childNode, keys);
             }
         }
