@@ -1331,12 +1331,10 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         }).click(function(e) {
             var header = $(this);
 
-            if(header.hasClass('ui-state-active')) {
+            if(header.hasClass('ui-state-active'))
                 _self.collapseRootSubmenu($(this));
-            }
-            else {
+            else
                 _self.expandRootSubmenu($(this), false);
-            }
 
             e.preventDefault();
         });
@@ -1349,14 +1347,13 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
 
         this.treeLinks.click(function(e) {
             var link = $(this),
-            submenu = link.next();
+            submenu = link.parent(),
+            submenuList = link.next();
 
-            if(submenu.is(':visible')) {
-                _self.collapseTreeItem(link, submenu);
-            }
-            else {
-                _self.expandTreeItem(link, submenu, false);
-            }
+            if(submenuList.is(':visible'))
+                _self.collapseTreeItem(submenu);
+            else
+                _self.expandTreeItem(submenu, false);
 
             e.preventDefault();
         });
@@ -1389,20 +1386,20 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    expandTreeItem: function(link, submenu, restoring) {
-        link.children('.ui-panelmenu-icon').addClass('ui-icon-triangle-1-s');
-        submenu.show();
+    expandTreeItem: function(submenu, restoring) {
+        submenu.find('> .ui-menuitem-link > .ui-panelmenu-icon').addClass('ui-icon-triangle-1-s');
+        submenu.children('.ui-menu-list').show();
         
         if(!restoring) {
-            this.addAsExpanded(link);
+            this.addAsExpanded(submenu);
         }
     },
 
-    collapseTreeItem: function(link, submenu) {
-        link.children('.ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s');
-        submenu.hide();
+    collapseTreeItem: function(submenu) {
+        submenu.find('> .ui-menuitem-link > .ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s');
+        submenu.children('.ui-menu-list').hide();
         
-        this.removeAsExpanded(link);
+        this.removeAsExpanded(submenu);
     },
     
     saveState: function() {
@@ -1413,17 +1410,15 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     
     restoreState: function() {
         var expandedNodeIds = PrimeFaces.getCookie(this.stateKey);
-        
+
         if(expandedNodeIds) {
             this.expandedNodes = expandedNodeIds.split(',');
             for(var i = 0 ; i < this.expandedNodes.length; i++) {
                 var element = $(PrimeFaces.escapeClientId(this.expandedNodes[i]));
-                if(element.is('div.ui-panelmenu-content')) {
+                if(element.is('div.ui-panelmenu-content'))
                     this.expandRootSubmenu(element.prev(), true);
-                }
-                else if(element.is('a.ui-menuitem-link')) {
-                    this.expandTreeItem(element, element.next(), true);
-                }
+                else if(element.is('li.ui-menu-parent'))
+                    this.expandTreeItem(element, true);
             }
         }
         else {
@@ -1443,7 +1438,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
 
     addAsExpanded: function(element) {
         this.expandedNodes.push(element.attr('id'));
-        
+
         this.saveState();
     },
     

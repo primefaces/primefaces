@@ -28,6 +28,7 @@ public class DefaultSubMenu implements Submenu, Serializable {
     private String label;
     private List<MenuElement> elements;
     private boolean rendered = true;
+    private boolean expanded = false;
     
     public DefaultSubMenu() {
         elements = new ArrayList<MenuElement>();
@@ -96,6 +97,13 @@ public class DefaultSubMenu implements Submenu, Serializable {
     }
     public void setRendered(boolean rendered) {
         this.rendered = rendered;
+    }
+    
+    public boolean isExpanded() {
+        return expanded;
+    }
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
     }
 
     public Object getParent() {
