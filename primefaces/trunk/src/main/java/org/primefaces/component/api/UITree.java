@@ -64,7 +64,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 		,value
         ,required
         ,requiredMessage
-        ,skipChildren;
+        ,skipChildren
+        ,showUnselectableCheckbox;
             
 		String toString;
 
@@ -166,6 +167,13 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 	}
 	public void setSkipChildren(boolean _skipChildren) {
 		getStateHelper().put(PropertyKeys.skipChildren, _skipChildren);
+	}
+    
+    public boolean isShowUnselectableCheckbox() {
+		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showUnselectableCheckbox, false);
+	}
+	public void setShowUnselectableCheckbox(boolean _showUnselectableCheckbox) {
+		getStateHelper().put(PropertyKeys.showUnselectableCheckbox, _showUnselectableCheckbox);
 	}
     
     public Object getLocalSelectedNodes() {

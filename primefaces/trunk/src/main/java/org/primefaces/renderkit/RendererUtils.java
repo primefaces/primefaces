@@ -46,9 +46,10 @@ public class RendererUtils {
         writer.endElement("div");
     }
     
-    public static void encodeCheckbox(FacesContext context, boolean checked, boolean partialSelected) throws IOException {
+    public static void encodeCheckbox(FacesContext context, boolean checked, boolean partialSelected, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon;
+        String boxClass = disabled ? HTML.CHECKBOX_BOX_CLASS + " ui-state-disabled" : HTML.CHECKBOX_BOX_CLASS;
         
         if (checked)
             icon = HTML.CHECKBOX_CHECKED_ICON_CLASS;
@@ -61,7 +62,7 @@ public class RendererUtils {
         writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
                 
         writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_BOX_CLASS, null);
+        writer.writeAttribute("class", boxClass, null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", icon, null);

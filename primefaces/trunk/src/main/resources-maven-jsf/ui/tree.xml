@@ -192,6 +192,14 @@
             <description>Ignores processing of children during lifecycle, improves performance if table only has output components, default is false.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>showUnselectableCheckbox</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node. Default is false.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
