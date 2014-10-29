@@ -1298,7 +1298,6 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
     }
     
 });
-
 /**
  * PrimeFaces PanelMenu Widget
  */
@@ -1412,7 +1411,9 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         var expandedNodeIds = PrimeFaces.getCookie(this.stateKey);
 
         if(expandedNodeIds) {
+            this.collapseAll();
             this.expandedNodes = expandedNodeIds.split(',');
+            
             for(var i = 0 ; i < this.expandedNodes.length; i++) {
                 var element = $(PrimeFaces.escapeClientId(this.expandedNodes[i]));
                 if(element.is('div.ui-panelmenu-content'))
@@ -1423,6 +1424,16 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             this.expandedNodes = [];
+            var activeHeaders = this.headers.filter('.ui-state-active'),
+            activeTreeSubmenus = this.jq.find('.ui-menu-parent > .ui-menu-list:not(.ui-helper-hidden)');
+    
+            for(var i = 0; i < activeHeaders.length; i++) {
+                this.expandedNodes.push(activeHeaders.eq(i).next().attr('id'));
+            }
+            
+            for(var i = 0; i < activeTreeSubmenus.length; i++) {
+                this.expandedNodes.push(activeTreeSubmenus.eq(i).parent().attr('id'));
+            }
         }
     },
     
@@ -1444,6 +1455,18 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     
     clearState: function() {
         PrimeFaces.setCookie(this.stateKey, null);
+    },
+    
+    collapseAll: function() {
+        this.headers.filter('.ui-state-active').each(function() {
+            var header = $(this);
+            header.removeClass('ui-state-active').children('.ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+            header.next().addClass('ui-helper-hidden');
+        });
+        
+        this.jq.find('.ui-menu-parent > .ui-menu-list:not(.ui-helper-hidden)').each(function() {
+            $(this).addClass('ui-helper-hidden').prev().children('.ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+        });
     }
 
 });
