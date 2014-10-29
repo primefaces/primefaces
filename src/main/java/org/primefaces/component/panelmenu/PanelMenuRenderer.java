@@ -73,6 +73,10 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
         styleClass = styleClass == null ? PanelMenu.PANEL_CLASS : PanelMenu.PANEL_CLASS + " " + styleClass;
+        boolean expanded = submenu.isExpanded();
+        String headerClass = expanded ? PanelMenu.ACTIVE_HEADER_CLASS : PanelMenu.INACTIVE_HEADER_CLASS;
+        String headerIconClass = expanded ? PanelMenu.ACTIVE_TAB_HEADER_ICON_CLASS : PanelMenu.INACTIVE_TAB_HEADER_ICON_CLASS;
+        String contentClass = expanded ? PanelMenu.ACTIVE_ROOT_SUBMENU_CONTENT : PanelMenu.INACTIVE_ROOT_SUBMENU_CONTENT;
         
         //wrapper
         writer.startElement("div", null);
@@ -83,12 +87,12 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         
         //header
         writer.startElement("h3", null);
-        writer.writeAttribute("class", PanelMenu.HEADER_CLASS, null);
+        writer.writeAttribute("class", headerClass, null);
         writer.writeAttribute("role", "tab", null);
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", PanelMenu.HEADER_ICON_CLASS, null);
+        writer.writeAttribute("class", headerIconClass, null);
         writer.endElement("span");
 
         writer.startElement("a", null);
@@ -101,7 +105,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
         //content
         writer.startElement("div", null);
-        writer.writeAttribute("class", PanelMenu.ROOT_SUBMENU_CONTENT, null);
+        writer.writeAttribute("class", contentClass, null);
         writer.writeAttribute("role", "tabpanel", null);
         writer.writeAttribute("id", menu.getClientId(context) + "_" + submenu.getId(), null);
         
@@ -148,8 +152,12 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
         styleClass = styleClass == null ? PanelMenu.DESCENDANT_SUBMENU_CLASS : PanelMenu.DESCENDANT_SUBMENU_CLASS + " " + styleClass;
+        boolean expanded = submenu.isExpanded();
+        String toggleIconClass = expanded ? PanelMenu.DESCENDANT_SUBMENU_EXPANDED_ICON_CLASS : PanelMenu.DESCENDANT_SUBMENU_COLLAPSED_ICON_CLASS;
+        String listClass = expanded ? PanelMenu.DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS :PanelMenu.DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS;
         
         writer.startElement("li", null);
+        writer.writeAttribute("id", submenu.getClientId(), null);
         writer.writeAttribute("class", styleClass, null);
         if(style != null) {
             writer.writeAttribute("style", style, null);
@@ -161,7 +169,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         
         //toggle icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", PanelMenu.DESCENDANT_SUBMENU_COLLAPSED_ICON_CLASS, null); 
+        writer.writeAttribute("class", toggleIconClass, null); 
         writer.endElement("span");
         
         //user icon
@@ -184,7 +192,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
             List<MenuElement> elements = submenu.getElements();
             
             writer.startElement("ul", null);
-            writer.writeAttribute("class", PanelMenu.LIST_CLASS, null);
+            writer.writeAttribute("class", listClass, null);
 
             for(MenuElement element : elements) {
                 if(element.isRendered()) {
@@ -205,5 +213,5 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         }
         
         writer.endElement("li");
-    } 
+    }
 }

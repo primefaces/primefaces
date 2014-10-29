@@ -28,4 +28,6 @@ public interface Submenu extends MenuGroup {
     public Object getParent();
     
     public String getClientId();
+    
+    public boolean isExpanded();
 }
