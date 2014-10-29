@@ -352,11 +352,14 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     partialCheck: function(checkbox) {
-        var icon = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon'),
+        var box = checkbox.children('.ui-chkbox-box'),
+        icon = box.children('.ui-chkbox-icon'),
         treeNode = checkbox.closest('.ui-treenode'),
         rowKey = this.getRowKey(treeNode);
         
-        this.removeFromSelection(rowKey);
+        if(!box.hasClass('ui-state-disabled')) {
+            this.removeFromSelection(rowKey);
+        }
         
         treeNode.find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-highlight');
         icon.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus');
@@ -371,8 +374,11 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
         box.removeClass('ui-state-hover');
         icon.removeClass('ui-icon-blank ui-icon-minus').addClass('ui-icon-check');
-        this.addToSelection(rowKey);
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-unselected').addClass('ui-treenode-selected').attr('aria-checked', true).attr('aria-selected', true);
+    
+        if(!box.hasClass('ui-state-disabled')) {
+            this.addToSelection(rowKey);
+        }
     },
     
     uncheck: function(checkbox) {
@@ -383,8 +389,11 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         
         box.removeClass('ui-state-hover');
         icon.removeClass('ui-icon-minus ui-icon-check').addClass('ui-icon-blank');
-        this.removeFromSelection(rowKey);
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-selected').addClass('ui-treenode-unselected').attr('aria-checked', false).attr('aria-selected', false);
+    
+        if(!box.hasClass('ui-state-disabled')) {
+            this.removeFromSelection(rowKey);
+        }
     }
     
 });
@@ -450,7 +459,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
         
         if(this.isCheckboxSelection()) {       
-            var checkboxSelector = '.ui-chkbox-box';
+            var checkboxSelector = '.ui-chkbox-box:not(.ui-state-disabled)';
             
             this.jq.off('mouseout.tree-checkbox mouseover.tree-checkbox click.tree-checkbox', checkboxSelector)
                         .on('mouseout.tree-checkbox', checkboxSelector, null, function() {

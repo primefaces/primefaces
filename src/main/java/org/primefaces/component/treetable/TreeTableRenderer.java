@@ -389,7 +389,8 @@ public class TreeTableRenderer extends CoreRenderer {
         boolean partialSelected = treeNode.isPartialSelected();
         boolean nativeElements = tt.isNativeElements();
         List<UIColumn> columns = tt.getColumns();
-
+        boolean showUnselectableCheckbox = tt.isShowUnselectableCheckbox();
+        
         String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
         rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
         rowStyleClass = rowStyleClass + " " + treeNode.getType();
@@ -448,9 +449,9 @@ public class TreeTableRenderer extends CoreRenderer {
                     }
                     writer.endElement("span");
 
-                    if(selectable && checkboxSelection) {
+                    if(checkboxSelection && (selectable || showUnselectableCheckbox)) {
                         if(!nativeElements)
-                            RendererUtils.encodeCheckbox(context, selected, partialSelected);
+                            RendererUtils.encodeCheckbox(context, selected, partialSelected, (showUnselectableCheckbox && !selectable));
                         else
                             renderNativeCheckbox(context, tt, selected, partialSelected);
                     }

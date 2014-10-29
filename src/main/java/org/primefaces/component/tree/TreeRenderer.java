@@ -166,7 +166,7 @@ public class TreeRenderer extends CoreRenderer {
             String rowKey = params.get(clientId + "_expandNode");
             
             if(!vertical && rowKey.equals("root")) {
-                encodeHorizontalTreeNodeChildren(context, tree, tree.getValue(), tree.getClientId(context), null, tree.isDynamic(), tree.isCheckboxSelection());
+                encodeHorizontalTreeNodeChildren(context, tree, tree.getValue(), tree.getClientId(context), null, tree.isDynamic(), tree.isCheckboxSelection(), tree.isShowUnselectableCheckbox());
             }
             else {
                 tree.setRowKey(rowKey);
@@ -174,10 +174,10 @@ public class TreeRenderer extends CoreRenderer {
                 node.setExpanded(true);
                 
                 if(vertical) {
-                    encodeTreeNodeChildren(context, tree, node, clientId, tree.isDynamic(), tree.isCheckboxSelection(), tree.isDroppable());
+                    encodeTreeNodeChildren(context, tree, node, clientId, tree.isDynamic(), tree.isCheckboxSelection(), tree.isDroppable(), tree.isShowUnselectableCheckbox());
                 }
                 else {
-                    encodeHorizontalTreeNodeChildren(context, tree, node, tree.getClientId(context), rowKey, tree.isDynamic(), tree.isCheckboxSelection());
+                    encodeHorizontalTreeNodeChildren(context, tree, node, tree.getClientId(context), rowKey, tree.isDynamic(), tree.isCheckboxSelection(), tree.isShowUnselectableCheckbox());
                 }
                 
                 
@@ -251,7 +251,8 @@ public class TreeRenderer extends CoreRenderer {
         boolean multiselectable = selectable && selectionMode.equals("single");
         boolean checkbox = selectable && selectionMode.equals("checkbox");
         boolean droppable = tree.isDroppable();
-                
+        boolean showUnselectableCheckbox = tree.isShowUnselectableCheckbox();        
+        
         if(root != null && root.getRowKey() == null) {
             root.setRowKey("root");
             tree.buildRowKeys(root);
@@ -282,7 +283,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
 
         if(root != null) {
-            encodeTreeNodeChildren(context, tree, root, clientId, dynamic, checkbox, droppable);
+            encodeTreeNodeChildren(context, tree, root, clientId, dynamic, checkbox, droppable, showUnselectableCheckbox);
         }
 
 		writer.endElement("ul");
@@ -300,6 +301,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
         boolean checkbox = (selectionMode != null) && selectionMode.equals("checkbox");
+        boolean showUnselectableCheckbox = tree.isShowUnselectableCheckbox();
         
         String containerClass = tree.getStyleClass() == null ? Tree.HORIZONTAL_CONTAINER_CLASS : Tree.HORIZONTAL_CONTAINER_CLASS + " " + tree.getStyleClass();
         
@@ -309,7 +311,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("role", "tree", null);
         
         if(root != null) {
-            encodeHorizontalTreeNode(context, tree, root, clientId, null, NodeOrder.NONE, dynamic, checkbox);
+            encodeHorizontalTreeNode(context, tree, root, clientId, null, NodeOrder.NONE, dynamic, checkbox, showUnselectableCheckbox);
         }
         
         if(selectionMode != null) {
@@ -319,7 +321,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement("div");
     }
     
-    protected void encodeHorizontalTreeNode(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, NodeOrder nodeOrder, boolean dynamic, boolean checkbox) throws IOException {
+    protected void encodeHorizontalTreeNode(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, NodeOrder nodeOrder, boolean dynamic, boolean checkbox, boolean showUnselectableCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
         boolean expanded = node.isExpanded();
@@ -383,8 +385,8 @@ public class TreeRenderer extends CoreRenderer {
         }
         
         //checkbox
-        if(checkbox && selectable) {
-            RendererUtils.encodeCheckbox(context, selected, partialSelected);
+        if(checkbox && (selectable || showUnselectableCheckbox)) {
+            RendererUtils.encodeCheckbox(context, selected, partialSelected, (showUnselectableCheckbox && !selectable));
         }
         
         //icon
@@ -407,7 +409,7 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("class", Tree.CHILDREN_NODES_CLASS, null);
 
             if((dynamic && expanded) || !dynamic) {
-                encodeHorizontalTreeNodeChildren(context, tree, node, clientId, rowKey, dynamic, checkbox);
+                encodeHorizontalTreeNodeChildren(context, tree, node, clientId, rowKey, dynamic, checkbox, showUnselectableCheckbox);
             }
             
             writer.endElement("div");
@@ -419,7 +421,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement("table");
     }
     
-    protected void encodeHorizontalTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, boolean dynamic, boolean checkbox) throws IOException {
+    protected void encodeHorizontalTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, boolean dynamic, boolean checkbox, boolean showUnselectableCheckbox) throws IOException {
         int childIndex = 0;
         for(Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext();) {
             String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
@@ -435,7 +437,7 @@ public class TreeRenderer extends CoreRenderer {
                 no = NodeOrder.MIDDLE;
             }
 
-            encodeHorizontalTreeNode(context, tree, iterator.next(), clientId, childRowKey, no, dynamic, checkbox);
+            encodeHorizontalTreeNode(context, tree, iterator.next(), clientId, childRowKey, no, dynamic, checkbox, showUnselectableCheckbox);
 
             childIndex++;
         }
@@ -473,7 +475,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement("td");
 	}
  
-	public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node, String clientId, boolean dynamic, boolean checkbox, boolean dragdrop) throws IOException {
+	public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node, String clientId, boolean dynamic, boolean checkbox, boolean dragdrop, boolean showUnselectableCheckbox) throws IOException {
         //preselection
         String rowKey = node.getRowKey();
         boolean selected = node.isSelected();
@@ -537,8 +539,8 @@ public class TreeRenderer extends CoreRenderer {
                 writer.endElement("span");
 
                 //checkbox
-                if(checkbox && selectable) {
-                    RendererUtils.encodeCheckbox(context, selected, partialSelected);
+                if(checkbox && (selectable || showUnselectableCheckbox)) {
+                    RendererUtils.encodeCheckbox(context, selected, partialSelected, (showUnselectableCheckbox && !selectable));
                 }
 
                 //node icon
@@ -563,7 +565,7 @@ public class TreeRenderer extends CoreRenderer {
             }
 
             if((dynamic && expanded) || !dynamic) {
-                encodeTreeNodeChildren(context, tree, node, clientId, dynamic, checkbox, dragdrop);
+                encodeTreeNodeChildren(context, tree, node, clientId, dynamic, checkbox, dragdrop, showUnselectableCheckbox);
             }
 
             writer.endElement("ul");
@@ -575,7 +577,7 @@ public class TreeRenderer extends CoreRenderer {
         }
 	}
     
-    public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, boolean dynamic, boolean checkbox, boolean droppable) throws IOException {     
+    public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, boolean dynamic, boolean checkbox, boolean droppable, boolean showUnselectableCheckbox) throws IOException {     
         int childCount = node.getChildCount();        
         if(childCount > 0) {
             for(int i = 0; i < childCount; i++) {
@@ -583,7 +585,7 @@ public class TreeRenderer extends CoreRenderer {
                     encodeDropTarget(context, tree);
                 }
                 
-                encodeTreeNode(context, tree, node.getChildren().get(i), clientId, dynamic, checkbox, droppable);
+                encodeTreeNode(context, tree, node.getChildren().get(i), clientId, dynamic, checkbox, droppable, showUnselectableCheckbox);
             }
         }
     }
