@@ -387,12 +387,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var descendants = this.getDescendants(node);
         for(var i = 0; i < descendants.length; i++) {
             var descendant = descendants[i];
-            if(descendant.hasClass('ui-treetable-selectable-node')) {
-                if(selected)
-                    this.unselectNode(descendant, true);
-                else
-                    this.selectNode(descendant, true);
-            }   
+            if(selected)
+                this.unselectNode(descendant, true);
+            else
+                this.selectNode(descendant, true);
         }
         
         if(selected) {
@@ -511,19 +509,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
             
     removeDescendantsFromSelection: function(rowKey) {
-        var $this = this;
-        
         this.selections = $.grep(this.selections, function(value) {
-            var row = $($this.jqId + '_node_' + value);
-            
-            if(value.indexOf(rowKey + '_') === 0) {
-                return true;
-            } else {
-                return !row.hasClass('ui-treetable-selectable-node');
-            }
+            return value.indexOf(rowKey + '_') !== 0;
         });
     },
-    
     
     removeSelection: function(nodeKey) {
         this.selections = $.grep(this.selections, function(value) {
