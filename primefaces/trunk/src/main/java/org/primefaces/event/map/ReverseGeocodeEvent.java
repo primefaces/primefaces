@@ -21,14 +21,17 @@ import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.AjaxBehaviorListener;
 import javax.faces.event.FacesListener;
+import org.primefaces.model.map.LatLng;
 
 public class ReverseGeocodeEvent extends AjaxBehaviorEvent {
 	
 	private List<String> address;
+    private List<LatLng> latlng;
 	
-	public ReverseGeocodeEvent(UIComponent component, Behavior behavior, List<String> address) {
+	public ReverseGeocodeEvent(UIComponent component, Behavior behavior, List<String> address, List<LatLng> latlng) {
 		super(component, behavior);
 		this.address = address;
+        this.latlng = latlng;
 	}
 
 	@Override
@@ -45,4 +48,11 @@ public class ReverseGeocodeEvent extends AjaxBehaviorEvent {
         return address;
     }
 
+    public List<LatLng> getLatlng() {
+        return latlng;
+    }
+
+    public void setLatlng(List<LatLng> latlng) {
+        this.latlng = latlng;
+    }
 }
