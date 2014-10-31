@@ -26,10 +26,12 @@ import org.primefaces.model.map.LatLng;
 
 public class GeocodeEvent extends AjaxBehaviorEvent {
 	
+    private List<String> address;
 	private List<LatLng> latlng;
 	
-	public GeocodeEvent(UIComponent component, Behavior behavior, List<LatLng> latlng) {
+	public GeocodeEvent(UIComponent component, Behavior behavior, List<String> address, List<LatLng> latlng) {
 		super(component, behavior);
+        this.address = address;
 		this.latlng = latlng;
 	}
 
@@ -42,6 +44,14 @@ public class GeocodeEvent extends AjaxBehaviorEvent {
 	public void processListener(FacesListener faceslistener) {
 		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
+
+    public List<String> getAddress() {
+        return address;
+    }
+
+    public void setAddress(List<String> address) {
+        this.address = address;
+    }
 
     public List<LatLng> getLatlng() {
         return latlng;

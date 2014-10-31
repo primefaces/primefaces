@@ -144,6 +144,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                     if(0 < lats.length && 0 < lngs.length) {
                         var ext = {
                             params: [
+                                {name: $this.id + '_address', value: address},
                                 {name: $this.id + '_lat', value: lats.join()},
                                 {name: $this.id + '_lng', value: lngs.join()}
                             ]
@@ -181,7 +182,9 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                     if(0 < addresses.length) {
                         var ext = {
                             params: [
-                                {name: $this.id + '_address', value: addresses.join(';')}
+                                {name: $this.id + '_address', value: addresses.join(';')},
+                                {name: $this.id + '_lat', value: lat},
+                                {name: $this.id + '_lng', value: lng}
                             ]
                         };
 

@@ -70,6 +70,9 @@ import org.primefaces.context.RequestContext;
                 wrapperEvent = new MarkerDragEvent(this, behaviorEvent.getBehavior(), marker);
             }
             else if(eventName.equals("geocode")) {
+                List<String> address = new ArrayList<String>();
+                address.add(params.get(clientId + "_address"));
+
                 List<LatLng> positions = new ArrayList<LatLng>();
                 String[] lats = params.get(clientId + "_lat").split(",");
                 String[] lngs = params.get(clientId + "_lng").split(",");
@@ -79,16 +82,21 @@ import org.primefaces.context.RequestContext;
                     }
                 }
                 
-                wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), positions);
+                wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), address, positions);
             }
-            else if(eventName.equals("reverseGeocode")) {
+            else if(eventName.equals("reverseGeocode")) {                
                 List<String> address = new ArrayList<String>();
                 String[] addresses = params.get(clientId + "_address").split(";");
                 for (int i = 0; i < addresses.length; i++) {
                     address.add(addresses[i]);
                 }
 
-                wrapperEvent = new ReverseGeocodeEvent(this, behaviorEvent.getBehavior(), address);
+                List<LatLng> positions = new ArrayList<LatLng>();
+                double lat = Double.valueOf(params.get(clientId + "_lat"));
+                double lng = Double.valueOf(params.get(clientId + "_lng"));
+                positions.add(new LatLng(lat, lng));
+
+                wrapperEvent = new ReverseGeocodeEvent(this, behaviorEvent.getBehavior(), address, positions);
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
