@@ -62,6 +62,7 @@ public class ConfigContainer {
     private String  uploader = null;
     private boolean transformMetadataEnabled = false;
     private boolean legacyWidgetNamespace = false;
+    private boolean parameterNamespacingEnabled = false;
 
     // internal config
     private boolean beanValidationAvailable = false;
@@ -138,6 +139,9 @@ public class ConfigContainer {
         
         value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
         legacyWidgetNamespace = (value == null) ? false : Boolean.valueOf(value);
+        
+        value = externalContext.getInitParameter(Constants.ContextParams.NAMESPACE_PARAMETERS);
+        parameterNamespacingEnabled = (value == null) ? false : Boolean.valueOf(value);
     }
 
     protected void initValidateEmptyFields(FacesContext context) {
@@ -392,8 +396,7 @@ public class ConfigContainer {
         return fontAwesomeEnabled;
     }
 
-    public void setFontAwesomeEnabled(boolean fontAwesomeEnabled) {
-        this.fontAwesomeEnabled = fontAwesomeEnabled;
-    }
-    
+    public boolean isParameterNamespacingEnabled() {
+        return parameterNamespacingEnabled;
+    }    
 }

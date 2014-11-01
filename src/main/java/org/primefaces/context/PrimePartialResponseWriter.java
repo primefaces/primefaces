@@ -52,7 +52,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         if (validationFailed) {
             requestContext.addCallbackParam("validationFailed", true);
         }
-        if (context.getViewRoot() instanceof NamingContainer) {
+        if (requestContext.getApplicationContext().getConfig().isParameterNamespacingEnabled() && context.getViewRoot() instanceof NamingContainer) {
             requestContext.addCallbackParam("parameterNamespace", context.getViewRoot().getContainerClientId(context));
         }
 
