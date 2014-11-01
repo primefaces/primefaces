@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.faces.component.NamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.AbortProcessingException;
@@ -45,9 +46,14 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     
     private void encodeCallbackParams(RequestContext requestContext) throws IOException, JSONException {
 
-        boolean validationFailed = FacesContext.getCurrentInstance().isValidationFailed();
+        FacesContext context = FacesContext.getCurrentInstance();
+        
+        boolean validationFailed = context.isValidationFailed();
         if (validationFailed) {
             requestContext.addCallbackParam("validationFailed", true);
+        }
+        if (context.getViewRoot() instanceof NamingContainer) {
+            requestContext.addCallbackParam("parameterNamespace", context.getViewRoot().getContainerClientId(context));
         }
 
         Map<String, Object> params = requestContext.getCallbackParams();
@@ -62,16 +68,16 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 Object paramValue = params.get(paramName);
 
                 if (paramValue instanceof JSONObject) {
-                	String json = ((JSONObject) paramValue).toString();
-                	write("\"");
+                    String json = ((JSONObject) paramValue).toString();
+                    write("\"");
                     write(paramName);
                     write("\":{");
                     write(json.substring(1, json.length() - 1));
                     write("}");
                 }
                 else if (paramValue instanceof JSONArray) {
-                	String json = ((JSONArray) paramValue).toString();
-                	write("\"");
+                    String json = ((JSONArray) paramValue).toString();
+                    write("\"");
                     write(paramName);
                     write("\":[");
                     write(json.substring(1, json.length() - 1));
@@ -150,6 +156,18 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void startDocument() throws IOException {
         wrapped.startDocument();
+        
+
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+
+        if (requestContext != null) {
+            try {
+                encodeCallbackParams(requestContext);
+            } 
+            catch (Exception exception) {
+                throw new AbortProcessingException(exception);
+            } 
+        }
     }
     
     @Override
@@ -158,7 +176,6 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
         if (requestContext != null) {
             try {
-                encodeCallbackParams(requestContext);
                 encodeScripts(requestContext);
             } 
             catch (Exception exception) {
