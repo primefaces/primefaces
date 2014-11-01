@@ -96,28 +96,26 @@ public class HeadRenderer extends Renderer {
         for (UIComponent resource : viewRoot.getComponentResources(context, "head")) {
             resource.encodeAll(context);
         }
-        
-        if (cc.isLegacyWidgetNamespace() || cc.isClientSideValidationEnabled() || cc.isParameterNamespacingEnabled()) {
-            
-            writer.startElement("script", null);
-            writer.writeAttribute("type", "text/javascript", null);
-            writer.write("if(window.PrimeFaces){");
-            
-            if (cc.isClientSideValidationEnabled()) {
-                writer.write("PrimeFaces.settings.locale = '" + context.getViewRoot().getLocale() + "';");
-                writer.write("PrimeFaces.settings.validateEmptyFields = " + cc.isValidateEmptyFields() + ";");
-                writer.write("PrimeFaces.settings.considerEmptyStringNull = " + cc.isInterpretEmptyStringAsNull() + ";");
-            }
-            if (cc.isLegacyWidgetNamespace()) {
-                writer.write("PrimeFaces.settings.legacyWidgetNamespace = true;");
-            }
-            if (cc.isParameterNamespacingEnabled()) {
-                writer.write("PrimeFaces.settings.namespaceParameters = true;");
-            }
 
-            writer.write("}");
-            writer.endElement("script");
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.write("if(window.PrimeFaces){");
+
+        if (cc.isClientSideValidationEnabled()) {
+            writer.write("PrimeFaces.settings.locale='" + context.getViewRoot().getLocale() + "';");
+            writer.write("PrimeFaces.settings.validateEmptyFields=" + cc.isValidateEmptyFields() + ";");
+            writer.write("PrimeFaces.settings.considerEmptyStringNull=" + cc.isInterpretEmptyStringAsNull() + ";");
         }
+        if (cc.isLegacyWidgetNamespace()) {
+            writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");
+        }
+        if (cc.isParameterNamespacingEnabled()) {
+            writer.write("PrimeFaces.settings.namespaceParameters=true;");
+        }
+        writer.write("PrimeFaces.settings.projectStage='" + context.getApplication().getProjectStage().toString() + "';");
+
+        writer.write("}");
+        writer.endElement("script");
     }
 
     @Override
