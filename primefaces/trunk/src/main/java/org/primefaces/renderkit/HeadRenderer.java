@@ -97,7 +97,7 @@ public class HeadRenderer extends Renderer {
             resource.encodeAll(context);
         }
         
-        if (cc.isLegacyWidgetNamespace() || cc.isClientSideValidationEnabled()) {
+        if (cc.isLegacyWidgetNamespace() || cc.isClientSideValidationEnabled() || cc.isParameterNamespacingEnabled()) {
             
             writer.startElement("script", null);
             writer.writeAttribute("type", "text/javascript", null);
@@ -110,6 +110,9 @@ public class HeadRenderer extends Renderer {
             }
             if (cc.isLegacyWidgetNamespace()) {
                 writer.write("PrimeFaces.settings.legacyWidgetNamespace = true;");
+            }
+            if (cc.isParameterNamespacingEnabled()) {
+                writer.write("PrimeFaces.settings.namespaceParameters = true;");
             }
 
             writer.write("}");
