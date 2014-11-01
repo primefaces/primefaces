@@ -163,12 +163,24 @@
             if(this.logger) {
                 this.logger.warn(log);
             }
+            
+            if (PrimeFaces.isDevelopmentProjectStage() && window.console) {
+                console.log(log);
+            }
         },
 
         error: function(log) {
             if(this.logger) {
                 this.logger.error(log);
             }
+            
+            if (PrimeFaces.isDevelopmentProjectStage() && window.console) {
+                console.log(log);
+            }
+        },
+        
+        isDevelopmentProjectStage: function() {
+            return PrimeFaces.settings.projectStage === 'Development';
         },
 
         setCaretToEnd: function(element) {
