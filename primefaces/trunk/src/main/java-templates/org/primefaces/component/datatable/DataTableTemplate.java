@@ -363,9 +363,26 @@ import org.primefaces.util.SharedStringBuilder;
         FacesContext context = this.getFacesContext();
         ColumnGroup headerGroup = this.getColumnGroup("header");
         for(UIComponent row : headerGroup.getChildren()) {
-            for(UIComponent col : row.getChildren()) {
-                if(col.getClientId(context).equals(clientId)) {
-                    return (UIColumn) col;
+            String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+            
+            for(UIComponent rowChild : row.getChildren()) {
+                if(rowChild instanceof Column) {
+                    if(rowChild.getClientId(context).equals(clientId)) {
+                        return (UIColumn) rowChild;
+                    }
+                }
+                else if (rowChild instanceof Columns) {
+                    Columns uiColumns = (Columns) rowChild;
+                    String uiColumnsClientId = uiColumns.getClientId(context);
+
+                    for(int i=0; i < uiColumns.getRowCount(); i++) {
+                        DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
+                        dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
+
+                        if(dynaColumn.getColumnKey().equals(clientId)) {
+                            return dynaColumn;
+                        }
+                    }
                 }
             }
         }
