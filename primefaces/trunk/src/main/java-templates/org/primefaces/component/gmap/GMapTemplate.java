@@ -70,19 +70,17 @@ import org.primefaces.context.RequestContext;
                 wrapperEvent = new MarkerDragEvent(this, behaviorEvent.getBehavior(), marker);
             }
             else if(eventName.equals("geocode")) {
-                List<String> address = new ArrayList<String>();
-                address.add(params.get(clientId + "_address"));
-
-                List<LatLng> positions = new ArrayList<LatLng>();
+                String address = params.get(clientId + "_address");
+                List<LatLng> coordinates = new ArrayList<LatLng>();
                 String[] lats = params.get(clientId + "_lat").split(",");
                 String[] lngs = params.get(clientId + "_lng").split(",");
                 for(int i = 0; i < lats.length; i++) {
                     if(!lats[i].isEmpty() && !lngs[i].isEmpty()) {
-                        positions.add(new LatLng(Double.valueOf(lats[i]), Double.valueOf(lngs[i])));
+                        coordinates.add(new LatLng(Double.valueOf(lats[i]), Double.valueOf(lngs[i])));
                     }
                 }
                 
-                wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), address, positions);
+                wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), address, coordinates);
             }
             else if(eventName.equals("reverseGeocode")) {                
                 List<String> address = new ArrayList<String>();
@@ -91,12 +89,11 @@ import org.primefaces.context.RequestContext;
                     address.add(addresses[i]);
                 }
 
-                List<LatLng> positions = new ArrayList<LatLng>();
                 double lat = Double.valueOf(params.get(clientId + "_lat"));
                 double lng = Double.valueOf(params.get(clientId + "_lng"));
-                positions.add(new LatLng(lat, lng));
+                LatLng coordinates = new LatLng(lat, lng);
 
-                wrapperEvent = new ReverseGeocodeEvent(this, behaviorEvent.getBehavior(), address, positions);
+                wrapperEvent = new ReverseGeocodeEvent(this, behaviorEvent.getBehavior(), address, coordinates);
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
