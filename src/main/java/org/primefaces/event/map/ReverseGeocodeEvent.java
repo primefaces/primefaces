@@ -25,10 +25,10 @@ import org.primefaces.model.map.LatLng;
 
 public class ReverseGeocodeEvent extends AjaxBehaviorEvent {
 	
-	private List<String> address;
-    private List<LatLng> latlng;
+	private final List<String> address;
+    private final LatLng latlng;
 	
-	public ReverseGeocodeEvent(UIComponent component, Behavior behavior, List<String> address, List<LatLng> latlng) {
+	public ReverseGeocodeEvent(UIComponent component, Behavior behavior, List<String> address, LatLng latlng) {
 		super(component, behavior);
 		this.address = address;
         this.latlng = latlng;
@@ -48,11 +48,8 @@ public class ReverseGeocodeEvent extends AjaxBehaviorEvent {
         return address;
     }
 
-    public List<LatLng> getLatlng() {
+    public LatLng getLatlng() {
         return latlng;
     }
-
-    public void setLatlng(List<LatLng> latlng) {
-        this.latlng = latlng;
-    }
 }
+
