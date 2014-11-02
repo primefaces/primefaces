@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
+import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 
 import javax.faces.component.UIComponent;
@@ -36,6 +37,7 @@ public class HeadRenderer extends Renderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        ProjectStage projectStage = context.getApplication().getProjectStage();
         writer.startElement("head", component);
         
         //First facet
@@ -106,6 +108,10 @@ public class HeadRenderer extends Renderer {
             writer.writeAttribute("type", "text/javascript", null);
             writer.write("PrimeFaces.settings.legacyWidgetNamespace = true;");
             writer.endElement("script");
+        }
+        
+        if (!projectStage.equals(ProjectStage.Production)) {
+            writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
         }
     }
 
