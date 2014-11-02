@@ -20,6 +20,7 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 
 import javax.faces.component.UIComponent;
@@ -46,6 +47,7 @@ public class HeadRenderer extends Renderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        ProjectStage projectStage = context.getApplication().getProjectStage();
         
         if (cc.isClientSideValidationEnabled()) {
             ResourceUtils.addComponentResource(context, "validation/validation.js");
@@ -81,7 +83,7 @@ public class HeadRenderer extends Renderer {
             encodeCSS(context, "primefaces-" + theme, "theme.css");
         }
         
-        if(cc.isFontAwesomeEnabled()) {
+        if (cc.isFontAwesomeEnabled()) {
             encodeCSS(context, "primefaces", "fa/font-awesome.css");
         }
         
@@ -106,13 +108,18 @@ public class HeadRenderer extends Renderer {
             writer.write("PrimeFaces.settings.validateEmptyFields=" + cc.isValidateEmptyFields() + ";");
             writer.write("PrimeFaces.settings.considerEmptyStringNull=" + cc.isInterpretEmptyStringAsNull() + ";");
         }
+        
         if (cc.isLegacyWidgetNamespace()) {
             writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");
         }
+        
         if (cc.isParameterNamespacingEnabled()) {
             writer.write("PrimeFaces.settings.namespaceParameters=true;");
         }
-        writer.write("PrimeFaces.settings.projectStage='" + context.getApplication().getProjectStage().toString() + "';");
+        
+        if (!projectStage.equals(ProjectStage.Production)) {
+            writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
+        }
 
         writer.write("}");
         writer.endElement("script");
@@ -137,7 +144,7 @@ public class HeadRenderer extends Renderer {
         Resource cssResource = context.getApplication().getResourceHandler().createResource(resource, library);
         if (cssResource == null) {
             throw new FacesException("Error loading css, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
-        } 
+        }
         else {
             writer.startElement("link", null);
             writer.writeAttribute("type", "text/css", null);
