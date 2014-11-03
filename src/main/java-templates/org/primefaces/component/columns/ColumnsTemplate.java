@@ -60,6 +60,6 @@ import org.primefaces.component.celleditor.CellEditor;
     }
 
     public void setDynamicColumns(List<DynamicColumn> dynamicColumns) {
-
+        this.dynamicColumns = dynamicColumns;
     }
     
