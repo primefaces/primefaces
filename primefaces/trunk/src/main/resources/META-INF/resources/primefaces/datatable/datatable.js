@@ -2187,8 +2187,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 dropLocation = ui.helper.data('drop-location'),
                 droppedColumn =  $(this);
                                 
-                var draggedCells = $this.tbody.find('> tr > td:nth-child(' + (draggedColumn.index() + 1) + ')'),
-                droppedCells = $this.tbody.find('> tr > td:nth-child(' + (droppedColumn.index() + 1) + ')');
+                var draggedCells = $this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (draggedColumn.index() + 1) + ')'),
+                droppedCells = $this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (droppedColumn.index() + 1) + ')');
                 
                 //drop right
                 if(dropLocation > 0) {
