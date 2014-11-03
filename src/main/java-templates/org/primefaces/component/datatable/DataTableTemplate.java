@@ -354,17 +354,17 @@ import org.primefaces.util.SharedStringBuilder;
     }
     
     public UIColumn findColumn(String clientId) {
+        //body columns
         for(UIColumn column : this.getColumns()) {
             if(column.getColumnKey().equals(clientId)) {
                 return column;
             }
         }
         
+        //header columns
         FacesContext context = this.getFacesContext();
         ColumnGroup headerGroup = this.getColumnGroup("header");
         for(UIComponent row : headerGroup.getChildren()) {
-            String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-            
             for(UIComponent rowChild : row.getChildren()) {
                 if(rowChild instanceof Column) {
                     if(rowChild.getClientId(context).equals(clientId)) {
@@ -373,14 +373,10 @@ import org.primefaces.util.SharedStringBuilder;
                 }
                 else if (rowChild instanceof Columns) {
                     Columns uiColumns = (Columns) rowChild;
-                    String uiColumnsClientId = uiColumns.getClientId(context);
-
-                    for(int i=0; i < uiColumns.getRowCount(); i++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
-                        dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
-
-                        if(dynaColumn.getColumnKey().equals(clientId)) {
-                            return dynaColumn;
+                    List<DynamicColumn> dynaColumns = uiColumns.getDynamicColumns();
+                    for(UIColumn column : dynaColumns) {
+                        if(column.getColumnKey().equals(clientId)) {
+                            return column;
                         }
                     }
                 }

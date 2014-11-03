@@ -684,7 +684,6 @@ public class DataTableRenderer extends DataRenderer {
         ColumnGroup group = table.getColumnGroup("header");
         List<UIColumn> columns = table.getColumns();
         String theadClientId = (theadId == null) ? table.getClientId(context) + "_head" : theadId;
-        char separator = UINamingContainer.getSeparatorChar(context);
         
         writer.startElement("thead", null);
         writer.writeAttribute("id", theadClientId, null);
@@ -705,14 +704,9 @@ public class DataTableRenderer extends DataRenderer {
                                     encodeColumnHeader(context, table, (Column) headerRowChild);
                                 }
                                 else if(headerRowChild instanceof Columns) {
-                                    Columns uiColumns = (Columns) headerRowChild;
-                                    String uiColumnsClientId = uiColumns.getClientId(context);
-
-                                    for(int i=0; i < uiColumns.getRowCount(); i++) {
-                                        DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
-                                        dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
+                                    List<DynamicColumn> dynamicColumns = ((Columns) headerRowChild).getDynamicColumns();
+                                    for (DynamicColumn dynaColumn : dynamicColumns) {
                                         dynaColumn.applyModel();
-                                        
                                         encodeColumnHeader(context, table, dynaColumn);
                                     }
                                 }
@@ -1010,10 +1004,19 @@ public class DataTableRenderer extends DataRenderer {
                         writer.startElement("tr", null);
                         for(UIComponent footerRowChild : footerRow.getChildren()) {
                             if(footerRowChild.isRendered()) {
-                                if(footerRowChild instanceof Column)
+                                if(footerRowChild instanceof Column) {
                                     encodeColumnFooter(context, table, (Column) footerRowChild);
-                                else
+                                }
+                                else if(footerRowChild instanceof Columns) {
+                                    List<DynamicColumn> dynamicColumns = ((Columns) footerRowChild).getDynamicColumns();
+                                    for (DynamicColumn dynaColumn : dynamicColumns) {
+                                        dynaColumn.applyModel();
+                                        encodeColumnHeader(context, table, dynaColumn);
+                                    }
+                                }
+                                else {
                                     footerRowChild.encodeAll(context);
+                                }
                             }
                         }
                         writer.endElement("tr");
