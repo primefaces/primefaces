@@ -249,16 +249,10 @@ public class FilterFeature implements DataTableFeature {
                             Column column = (Column) headerRowChild;
                             if(column.isRendered()) {
                                 ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
-                            
                                 if(columnFilterByVE != null) {
                                     ValueExpression filterByVE = columnFilterByVE;
                                     UIComponent filterFacet = column.getFacet("filter");
-                                    Object filterValue;
-
-                                    if(filterFacet == null)
-                                        filterValue = params.get(column.getClientId(context) + separator + "filter");
-                                    else
-                                        filterValue = ((ValueHolder) filterFacet).getLocalValue();
+                                    Object filterValue = (filterFacet == null) ? params.get(column.getClientId(context) + separator + "filter") : ((ValueHolder) filterFacet).getLocalValue(); 
 
                                     filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
                                 }
@@ -266,25 +260,19 @@ public class FilterFeature implements DataTableFeature {
                         }
                         else if(headerRowChild instanceof Columns) {
                             Columns uiColumns = (Columns) headerRowChild;
-                            String uiColumnsClientId = uiColumns.getClientId(context);
+                            List<DynamicColumn> dynamicColumns = uiColumns.getDynamicColumns();
 
-                            for(int i=0; i < uiColumns.getRowCount(); i++) {
-                                DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
-                                dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
+                            for(DynamicColumn dynaColumn : dynamicColumns) {
                                 dynaColumn.applyStatelessModel();
-                                
-                                ValueExpression columnFilterByVE = dynaColumn.getValueExpression("filterBy");
-                                if(columnFilterByVE != null) {
-                                    Object filterValue = null;
-                                    String filterId = dynaColumn.getContainerClientId(context) + separator + "filter";
-                                    UIComponent filterFacet = dynaColumn.getFacet("filter"); 
-                                    
-                                    if(filterFacet == null)
-                                        filterValue = params.get(filterId);
-                                    else
-                                        filterValue = ((ValueHolder) filterFacet).getLocalValue();
-                                    
-                                    filterMetadata.add(new FilterMeta(dynaColumn, columnFilterByVE, filterValue));
+                                if(dynaColumn.isRendered()) {
+                                    ValueExpression columnFilterByVE = dynaColumn.getValueExpression("filterBy");
+                                    if(columnFilterByVE != null) {
+                                        String filterId = dynaColumn.getContainerClientId(context) + separator + "filter";
+                                        UIComponent filterFacet = dynaColumn.getFacet("filter"); 
+                                        Object filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+
+                                        filterMetadata.add(new FilterMeta(dynaColumn, columnFilterByVE, filterValue));
+                                    }
                                 }
                             }
                         }
