@@ -48,6 +48,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     
     public final static String REQUIRED_MESSAGE_ID = "primefaces.tree.REQUIRED";
     
+    public final static String CHECKBOX_CLASS = "ui-selection";
+    
     private String rowKey;
    
     private TreeNode rowNode;

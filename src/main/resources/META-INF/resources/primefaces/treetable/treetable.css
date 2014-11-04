@@ -125,3 +125,15 @@
     display: inline-block;
     margin: -3px 0px -3px 2px;
 }
+
+.ui-treetable .ui-chkbox.ui-selection {
+    display: none;
+}
+
+.ui-treetable .ui-treetable-selectable-node .ui-chkbox.ui-selection {
+    display: inline-block;
+}
+
+.ui-treetable.ui-treetable-checkbox-all  .ui-chkbox.ui-selection {
+    display: inline-block;
+}
