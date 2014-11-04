@@ -303,7 +303,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     selectNode: function(node, silent) {
         var nodeKey = node.attr('data-rk');
 
-        node.removeClass('ui-state-hover').addClass('ui-state-highlight').attr('aria-selected', true);
+        node.removeClass('ui-state-hover ui-treetable-partialselected').addClass('ui-state-highlight').attr('aria-selected', true);
         this.addToSelection(nodeKey);
         this.writeSelections();
         
@@ -322,7 +322,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     unselectNode: function(node, silent) {
         var nodeKey = node.attr('data-rk');
         
-        node.removeClass('ui-state-highlight').attr('aria-selected', false);
+        node.removeClass('ui-state-highlight ui-treetable-partialselected').attr('aria-selected', false);
         this.removeSelection(nodeKey);
         this.writeSelections();
         
