@@ -21,18 +21,17 @@ import javax.faces.component.behavior.Behavior;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.AjaxBehaviorListener;
 import javax.faces.event.FacesListener;
-
-import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.GeocodeResult;
 
 public class GeocodeEvent extends AjaxBehaviorEvent {
 	
-    private final String address;
-	private final List<LatLng> coordinates;
+    private final String query;
+	private final List<GeocodeResult> results;
 	
-	public GeocodeEvent(UIComponent component, Behavior behavior, String address, List<LatLng> coordinates) {
+	public GeocodeEvent(UIComponent component, Behavior behavior, String query, List<GeocodeResult> results) {
 		super(component, behavior);
-        this.address = address;
-		this.coordinates = coordinates;
+        this.query = query;
+        this.results = results;
 	}
 
 	@Override
@@ -45,11 +44,11 @@ public class GeocodeEvent extends AjaxBehaviorEvent {
 		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
-    public String getAddress() {
-        return address;
+    public String getQuery() {
+        return query;
     }
 
-    public List<LatLng> getCoordinates() {
-        return coordinates;
+    public List<GeocodeResult> getResults() {
+        return results;
     }
 }

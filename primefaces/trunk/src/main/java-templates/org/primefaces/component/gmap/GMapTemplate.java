@@ -8,6 +8,7 @@ import org.primefaces.model.map.LatLngBounds;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
+import org.primefaces.model.map.GeocodeResult;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
@@ -70,30 +71,30 @@ import org.primefaces.context.RequestContext;
                 wrapperEvent = new MarkerDragEvent(this, behaviorEvent.getBehavior(), marker);
             }
             else if(eventName.equals("geocode")) {
-                String address = params.get(clientId + "_address");
-                List<LatLng> coordinates = new ArrayList<LatLng>();
+                List<GeocodeResult> results = new ArrayList<GeocodeResult>();
+                String query = params.get(clientId + "_query");
+                String[] addresses = params.get(clientId + "_addresses").split("_primefaces_");                
                 String[] lats = params.get(clientId + "_lat").split(",");
                 String[] lngs = params.get(clientId + "_lng").split(",");
-                for(int i = 0; i < lats.length; i++) {
-                    if(!lats[i].isEmpty() && !lngs[i].isEmpty()) {
-                        coordinates.add(new LatLng(Double.valueOf(lats[i]), Double.valueOf(lngs[i])));
-                    }
+
+                for(int i = 0; i < addresses.length; i++) {
+                    results.add(new GeocodeResult(addresses[i], new LatLng(Double.valueOf(lats[i]), Double.valueOf(lngs[i]))));
                 }
                 
-                wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), address, coordinates);
+                wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), query, results);
             }
             else if(eventName.equals("reverseGeocode")) {                
-                List<String> address = new ArrayList<String>();
-                String[] addresses = params.get(clientId + "_address").split(";");
-                for (int i = 0; i < addresses.length; i++) {
-                    address.add(addresses[i]);
+                List<String> addresses = new ArrayList<String>();
+                String[] results = params.get(clientId + "_address").split("_primefaces_");
+                for (int i = 0; i < results.length; i++) {
+                    addresses.add(results[i]);
                 }
 
                 double lat = Double.valueOf(params.get(clientId + "_lat"));
                 double lng = Double.valueOf(params.get(clientId + "_lng"));
-                LatLng coordinates = new LatLng(lat, lng);
+                LatLng coord = new LatLng(lat, lng);
 
-                wrapperEvent = new ReverseGeocodeEvent(this, behaviorEvent.getBehavior(), address, coordinates);
+                wrapperEvent = new ReverseGeocodeEvent(this, behaviorEvent.getBehavior(), coord, addresses);
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
