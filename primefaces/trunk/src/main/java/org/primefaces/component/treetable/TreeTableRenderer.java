@@ -31,6 +31,7 @@ import org.primefaces.component.api.UITree;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.row.Row;
+import org.primefaces.component.tree.Tree;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
@@ -174,6 +175,7 @@ public class TreeTableRenderer extends CoreRenderer {
         
         String containerClass = tt.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
         containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
+        containerClass = tt.isShowUnselectableCheckbox() ? containerClass + " ui-treetable-checkbox-all" : containerClass + " " + tt.getStyleClass();
 		containerClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
 	
         writer.startElement("div", null);
@@ -389,7 +391,6 @@ public class TreeTableRenderer extends CoreRenderer {
         boolean partialSelected = treeNode.isPartialSelected();
         boolean nativeElements = tt.isNativeElements();
         List<UIColumn> columns = tt.getColumns();
-        boolean showUnselectableCheckbox = tt.isShowUnselectableCheckbox();
         
         String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
         rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
@@ -449,9 +450,9 @@ public class TreeTableRenderer extends CoreRenderer {
                     }
                     writer.endElement("span");
 
-                    if(checkboxSelection && (selectable || showUnselectableCheckbox)) {
+                    if(checkboxSelection) {
                         if(!nativeElements)
-                            RendererUtils.encodeCheckbox(context, selected, partialSelected, (showUnselectableCheckbox && !selectable));
+                            RendererUtils.encodeCheckbox(context, selected, partialSelected, !selectable, Tree.CHECKBOX_CLASS);
                         else
                             renderNativeCheckbox(context, tt, selected, partialSelected);
                     }

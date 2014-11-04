@@ -199,3 +199,15 @@
 .ui-tree .ui-tree-scrollerbottom {
     bottom: 0;
 }
+
+.ui-tree .ui-treenode-content .ui-chkbox.ui-selection {
+    display: none;
+}
+
+.ui-tree .ui-treenode-content.ui-tree-selectable .ui-chkbox.ui-selection {
+    display: inline-block;
+}
+
+.ui-tree.ui-tree-checkbox-all .ui-treenode-content .ui-chkbox.ui-selection {
+    display: inline-block;
+}
