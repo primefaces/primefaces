@@ -254,7 +254,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
                 return true;
             },
             oncomplete: function() {
-                $this._show(element);
+                $this._show(target);
             }
         };
 
