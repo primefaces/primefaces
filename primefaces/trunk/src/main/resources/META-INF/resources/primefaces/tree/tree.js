@@ -357,13 +357,11 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         treeNode = checkbox.closest('.ui-treenode'),
         rowKey = this.getRowKey(treeNode);
         
-        if(!box.hasClass('ui-state-disabled')) {
-            this.removeFromSelection(rowKey);
-        }
-        
         treeNode.find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-highlight');
         icon.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus');
         treeNode.removeClass('ui-treenode-selected ui-treenode-unselected').addClass('ui-treenode-hasselected').attr('aria-checked', false).attr('aria-selected', false);
+    
+        this.removeFromSelection(rowKey);
     },
         
     check: function(checkbox) {
@@ -376,9 +374,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         icon.removeClass('ui-icon-blank ui-icon-minus').addClass('ui-icon-check');
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-unselected').addClass('ui-treenode-selected').attr('aria-checked', true).attr('aria-selected', true);
     
-        if(!box.hasClass('ui-state-disabled')) {
-            this.addToSelection(rowKey);
-        }
+        this.addToSelection(rowKey);
     },
     
     uncheck: function(checkbox) {
@@ -391,9 +387,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         icon.removeClass('ui-icon-minus ui-icon-check').addClass('ui-icon-blank');
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-selected').addClass('ui-treenode-unselected').attr('aria-checked', false).attr('aria-selected', false);
     
-        if(!box.hasClass('ui-state-disabled')) {
-            this.removeFromSelection(rowKey);
-        }
+        this.removeFromSelection(rowKey);
     }
     
 });
