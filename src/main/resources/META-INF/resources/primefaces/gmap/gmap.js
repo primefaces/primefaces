@@ -130,21 +130,24 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
             var geocodeBehavior = this.cfg.behaviors['geocode'],
                 geocoder = new google.maps.Geocoder(),
                 lats = [],
-                lngs = [];
+                lngs = [],
+                addresses = [];
             
             geocoder.geocode({'address': address}, function(results, status) {
                 
                 if (status == google.maps.GeocoderStatus.OK) { 
                     for(var i = 0; i < results.length; i++) {
                         var location = results[i].geometry.location;
-                        lats[i] = location.lat();
-                        lngs[i] = location.lng();
+                        lats.push(location.lat());
+                        lngs.push(location.lng());
+                        addresses.push(results[i].formatted_address);
                     }
                     
-                    if(0 < lats.length && 0 < lngs.length) {
+                    if(results.length) {
                         var ext = {
                             params: [
-                                {name: $this.id + '_address', value: address},
+                                {name: $this.id + '_query', value: address},
+                                {name: $this.id + '_addresses', value: addresses.join('_primefaces_')},
                                 {name: $this.id + '_lat', value: lats.join()},
                                 {name: $this.id + '_lng', value: lngs.join()}
                             ]
@@ -182,7 +185,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                     if(0 < addresses.length) {
                         var ext = {
                             params: [
-                                {name: $this.id + '_address', value: addresses.join(';')},
+                                {name: $this.id + '_address', value: addresses.join('_primefaces_')},
                                 {name: $this.id + '_lat', value: lat},
                                 {name: $this.id + '_lng', value: lng}
                             ]
@@ -200,7 +203,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
            });
            
         }
-    },            
+    },         
     
     configurePolylines: function() {
         this.addOverlays(this.cfg.polylines);
