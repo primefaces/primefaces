@@ -185,5 +185,19 @@
             <defaultValue>0</defaultValue>
             <description>Priority of the column defined as an integer, lower values have more priority.</description>
 		</attribute>
+        <attribute>
+			<name>sortable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Boolean value to mark column as sortable.</description>
+		</attribute>
+        <attribute>
+			<name>filterable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Boolean value to mark column as filterable.</description>
+		</attribute>
 	</attributes>
 </component>

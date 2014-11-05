@@ -98,4 +98,8 @@ public interface UIColumn {
     public String getField();
     
     public int getPriority();
+    
+    public boolean isSortable();
+    
+    public boolean isFilterable();
 }
