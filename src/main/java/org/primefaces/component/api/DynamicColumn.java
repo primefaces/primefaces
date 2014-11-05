@@ -208,4 +208,12 @@ public class DynamicColumn implements UIColumn {
     public int getPriority() {
         return this.columns.getPriority();
     }
+    
+    public boolean isSortable() {
+        return this.columns.isSortable();
+    }
+
+    public boolean isFilterable() {
+        return this.columns.isFilterable();
+    }
 }

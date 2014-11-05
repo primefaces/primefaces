@@ -399,8 +399,8 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = column.getContainerClientId(context);
 
         ValueExpression columnSortByVE = column.getValueExpression("sortBy");
-        boolean sortable = (columnSortByVE != null);
-        boolean filterable = (column.getValueExpression("filterBy") != null);
+        boolean sortable = (columnSortByVE != null && column.isSortable());
+        boolean filterable = (column.getValueExpression("filterBy") != null && column.isFilterable());
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
