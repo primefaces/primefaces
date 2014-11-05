@@ -23,7 +23,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             this.jq.appendTo(document.body);
         }
         
-        this.bindDocumentEvents();
+        this.bindCommonEvents();
 
         if(this.cfg.target) {
             this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
@@ -79,6 +79,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
                 e.preventDefault();
             }
         });
+    },
+    
+    bindCommonEvents: function() {
+        var $this = this;
         
         if(this.cfg.showCloseIcon) {
             this.closerIcon.on('mouseover.ui-overlaypanel', function() {
@@ -92,10 +96,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
                 e.preventDefault();
             });
         }
-    },
-    
-    bindDocumentEvents: function() {
-        var $this = this;
         
         //hide overlay when mousedown is at outside of overlay
         if(this.cfg.dismissable) {
