@@ -155,6 +155,8 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         boolean expanded = submenu.isExpanded();
         String toggleIconClass = expanded ? PanelMenu.DESCENDANT_SUBMENU_EXPANDED_ICON_CLASS : PanelMenu.DESCENDANT_SUBMENU_COLLAPSED_ICON_CLASS;
         String listClass = expanded ? PanelMenu.DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS :PanelMenu.DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS;
+        boolean hasIcon = (icon != null);
+        String linkClass = (hasIcon) ? PanelMenu.MENUITEM_LINK_WITH_ICON_CLASS : PanelMenu.MENUITEM_LINK_CLASS;
         
         writer.startElement("li", null);
         writer.writeAttribute("id", submenu.getClientId(), null);
@@ -165,7 +167,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("role", "menuitem", null);
         
         writer.startElement("a", null);
-        writer.writeAttribute("class", PanelMenu.MENUITEM_LINK_CLASS, null);
+        writer.writeAttribute("class", linkClass, null);
         
         //toggle icon
         writer.startElement("span", null);
@@ -173,7 +175,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.endElement("span");
         
         //user icon
-        if(icon != null) {
+        if(hasIcon) {
             writer.startElement("span", null);
             writer.writeAttribute("class", "ui-icon " + icon, null); 
             writer.endElement("span");
