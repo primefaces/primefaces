@@ -457,6 +457,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/autocomplete.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/calendar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datalist.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datagrid.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datatable.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/dialog.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/forms.js</include>
@@ -684,6 +685,7 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/autocomplete.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/calendar.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datalist.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datagrid.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datatable.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/dialog.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/forms.js</include>
