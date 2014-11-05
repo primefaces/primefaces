@@ -122,7 +122,11 @@
             });
 
             //aria
-            button.attr('role', 'button').attr('aria-disabled', button.prop('disabled'));
+            var role = button.attr('role');
+            if(!role) {
+                button.attr('role', 'button');
+            }
+            button.attr('aria-disabled', button.prop('disabled'));
 
             return this;
         },
