@@ -25,6 +25,12 @@ import org.primefaces.util.Constants;
     public static final String GRID_ROW_CLASS = "ui-grid-row";
     public static final String COLUMN_CLASS = "ui-datagrid-column";
 
+    public static final String MOBILE_DATAGRID_CLASS = "ui-datagrid";
+    public static final String MOBILE_HEADER_CLASS = "ui-datagrid-header ui-bar ui-bar-b";
+    public static final String MOBILE_FOOTER_CLASS = "ui-datagrid-footer ui-bar ui-bar-b";
+    public static final String MOBILE_CONTENT_CLASS = "ui-datagrid-content ui-responsive";
+    public static final String MOBILE_EMPTY_CONTENT_CLASS = "ui-datagrid-content ui-datagrid-content-empty";
+
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page"));
 
     public void loadLazyData() {
