@@ -339,7 +339,7 @@
 }
 
 .ui-panelmenu .ui-panelmenu-content { 
-    padding: 0.2em 0 0.2em 0.2em;
+    padding: 0.2em 0;
     border-top: 0; 
     margin-top: -2px; 
     position: relative; 
@@ -358,33 +358,45 @@
 }
 
 .ui-panelmenu .ui-menuitem {
-    width:100%;
-    float:left;
-    clear:both;
     margin:1px 0;
     padding:0;
 }
 
 .ui-panelmenu .ui-menuitem-link {
     display:block;
-    width:92%;
     outline:none;
     text-decoration:none;
     font-weight:400;
     border:solid 1px transparent;
-    float:left;
     line-height:16px;
-    padding:0.3em;
     cursor: pointer;
+    position: relative;
+    padding: 0.3em 0.3em 0.3em 2em;
+}
+
+.ui-panelmenu .ui-menu-parent .ui-menuitem-link-hasicon {
+    padding-left: 2.8em;
 }
 
 .ui-panelmenu .ui-icon {
-    display:inline-block;
-    float:left;
+    position: absolute;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    left: 0.5em;
+}
+
+.ui-panelmenu .ui-menu-parent > .ui-menuitem-link > .ui-icon {
+    left: 1.5em;
+}
+
+.ui-panelmenu .ui-menu-parent .ui-panelmenu-icon.ui-icon {
+    left: 0.5em;
 }
 
 .ui-panelmenu .ui-menuitem-text {
-    float:left;
+    float: none;
 }
 
 .ui-panelmenu .ui-menu-parent .ui-menu-list {
