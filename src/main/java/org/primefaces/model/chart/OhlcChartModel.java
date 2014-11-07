@@ -15,11 +15,10 @@
  */
 package org.primefaces.model.chart;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OhlcChartModel extends CartesianChartModel implements Serializable {
+public class OhlcChartModel extends CartesianChartModel {
 
     private List<OhlcChartSeries> data;
     

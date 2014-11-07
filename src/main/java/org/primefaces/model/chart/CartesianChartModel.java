@@ -15,13 +15,12 @@
  */
 package org.primefaces.model.chart;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CartesianChartModel extends ChartModel implements Serializable {
+public class CartesianChartModel extends ChartModel {
 
     private List<ChartSeries> series;
     protected Map<AxisType,Axis> axes;

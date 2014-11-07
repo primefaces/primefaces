@@ -15,7 +15,9 @@
  */
 package org.primefaces.model.chart;
 
-public class ChartModel {
+import java.io.Serializable;
+
+public class ChartModel implements Serializable {
 
     private String title;
     private boolean shadow = true;

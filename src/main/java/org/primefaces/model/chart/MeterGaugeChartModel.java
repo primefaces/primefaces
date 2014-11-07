@@ -15,11 +15,10 @@
  */
 package org.primefaces.model.chart;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MeterGaugeChartModel extends ChartModel implements Serializable {
+public class MeterGaugeChartModel extends ChartModel {
  
     private Number value;
     private List<Number> intervals;

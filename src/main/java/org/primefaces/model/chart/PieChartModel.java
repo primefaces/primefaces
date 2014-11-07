@@ -15,11 +15,10 @@
  */
 package org.primefaces.model.chart;
 
-import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class PieChartModel extends ChartModel implements Serializable {
+public class PieChartModel extends ChartModel {
 
     private Map<String,Number> data;
     private int diameter;
