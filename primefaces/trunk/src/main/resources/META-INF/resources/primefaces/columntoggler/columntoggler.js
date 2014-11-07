@@ -18,16 +18,20 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     render: function() {
-        this.columns = this.thead.find('> tr > th:visible:not(.ui-static-column)');
+        this.columns = this.thead.find('> tr > th:not(.ui-static-column)');
         this.panel = $('<div></div>').attr('id', this.cfg.id).addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow ui-corner-all')
                 .append('<ul class="ui-columntoggler-items"></ul').appendTo(document.body);
         this.itemContainer = this.panel.children('ul');
-        
+                
         for(var i = 0; i < this.columns.length; i++) {
-            var column = this.columns.eq(i);
+            var column = this.columns.eq(i),
+            hidden = column.hasClass('ui-helper-hidden'),
+            boxClass = hidden ? 'ui-chkbox-box ui-widget ui-corner-all ui-state-default' : 'ui-chkbox-box ui-widget ui-corner-all ui-state-default ui-state-active',
+            iconClass = (hidden) ? 'ui-chkbox-icon ui-icon ui-icon-blank' : 'ui-chkbox-icon ui-icon ui-icon-check';
+                    
             $('<li class="ui-columntoggler-item">' + 
                     '<div class="ui-chkbox ui-widget">' +
-                    '<div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default ui-state-active"><span class="ui-chkbox-icon ui-icon ui-icon-check"></span></div>' + 
+                    '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div>' + 
                     '</div>'
                     + '<label>' + column.children('.ui-column-title').text() + '</label></li>').data('column', column.attr('id')).appendTo(this.itemContainer);
         }
@@ -110,7 +114,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     check: function(chkbox) {
-        chkbox.addClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon ui-icon-check');
+        chkbox.addClass('ui-state-active').removeClass('ui-state-hover').children('.ui-chkbox-icon').addClass('ui-icon-check').removeClass('ui-icon-blank');
         
         var index = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))).index() + 1;
 
@@ -122,7 +126,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     uncheck: function(chkbox) {
-        chkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon ui-icon-check');
+        chkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
         
         var index = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))).index() + 1;
         
