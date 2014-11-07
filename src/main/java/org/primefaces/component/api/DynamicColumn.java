@@ -216,4 +216,8 @@ public class DynamicColumn implements UIColumn {
     public boolean isFilterable() {
         return this.columns.isFilterable();
     }
+
+    public boolean isVisible() {
+        return this.columns.isVisible();
+    }
 }

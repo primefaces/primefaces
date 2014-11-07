@@ -102,4 +102,6 @@ public interface UIColumn {
     public boolean isSortable();
     
     public boolean isFilterable();
+    
+    public boolean isVisible();
 }

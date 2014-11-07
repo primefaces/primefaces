@@ -198,5 +198,12 @@
             <defaultValue>true</defaultValue>
             <description>Boolean value to mark column as filterable.</description>
 		</attribute>
+        <attribute>
+			<name>visible</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Controls the visibilty of the column, default is true.</description>
+		</attribute>
     </attributes>
 </component>

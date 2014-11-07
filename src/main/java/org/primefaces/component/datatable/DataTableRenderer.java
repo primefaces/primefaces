@@ -410,6 +410,7 @@ public class DataTableRenderer extends DataRenderer {
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
         columnClass = resizable ? columnClass + " " + DataTable.RESIZABLE_COLUMN_CLASS : columnClass;
         columnClass = !column.isToggleable() ? columnClass + " " + DataTable.STATIC_COLUMN_CLASS : columnClass;
+        columnClass = !column.isVisible()? columnClass + " " + DataTable.HIDDEN_COLUMN_CLASS : columnClass;
         columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
         
         if(sortable) {
@@ -656,6 +657,10 @@ public class DataTableRenderer extends DataRenderer {
         String styleClass = column.getStyleClass();
         styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
+        if(!column.isVisible()) {
+            styleClass = styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
+        }
+        
         writer.startElement("td", null);
         writer.writeAttribute("class", styleClass, null);
         
@@ -960,6 +965,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean selectionEnabled = column.getSelectionMode() != null;
         String style = column.getStyle();
         String styleClass = selectionEnabled ? DataTable.SELECTION_COLUMN_CLASS : (column.getCellEditor() != null) ? DataTable.EDITABLE_COLUMN_CLASS : null;
+        styleClass = (column.isVisible()) ? styleClass : (styleClass == null) ? DataTable.HIDDEN_COLUMN_CLASS : styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         String userStyleClass = column.getStyleClass();
         styleClass = userStyleClass == null ? styleClass : (styleClass == null) ? userStyleClass : styleClass + " " + userStyleClass;
         int colspan = column.getColspan();
