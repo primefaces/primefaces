@@ -15,11 +15,10 @@
  */
 package org.primefaces.model.chart;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BubbleChartModel extends CartesianChartModel implements Serializable {
+public class BubbleChartModel extends CartesianChartModel {
 
     private List<BubbleChartSeries> data;
     private boolean bubbleGradients = false;

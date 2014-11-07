@@ -15,12 +15,11 @@
  */
 package org.primefaces.model.chart;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DonutChartModel extends ChartModel implements Serializable {
+public class DonutChartModel extends ChartModel {
 
     private List<Map<String,Number>> data;
     private int sliceMargin;
