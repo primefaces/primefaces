@@ -213,5 +213,5 @@
 }
 
 .ui-tree .ui-treenode-outline {
-    outline: 1px solid;
+    outline: 1px dotted;
 }
