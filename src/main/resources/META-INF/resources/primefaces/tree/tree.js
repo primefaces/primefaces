@@ -290,10 +290,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                         this.cursorNode = node;
                     }
                 }
-            }
-            
-            this.focusNode(node);
-            this.keyboardTarget.trigger('focus.tree');
+                
+                this.focusNode(node);
+                this.keyboardTarget.trigger('focus.tree');
+            } 
         }
     },
             
