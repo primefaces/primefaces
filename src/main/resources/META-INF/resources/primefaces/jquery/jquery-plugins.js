@@ -13617,7 +13617,7 @@ $(function() {
 			var cal = calculator, self = this, element = self[0], elementOffset = self.offset();
 
 			// IE has easy way to get caret offset position
-			if ($.browser.msie) {
+			if ($.browser.msie && document.selection && document.selection.createRange) {
 				// must get focus first
 				element.focus();
 			    var range = document.selection.createRange();  
