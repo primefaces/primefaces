@@ -6,7 +6,9 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         this.cfg.highlight = (this.cfg.highlight === false) ? false : true;
-
+        this.focusedNode = null;
+        this.keyboardTarget = this.jq.children('.ui-helper-hidden-accessible');
+        
         if(this.cfg.selectionMode) {
             this.initSelection();
         }
@@ -289,6 +291,9 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
             }
+            
+            this.focusNode(node);
+            this.keyboardTarget.trigger('focus.tree');
         }
     },
             
@@ -468,7 +473,177 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         .on('click.tree-content', nodeContentSelector, null, function(e) {
                             $this.nodeClick(e, $(this));
                         });
+                        
+        this.bindKeyEvents();                
     },
+            
+    bindKeyEvents: function() {
+        var $this = this;
+
+        this.keyboardTarget.on('focus.tree', function() {
+            if(!$this.focusedNode) {
+                $this.focusNode($this.getFirstNode());
+            }
+        })
+        .on('blur.tree', function() {
+           if($this.focusedNode) {
+               $this.getNodeLabel($this.focusedNode).removeClass('ui-treenode-outline');
+               $this.focusedNode = null;
+            }
+        })
+        .on('keydown.tree', function(e) {
+            var prevNode = $this.focusedNode,
+                searchRowkey = "",
+                keyCode = $.ui.keyCode;
+            
+            switch(e.which) {
+                case keyCode.LEFT:
+                    if($this.focusedNode) {
+                        var rowkey = $this.focusedNode.data('rowkey').toString(),
+                            keyLength = rowkey.length;
+
+                            if($this.getNodeLabel($this.focusedNode).hasClass('ui-treenode-outline') && $this.focusedNode.find('> span > span.ui-icon').hasClass('ui-icon-triangle-1-s')) {
+                                $this.collapseNode($this.focusedNode);
+                            }
+                            else {
+                                for(var i = 1; i < parseInt(keyLength / 2) + 1; i++){
+                                    searchRowkey = rowkey.substring(0, keyLength - 2*i);
+                                    $this.focusedNode = $this.container.find("li:visible[data-rowkey = '" + searchRowkey + "']");
+                                    if($this.focusedNode) {
+                                        break;
+                                    }
+                                }
+
+                                $this.getNodeLabel(prevNode).removeClass('ui-treenode-outline');
+                                $this.getNodeLabel($this.focusedNode).addClass('ui-treenode-outline');
+                            }
+
+                    }
+                    e.preventDefault();
+                break;
+
+                case keyCode.RIGHT:
+                    if($this.focusedNode && !$this.focusedNode.hasClass('ui-treenode-leaf')) {
+                        var rowkey = "" + $this.focusedNode.data('rowkey'),
+                            keyLength = rowkey.length;
+
+                        $this.expandNode($this.focusedNode);
+                        if($this.focusedNode.find('> span > span.ui-icon').hasClass('ui-icon-triangle-1-e') && !$this.cfg.dynamic) {
+                            searchRowkey = rowkey + '_0';
+                            $this.focusedNode = $this.container.find("li:visible[data-rowkey = '" + searchRowkey + "']");
+
+                            if($this.focusedNode) {
+                                $this.getNodeLabel(prevNode).removeClass('ui-treenode-outline');
+                                $this.getNodeLabel($this.focusedNode).addClass('ui-treenode-outline');
+                            }           
+                        }
+                    }
+                    e.preventDefault();
+                break;
+
+                case keyCode.UP:
+                    if($this.focusedNode) { 
+                         if(0 < $this.focusedNode.prev().length) {
+                            $this.focusedNode = $this.focusedNode.prev().find('ul > li.ui-treenode:visible:last');
+                            if($this.focusedNode.length === 0) {
+                                $this.focusedNode = prevNode.prev();    
+                            }
+                         }
+                         else {
+                             $this.focusedNode = $this.focusedNode.closest('ul').closest('li.ui-treenode');
+                         }
+
+                        if(0 < $this.focusedNode.length) {
+                            $this.getNodeLabel(prevNode).removeClass('ui-treenode-outline');
+                            $this.getNodeLabel($this.focusedNode).addClass('ui-treenode-outline');
+                        }
+                        else {
+                            $this.focusedNode = prevNode;
+                        }
+                    } 
+                    e.preventDefault();
+                break;
+
+                case keyCode.DOWN:
+                    if($this.focusedNode) {   
+                        if(0 < $this.focusedNode.find("> ul > li:visible").length) {
+                            $this.focusedNode = $this.focusedNode.find("> ul > li.ui-treenode:visible:first");
+                        }
+                        else if(0 < $this.focusedNode.next().length) {
+                            $this.focusedNode = $this.focusedNode.next();
+                        }
+                        else {
+                            var rowkey = "" + $this.focusedNode.data('rowkey');
+                            if(rowkey.length !== 1) {
+                                $this.searchDown($this.focusedNode);
+                            }   
+                        }
+
+                        if($this.focusedNode.length > 0) {
+                            $this.getNodeLabel(prevNode).removeClass('ui-treenode-outline');
+                            $this.getNodeLabel($this.focusedNode).addClass('ui-treenode-outline');
+                        }
+                        else {
+                            $this.focusedNode = prevNode;
+                        }
+                    }
+                    e.preventDefault();
+                break;
+                
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.SPACE:
+                    if($this.focusedNode && $this.cfg.selectionMode) {
+                        var selectable = $this.focusedNode.children('.ui-treenode-content').hasClass('ui-tree-selectable');
+                        
+                        if($this.cfg.onNodeClick) {
+                            $this.cfg.onNodeClick.call($this, $this.focusedNode, e);
+                        }
+                        
+                        if(selectable) {
+                            var selected = $this.isNodeSelected($this.focusedNode);
+
+                            if($this.isCheckboxSelection()) {
+                                $this.toggleCheckboxNode($this.focusedNode);
+                            }
+                            else {
+                                if(selected) {
+                                    $this.unselectNode($this.focusedNode);
+                                }
+                                else {
+                                    if($this.isSingleSelection()) {
+                                        $this.unselectAllNodes();
+                                    }
+                                    
+                                    $this.selectNode($this.focusedNode);
+                                    $this.cursorNode = $this.focusedNode;
+                                }
+                            }
+                        }
+                    }
+
+                    e.preventDefault();
+                break;
+            }       
+        });
+    },
+    
+    searchDown: function(node) {
+        var nextNode = node.closest('ul').closest('li.ui-treenode').next();
+        
+        if(0 < nextNode.length) {
+            this.focusedNode = nextNode;
+        }
+        else if(node.hasClass('ui-treenode-leaf') && node.closest('ul').closest('li.ui-treenode').length == 0){   
+            this.focusedNode = node;
+        }
+        else {
+            var rowkey = "" + node.data('rowkey');
+            if(rowkey.length !== 1) {
+                this.searchDown(node.closest('ul').closest('li.ui-treenode'));
+            }
+        }     
+    }, 
             
     collapseNode: function(node) {
         var _self = this;
@@ -1070,6 +1245,25 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             
     isEmpty: function() {
         return (this.container.children().length === 0);
+    },
+    
+    getFirstNode: function() {
+        return this.jq.find('> ul.ui-tree-container > li:first-child');
+    },
+    
+    getNodeLabel: function(node) {
+        return node.find('> span.ui-treenode-content > span.ui-treenode-label');
+    },
+    
+    focusNode: function(node) {
+        if(this.focusedNode) {
+            this.getNodeLabel(this.focusedNode).removeClass('ui-treenode-outline');
+        } else {
+            this.getNodeLabel(node).addClass('ui-treenode-outline');
+        }
+        
+        this.focusedNode = node;
+        
     }
 });
 
