@@ -211,3 +211,7 @@
 .ui-tree.ui-tree-checkbox-all .ui-treenode-content .ui-chkbox.ui-selection {
     display: inline-block;
 }
+
+.ui-tree .ui-treenode-outline {
+    outline: 1px solid;
+}
