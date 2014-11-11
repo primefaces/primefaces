@@ -6,7 +6,7 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.cfg.connectWith = '.ui-dashboard-column';
+        this.cfg.connectWith =  this.jqId + ' .ui-dashboard-column';
         this.cfg.placeholder = 'ui-state-hover';
         this.cfg.forcePlaceholderSize = true;
         this.cfg.revert=false;
