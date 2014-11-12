@@ -48,7 +48,7 @@ PrimeFaces.expressions.SearchExpressionFacade = {
 	},
 
 	resolveComponents: function(expressions) {
-		var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions).
+		var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions),
 		ids = [];
 
 		if (splittedExpressions) {
