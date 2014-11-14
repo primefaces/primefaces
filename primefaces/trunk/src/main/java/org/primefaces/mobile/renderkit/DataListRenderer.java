@@ -125,7 +125,7 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
             writer.writeAttribute("type", list.getItemType(), null);
         }
 
-        for (int i = first; i < rowCount; i++) {
+        for (int i = first; i < pageSize; i++) {
             if(varStatus != null) {
                 requestMap.put(varStatus, new org.primefaces.component.datalist.DataListRenderer.VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
             }
