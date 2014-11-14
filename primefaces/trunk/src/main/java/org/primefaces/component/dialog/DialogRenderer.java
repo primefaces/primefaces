@@ -129,7 +129,7 @@ public class DialogRenderer extends CoreRenderer {
         if(headerFacet != null)
             headerFacet.encodeAll(context);
         else if(header != null)
-            writer.write(header);
+            writer.writeText(header, null);
         
         writer.endElement("span");
         
@@ -163,7 +163,7 @@ public class DialogRenderer extends CoreRenderer {
         if(footerFacet != null)
             footerFacet.encodeAll(context);
         else if(footer != null)
-            writer.write(footer);
+            writer.writeText(footer, null);
         writer.endElement("span");
         
         writer.endElement("div");
