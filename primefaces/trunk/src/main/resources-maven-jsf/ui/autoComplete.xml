@@ -79,13 +79,6 @@
             <description>Delay to wait in milliseconds before sending each query to the server. Default is 300.</description>
         </attribute>
         <attribute>
-            <name>queryDeletionDelay</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-            <defaultValue>600</defaultValue>
-            <description>Delay to wait in milliseconds, after deleting a character and before sending each query to the server Default is 600.</description>
-        </attribute>
-        <attribute>
             <name>forceSelection</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
