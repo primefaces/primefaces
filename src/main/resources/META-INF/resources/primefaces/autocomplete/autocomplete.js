@@ -198,91 +198,54 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     bindKeyEvents: function() {
         var $this = this;
-        
-        this.currentText = this.input.val();
-        this.previousText = this.input.val();
 
-        //bind keyup handler
-        this.input.on('keyup.autoComplete', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which,
-            shouldSearch = true;
-            
-            $this.previousText = $this.currentText;
-            $this.currentText = this.value;
-            
-            if($this.cfg.queryEvent === 'enter') {
-                if((key !== keyCode.ENTER && key !== keyCode.NUMPAD_ENTER) || $this.itemSelectedWithEnter) {
-                    shouldSearch = false;
-                    $this.itemSelectedWithEnter = false;
-                }
-            }
-            else {
-                 // Cancel a possible long running search when selecting an entry via enter
-                if (key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
-                    if ($this.timeout) {
-                        clearTimeout($this.timeout);
-                    }
-                    shouldSearch = false;
-                }
-                else if (key === keyCode.ESCAPE) {
-                    $this.hide();
-                    shouldSearch = false;
-                }
-                else if ((e.ctrlKey && key === 65) // ctrl+a
-                    || (e.ctrlKey && key === 67) // ctrl+c
-                    || key === keyCode.LEFT
-                    || key === keyCode.RIGHT
-                    || key === keyCode.TAB
-                    || key === 16 // keyCode.SHIFT
-                    || key === keyCode.HOME
-                    || key === keyCode.END
-                    || key === 18 // keyCode.ALT
-                    || key === 17 // keyCode.CONTROL
-                    || (key >= 112 && key <= 123)) { // F1-F12
-                    shouldSearch = false;
-                }
-                else if(key === keyCode.UP || key === keyCode.DOWN) {
-                    if($this.panel.is(':visible')) {
-                        var highlightedItem = $this.items.filter('.ui-state-highlight');
-                        if(highlightedItem.length) {
-                            $this.displayAriaStatus(highlightedItem.data('item-label'));
-                        }
-                    }
-
-                    shouldSearch = false;
-                }
-                else if($this.cfg.pojo && !$this.cfg.multiple && ($this.previousText !== $this.currentText)) {
-                    $this.hinput.val($(this).val());
-                }
-            }
-            
-            if(shouldSearch) {
+        if(this.cfg.queryEvent !== 'enter') {
+            this.input.on('input propertychange', function(e) {
                 var value = $this.input.val();
+
+                if($this.cfg.pojo && !$this.cfg.multiple) {
+                    $this.hinput.val(value);
+                }
 
                 if(!value.length) {
                     $this.hide();
                 }
 
                 if(value.length >= $this.cfg.minLength) {
-
-                    //Cancel the search request if user types within the timeout
                     if($this.timeout) {
                         clearTimeout($this.timeout);
                     }
 
                     var delay = $this.cfg.delay;
-
-                    if (value != '' && (key == keyCode.BACKSPACE || key == keyCode.DELETE)) {
-                        delay = $this.cfg.deletionDelay;
-                    }
-
                     $this.timeout = setTimeout(function() {
                         $this.search(value);
                     }, delay);
                 }
+            });
+        }
+        
+        this.input.on('keyup.autoComplete', function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+            
+            if($this.cfg.queryEvent === 'enter' && (key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER)) {
+                if($this.itemSelectedWithEnter)
+                    $this.itemSelectedWithEnter = false;
+                else
+                    $this.search($this.input.val());
             }
             
+            if($this.panel.is(':visible')) {
+                if(key === keyCode.ESCAPE) {
+                    $this.hide();
+                }
+                else if(key === keyCode.UP || key === keyCode.DOWN) {
+                    var highlightedItem = $this.items.filter('.ui-state-highlight');
+                    if(highlightedItem.length) {
+                        $this.displayAriaStatus(highlightedItem.data('item-label'));
+                    }
+                }
+            }
         }).on('keydown.autoComplete', function(e) {
             var keyCode = $.ui.keyCode;
 
@@ -330,6 +293,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                     case keyCode.ENTER:
                     case keyCode.NUMPAD_ENTER:
+                        if ($this.timeout) {
+                            clearTimeout($this.timeout);
+                        }
+                    
                         highlightedItem.click();
 
                         e.preventDefault();
@@ -356,7 +323,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     break;
                     
                     case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:
+                    case keyCode.NUMPAD_ENTER:                        
                         if($this.cfg.queryEvent === 'enter') {
                             e.preventDefault();
                         }

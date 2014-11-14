@@ -532,7 +532,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         
         wb.attr("minLength", ac.getMinQueryLength(), 1)
             .attr("delay", ac.getQueryDelay())
-            .attr("deletionDelay", ac.getQueryDeletionDelay())
             .attr("forceSelection", ac.isForceSelection(), false)
             .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
             .attr("multiple", ac.isMultiple(), false)
