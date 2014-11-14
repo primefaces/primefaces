@@ -28,6 +28,8 @@ import javax.faces.event.FacesEvent;
     public static final String FOOTER_CLASS = "ui-datalist-footer ui-widget-header ui-corner-bottom";
 	public static final String DATALIST_EMPTYMESSAGE_CLASS = "ui-datalist-empty-message";
 
+    public static final String MOBILE_CONTENT_CLASS = "ui-datalist-content";
+
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("swipeleft","swiperight","tap","taphold"));
 
     @Override
