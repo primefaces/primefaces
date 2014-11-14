@@ -64,7 +64,9 @@
     font-weight: normal;
 }
 
-.ui-datatable .ui-paginator .ui-controlgroup {
+.ui-datatable .ui-paginator .ui-controlgroup,
+.ui-datagrid .ui-paginator .ui-controlgroup,
+.ui-datalist .ui-paginator .ui-controlgroup {
     margin: 0;
     padding: 0.1em 0em;
     text-align: center;
@@ -76,4 +78,23 @@
         display: none;
     }
     
+}
+
+/** DataGrid **/
+.ui-datagrid .ui-datagrid-header,
+.ui-datagrid .ui-datagrid-footer {
+    text-align: center;
+}
+
+/** DataList **/
+.ui-datalist .ui-listview  {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.ui-datalist.ui-datalist-topbar .ui-listview > li.ui-first-child, 
+.ui-datalist.ui-datalist-topbar .ui-listview > li.ui-first-child > a.ui-btn,
+.ui-datalist.ui-datalist-bottombar .ui-listview > li.ui-last-child, 
+.ui-datalist.ui-datalist-bottombar .ui-listview > li.ui-last-child > a.ui-btn {
+    border-radius: 0;
 }
