@@ -71,6 +71,10 @@ public class PanelGridRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = grid.getClientId(context);
         int columns = grid.getColumns();
+        if(columns == 0) {
+            throw new FacesException("Columns of PanelGrid \"" + grid.getClientId(context) + "\" must be greater than zero in grid layout.");
+        }
+                
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass();
         styleClass = styleClass == null ? PanelGrid.CONTAINER_CLASS : PanelGrid.CONTAINER_CLASS + " " + styleClass;
