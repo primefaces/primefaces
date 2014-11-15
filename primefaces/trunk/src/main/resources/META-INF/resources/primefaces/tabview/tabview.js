@@ -9,7 +9,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         this.panelContainer = this.jq.children('.ui-tabs-panels');
         this.stateHolder = $(this.jqId + '_activeIndex');
         this.cfg.selected = parseInt(this.stateHolder.val());
-        this.onshowHandlers = this.onshowHandlers||{};
         
         if(this.cfg.scrollable) {
             this.navscroller = this.jq.children('.ui-tabs-navscroller');
@@ -405,26 +404,13 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         this.navContainer.children().eq(index).removeClass('ui-state-disabled');
     },
     
-    addOnshowHandler: function(id, fn) {
-        this.onshowHandlers[id] = fn;
-    },
-    
     postTabShow: function(newPanel) {    
         //execute user defined callback
         if(this.cfg.onTabShow) {
             this.cfg.onTabShow.call(this, newPanel.index());
         }
 
-        //execute onshowHandlers and remove successful ones
-        for(var id in this.onshowHandlers) {
-            if(this.onshowHandlers.hasOwnProperty(id)) {
-                var fn = this.onshowHandlers[id];
-                
-                if(fn.call()) {
-                    delete this.onshowHandlers[id];
-                }
-            }
-        }
+        PrimeFaces.invokeDeferredRenders(this.id);
     }
 
 });

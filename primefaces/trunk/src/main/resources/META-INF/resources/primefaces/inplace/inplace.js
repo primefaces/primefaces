@@ -9,7 +9,6 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         this.display = $(this.jqId + '_display');
         this.content = $(this.jqId + '_content');
         this.cfg.formId = this.jq.parents('form:first').attr('id');
-        this.onshowHandlers = this.onshowHandlers||{};
 
         var $this = this;
 
@@ -81,16 +80,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
     postShow: function() {
         this.content.find('input:text,textarea').filter(':visible:enabled:first').focus().select();
         
-        //execute onshowHandlers and remove successful ones
-        for(var id in this.onshowHandlers) {
-            if(this.onshowHandlers.hasOwnProperty(id)) {
-                var fn = this.onshowHandlers[id];
-                
-                if(fn.call()) {
-                    delete this.onshowHandlers[id];
-                }
-            }
-        }
+        PrimeFaces.invokeDeferredRenders(this.id);
     },
     
     getDisplay: function() {
@@ -147,10 +137,6 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return false;
-    },
-    
-    addOnshowHandler: function(id, fn) {
-        this.onshowHandlers[id] = fn;
     }
     
 });
