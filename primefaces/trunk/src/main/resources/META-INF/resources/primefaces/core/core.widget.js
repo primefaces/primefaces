@@ -127,18 +127,13 @@ PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
             this._render();
         }
         else {
-            var hiddenParent = this.jq.closest('.ui-hidden-container'),
-            hiddenParentWidgetVar = hiddenParent.data('widget'),
+            var container = this.jq.closest('.ui-hidden-container'),
             $this = this;
-
-            if(hiddenParentWidgetVar) {
-                var hiddenParentWidget = PF(hiddenParentWidgetVar);
-                
-                if(hiddenParentWidget) {
-                    hiddenParentWidget.addOnshowHandler(this.id, function() {
-                        return $this.render();
-                    });
-                }
+    
+            if(container.length) {
+                this.addDeferredRender(this.id, container, function() {
+                    $this.render();
+                });
             }
         }
     },
@@ -146,10 +141,7 @@ PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
     render: function() {
         if(this.jq.is(':visible')) {
             this._render();
-            return true;
-        }
-        else {
-            return false;
+            PrimeFaces.removeDeferredRenders(this.id);
         }
     },
     
@@ -158,5 +150,17 @@ PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
      */
     _render: function() {
         throw 'Unsupported Operation';
+    },
+        
+    addDeferredRender: function(widgetId, container, callback) {
+        PrimeFaces.addDeferredRender(widgetId, container.attr('id'), callback);
+        
+        if(container.is(':hidden')) {
+            var parentContainer = this.jq.closest('.ui-hidden-container');
+            
+            if(parentContainer.length) {
+                this.addDeferredRender(widgetId, container.parent().closest('.ui-hidden-container'), callback);
+            }
+        }
     }
 });
