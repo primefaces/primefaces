@@ -27,10 +27,17 @@ public class RowEditorRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        RowEditor rowEditor = (RowEditor) component;
+        String style = rowEditor.getStyle();
+        String styleClass = rowEditor.getStyleClass();
+        styleClass = (styleClass == null) ? DataTable.ROW_EDITOR_CLASS : DataTable.ROW_EDITOR_CLASS + " " + styleClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);
-        writer.writeAttribute("class", DataTable.ROW_EDITOR_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-pencil", null);
