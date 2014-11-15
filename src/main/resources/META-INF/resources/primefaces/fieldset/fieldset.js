@@ -5,7 +5,6 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        this.onshowHandlers = this.onshowHandlers||{};
         
         this.legend = this.jq.children('.ui-fieldset-legend');
 
@@ -43,7 +42,7 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
             }
         });
         
-        $this.invokeOnshowHandlers();
+        PrimeFaces.invokeDeferredRenders(this.id);
     },
     
     /**
@@ -58,22 +57,6 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.collapsed = !collapsed;
 
         this.stateHolder.val(!collapsed);
-    },
-    
-    addOnshowHandler: function(id, fn) {
-        this.onshowHandlers[id] = fn;
-    },
-    
-    invokeOnshowHandlers: function() {
-        for(var id in this.onshowHandlers) {
-            if(this.onshowHandlers.hasOwnProperty(id)) {
-                var fn = this.onshowHandlers[id];
-                
-                if(fn.call()) {
-                    delete this.onshowHandlers[id];
-                }
-            }
-        }
     }
     
 });

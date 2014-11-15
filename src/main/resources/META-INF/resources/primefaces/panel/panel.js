@@ -8,7 +8,6 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.header = this.jq.children('div.ui-panel-titlebar');
         this.title = this.header.children('span.ui-panel-title');
         this.content = $(this.jqId + '_content');
-        this.onshowHandlers = this.onshowHandlers||{};
         
         this.bindEvents();
     },
@@ -33,7 +32,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     toggle: function() {
         if(this.cfg.collapsed) {
             this.expand();
-            this.invokeOnshowHandlers();
+            PrimeFaces.invokeDeferredRenders(this.id);
         }
         else {
             this.collapse();
@@ -165,22 +164,6 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.visibleStateHolder = $(this.jqId + "_visible");
 
         this.closer.click(function() {_self.close();});
-    },
-        
-    addOnshowHandler: function(id, fn) {
-        this.onshowHandlers[id] = fn;
-    },
-    
-    invokeOnshowHandlers: function() {
-        for(var id in this.onshowHandlers) {
-            if(this.onshowHandlers.hasOwnProperty(id)) {
-                var fn = this.onshowHandlers[id];
-                
-                if(fn.call()) {
-                    delete this.onshowHandlers[id];
-                }
-            }
-        }
     }
 
 });
