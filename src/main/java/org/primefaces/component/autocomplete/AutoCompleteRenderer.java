@@ -538,7 +538,8 @@ public class AutoCompleteRenderer extends InputRenderer {
             .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, ac, ac.getAppendTo()), null)
             .attr("grouping", ac.getValueExpression("groupBy") != null, false)
             .attr("queryEvent", ac.getQueryEvent(), null)
-            .attr("dropdownMode", ac.getDropdownMode(), null);
+            .attr("dropdownMode", ac.getDropdownMode(), null)
+            .attr("autoHighlight", ac.isAutoHighlight(), true);
         
         if(ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());            

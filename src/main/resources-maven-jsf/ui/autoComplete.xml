@@ -188,6 +188,13 @@
             <description>Specifies the behavior dropdown button. Default "blank" mode
             sends an empty string and "current" mode sends the input value.</description>
         </attribute>
+        <attribute>
+            <name>autoHighlight</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Highlights the first suggested item automatically. Default is true.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
