@@ -41,6 +41,8 @@ public class OrderListRenderer extends CoreRenderer {
 		if(values != null) {
 			pickList.setSubmittedValue(params.get(values));
 		}
+        
+        decodeBehaviors(context, component);
 	}
     
     @Override
@@ -216,6 +218,9 @@ public class OrderListRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("OrderList", ol.resolveWidgetVar(), clientId)
             .attr("effect", ol.getEffect(), null);
+        
+        encodeClientBehaviors(context, ol);
+        
         wb.finish();
     }
     
