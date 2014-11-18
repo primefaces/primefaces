@@ -18,6 +18,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.resultsMessage = this.cfg.resultsMessage||' results are available, use up and down arrow keys to navigate';
         this.cfg.ariaEmptyMessage = this.cfg.emptyMessage||'No search results are available.';
         this.cfg.dropdownMode = this.cfg.dropdownMode||'blank';
+        this.cfg.autoHighlight = (this.cfg.autoHighlight === undefined) ? true : this.cfg.autoHighlight;
 
         if(this.cfg.cache) {
             this.initCache();
@@ -309,7 +310,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
 
                     case keyCode.TAB:
-                        highlightedItem.trigger('click');
+                        if(highlightedItem.length) {
+                            highlightedItem.trigger('click');
+                        }
                         $this.hide();
                         break;
                 }
@@ -433,7 +436,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             var firstItem = this.items.eq(0);
 
             //highlight first item
-            firstItem.addClass('ui-state-highlight');
+            if(this.cfg.autoHighlight && firstItem.length) {
+                firstItem.addClass('ui-state-highlight');
+            }
 
             //highlight query string
             if(this.panel.children().is('ul') && query.length > 0) {
