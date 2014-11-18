@@ -396,8 +396,9 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
     
     focusKeyboardTarget: function() {
-        var y = window.scrollY || window.pageYOffset,
-        x = window.scrollX || window.pageXOffset;
+        var win = $(window),
+        y = win.scrollTop(),
+        x = win.scrollLeft();
         this.keyboardTarget.trigger('focus.tree');
         window.scrollTo(x,y);
     }
