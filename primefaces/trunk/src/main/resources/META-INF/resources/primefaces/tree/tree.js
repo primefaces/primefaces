@@ -401,6 +401,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         x = win.scrollLeft();
         this.keyboardTarget.trigger('focus.tree');
         window.scrollTo(x,y);
+    },
+    
+    isExpanded: function(node) {
+        return this.getNodeChildrenContainer(node).is(':visible');
     }
     
 });
@@ -535,7 +539,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         var rowkey = "" + $this.focusedNode.data('rowkey'),
                             keyLength = rowkey.length;
 
-                        $this.expandNode($this.focusedNode);
+                        if(!$this.isExpanded($this.focusedNode)) {
+                            $this.expandNode($this.focusedNode);
+                        }
+                        
                         if($this.focusedNode.find('> span > span.ui-icon').hasClass('ui-icon-triangle-1-e') && !$this.cfg.dynamic) {
                             searchRowkey = rowkey + '_0';
                             $this.focusedNode = $this.container.find("li:visible[data-rowkey = '" + searchRowkey + "']");
@@ -657,7 +664,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         var _self = this;
         
         //aria
-        node.attr('aria-expanded', true);
+        node.attr('aria-expanded', false);
         
         var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
         nodeType = node.data('nodetype'),
