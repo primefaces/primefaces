@@ -292,7 +292,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 }
                 
                 this.focusNode(node);
-                this.keyboardTarget.trigger('focus.tree');
+                this.focusKeyboardTarget();
             } 
         }
     },
@@ -393,6 +393,13 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-selected').addClass('ui-treenode-unselected').attr('aria-checked', false).attr('aria-selected', false);
     
         this.removeFromSelection(rowKey);
+    },
+    
+    focusKeyboardTarget: function() {
+        var y = window.scrollY || window.pageYOffset,
+        x = window.scrollX || window.pageXOffset;
+        this.keyboardTarget.trigger('focus.tree');
+        window.scrollTo(x,y);
     }
     
 });
