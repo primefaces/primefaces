@@ -15,19 +15,26 @@
  */
 package org.primefaces.event.system;
 
+import javax.faces.component.UIComponent;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.treetable.TreeTable;
 
 public class DynamicColumnsListener implements SystemEventListener {
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         Columns columns = (Columns) event.getSource();
+        UIComponent parent = columns.getParent();
         
-        if (columns.getParent() instanceof DataTable) {
-        	((DataTable) columns.getParent()).setDynamicColumns(columns);
+        //todo: consider an interface
+        if (parent instanceof DataTable) {
+        	((DataTable) parent).setDynamicColumns(columns);
+        }
+        else if (parent instanceof TreeTable) {
+        	((TreeTable) parent).setDynamicColumns(columns);
         }
     }
 
