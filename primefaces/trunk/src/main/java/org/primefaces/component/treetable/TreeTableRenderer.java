@@ -25,11 +25,13 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.tree.Tree;
 import org.primefaces.context.RequestContext;
@@ -121,6 +123,8 @@ public class TreeTableRenderer extends CoreRenderer {
         String clientId = tt.getClientId(context);
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         
+        preRender(context, tt);
+        
         String nodeKey = params.get(clientId + "_expand");
         if(nodeKey != null) {
             tt.setRowKey(nodeKey);
@@ -137,6 +141,13 @@ public class TreeTableRenderer extends CoreRenderer {
             encodeScript(context, tt); 
         }
 	}
+    
+    protected void preRender(FacesContext context, TreeTable tt) {
+        Columns dynamicCols = tt.getDynamicColumns();
+        if(dynamicCols != null) {
+            dynamicCols.setRowIndex(-1);
+        }
+    }  
 	
 	protected void encodeScript(FacesContext context, TreeTable tt) throws IOException {
 		String clientId = tt.getClientId(context);
@@ -323,16 +334,24 @@ public class TreeTableRenderer extends CoreRenderer {
             writer.startElement("tr", null);
             writer.writeAttribute("role", "row", null);
 
-            for(int i = 0; i < tt.getChildCount(); i++) {
-                UIComponent kid = tt.getChildren().get(i);
+            List<UIColumn> columns = tt.getColumns();
+            for(int i = 0; i < columns.size(); i++) {
+                UIColumn column = columns.get(i);
 
-                if(kid instanceof Column && kid.isRendered()) {
-                    encodeColumnHeader(context, tt, (UIColumn) kid);
+                if(column instanceof Column) {
+                    encodeColumnHeader(context, tt, column);
+                }
+                else if(column instanceof DynamicColumn) {
+                    DynamicColumn dynamicColumn = (DynamicColumn) column;
+                    dynamicColumn.applyModel();
+
+                    encodeColumnHeader(context, tt, dynamicColumn);
                 }
             }
+            
+            writer.endElement("tr");
         }
-        
-        writer.endElement("tr");
+
 		writer.endElement("thead");
 	}
        
@@ -423,6 +442,10 @@ public class TreeTableRenderer extends CoreRenderer {
         for(int i=0; i < columns.size(); i++) {
             UIColumn column = columns.get(i);
 
+            if(column.isDynamic()) {
+                ((DynamicColumn) column).applyModel();
+            }
+            
             if(column.isRendered()) {
                 String columnStyleClass = column.getStyleClass();
                 String columnStyle = column.getStyle();
@@ -574,11 +597,18 @@ public class TreeTableRenderer extends CoreRenderer {
         else if(tt.hasFooterColumn()) {
             writer.startElement("tr", null);
 
-            for(int i = 0; i < tt.getChildCount(); i++) {
-                UIComponent kid = tt.getChildren().get(i);
+            List<UIColumn> columns = tt.getColumns();
+            for(int i = 0; i < columns.size(); i++) {
+                UIColumn column = columns.get(i);
 
-                if(kid instanceof Column && kid.isRendered()) {
-                    encodeColumnFooter(context, tt, (Column) kid);
+                if(column instanceof Column) {
+                    encodeColumnFooter(context, tt, column);
+                }
+                else if(column instanceof DynamicColumn) {
+                    DynamicColumn dynamicColumn = (DynamicColumn) column;
+                    dynamicColumn.applyModel();
+
+                    encodeColumnFooter(context, tt, dynamicColumn);
                 }
             }
 
@@ -673,6 +703,11 @@ public class TreeTableRenderer extends CoreRenderer {
         TreeNode root = tt.getValue();
         if(root == null)
             return;
+        
+        UIColumn sortColumn = tt.getSortColumn();
+        if(sortColumn != null && sortColumn.isDynamic()) {
+            ((DynamicColumn) sortColumn).applyStatelessModel();
+        }
         
         ValueExpression sortByVE = tt.getValueExpression("sortBy");
         SortOrder sortOrder = SortOrder.valueOf(tt.getSortOrder().toUpperCase(Locale.ENGLISH));

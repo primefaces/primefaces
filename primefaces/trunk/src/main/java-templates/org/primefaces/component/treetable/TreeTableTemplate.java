@@ -281,13 +281,43 @@ import org.primefaces.util.ComponentUtils;
     public List<UIColumn> getColumns() {
         if(columns == null) {
             columns = new ArrayList<UIColumn>();
+            FacesContext context = getFacesContext();
+            char separator = UINamingContainer.getSeparatorChar(context);
             
             for(UIComponent child : this.getChildren()) {
                 if(child instanceof Column) {
                     columns.add((UIColumn) child);
+                }
+                else if(child instanceof Columns) {
+                    Columns uiColumns = (Columns) child;
+                    String uiColumnsClientId = uiColumns.getClientId(context);
+                    
+                    for(int i=0; i < uiColumns.getRowCount(); i++) {
+                        DynamicColumn dynaColumn = new DynamicColumn(i, uiColumns);
+                        dynaColumn.setColumnKey(uiColumnsClientId + separator + i);
+                        columns.add(dynaColumn);
+                    }
                 }
             }
         }
         
         return columns;
     }
+
+    private Columns dynamicColumns;
+    
+    public void setDynamicColumns(Columns value) {
+        this.dynamicColumns = value;
+    }
+    public Columns getDynamicColumns() {
+        return dynamicColumns;
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        if(this.dynamicColumns != null) {
+            dynamicColumns.setRowIndex(-1);
+        }
+    
+        return super.saveState(context);
+    } 
