@@ -649,7 +649,7 @@
             yearSuffix:'',
             timeOnlyTitle: 'Only Time',
             timeText: 'Time',
-            hourText: 'Time',
+            hourText: 'Hour',
             minuteText: 'Minute',
             secondText: 'Second',
             currentText: 'Current Date',
