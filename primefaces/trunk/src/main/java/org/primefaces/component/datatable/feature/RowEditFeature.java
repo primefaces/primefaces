@@ -64,6 +64,10 @@ public class RowEditFeature implements DataTableFeature {
         }
 
         if (table.isRowAvailable()) {
+            if (table.isSelectionEnabled()) {
+                table.findSelectedRowKeys();
+            }
+                    
             renderer.encodeRow(context, table, clientId, editedRowId);
         }
     }
