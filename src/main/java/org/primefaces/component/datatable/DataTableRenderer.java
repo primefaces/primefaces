@@ -995,6 +995,12 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         List<UIColumn> columns = table.getColumns();
         ColumnGroup group = table.getColumnGroup("footer");
+        boolean hasFooterColumn = table.hasFooterColumn();
+        boolean shouldRenderFooter = (hasFooterColumn || group != null); 
+
+        if(!shouldRenderFooter) {
+            return;
+        }
 
         writer.startElement("tfoot", null);
         writer.writeAttribute("id", table.getClientId(context) + "_foot", null);
