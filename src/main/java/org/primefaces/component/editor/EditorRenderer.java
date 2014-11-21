@@ -17,6 +17,7 @@ package org.primefaces.component.editor;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.faces.application.Resource;
 
 import javax.faces.component.UIComponent;
@@ -32,6 +33,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class EditorRenderer extends CoreRenderer{
 
+    private final static Logger logger = Logger.getLogger(EditorRenderer.class.getName());
+    
     @Override
 	public void decode(FacesContext context, UIComponent component) {
 		Editor editor = (Editor) component;
@@ -98,6 +101,10 @@ public class EditorRenderer extends CoreRenderer{
         if(AgentUtils.isIE(context)) {
             Resource resource = context.getApplication().getResourceHandler().createResource("editor/editor-ie.css", "primefaces");
             wb.attr("docCSSFile", resource.getRequestPath());
+        }
+        
+        if(editor.getMaxlength() != Integer.MAX_VALUE) {
+            logger.info("Maxlength option is deprecated and will be removed in a future version.");
         }
 
         wb.finish();
