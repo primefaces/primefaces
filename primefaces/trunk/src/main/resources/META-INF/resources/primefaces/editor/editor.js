@@ -730,9 +730,24 @@
 
         // Execute the command and check for error
         var inserthtml = command.toLowerCase() === "inserthtml";
-        if (ie && inserthtml)
-            getRange(editor).pasteHTML(value);
+        if (ie && inserthtml) {
+            /*
+            Despite having access to pasteHTML, IE8 will produce an 'unspecified error'
+            if it is invoked. The only way to detect this bug is via try catch.
+            */
+            try{
+                getRange(editor).pasteHTML(value);
+            }
+            catch(e){
+              // An empty document needs selection beforehand
+              if(/^\s*$/.test(editor.doc.body.innerText)){
+                editor.doc.execCommand('selectAll',false, null);
+              }
 
+              // execCommand is the standard method for contentEditable elements
+              editor.doc.execCommand("Paste", 0, value || null);
+            }
+        }
         else if (iege11 && inserthtml) {
             var selection = getSelection(editor),
                 range = selection.getRangeAt(0);
