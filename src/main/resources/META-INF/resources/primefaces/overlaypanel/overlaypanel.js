@@ -19,6 +19,12 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             this.closerIcon = $('<a href="#" class="ui-overlaypanel-close ui-state-default" href="#"><span class="ui-icon ui-icon-closethick"></span></a>').appendTo(this.jq);
         }
         
+        //prevent duplicate elements
+        if(this.jq.length > 1) {
+            $(document.body).children(this.jqId).remove();
+            this.jq = $(this.jqId);
+        }
+        
         if(this.cfg.appendToBody) {
             this.jq.appendTo(document.body);
         }
@@ -220,7 +226,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     setupDialogSupport: function() {
-        var dialog = this.target.parents('.ui-dialog:first');
+        var dialog = this.target.closest('.ui-dialog');
 
         if(dialog.length == 1) {
             //set position as fixed to scroll with dialog
