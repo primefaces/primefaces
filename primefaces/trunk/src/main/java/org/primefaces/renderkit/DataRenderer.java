@@ -49,6 +49,14 @@ public class DataRenderer extends CoreRenderer {
         PAGINATOR_ELEMENTS.put("{JumpToPageDropdown}", new JumpToPageDropdownRenderer());
     }
 
+    public static void addPaginatorElement(String element, PaginatorElementRenderer renderer) {
+        PAGINATOR_ELEMENTS.put(element, renderer);
+    }
+    
+    public static PaginatorElementRenderer removePaginatorElement(String element) {
+        return PAGINATOR_ELEMENTS.remove(element);
+    }
+    
     protected void encodePaginatorMarkup(FacesContext context, UIData uidata, String position) throws IOException {
         if(!uidata.isPaginatorAlwaysVisible() && uidata.getPageCount() <= 1) {
             return;
