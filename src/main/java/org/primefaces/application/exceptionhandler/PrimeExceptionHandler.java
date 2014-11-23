@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
+import javax.faces.application.ViewExpiredException;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -93,8 +94,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                         rootCause.printStackTrace();
                     }
 
-                    // always log the exception
-                    LOG.log(Level.SEVERE, rootCause.getMessage(), rootCause);
+                    if (isLogException(context, rootCause)) {
+                        LOG.log(Level.SEVERE, rootCause.getMessage(), rootCause);
+                    }
 
                     if (context.getPartialViewContext().isAjaxRequest()) {
                         handleAjaxException(context, rootCause, info);
@@ -114,6 +116,17 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         }
     }
 
+    protected boolean isLogException(FacesContext context, Throwable rootCause) {
+        
+        if (context.isProjectStage(ProjectStage.Production)) {
+            if (rootCause != null && rootCause instanceof ViewExpiredException) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     @Override
     public Throwable getRootCause(Throwable throwable) {
         while ((ELException.class.isInstance(throwable) || FacesException.class.isInstance(throwable)) && throwable.getCause() != null) {
