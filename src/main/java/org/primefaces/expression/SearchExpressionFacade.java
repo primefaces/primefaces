@@ -243,11 +243,6 @@ public class SearchExpressionFacade {
 			return null;
 		}
 
-		if (isClientExpressionOnly(expression)) {
-			throw new FacesException("Client side expression (PFS) are not supported... expression \"" + expression
-                            + "\" referenced from \""+ source.getClientId(context) + "\".");
-		}
-
 		UIComponent component = resolveComponentInternal(context, source, expression, separatorChar, separatorString, options);
 
 		if (component == null && !isOptionSet(options, IGNORE_NO_RESULT)) {
@@ -588,17 +583,6 @@ public class SearchExpressionFacade {
      * @return <code>true</code> if it should just be rendered without manipulation or resolving.
      */
 	private static boolean isPassTroughExpression(String expression) {
-		return expression.contains(SearchExpressionConstants.PFS_PREFIX);
-	}
-
-	/**
-     * Checks if the given expression can just be used for resolving it on the client.
-     * e.g. PFS
-     *
-     * @param expression The search expression.
-     * @return <code>true</code> if it's a client expression only.
-     */
-	private static boolean isClientExpressionOnly(String expression) {
 		return expression.contains(SearchExpressionConstants.PFS_PREFIX);
 	}
 
