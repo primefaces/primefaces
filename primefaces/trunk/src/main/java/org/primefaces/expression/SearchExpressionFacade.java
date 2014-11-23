@@ -24,6 +24,7 @@ import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
+import org.primefaces.expression.impl.IdContextCallback;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
@@ -396,7 +397,19 @@ public class SearchExpressionFacade {
 			}
 		} else {
 		    // default ID case
-			component = source.findComponent(expression);
+            component = source.findComponent(expression);
+
+            if (component == null) {
+                // try #invokeOnComponent
+                if (expression.startsWith(separatorString)) {
+                    expression = expression.substring(1);
+
+                    IdContextCallback callback = new IdContextCallback();
+                    context.getViewRoot().invokeOnComponent(context, expression, callback);
+
+                    component = callback.getComponent();
+                }
+            }
 
 			if (component == null && !isOptionSet(options, IGNORE_NO_RESULT)) {
 				throw new FacesException("Cannot find component with expression \""
@@ -490,7 +503,19 @@ public class SearchExpressionFacade {
 			}
 		} else {
 		    // default ID case
-			component = source.findComponent(expression);
+            component = source.findComponent(expression);
+
+            if (component == null) {
+                // try #invokeOnComponent
+                if (expression.startsWith(separatorString)) {
+                    expression = expression.substring(1);
+
+                    IdContextCallback callback = new IdContextCallback();
+                    context.getViewRoot().invokeOnComponent(context, expression, callback);
+
+                    component = callback.getComponent();
+                }
+            }
 
 			if (component == null && !isOptionSet(options, IGNORE_NO_RESULT)) {
 				throw new FacesException("Cannot find component with expression \""
