@@ -26,6 +26,7 @@ import org.primefaces.expression.impl.FormExpressionResolver;
 import org.primefaces.expression.impl.IdExpressionResolver;
 import org.primefaces.expression.impl.NamingContainerExpressionResolver;
 import org.primefaces.expression.impl.NextExpressionResolver;
+import org.primefaces.expression.impl.NoneExpressionResolver;
 import org.primefaces.expression.impl.ParentExpressionResolver;
 import org.primefaces.expression.impl.PreviousExpressionResolver;
 import org.primefaces.expression.impl.ThisExpressionResolver;
@@ -48,7 +49,7 @@ public class SearchExpressionResolverFactory {
         RESOLVER_MAPPING.put(SearchExpressionConstants.FORM_KEYWORD, new FormExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.ALL_KEYWORD, new AllExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.NAMINGCONTAINER_KEYWORD, new NamingContainerExpressionResolver());
-        RESOLVER_MAPPING.put(SearchExpressionConstants.NONE_KEYWORD, new NamingContainerExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.NONE_KEYWORD, new NoneExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.NEXT_KEYWORD, new NextExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.PREVIOUS_KEYWORD, new PreviousExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.CHILD_KEYWORD, new ChildExpressionResolver());
