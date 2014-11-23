@@ -23,6 +23,7 @@ import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
+import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.context.RequestContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
@@ -31,7 +32,9 @@ public class DynamicResourceBuilder {
     
     private static final String SB_BUILD = DynamicResourceBuilder.class.getName() + "#build";
     
-    public static String build(FacesContext context, Object value, UIComponent component, boolean cache, String type) throws UnsupportedEncodingException {
+    public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type)
+            throws UnsupportedEncodingException {
+        
         String src = null;
             
         if (value == null) {
@@ -52,7 +55,7 @@ public class DynamicResourceBuilder {
             StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
 
             builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid,"UTF-8"))
-                    .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type);
+                    .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
 
             for (UIComponent kid : component.getChildren()) {
                 if (kid instanceof UIParameter) {

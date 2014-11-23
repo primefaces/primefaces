@@ -34,14 +34,14 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     public PrimeResourceHandler(ResourceHandler wrapped) {
         this.wrapped = wrapped;
         handlers = new HashMap<String,DynamicContentHandler>();
-        handlers.put("sc", new StreamedContentHandler());
+        handlers.put(DynamicContentType.STREAMED_CONTENT.toString(), new StreamedContentHandler());
         
         if(isBarcodeHandlerAvailable()) {
-            handlers.put("barcode", new BarcodeHandler());
+            handlers.put(DynamicContentType.BARCODE.toString(), new BarcodeHandler());
         }
         
         if(isQRCodeHandlerAvailable()) {
-            handlers.put("qr", new QRCodeHandler());
+            handlers.put(DynamicContentType.QR_CODE.toString(), new QRCodeHandler());
         }
     }
 
