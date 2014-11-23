@@ -52,13 +52,15 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         }
 
         // touch support - prevents keyboard popup
-        if (!this.input.attr("readonly") && this.cfg.showOn && this.cfg.showOn === 'button') {
-            this.cfg.beforeShow = function(input, inst) {
-                $(this).attr("readonly", true);
-            };
-            this.cfg.onClose = function(dateText, inst) {
-                $(this).attr("readonly", false);
-            };
+        if (PrimeFaces.env.touch) {
+            if (!this.input.attr("readonly") && this.cfg.showOn && this.cfg.showOn === 'button') {
+                this.cfg.beforeShow = function(input, inst) {
+                    $(this).attr("readonly", true);
+                };
+                this.cfg.onClose = function(dateText, inst) {
+                    $(this).attr("readonly", false);
+                };
+            }
         }
 
         //Initialize calendar
