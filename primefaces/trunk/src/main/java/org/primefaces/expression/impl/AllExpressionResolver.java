@@ -16,13 +16,15 @@
 package org.primefaces.expression.impl;
 
 import javax.faces.component.UIComponent;
+import org.primefaces.expression.ClientIdSearchExpressionResolver;
+import org.primefaces.expression.SearchExpressionConstants;
 
 import org.primefaces.expression.SearchExpressionResolver;
 
 /**
  * {@link SearchExpressionResolver} for the "@all" keyword.
  */
-public class AllExpressionResolver implements SearchExpressionResolver {
+public class AllExpressionResolver implements SearchExpressionResolver, ClientIdSearchExpressionResolver {
 
 	public UIComponent resolveComponent(UIComponent source, UIComponent last, String expression) {
 		UIComponent parent = last.getParent();
@@ -33,4 +35,8 @@ public class AllExpressionResolver implements SearchExpressionResolver {
 
 		return parent;
 	}
+
+    public String resolveClientIds(UIComponent source, UIComponent last, String expression) {
+        return SearchExpressionConstants.ALL_KEYWORD;
+    }
 }

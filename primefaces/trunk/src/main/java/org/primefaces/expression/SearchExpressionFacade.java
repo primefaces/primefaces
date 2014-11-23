@@ -588,9 +588,7 @@ public class SearchExpressionFacade {
      * @return <code>true</code> if it should just be rendered without manipulation or resolving.
      */
 	private static boolean isPassTroughExpression(String expression) {
-		return expression.contains(SearchExpressionConstants.PFS_PREFIX)
-				|| expression.contains(SearchExpressionConstants.ALL_KEYWORD)
-				|| expression.contains(SearchExpressionConstants.NONE_KEYWORD);
+		return expression.contains(SearchExpressionConstants.PFS_PREFIX);
 	}
 
 	/**
