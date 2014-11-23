@@ -660,13 +660,6 @@ public class SearchExpressionFacadeTest
 		source.setId("source");
 
 		try {
-			resolveComponentForClient(source, " @widgetVar(myForm:myDiv):asd");
-			Assert.fail("This should actually raise an exception");
-		} catch (Exception e) {
-			assertEquals(FacesException.class, e.getClass());
-		}
-
-		try {
 			resolveComponentForClient(source, " @none:@all:asd");
 			Assert.fail("This should actually raise an exception");
 		} catch (Exception e) {
@@ -1447,6 +1440,38 @@ public class SearchExpressionFacadeTest
 
 	    assertSame("Failed", null,
 	    		resolveComponent(command1, " command3 ", SearchExpressionFacade.IGNORE_NO_RESULT));
+	}
+    
+	@Test
+	public void resolveComponent_WidgetVarNext() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		outerContainer.getChildren().add(innerContainer);
+
+		UIComponent component = new UIOutput();
+		innerContainer.getChildren().add(component);
+
+		UIComponent source = new UICommand();
+		innerContainer.getChildren().add(source);
+        
+        InputText input = new InputText();
+        input.setWidgetVar("myInput_Widget");
+        outerContainer.getChildren().add(input);
+        
+        InputText input2 = new InputText();
+        input2.setWidgetVar("myInput_Widget2");
+        outerContainer.getChildren().add(input2);
+
+		assertEquals("Failed", input2, resolveComponent(source, " @widgetVar(myInput_Widget):@next"));
 	}
     
 	@Test

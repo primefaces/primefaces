@@ -616,7 +616,6 @@ public class SearchExpressionFacade {
 	private static boolean isNestable(String expression) {
         return !(expression.contains(SearchExpressionConstants.ALL_KEYWORD)
 				|| expression.contains(SearchExpressionConstants.NONE_KEYWORD)
-                || expression.contains(SearchExpressionConstants.WIDGETVAR_KEYWORD)
                 || expression.contains(SearchExpressionConstants.PFS_PREFIX));
 	}
 
