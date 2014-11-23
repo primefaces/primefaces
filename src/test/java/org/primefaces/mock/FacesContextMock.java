@@ -1,4 +1,19 @@
-package org.primefaces.expression;
+/*
+ * Copyright 2009-2014 PrimeTek.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.primefaces.mock;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -13,11 +28,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
+import org.primefaces.expression.RenderKitMock;
 
 public class FacesContextMock extends FacesContext {
 
+    private ExternalContext externalContext = new ExternalContextMock();
+    private Application application = new ApplicationMock();
+    
 	private Map<Object, Object> attributes;
 	private ResponseWriter writer;
+    private UIViewRoot viewRoot;
+    
 
 	public FacesContextMock() {
     }
@@ -51,7 +72,7 @@ public class FacesContextMock extends FacesContext {
 
 	@Override
 	public Application getApplication() {
-		return null;
+		return application;
 	}
 
 	@Override
@@ -61,7 +82,7 @@ public class FacesContextMock extends FacesContext {
 
 	@Override
 	public ExternalContext getExternalContext() {
-		return null;
+		return externalContext;
 	}
 
 	@Override
@@ -106,7 +127,7 @@ public class FacesContextMock extends FacesContext {
 
 	@Override
 	public UIViewRoot getViewRoot() {
-		return null;
+		return viewRoot;
 	}
 
 	@Override
@@ -135,7 +156,7 @@ public class FacesContextMock extends FacesContext {
 	}
 
 	@Override
-	public void setViewRoot(UIViewRoot arg0) {
-
+	public void setViewRoot(UIViewRoot viewRoot) {
+        this.viewRoot = viewRoot;
 	}
 }

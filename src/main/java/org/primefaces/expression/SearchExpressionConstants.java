@@ -29,7 +29,7 @@ public class SearchExpressionConstants {
 	public static final String NEXT_KEYWORD =               KEYWORD_PREFIX + "next";
 	public static final String PREVIOUS_KEYWORD =           KEYWORD_PREFIX + "previous";
 	public static final String CHILD_KEYWORD =           	KEYWORD_PREFIX + "child";
-
+    public static final String WIDGETVAR_KEYWORD =          KEYWORD_PREFIX + "widgetVar";
+    
 	public static final String PFS_PREFIX =                 KEYWORD_PREFIX + "(";
-	public static final String WIDGETVAR_PREFIX =           KEYWORD_PREFIX + "widgetVar(";
 }

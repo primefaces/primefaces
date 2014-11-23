@@ -29,6 +29,7 @@ import org.primefaces.expression.impl.NextExpressionResolver;
 import org.primefaces.expression.impl.ParentExpressionResolver;
 import org.primefaces.expression.impl.PreviousExpressionResolver;
 import org.primefaces.expression.impl.ThisExpressionResolver;
+import org.primefaces.expression.impl.WidgetVarExpressionResolver;
 
 /**
  * Factory for providing different {@link SearchExpressionResolver} for
@@ -51,6 +52,7 @@ public class SearchExpressionResolverFactory {
         RESOLVER_MAPPING.put(SearchExpressionConstants.NEXT_KEYWORD, new NextExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.PREVIOUS_KEYWORD, new PreviousExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.CHILD_KEYWORD, new ChildExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.WIDGETVAR_KEYWORD, new WidgetVarExpressionResolver());
     }
 
     /**
