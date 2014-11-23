@@ -24,6 +24,7 @@ import org.primefaces.expression.impl.ChildExpressionResolver;
 import org.primefaces.expression.impl.CompositeExpressionResolver;
 import org.primefaces.expression.impl.FormExpressionResolver;
 import org.primefaces.expression.impl.IdExpressionResolver;
+import org.primefaces.expression.impl.JQuerySelectorExpressionResolver;
 import org.primefaces.expression.impl.NamingContainerExpressionResolver;
 import org.primefaces.expression.impl.NextExpressionResolver;
 import org.primefaces.expression.impl.NoneExpressionResolver;
@@ -54,6 +55,7 @@ public class SearchExpressionResolverFactory {
         RESOLVER_MAPPING.put(SearchExpressionConstants.PREVIOUS_KEYWORD, new PreviousExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.CHILD_KEYWORD, new ChildExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.WIDGETVAR_KEYWORD, new WidgetVarExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.PFS_PREFIX, new JQuerySelectorExpressionResolver());
     }
 
     /**
