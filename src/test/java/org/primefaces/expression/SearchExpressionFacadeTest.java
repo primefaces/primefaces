@@ -1475,6 +1475,39 @@ public class SearchExpressionFacadeTest
 	}
     
 	@Test
+	public void resolveComponentForClient_WidgetVarNext() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		outerContainer.getChildren().add(innerContainer);
+
+		UIComponent component = new UIOutput();
+		innerContainer.getChildren().add(component);
+
+		UIComponent source = new UICommand();
+		innerContainer.getChildren().add(source);
+        
+        InputText input = new InputText();
+        input.setWidgetVar("myInput_Widget");
+        outerContainer.getChildren().add(input);
+        
+        InputText input2 = new InputText();
+        input2.setId("input2");
+        input2.setWidgetVar("myInput_Widget2");
+        outerContainer.getChildren().add(input2);
+
+		assertEquals("Failed", input2.getClientId(), resolveComponentForClient(source, " @widgetVar(myInput_Widget):@next"));
+	}
+    
+	@Test
 	public void resolveComponent_WidgetVar() {
 
 		UIComponent root = new UIPanel();
