@@ -22,6 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.application.resource.DynamicContentType;
 
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
@@ -122,7 +123,7 @@ public class MediaRenderer extends CoreRenderer {
 	}
 
 	protected String getMediaSrc(FacesContext context, Media media) throws Exception {
-        return DynamicResourceBuilder.build(context, media.getValue(), media, media.isCache(), "sc");
+        return DynamicResourceBuilder.build(context, media.getValue(), media, media.isCache(), DynamicContentType.STREAMED_CONTENT);
 	}
     
     @Override

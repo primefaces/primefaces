@@ -22,6 +22,7 @@ import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
@@ -42,7 +43,7 @@ public class BarcodeRenderer extends CoreRenderer {
 		String src = null;
         Object value = barcode.getValue();
         String type = barcode.getType();
-        String handlerType = type.equals("qr") ? "qr" : "barcode";
+        DynamicContentType dynamicContentType = type.equals("qr") ? DynamicContentType.QR_CODE : DynamicContentType.BARCODE;
         
         if(value == null) {
             return;
@@ -56,7 +57,7 @@ public class BarcodeRenderer extends CoreRenderer {
             StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
 
             src = builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid, "UTF-8"))
-                    .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(handlerType)
+                    .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(dynamicContentType.toString())
                     .append("&gen=").append(type)
                     .append("&fmt=").append(barcode.getFormat())
                     .append("&").append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(barcode.isCache())
