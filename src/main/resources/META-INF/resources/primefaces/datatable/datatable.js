@@ -2490,7 +2490,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 this.setScrollWidth(parseInt(this.cfg.scrollWidth));
             
             if(this.hasVerticalOverflow()) {
-                if(PrimeFaces.browser.webkit === true)
+                if(PrimeFaces.env.browser.webkit === true)
                     this.frozenBody.append('<div style="height:' + scrollBarWidth + ';border:1px solid transparent"></div>');
                 else if(PrimeFaces.isIE(8))
                     this.frozenBody.append('<div style="height:' + scrollBarWidth + '"></div>');
