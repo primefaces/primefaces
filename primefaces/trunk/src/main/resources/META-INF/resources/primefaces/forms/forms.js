@@ -486,6 +486,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
+        // see #7602
+        if (PrimeFaces.env.touch) {
+            this.focusInput.attr('readonly', true);
+        }
+
         this.renderDeferred();
     },
 
