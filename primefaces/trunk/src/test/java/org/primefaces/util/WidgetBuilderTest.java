@@ -18,7 +18,7 @@ package org.primefaces.util;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.primefaces.expression.FacesContextMock;
+import org.primefaces.mock.FacesContextMock;
 
 import static org.junit.Assert.*;
 

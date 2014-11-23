@@ -28,12 +28,12 @@ import org.primefaces.expression.SearchExpressionResolver;
  */
 public class ChildExpressionResolver implements SearchExpressionResolver {
 
-    private static final Pattern CHILD_PATTERN = Pattern.compile("@child\\((\\d+)\\)");
+    private static final Pattern PATTERN = Pattern.compile("@child\\((\\d+)\\)");
 
-    public UIComponent resolve(UIComponent source, UIComponent last, String expression) {
+    public UIComponent resolveComponent(UIComponent source, UIComponent last, String expression) {
 
         try {
-            Matcher matcher = CHILD_PATTERN.matcher(expression);
+            Matcher matcher = PATTERN.matcher(expression);
 
             if (matcher.matches()) {
 

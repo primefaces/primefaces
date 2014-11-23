@@ -1,5 +1,8 @@
 package org.primefaces.expression;
 
+import org.primefaces.mock.FacesContextMock;
+import org.primefaces.mock.TestVisitContextFactory;
+import java.util.Collection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -7,8 +10,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.faces.FacesException;
+import javax.faces.FactoryFinder;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -16,11 +21,15 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIPanel;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitContextFactory;
+import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.primefaces.component.inputtext.InputText;
 import org.primefaces.expression.SearchExpressionFacade;
 
 public class SearchExpressionFacadeTest
@@ -33,6 +42,7 @@ public class SearchExpressionFacadeTest
 
 		FacesContext context = new FacesContextMock(attributes);
 		context.setViewRoot(new UIViewRoot());
+        FactoryFinder.setFactory(FactoryFinder.VISIT_CONTEXT_FACTORY, TestVisitContextFactory.class.getName());
 	}
 
 	private UIComponent resolveComponent(UIComponent source, String expression)
@@ -621,6 +631,7 @@ public class SearchExpressionFacadeTest
 		assertEquals("Failed", "@widgetVar(myDialog_widget)", resolveComponentForClient(source, " @widgetVar(myDialog_widget)"));
 	}
 
+    
 	@Test
 	public void resolveComponent_NotNestablePasstrough() {
 
@@ -1437,4 +1448,33 @@ public class SearchExpressionFacadeTest
 	    assertSame("Failed", null,
 	    		resolveComponent(command1, " command3 ", SearchExpressionFacade.IGNORE_NO_RESULT));
 	}
+    
+	@Test
+	public void resolveComponent_WidgetVar() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		outerContainer.getChildren().add(innerContainer);
+
+		UIComponent component = new UIOutput();
+		innerContainer.getChildren().add(component);
+
+		UIComponent source = new UICommand();
+		innerContainer.getChildren().add(source);
+        
+        InputText input = new InputText();
+        input.setWidgetVar("myInput_Widget");
+        outerContainer.getChildren().add(input);
+
+		assertEquals("Failed", input, resolveComponent(source, " @widgetVar(myInput_Widget)"));
+	}
+    
 }

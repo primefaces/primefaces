@@ -32,5 +32,5 @@ public interface SearchExpressionResolver {
 	 * @param expression The search expression.
 	 * @return The resolved {@link UIComponent} or <code>null</code>.
 	 */
-	UIComponent resolve(UIComponent source, UIComponent last, String expression);
+	UIComponent resolveComponent(UIComponent source, UIComponent last, String expression);
 }
