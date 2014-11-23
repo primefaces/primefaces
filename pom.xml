@@ -395,6 +395,7 @@
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces.js</output>
                             <includes>                                
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
@@ -449,6 +450,7 @@
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces-mobile.js</output>
                             <includes>                             
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
@@ -623,6 +625,7 @@
                                     <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces.js</output>
                                     <includes>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
@@ -677,6 +680,7 @@
                                     <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces-mobile.js</output>
                                     <includes>                             
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
