@@ -50,7 +50,6 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             throw new FacesException("Expression does not match following pattern @widgetVar(var). Expression: \"" + expression + "\"", e);
         }
 	}
