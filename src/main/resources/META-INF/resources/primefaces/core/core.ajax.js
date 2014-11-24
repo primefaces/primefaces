@@ -658,7 +658,6 @@ PrimeFaces.ajax = {
                 var widget = PF(widgetVar);
                 if (widget) {
                     if (widget.isDetached()) {
-                        PrimeFaces.removeDeferredRenders(widget.id);
                         PrimeFaces.widgets[widgetVar] = null;
                         widget.destroy();
 
