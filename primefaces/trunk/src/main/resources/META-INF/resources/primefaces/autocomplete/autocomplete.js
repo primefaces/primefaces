@@ -202,6 +202,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.queryEvent !== 'enter') {
             this.input.on('input propertychange', function(e) {
+                if(PrimeFaces.isIE(8) && $this.itemClick) {
+                    $this.itemClick = false;
+                    return;
+                }
+                
                 var value = $this.input.val();
 
                 if($this.cfg.pojo && !$this.cfg.multiple) {
@@ -356,6 +361,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         .bind('click', function(event) {
             var item = $(this),
             itemValue = item.attr('data-item-value');
+            
+            if(PrimeFaces.isIE(8)) {
+                $this.itemClick = true;
+            }
 
             if($this.cfg.multiple) {
                 var itemDisplayMarkup = '<li data-token-value="' + item.attr('data-item-value') + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
