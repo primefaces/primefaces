@@ -202,7 +202,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.queryEvent !== 'enter') {
             this.input.on('input propertychange', function(e) {
-                if(PrimeFaces.isIE(8) && $this.itemClick) {
+                if(PrimeFaces.isIE(8) && ($this.itemClick || e.originalEvent.propertyName !== 'value')) {
                     $this.itemClick = false;
                     return;
                 }
