@@ -154,6 +154,11 @@ PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
     _render: function() {
         throw 'Unsupported Operation';
     },
+    
+    destroy: function() {
+        this._super();
+        PrimeFaces.removeDeferredRenders(this.id);
+    },
         
     addDeferredRender: function(widgetId, container, callback) {
         PrimeFaces.addDeferredRender(widgetId, container.attr('id'), callback);
