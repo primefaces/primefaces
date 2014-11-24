@@ -35,6 +35,10 @@ public class RowEditFeature implements DataTableFeature {
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        if (table.isSelectionEnabled()) {
+            table.findSelectedRowKeys();
+        }
+                
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = table.getClientId(context);
         int editedRowId = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
@@ -63,11 +67,7 @@ public class RowEditFeature implements DataTableFeature {
             }
         }
 
-        if (table.isRowAvailable()) {
-            if (table.isSelectionEnabled()) {
-                table.findSelectedRowKeys();
-            }
-                    
+        if (table.isRowAvailable()) {                    
             renderer.encodeRow(context, table, clientId, editedRowId);
         }
     }
