@@ -276,13 +276,12 @@ public class TreeRenderer extends CoreRenderer {
 		writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", containerClass, null);
         writer.writeAttribute("role", "tree", null);
+        writer.writeAttribute("tabindex", tree.getTabindex(), null);
         writer.writeAttribute("aria-multiselectable", String.valueOf(multiselectable), null);
 		if(tree.getStyle() != null) {
             writer.writeAttribute("style", tree.getStyle(), null);
         }
-        
-        encodeKeyboardTarget(context, tree);
-        
+                
         writer.startElement("ul", null);
         writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
 
@@ -685,13 +684,4 @@ public class TreeRenderer extends CoreRenderer {
 	public boolean getRendersChildren() {
 		return true;
 	}
-    
-    protected void encodeKeyboardTarget(FacesContext context, Tree tree) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        
-        writer.startElement("div", null);
-        writer.writeAttribute("tabindex", tree.getTabindex(), null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-        writer.endElement("div");
-    }
 }
