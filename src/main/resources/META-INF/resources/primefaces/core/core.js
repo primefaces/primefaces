@@ -487,6 +487,40 @@
         confirm: function(msg) {
         	PrimeFaces.dialog.DialogHandler.confirm(msg);
         },
+        
+        deferredRenders: [],
+
+        addDeferredRender: function(widgetId, containerId, fn) {
+            this.deferredRenders.push({widget: widgetId, container: containerId, callback: fn});
+        },
+        
+        removeDeferredRenders: function(widgetId) {
+            for(var i = (this.deferredRenders.length - 1); i >= 0; i--) {
+                var deferredRender = this.deferredRenders[i];
+                
+                if(deferredRender.widget === widgetId) {
+                    this.deferredRenders.splice(i, 1);
+                }
+            }
+        },
+        
+        invokeDeferredRenders: function(containerId) {
+            var widgetsToRemove = [];
+            for(var i = 0; i < this.deferredRenders.length; i++) {
+                var deferredRender = this.deferredRenders[i];
+                
+                if(deferredRender.container === containerId) {
+                    var rendered = deferredRender.callback.call();
+                    if(rendered) {
+                        widgetsToRemove.push(deferredRender.widget);
+                    }
+                }
+            }
+            
+            for(var j = 0; j < widgetsToRemove.length; j++) {
+                this.removeDeferredRenders(widgetsToRemove[j]);
+            }
+        },
     	
         zindex : 1000,
         

@@ -124,7 +124,7 @@ PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
 
     renderDeferred: function() {     
         if(this.jq.is(':visible')) {
-            this.render();
+            this._render();
         }
         else {
             var container = this.jq.closest('.ui-hidden-container'),
@@ -132,7 +132,7 @@ PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
     
             if(container.length) {
                 this.addDeferredRender(this.id, container, function() {
-                    $this._render();
+                    return $this.render();
                 });
             }
         }
@@ -141,7 +141,10 @@ PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
     render: function() {
         if(this.jq.is(':visible')) {
             this._render();
-            PrimeFaces.removeDeferredRenders(this.id);
+            return true;
+        }
+        else {
+            return false;
         }
     },
     
