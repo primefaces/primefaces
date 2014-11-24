@@ -722,6 +722,8 @@ import org.primefaces.util.SharedStringBuilder;
                 }
                 
             }
+            
+            requestMap.remove(var);
         }
     }
     
