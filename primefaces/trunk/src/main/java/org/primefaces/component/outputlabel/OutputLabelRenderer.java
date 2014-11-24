@@ -16,13 +16,18 @@
 package org.primefaces.component.outputlabel;
 
 import java.io.IOException;
+import java.util.Set;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.validation.constraints.NotNull;
+import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -91,15 +96,32 @@ public class OutputLabelRenderer extends CoreRenderer {
         }
         
         renderChildren(context, label);
-        
-        if(input != null && input.isRequired() && label.isIndicateRequired()) {
-            writer.startElement("span", label);
-            writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
-            writer.write("*");
-            writer.endElement("span");   
+
+        if (input != null && label.isIndicateRequired()) {
+            if (input.isRequired() || isNotNullDefined(input, context)) {
+                writer.startElement("span", label);
+                writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
+                writer.write("*");
+                writer.endElement("span");   
+            }
         }
         
         writer.endElement("label");        
+    }
+    
+    protected boolean isNotNullDefined(UIInput input, FacesContext context) {
+        
+        Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
+                context, RequestContext.getCurrentInstance(), input.getValueExpression("value"));
+        if (constraints != null && !constraints.isEmpty()) {
+            for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
+                if (constraintDescriptor.getAnnotation().annotationType().equals(NotNull.class)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
     
     @Override

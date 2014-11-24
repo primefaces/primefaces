@@ -23,7 +23,6 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.spinner.Spinner;
@@ -60,12 +59,6 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                 if (size.max() > 0) {
                     setMaxlength(input, size.max());
                 }
-            }
-        }
-        
-        if (!editableValueHolder.isRequired()) {
-            if (constraint.annotationType().equals(NotNull.class)) {
-                editableValueHolder.setRequired(true);
             }
         }
         
