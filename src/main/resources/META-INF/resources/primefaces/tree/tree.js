@@ -292,7 +292,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 }
                 
                 this.focusNode(node);
-                this.focusKeyboardTarget();
+                this.jq.trigger('focus');
             } 
         }
     },
@@ -395,14 +395,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         this.removeFromSelection(rowKey);
     },
     
-    focusKeyboardTarget: function() {
-        var win = $(window),
-        y = win.scrollTop(),
-        x = win.scrollLeft();
-        this.keyboardTarget.trigger('focus.tree');
-        window.scrollTo(x,y);
-    },
-    
     isExpanded: function(node) {
         return this.getNodeChildrenContainer(node).is(':visible');
     }
@@ -492,7 +484,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     bindKeyEvents: function() {
         var $this = this;
 
-        this.keyboardTarget.on('focus.tree', function() {
+        this.jq.on('mousedown.tree', function(e) {
+            //prevent focus on mousedown
+            e.preventDefault();
+        }).on('focus.tree', function() {
             if(!$this.focusedNode) {
                 $this.focusNode($this.getFirstNode());
             }
