@@ -42,16 +42,22 @@ PrimeFaces.dialog.DialogHandler = {
                     sourceComponentId: cfg.sourceComponentId,
                     sourceWidget: cfg.sourceWidget,
                     onHide: function() {
-                        var $dialogWidget = this;
+                        var $dialogWidget = this,
+                        dialogFrame = this.content.children('iframe');
                         
-                        this.destroyIntervalId = setInterval(function() {
-                            var dialogFrame = $dialogWidget.content.children('iframe');
-                            if(dialogFrame.get(0).contentWindow.PrimeFaces.ajax.Queue.isEmpty()) {
-                                clearInterval($dialogWidget.destroyIntervalId);
-                                dialogFrame.attr('src','about:blank');
-                                $dialogWidget.jq.remove();
-                            }
-                        }, 10);
+                        if(dialogFrame.get(0).contentWindow.PrimeFaces) {
+                            this.destroyIntervalId = setInterval(function() {
+                                if(dialogFrame.get(0).contentWindow.PrimeFaces.ajax.Queue.isEmpty()) {
+                                    clearInterval($dialogWidget.destroyIntervalId);
+                                    dialogFrame.attr('src','about:blank');
+                                    $dialogWidget.jq.remove();
+                                }
+                            }, 10);
+                        }
+                        else {
+                            dialogFrame.attr('src','about:blank');
+                            $dialogWidget.jq.remove();
+                        }
                         
                         PF[dialogWidgetVar] = undefined;
                     },
