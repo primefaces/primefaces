@@ -148,7 +148,7 @@
         },
 
         isIE: function(version) {
-            return (version === undefined) ? PrimeFaces.env.browser.msie: (PrimeFaces.env.msie && parseInt(PrimeFaces.env.version, 10) === version);
+            return (version === undefined) ? PrimeFaces.env.browser.msie: (PrimeFaces.env.browser.msie && parseInt(PrimeFaces.env.browser.version, 10) === version);
         },
 
         info: function(log) {
