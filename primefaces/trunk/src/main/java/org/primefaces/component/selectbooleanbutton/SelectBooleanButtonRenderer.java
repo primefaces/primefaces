@@ -63,6 +63,8 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         String inputId = clientId + "_input";
         String label = checked ? button.getOnLabel() : button.getOffLabel();
         String icon = checked ? button.getOnIcon() : button.getOffIcon();
+        String title = button.getTitle();
+        String style = button.getStyle();
         
         //button        
         writer.startElement("div", null);
@@ -70,8 +72,8 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.writeAttribute("type", "button", null);
 		writer.writeAttribute("class", button.resolveStyleClass(checked, disabled), null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
-        if(button.getTitle()!= null) writer.writeAttribute("title", button.getTitle(), null);
-        if(button.getStyle() != null) writer.writeAttribute("style", button.getStyle(), "style");
+        if(title != null) writer.writeAttribute("title", title, null);
+        if(style != null) writer.writeAttribute("style", style, "style");
 
         //input
         writer.startElement("input", null);
