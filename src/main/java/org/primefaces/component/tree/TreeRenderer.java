@@ -556,6 +556,7 @@ public class TreeRenderer extends CoreRenderer {
 
                 writer.startElement("span", null);
                 writer.writeAttribute("class", nodeLabelClass, null);
+                writer.writeAttribute("tabindex", "-1", null);
                 uiTreeNode.encodeAll(context);
                 writer.endElement("span");
 
