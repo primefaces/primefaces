@@ -7,8 +7,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.cfg.highlight = (this.cfg.highlight === false) ? false : true;
         this.focusedNode = null;
-        this.keyboardTarget = this.jq.children('.ui-helper-hidden-accessible');
-        
+
         if(this.cfg.selectionMode) {
             this.initSelection();
         }
@@ -278,7 +277,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     this.toggleCheckboxNode(node);
                 }
                 else {
-                    if(selected && metaKey) {
+                    if(selected && (metaKey)) {
                         this.unselectNode(node);
                     }
                     else {
@@ -292,8 +291,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 }
                 
                 this.focusNode(node);
-                this.jq.trigger('focus');
-            } 
+            }
         }
     },
             
@@ -361,7 +359,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         icon = box.children('.ui-chkbox-icon'),
         treeNode = checkbox.closest('.ui-treenode'),
         rowKey = this.getRowKey(treeNode);
-        
+
         treeNode.find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-highlight');
         icon.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus');
         treeNode.removeClass('ui-treenode-selected ui-treenode-unselected').addClass('ui-treenode-hasselected').attr('aria-checked', false).attr('aria-selected', false);
@@ -378,7 +376,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         box.removeClass('ui-state-hover');
         icon.removeClass('ui-icon-blank ui-icon-minus').addClass('ui-icon-check');
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-unselected').addClass('ui-treenode-selected').attr('aria-checked', true).attr('aria-selected', true);
-    
+        
         this.addToSelection(rowKey);
     },
     
@@ -391,10 +389,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         box.removeClass('ui-state-hover');
         icon.removeClass('ui-icon-minus ui-icon-check').addClass('ui-icon-blank');
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-selected').addClass('ui-treenode-unselected').attr('aria-checked', false).attr('aria-selected', false);
-    
+        
         this.removeFromSelection(rowKey);
     },
-    
+        
     isExpanded: function(node) {
         return this.getNodeChildrenContainer(node).is(':visible');
     }
@@ -487,123 +485,112 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.jq.on('mousedown.tree', function(e) {
             //prevent focus on mousedown
             e.preventDefault();
-        }).on('focus.tree', function() {
+        })
+        .on('focus.tree', function() {
             if(!$this.focusedNode) {
                 $this.focusNode($this.getFirstNode());
             }
-        })
-        .on('blur.tree', function() {
-           if($this.focusedNode) {
-               $this.getNodeLabel($this.focusedNode).removeClass('ui-treenode-outline');
-               $this.focusedNode = null;
-            }
-        })
-        .on('keydown.tree', function(e) {
-            var prevNode = $this.focusedNode,
-                searchRowkey = "",
-                keyCode = $.ui.keyCode;
+        });
+        
+        this.jq.off('keydown.tree blur.tree', '.ui-treenode-label').on('keydown.tree', '.ui-treenode-label', null, function(e) {
+            var searchRowkey = "",
+            keyCode = $.ui.keyCode;
             
             switch(e.which) {
                 case keyCode.LEFT:
-                    if($this.focusedNode) {
-                        var rowkey = $this.focusedNode.data('rowkey').toString(),
-                            keyLength = rowkey.length;
+                    var rowkey = $this.focusedNode.data('rowkey').toString(),
+                    keyLength = rowkey.length;
 
-                            if($this.getNodeLabel($this.focusedNode).hasClass('ui-treenode-outline') && $this.focusedNode.find('> span > span.ui-icon').hasClass('ui-icon-triangle-1-s')) {
-                                $this.collapseNode($this.focusedNode);
-                            }
-                            else {
-                                for(var i = 1; i < parseInt(keyLength / 2) + 1; i++){
-                                    searchRowkey = rowkey.substring(0, keyLength - 2*i);
-                                    $this.focusedNode = $this.container.find("li:visible[data-rowkey = '" + searchRowkey + "']");
-                                    if($this.focusedNode) {
-                                        break;
-                                    }
-                                }
-
-                                $this.getNodeLabel(prevNode).removeClass('ui-treenode-outline');
-                                $this.getNodeLabel($this.focusedNode).addClass('ui-treenode-outline');
-                            }
-
+                    if($this.isExpanded($this.focusedNode)) {
+                        $this.collapseNode($this.focusedNode);
                     }
+                    else {
+                        var nodeToFocus = null;
+                        for(var i = 1; i < parseInt(keyLength / 2) + 1; i++){
+                            searchRowkey = rowkey.substring(0, keyLength - 2 * i);
+                            nodeToFocus = $this.container.find("li:visible[data-rowkey = '" + searchRowkey + "']");
+                            if(nodeToFocus.length) {
+                                $this.focusNode(nodeToFocus);
+                                break;
+                            }
+                        }
+                    }
+                        
                     e.preventDefault();
                 break;
 
                 case keyCode.RIGHT:
-                    if($this.focusedNode && !$this.focusedNode.hasClass('ui-treenode-leaf')) {
-                        var rowkey = "" + $this.focusedNode.data('rowkey'),
-                            keyLength = rowkey.length;
+                    if(!$this.focusedNode.hasClass('ui-treenode-leaf')) {
+                        var rowkey = $this.focusedNode.data('rowkey').toString(),
+                        keyLength = rowkey.length;
 
                         if(!$this.isExpanded($this.focusedNode)) {
                             $this.expandNode($this.focusedNode);
                         }
                         
-                        if($this.focusedNode.find('> span > span.ui-icon').hasClass('ui-icon-triangle-1-e') && !$this.cfg.dynamic) {
+                        if(!$this.isExpanded($this.focusedNode) && !$this.cfg.dynamic) {
                             searchRowkey = rowkey + '_0';
-                            $this.focusedNode = $this.container.find("li:visible[data-rowkey = '" + searchRowkey + "']");
+                            var nodeToFocus = $this.container.find("li:visible[data-rowkey = '" + searchRowkey + "']");
 
-                            if($this.focusedNode) {
-                                $this.getNodeLabel(prevNode).removeClass('ui-treenode-outline');
-                                $this.getNodeLabel($this.focusedNode).addClass('ui-treenode-outline');
+                            if(nodeToFocus.length) {
+                                $this.focusNode(nodeToFocus);
                             }           
                         }
                     }
+                    
                     e.preventDefault();
                 break;
 
                 case keyCode.UP:
-                    if($this.focusedNode) { 
-                         if(0 < $this.focusedNode.prev().length) {
-                            $this.focusedNode = $this.focusedNode.prev().find('ul > li.ui-treenode:visible:last');
-                            if($this.focusedNode.length === 0) {
-                                $this.focusedNode = prevNode.prev();    
-                            }
-                         }
-                         else {
-                             $this.focusedNode = $this.focusedNode.closest('ul').closest('li.ui-treenode');
-                         }
+                    var nodeToFocus = null,
+                    prevNode = $this.focusedNode.prev();
+                    
+                    if(prevNode.length) {
+                        nodeToFocus = prevNode.find('li.ui-treenode:visible:last');
+                        if(!nodeToFocus.length) {
+                            nodeToFocus = prevNode;    
+                        }
+                    }
+                    else {
+                        nodeToFocus = $this.focusedNode.closest('ul').parent('li');
+                    }
 
-                        if(0 < $this.focusedNode.length) {
-                            $this.getNodeLabel(prevNode).removeClass('ui-treenode-outline');
-                            $this.getNodeLabel($this.focusedNode).addClass('ui-treenode-outline');
-                        }
-                        else {
-                            $this.focusedNode = prevNode;
-                        }
-                    } 
+                    if(nodeToFocus.length) {
+                        $this.focusNode(nodeToFocus);
+                    }
+                        
                     e.preventDefault();
                 break;
 
                 case keyCode.DOWN:
-                    if($this.focusedNode) {   
-                        if(0 < $this.focusedNode.find("> ul > li:visible").length) {
-                            $this.focusedNode = $this.focusedNode.find("> ul > li.ui-treenode:visible:first");
-                        }
-                        else if(0 < $this.focusedNode.next().length) {
-                            $this.focusedNode = $this.focusedNode.next();
-                        }
-                        else {
-                            var rowkey = "" + $this.focusedNode.data('rowkey');
-                            if(rowkey.length !== 1) {
-                                $this.searchDown($this.focusedNode);
-                            }   
-                        }
-
-                        if($this.focusedNode.length > 0) {
-                            $this.getNodeLabel(prevNode).removeClass('ui-treenode-outline');
-                            $this.getNodeLabel($this.focusedNode).addClass('ui-treenode-outline');
-                        }
-                        else {
-                            $this.focusedNode = prevNode;
+                    var nodeToFocus = null,
+                    firstVisibleChildNode = $this.focusedNode.find("> ul > li:visible:first");
+                    
+                    if(firstVisibleChildNode.length) {
+                        nodeToFocus = firstVisibleChildNode;
+                    }
+                    else if($this.focusedNode.next().length) {
+                        nodeToFocus = $this.focusedNode.next();
+                    }
+                    else {
+                        var rowkey = $this.focusedNode.data('rowkey').toString();
+                        
+                        if(rowkey.length !== 1) {
+                            nodeToFocus = $this.searchDown($this.focusedNode);
                         }
                     }
+
+                    if(nodeToFocus && nodeToFocus.length) {
+                        $this.focusNode(nodeToFocus);
+                    }
+                        
                     e.preventDefault();
                 break;
                 
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
-                    if($this.focusedNode && $this.cfg.selectionMode) {
+                    if($this.cfg.selectionMode) {
                         var selectable = $this.focusedNode.children('.ui-treenode-content').hasClass('ui-tree-selectable');
                         
                         if($this.cfg.onNodeClick) {
@@ -635,25 +622,35 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     e.preventDefault();
                 break;
             }       
+        })
+        .on('blur.tree', '.ui-treenode-label', null, function(e) {
+            if($this.focusedNode) {
+                $this.getNodeLabel($this.focusedNode).removeClass('ui-treenode-outline');
+                $this.focusedNode = null;
+            }
         });
     },
     
     searchDown: function(node) {
-        var nextNode = node.closest('ul').closest('li.ui-treenode').next();
+        var nextOfParent = node.closest('ul').parent('li').next(),
+        nodeToFocus = null;
         
-        if(0 < nextNode.length) {
-            this.focusedNode = nextNode;
+        if(nextOfParent.length) {
+            nodeToFocus = nextOfParent;
         }
-        else if(node.hasClass('ui-treenode-leaf') && node.closest('ul').closest('li.ui-treenode').length == 0){   
-            this.focusedNode = node;
+        else if(node.hasClass('ui-treenode-leaf') && node.closest('ul').parent('li').length == 0){   
+            nodeToFocus = node;
         }
         else {
-            var rowkey = "" + node.data('rowkey');
+            var rowkey = node.data('rowkey').toString();
+            
             if(rowkey.length !== 1) {
-                this.searchDown(node.closest('ul').closest('li.ui-treenode'));
+                nodeToFocus = this.searchDown(node.closest('ul').parent('li'));
             }
-        }     
-    }, 
+        }
+        
+        return nodeToFocus;
+    },        
             
     collapseNode: function(node) {
         var _self = this;
@@ -1268,13 +1265,12 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     focusNode: function(node) {
         if(this.focusedNode) {
             this.getNodeLabel(this.focusedNode).removeClass('ui-treenode-outline');
-        } else {
-            this.getNodeLabel(node).addClass('ui-treenode-outline');
         }
-        
+
+        this.getNodeLabel(node).addClass('ui-treenode-outline').focus();
         this.focusedNode = node;
-        
     }
+
 });
 
 /**
