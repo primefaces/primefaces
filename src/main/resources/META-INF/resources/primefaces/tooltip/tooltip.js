@@ -141,7 +141,8 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             this.jq.position({
                 my: 'left top',
                 at: 'right bottom',
-                of: this.target
+                of: this.target,
+                collision: 'flipfit'
             });
         }
     },
