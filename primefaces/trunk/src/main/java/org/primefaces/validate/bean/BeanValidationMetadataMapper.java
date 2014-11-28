@@ -129,7 +129,7 @@ public class BeanValidationMetadataMapper {
         CONSTRAINT_MAPPING.put(constraint, clientValidationConstraint);
     }
     
-    public static void removeConstraintMapping(Class<? extends Annotation> constraint) {
-        CONSTRAINT_MAPPING.remove(constraint);
+    public static ClientValidationConstraint removeConstraintMapping(Class<? extends Annotation> constraint) {
+        return CONSTRAINT_MAPPING.remove(constraint);
     }
 }
