@@ -28,6 +28,7 @@ import org.primefaces.component.api.InputHolder;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
+import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -98,15 +99,30 @@ public class OutputLabelRenderer extends CoreRenderer {
         renderChildren(context, label);
 
         if (input != null && label.isIndicateRequired()) {
-            if (input.isRequired() || isNotNullDefined(input, context)) {
-                writer.startElement("span", label);
-                writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
-                writer.write("*");
-                writer.endElement("span");   
+
+            if (input.isRequired()) {
+                encodeRequiredIndidicator(writer, label);
+            }
+            // if transformMetadataEnabled, skip the @NotNull checking...
+            // the BeanValidationInputMetadataTransformer will set the marker to true or false
+            else if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isTransformMetadataEnabled()) {
+                if (AbstractInputMetadataTransformer.isMarkedAsRequired(input)) {
+                    encodeRequiredIndidicator(writer, label);    
+                }
+            }
+            else if (isNotNullDefined(input, context)) {
+                encodeRequiredIndidicator(writer, label);
             }
         }
         
         writer.endElement("label");        
+    }
+    
+    protected void encodeRequiredIndidicator(ResponseWriter writer, OutputLabel label) throws IOException {
+        writer.startElement("span", label);
+        writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
+        writer.write("*");
+        writer.endElement("span");   
     }
     
     protected boolean isNotNullDefined(UIInput input, FacesContext context) {

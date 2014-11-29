@@ -23,6 +23,7 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.spinner.Spinner;
@@ -32,19 +33,21 @@ import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
-    public void transformInput(FacesContext context, RequestContext requestContext, UIInput component) throws IOException {
+    public void transformInput(FacesContext context, RequestContext requestContext, UIInput input) throws IOException {
 
-        EditableValueHolder editableValueHolder = (EditableValueHolder) component;
+        EditableValueHolder editableValueHolder = (EditableValueHolder) input;
        
-        if (editableValueHolder.isRequired() && isMaxlenghtSet(component)) {
+        if (editableValueHolder.isRequired() && isMaxlenghtSet(input)) {
             return;
         }
  
+        markAsRequired(input, false);
+        
         Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                context, requestContext, component.getValueExpression("value"));
-        if (constraints != null && !constraints.isEmpty()) {
+                context, requestContext, input.getValueExpression("value"));
+        if (constraints != null && !constraints.isEmpty()) {    
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                applyConstraint(constraintDescriptor, component, editableValueHolder);
+                applyConstraint(constraintDescriptor, input, editableValueHolder);
             }
         }
     }
@@ -59,6 +62,12 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                 if (size.max() > 0) {
                     setMaxlength(input, size.max());
                 }
+            }
+        }
+        
+        if (!editableValueHolder.isRequired()) {
+            if (constraint.annotationType().equals(NotNull.class)) {
+                markAsRequired(input, true);
             }
         }
         
