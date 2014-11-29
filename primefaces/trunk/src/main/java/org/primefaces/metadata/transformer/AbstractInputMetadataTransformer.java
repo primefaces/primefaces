@@ -26,6 +26,8 @@ import org.primefaces.context.RequestContext;
 
 public abstract class AbstractInputMetadataTransformer implements MetadataTransformer {
     
+    private static final String ATTRIBUTE_REQUIRED_MARKER = "pfRequired";
+    
     public void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException {
         if (component instanceof EditableValueHolder && component instanceof UIInput) {
             transformInput(context, requestContext, (UIInput) component);
@@ -56,5 +58,19 @@ public abstract class AbstractInputMetadataTransformer implements MetadataTransf
     
     protected boolean isMaxlenghtSet(UIInput input) {
         return getMaxlength(input) != Integer.MIN_VALUE;
+    }
+    
+    protected void markAsRequired(UIInput input, boolean value) {
+        input.getAttributes().put(ATTRIBUTE_REQUIRED_MARKER, value);
+    }
+    
+    public static boolean isMarkedAsRequired(UIInput input) {
+        Object value = input.getAttributes().get(ATTRIBUTE_REQUIRED_MARKER);
+        
+        if (value == null) {
+            return false;
+        }
+        
+        return (Boolean) value;
     }
 }
