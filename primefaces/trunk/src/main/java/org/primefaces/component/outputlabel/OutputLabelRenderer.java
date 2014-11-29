@@ -101,24 +101,24 @@ public class OutputLabelRenderer extends CoreRenderer {
         if (input != null && label.isIndicateRequired()) {
 
             if (input.isRequired()) {
-                encodeRequiredIndidicator(writer, label);
+                encodeRequiredIndicator(writer, label);
             }
             // if transformMetadataEnabled, skip the @NotNull checking...
             // the BeanValidationInputMetadataTransformer will set the marker to true or false
             else if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isTransformMetadataEnabled()) {
                 if (AbstractInputMetadataTransformer.isMarkedAsRequired(input)) {
-                    encodeRequiredIndidicator(writer, label);    
+                    encodeRequiredIndicator(writer, label);    
                 }
             }
             else if (isNotNullDefined(input, context)) {
-                encodeRequiredIndidicator(writer, label);
+                encodeRequiredIndicator(writer, label);
             }
         }
         
         writer.endElement("label");        
     }
     
-    protected void encodeRequiredIndidicator(ResponseWriter writer, OutputLabel label) throws IOException {
+    protected void encodeRequiredIndicator(ResponseWriter writer, OutputLabel label) throws IOException {
         writer.startElement("span", label);
         writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
         writer.write("*");
