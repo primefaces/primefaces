@@ -141,13 +141,14 @@ public class HTML {
 		"title"
 	};
     
-    public static final String[] BODY_ATTRS = {
+    public static final String[] BODY_ATTRS = ArrayUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT, new String[] {
 		"dir",
 		"lang",
 		"style",
+        "title",
 		"onload",
 		"onunload"
-	};
+	});
     
     public static String[] COMMON_EVENTS = ArrayUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT);
     
