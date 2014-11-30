@@ -7,10 +7,10 @@
 @font-face {
     font-family: 'FontAwesome';
     src: url("#{resource['primefaces:fa/fontawesome-webfont.eot']}");
-    src: url("#{resource['primefaces:fa/fontawesome-webfont.eot?#iefix']}") format('embedded-opentype'), 
+    src: url("#{resource['primefaces:fa/fontawesome-webfont.eot']}&#iefix") format('embedded-opentype'), 
       url("#{resource['primefaces:fa/fontawesome-webfont.woff']}") format('woff'), 
       url("#{resource['primefaces:fa/fontawesome-webfont.ttf']}") format('truetype'), 
-      url("#{resource['primefaces:fa/fontawesome-webfont.svg#fontawesomeregular']}") format('svg');
+      url("#{resource['primefaces:fa/fontawesome-webfont.svg']}#fontawesomeregular") format('svg');
     font-weight: normal;
     font-style: normal;
 }
