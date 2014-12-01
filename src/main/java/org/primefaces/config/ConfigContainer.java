@@ -133,13 +133,13 @@ public class ConfigContainer {
 
         value = externalContext.getInitParameter(Constants.ContextParams.FONT_AWESOME);
         fontAwesomeEnabled = (value == null) ? false : Boolean.valueOf(value);
-        
+
         value = externalContext.getInitParameter(Constants.ContextParams.TRANSFORM_METADATA);
         transformMetadataEnabled = (value == null) ? false : Boolean.valueOf(value);
-        
+
         value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
         legacyWidgetNamespace = (value == null) ? false : Boolean.valueOf(value);
-        
+
         value = externalContext.getInitParameter(Constants.ContextParams.NAMESPACE_PARAMETERS);
         parameterNamespacingEnabled = (value == null) ? false : Boolean.valueOf(value);
     }
@@ -266,6 +266,11 @@ public class ConfigContainer {
                 factory.setValidating(false);
                 factory.setNamespaceAware(false);
                 factory.setExpandEntityReferences(false);
+                factory.setFeature("http://xml.org/sax/features/namespaces", false);
+                factory.setFeature("http://xml.org/sax/features/validation", false);
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document document = builder.parse(is);
 
@@ -390,7 +395,7 @@ public class ConfigContainer {
 
     public boolean isLegacyWidgetNamespace() {
         return legacyWidgetNamespace;
-    } 
+    }
 
     public boolean isFontAwesomeEnabled() {
         return fontAwesomeEnabled;
@@ -398,5 +403,5 @@ public class ConfigContainer {
 
     public boolean isParameterNamespacingEnabled() {
         return parameterNamespacingEnabled;
-    }    
+    }
 }
