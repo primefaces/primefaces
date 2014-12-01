@@ -34,6 +34,10 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.init(cfg);
     },
     
+    destroy: function() {
+        this.panel.remove();
+    },
+    
     createPanel: function() {
         var dom = '<div id="' + this.id + '_panel" class="ui-lightbox ui-widget ui-helper-hidden ui-corner-all ui-shadow">';
         dom += '<div class="ui-lightbox-content-wrapper">';
