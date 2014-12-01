@@ -79,6 +79,12 @@
 			<ignoreInComponent>true</ignoreInComponent>
             <description>Position of the button element in the tabbing order.</description>
 		</attribute>
+		<attribute>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Advisory tooltip information.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
