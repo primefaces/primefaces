@@ -219,11 +219,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                 if(value.length >= $this.cfg.minLength) {
                     if($this.timeout) {
-                        clearTimeout($this.timeout);
+                        $this.deleteTimeout();
                     }
 
                     var delay = $this.cfg.delay;
                     $this.timeout = setTimeout(function() {
+                        $this.timeout = null;
                         $this.search(value);
                     }, delay);
                 }
@@ -300,7 +301,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     case keyCode.ENTER:
                     case keyCode.NUMPAD_ENTER:
                         if ($this.timeout) {
-                            clearTimeout($this.timeout);
+                            $this.deleteTimeout();
                         }
                     
                         highlightedItem.click();
@@ -326,13 +327,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 switch(e.which) {
                     case keyCode.TAB:
                         if ($this.timeout) {
-                            clearTimeout($this.timeout);
+                            $this.deleteTimeout();
                         }
                     break;
                     
                     case keyCode.ENTER:
                     case keyCode.NUMPAD_ENTER:                        
-                        if($this.cfg.queryEvent === 'enter') {
+                        if($this.cfg.queryEvent === 'enter' || ($this.timeout > 0) || $this.querying) {
                             e.preventDefault();
                         }
                     break;
@@ -510,6 +511,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if(!this.active) {
             return;
         }
+        
+        this.querying = true;
 
         var $this = this;
 
@@ -537,6 +540,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 });
 
                 return true;
+            },
+            oncomplete: function() {
+                $this.querying = false;
             }
         };
 
@@ -770,6 +776,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         else {
             return '<li class="ui-autocomplete-group ui-autocomplete-list-item ui-widget-header">' + group + '</li>';
         }
+    },
+    
+    deleteTimeout: function() {
+        clearTimeout(this.timeout);
+        this.timeout = null;
     }
 
 });
