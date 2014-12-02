@@ -43,7 +43,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //maxLength
-        if(this.cfg.maxlength) {
+        if(this.cfg.maxlength && !this.nativeMaxlengthSupported()) {
             this.applyMaxlength();
         }
 
@@ -413,6 +413,15 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         if(dialog.length == 1) {
             this.panel.css('position', 'fixed');
         }
+    },
+    
+    nativeMaxlengthSupported: function() {
+        if(PrimeFaces.browser.msie)
+            return (parseInt(PrimeFaces.browser.version, 10) > 10);
+        else if(PrimeFaces.browser.opera)
+            return (parseInt(PrimeFaces.browser.version, 10) > 12);
+        else
+            return true;
     }
 
 });
