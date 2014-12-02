@@ -128,7 +128,8 @@ public class HTML {
 		"lang",
 		"size",
 		"tabindex",
-		"title"
+		"title",
+        "maxlength"
 	};
     
     //StyleClass is omitted
