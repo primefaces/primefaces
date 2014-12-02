@@ -366,8 +366,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", "disabled");
-        if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
-        if(ac.getMaxlength() != Integer.MIN_VALUE)writer.writeAttribute("maxlength", ""+ac.getMaxlength(),null);
+
+        renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
         
         writer.endElement("input");
         writer.endElement("li");
