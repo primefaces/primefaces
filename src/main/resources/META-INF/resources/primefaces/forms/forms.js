@@ -2507,7 +2507,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     updateToggler: function() {
-        if(this.itemContainer.children('li.ui-selectcheckboxmenu-item:visible').filter('.ui-selectcheckboxmenu-unchecked').length === 0) {
+        var visibleItems = this.itemContainer.children('li.ui-selectcheckboxmenu-item:visible');
+        
+        if(visibleItems.length && visibleItems.filter('.ui-selectcheckboxmenu-unchecked').length === 0) {
             this.check(this.togglerBox);
         }
         else {
