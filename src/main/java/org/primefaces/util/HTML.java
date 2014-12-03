@@ -214,6 +214,8 @@ public class HTML {
         public static final String CONVERTER = "data-p-con";
         public static final String REGEX = "data-p-regex";
         public static final String PATTERN = "data-p-pattern";
+        public static final String DATE_STYLE_PATTERN = "data-p-dspattern";
+        public static final String TIME_STYLE_PATTERN = "data-p-tspattern";
         public static final String DATETIME_TYPE = "data-p-dttype";
         public static final String REQUIRED_MESSAGE = "data-p-rmsg";
         public static final String VALIDATOR_MESSAGE = "data-p-vmsg";
