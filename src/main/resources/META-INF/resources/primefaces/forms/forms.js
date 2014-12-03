@@ -67,6 +67,8 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
     setupAutoResize: function() {
         var _self = this;
         
+        _self.resize();
+        
         this.jq.keyup(function() {
             _self.resize();
         }).focus(function() {
