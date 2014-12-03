@@ -993,12 +993,12 @@ if (window.PrimeFaces) {
 
                 highlight: function(element) {
                     element.parent().next().addClass('ui-state-error');
-                    PrimeFaces.validator.Highlighter.highlightLabel(element.parent().parent());
+                    PrimeFaces.validator.Highlighter.highlightLabel(element);
                 },
 
                 unhighlight: function(element) {
                     element.parent().next().removeClass('ui-state-error');
-                    PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent().parent());
+                    PrimeFaces.validator.Highlighter.unhighlightLabel(element);
                 }
 
             },
