@@ -43,7 +43,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    show: function() {
+    show: function()Â {
         if(!this.loaded && this.cfg.dynamic)
             this.loadContents();
         else
