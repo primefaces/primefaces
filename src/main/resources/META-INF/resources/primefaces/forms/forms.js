@@ -59,7 +59,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         //remove autocomplete panel
         if(cfg.autoComplete) {
             $(PrimeFaces.escapeClientId(cfg.id + '_panel')).remove();
-            $(PrimeFaces.escapeClientId('textarea_simulator')).remove();
         }
 
         this.init(cfg);
