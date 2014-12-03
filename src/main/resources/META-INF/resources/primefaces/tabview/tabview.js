@@ -335,12 +335,19 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         header.remove();
         panel.remove();
         
-        if(index < this.cfg.selected) {
-            this.cfg.selected--;
+        var length = this.getLength();
+        
+        if(length > 0) {
+            if(index < this.cfg.selected) {
+                this.cfg.selected--;
+            }
+            else if(index === this.cfg.selected) {
+                var newIndex = (this.cfg.selected === (length)) ? (this.cfg.selected - 1): this.cfg.selected;
+                this.select(newIndex, true);
+            }
         }
-        else if(index === this.cfg.selected) {
-            var newIndex = (this.cfg.selected === this.getLength()) ? this.cfg.selected - 1: this.cfg.selected;
-            this.select(newIndex, true);
+        else {
+            this.cfg.selected = -1;
         }
         
         this.fireTabCloseEvent(panel.attr('id'), index);
