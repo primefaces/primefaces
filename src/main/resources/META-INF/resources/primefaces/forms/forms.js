@@ -67,7 +67,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
 
     setupAutoResize: function() {
         var _self = this;
-
+        
         this.jq.keyup(function() {
             _self.resize();
         }).focus(function() {
@@ -416,10 +416,10 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
     },
     
     nativeMaxlengthSupported: function() {
-        if(PrimeFaces.browser.msie)
-            return (parseInt(PrimeFaces.browser.version, 10) > 10);
-        else if(PrimeFaces.browser.opera)
-            return (parseInt(PrimeFaces.browser.version, 10) > 12);
+        if(PrimeFaces.env.browser.msie)
+            return (parseInt(PrimeFaces.env.browser.version, 10) > 10);
+        else if(PrimeFaces.env.browser.opera)
+            return (parseInt(PrimeFaces.env.browser.version, 10) > 12);
         else
             return true;
     }
