@@ -83,6 +83,7 @@
             <name>title</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Advisory tooltip information.</description>
         </attribute>
 	</attributes>
