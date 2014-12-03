@@ -624,7 +624,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             }       
         })
         .on('blur.tree', '.ui-treenode-label', null, function(e) {
-            if($this.focusedNode)Â {
+            if($this.focusedNode) {
                 $this.getNodeLabel($this.focusedNode).removeClass('ui-treenode-outline');
                 $this.focusedNode = null;
             }

@@ -123,7 +123,7 @@
 
             //aria
             var role = button.attr('role');
-            if(!role) {
+            if(!role) {
                 button.attr('role', 'button');
             }
             button.attr('aria-disabled', button.prop('disabled'));
