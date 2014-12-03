@@ -422,12 +422,41 @@ if (window.PrimeFaces) {
 
                 var vc = PrimeFaces.util.ValidationContext,
                 pattern = element.data('p-pattern'),
-                type = element.data('p-dttype');
+                type = element.data('p-dttype'),
+                datePattern = null,
+                timePattern = null;
 
                 var locale = vc.getLocaleSettings();
 
                 try {
-                    return $.datepicker.parseDate(pattern, submittedValue, locale);
+                    if(pattern) {
+                        var patternArr = pattern.split(" ");
+                        for(var i = 0; i < patternArr.length; i++) {
+                            if(patternArr[i].toLowerCase().indexOf('h') !== -1) {
+                                timePattern = patternArr[i];
+                            }
+                            else if(patternArr[i].toLowerCase().indexOf('t') !== -1 && timePattern) {
+                                timePattern = timePattern + " " + patternArr[i];
+                            }
+                            else {
+                                datePattern = patternArr[i];
+                            }
+                        }
+                    }
+                    else {
+                         datePattern = element.data('p-dspattern');
+                         timePattern = element.data('p-tspattern');
+                    }
+                    
+                    if(timePattern && datePattern) {
+                        return $.datepicker.parseDateTime(datePattern, timePattern, submittedValue, locale, {timeFormat:timePattern});
+                    }
+                    else if(timePattern) {
+                        return $.datepicker.parseTime(timePattern, submittedValue, locale);
+                    }
+                    else {
+                        return $.datepicker.parseDate(datePattern, submittedValue, locale);
+                    }
                 }
                 catch(exception) {
                     var now = $.datepicker.formatDate(pattern, new Date(), locale);
