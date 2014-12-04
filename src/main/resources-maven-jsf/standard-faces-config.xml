@@ -96,6 +96,16 @@
         <converter-for-class>java.lang.Integer</converter-for-class>
         <converter-class>org.primefaces.convert.IntegerConverter</converter-class>
     </converter>
+    
+    <converter>
+        <converter-id>javax.faces.Long</converter-id>
+        <converter-class>org.primefaces.convert.LongConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Long</converter-for-class>
+        <converter-class>org.primefaces.convert.LongConverter</converter-class>
+    </converter>
 
     <converter>
         <converter-id>javax.faces.Double</converter-id>
