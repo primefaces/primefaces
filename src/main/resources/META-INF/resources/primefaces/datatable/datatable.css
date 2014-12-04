@@ -137,6 +137,7 @@
     border-top-width: 0px;
     padding-top: 0px;
     padding-bottom: 0px;
+    outline: 0 none;
 }
 
 .ui-datatable-scrollable-theadclone th span.ui-column-title {

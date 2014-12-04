@@ -667,6 +667,32 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $(this).children().not('.ui-column-title').remove();
         });
         this.theadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.bodyTable);
+        
+        //align horizontal scroller on keyboard tab
+        if(this.cfg.scrollWidth) {
+            this.sortableColumns.attr('tabindex', "-1").off('blur.dataTable focus.dataTable keydown.dataTable');
+            
+            var clonedSortableColumns = this.theadClone.find('> tr > th.ui-sortable-column');
+            clonedSortableColumns.each(function() {
+                $(this).data('original', $(this).attr('id').split('_clone')[0]);
+            });
+                        
+            clonedSortableColumns.on('blur.dataTable', function() {
+                $(PrimeFaces.escapeClientId($(this).data('original'))).removeClass('ui-state-focus');
+            })
+            .on('focus.dataTable', function() {
+                $(PrimeFaces.escapeClientId($(this).data('original'))).addClass('ui-state-focus');
+            })
+            .on('keydown.dataTable', function(e) {
+                var key = e.which,
+                keyCode = $.ui.keyCode;
+
+                if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) && $(e.target).is(':not(:input)')) {
+                    $(PrimeFaces.escapeClientId($(this).data('original'))).trigger('click.dataTable', (e.metaKey||e.ctrlKey));
+                    e.preventDefault();
+                }
+            });
+        }
     },
             
     adjustScrollHeight: function() {
