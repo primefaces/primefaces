@@ -111,6 +111,14 @@ PrimeFaces.env = {
             this.browser = browser;
             $.browser = browser;
         }
+    },
+    
+    isIE: function(version) {
+        return (version === undefined) ? this.browser.msie: (this.browser.msie && parseInt(this.browser.version, 10) === version);
+    },
+    
+    isLtIE: function(version) {
+        return (this.browser.msie) ? parseInt(this.browser.version, 10) < version : false;
     }
 };
 

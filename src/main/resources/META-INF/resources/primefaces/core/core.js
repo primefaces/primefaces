@@ -147,8 +147,9 @@
             return this;
         },
 
+        //Deprecated, use PrimeFaces.env.isIE instead
         isIE: function(version) {
-            return (version === undefined) ? PrimeFaces.env.browser.msie: (PrimeFaces.env.browser.msie && parseInt(PrimeFaces.env.browser.version, 10) === version);
+            return PrimeFaces.env.isIE(version);
         },
 
         info: function(log) {
