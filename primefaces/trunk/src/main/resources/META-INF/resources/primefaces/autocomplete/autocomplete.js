@@ -387,6 +387,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 if($this.cfg.pojo) {
                     $this.hinput.val(itemValue);
                 }
+                
+                if(PrimeFaces.env.isLtIE(10)) {
+                    var length = $this.input.val().length;
+                    $this.input.setSelection(length,length);
+                }
             }
 
             $this.invokeItemSelectBehavior(event, itemValue);
