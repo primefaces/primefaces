@@ -12,6 +12,8 @@ if (window.PrimeFaces) {
             'javax.faces.component.UIInput.REQUIRED': '{0}: Validation Error: Value is required.',
             'javax.faces.converter.IntegerConverter.INTEGER': '{2}: \'{0}\' must be a number consisting of one or more digits.',
             'javax.faces.converter.IntegerConverter.INTEGER_detail': '{2}: \'{0}\' must be a number between -2147483648 and 2147483647 Example: {1}',
+            'javax.faces.converter.LongConverter.LONG': '{2}: \'{0}\' must be a number consisting of one or more digits.',
+            'javax.faces.converter.LongConverter.LONG_detail': '{2}: \'{0}\' must be a number between -9223372036854775808 to 9223372036854775807 Example: {1}',
             'javax.faces.converter.DoubleConverter.DOUBLE': '{2}: \'{0}\' must be a number consisting of one or more digits.',
             'javax.faces.converter.DoubleConverter.DOUBLE_detail': '{2}: \'{0}\' must be a number between 4.9E-324 and 1.7976931348623157E308  Example: {1}',
             'javax.faces.converter.BigDecimalConverter.DECIMAL': '{2}: \'{0}\' must be a signed decimal number.',
@@ -193,6 +195,31 @@ if (window.PrimeFaces) {
 
                 if(!this.regex.test(submittedValue)) {
                     throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9346, vc.getLabel(element));
+                }
+
+                return parseInt(submittedValue);
+            }
+        },
+        
+        'javax.faces.Long': {
+
+            regex: /^[-+]?\d+$/,
+
+            MESSAGE_ID: 'javax.faces.converter.LongConverter.LONG',
+
+            convert: function(element, submittedValue) {
+                if(submittedValue === null) {
+                    return null;
+                }
+
+                if($.trim(submittedValue).length === 0) {
+                    return null;
+                }
+
+                var vc = PrimeFaces.util.ValidationContext;
+
+                if(!this.regex.test(submittedValue)) {
+                    throw vc.getMessage(this.MESSAGE_ID, submittedValue, 98765432, vc.getLabel(element));
                 }
 
                 return parseInt(submittedValue);
