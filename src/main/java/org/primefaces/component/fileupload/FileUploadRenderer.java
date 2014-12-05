@@ -248,7 +248,8 @@ public class FileUploadRenderer extends CoreRenderer {
 
         if(fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
         if(fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-
+        if(fileUpload.getAccept() != null) writer.writeAttribute("accept", fileUpload.getAccept(), null);
+        
         renderDynamicPassThruAttributes(context, fileUpload);
 
         writer.endElement("input");
@@ -264,6 +265,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         if(fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
         if(fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if(fileUpload.getAccept() != null) writer.writeAttribute("accept", fileUpload.getAccept(), null);
         if(style != null) writer.writeAttribute("style", style, "style");
         if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
 

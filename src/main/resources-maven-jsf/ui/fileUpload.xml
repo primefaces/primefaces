@@ -190,6 +190,12 @@
             <defaultValue>false</defaultValue>
             <description>Applies theming to simple uploader, default is false.</description>
 		</attribute>
+        <attribute>
+			<name>accept</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>To filter files in native file browser dialog.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
