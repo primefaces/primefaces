@@ -54,6 +54,8 @@ public class UICacheRenderer extends CoreRenderer {
                 output = stringWriter.getBuffer().toString();
                 cacheProvider.put(region, key, output);
                 context.setResponseWriter(writer);
+                
+                uiCache.setCacheSetInCurrentRequest(true);
             }
             
             writer.write(output);
