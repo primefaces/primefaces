@@ -401,14 +401,16 @@ public class SearchExpressionFacade {
 
             if (component == null) {
                 // try #invokeOnComponent
-                if (expression.startsWith(separatorString)) {
-                    String tempExpression = expression.substring(1);
-
-                    IdContextCallback callback = new IdContextCallback();
-                    context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
-
-                    component = callback.getComponent();
+                String tempExpression = expression;
+                
+                if (tempExpression.startsWith(separatorString)) {
+                    tempExpression = tempExpression.substring(1);
                 }
+                
+                IdContextCallback callback = new IdContextCallback();
+                context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
+
+                component = callback.getComponent();
             }
 
 			if (component == null && !isOptionSet(options, IGNORE_NO_RESULT)) {
@@ -507,14 +509,16 @@ public class SearchExpressionFacade {
 
             if (component == null) {
                 // try #invokeOnComponent
-                if (expression.startsWith(separatorString)) {
-                    String tempExpression = expression.substring(1);
-
-                    IdContextCallback callback = new IdContextCallback();
-                    context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
-
-                    component = callback.getComponent();
+                String tempExpression = expression;
+                
+                if (tempExpression.startsWith(separatorString)) {
+                    tempExpression = tempExpression.substring(1);
                 }
+                
+                IdContextCallback callback = new IdContextCallback();
+                context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
+
+                component = callback.getComponent();
             }
 
 			if (component == null && !isOptionSet(options, IGNORE_NO_RESULT)) {
