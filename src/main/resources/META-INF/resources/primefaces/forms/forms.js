@@ -41,17 +41,17 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.autoResize) {
             this.setupAutoResize();
         }
-
-        //maxLength
-        if(this.cfg.maxlength) {
-            this.applyMaxlength();
-        }
-
+        
         //Counter
         if(this.cfg.counter) {
             this.counter = this.cfg.counter ? $(PrimeFaces.escapeClientId(this.cfg.counter)) : null;
             this.cfg.counterTemplate = this.cfg.counterTemplate||'{0}';
             this.updateCounter();
+        }
+
+        //maxLength
+        if(this.cfg.maxlength) {
+            this.applyMaxlength();
         }
     },
 
@@ -117,8 +117,12 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         length = value.length;
 
         if(this.counter) {
-            var remaining = this.cfg.maxlength - length,
-            remainingText = this.cfg.counterTemplate.replace('{0}', remaining);
+            var remaining = this.cfg.maxlength - length;
+            if(remaining < 0) {
+                remaining = 0;
+            }
+            
+            var remainingText = this.cfg.counterTemplate.replace('{0}', remaining);
 
             this.counter.html(remainingText);
         }
