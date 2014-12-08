@@ -1076,7 +1076,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             rowMeta = this.getRowMeta(row),
             selected = row.hasClass('ui-state-highlight');
                
-            if(cmSelMode === 'single' || !selected) {
+            if(cmSelMode === 'single' || !selected) {
                 this.unselectAllRows();
             }
                
