@@ -43,22 +43,10 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         super(writer);
         wrapped = (PartialResponseWriter) writer;
     }
-    
-    private void encodeCallbackParams(RequestContext requestContext) throws IOException, JSONException {
 
-        FacesContext context = FacesContext.getCurrentInstance();
-        
-        boolean validationFailed = context.isValidationFailed();
-        if (validationFailed) {
-            requestContext.addCallbackParam("validationFailed", true);
-        }
-        if (requestContext.getApplicationContext().getConfig().isParameterNamespacingEnabled() && context.getViewRoot() instanceof NamingContainer) {
-            requestContext.addCallbackParam("parameterNamespace", context.getViewRoot().getContainerClientId(context));
-        }
+    private void encodeCallbackParams(Map<String, Object> params) throws IOException, JSONException {
 
-        Map<String, Object> params = requestContext.getCallbackParams();
-
-        if (!params.isEmpty()) {
+        if (params != null && !params.isEmpty()) {
 
             startExtension(CALLBACK_EXTENSION_PARAMS);
             write("{");
@@ -88,7 +76,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                     write(paramName);
                     write("\":");
                     write(new JSONObject(paramValue).toString());
-                } 
+                }
                 else {
                     String json = new JSONObject().put(paramName, paramValue).toString();
                     write(json.substring(1, json.length() - 1));
@@ -103,7 +91,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             endExtension();
         }
     }
-    
+
     private void encodeScripts(RequestContext requestContext) throws IOException {
         List<String> scripts = requestContext.getScriptsToExecute();
         if (!scripts.isEmpty()) {
@@ -115,7 +103,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             }
 
             endEval();
-        }           
+        }
     }
 
     @Override
@@ -156,33 +144,44 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void startDocument() throws IOException {
         wrapped.startDocument();
-        
+
 
         RequestContext requestContext = RequestContext.getCurrentInstance();
 
         if (requestContext != null) {
             try {
-                encodeCallbackParams(requestContext);
-            } 
+                FacesContext context = FacesContext.getCurrentInstance();
+                if (context.getViewRoot() instanceof NamingContainer && requestContext.getApplicationContext().getConfig().isParameterNamespacingEnabled()) {
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    params.put("parameterNamespace", context.getViewRoot().getContainerClientId(context));
+                    encodeCallbackParams(params);
+                }
+            }
             catch (Exception exception) {
                 throw new AbortProcessingException(exception);
-            } 
+            }
         }
     }
-    
+
     @Override
     public void endDocument() throws IOException {
         RequestContext requestContext = RequestContext.getCurrentInstance();
 
         if (requestContext != null) {
             try {
+                FacesContext context = FacesContext.getCurrentInstance();
+                if (context.isValidationFailed()) {
+                    requestContext.addCallbackParam("validationFailed", true);
+                }
+
+                encodeCallbackParams(requestContext.getCallbackParams());
                 encodeScripts(requestContext);
-            } 
+            }
             catch (Exception exception) {
                 throw new AbortProcessingException(exception);
-            } 
+            }
         }
-            
+
         wrapped.endDocument();
     }
 
