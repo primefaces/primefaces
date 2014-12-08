@@ -102,17 +102,12 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
                 if(length > _self.cfg.maxlength) {
                     _self.jq.val(value.substr(0, _self.cfg.maxlength));
                 }
-
-                if(_self.counter) {
-                    _self.updateCounter();
-                }
             });
         }
-        else {
-            this.jq.on('keyup.inputtextarea-input', function(e) {
-                if(_self.counter) {
-                    _self.updateCounter();
-                }
+        
+        if(_self.counter) {
+            this.jq.on('keyup.inputtextarea-counter', function(e) {
+                _self.updateCounter();
             });
         }
     },
@@ -427,7 +422,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
     
     nativeMaxlengthSupported: function() {
         if(PrimeFaces.env.browser.msie)
-            return (parseInt(PrimeFaces.env.browser.version, 10) > 10);
+            return (parseInt(PrimeFaces.env.browser.version, 10) > 9);
         else if(PrimeFaces.env.browser.opera)
             return (parseInt(PrimeFaces.env.browser.version, 10) > 12);
         else
