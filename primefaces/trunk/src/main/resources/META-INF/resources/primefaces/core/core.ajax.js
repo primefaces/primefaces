@@ -371,7 +371,7 @@ PrimeFaces.ajax = {
              * if partial submit is enabled and there are components to process partially
              */
             if(cfg.partialSubmit && processIds.indexOf('@all') === -1) {
-                var formProcessed = false,  
+                var formProcessed = false,
                 partialSubmitFilter = cfg.partialSubmitFilter||':input';
 
                 if(processIds.indexOf('@none') === -1) {
@@ -517,7 +517,7 @@ PrimeFaces.ajax = {
 
             return PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(expressions);
         },
-        
+
         addParam: function(params, name, value, parameterNamespace) {
             // add namespace if not available
             if (parameterNamespace || !name.indexOf(parameterNamespace) === 0) {
@@ -526,22 +526,22 @@ PrimeFaces.ajax = {
             else {
                 params.push({ name:name, value:value });
             }
-            
+
         },
-        
+
         addParams: function(params, paramsToAdd, parameterNamespace) {
-            
+
             for (var i = 0; i < paramsToAdd.length; i++) {
                 var param = paramsToAdd[i];
                 // add namespace if not available
                 if (parameterNamespace && !param.name.indexOf(parameterNamespace) === 0) {
                     param.name = parameterNamespace + param.name;
                 }
-                
+
                 params.push(param);
             }
         },
-        
+
         addParamFromInput: function(params, name, form, parameterNamespace) {
             var input = null;
             if (parameterNamespace) {
@@ -550,13 +550,13 @@ PrimeFaces.ajax = {
             else {
                 input = form.children("input[name='" + name + "']");
             }
-            
+
             if (input && input.length > 0) {
                 var value = input.val();
                 PrimeFaces.ajax.Request.addParam(params, name, value, parameterNamespace);
             }
         },
-        
+
         extractParameterNamespace: function(form) {
             var input = form.children("input[name*='" + PrimeFaces.VIEW_STATE + "']");
             if (input && input.length > 0) {
@@ -565,7 +565,7 @@ PrimeFaces.ajax = {
                     return name.substring(0, name.indexOf(PrimeFaces.VIEW_STATE));
                 }
             }
-            
+
             return null;
         }
     },
@@ -698,7 +698,19 @@ PrimeFaces.ajax = {
             if (xhr) {
                 if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
                     var textContent = node.textContent || node.innerText || node.text;
-                    xhr.pfArgs = $.parseJSON(textContent);
+                    // it's possible that pfArgs are already defined e.g. if portlet parameter namespacing is enabled
+                    // the "parameterNamespace" will be encoded on document start
+                    // the other parameters will be encoded on document end
+                    // --> see PrimePartialResponseWriter
+                    if (xhr.pfArgs) {
+                        var json = $.parseJSON(textContent);
+                        for (var name in json) {
+                            xhr.pfArgs[name] = json[name];
+                        }
+                    }
+                    else {
+                        xhr.pfArgs = $.parseJSON(textContent);
+                    }
                 }
             }
         },
