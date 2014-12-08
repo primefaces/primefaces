@@ -1730,7 +1730,33 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        PrimeFaces.skinButton(this.buttonBar.children('.ui-button'));
+        PrimeFaces.skinButton(this.buttonBar.children('button'));
+        
+        this.chooseButton.on('mouseover.fileupload', function(){
+            var el = $(this);
+            if(!el.prop('disabled')) {
+                el.addClass('ui-state-hover');
+            }
+        })
+        .on('mouseout.fileupload', function() {
+            $(this).removeClass('ui-state-active ui-state-hover');
+        })
+        .on('mousedown.fileupload', function() {
+            var el = $(this);
+            if(!el.prop('disabled')) {
+                el.addClass('ui-state-active').removeClass('ui-state-hover');
+            }
+        })
+        .on('mouseup.fileupload', function() {
+            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
+        });
+        
+        this.chooseButton.children('input').on('focus.fileupload', function() {
+            $this.chooseButton.addClass('ui-state-focus');
+        })
+        .on('blur.fileupload', function() {
+            $this.chooseButton.removeClass('ui-state-focus');
+        });
 
         this.uploadButton.on('click.fileupload', function(e) {
             $this.disableButton($this.uploadButton);
@@ -1937,7 +1963,6 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             this.display = this.jq.children('.ui-fileupload-filename');
 
             if(!this.input.prop('disabled')) {
-                PrimeFaces.skinButton(this.button);
                 this.bindEvents();
             }
         }
@@ -1946,9 +1971,34 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
         
-        this.input.on('change.fileUpload', function() {
+        this.button.on('mouseover.fileupload', function(){
+            var el = $(this);
+            if(!el.prop('disabled')) {
+                el.addClass('ui-state-hover');
+            }
+        })
+        .on('mouseout.fileupload', function() {
+            $(this).removeClass('ui-state-active ui-state-hover');
+        })
+        .on('mousedown.fileupload', function() {
+            var el = $(this);
+            if(!el.prop('disabled')) {
+                el.addClass('ui-state-active').removeClass('ui-state-hover');
+            }
+        })
+        .on('mouseup.fileupload', function() {
+            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
+        });
+        
+        this.input.on('change.fileupload', function() {
             var filename = $this.input.val().replace(/\\/g, '/').replace(/.*\//, '');
             $this.display.text(filename);
+        })
+        .on('focus.fileupload', function() {
+            $this.button.addClass('ui-state-focus');
+        })
+        .on('blur.fileupload', function() {
+            $this.button.removeClass('ui-state-focus');
         });
         
     }
