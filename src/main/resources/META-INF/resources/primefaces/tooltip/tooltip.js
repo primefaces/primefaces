@@ -22,10 +22,13 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     },
     
     refresh: function(cfg) {
-        if(cfg.target)
-            $(document.body).children(PrimeFaces.escapeClientId(cfg.id)).remove();
-        else
+        if(cfg.target) {
+            if($(PrimeFaces.escapeClientId(cfg.id)).length > 1) 
+                $(document.body).children(PrimeFaces.escapeClientId(cfg.id)).remove();
+        }
+        else {
             $(document.body).children('.ui-tooltip-global').remove();
+        }
         
         this._super(cfg);
     },
