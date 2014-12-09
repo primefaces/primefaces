@@ -802,6 +802,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
                 case keyCode.ESCAPE:
+                case 16: //shift
                 break;
 
                 default:
