@@ -19,7 +19,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.ariaEmptyMessage = this.cfg.emptyMessage||'No search results are available.';
         this.cfg.dropdownMode = this.cfg.dropdownMode||'blank';
         this.cfg.autoHighlight = (this.cfg.autoHighlight === undefined) ? true : this.cfg.autoHighlight;
-
+        this.suppressInput = true;
+        
         if(this.cfg.cache) {
             this.initCache();
         }
@@ -202,6 +203,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.queryEvent !== 'enter') {
             this.input.on('input propertychange', function(e) {
+                if($this.suppressInput) {
+                    e.preventDefault();
+                    return;
+                }
+                
                 if(PrimeFaces.isIE(8) && ($this.itemClick || e.originalEvent.propertyName !== 'value')) {
                     $this.itemClick = false;
                     return;
@@ -256,6 +262,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }).on('keydown.autoComplete', function(e) {
             var keyCode = $.ui.keyCode;
 
+            $this.suppressInput = false;
             if($this.panel.is(':visible')) {
                 var highlightedItem = $this.items.filter('.ui-state-highlight');
 
