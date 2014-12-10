@@ -6,6 +6,7 @@
     <tag>columns</tag>
     <tagClass>org.primefaces.component.columns.ColumnsTag</tagClass>
     <componentClass>org.primefaces.component.columns.Columns</componentClass>
+    <componentHandlerClass>org.primefaces.component.columns.ColumnsHandler</componentHandlerClass>
     <componentType>org.primefaces.component.Columns</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
     <parent>org.primefaces.component.api.UIData</parent>
