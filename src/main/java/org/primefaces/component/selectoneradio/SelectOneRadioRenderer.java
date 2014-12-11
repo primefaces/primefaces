@@ -65,12 +65,10 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         List<SelectItem> selectItems = getSelectItems(context, radio);
         
         if(custom) {
-            //populate selectitems for radiobutton access
-            radio.setSelectItems(getSelectItems(context, radio));
-            
-            //render dummy markup to enable processing of ajax behaviors (finding form on client side)
             writer.startElement("span", radio);
             writer.writeAttribute("id", radio.getClientId(context), "id");
+            writer.writeAttribute("class", "ui-helper-hidden", null);
+            encodeCustomLayout(context, radio, selectItems);
             writer.endElement("span");
         }
         else {
@@ -106,6 +104,27 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             encodeGridLayout(context, radio, selectItems);
         else 
             throw new FacesException("Invalid '" + layout + "' type for component '" + radio.getClientId(context) + "'.");    
+    }
+    
+    protected void encodeCustomLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException{
+        Converter converter = radio.getConverter();
+        String name = radio.getClientId(context);
+        Object value = radio.getSubmittedValue();
+        if(value == null) {
+            value = radio.getValue();
+        }
+        Class type = value == null ? String.class : value.getClass();
+        
+        int idx = 0;
+        for(SelectItem selectItem : selectItems) {
+            String id = name + UINamingContainer.getSeparatorChar(context) + idx;
+            Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
+            boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
+            String itemValueAsString = getOptionAsString(context, radio, converter, selectItem.getValue());
+            
+            encodeOptionInput(context, radio, id, name, selected, true, itemValueAsString);
+            idx++;
+        }
     }
     
     protected void encodeLineLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException{

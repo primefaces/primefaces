@@ -1165,6 +1165,21 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             for(var i=0; i < this.outputs.length; i++) {
                 this.labels = this.labels.add('label[for="' + this.outputs.eq(i).parent().attr('id') + '"]');
             }
+            
+            //update radio state
+            this.originalInputs = this.jq.find(':radio');
+            for(var i = 0; i < this.originalInputs.length; i++) {
+                var original = this.originalInputs.eq(i),
+                delegate = $(PrimeFaces.escapeClientId(original.attr('id') + '_clone'));
+        
+                delegate.val(original.val());
+                
+                //default checked
+                if(original.is(':checked')) {
+                    delegate.prop('checked', true).parent().next().addClass('ui-state-active').children('.ui-radiobutton-icon')
+                            .addClass('ui-icon-bullet').removeClass('ui-icon-blank');
+                }
+            }
         }
         //regular layout
         else {

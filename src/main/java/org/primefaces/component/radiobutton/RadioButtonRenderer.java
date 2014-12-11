@@ -19,12 +19,9 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.model.SelectItem;
 import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 
@@ -47,21 +44,7 @@ public class RadioButtonRenderer extends InputRenderer {
         String inputId = selectOneRadio.getRadioButtonId(context);
         String clientId = radio.getClientId(context);
         boolean disabled = radio.isDisabled() || selectOneRadio.isDisabled();
-        Converter converter = ComponentUtils.getConverter(context, selectOneRadio);
-        SelectItem selecItem = selectOneRadio.getSelectItems().get(radio.getItemIndex());
-        Object itemValue = selecItem.getValue();
-        String itemValueAsString = getOptionAsString(context, selectOneRadio, converter, itemValue);
 
-        //selected
-        Object value = selectOneRadio.getSubmittedValue();
-        if(value == null) {
-            value = selectOneRadio.getValue();
-        }
-        Class type = value == null ? String.class : value.getClass();
-        Object coercedItemValue = coerceToModelType(context, itemValue, type);
-        boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
-
-        //render markup
         String style = radio.getStyle();
         String defaultStyleClass = selectOneRadio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
         String styleClass = radio.getStyleClass();
@@ -74,13 +57,13 @@ public class RadioButtonRenderer extends InputRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeOptionInput(context, selectOneRadio, radio, inputId, masterClientId, selected, disabled, itemValueAsString);
-        encodeOptionOutput(context, selected, disabled);
+        encodeOptionInput(context, selectOneRadio, radio, inputId, masterClientId, disabled);
+        encodeOptionOutput(context, disabled);
 
         writer.endElement("div");
     }
 
-    protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name, boolean checked, boolean disabled, String value) throws IOException {
+    protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = button.getTabindex();
         if(tabindex == null) {
@@ -91,13 +74,11 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         writer.startElement("input", null);
-        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("id", id + "_clone", null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "radio", null);
-        writer.writeAttribute("value", value, null);
 
         if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
-        if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
 
         String onchange = buildEvent(context, radio, button, "onchange", "change", "valueChange");
@@ -130,18 +111,16 @@ public class RadioButtonRenderer extends InputRenderer {
         return eventBuilder.toString();
     }
 
-    protected void encodeOptionOutput(FacesContext context, boolean selected, boolean disabled) throws IOException {
+    protected void encodeOptionOutput(FacesContext context, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
-        boxClass = selected ? boxClass + " ui-state-active" : boxClass;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
-        String iconClass = selected ? HTML.RADIOBUTTON_CHECKED_ICON_CLASS: HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", iconClass, null);
+        writer.writeAttribute("class", HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("div");
