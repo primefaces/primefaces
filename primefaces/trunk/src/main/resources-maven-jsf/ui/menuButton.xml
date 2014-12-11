@@ -65,6 +65,12 @@
             <type>java.lang.String</type>
             <description>Appends the overlay to the element defined by search expression. Defaults to document body.</description>
         </attribute>
+        <attribute>
+			<name>menuStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the overlay menu element.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

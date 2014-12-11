@@ -98,10 +98,12 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
     
     protected void encodeMenu(FacesContext context, MenuButton button, String menuId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String menuStyleClass = button.getMenuStyleClass();
+        menuStyleClass = (menuStyleClass == null) ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.DYNAMIC_CONTAINER_CLASS + " " + menuStyleClass;
         
         writer.startElement("div", null);
             writer.writeAttribute("id", menuId, null);
-            writer.writeAttribute("class", Menu.DYNAMIC_CONTAINER_CLASS, "styleClass");
+            writer.writeAttribute("class", menuStyleClass, "styleClass");
             writer.writeAttribute("role", "menu", null);
 
             writer.startElement("ul", null);
