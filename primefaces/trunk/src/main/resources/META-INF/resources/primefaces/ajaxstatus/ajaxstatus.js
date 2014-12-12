@@ -14,25 +14,25 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
         $this = this;
         
         doc.on('pfAjaxStart', function() {
-            $this.trigger('start');
+            $this.trigger('start', arguments);
         })
         .on('pfAjaxError', function() {
-            $this.trigger('error');
+            $this.trigger('error', arguments);
         })
         .on('pfAjaxSuccess', function() {
-            $this.trigger('success');
+            $this.trigger('success', arguments);
         })
         .on('pfAjaxComplete', function() {
-            $this.trigger('complete');
+            $this.trigger('complete', arguments);
         });
         
         this.bindToStandard();
     },
             
-    trigger: function(event) {
+    trigger: function(event, args) {
         var callback = this.cfg[event];
         if(callback) {
-            callback.call(document);
+            callback.apply(document, args);
         }
         
         this.jq.children().hide().filter(this.jqId + '_' + event).show();
@@ -44,18 +44,18 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
 
         	jsf.ajax.addOnEvent(function(data) {
                 if(data.status === 'begin') {
-                    doc.trigger('pfAjaxStart');
+                    doc.trigger('pfAjaxStart', arguments);
                 }
                 else if(data.status === 'complete') {
-                    doc.trigger('pfAjaxSuccess');
+                    doc.trigger('pfAjaxSuccess', arguments);
                 }
                 else if(data.status === 'success') {
-                    doc.trigger('pfAjaxComplete');
+                    doc.trigger('pfAjaxComplete', arguments);
                 }
             });
 
             jsf.ajax.addOnError(function(data) {
-                doc.trigger('pfAjaxError');
+                doc.trigger('pfAjaxError', arguments);
             });
         }
     }
