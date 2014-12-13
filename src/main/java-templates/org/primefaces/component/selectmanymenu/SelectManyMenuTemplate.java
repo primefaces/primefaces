@@ -12,6 +12,10 @@ import javax.faces.component.UINamingContainer;
         return this.getClientId(getFacesContext()) + "_input";
     }
 
+    public String getValidatableInputClientId() {
+        return this.getInputClientId();
+    }
+
     public static String[] DOM_EVENTS = {
 		"onchange",
 		"onclick",

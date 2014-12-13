@@ -134,3 +134,7 @@ import javax.faces.component.behavior.Behavior;
     public String getInputClientId() {
         return this.getClientId(getFacesContext()) + "_input";
     }
+
+    public String getValidatableInputClientId() {
+        return this.getInputClientId();
+    }

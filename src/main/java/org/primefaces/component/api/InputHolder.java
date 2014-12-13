@@ -24,4 +24,9 @@ public interface InputHolder {
      * @return Client id of the input element
      */
     public String getInputClientId();
+    
+    /**
+     * @return Client id of the validatable input element
+     */
+    public String getValidatableInputClientId();
 }

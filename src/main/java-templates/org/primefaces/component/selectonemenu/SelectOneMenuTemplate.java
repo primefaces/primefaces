@@ -104,5 +104,9 @@ import org.primefaces.util.MessageFactory;
         return this.getClientId(getFacesContext()) + "_focus";
     }
 
+    public String getValidatableInputClientId() {
+        return this.getClientId(getFacesContext()) + "_input";
+    }
+
 
     
