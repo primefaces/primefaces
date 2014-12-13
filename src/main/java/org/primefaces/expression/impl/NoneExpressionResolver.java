@@ -16,6 +16,7 @@
 package org.primefaces.expression.impl;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import org.primefaces.expression.ClientIdSearchExpressionResolver;
 import org.primefaces.expression.SearchExpressionConstants;
 
@@ -26,11 +27,11 @@ import org.primefaces.expression.SearchExpressionResolver;
  */
 public class NoneExpressionResolver implements SearchExpressionResolver, ClientIdSearchExpressionResolver {
 
-	public UIComponent resolveComponent(UIComponent source, UIComponent last, String expression) {
+	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
 		return null;
 	}
 
-    public String resolveClientIds(UIComponent source, UIComponent last, String expression) {
+    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression) {
         return SearchExpressionConstants.NONE_KEYWORD;
     }
 }

@@ -17,6 +17,7 @@ package org.primefaces.expression.impl;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.expression.SearchExpressionResolver;
 
@@ -25,7 +26,7 @@ import org.primefaces.expression.SearchExpressionResolver;
  */
 public class NamingContainerExpressionResolver implements SearchExpressionResolver {
 
-	public UIComponent resolveComponent(UIComponent source, UIComponent last, String expression) {
+	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
 		UIComponent parent = last.getParent();
 
 		while (parent != null) {
