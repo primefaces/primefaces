@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.expression.SearchExpressionResolver;
 
@@ -30,7 +31,7 @@ public class ChildExpressionResolver implements SearchExpressionResolver {
 
     private static final Pattern PATTERN = Pattern.compile("@child\\((\\d+)\\)");
 
-    public UIComponent resolveComponent(UIComponent source, UIComponent last, String expression) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
 
         try {
             Matcher matcher = PATTERN.matcher(expression);

@@ -365,7 +365,7 @@ public class SearchExpressionFacade {
 						}
 	
 						SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
-						UIComponent temp = resolver.resolveComponent(source, last, subExpression);
+						UIComponent temp = resolver.resolveComponent(context, source, last, subExpression);
 	
 						
 						if (temp == null) {
@@ -387,7 +387,7 @@ public class SearchExpressionFacade {
 			} else {
 				// it's a keyword and not nested, just ask our resolvers
 				SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
-				component = resolver.resolveComponent(source, source, expression);
+				component = resolver.resolveComponent(context, source, source, expression);
 				
 				if (component == null && !isOptionSet(options, IGNORE_NO_RESULT)) {
 					throw new FacesException("Cannot find component for expression \""
@@ -467,7 +467,7 @@ public class SearchExpressionFacade {
 						}
 	
 						SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
-						UIComponent temp = resolver.resolveComponent(source, last, subExpression);
+						UIComponent temp = resolver.resolveComponent(context, source, last, subExpression);
 	
 						
 						if (temp == null) {
@@ -491,10 +491,10 @@ public class SearchExpressionFacade {
 				SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
                 
                 if (resolver instanceof ClientIdSearchExpressionResolver) {
-                    return ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(source, source, expression);
+                    return ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression);
                 }
                 else {
-                    component = resolver.resolveComponent(source, source, expression);
+                    component = resolver.resolveComponent(context, source, source, expression);
 
                     if (component == null && !isOptionSet(options, IGNORE_NO_RESULT)) {
                         throw new FacesException("Cannot find component for expression \""

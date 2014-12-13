@@ -31,14 +31,12 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
 
     private static final Pattern PATTERN = Pattern.compile("@widgetVar\\((\\w+)\\)");
         
-	public UIComponent resolveComponent(UIComponent source, UIComponent last, String expression) {
+	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
         
         try {
             Matcher matcher = PATTERN.matcher(expression);
 
             if (matcher.matches()) {
-
-                FacesContext context = FacesContext.getCurrentInstance();
 
                 WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(matcher.group(1));
                 context.getViewRoot().visitTree(VisitContext.createVisitContext(context), visitCallback);
@@ -55,7 +53,7 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
 	}
 
     
-    public String resolveClientIds(UIComponent source, UIComponent last, String expression) {
+    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression) {
         // just return the complete expression, the client side will take care of it
         // e.g. @widgetVar(myWidget)
         return expression;
