@@ -27,6 +27,7 @@ import javax.faces.context.FacesContext;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -40,14 +41,14 @@ public class ExcelExporter extends Exporter {
 
     @Override
 	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
-    	Workbook wb = new HSSFWorkbook();
+    	Workbook wb = createWorkBook();
     	Sheet sheet = wb.createSheet();
         
     	if(preProcessor != null) {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
 
-        addColumnFacets(table, sheet, ColumnType.HEADER);
+        addColumnFacets(table, sheet, Exporter.ColumnType.HEADER);
         
         if (pageOnly) {
             exportPageOnly(context, table, sheet);
@@ -60,7 +61,7 @@ public class ExcelExporter extends Exporter {
         }
         
         if (table.hasFooterColumn()) {
-            addColumnFacets(table, sheet, ColumnType.FOOTER);
+            addColumnFacets(table, sheet, Exporter.ColumnType.FOOTER);
         }
     	
     	table.setRowIndex(-1);
@@ -89,8 +90,8 @@ public class ExcelExporter extends Exporter {
         }
     }
     
-	protected void addColumnFacets(DataTable table, Sheet sheet, ColumnType columnType) {
-        int sheetRowIndex = columnType.equals(ColumnType.HEADER) ? 0 : (sheet.getLastRowNum() + 1);
+	protected void addColumnFacets(DataTable table, Sheet sheet, Exporter.ColumnType columnType) {
+        int sheetRowIndex = columnType.equals(Exporter.ColumnType.HEADER) ? 0 : (sheet.getLastRowNum() + 1);
         Row rowHeader = sheet.createRow(sheetRowIndex);
         
         for (UIColumn col : table.getColumns()) {
@@ -134,7 +135,7 @@ public class ExcelExporter extends Exporter {
         int cellIndex = row.getLastCellNum() == -1 ? 0 : row.getLastCellNum();
         Cell cell = row.createCell(cellIndex);
 
-        cell.setCellValue(new HSSFRichTextString(value));
+        cell.setCellValue(createRichTextString(value));
     }
     
     protected void addColumnValue(Row row, List<UIComponent> components) {
@@ -152,7 +153,15 @@ public class ExcelExporter extends Exporter {
             }
 		}  
         
-        cell.setCellValue(new HSSFRichTextString(builder.toString()));
+        cell.setCellValue(createRichTextString(builder.toString()));
+    }
+    
+    protected RichTextString createRichTextString(String value) {
+        return new HSSFRichTextString(value);
+    }
+    
+    protected Workbook createWorkBook() {
+        return new HSSFWorkbook();
     }
     
     protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {
@@ -160,11 +169,15 @@ public class ExcelExporter extends Exporter {
     	externalContext.setResponseHeader("Expires", "0");
     	externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
     	externalContext.setResponseHeader("Pragma", "public");
-    	externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".xls");
+    	externalContext.setResponseHeader("Content-disposition", getContentDisposition(filename));
     	externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
 
         OutputStream out = externalContext.getResponseOutputStream();
         generatedExcel.write(out);
         externalContext.responseFlushBuffer();        
+    }
+
+    protected String getContentDisposition(String filename) {
+        return "attachment;filename="+ filename + ".xls";
     }
 }
