@@ -41,6 +41,10 @@ public class ExporterFactory {
                 case XML:
                     exporter = new XMLExporter();
                 break;
+                    
+                case XLSX:
+                    exporter = new ExcelXExporter();
+                break;
             }
         }
         catch(IllegalArgumentException e) {

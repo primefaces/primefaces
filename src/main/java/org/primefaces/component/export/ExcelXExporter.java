@@ -15,10 +15,27 @@
  */
 package org.primefaces.component.export;
 
-public enum ExporterType {
-    XLS,
-    PDF,
-    CSV,
-    XML,
-    XLSX
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class ExcelXExporter extends ExcelExporter {
+
+    @Override
+    protected Workbook createWorkBook() {
+        return new XSSFWorkbook();
+    }
+
+    @Override
+    protected RichTextString createRichTextString(String value) {
+        return new XSSFRichTextString(value);
+    }
+
+    @Override
+    protected String getContentDisposition(String filename) {
+        return "attachment;filename="+ filename + ".xlsx";
+    }
+
 }
+
