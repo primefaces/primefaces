@@ -2,11 +2,13 @@ PrimeFaces.env = {
     
     mobile : false,
     touch : false,
+    ios: false,
     browser : null,
     
     init : function() {
         this.mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent);
         this.touch = 'ontouchstart' in window || window.navigator.msMaxTouchPoints || PrimeFaces.env.mobile;
+        this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent);
         
         this.resolveUserAgent();
     },
