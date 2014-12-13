@@ -240,7 +240,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     
     bindCommonEvents: function() {
         var $this = this,
-        hideNS = 'click.' + this.id,
+        hideNS = PrimeFaces.env.ios ? 'touchstart.' + this.id: 'click.' + this.id,
         resizeNS = 'resize.' + this.id;
         
         this.closeIcon.mouseover(function() {
@@ -268,11 +268,21 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             }
 
             //hide if mouse is outside of lightbox
-            var offset = $this.panel.offset();
-            if(e.pageX < offset.left ||
-                e.pageX > offset.left + $this.panel.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.panel.height()) {
+            var offset = $this.panel.offset(),
+            pageX, pageY;
+            
+            if(e.originalEvent.touches) {
+                pageX = e.originalEvent.touches[0].pageX;
+                pageY = e.originalEvent.touches[0].pageY;
+            } else {
+                pageX = e.pageX;
+                pageY = e.pageY;
+            }
+            
+            if(pageX < offset.left ||
+                pageX > offset.left + $this.panel.width() ||
+                pageY < offset.top ||
+                pageY > offset.top + $this.panel.height()) {
 
                 $this.hide();
             }
