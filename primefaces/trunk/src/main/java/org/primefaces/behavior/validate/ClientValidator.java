@@ -34,7 +34,7 @@ public class ClientValidator extends ClientBehaviorBase {
         
         FacesContext context = behaviorContext.getFacesContext();
         UIComponent component = behaviorContext.getComponent();
-        String target = (component instanceof InputHolder) ? ((InputHolder) component).getInputClientId() : component.getClientId(context);
+        String target = (component instanceof InputHolder) ? ((InputHolder) component).getValidatableInputClientId(): component.getClientId(context);
         
         return "return PrimeFaces.vi('" + target + "')";
     }

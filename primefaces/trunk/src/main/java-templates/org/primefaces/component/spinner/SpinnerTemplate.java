@@ -9,3 +9,7 @@
     public String getInputClientId() {
         return this.getClientId(getFacesContext()) + "_input";
     }
+
+    public String getValidatableInputClientId() {
+        return this.getInputClientId();
+    }
