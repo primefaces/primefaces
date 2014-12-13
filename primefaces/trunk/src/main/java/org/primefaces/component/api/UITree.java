@@ -35,6 +35,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.SharedStringBuilder;
@@ -548,22 +549,31 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             return;
         
         for(UIComponent child : getChildren()) {
-            if(child instanceof UIColumn && child.isRendered()) {
-                for(UIComponent grandkid : child.getChildren()) {
-                    if(!grandkid.isRendered())
-                        continue;
-                    
-                    if(phaseId == PhaseId.APPLY_REQUEST_VALUES)
-                        grandkid.processDecodes(context);
-                    else if(phaseId == PhaseId.PROCESS_VALIDATIONS)
-                        grandkid.processValidators(context);
-                    else if(phaseId == PhaseId.UPDATE_MODEL_VALUES)
-                        grandkid.processUpdates(context);
-                    else
-                        throw new IllegalArgumentException();
+            if(child.isRendered()) {
+                if(child instanceof UIColumn) {
+                    for(UIComponent grandkid : child.getChildren()) {
+                        if(grandkid.isRendered()) {
+                            processComponent(context, grandkid, phaseId);
+                        }
+                    }
+                }
+                else {
+                    processComponent(context, child, phaseId);
                 }
             }
+            
         }
+    }
+    
+    protected void processComponent(FacesContext context, UIComponent component, PhaseId phaseId) {
+        if(phaseId == PhaseId.APPLY_REQUEST_VALUES)
+            component.processDecodes(context);
+        else if(phaseId == PhaseId.PROCESS_VALIDATIONS)
+            component.processValidators(context);
+        else if(phaseId == PhaseId.UPDATE_MODEL_VALUES)
+            component.processUpdates(context);
+        else
+            throw new IllegalArgumentException();
     }
     
     private void saveDescendantState() {
@@ -712,7 +722,21 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         
         if(getChildCount() > 0) {
             for(UIComponent child : getChildren()) {
-                if(child instanceof UIColumn) {
+                if(child instanceof Columns) {
+                    Columns uicolumns = (Columns) child;
+                    for(int i = 0; i < uicolumns.getRowCount(); i++) {
+                        uicolumns.setRowIndex(i);
+
+                        boolean value = visitColumnContent(context, callback, uicolumns);
+                        if(value) {
+                            uicolumns.setRowIndex(-1);
+                            return true;
+                        }
+                    }
+
+                    uicolumns.setRowIndex(-1);
+                }
+                else if(child instanceof UIColumn) {
                     if(child.visitTree(context, callback)) {
                         return true;
                     }
@@ -720,6 +744,18 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             }
         }
 
+        return false;
+    }
+    
+    protected boolean visitColumnContent(VisitContext context, VisitCallback callback, UIComponent component) {
+        if(component.getChildCount() > 0) {
+            for(UIComponent grandkid : component.getChildren()) {
+                if(grandkid.visitTree(context, callback)) {
+                    return true;
+                }
+            }
+        }  
+        
         return false;
     }
     
