@@ -33,7 +33,7 @@ public class RatingRenderer extends InputRenderer {
             return;
         }
 
-        String clientId = rating.getClientId();
+        String clientId = rating.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         rating.setSubmittedValue(submittedValue);

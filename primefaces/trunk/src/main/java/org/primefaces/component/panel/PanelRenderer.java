@@ -193,33 +193,33 @@ public class PanelRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeContent(FacesContext facesContext, Panel panel) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    protected void encodeContent(FacesContext context, Panel panel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", panel.getClientId() + "_content", null);
+        writer.writeAttribute("id", panel.getClientId(context) + "_content", null);
         writer.writeAttribute("class", Panel.PANEL_CONTENT_CLASS, null);
         if (panel.isCollapsed()) {
             writer.writeAttribute("style", "display:none", null);
         }
 
-        renderChildren(facesContext, panel);
+        renderChildren(context, panel);
 
         writer.endElement("div");
     }
 
-    protected void encodeFooter(FacesContext facesContext, Panel panel) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    protected void encodeFooter(FacesContext context, Panel panel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         UIComponent footer = panel.getFacet("footer");
         String footerText = panel.getFooter();
 
         if (footer != null || footerText != null) {
             writer.startElement("div", null);
-            writer.writeAttribute("id", panel.getClientId(facesContext) + "_footer", null);
+            writer.writeAttribute("id", panel.getClientId(context) + "_footer", null);
             writer.writeAttribute("class", Panel.PANEL_FOOTER_CLASS, null);
 
             if (footer != null) {
-                renderChild(facesContext, footer);
+                renderChild(context, footer);
             } else if (footerText != null) {
                 writer.writeText(footerText, null);
             }

@@ -51,8 +51,8 @@ public class GMapRenderer extends CoreRenderer {
 		encodeScript(facesContext, map);
 	}
 	
-	protected void encodeMarkup(FacesContext facesContext, GMap map) throws IOException {
-		ResponseWriter writer = facesContext.getResponseWriter();
+	protected void encodeMarkup(FacesContext context, GMap map) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
 		String clientId = map.getClientId(context);
 		
 		writer.startElement("div", map);

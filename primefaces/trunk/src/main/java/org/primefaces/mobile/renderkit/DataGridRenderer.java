@@ -49,7 +49,7 @@ public class DataGridRenderer extends org.primefaces.component.datagrid.DataGrid
         }
         
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = grid.getClientId();
+        String clientId = grid.getClientId(context);
         boolean hasPaginator = grid.isPaginator();
         boolean empty = grid.getRowCount() == 0;
         String paginatorPosition = grid.getPaginatorPosition();
