@@ -27,8 +27,8 @@ import org.primefaces.expression.SearchExpressionResolver;
 public class JQuerySelectorExpressionResolver implements SearchExpressionResolver, ClientIdSearchExpressionResolver {
 
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
-			throw new FacesException("jQuery selectors aka PFS are not supported on the server side... expression \"" + expression
-                            + "\" referenced from \""+ source.getClientId() + "\".");
+        throw new FacesException("jQuery selectors aka PFS are not supported on the server side... expression \"" + expression
+                        + "\" referenced from \""+ source.getClientId(context) + "\".");
     }
 
     public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression) {

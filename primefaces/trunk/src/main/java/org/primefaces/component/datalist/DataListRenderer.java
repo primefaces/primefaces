@@ -53,7 +53,7 @@ public class DataListRenderer extends DataRenderer {
         }
         
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = list.getClientId();
+        String clientId = list.getClientId(context);
         boolean hasPaginator = list.isPaginator();
         boolean empty = (list.getRowCount() == 0);
         String paginatorPosition = list.getPaginatorPosition();
@@ -102,7 +102,7 @@ public class DataListRenderer extends DataRenderer {
     }
 
     protected void encodeScript(FacesContext context, DataList list) throws IOException {
-        String clientId = list.getClientId();
+        String clientId = list.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("DataList", list.resolveWidgetVar(), clientId);
         
@@ -122,7 +122,7 @@ public class DataListRenderer extends DataRenderer {
      */
     protected void encodeStrictList(FacesContext context, DataList list) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = list.getClientId();
+        String clientId = list.getClientId(context);
         boolean isDefinition = list.isDefinition();
         UIComponent definitionFacet = list.getFacet("description");
         boolean renderDefinition = isDefinition && definitionFacet != null;

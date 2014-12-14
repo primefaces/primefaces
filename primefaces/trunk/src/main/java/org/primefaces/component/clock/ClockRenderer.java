@@ -47,7 +47,7 @@ public class ClockRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("span", clock);
-        writer.writeAttribute("id", clock.getClientId(), null);
+        writer.writeAttribute("id", clock.getClientId(context), null);
         writer.writeAttribute("class", Clock.STYLE_CLASS, null);
         writer.endElement("span");
     }

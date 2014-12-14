@@ -30,7 +30,7 @@ public class FieldsetRenderer extends CoreRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Fieldset fieldset = (Fieldset) component;
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = fieldset.getClientId();
+        String clientId = fieldset.getClientId(context);
         String toggleStateParam = clientId + "_collapsed";
         
         if(params.containsKey(toggleStateParam)) {

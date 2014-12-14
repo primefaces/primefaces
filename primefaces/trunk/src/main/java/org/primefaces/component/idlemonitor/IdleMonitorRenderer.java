@@ -34,7 +34,7 @@ public class IdleMonitorRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         IdleMonitor monitor = (IdleMonitor) component;
-        String clientId = monitor.getClientId();
+        String clientId = monitor.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("IdleMonitor", monitor.resolveWidgetVar(), clientId, "idlemonitor")

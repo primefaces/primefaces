@@ -162,7 +162,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
     protected void encodeSimpleMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = fileUpload.getClientId();
+        String clientId = fileUpload.getClientId(context);
         String style = fileUpload.getStyle();
         String styleClass = fileUpload.getStyleClass();
         

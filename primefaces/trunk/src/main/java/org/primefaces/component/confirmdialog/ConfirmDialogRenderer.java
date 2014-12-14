@@ -67,7 +67,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 	}
     
 	protected void encodeScript(FacesContext context, ConfirmDialog dialog) throws IOException {
-		String clientId = dialog.getClientId();
+		String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
         wb.initWithDomReady("ConfirmDialog", dialog.resolveWidgetVar(), clientId)
