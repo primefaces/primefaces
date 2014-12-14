@@ -198,7 +198,7 @@ public class PanelGridRenderer extends CoreRenderer {
     }
     
     public void encodeGridBody(FacesContext context, PanelGrid grid, int columns) throws IOException {
-        String clientId = grid.getClientId();
+        String clientId = grid.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         String columnClassesValue = grid.getColumnClasses();
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");

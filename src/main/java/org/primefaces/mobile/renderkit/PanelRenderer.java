@@ -27,7 +27,7 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
     
     @Override
     protected void encodeScript(FacesContext context, Panel panel) throws IOException {
-        String clientId = panel.getClientId();
+        String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Panel", panel.resolveWidgetVar(), clientId);
         

@@ -53,7 +53,7 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
     
     @Override
     protected void encodeScript(FacesContext context, DataList list) throws IOException {
-        String clientId = list.getClientId();
+        String clientId = list.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DataList", list.resolveWidgetVar(), clientId);
         

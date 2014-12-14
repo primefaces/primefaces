@@ -153,7 +153,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if(menu.isEditable()) {
             writer.startElement("input", null);
             writer.writeAttribute("type", "text", null);
-            writer.writeAttribute("name", menu.getClientId() + "_editableInput", null);
+            writer.writeAttribute("name", menu.getClientId(context) + "_editableInput", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
             
             if(menu.getTabindex() != null) {
@@ -176,7 +176,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
         else {
             writer.startElement("label", null);
-            writer.writeAttribute("id", menu.getClientId() + "_label", null);
+            writer.writeAttribute("id", menu.getClientId(context) + "_label", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
             writer.write("&nbsp;");
             writer.endElement("label");

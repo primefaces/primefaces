@@ -39,7 +39,7 @@ public class OutputLabelRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         OutputLabel label = (OutputLabel) component;
-        String clientId = label.getClientId();
+        String clientId = label.getClientId(context);
         String value = ComponentUtils.getValueToRender(context, label);
         UIComponent target = null;
         String targetClientId = null;
