@@ -52,7 +52,7 @@ public class DataGridRenderer extends DataRenderer {
     }
     
     protected void encodeScript(FacesContext context, DataGrid grid) throws IOException {
-        String clientId = grid.getClientId();
+        String clientId = grid.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DataGrid", grid.resolveWidgetVar(), clientId);
         
@@ -71,7 +71,7 @@ public class DataGridRenderer extends DataRenderer {
         }
         
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = grid.getClientId();
+        String clientId = grid.getClientId(context);
         boolean hasPaginator = grid.isPaginator();
         boolean empty = grid.getRowCount() == 0;
         String layout = grid.getLayout();

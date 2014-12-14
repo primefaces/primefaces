@@ -46,7 +46,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             return;
         }
         
-		String param = component.getClientId();
+		String param = component.getClientId(context);
 
 		if(context.getExternalContext().getRequestParameterMap().containsKey(param)) {
 			component.queueEvent(new ActionEvent(component));
