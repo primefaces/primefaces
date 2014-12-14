@@ -42,7 +42,7 @@ public class ChildExpressionResolver implements SearchExpressionResolver {
 
                 if (childNumber + 1 > last.getChildCount()) {
                     throw new FacesException("Component with clientId \"" +
-                            last.getClientId() + "\" has fewer children as \"" + childNumber + "\". Expression: \"" + expression + "\"");
+                            last.getClientId(context) + "\" has fewer children as \"" + childNumber + "\". Expression: \"" + expression + "\"");
                 }
 
                 return last.getChildren().get(childNumber);
