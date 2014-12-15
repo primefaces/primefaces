@@ -137,3 +137,25 @@
 .ui-treetable.ui-treetable-checkbox-all  .ui-chkbox.ui-selection {
     display: inline-block;
 }
+
+.ui-treetable-scrollable-theadclone {
+    height:0px;
+}
+
+.ui-treetable-scrollable-theadclone tr {
+    height:0px;
+}
+
+.ui-treetable-scrollable-theadclone th.ui-state-default {
+    height:0px;
+    border-bottom-width: 0px;
+    border-top-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    outline: 0 none;
+}
+
+.ui-treetable-scrollable-theadclone th span {
+  display: block;
+  height: 0px;
+}
