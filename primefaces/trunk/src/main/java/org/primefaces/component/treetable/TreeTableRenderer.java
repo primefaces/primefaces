@@ -186,8 +186,8 @@ public class TreeTableRenderer extends CoreRenderer {
         
         String containerClass = tt.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
         containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
-        containerClass = tt.isShowUnselectableCheckbox() ? containerClass + " ui-treetable-checkbox-all" : containerClass + " " + tt.getStyleClass();
-		containerClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
+        containerClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
+        containerClass = tt.isShowUnselectableCheckbox() ? containerClass + " ui-treetable-checkbox-all" : containerClass;
 	
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
@@ -239,24 +239,10 @@ public class TreeTableRenderer extends CoreRenderer {
         if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if(tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);
         
-        encodeColGroup(context, tt);
         encodeTbody(context, tt, false);
         
         writer.endElement("table");
         writer.endElement("div");
-    }
-    
-    public void encodeColGroup(FacesContext context, TreeTable tt) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        
-        writer.startElement("colgroup", null);
-        for(UIComponent kid : tt.getChildren()) {
-            if(kid.isRendered() && kid instanceof Column) {
-                writer.startElement("col", null);
-                writer.endElement("col");
-            }
-        }
-        writer.endElement("colgroup");
     }
     
     protected void encodeScrollAreaStart(FacesContext context, TreeTable tt, String containerClass, String containerBoxClass, 
