@@ -994,8 +994,6 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                             widget.onRowRightClick(e, this, $this.cfg.selectionMode);
 
                             $this.show(e);
-
-                            e.preventDefault();
                         }
                         else if(widget.cfg.editMode === 'cell') {
                             var target = $(e.target),
@@ -1089,7 +1087,11 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         });
     },
     
-    show: function(e) {  
+    show: function(e) { 
+        if(this.cfg.targetFilter && $(e.target).is(':not(' + this.cfg.targetFilter + ')')) {
+            return;
+        }
+        
         //hide other contextmenus if any
         $(document.body).children('.ui-contextmenu:visible').hide();
 
@@ -1108,7 +1110,10 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         }
         
         if(this.cfg.beforeShow) {
-            this.cfg.beforeShow.call(this, e);
+            var retVal = this.cfg.beforeShow.call(this, e);
+            if(retVal === false) {
+                return;
+            }
         }
 
         this.jq.css({

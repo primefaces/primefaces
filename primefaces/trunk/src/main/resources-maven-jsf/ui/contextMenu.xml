@@ -70,6 +70,12 @@
             <defaultValue>multiple</defaultValue>
             <description>Defines the selection behavior. Valid values are "single" and "multiple" (default).</description>
 		</attribute>
+        <attribute>
+			<name>targetFilter</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Selector to filter the elements to attach the menu. Default is null.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
