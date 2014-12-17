@@ -55,6 +55,55 @@
 			<method-signature>void listener(org.primefaces.event.CaptureEvent)</method-signature>
             <description>Method expression to listen capture events.</description>
 		</attribute>
+        <attribute>
+            <name>width</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>320</defaultValue>
+            <description>Width of the camera viewport.</description>
+        </attribute>
+        <attribute>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>240</defaultValue>
+            <description>Height of the camera viewport.</description>
+        </attribute>
+        <attribute>
+            <name>photoWidth</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>320</defaultValue>
+            <description>Width of the captured photo, defaults to width.</description>
+        </attribute>
+        <attribute>
+            <name>photoHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>240</defaultValue>
+            <description>Height of the captured photo, defaults to height</description>
+        </attribute>
+        <attribute>
+            <name>format</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>null</defaultValue>
+            <description>Format of the image, valid values are "jpeg" default and png.</description>
+        </attribute>
+        <attribute>
+            <name>jpegQuality</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>90</defaultValue>
+            <description>Quality of the image between 0 and 100 when the format is jpeg, default value is 90.</description>
+        </attribute>
+        <attribute>
+            <name>forceFlash</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Enables always using flash fallback even in an HTML5 environment.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
