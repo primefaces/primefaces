@@ -1567,4 +1567,33 @@ public class SearchExpressionFacadeTest
 
 		assertEquals("Failed", "outerContainer:innerContainer:source", resolveComponentForClient(source, " :form:outerContainer:innerContainer:source "));
 	}
+    
+	@Test
+	public void resolveComponentForClient_AbsoluteWithFormPrependIdFalse_InvokeOnComponent() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+        form.setPrependId(false);
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("outerContainer");
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("innerContainer");
+		outerContainer.getChildren().add(innerContainer);
+
+		UIComponent component = new UIOutput();
+		innerContainer.getChildren().add(component);
+
+		UIComponent source = new UICommand();
+		source.setId("source");
+		innerContainer.getChildren().add(source);
+
+		assertEquals("Failed", "outerContainer:innerContainer:source", resolveComponentForClient(source, " outerContainer:innerContainer:source "));
+	}
 }
