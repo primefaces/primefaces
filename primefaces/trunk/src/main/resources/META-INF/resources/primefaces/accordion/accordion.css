@@ -17,3 +17,8 @@
 .ui-accordion.ui-accordion-rtl .ui-accordion-header a {
     padding: 0.5em 2.2em 0.5em 0.5em;
 }
+
+.ui-tabs-outline {
+    outline: dotted thin;
+    z-index: 1;
+}

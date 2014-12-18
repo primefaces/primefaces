@@ -12,7 +12,8 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.rtl = this.jq.hasClass('ui-accordion-rtl');
         this.cfg.expandedIcon = 'ui-icon-triangle-1-s';
         this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
-
+        this.focusedHeader = null;
+        
         this.initActive();
         this.bindEvents();
 
@@ -22,6 +23,8 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     },
             
     initActive: function() {
+        var firstActiveIndex = 0;
+        
         if(this.cfg.multiple) {
             var indexes = this.stateHolder.val().split(',');
             for(var i = 0; i < indexes.length; i++) {
@@ -32,6 +35,26 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             this.cfg.active = parseInt(this.stateHolder.val());
+        }
+        
+        if(this.cfg.multiple) {
+            firstActiveIndex = this.cfg.active[0];
+        }
+        else {
+            firstActiveIndex = this.cfg.active;
+        }
+        
+        for(var i = 0; i < this.headers.length; i++) {
+            if(firstActiveIndex === i && !this.headers.eq(i).hasClass('ui-state-disabled')) {
+                this.headers.eq(i).attr('tabindex', '0');
+            }
+            else {
+                this.headers.eq(i).attr('tabindex', '-1');
+            }
+        }
+
+        if(this.headers.filter('[tabindex="-1"]').length === this.headers.length) {
+            this.headers.filter('h3:not(.ui-state-disabled):first').attr('tabindex', '0');
         }
     },
         
@@ -58,13 +81,81 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 }
                 else {
                     $this.select(tabIndex);
+                    $(this).trigger('focus.accordion');
                 }
             }
 
             e.preventDefault();
         });
+        
+        this.bindKeyEvents();
     },
     
+    bindKeyEvents: function() {
+        var $this = this;
+        
+        this.headers.on('focus.accordion', function(){
+            $this.focusedHeader = $(this);
+            if(!$this.focusedHeader.hasClass('ui-state-disabled')) {
+                $this.headers.filter('[tabindex="0"]').attr('tabindex', '-1').removeClass('ui-tabs-outline');
+                $this.focusedHeader.attr('tabindex', '0').addClass('ui-tabs-outline');
+            }
+        })
+        .on('blur.accordion', function(){
+            if($this.focusedHeader) {
+                $this.focusedHeader.removeClass('ui-tabs-outline');                
+            }
+        })
+        .on('keydown.accordion', function(e) {
+            var keyCode = $.ui.keyCode;
+ 
+            switch(e.which) {
+                case keyCode.LEFT:
+                case keyCode.UP: 
+                    if($this.focusedHeader) {
+                        if(($this.focusedHeader.index()/2) === 0) {
+                            $this.focusedHeader = $this.headers.filter('h3:not(.ui-state-disabled):last');
+                        }
+                        else {
+                            $this.focusedHeader = $this.focusedHeader.prevAll('h3:not(.ui-state-disabled):first');
+                            if(!$this.focusedHeader.length) {
+                                $this.focusedHeader = $this.headers.filter('h3:not(.ui-state-disabled):last');
+                            }
+                        }
+                        $this.focusedHeader.trigger('focus.accordion');
+                    }
+                    e.preventDefault();
+                break;
+
+                case keyCode.RIGHT:
+                case keyCode.DOWN:
+                    if($this.focusedHeader) {
+                        if(($this.focusedHeader.index()/2) === ($this.headers.length - 1)) {
+                            $this.focusedHeader = $this.headers.filter('h3:not(.ui-state-disabled):first');
+                        }
+                        else {
+                            $this.focusedHeader = $this.focusedHeader.nextAll('h3:not(.ui-state-disabled):first');
+                            if(!$this.focusedHeader.length) {
+                                $this.focusedHeader = $this.headers.filter('h3:not(.ui-state-disabled):first');
+                            }
+                        } 
+                        $this.focusedHeader.trigger('focus.accordion');
+                    }
+                    e.preventDefault();
+                break;
+                
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.SPACE:
+                    if($this.focusedHeader) {
+                        $this.focusedHeader.trigger('click');
+                    }
+                    e.preventDefault();
+                break;
+            }       
+        });
+    },
+            
     markLoadedPanels: function() {
         if(this.cfg.multiple) {
             for(var i = 0; i < this.cfg.active.length; i++) {
