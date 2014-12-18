@@ -9,6 +9,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         this.panelContainer = this.jq.children('.ui-tabs-panels');
         this.stateHolder = $(this.jqId + '_activeIndex');
         this.cfg.selected = parseInt(this.stateHolder.val());
+        this.focusedTabHeader = null;
         
         if(this.cfg.scrollable) {
             this.navscroller = this.jq.children('.ui-tabs-navscroller');
@@ -78,6 +79,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
 
                         if(!element.hasClass('ui-state-disabled') && index !== $this.cfg.selected) {
                             $this.select(index);
+                            element.trigger('focus.tabview');
                         }
                     }
 
@@ -138,6 +140,96 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
                                 e.preventDefault();
                             });
         }
+        
+        this.bindKeyEvents();
+    },
+        
+    bindKeyEvents: function() {
+        var $this = this;
+        
+        this.navContainer.children('li').on('focus.tabview', function() {
+            $this.focusedTabHeader = $(this);
+            if(!$this.focusedTabHeader.hasClass('ui-state-disabled')) {
+                $this.navContainer.children('li[tabindex="0"]').attr('tabindex', '-1').removeClass('ui-tabs-outline');
+                $this.focusedTabHeader.attr('tabindex', '0').addClass('ui-tabs-outline');
+            }
+        })
+        .on('blur.tabview', function(){
+            if($this.focusedTabHeader) {
+                $this.focusedTabHeader.removeClass('ui-tabs-outline');                
+            }
+        })
+        .on('keydown.tabview', function(e) {
+            var keyCode = $.ui.keyCode;
+ 
+            switch(e.which) {
+                case keyCode.LEFT:
+                case keyCode.UP: 
+                    if($this.focusedTabHeader) {
+                        if($this.cfg.scrollable && ($this.focusedTabHeader.index() === 0)) {
+                            break;
+                        }
+                      
+                        if($this.focusedTabHeader.index() === 0) {
+                            $this.focusedTabHeader = $this.navContainer.children('li:not(.ui-state-disabled):last');
+                        }
+                        else {
+                            $this.focusedTabHeader = $this.focusedTabHeader.prevAll('li:not(.ui-state-disabled):first');
+                            if(!$this.focusedTabHeader.length) {
+                                $this.focusedTabHeader = $this.navContainer.children('li:not(.ui-state-disabled):last');
+                            }
+                        }
+                        $this.focusedTabHeader.trigger('focus.tabview');
+
+                        if($this.cfg.scrollable) {
+                            var leftScroll = $this.focusedTabHeader.position().left < $this.navcrollerLeft.position().left;
+                            if(leftScroll) {
+                                $this.navcrollerLeft.trigger('click.tabview');
+                            }
+                        }
+                    }
+                    e.preventDefault();
+                    clearTimeout($this.activating);
+                    
+                    $this.activating = setTimeout(function() {                
+                        $this.focusedTabHeader.trigger('click');
+                    }, 500);
+                break;
+
+                case keyCode.RIGHT:
+                case keyCode.DOWN:
+                    if($this.focusedTabHeader) {
+                        if($this.cfg.scrollable && ($this.focusedTabHeader.index() === ($this.getLength() - 1))) {
+                            break;
+                        }
+                        
+                        if($this.focusedTabHeader.index() === ($this.getLength() - 1)) {
+                            $this.focusedTabHeader = $this.navContainer.children('li:not(.ui-state-disabled):first');
+                        }
+                        else {
+                            $this.focusedTabHeader = $this.focusedTabHeader.nextAll('li:not(.ui-state-disabled):first');
+                            if(!$this.focusedTabHeader.length) {
+                                $this.focusedTabHeader = $this.navContainer.children('li:not(.ui-state-disabled):first');
+                            }
+                        } 
+                        $this.focusedTabHeader.trigger('focus.tabview');
+
+                        if($this.cfg.scrollable) {
+                            var rightScroll = $this.focusedTabHeader.position().left + $this.focusedTabHeader.width() > $this.navcrollerRight.position().left;
+                            if(rightScroll) {
+                                $this.navcrollerRight.trigger('click.tabview');
+                            }
+                        }
+                    }
+                    e.preventDefault();
+                    clearTimeout($this.activating);
+                    
+                    $this.activating = setTimeout(function() {
+                        $this.focusedTabHeader.trigger('click');
+                    }, 500);
+                break;
+            }       
+        });
     },
         
     initScrolling: function() {

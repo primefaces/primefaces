@@ -99,6 +99,11 @@
     width: 98%;
 }
 
+.ui-tabs.ui-tabs-left > .ui-tabs-nav li a,
+.ui-tabs.ui-tabs-right > .ui-tabs-nav li a {
+    width: 90%;
+}
+
 .ui-tabs.ui-tabs-left > .ui-tabs-nav li {
     float: right;
 }
@@ -146,7 +151,6 @@
 
 .ui-tabs .ui-tabs-navscroller {
     overflow: hidden;
-    position: relative;
 }
 
 .ui-tabs-scrollable .ui-tabs-nav li {
@@ -156,21 +160,25 @@
 .ui-tabs .ui-tabs-navscroller-btn {
     position: absolute;
     height: 28px;
-    top: 0px;
     z-index: 100;
     cursor: pointer;
     display: none;
 }
 
 .ui-tabs .ui-tabs-navscroller-btn-left {
-    left: 0px;
+    left: 0.2em;
 }
 
 .ui-tabs .ui-tabs-navscroller-btn-right {
-    right: 0px;
+    right: 0.2em;
 }
 
 .ui-tabs .ui-tabs-navscroller-btn-left .ui-icon,
 .ui-tabs .ui-tabs-navscroller-btn-right .ui-icon {
     margin-top: 5px;
+}
+
+.ui-tabs-outline {
+    outline: dotted thin;
+    z-index: 1;
 }
