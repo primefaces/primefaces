@@ -575,9 +575,10 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.height = this.cfg.height||240;
         this.cfg.photoWidth = this.cfg.photoWidth||this.cfg.width;
         this.cfg.photoHeight = this.cfg.photoHeight||this.cfg.height;
+        
+        Webcam.setSWFLocation(this.cfg.camera);
 
         Webcam.set({
-            swfURL: this.cfg.camera,
             width: this.cfg.width,
             height: this.cfg.height,
             dest_width: this.cfg.photoWidth,
