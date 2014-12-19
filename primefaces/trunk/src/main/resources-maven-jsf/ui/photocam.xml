@@ -87,7 +87,6 @@
             <name>format</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>null</defaultValue>
             <description>Format of the image, valid values are "jpeg" default and png.</description>
         </attribute>
         <attribute>
