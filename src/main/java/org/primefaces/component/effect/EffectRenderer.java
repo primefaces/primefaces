@@ -36,7 +36,7 @@ public class EffectRenderer extends CoreRenderer {
         int delay = effect.getDelay();
 		
         UIComponent targetComponent = SearchExpressionFacade.resolveComponent(
-        		context, effect, effect.getFor(), SearchExpressionFacade.PARENT_FALLBACK);
+        		context, effect, effect.getFor(), SearchExpressionFacade.Options.PARENT_FALLBACK);
         String target = targetComponent.getClientId(context);
 		
 		String animation = getEffectBuilder(effect, target).build();

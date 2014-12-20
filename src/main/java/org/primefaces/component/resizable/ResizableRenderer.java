@@ -38,7 +38,7 @@ public class ResizableRenderer extends CoreRenderer {
         String clientId = resizable.getClientId(context);
         
         UIComponent target = SearchExpressionFacade.resolveComponent(
-        		context, resizable, resizable.getFor(), SearchExpressionFacade.PARENT_FALLBACK);
+        		context, resizable, resizable.getFor(), SearchExpressionFacade.Options.PARENT_FALLBACK);
         String targetId = target.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);

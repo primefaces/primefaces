@@ -3,7 +3,6 @@ package org.primefaces.expression;
 import java.util.ArrayList;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.TestVisitContextFactory;
-import java.util.Collection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +10,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
@@ -22,9 +20,6 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIPanel;
 import javax.faces.component.UIViewRoot;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitContextFactory;
-import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import junit.framework.Assert;
 
@@ -1234,12 +1229,12 @@ public class SearchExpressionFacadeTest
 	    assertEquals(
 	    		root, 
 	    		SearchExpressionFacade.resolveComponent(
-	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionFacade.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionFacade.Options.PARENT_FALLBACK));
 
 	    assertEquals(
 	    		root, 
 	    		SearchExpressionFacade.resolveComponent(
-	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionFacade.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionFacade.Options.PARENT_FALLBACK));
 	}
 	
 	@Test
@@ -1255,12 +1250,12 @@ public class SearchExpressionFacadeTest
 	    assertEquals(
 	    		"test", 
 	    		SearchExpressionFacade.resolveComponentsForClient(
-	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionFacade.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionFacade.Options.PARENT_FALLBACK));
 
 	    assertEquals(
 	    		"test", 
 	    		SearchExpressionFacade.resolveComponentsForClient(
-	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionFacade.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionFacade.Options.PARENT_FALLBACK));
 	}
 	
 	@Test
@@ -1449,7 +1444,7 @@ public class SearchExpressionFacadeTest
 	    root.getChildren().add(command2);
 
 	    assertSame("Failed", null,
-	    		resolveComponent(command1, " command3 ", SearchExpressionFacade.IGNORE_NO_RESULT));
+	    		resolveComponent(command1, " command3 ", SearchExpressionFacade.Options.IGNORE_NO_RESULT));
 	}
     
 	@Test
@@ -1717,7 +1712,7 @@ public class SearchExpressionFacadeTest
         components.add(root);
 		
         SearchExpressionResolverFactory.registerResolver("@test", new TestMultiSearchExpressionResolver(components));
-        List<UIComponent> result = resolveComponents(root, " @test:@parent:@parent ", SearchExpressionFacade.IGNORE_NO_RESULT);
+        List<UIComponent> result = resolveComponents(root, " @test:@parent:@parent ", SearchExpressionFacade.Options.IGNORE_NO_RESULT);
         assertTrue(result.size() == 1);
         assertTrue(result.contains(FacesContext.getCurrentInstance().getViewRoot()));
         
