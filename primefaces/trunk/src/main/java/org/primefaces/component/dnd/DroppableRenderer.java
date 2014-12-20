@@ -36,7 +36,7 @@ public class DroppableRenderer extends CoreRenderer {
         Droppable droppable = (Droppable) component;
         
         UIComponent target = SearchExpressionFacade.resolveComponent(
-        		context, droppable, droppable.getFor(), SearchExpressionFacade.PARENT_FALLBACK);
+        		context, droppable, droppable.getFor(), SearchExpressionFacade.Options.PARENT_FALLBACK);
 
         String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
