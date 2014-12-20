@@ -1,4 +1,4 @@
-package org.primefaces.expression;
+package org.primefaces.mock;
 
 import java.io.OutputStream;
 import java.io.Writer;

@@ -28,7 +28,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
-import org.primefaces.expression.RenderKitMock;
 
 public class FacesContextMock extends FacesContext {
 
