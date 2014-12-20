@@ -109,21 +109,27 @@ public class SearchExpressionFacade {
                             else {
                                 UIComponent component = resolver.resolveComponent(context, source, source, expression);
                                 
-                                if (component == null && !isOptionSet(options, Options.IGNORE_NO_RESULT)) {
-                                    cannotFindComponent(context, source, expression);
+                                if (component == null) {
+                                    if (!isOptionSet(options, Options.IGNORE_NO_RESULT)) {
+                                        cannotFindComponent(context, source, expression);
+                                    }
                                 }
-
-                                components.add(component);
+                                else {
+                                    components.add(component);
+                                }
                             }
                         } // default ID case
                         else {
                             UIComponent component = resolveComponentById(source, expression, separatorString, context, options);
-                            
-                            if (component == null && !isOptionSet(options, Options.IGNORE_NO_RESULT)) {
-                                cannotFindComponent(context, source, expression);
-                            }
 
-                            components.add(component);
+                            if (component == null) {
+                                if (!isOptionSet(options, Options.IGNORE_NO_RESULT)) {
+                                    cannotFindComponent(context, source, expression);
+                                }
+                            }
+                            else {
+                                components.add(component);
+                            }
                         }
                     }
                 }
@@ -171,6 +177,9 @@ public class SearchExpressionFacade {
 
         if (splittedExpressions != null && splittedExpressions.length > 0) {
 
+            final char separatorChar = UINamingContainer.getSeparatorChar(context);
+            final String separatorString = String.valueOf(separatorChar);
+
             StringBuilder expressionsBuffer = SharedStringBuilder.get(context, SHARED_EXPRESSION_BUFFER_KEY);
 
             for (int i = 0; i < splittedExpressions.length; i++) {
@@ -180,14 +189,84 @@ public class SearchExpressionFacade {
                     continue;
                 }
 
-                if (i != 0 && expressionsBuffer.length() > 0) {
-                    expressionsBuffer.append(" ");
-                }
+                validateExpression(context, source, expression, separatorChar, separatorString);
 
-                String component = resolveComponentForClient(context, source, expression, options);
-                if (component != null) {
-                    expressionsBuffer.append(component);
+                String clientIds = "";
+                
+                if (isPassTroughExpression(expression)) {
+                    clientIds = expression;
                 }
+                else {
+                    // if it contains a keyword and it's not a nested expression (e.g. @parent:@parent), we don't need to loop
+                    if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.contains(separatorString)) {
+                        ArrayList<UIComponent> result = resolveComponentsByExpressionChain(context, source, expression, separatorChar, separatorString, options);
+                        for (int j = 0; j < result.size(); j++) {
+                            if (j != 0 && clientIds.length() > 0) {
+                                clientIds += " ";
+                            }
+                            UIComponent component = result.get(j);
+                            validateRenderer(context, source, component, expression, options);
+                            clientIds += component.getClientId();
+                        }
+                    }
+                    else {
+                        // it's a keyword and not nested, just ask our resolvers
+                        if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
+                            SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
+                            
+                            if (resolver instanceof ClientIdSearchExpressionResolver) {
+                                clientIds = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression);
+                            }
+                            else if (resolver instanceof MultiSearchExpressionResolver) {
+                                ArrayList<UIComponent> result = new ArrayList<UIComponent>();
+                                ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, source, expression, result);
+                                for (int j = 0; j < result.size(); j++) {
+                                    if (j != 0 && clientIds.length() > 0) {
+                                        clientIds += " ";
+                                    }
+                                    UIComponent component = result.get(j);
+                                    validateRenderer(context, source, component, expression, options);
+                                    clientIds += component.getClientId();
+                                }
+                            }
+                            else {
+                                UIComponent component = resolver.resolveComponent(context, source, source, expression);
+                                
+                                if (component == null) {
+                                    if (!isOptionSet(options, Options.IGNORE_NO_RESULT)) {
+                                        cannotFindComponent(context, source, expression);
+                                    }
+                                }
+                                else {
+                                    validateRenderer(context, source, component, expression, options);
+                                    clientIds = component.getClientId(context);
+                                }
+                            }
+                        }
+                        // default ID case
+                        else {
+                            UIComponent component = resolveComponentById(source, expression, separatorString, context, options);
+                            
+                            if (component == null) {
+                                if (!isOptionSet(options, Options.IGNORE_NO_RESULT)) {
+                                    cannotFindComponent(context, source, expression);
+                                }
+                            }
+                            else {
+                                validateRenderer(context, source, component, expression, options);
+                                clientIds = component.getClientId(context);
+                            }
+                        }
+                    }
+                }
+                 
+                if (!ComponentUtils.isValueBlank(clientIds)) {
+                    if (i != 0 && expressionsBuffer.length() > 0) {
+                        expressionsBuffer.append(" ");
+                    }
+                    
+                    expressionsBuffer.append(clientIds);
+                }   
             }
 
             buildedExpressions = expressionsBuffer.toString();
@@ -200,6 +279,18 @@ public class SearchExpressionFacade {
         return buildedExpressions;
     }
 
+    protected static void validateRenderer(FacesContext context, UIComponent source, UIComponent component, String expression, int options)
+    {
+        if (isOptionSet(options, Options.VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
+            if (ComponentUtils.isValueBlank(component.getRendererType())) {
+                LOG.warning("Can not update component \"" + component.getClass().getName()
+                        + "\" with id \"" + component.getClientId(context)
+                        + "\" without a attached renderer. Expression \"" + expression
+                        + "\" referenced from \"" + source.getClientId(context) + "\"");
+            }
+        }
+    }
+    
     /**
      * Resolves a {@link UIComponent} clientId and/or passtrough expression for the given expression.
      *
@@ -264,14 +355,7 @@ public class SearchExpressionFacade {
             }
         }
 
-        if (isOptionSet(options, Options.VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
-            if (ComponentUtils.isValueBlank(component.getRendererType())) {
-                LOG.warning("Can not update component \"" + component.getClass().getName()
-                        + "\" with id \"" + component.getClientId(context)
-                        + "\" without a attached renderer. Expression \"" + expression
-                        + "\" referenced from \"" + source.getClientId(context) + "\"");
-            }
-        }
+        validateRenderer(context, source, component, expression, options);
 
         return component.getClientId(context);
     }
@@ -465,7 +549,7 @@ public class SearchExpressionFacade {
                     SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
 
                     if (resolver instanceof MultiSearchExpressionResolver) {
-                        ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, last, expression, tempComponents);
+                        ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, last, subExpression, tempComponents);
                     } else {
                         UIComponent temp = resolver.resolveComponent(context, source, last, subExpression);
 
