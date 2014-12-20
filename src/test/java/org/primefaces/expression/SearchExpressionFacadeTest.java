@@ -1,5 +1,6 @@
 package org.primefaces.expression;
 
+import java.util.ArrayList;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.TestVisitContextFactory;
 import java.util.Collection;
@@ -73,6 +74,12 @@ public class SearchExpressionFacadeTest
         return SearchExpressionFacade.resolveComponents(context, source, expression);
     }
 
+    private List<UIComponent> resolveComponents(UIComponent source, String expression, int options)
+    {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        return SearchExpressionFacade.resolveComponents(context, source, expression, options);
+    }
 
     private String resolveComponentsForClient(UIComponent source, String expression)
     {
@@ -1595,5 +1602,125 @@ public class SearchExpressionFacadeTest
 		innerContainer.getChildren().add(source);
 
 		assertEquals("Failed", "outerContainer:innerContainer:source", resolveComponentForClient(source, " outerContainer:innerContainer:source "));
+	}
+
+	@Test
+	public void resolveComponents_SimpleMultiSearchExpressionResolver() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+        form.setPrependId(false);
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("outerContainer");
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("innerContainer");
+		outerContainer.getChildren().add(innerContainer);
+
+        ArrayList<UIComponent> components = new ArrayList<UIComponent>();
+        components.add(outerContainer);
+        components.add(innerContainer);
+		
+        SearchExpressionResolverFactory.registerResolver("@test", new TestMultiSearchExpressionResolver(components));
+        List<UIComponent> result = resolveComponents(root, " @test ");
+        assertTrue(result.size() == 2);
+        assertTrue(result.contains(outerContainer));
+        assertTrue(result.contains(innerContainer));
+        
+        SearchExpressionResolverFactory.removeResolver("@test");
+	}
+    
+	@Test
+	public void resolveComponents_SimpleMultiSearchExpressionResolver_Parent() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+        form.setPrependId(false);
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("outerContainer");
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("innerContainer");
+		outerContainer.getChildren().add(innerContainer);
+
+        ArrayList<UIComponent> components = new ArrayList<UIComponent>();
+        components.add(outerContainer);
+        components.add(innerContainer);
+		
+        SearchExpressionResolverFactory.registerResolver("@test", new TestMultiSearchExpressionResolver(components));
+        List<UIComponent> result = resolveComponents(root, " @test:@parent ");
+        assertTrue(result.size() == 2);
+        assertTrue(result.contains(outerContainer));
+        assertTrue(result.contains(form));
+        
+        SearchExpressionResolverFactory.removeResolver("@test");
+	}
+    
+	@Test
+	public void resolveComponents_SimpleMultiSearchExpressionResolver_ParentParent() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+        form.setPrependId(false);
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("outerContainer");
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("innerContainer");
+		outerContainer.getChildren().add(innerContainer);
+
+        ArrayList<UIComponent> components = new ArrayList<UIComponent>();
+        components.add(outerContainer);
+        components.add(innerContainer);
+		
+        SearchExpressionResolverFactory.registerResolver("@test", new TestMultiSearchExpressionResolver(components));
+        List<UIComponent> result = resolveComponents(root, " @test:@parent:@parent ");
+        assertTrue(result.size() == 2);
+        assertTrue(result.contains(root));
+        assertTrue(result.contains(form));
+        
+        SearchExpressionResolverFactory.removeResolver("@test");
+	}
+    
+	@Test
+	public void resolveComponents_SimpleMultiSearchExpressionResolver_ParentParent_IgnoreNoResult() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+        form.setPrependId(false);
+		root.getChildren().add(form);
+
+
+        ArrayList<UIComponent> components = new ArrayList<UIComponent>();
+        components.add(form);
+        components.add(root);
+		
+        SearchExpressionResolverFactory.registerResolver("@test", new TestMultiSearchExpressionResolver(components));
+        List<UIComponent> result = resolveComponents(root, " @test:@parent:@parent ", SearchExpressionFacade.IGNORE_NO_RESULT);
+        assertTrue(result.size() == 1);
+        assertTrue(result.contains(FacesContext.getCurrentInstance().getViewRoot()));
+        
+        SearchExpressionResolverFactory.removeResolver("@test");
 	}
 }
