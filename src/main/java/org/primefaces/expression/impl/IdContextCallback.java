@@ -29,5 +29,9 @@ public class IdContextCallback implements ContextCallback {
 
     public UIComponent getComponent() {
         return component;
-    }    
+    }
+    
+    public void setComponent(UIComponent component) {
+        this.component = component;
+    }   
 }

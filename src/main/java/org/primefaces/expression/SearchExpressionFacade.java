@@ -90,6 +90,7 @@ public class SearchExpressionFacade {
                 
                 for (String splittedExpression : splittedExpressions) {
                     String expression = splittedExpression.trim();
+
                     if (ComponentUtils.isValueBlank(expression)) {
                         continue;
                     }
@@ -171,8 +172,6 @@ public class SearchExpressionFacade {
             return null;
         }
 
-        String buildedExpressions = "";
-
         String[] splittedExpressions = splitExpressions(context, source, expressions);
 
         if (splittedExpressions != null && splittedExpressions.length > 0) {
@@ -191,22 +190,23 @@ public class SearchExpressionFacade {
 
                 validateExpression(context, source, expression, separatorChar, separatorString);
 
-                String clientIds = "";
-                
                 if (isPassTroughExpression(expression)) {
-                    clientIds = expression;
+                    if (expressionsBuffer.length() > 0) {
+                        expressionsBuffer.append(" ");
+                    }
+                    expressionsBuffer.append(expression);
                 }
                 else {
                     // if it contains a keyword and it's not a nested expression (e.g. @parent:@parent), we don't need to loop
                     if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.contains(separatorString)) {
                         ArrayList<UIComponent> result = resolveComponentsByExpressionChain(context, source, expression, separatorChar, separatorString, options);
                         for (int j = 0; j < result.size(); j++) {
-                            if (j != 0 && clientIds.length() > 0) {
-                                clientIds += " ";
-                            }
                             UIComponent component = result.get(j);
                             validateRenderer(context, source, component, expression, options);
-                            clientIds += component.getClientId();
+                            if (expressionsBuffer.length() > 0) {
+                                expressionsBuffer.append(" ");
+                            }
+                            expressionsBuffer.append(component.getClientId());
                         }
                     }
                     else {
@@ -215,18 +215,24 @@ public class SearchExpressionFacade {
                             SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
                             
                             if (resolver instanceof ClientIdSearchExpressionResolver) {
-                                clientIds = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression);
+                                String clientIds = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression);
+                                if (!ComponentUtils.isValueBlank(clientIds)) {
+                                    if (expressionsBuffer.length() > 0) {
+                                        expressionsBuffer.append(" ");
+                                    }
+                                    expressionsBuffer.append(clientIds);
+                                }
                             }
                             else if (resolver instanceof MultiSearchExpressionResolver) {
                                 ArrayList<UIComponent> result = new ArrayList<UIComponent>();
                                 ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, source, expression, result);
                                 for (int j = 0; j < result.size(); j++) {
-                                    if (j != 0 && clientIds.length() > 0) {
-                                        clientIds += " ";
-                                    }
                                     UIComponent component = result.get(j);
                                     validateRenderer(context, source, component, expression, options);
-                                    clientIds += component.getClientId();
+                                    if (expressionsBuffer.length() > 0) {
+                                        expressionsBuffer.append(" ");
+                                    }
+                                    expressionsBuffer.append(component.getClientId());
                                 }
                             }
                             else {
@@ -239,7 +245,10 @@ public class SearchExpressionFacade {
                                 }
                                 else {
                                     validateRenderer(context, source, component, expression, options);
-                                    clientIds = component.getClientId(context);
+                                    if (expressionsBuffer.length() > 0) {
+                                        expressionsBuffer.append(" ");
+                                    }
+                                    expressionsBuffer.append(component.getClientId(context));
                                 }
                             }
                         }
@@ -254,29 +263,23 @@ public class SearchExpressionFacade {
                             }
                             else {
                                 validateRenderer(context, source, component, expression, options);
-                                clientIds = component.getClientId(context);
+                                if (expressionsBuffer.length() > 0) {
+                                    expressionsBuffer.append(" ");
+                                }
+                                expressionsBuffer.append(component.getClientId(context));
                             }
                         }
                     }
-                }
-                 
-                if (!ComponentUtils.isValueBlank(clientIds)) {
-                    if (i != 0 && expressionsBuffer.length() > 0) {
-                        expressionsBuffer.append(" ");
-                    }
-                    
-                    expressionsBuffer.append(clientIds);
-                }   
+                }  
             }
 
-            buildedExpressions = expressionsBuffer.toString();
+            String clientIds = expressionsBuffer.toString();
+            if (!ComponentUtils.isValueBlank(clientIds)) {
+                return clientIds;
+            }
         }
 
-        if (ComponentUtils.isValueBlank(buildedExpressions)) {
-            return null;
-        }
-
-        return buildedExpressions;
+        return null;
     }
 
     protected static void validateRenderer(FacesContext context, UIComponent source, UIComponent component, String expression, int options)
@@ -527,9 +530,9 @@ public class SearchExpressionFacade {
             
             ArrayList<UIComponent> tempComponents = new ArrayList<UIComponent>();
             
-            for (int j = 0; j < subExpressions.length; j++) {
+            for (int i = 0; i < subExpressions.length; i++) {
 
-                String subExpression = subExpressions[j].trim();
+                String subExpression = subExpressions[i].trim();
 
                 if (ComponentUtils.isValueBlank(subExpression)) {
                     continue;
@@ -538,16 +541,18 @@ public class SearchExpressionFacade {
                 // re-add the separator string here
                 // the impl will decide to search absolute or relative then
                 if (startsWithSeperator
-                        && j == 0
+                        && i == 0
                         && !subExpression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
                     subExpression = separatorString + subExpression;
                 }
 
+                SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
+                
                 tempComponents.clear();
 
-                for (UIComponent last : lastComponents) {
-                    SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
-
+                for (int j = 0; j < lastComponents.size(); j++) {
+                    UIComponent last = lastComponents.get(j);
+                    
                     if (resolver instanceof MultiSearchExpressionResolver) {
                         ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, last, subExpression, tempComponents);
                     } else {
