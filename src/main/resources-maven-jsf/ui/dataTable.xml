@@ -418,7 +418,7 @@
 			<name>tabindex</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Position of the input element in the tabbing order.</description>
+            <description>Position of the element in the tabbing order.</description>
 		</attribute>
 	</attributes>
 	<resources>
