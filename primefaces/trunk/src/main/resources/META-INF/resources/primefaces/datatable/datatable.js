@@ -114,7 +114,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindSortEvents: function() {
         var $this = this;
-        this.cfg.tabindex = this.cfg.tabindex || '0';
+        this.cfg.tabindex = this.cfg.tabindex||'0';
         this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
         

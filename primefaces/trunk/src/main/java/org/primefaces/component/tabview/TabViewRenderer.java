@@ -210,10 +210,6 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.INACTIVE_TAB_HEADER_CLASS;
-        String tabindex = "-1"; 
-        if(active && !tab.isDisabled()) {
-            tabindex = (tabView.getTabindex() != null) ? tabView.getTabindex() : "0";
-        }
         defaultStyleClass = defaultStyleClass + " ui-corner-" + tabView.getOrientation();   //cornering
         if(tab.isDisabled()) {
             defaultStyleClass = defaultStyleClass + " ui-state-disabled";
@@ -227,7 +223,6 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute("aria-expanded", String.valueOf(active), null);
-        writer.writeAttribute("tabindex", tabindex , null);
         if(tab.getTitleStyle() != null)  writer.writeAttribute("style", tab.getTitleStyle(), null);
         if(tab.getTitletip() != null)  writer.writeAttribute("title", tab.getTitletip(), null);
 

@@ -10,7 +10,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         this.stateHolder = $(this.jqId + '_activeIndex');
         this.cfg.selected = parseInt(this.stateHolder.val());
         this.focusedTabHeader = null;
-        this.cfg.tabindex = this.cfg.tabindex || '0';
+        this.cfg.tabindex = this.cfg.tabindex||'0';
         
         if(this.cfg.scrollable) {
             this.navscroller = this.jq.children('.ui-tabs-navscroller');
@@ -25,6 +25,16 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             this.navContainer = this.jq.children('.ui-tabs-nav');
         }
 
+        this.navContainerItems = this.navContainer.children('li');
+        for(var i = 0; i < this.navContainerItems.length; i++) {
+            if(this.cfg.selected === i && !this.navContainerItems.eq(i).hasClass('ui-state-disabled')) {
+                this.navContainerItems.eq(i).attr('tabindex', this.cfg.tabindex);
+            }
+            else {
+                this.navContainerItems.eq(i).attr('tabindex', '-1');
+            }
+        }
+        
         this.bindEvents();
 
         //Cache initial active tab
