@@ -1540,14 +1540,14 @@
  */
 PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
-    IMAGE_TYPES: /(\.|\/)(gif|jpe?g|png)$/,
+    IMAGE_TYPES: /(\.|\/)(gif|jpe?g|png)$/i,
 
     init: function(cfg) {
         this._super(cfg);
         if(this.cfg.disabled) {
             return;
         }
-        
+
         this.ucfg = {};
         this.form = this.jq.closest('form');
         this.buttonBar = this.jq.children('.ui-fileupload-buttonbar');
@@ -1604,7 +1604,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                     return;
                 }
-                
+
                 var file = data.files ? data.files[0] : null;
                 if(file) {
                     var validMsg = $this.validate(file);
@@ -1626,7 +1626,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                         //preview
                         if($this.isCanvasSupported() && window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
-                            var imageCanvas = $('<canvas></canvas')
+                            var imageCanvas = $('<canvas></canvas>')
                                                     .appendTo(row.children('td.ui-fileupload-preview')),
                             context = imageCanvas.get(0).getContext('2d'),
                             winURL = window.URL||window.webkitURL,
@@ -1647,10 +1647,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                                 var imgHeight = parseInt(this.height * scale);
 
                                 imageCanvas.attr({width:imgWidth, height: imgHeight});
-                                context.drawImage(img, 0, 0, imgWidth, imgHeight);  
+                                context.drawImage(img, 0, 0, imgWidth, imgHeight);
                             }
 
-                            img.src = url; 
+                            img.src = url;
                         }
 
                         //progress
@@ -1666,7 +1666,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             $this.upload();
                         }
                     }
-                    
+
                     if($this.files.length > 0) {
                         $this.enableButton($this.uploadButton);
                         $this.enableButton($this.cancelButton);
@@ -1726,12 +1726,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.fileupload(this.ucfg);
     },
-            
+
     bindEvents: function() {
         var $this = this;
 
         PrimeFaces.skinButton(this.buttonBar.children('button'));
-        
+
         this.chooseButton.on('mouseover.fileupload', function(){
             var el = $(this);
             if(!el.prop('disabled')) {
@@ -1750,7 +1750,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         .on('mouseup.fileupload', function() {
             $(this).removeClass('ui-state-active').addClass('ui-state-hover');
         });
-        
+
         this.chooseButton.children('input').on('focus.fileupload', function() {
             $this.chooseButton.addClass('ui-state-focus');
         })
@@ -1762,7 +1762,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             $this.disableButton($this.uploadButton);
             $this.disableButton($this.cancelButton);
             $this.disableButton($this.filesTbody.find('> tr > td:last-child').children('.ui-fileupload-cancel'));
-            
+
             $this.upload();
 
             e.preventDefault();
@@ -1813,22 +1813,22 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     removedFile[0].row = null;
 
                     $this.removeFileRow(row);
-                    
+
                     if($this.files.length === 0) {
                         $this.disableButton($this.uploadButton);
                         $this.disableButton($this.cancelButton);
-                    } 
+                    }
 
                     e.preventDefault();
                 });
     },
-            
+
     upload: function() {
         for(var i = 0; i < this.files.length; i++) {
             this.files[i].row.data('filedata').submit();
         }
     },
-            
+
     createPostData: function() {
         var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
         var params = this.form.serializeArray();
@@ -1844,7 +1844,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         return params;
     },
-            
+
     formatSize: function(bytes) {
         if(bytes === undefined)
             return '';
@@ -1858,13 +1858,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         else
             return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + this.sizes[i];
     },
-            
+
     removeFiles: function(files) {
         for (var i = 0; i < files.length; i++) {
             this.removeFile(files[i]);
-        }           
+        }
     },
-            
+
     removeFile: function(file) {
         var $this = this;
 
@@ -1875,13 +1875,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         $this.removeFileRow(file.row);
         file.row = null;
     },
-            
+
     removeFileRow: function(row) {
         row.fadeOut(function() {
             $(this).remove();
         });
     },
-            
+
     clear: function() {
         for (var i = 0; i < this.files.length; i++) {
             this.removeFileRow(this.files[i].row);
@@ -1892,7 +1892,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         this.files = [];
     },
-            
+
     validate: function(file) {
         if (this.cfg.allowTypes && !(this.cfg.allowTypes.test(file.type) || this.cfg.allowTypes.test(file.name))) {
             return this.cfg.invalidFileMessage;
@@ -1904,7 +1904,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         return null;
     },
-            
+
     renderMessages: function() {
         var markup = '<div class="ui-messages ui-widget ui-helper-hidden"><div class="ui-messages-error ui-corner-all">' +
                 '<a class="ui-messages-close" href="#"><span class="ui-icon ui-icon-close"></span></a>' +
@@ -1916,12 +1916,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.messageList = this.messageContainer.find('> .ui-messages-error > ul');
         this.clearMessageLink = this.messageContainer.find('> .ui-messages-error > a.ui-messages-close');
     },
-            
+
     clearMessages: function() {
         this.messageContainer.hide();
         this.messageList.children().remove();
     },
-            
+
     showMessage: function(msg) {
         var summary = msg.summary,
         detail = '';
@@ -1933,30 +1933,30 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.messageList.append('<li><span class="ui-messages-error-summary">' + summary + '</span><span class="ui-messages-error-detail">' + detail + '</span></li>');
         this.messageContainer.show();
     },
-            
+
     disableButton: function(btn) {
         btn.prop('disabled', true).addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active ui-state-focus');
     },
-            
+
     enableButton: function(btn) {
         btn.prop('disabled', false).removeClass('ui-state-disabled');
     },
-            
+
     isCanvasSupported: function() {
         var elem = document.createElement('canvas');
         return !!(elem.getContext && elem.getContext('2d'));
     }
-    
+
 });
 
 /**
  * PrimeFaces Simple FileUpload Widget
  */
 PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
-   
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         if(this.cfg.skinSimple) {
             this.button = this.jq.children('.ui-button');
             this.input = $(this.jqId + '_input');
@@ -1967,10 +1967,10 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
-    
+
     bindEvents: function() {
         var $this = this;
-        
+
         this.button.on('mouseover.fileupload', function(){
             var el = $(this);
             if(!el.prop('disabled')) {
@@ -1989,7 +1989,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         .on('mouseup.fileupload', function() {
             $(this).removeClass('ui-state-active').addClass('ui-state-hover');
         });
-        
+
         this.input.on('change.fileupload', function() {
             var filename = $this.input.val().replace(/\\/g, '/').replace(/.*\//, '');
             $this.display.text(filename);
@@ -2000,7 +2000,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         .on('blur.fileupload', function() {
             $this.button.removeClass('ui-state-focus');
         });
-        
+
     }
-        
+
 });
