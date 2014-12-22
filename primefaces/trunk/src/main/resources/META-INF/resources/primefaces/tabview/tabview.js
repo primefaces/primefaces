@@ -10,6 +10,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         this.stateHolder = $(this.jqId + '_activeIndex');
         this.cfg.selected = parseInt(this.stateHolder.val());
         this.focusedTabHeader = null;
+        this.cfg.tabindex = this.cfg.tabindex || '0';
         
         if(this.cfg.scrollable) {
             this.navscroller = this.jq.children('.ui-tabs-navscroller');
@@ -150,8 +151,8 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         this.navContainer.children('li').on('focus.tabview', function() {
             $this.focusedTabHeader = $(this);
             if(!$this.focusedTabHeader.hasClass('ui-state-disabled')) {
-                $this.navContainer.children('li[tabindex="0"]').attr('tabindex', '-1').removeClass('ui-tabs-outline');
-                $this.focusedTabHeader.attr('tabindex', '0').addClass('ui-tabs-outline');
+                $this.navContainer.children('li[tabindex="'+ $this.cfg.tabindex +'"]').attr('tabindex', '-1').removeClass('ui-tabs-outline');
+                $this.focusedTabHeader.attr('tabindex', $this.cfg.tabindex).addClass('ui-tabs-outline');
             }
         })
         .on('blur.tabview', function(){

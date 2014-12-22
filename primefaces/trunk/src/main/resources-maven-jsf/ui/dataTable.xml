@@ -414,6 +414,12 @@
             <description>Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
             at beginning in descending mode. Set to "-1" for the opposite behavior.</description>
 		</attribute>
+        <attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Position of the input element in the tabbing order.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

@@ -90,7 +90,8 @@ public class TabViewRenderer extends CoreRenderer {
 
         wb.attr("effect", tabView.getEffect(), null)
             .attr("effectDuration", tabView.getEffectDuration(), null)
-            .attr("scrollable", tabView.isScrollable());
+            .attr("scrollable", tabView.isScrollable())
+            .attr("tabindex", tabView.getTabindex(), null);
         
         encodeClientBehaviors(context, tabView);
 
@@ -209,7 +210,10 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.INACTIVE_TAB_HEADER_CLASS;
-        String tabindex = (active && !tab.isDisabled()) ?  "0" : "-1";
+        String tabindex = "-1"; 
+        if(active && !tab.isDisabled()) {
+            tabindex = (tabView.getTabindex() != null) ? tabView.getTabindex() : "0";
+        }
         defaultStyleClass = defaultStyleClass + " ui-corner-" + tabView.getOrientation();   //cornering
         if(tab.isDisabled()) {
             defaultStyleClass = defaultStyleClass + " ui-state-disabled";

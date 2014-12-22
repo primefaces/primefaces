@@ -139,6 +139,12 @@
             <description>AccordionPanel is a naming container thus prepends its id to its children by default, a false value turns this behavior off except for dynamic tabs.</description>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
+        <attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Position of the input element in the tabbing order.</description>
+		</attribute>
     </attributes>
 	<resources>
         <resource>

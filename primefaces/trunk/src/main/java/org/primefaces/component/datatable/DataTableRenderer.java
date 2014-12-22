@@ -192,6 +192,8 @@ public class DataTableRenderer extends DataRenderer {
             wb.attr("stickyHeader", true);
         }
 
+        wb.attr("tabindex", table.getTabindex(), null);
+        
         //Behaviors
         encodeClientBehaviors(context, table);
 
