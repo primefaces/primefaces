@@ -15,23 +15,28 @@
  */
 package org.primefaces.model;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import javax.faces.FacesException;
 import javax.servlet.http.Part;
 
 public class NativeUploadedFile implements UploadedFile, Serializable {
 
+    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+
     private Part part;
     private String filename;
-    
+    private byte[] cachedContent;
+
     public NativeUploadedFile() {}
 
-	public NativeUploadedFile(Part part) {
-		this.part = part;
+    public NativeUploadedFile(Part part) {
+        this.part = part;
         this.filename = resolveFilename(part);
-	}
-    
+    }
+
     public String getFileName() {
         return filename;
     }
@@ -44,21 +49,51 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         return part.getSize();
     }
 
-    public byte[] getContents() {
-        return null;
+     public byte[] getContents() {
+        if (cachedContent != null) {
+            return cachedContent;
+        }
+
+        InputStream input = null;
+        try {
+            input = getInputstream();
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+
+            int n = 0;
+            while (-1 != (n = input.read(buffer))) {
+                output.write(buffer, 0, n);
+            }
+            cachedContent = output.toByteArray();
+        }
+        catch (IOException ex) {
+            cachedContent = null;
+            throw new FacesException(ex);
+        }
+        finally {
+            if (input != null) {
+                try {
+                    input.close();
+                }
+                catch (IOException ex) {
+                }
+            }
+        }
+
+        return cachedContent;
     }
 
     public String getContentType() {
        return part.getContentType();
     }
-    
+
     private String resolveFilename(Part part) {
         for (String cd : part.getHeader("content-disposition").split(";")) {
             if (cd.trim().startsWith("filename")) {
                 return cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
             }
         }
-        
+
         return null;
     }
 
