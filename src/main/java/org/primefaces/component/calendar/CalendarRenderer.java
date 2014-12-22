@@ -84,11 +84,11 @@ public class CalendarRenderer extends InputRenderer {
 
         //input
         encodeInput(context, calendar, inputId, value, popup);
-        
+
         writer.endElement("span");
-       
+
     }
-    
+
     protected void encodeInput(FacesContext context, Calendar calendar, String id, String value, boolean popup) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String type = popup ? "text" : "hidden";
@@ -107,20 +107,20 @@ public class CalendarRenderer extends InputRenderer {
             String inputStyleClass = Calendar.INPUT_STYLE_CLASS;
             if(disabled) inputStyleClass = inputStyleClass + " ui-state-disabled";
             if(!calendar.isValid()) inputStyleClass = inputStyleClass + " ui-state-error";
-            
+
             writer.writeAttribute("class", inputStyleClass, null);
-              
+
             if(calendar.isReadonly()||calendar.isReadonlyInput()) writer.writeAttribute("readonly", "readonly", null);
             if(calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        
+
             renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
             renderDomEvents(context, calendar, HTML.INPUT_TEXT_EVENTS);
         }
-        
+
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, calendar);
         }
-        
+
         writer.endElement("input");
     }
 
@@ -131,25 +131,25 @@ public class CalendarRenderer extends InputRenderer {
         String mask = calendar.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Calendar", calendar.resolveWidgetVar(), clientId);
-        
+
         wb.attr("popup", calendar.isPopup())
             .attr("locale", locale.toString())
             .attr("dateFormat", CalendarUtils.convertPattern(pattern));
-        
+
         //default date
         Object pagedate = calendar.getPagedate();
         String defaultDate = null;
-        
+
         if(calendar.isConversionFailed()) {
             defaultDate = CalendarUtils.getValueAsString(context, calendar, new Date());
         }
         else if(!isValueBlank(value)) {
             defaultDate = value;
-        } 
+        }
         else if(pagedate != null) {
             defaultDate = CalendarUtils.getValueAsString(context, calendar, pagedate);
         }
-        
+
         wb.attr("defaultDate", defaultDate, null)
             .attr("numberOfMonths", calendar.getPages(), 1)
             .attr("minDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMindate()), null)
@@ -159,29 +159,29 @@ public class CalendarRenderer extends InputRenderer {
             .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
             .attr("disabled", calendar.isDisabled(), false)
             .attr("yearRange", calendar.getYearRange(), null);
-        
+
         if(calendar.isNavigator()) {
             wb.attr("changeMonth", true).attr("changeYear", true);
         }
-        
+
         if(calendar.getEffect() != null) {
             wb.attr("showAnim", calendar.getEffect()).attr("duration", calendar.getEffectDuration());
         }
-        
+
         String beforeShowDay = calendar.getBeforeShowDay();
         if(beforeShowDay != null) {
             wb.nativeAttr("preShowDay", beforeShowDay);
         }
-        
+
         String showOn = calendar.getShowOn();
         if(!showOn.equalsIgnoreCase("focus")) {
             wb.attr("showOn", showOn);
         }
-        
+
         if(calendar.isShowOtherMonths()) {
             wb.attr("showOtherMonths", true).attr("selectOtherMonths", true);
         }
-        
+
         if(calendar.hasTime()) {
             wb.attr("timeOnly", calendar.isTimeOnly())
                 .attr("stepHour", calendar.getStepHour())
@@ -195,14 +195,15 @@ public class CalendarRenderer extends InputRenderer {
                 .attr("secondMax", calendar.getMaxSecond())
                 .attr("controlType", calendar.getTimeControlType(), null);
         }
-        
+
         if(mask != null && !mask.equals("false")) {
-            String maskTemplate = (mask.equals("true")) ? pattern.replaceAll("[a-zA-Z]", "9"): mask;
+            String patternTemplate = calendar.getPattern() == null ? pattern : calendar.getPattern();
+            String maskTemplate = (mask.equals("true")) ? patternTemplate.replaceAll("[a-zA-Z]", "9") : mask;
             wb.attr("mask", maskTemplate);
         }
-        
+
         encodeClientBehaviors(context, calendar);
-        
+
         wb.finish();
     }
 
@@ -215,7 +216,7 @@ public class CalendarRenderer extends InputRenderer {
         if(isValueBlank(submittedValue)) {
             return null;
         }
-        
+
         //Delegate to user supplied converter if defined
         try {
         	Converter converter = calendar.getConverter();
@@ -225,36 +226,36 @@ public class CalendarRenderer extends InputRenderer {
         }
         catch(ConverterException e){
             calendar.setConversionFailed(true);
-                   
+
             throw e;
         }
-        
+
         //Use built-in converter
         format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
         format.setLenient(false);
         format.setTimeZone(calendar.calculateTimeZone());
         try {
             return format.parse(submittedValue);
-        } 
+        }
         catch (ParseException e) {
             calendar.setConversionFailed(true);
-            
+
             FacesMessage message = null;
             Object[] params = new Object[3];
             params[0] = submittedValue;
             params[1] = format.format(new Date());
             params[2] = MessageFactory.getLabel(context, calendar);
-            
+
             if(calendar.isTimeOnly()) {
                 message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
-            } 
+            }
             else if(calendar.hasTime()) {
                 message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
-            } 
+            }
             else {
                 message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATE", FacesMessage.SEVERITY_ERROR, params);
             }
-            
+
             throw new ConverterException(message);
         }
     }
