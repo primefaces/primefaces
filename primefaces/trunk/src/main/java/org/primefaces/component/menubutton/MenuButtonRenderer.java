@@ -144,7 +144,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("MenuButton", button.resolveWidgetVar(), clientId);        
-        wb.attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, button, button.getAppendTo()), null);
+        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo()), null);
         wb.finish();
 	}
 }

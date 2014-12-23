@@ -39,7 +39,7 @@ public class DialogRenderer extends org.primefaces.component.dialog.DialogRender
             .callback("onHide", "function()", dialog.getOnHide())
             .callback("onShow", "function()", dialog.getOnShow());
         
-        String focusExpressions = SearchExpressionFacade.resolveComponentsForClient(
+        String focusExpressions = SearchExpressionFacade.resolveClientIds(
         		context, dialog, dialog.getFocus());
         if (focusExpressions != null) {
         	wb.attr("focus", focusExpressions);

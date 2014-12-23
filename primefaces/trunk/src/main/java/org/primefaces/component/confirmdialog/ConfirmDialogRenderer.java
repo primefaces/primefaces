@@ -74,7 +74,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
             .attr("visible", dialog.isVisible(), false)
             .attr("width", dialog.getWidth(), null)
             .attr("height", dialog.getHeight(), null)
-            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, dialog, dialog.getAppendTo()), null)
+            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo()), null)
             .attr("showEffect", dialog.getShowEffect(), null)
             .attr("hideEffect", dialog.getHideEffect(), null)
             .attr("closeOnEscape", dialog.isCloseOnEscape(), false)

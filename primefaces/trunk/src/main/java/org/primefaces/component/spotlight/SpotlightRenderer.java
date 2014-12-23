@@ -47,7 +47,7 @@ public class SpotlightRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Spotlight", spotlight.resolveWidgetVar(), clientId);
         
-        wb.attr("target", SearchExpressionFacade.resolveComponentsForClient(context, spotlight, spotlight.getTarget()));
+        wb.attr("target", SearchExpressionFacade.resolveClientIds(context, spotlight, spotlight.getTarget()));
         wb.attr("animate", spotlight.isAnimate(), true);
         
         wb.finish();

@@ -325,7 +325,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("effect", menu.getEffect(), null)
                 .attr("effectSpeed", menu.getEffectSpeed(), null)
                 .attr("editable", menu.isEditable(), false)
-                .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, menu, menu.getAppendTo()), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null)
                 .attr("syncTooltip", menu.isSyncTooltip(), false);
         
         if(menu.isFilter()) {

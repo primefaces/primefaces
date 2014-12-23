@@ -536,7 +536,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             .attr("forceSelection", ac.isForceSelection(), false)
             .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
             .attr("multiple", ac.isMultiple(), false)
-            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, ac, ac.getAppendTo()), null)
+            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, ac, ac.getAppendTo()), null)
             .attr("grouping", ac.getValueExpression("groupBy") != null, false)
             .attr("queryEvent", ac.getQueryEvent(), null)
             .attr("dropdownMode", ac.getDropdownMode(), null)

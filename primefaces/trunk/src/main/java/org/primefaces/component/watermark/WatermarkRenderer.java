@@ -35,7 +35,7 @@ public class WatermarkRenderer extends CoreRenderer {
 		
 		String _for = watermark.getFor();
 		if(_for != null) {
-			target = SearchExpressionFacade.resolveComponentsForClient(context, watermark, _for);
+			target = SearchExpressionFacade.resolveClientIds(context, watermark, _for);
 		} 
         else {
 			throw new FacesException("\"For\" option must be used to define a watermark.");
