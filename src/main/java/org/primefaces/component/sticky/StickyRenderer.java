@@ -44,7 +44,7 @@ public class StickyRenderer extends CoreRenderer {
         String target = sticky.getTarget();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Sticky", sticky.resolveWidgetVar(), sticky.getClientId(context))
-            .attr("target", SearchExpressionFacade.resolveComponentsForClient(context, sticky, target))
+            .attr("target", SearchExpressionFacade.resolveClientIds(context, sticky, target))
             .attr("margin", sticky.getMargin(), 0)
             .finish();
     }

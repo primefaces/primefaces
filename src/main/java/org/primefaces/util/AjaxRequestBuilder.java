@@ -89,7 +89,7 @@ public class AjaxRequestBuilder {
     
     private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, int options) {        
         if(!isValueBlank(expressions)) {
-        	String resolvedExpressions = SearchExpressionFacade.resolveComponentsForClient(context, component, expressions, options);
+        	String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, options);
             buffer.append(",").append(key).append(":'").append(resolvedExpressions).append("'");
         }
         

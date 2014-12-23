@@ -83,8 +83,8 @@ public class PhotoCamRenderer extends CoreRenderer {
             .attr("jpegQuality", cam.getJpegQuality(), 90)
             .attr("forceFlash", cam.isForceFlash(), false);
         
-        if(cam.getUpdate() != null) wb.attr("update", SearchExpressionFacade.resolveComponentsForClient(context, cam, cam.getUpdate()));
-        if(cam.getProcess() != null) wb.attr("process", SearchExpressionFacade.resolveComponentsForClient(context, cam, cam.getProcess()));
+        if(cam.getUpdate() != null) wb.attr("update", SearchExpressionFacade.resolveClientIds(context, cam, cam.getUpdate()));
+        if(cam.getProcess() != null) wb.attr("process", SearchExpressionFacade.resolveClientIds(context, cam, cam.getProcess()));
 
        wb.finish();
 	}

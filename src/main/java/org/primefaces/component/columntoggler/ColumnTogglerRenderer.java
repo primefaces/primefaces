@@ -51,8 +51,8 @@ public class ColumnTogglerRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         
         wb.initWithDomReady("ColumnToggler", columnToggler.resolveWidgetVar(), columnToggler.getClientId(context));
-        wb.attr("trigger", SearchExpressionFacade.resolveComponentsForClient(context, columnToggler, columnToggler.getTrigger()))
-            .attr("datasource", SearchExpressionFacade.resolveComponentsForClient(context, columnToggler, columnToggler.getDatasource()));
+        wb.attr("trigger", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getTrigger()))
+            .attr("datasource", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getDatasource()));
         
         encodeClientBehaviors(context, columnToggler);
         

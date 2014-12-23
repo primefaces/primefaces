@@ -31,7 +31,7 @@ public class TooltipRenderer extends CoreRenderer {
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Tooltip tooltip = (Tooltip) component;
-        String target = SearchExpressionFacade.resolveComponentsForClient(
+        String target = SearchExpressionFacade.resolveClientIds(
         				context, component, tooltip.getFor());
 		
         encodeMarkup(context, tooltip, target);

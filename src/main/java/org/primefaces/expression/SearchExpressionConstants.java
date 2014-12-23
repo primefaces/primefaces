@@ -30,6 +30,8 @@ public class SearchExpressionConstants {
 	public static final String PREVIOUS_KEYWORD =           KEYWORD_PREFIX + "previous";
 	public static final String CHILD_KEYWORD =           	KEYWORD_PREFIX + "child";
     public static final String WIDGETVAR_KEYWORD =          KEYWORD_PREFIX + "widgetVar";
+    public static final String ROW_KEYWORD =                KEYWORD_PREFIX + "row";
+    public static final String COLUMN_KEYWORD =             KEYWORD_PREFIX + "column";
     
 	public static final String PFS_PREFIX =                 KEYWORD_PREFIX + "(";
 }

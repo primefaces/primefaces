@@ -64,7 +64,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
     }
     
     protected void encodeScript(FacesContext context, OverlayPanel panel) throws IOException {
-        String target = SearchExpressionFacade.resolveComponentForClient(context, panel, panel.getFor());
+        String target = SearchExpressionFacade.resolveClientId(context, panel, panel.getFor());
         String clientId = panel.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);

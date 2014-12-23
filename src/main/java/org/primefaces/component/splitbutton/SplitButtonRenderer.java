@@ -165,7 +165,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
 		String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("SplitButton", button.resolveWidgetVar(), clientId);
-        wb.attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, button, button.getAppendTo()), null);
+        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo()), null);
         wb.finish();
     }
     

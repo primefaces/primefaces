@@ -62,7 +62,7 @@ public class DialogRenderer extends CoreRenderer {
             .attr("height", dialog.getHeight(), null)
             .attr("minWidth", dialog.getMinWidth(), Integer.MIN_VALUE)
             .attr("minHeight", dialog.getMinHeight(), Integer.MIN_VALUE)
-            .attr("appendTo", SearchExpressionFacade.resolveComponentForClient(context, dialog, dialog.getAppendTo()), null)
+            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo()), null)
             .attr("dynamic", dialog.isDynamic(), false)
             .attr("showEffect", dialog.getShowEffect(), null)
             .attr("hideEffect", dialog.getHideEffect(), null)
@@ -72,7 +72,7 @@ public class DialogRenderer extends CoreRenderer {
             .callback("onHide", "function()", dialog.getOnHide())
             .callback("onShow", "function()", dialog.getOnShow());
         
-        String focusExpressions = SearchExpressionFacade.resolveComponentsForClient(
+        String focusExpressions = SearchExpressionFacade.resolveClientIds(
         		context, dialog, dialog.getFocus());
         if (focusExpressions != null) {
         	wb.attr("focus", focusExpressions);
