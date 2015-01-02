@@ -44,7 +44,7 @@ if (window.PrimeFaces) {
             'javax.faces.converter.DateTimeConverter.TIME_detail': '{2}: \'{0}\' could not be understood as a time. Example: {1}',
             'javax.faces.converter.DateTimeConverter.DATETIME': '{2}: \'{0}\' could not be understood as a date and time.',
             'javax.faces.converter.DateTimeConverter.DATETIME_detail': '{2}: \'{0}\' could not be understood as a date and time. Example: {1}',
-            'javax.faces.converter.DateTimeConverter.PATTERN_TYPE': '{1}: A \'pattern\' or \'type\' attribute must be specified to convert the value \'{0}\'', 
+            'javax.faces.converter.DateTimeConverter.PATTERN_TYPE': '{1}: A \'pattern\' or \'type\' attribute must be specified to convert the value \'{0}\'',
             'javax.faces.converter.NumberConverter.CURRENCY': '{2}: \'{0}\' could not be understood as a currency value.',
             'javax.faces.converter.NumberConverter.CURRENCY_detail': '{2}: \'{0}\' could not be understood as a currency value. Example: {1}',
             'javax.faces.converter.NumberConverter.PERCENT': '{2}: \'{0}\' could not be understood as a percentage.',
@@ -200,7 +200,7 @@ if (window.PrimeFaces) {
                 return parseInt(submittedValue);
             }
         },
-        
+
         'javax.faces.Long': {
 
             regex: /^[-+]?\d+$/,
@@ -424,7 +424,7 @@ if (window.PrimeFaces) {
                 var vc = PrimeFaces.util.ValidationContext;
 
                 try {
-                    return ((submittedValue === 'true' || submittedValue === 'on' || submittedValue === 'yes') ? true : false);  
+                    return ((submittedValue === 'true' || submittedValue === 'on' || submittedValue === 'yes') ? true : false);
                 }
                 catch(exception) {
                     throw vc.getMessage(this.MESSAGE_ID, submittedValue, vc.getLabel(element));
@@ -474,7 +474,7 @@ if (window.PrimeFaces) {
                          datePattern = element.data('p-dspattern');
                          timePattern = element.data('p-tspattern');
                     }
-                    
+
                     if(timePattern && datePattern) {
                         return $.datepicker.parseDateTime(datePattern, timePattern, submittedValue, locale, {timeFormat:timePattern});
                     }
@@ -547,10 +547,10 @@ if (window.PrimeFaces) {
                 intValue = tokens[0].replace(new RegExp(locale.groupingSeparator, 'g'), ''),
                 decimalValue = tokens[1];
 
-                if(maxIntegerDigits && intValue.length > maxIntegerDigits) 
+                if(maxIntegerDigits && intValue.length > maxIntegerDigits)
                     intValue = intValue.substring(intValue.length - maxIntegerDigits);
 
-                if(decimalValue && minFractionDigits && decimalValue.length > minFractionDigits) 
+                if(decimalValue && minFractionDigits && decimalValue.length > minFractionDigits)
                     decimalValue = decimalValue.substring(0, minFractionDigits);
 
                 if(integerOnly) {
@@ -700,7 +700,7 @@ if (window.PrimeFaces) {
         if(valid)
             highlighter.unhighlight(element);
         else
-            highlighter.highlight(element);  
+            highlighter.highlight(element);
     };
 
     PrimeFaces.validateInstant = function(id) {
@@ -738,8 +738,8 @@ if (window.PrimeFaces) {
         }
         else {
             vc.clear();
-            return true; 
-        } 
+            return true;
+        }
     };
 
     PrimeFaces.util.ValidationContext = {
@@ -781,8 +781,8 @@ if (window.PrimeFaces) {
 
         format: function(str, params) {
             var s = str;
-            for(var i = 0; i < params.length - 1; i++) {       
-                var reg = new RegExp('\\{' + i + '\\}', 'gm');             
+            for(var i = 0; i < params.length - 1; i++) {
+                var reg = new RegExp('\\{' + i + '\\}', 'gm');
                 s = s.replace(reg, params[i + 1]);
             }
 
@@ -835,7 +835,7 @@ if (window.PrimeFaces) {
                             msgItem.append('<span class="ui-messages-error-detail">' + msg.detail + '</span>');
                         }
 
-                        uiMessagesComponent.find('> .ui-messages-error > ul').append(msgItem); 
+                        uiMessagesComponent.find('> .ui-messages-error > ul').append(msgItem);
                         msg.rendered = true;
                     }
                 }
@@ -882,7 +882,7 @@ if (window.PrimeFaces) {
 
                             this.renderUIMessage(uiMessage, msg);
                             msg.rendered = true;
-                        } 
+                        }
                     }
                 }
             }
@@ -896,10 +896,10 @@ if (window.PrimeFaces) {
 
                 if(display === 'both') {
                     uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + msg.detail + '</span></div>');
-                } 
+                }
                 else if(display === 'text') {
                     uiMessage.append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
-                } 
+                }
                 else if(display === 'icon') {
                     uiMessage.addClass('ui-message-icon-only')
                             .append('<span class="ui-message-error-icon" title="' + msg.detail + '"></span>');
@@ -925,7 +925,7 @@ if (window.PrimeFaces) {
             var length = 0, key;
 
             for(key in this.messages) {
-                if(this.messages.hasOwnProperty(key)) 
+                if(this.messages.hasOwnProperty(key))
                     length++;
             }
 
@@ -1070,14 +1070,17 @@ if (window.PrimeFaces) {
 
                 highlight: function(element) {
                     element.parent().siblings('.ui-selectonemenu-trigger').addClass('ui-state-error').parent().addClass('ui-state-error');
-                    PrimeFaces.validator.Highlighter.highlightLabel(element.parent());
+                    PrimeFaces.validator.Highlighter.highlightLabel(this.getFocusElement(element));
                 },
 
                 unhighlight: function(element) {
                     element.parent().siblings('.ui-selectonemenu-trigger').removeClass('ui-state-error').parent().removeClass('ui-state-error');
-                    PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent());
-                }
+                    PrimeFaces.validator.Highlighter.unhighlightLabel(this.getFocusElement(element));
+                },
 
+                getFocusElement: function(element) {
+                    return element.closest('.ui-selectonemenu').find('.ui-helper-hidden-accessible > input');
+                }
             },
 
             'spinner': {
