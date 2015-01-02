@@ -32,6 +32,7 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
 
     private static final Logger LOG = Logger.getLogger(AjaxBehaviorListenerImpl.class.getName());
     private static final Class[] EMPTY_PARAMS = new Class[]{};
+    private static final Class[] ARG_PARAMS = new Class[]{ AjaxBehaviorEvent.class };
 
     private MethodExpression defaultListener;
 
@@ -50,30 +51,24 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
             processDefaultListener(context);
         }
         catch (MethodNotFoundException mnfe) {
-            // custom listener... (e.g. AutoCompleteEvent)
-            try {
-                processCustomListener(context, event);
-            }
-            // arg listener... (AjaxBehaviorEvent)
-            catch (MethodNotFoundException imnfe) {
-                processArgListener(context, event);
-            }
-            catch (IllegalArgumentException iiae) {
-                processArgListener(context, event);
-            }
+            processFallback(context, event);
         }
         catch (IllegalArgumentException iae) {
-            // custom listener... (e.g. AutoCompleteEvent)
-            try {
-                processCustomListener(context, event);
-            }
-            // arg listener... (AjaxBehaviorEvent)
-            catch (MethodNotFoundException imnfe) {
-                processArgListener(context, event);
-            }
-            catch (IllegalArgumentException iiae) {
-                processArgListener(context, event);
-            }
+            processFallback(context, event);
+        }
+    }
+
+    protected void processFallback(FacesContext context, AjaxBehaviorEvent event) {
+        // custom listener... (e.g. AutoCompleteEvent)
+        try {
+            processCustomListener(context, event);
+        }
+        // arg listener... (AjaxBehaviorEvent)
+        catch (MethodNotFoundException mnfe) {
+            processArgListener(context, event);
+        }
+        catch (IllegalArgumentException iae) {
+            processArgListener(context, event);
         }
     }
 
@@ -87,7 +82,7 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
 
     protected void processArgListener(FacesContext context, AjaxBehaviorEvent event) {
         MethodExpression listener = context.getApplication().getExpressionFactory().createMethodExpression(
-                context.getELContext(), defaultListener.getExpressionString(), null, new Class[]{ AjaxBehaviorEvent.class });
+                context.getELContext(), defaultListener.getExpressionString(), null, ARG_PARAMS);
 
     	if (LOG.isLoggable(Level.FINE)) {
             LOG.fine("Try to invoke argListener: " + listener.getExpressionString());
