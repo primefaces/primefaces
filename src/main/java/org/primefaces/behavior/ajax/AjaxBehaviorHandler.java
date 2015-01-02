@@ -16,7 +16,6 @@
 package org.primefaces.behavior.ajax;
 
 import javax.faces.application.Application;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.facelets.BehaviorConfig;
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
@@ -42,7 +41,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
     private final TagAttribute delay;
     private final TagAttribute timeout;
     private final TagAttribute partialSubmitFilter;
-    
+
     public AjaxBehaviorHandler(BehaviorConfig config) {
         super(config);
         this.process = this.getAttribute(AjaxBehavior.PropertyKeys.process.name());
@@ -86,13 +85,11 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         setBehaviorAttribute(ctx, behavior, this.delay, AjaxBehavior.PropertyKeys.delay.expectedType);
         setBehaviorAttribute(ctx, behavior, this.timeout, AjaxBehavior.PropertyKeys.timeout.expectedType);
         setBehaviorAttribute(ctx, behavior, this.partialSubmitFilter, AjaxBehavior.PropertyKeys.partialSubmitFilter.expectedType);
-        
+
         if (listener != null) {
-            behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
-                this.listener.getMethodExpression(ctx, Object.class, new Class[] {}) ,
-                this.listener.getMethodExpression(ctx, Object.class, new Class[] {AjaxBehaviorEvent.class})));
+            behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(listener, ctx));
         }
-        
+
         return behavior;
     }
 }

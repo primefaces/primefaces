@@ -19,71 +19,91 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.AjaxBehaviorListener;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.TagAttribute;
 
 public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializable {
 
-	private static Logger LOG = Logger.getLogger(AjaxBehaviorListenerImpl.class.getName());
-	
-    private MethodExpression listener;
-    private MethodExpression listenerWithArg;
+    private static final Logger LOG = Logger.getLogger(AjaxBehaviorListenerImpl.class.getName());
+    private static final Class[] EMPTY_PARAMS = new Class[]{};
 
+    private MethodExpression defaultListener;
+
+    // required by serialization
     public AjaxBehaviorListenerImpl() {}
 
-    public AjaxBehaviorListenerImpl(MethodExpression listener, MethodExpression listenerWithArg) {
-        this.listener = listener;
-        this.listenerWithArg = listenerWithArg;
+    public AjaxBehaviorListenerImpl(TagAttribute listenerAttribute, FaceletContext context) {
+        this.defaultListener = listenerAttribute.getMethodExpression(context, null, EMPTY_PARAMS);
     }
 
     public void processAjaxBehavior(AjaxBehaviorEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
-        final ELContext elContext = context.getELContext();
 
-    	if (LOG.isLoggable(Level.FINE)) {
-    		LOG.fine("Try to invoke listener: " + listener.getExpressionString());
-    	}
-
+        // default listener first... (without arguments)
         try {
-            listener.invoke(elContext, new Object[]{});
-        } 
+            processDefaultListener(context);
+        }
         catch (MethodNotFoundException mnfe) {
-            processArgListener(context, elContext, event);
-        } 
+            // custom listener... (e.g. AutoCompleteEvent)
+            try {
+                processCustomListener(context, event);
+            }
+            // arg listener... (AjaxBehaviorEvent)
+            catch (MethodNotFoundException imnfe) {
+                processArgListener(context, event);
+            }
+            catch (IllegalArgumentException iiae) {
+                processArgListener(context, event);
+            }
+        }
         catch (IllegalArgumentException iae) {
-            processArgListener(context, elContext, event);
+            // custom listener... (e.g. AutoCompleteEvent)
+            try {
+                processCustomListener(context, event);
+            }
+            // arg listener... (AjaxBehaviorEvent)
+            catch (MethodNotFoundException imnfe) {
+                processArgListener(context, event);
+            }
+            catch (IllegalArgumentException iiae) {
+                processArgListener(context, event);
+            }
         }
     }
-    
-    private void processArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
+
+    protected void processDefaultListener(FacesContext context) {
     	if (LOG.isLoggable(Level.FINE)) {
-    		LOG.fine("Try to invoke listenerWithArg: " + listenerWithArg.getExpressionString());
+            LOG.fine("Try to invoke defaultListener: " + defaultListener.getExpressionString());
     	}
 
-    	try {
-            listenerWithArg.invoke(elContext , new Object[]{event});
-        }
-        catch (MethodNotFoundException mnfe) {
-            processCustomListener(context, elContext, event);
-        }
-        catch (IllegalArgumentException e) {
-            processCustomListener(context, elContext, event);
-        }
+        defaultListener.invoke(context.getELContext(), EMPTY_PARAMS);
     }
-    
-    private void processCustomListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
-    	MethodExpression argListener = context.getApplication().getExpressionFactory().
-                    createMethodExpression(elContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
+
+    protected void processArgListener(FacesContext context, AjaxBehaviorEvent event) {
+        MethodExpression listener = context.getApplication().getExpressionFactory().createMethodExpression(
+                context.getELContext(), defaultListener.getExpressionString(), null, new Class[]{ AjaxBehaviorEvent.class });
 
     	if (LOG.isLoggable(Level.FINE)) {
-    		LOG.fine("Try to invoke customListener: " + argListener.getExpressionString());
+            LOG.fine("Try to invoke argListener: " + listener.getExpressionString());
     	}
 
-        argListener.invoke(elContext, new Object[]{event});
+        listener.invoke(context.getELContext(), new Object[]{ event });
+    }
+
+    protected void processCustomListener(FacesContext context, AjaxBehaviorEvent event) {
+    	MethodExpression listener = context.getApplication().getExpressionFactory().createMethodExpression(
+                context.getELContext(), defaultListener.getExpressionString(), null, new Class[]{ event.getClass() });
+
+    	if (LOG.isLoggable(Level.FINE)) {
+            LOG.fine("Try to invoke customListener: " + listener.getExpressionString());
+    	}
+
+        listener.invoke(context.getELContext(), new Object[]{ event });
     }
 }
