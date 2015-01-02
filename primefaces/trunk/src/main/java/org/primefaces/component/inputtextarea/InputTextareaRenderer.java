@@ -134,7 +134,8 @@ public class InputTextareaRenderer extends InputRenderer {
         if(inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(inputTextarea.getStyle() != null) writer.writeAttribute("style", inputTextarea.getStyle(), null);
-
+        if(inputTextarea.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
         
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {

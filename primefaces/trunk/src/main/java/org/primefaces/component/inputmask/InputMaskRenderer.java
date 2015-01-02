@@ -107,7 +107,8 @@ public class InputMaskRenderer extends InputRenderer {
         if(inputMask.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(inputMask.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
         if(inputMask.getStyle() != null) writer.writeAttribute("style", inputMask.getStyle(), "style");
-		
+		if(inputMask.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        
         writer.writeAttribute("class", styleClass, "styleClass");
         
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
