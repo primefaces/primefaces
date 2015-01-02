@@ -99,6 +99,8 @@ public class CalendarRenderer extends InputRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", type, null);
 
+        if(calendar.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        
         if(!isValueBlank(value)) {
             writer.writeAttribute("value", value, null);
         }

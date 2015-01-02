@@ -126,7 +126,8 @@ public class SpinnerRenderer extends InputRenderer {
 
         if(spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-
+        if(spinner.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, spinner);
         }
