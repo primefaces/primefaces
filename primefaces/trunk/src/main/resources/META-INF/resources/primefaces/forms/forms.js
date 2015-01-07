@@ -1984,6 +1984,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.inputs = this.jq.find(':checkbox');
         this.panelId = this.id + '_panel';
         this.keyboardTarget = $(this.jqId + '_focus');
+        this.cfg.showHeader = (this.cfg.showHeader === undefined) ? true : this.cfg.showHeader;
         
         if(!this.disabled) {
             this.renderPanel();
@@ -2036,6 +2037,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.header = $('<div class="ui-widget-header ui-corner-all ui-selectcheckboxmenu-header ui-helper-clearfix"></div>')
                         .appendTo(this.panel);
 
+        if(!this.cfg.showHeader) {
+            this.header.removeClass('ui-helper-clearfix').addClass('ui-helper-hidden');
+        }
         //toggler
         this.toggler = $('<div class="ui-chkbox ui-widget"><div class="ui-helper-hidden-accessible"><input type="checkbox" readonly="readonly"/></div><div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default"><span class="ui-chkbox-icon ui-icon ui-icon-blank"></span></div></div>')
                             .appendTo(this.header);
@@ -2253,8 +2257,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 
                 case keyCode.TAB:
                     if($this.panel.is(':visible')) {
-                       $this.toggler.find('> div.ui-helper-hidden-accessible > input').trigger('focus'); 
-                       e.preventDefault();
+                       if(!$this.cfg.showHeader) {
+                            $this.itemContainer.children('li:not(.ui-state-disabled):first').find('div.ui-helper-hidden-accessible > input').trigger('focus');
+                        }
+                        else {
+                            $this.toggler.find('> div.ui-helper-hidden-accessible > input').trigger('focus'); 
+                        }
+                        e.preventDefault();
                     }
 
                 break;

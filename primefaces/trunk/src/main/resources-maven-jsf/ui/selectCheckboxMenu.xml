@@ -124,6 +124,13 @@
             <type>java.lang.String</type>
             <description>Advisory tooltip information.</description>
         </attribute>
+        <attribute>
+			<name>showHeader</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When enabled, the header of panel is displayed. Default is true.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
