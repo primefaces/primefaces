@@ -288,7 +288,7 @@ PrimeFaces.ajax = {
             PrimeFaces.debug('Form to post ' + form.attr('id') + '.');
 
             var postURL = form.attr('action'),
-            encodedURLfield = form.children("input[name='javax.faces.encodedURL']"),
+            encodedURLfield = form.children("input[name*='javax.faces.encodedURL']"),
             postParams = [];
 
             //portlet support
