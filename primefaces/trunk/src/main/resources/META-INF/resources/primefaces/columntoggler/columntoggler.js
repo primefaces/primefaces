@@ -35,6 +35,10 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                     '</div>'
                     + '<label>' + column.children('.ui-column-title').text() + '</label></li>').data('column', column.attr('id')).appendTo(this.itemContainer);
         }
+        
+        if(this.panel.outerHeight() > 200) {
+            this.panel.height(200);
+        }
         this.hide();
     },
     
