@@ -481,6 +481,10 @@ public class TreeTableRenderer extends CoreRenderer {
     }
     
     protected void encodeColumnHeader(FacesContext context, TreeTable tt, UIColumn column) throws IOException {
+        if(!column.isRendered()) {
+            return;
+        }
+                
         ResponseWriter writer = context.getResponseWriter();
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
@@ -604,7 +608,11 @@ public class TreeTableRenderer extends CoreRenderer {
         writer.endElement("tfoot");
     }
     
-    protected void encodeColumnFooter(FacesContext context, TreeTable table, UIColumn column) throws IOException {        
+    protected void encodeColumnFooter(FacesContext context, TreeTable table, UIColumn column) throws IOException {
+        if(!column.isRendered()) {
+            return;
+        }
+        
         ResponseWriter writer = context.getResponseWriter();
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
