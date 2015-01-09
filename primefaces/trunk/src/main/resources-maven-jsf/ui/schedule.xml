@@ -194,10 +194,13 @@
 	</attributes>
 	<resources>
         <resource>
+			<name>schedule/schedule.css</name>
+		</resource>
+        <resource>
 			<name>primefaces.css</name>
 		</resource>
 		<resource>
-			<name>schedule/schedule.css</name>
+			<name>moment/moment.js</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -208,7 +211,7 @@
 		<resource>
 			<name>primefaces.js</name>
 		</resource>
-		<resource>
+        <resource>
 			<name>schedule/schedule.js</name>
 		</resource>
 	</resources>

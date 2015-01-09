@@ -23,6 +23,7 @@ import java.util.UUID;
 public class DefaultScheduleModel implements ScheduleModel, Serializable {
 
 	private List<ScheduleEvent> events;
+    private boolean eventLimit = false;
 
 	public DefaultScheduleModel() {
 		events = new ArrayList<ScheduleEvent>(); 
@@ -78,4 +79,12 @@ public class DefaultScheduleModel implements ScheduleModel, Serializable {
 	public void clear() {
 		events = new ArrayList<ScheduleEvent>();
 	}
+
+    public boolean isEventLimit() {
+        return eventLimit;
+}
+
+    public void setEventLimit(boolean eventLimit) {
+        this.eventLimit = eventLimit;
+    } 
 }
