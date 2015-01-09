@@ -27,13 +27,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class EventBusImpl implements EventBus {
-
-    public EventBusImpl() {
+    
+    private final MetaBroadcaster metaBroadcaster; 
+    
+    public EventBusImpl(MetaBroadcaster metaBroadcaster) {
+        this.metaBroadcaster = metaBroadcaster;
     }
 
     //@Override
     public EventBus publish(Object o) {
-        MetaBroadcaster.getDefault().broadcastTo("/*", o);
+        metaBroadcaster.broadcastTo("/*", o);
         return this;
     }
 
@@ -41,18 +44,18 @@ public class EventBusImpl implements EventBus {
     public EventBus publish(String path, Object o) {
         if (!path.startsWith("/")) path = "/" + path;
 
-        MetaBroadcaster.getDefault().broadcastTo(path, o);
+        metaBroadcaster.broadcastTo(path, o);
         return this;
     }
 
     //@Override
     public EventBus publish(String path, Object o, final Reply r) {
-        MetaBroadcaster.getDefault().addBroadcasterListener(new BroadcasterListenerAdapter() {
+        metaBroadcaster.addBroadcasterListener(new BroadcasterListenerAdapter() {
             public void onComplete(Broadcaster b) {
                 try {
                     r.completed(b.getID());
                 } finally {
-                    MetaBroadcaster.getDefault().removeBroadcasterListener(this);
+                    metaBroadcaster.removeBroadcasterListener(this);
                 }
             }
         });
@@ -60,7 +63,7 @@ public class EventBusImpl implements EventBus {
     }
 
     public <T> Future<T> schedule(final String path, final T t, int time, TimeUnit unit) {
-        final Future<List<Broadcaster>> f = MetaBroadcaster.getDefault().scheduleTo(path, t, time, unit);
+        final Future<List<Broadcaster>> f = metaBroadcaster.scheduleTo(path, t, time, unit);
         return new WrappedFuture<T>(f, t);
     }
 

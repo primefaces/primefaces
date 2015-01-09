@@ -15,17 +15,22 @@
  */
 package org.primefaces.push;
 
+import org.atmosphere.cpr.MetaBroadcaster;
+
 /**
  * Factory for retrieving {@link PushContext}
  * @deprecated With PrimeFaces 4.1 and up, it is recommended to use {@link EventBus}
  */
 public class PushContextFactory {
 
-    private static final PushContextFactory p = new PushContextFactory();
+    private static PushContextFactory p;
     private final PushContext pushContext;
+    private final MetaBroadcaster metaBroadcaster;
 
-    private PushContextFactory() {
-        pushContext = new PushContextImpl();
+    protected PushContextFactory(MetaBroadcaster metaBroadcaster) {
+        this.metaBroadcaster = metaBroadcaster;
+        pushContext = new PushContextImpl(this.metaBroadcaster);
+        p = this;
     }
 
     /**
