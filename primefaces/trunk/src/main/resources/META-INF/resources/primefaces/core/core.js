@@ -306,6 +306,9 @@
          */
         getFacesResource : function(name, library, version) {
             var scriptURI = $('script[src*="/javax.faces.resource/' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
+            if (!scriptURI) {
+                scriptURI = $('script[src*="javax.faces.resource=' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
+            }
         
             scriptURI = scriptURI.replace(PrimeFaces.getCoreScriptName(), name);
             scriptURI = scriptURI.replace('ln=primefaces', 'ln=' + library);
@@ -315,7 +318,8 @@
                 scriptURI = scriptURI.replace('v=' + extractedVersion, 'v=' + version);
             }
 
-            return window.location.protocol + '//' + window.location.host + scriptURI;
+            var prefix = window.location.protocol + '//' + window.location.host;
+            return scriptURI.indexOf(prefix) >= 0 ? scriptURI : prefix + scriptURI;
         },
         
         getCoreScriptName: function() {
