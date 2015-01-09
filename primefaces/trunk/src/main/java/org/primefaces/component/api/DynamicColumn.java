@@ -220,4 +220,8 @@ public class DynamicColumn implements UIColumn {
     public boolean isVisible() {
         return this.columns.isVisible();
     }
+    
+    public boolean isSelectRow() {
+        return this.columns.isSelectRow();
+    }
 }
