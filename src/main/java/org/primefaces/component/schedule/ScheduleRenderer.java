@@ -129,7 +129,8 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("defaultView", schedule.getView())
             .attr("locale", schedule.calculateLocale(context).toString())
             .attr("offset", schedule.calculateTimeZone().getRawOffset())
-            .attr("tooltip", schedule.isTooltip(), false);
+            .attr("tooltip", schedule.isTooltip(), false)
+            .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false);
         
         if(schedule.getInitialDate() != null) {
 			Calendar c = Calendar.getInstance();

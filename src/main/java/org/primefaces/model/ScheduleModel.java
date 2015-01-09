@@ -32,4 +32,6 @@ public interface ScheduleModel {
 	public int getEventCount();
 	
 	public void clear();
+    
+    public boolean isEventLimit();
 }
