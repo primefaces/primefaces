@@ -206,5 +206,12 @@
             <defaultValue>true</defaultValue>
             <description>Controls the visibilty of the column, default is true.</description>
 		</attribute>
+        <attribute>
+			<name>selectRow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether clicking the column selects the row when datatable has row selection enabled, default is true.</description>
+		</attribute>
 	</attributes>
 </component>

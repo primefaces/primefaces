@@ -104,4 +104,6 @@ public interface UIColumn {
     public boolean isFilterable();
     
     public boolean isVisible();
+    
+    public boolean isSelectRow();
 }

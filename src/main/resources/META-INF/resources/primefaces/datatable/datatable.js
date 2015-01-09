@@ -1023,7 +1023,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     onRowClick: function(event, rowElement, silent) {    
         //Check if rowclick triggered this event not a clickable element in row content
-        if($(event.target).is('td,span:not(.ui-c)')) {
+        if($(event.target).is('td:not(.ui-column-unselectable),span:not(.ui-c)')) {
             var row = $(rowElement),
             selected = row.hasClass('ui-state-highlight'),
             metaKey = event.metaKey||event.ctrlKey,
