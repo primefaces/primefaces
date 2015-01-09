@@ -69,7 +69,7 @@ public class PushServlet extends AtmosphereServlet {
             }
         }
 
-        framework.setUseStreamForFlushingComments(false);
+        //framework.setUseStreamForFlushingComments(false);
         framework.interceptor(new AtmosphereResourceLifecycleInterceptor())
                 .interceptor(new TrackMessageSizeInterceptor())
                 .addAnnotationPackage(PushEndpointProcessor.class);
