@@ -32,12 +32,13 @@ public class DefaultPushRule implements PushRule {
      */
     public boolean apply(AtmosphereResource resource) {
         String pathInfo = resource.getRequest().getPathInfo();
+        BroadcasterFactory f = resource.getAtmosphereConfig().getBroadcasterFactory();
         if (pathInfo == null) {
-            resource.setBroadcaster(BroadcasterFactory.getDefault().lookup("/*"));
+            resource.setBroadcaster(f.lookup("/*"));
             return true;
         }
 
-        final Broadcaster b = BroadcasterFactory.getDefault().lookup(pathInfo, true);
+        final Broadcaster b = f.lookup(pathInfo, true);
         resource.setBroadcaster(b);
 
         return true;

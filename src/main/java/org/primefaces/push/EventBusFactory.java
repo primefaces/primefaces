@@ -15,6 +15,7 @@
  */
 package org.primefaces.push;
 
+import org.atmosphere.cpr.MetaBroadcaster;
 import org.primefaces.push.impl.EventBusImpl;
 
 /**
@@ -22,10 +23,12 @@ import org.primefaces.push.impl.EventBusImpl;
  */
 public class EventBusFactory {
 
-    private static EventBusFactory p = new EventBusFactory();
-    private EventBus eventBus = new EventBusImpl();
+    private final EventBus eventBus;
+    private static EventBusFactory f = null;
 
-    protected EventBusFactory() {
+    protected EventBusFactory(MetaBroadcaster metaBroadcaster) {
+        eventBus = new EventBusImpl(metaBroadcaster);
+        f = this;
     }
 
     /**
@@ -33,7 +36,7 @@ public class EventBusFactory {
      * @return the default factory
      */
     public final static EventBusFactory getDefault() {
-        return p;
+        return f;
     }
 
     /**

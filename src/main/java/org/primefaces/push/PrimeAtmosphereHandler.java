@@ -17,7 +17,6 @@ package org.primefaces.push;
 
 import org.atmosphere.cpr.AtmosphereRequest;
 import org.atmosphere.cpr.AtmosphereResource;
-import org.atmosphere.cpr.MetaBroadcaster;
 import org.atmosphere.handler.AbstractReflectorAtmosphereHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +56,7 @@ public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
             applyRules(resource);
         } else {
             StringBuilder stringBuilder = read(resource);
-            MetaBroadcaster.getDefault().broadcastTo("/*", stringBuilder.toString());
+            resource.getAtmosphereConfig().metaBroadcaster().broadcastTo("/*", stringBuilder.toString());
         }
     }
 
