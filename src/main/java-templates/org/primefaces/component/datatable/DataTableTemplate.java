@@ -61,6 +61,7 @@ import javax.faces.event.PostRestoreStateEvent;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortMeta;
 import org.primefaces.component.datatable.feature.*;
+import org.primefaces.model.FilterMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 
@@ -230,6 +231,25 @@ import org.primefaces.util.SharedStringBuilder;
             selectionVE.setValue(context.getELContext(), this.getLocalSelection());
 
             this.setSelection(null);
+        }
+        
+        List<FilterMeta> filterMeta = this.getFilterMetadata();
+        if(filterMeta != null && !filterMeta.isEmpty()) {
+            ELContext eLContext = context.getELContext();
+            for(FilterMeta fm : filterMeta) {
+                UIColumn column = fm.getColumn();
+                ValueExpression columnFilterValueVE = column.getValueExpression("filterValue");
+                if(columnFilterValueVE != null) {
+                    if(column.isDynamic()) { 
+                        DynamicColumn dynamicColumn = (DynamicColumn) column;
+                        dynamicColumn.applyStatelessModel();
+                        columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                        dynamicColumn.cleanStatelessModel();
+                    }
+                    
+                    columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                }
+            }
         }
 	}
 
