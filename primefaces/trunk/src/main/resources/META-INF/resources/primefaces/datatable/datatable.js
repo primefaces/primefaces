@@ -1470,7 +1470,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     this.collapseAllRows();
                 }
                 
-                row.addClass('ui-expanded-row');
                 toggler.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
 
                 this.loadExpandedRowContent(row);
@@ -1494,7 +1493,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            this.displayExpandedRow(row, content);
+                            if(content && $.trim(content).length) {
+                                row.addClass('ui-expanded-row');
+                                this.displayExpandedRow(row, content);
+                            }
                         }
                     });
 
@@ -1541,7 +1543,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     collapseRow: function(row) {
-        row.removeClass('ui-expanded-row').next().remove();
+        row.removeClass('ui-expanded-row').next('.ui-expanded-row-content').remove();
     },
     
     collapseAllRows: function() {

@@ -49,21 +49,23 @@ public class RowExpandFeature implements DataTableFeature {
 
         table.setRowIndex(rowIndex);
         
-        if(rowIndexVar != null) {
-            context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
+        if(rowExpansion.isRendered()) {
+            if(rowIndexVar != null) {
+                context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
+            }
+
+            writer.startElement("tr", null);
+            writer.writeAttribute("class", styleClass, null);
+
+            writer.startElement("td", null);
+            writer.writeAttribute("colspan", table.getColumnsCount(), null);
+
+            table.getRowExpansion().encodeAll(context);
+
+            writer.endElement("td");
+
+            writer.endElement("tr");
         }
-
-        writer.startElement("tr", null);
-        writer.writeAttribute("class", styleClass, null);
-
-        writer.startElement("td", null);
-        writer.writeAttribute("colspan", table.getColumnsCount(), null);
-
-        table.getRowExpansion().encodeAll(context);
-
-        writer.endElement("td");
-
-        writer.endElement("tr");
     }
 
     public boolean shouldDecode(FacesContext context, DataTable table) {

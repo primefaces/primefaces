@@ -54,14 +54,6 @@
     margin:auto;
 }
 
-.ui-datatable .ui-expanded-row {
-    border-bottom:0px none;
-}
-
-.ui-datatable .ui-expanded-row-content {
-    border-top:0px none;
-}
-
 .ui-datatable .ui-row-toggler {
     cursor: pointer;
 }
