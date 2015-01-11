@@ -301,10 +301,7 @@ PrimeFaces.ajax = {
             PrimeFaces.debug('URL to post ' + postURL + '.');
 
             // See #6857 - parameter namespace for porlet
-            var parameterNamespace = null;
-            if (PrimeFaces.settings.namespaceParameters) {
-                parameterNamespace = PrimeFaces.ajax.Request.extractParameterNamespace(form);
-            }
+            var parameterNamespace = PrimeFaces.ajax.Request.extractParameterNamespace(form);
 
             //partial ajax
             PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterNamespace);

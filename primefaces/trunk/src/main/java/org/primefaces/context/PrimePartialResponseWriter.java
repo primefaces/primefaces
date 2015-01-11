@@ -151,7 +151,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         if (requestContext != null) {
             try {
                 FacesContext context = FacesContext.getCurrentInstance();
-                if (context.getViewRoot() instanceof NamingContainer && requestContext.getApplicationContext().getConfig().isParameterNamespacingEnabled()) {
+                if (context.getViewRoot() instanceof NamingContainer) {
                     Map<String, Object> params = new HashMap<String, Object>();
                     params.put("parameterNamespace", context.getViewRoot().getContainerClientId(context));
                     encodeCallbackParams(params);
