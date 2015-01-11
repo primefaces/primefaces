@@ -112,11 +112,7 @@ public class HeadRenderer extends Renderer {
         if (cc.isLegacyWidgetNamespace()) {
             writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");
         }
-        
-        if (cc.isParameterNamespacingEnabled()) {
-            writer.write("PrimeFaces.settings.namespaceParameters=true;");
-        }
-        
+
         if (!projectStage.equals(ProjectStage.Production)) {
             writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
         }
