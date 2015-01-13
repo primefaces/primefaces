@@ -488,7 +488,7 @@ public class SearchExpressionFacade {
         UIComponent component = source.findComponent(expression);
 
         // try #invokeOnComponent
-        // it's required to support e.g. a full client id for a component which is placed inside one/multiple ui:repeats
+        // it's required to support e.g. a full client id for a component which is placed inside UIData components
         if (component == null) {
             // #invokeOnComponent doesn't support the leading seperator char
             String tempExpression = expression;
