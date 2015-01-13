@@ -28,7 +28,6 @@ public class ResourceUtils {
 
         UIComponent componentResource = application.createComponent(UIOutput.COMPONENT_TYPE);
         componentResource.setRendererType(application.getResourceHandler().getRendererTypeForResourceName(name));
-        componentResource.setTransient(true);
         componentResource.getAttributes().put("name", name);
         componentResource.getAttributes().put("library", library);
         componentResource.getAttributes().put("target", target);
