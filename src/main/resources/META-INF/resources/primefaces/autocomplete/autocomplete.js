@@ -33,6 +33,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.setupMultipleMode();
 
             this.multiItemContainer.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+            
+            if(this.cfg.selectLimit <= 0) {
+                this.input.css('visibility', 'hidden');
+            }
         }
         else {
             //visuals
@@ -122,6 +126,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         var closeSelector = '> li.ui-autocomplete-token > .ui-autocomplete-token-icon';
         this.multiItemContainer.off('click', closeSelector).on('click', closeSelector, null, function(event) {
+            if($this.multiItemContainer.children('li.ui-autocomplete-token').length === $this.cfg.selectLimit) {
+                if(PrimeFaces.isIE(8)) {
+                    $this.input.val('');
+                }
+                $this.input.css('display', 'inline');
+            }
             $this.removeItem(event, $(this).parent());
         });
     },
@@ -384,6 +394,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.input.val('').focus();
 
                 $this.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
+                if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
+                    $this.input.css('display', 'none').blur();
+                }
             }
             else {
                 $this.input.val(item.attr('data-item-label')).focus();

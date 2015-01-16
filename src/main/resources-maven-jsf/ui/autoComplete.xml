@@ -195,6 +195,13 @@
             <defaultValue>true</defaultValue>
             <description>Highlights the first suggested item automatically. Default is true.</description>
         </attribute>
+        <attribute>
+            <name>selectLimit</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Limits the selection. Default is unlimited.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

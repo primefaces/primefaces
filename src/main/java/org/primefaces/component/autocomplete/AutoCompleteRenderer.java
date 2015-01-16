@@ -562,6 +562,10 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("itemtipAtPosition", ac.getItemtipAtPosition(), null);
         }
         
+        if(ac.isMultiple()) {
+            wb.attr("selectLimit", ac.getSelectLimit(), Integer.MAX_VALUE);
+        }
+        
         encodeClientBehaviors(context, ac);
 
         wb.finish();
