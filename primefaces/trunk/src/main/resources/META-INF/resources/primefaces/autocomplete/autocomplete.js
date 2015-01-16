@@ -645,7 +645,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.input.blur(function() {
             var value = $(this).val(),
             valid = false;
-
+            
+            if(PrimeFaces.isIE(8)) {
+                $this.itemClick = true;
+            }
+            
             for(var i = 0; i < $this.currentItems.length; i++) {
                 if($this.currentItems[i] === value) {
                     valid = true;
