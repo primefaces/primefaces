@@ -59,3 +59,10 @@
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
 }
+
+/* Responsive */
+@media (max-width: 35em) {
+    .ui-paginator .ui-paginator-pages {
+        display: none;
+    }
+}
