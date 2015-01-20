@@ -98,7 +98,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         if(headerFacet != null)
             headerFacet.encodeAll(context);
         else if(header != null)
-            writer.write(header);
+            writer.writeText(header, null);
         
         writer.endElement("span");
         
