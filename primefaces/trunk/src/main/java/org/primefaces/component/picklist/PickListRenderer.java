@@ -67,7 +67,11 @@ public class PickListRenderer extends CoreRenderer {
         String styleClass = pickList.getStyleClass();
         styleClass = styleClass == null ? PickList.CONTAINER_CLASS : PickList.CONTAINER_CLASS + " " + styleClass;
         String labelDisplay = pickList.getLabelDisplay();
-
+        boolean vertical = pickList.getOrientation().equals("vertical");
+        if(vertical) {
+            styleClass += " ui-picklist-vertical"; 
+        }
+        
 		writer.startElement("div", pickList);
 		writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
@@ -88,10 +92,18 @@ public class PickListRenderer extends CoreRenderer {
         writer.writeAttribute("class", PickList.BUTTONS_CLASS, null);
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.BUTTONS_CELL_CLASS, null);
-        encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.ADD_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.REMOVE_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
+        if(vertical) {
+            encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.VERTICAL_ADD_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.VERTICAL_ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.VERTICAL_REMOVE_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.VERTICAL_REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
+        }
+        else {
+            encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.ADD_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.REMOVE_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
+        }
 		writer.endElement("div");
         writer.endElement("div");
 

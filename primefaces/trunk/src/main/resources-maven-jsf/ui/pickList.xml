@@ -206,6 +206,13 @@
 			<defaultValue>tooltip</defaultValue>
             <description>Defines how the button labels displayed, valid values are "tooltip" (default) and "inline".</description>
 		</attribute>
+        <attribute>
+			<name>orientation</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>horizontal</defaultValue>
+            <description>Displays lists horizontally, valid values are "horizontal" (default) and "vertical".</description>
+		</attribute>
 	</attributes>
 	    <resources>
         <resource>
