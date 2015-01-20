@@ -210,8 +210,8 @@ public class TreeTableRenderer extends CoreRenderer {
 	}
     
     protected void encodeScrollableMarkup(FacesContext context, TreeTable tt) throws IOException {
-        String tableStyle = tt.getStyle();
-        String tableStyleClass = tt.getStyleClass();
+        String tableStyle = tt.getTableStyle();
+        String tableStyleClass = tt.getTableStyleClass();
                         
         encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_HEADER_CLASS, TreeTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass, "header", TreeTable.HEADER_CLASS);
         encodeThead(context, tt);
