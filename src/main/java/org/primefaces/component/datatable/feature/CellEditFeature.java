@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
@@ -51,7 +52,16 @@ public class CellEditFeature implements DataTableFeature {
         
         table.setRowIndex(rowIndex);
         
+        if(column.isDynamic()) {
+            DynamicColumn dynamicColumn = (DynamicColumn) column;
+            dynamicColumn.applyStatelessModel();
+        }
+        
         column.getCellEditor().getFacet("output").encodeAll(context);
+        
+        if(column.isDynamic()) {
+            ((DynamicColumn) column).cleanStatelessModel();
+        }
     }
 
     public boolean shouldDecode(FacesContext context, DataTable table) {

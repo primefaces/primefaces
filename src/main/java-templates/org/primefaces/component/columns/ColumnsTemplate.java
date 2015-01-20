@@ -15,8 +15,17 @@ import org.primefaces.component.celleditor.CellEditor;
         return false;
     }
 
+    private CellEditor cellEditor = null;
+
     public CellEditor getCellEditor() {
-        return null;
+        if(cellEditor == null) {
+            for(UIComponent child : getChildren()) {
+                if(child instanceof CellEditor)
+                    cellEditor = (CellEditor) child;
+            }
+        }
+
+        return cellEditor;
     }
 
     public boolean isDynamic() {
