@@ -42,16 +42,39 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             $this.onSlideEnd(event, ui);
         });
 
-        this.input.keypress(function(e) {
-            var charCode = (e.which) ? e.which : e.keyCode
-            if(charCode > 31 && (charCode < 48 || charCode > 57))
-                return false;
-            else
-                return true;
-        });
-
-        this.input.keyup(function() {
-            $this.setValue($this.input.val());
+        this.input.on('keydown.slider', function (e) { 
+            var keyCode = $.ui.keyCode, 
+            key = e.which;
+            
+            switch(key) { 
+                case keyCode.UP: 
+                case keyCode.DOWN: 
+                case keyCode.LEFT: 
+                case keyCode.RIGHT:                
+                case keyCode.BACKSPACE: 
+                case keyCode.DELETE: 
+                case keyCode.END: 
+                case keyCode.HOME:
+                case keyCode.TAB: 
+                break; 
+            
+                default:
+                    var metaKey = e.metaKey||e.ctrlKey, 
+                    isNumber = (key >= 48 && key <= 57);
+                    
+                    //prevent special characters with alt and shift
+                    if(e.altKey || (e.shiftKey && !(key === keyCode.UP || key === keyCode.DOWN || key === keyCode.LEFT || key === keyCode.RIGHT))) {
+                        e.preventDefault();
+                    }
+                    
+                    //prevent letters and allow letters with meta key such as ctrl+c
+                    if(!isNumber && !metaKey) { 
+                        e.preventDefault(); 
+                    }
+                break; 
+            } 
+        }).on('keyup.slider', function (e) { 
+            $this.setValue($this.input.val()); 
         });
     },
     
