@@ -802,34 +802,45 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
                 case keyCode.ESCAPE:
+                case keyCode.SPACE:
+                case keyCode.HOME:
+                case keyCode.PAGE_DOWN:
+                case keyCode.PAGE_UP:
+                case keyCode.END:
+                case keyCode.DELETE:
                 case 16: //shift
+                case 17: //keyCode.CONTROL:
+                case 18: //keyCode.ALT:
+                case 224:   //mac command 
                 break;
 
                 default:
                     var text = $(this).val(),
-                    matchedOptions = null;
+                    matchedOptions = null,
+                    metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
 
-                    clearTimeout($this.searchTimer);
-                                        
-                    matchedOptions = $this.options.filter(function() {
-                        return $(this).text().toLowerCase().indexOf(text.toLowerCase()) === 0;
-                    });
-                    
-                    if(matchedOptions.length) {
-                        var highlightItem = $this.items.eq(matchedOptions.index());
-                        if($this.panel.is(':hidden')) {
-                            $this.selectItem(highlightItem);
+                    if(!metaKey) {
+                        clearTimeout($this.searchTimer);
+
+                        matchedOptions = $this.options.filter(function() {
+                            return $(this).text().toLowerCase().indexOf(text.toLowerCase()) === 0;
+                        });
+
+                        if(matchedOptions.length) {
+                            var highlightItem = $this.items.eq(matchedOptions.index());
+                            if($this.panel.is(':hidden')) {
+                                $this.selectItem(highlightItem);
+                            }
+                            else {
+                                $this.highlightItem(highlightItem);
+                                PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
+                            }
                         }
-                        else {
-                            $this.highlightItem(highlightItem);
-                            PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
-                        }
+
+                        $this.searchTimer = setTimeout(function(){
+                            $this.focusInput.val('');
+                        }, 1000);
                     }
-                    
-                    $this.searchTimer = setTimeout(function(){
-                        $this.focusInput.val('');
-                    }, 1000);
-
                 break;
             }
         });
@@ -851,10 +862,24 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
                 case keyCode.ESCAPE:
+                case keyCode.SPACE:
+                case keyCode.HOME:
+                case keyCode.PAGE_DOWN:
+                case keyCode.PAGE_UP:
+                case keyCode.END:
+                case keyCode.DELETE:
+                case 16: //shift
+                case 17: //keyCode.CONTROL:
+                case 18: //keyCode.ALT:
+                case 224:   //mac command 
                 break;
 
                 default:
-                    $this.filter($(this).val());
+                    var metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
+                    
+                    if(!metaKey) {
+                        $this.filter($(this).val());
+                    }
                 break;
             }
         })
