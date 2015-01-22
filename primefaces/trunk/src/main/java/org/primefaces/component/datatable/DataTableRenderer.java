@@ -407,7 +407,8 @@ public class DataTableRenderer extends DataRenderer {
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
-                
+        int priority = column.getPriority();        
+        
         String columnClass = sortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
         columnClass = filterable ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
@@ -415,6 +416,10 @@ public class DataTableRenderer extends DataRenderer {
         columnClass = !column.isToggleable() ? columnClass + " " + DataTable.STATIC_COLUMN_CLASS : columnClass;
         columnClass = !column.isVisible()? columnClass + " " + DataTable.HIDDEN_COLUMN_CLASS : columnClass;
         columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
+        
+        if(priority > 0) {
+            columnClass = columnClass + " ui-column-p-" + priority; 
+        }
         
         if(sortable) {
             ValueExpression tableSortByVE = table.getValueExpression("sortBy");
@@ -656,12 +661,17 @@ public class DataTableRenderer extends DataRenderer {
         
         ResponseWriter writer = context.getResponseWriter();
         
+        int priority = column.getPriority();
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
         styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
         if(!column.isVisible()) {
             styleClass = styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
+        }
+        
+        if(priority > 0) {
+            styleClass = styleClass + " ui-column-p-" + priority; 
         }
         
         writer.startElement("td", null);
@@ -966,12 +976,18 @@ public class DataTableRenderer extends DataRenderer {
         
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = column.getSelectionMode() != null;
+        int priority = column.getPriority();
         String style = column.getStyle();
         String styleClass = selectionEnabled ? DataTable.SELECTION_COLUMN_CLASS : (column.getCellEditor() != null) ? DataTable.EDITABLE_COLUMN_CLASS : null;
         styleClass = (column.isSelectRow()) ? styleClass : (styleClass == null) ? DataTable.UNSELECTABLE_COLUMN_CLASS : styleClass + " " + DataTable.UNSELECTABLE_COLUMN_CLASS;
         styleClass = (column.isVisible()) ? styleClass : (styleClass == null) ? DataTable.HIDDEN_COLUMN_CLASS : styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         String userStyleClass = column.getStyleClass();
         styleClass = userStyleClass == null ? styleClass : (styleClass == null) ? userStyleClass : styleClass + " " + userStyleClass;
+        
+        if(priority > 0) {
+            styleClass = (styleClass == null) ? "ui-column-p-" + priority : styleClass + " ui-column-p-" + priority; 
+        }
+        
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
         
