@@ -24,7 +24,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             $(this.jqId + ' button').attr('disabled', 'disabled').addClass('ui-state-disabled');
         }
         else {
-            var $this = this;
+            var $this = this,
+                reordered = true;
 
             //Sortable lists
             $(this.jqId + ' ul').sortable({
@@ -35,17 +36,31 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     $this.unselectItem(ui.item);
 
                     $this.saveState();
+                    if(reordered) {
+                        $this.fireReorderEvent();
+                        reordered = false;
+                    }
                 },
                 receive: function(event, ui) {
                     $this.fireTransferEvent(ui.item, ui.sender, ui.item.parents('ul.ui-picklist-list:first'), 'dragdrop');
                 },
                 
                 start: function(event, ui) {
+                    $this.itemListName = $this.getListName(ui.item);
                     $this.dragging = true;
                 },
                 
                 stop: function(event, ui) {
                     $this.dragging = false;
+                },
+                
+                beforeStop:function(event, ui) {
+                    if($this.itemListName !== $this.getListName(ui.item)) {
+                        reordered = false;
+                    }
+                    else {
+                        reordered = true;
+                    }
                 }
             });
             
@@ -86,10 +101,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 }
 
                 if(metaKey && item.hasClass('ui-state-highlight')) {
-                    $this.unselectItem(item);
+                    $this.unselectItem(item, true);
                 } 
                 else {
-                    $this.selectItem(item);
+                    $this.selectItem(item, true);
                     $this.cursorItem = item;
                 }
             }
@@ -107,12 +122,15 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                         var it = parentList.children('li.ui-picklist-item').eq(i);
                         
                         if(it.is(':visible')) {
-                            $this.selectItem(it);
+                            if(i === (endIndex - 1))
+                                $this.selectItem(it, true);
+                            else
+                                $this.selectItem(it);
                         }
                     }
                 } 
                 else {
-                    $this.selectItem(item);
+                    $this.selectItem(item, true);
                     $this.cursorItem = item;
                 }
             }
@@ -142,23 +160,29 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 $this.checkboxClick = true;
                 
                 var item = $(this).closest('li.ui-picklist-item');
-                if(item.hasClass('ui-state-highlight'))
-                    $this.unselectItem(item);
-                else
-                    $this.selectItem(item);
+                if(item.hasClass('ui-state-highlight')) {
+                    $this.unselectItem(item, true);
+                }
+                else {
+                    $this.selectItem(item, true);
+                }
             });
         }
     },
     
-    selectItem: function(item) {
+    selectItem: function(item, silent) {
         item.removeClass('ui-state-hover').addClass('ui-state-highlight');
         
         if(this.cfg.showCheckbox) {
             this.selectCheckbox(item.find('div.ui-chkbox-box'));
         }
+        
+        if(silent) {
+            this.fireItemSelectEvent(item);
+        }
     },
     
-    unselectItem: function(item) {
+    unselectItem: function(item, silent) {
         item.removeClass('ui-state-hover ui-state-highlight');
         
         if(PrimeFaces.isIE(8)) {
@@ -167,6 +191,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         
         if(this.cfg.showCheckbox) {
             this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+        }
+        
+        if(silent) {
+            this.fireItemUnselectEvent(item);
         }
     },
     
@@ -327,31 +355,35 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         itemsCount = items.length,
         movedCount = 0;
             
-        items.each(function() {
-            var item = $(this);
+        if(itemsCount) {    
+            items.each(function() {
+                var item = $(this);
 
-            if(!item.is(':first-child')) {
-                
-                if(animated) {
-                    item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                        item.insertBefore(item.prev()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                            movedCount++;
+                if(!item.is(':first-child')) {
 
-                            if(movedCount === itemsCount) {
-                                _self.saveState();
-                            }
+                    if(animated) {
+                        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                            item.insertBefore(item.prev()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                                movedCount++;
+
+                                if(movedCount === itemsCount) {
+                                    _self.saveState();
+                                    _self.fireReorderEvent();
+                                }
+                            });
                         });
-                    });
+                    }
+                    else {
+                        item.hide().insertBefore(item.prev()).show();
+                    }
+
                 }
-                else {
-                    item.hide().insertBefore(item.prev()).show();
-                }
-                
+            });
+
+            if(!animated) {
+                this.saveState();
+                this.fireReorderEvent();
             }
-        });
-        
-        if(!animated) {
-            this.saveState();
         }
         
     },
@@ -363,30 +395,34 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         itemsCount = items.length,
         movedCount = 0;
 
-        list.children('.ui-state-highlight').each(function() {
-            var item = $(this);
+        if(itemsCount) {
+            items.each(function() {
+                var item = $(this);
 
-            if(!item.is(':first-child')) {
-                
-                if(animated) {
-                    item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                        item.prependTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function(){
-                            movedCount++;
-                            
-                            if(movedCount === itemsCount) {
-                                _self.saveState();
-                            }
+                if(!item.is(':first-child')) {
+
+                    if(animated) {
+                        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                            item.prependTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function(){
+                                movedCount++;
+
+                                if(movedCount === itemsCount) {
+                                    _self.saveState();
+                                    _self.fireReorderEvent();
+                                }
+                            });
                         });
-                    });
+                    }
+                    else {
+                        item.hide().prependTo(item.parent()).show();
+                    }
                 }
-                else {
-                    item.hide().prependTo(item.parent()).show();
-                }
+            });
+
+            if(!animated) {
+                this.saveState();
+                this.fireReorderEvent();
             }
-        });
-        
-        if(!animated) {
-            this.saveState();
         }
     },
     
@@ -397,30 +433,34 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         itemsCount = items.length,
         movedCount = 0;
 
-        $(list.children('.ui-state-highlight').get().reverse()).each(function() {
-            var item = $(this);
+        if(itemsCount) {
+            $(items.get().reverse()).each(function() {
+                var item = $(this);
 
-            if(!item.is(':last-child')) {
-                if(animated) {
-                    item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                        item.insertAfter(item.next()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                            movedCount++;
-                            
-                            if(movedCount === itemsCount) {
-                                _self.saveState();
-                            }
+                if(!item.is(':last-child')) {
+                    if(animated) {
+                        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                            item.insertAfter(item.next()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                                movedCount++;
+
+                                if(movedCount === itemsCount) {
+                                    _self.saveState();
+                                    _self.fireReorderEvent();
+                                }
+                            });
                         });
-                    });
+                    }
+                    else {
+                        item.hide().insertAfter(item.next()).show();
+                    }
                 }
-                else {
-                    item.hide().insertAfter(item.next()).show();
-                }
-            }
 
-        });
-        
-        if(!animated) {
-            this.saveState();
+            });
+
+            if(!animated) {
+                this.saveState();
+                this.fireReorderEvent();
+            }
         }
     },
     
@@ -431,31 +471,35 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         itemsCount = items.length,
         movedCount = 0;
 
-        list.children('.ui-state-highlight').each(function() {
-            var item = $(this);
+        if(itemsCount) {
+            items.each(function() {
+                var item = $(this);
 
-            if(!item.is(':last-child')) {
-                
-                if(animated) {
-                    item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                        item.appendTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
-                            movedCount++;
-                            
-                            if(movedCount === itemsCount) {
-                                _self.saveState();
-                            }
+                if(!item.is(':last-child')) {
+
+                    if(animated) {
+                        item.hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                            item.appendTo(item.parent()).show(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                                movedCount++;
+
+                                if(movedCount === itemsCount) {
+                                    _self.saveState();
+                                    _self.fireReorderEvent();
+                                }
+                            });
                         });
-                    });
+                    }
+                    else {
+                        item.hide().appendTo(item.parent()).show();
+                    }
                 }
-                else {
-                    item.hide().appendTo(item.parent()).show();
-                }
-            }
 
-        });
-        
-        if(!animated) {
-            this.saveState();
+            });
+
+            if(!animated) {
+                this.saveState();
+                this.fireReorderEvent();
+            }
         }
     },
     
@@ -543,6 +587,52 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    getListName: function(element){
+        return element.parent().hasClass("ui-picklist-source") ? "source" : "target";
+    },
+            
+    hasBehavior: function(event) {
+        if(this.cfg.behaviors) {
+            return this.cfg.behaviors[event] != undefined;
+        }
+    
+        return false;
+    },
+    
+    fireItemSelectEvent: function(item) {
+        if(this.hasBehavior('select')) {
+            var itemSelectBehavior = this.cfg.behaviors['select'],
+            ext = {
+                params: [
+                    {name: this.id + '_itemIndex', value: item.index()},
+                    {name: this.id + '_listName', value: this.getListName(item)}
+                ]
+            };
+
+            itemSelectBehavior.call(this, ext);
+        }
+    },
+    
+    fireItemUnselectEvent: function(item) {
+        if(this.hasBehavior('unselect')) {
+            var itemUnselectBehavior = this.cfg.behaviors['unselect'],
+            ext = {
+                params: [
+                    {name: this.id + '_itemIndex', value: item.index()},
+                    {name: this.id + '_listName', value: this.getListName(item)}
+                ]
+            };
+
+            itemUnselectBehavior.call(this, ext);
+        }
+    },
+    
+    fireReorderEvent: function() {
+        if(this.hasBehavior('reorder')) {
+            this.cfg.behaviors['reorder'].call(this);
+        }
+    },
+            
     isAnimated: function() {
         return (this.cfg.effect && this.cfg.effect != 'none');
     }

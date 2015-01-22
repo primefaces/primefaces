@@ -14,6 +14,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
+import java.util.HashMap;
+import java.util.Iterator;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
+import org.primefaces.event.ReorderEvent;
 
     public static final String CONTAINER_CLASS = "ui-picklist ui-widget ui-helper-clearfix";
     public static final String LIST_CLASS = "ui-widget-content ui-picklist-list";
@@ -49,7 +54,9 @@ import javax.faces.event.AjaxBehaviorEvent;
     public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("transfer"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("transfer", "select", "unselect", "reorder"));
+
+    private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
 
     @Override
     public Collection<String> getEventNames() {
@@ -82,6 +89,51 @@ import javax.faces.event.AjaxBehaviorEvent;
 		}
 	}
 
+ @Override
+    public void validate(FacesContext context) {
+        super.validate(context);
+        if (isValid() && customEvents != null) {
+            for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext();) {
+                String eventName = customEventIter.next();
+                AjaxBehaviorEvent behaviorEvent = customEvents.get(eventName);
+                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+                String clientId = this.getClientId(context);
+                DualListModel<?> list = (DualListModel<?>) this.getValue();
+                FacesEvent wrapperEvent = null;
+
+                if (eventName.equals("select")) {
+                    String listName = params.get(clientId + "_listName");
+                    int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
+
+                    if (listName.equals("target")) {
+                        wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
+                    } 
+                    else {
+                        wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
+                    }
+                } 
+                else if (eventName.equals("unselect")) {
+                    String listName = params.get(clientId + "_listName");
+                    int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
+
+                    if (listName.equals("target")) {
+                        wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
+                    } 
+                    else {
+                        wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
+                    }
+                } 
+                else if (eventName.equals("reorder")) {
+                    wrapperEvent = behaviorEvent;
+                }
+
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+
+                super.queueEvent(wrapperEvent);
+            }
+        }
+    }
+
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
@@ -104,6 +156,15 @@ import javax.faces.event.AjaxBehaviorEvent;
                 transferEvent.setPhaseId(event.getPhaseId());
 
                 super.queueEvent(transferEvent);
+            }
+            else if (eventName.equals("select")) {
+                customEvents.put(eventName, (AjaxBehaviorEvent) event);
+            }
+            else if (eventName.equals("unselect")) {
+                customEvents.put(eventName, (AjaxBehaviorEvent) event);
+            } 
+            else if (eventName.equals("reorder")) {
+                customEvents.put(eventName, (AjaxBehaviorEvent) event);
             }
         }
         else {
