@@ -186,7 +186,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
 
     show: function() {
-        if(this.jq.hasClass('ui-overlay-visible')) {
+        if(this.isVisible()) {
             return;
         }
 
@@ -203,12 +203,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
 
     _show: function() {
-        //replace visibility hidden with display none for effect support, toggle marker class
-        this.jq.removeClass('ui-overlay-hidden').addClass('ui-overlay-visible').css({
-            'display':'none'
-            ,'visibility':'visible'
-        });
-
         this.moveToTop();
 
         if(this.cfg.showEffect) {
@@ -231,6 +225,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
 
     postShow: function() {
+        PrimeFaces.invokeDeferredRenders(this.id);
+        
         //execute user defined callback
         if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
@@ -245,7 +241,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
 
     hide: function() {
-        if(this.jq.hasClass('ui-overlay-hidden')) {
+        if(!this.isVisible()) {
             return;
         }
 
@@ -311,7 +307,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 var keyCode = $.ui.keyCode,
                 active = parseInt($this.jq.css('z-index')) === PrimeFaces.zindex;
 
-                if(e.which === keyCode.ESCAPE && $this.jq.hasClass('ui-overlay-visible') && active) {
+                if(e.which === keyCode.ESCAPE && $this.isVisible() && active) {
                     $this.hide();
                 };
             });
@@ -402,12 +398,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
 
     onHide: function(event, ui) {
-        //replace display block with visibility hidden for hidden container support, toggle marker class
-        this.jq.removeClass('ui-overlay-visible').addClass('ui-overlay-hidden').css({
-            'display':'block'
-            ,'visibility':'hidden'
-        });
-
         if(this.cfg.behaviors) {
             var closeBehavior = this.cfg.behaviors['close'];
 
@@ -669,7 +659,7 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
     },
 
     isVisible: function() {
-        return this.jq.hasClass('ui-overlay-visible');
+        return this.jq.is(':visible');
     }
 
 });

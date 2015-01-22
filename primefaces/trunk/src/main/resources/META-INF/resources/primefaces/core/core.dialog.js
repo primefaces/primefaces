@@ -9,7 +9,7 @@ PrimeFaces.dialog.DialogHandler = {
         }
 
         var dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
-        dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-overlay-hidden"' + 
+        dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"' + 
                 ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widgetvar="' + dialogWidgetVar + '"></div>')
                 .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span></div>');
         
@@ -73,11 +73,12 @@ PrimeFaces.dialog.DialogHandler = {
                 PF(dialogWidgetVar).titlebar.children('span.ui-dialog-title').html(titleElement.text());
             }
             
-            //adjust height
-            var frameHeight = cfg.options.contentHeight||$frame.get(0).contentWindow.document.body.scrollHeight + 5;
-            $frame.height(frameHeight);
-            
             PF(dialogWidgetVar).show();
+            
+            //adjust height
+            var offset = PrimeFaces.browser.webkit ? 5 : 20,
+            frameHeight = cfg.options.contentHeight||$frame.get(0).contentWindow.document.body.scrollHeight + offset;
+            $frame.height(frameHeight);
             
             dialogFrame.data('initialized', true);
         })
@@ -119,7 +120,7 @@ PrimeFaces.dialog.DialogHandler = {
             
     showMessageInDialog: function(msg) {
         if(!this.messageDialog) {
-            var messageDialogDOM = $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-overlay-hidden"/>')
+            var messageDialogDOM = $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"/>')
                         .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span>' +
                         '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' + 
                         '<div class="ui-dialog-content ui-widget-content" style="height: auto;"></div>')
