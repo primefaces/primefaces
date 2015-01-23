@@ -284,6 +284,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
                 pageY < offset.top ||
                 pageY > offset.top + $this.panel.height()) {
 
+                e.preventDefault();
                 $this.hide();
             }
         });
