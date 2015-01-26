@@ -107,7 +107,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
     }
     
     @Override
-    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd, String theadId) throws IOException {
+    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd, String theadId, String columnGroupName) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ColumnGroup group = table.getColumnGroup("header");
         List<UIColumn> columns = table.getColumns();
