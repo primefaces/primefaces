@@ -701,6 +701,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.value = this.options.filter(':selected').val();
         }
     },
+    
+    triggerItemSelect: function() {
+        if(this.cfg.behaviors) {
+            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+            if(itemSelectBehavior) {
+                itemSelectBehavior.call(this);
+            }
+        }
+    },
 
     /**
      * Handler to process item selection with mouse
@@ -735,6 +744,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(!silent) {
             this.focusInput.focus();
+            this.triggerItemSelect();
         }
 
         if(this.panel.is(':visible')) {

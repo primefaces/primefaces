@@ -46,9 +46,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if(menu.isEditable()) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             
-            decodeBehaviors(context, menu);
-            
             menu.setSubmittedValue(params.get(menu.getClientId(context) + "_editableInput"));
+        
+            decodeBehaviors(context, menu);
         }
         else {
             super.decode(context, component);
@@ -334,6 +334,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .nativeAttr("filterFunction", menu.getFilterFunction(), null)
                 .attr("caseSensitive", menu.isCaseSensitive(), false);
         }
+        
+        encodeClientBehaviors(context, menu);
                 
         wb.finish();
     }

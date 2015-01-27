@@ -4,12 +4,20 @@ import org.primefaces.context.RequestContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.component.UIComponent;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MessageFactory;
+import org.primefaces.util.Constants;
+import org.primefaces.event.SelectEvent;
+import java.util.Map;
 
     public final static String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default ui-corner-all";
     public final static String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield ui-corner-all";
@@ -34,6 +42,29 @@ import org.primefaces.util.MessageFactory;
         }
 
         return columns;
+    }
+
+    @Override
+    public void queueEvent(FacesEvent event) {
+        if(event instanceof AjaxBehaviorEvent) {
+            FacesContext context = getFacesContext();
+            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+            
+            if("itemSelect".equals(eventName)) {
+                Object item = context.getRenderKit().getRenderer("javax.faces.SelectOne", "javax.faces.Menu").getConvertedValue(context, this, this.getSubmittedValue());
+                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
+                selectEvent.setPhaseId(event.getPhaseId());
+                super.queueEvent(selectEvent);
+            }
+            else {
+                super.queueEvent(event);
+            }
+        }
+        else {
+            super.queueEvent(event);
+        }
     }
 
     @Override
