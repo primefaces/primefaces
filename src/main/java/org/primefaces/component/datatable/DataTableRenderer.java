@@ -296,13 +296,13 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-datatable-frozen-container", null);
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeThead(context, table, 0, frozenColumns, clientId + "_frozenThead", "frozen");
+            encodeThead(context, table, 0, frozenColumns, clientId + "_frozenThead", "frozenHeader");
             encodeScrollAreaEnd(context);
 
             encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns, clientId + "_frozenTbody");
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeTFoot(context, table, 0, frozenColumns, "frozen");
+            encodeTFoot(context, table, 0, frozenColumns, "frozenFooter");
             encodeScrollAreaEnd(context);
             writer.endElement("div");
             writer.endElement("td");
@@ -314,13 +314,13 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", "ui-datatable-scrollable-container", null);
             
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeThead(context, table, frozenColumns, columnsCount, clientId + "_scrollableThead", "scrollable");
+            encodeThead(context, table, frozenColumns, columnsCount, clientId + "_scrollableThead", "scrollableHeader");
             encodeScrollAreaEnd(context);
 
             encodeScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, columnsCount, clientId + "_scrollableTbody");
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeTFoot(context, table, frozenColumns, columnsCount, "scrollable");
+            encodeTFoot(context, table, frozenColumns, columnsCount, "scrollableFooter");
             encodeScrollAreaEnd(context);
             writer.endElement("div");
             writer.endElement("td");
