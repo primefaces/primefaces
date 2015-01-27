@@ -4,11 +4,11 @@
     padding:2px;
 }
 
-.ui-paginator .ui-paginator-top {
+.ui-paginator.ui-paginator-top {
     border-bottom:0px none;
 }
 
-.ui-paginator .ui-paginator-bottom {
+.ui-paginator.ui-paginator-bottom {
     border-top:0px none;
 }
 
