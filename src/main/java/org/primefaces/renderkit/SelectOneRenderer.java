@@ -30,8 +30,6 @@ public abstract class SelectOneRenderer extends SelectRenderer {
         
         UISelectOne selectOne = (UISelectOne) component;
 
-        decodeBehaviors(context, selectOne);
-
         String clientId = getSubmitParam(context, selectOne);
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         if(params.containsKey(clientId)) {
@@ -40,6 +38,8 @@ public abstract class SelectOneRenderer extends SelectRenderer {
         else {
             selectOne.setSubmittedValue("");
         }
+        
+        decodeBehaviors(context, selectOne);
     }
     
     protected Object getValues(UISelectOne selectOne) {
