@@ -2530,13 +2530,6 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         
         this.cloneHead();  
         
-        //match headers
-        var frozenTheadHeight = this.frozenThead.height(),
-        scrollTheadHeight = this.scrollThead.height(),
-        theadHeight = Math.max(frozenTheadHeight,scrollTheadHeight);
-        this.scrollThead.height(theadHeight);
-        this.frozenThead.height(theadHeight);
-
         this.restoreScrollState();
 
         if(this.cfg.liveScroll) {
