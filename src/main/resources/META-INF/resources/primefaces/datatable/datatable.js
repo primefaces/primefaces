@@ -42,6 +42,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.makeRowsDraggable();
         }
         
+        if(this.cfg.reflow) {
+            this.initReflow();
+        }
+        
         this.renderDeferred();
     },
     
@@ -86,6 +90,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.draggableRows) {
             this.makeRowsDraggable();
         } 
+        
+        if(this.cfg.reflow) {
+            this.initReflow();
+        }
     },
  
     /**
