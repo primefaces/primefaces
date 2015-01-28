@@ -1982,6 +1982,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     setupResizableColumns: function() {
+        this.hasColumnGroup = this.thead.children('tr').length > 1;
+        if(this.hasColumnGroup) {
+            this.addGhostRow();
+        }
+        
         this.fixColumnWidths();
         
         if(!this.cfg.liveResize) {
@@ -1995,7 +2000,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             
         resizers.draggable({
             axis: 'x',
-            start: function() {
+            start: function(event, ui) {
+                ui.helper.data('originalposition', ui.helper.offset());
+                
                 if($this.cfg.liveResize) {
                     $this.jq.css('cursor', 'col-resize');
                 }
@@ -2057,15 +2064,48 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
     
+    addGhostRow: function() {
+        var dataColumnsCount = this.tbody.find('tr:first').children('td').length,
+        columnMarkup = '';
+
+        for(var i = 0; i < dataColumnsCount; i++) {
+            columnMarkup += '<th style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none;" class="ui-resizable-column"></th>';
+        } 
+        this.thead.prepend('<tr>' + columnMarkup + '</tr>');
+    },
+    
+    findGroupResizer: function(ui) {
+        for(var i = 0; i < this.groupResizers.length; i++) {
+            var groupResizer = this.groupResizers.eq(i);
+            if(groupResizer.offset().left === ui.helper.data('originalposition').left) {
+                return groupResizer;
+            }
+        }
+        
+        return null;
+    },
+    
     addResizers: function() {
         this.thead.find('> tr > th.ui-resizable-column').prepend('<span class="ui-column-resizer">&nbsp;</span>').filter(':last-child')
                 .children('span.ui-column-resizer').hide();
+        
+        if(this.hasColumnGroup) {
+            this.groupResizers = this.thead.find('> tr:first > th > .ui-column-resizer');
+        }
     },
     
     resize: function(event, ui) {
-        var columnHeader = ui.helper.parent(),
-        nextColumnHeader = columnHeader.next(),
-        change = null, newWidth = null, nextColumnWidth = null;
+        var columnHeader, nextColumnHeader, change = null, newWidth = null, nextColumnWidth = null;
+        
+        if(this.hasColumnGroup) {
+            var groupResizer = this.findGroupResizer(ui);
+            columnHeader = groupResizer.parent();
+        }
+        else {
+            columnHeader = ui.helper.parent();
+        }
+        
+        nextColumnHeader = columnHeader.next();
         
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
