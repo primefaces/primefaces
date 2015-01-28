@@ -194,6 +194,8 @@ public class DataTableRenderer extends DataRenderer {
 
         wb.attr("tabindex", table.getTabindex(), null);
         
+        wb.attr("reflow", table.isReflow(), false);
+        
         //Behaviors
         encodeClientBehaviors(context, table);
 
@@ -214,6 +216,7 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isResizableColumns()) containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;
         if(table.isStickyHeader()) containerClass = containerClass + " " + DataTable.STICKY_HEADER_CLASS;
         if(ComponentUtils.isRTL(context, table)) containerClass = containerClass + " " + DataTable.RTL_CLASS;
+        if(table.isReflow()) containerClass = containerClass + " " + DataTable.REFLOW_CLASS;
 
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");

@@ -71,6 +71,7 @@ import org.primefaces.util.SharedStringBuilder;
             
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String TABLE_WRAPPER_CLASS = "ui-datatable-tablewrapper";
+    public static final String REFLOW_CLASS = "ui-datatable-reflow";
     public static final String RTL_CLASS = "ui-datatable-rtl";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
     public static final String DYNAMIC_COLUMN_HEADER_CLASS = "ui-dynamic-column";
@@ -1133,20 +1134,6 @@ import org.primefaces.util.SharedStringBuilder;
         }
     
         return super.saveState(context);
-    }
-    
-    boolean reflow = false;
-    boolean reflowChecked = false;
-    
-    public boolean isReflow() {
-        if(!reflowChecked) {
-            String styleClass = this.getTableStyleClass();
-        
-            reflow = (styleClass != null && styleClass.contains("ui-table-reflow"));
-            reflowChecked = true;
-        }
-        
-        return reflow;
     }
     
    

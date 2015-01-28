@@ -420,6 +420,13 @@
 			<type>java.lang.String</type>
             <description>Position of the element in the tabbing order.</description>
 		</attribute>
+        <attribute>
+			<name>reflow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Reflow mode is a responsive mode to display columns as stacked depending on screen size.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
