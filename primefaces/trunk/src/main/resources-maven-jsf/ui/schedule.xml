@@ -128,30 +128,30 @@
             <description>Determines if all-day slot will be displayed in agendaWeek or agendaDay views. Default is true.</description>
 		</attribute>
 		<attribute>
-			<name>slotMinutes</name>
+			<name>slotDuration</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>30</defaultValue>
-            <description>Interval in minutes in an hour to create a slot. Default is 30.</description>
+			<type>java.lang.String</type>
+			<defaultValue>00:30:00</defaultValue>
+            <description>Interval time to create a slot. Default is 00:30:00.</description>
 		</attribute>
 		<attribute>
-			<name>firstHour</name>
+			<name>scrollTime</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>6</defaultValue>
-            <description>First hour to display in day view. Default is 6.</description>
+			<type>java.lang.String</type>
+			<defaultValue>06:00:00</defaultValue>
+            <description>First hour to display in day view. Default is 06:00:00.</description>
 		</attribute>
 		<attribute>
 			<name>minTime</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Minimum time to display in a day view.</description>
+            <description>Minimum time to display in a day view. Default is 00:00:00.</description>
 		</attribute>
 		<attribute>
 			<name>maxTime</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Maximum time to display in a day view.</description>
+            <description>Maximum time to display in a day view. Default is 24:00:00.</description>
 		</attribute>
         <attribute>
 			<name>axisFormat</name>
@@ -176,13 +176,6 @@
             <required>false</required>
             <type>java.lang.Object</type>
             <description>String or a java.util.TimeZone instance to specify the timezone used for date conversion to ISO_8601 format, defaults to "UTC".</description>
-        </attribute>
-        <attribute>
-            <name>ignoreTimezone</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>When parsing dates, whether UTC offsets should be ignored while processing event data. Default is true</description>
         </attribute>
         <attribute>
             <name>tooltip</name>
