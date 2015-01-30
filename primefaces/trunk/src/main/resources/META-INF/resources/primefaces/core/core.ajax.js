@@ -72,7 +72,7 @@ PrimeFaces.ajax = {
             }
 
             var parameterNamespace = '';
-            if (xhr.pfArgs && xhr.pfArgs.parameterNamespace) {
+            if (xhr && xhr.pfArgs && xhr.pfArgs.parameterNamespace) {
                 parameterNamespace = xhr.pfArgs.parameterNamespace;
             }
 
