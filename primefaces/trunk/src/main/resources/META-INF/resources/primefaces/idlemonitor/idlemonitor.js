@@ -346,6 +346,10 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
     
     resume: function() {
         $.idleTimer('resume');
+    },
+    
+    reset: function() {
+        $.idleTimer('reset');
     }
     
 });
