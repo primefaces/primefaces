@@ -982,7 +982,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     },
     
     bindDataTable: function() {
-        var rowSelector = this.jqTargetId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)',
+        var rowSelector = this.jqTargetId + ' tbody.ui-datatable-data > tr.ui-widget-content.ui-datatable-selectable:not(.ui-datatable-empty-message)',
         event = this.cfg.event + '.datatable',
         $this = this;
         
