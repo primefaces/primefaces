@@ -309,36 +309,43 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        var _self = this;
+        var $this = this;
 
-        $(document).bind("idle.idleTimer", function(){
+        $(document).on("idle.idleTimer", function(){
 
-            if(_self.cfg.onidle) {
-                _self.cfg.onidle.call(_self);
+            if($this.cfg.onidle) {
+                $this.cfg.onidle.call($this);
             }
 
-            if(_self.cfg.behaviors) {
-                var idleBehavior = _self.cfg.behaviors['idle'];
+            if($this.cfg.behaviors) {
+                var idleBehavior = $this.cfg.behaviors['idle'];
                 if(idleBehavior) {
-                    idleBehavior.call(_self);
+                    idleBehavior.call($this);
                 }
             }
-        });
-
-        $(document).bind("active.idleTimer", function(){
-            if(_self.cfg.onactive) {
-                _self.cfg.onactive.call(this);
+        })
+        .on("active.idleTimer", function(){
+            if($this.cfg.onactive) {
+                $this.cfg.onactive.call(this);
             }
 
-            if(_self.cfg.behaviors) {
-                var activeBehavior = _self.cfg.behaviors['active'];
+            if($this.cfg.behaviors) {
+                var activeBehavior = $this.cfg.behaviors['active'];
                 if(activeBehavior) {
-                    activeBehavior.call(_self);
+                    activeBehavior.call($this);
                 }
             }
         });
 
         $.idleTimer(this.cfg.timeout);
+    },
+    
+    pause: function() {
+        $.idleTimer('pause');
+    },
+    
+    resume: function() {
+        $.idleTimer('resume');
     }
     
 });
