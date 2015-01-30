@@ -136,7 +136,9 @@ public class ScheduleRenderer extends CoreRenderer {
 			Calendar c = Calendar.getInstance();
 			c.setTime((Date) schedule.getInitialDate());
             
-            wb.attr("year", c.get(Calendar.YEAR)).attr("month", c.get(Calendar.MONTH)).attr("date", c.get(Calendar.DATE));
+           wb.attr("defaultDate", String.valueOf(c.get(Calendar.YEAR)) + "-" +
+                                   String.valueOf(c.get(Calendar.MONTH)) + "-" +
+                                   String.valueOf(c.get(Calendar.DATE)), null);
 		}
         
         if(schedule.isShowHeader()) {
@@ -151,21 +153,20 @@ public class ScheduleRenderer extends CoreRenderer {
 		}
         
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
-            .attr("slotMinutes", schedule.getSlotMinutes(), 30)
-            .attr("firstHour", schedule.getFirstHour(), 6)
+            .attr("slotDuration", schedule.getSlotDuration(), "00:30:00")
+            .attr("scrollTime", schedule.getScrollTime(), "06:00:00")
             .attr("minTime", schedule.getMinTime(), null)
             .attr("maxTime", schedule.getMaxTime(), null)
             .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
             .attr("weekends", schedule.isShowWeekends(), true)
-            .attr("disableDragging", !schedule.isDraggable(), false)
-            .attr("disableResizing", !schedule.isResizable(), false)
+            .attr("eventStartEditable", schedule.isDraggable(), true)
+            .attr("eventDurationEditable", schedule.isResizable(), true)    
             .attr("axisFormat", schedule.getAxisFormat(), null)
-            .attr("timeFormat", schedule.getTimeFormat(), null)
-            .attr("ignoreTimezone", schedule.isIgnoreTimezone(), true);
+            .attr("timeFormat", schedule.getTimeFormat(), null);
                 
         String columnFormat = schedule.getColumnFormat();
         if(columnFormat != null) {
-            wb.nativeAttr("columnFormat", "{" + columnFormat + "}");
+            wb.attr("columnFormat", columnFormat, null);
         }
             
         encodeClientBehaviors(context, schedule);

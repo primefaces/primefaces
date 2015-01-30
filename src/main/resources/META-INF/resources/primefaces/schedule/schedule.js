@@ -9806,6 +9806,10 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.jqc = $(this.jqId + '_container');
         this.viewNameState = $(this.jqId + '_view');
         
+        if(this.cfg.defaultDate) {
+            this.cfg.defaultDate = moment(this.cfg.defaultDate);
+        }
+        
         this.setupEventSource();
         
         this.configureLocale();
