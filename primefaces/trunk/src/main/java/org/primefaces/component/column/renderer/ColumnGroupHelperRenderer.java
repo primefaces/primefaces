@@ -31,9 +31,9 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
         String type = group.getType();
         DataTableRenderer renderer = (DataTableRenderer) context.getRenderKit().getRenderer("org.primefaces.component", "org.primefaces.component.DataTableRenderer");
         
-        if(type.equals("header"))
+        if(type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader"))
             renderer.encodeColumnHeader(context, table, column);
-        else if(type.equals("footer"))
+        else if(type.equals("footer") || type.equals("frozenFooter") || type.equals("scrollableFooter"))
             renderer.encodeColumnFooter(context, table, column);
     }
     
