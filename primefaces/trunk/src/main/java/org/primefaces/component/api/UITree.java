@@ -68,7 +68,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         ,required
         ,requiredMessage
         ,skipChildren
-        ,showUnselectableCheckbox;
+        ,showUnselectableCheckbox
+        ,nodeVar;
             
 		String toString;
 
@@ -91,21 +92,35 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     public void setRowKey(String rowKey) {
         Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
         saveDescendantState();
+        String nodeVar = this.getNodeVar();
         
         this.rowKey = rowKey;
 
         if(rowKey == null) {
             requestMap.remove(getVar());
             this.rowNode = null;
+            if(nodeVar != null) {
+                requestMap.remove(nodeVar);
+            }
         } 
         else {
             TreeNode root = getValue();
             this.rowNode = findTreeNode(root, rowKey);
             
-            if(this.rowNode != null) 
+            if(this.rowNode != null) {
                 requestMap.put(getVar(), this.rowNode.getData());
-            else 
+                
+                if(nodeVar != null) {
+                    requestMap.put(nodeVar, this.rowNode);
+                }
+            }
+            else { 
                 requestMap.remove(getVar());
+                
+                if(nodeVar != null) {
+                    requestMap.remove(nodeVar);
+                }
+            }
         }
 
         restoreDescendantState();
@@ -128,6 +143,13 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 	}
 	public void setVar(java.lang.String _var) {
 		getStateHelper().put(PropertyKeys.var, _var);
+	}
+    
+    public java.lang.String getNodeVar() {
+		return (String) getStateHelper().eval(PropertyKeys.nodeVar, null);
+	}
+	public void setNodeVar(java.lang.String _nodeVar) {
+		getStateHelper().put(PropertyKeys.nodeVar, _nodeVar);
 	}
     
     public TreeNode getValue() {

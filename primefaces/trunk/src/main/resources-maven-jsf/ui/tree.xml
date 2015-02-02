@@ -207,6 +207,13 @@
 			<defaultValue>0</defaultValue>
             <description>Position of the element in the tabbing order. Default is 0.</description>
 		</attribute>
+        <attribute>
+			<name>nodeVar</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the request-scoped variable that'll be used to refer current treenode using EL.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

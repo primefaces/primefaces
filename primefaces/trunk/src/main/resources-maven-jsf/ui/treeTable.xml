@@ -193,6 +193,13 @@
             <description>Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node. Default is false.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>nodeVar</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the request-scoped variable that'll be used to refer current treenode using EL.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
