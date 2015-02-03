@@ -132,14 +132,28 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>00:30:00</defaultValue>
-            <description>Interval time to create a slot. Default is 00:30:00.</description>
+            <description>The frequency for displaying time slots. Default is 00:30:00.</description>
+		</attribute>
+        <attribute>
+			<name>slotMinutes</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>30</defaultValue>
+            <description>Interval in minutes in an hour to create a slot. Default is 30.</description>
 		</attribute>
 		<attribute>
 			<name>scrollTime</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<defaultValue>06:00:00</defaultValue>
-            <description>First hour to display in day view. Default is 06:00:00.</description>
+            <description>Determines how far down the scroll pane is initially scrolled down. Default is 06:00:00.</description>
+		</attribute>
+        <attribute>
+			<name>firstHour</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>6</defaultValue>
+            <description>First hour to display in day view. Default is 6.</description>
 		</attribute>
 		<attribute>
 			<name>minTime</name>

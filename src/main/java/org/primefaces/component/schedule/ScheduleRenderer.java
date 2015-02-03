@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,6 +36,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ScheduleRenderer extends CoreRenderer {
 
+    private final static Logger logger = Logger.getLogger(ScheduleRenderer.class.getName());
+    
     @Override
 	public void decode(FacesContext context, UIComponent component) {
         Schedule schedule = (Schedule) component;
@@ -152,9 +155,24 @@ public class ScheduleRenderer extends CoreRenderer {
             wb.attr("header", false);
 		}
         
+        //deprecated options
+        String slotDuration = schedule.getSlotDuration();
+        int slotMinutes = schedule.getSlotMinutes();
+        if(slotMinutes != 30) {
+            logger.warning("slotMinutes is deprecated, use slotDuration instead.");
+            slotDuration = "00:" + slotMinutes + ":00";
+        }
+        
+        String scrollTime = schedule.getScrollTime();
+        int firstHour = schedule.getFirstHour();
+        if(firstHour != 6) {
+            logger.warning("firstHour is deprecated, use scrollTime instead.");
+            scrollTime = firstHour + ":00:00";
+        }
+        
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
-            .attr("slotDuration", schedule.getSlotDuration(), "00:30:00")
-            .attr("scrollTime", schedule.getScrollTime(), "06:00:00")
+            .attr("slotDuration", slotDuration, "00:30:00")
+            .attr("scrollTime", scrollTime, "06:00:00")
             .attr("minTime", schedule.getMinTime(), null)
             .attr("maxTime", schedule.getMaxTime(), null)
             .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
