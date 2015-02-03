@@ -139,7 +139,7 @@ public class ScheduleRenderer extends CoreRenderer {
 			Calendar c = Calendar.getInstance();
 			c.setTime((Date) schedule.getInitialDate());
             
-           wb.attr("defaultDate", String.valueOf(c.get(Calendar.YEAR)) + "-" +
+            wb.attr("defaultDate", String.valueOf(c.get(Calendar.YEAR)) + "-" +
                                    String.valueOf(c.get(Calendar.MONTH)) + "-" +
                                    String.valueOf(c.get(Calendar.DATE)), null);
 		}
@@ -170,9 +170,17 @@ public class ScheduleRenderer extends CoreRenderer {
             scrollTime = firstHour + ":00:00";
         }
         
+        String clientTimezone = schedule.getClientTimeZone();
+        boolean ignoreTimezone = schedule.isIgnoreTimezone();
+        if(!ignoreTimezone) {
+            logger.warning("ignoreTimezone is deprecated, use clientTimezone instead with 'local' setting.");
+            clientTimezone = "local";
+        }
+        
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
             .attr("slotDuration", slotDuration, "00:30:00")
             .attr("scrollTime", scrollTime, "06:00:00")
+            .attr("timezone", clientTimezone, null)
             .attr("minTime", schedule.getMinTime(), null)
             .attr("maxTime", schedule.getMaxTime(), null)
             .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
