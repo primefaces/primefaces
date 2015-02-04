@@ -92,7 +92,10 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = table.getTableStyleClass();
         styleClass = (styleClass == null) ? DataTable.MOBILE_TABLE_CLASS : DataTable.MOBILE_TABLE_CLASS + " " + styleClass;
-                
+        if(table.isReflow()) {
+            styleClass = styleClass + " ui-table-reflow";
+        }           
+        
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
         writer.writeAttribute("class", styleClass, null);
