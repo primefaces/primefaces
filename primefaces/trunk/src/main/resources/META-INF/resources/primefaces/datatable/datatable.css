@@ -345,6 +345,12 @@
         text-align: left;
         display: block;
         border: 0px none;
+        width: 100%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		float: left;
+		clear: left;
     }
 
     .ui-datatable-reflow .ui-datatable-data td .ui-column-title { 
