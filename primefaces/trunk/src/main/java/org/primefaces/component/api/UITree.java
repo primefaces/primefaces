@@ -375,12 +375,31 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             return;
         }
         
+        FacesContext context = FacesContext.getCurrentInstance();
         WrapperEvent wrapperEvent = (WrapperEvent) event;
-        FacesEvent originalEvent = wrapperEvent.getFacesEvent();
-        UIComponent originalSource = (UIComponent) originalEvent.getSource();
+        String oldRowKey = this.getRowKey();
         setRowKey(wrapperEvent.getRowKey());
+        FacesEvent originalEvent = wrapperEvent.getFacesEvent();
+        UIComponent source = (UIComponent) originalEvent.getSource();
+        UIComponent compositeParent = null;
         
-        originalSource.broadcast(originalEvent);
+        try {
+            if(!UIComponent.isCompositeComponent(source)) {
+                compositeParent = UIComponent.getCompositeComponentParent(source);
+            }
+            if (compositeParent != null) {
+                compositeParent.pushComponentToEL(context, null);
+            }
+            source.pushComponentToEL(context, null);
+            source.broadcast(originalEvent);
+        } finally {
+            source.popComponentFromEL(context);
+            if (compositeParent != null) {
+                compositeParent.popComponentFromEL(context);
+            }
+        }
+                
+        setRowKey(oldRowKey);
     }
     
     @Override
