@@ -427,6 +427,14 @@
             <defaultValue>false</defaultValue>
             <description>Reflow mode is a responsive mode to display columns as stacked depending on screen size.</description>
 		</attribute>
+        <attribute>
+			<name>liveScrollBuffer</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Percentage height of the buffer between the bottom of the page and the scroll position to initiate
+            the load for the new chunk. Value is defined in integer and default is 0.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

@@ -626,8 +626,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.restoreScrollState();
 
         if(this.cfg.liveScroll) {
-            this.scrollOffset = this.cfg.scrollStep;
+            this.scrollOffset = 0;
+            this.cfg.liveScrollBuffer = (100 - this.cfg.liveScrollBuffer) / 100;
             this.shouldLiveScroll = true;       
+            this.loadingLiveScroll = false;
+            this.allLoadedLiveScroll = $this.cfg.scrollStep >= $this.cfg.scrollLimit;      
         }
         
         this.scrollBody.on('scroll.dataTable', function() {
@@ -640,7 +643,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 scrollHeight = this.scrollHeight,
                 viewportHeight = this.clientHeight;
 
-                if(scrollTop >= (scrollHeight - (viewportHeight))) {
+                if((scrollTop >= ((scrollHeight * $this.cfg.liveScrollBuffer) - (viewportHeight))) && $this.shouldLoadLiveScroll()) {
                     $this.loadLiveRows();
                 }
             }
@@ -668,6 +671,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
     
+    shouldLoadLiveScroll: function() {
+        return (!this.loadingLiveScroll && !this.allLoadedLiveScroll);
+    },
+            
     cloneHead: function() {
         this.theadClone = this.thead.clone();
         this.theadClone.find('th').each(function() {
@@ -814,6 +821,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         
         this.liveScrollActive = true;
+        this.scrollOffset += this.cfg.scrollStep;
+
+        //Disable scroll if there is no more data left
+        if(this.scrollOffset === this.cfg.scrollLimit) {
+            this.shouldLiveScroll = false;
+        }
         
         var $this = this,
         options = {
@@ -831,19 +844,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     handle: function(content) {
                         //insert new rows
                         this.updateData(content, false);
-
-                        this.scrollOffset += this.cfg.scrollStep;
-
-                        //Disable scroll if there is no more data left
-                        if(this.scrollOffset === this.cfg.scrollLimit) {
-                            this.shouldLiveScroll = false;
-                        }
-                        
+ 
                         this.liveScrollActive = false;
                     }
                 });
 
                 return true;
+            },
+            oncomplete: function() {
+                $this.loadingLiveScroll = false;
+                $this.allLoadedLiveScroll = ($this.scrollOffset + $this.cfg.scrollStep) >= $this.cfg.scrollLimit;
             }
         };
 
@@ -2581,8 +2591,11 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.restoreScrollState();
 
         if(this.cfg.liveScroll) {
-            this.scrollOffset = this.cfg.scrollStep;
+            this.scrollOffset = 0;
+            this.cfg.liveScrollBuffer = (100 - this.cfg.liveScrollBuffer) / 100;
             this.shouldLiveScroll = true;       
+            this.loadingLiveScroll = false;
+            this.allLoadedLiveScroll = $this.cfg.scrollStep >= $this.cfg.scrollLimit;            
         }
 
         this.scrollBody.scroll(function() {
@@ -2597,7 +2610,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 scrollHeight = this.scrollHeight,
                 viewportHeight = this.clientHeight;
 
-                if(scrollTop >= (scrollHeight - (viewportHeight))) {
+                if((scrollTop >= ((scrollHeight * $this.cfg.liveScrollBuffer) - (viewportHeight))) && $this.shouldLoadLiveScroll()) {
                     $this.loadLiveRows();
                 }
             }

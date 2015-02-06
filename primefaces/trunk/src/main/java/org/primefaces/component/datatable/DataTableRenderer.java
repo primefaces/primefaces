@@ -167,7 +167,8 @@ public class DataTableRenderer extends DataRenderer {
                 .attr("scrollLimit", table.getRowCount())
                 .attr("scrollWidth", table.getScrollWidth(), null)
                 .attr("scrollHeight", table.getScrollHeight(), null)
-                .attr("frozenColumns", table.getFrozenColumns(), Integer.MIN_VALUE);
+                .attr("frozenColumns", table.getFrozenColumns(), Integer.MIN_VALUE)
+                .attr("liveScrollBuffer", table.getLiveScrollBuffer());
         }
 
         //Resizable/Draggable Columns
