@@ -303,8 +303,12 @@ public class TreeTableRenderer extends CoreRenderer {
             for(UIComponent child : group.getChildren()) {
                 if(child.isRendered() && child instanceof Row) {
                     Row headerRow = (Row) child;
+                    String rowClass = headerRow.getStyleClass();
+                    String rowStyle = headerRow.getStyle();
 
                     writer.startElement("tr", null);
+                    if(rowClass != null) writer.writeAttribute("class", rowClass, null);
+                    if(rowStyle != null) writer.writeAttribute("style", rowStyle, null);
 
                     for(UIComponent headerRowChild : headerRow.getChildren()) {
                         if(headerRowChild.isRendered() && headerRowChild instanceof Column) {
@@ -571,8 +575,12 @@ public class TreeTableRenderer extends CoreRenderer {
             for(UIComponent child : group.getChildren()) {
                 if(child.isRendered() && child instanceof Row) {
                     Row footerRow = (Row) child;
+                    String rowClass = footerRow.getStyleClass();
+                    String rowStyle = footerRow.getStyle();
 
                     writer.startElement("tr", null);
+                    if(rowClass != null) writer.writeAttribute("class", rowClass, null);
+                    if(rowStyle != null) writer.writeAttribute("style", rowStyle, null);
 
                     for(UIComponent footerRowChild : footerRow.getChildren()) {
                         if(footerRowChild.isRendered() && footerRowChild instanceof Column) {
