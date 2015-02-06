@@ -162,12 +162,17 @@ public class PanelGridRenderer extends CoreRenderer {
     
     public void encodeRow(FacesContext context, Row row, String columnRole, String rowClass, String columnClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String style = row.getStyle();
         
         writer.startElement("tr", null);
         if(shouldWriteId(row)) {
             writer.writeAttribute("id", row.getClientId(context), null);
         }
-
+        if(row.getStyleClass() != null) {
+            rowClass += " " + row.getStyleClass();
+        }
+        if(style != null) writer.writeAttribute("style", style, null);
+        
         writer.writeAttribute("class", rowClass, null);
         writer.writeAttribute("role", "row", null);
         

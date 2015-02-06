@@ -717,9 +717,13 @@ public class DataTableRenderer extends DataRenderer {
                 if(child.isRendered()) {
                     if(child instanceof Row) {
                         Row headerRow = (Row) child;
-
+                        String rowClass = headerRow.getStyleClass();
+                        String rowStyle = headerRow.getStyle();
+                        
                         writer.startElement("tr", null);
-
+                        if(rowClass != null) writer.writeAttribute("class", rowClass, null);
+                        if(rowStyle != null) writer.writeAttribute("style", rowStyle, null);
+                        
                         for(UIComponent headerRowChild: headerRow.getChildren()) {
                             if(headerRowChild.isRendered()) {
                                 if(headerRowChild instanceof Column) {
@@ -1037,8 +1041,13 @@ public class DataTableRenderer extends DataRenderer {
                 if(child.isRendered()) {
                     if(child instanceof Row) {
                         Row footerRow = (Row) child;
-
+                        String rowClass = footerRow.getStyleClass();
+                        String rowStyle = footerRow.getStyle();
+                        
                         writer.startElement("tr", null);
+                        if(rowClass != null) writer.writeAttribute("class", rowClass, null);
+                        if(rowStyle != null) writer.writeAttribute("style", rowStyle, null);
+                        
                         for(UIComponent footerRowChild : footerRow.getChildren()) {
                             if(footerRowChild.isRendered()) {
                                 if(footerRowChild instanceof Column) {

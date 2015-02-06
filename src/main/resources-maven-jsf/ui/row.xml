@@ -14,5 +14,17 @@
     <description>Row is a helper component for datatable.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the row.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the row.</description>
+		</attribute>
 	</attributes>
 </component>
