@@ -193,9 +193,9 @@ public class DataTableRenderer extends DataRenderer {
             wb.attr("stickyHeader", true);
         }
 
-        wb.attr("tabindex", table.getTabindex(), null);
-        
-        wb.attr("reflow", table.isReflow(), false);
+        wb.attr("tabindex", table.getTabindex(), null)
+            .attr("reflow", table.isReflow(), false)
+            .attr("rowHover", table.isRowHover(), false);
         
         //Behaviors
         encodeClientBehaviors(context, table);
