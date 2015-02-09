@@ -435,6 +435,13 @@
             <description>Percentage height of the buffer between the bottom of the page and the scroll position to initiate
             the load for the new chunk. Value is defined in integer and default is 0.</description>
 		</attribute>
+        <attribute>
+			<name>rowHover</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Adds hover effect to rows, default is false. Hover is always on when selection is enabled.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

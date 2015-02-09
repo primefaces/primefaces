@@ -20,6 +20,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.bindSortEvents();
+        
+        if(this.cfg.rowHover) {
+            this.setupRowHover();
+        }
 
         if(this.cfg.selectionMode) {
             this.setupSelection();
@@ -324,6 +328,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
     
+    setupRowHover: function() {
+        var selector = '> tr.ui-widget-content';
+        if(!this.cfg.selectionMode) {
+            this.bindRowHover(selector);
+        }
+    },
+    
     setupSelection: function() {
         this.selectionHolder = this.jqId + '_selection';
         this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
@@ -362,10 +373,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     bindRowEvents: function() {
         var $this = this;
-        
-        
-        
-        this.bindRowHover();
+
+        this.bindRowHover(this.rowSelector);
 
         this.tbody.off('click.dataTable', this.rowSelector).on('click.dataTable', this.rowSelector, null, function(e) {
             $this.onRowClick(e, this);
@@ -379,16 +388,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
     },
     
-    bindRowHover: function() {
-        this.tbody.off('mouseenter.dataTable mouseleave.dataTable', this.rowSelector)
-                    .on('mouseenter.dataTable', this.rowSelector, null, function() {
+    bindRowHover: function(selector) {
+        this.tbody.off('mouseenter.dataTable mouseleave.dataTable', selector)
+                    .on('mouseenter.dataTable', selector, null, function() {
                         var element = $(this);
 
                         if(!element.hasClass('ui-state-highlight')) {
                             element.addClass('ui-state-hover');
                         }
                     })
-                    .on('mouseleave.dataTable', this.rowSelector, null, function() {
+                    .on('mouseleave.dataTable', selector, null, function() {
                         var element = $(this);
 
                         if(!element.hasClass('ui-state-highlight')) {
@@ -2753,11 +2762,11 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         return $(this.jqId + '_frozenTbody,' + this.jqId + '_scrollableTbody');
     },
     
-    bindRowHover: function() {
+    bindRowHover: function(selector) {
         var $this = this;
         
-        this.tbody.off('mouseover.datatable mouseout.datatable', this.rowSelector)
-                    .on('mouseover.datatable', this.rowSelector, null, function() {
+        this.tbody.off('mouseover.datatable mouseout.datatable', selector)
+                    .on('mouseover.datatable', selector, null, function() {
                         var row = $(this),
                         twinRow = $this.getTwinRow(row);
                 
@@ -2766,7 +2775,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                             twinRow.addClass('ui-state-hover');
                         }
                     })
-                    .on('mouseout.datatable', this.rowSelector, null, function() {
+                    .on('mouseout.datatable', selector, null, function() {
                         var row = $(this),
                         twinRow = $this.getTwinRow(row);
 
