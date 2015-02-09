@@ -35,6 +35,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.data.PostFilterEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.filter.*;
 import org.primefaces.util.Constants;
@@ -117,6 +118,8 @@ public class FilterFeature implements DataTableFeature {
                     sortFeature.singleSort(context, table);
             }
         }
+        
+        context.getApplication().publishEvent(context, PostFilterEvent.class, table);
                         
         renderer.encodeTbody(context, table, true);
     }

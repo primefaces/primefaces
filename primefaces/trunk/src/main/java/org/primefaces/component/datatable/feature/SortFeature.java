@@ -31,6 +31,7 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.data.PostSortEvent;
 import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.ChainedBeanPropertyComparator;
 import org.primefaces.model.DynamicChainedPropertyComparator;
@@ -118,6 +119,8 @@ public class SortFeature implements DataTableFeature {
                 table.updateFilteredValue(context, (List) filteredValue);
             }
         }
+        
+        context.getApplication().publishEvent(context, PostSortEvent.class, table);
    
         renderer.encodeTbody(context, table, true);
     }
