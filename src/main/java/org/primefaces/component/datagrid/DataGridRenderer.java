@@ -76,6 +76,7 @@ public class DataGridRenderer extends DataRenderer {
         boolean empty = grid.getRowCount() == 0;
         String layout = grid.getLayout();
         String paginatorPosition = grid.getPaginatorPosition();
+        String style = grid.getStyle();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
         String contentClass = empty ? DataGrid.EMPTY_CONTENT_CLASS : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS: DataGrid.GRID_CONTENT_CLASS);
 
@@ -86,6 +87,9 @@ public class DataGridRenderer extends DataRenderer {
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
         
         encodeFacet(context, grid, "header", DataGrid.HEADER_CLASS);
 
