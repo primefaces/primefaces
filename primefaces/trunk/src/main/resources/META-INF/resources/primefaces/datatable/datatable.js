@@ -1089,23 +1089,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     onRowRightClick: function(event, rowElement, cmSelMode) {
-        //Check if rowclick triggered this event not a clickable element in row content
-        if($(event.target).is('td,span:not(.ui-c)')) {
-            var row = $(rowElement),
-            rowMeta = this.getRowMeta(row),
-            selected = row.hasClass('ui-state-highlight');
-               
-            if(cmSelMode === 'single' || !selected) {
-                this.unselectAllRows();
-            }
-               
-            this.selectRow(row, true);
-                                                
-            this.fireRowSelectEvent(rowMeta.key, 'contextMenu');
+        var row = $(rowElement),
+        rowMeta = this.getRowMeta(row),
+        selected = row.hasClass('ui-state-highlight');
 
-            if(this.cfg.disabledTextSelection) {
-                PrimeFaces.clearSelection();
-            }
+        if(cmSelMode === 'single' || !selected) {
+            this.unselectAllRows();
+        }
+
+        this.selectRow(row, true);
+
+        this.fireRowSelectEvent(rowMeta.key, 'contextMenu');
+
+        if(this.cfg.disabledTextSelection) {
+            PrimeFaces.clearSelection();
         }
     },
         
