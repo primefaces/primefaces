@@ -483,8 +483,9 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         var $this = this;
 
         this.jq.on('mousedown.tree', function(e) {
-            //prevent focus on mousedown
-            e.preventDefault();
+            if($(e.target).is(':not(:input:enabled)')) {
+                e.preventDefault();
+            }
         })
         .on('focus.tree', function() {
             if(!$this.focusedNode) {
@@ -493,6 +494,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         });
         
         this.jq.off('keydown.tree blur.tree', '.ui-treenode-label').on('keydown.tree', '.ui-treenode-label', null, function(e) {
+            if(!$this.focusedNode) {
+                return;
+            }
+            
             var searchRowkey = "",
             keyCode = $.ui.keyCode;
             
