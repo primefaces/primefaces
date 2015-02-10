@@ -577,8 +577,10 @@ import org.primefaces.util.SharedStringBuilder;
     }
 
     public void clearLazyCache() {
-        LazyDataModel model = (LazyDataModel) getDataModel();
-        model.setWrappedData(null);
+		if (getDataModel() instanceof LazyDataModel) {
+			LazyDataModel model = (LazyDataModel) getDataModel();
+			model.setWrappedData(null);
+		}
     }
 
     public Map<String,Object> getFilters() {
