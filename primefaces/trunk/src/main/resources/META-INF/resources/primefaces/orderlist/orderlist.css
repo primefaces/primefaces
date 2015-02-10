@@ -42,3 +42,7 @@
 .ui-orderlist.ui-state-disabled .ui-button {
     cursor: default;
 }
+
+.ui-orderlist.ui-state-disabled .ui-orderlist-list {
+    overflow:hidden;
+}
