@@ -269,6 +269,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     protected void encodeFilter(FacesContext context, SelectManyMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String id = menu.getClientId(context) + "_filter";
+        boolean disabled = menu.isDisabled();
+        String filterClass = disabled ? SelectManyMenu.FILTER_CLASS + " ui-state-disabled" : SelectManyMenu.FILTER_CLASS;
         
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectManyMenu.FILTER_CONTAINER_CLASS, null);
@@ -278,12 +280,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.endElement("span");
         
         writer.startElement("input", null);
-        writer.writeAttribute("class", SelectManyMenu.FILTER_CLASS, null);
+        writer.writeAttribute("class", filterClass, null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(disabled) writer.writeAttribute("disabled", "disabled", null);
 
         writer.endElement("input");
         
