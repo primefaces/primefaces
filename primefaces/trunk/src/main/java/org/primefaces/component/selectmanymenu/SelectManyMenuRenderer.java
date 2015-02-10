@@ -283,6 +283,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 
         writer.endElement("input");
         

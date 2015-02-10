@@ -266,6 +266,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        if(listbox.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 
         writer.endElement("input");
         
