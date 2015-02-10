@@ -5,6 +5,21 @@ import javax.faces.event.ActionEvent;
 import javax.el.MethodExpression;
 import javax.faces.component.UIParameter;
 import org.primefaces.util.ComponentUtils;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("click"));
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return "click";
+    }
 
 	public void decode(FacesContext facesContext) {
 		Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
@@ -60,4 +75,16 @@ import org.primefaces.util.ComponentUtils;
 
     public void setParam(String key, Object value) {
         throw new UnsupportedOperationException("Use UIParameter component instead to add parameters.");
+    }
+
+    private String confirmationScript;
+    
+    public String getConfirmationScript() {
+        return this.confirmationScript;
+    }
+    public void setConfirmationScript(String confirmationScript) {
+        this.confirmationScript = confirmationScript;
+    }
+    public boolean requiresConfirmation() {
+        return this.confirmationScript != null;
     }

@@ -64,6 +64,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String containerStyle;
     private String containerStyleClass;
     private String partialSubmitFilter;
+    private String confirmationScript;
     
     public DefaultMenuItem() {}
     
@@ -409,5 +410,16 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
     public void setPartialSubmitFilter(String partialSubmitFilter) {
         this.partialSubmitFilter = partialSubmitFilter;
+    }
+    
+    public String getConfirmationScript() {
+        return this.confirmationScript;
+    }
+    public void setConfirmationScript(String confirmationScript) {
+        this.confirmationScript = confirmationScript;
+    }
+    
+    public boolean requiresConfirmation() {
+        return this.confirmationScript != null;
     }
 }
