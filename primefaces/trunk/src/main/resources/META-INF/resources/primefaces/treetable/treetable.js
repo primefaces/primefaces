@@ -299,6 +299,24 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             PrimeFaces.clearSelection();
         }
     },
+            
+    onRowRightClick: function(event, node) {
+        var selected = node.hasClass('ui-state-highlight');
+        
+        if(this.isCheckboxSelection()) {
+            if(!selected) {
+                this.toggleCheckboxNode(node);
+            }
+        }
+        else {
+            if(this.isSingleSelection() || !selected ) {
+                this.unselectAllNodes();
+            }
+            this.selectNode(node);
+        }
+ 
+        PrimeFaces.clearSelection();        
+    },
     
     selectNode: function(node, silent) {
         var nodeKey = node.attr('data-rk');

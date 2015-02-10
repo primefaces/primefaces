@@ -1019,7 +1019,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         
         $(document).off(event, rowSelector)
                     .on(event, rowSelector, null, function(e) {
-                    	PrimeFaces.widgets[_self.cfg.targetWidgetVar].onRowClick(e, $(this));
+                    	PrimeFaces.widgets[_self.cfg.targetWidgetVar].onRowRightClick(e, $(this));
                         _self.show(e);
                         e.preventDefault();
                     });
