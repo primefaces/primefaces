@@ -289,8 +289,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                         this.cursorNode = node;
                     }
                 }
-                
-                this.focusNode(node);
+
+                if($(event.target).is(':not(:input:enabled)')) {
+                    this.focusNode(node);
+                }
             }
         }
     },
