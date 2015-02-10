@@ -252,6 +252,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
     protected void encodeFilter(FacesContext context, SelectOneListbox listbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String id = listbox.getClientId(context) + "_filter";
+        boolean disabled = listbox.isDisabled();
+        String filterClass = disabled ? SelectOneListbox.FILTER_CLASS + " ui-state-disabled" : SelectOneListbox.FILTER_CLASS;
         
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneListbox.FILTER_CONTAINER_CLASS, null);
@@ -261,12 +263,12 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.endElement("span");
         
         writer.startElement("input", null);
-        writer.writeAttribute("class", SelectOneListbox.FILTER_CLASS, null);
+        writer.writeAttribute("class", filterClass, null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        if(listbox.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(disabled) writer.writeAttribute("disabled", "disabled", null);
 
         writer.endElement("input");
         
