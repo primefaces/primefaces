@@ -17,8 +17,9 @@ package org.primefaces.model.menu;
 
 import java.util.List;
 import java.util.Map;
+import org.primefaces.component.api.Confirmable;
 
-public interface MenuItem extends MenuElement {
+public interface MenuItem extends MenuElement, Confirmable {
         
     public String getIcon();
     

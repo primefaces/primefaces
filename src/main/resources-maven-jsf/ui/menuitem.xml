@@ -20,7 +20,13 @@
 		</interface>
         <interface>
 			<name>org.primefaces.model.menu.MenuItem</name>
-		</interface>     
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.Confirmable</name>
+		</interface> 
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>  
 	</interfaces>
 	<attributes>
 		&command_component_attributes;

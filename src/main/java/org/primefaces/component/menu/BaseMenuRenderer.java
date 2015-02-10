@@ -17,6 +17,7 @@ package org.primefaces.component.menu;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -25,9 +26,13 @@ import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
+import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.context.RequestContext;
@@ -155,6 +160,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 writer.writeAttribute("onclick", "return false;", null);
             }
             else {
+                setConfirmationScript(context, menuitem);
                 String onclick = menuitem.getOnclick();
                 
                 //GET
@@ -196,7 +202,13 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 }
                 
                 if(onclick != null) {
-                    writer.writeAttribute("onclick", onclick, null);
+                    if(menuitem.requiresConfirmation()) {
+                        writer.writeAttribute("data-pfconfirmcommand", onclick, null);
+                        writer.writeAttribute("onclick", menuitem.getConfirmationScript(), "onclick");
+                    }
+                    else {
+                        writer.writeAttribute("onclick", onclick, null);
+                    }
                 }
             }
 
@@ -205,6 +217,24 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             writer.endElement("a");
 		}
 	}
+    
+    protected void setConfirmationScript(FacesContext context, MenuItem item) {
+        if(item instanceof ClientBehaviorHolder) {
+            Map<String,List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) item).getClientBehaviors();
+            List<ClientBehavior> clickBehaviors = (behaviors == null) ? null : behaviors.get("click");
+            
+            if(clickBehaviors != null && !clickBehaviors.isEmpty()) {
+                for(int i = 0; i < clickBehaviors.size(); i++) {
+                    ClientBehavior clientBehavior = clickBehaviors.get(i);
+                    if(clientBehavior instanceof ConfirmBehavior) {
+                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) item, "click", item.getClientId(), Collections.EMPTY_LIST);
+                        clientBehavior.getScript(cbc);
+                        break;
+                    }
+                }
+            }
+        }
+    }
     
     protected boolean shouldRenderId(MenuElement element) {
         if(element instanceof UIComponent)
