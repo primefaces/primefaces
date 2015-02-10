@@ -28,6 +28,11 @@
     overflow:auto;
 }
 
+.ui-selectonelistbox.ui-state-disabled .ui-selectlistbox-listcontainer, 
+.ui-selectmanymenu.ui-state-disabled .ui-selectlistbox-listcontainer {
+    overflow:hidden;
+}
+
 .ui-selectonelistbox .ui-selectlistbox-list,
 .ui-selectmanymenu .ui-selectlistbox-list,
 .ui-multiselectlistbox .ui-multiselectlistbox-list {
