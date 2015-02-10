@@ -37,7 +37,6 @@ public class CommandButtonRenderer extends org.primefaces.component.commandbutto
 		writer.startElement("button", button);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
-        writer.writeAttribute("type", type, null);
         writer.writeAttribute("class", button.resolveMobileStyleClass(), null);
         
 		if (onclick != null) {
