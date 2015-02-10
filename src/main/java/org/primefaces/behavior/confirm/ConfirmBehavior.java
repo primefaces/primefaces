@@ -38,7 +38,8 @@ public class ConfirmBehavior extends ClientBehaviorBase {
         String messageText = JSONObject.quote(this.getMessage());
         
         if(component instanceof Confirmable) {
-            String script = "PrimeFaces.confirm({source:\"" + source + "\",header:" + headerText + ",message:" + messageText + ",icon:\"" + getIcon()  + "\"});return false;";
+            String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
+            String script = "PrimeFaces.confirm({" + sourceProperty + ",header:" + headerText + ",message:" + messageText + ",icon:\"" + getIcon()  + "\"});return false;";
             ((Confirmable) component).setConfirmationScript(script);
 
             return null;

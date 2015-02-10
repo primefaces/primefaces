@@ -145,7 +145,7 @@ PrimeFaces.dialog.DialogHandler = {
             
     confirm: function(msg) {
         if(PrimeFaces.confirmDialog) {
-            PrimeFaces.confirmSource = $(PrimeFaces.escapeClientId(msg.source));
+            PrimeFaces.confirmSource = (typeof(msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);
             PrimeFaces.confirmDialog.showMessage(msg);
         }
         else {
