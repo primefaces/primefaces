@@ -1531,7 +1531,8 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         this.listContainer = this.jq.children('.ui-selectlistbox-listcontainer');
         this.listElement = this.listContainer.children('.ui-selectlistbox-list');
         this.options = $(this.input).children('option');
-        this.items = this.listElement.find('.ui-selectlistbox-item:not(.ui-state-disabled)');
+        this.allItems = this.listElement.find('.ui-selectlistbox-item');
+        this.items = this.allItems.filter(':not(.ui-state-disabled)');
 
         //scroll to selected
         var selected = this.options.filter(':selected:not(:disabled)');
@@ -1721,9 +1722,9 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                         endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
 
                         for(var i = startIndex ; i < endIndex; i++) {
-                            var it = $this.items.eq(i);
+                            var it = $this.allItems.eq(i);
 
-                            if(it.is(':visible')) {
+                            if(!it.hasClass('ui-state-disabled')) {
                                 $this.selectItem(it);
                             }
                         }
