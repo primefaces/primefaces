@@ -210,7 +210,9 @@ public class DataTableRenderer extends DataRenderer {
         boolean hasPaginator = table.isPaginator();
         String style = table.getStyle();
         String paginatorPosition = table.getPaginatorPosition();
-                        
+        int frozenColumns = table.getFrozenColumns();
+        boolean hasFrozenColumns = (frozenColumns != Integer.MIN_VALUE);
+        
         //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
@@ -218,7 +220,8 @@ public class DataTableRenderer extends DataRenderer {
         if(table.isStickyHeader()) containerClass = containerClass + " " + DataTable.STICKY_HEADER_CLASS;
         if(ComponentUtils.isRTL(context, table)) containerClass = containerClass + " " + DataTable.RTL_CLASS;
         if(table.isReflow()) containerClass = containerClass + " " + DataTable.REFLOW_CLASS;
-
+        if(hasFrozenColumns) containerClass = containerClass + " ui-datatable-frozencolumn";
+        
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", containerClass, "styleClass");
