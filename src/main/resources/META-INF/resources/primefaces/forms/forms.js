@@ -1377,9 +1377,17 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
             });
 
             this.input.on('focus.selectBooleanCheckbox', function() {
+                if($(this).prop('checked')) {
+                    $this.box.removeClass('ui-state-active');
+                }
+
                 $this.box.addClass('ui-state-focus');
             })
             .on('blur.selectBooleanCheckbox', function() {
+                if($(this).prop('checked')) {
+                    $this.box.addClass('ui-state-active');
+                }
+
                 $this.box.removeClass('ui-state-focus');
             })
             .on('keydown.selectBooleanCheckbox', function(e) {
@@ -1392,6 +1400,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 var keyCode = $.ui.keyCode;
                 if(e.which === keyCode.SPACE) {
                     $this.toggle();
+                    $this.input.trigger('focus');
 
                     e.preventDefault();
                 }
@@ -1406,6 +1415,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
             //toggle state on label click
             this.itemLabel.click(function() {
                 $this.toggle();
+                $this.input.trigger('focus');
             });
         }
 
