@@ -58,6 +58,11 @@ public class DialogRenderer extends org.primefaces.component.dialog.DialogRender
         String styleClass = dialog.getStyleClass();
         styleClass = (styleClass == null) ? Dialog.MOBILE_CONTAINER_CLASS : Dialog.MOBILE_CONTAINER_CLASS + " " + styleClass;
 
+        writer.startElement("div", dialog);
+        writer.writeAttribute("id", clientId + "_mask", null);
+        writer.writeAttribute("class", Dialog.MOBILE_MASK_CLASS, null);
+        writer.endElement("div");
+        
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
@@ -65,11 +70,16 @@ public class DialogRenderer extends org.primefaces.component.dialog.DialogRender
             writer.writeAttribute("style", style, null);
         }
         
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Dialog.MOBILE_POPUP_CLASS, null);
+        
         if(dialog.isShowHeader()) {
             encodeHeader(context, dialog);
         }
         
         encodeContent(context, dialog);
+        
+        writer.endElement("div");
 
         writer.endElement("div");
     }

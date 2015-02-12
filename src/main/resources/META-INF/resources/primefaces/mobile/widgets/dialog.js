@@ -5,14 +5,23 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        this.content = this.jq.children('.ui-content');
-        this.titlebar = this.jq.children('.ui-header');
-        this.closeIcon = this.titlebar.children('.ui-icon-delete');
+        this.popupElement = this.jq.children('.ui-popup');
+        this.mask = this.jq.prev('.ui-popup-screen');
+        this.content = this.popupElement.children('.ui-content');
+        this.header = this.popupElement.children('.ui-header');
+        this.closeIcon = this.header.children('.ui-icon-delete');
         
-        this.jq.popup({
+        //cleanup duplicate masks due to ajax update
+        var orphanMask = this.mask.prev('.ui-popup-screen');
+        if(orphanMask.length) {
+            orphanMask.remove();
+        } 
+        
+        this.popupElement.popup({
             positionTo: 'window',
             dismissible: false,
-            overlayTheme: 'b'
+            overlayTheme: 'b',
+            enhanced: true
         });
     
         this.bindEvents();
@@ -28,10 +37,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
-        this.jq.removeClass('ui-dialog-container').popup('open', {transition:this.cfg.showEffect});
+        this.popupElement.popup('open', {transition:this.cfg.showEffect});
     },
     
     hide: function() {
-        this.jq.popup('close');
+        this.popupElement.popup('close');
     }
 });
