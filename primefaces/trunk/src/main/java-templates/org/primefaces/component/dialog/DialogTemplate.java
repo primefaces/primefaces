@@ -22,7 +22,9 @@ import javax.el.ELContext;
     public static final String CONTENT_CLASS = "ui-dialog-content ui-widget-content";
     public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-content";
 
-    public static final String MOBILE_CONTAINER_CLASS = "ui-dialog-container";
+    public static final String MOBILE_CONTAINER_CLASS = "ui-popup-container ui-popup-hidden ui-popup-truncate";
+    public static final String MOBILE_POPUP_CLASS = "ui-popup ui-body-inherit ui-overlay-shadow ui-corner-all";
+    public static final String MOBILE_MASK_CLASS = "ui-popup-screen ui-overlay-b ui-screen-hidden";
     public static final String MOBILE_TITLE_BAR_CLASS = "ui-header ui-bar-inherit";
     public static final String MOBILE_TITLE_CLASS = "ui-title";
     public static final String MOBILE_CONTENT_CLASS = "ui-content";
