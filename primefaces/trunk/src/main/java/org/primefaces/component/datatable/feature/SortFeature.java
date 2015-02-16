@@ -119,9 +119,7 @@ public class SortFeature implements DataTableFeature {
                 table.updateFilteredValue(context, (List) filteredValue);
             }
         }
-        
-        context.getApplication().publishEvent(context, PostSortEvent.class, table);
-   
+
         renderer.encodeTbody(context, table, true);
     }
             
@@ -148,6 +146,8 @@ public class SortFeature implements DataTableFeature {
             throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
         
         Collections.sort(list, new BeanPropertyComparator(sortByVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort(), table.resolveDataLocale(), table.getNullSortOrder()));
+    
+        context.getApplication().publishEvent(context, PostSortEvent.class, table);
     }
     
     public void multiSort(FacesContext context, DataTable table) {
@@ -187,6 +187,8 @@ public class SortFeature implements DataTableFeature {
         }
         
         Collections.sort(list, chainedComparator);
+        
+        context.getApplication().publishEvent(context, PostSortEvent.class, table);
     }
 
     public boolean shouldDecode(FacesContext context, DataTable table) {
