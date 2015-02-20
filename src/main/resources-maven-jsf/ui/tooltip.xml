@@ -100,6 +100,24 @@
             <defaultValue>false</defaultValue>
             <description>Tooltip position follows pointer on mousemove, default is false</description>
 		</attribute>
+        <attribute>
+			<name>beforeShow</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute before tooltip is shown. Returning false will prevent display.</description>
+		</attribute>
+        <attribute>
+			<name>onHide</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute after tooltip is shown.</description>
+		</attribute>
+        <attribute>
+			<name>onShow</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute after tooltip is shown.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
