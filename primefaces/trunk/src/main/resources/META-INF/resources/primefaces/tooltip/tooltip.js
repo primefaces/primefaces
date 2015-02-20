@@ -12,6 +12,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.hideEffect = this.cfg.hideEffect ? this.cfg.hideEffect : 'fade';
         this.cfg.showDelay = this.cfg.showDelay||150;
         this.cfg.hideDelay = this.cfg.hideDelay||0;
+        this.cfg.hideEffectDuration = this.cfg.target ? 250 : 1;
         
         if(this.cfg.target)
             this.bindTarget();
@@ -203,7 +204,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         
         if(this.isVisible()) {
-            this.jq.hide(this.cfg.hideEffect, {}, 250, function() {
+            this.jq.hide(this.cfg.hideEffect, {}, this.cfg.hideEffectDuration, function() {
                 $(this).css('z-index', '');
                 if($this.cfg.trackMouse) {
                     $this.unfollowMouse();
