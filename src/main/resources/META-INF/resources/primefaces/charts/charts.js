@@ -22306,6 +22306,19 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         this.bindItemSelect();
         this.plot = $.jqplot(this.jqpid, this.cfg.data, this.cfg);
         this.adjustLegendTable();
+        
+        if(this.cfg.responsive) {
+            this.makeResponsive();
+        }
+    },
+    
+    makeResponsive: function() {
+        var $this = this,
+        resizeNS = 'resize.' + this.id;
+        
+        $(window).off(resizeNS).on(resizeNS, function() {
+            $this.plot.replot({resetAxes: true});
+        });
     },
             
     adjustLegendTable: function() {

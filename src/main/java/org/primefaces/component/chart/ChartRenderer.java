@@ -92,6 +92,9 @@ public class ChartRenderer extends CoreRenderer {
         writer.write("PrimeFaces.cw('Chart','" + chart.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",type:'" + type + "'");
+        
+        if(chart.isResponsive()) writer.write(",responsive:true");
+        
         plotRenderer.render(context, chart);
         encodeClientBehaviors(context, chart);
 		writer.write("},'charts');});");
