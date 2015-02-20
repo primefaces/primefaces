@@ -83,7 +83,10 @@ public class TooltipRenderer extends CoreRenderer {
             .attr("target", target, null)
             .attr("globalSelector", tooltip.getGlobalSelector(), null)
             .attr("escape", tooltip.isEscape(), true)
-            .attr("trackMouse", tooltip.isTrackMouse(), false);
+            .attr("trackMouse", tooltip.isTrackMouse(), false)
+            .callback("beforeShow", "function()", tooltip.getBeforeShow())
+            .callback("onShow", "function()", tooltip.getOnShow())
+            .callback("onHide", "function()", tooltip.getOnHide());
         
 		wb.finish();
 	}

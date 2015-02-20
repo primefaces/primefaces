@@ -159,13 +159,30 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             this.clearTimeout();
 
             this.timeout = setTimeout(function() {
-                $this.align();
-                if($this.cfg.trackMouse) {
-                    $this.followMouse();
-                }
-                $this.jq.show($this.cfg.showEffect, {}, 250);
+                $this._show();
             }, this.cfg.showDelay);
         }
+    },
+    
+    _show: function() {
+        var $this = this;
+        
+        if(this.cfg.beforeShow) {
+            var retVal = this.cfg.beforeShow.call(this);
+            if(retVal === false) {
+                return;
+            }
+        }
+        
+        this.align();
+        if(this.cfg.trackMouse) {
+            this.followMouse();
+        }
+        this.jq.show(this.cfg.showEffect, {}, 250, function() {
+            if($this.cfg.onShow) {
+                $this.cfg.onShow.call();
+            }
+        });
     },
     
     hide: function() {
@@ -185,12 +202,18 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     _hide: function() {
         var $this = this;
         
-        this.jq.hide(this.cfg.hideEffect, {}, 250, function() {
-            $(this).css('z-index', '');
-            if($this.cfg.trackMouse) {
-                $this.unfollowMouse();
-            }
-        });
+        if(this.isVisible()) {
+            this.jq.hide(this.cfg.hideEffect, {}, 250, function() {
+                $(this).css('z-index', '');
+                if($this.cfg.trackMouse) {
+                    $this.unfollowMouse();
+                }
+
+                if($this.cfg.onHide) {
+                    $this.cfg.onHide.call();
+                }
+            });
+        }
     },
     
     clearTimeout: function() {
@@ -214,6 +237,10 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     
     unfollowMouse: function() {
         this.target.off('mousemove.tooltip-track'); 
+    },
+    
+    isVisible: function() {
+        return this.jq.is(':visible');
     }
     
 });
