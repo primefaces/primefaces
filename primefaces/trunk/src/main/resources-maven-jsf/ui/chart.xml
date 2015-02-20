@@ -47,6 +47,13 @@
 			<type>java.lang.String</type>
 			<description>Style class of the component.</description>
 		</attribute>
+        <attribute>
+			<name>responsive</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+			<description>In responsive mode, chart is redrawn when window is resized.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
