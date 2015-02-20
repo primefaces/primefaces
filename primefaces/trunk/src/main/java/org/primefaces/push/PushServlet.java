@@ -61,37 +61,31 @@ public class PushServlet extends AtmosphereServlet {
         super(isFilter, autoDetectHandlers);
     }
 
-    protected PushServlet configureFramework(ServletConfig sc) throws ServletException {
-        if (framework == null) {
-            framework = (AtmosphereFramework) sc.getServletContext().getAttribute(AtmosphereFramework.class.getName());
-            if (framework == null) {
-                framework = newAtmosphereFramework();
-            }
-        }
 
-        //framework.setUseStreamForFlushingComments(false);
-        framework.interceptor(new AtmosphereResourceLifecycleInterceptor())
+    protected PushServlet configureFramework(ServletConfig sc) throws ServletException {
+        super.configureFramework(sc, false);
+        framework().interceptor(new AtmosphereResourceLifecycleInterceptor())
                 .interceptor(new TrackMessageSizeInterceptor())
                 .addAnnotationPackage(PushEndpointProcessor.class);
 
-        framework.getAtmosphereConfig().startupHook(new AtmosphereConfig.StartupHook() {
+        framework().getAtmosphereConfig().startupHook(new AtmosphereConfig.StartupHook() {
             public void started(AtmosphereFramework framework) {
                 configureMetaBroadcasterCache(framework);
             }
         });
 
-        framework.init(sc);
+        framework().init(sc);
 
-        PushContextFactory pcf = new PushContextFactory(framework.getAtmosphereConfig().metaBroadcaster());
+        PushContextFactory pcf = new PushContextFactory(framework().getAtmosphereConfig().metaBroadcaster());
         PushContext c = pcf.getPushContext();
         if (PushContextImpl.class.isAssignableFrom(c.getClass())) {
             framework().asyncSupportListener(PushContextImpl.class.cast(c));
         }
 
-        EventBusFactory f = new EventBusFactory(framework.getAtmosphereConfig().metaBroadcaster());
-        framework.getAtmosphereConfig().properties().put("evenBus", f.eventBus());
+        EventBusFactory f = new EventBusFactory(framework().getAtmosphereConfig().metaBroadcaster());
+        framework().getAtmosphereConfig().properties().put("evenBus", f.eventBus());
 
-        if (framework.getAtmosphereHandlers().size() == 0) {
+        if (framework().getAtmosphereHandlers().size() == 0) {
             logger.error("No Annotated class using @PushEndpoint found. Push will not work.");
         }
         return this;
@@ -102,14 +96,4 @@ public class PushServlet extends AtmosphereServlet {
         m.cache(new MetaBroadcaster.ThirtySecondsCache(m, framework.getAtmosphereConfig()));
     }
 
-    protected AtmosphereFramework newAtmosphereFramework() {
-        return new AtmosphereFramework(isFilter, autoDetectHandlers);
-    }
-
-    public AtmosphereFramework framework() {
-        if (framework == null) {
-            framework = newAtmosphereFramework();
-        }
-        return framework;
-    }
 }
