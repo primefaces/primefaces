@@ -16,8 +16,8 @@
 package org.primefaces.component.schedule;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
@@ -135,13 +135,11 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("tooltip", schedule.isTooltip(), false)
             .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false);
         
-        if(schedule.getInitialDate() != null) {
-			Calendar c = Calendar.getInstance();
-			c.setTime((Date) schedule.getInitialDate());
+        Object initialDate = schedule.getInitialDate();
+        if(initialDate != null) {
+            DateFormat fmt = new SimpleDateFormat("YYYY-MM-dd");
             
-            wb.attr("defaultDate", String.valueOf(c.get(Calendar.YEAR)) + "-" +
-                                   String.valueOf(c.get(Calendar.MONTH)) + "-" +
-                                   String.valueOf(c.get(Calendar.DATE)), null);
+            wb.attr("defaultDate",fmt.format((Date) initialDate), null);
 		}
         
         if(schedule.isShowHeader()) {
