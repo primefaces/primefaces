@@ -594,6 +594,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     });
     },
     
+    initReflow: function() {
+        var headerColumns = this.thead.find('> tr > th');
+        
+        for(var i = 0; i < headerColumns.length; i++) {
+            var headerColumn = headerColumns.eq(i),
+            title = headerColumn.children('.ui-column-title').text();
+            this.tbody.find('> tr > td:nth-child(' + (i + 1) + ')').prepend('<span class="ui-column-title">' + title + '</span>');
+        }
+    },
+    
     setupScrolling: function() {
         this.scrollHeader = this.jq.children('.ui-datatable-scrollable-header');
         this.scrollBody = this.jq.children('.ui-datatable-scrollable-body');
