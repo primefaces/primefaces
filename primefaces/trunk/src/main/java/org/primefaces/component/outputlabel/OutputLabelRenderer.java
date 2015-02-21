@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
@@ -100,17 +101,19 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         if (input != null && label.isIndicateRequired()) {
 
+            ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+            
             if (input.isRequired()) {
                 encodeRequiredIndicator(writer, label);
             }
             // if transformMetadataEnabled, skip the @NotNull checking...
             // the BeanValidationInputMetadataTransformer will set the marker to true or false
-            else if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isTransformMetadataEnabled()) {
+            else if (config.isTransformMetadataEnabled()) {
                 if (AbstractInputMetadataTransformer.isMarkedAsRequired(input)) {
                     encodeRequiredIndicator(writer, label);    
                 }
             }
-            else if (isNotNullDefined(input, context)) {
+            else if (config.isBeanValidationAvailable() && isNotNullDefined(input, context)) {
                 encodeRequiredIndicator(writer, label);
             }
         }
@@ -126,7 +129,7 @@ public class OutputLabelRenderer extends CoreRenderer {
     }
     
     protected boolean isNotNullDefined(UIInput input, FacesContext context) {
-        
+
         Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
                 context, RequestContext.getCurrentInstance(), input.getValueExpression("value"));
         if (constraints != null && !constraints.isEmpty()) {
