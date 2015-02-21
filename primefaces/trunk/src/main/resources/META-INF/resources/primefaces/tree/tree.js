@@ -397,6 +397,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         
     isExpanded: function(node) {
         return this.getNodeChildrenContainer(node).is(':visible');
+    },
+    
+    focusNode: function() {
+        throw "Unsupported Operation";
     }
     
 });
@@ -1504,6 +1508,10 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
             
     isEmpty: function() {
         return this.jq.children('table').length === 0;
+    },
+    
+    focusNode: function(node) {
+        //focus not supported in horizontal mode
     }
     
 });
