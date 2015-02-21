@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class CheckboxTreeNodeChildren extends ArrayList<TreeNode> {
+public class CheckboxTreeNodeChildren extends TreeNodeList {
 
     private TreeNode parent;
     

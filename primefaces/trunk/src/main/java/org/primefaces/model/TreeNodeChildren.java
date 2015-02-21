@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class TreeNodeChildren extends ArrayList<TreeNode> {
+public class TreeNodeChildren extends TreeNodeList {
 
     private TreeNode parent;
     

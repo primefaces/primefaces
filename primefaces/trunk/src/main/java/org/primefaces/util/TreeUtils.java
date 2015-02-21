@@ -18,7 +18,7 @@ package org.primefaces.util;
 import java.util.Arrays;
 import java.util.Comparator;
 import org.primefaces.model.TreeNode;
-import org.primefaces.model.TreeNodeChildren;
+import org.primefaces.model.TreeNodeList;
 
 /**
  * Utilities for Tree components.
@@ -32,7 +32,7 @@ public class TreeUtils {
      * @param comparator Comparator to use in sorting
      */
     public static void sortNode(TreeNode node, Comparator comparator) {
-        TreeNodeChildren children = (TreeNodeChildren) node.getChildren();
+        TreeNodeList children = (TreeNodeList) node.getChildren();
         
         if(children != null && !children.isEmpty()) {
             Object[] childrenArray = children.toArray();
