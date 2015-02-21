@@ -715,6 +715,9 @@ public class TreeTableRenderer extends CoreRenderer {
         SortOrder sortOrder = SortOrder.valueOf(tt.getSortOrder().toUpperCase(Locale.ENGLISH));
         TreeUtils.sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction(), tt.isCaseSensitiveSort(), tt.resolveDataLocale()));
         tt.updateRowKeys(root);
+        
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.addCallbackParam("selection", tt.getSelectedRowKeysAsString());
     }
 
     protected void renderNativeCheckbox(FacesContext context, TreeTable tt, boolean checked, boolean partialSelected) throws IOException {

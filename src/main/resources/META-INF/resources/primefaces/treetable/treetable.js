@@ -186,6 +186,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     });
 
                 return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                $this.jqSelection.val(args.selection);
             }
         };
         
