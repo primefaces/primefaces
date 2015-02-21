@@ -104,11 +104,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
 		return parent;
 	}
 	
-	public void setParent(TreeNode parent) {
-        if(this.parent != null) {
-            this.parent.getChildren().remove(this);
-        }
-        
+	public void setParent(TreeNode parent) {        
         this.parent = parent;
 	}
     
