@@ -362,8 +362,8 @@
 			<name>frozenColumns</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
-            <description>Number of columns to freeze from the start index 0.</description>
+            <defaultValue>0</defaultValue>
+            <description>Number of columns to freeze, default is 0.</description>
 		</attribute>
         <attribute>
 			<name>draggableRows</name>
