@@ -124,7 +124,7 @@ public class DataTableRenderer extends DataRenderer {
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
 		String clientId = table.getClientId(context);
         String selectionMode = table.resolveSelectionMode();
-        String widgetClass = (table.getFrozenColumns() == Integer.MIN_VALUE) ? "DataTable" : "FrozenDataTable";
+        String widgetClass = (table.getFrozenColumns() == 0) ? "DataTable" : "FrozenDataTable";
         String initMode = table.getInitMode();
         
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -167,7 +167,7 @@ public class DataTableRenderer extends DataRenderer {
                 .attr("scrollLimit", table.getRowCount())
                 .attr("scrollWidth", table.getScrollWidth(), null)
                 .attr("scrollHeight", table.getScrollHeight(), null)
-                .attr("frozenColumns", table.getFrozenColumns(), Integer.MIN_VALUE)
+                .attr("frozenColumns", table.getFrozenColumns(), 0)
                 .attr("liveScrollBuffer", table.getLiveScrollBuffer());
         }
 
@@ -211,7 +211,7 @@ public class DataTableRenderer extends DataRenderer {
         String style = table.getStyle();
         String paginatorPosition = table.getPaginatorPosition();
         int frozenColumns = table.getFrozenColumns();
-        boolean hasFrozenColumns = (frozenColumns != Integer.MIN_VALUE);
+        boolean hasFrozenColumns = (frozenColumns != 0);
         
         //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
@@ -287,7 +287,7 @@ public class DataTableRenderer extends DataRenderer {
         String tableStyle = table.getTableStyle();
         String tableStyleClass = table.getTableStyleClass();
         int frozenColumns = table.getFrozenColumns();
-        boolean hasFrozenColumns = (frozenColumns != Integer.MIN_VALUE);
+        boolean hasFrozenColumns = (frozenColumns != 0);
         ResponseWriter writer = context.getResponseWriter();
         String clientId = table.getClientId(context);
         int columnsCount = table.getColumns().size();
