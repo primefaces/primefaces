@@ -44,3 +44,54 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.popupElement.popup('close');
     }
 });
+
+/**
+ * PrimeFaces Mobile ConfirmDialog Widget
+ */
+PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
+
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.title = this.header.children('.ui-title');
+        this.message = this.content.children('.ui-title');
+
+        if(this.cfg.global) {
+            PrimeFaces.confirmDialog = this;
+
+            this.content.find('.ui-confirmdialog-yes').on('click.ui-confirmdialog', function(e) {                
+                if(PrimeFaces.confirmSource) {
+                    var fn = new Function('event',PrimeFaces.confirmSource.data('pfconfirmcommand'));
+                    
+                    fn.call(PrimeFaces.confirmSource.get(0),e);
+                    PrimeFaces.confirmDialog.hide();
+                    PrimeFaces.confirmSource = null;
+                }
+                
+                e.preventDefault();
+            });
+
+            this.jq.find('.ui-confirmdialog-no').on('click.ui-confirmdialog', function(e) {
+                PrimeFaces.confirmDialog.hide();
+                PrimeFaces.confirmSource = null;
+                
+                e.preventDefault();
+            });
+        }
+    },
+
+    applyFocus: function() {
+        this.jq.find(':button,:submit').filter(':visible:enabled').eq(0).focus();
+    },
+            
+    showMessage: function(msg) {
+        if(msg.header)
+            this.title.text(msg.header);
+        
+        if(msg.message)
+            this.message.text(msg.message);
+        
+        this.show();
+    }
+
+});
