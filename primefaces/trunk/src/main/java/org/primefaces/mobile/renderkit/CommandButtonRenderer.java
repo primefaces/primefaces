@@ -39,8 +39,13 @@ public class CommandButtonRenderer extends org.primefaces.component.commandbutto
 		writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("class", button.resolveMobileStyleClass(), null);
         
-		if (onclick != null) {
-            writer.writeAttribute("onclick", onclick, "onclick");
+		if(onclick != null) {
+            if(button.requiresConfirmation()) {
+                writer.writeAttribute("data-pfconfirmcommand", onclick, null);
+                writer.writeAttribute("onclick", button.getConfirmationScript(), "onclick");
+            }
+            else
+                writer.writeAttribute("onclick", onclick, "onclick");
 		}
 		
         renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);

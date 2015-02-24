@@ -10,6 +10,16 @@ PrimeFaces.getCoreScriptName = function() {
     return 'primefaces-mobile.js';
 };
 
+PrimeFaces.confirm = function(msg) {
+    if(PrimeFaces.confirmDialog) {
+        PrimeFaces.confirmSource = (typeof(msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);
+        PrimeFaces.confirmDialog.showMessage(msg);
+    }
+    else {
+        PrimeFaces.warn('No global confirmation dialog available.');
+    }
+}
+
 PrimeFaces.Mobile = {
     
     navigate: function(to, cfg) {

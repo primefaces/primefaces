@@ -390,6 +390,12 @@
         
         <renderer>
             <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ConfirmDialogRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.ConfirmDialogRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.TabViewRenderer</renderer-type>
             <renderer-class>org.primefaces.mobile.renderkit.TabViewRenderer</renderer-class>
         </renderer>
