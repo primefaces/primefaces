@@ -28,11 +28,14 @@ public class SortEvent extends AjaxBehaviorEvent {
 	private UIColumn sortColumn;
     
     private boolean ascending;
+
+    private int sortColumnIndex;
 	
-	public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order) {
+	public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order, int sortColumnIndex) {
 		super(component, behavior);
 		this.sortColumn = sortColumn;
         this.ascending = order.equals(SortOrder.ASCENDING);
+        this.sortColumnIndex = sortColumnIndex;
 	}
 
 	@Override
@@ -51,5 +54,9 @@ public class SortEvent extends AjaxBehaviorEvent {
 
     public UIColumn getSortColumn() {
         return sortColumn;
+    }
+
+    public int getSortColumnIndex() {
+        return sortColumnIndex;
     }
 }

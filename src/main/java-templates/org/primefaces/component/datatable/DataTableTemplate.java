@@ -286,20 +286,22 @@ import org.primefaces.util.SharedStringBuilder;
             else if(eventName.equals("sort")) {
                 SortOrder order;
                 UIColumn sortColumn;
-                
+                int sortColumnIndex = 0;
+
                 if(isMultiSort()) {
                     String[] sortDirs = params.get(clientId + "_sortDir").split(",");
                     String[] sortKeys = params.get(clientId + "_sortKey").split(",");
                     
                     order = SortOrder.valueOf(((SortFeature) FEATURES.get(DataTableFeatureKey.SORT)).convertSortOrderParam(sortDirs[sortDirs.length - 1]));
                     sortColumn = findColumn(sortKeys[sortKeys.length - 1]);
+                    sortColumnIndex = sortKeys.length - 1;
                 } 
                 else {
                     order = SortOrder.valueOf(((SortFeature) FEATURES.get(DataTableFeatureKey.SORT)).convertSortOrderParam(params.get(clientId + "_sortDir")));
                     sortColumn = findColumn(params.get(clientId + "_sortKey"));
                 }
                 
-                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order);
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order, sortColumnIndex);
             }
             else if(eventName.equals("filter")) {
                 wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredValue());
