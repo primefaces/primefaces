@@ -55,7 +55,10 @@ public class MessagesRenderer extends UINotificationRenderer {
             UIComponent forComponent = SearchExpressionFacade.resolveComponent(
             		context, uiMessages, _for, SearchExpressionFacade.Options.IGNORE_NO_RESULT);
             if (forComponent != null) {
-                messages = new IteratorChain(messages, context.getMessages(forComponent.getClientId(context)));
+                Iterator<FacesMessage> temp = context.getMessages(forComponent.getClientId(context));
+                if (temp != null && temp.hasNext()) {
+                    messages = new IteratorChain(messages, temp);
+                }
             }
         }
         else {

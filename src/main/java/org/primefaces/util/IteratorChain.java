@@ -227,7 +227,7 @@ public class IteratorChain implements Iterator {
     protected void updateCurrentIterator() {
         if (currentIterator == null) {
             if (iteratorChain.isEmpty()) {
-                currentIterator = Collections.emptyIterator();
+                currentIterator = Collections.emptyList().iterator();
             } else {
                 currentIterator = (Iterator) iteratorChain.get(0);
             }
