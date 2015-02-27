@@ -1946,7 +1946,6 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
 
 });
 
-
 /**
  * PrimeFaces SelectBooleanButton Widget
  */
@@ -1962,18 +1961,39 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
 
         //bind events if not disabled
         if(!this.disabled) {
-            this.jq.mouseover(function() {
+            this.jq.on('mouseover', function() {
                 if(!$this.jq.hasClass('ui-state-active')) {
                     $this.jq.addClass('ui-state-hover');
                 }
-            }).mouseout(function() {
-                if(!$this.jq.hasClass('ui-state-active')) {
-                    $this.jq.removeClass('ui-state-hover');
-                }
-            }).click(function() {
+            }).on('mouseout', function() {
+                $this.jq.removeClass('ui-state-hover');
+            })
+            .on('click', function() {
                 $this.toggle();
+                $this.input.trigger('focus');
             });
         }
+        
+        this.input.on('focus', function() {
+            $this.jq.addClass('ui-state-focus');
+        })
+        .on('blur', function() {
+            $this.jq.removeClass('ui-state-focus');
+        })
+        .on('keydown', function(e) {
+            var keyCode = $.ui.keyCode;
+            if(e.which === keyCode.SPACE) {
+                e.preventDefault();
+            }
+        })
+        .on('keyup', function(e) {
+            var keyCode = $.ui.keyCode;
+            if(e.which === keyCode.SPACE) {
+                $this.toggle();
+
+                e.preventDefault();
+            }
+        });
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -1981,7 +2001,7 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
 
     toggle: function() {
         if(!this.disabled) {
-            if(this.jq.hasClass('ui-state-active'))
+            if(this.input.prop('checked'))
                 this.uncheck();
             else
                 this.check();
