@@ -386,10 +386,28 @@ import org.primefaces.util.SharedStringBuilder;
             }
         }
         
-        //header columns
+        //header columns        
+        if(this.getFrozenColumns() > 0) {
+            UIColumn column = findColumnInGroup(clientId, this.getColumnGroup("frozenHeader"));
+            if(column == null) {
+                column = findColumnInGroup(clientId, this.getColumnGroup("scrollableHeader"));
+            }
+            
+            if(column != null) {
+                return column;
+            }
+        }
+        else {
+            return findColumnInGroup(clientId, this.getColumnGroup("header"));
+        }
+
+        throw new FacesException("Cannot find column with key: " + clientId);
+    }
+    
+    public UIColumn findColumnInGroup(String clientId, ColumnGroup group) {
         FacesContext context = this.getFacesContext();
-        ColumnGroup headerGroup = this.getColumnGroup("header");
-        for(UIComponent row : headerGroup.getChildren()) {
+        
+        for(UIComponent row : group.getChildren()) {
             for(UIComponent rowChild : row.getChildren()) {
                 if(rowChild instanceof Column) {
                     if(rowChild.getClientId(context).equals(clientId)) {
@@ -407,10 +425,10 @@ import org.primefaces.util.SharedStringBuilder;
                 }
             }
         }
-       
-        throw new FacesException("Cannot find column with key: " + clientId);
+        
+        return null;
     }
-
+    
     public ColumnGroup getColumnGroup(String target) {
         for(UIComponent child : this.getChildren()) {
             if(child instanceof ColumnGroup) {
