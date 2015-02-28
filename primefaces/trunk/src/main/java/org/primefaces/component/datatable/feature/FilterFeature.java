@@ -238,82 +238,107 @@ public class FilterFeature implements DataTableFeature {
     public List<FilterMeta> populateFilterMetaData(FacesContext context, DataTable table) {
         List<FilterMeta> filterMetadata = new ArrayList<FilterMeta>();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-        String var = table.getVar();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        
-        ColumnGroup group = getColumnGroup(table, "header");
-        if(group != null) {
-            for(UIComponent child : group.getChildren()) {
-                Row headerRow = (Row) child;
-
-                if(headerRow.isRendered()) {
-                    for(UIComponent headerRowChild : headerRow.getChildren()) {
-                        if(headerRowChild instanceof Column) {
-                            Column column = (Column) headerRowChild;
-                            if(column.isRendered()) {
-                                ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
-                                if(columnFilterByVE != null) {
-                                    ValueExpression filterByVE = columnFilterByVE;
-                                    UIComponent filterFacet = column.getFacet("filter");
-                                    Object filterValue = (filterFacet == null) ? params.get(column.getClientId(context) + separator + "filter") : ((ValueHolder) filterFacet).getLocalValue(); 
-
-                                    filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
-                                }
-                            }
-                        }
-                        else if(headerRowChild instanceof Columns) {
-                            Columns uiColumns = (Columns) headerRowChild;
-                            List<DynamicColumn> dynamicColumns = uiColumns.getDynamicColumns();
-
-                            for(DynamicColumn dynaColumn : dynamicColumns) {
-                                dynaColumn.applyStatelessModel();
-                                if(dynaColumn.isRendered()) {
-                                    ValueExpression columnFilterByVE = dynaColumn.getValueExpression("filterBy");
-                                    if(columnFilterByVE != null) {
-                                        String filterId = dynaColumn.getContainerClientId(context) + separator + "filter";
-                                        UIComponent filterFacet = dynaColumn.getFacet("filter"); 
-                                        Object filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
-
-                                        filterMetadata.add(new FilterMeta(dynaColumn, columnFilterByVE, filterValue));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } 
+        boolean hasFrozenColumns = table.getFrozenColumns() > 0;
+                        
+        if(!hasFrozenColumns) {
+            ColumnGroup headerGroup = getColumnGroup(table, "header");
+            
+            if(headerGroup != null)
+                populateFilterMetaDataInColumnGroup(context, filterMetadata, headerGroup, params, separator);
+            else
+                populateFilterMetaDataWithoutColumnGroups(context, table, filterMetadata, params, separator);
+        }
         else {
-            for(UIColumn column : table.getColumns()) {
-                ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
-                
-                if (columnFilterByVE != null) {
-                    UIComponent filterFacet = column.getFacet("filter");                    
-                    ValueExpression filterByVE = columnFilterByVE;
-                    Object filterValue = null;
-                    String filterId = null;
-                    
-                    if(column instanceof Column) {
-                        filterId = column.getClientId(context) + separator + "filter";
-                    }
-                    else if(column instanceof DynamicColumn) {
-                        DynamicColumn dynamicColumn = (DynamicColumn) column;
-                        dynamicColumn.applyStatelessModel();
-                        filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
-                        dynamicColumn.cleanStatelessModel();
-                    }
-                    
-                    if(filterFacet == null)
-                        filterValue = params.get(filterId);
-                    else
-                        filterValue = ((ValueHolder) filterFacet).getLocalValue();
-
-                    filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
-                }
+            ColumnGroup frozenHeaderGroup = getColumnGroup(table, "frozenHeader");
+            ColumnGroup scrollableHeaderGroup = getColumnGroup(table, "scrollableHeader");
+            
+            if(frozenHeaderGroup != null) {
+                populateFilterMetaDataInColumnGroup(context, filterMetadata, frozenHeaderGroup, params, separator);
+                populateFilterMetaDataInColumnGroup(context, filterMetadata, scrollableHeaderGroup, params, separator);
+            }
+            else {
+                populateFilterMetaDataWithoutColumnGroups(context, table, filterMetadata, params, separator);
             }
         }
 
-      return filterMetadata;
+        return filterMetadata;
+    }
+    
+    private void populateFilterMetaDataInColumnGroup(FacesContext context, List<FilterMeta> filterMetadata, ColumnGroup group, Map<String,String> params, String separator) {
+        if(group == null) {
+            return;
+        }
+       
+       for(UIComponent child : group.getChildren()) {
+            Row headerRow = (Row) child;
+
+            if(headerRow.isRendered()) {
+                for(UIComponent headerRowChild : headerRow.getChildren()) {
+                    if(headerRowChild instanceof Column) {
+                        Column column = (Column) headerRowChild;
+                        if(column.isRendered()) {
+                            ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
+                            if(columnFilterByVE != null) {
+                                ValueExpression filterByVE = columnFilterByVE;
+                                UIComponent filterFacet = column.getFacet("filter");
+                                Object filterValue = (filterFacet == null) ? params.get(column.getClientId(context) + separator + "filter") : ((ValueHolder) filterFacet).getLocalValue(); 
+
+                                filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
+                            }
+                        }
+                    }
+                    else if(headerRowChild instanceof Columns) {
+                        Columns uiColumns = (Columns) headerRowChild;
+                        List<DynamicColumn> dynamicColumns = uiColumns.getDynamicColumns();
+
+                        for(DynamicColumn dynaColumn : dynamicColumns) {
+                            dynaColumn.applyStatelessModel();
+                            if(dynaColumn.isRendered()) {
+                                ValueExpression columnFilterByVE = dynaColumn.getValueExpression("filterBy");
+                                if(columnFilterByVE != null) {
+                                    String filterId = dynaColumn.getContainerClientId(context) + separator + "filter";
+                                    UIComponent filterFacet = dynaColumn.getFacet("filter"); 
+                                    Object filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+
+                                    filterMetadata.add(new FilterMeta(dynaColumn, columnFilterByVE, filterValue));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+   
+   private void populateFilterMetaDataWithoutColumnGroups(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, Map<String,String> params, String separator) {
+       for(UIColumn column : table.getColumns()) {
+            ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
+
+            if (columnFilterByVE != null) {
+                UIComponent filterFacet = column.getFacet("filter");                    
+                ValueExpression filterByVE = columnFilterByVE;
+                Object filterValue = null;
+                String filterId = null;
+
+                if(column instanceof Column) {
+                    filterId = column.getClientId(context) + separator + "filter";
+                }
+                else if(column instanceof DynamicColumn) {
+                    DynamicColumn dynamicColumn = (DynamicColumn) column;
+                    dynamicColumn.applyStatelessModel();
+                    filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
+                    dynamicColumn.cleanStatelessModel();
+                }
+
+                if(filterFacet == null)
+                    filterValue = params.get(filterId);
+                else
+                    filterValue = ((ValueHolder) filterFacet).getLocalValue();
+
+                filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
+            }
+        }
    }
     
    private ColumnGroup getColumnGroup(DataTable table, String target) {
