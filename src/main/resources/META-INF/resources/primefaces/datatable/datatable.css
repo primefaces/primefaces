@@ -236,6 +236,10 @@
 }
 
 /* Frozen Columns */
+.ui-datatable table.ui-datatable-fs {
+    width:auto;
+}
+
 .ui-datatable .ui-datatable-frozenlayout-left,
 .ui-datatable .ui-datatable-frozenlayout-right {
     padding: 0;
