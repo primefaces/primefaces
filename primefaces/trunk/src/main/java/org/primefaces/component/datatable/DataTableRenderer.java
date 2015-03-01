@@ -294,6 +294,7 @@ public class DataTableRenderer extends DataRenderer {
         
         if(hasFrozenColumns) {
             writer.startElement("table", null);
+            writer.writeAttribute("class", "ui-datatable-fs", null);
             writer.startElement("tbody", null);
             writer.startElement("tr", null);
             
