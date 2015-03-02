@@ -181,7 +181,7 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         if(calendar.isShowOtherMonths()) {
-            wb.attr("showOtherMonths", true).attr("selectOtherMonths", true);
+            wb.attr("showOtherMonths", true).attr("selectOtherMonths", calendar.isSelectOtherMonths());
         }
 
         if(calendar.hasTime()) {
