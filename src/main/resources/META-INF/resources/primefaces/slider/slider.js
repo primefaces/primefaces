@@ -60,7 +60,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             
                 default:
                     var metaKey = e.metaKey||e.ctrlKey, 
-                    isNumber = (key >= 48 && key <= 57);
+                    isNumber = (key >= 48 && key <= 57) || (key >= 96 && key <= 105);
                     
                     //prevent special characters with alt and shift
                     if(e.altKey || (e.shiftKey && !(key === keyCode.UP || key === keyCode.DOWN || key === keyCode.LEFT || key === keyCode.RIGHT))) {
