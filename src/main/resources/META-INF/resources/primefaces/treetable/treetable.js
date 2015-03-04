@@ -188,7 +188,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 return true;
             },
             oncomplete: function(xhr, status, args) {
-                if($this.cfg.selectionMode) {
+                if($this.cfg.selectionMode && args.selection) {
                     $this.selections = args.selection.split(',');
                     $this.writeSelections();
                 }
