@@ -12,6 +12,7 @@ import org.primefaces.component.datatable.DataTable;
             while(parent != null) {
                 if(parent instanceof DataTable) {
                     parentTable = (DataTable) parent;
+                    break;
                 }
 
                 parent = parent.getParent();
