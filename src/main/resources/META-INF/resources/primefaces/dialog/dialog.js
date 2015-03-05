@@ -663,3 +663,42 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
     }
 
 });
+
+/**
+ * PrimeFaces Dynamic Dialog Widget for Dialog Framework
+ */ 
+PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
+      
+    //@Override
+    show: function() {
+        if(this.jq.hasClass('ui-overlay-visible')) {
+            return;
+        }
+
+        if(!this.positionInitialized) {
+            this.initPosition();
+        }
+
+        this._show();
+    },
+    
+    //@Override
+    _show: function() {
+        //replace visibility hidden with display none for effect support, toggle marker class
+        this.jq.removeClass('ui-overlay-hidden').addClass('ui-overlay-visible').css({
+            'display':'none'
+            ,'visibility':'visible'
+        });
+        
+        this.moveToTop();
+        
+        this.jq.show();
+
+        this.postShow();
+
+        if(this.cfg.modal) {
+            this.enableModality();
+        }
+    }
+    
+});

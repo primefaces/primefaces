@@ -9,7 +9,7 @@ PrimeFaces.dialog.DialogHandler = {
         }
 
         var dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
-        dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"' + 
+        dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container ui-overlay-hidden"' + 
                 ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widgetvar="' + dialogWidgetVar + '"></div>')
                 .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span></div>');
         
@@ -36,7 +36,7 @@ PrimeFaces.dialog.DialogHandler = {
             titleElement = $frame.contents().find('title');
             
             if(!$frame.data('initialized')) {
-                PrimeFaces.cw('Dialog', dialogWidgetVar, {
+                PrimeFaces.cw('DynamicDialog', dialogWidgetVar, {
                     id: dialogId,
                     position: 'center',
                     sourceComponentId: cfg.sourceComponentId,
