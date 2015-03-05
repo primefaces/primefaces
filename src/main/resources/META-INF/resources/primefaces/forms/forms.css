@@ -343,6 +343,13 @@
     margin-top: -8px; 
 }
 
+/* FontAwesome icon */
+.ui-button-icon-only .ui-icon.fa, 
+.ui-button-text-icon-left .ui-icon.fa, 
+.ui-button-text-icon-right .ui-icon.fa {  
+    margin-top: -7px; 
+}
+
 .ui-button-icon-only .ui-icon { 
     left: 50%; 
     margin-left: -8px; 
