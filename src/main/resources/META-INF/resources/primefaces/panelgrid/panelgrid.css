@@ -19,6 +19,15 @@
     padding: 4px 10px;
 }
 
+.ui-panelgrid.ui-noborder .ui-panelgrid-cell {
+    border: 0px none;
+}
+
+.ui-panelgrid.ui-noborder tr.ui-widget-content,
+.ui-panelgrid.ui-noborder tr.ui-widget-header {
+    border: 0px none;
+}
+
 /* Grid CSS */
 .ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
     border: 0 none;
