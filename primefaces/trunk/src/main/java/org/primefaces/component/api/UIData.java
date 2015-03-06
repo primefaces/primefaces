@@ -30,6 +30,7 @@
  */
 package org.primefaces.component.api;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +43,7 @@ import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
 import javax.faces.application.StateManager;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitCallback;
@@ -51,6 +53,7 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
+import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.model.ArrayDataModel;
 import javax.faces.model.DataModel;
@@ -91,6 +94,7 @@ public class UIData extends javax.faces.component.UIData {
     private Map<String, Object> _rowDeltaStates = new HashMap<String, Object>();
     private Map<String, Object> _rowTransientStates = new HashMap<String, Object>();
     private Object _initialDescendantFullComponentState = null;
+    private Boolean isNested = null;
     
     protected enum PropertyKeys {
         paginator
@@ -272,6 +276,7 @@ public class UIData extends javax.faces.component.UIData {
         }
         
         pushComponentToEL(context, this);
+        preDecode(context);
         processPhase(context, PhaseId.APPLY_REQUEST_VALUES);
         decode(context);
         popComponentFromEL(context);
@@ -286,6 +291,7 @@ public class UIData extends javax.faces.component.UIData {
         pushComponentToEL(context, this);
         Application app = context.getApplication();
         app.publishEvent(context, PreValidateEvent.class, this);
+        preValidate(context);
         processPhase(context, PhaseId.PROCESS_VALIDATIONS);
         app.publishEvent(context, PostValidateEvent.class, this);
         popComponentFromEL(context);
@@ -298,6 +304,7 @@ public class UIData extends javax.faces.component.UIData {
         }
         
         pushComponentToEL(context, this);
+        preUpdate(context);
         processPhase(context, PhaseId.UPDATE_MODEL_VALUES);
         popComponentFromEL(context);
     }
@@ -1332,6 +1339,87 @@ public class UIData extends javax.faces.component.UIData {
             values[0] = super.saveState(context);
             values[1] = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
             return values;
+        }
+    }
+    
+    private Boolean isNestedWithinIterator() {
+        if (isNested == null) {
+            UIComponent parent = this;
+            while (null != (parent = parent.getParent())) {
+                if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")) {
+                    isNested = Boolean.TRUE;
+                    break;
+                }
+            }
+            if (isNested == null) {
+                isNested = Boolean.FALSE;
+            }
+            return isNested;
+        } else {
+            return isNested;
+        }
+    }
+    
+    private void preDecode(FacesContext context) {
+        setDataModel(null);
+        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
+        if (null == saved || !keepSaved(context)) {
+            getStateHelper().remove(PropertyKeys.saved);
+        }
+    }
+    
+    private void preValidate(FacesContext context) {
+        if (isNestedWithinIterator()) {
+            setDataModel(null);
+        }
+    }
+
+    private void preUpdate(FacesContext context) {
+        if (isNestedWithinIterator()) {
+            setDataModel(null);
+        }
+    }
+    
+    private void preEncode(FacesContext context) {
+        setDataModel(null);
+        if (!keepSaved(context)) {
+ 
+            getStateHelper().remove(PropertyKeys.saved);
+        }
+    }
+    
+    private boolean keepSaved(FacesContext context) {
+        return (contextHasErrorMessages(context) || isNestedWithinIterator());
+    }
+    
+    private boolean contextHasErrorMessages(FacesContext context) {
+        FacesMessage.Severity sev = context.getMaximumSeverity();
+        return (sev != null && (FacesMessage.SEVERITY_ERROR.compareTo(sev) >= 0));
+    }
+    
+    @Override
+    public void encodeBegin(FacesContext context) throws IOException {
+
+        preEncode(context);
+        
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
+        pushComponentToEL(context, null);
+
+        if (!isRendered()) {
+            return;
+        }
+
+        context.getApplication().publishEvent(context, PreRenderComponentEvent.class, this);
+
+        String rendererType = getRendererType();
+        if (rendererType != null) {
+            Renderer renderer = this.getRenderer(context);
+            if (renderer != null) {
+                renderer.encodeBegin(context, this);
+            }
         }
     }
 }
