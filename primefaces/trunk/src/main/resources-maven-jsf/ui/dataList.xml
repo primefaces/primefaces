@@ -146,6 +146,14 @@
             <type>java.lang.String</type>
             <description>Style class of an item in list. This option is useful to assign specific styles to certain items using an EL expression.</description>
         </attribute>
+        <attribute>
+			<name>rowStatePreserved</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Keeps state of its children on a per-row basis. Default is false.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
     </attributes>
     <resources>
         <resource>

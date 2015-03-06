@@ -132,6 +132,14 @@
             <defaultValue>tabular</defaultValue>
             <description>Layout approach to use, valid values are "tabular" (default) and "grid" for responsive grid.</description>
 		</attribute>
+        <attribute>
+			<name>rowStatePreserved</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Keeps state of its children on a per-row basis. Default is false.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
     </attributes>
     <resources>
         <resource>
