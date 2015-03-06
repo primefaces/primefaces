@@ -13,17 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * Copyright 2009-2014 PrimeTek.
+ *
+ * Licensed under PrimeFaces Commercial License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.primefaces.org/elite/license.xhtml
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.primefaces.component.api;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
+import javax.faces.application.StateManager;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -69,6 +88,9 @@ public class UIData extends javax.faces.component.UIData {
     private StringBuilder idBuilder = new StringBuilder();
     private DataModel model = null;
     private Object oldVar = null;
+    private Map<String, Object> _rowDeltaStates = new HashMap<String, Object>();
+    private Map<String, Object> _rowTransientStates = new HashMap<String, Object>();
+    private Object _initialDescendantFullComponentState = null;
     
     protected enum PropertyKeys {
         paginator
@@ -82,7 +104,8 @@ public class UIData extends javax.faces.component.UIData {
         ,rowIndex
         ,rowIndexVar
         ,saved
-        ,lazy;
+        ,lazy
+        ,rowStatePreserved;
 
         String toString;
 
@@ -165,6 +188,13 @@ public class UIData extends javax.faces.component.UIData {
 	}
 	public void setRowIndexVar(java.lang.String _rowIndexVar) {
 		getStateHelper().put(PropertyKeys.rowIndexVar, _rowIndexVar);
+	}
+    
+    public boolean isRowStatePreserved() {
+		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.rowStatePreserved, false);
+	}
+	public void setRowStatePreserved(boolean _paginator) {
+		getStateHelper().put(PropertyKeys.rowStatePreserved, _paginator);
 	}
     
     public void calculateFirst() {
@@ -423,12 +453,104 @@ public class UIData extends javax.faces.component.UIData {
     
     @Override
     public void setRowIndex(int rowIndex) {
-        saveDescendantState();
-
-        setRowModel(rowIndex);
-
-        restoreDescendantState();
+        if(isRowStatePreserved()) {
+            setRowIndexRowStatePreserved(rowIndex);
+        }
+        else {
+            setRowIndexWithoutRowStatePreserved(rowIndex);
+        }
     }
+    
+    //Row State preserved implementation is taken from Mojarra
+    private void setRowIndexRowStatePreserved(int rowIndex) {
+        if(rowIndex < -1) {
+            throw new IllegalArgumentException("rowIndex is less than -1");
+        }
+
+        if(getRowIndex() == rowIndex) {
+            return;
+        }
+
+        FacesContext facesContext = getFacesContext();
+
+        if(_initialDescendantFullComponentState != null) {
+            //Just save the row
+            Map<String, Object> sm = saveFullDescendantComponentStates(facesContext, null, getChildren().iterator(), false);
+            if(sm != null && !sm.isEmpty()) {
+                _rowDeltaStates.put(getContainerClientId(facesContext), sm);
+            }
+            
+            if(getRowIndex() != -1) {
+                _rowTransientStates.put(getContainerClientId(facesContext), saveTransientDescendantComponentStates(facesContext, null, getChildren().iterator(), false));
+            }
+        }
+
+        // Update to the new row index        
+        //this.rowIndex = rowIndex;
+        getStateHelper().put(PropertyKeys.rowIndex, rowIndex);
+        DataModel localModel = getDataModel();
+        localModel.setRowIndex(rowIndex);
+        
+        // if rowIndex is -1, clear the cache
+        if (rowIndex == -1) {
+            setDataModel(null);
+        }
+        
+        // Clear or expose the current row data as a request scope attribute
+        String var = this.getVar();
+        if (var != null) {
+            Map<String, Object> requestMap =
+                  getFacesContext().getExternalContext().getRequestMap();
+            if (rowIndex == -1) {
+                oldVar = requestMap.remove(var);
+            } else if (isRowAvailable()) {
+                requestMap.put(var, getRowData());
+            } else {
+                requestMap.remove(var);
+                if (null != oldVar) {
+                    requestMap.put(var, oldVar);
+                    oldVar = null;
+                }
+            }
+        }
+
+        if (_initialDescendantFullComponentState != null)
+        {
+            Object rowState = _rowDeltaStates.get(getContainerClientId(facesContext));
+            if (rowState == null)
+            {
+                //Restore as original
+                restoreFullDescendantComponentStates(facesContext, getChildren().iterator(), _initialDescendantFullComponentState, false);
+            }
+            else
+            {
+                //Restore first original and then delta
+                restoreFullDescendantComponentDeltaStates(facesContext, getChildren().iterator(), rowState, _initialDescendantFullComponentState, false);
+            }
+            if (getRowIndex() == -1)
+            {
+                restoreTransientDescendantComponentStates(facesContext, getChildren().iterator(), null, false);
+            }
+            else
+            {
+                rowState = _rowTransientStates.get(getContainerClientId(facesContext));
+                if (rowState == null)
+                {
+                    restoreTransientDescendantComponentStates(facesContext, getChildren().iterator(), null, false);
+                }
+                else
+                {
+                    restoreTransientDescendantComponentStates(facesContext, getChildren().iterator(), (Map<String, Object>) rowState, false);
+                }
+            }
+        }
+    }
+    
+    private void setRowIndexWithoutRowStatePreserved(int rowIndex) {
+        saveDescendantState();
+        setRowModel(rowIndex);
+        restoreDescendantState();
+    } 
         
     public void setRowModel(int rowIndex) {
         //update rowIndex
@@ -905,5 +1027,311 @@ public class UIData extends javax.faces.component.UIData {
     protected List<UIComponent> getIterableChildren() {
         return this.getChildren();
     }
-}
+    
+    @Override
+    public void markInitialState()
+    {
+        if (isRowStatePreserved())
+        {
+            if (getFacesContext().getAttributes().containsKey(StateManager.IS_BUILDING_INITIAL_STATE))
+            {
+                _initialDescendantFullComponentState = saveDescendantInitialComponentStates(getFacesContext(), getChildren().iterator(), false);
+            }
+        }
+        super.markInitialState();
+    }
 
+    private void restoreFullDescendantComponentStates(FacesContext facesContext,
+            Iterator<UIComponent> childIterator, Object state,
+            boolean restoreChildFacets)
+    {
+        Iterator<? extends Object[]> descendantStateIterator = null;
+        while (childIterator.hasNext())
+        {
+            if (descendantStateIterator == null && state != null)
+            {
+                descendantStateIterator = ((Collection<? extends Object[]>) state)
+                        .iterator();
+            }
+            UIComponent component = childIterator.next();
+
+            // reset the client id (see spec 3.1.6)
+            component.setId(component.getId());
+            if (!component.isTransient())
+            {
+                Object childState = null;
+                Object descendantState = null;
+                if (descendantStateIterator != null
+                        && descendantStateIterator.hasNext())
+                {
+                    Object[] object = descendantStateIterator.next();
+                    childState = object[0];
+                    descendantState = object[1];
+                }
+                
+                component.clearInitialState();
+                component.restoreState(facesContext, childState);
+                component.markInitialState();
+                
+                Iterator<UIComponent> childsIterator;
+                if (restoreChildFacets)
+                {
+                    childsIterator = component.getFacetsAndChildren();
+                }
+                else
+                {
+                    childsIterator = component.getChildren().iterator();
+                }
+                restoreFullDescendantComponentStates(facesContext, childsIterator,
+                        descendantState, true);
+            }
+        }
+    }
+
+    private Collection<Object[]> saveDescendantInitialComponentStates(FacesContext facesContext,
+            Iterator<UIComponent> childIterator, boolean saveChildFacets)
+    {
+        Collection<Object[]> childStates = null;
+        while (childIterator.hasNext())
+        {
+            if (childStates == null)
+            {
+                childStates = new ArrayList<Object[]>();
+            }
+
+            UIComponent child = childIterator.next();
+            if (!child.isTransient())
+            {
+                // Add an entry to the collection, being an array of two
+                // elements. The first element is the state of the children
+                // of this component; the second is the state of the current
+                // child itself.
+
+                Iterator<UIComponent> childsIterator;
+                if (saveChildFacets)
+                {
+                    childsIterator = child.getFacetsAndChildren();
+                }
+                else
+                {
+                    childsIterator = child.getChildren().iterator();
+                }
+                Object descendantState = saveDescendantInitialComponentStates(
+                        facesContext, childsIterator, true);
+                Object state = child.saveState(facesContext);
+                childStates.add(new Object[] { state, descendantState });
+            }
+        }
+        return childStates;
+    }
+    
+    private Map<String,Object> saveFullDescendantComponentStates(FacesContext facesContext, Map<String,Object> stateMap,
+            Iterator<UIComponent> childIterator, boolean saveChildFacets)
+    {
+        while (childIterator.hasNext())
+        {
+            UIComponent child = childIterator.next();
+            if (!child.isTransient())
+            {
+                Iterator<UIComponent> childsIterator;
+                if (saveChildFacets)
+                {
+                    childsIterator = child.getFacetsAndChildren();
+                }
+                else
+                {
+                    childsIterator = child.getChildren().iterator();
+                }
+                stateMap = saveFullDescendantComponentStates(facesContext, stateMap,
+                        childsIterator, true);
+                Object state = child.saveState(facesContext);
+                if (state != null)
+                {
+                    if (stateMap == null)
+                    {
+                        stateMap = new HashMap<String,Object>();
+                    }
+                    stateMap.put(child.getClientId(facesContext), state);
+                }
+            }
+        }
+        return stateMap;
+    }
+    
+    private void restoreFullDescendantComponentDeltaStates(FacesContext facesContext,
+            Iterator<UIComponent> childIterator, Object state, Object initialState,
+            boolean restoreChildFacets)
+    {
+        Map<String,Object> descendantStateIterator = null;
+        Iterator<? extends Object[]> descendantFullStateIterator = null;
+        while (childIterator.hasNext())
+        {
+            if (descendantStateIterator == null && state != null)
+            {
+                descendantStateIterator = (Map<String,Object>) state;
+            }
+            if (descendantFullStateIterator == null && initialState != null)
+            {
+                descendantFullStateIterator = ((Collection<? extends Object[]>) initialState).iterator();
+            }
+            UIComponent component = childIterator.next();
+
+            // reset the client id (see spec 3.1.6)
+            component.setId(component.getId());
+            if (!component.isTransient())
+            {
+                Object childInitialState = null;
+                Object descendantInitialState = null;
+                Object childState = null;
+                if (descendantStateIterator != null
+                        && descendantStateIterator.containsKey(component.getClientId(facesContext)))
+                {
+                    //Object[] object = (Object[]) descendantStateIterator.get(component.getClientId(facesContext));
+                    //childState = object[0];
+                    childState = descendantStateIterator.get(component.getClientId(facesContext));
+                }
+                if (descendantFullStateIterator != null
+                        && descendantFullStateIterator.hasNext())
+                {
+                    Object[] object = (Object[]) descendantFullStateIterator.next();
+                    childInitialState = object[0];
+                    descendantInitialState = object[1];
+                }
+                
+                component.clearInitialState();
+                if (childInitialState != null)
+                {
+                    component.restoreState(facesContext, childInitialState);
+                    component.markInitialState();
+                    component.restoreState(facesContext, childState);
+                }
+                else
+                {
+                    component.restoreState(facesContext, childState);
+                    component.markInitialState();
+                }
+                
+                Iterator<UIComponent> childsIterator;
+                if (restoreChildFacets)
+                {
+                    childsIterator = component.getFacetsAndChildren();
+                }
+                else
+                {
+                    childsIterator = component.getChildren().iterator();
+                }
+                restoreFullDescendantComponentDeltaStates(facesContext, childsIterator,
+                        state, descendantInitialState , true);
+            }
+        }
+    }
+
+    private void restoreTransientDescendantComponentStates(FacesContext facesContext, Iterator<UIComponent> childIterator, Map<String, Object> state,
+            boolean restoreChildFacets)
+    {
+        while (childIterator.hasNext())
+        {
+            UIComponent component = childIterator.next();
+
+            // reset the client id (see spec 3.1.6)
+            component.setId(component.getId());
+            if (!component.isTransient())
+            {
+                component.restoreTransientState(facesContext, (state == null) ? null : state.get(component.getClientId(facesContext)));                    
+                
+                Iterator<UIComponent> childsIterator;
+                if (restoreChildFacets)
+                {
+                    childsIterator = component.getFacetsAndChildren();
+                }
+                else
+                {
+                    childsIterator = component.getChildren().iterator();
+                }
+                restoreTransientDescendantComponentStates(facesContext, childsIterator, state, true);
+            }
+        }
+
+    }
+
+    private Map<String, Object> saveTransientDescendantComponentStates(FacesContext facesContext, Map<String, Object> childStates, Iterator<UIComponent> childIterator,
+            boolean saveChildFacets)
+    {
+        while (childIterator.hasNext())
+        {
+            UIComponent child = childIterator.next();
+            if (!child.isTransient())
+            {
+                Iterator<UIComponent> childsIterator;
+                if (saveChildFacets)
+                {
+                    childsIterator = child.getFacetsAndChildren();
+                }
+                else
+                {
+                    childsIterator = child.getChildren().iterator();
+                }
+                childStates = saveTransientDescendantComponentStates(facesContext, childStates, childsIterator, true);
+                Object state = child.saveTransientState(facesContext);
+                if (state != null)
+                {
+                    if (childStates == null)
+                    {
+                        childStates = new HashMap<String, Object>();
+                    }
+                    childStates.put(child.getClientId(facesContext), state);
+                }
+            }
+        }
+        return childStates;
+    }
+
+    @Override
+    public void restoreState(FacesContext context, Object state)
+    {
+        if (state == null)
+        {
+            return;
+        }
+        
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        Object restoredRowStates = UIComponentBase.restoreAttachedState(context, values[1]);
+        if (restoredRowStates == null)
+        {
+            if (!_rowDeltaStates.isEmpty())
+            {
+                _rowDeltaStates.clear();
+            }
+        }
+        else
+        {
+            _rowDeltaStates = (Map<String, Object>) restoredRowStates;
+        } 
+    }
+
+    @Override
+    public Object saveState(FacesContext context)
+    {
+        if (initialStateMarked()) {
+            Object superState = super.saveState(context);
+            
+            if (superState == null && _rowDeltaStates.isEmpty()) {
+                return null;
+            }
+            else {
+                Object values[] = null;
+                Object attachedState = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
+                if (superState != null || attachedState != null) {
+                    values = new Object[] { superState, attachedState };
+                }
+                return values; 
+            }
+        } else {
+            Object values[] = new Object[2];
+            values[0] = super.saveState(context);
+            values[1] = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
+            return values;
+        }
+    }
+}

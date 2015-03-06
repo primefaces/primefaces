@@ -442,6 +442,14 @@
             <defaultValue>false</defaultValue>
             <description>Adds hover effect to rows, default is false. Hover is always on when selection is enabled.</description>
 		</attribute>
+        <attribute>
+			<name>rowStatePreserved</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Keeps state of its children on a per-row basis. Default is false.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
