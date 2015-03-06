@@ -268,11 +268,15 @@
 
         createWidget : function(widgetConstructor, widgetVar, cfg, resource) { 
             if(PrimeFaces.widget[widgetConstructor]) {
-                if(PrimeFaces.widgets[widgetVar]) {
-                    PrimeFaces.widgets[widgetVar].refresh(cfg);                                     //ajax update
+                var widget = PrimeFaces.widgets[widgetVar];
+                
+                //ajax update
+                if(widget && (widget instanceof PrimeFaces.widget[widgetConstructor])) {
+                    widget.refresh(cfg);
                 }
+                //page init
                 else {
-                    PrimeFaces.widgets[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);  //page init
+                    PrimeFaces.widgets[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);  
                     if(PrimeFaces.settings.legacyWidgetNamespace) {
                         window[widgetVar] = PrimeFaces.widgets[widgetVar]; 
                     }
