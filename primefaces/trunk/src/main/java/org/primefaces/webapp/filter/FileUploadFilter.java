@@ -28,6 +28,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.fileupload.FileItemFactory;
 
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.FileCleanerCleanup;
@@ -53,22 +54,27 @@ public class FileUploadFilter implements Filter {
 	public void init(FilterConfig filterConfig) throws ServletException {
         boolean isAtLeastJSF22 = detectJSF22();
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
-        if(uploader == null || uploader.equals("auto"))
+        
+        if (uploader == null || uploader.equals("auto")) {
             bypass = isAtLeastJSF22 ? true : false;
-        else if(uploader.equals("native"))
+        }
+        else if (uploader.equals("native")) {
             bypass = true;
-        else if(uploader.equals("commons"))
+        }
+        else if (uploader.equals("commons")) {
             bypass = false;
+        }
 
 		thresholdSize = filterConfig.getInitParameter(THRESHOLD_SIZE_PARAM);
 		uploadDir = filterConfig.getInitParameter(UPLOAD_DIRECTORY_PARAM);
 
-		if(logger.isLoggable(Level.FINE))
+		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("FileUploadFilter initiated successfully");
+        }
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        if(bypass) {
+        if (bypass) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -76,28 +82,17 @@ public class FileUploadFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
 
-		if(isMultipart) {
-			if(logger.isLoggable(Level.FINE))
+		if (isMultipart) {
+			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("Parsing file upload request");
-
-			DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
-			if(thresholdSize != null) {
-				diskFileItemFactory.setSizeThreshold(Integer.valueOf(thresholdSize));
-			}
-			if(uploadDir != null) {
-				diskFileItemFactory.setRepository(new File(uploadDir));
-			}
-
-            FileCleaningTracker fileCleaningTracker = FileCleanerCleanup.getFileCleaningTracker(httpServletRequest.getSession().getServletContext());
-            if(fileCleaningTracker != null) {
-                diskFileItemFactory.setFileCleaningTracker(fileCleaningTracker);
             }
 
-			ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
+			ServletFileUpload servletFileUpload = new ServletFileUpload(createFileItemFactory(httpServletRequest));
 			MultipartRequest multipartRequest = new MultipartRequest(httpServletRequest, servletFileUpload);
 
-			if(logger.isLoggable(Level.FINE))
+			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("File upload request parsed succesfully, continuing with filter chain with a wrapped multipart request");
+            }
 
 			filterChain.doFilter(multipartRequest, response);
 		}
@@ -107,14 +102,15 @@ public class FileUploadFilter implements Filter {
 	}
 
 	public void destroy() {
-		if(logger.isLoggable(Level.FINE))
+		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("Destroying FileUploadFilter");
+        }
 	}
 
     private boolean detectJSF22() {
         String version = FacesContext.class.getPackage().getImplementationVersion();
 
-        if(version != null) {
+        if (version != null) {
             return version.startsWith("2.2");
         }
         else {
@@ -129,4 +125,21 @@ public class FileUploadFilter implements Filter {
         }
     }
 
+    protected FileItemFactory createFileItemFactory(HttpServletRequest httpServletRequest)
+    {
+        DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
+        if (thresholdSize != null) {
+            diskFileItemFactory.setSizeThreshold(Integer.valueOf(thresholdSize));
+        }
+        if (uploadDir != null) {
+            diskFileItemFactory.setRepository(new File(uploadDir));
+        }
+
+        FileCleaningTracker fileCleaningTracker = FileCleanerCleanup.getFileCleaningTracker(httpServletRequest.getSession().getServletContext());
+        if (fileCleaningTracker != null) {
+            diskFileItemFactory.setFileCleaningTracker(fileCleaningTracker);
+        }
+        
+        return diskFileItemFactory;
+    }
 }
