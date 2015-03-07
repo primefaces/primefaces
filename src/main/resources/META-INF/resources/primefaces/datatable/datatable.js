@@ -892,7 +892,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             params: [{name: this.id + '_pagination', value: true},
                     {name: this.id + '_first', value: newState.first},
                     {name: this.id + '_rows', value: newState.rows},
-                    {name: this.id + '_renderFeature', value: true}],
+                    {name: this.id + '_encodeFeature', value: true}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
