@@ -1720,18 +1720,29 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
 
         var $this = this,
-        encodedURLfield = this.form.children("input[name='javax.faces.encodedURL']");
+            postURL = this.form.attr('action'),
+            encodedURLfield = this.form.children("input[name*='javax.faces.encodedURL']");
+
+        //portlet support
+        var porletFormsSelector = null;
+        if(encodedURLfield.length > 0) {
+            porletFormsSelector = 'form[action="' + postURL + '"]';
+            postURL = encodedURLfield.val();
+        }
 
         this.ucfg = {
-            url: (encodedURLfield.length) ? encodedURLfield.val() : this.form.attr('action'),
+            url: postURL,
+            portletForms: porletFormsSelector,
             paramName: this.id,
             dataType: 'xml',
             dropZone: (this.cfg.dnd === false) ? null : this.jq,
             formData: function() {
                 return $this.createPostData();
             },
-            beforeSend: function(xhr) {
+            beforeSend: function(xhr, settings) {
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
+                xhr.pfSettings = settings;
+                xhr.pfArgs = {}; // default should be an empty object
             },
             start: function(e) {
                 if($this.cfg.onstart) {
