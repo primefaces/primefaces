@@ -593,6 +593,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return false;
+    },
+    
+    isVisible: function() {
+        return this.jq.is(':visible');
     }
 
 });
@@ -656,10 +660,6 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
             this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + msg.icon);
 
         this.show();
-    },
-
-    isVisible: function() {
-        return this.jq.is(':visible');
     }
 
 });
