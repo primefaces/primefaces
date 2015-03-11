@@ -2199,7 +2199,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     getRowMeta: function(row) {
         var meta = {
             index: row.data('ri'),
-            key:  row.data('rk')
+            key:  row.attr('data-rk')
         };
 
         return meta;
@@ -2762,7 +2762,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
     
     copyRow: function(original) {
-        return $('<tr></tr>').data('ri', original.data('ri')).data('rk', original.data('rk')).addClass(original.attr('class')).attr('role', 'row');
+        return $('<tr></tr>').data('ri', original.data('ri')).attr('data-rk', original.data('rk')).addClass(original.attr('class')).attr('role', 'row');
     },
     
     getThead: function() {
