@@ -427,7 +427,7 @@ public abstract class CoreRenderer extends Renderer {
 		return request.toString();
 	}
 
-    protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
+protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String,List<ClientBehavior>> clientBehaviors = component.getClientBehaviors();
 
@@ -445,15 +445,41 @@ public abstract class CoreRenderer extends Renderer {
                 List<ClientBehavior> eventBehaviors = clientBehaviors.get(eventName);
 
                 if(eventBehaviors != null && !eventBehaviors.isEmpty()) {
-                    if(!written)
-                        written = true;
-                    else
+                    if(written) {
                         writer.write(",");
+                    }
+                    
+                    int eventBehaviorsSize = eventBehaviors.size();
 
                     writer.write(eventName + ":");
                     writer.write("function(ext) {");
-                    for(Iterator<ClientBehavior> behaviorIter = eventBehaviors.iterator(); behaviorIter.hasNext();) {
-                        ClientBehavior behavior = behaviorIter.next();
+                    
+                    if(eventBehaviorsSize > 1) {
+                        boolean chained = false;
+                        writer.write("PrimeFaces.bcnu(ext,[");
+                        
+                        for(int i = 0; i < eventBehaviorsSize; i++) {
+                            ClientBehavior behavior = eventBehaviors.get(i);
+                            ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, eventName, clientId, params);
+                            String script = behavior.getScript(cbc);
+
+                            if(script != null) {
+                                if(chained) {
+                                    writer.write(",");
+                                }
+                                
+                                writer.write("function(ext) {");
+                                writer.write(script);
+                                writer.write("}");
+                                
+                                chained = true;
+                            }
+                        }
+                        
+                        writer.write("]);");
+                    }
+                    else {
+                        ClientBehavior behavior = eventBehaviors.get(0);
                         ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, eventName, clientId, params);
                         String script = behavior.getScript(cbc);
 
@@ -461,7 +487,9 @@ public abstract class CoreRenderer extends Renderer {
                             writer.write(script);
                         }
                     }
+
                     writer.write("}");
+                    
                     written = true;
                 }
             }
