@@ -480,6 +480,17 @@
                 } 
             }
         },
+          
+        bcnu: function(ext, fns) {
+            if(fns) {
+                for(var i = 0; i < fns.length; i++) {
+                    var retVal = fns[i].call(ext);
+                    if(retVal === false) {
+                        break;
+                    }
+                } 
+            }
+        },
         
     	/**
     	 * moved to core.dialog.js
