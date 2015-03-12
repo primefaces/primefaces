@@ -703,9 +703,9 @@ if (window.PrimeFaces) {
             highlighter.highlight(element);
     };
 
-    PrimeFaces.validateInstant = function(id) {
+    PrimeFaces.validateInstant = function(el) {
         var vc = PrimeFaces.util.ValidationContext,
-        element = $(PrimeFaces.escapeClientId(id)),
+        element = $(el),
         clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id'),
         uiMessageId = element.data('uimessageid'),
         uiMessage = null;
