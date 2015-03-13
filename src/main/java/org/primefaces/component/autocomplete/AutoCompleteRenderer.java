@@ -161,6 +161,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, AutoComplete ac, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean disabled = ac.isDisabled();
+        String var = ac.getVar();
         String itemLabel;
         String defaultStyleClass = ac.isDropdown() ? AutoComplete.INPUT_WITH_DROPDOWN_CLASS : AutoComplete.INPUT_CLASS;
         String styleClass = disabled ? defaultStyleClass + " ui-state-disabled" : defaultStyleClass;
@@ -183,7 +184,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
         
-        if(ac.getVar() == null) {
+        if(var == null) {
             itemLabel = ComponentUtils.getValueToRender(context, ac);
             
             if(itemLabel != null) {
@@ -191,18 +192,27 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
         }
         else {
+            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+            
             if(ac.isValid()) {
-                context.getExternalContext().getRequestMap().put(ac.getVar(), ac.getValue());
+                requestMap.put(var, ac.getValue());
                 itemLabel = ac.getItemLabel();
             }
             else {
                 Object submittedValue = ac.getSubmittedValue();
                 itemLabel = (submittedValue == null) ? null : String.valueOf(submittedValue);
+                
+                if(itemLabel == null && ac.getValue() != null) {
+                    requestMap.put(var, ac.getValue());
+                    itemLabel = ac.getItemLabel();
+                }
             }
 
             if(itemLabel != null) {
                 writer.writeAttribute("value", itemLabel, null);
             }
+            
+            requestMap.remove(var);
         }
 
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
