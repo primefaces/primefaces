@@ -202,6 +202,18 @@
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Limits the selection. Default is unlimited.</description>
         </attribute>
+        <attribute>
+            <name>inputStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the input element.</description>
+        </attribute>
+        <attribute>
+            <name>inputStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the input element.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

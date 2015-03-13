@@ -165,13 +165,20 @@ public class AutoCompleteRenderer extends InputRenderer {
         String defaultStyleClass = ac.isDropdown() ? AutoComplete.INPUT_WITH_DROPDOWN_CLASS : AutoComplete.INPUT_CLASS;
         String styleClass = disabled ? defaultStyleClass + " ui-state-disabled" : defaultStyleClass;
         styleClass = ac.isValid() ? styleClass : styleClass + " ui-state-error";
+        String inputStyle = ac.getInputStyle();
+        String inputStyleClass = ac.getInputStyleClass();
+        inputStyleClass = (inputStyleClass == null) ? styleClass : styleClass + " " + inputStyleClass; 
             
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("name", clientId + "_input", null);
         writer.writeAttribute("type", "text", null);
-        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("class", inputStyleClass, null);
         writer.writeAttribute("autocomplete", "off", null);
+        
+        if(inputStyle != null) {
+            writer.writeAttribute("style", inputStyle, null);
+        }
         
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
