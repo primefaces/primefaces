@@ -26,3 +26,6 @@ This product includes software developed by Jeffrey M. Hunter (http://www.idevel
 This product includes software developed by Mikael Grev (http://sourceforge.net/projects/migbase64/)
 This product includes software developed by Sebastian Kutsch (http://jacksasylum.eu/ContentFlow/)
 This product includes software developed by Kelvin Luck (http://jscrollpane.kelvinluck.com)
+This product includes software developed by Joseph Huckaby (https://github.com/jhuckaby/webcamjs)
+This product includes software developed by JSPlumbToolkit Team (https://www.jsplumb.org)
+This product includes software developed by Jack Moore (http://www.jacklmoore.com/autosize/)

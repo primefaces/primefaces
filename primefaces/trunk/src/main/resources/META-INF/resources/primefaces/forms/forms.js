@@ -65,30 +65,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
     },
 
     setupAutoResize: function() {
-        var _self = this;
-        
-        _self.resize();
-        
-        this.jq.keyup(function() {
-            _self.resize();
-        }).focus(function() {
-            _self.resize();
-        }).blur(function() {
-            _self.resize();
-        });
-    },
-
-    resize: function() {
-        var linesCount = 0,
-        lines = this.jq.val().split('\n');
-
-        for(var i = lines.length-1; i >= 0 ; --i) {
-            linesCount += Math.floor((lines[i].length / this.cfg.colsDefault) + 1);
-        }
-
-        var newRows = (linesCount >= this.cfg.rowsDefault) ? (linesCount + 1) : this.cfg.rowsDefault;
-
-        this.jq.attr('rows', newRows);
+        autosize(this.jq.get(0));
     },
 
     applyMaxlength: function() {
