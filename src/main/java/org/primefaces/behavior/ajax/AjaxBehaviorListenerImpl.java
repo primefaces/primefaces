@@ -39,6 +39,11 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
     // required by serialization
     public AjaxBehaviorListenerImpl() {}
 
+    // can be used to instaniate it manually by the user
+    public AjaxBehaviorListenerImpl(MethodExpression methodExpression) {
+        this.defaultListener = methodExpression;
+    }
+    
     public AjaxBehaviorListenerImpl(TagAttribute listenerAttribute, FaceletContext context) {
         this.defaultListener = listenerAttribute.getMethodExpression(context, null, EMPTY_PARAMS);
     }
