@@ -2008,6 +2008,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     setupResizableColumns: function() {
+        this.cfg.resizeMode = this.cfg.resizeMode||'fit';
         this.hasColumnGroup = this.thead.children('tr').length > 1;
         if(this.hasColumnGroup) {
             this.addGhostRow();
@@ -2121,8 +2122,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     resize: function(event, ui) {
-        var columnHeader, nextColumnHeader, change = null, newWidth = null, nextColumnWidth = null;
-        
+        var columnHeader, nextColumnHeader, change = null, newWidth = null, nextColumnWidth = null, 
+        expandMode = (this.cfg.resizeMode === 'expand'),
+        table = this.getThead().parent(),
+        cloneTable = this.theadClone ? this.theadClone.parent() : null;
+
         if(this.hasColumnGroup) {
             var groupResizer = this.findGroupResizer(ui);
             columnHeader = groupResizer.parent();
@@ -2137,29 +2141,46 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
             newWidth = (columnHeader.width() - change),
             nextColumnWidth = (nextColumnHeader.width() + change);
-        } 
+        }
         else {
             change = (ui.position.left - ui.originalPosition.left),
             newWidth = (columnHeader.width() + change),
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
-        
-        if(newWidth > 15 && nextColumnWidth > 15) {
-            columnHeader.width(newWidth);
-            nextColumnHeader.width(nextColumnWidth);
-            var colIndex = columnHeader.index();
-
-            if(this.cfg.scrollable) {
-                this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
-                this.theadClone.find(PrimeFaces.escapeClientId(nextColumnHeader.attr('id') + '_clone')).width(nextColumnWidth);
-                if(this.footerCols.length > 0) {
-                    var footerCol = this.footerCols.eq(colIndex),
-                    nextFooterCol = footerCol.next();
-
-                    footerCol.width(newWidth);
-                    nextFooterCol.width(nextColumnWidth);
-                }
+                        
+        if((newWidth > 15 && nextColumnWidth > 15) || expandMode) {            
+            if(expandMode) {
+                table.width(table.width() + change);
+                setTimeout(function() {
+                    columnHeader.width(newWidth);
+                }, 1);
             }
+            else {
+                columnHeader.width(newWidth);
+                nextColumnHeader.width(nextColumnWidth);
+            }
+            
+            if(this.cfg.scrollable) {
+                if(expandMode) {
+                    var $this = this;
+                    cloneTable.width(cloneTable.width() + change);
+                    setTimeout(function() {
+                        $this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
+                    }, 1);
+                }
+                else {
+                    var colIndex = columnHeader.index();
+                    this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
+                    this.theadClone.find(PrimeFaces.escapeClientId(nextColumnHeader.attr('id') + '_clone')).width(nextColumnWidth);
+                    if(this.footerCols.length > 0) {
+                        var footerCol = this.footerCols.eq(colIndex),
+                        nextFooterCol = footerCol.next();
+
+                        footerCol.width(newWidth);
+                        nextFooterCol.width(nextColumnWidth);
+                    }
+                }
+            }            
         }
     },
     
