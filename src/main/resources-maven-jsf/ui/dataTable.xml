@@ -450,6 +450,13 @@
             <description>Keeps state of its children on a per-row basis. Default is false.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>resizeMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>fit</defaultValue>
+            <description>Defines the resize behavior, valid values are "fit" (default) and expand.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
