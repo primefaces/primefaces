@@ -271,7 +271,7 @@
                 var widget = PrimeFaces.widgets[widgetVar];
                 
                 //ajax update
-                if(widget && (widget instanceof PrimeFaces.widget[widgetConstructor])) {
+                if(widget && (widget.constructor === PrimeFaces.widget[widgetConstructor])) {
                     widget.refresh(cfg);
                 }
                 //page init
