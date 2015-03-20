@@ -53,7 +53,7 @@ public class AjaxRequestBuilder {
 
     public AjaxRequestBuilder source(String source) {
         if(source != null)
-            buffer.append("s:").append("'").append(source).append("'");
+            buffer.append("s:").append("\"").append(source).append("\"");
         else
             buffer.append("s:").append("this");
         
@@ -62,7 +62,7 @@ public class AjaxRequestBuilder {
     
     public AjaxRequestBuilder form(String form) {
         if(form != null) {
-            buffer.append(",f:'").append(form).append("'");
+            buffer.append(",f:\"").append(form).append("\"");
         }
         
         return this;
@@ -90,14 +90,14 @@ public class AjaxRequestBuilder {
     private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, int options) {        
         if(!isValueBlank(expressions)) {
         	String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, options);
-            buffer.append(",").append(key).append(":'").append(resolvedExpressions).append("'");
+            buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }
         
         return this;
     }
     
     public AjaxRequestBuilder event(String event) {
-        buffer.append(",e:'").append(event).append("'");
+        buffer.append(",e:\"").append(event).append("\"");
         
         return this;
     }
@@ -240,7 +240,7 @@ public class AjaxRequestBuilder {
                     buffer.append(",");
                 }
 
-                buffer.append("{name:").append("'").append(parameter.getName()).append("',value:'").append(parameter.getValue()).append("'}");
+                buffer.append("{name:").append("\"").append(parameter.getName()).append("\",value:\"").append(parameter.getValue()).append("\"}");
             }
         }
 
@@ -261,7 +261,7 @@ public class AjaxRequestBuilder {
                 int size = paramValues.size();
                 for(int i = 0; i < size; i++) {
                     String paramValue = paramValues.get(i);
-                    buffer.append("{name:").append("'").append(name).append("',value:'").append(paramValue).append("'}");
+                    buffer.append("{name:").append("\"").append(name).append("\",value:\"").append(paramValue).append("\"}");
                     
                     if(i < (size - 1)) {
                         buffer.append(",");
@@ -339,7 +339,7 @@ public class AjaxRequestBuilder {
         Map<Object,Object> attrs = RequestContext.getCurrentInstance().getAttributes();
         Object fragmentId = attrs.get(Constants.FRAGMENT_ID);
         if(fragmentId != null) {
-            buffer.append(",fi:'").append(fragmentId).append("'");
+            buffer.append(",fi:\"").append(fragmentId).append("\"");
             
             if(attrs.containsKey(Constants.FRAGMENT_AUTO_RENDERED))
                 buffer.append(",fu:true");
