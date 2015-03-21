@@ -1954,9 +1954,17 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
         }
         
         this.input.on('focus', function() {
+            if($this.input.prop('checked')) {
+                $this.jq.removeClass('ui-state-active');
+            }
+            
             $this.jq.addClass('ui-state-focus');
         })
         .on('blur', function() {
+            if($this.input.prop('checked')) {
+                $this.jq.addClass('ui-state-active');
+            }
+            
             $this.jq.removeClass('ui-state-focus');
         })
         .on('keydown', function(e) {
