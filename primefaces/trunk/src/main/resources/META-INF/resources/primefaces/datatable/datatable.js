@@ -2113,8 +2113,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     addResizers: function() {
-        this.thead.find('> tr > th.ui-resizable-column').prepend('<span class="ui-column-resizer">&nbsp;</span>').filter(':last-child')
-                .children('span.ui-column-resizer').hide();
+        var resizableColumns = this.thead.find('> tr > th.ui-resizable-column');
+        resizableColumns.prepend('<span class="ui-column-resizer">&nbsp;</span>');
+        
+        if(this.cfg.resizeMode === 'fit') {
+            resizableColumns.filter(':last-child').children('span.ui-column-resizer').hide();
+        }
         
         if(this.hasColumnGroup) {
             this.groupResizers = this.thead.find('> tr:first > th > .ui-column-resizer');
