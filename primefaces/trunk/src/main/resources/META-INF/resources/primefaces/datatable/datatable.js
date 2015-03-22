@@ -2009,7 +2009,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     setupResizableColumns: function() {
         this.cfg.resizeMode = this.cfg.resizeMode||'fit';
-        this.hasColumnGroup = this.thead.children('tr').length > 1;
+        this.hasColumnGroup = this.hasColGroup();
         if(this.hasColumnGroup) {
             this.addGhostRow();
         }
@@ -2091,14 +2091,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
     
+    hasColGroup: function() {
+        return this.thead.children('tr').length > 1;
+    },
+    
     addGhostRow: function() {
         var dataColumnsCount = this.tbody.find('tr:first').children('td').length,
         columnMarkup = '';
 
         for(var i = 0; i < dataColumnsCount; i++) {
             columnMarkup += '<th style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none;" class="ui-resizable-column"></th>';
-        } 
+        }
+        
         this.thead.prepend('<tr>' + columnMarkup + '</tr>');
+
+        if(this.cfg.scrollable) {         
+            this.theadClone.prepend('<tr>' + columnMarkup + '</tr>');
+            this.footerTable.children('tfoot').prepend('<tr>' + columnMarkup + '</tr>');
+        }
     },
     
     findGroupResizer: function(ui) {
@@ -2128,9 +2138,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     resize: function(event, ui) {
         var columnHeader, nextColumnHeader, change = null, newWidth = null, nextColumnWidth = null, 
         expandMode = (this.cfg.resizeMode === 'expand'),
-        table = this.getThead().parent(),
-        cloneTable = this.theadClone ? this.theadClone.parent() : null;
-
+        table = this.thead.parent();
+                
         if(this.hasColumnGroup) {
             var groupResizer = this.findGroupResizer(ui);
             columnHeader = groupResizer.parent();
@@ -2139,7 +2148,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             columnHeader = ui.helper.parent();
         }
         
-        nextColumnHeader = columnHeader.next();
+        var nextColumnHeader = columnHeader.next();
         
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
@@ -2152,7 +2161,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
                         
-        if((newWidth > 15 && nextColumnWidth > 15) || expandMode) {            
+        if((newWidth > 15 && nextColumnWidth > 15) || expandMode) {          
             if(expandMode) {
                 table.width(table.width() + change);
                 setTimeout(function() {
@@ -2165,23 +2174,52 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
             
             if(this.cfg.scrollable) {
+                var cloneTable = this.theadClone.parent(),
+                colIndex = columnHeader.index();
+        
                 if(expandMode) {
                     var $this = this;
+                    
+                    //body
                     cloneTable.width(cloneTable.width() + change);
+                    
+                    //footer
+                    this.footerTable.width(this.footerTable.width() + change);
+                    
                     setTimeout(function() {
-                        $this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
+                        if($this.hasColumnGroup) {
+                            $this.theadClone.find('> tr:first').children('th').eq(colIndex).width(newWidth);            //body
+                            $this.footerTable.find('> tfoot > tr:first').children('th').eq(colIndex).width(newWidth);   //footer
+                        }
+                        else {
+                            $this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);   //body
+                            $this.footerCols.eq(colIndex).width(newWidth);                                                          //footer
+                        }
                     }, 1);
                 }
                 else {
-                    var colIndex = columnHeader.index();
-                    this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
-                    this.theadClone.find(PrimeFaces.escapeClientId(nextColumnHeader.attr('id') + '_clone')).width(nextColumnWidth);
-                    if(this.footerCols.length > 0) {
-                        var footerCol = this.footerCols.eq(colIndex),
-                        nextFooterCol = footerCol.next();
+                    if(this.hasColumnGroup) {
+                        //body
+                        this.theadClone.find('> tr:first').children('th').eq(colIndex).width(newWidth);
+                        this.theadClone.find('> tr:first').children('th').eq(colIndex + 1).width(nextColumnWidth);
+                        
+                        //footer
+                        this.footerTable.find('> tfoot > tr:first').children('th').eq(colIndex).width(newWidth);
+                        this.footerTable.find('> tfoot > tr:first').children('th').eq(colIndex + 1).width(nextColumnWidth);
+                    }
+                    else {
+                        //body
+                        this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
+                        this.theadClone.find(PrimeFaces.escapeClientId(nextColumnHeader.attr('id') + '_clone')).width(nextColumnWidth);
+                        
+                        //footer
+                        if(this.footerCols.length > 0) {
+                            var footerCol = this.footerCols.eq(colIndex),
+                            nextFooterCol = footerCol.next();
 
-                        footerCol.width(newWidth);
-                        nextFooterCol.width(nextColumnWidth);
+                            footerCol.width(newWidth);
+                            nextFooterCol.width(nextColumnWidth);
+                        }
                     }
                 }
             }            
@@ -2581,7 +2619,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.scrollBodyTable = this.scrollBody.children('table');
         this.scrollThead = this.thead.eq(1);
         this.scrollTbody = this.tbody.eq(1);
-        this.scrollFooterTable = this.scrollFooter.children('table');
+        this.scrollFooterTable = this.scrollFooterBox.children('table');
         this.scrollFooterCols = this.scrollFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');  
         this.frozenHeader = this.frozenContainer.children('.ui-datatable-scrollable-header');
         this.frozenBody = this.frozenContainer.children('.ui-datatable-scrollable-body');
@@ -2589,10 +2627,11 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.frozenThead = this.thead.eq(0);
         this.frozenTbody = this.tbody.eq(0);
         this.frozenFooter = this.frozenContainer.children('.ui-datatable-scrollable-footer');
+        this.frozenFooterTable = this.frozenFooter.find('> .ui-datatable-scrollable-footer-box > table');
         this.frozenFooterCols = this.frozenFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
         this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
         this.percentageScrollWidth = this.cfg.scrollWidth && (this.cfg.scrollWidth.indexOf('%') !== -1);
-        
+
         this.frozenThead.find('> tr > th').addClass('ui-frozen-column');
         
         var $this = this,
@@ -2896,23 +2935,67 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
     
     //@Override
-    addResizers: function() {
-        this.frozenThead.find('> tr > th.ui-resizable-column').prepend('<span class="ui-column-resizer">&nbsp;</span>').filter(':last-child')
-                .addClass('ui-frozen-column-last');
-        this.scrollThead.find('> tr > th.ui-resizable-column').prepend('<span class="ui-column-resizer">&nbsp;</span>').filter(':last-child')
-                .children('span.ui-column-resizer').hide();
+    findGroupResizer: function(ui) {
+        var resizer = this._findGroupResizer(ui, this.frozenGroupResizers);
+        if(resizer) {
+            return resizer;
+        }
+        else {
+            return this._findGroupResizer(ui, this.scrollGroupResizers);
+        }
     },
-   
+    
+    _findGroupResizer: function(ui, resizers) {
+        for(var i = 0; i < resizers.length; i++) {
+            var groupResizer = resizers.eq(i);
+            if(groupResizer.offset().left === ui.helper.data('originalposition').left) {
+                return groupResizer;
+            }
+        }
+        
+        return null;
+    },
+    
+    //@Override
+    addResizers: function() {
+        var frozenColumns = this.frozenThead.find('> tr > th.ui-resizable-column'),
+        scrollableColumns = this.scrollThead.find('> tr > th.ui-resizable-column');
+
+        frozenColumns.prepend('<span class="ui-column-resizer">&nbsp;</span>');
+        scrollableColumns.prepend('<span class="ui-column-resizer">&nbsp;</span>')
+        
+        if(this.cfg.resizeMode === 'fit') {
+            frozenColumns.filter(':last-child').addClass('ui-frozen-column-last');
+            scrollableColumns.filter(':last-child').children('span.ui-column-resizer').hide();
+        }
+        
+        if(this.hasColumnGroup) {
+            this.frozenGroupResizers = this.frozenThead.find('> tr:first > th > .ui-column-resizer');
+            this.scrollGroupResizers = this.scrollThead.find('> tr:first > th > .ui-column-resizer');
+        }
+    },
+       
     //@Override
     resize: function(event, ui) {
-        var columnHeader = ui.helper.parent(),
-        nextColumnHeader = columnHeader.next(),
+        var columnHeader = null,
         change = null, 
         newWidth = null, 
         nextColumnWidth = null, 
-        colIndex = columnHeader.index(),
-        lastFrozen = columnHeader.hasClass('ui-frozen-column-last');
+        expandMode = (this.cfg.resizeMode === 'expand');
         
+        if(this.hasColumnGroup) {
+            var groupResizer = this.findGroupResizer(ui);
+            columnHeader = groupResizer.parent();
+        }
+        else {
+            columnHeader = ui.helper.parent();
+        }
+        
+        var nextColumnHeader = columnHeader.next();
+        
+        var colIndex = columnHeader.index(),
+        lastFrozen = columnHeader.hasClass('ui-frozen-column-last');
+
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
             newWidth = (columnHeader.width() - change),
@@ -2924,29 +3007,103 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
         
-        var shouldChange = lastFrozen ? (newWidth > 15) : (newWidth > 15 && nextColumnWidth > 15); 
+        var shouldChange = (expandMode || (lastFrozen ? (newWidth > 15) : (newWidth > 15 && nextColumnWidth > 15))); 
         if(shouldChange) {
-            if(lastFrozen) {
-                this.frozenLayout.width(this.frozenLayout.width() + change);
-            }
-
-            columnHeader.width(newWidth);
-            nextColumnHeader.width(nextColumnWidth);
-
             var frozenColumn = columnHeader.hasClass('ui-frozen-column'),
             theadClone = frozenColumn ? this.frozenTheadClone : this.scrollTheadClone,
-            footerCols = frozenColumn ? this.frozenFooterCols : this.scrollFooterCols;
+            originalTable = frozenColumn ? this.frozenThead.parent() : this.scrollThead.parent(),
+            cloneTable = theadClone.parent(),
+            footerCols = frozenColumn ? this.frozenFooterCols : this.scrollFooterCols,
+            footerTable = frozenColumn ? this.frozenFooterTable:  this.scrollFooterTable,
+            $this = this;
 
-            theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
-            theadClone.find(PrimeFaces.escapeClientId(nextColumnHeader.attr('id') + '_clone')).width(nextColumnWidth);
-
-            if(footerCols.length > 0) {
-                var footerCol = footerCols.eq(colIndex),
-                nextFooterCol = footerCol.next();
-
-                footerCol.width(newWidth);
-                nextFooterCol.width(nextColumnWidth);
+            if(expandMode) {
+                if(lastFrozen) {
+                    this.frozenLayout.width(this.frozenLayout.width() + change);
+                }
+                
+                //header
+                originalTable.width(originalTable.width() + change);
+                
+                //body
+                cloneTable.width(cloneTable.width() + change);
+                
+                //footer
+                footerTable.width(footerTable.width() + change);
+                
+                setTimeout(function() {
+                    columnHeader.width(newWidth);
+                    
+                    if($this.hasColumnGroup) {
+                        theadClone.find('> tr:first').children('th').eq(colIndex).width(newWidth);                          //body
+                        footerTable.find('> tfoot > tr:first').children('th').eq(colIndex).width(newWidth);                 //footer
+                    }
+                    else {
+                        theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);     //body
+                        footerCols.eq(colIndex).width(newWidth);                                                            //footer
+                    }
+                }, 1);
+                
+                
             }
+            else {
+                if(lastFrozen) {
+                    this.frozenLayout.width(this.frozenLayout.width() + change);
+                }
+                
+                columnHeader.width(newWidth);
+                nextColumnHeader.width(nextColumnWidth);
+                
+                if(this.hasColumnGroup) {
+                    //body
+                    theadClone.find('> tr:first').children('th').eq(colIndex).width(newWidth);
+                    theadClone.find('> tr:first').children('th').eq(colIndex + 1).width(nextColumnWidth);
+
+                    //footer
+                    footerTable.find('> tfoot > tr:first').children('th').eq(colIndex).width(newWidth);
+                    footerTable.find('> tfoot > tr:first').children('th').eq(colIndex + 1).width(nextColumnWidth);
+                }
+                else {
+                    theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
+                    theadClone.find(PrimeFaces.escapeClientId(nextColumnHeader.attr('id') + '_clone')).width(nextColumnWidth);
+
+                    if(footerCols.length > 0) {
+                        var footerCol = footerCols.eq(colIndex),
+                        nextFooterCol = footerCol.next();
+
+                        footerCol.width(newWidth);
+                        nextFooterCol.width(nextColumnWidth);
+                    }
+                }
+            }
+        }
+    },
+    
+    //@Override
+    hasColGroup: function() {
+        return this.frozenThead.children('tr').length > 1 || this.scrollThead.children('tr').length > 1;
+    },
+    
+    //@Override
+    addGhostRow: function() {
+        this._addGhostRow(this.frozenTbody, this.frozenThead, this.frozenTheadClone, this.frozenFooter.find('table'), 'ui-frozen-column');
+        this._addGhostRow(this.scrollTbody, this.scrollThead, this.scrollTheadClone, this.scrollFooterTable);
+    },
+    
+    _addGhostRow: function(body, header, headerClone, footerTable, columnClass) {
+        var dataColumnsCount = body.find('tr:first').children('td').length,
+        columnMarkup = '',
+        columnStyleClass = columnClass ? 'ui-resizable-column ' + columnClass : 'ui-resizable-column';
+
+        for(var i = 0; i < dataColumnsCount; i++) {
+            columnMarkup += '<th style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none;" class="' + columnStyleClass + '"></th>';
+        }
+        
+        header.prepend('<tr>' + columnMarkup + '</tr>');
+
+        if(this.cfg.scrollable) {         
+            headerClone.prepend('<tr>' + columnMarkup + '</tr>');
+            footerTable.children('tfoot').prepend('<tr>' + columnMarkup + '</tr>');
         }
     }
     
