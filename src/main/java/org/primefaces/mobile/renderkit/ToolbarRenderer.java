@@ -50,6 +50,10 @@ public class ToolbarRenderer extends org.primefaces.component.toolbar.ToolbarRen
     }
     
     protected void encodeGroup(FacesContext context, UIComponent group, String styleClass) throws IOException {
+        if (group == null) {
+            return;
+        }
+        
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("div", null);
