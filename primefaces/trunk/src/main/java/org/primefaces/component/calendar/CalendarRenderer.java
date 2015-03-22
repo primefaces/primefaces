@@ -40,14 +40,14 @@ public class CalendarRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Calendar calendar = (Calendar) component;
 
-        if(calendar.isDisabled() || calendar.isReadonly()) {
+        if (calendar.isDisabled() || calendar.isReadonly()) {
             return;
         }
 
         String param = calendar.getClientId(context) + "_input";
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(param);
 
-        if(submittedValue != null) {
+        if (submittedValue != null) {
             calendar.setSubmittedValue(submittedValue);
         }
 
@@ -72,11 +72,15 @@ public class CalendarRenderer extends InputRenderer {
 
         writer.startElement("span", calendar);
         writer.writeAttribute("id", clientId, null);
-        if(calendar.getStyle() != null) writer.writeAttribute("style", calendar.getStyle(), null);
-        if(calendar.getStyleClass() != null) writer.writeAttribute("class", calendar.getStyleClass(), null);
+        if (calendar.getStyle() != null) {
+            writer.writeAttribute("style", calendar.getStyle(), null);
+        }
+        if (calendar.getStyleClass() != null) {
+            writer.writeAttribute("class", calendar.getStyleClass(), null);
+        }
 
         //inline container
-        if(!popup) {
+        if (!popup) {
             String styleClass = "ui-state-default";
             if (calendar.isDisabled()) styleClass = styleClass + " ui-state-disabled";
             if (!calendar.isValid()) styleClass = styleClass + " ui-state-error";
@@ -98,34 +102,33 @@ public class CalendarRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, Calendar calendar, String id, String value, boolean popup) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String type = popup ? "text" : "hidden";
-        boolean disabled = calendar.isDisabled();
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", type, null);
 
-        if(calendar.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if (calendar.isRequired()) writer.writeAttribute("aria-required", "true", null);
         
-        if(!isValueBlank(value)) {
+        if (!isValueBlank(value)) {
             writer.writeAttribute("value", value, null);
         }
 
-        if(popup) {
+        if (popup) {
             String inputStyleClass = Calendar.INPUT_STYLE_CLASS;
-            if(disabled) inputStyleClass = inputStyleClass + " ui-state-disabled";
-            if(!calendar.isValid()) inputStyleClass = inputStyleClass + " ui-state-error";
+            if (calendar.isDisabled()) inputStyleClass = inputStyleClass + " ui-state-disabled";
+            if (!calendar.isValid()) inputStyleClass = inputStyleClass + " ui-state-error";
 
             writer.writeAttribute("class", inputStyleClass, null);
 
-            if(calendar.isReadonly()||calendar.isReadonlyInput()) writer.writeAttribute("readonly", "readonly", null);
-            if(calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+            if (calendar.isReadonly()||calendar.isReadonlyInput()) writer.writeAttribute("readonly", "readonly", null);
+            if (calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 
             renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
             renderDomEvents(context, calendar, HTML.INPUT_TEXT_EVENTS);
         }
 
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, calendar);
         }
 
@@ -148,13 +151,13 @@ public class CalendarRenderer extends InputRenderer {
         Object pagedate = calendar.getPagedate();
         String defaultDate = null;
 
-        if(calendar.isConversionFailed()) {
+        if (calendar.isConversionFailed()) {
             defaultDate = CalendarUtils.getValueAsString(context, calendar, new Date());
         }
-        else if(!isValueBlank(value)) {
+        else if (!isValueBlank(value)) {
             defaultDate = value;
         }
-        else if(pagedate != null) {
+        else if (pagedate != null) {
             defaultDate = CalendarUtils.getValueAsString(context, calendar, pagedate);
         }
 
@@ -168,29 +171,29 @@ public class CalendarRenderer extends InputRenderer {
             .attr("disabled", calendar.isDisabled(), false)
             .attr("yearRange", calendar.getYearRange(), null);
 
-        if(calendar.isNavigator()) {
+        if (calendar.isNavigator()) {
             wb.attr("changeMonth", true).attr("changeYear", true);
         }
 
-        if(calendar.getEffect() != null) {
+        if (calendar.getEffect() != null) {
             wb.attr("showAnim", calendar.getEffect()).attr("duration", calendar.getEffectDuration());
         }
 
         String beforeShowDay = calendar.getBeforeShowDay();
-        if(beforeShowDay != null) {
+        if (beforeShowDay != null) {
             wb.nativeAttr("preShowDay", beforeShowDay);
         }
 
         String showOn = calendar.getShowOn();
-        if(!showOn.equalsIgnoreCase("focus")) {
+        if (!showOn.equalsIgnoreCase("focus")) {
             wb.attr("showOn", showOn);
         }
 
-        if(calendar.isShowOtherMonths()) {
+        if (calendar.isShowOtherMonths()) {
             wb.attr("showOtherMonths", true).attr("selectOtherMonths", calendar.isSelectOtherMonths());
         }
 
-        if(calendar.hasTime()) {
+        if (calendar.hasTime()) {
             wb.attr("timeOnly", calendar.isTimeOnly())
                 .attr("stepHour", calendar.getStepHour())
                 .attr("stepMinute", calendar.getStepMinute())
@@ -204,7 +207,7 @@ public class CalendarRenderer extends InputRenderer {
                 .attr("controlType", calendar.getTimeControlType(), null);
         }
 
-        if(mask != null && !mask.equals("false")) {
+        if (mask != null && !mask.equals("false")) {
             String patternTemplate = calendar.getPattern() == null ? pattern : calendar.getPattern();
             String maskTemplate = (mask.equals("true")) ? patternTemplate.replaceAll("[a-zA-Z]", "9") : mask;
             wb.attr("mask", maskTemplate);
@@ -221,14 +224,14 @@ public class CalendarRenderer extends InputRenderer {
         String submittedValue = (String) value;
         SimpleDateFormat format = null;
 
-        if(isValueBlank(submittedValue)) {
+        if (isValueBlank(submittedValue)) {
             return null;
         }
 
         //Delegate to user supplied converter if defined
         try {
         	Converter converter = calendar.getConverter();
-            if(converter != null) {
+            if (converter != null) {
                 return converter.getAsObject(context, calendar, submittedValue);
             }
         }
@@ -254,10 +257,10 @@ public class CalendarRenderer extends InputRenderer {
             params[1] = format.format(new Date());
             params[2] = MessageFactory.getLabel(context, calendar);
 
-            if(calendar.isTimeOnly()) {
+            if (calendar.isTimeOnly()) {
                 message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
             }
-            else if(calendar.hasTime()) {
+            else if (calendar.hasTime()) {
                 message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
             }
             else {
