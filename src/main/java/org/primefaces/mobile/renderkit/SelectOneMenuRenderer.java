@@ -46,9 +46,11 @@ public class SelectOneMenuRenderer extends org.primefaces.component.selectonemen
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("data-role", "none", null);
         
-        if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if(menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
-        if(menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
+        if (menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if (menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
+        if (menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
+        if (menu.getStyle() != null) writer.writeAttribute("style", menu.getStyle(), null);
+        if (menu.getStyleClass() != null) writer.writeAttribute("class", menu.getStyleClass(), null);
         
         renderOnchange(context, menu);
         renderDynamicPassThruAttributes(context, menu);
