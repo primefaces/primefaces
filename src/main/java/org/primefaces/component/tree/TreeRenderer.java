@@ -518,7 +518,6 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("data-rowkey", rowKey, null);
             writer.writeAttribute("data-nodetype", uiTreeNode.getType(), null);
             writer.writeAttribute("class", containerClass, null);
-            writer.writeAttribute("role", "treeitem", null);
 
             if(datakey != null) {
                 writer.writeAttribute("data-datakey", datakey, null);
@@ -557,6 +556,8 @@ public class TreeRenderer extends CoreRenderer {
                 writer.startElement("span", null);
                 writer.writeAttribute("class", nodeLabelClass, null);
                 writer.writeAttribute("tabindex", "-1", null);
+                writer.writeAttribute("role", "treeitem", null);
+                writer.writeAttribute("aria-label", uiTreeNode.getAriaLabel(), null);
                 uiTreeNode.encodeAll(context);
                 writer.endElement("span");
 
@@ -565,7 +566,8 @@ public class TreeRenderer extends CoreRenderer {
             //children nodes                
             writer.startElement("ul", null);
             writer.writeAttribute("class", Tree.CHILDREN_NODES_CLASS , null);
-
+            writer.writeAttribute("role", "group", null);
+            
             if(!expanded) {
                 writer.writeAttribute("style", "display:none", null);
             }
