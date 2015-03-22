@@ -40,25 +40,25 @@ public class FileUploadRenderer extends CoreRenderer {
 
         FileUpload fileUpload = (FileUpload) component;
 
-        if(!fileUpload.isDisabled()) {
+        if (!fileUpload.isDisabled()) {
             ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
             String uploader = cc.getUploader();
             boolean isAtLeastJSF22 = cc.isAtLeastJSF22();
 
-            if(uploader.equals("auto")) {
-                if(isAtLeastJSF22)
+            if (uploader.equals("auto")) {
+                if (isAtLeastJSF22)
                     NativeFileUploadDecoder.decode(context, fileUpload);
                 else
                     CommonsFileUploadDecoder.decode(context, fileUpload);
             }
-            else if(uploader.equals("native")) {
-                if(!isAtLeastJSF22) {
+            else if (uploader.equals("native")) {
+                if (!isAtLeastJSF22) {
                     throw new FacesException("native uploader requires at least a JSF 2.2 runtime");
                 }
 
                 NativeFileUploadDecoder.decode(context, fileUpload);
             }
-            else if(uploader.equals("commons")) {
+            else if (uploader.equals("commons")) {
                 CommonsFileUploadDecoder.decode(context, fileUpload);
             }
         }
@@ -78,7 +78,7 @@ public class FileUploadRenderer extends CoreRenderer {
         String process = fileUpload.getProcess();
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        if(fileUpload.getMode().equals("advanced")) {
+        if (fileUpload.getMode().equals("advanced")) {
             wb.initWithDomReady("FileUpload", fileUpload.resolveWidgetVar(), clientId, "fileupload");
             
             wb.attr("auto", fileUpload.isAuto(), false)
@@ -97,7 +97,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
 
-            if(fileUpload.getAllowTypes() != null) {
+            if (fileUpload.getAllowTypes() != null) {
                 wb.append(",allowTypes:").append(fileUpload.getAllowTypes());
             }
         }
@@ -110,7 +110,7 @@ public class FileUploadRenderer extends CoreRenderer {
 	}
 
     protected void encodeMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
-        if(fileUpload.getMode().equals("simple"))
+        if (fileUpload.getMode().equals("simple"))
             encodeSimpleMarkup(context, fileUpload);
         else
             encodeAdvancedMarkup(context, fileUpload);
@@ -127,7 +127,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, styleClass);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
@@ -138,13 +138,15 @@ public class FileUploadRenderer extends CoreRenderer {
         //choose button
         encodeChooseButton(context, fileUpload, disabled);
 
-        if(!fileUpload.isAuto()) {
+        if (!fileUpload.isAuto()) {
             encodeButton(context, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS, "ui-icon-arrowreturnthick-1-n");
             encodeButton(context, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS, "ui-icon-cancel");
         }
 
         writer.endElement("div");
 
+        renderChildren(context, fileUpload);
+        
         //content
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
@@ -166,17 +168,17 @@ public class FileUploadRenderer extends CoreRenderer {
         String style = fileUpload.getStyle();
         String styleClass = fileUpload.getStyleClass();
         
-        if(fileUpload.isSkinSimple()) {
+        if (fileUpload.isSkinSimple()) {
             styleClass = (styleClass == null) ? FileUpload.CONTAINER_CLASS_SIMPLE : FileUpload.CONTAINER_CLASS_SIMPLE + " " + styleClass;
             String buttonClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
-            if(fileUpload.isDisabled()) {
+            if (fileUpload.isDisabled()) {
                 buttonClass += " ui-state-disabled";
             }
             
             writer.startElement("span", fileUpload);
             writer.writeAttribute("id", clientId, "id");
             writer.writeAttribute("class", styleClass, "styleClass");
-            if(style != null) {
+            if (style != null) {
                 writer.writeAttribute("style", style, "style");
             }
             
@@ -213,7 +215,7 @@ public class FileUploadRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fileUpload.getClientId(context);
         String cssClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + FileUpload.CHOOSE_BUTTON_CLASS;
-        if(disabled) {
+        if (disabled) {
             cssClass += " ui-state-disabled";
         }
 
@@ -231,7 +233,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeText(fileUpload.getLabel(), "value");
         writer.endElement("span");
 
-        if(!disabled) {
+        if (!disabled) {
             encodeInputField(context, fileUpload, clientId + "_input");
         }
 
@@ -246,9 +248,9 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId , null);
         writer.writeAttribute("name", clientId, null);
 
-        if(fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
-        if(fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-        if(fileUpload.getAccept() != null) writer.writeAttribute("accept", fileUpload.getAccept(), null);
+        if (fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
+        if (fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if (fileUpload.getAccept() != null) writer.writeAttribute("accept", fileUpload.getAccept(), null);
         
         renderDynamicPassThruAttributes(context, fileUpload);
 
@@ -263,11 +265,11 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId , null);
         writer.writeAttribute("name", clientId, null);
 
-        if(fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
-        if(fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-        if(fileUpload.getAccept() != null) writer.writeAttribute("accept", fileUpload.getAccept(), null);
-        if(style != null) writer.writeAttribute("style", style, "style");
-        if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+        if (fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
+        if (fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if (fileUpload.getAccept() != null) writer.writeAttribute("accept", fileUpload.getAccept(), null);
+        if (style != null) writer.writeAttribute("style", style, "style");
+        if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
 
         renderDynamicPassThruAttributes(context, fileUpload);
 
@@ -302,11 +304,21 @@ public class FileUploadRenderer extends CoreRenderer {
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         FileUpload fileUpload = (FileUpload) component;
         
-        if(fileUpload.getMode().equals("simple") && submittedValue != null && submittedValue.equals("")) {
+        if (fileUpload.getMode().equals("simple") && submittedValue != null && submittedValue.equals("")) {
             return null;
         }
         else {
             return submittedValue;
         }
     } 
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        // Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
 }
