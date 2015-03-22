@@ -3091,12 +3091,13 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
     
     _addGhostRow: function(body, header, headerClone, footerTable, columnClass) {
-        var dataColumnsCount = body.find('tr:first').children('td').length,
+        var dataColumns = body.find('tr:first').children('td'),
+        dataColumnsCount = dataColumns.length,
         columnMarkup = '',
         columnStyleClass = columnClass ? 'ui-resizable-column ' + columnClass : 'ui-resizable-column';
 
         for(var i = 0; i < dataColumnsCount; i++) {
-            columnMarkup += '<th style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none;" class="' + columnStyleClass + '"></th>';
+            columnMarkup += '<th style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none;width:' + dataColumns.eq(i).width() + 'px" class="' + columnStyleClass + '"></th>';
         }
         
         header.prepend('<tr>' + columnMarkup + '</tr>');
