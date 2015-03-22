@@ -30,7 +30,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 	public void decode(FacesContext context, UIComponent component) {
 		SelectBooleanButton button = (SelectBooleanButton) component;
 
-        if(button.isDisabled()) {
+        if (button.isDisabled()) {
             return;
         }
 
@@ -39,7 +39,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 		String clientId = button.getClientId(context);
 		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
-        if(submittedValue != null && submittedValue.equalsIgnoreCase("on")) {
+        if (submittedValue != null && submittedValue.equalsIgnoreCase("on")) {
             button.setSubmittedValue("true");
         }
         else {
@@ -71,9 +71,9 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("type", "button", null);
 		writer.writeAttribute("class", button.resolveStyleClass(checked, disabled), null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
-        if(title != null) writer.writeAttribute("title", title, null);
-        if(style != null) writer.writeAttribute("style", style, "style");
+        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (title != null) writer.writeAttribute("title", title, null);
+        if (style != null) writer.writeAttribute("style", style, "style");
 
         //input
         writer.startElement("input", null);
@@ -82,8 +82,8 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
-        if(checked) writer.writeAttribute("checked", "checked", null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (checked) writer.writeAttribute("checked", "checked", null);
+        if (disabled) writer.writeAttribute("disabled", "disabled", null);
         
         renderOnchange(context, button);
 
@@ -95,7 +95,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.endElement("input");
         
         //icon
-        if(icon != null) {
+        if (icon != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
             writer.endElement("span");
