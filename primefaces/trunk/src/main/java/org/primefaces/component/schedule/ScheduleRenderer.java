@@ -137,7 +137,7 @@ public class ScheduleRenderer extends CoreRenderer {
         
         Object initialDate = schedule.getInitialDate();
         if(initialDate != null) {
-            DateFormat fmt = new SimpleDateFormat("YYYY-MM-dd");
+            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
             
             wb.attr("defaultDate",fmt.format((Date) initialDate), null);
 		}
