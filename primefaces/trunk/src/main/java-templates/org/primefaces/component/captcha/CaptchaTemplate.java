@@ -10,6 +10,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.FacesException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.logging.Logger;
+import org.primefaces.context.PrimeExternalContext;
 
     public final static String PUBLIC_KEY = "primefaces.PUBLIC_CAPTCHA_KEY";
     public final static String PRIVATE_KEY = "primefaces.PRIVATE_CAPTCHA_KEY";
@@ -76,7 +77,7 @@ import java.util.logging.Logger;
     private String createPostParameters(FacesContext facesContext, Verification verification) throws UnsupportedEncodingException {
 		String challenge = verification.getChallenge();
 		String answer = verification.getAnswer();
-		String remoteAddress = ((HttpServletRequest) facesContext.getExternalContext().getRequest()).getRemoteAddr();
+		String remoteAddress = ((PrimeExternalContext) facesContext.getExternalContext()).getRemoteAddr();
         String privateKey = null;
 		String oldPrivateKey = facesContext.getExternalContext().getInitParameter(Captcha.OLD_PRIVATE_KEY);
         String newPrivateKey = facesContext.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);
