@@ -211,6 +211,7 @@
         changeTheme: function(newTheme) {
             if(newTheme && newTheme !== '') {
                 var themeLink = $('link[href*="javax.faces.resource/theme.css"]');
+                // portlet
                 if (themeLink.length === 0) {
                     themeLink = $('link[href*="javax.faces.resource=theme.css"]');
                 }
@@ -314,6 +315,7 @@
          */
         getFacesResource : function(name, library, version) {
             var scriptURI = $('script[src*="/javax.faces.resource/' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
+            // portlet
             if (!scriptURI) {
                 scriptURI = $('script[src*="javax.faces.resource=' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
             }
