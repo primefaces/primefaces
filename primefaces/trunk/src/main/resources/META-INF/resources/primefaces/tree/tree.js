@@ -664,16 +664,16 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     },        
             
     collapseNode: function(node) {
-        var _self = this;
-        
-        //aria
-        node.attr('aria-expanded', false);
-        
-        var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
+        var _self = this,
+        nodeContent = node.find('> .ui-treenode-content'), 
+        toggleIcon = nodeContent.find('> .ui-tree-toggler'),
         nodeType = node.data('nodetype'),
         nodeIcon = toggleIcon.nextAll('span.ui-treenode-icon'),
         iconState = this.cfg.iconStates[nodeType],
         childrenContainer = node.children('.ui-treenode-children');
+        
+        //aria
+        nodeContent.find('> .ui-treenode-label').attr('aria-expanded', false);
         
         toggleIcon.addClass(_self.cfg.collapsedIcon).removeClass('ui-icon-triangle-1-s');
         
@@ -707,14 +707,15 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     
     //@Override
     showNodeChildren: function(node) {
-        //aria
-        node.attr('aria-expanded', true);
-        
-        var toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
+        var nodeContent = node.find('> .ui-treenode-content'), 
+        toggleIcon = nodeContent.find('> .ui-tree-toggler'),
         nodeType = node.data('nodetype'),
         nodeIcon = toggleIcon.nextAll('span.ui-treenode-icon'),
         iconState = this.cfg.iconStates[nodeType];
 
+        //aria
+        nodeContent.find('> .ui-treenode-label').attr('aria-expanded', true);
+        
         toggleIcon.addClass('ui-icon-triangle-1-s').removeClass(this.cfg.collapsedIcon);
 
         if(iconState) {
