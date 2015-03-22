@@ -46,6 +46,9 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
             boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
             try {
+                // see #6448
+                dynamicContentId = dynamicContentId.replaceAll(" ", "+");
+
                 String dynamicContentEL = strEn.decrypt(dynamicContentId);
                 ExternalContext externalContext = context.getExternalContext();
 
