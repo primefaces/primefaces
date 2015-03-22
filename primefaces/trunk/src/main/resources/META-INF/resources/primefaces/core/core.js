@@ -210,11 +210,15 @@
 
         changeTheme: function(newTheme) {
             if(newTheme && newTheme !== '') {
-                var themeLink = $('link[href*="javax.faces.resource/theme.css"]'),
-                themeURL = themeLink.attr('href'),
-                plainURL = themeURL.split('&')[0],
-                oldTheme = plainURL.split('ln=')[1],
-                newThemeURL = themeURL.replace(oldTheme, 'primefaces-' + newTheme);
+                var themeLink = $('link[href*="javax.faces.resource/theme.css"]');
+                if (themeLink.length === 0) {
+                    themeLink = $('link[href*="javax.faces.resource=theme.css"]');
+                }
+
+                var themeURL = themeLink.attr('href'),
+                    plainURL = themeURL.split('&')[0],
+                    oldTheme = plainURL.split('ln=')[1],
+                    newThemeURL = themeURL.replace(oldTheme, 'primefaces-' + newTheme);
 
                 themeLink.attr('href', newThemeURL);
             }
