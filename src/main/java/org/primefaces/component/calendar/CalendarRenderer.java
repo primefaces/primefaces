@@ -77,8 +77,14 @@ public class CalendarRenderer extends InputRenderer {
 
         //inline container
         if(!popup) {
+            String styleClass = "ui-state-default";
+            if (calendar.isDisabled()) styleClass = styleClass + " ui-state-disabled";
+            if (!calendar.isValid()) styleClass = styleClass + " ui-state-error";
+
             writer.startElement("div", null);
             writer.writeAttribute("id", clientId + "_inline", null);
+            writer.writeAttribute("class", styleClass, null);
+            writer.writeAttribute("style", "display:inline-block", null);
             writer.endElement("div");
         }
 
