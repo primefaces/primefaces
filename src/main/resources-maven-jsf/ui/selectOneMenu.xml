@@ -162,6 +162,12 @@
             <defaultValue>false</defaultValue>
             <description>Updates the title of the component with the description of the selected item.</description>
         </attribute>
+        <attribute>
+            <name>labelTemplate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Displays label of the element in a custom template. Valid placeholder is {0}.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>

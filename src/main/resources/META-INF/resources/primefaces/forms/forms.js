@@ -1068,17 +1068,19 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     setLabel: function(value) {
+        var displayedLabel = this.getLabelToDisplay(value);
+        
         if(this.cfg.editable) {
             if(value === '&nbsp;')
                 this.label.val('');
             else
-                this.label.val(value);
+                this.label.val(displayedLabel);
         }
         else {
             if(value === '&nbsp;')
                 this.label.html('&nbsp;');
             else
-                this.label.text(value);
+                this.label.text(displayedLabel);
         }
     },
 
@@ -1157,7 +1159,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     getSelectedLabel: function() {
         return this.options.filter(':selected').text();
-    }
+    },
+    
+    getLabelToDisplay: function(value) {
+        if(this.cfg.labelTemplate && value !== '&nbsp;') {
+            return this.cfg.labelTemplate.replace('{0}', value);
+        }
+        return value;
+    }        
 
 });
 
