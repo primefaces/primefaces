@@ -84,9 +84,12 @@ public class SpinnerRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = spinner.getClientId(context);
         String styleClass = spinner.getStyleClass();
+        boolean valid = spinner.isValid();
         styleClass = styleClass == null ? Spinner.CONTAINER_CLASS : Spinner.CONTAINER_CLASS + " " + styleClass;
         styleClass = spinner.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = !spinner.isValid() ? styleClass + " ui-state-error" : styleClass;
+        String upButtonClass = (valid) ? Spinner.UP_BUTTON_CLASS : Spinner.UP_BUTTON_CLASS + " ui-state-error";
+        String downButtonClass = (valid) ? Spinner.DOWN_BUTTON_CLASS : Spinner.DOWN_BUTTON_CLASS + " ui-state-error";
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
@@ -97,8 +100,8 @@ public class SpinnerRenderer extends InputRenderer {
 
         encodeInput(context, spinner);
 
-        encodeButton(context, Spinner.UP_BUTTON_CLASS, Spinner.UP_ICON_CLASS);
-        encodeButton(context, Spinner.DOWN_BUTTON_CLASS, Spinner.DOWN_ICON_CLASS);
+        encodeButton(context, upButtonClass, Spinner.UP_ICON_CLASS);
+        encodeButton(context, downButtonClass, Spinner.DOWN_ICON_CLASS);
 
         writer.endElement("span");
     }
@@ -106,12 +109,13 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, Spinner spinner) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = spinner.getClientId(context) + "_input";
+        String inputClass = spinner.isValid() ? Spinner.INPUT_CLASS : Spinner.INPUT_CLASS + " ui-state-error";
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "text", null);
-        writer.writeAttribute("class", Spinner.INPUT_CLASS, null);
+        writer.writeAttribute("class", inputClass, null);
         writer.writeAttribute("autocomplete", "off", null);
 
         String valueToRender = ComponentUtils.getValueToRender(context, spinner);
