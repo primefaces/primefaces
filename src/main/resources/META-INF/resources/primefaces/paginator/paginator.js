@@ -44,7 +44,10 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-state-hover');
         })
         .on('focus.paginator', function() {
-            $(this).addClass('ui-state-focus');
+            var item = $(this);
+            if(!item.hasClass('ui-state-disabled')) {
+                item.addClass('ui-state-focus');
+            }
         })
         .on('blur.paginator', function() {
             $(this).removeClass('ui-state-focus');
