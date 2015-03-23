@@ -1,0 +1,7 @@
+<attribute>
+	<name>widgetVar</name>
+	<required>false</required>
+	<type>java.lang.String</type>
+	<ignoreInComponent>false</ignoreInComponent>
+    <description>Name of the client side widget.</description>
+</attribute>

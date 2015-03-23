@@ -1,0 +1,46 @@
+.ui-panelgrid {
+    border-collapse: collapse;
+}
+
+.ui-panelgrid .ui-panelgrid-header {
+    text-align: center;
+    padding: 4px 10px;
+}
+
+.ui-panelgrid .ui-panelgrid-footer {
+    text-align: left;
+    padding: 2px 5px;
+}
+
+.ui-panelgrid .ui-panelgrid-cell {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding: 4px 10px;
+}
+
+.ui-panelgrid.ui-noborder .ui-panelgrid-cell {
+    border: 0px none;
+}
+
+.ui-panelgrid.ui-noborder tr.ui-widget-content,
+.ui-panelgrid.ui-noborder tr.ui-widget-header {
+    border: 0px none;
+}
+
+/* Grid CSS */
+.ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
+    border: 0 none;
+}
+
+/* Responsive */
+@media (max-width: 35em) {       
+    .ui-panelgrid .ui-grid-responsive .ui-grid-row {
+        border-top: 1px solid;
+        border-top-color: inherit;
+    }
+    
+    .ui-panelgrid .ui-grid-responsive .ui-grid-row:first-child {
+        border-top: 0 none;
+    }
+}

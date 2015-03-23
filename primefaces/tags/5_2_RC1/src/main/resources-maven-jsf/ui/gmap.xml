@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>gmap</tag>
+	<tagClass>org.primefaces.component.gmap.GMapTag</tagClass>
+	<componentClass>org.primefaces.component.gmap.GMap</componentClass>
+	<componentType>org.primefaces.component.GMap</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.GMapRenderer</rendererType>
+	<rendererClass>org.primefaces.component.gmap.GMapRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>GMap component is built on Google Maps API Version 3. Gmap is highly integrated with JSF development model and enhanced with Ajax capabilities.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>model</name>
+			<required>false</required>
+			<type>org.primefaces.model.map.MapModel</type>
+            <description>An org.primefaces.model.MapModel instance.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the map container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the map container.</description>
+		</attribute>
+		<attribute>
+			<name>type</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Type of the map. Required.</description>
+		</attribute>
+		<attribute>
+			<name>center</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+            <description>Center point of the map. Required.</description>
+		</attribute>
+		<attribute>
+			<name>zoom</name>
+			<required>true</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>8</defaultValue>
+            <description>Defines the initial zoom level. Default is 8.</description>
+		</attribute>
+		<attribute>
+			<name>streetView</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Controls street view support. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>disableDefaultUI</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Disables default UI controls. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>navigationControl</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines visibility of navigation control. Default is true.</description>
+		</attribute>
+		<attribute>
+			<name>mapTypeControl</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines visibility of map type control. Default is true.</description>
+		</attribute>
+		<attribute>
+			<name>draggable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines draggability of map. Default is true.</description>
+		</attribute>
+		<attribute>
+			<name>disableDoubleClickZoom</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Disables zooming on mouse double click. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>onPointClick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript callback to execute when a point on map is clicked.</description>
+		</attribute>
+        <attribute>
+			<name>fitBounds</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Defines setting center and zoom values auto by included overlays on startup. Default value is false</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>gmap/gmap.js</name>
+		</resource>
+	</resources>
+</component>

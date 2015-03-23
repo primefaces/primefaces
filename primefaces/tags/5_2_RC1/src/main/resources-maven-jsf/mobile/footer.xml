@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>footer</tag>
+    <tagClass>org.primefaces.mobile.component.footer.FooterTag</tagClass>
+	<componentClass>org.primefaces.mobile.component.footer.Footer</componentClass>
+	<componentType>org.primefaces.mobile.Footer</componentType>
+	<componentFamily>org.primefaces.mobile.component</componentFamily>
+	<rendererType>org.primefaces.mobile.component.FooterRenderer</rendererType>
+	<rendererClass>org.primefaces.mobile.component.footer.FooterRenderer</rendererClass>
+	<parent>javax.faces.component.UIPanel</parent>
+	<attributes>
+		&standard_uicomponent_attributes;
+        <attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+        <attribute>
+			<name>fixed</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+		</attribute>
+        <attribute>
+            <name>swatch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Swatch of the footer</description>
+        </attribute>
+        <attribute>
+            <name>tapToggle</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>For fixed footers, sets whether the fixed toolbar's visibility can be toggled by tapping on the page.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the component.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the component.</description>
+        </attribute>
+	</attributes>
+</component>

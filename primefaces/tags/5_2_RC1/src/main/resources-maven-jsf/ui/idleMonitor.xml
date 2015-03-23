@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>idleMonitor</tag>
+    <tagClass>org.primefaces.component.idlemonitor.IdleMonitorTag</tagClass>
+    <componentClass>org.primefaces.component.idlemonitor.IdleMonitor</componentClass>
+    <componentType>org.primefaces.component.IdleMonitor</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.IdleMonitorRenderer</rendererType>
+    <rendererClass>org.primefaces.component.idlemonitor.IdleMonitorRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description>IdleMonitor watches user actions on a page and notify several callbacks in case they go idle or active again.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>timeout</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>300000</defaultValue>
+            <description>Time to wait in milliseconds until deciding if the user is idle. Default is 5 minutes.</description>
+        </attribute>
+        <attribute>
+            <name>onidle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when user goes idle.</description>
+        </attribute>
+        <attribute>
+            <name>onactive</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when user goes idle.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+        <resource>
+            <name>idlemonitor/idlemonitor.js</name>
+        </resource>
+    </resources>
+</component>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>ajaxExceptionHandler</tag>
+    <tagClass>org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler</tagClass>
+    <componentClass>org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler</componentClass>
+    <componentType>org.primefaces.component.AjaxExceptionHandler</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description></description>
+    <attributes>
+        &standard_uicomponent_attributes;
+        <attribute>
+            <name>onexception</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute after a exception with this type occured.</description>
+        </attribute>
+        <attribute>
+            <name>update</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Components to update after a exception with this type occured.</description>
+        </attribute>
+        <attribute>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Exception type to handle.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+    </resources>
+</component>

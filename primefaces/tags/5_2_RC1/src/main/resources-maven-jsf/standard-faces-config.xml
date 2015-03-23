@@ -1,0 +1,481 @@
+    
+    <name>primefaces</name>
+    
+    <factory>
+        <partial-view-context-factory>org.primefaces.context.PrimePartialViewContextFactory</partial-view-context-factory>
+    </factory>
+
+    <application>
+        <resource-handler>org.primefaces.application.resource.PrimeResourceHandler</resource-handler>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.metadata.transformer.MetadataTransformerExecutor</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.webapp.PostConstructApplicationEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+            <source-class>javax.faces.application.Application</source-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <source-class>org.primefaces.component.messages.Messages</source-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>         
+            <source-class>org.primefaces.component.growl.Growl</source-class>               
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.event.AutoUpdateComponentListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <source-class>org.primefaces.component.outputpanel.OutputPanel</source-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.event.system.DynamicColumnsListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <source-class>org.primefaces.component.columns.Columns</source-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.mobile.event.system.CalendarResourceListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <source-class>org.primefaces.component.calendar.Calendar</source-class>
+        </system-event-listener>
+    </application>
+    
+    <behavior>
+        <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.ajax.AjaxBehavior</behavior-class>
+    </behavior>
+    
+    <behavior>
+        <behavior-id>org.primefaces.component.PrinterBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.printer.PrinterBehavior</behavior-class>
+    </behavior>
+    
+    <behavior>
+        <behavior-id>org.primefaces.behavior.ConfirmBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.confirm.ConfirmBehavior</behavior-class>
+    </behavior>
+    
+    <behavior>
+        <behavior-id>org.primefaces.behavior.ClientValidator</behavior-id>
+        <behavior-class>org.primefaces.behavior.validate.ClientValidator</behavior-class>
+    </behavior>
+    
+    <factory>
+    	<faces-context-factory>org.primefaces.context.PrimeFacesContextFactory</faces-context-factory>
+    </factory>
+    
+    <validator>
+        <validator-id>javax.faces.Length</validator-id>
+        <validator-class>org.primefaces.validate.LengthValidator</validator-class>
+    </validator>
+    
+    <validator>
+        <validator-id>javax.faces.LongRange</validator-id>
+        <validator-class>org.primefaces.validate.LongRangeValidator</validator-class>
+    </validator>
+    
+    <validator>
+        <validator-id>javax.faces.DoubleRange</validator-id>
+        <validator-class>org.primefaces.validate.DoubleRangeValidator</validator-class>
+    </validator>
+    
+    <validator>
+        <validator-id>javax.faces.RegularExpression</validator-id>
+        <validator-class>org.primefaces.validate.RegexValidator</validator-class>
+    </validator>
+    
+    <converter>
+        <converter-id>javax.faces.Integer</converter-id>
+        <converter-class>org.primefaces.convert.IntegerConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Integer</converter-for-class>
+        <converter-class>org.primefaces.convert.IntegerConverter</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-id>javax.faces.Long</converter-id>
+        <converter-class>org.primefaces.convert.LongConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Long</converter-for-class>
+        <converter-class>org.primefaces.convert.LongConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Double</converter-id>
+        <converter-class>org.primefaces.convert.DoubleConverter</converter-class> 
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Double</converter-for-class>
+        <converter-class>org.primefaces.convert.DoubleConverter</converter-class> 
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Float</converter-id>
+        <converter-class>org.primefaces.convert.FloatConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Float</converter-for-class>
+        <converter-class>org.primefaces.convert.FloatConverter</converter-class>
+    </converter>
+
+    <converter>        
+        <converter-id>javax.faces.Short</converter-id>
+        <converter-class>org.primefaces.convert.ShortConverter</converter-class>
+    </converter>
+
+    <converter>        
+        <converter-for-class>java.lang.Short</converter-for-class>
+        <converter-class>org.primefaces.convert.ShortConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.math.BigInteger</converter-for-class>
+        <converter-class>org.primefaces.convert.BigIntegerConverter</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-for-class>java.math.BigDecimal</converter-for-class>
+        <converter-class>org.primefaces.convert.BigDecimalConverter</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-id>javax.faces.Byte</converter-id>
+        <converter-class>org.primefaces.convert.ByteConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Byte</converter-for-class>
+        <converter-class>org.primefaces.convert.ByteConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Character</converter-id>
+        <converter-class>org.primefaces.convert.CharacterConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Character</converter-for-class>
+        <converter-class>org.primefaces.convert.CharacterConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Boolean</converter-id>        
+        <converter-class>org.primefaces.convert.BooleanConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Boolean</converter-for-class>        
+        <converter-class>org.primefaces.convert.BooleanConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.DateTime</converter-id>
+        <converter-class>org.primefaces.convert.DateTimeConverter</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-id>javax.faces.Number</converter-id>
+        <converter-class>org.primefaces.convert.NumberConverter</converter-class>
+    </converter>
+    
+    <!-- Mobile -->
+    <component>
+		<component-type>org.primefaces.mobile.Content</component-type>
+		<component-class>org.primefaces.mobile.component.content.Content</component-class>
+	</component>
+
+	<component>
+		<component-type>org.primefaces.mobile.Header</component-type>
+		<component-class>org.primefaces.mobile.component.header.Header</component-class>
+	</component>
+    
+    <component>
+		<component-type>org.primefaces.mobile.Footer</component-type>
+		<component-class>org.primefaces.mobile.component.footer.Footer</component-class>
+	</component>
+
+	<component>
+		<component-type>org.primefaces.mobile.Page</component-type>
+		<component-class>org.primefaces.mobile.component.page.Page</component-class>
+	</component>
+    
+    <component>
+		<component-type>org.primefaces.mobile.Field</component-type>
+		<component-class>org.primefaces.mobile.component.field.Field</component-class>
+	</component>
+    
+    <component>
+		<component-type>org.primefaces.mobile.InputSlider</component-type>
+		<component-class>org.primefaces.mobile.component.inputslider.InputSlider</component-class>
+	</component>
+    
+    <component>
+		<component-type>org.primefaces.mobile.RangeSlider</component-type>
+		<component-class>org.primefaces.mobile.component.rangeslider.RangeSlider</component-class>
+	</component>
+    
+    <component>
+		<component-type>org.primefaces.mobile.UISwitch</component-type>
+		<component-class>org.primefaces.mobile.component.uiswitch.UISwitch</component-class>
+	</component>
+
+    <render-kit>
+        <render-kit-id>PRIMEFACES_MOBILE</render-kit-id>
+        <render-kit-class>org.primefaces.mobile.renderkit.MobileRenderKit</render-kit-class>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>javax.faces.Head</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.HeadRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+			<component-family>org.primefaces.mobile.component</component-family>
+			<renderer-type>org.primefaces.mobile.component.PageRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.page.PageRenderer</renderer-class>
+		</renderer>
+        
+        <renderer>
+			<component-family>org.primefaces.mobile.component</component-family>
+			<renderer-type>org.primefaces.mobile.component.ContentRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.content.ContentRenderer</renderer-class>
+		</renderer>
+        
+        <renderer>
+			<component-family>org.primefaces.mobile.component</component-family>
+			<renderer-type>org.primefaces.mobile.component.HeaderRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.header.HeaderRenderer</renderer-class>
+		</renderer>
+        
+        <renderer>
+			<component-family>org.primefaces.mobile.component</component-family>
+			<renderer-type>org.primefaces.mobile.component.FooterRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.footer.FooterRenderer</renderer-class>
+		</renderer>
+        
+        <renderer>
+			<component-family>org.primefaces.mobile.component</component-family>
+			<renderer-type>org.primefaces.mobile.component.FieldRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.field.FieldRenderer</renderer-class>
+		</renderer>
+        
+        <renderer>
+			<component-family>org.primefaces.mobile.component</component-family>
+			<renderer-type>org.primefaces.mobile.component.InputSliderRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.inputslider.InputSliderRenderer</renderer-class>
+		</renderer>
+        
+        <renderer>
+			<component-family>org.primefaces.mobile.component</component-family>
+			<renderer-type>org.primefaces.mobile.component.RangeSliderRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.rangeslider.RangeSliderRenderer</renderer-class>
+		</renderer>
+        
+        <renderer>
+			<component-family>org.primefaces.mobile.component</component-family>
+			<renderer-type>org.primefaces.mobile.component.UISwitchRenderer</renderer-type>
+			<renderer-class>org.primefaces.mobile.component.uiswitch.UISwitchRenderer</renderer-class>
+		</renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.InputTextRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.InputTextRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.InputTextareaRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.InputTextareaRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PasswordRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.PasswordRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectOneMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.SelectOneMenuRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectOneRadioRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.SelectOneRadioRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectOneButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.SelectOneButtonRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectBooleanCheckboxRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.SelectBooleanCheckboxRenderer</renderer-class>
+        </renderer> 
+       
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectManyCheckboxRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.SelectManyCheckboxRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectManyButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.SelectManyButtonRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectCheckboxMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.SelectCheckboxMenuRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CommandButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.CommandButtonRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.MenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.MenuRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DataListRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.DataListRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PanelRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.PanelRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AccordionPanelRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.AccordionPanelRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.GrowlRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.GrowlRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DialogRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.DialogRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ConfirmDialogRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.ConfirmDialogRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TabViewRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.TabViewRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PanelGridRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.PanelGridRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.OverlayPanelRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.OverlayPanelRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CalendarRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.CalendarRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AutoCompleteRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.AutoCompleteRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ToolbarRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.ToolbarRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.ButtonRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.LinkRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.LinkRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TabMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.TabMenuRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.FileUploadRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.FileUploadRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.InputSwitchRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.InputSwitchRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PaginatorRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.paginator.PaginatorRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DataGridRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.DataGridRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DataTableRenderer</renderer-type>
+            <renderer-class>org.primefaces.mobile.renderkit.DataTableRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+    <!-- Mobile -->
