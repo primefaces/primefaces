@@ -190,6 +190,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.writeAttribute("class", headerClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute("aria-expanded", String.valueOf(active), null);
+        writer.writeAttribute("aria-selected", String.valueOf(active), null);
+        writer.writeAttribute("aria-label", tab.getAriaLabel(), null);
         if(tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
         if(tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
 
