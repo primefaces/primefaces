@@ -75,12 +75,11 @@ public class PushServlet extends AtmosphereServlet {
             }
         });
 
-        boolean configured = sc.getInitParameter(ApplicationConfig.READ_GET_BODY) == null ? false : Boolean.valueOf(sc.getInitParameter(ApplicationConfig.READ_GET_BODY));
-        if (!configured) {
+        boolean notConfigured = sc.getInitParameter(ApplicationConfig.READ_GET_BODY) == null;
+        if (!notConfigured) {
             // For Backward compatibility with Atmosphere 2.2.x
             framework().addInitParameter(ApplicationConfig.READ_GET_BODY, "true");
         }
-
 
         framework().init(sc);
 
