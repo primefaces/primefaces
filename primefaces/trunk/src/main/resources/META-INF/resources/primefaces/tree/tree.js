@@ -1513,6 +1513,20 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
     
     focusNode: function(node) {
         //focus not supported in horizontal mode
-    }
+    },
+    
+    //@Override
+    partialCheck: function(checkbox) {
+        var box = checkbox.children('.ui-chkbox-box'),
+        icon = box.children('.ui-chkbox-icon'),
+        treeNode = checkbox.closest('.ui-treenode'),
+        rowKey = this.getRowKey(treeNode);
+
+        treeNode.find('> .ui-treenode-content').removeClass('ui-state-highlight');
+        icon.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus');
+        treeNode.removeClass('ui-treenode-selected ui-treenode-unselected').addClass('ui-treenode-hasselected').attr('aria-checked', false).attr('aria-selected', false);
+    
+        this.removeFromSelection(rowKey);
+     }        
     
 });
