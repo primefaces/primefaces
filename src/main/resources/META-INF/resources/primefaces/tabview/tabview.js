@@ -360,8 +360,10 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         //aria
         oldPanel.attr('aria-hidden', true);
         oldHeader.attr('aria-expanded', false);
+        oldHeader.attr('aria-selected', false);
         newPanel.attr('aria-hidden', false);
         newHeader.attr('aria-expanded', true);
+        newHeader.attr('aria-selected', true);
 
         if(this.cfg.effect) {
                 oldPanel.hide(this.cfg.effect, null, this.cfg.effectDuration, function() {

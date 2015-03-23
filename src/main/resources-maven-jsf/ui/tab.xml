@@ -52,5 +52,11 @@
 			<type>java.lang.String</type>
             <description>Tooltip of the tab header.</description>
 		</attribute>
+        <attribute>
+			<name>ariaLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description></description>
+		</attribute>
 	</attributes>
 </component>
