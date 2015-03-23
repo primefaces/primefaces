@@ -16,6 +16,7 @@
 package org.primefaces.push;
 
 import org.atmosphere.client.TrackMessageSizeInterceptor;
+import org.atmosphere.cpr.ApplicationConfig;
 import org.atmosphere.cpr.AtmosphereConfig;
 import org.atmosphere.cpr.AtmosphereFramework;
 import org.atmosphere.cpr.AtmosphereServlet;
@@ -73,6 +74,13 @@ public class PushServlet extends AtmosphereServlet {
                 configureMetaBroadcasterCache(framework);
             }
         });
+
+        boolean configured = sc.getInitParameter(ApplicationConfig.READ_GET_BODY) == null ? false : Boolean.valueOf(sc.getInitParameter(ApplicationConfig.READ_GET_BODY));
+        if (!configured) {
+            // For Backward compatibility with Atmosphere 2.2.x
+            framework().addInitParameter(ApplicationConfig.READ_GET_BODY, "true");
+        }
+
 
         framework().init(sc);
 
