@@ -29,6 +29,7 @@ import org.primefaces.component.api.ClientBehaviorRenderingMode;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentUtils;
 
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
@@ -53,11 +54,11 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         if (ajaxBehavior.isDisabled()) {
             return null;
         }
-        
+
         UIComponent component = behaviorContext.getComponent();
 
         ClientBehaviorRenderingMode renderingMode = ClientBehaviorRenderingMode.OBSTRUSIVE;
-        
+
         Collection<ClientBehaviorContext.Parameter> behaviorParameters = behaviorContext.getParameters();
         if (behaviorParameters != null && !behaviorParameters.isEmpty()) {
             for (ClientBehaviorContext.Parameter behaviorParameter : behaviorParameters) {
@@ -73,12 +74,21 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         if (process == null) {
             process = "@this";
         }
-      
+
+        // get the parent form
+        FacesContext context = FacesContext.getCurrentInstance();
+        UIComponent form = ComponentUtils.findParentForm(context, component);
+        String formId = null;
+        if (form != null){
+            formId = form.getClientId(context);
+        }
+
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
 
         String request = builder.init()
                         .source(source)
                         .event(behaviorContext.getEventName())
+                        .form(formId)
                         .process(component, process)
                         .update(component, ajaxBehavior.getUpdate())
                         .async(ajaxBehavior.isAsync())
