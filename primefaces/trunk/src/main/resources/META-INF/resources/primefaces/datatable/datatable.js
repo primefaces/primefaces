@@ -2161,7 +2161,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
                         
-        if((newWidth > 15 && nextColumnWidth > 15) || expandMode) {          
+        if((newWidth > 15 && nextColumnWidth > 15) || expandMode) {          
             if(expandMode) {
                 table.width(table.width() + change);
                 setTimeout(function() {
@@ -3046,7 +3046,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 
                 
             }
-            else {
+            else {
                 if(lastFrozen) {
                     this.frozenLayout.width(this.frozenLayout.width() + change);
                 }
@@ -3081,7 +3081,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     
     //@Override
     hasColGroup: function() {
-        return this.frozenThead.children('tr').length > 1 || this.scrollThead.children('tr').length > 1;
+        return this.frozenThead.children('tr').length > 1 || this.scrollThead.children('tr').length > 1;
     },
     
     //@Override

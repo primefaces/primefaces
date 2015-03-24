@@ -30,7 +30,7 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
                 MaxConnections: $this.cfg.maxConnections
             });
 
-            $this.canvas.doWhileSuspended(function() {
+            $this.canvas.doWhileSuspended(function() {
                 $this.initEndPoints();
                 $this.initConnections();
                 
