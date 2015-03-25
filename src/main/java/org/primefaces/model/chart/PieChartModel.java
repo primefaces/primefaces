@@ -26,6 +26,7 @@ public class PieChartModel extends ChartModel {
     private boolean fill = true;
     private boolean showDataLabels = false;
     private String dataFormat;
+    private String dataLabelFormatString;
 
     public PieChartModel() {
         data = new LinkedHashMap<String, Number>();
@@ -90,4 +91,13 @@ public class PieChartModel extends ChartModel {
     public void setDataFormat(String dataFormat) {
         this.dataFormat = dataFormat;
     }
+
+    public String getDataLabelFormatString() {
+        return dataLabelFormatString;
+    }
+
+    public void setDataLabelFormatString(String dataLabelFormatString) {
+        this.dataLabelFormatString = dataLabelFormatString;
+    }
+    
 }

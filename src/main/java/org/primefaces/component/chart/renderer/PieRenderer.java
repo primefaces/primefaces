@@ -55,12 +55,14 @@ public class PieRenderer extends BasePlotRenderer {
         boolean fill = model.isFill();
         boolean showDataLabels = model.isShowDataLabels();
         String dataFormat = model.getDataFormat();
+        String dataLabelFormatString = model.getDataLabelFormatString();
  
         if(diameter != 0) writer.write(",diameter:" + diameter);
         if(sliceMargin != 0) writer.write(",sliceMargin:" + sliceMargin);
         if(!fill) writer.write(",fill:false");
         if(showDataLabels) writer.write(",showDataLabels:true");
         if(dataFormat != null) writer.write(",dataFormat:\"" + dataFormat + "\"");
+        if(dataLabelFormatString != null) writer.write(",dataLabelFormatString:\"" + dataLabelFormatString + "\"");
     }
     
 }

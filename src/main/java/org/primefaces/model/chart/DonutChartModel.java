@@ -26,6 +26,7 @@ public class DonutChartModel extends ChartModel {
     private boolean fill = true;
     private boolean showDataLabels = false;
     private String dataFormat;
+    private String dataLabelFormatString;
 
     public DonutChartModel() {
         data = new ArrayList<Map<String, Number>>();
@@ -78,4 +79,13 @@ public class DonutChartModel extends ChartModel {
     public void setDataFormat(String dataFormat) {
         this.dataFormat = dataFormat;
     }
+
+    public String getDataLabelFormatString() {
+        return dataLabelFormatString;
+    }
+
+    public void setDataLabelFormatString(String dataLabelFormatString) {
+        this.dataLabelFormatString = dataLabelFormatString;
+    }
+    
 }
