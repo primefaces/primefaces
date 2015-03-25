@@ -2142,6 +2142,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 
         if(this.hasColumnGroup) {
             var groupResizer = this.findGroupResizer(ui);
+            if(!groupResizer) {
+                return;
+            }
+            
             columnHeader = groupResizer.parent();
         }
         else {
@@ -2985,6 +2989,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         
         if(this.hasColumnGroup) {
             var groupResizer = this.findGroupResizer(ui);
+            if(!groupResizer) {
+                return;
+            }
+            
             columnHeader = groupResizer.parent();
         }
         else {
