@@ -2161,7 +2161,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
                         
-        if((newWidth > 15 && nextColumnWidth > 15) || expandMode) {          
+        if((newWidth > 15 && nextColumnWidth > 15) || (expandMode && newWidth > 15)) {          
             if(expandMode) {
                 table.width(table.width() + change);
                 setTimeout(function() {
@@ -3007,7 +3007,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
         
-        var shouldChange = (expandMode || (lastFrozen ? (newWidth > 15) : (newWidth > 15 && nextColumnWidth > 15))); 
+        var shouldChange = (expandMode && newWidth > 15) || (lastFrozen ? (newWidth > 15) : (newWidth > 15 && nextColumnWidth > 15)); 
         if(shouldChange) {
             var frozenColumn = columnHeader.hasClass('ui-frozen-column'),
             theadClone = frozenColumn ? this.frozenTheadClone : this.scrollTheadClone,
