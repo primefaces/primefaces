@@ -27,6 +27,7 @@ public class PieChartModel extends ChartModel {
     private boolean showDataLabels = false;
     private String dataFormat;
     private String dataLabelFormatString;
+    private int dataLabelThreshold;
 
     public PieChartModel() {
         data = new LinkedHashMap<String, Number>();
@@ -98,6 +99,14 @@ public class PieChartModel extends ChartModel {
 
     public void setDataLabelFormatString(String dataLabelFormatString) {
         this.dataLabelFormatString = dataLabelFormatString;
+    }
+
+    public int getDataLabelThreshold() {
+        return dataLabelThreshold;
+    }
+
+    public void setDataLabelThreshold(int dataLabelThreshold) {
+        this.dataLabelThreshold = dataLabelThreshold;
     }
     
 }

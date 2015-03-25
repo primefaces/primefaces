@@ -27,7 +27,8 @@ public class DonutChartModel extends ChartModel {
     private boolean showDataLabels = false;
     private String dataFormat;
     private String dataLabelFormatString;
-
+    private int dataLabelThreshold;
+    
     public DonutChartModel() {
         data = new ArrayList<Map<String, Number>>();
     }
@@ -86,6 +87,14 @@ public class DonutChartModel extends ChartModel {
 
     public void setDataLabelFormatString(String dataLabelFormatString) {
         this.dataLabelFormatString = dataLabelFormatString;
+    }
+
+    public int getDataLabelThreshold() {
+        return dataLabelThreshold;
+    }
+
+    public void setDataLabelThreshold(int dataLabelThreshold) {
+        this.dataLabelThreshold = dataLabelThreshold;
     }
     
 }
