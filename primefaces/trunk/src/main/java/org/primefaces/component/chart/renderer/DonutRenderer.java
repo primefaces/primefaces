@@ -68,11 +68,13 @@ public class DonutRenderer extends BasePlotRenderer {
         boolean showDataLabels = model.isShowDataLabels();
         String dataFormat = model.getDataFormat();
         String dataLabelFormatString = model.getDataLabelFormatString();
+        int dataLabelThreshold = model.getDataLabelThreshold();
 		
         if(sliceMargin != 0) writer.write(",sliceMargin:" + sliceMargin);
         if(!fill) writer.write(",fill:false");
         if(showDataLabels) writer.write(",showDataLabels:true");
         if(dataFormat != null) writer.write(",dataFormat:\"" + dataFormat + "\"");
         if(dataLabelFormatString != null) writer.write(",dataLabelFormatString:\"" + dataLabelFormatString + "\"");
+        if(dataLabelThreshold > 0 && dataLabelThreshold < 100) writer.write(",dataLabelThreshold:" + dataLabelThreshold);
     }
 }
