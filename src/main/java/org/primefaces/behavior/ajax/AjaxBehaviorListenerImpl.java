@@ -35,17 +35,20 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
     private static final Class[] ARG_PARAMS = new Class[]{ AjaxBehaviorEvent.class };
 
     private MethodExpression defaultListener;
+    private MethodExpression argumentListener;
 
     // required by serialization
     public AjaxBehaviorListenerImpl() {}
 
     // can be used to instaniate it manually by the user
-    public AjaxBehaviorListenerImpl(MethodExpression methodExpression) {
-        this.defaultListener = methodExpression;
+    public AjaxBehaviorListenerImpl(MethodExpression defaultListener, MethodExpression argumentListener) {
+        this.defaultListener = defaultListener;
+        this.argumentListener = argumentListener;
     }
     
     public AjaxBehaviorListenerImpl(TagAttribute listenerAttribute, FaceletContext context) {
         this.defaultListener = listenerAttribute.getMethodExpression(context, null, EMPTY_PARAMS);
+        this.argumentListener = listenerAttribute.getMethodExpression(context, null, ARG_PARAMS);
     }
 
     public void processAjaxBehavior(AjaxBehaviorEvent event) throws AbortProcessingException {
@@ -86,19 +89,17 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
     }
 
     protected void processArgListener(FacesContext context, AjaxBehaviorEvent event) {
-        MethodExpression listener = context.getApplication().getExpressionFactory().createMethodExpression(
-                context.getELContext(), defaultListener.getExpressionString(), null, ARG_PARAMS);
-
     	if (LOG.isLoggable(Level.FINE)) {
-            LOG.fine("Try to invoke argListener: " + listener.getExpressionString());
+            LOG.fine("Try to invoke argumentListener: " + argumentListener.getExpressionString());
     	}
 
-        listener.invoke(context.getELContext(), new Object[]{ event });
+        argumentListener.invoke(context.getELContext(), new Object[]{ event });
     }
 
     protected void processCustomListener(FacesContext context, AjaxBehaviorEvent event) {
+        FaceletContext fc = (FaceletContext) context.getAttributes().get(FaceletContext.FACELET_CONTEXT_KEY);
     	MethodExpression listener = context.getApplication().getExpressionFactory().createMethodExpression(
-                context.getELContext(), defaultListener.getExpressionString(), null, new Class[]{ event.getClass() });
+                fc, defaultListener.getExpressionString(), null, new Class[]{ event.getClass() });
 
     	if (LOG.isLoggable(Level.FINE)) {
             LOG.fine("Try to invoke customListener: " + listener.getExpressionString());
