@@ -705,7 +705,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validateInstant = function(el) {
         var vc = PrimeFaces.util.ValidationContext,
-        element = $(el),
+        element = (typeof el === 'string') ? $(PrimeFaces.escapeClientId(el)) : $(el),
         clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id'),
         uiMessageId = element.data('uimessageid'),
         uiMessage = null;
