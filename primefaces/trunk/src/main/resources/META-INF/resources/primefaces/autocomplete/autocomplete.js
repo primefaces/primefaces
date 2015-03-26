@@ -20,6 +20,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.dropdownMode = this.cfg.dropdownMode||'blank';
         this.cfg.autoHighlight = (this.cfg.autoHighlight === undefined) ? true : this.cfg.autoHighlight;
         this.suppressInput = true;
+        this.touchToDropdownButton = false;
         
         if(this.cfg.cache) {
             this.initCache();
@@ -180,6 +181,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
+        if(PrimeFaces.browser.mobile) {
+            this.dropdown.bind('touchstart', function() {
+                $this.touchToDropdownButton = true;
+            });
+        }
+        
         //hide overlay when outside is clicked
         this.hideNS = 'mousedown.' + this.id;
         $(document.body).off(this.hideNS).on(this.hideNS, function (e) {
@@ -218,6 +225,16 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     return;
                 }
                 
+                // for touch event on mobile
+                if(PrimeFaces.browser.mobile) {
+                    $this.touchToDropdownButton = false;
+                    if($this.itemClick) {
+                        $this.itemClick = false;
+                        return;
+                    }
+                }
+                
+                // for click event on IE8
                 if(PrimeFaces.isIE(8) && ($this.itemClick || e.originalEvent.propertyName !== 'value')) {
                     $this.itemClick = false;
                     return;
@@ -418,6 +435,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             $this.hide();
         });
+        
+        if(PrimeFaces.browser.mobile) {
+            this.items.bind('touchstart', function() {
+                if(!$this.touchToDropdownButton) {
+                    $this.itemClick = true;
+                }
+            });
+        }
     },
 
     showItemtip: function(item) {
