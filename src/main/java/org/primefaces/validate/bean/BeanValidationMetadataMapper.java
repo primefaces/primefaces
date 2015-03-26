@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.el.PropertyNotFoundException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.validation.constraints.AssertFalse;
@@ -73,53 +74,61 @@ public class BeanValidationMetadataMapper {
         Map<String,Object> metadata = new HashMap<String, Object>();
         List<String> validatorIds = new ArrayList<String>();
         
-        Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractAllConstraintDescriptors(
-                context, requestContext, component.getValueExpression("value"));
+        try {
+            Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractAllConstraintDescriptors(
+                    context, requestContext, component.getValueExpression("value"));
 
-        if (constraints != null && !constraints.isEmpty()) {
-            for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
-                ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType);
+            if (constraints != null && !constraints.isEmpty()) {
+                for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
+                    Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
+                    ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType);
 
-                if (clientValidationConstraint != null) {
-                    String validatorId = clientValidationConstraint.getValidatorId();
-                    Map<String,Object> constraintMetadata = clientValidationConstraint.getMetadata(constraintDescriptor);
+                    if (clientValidationConstraint != null) {
+                        String validatorId = clientValidationConstraint.getValidatorId();
+                        Map<String,Object> constraintMetadata = clientValidationConstraint.getMetadata(constraintDescriptor);
 
-                    if (constraintMetadata != null)
-                        metadata.putAll(constraintMetadata);
+                        if (constraintMetadata != null)
+                            metadata.putAll(constraintMetadata);
 
-                    if (validatorId != null)
-                        validatorIds.add(validatorId);
-                }
-                else {
-                    ClientConstraint clientConstraint = annotationType.getAnnotation(ClientConstraint.class);
-                    if (clientConstraint != null) {
-                        Class<?> resolvedBy = clientConstraint.resolvedBy();
+                        if (validatorId != null)
+                            validatorIds.add(validatorId);
+                    }
+                    else {
+                        ClientConstraint clientConstraint = annotationType.getAnnotation(ClientConstraint.class);
+                        if (clientConstraint != null) {
+                            Class<?> resolvedBy = clientConstraint.resolvedBy();
 
-                        if (resolvedBy != null) {
-                            try {
-                                ClientValidationConstraint customClientValidationConstraint = (ClientValidationConstraint) resolvedBy.newInstance();
+                            if (resolvedBy != null) {
+                                try {
+                                    ClientValidationConstraint customClientValidationConstraint = (ClientValidationConstraint) resolvedBy.newInstance();
 
-                                String validatorId = customClientValidationConstraint.getValidatorId();
-                                Map<String,Object> constraintMetadata = customClientValidationConstraint.getMetadata(constraintDescriptor);
+                                    String validatorId = customClientValidationConstraint.getValidatorId();
+                                    Map<String,Object> constraintMetadata = customClientValidationConstraint.getMetadata(constraintDescriptor);
 
-                                if (constraintMetadata != null)
-                                    metadata.putAll(constraintMetadata);
+                                    if (constraintMetadata != null)
+                                        metadata.putAll(constraintMetadata);
 
-                                if (validatorId != null)
-                                    validatorIds.add(validatorId);
+                                    if (validatorId != null)
+                                        validatorIds.add(validatorId);
 
-                            }
-                            catch (InstantiationException ex) {
-                                LOG.log(Level.SEVERE, null, ex);
-                            }
-                            catch (IllegalAccessException ex) {
-                                LOG.log(Level.SEVERE, null, ex);
+                                }
+                                catch (InstantiationException ex) {
+                                    LOG.log(Level.SEVERE, null, ex);
+                                }
+                                catch (IllegalAccessException ex) {
+                                    LOG.log(Level.SEVERE, null, ex);
+                                }
                             }
                         }
                     }
                 }
             }
+        }
+        catch (PropertyNotFoundException e) {
+            String message = "Skip resolving of CSV BV metadata for component \"" + component.getClientId(context) + "\" because"
+                    + " the ValueExpression of the \"value\" attribute"
+                    + " isn't resolvable completely (e.g. a sub-expression returns null)";
+            LOG.log(Level.FINE, message);
         }
 
         return new BeanValidationMetadata(metadata, validatorIds);

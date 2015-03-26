@@ -18,6 +18,9 @@ package org.primefaces.metadata.transformer.impl;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.el.PropertyNotFoundException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -33,6 +36,8 @@ import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
+    private static final Logger LOG = Logger.getLogger(BeanValidationInputMetadataTransformer.class.getName());
+    
     public void transformInput(FacesContext context, RequestContext requestContext, UIInput input) throws IOException {
 
         EditableValueHolder editableValueHolder = (EditableValueHolder) input;
@@ -40,15 +45,21 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         if (editableValueHolder.isRequired() && isMaxlenghtSet(input)) {
             return;
         }
- 
-        markAsRequired(input, false);
-        
-        Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                context, requestContext, input.getValueExpression("value"));
-        if (constraints != null && !constraints.isEmpty()) {    
-            for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                applyConstraint(constraintDescriptor, input, editableValueHolder);
+         
+        try {
+            Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
+                    context, requestContext, input.getValueExpression("value"));
+            if (constraints != null && !constraints.isEmpty()) {    
+                for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
+                    applyConstraint(constraintDescriptor, input, editableValueHolder);
+                }
             }
+        }
+        catch (PropertyNotFoundException e)  {
+            String message = "Skip transform metadata for component \"" + input.getClientId(context) + "\" because"
+                    + " the ValueExpression of the \"value\" attribute"
+                    + " isn't resolvable completely (e.g. a sub-expression returns null)";
+            LOG.log(Level.FINE, message);
         }
     }
     
