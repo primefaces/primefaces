@@ -63,9 +63,13 @@ public class ValueExpressionAnalyzer {
         }
 
         InterceptingResolver resolver = new InterceptingResolver(elContext.getELResolver());
-
-        // #getType internally calls #getValue and throws a PropertyNotFoundException when a sub-expression is null
-        expression.getType(new InterceptingContext(elContext, resolver));
+        ELContext interceptingContext = new InterceptingContext(elContext, resolver);
+        
+        // #getType throws a PropertyNotFoundException when a sub-expression is null
+        expression.getType(interceptingContext);
+        
+        // intercept EL calls
+        expression.getValue(interceptingContext);
 
         return resolver.getValueReference();
     }
