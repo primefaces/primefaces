@@ -2580,7 +2580,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             tableOffset = table.offset();
             
             if(scrollTop > tableOffset.top) {
-                $this.cloneContainer.css('top', scrollTop)
+                $this.cloneContainer.css({
+                                        'position': 'fixed',
+                                        'top': '0px'
+                                    })
                                     .addClass('ui-shadow ui-sticky');
                 
                 if(scrollTop >= (tableOffset.top + $this.tbody.height()))
@@ -2589,7 +2592,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.cloneContainer.show();
             }
             else {
-                $this.cloneContainer.css('top', tableOffset.top)
+                $this.cloneContainer.css({
+                                        'position': 'absolute',
+                                        'top': tableOffset.top
+                                    })
                                     .removeClass('ui-shadow ui-sticky');
             }
         })
