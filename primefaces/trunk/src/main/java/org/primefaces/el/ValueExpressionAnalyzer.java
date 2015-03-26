@@ -16,7 +16,6 @@
 package org.primefaces.el;
 
 import javax.el.ELContext;
-import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.el.ValueReference;
 import javax.faces.el.CompositeComponentExpressionHolder;
@@ -65,11 +64,8 @@ public class ValueExpressionAnalyzer {
 
         InterceptingResolver resolver = new InterceptingResolver(elContext.getELResolver());
 
-        try {
-            expression.getValue(new InterceptingContext(elContext, resolver));
-        } catch (ELException ele) {
-            return null;
-        }
+        // #getType internally calls #getValue and throws a PropertyNotFoundException when a sub-expression is null
+        expression.getType(new InterceptingContext(elContext, resolver));
 
         return resolver.getValueReference();
     }

@@ -23,6 +23,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.el.PropertyNotFoundException;
 import javax.faces.application.Resource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -54,6 +57,8 @@ import org.primefaces.validate.bean.BeanValidationMetadataMapper;
 
 public abstract class CoreRenderer extends Renderer {
 
+    private static final Logger LOG = Logger.getLogger(CoreRenderer.class.getName());
+    
     private static final String SB_RENDER_DOM_EVENTS = CoreRenderer.class.getName() + "#renderDomEvents";
     private static final String SB_BUILD_NON_AJAX_REQUEST = CoreRenderer.class.getName() + "#buildNonAjaxRequest";
     private static final String SB_GET_EVENT_BEHAVIORS = CoreRenderer.class.getName() + "#getEventBehaviors";
@@ -582,7 +587,21 @@ protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder 
     protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent comp = (UIComponent) component;
-        Converter converter = ComponentUtils.getConverter(context, comp);
+        
+        Converter converter = null;
+        
+        try {
+            converter = ComponentUtils.getConverter(context, comp);
+        }
+        catch (PropertyNotFoundException e) {
+            String message = "Skip rendering of CSV metadata for component \"" + comp.getClientId(context) + "\" because"
+                    + " the ValueExpression of the \"value\" attribute"
+                    + " isn't resolvable completely (e.g. a sub-expression returns null)";
+            LOG.log(Level.FINE, message);
+            return;
+        }
+        
+        
         Map<String,Object> attrs = comp.getAttributes();
         Object label = attrs.get("label");
         Object requiredMessage = attrs.get("requiredMessage");

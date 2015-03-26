@@ -17,6 +17,9 @@ package org.primefaces.component.outputlabel;
 
 import java.io.IOException;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -36,6 +39,8 @@ import org.primefaces.util.HTML;
 
 public class OutputLabelRenderer extends CoreRenderer {
 
+    private static final Logger LOG = Logger.getLogger(OutputLabelRenderer.class.getName());
+    
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -130,14 +135,22 @@ public class OutputLabelRenderer extends CoreRenderer {
     
     protected boolean isNotNullDefined(UIInput input, FacesContext context) {
 
-        Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                context, RequestContext.getCurrentInstance(), input.getValueExpression("value"));
-        if (constraints != null && !constraints.isEmpty()) {
-            for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                if (constraintDescriptor.getAnnotation().annotationType().equals(NotNull.class)) {
-                    return true;
+        try {
+            Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
+                    context, RequestContext.getCurrentInstance(), input.getValueExpression("value"));
+            if (constraints != null && !constraints.isEmpty()) {
+                for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
+                    if (constraintDescriptor.getAnnotation().annotationType().equals(NotNull.class)) {
+                        return true;
+                    }
                 }
             }
+        }
+        catch (PropertyNotFoundException e)  {
+            String message = "Skip evaluating @NotNull for outputPanel and referenced component \"" + input.getClientId(context) + "\" because"
+                    + " the ValueExpression of the \"value\" attribute"
+                    + " isn't resolvable completely (e.g. a sub-expression returns null)";
+            LOG.log(Level.FINE, message);
         }
 
         return false;
