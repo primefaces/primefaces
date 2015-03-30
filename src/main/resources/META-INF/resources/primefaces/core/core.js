@@ -53,8 +53,12 @@
             return $.cookie(name);
         },
 
-        setCookie : function(name, value) {
-            $.cookie(name, value);
+        setCookie : function(name, value, cfg) {
+            $.cookie(name, value, cfg);
+        },
+        
+        deleteCookie: function(name, cfg) {
+            $.removeCookie(name, cfg);
         },
                 
         cookiesEnabled: function() {
