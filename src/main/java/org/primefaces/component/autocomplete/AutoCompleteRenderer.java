@@ -419,6 +419,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         boolean pojo = var != null;
         UIComponent itemtip = ac.getFacet("itemtip");
         boolean hasHeader = false;
+        boolean hasGroupByTooltip = (ac.getValueExpression("groupByTooltip") != null);
         
         for(Column column : ac.getColums()) {
             if(column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
@@ -469,6 +470,10 @@ public class AutoCompleteRenderer extends InputRenderer {
                 writer.writeAttribute("data-item-value", value, null);
                 writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
                 writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
+                
+                if(hasGroupByTooltip) {
+                    writer.writeAttribute("data-item-group-tooltip", ac.getGroupByTooltip(), null);
+                }
             }
             
             for(Column column : ac.getColums()) {
@@ -503,6 +508,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         boolean pojo = var != null;
         UIComponent itemtip = ac.getFacet("itemtip");
+        boolean hasGroupByTooltip = (ac.getValueExpression("groupByTooltip") != null);
         
         writer.startElement("ul", ac);
         writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
@@ -517,6 +523,10 @@ public class AutoCompleteRenderer extends InputRenderer {
                 writer.writeAttribute("data-item-value", value, null);
                 writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
                 writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
+                
+                if(hasGroupByTooltip) {
+                    writer.writeAttribute("data-item-group-tooltip", ac.getGroupByTooltip(), null);
+                }
                 
                 writer.writeText(ac.getItemLabel(), null);
             }

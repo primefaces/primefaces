@@ -804,32 +804,42 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if(this.items.length) {
             this.itemContainer = this.panel.children('.ui-autocomplete-items');
             this.currentGroup = this.items.eq(0).data('item-group');
+            var currentGroupTooltip = this.items.eq(0).data('item-group-tooltip');
             
-            this.items.eq(0).before(this.getGroupItem($this.currentGroup, $this.itemContainer));
+            this.items.eq(0).before(this.getGroupItem($this.currentGroup, $this.itemContainer, currentGroupTooltip));
             
             this.items.each(function(i) {
                 var item = $this.items.eq(i),
-                itemGroup = $this.items.eq(i).data('item-group');
+                itemGroup = item.data('item-group'),
+                itemGroupTooltip = item.data('item-group-tooltip');
                 
                 if($this.currentGroup !== itemGroup) {
                     $this.currentGroup = itemGroup;
-                    item.before($this.getGroupItem(itemGroup, $this.itemContainer));
+                    item.before($this.getGroupItem(itemGroup, $this.itemContainer, itemGroupTooltip));
                 }
             });
         }
     },
     
-    getGroupItem: function(group, container) {
+    getGroupItem: function(group, container, tooltip) {
+        var element = null;
+        
         if(container.is('.ui-autocomplete-table')) {
             if(!this.colspan) {
                 this.colspan = this.items.eq(0).children('td').length;
             }
             
-            return '<tr class="ui-autocomplete-group ui-widget-header"><td colspan="' + this.colspan + '">' + group + '</td></tr>';
+            element = $('<tr class="ui-autocomplete-group ui-widget-header"><td colspan="' + this.colspan + '">' + group + '</td></tr>');
         }
         else {
-            return '<li class="ui-autocomplete-group ui-autocomplete-list-item ui-widget-header">' + group + '</li>';
+            element = $('<li class="ui-autocomplete-group ui-autocomplete-list-item ui-widget-header">' + group + '</li>');
         }
+        
+        if(element) {
+            element.attr('title', tooltip);
+        }
+        
+        return element;
     },
     
     deleteTimeout: function() {
