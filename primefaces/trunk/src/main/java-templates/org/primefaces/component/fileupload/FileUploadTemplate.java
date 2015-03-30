@@ -1,4 +1,3 @@
-
     public final static String CONTAINER_CLASS = "ui-fileupload ui-widget";
     public final static String BUTTON_BAR_CLASS = "ui-fileupload-buttonbar ui-widget-header ui-corner-top";
     public final static String CONTENT_CLASS = "ui-fileupload-content ui-widget-content ui-corner-bottom";
@@ -24,12 +23,5 @@
 	}
 
     public String getSimpleInputDecodeId(FacesContext context) {
-        String clientId = this.getClientId(context);
-    
-        if(this.getMode().equals("simple") && !this.isSkinSimple()) {
-            return clientId;
-        }
-        else {
-            return clientId + "_input";
-        }
+        return ((FileUploadRenderer) this.getRenderer(context)).getSimpleInputDecodeId(this, context);
     }

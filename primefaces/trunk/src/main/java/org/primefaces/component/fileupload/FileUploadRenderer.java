@@ -310,7 +310,16 @@ public class FileUploadRenderer extends CoreRenderer {
         else {
             return submittedValue;
         }
-    } 
+    }
+    
+    public String getSimpleInputDecodeId(FileUpload fileUpload, FacesContext context) {
+        String clientId = fileUpload.getClientId(context);
+    
+        if(fileUpload.getMode().equals("simple") && !fileUpload.isSkinSimple())
+            return clientId;
+        else
+            return clientId + "_input";
+    }
     
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {

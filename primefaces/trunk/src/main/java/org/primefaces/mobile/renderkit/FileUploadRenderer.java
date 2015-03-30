@@ -64,4 +64,9 @@ public class FileUploadRenderer extends org.primefaces.component.fileupload.File
         
 		writer.endElement("input");
     }
+    
+    @Override
+    public String getSimpleInputDecodeId(FileUpload fileUpload, FacesContext context) {
+        return fileUpload.getClientId(context) + "_input";
+    }
 }
