@@ -1,0 +1,110 @@
+/*
+ * Copyright 2009-2014 PrimeTek.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.primefaces.behavior.ajax;
+
+import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.el.MethodExpression;
+import javax.el.MethodNotFoundException;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.AjaxBehaviorListener;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.TagAttribute;
+
+public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializable {
+
+    private static final Logger LOG = Logger.getLogger(AjaxBehaviorListenerImpl.class.getName());
+    private static final Class[] EMPTY_PARAMS = new Class[]{};
+    private static final Class[] ARG_PARAMS = new Class[]{ AjaxBehaviorEvent.class };
+
+    private MethodExpression defaultListener;
+    private MethodExpression argumentListener;
+
+    // required by serialization
+    public AjaxBehaviorListenerImpl() {}
+
+    // can be used to instaniate it manually by the user
+    public AjaxBehaviorListenerImpl(MethodExpression defaultListener, MethodExpression argumentListener) {
+        this.defaultListener = defaultListener;
+        this.argumentListener = argumentListener;
+    }
+    
+    public AjaxBehaviorListenerImpl(TagAttribute listenerAttribute, FaceletContext context) {
+        this.defaultListener = listenerAttribute.getMethodExpression(context, null, EMPTY_PARAMS);
+        this.argumentListener = listenerAttribute.getMethodExpression(context, null, ARG_PARAMS);
+    }
+
+    public void processAjaxBehavior(AjaxBehaviorEvent event) throws AbortProcessingException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        // default listener first... (without arguments)
+        try {
+            processDefaultListener(context);
+        }
+        catch (MethodNotFoundException mnfe) {
+            processFallback(context, event);
+        }
+        catch (IllegalArgumentException iae) {
+            processFallback(context, event);
+        }
+    }
+
+    protected void processFallback(FacesContext context, AjaxBehaviorEvent event) {
+        // custom listener... (e.g. AutoCompleteEvent)
+        try {
+            processCustomListener(context, event);
+        }
+        // arg listener... (AjaxBehaviorEvent)
+        catch (MethodNotFoundException mnfe) {
+            processArgListener(context, event);
+        }
+        catch (IllegalArgumentException iae) {
+            processArgListener(context, event);
+        }
+    }
+
+    protected void processDefaultListener(FacesContext context) {
+    	if (LOG.isLoggable(Level.FINE)) {
+            LOG.fine("Try to invoke defaultListener: " + defaultListener.getExpressionString());
+    	}
+
+        defaultListener.invoke(context.getELContext(), EMPTY_PARAMS);
+    }
+
+    protected void processArgListener(FacesContext context, AjaxBehaviorEvent event) {
+    	if (LOG.isLoggable(Level.FINE)) {
+            LOG.fine("Try to invoke argumentListener: " + argumentListener.getExpressionString());
+    	}
+
+        argumentListener.invoke(context.getELContext(), new Object[]{ event });
+    }
+
+    protected void processCustomListener(FacesContext context, AjaxBehaviorEvent event) {
+        FaceletContext fc = (FaceletContext) context.getAttributes().get(FaceletContext.FACELET_CONTEXT_KEY);
+    	MethodExpression listener = context.getApplication().getExpressionFactory().createMethodExpression(
+                fc, defaultListener.getExpressionString(), null, new Class[]{ event.getClass() });
+
+    	if (LOG.isLoggable(Level.FINE)) {
+            LOG.fine("Try to invoke customListener: " + listener.getExpressionString());
+    	}
+
+        listener.invoke(context.getELContext(), new Object[]{ event });
+    }
+}
