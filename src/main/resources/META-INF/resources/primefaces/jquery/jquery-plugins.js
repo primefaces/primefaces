@@ -12868,45 +12868,120 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 
 /* General Utilities */
 
-/**
- * jQuery Cookie plugin
+/*!
+ * jQuery Cookie Plugin v1.4.1
+ * https://github.com/carhartl/jquery-cookie
  *
- * Copyright (c) 2010 Klaus Hartl (stilbuero.de)
- * Dual licensed under the MIT and GPL licenses:
- * http://www.opensource.org/licenses/mit-license.php
- * http://www.gnu.org/licenses/gpl.html
- *
+ * Copyright 2006, 2014 Klaus Hartl
+ * Released under the MIT license
  */
-jQuery.cookie = function (key, value, options) {
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD (Register as an anonymous module)
+		define(['jquery'], factory);
+	} else if (typeof exports === 'object') {
+		// Node/CommonJS
+		module.exports = factory(require('jquery'));
+	} else {
+		// Browser globals
+		factory(jQuery);
+	}
+}(function ($) {
 
-    // key and value given, set cookie...
-    if (arguments.length > 1 && (value === null || typeof value !== "object")) {
-        options = jQuery.extend({}, options);
+	var pluses = /\+/g;
 
-        if (value === null) {
-            options.expires = -1;
-        }
+	function encode(s) {
+		return config.raw ? s : encodeURIComponent(s);
+	}
 
-        if (typeof options.expires === 'number') {
-            var days = options.expires, t = options.expires = new Date();
-            t.setDate(t.getDate() + days);
-        }
+	function decode(s) {
+		return config.raw ? s : decodeURIComponent(s);
+	}
 
-        return (document.cookie = [
-            encodeURIComponent(key), '=',
-            options.raw ? String(value) : encodeURIComponent(String(value)),
-            options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-            options.path ? '; path=' + options.path : '',
-            options.domain ? '; domain=' + options.domain : '',
-            options.secure ? '; secure' : ''
-        ].join(''));
-    }
+	function stringifyCookieValue(value) {
+		return encode(config.json ? JSON.stringify(value) : String(value));
+	}
 
-    // key and possibly options given, get cookie...
-    options = value || {};
-    var result, decode = options.raw ? function (s) {return s;} : decodeURIComponent;
-    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
-};
+	function parseCookieValue(s) {
+		if (s.indexOf('"') === 0) {
+			// This is a quoted cookie as according to RFC2068, unescape...
+			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		}
+
+		try {
+			// Replace server-side written pluses with spaces.
+			// If we can't decode the cookie, ignore it, it's unusable.
+			// If we can't parse the cookie, ignore it, it's unusable.
+			s = decodeURIComponent(s.replace(pluses, ' '));
+			return config.json ? JSON.parse(s) : s;
+		} catch(e) {}
+	}
+
+	function read(s, converter) {
+		var value = config.raw ? s : parseCookieValue(s);
+		return $.isFunction(converter) ? converter(value) : value;
+	}
+
+	var config = $.cookie = function (key, value, options) {
+
+		// Write
+
+		if (arguments.length > 1 && !$.isFunction(value)) {
+			options = $.extend({}, config.defaults, options);
+
+			if (typeof options.expires === 'number') {
+				var days = options.expires, t = options.expires = new Date();
+				t.setMilliseconds(t.getMilliseconds() + days * 864e+5);
+			}
+
+			return (document.cookie = [
+				encode(key), '=', stringifyCookieValue(value),
+				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+				options.path    ? '; path=' + options.path : '',
+				options.domain  ? '; domain=' + options.domain : '',
+				options.secure  ? '; secure' : ''
+			].join(''));
+		}
+
+		// Read
+
+		var result = key ? undefined : {},
+			// To prevent the for loop in the first place assign an empty array
+			// in case there are no cookies at all. Also prevents odd result when
+			// calling $.cookie().
+			cookies = document.cookie ? document.cookie.split('; ') : [],
+			i = 0,
+			l = cookies.length;
+
+		for (; i < l; i++) {
+			var parts = cookies[i].split('='),
+				name = decode(parts.shift()),
+				cookie = parts.join('=');
+
+			if (key === name) {
+				// If second argument (value) is a function it's a converter...
+				result = read(cookie, value);
+				break;
+			}
+
+			// Prevent storing a cookie that we couldn't decode.
+			if (!key && (cookie = read(cookie)) !== undefined) {
+				result[name] = cookie;
+			}
+		}
+
+		return result;
+	};
+
+	config.defaults = {};
+
+	$.removeCookie = function (key, options) {
+		// Must not alter options, thus extending a fresh object...
+		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
+		return !$.cookie(key);
+	};
+
+}));
 
 /*! Copyright (c) 2011 Brandon Aaron (http://brandonaaron.net)
  * Licensed under the MIT License (LICENSE.txt).
