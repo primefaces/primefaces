@@ -59,7 +59,8 @@ public class EventBusImpl implements EventBus {
                 }
             }
         });
-        return null;
+        metaBroadcaster.broadcastTo(path, o);
+        return this;
     }
 
     public <T> Future<T> schedule(final String path, final T t, int time, TimeUnit unit) {
