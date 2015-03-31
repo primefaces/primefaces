@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.faces.FacesException;
+import javax.faces.component.NamingContainer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -88,16 +89,29 @@ public class CaptchaRenderer extends CoreRenderer {
         writer.writeAttribute("src", protocol + "://www.google.com/recaptcha/api/noscript?k=" + publicKey + "&hl=" + captcha.getLanguage(), null);
         writer.endElement("iframe");
 
+
+        String challengeFieldId = CHALLENGE_FIELD;
+        // portlet compatibilty
+        if (context.getViewRoot() instanceof NamingContainer) {
+            challengeFieldId = context.getViewRoot().getContainerClientId(context) + challengeFieldId;
+        }
+
         writer.startElement("textarea", null);
-        writer.writeAttribute("id", CHALLENGE_FIELD, null);
-        writer.writeAttribute("name", CHALLENGE_FIELD, null);
+        writer.writeAttribute("id", challengeFieldId, null);
+        writer.writeAttribute("name", challengeFieldId, null);
         writer.writeAttribute("rows", "3", null);
         writer.writeAttribute("columns", "40", null);
         writer.endElement("textarea");
 
+        String responseFieldId = RESPONSE_FIELD;
+        // portlet compatibilty
+        if (context.getViewRoot() instanceof NamingContainer) {
+            responseFieldId = context.getViewRoot().getContainerClientId(context) + responseFieldId;
+        }
+
         writer.startElement("input", null);
-        writer.writeAttribute("id", RESPONSE_FIELD, null);
-        writer.writeAttribute("name", RESPONSE_FIELD, null);
+        writer.writeAttribute("id", responseFieldId, null);
+        writer.writeAttribute("name", responseFieldId, null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("value", "manual_challenge", null);
         writer.endElement("input");
