@@ -58,17 +58,21 @@ public class ComponentUtils {
      * @return					End text
      */
     public static String getValueToRender(FacesContext context, UIComponent component) {
-        if(component instanceof ValueHolder) {
+        if (component instanceof ValueHolder) {
 
-            if(component instanceof EditableValueHolder) {
+            if (component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
                 ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
 
-                if(config.isInterpretEmptyStringAsNull() && submittedValue == null && context.isValidationFailed() && !input.isValid()) {
+                if (config.isInterpretEmptyStringAsNull()
+                        && submittedValue == null
+                        && !input.isLocalValueSet()
+                        && context.isValidationFailed()
+                        && !input.isValid()) {
                     return null;
                 }
-                else if(submittedValue != null) {
+                else if (submittedValue != null) {
                     return submittedValue.toString();
                 }
             }
@@ -77,9 +81,9 @@ public class ComponentUtils {
             Object value = valueHolder.getValue();
 
             //format the value as string
-            if(value != null) {
+            if (value != null) {
                 Converter converter = valueHolder.getConverter();
-                if(converter == null) {
+                if (converter == null) {
                     Class valueType = value.getClass();
                     if(valueType == String.class && !RequestContext.getCurrentInstance().getApplicationContext().getConfig().isStringConverterAvailable()) {
                         return (String) value;
@@ -88,7 +92,7 @@ public class ComponentUtils {
                     converter = context.getApplication().createConverter(valueType);
                 }
 
-                if(converter != null)
+                if (converter != null)
                     return converter.getAsString(context, component, value);
                 else
                     return value.toString();    //Use toString as a fallback if there is no explicit or implicit converter
