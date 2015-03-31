@@ -181,7 +181,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        if(PrimeFaces.browser.mobile) {
+        if(PrimeFaces.env.browser.mobile) {
             this.dropdown.bind('touchstart', function() {
                 $this.touchToDropdownButton = true;
             });
@@ -226,7 +226,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
                 
                 // for touch event on mobile
-                if(PrimeFaces.browser.mobile) {
+                if(PrimeFaces.env.browser.mobile) {
                     $this.touchToDropdownButton = false;
                     if($this.itemClick) {
                         $this.itemClick = false;
@@ -436,7 +436,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.hide();
         });
         
-        if(PrimeFaces.browser.mobile) {
+        if(PrimeFaces.env.browser.mobile) {
             this.items.bind('touchstart', function() {
                 if(!$this.touchToDropdownButton) {
                     $this.itemClick = true;
