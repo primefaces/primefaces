@@ -46,17 +46,15 @@ public class PrimeExternalContext extends ExternalContextWrapper {
         if (request instanceof HttpServletRequest) {
             httpServletRequest = (HttpServletRequest) request;
         }
-        else if (request.getClass().getName().equals("javax.portlet.PortletRequest")) {
-            if (isLiferay()) {
-                try {
-                    Class<?> portletRequestClass = Class.forName("javax.portlet.PortletRequest");
-                    Class<?> portalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
-                    Method method = portalUtilClass.getMethod("getHttpServletRequest", new Class[] { portletRequestClass });
-                    httpServletRequest = (HttpServletRequest) method.invoke(null, new Object[] { request });
-                }
-                catch (Exception ex) {
-                    throw new FacesException(ex);
-                }
+        else if (isLiferay()) {
+            try {
+                Class<?> portletRequestClass = Class.forName("javax.portlet.PortletRequest");
+                Class<?> portalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
+                Method method = portalUtilClass.getMethod("getHttpServletRequest", new Class[] { portletRequestClass });
+                httpServletRequest = (HttpServletRequest) method.invoke(null, new Object[] { request });
+            }
+            catch (Exception ex) {
+                throw new FacesException(ex);
             }
         }
     }
