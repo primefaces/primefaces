@@ -16,6 +16,7 @@
 package org.primefaces.behavior.ajax;
 
 import javax.faces.application.Application;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.facelets.BehaviorConfig;
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
@@ -23,6 +24,9 @@ import javax.faces.view.facelets.TagAttribute;
 import org.primefaces.behavior.base.AbstractBehaviorHandler;
 
 public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
+
+    private static final Class[] EMPTY_PARAMS = new Class[] {};
+    private static final Class[] ARG_PARAMS = new Class[] { AjaxBehaviorEvent.class };
 
     private final TagAttribute process;
     private final TagAttribute update;
@@ -87,7 +91,9 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         setBehaviorAttribute(ctx, behavior, this.partialSubmitFilter, AjaxBehavior.PropertyKeys.partialSubmitFilter.expectedType);
 
         if (listener != null) {
-            behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(listener, ctx));
+            behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
+                this.listener.getMethodExpression(ctx, Object.class, EMPTY_PARAMS) ,
+                this.listener.getMethodExpression(ctx, Object.class, ARG_PARAMS)));
         }
 
         return behavior;
