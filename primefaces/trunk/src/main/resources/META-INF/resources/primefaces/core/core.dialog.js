@@ -76,7 +76,7 @@ PrimeFaces.dialog.DialogHandler = {
             PF(dialogWidgetVar).show();
             
             //adjust height
-            var offset = PrimeFaces.browser.webkit ? 5 : 20,
+            var offset = PrimeFaces.env.browser.webkit ? 5 : 20,
             frameHeight = cfg.options.contentHeight||$frame.get(0).contentWindow.document.body.scrollHeight + offset;
             $frame.height(frameHeight);
             
