@@ -198,6 +198,7 @@
     padding:0px;
     cursor:col-resize;
     background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
+    border: 1px solid transparent;
 }
 
 .ui-datatable .ui-filter-column .ui-column-resizer {
