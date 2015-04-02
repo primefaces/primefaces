@@ -62,10 +62,12 @@ public class ConfigContainer {
     private String  uploader = null;
     private boolean transformMetadataEnabled = false;
     private boolean legacyWidgetNamespace = false;
+    private boolean beanValidationDisabled = false;
 
     // internal config
     private boolean beanValidationAvailable = false;
     private boolean stringConverterAvailable = false;
+    private boolean el22Available = false;
     private boolean jsf22 = false;
     private boolean jsf21 = false;
 
@@ -80,14 +82,15 @@ public class ConfigContainer {
     }
 
     public ConfigContainer(FacesContext context) {
-        initConfig(context);
         initConfigFromContextParams(context);
+        initConfig(context);
         initBuildProperties();
         initConfigFromWebXml(context);
         initValidateEmptyFields(context);
     }
 
     protected void initConfig(FacesContext context) {
+        el22Available = checkIfEL22IsAvailable();
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
         jsf22 = detectJSF22();
@@ -138,6 +141,9 @@ public class ConfigContainer {
 
         value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
         legacyWidgetNamespace = (value == null) ? false : Boolean.valueOf(value);
+    
+        value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
+        beanValidationDisabled = (value == null) ? false : Boolean.valueOf(value);
     }
 
     protected void initValidateEmptyFields(FacesContext context) {
@@ -209,6 +215,18 @@ public class ConfigContainer {
             	LOG.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
             	available = false;
             }
+        }
+
+        return available && !beanValidationDisabled && el22Available;
+    }
+    
+    private boolean checkIfEL22IsAvailable() {
+    	boolean available;
+
+        try {
+            available = Class.forName("javax.el.ValueReference") != null;
+        } catch (ClassNotFoundException e) {
+            available = false;
         }
 
         return available;
@@ -327,6 +345,10 @@ public class ConfigContainer {
 
     public boolean isBeanValidationAvailable() {
         return beanValidationAvailable;
+    }
+    
+    public boolean isEL22Available() {
+        return el22Available;
     }
 
     public boolean isPartialSubmitEnabled() {
