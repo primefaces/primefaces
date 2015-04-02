@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>treeTable</tag>
+	<tagClass>org.primefaces.component.treetable.TreeTableTag</tagClass>
+	<componentClass>org.primefaces.component.treetable.TreeTable</componentClass>
+    <componentHandlerClass>org.primefaces.component.treetable.TreeTableHandler</componentHandlerClass>
+	<componentType>org.primefaces.component.TreeTable</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TreeTableRenderer</rendererType>
+	<rendererClass>org.primefaces.component.treetable.TreeTableRenderer</rendererClass>
+	<parent>org.primefaces.component.api.UITree</parent>
+    <description>Treetable is is used for displaying hierarchical data in tabular format.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+        &standard_uicomponent_attributes;
+		&widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <type>org.primefaces.model.TreeNode</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <literal>true</literal>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
+		</attribute>
+        <attribute>
+            <name>selection</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>TreeNode array to reference the selections.</description>
+		</attribute>
+        <attribute>
+			<name>selectionMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Defines the selectionMode, valid values are "single" and "multiple".</description>
+		</attribute>
+        <attribute>
+			<name>scrollable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Makes data scrollable with fixed header. Default is false.</description>
+		</attribute>
+        <attribute>
+			<name>scrollHeight</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Height for scrollable data.</description>
+		</attribute>
+        <attribute>
+			<name>scrollWidth</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Width for scrollable data.</description>
+		</attribute>
+        <attribute>
+			<name>tableStyle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the table element.</description>
+		</attribute>
+        <attribute>
+			<name>tableStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the table element.</description>
+		</attribute>
+        <attribute>
+			<name>emptyMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>No records found.</defaultValue>
+            <description>Text to display when there is no data to display. Default is "No records found."</description>
+		</attribute>
+        <attribute>
+			<name>resizableColumns</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if columns can be resized or not.</description>
+		</attribute>
+        <attribute>
+			<name>rowStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class for each row.</description>
+		</attribute>
+        <attribute>
+			<name>liveResize</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Columns are resized live in this mode without using a resize helper.</description>
+		</attribute>
+        <attribute>
+			<name>required</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Validation constraint for selection.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>requiredMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Message for required selection validation.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>sortBy</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Expression for default sorting.</description>
+		</attribute>
+        <attribute>
+			<name>sortOrder</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>ascending</defaultValue>
+            <description>Defines default sorting order. Default is "ascending"</description>
+		</attribute>
+        <attribute>
+			<name>sortFunction</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>java.lang.Integer sort(java.lang.Object, java.lang.Object)</method-signature>
+            <description>Custom pluggable sortFunction for default sorting.</description>
+		</attribute>
+        <attribute>
+            <name>nativeElements</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>In native mode, treetable uses native checkboxes.</description>
+        </attribute>
+        <attribute>
+            <name>dataLocale</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Locale to be used in features such as sorting, defaults to view locale.</description>
+        </attribute>
+        <attribute>
+			<name>caseSensitiveSort</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Case sensitivity for sorting, insensitive by default.</description>
+		</attribute>
+        <attribute>
+			<name>skipChildren</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Ignores processing of children during lifecycle, improves performance if table only has output components, default is false.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>showUnselectableCheckbox</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node. Default is false.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>nodeVar</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the request-scoped variable that'll be used to refer current treenode using EL.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

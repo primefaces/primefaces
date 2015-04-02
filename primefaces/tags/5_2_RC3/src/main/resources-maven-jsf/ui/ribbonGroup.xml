@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>ribbonGroup</tag>
+	<tagClass>org.primefaces.component.ribbon.RibbonGroupTag</tagClass>
+	<componentClass>org.primefaces.component.ribbon.RibbonGroup</componentClass>
+	<componentType>org.primefaces.component.RibbonGroup</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.RibbonGroupRenderer</rendererType>
+	<rendererClass>org.primefaces.component.ribbon.RibbonGroupRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description>RibbonGroup is a helper component for Ribbon to define groups in a tab.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label of the submenu header.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the component.</description>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the component.</description>
+		</attribute>
+	</attributes>
+</component>

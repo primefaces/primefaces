@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>tree</tag>
+	<tagClass>org.primefaces.component.tree.TreeTag</tagClass>
+	<componentClass>org.primefaces.component.tree.Tree</componentClass>
+	<componentType>org.primefaces.component.Tree</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TreeRenderer</rendererType>
+	<rendererClass>org.primefaces.component.tree.TreeRenderer</rendererClass>
+	<parent>org.primefaces.component.api.UITree</parent>
+    <description>Tree is is used for displaying hierarchical data and creating site navigations.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.RTLAware</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>value</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>A TreeNode instance as the backing model.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+		<attribute>
+			<name>var</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the request-scoped variable that'll be used to refer each treenode data during rendering.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+		<attribute>
+			<name>dynamic</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Specifies the ajax/client toggleMode. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>cache</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Specifies caching on dynamically loaded nodes. When set to true expanded nodes will be kept in memory. Default is true.</description>
+		</attribute>
+		<attribute>
+			<name>onNodeClick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Javascript event to process when a tree node is clicked.</description>
+		</attribute>
+		<attribute>
+			<name>selection</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>TreeNode array to reference the selections.</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the main container element of tree.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container element of tree.</description>
+		</attribute>
+		<attribute>
+			<name>selectionMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Defines the selectionMode.</description>
+		</attribute>
+        <attribute>
+			<name>highlight</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Highlights nodes on hover when selection is enabled, set to false to disable highlighting.</description>
+		</attribute>
+        <attribute>
+			<name>datakey</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Unique key of the data presented by tree nodes.</description>
+		</attribute>
+        <attribute>
+			<name>animate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, Displays slide effect during toggling of a node.</description>
+		</attribute>
+        <attribute>
+			<name>orientation</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>vertical</defaultValue>
+            <description>Defines the orientation of the tree, valid values are, "vertical" (default) and horizontal.</description>
+		</attribute>
+        <attribute>
+			<name>propagateSelectionUp</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines upwards selection propagation for checkbox mode, default is true.</description>
+		</attribute>
+        <attribute>
+			<name>propagateSelectionDown</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines upwards selection propagation for checkbox mode, default is true.</description>
+		</attribute>
+        <attribute>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>ltr</defaultValue>
+            <description>Defines text direction, valid values are "ltr" (default) and "rtl".</description>
+        </attribute>
+        <attribute>
+			<name>draggable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Controls dragging of tree nodes. Default is false.</description>
+		</attribute>
+        <attribute>
+			<name>droppable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Controls dropping of tree nodes. Default is false.</description>
+		</attribute>
+        <attribute>
+			<name>dragdropScope</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Scope key to group a set of tree components for transferring nodes using drag and drop.</description>
+		</attribute>
+        <attribute>
+			<name>dragMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>self</defaultValue>
+            <description>Defines parent-child relationship when a node is dragged, valid values are self (default), parent and ancestor.</description>
+		</attribute>
+        <attribute>
+			<name>dropRestrict</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>none</defaultValue>
+            <description>Defines parent-child restrictions when a node is dropped valid values are none (default) and sibling.</description>
+		</attribute>
+        <attribute>
+			<name>required</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Validation constraint for selection.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>requiredMessage</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Message for required selection validation.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>skipChildren</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Ignores processing of children during lifecycle, improves performance if table only has output components, default is false.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>showUnselectableCheckbox</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node. Default is false.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Position of the element in the tabbing order. Default is 0.</description>
+		</attribute>
+        <attribute>
+			<name>nodeVar</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Name of the request-scoped variable that'll be used to refer current treenode using EL.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>
