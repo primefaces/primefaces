@@ -347,7 +347,8 @@
 }
 
 @media ( max-width: 35em ) {
-    .ui-datatable-reflow thead th {
+    .ui-datatable-reflow thead th,
+    .ui-datatable-reflow tfoot td {
         display: none;
     }
 
