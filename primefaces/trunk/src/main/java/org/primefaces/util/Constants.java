@@ -36,6 +36,7 @@ public class Constants {
         public static final String CACHE_PROVIDER = "primefaces.CACHE_PROVIDER";
         public static final String TRANSFORM_METADATA = "primefaces.TRANSFORM_METADATA";
         public static final String LEGACY_WIDGET_NAMESPACE = "primefaces.LEGACY_WIDGET_NAMESPACE";
+        public static final String BEAN_VALIDATION_DISABLED = "javax.faces.validator.DISABLE _DEFAULT_BEAN_VALIDATOR";
     }
 
     public class RequestParams {
