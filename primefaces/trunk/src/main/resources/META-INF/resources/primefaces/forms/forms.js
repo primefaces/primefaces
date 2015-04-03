@@ -1962,18 +1962,10 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
             });
         }
         
-        this.input.on('focus', function() {
-            if($this.input.prop('checked')) {
-                $this.jq.removeClass('ui-state-active');
-            }
-            
+        this.input.on('focus', function() {            
             $this.jq.addClass('ui-state-focus');
         })
-        .on('blur', function() {
-            if($this.input.prop('checked')) {
-                $this.jq.addClass('ui-state-active');
-            }
-            
+        .on('blur', function() {            
             $this.jq.removeClass('ui-state-focus');
         })
         .on('keydown', function(e) {
