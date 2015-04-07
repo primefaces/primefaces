@@ -110,7 +110,7 @@
 			<name>onHide</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Client side callback to execute after tooltip is shown.</description>
+            <description>Client side callback to execute after tooltip is hidden.</description>
 		</attribute>
         <attribute>
 			<name>onShow</name>
