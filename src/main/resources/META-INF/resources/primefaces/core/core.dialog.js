@@ -73,14 +73,14 @@ PrimeFaces.dialog.DialogHandler = {
                 PF(dialogWidgetVar).titlebar.children('span.ui-dialog-title').html(titleElement.text());
             }
             
-            PF(dialogWidgetVar).show();
-            
             //adjust height
             var offset = PrimeFaces.env.browser.webkit ? 5 : 20,
             frameHeight = cfg.options.contentHeight||$frame.get(0).contentWindow.document.body.scrollHeight + offset;
             $frame.height(frameHeight);
             
             dialogFrame.data('initialized', true);
+            
+            PF(dialogWidgetVar).show();
         })
         .attr('src', frameURL);
     },
