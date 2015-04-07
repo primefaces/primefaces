@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY data_component_attributes				SYSTEM "../entities/data_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>dataScroller</tag>
+    <tagClass>org.primefaces.component.datascroller.DataScrollerTag</tagClass>
+    <componentClass>org.primefaces.component.datascroller.DataScroller</componentClass>
+    <componentType>org.primefaces.component.DataScroller</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.DataScrollerRenderer</rendererType>
+    <rendererClass>org.primefaces.component.datascroller.DataScrollerRenderer</rendererClass>
+    <parent>org.primefaces.component.api.UIData</parent>
+    <description>DataScroller displays a collection of data featuring on demand loading using scroll.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+    <attributes>
+        &data_component_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+        </attribute>
+        <attribute>
+            <name>chunkSize</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Number of items to fetch.</description>
+        </attribute>
+        <attribute>
+            <name>rowIndexVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Name of iterator to refer each row index.</description>
+        </attribute>
+        <attribute>
+            <name>mode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>document</defaultValue>
+            <description>Defines the target to listen for scroll event, valid values are "document" (default) and "inline".</description>
+        </attribute>
+        <attribute>
+            <name>scrollHeight</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Defines pixel height of the viewport in inline mode.</description>
+        </attribute>
+        <attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <description>Defines if lazy loading is enabled for the data component.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+		</attribute>
+        <attribute>
+			<name>buffer</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>10</defaultValue>
+            <description>Percentage height of the buffer between the bottom of the page and the scroll position to initiate
+            the load for the new chunk. Value is defined in integer and default is 10 meaning load would happen after 90% of the viewport is scrolled down.</description>
+		</attribute>
+    </attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

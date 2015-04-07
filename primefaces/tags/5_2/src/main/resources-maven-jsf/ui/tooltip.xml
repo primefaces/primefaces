@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+]>
+<component>
+	<tag>tooltip</tag>
+	<tagClass>org.primefaces.component.tooltip.TooltipTag</tagClass>
+	<componentClass>org.primefaces.component.tooltip.Tooltip</componentClass>
+	<componentType>org.primefaces.component.Tooltip</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TooltipRenderer</rendererType>
+	<rendererClass>org.primefaces.component.tooltip.TooltipRenderer</rendererClass>
+	<parent>javax.faces.component.UIOutput</parent>
+    <description>Tooltip goes beyond the legacy html title attribute by providing custom effects, events, html content and advance theme support.</description>
+     <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&output_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>showEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Event displaying the tooltip. Default is mouseover.</description>
+		</attribute>
+		<attribute>
+			<name>showEffect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+            <description>Effect to be used for displaying. Default is fade.</description>
+		</attribute>
+        <attribute>
+			<name>showDelay</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>150</defaultValue>
+            <description>Delay time to show tooltip in milliseconds. Default is 150.</description>
+		</attribute>
+		<attribute>
+			<name>hideEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Event hiding the tooltip. Default is mouseout.</description>
+		</attribute>
+		<attribute>
+			<name>hideEffect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>fade</defaultValue>
+            <description>Effect to be used for hiding. Default is fade.</description>
+		</attribute>
+        <attribute>
+			<name>hideDelay</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Delay time to hide tooltip in milliseconds. Default is 0</description>
+		</attribute>
+		<attribute>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Id of the component to attach the tooltip.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the tooltip.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the tooltip.</description>
+		</attribute>
+        <attribute>
+			<name>globalSelector</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>jquery selector for global tooltip, default is "a,:input,:button".</description>
+		</attribute>
+        <attribute>
+			<name>escape</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether html would be escaped or not, defaults to true.</description>
+		</attribute>
+        <attribute>
+			<name>trackMouse</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Tooltip position follows pointer on mousemove, default is false</description>
+		</attribute>
+        <attribute>
+			<name>beforeShow</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute before tooltip is shown. Returning false will prevent display.</description>
+		</attribute>
+        <attribute>
+			<name>onHide</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute after tooltip is hidden.</description>
+		</attribute>
+        <attribute>
+			<name>onShow</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute after tooltip is shown.</description>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+	</resources>
+</component>

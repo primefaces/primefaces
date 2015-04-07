@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>ribbon</tag>
+	<tagClass>org.primefaces.component.ribbon.RibbonTag</tagClass>
+	<componentClass>org.primefaces.component.ribbon.Ribbon</componentClass>
+	<componentType>org.primefaces.component.Ribbon</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.RibbonRenderer</rendererType>
+	<rendererClass>org.primefaces.component.ribbon.RibbonRenderer</rendererClass>
+    <parent>javax.faces.component.UIPanel</parent>
+    <description>
+      Ribbon is container component to group different sets of controls.
+    </description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
+		</attribute>
+        <attribute>
+            <name>activeIndex</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Index of the active tab. Default is 0.</description>
+        </attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+        <resource>
+			<name>ribbon/ribbon.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+        <resource>
+			<name>ribbon/ribbon.js</name>
+		</resource>
+	</resources>
+</component>

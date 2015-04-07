@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>inputSwitch</tag>
+    <tagClass>org.primefaces.component.inputswitch.InputSwitchTag</tagClass>
+	<componentClass>org.primefaces.component.inputswitch.InputSwitch</componentClass>
+	<componentType>org.primefaces.InputSwitch</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.InputSwitchRenderer</rendererType>
+	<rendererClass>org.primefaces.component.inputswitch.InputSwitchRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>onLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>on</defaultValue>
+            <description>Custom label for on state.</description>
+        </attribute>
+        <attribute>
+            <name>offLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>off</defaultValue>
+            <description>Custom label for off state.</description>
+        </attribute>
+        <attribute>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>User presentable name.</description>
+		</attribute>
+        <attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Disables or enables the switch.</description>
+		</attribute>
+        <attribute>
+            <name>onchange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute on value change event.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the main container.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+        </attribute>
+        <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.</description>
+        </attribute>
+        <attribute>
+            <name>showLabels</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Controls the visibility of the labels, defaults to true.</description>
+        </attribute>
+	</attributes>
+    <resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+        <resource>
+			<name>inputswitch/inputswitch.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>primefaces.js</name>
+		</resource>
+        <resource>
+			<name>inputswitch/inputswitch.js</name>
+		</resource>
+	</resources>
+</component>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>multiSelectListbox</tag>
+	<tagClass>org.primefaces.component.multiselectlistbox.MultiSelectListboxTag</tagClass>
+	<componentClass>org.primefaces.component.multiselectlistbox.MultiSelectListbox</componentClass>
+	<componentType>org.primefaces.component.MultiSelectListbox</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.MultiSelectListboxRenderer</rendererType>
+	<rendererClass>org.primefaces.component.multiselectlistbox.MultiSelectListboxRenderer</rendererClass>
+	<parent>javax.faces.component.UISelectOne</parent>
+    <description>MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child relationship.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Disables the component.</description>
+		</attribute>
+        <attribute>
+			<name>effect</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Effect to use when showing a group of items.</description>
+		</attribute>
+        <attribute>
+			<name>showHeaders</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Displays label of a group at header section of the children items. Defaults to false.</description>
+		</attribute>
+        <attribute>
+			<name>header</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label of the root group items.</description>
+		</attribute>
+	</attributes>
+    <resources>
+        <resource>
+            <name>primefaces.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+	</resources>
+</component>
