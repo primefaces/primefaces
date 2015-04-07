@@ -47,7 +47,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.beforeShow = function() {
                 setTimeout(function() {
                     $('#ui-datepicker-div').css('z-index', ++PrimeFaces.zindex);
-                }, 250);
+                }, 1);
             };
         }
 
