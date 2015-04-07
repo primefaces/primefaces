@@ -31,7 +31,6 @@ import javax.faces.render.Renderer;
 import org.primefaces.config.ConfigContainer;
 
 import org.primefaces.context.RequestContext;
-import org.primefaces.util.ResourceUtils;
 
 /**
  * Renders head content based on the following order
@@ -48,14 +47,8 @@ public class HeadRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
         ProjectStage projectStage = context.getApplication().getProjectStage();
-        
-        if (cc.isClientSideValidationEnabled()) {
-            ResourceUtils.addComponentResource(context, "validation/validation.js");
-            if (cc.isBeanValidationAvailable()) {
-                ResourceUtils.addComponentResource(context, "validation/beanvalidation.js");
-            }
-        }
-        
+        boolean csvEnabled = cc.isClientSideValidationEnabled();
+                
         writer.startElement("head", component);
         
         //First facet
@@ -98,12 +91,16 @@ public class HeadRenderer extends Renderer {
         for (UIComponent resource : viewRoot.getComponentResources(context, "head")) {
             resource.encodeAll(context);
         }
+        
+        if(csvEnabled) {
+            encodeValidationResources(context, cc.isBeanValidationAvailable());
+        }
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("if(window.PrimeFaces){");
 
-        if (cc.isClientSideValidationEnabled()) {
+        if (csvEnabled) {
             writer.write("PrimeFaces.settings.locale='" + context.getViewRoot().getLocale() + "';");
             writer.write("PrimeFaces.settings.validateEmptyFields=" + cc.isValidateEmptyFields() + ";");
             writer.write("PrimeFaces.settings.considerEmptyStringNull=" + cc.isInterpretEmptyStringAsNull() + ";");
@@ -147,6 +144,29 @@ public class HeadRenderer extends Renderer {
             writer.writeAttribute("rel", "stylesheet", null);
             writer.writeAttribute("href", cssResource.getRequestPath(), null);
             writer.endElement("link");
+        }
+    }
+    
+    protected void encodeValidationResources(FacesContext context, boolean beanValidationEnabled) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Resource resource = context.getApplication().getResourceHandler().createResource("validation/validation.js", "primefaces");
+        
+        if(resource != null) {
+            writer.startElement("script", null);
+            writer.writeAttribute("type", "text/javascript", null);
+            writer.writeAttribute("src", resource.getRequestPath(), null);
+            writer.endElement("script");
+        }
+        
+        if(beanValidationEnabled) {
+            resource = context.getApplication().getResourceHandler().createResource("validation/beanvalidation.js", "primefaces");
+        
+            if(resource != null) {
+                writer.startElement("script", null);
+                writer.writeAttribute("type", "text/javascript", null);
+                writer.writeAttribute("src", resource.getRequestPath(), null);
+                writer.endElement("script");
+            }
         }
     }
 }
