@@ -12,3 +12,6 @@
 -canvasaxislabelrenderer
 -cursor
 -highlighter
+
+Extensions
+- Added z-index to highlighter
