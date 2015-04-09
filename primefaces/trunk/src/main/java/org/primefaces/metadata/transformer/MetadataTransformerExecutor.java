@@ -49,13 +49,15 @@ public class MetadataTransformerExecutor implements SystemEventListener {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
                 ConfigContainer config = requestContext.getApplicationContext().getConfig();
 
-                if (config.isTransformMetadataEnabled() && config.isBeanValidationAvailable()) {
-                    BV_INPUT_METADATA_TRANSFORMER.transform(context, requestContext, postAddToViewEvent.getComponent());
-                }
+                if (config.isTransformMetadataEnabled()) {
+                    if (config.isBeanValidationAvailable()) {
+                        BV_INPUT_METADATA_TRANSFORMER.transform(context, requestContext, postAddToViewEvent.getComponent());
+                    }
 
-                if (METADATA_TRANSFORMERS.size() > 0) {
-                    for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
-                        METADATA_TRANSFORMERS.get(i).transform(context, requestContext, postAddToViewEvent.getComponent());
+                    if (METADATA_TRANSFORMERS.size() > 0) {
+                        for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
+                            METADATA_TRANSFORMERS.get(i).transform(context, requestContext, postAddToViewEvent.getComponent());
+                        }
                     }
                 }
             }
