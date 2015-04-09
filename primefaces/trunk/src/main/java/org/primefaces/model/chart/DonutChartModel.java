@@ -28,6 +28,8 @@ public class DonutChartModel extends ChartModel {
     private String dataFormat;
     private String dataLabelFormatString;
     private int dataLabelThreshold;
+    private boolean showDatatip = true;
+    private String datatipFormat = "%s - %d";
     
     public DonutChartModel() {
         data = new ArrayList<Map<String, Number>>();
@@ -96,5 +98,20 @@ public class DonutChartModel extends ChartModel {
     public void setDataLabelThreshold(int dataLabelThreshold) {
         this.dataLabelThreshold = dataLabelThreshold;
     }
-    
+
+    public boolean isShowDatatip() {
+        return showDatatip;
+    }
+
+    public void setShowDatatip(boolean showDatatip) {
+        this.showDatatip = showDatatip;
+    }
+
+    public String getDatatipFormat() {
+        return datatipFormat;
+    }
+
+    public void setDatatipFormat(String datatipFormat) {
+        this.datatipFormat = datatipFormat;
+    }
 }

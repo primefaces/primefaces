@@ -22115,6 +22115,10 @@ PrimeFaces.widget.ChartUtils = {
                         dataLabelThreshold: chart.cfg.dataLabelThreshold||3
                     }
                 };
+                
+                if(chart.cfg.datatip) {
+                    chart.cfg.highlighter.useAxesFormatters = false;
+                }
             }
 
         },
@@ -22214,6 +22218,10 @@ PrimeFaces.widget.ChartUtils = {
                         dataLabelThreshold: chart.cfg.dataLabelThreshold||3
                     }
                 };
+                
+                if(chart.cfg.datatip) {
+                    chart.cfg.highlighter.useAxesFormatters = false;
+                }
             }
 
         },

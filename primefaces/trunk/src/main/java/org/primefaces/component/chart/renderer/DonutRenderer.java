@@ -76,5 +76,11 @@ public class DonutRenderer extends BasePlotRenderer {
         if(dataFormat != null) writer.write(",dataFormat:\"" + dataFormat + "\"");
         if(dataLabelFormatString != null) writer.write(",dataLabelFormatString:\"" + dataLabelFormatString + "\"");
         if(dataLabelThreshold > 0 && dataLabelThreshold < 100) writer.write(",dataLabelThreshold:" + dataLabelThreshold);
+        
+        if(model.isShowDatatip()) {
+            writer.write(",datatip:true");
+            if(model.getDatatipFormat() != null)
+                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
+        }
     }
 }
