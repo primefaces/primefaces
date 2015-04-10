@@ -14,6 +14,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
         this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
         this.blockEvents = 'focus.' + this.id + ' mousedown.' + this.id + ' mouseup.' + this.id;
+        this.cfg.absolutePositioned = this.jq.hasClass('ui-dialog-absolute');
 
         //configuration
         this.cfg.width = this.cfg.width||'auto';
@@ -204,6 +205,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
     _show: function() {
         this.moveToTop();
+        
+        //offset
+        if(this.cfg.absolutePositioned) {
+            var winScrollTop = $(window).scrollTop();
+            this.jq.css('top', parseFloat(this.jq.css('top')) + (winScrollTop - this.lastScrollTop) + 'px');
+            this.lastScrollTop = winScrollTop;
+        }
 
         if(this.cfg.showEffect) {
             var $this = this;
@@ -360,6 +368,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
 
     initPosition: function() {
+        var $this = this;
+        
         //reset
         this.jq.css({left:0,top:0});
 
@@ -374,8 +384,15 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                         //make sure dialog stays in viewport
                         ,using: function(pos) {
                             var l = pos.left < 0 ? 0 : pos.left,
-                            t = pos.top < 0 ? 0 : pos.top;
-
+                            t = pos.top < 0 ? 0 : pos.top,
+                            scrollTop = $(window).scrollTop();
+                    
+                            //offset
+                            if($this.cfg.absolutePositioned) {
+                                t += scrollTop;
+                                $this.lastScrollTop = scrollTop;
+                            }
+                            
                             $(this).css({
                                 left: l
                                 ,top: t
