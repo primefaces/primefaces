@@ -205,6 +205,13 @@
             <description>Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically
             adjusts height to fit dialog within the viewport.</description>
         </attribute>
+        <attribute>
+            <name>positionType</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>fixed</defaultValue>
+            <description>Defines whether dialog will be kept in viewport on scroll (fixed) or keep its position (absolute). Default is fixed.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

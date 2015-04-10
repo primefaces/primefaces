@@ -86,12 +86,17 @@ public class DialogRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Dialog dialog) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dialog.getClientId(context);
+        String positionType = dialog.getPositionType();
         String style = dialog.getStyle();
         String styleClass = dialog.getStyleClass();
         styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : Dialog.CONTAINER_CLASS + " " + styleClass;
         
         if(ComponentUtils.isRTL(context, dialog)) {
             styleClass += " ui-dialog-rtl";
+        }
+        
+        if(positionType.equals("absolute")) {
+            styleClass += " ui-dialog-absolute";
         }
 
         writer.startElement("div", null);
