@@ -177,6 +177,11 @@ public class CalendarRenderer extends InputRenderer {
         if (beforeShowDay != null) {
             wb.nativeAttr("preShowDay", beforeShowDay);
         }
+        
+        String beforeShow = calendar.getBeforeShow();
+        if(beforeShow != null) {
+            wb.nativeAttr("preShow", beforeShow);
+        }
 
         String showOn = calendar.getShowOn();
         if (!showOn.equalsIgnoreCase("focus")) {

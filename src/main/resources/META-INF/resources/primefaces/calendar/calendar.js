@@ -44,23 +44,30 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.attachBehaviors(this.jqEl, this.cfg.behaviors);
             }
 
-            this.cfg.beforeShow = function() {
+            this.cfg.beforeShow = function(input, inst) {
+                //display on top
                 setTimeout(function() {
                     $('#ui-datepicker-div').css('z-index', ++PrimeFaces.zindex);
                 }, 1);
+                
+                // touch support - prevents keyboard popup
+                if(PrimeFaces.env.touch && !_self.input.attr("readonly") && _self.cfg.showOn && _self.cfg.showOn === 'button') {
+                    $(this).prop("readonly", true);
+                }
+                
+                //user callback
+                var preShow = _self.cfg.preShow;
+                if(preShow) {
+                    return _self.cfg.preShow.call(_self, input, inst);
+                }
             };
         }
 
         // touch support - prevents keyboard popup
-        if (PrimeFaces.env.touch) {
-            if (!this.input.attr("readonly") && this.cfg.showOn && this.cfg.showOn === 'button') {
-                this.cfg.beforeShow = function(input, inst) {
-                    $(this).attr("readonly", true);
-                };
-                this.cfg.onClose = function(dateText, inst) {
-                    $(this).attr("readonly", false);
-                };
-            }
+        if (PrimeFaces.env.touch && !this.input.attr("readonly") && this.cfg.showOn && this.cfg.showOn === 'button') {
+            this.cfg.onClose = function(dateText, inst) {
+                $(this).attr("readonly", false);
+            };
         }
 
         //Initialize calendar

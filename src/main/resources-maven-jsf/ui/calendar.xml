@@ -246,6 +246,12 @@
             <type>java.lang.String</type>
             <description>Defines the type of element to use for time picker, valid values are "slider" and "select".</description>
         </attribute>
+        <attribute>
+            <name>beforeShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Callback to execute before displaying calendar, element and calendar instance are passed as parameters.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
