@@ -365,7 +365,7 @@
         },
 
         focus : function(id, context) {
-            var selector = ':not(:submit):not(:button):input:visible:enabled';
+            var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
 
             setTimeout(function() {
                 if(id) {
