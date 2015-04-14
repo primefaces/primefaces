@@ -1484,7 +1484,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     toggleExpansion: function(toggler) {
         var row = toggler.closest('tr'),
         rowIndex = this.getRowMeta(row).index,
-        expanded = toggler.hasClass('ui-icon-circle-triangle-s'),
+        iconOnly = toggler.hasClass('ui-icon'),
+        labels = toggler.children('span'),
+        expanded = iconOnly ? toggler.hasClass('ui-icon-circle-triangle-s'): toggler.children('span').eq(0).hasClass('ui-helper-hidden'),
         $this = this;
 
         //Run toggle expansion if row is not being toggled already to prevent conflicts
@@ -1492,7 +1494,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.expansionProcess.push(rowIndex);
             
             if(expanded) {
-                toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
+                if(iconOnly) {
+                    toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
+                }
+                else {
+                    labels.eq(0).removeClass('ui-helper-hidden');
+                    labels.eq(1).addClass('ui-helper-hidden');
+                }
+                
                 this.collapseRow(row);
                 $this.expansionProcess = $.grep($this.expansionProcess, function(r) {
                     return (r !== rowIndex);
@@ -1504,7 +1513,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     this.collapseAllRows();
                 }
                 
-                toggler.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
+                if(iconOnly) {
+                    toggler.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
+                }
+                else {
+                    labels.eq(0).addClass('ui-helper-hidden');
+                    labels.eq(1).removeClass('ui-helper-hidden');
+                }
 
                 this.loadExpandedRowContent(row);
             }
@@ -1593,7 +1608,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 toggler = column.children('.ui-row-toggler');
 
                 if(toggler.length > 0) {
-                    toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
+                    if(toggler.hasClass('ui-icon')) {
+                        toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
+                    }
+                    else {
+                        var labels = toggler.children('span');
+                        labels.eq(0).removeClass('ui-helper-hidden');
+                        labels.eq(1).addClass('ui-helper-hidden');
+                    }
                     break;
                 }
             }

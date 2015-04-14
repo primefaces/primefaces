@@ -29,10 +29,30 @@ public class RowTogglerRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         RowToggler toggler = (RowToggler) component;
         DataTable parentTable = toggler.getParentTable(context);
-        String icon = parentTable.isExpandedRow() ? RowToggler.EXPANDED_ICON : RowToggler.COLLAPSED_ICON;
-
+        boolean expanded = parentTable.isExpandedRow();
+        String icon = expanded ? RowToggler.EXPANDED_ICON : RowToggler.COLLAPSED_ICON;
+        String expandLabel = toggler.getExpandLabel();
+        String collapseLabel = toggler.getCollapseLabel();
+        boolean iconOnly = (expandLabel == null && collapseLabel == null);
+        String togglerClass = iconOnly ? DataTable.ROW_TOGGLER_CLASS + " " + icon : DataTable.ROW_TOGGLER_CLASS;
+        
         writer.startElement("div", toggler);
-        writer.writeAttribute("class", DataTable.ROW_TOGGLER_CLASS + " " + icon, null);
+        writer.writeAttribute("class", togglerClass, null);
+        
+        if(!iconOnly) {
+            writeLabel(writer, expandLabel, !expanded);
+            writeLabel(writer, collapseLabel, expanded);
+        }
+        
         writer.endElement("div");
+    }
+    
+    protected void writeLabel(ResponseWriter writer, String label, boolean visible) throws IOException {
+        writer.startElement("span", null);
+        if(!visible) {
+            writer.writeAttribute("class", "ui-helper-hidden", null);
+        }
+        writer.writeText(label, null);
+        writer.endElement("span");
     }
 }
