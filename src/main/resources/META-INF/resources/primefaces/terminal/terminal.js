@@ -29,7 +29,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                     }
                     
                     e.preventDefault();
-                break;
+                    break;
 
                 case keyCode.DOWN:
                     if($this.commandIndex < ($this.commands.length - 1)) {
@@ -41,7 +41,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                     }
                     
                     e.preventDefault();
-                break;
+                    break;
 
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
@@ -65,22 +65,31 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
             params: [
                 {name: this.id + '_command', value: true}
             ],
-            onsuccess: function(responseXML, status, xhr) {
+            onsuccess: function (responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
-                        handle: function(content) {
+                        handle: function (content) {
                             var commandResponseContainer = $('<div></div>');
-                            commandResponseContainer.append('<span>' + this.cfg.prompt + '</span><span class="ui-terminal-command">' + this.input.val() + '</span>')
-                                                .append('<div>' + content + '</div>').appendTo(this.content);
-                                        
+                            commandResponseContainer.append('<div class="ui-terminal-command">' + content+ '</div>').appendTo(this.content);
                             this.input.val('');
+                            $('#ui-prompt-id').show();
+                            //scroll the terminal down on long output
+                            this.content.prevObject[0].scrollTop = this.content.prevObject[0].scrollHeight;
+                            this.focus();
                         }
                     });
 
                 return true;
             }
         };
-        
+        var commandResponseContainer = $('<div></div>');
+        var outputid = Date.now();
+        //print the previous command out, so we can append asynchronously
+        commandResponseContainer.append('<span class="ui-terminal-command">' + this.cfg.prompt + '</span><span class="ui-terminal-command" id=command' + outputid + '></span>').appendTo(this.content);
+        //sanitize the command text
+        $('#command' + outputid).text(this.input.val());
+        //hide the prompt until the command finishes
+        $('#ui-prompt-id').hide();
         PrimeFaces.ajax.Request.handle(options);
     },
             
@@ -91,5 +100,11 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
     clear: function() {
         this.content.html('');
         this.input.val('');
+    },
+    //to be used with the socket component, allowing the command to output asynchronously to the terminal before finishing
+    handle: function (content) {
+        var commandResponseContainer = $("<div></div>");
+        commandResponseContainer.append('<div class="ui-terminal-command">' + content + "</div>").appendTo(this.content);
+        this.content.prevObject[0].scrollTop = this.content.prevObject[0].scrollHeight;
     }
 });

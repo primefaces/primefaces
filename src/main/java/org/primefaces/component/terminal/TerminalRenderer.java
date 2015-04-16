@@ -25,6 +25,8 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class TerminalRenderer extends CoreRenderer {
+    
+    private static final String PROMPT_CONTAINER_ID = "ui-prompt-id";
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -66,6 +68,9 @@ public class TerminalRenderer extends CoreRenderer {
         writer.endElement("div");
         
         writer.startElement("div", null);
+        //add an ID to the the prompt div so we can show/hide it from the component js
+        writer.writeAttribute("id", PROMPT_CONTAINER_ID, null);
+        
         writer.startElement("span", null);
         writer.writeAttribute("class", Terminal.PROMPT_CLASS, null);
         writer.writeText(terminal.getPrompt(), null);
