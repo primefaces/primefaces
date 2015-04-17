@@ -11,6 +11,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         this.content = this.jq.children('.ui-terminal-content');
         this.input = this.promptContainer.next('');
         this.commands = [];
+        this.promptDiv = this.jq.children('.ui-terminal-container');
         this.commandIndex = 0;
         
         this.bindEvents();
@@ -72,7 +73,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                             var commandResponseContainer = $('<div></div>');
                             commandResponseContainer.append('<div class="ui-terminal-command">' + content+ '</div>').appendTo(this.content);
                             this.input.val('');
-                            $('#ui-prompt-id').show();
+                            this.promptDiv.show();
                             //scroll the terminal down on long output
                             this.content.prevObject[0].scrollTop = this.content.prevObject[0].scrollHeight;
                             this.focus();
@@ -89,7 +90,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         //sanitize the command text
         $('#command' + outputid).text(this.input.val());
         //hide the prompt until the command finishes
-        $('#ui-prompt-id').hide();
+        this.promptDiv.hide();
         PrimeFaces.ajax.Request.handle(options);
     },
             

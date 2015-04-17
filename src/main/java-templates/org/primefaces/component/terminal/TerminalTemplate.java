@@ -4,6 +4,7 @@
     public static final String CONTENT_CLASS = "ui-terminal-content";
     public static final String PROMPT_CLASS = "ui-terminal-prompt";
     public static final String INPUT_CLASS = "ui-terminal-input";
+    public static final String PROMPT_CONTAINER_CLASS = "ui-terminal-container";
 
     public boolean isCommandRequest() {
         FacesContext context = getFacesContext();
