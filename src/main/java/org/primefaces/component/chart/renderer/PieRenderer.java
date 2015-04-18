@@ -68,8 +68,15 @@ public class PieRenderer extends BasePlotRenderer {
         
         if(model.isShowDatatip()) {
             writer.write(",datatip:true");
-            if(model.getDatatipFormat() != null)
+            
+            String datatipFormat = model.getDatatipFormat();
+            String datatipEditor = model.getDatatipEditor();
+            
+            if(datatipFormat != null)
                 writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
+            
+            if(datatipEditor != null)
+                writer.write(",datatipEditor:" + datatipEditor);
         }
     }
     

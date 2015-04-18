@@ -30,6 +30,7 @@ public class PieChartModel extends ChartModel {
     private int dataLabelThreshold;
     private boolean showDatatip = true;
     private String datatipFormat = "%s - %d";
+    private String datatipEditor;
 
     public PieChartModel() {
         data = new LinkedHashMap<String, Number>();
@@ -126,4 +127,12 @@ public class PieChartModel extends ChartModel {
     public void setDatatipFormat(String datatipFormat) {
         this.datatipFormat = datatipFormat;
     } 
+    
+    public String getDatatipEditor() {
+        return datatipEditor;
+    }
+
+    public void setDatatipEditor(String datatipEditor) {
+        this.datatipEditor = datatipEditor;
+    }
 }
