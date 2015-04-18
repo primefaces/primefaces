@@ -91,11 +91,11 @@ public class LayoutRenderer extends CoreRenderer {
                     .attr("resizable", unit.isResizable())
                     .attr("closable", unit.isCollapsible())
                     .attr("minSize", unit.getMinSize(), 50)
-                    .attr("maxSize", unit.getMaxSize(), 0);
+                    .attr("maxSize", unit.getMaxSize(), 0)
+                    .attr("spacing_open", unit.getGutter(), 6);
                 
                 if(unit.isCollapsible()) {
-                    wb.attr("spacing_open", unit.getGutter())
-                        .attr("spacing_closed", unit.getCollapseSize());
+                    wb.attr("spacing_closed", unit.getCollapseSize());
                 }
                 
                 wb.attr("initHidden", !unit.isVisible(), false)
