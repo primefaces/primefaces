@@ -32,6 +32,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.Constants;
 
 public class CSVExporter extends Exporter {
+    protected String separator = this.separator;
 
     @Override
 	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
@@ -60,6 +61,19 @@ public class CSVExporter extends Exporter {
         
         externalContext.responseFlushBuffer();
 	}
+
+    public void setSeparator(String separator) {
+        // Possibly do some check on the separator provided:
+        // it can be restrained to a list of allowed separators
+        // (for e.g., such as the list of separator suggested
+        // in the Microsoft Excel 'Get External Data' > 'From Text' function,
+        // which are: ',', ';', '\t', ' ').
+        // The length of the separator can also be checked.
+        if(separator.length != 1) {
+            throw new FacesException("Unsupported separator \"" + separator + "\" for CSVExporter.");
+        }
+        this.separator = separator;
+    }
     
     protected void addColumnFacets(Writer writer, DataTable table, ColumnType columnType) throws IOException {
         boolean firstCellWritten = false;
@@ -71,7 +85,7 @@ public class CSVExporter extends Exporter {
             
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    writer.write(",");
+                    writer.write(this.separator);
                 }
                 
                 UIComponent facet = col.getFacet(columnType.facet());
@@ -117,7 +131,7 @@ public class CSVExporter extends Exporter {
             
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    writer.write(",");
+                    writer.write(this.separator);
                 }
                 
                 try {
@@ -145,7 +159,7 @@ public class CSVExporter extends Exporter {
             addColumnValue(writer, iterator.next().getChildren());
 
             if (iterator.hasNext())
-                writer.write(",");
+                writer.write(this.separator);
 		}
 	}
 
