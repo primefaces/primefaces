@@ -77,6 +77,7 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.writeAttribute("id", id + "_clone", null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "radio", null);
+        writer.writeAttribute("data-itemindex", button.getItemIndex(), null);
 
         if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);

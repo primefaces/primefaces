@@ -1191,15 +1191,15 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             
             //update radio state
             this.originalInputs = this.jq.find(':radio');
-            for(var i = 0; i < this.originalInputs.length; i++) {
-                var original = this.originalInputs.eq(i),
-                delegate = $(PrimeFaces.escapeClientId(original.attr('id') + '_clone'));
+            for(var i = 0; i < this.inputs.length; i++) {
+                var input = this.inputs.eq(i),
+                itemindex = input.data('itemindex'),
+                original = this.originalInputs.eq(itemindex);
         
-                delegate.val(original.val());
+                input.val(original.val());
                 
-                //default checked
                 if(original.is(':checked')) {
-                    delegate.prop('checked', true).parent().next().addClass('ui-state-active').children('.ui-radiobutton-icon')
+                    input.prop('checked', true).parent().next().addClass('ui-state-active').children('.ui-radiobutton-icon')
                             .addClass('ui-icon-bullet').removeClass('ui-icon-blank');
                 }
             }
