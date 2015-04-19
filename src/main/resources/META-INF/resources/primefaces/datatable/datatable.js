@@ -2073,7 +2073,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }                
             },
             stop: function(event, ui) {
-                var columnHeader = ui.helper.parent();
                 ui.helper.css({
                     'left': '',
                     'top': '0px'
@@ -2086,19 +2085,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.resizerHelper.hide();
                 }
                 
-                var options = {
-                    source: $this.id,
-                    process: $this.id,
-                    params: [
-                        {name: $this.id + '_colResize', value: true},
-                        {name: $this.id + '_columnId', value: columnHeader.attr('id')},
-                        {name: $this.id + '_width', value: columnHeader.width()},
-                        {name: $this.id + '_height', value: columnHeader.height()}
-                    ]
+                if($this.cfg.resizeMode === 'expand') {
+                    setTimeout(function() {
+                        $this.fireColumnResizeEvent(ui.helper.parent());
+                    }, 5);
                 }
-                
-                if($this.hasBehavior('colResize')) {
-                    $this.cfg.behaviors['colResize'].call($this, options);
+                else {
+                    $this.fireColumnResizeEvent(ui.helper.parent());
                 }
                 
                 if($this.cfg.stickyHeader) {
@@ -2111,6 +2104,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             containment: this.jq
         });
+    },
+    
+    fireColumnResizeEvent: function(columnHeader) {
+        if(this.hasBehavior('colResize')) {
+            var options = {
+                source: this.id,
+                process: this.id,
+                params: [
+                    {name: this.id + '_colResize', value: true},
+                    {name: this.id + '_columnId', value: columnHeader.attr('id')},
+                    {name: this.id + '_width', value: columnHeader.width()},
+                    {name: this.id + '_height', value: columnHeader.height()}
+                ]
+            };
+                
+            this.cfg.behaviors['colResize'].call(this, options);
+        }
     },
     
     hasColGroup: function() {
