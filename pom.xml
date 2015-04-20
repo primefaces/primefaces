@@ -274,7 +274,7 @@
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>maven-jsf-plugin</artifactId>
-                <version>1.3.2</version>
+                <version>1.3.3-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>generate-ui</id>
@@ -714,7 +714,7 @@
                     <plugin>
                         <groupId>org.primefaces</groupId>
                         <artifactId>maven-jsf-plugin</artifactId>
-                        <version>1.3.2</version>
+                        <version>1.3.3-SNAPSHOT</version>
                         <executions>
                             <execution>
                                 <id>css-compressor</id>
