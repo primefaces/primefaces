@@ -2608,6 +2608,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindCheckboxKeyEvents: function(items) {
+        var $this = this;
+        
         items.on('focus.selectCheckboxMenu', function(e) {
             var input = $(this),
             box = input.parent().next();
@@ -2617,6 +2619,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
 
             box.addClass('ui-state-focus');
+            
+            PrimeFaces.scrollInView($this.itemContainerWrapper, box);
         })
         .on('blur.selectCheckboxMenu', function(e) {
             var input = $(this),
