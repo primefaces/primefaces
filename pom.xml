@@ -51,6 +51,10 @@
             <id>sincan.mert</id>
             <name>Mert Sincan</name>
         </developer>
+        <developer>
+            <id>jamaltun</id>
+            <name>Cem Altun</name>
+        </developer>
     </developers>
     
     <properties>
