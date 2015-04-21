@@ -346,28 +346,32 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
     
     showSubmenu: function(menuitem, submenu) {
-        var pos = null;
+        var win = $(window),
+        submenuOffsetTop = null,
+        submenuCSS = {
+            'z-index': ++PrimeFaces.zindex
+        };
         
         if(menuitem.parent().hasClass('ui-menu-child')) {
-            pos = {
-                my: 'left top',
-                at: 'right top',
-                of: menuitem,
-                collision: 'flipfit'
-            };
-        }
+            submenuCSS.left = menuitem.outerWidth();
+            submenuCSS.top = 0; 
+            submenuOffsetTop = menuitem.offset().top - win.scrollTop();
+        } 
         else {
-            pos = {
-                my: 'left top',
-                at: 'left bottom',
-                of: menuitem,
-                collision: 'flipfit'
-            };
+            submenuCSS.left = 0;
+            submenuCSS.top = menuitem.outerHeight(); 
+            menuitem.offset().top - win.scrollTop();
+            submenuOffsetTop = menuitem.offset().top + submenuCSS.top - win.scrollTop();
         }
         
-        submenu.css('z-index', ++PrimeFaces.zindex)
-                .show()
-                .position(pos);
+        //adjust height within viewport
+        submenu.css('height', 'auto');
+        if((submenuOffsetTop + submenu.outerHeight()) > win.height()) {
+            submenuCSS.overflow = 'auto';
+            submenuCSS.height = win.height() - (submenuOffsetTop + 20);
+        }
+        
+        submenu.css(submenuCSS).show();
     },
           
     //@Override
@@ -1310,7 +1314,10 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         this.menuitemLinks = this.jq.find('.ui-menuitem-link:not(.ui-state-disabled)');
         this.treeLinks = this.jq.find('.ui-menu-parent > .ui-menuitem-link:not(.ui-state-disabled)');
         this.bindEvents();
-        this.stateKey = 'panelMenu-' + this.id;
+        
+        if(this.cfg.stateful) {
+            this.stateKey = 'panelMenu-' + this.id;
+        }
         
         this.restoreState();
     },
@@ -1403,13 +1410,19 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     saveState: function() {
-        var expandedNodeIds = this.expandedNodes.join(',');
-        
-        PrimeFaces.setCookie(this.stateKey, expandedNodeIds);
+        if(this.cfg.stateful) {
+            var expandedNodeIds = this.expandedNodes.join(',');
+
+            PrimeFaces.setCookie(this.stateKey, expandedNodeIds);
+        }
     },
     
     restoreState: function() {
-        var expandedNodeIds = PrimeFaces.getCookie(this.stateKey);
+        var expandedNodeIds = null; 
+        
+        if(this.cfg.stateful) {
+            expandedNodeIds = PrimeFaces.getCookie(this.stateKey);
+        }
 
         if(expandedNodeIds) {
             this.collapseAll();
@@ -1455,7 +1468,9 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     clearState: function() {
-        PrimeFaces.setCookie(this.stateKey, null);
+        if(this.cfg.stateful) {
+            PrimeFaces.setCookie(this.stateKey, null);
+        }
     },
     
     collapseAll: function() {
