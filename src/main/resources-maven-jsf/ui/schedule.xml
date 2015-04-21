@@ -211,6 +211,13 @@
             <defaultValue>false</defaultValue>
             <description>Displays description of events on a tooltip, default value is false.</description>
         </attribute>
+        <attribute>
+            <name>showWeekNumbers</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Display week numbers in schedule.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
