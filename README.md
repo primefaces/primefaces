@@ -75,6 +75,9 @@ xmlns:p="http://primefaces.org/mobile"
 ***
 Please refer to the [showcase](http://www.primefaces.org/showcase) in order to see the full usage of the components.
 
+### Documentation
+***
+User Guide is available at [documentation](http://www.primefaces.org/documentation) page along with other additional resoures.
 
 ### Contribution
 ***
