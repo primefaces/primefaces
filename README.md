@@ -1,14 +1,13 @@
 # PrimeFaces
 
-**Ultimate JSF Framework**
+This is an overview page, please visit [PrimeFaces.org](http://www.primefaces.org) for more information.
 
 ![PrimeFaces icon](http://blog.primefaces.org/wp-content/uploads/2011/08/bloglogo.png)
-
 
 ### Overview
 ***
 
-[PrimeFaces](http://www.primefaces.org/index) is one of the most popular UI libraries in Java Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more. 
+[PrimeFaces](http://www.primefaces.org/index) is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more. 
 
 ### Getting Started
 ***
@@ -26,7 +25,7 @@ For a full list of the available downloads, please visit the [download page](htt
 
 ##### Maven
 
-```
+```xml
 <dependency>  
     <groupId>org.primefaces</groupId>  
     <artifactId>primefaces</artifactId>  
@@ -37,25 +36,23 @@ For a full list of the available downloads, please visit the [download page](htt
 ### Usage
 ***
 
-
-
 ##### Namespaces
 
 PrimeFaces namespace is necessary to add PrimeFaces components to your pages.
 
-```
+```xml
 xmlns:p="http://primefaces.org/ui"
 ```
 
 For PrimeFaces **Mobile**, the namespace would be:
 
-```
+```xml
 xmlns:p="http://primefaces.org/mobile"  
 ```
 
 ##### Test Run
 
-```
+```xml
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -73,18 +70,15 @@ xmlns:p="http://primefaces.org/mobile"
 </html>
 
 ```
-- - - -
 
-
-## [Demo](http://www.primefaces.org/showcase/index.xhtml)
+### Demo
 ***
-
-Please refer to the [showcase](http://www.primefaces.org/showcase/index.xhtml) in order to see the full usage of the components.
+Please refer to the [showcase](http://www.primefaces.org/showcase) in order to see the full usage of the components.
 
 
 ### Contribution
 ***
-To be announced.
+Visit [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Contributing-to-Primefaces) page for the detailed information.
 
 
 ### License
