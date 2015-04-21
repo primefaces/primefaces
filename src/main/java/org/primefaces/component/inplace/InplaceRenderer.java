@@ -51,9 +51,15 @@ public class InplaceRenderer extends CoreRenderer {
         String styleClass = userStyleClass == null ? Inplace.CONTAINER_CLASS : Inplace.CONTAINER_CLASS + " " + userStyleClass;
         boolean disabled = inplace.isDisabled();
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
+        String width = inplace.getWidth();
         
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
-        String displayStyle = validationFailed ? "none" : "inline";
+        String displayStyle;
+		if (width == null)
+			displayStyle = validationFailed ? "none" : "inline";
+		else
+			displayStyle = validationFailed ? "none" : "block";
+
         String contentStyle = validationFailed ? "inline" : "none";
         
         UIComponent outputFacet = inplace.getFacet("output");
@@ -73,6 +79,11 @@ public class InplaceRenderer extends CoreRenderer {
 		writer.startElement("span", null);
 		writer.writeAttribute("id", clientId + "_display", "id");
 		writer.writeAttribute("class", displayClass, null);
+
+        if(width != null) {
+			String unit = width.endsWith("%") ? "" : "px";
+			displayStyle += ";width:" + width + unit;
+		}
         writer.writeAttribute("style", "display:" + displayStyle, null);
         
         if(outputFacet != null)

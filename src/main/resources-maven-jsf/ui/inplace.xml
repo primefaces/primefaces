@@ -62,6 +62,12 @@
             <description>Prevents hidden content to be shown.</description>
 		</attribute>
         <attribute>
+            <name>width</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Width of the closed inplace in pixels or percentage.</description>
+        </attribute>
+        <attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
