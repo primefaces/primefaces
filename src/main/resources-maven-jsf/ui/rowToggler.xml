@@ -16,13 +16,13 @@
 		&standard_uicomponent_attributes;
         <attribute>
 			<name>expandLabel</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.String</type>
             <description>Expand text to display instead of icon to.</description>
 		</attribute>
         <attribute>
 			<name>collapseLabel</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.String</type>
             <description>Collapse text to display instead of icon.</description>
 		</attribute>
