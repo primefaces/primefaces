@@ -7,7 +7,7 @@ This is an overview page, please visit [PrimeFaces.org](http://www.primefaces.or
 ### Overview
 ***
 
-[PrimeFaces](http://www.primefaces.org/index) is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more. 
+[PrimeFaces](http://www.primefaces.org/index) is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more. Here are [some of the users](http://www.primefaces.org/whouses) who notified us or subscribed to PrimeFaces PRO.
 
 ### Getting Started
 ***
