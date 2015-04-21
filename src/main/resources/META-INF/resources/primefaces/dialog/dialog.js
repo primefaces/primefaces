@@ -295,7 +295,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-state-hover');
         });
 
-        this.closeIcon.click(function(e) {
+        this.closeIcon.on('focus', function() {
+            $(this).addClass('ui-state-focus');
+        }).on('blur', function() {
+            $(this).removeClass('ui-state-focus');
+        }).on('click', function(e) {
             $this.hide();
             e.preventDefault();
         });
