@@ -34,7 +34,8 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         PanelMenu menu = (PanelMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PanelMenu", menu.resolveWidgetVar(), clientId);
+        wb.init("PanelMenu", menu.resolveWidgetVar(), clientId)
+            .attr("stateful", menu.isStateful());
         wb.finish();
     }
 

@@ -1314,7 +1314,10 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         this.menuitemLinks = this.jq.find('.ui-menuitem-link:not(.ui-state-disabled)');
         this.treeLinks = this.jq.find('.ui-menu-parent > .ui-menuitem-link:not(.ui-state-disabled)');
         this.bindEvents();
-        this.stateKey = 'panelMenu-' + this.id;
+        
+        if(this.cfg.stateful) {
+            this.stateKey = 'panelMenu-' + this.id;
+        }
         
         this.restoreState();
     },
@@ -1407,13 +1410,19 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     saveState: function() {
-        var expandedNodeIds = this.expandedNodes.join(',');
+        if(this.cfg.stateful) {
+            var expandedNodeIds = this.expandedNodes.join(',');
         
-        PrimeFaces.setCookie(this.stateKey, expandedNodeIds);
+            PrimeFaces.setCookie(this.stateKey, expandedNodeIds);
+        }
     },
     
     restoreState: function() {
-        var expandedNodeIds = PrimeFaces.getCookie(this.stateKey);
+        var expandedNodeIds = null; 
+        
+        if(this.cfg.stateful) {
+            expandedNodeIds = PrimeFaces.getCookie(this.stateKey);
+        }
 
         if(expandedNodeIds) {
             this.collapseAll();
@@ -1459,7 +1468,9 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     },
     
     clearState: function() {
-        PrimeFaces.setCookie(this.stateKey, null);
+        if(this.cfg.stateful) {
+            PrimeFaces.setCookie(this.stateKey, null);
+        }
     },
     
     collapseAll: function() {
