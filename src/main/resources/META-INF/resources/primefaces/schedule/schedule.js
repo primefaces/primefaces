@@ -9806,6 +9806,14 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.jqc = $(this.jqId + '_container');
         this.viewNameState = $(this.jqId + '_view');
         
+        if (this.cfg.viewFormat) {
+            try {
+                this.cfg["views"] = $.parseJSON(this.cfg.viewFormat);
+            } catch (e) {
+                console.log("Cannot parse viewFormat: " + e.message);
+            }
+        }
+        
         if(this.cfg.defaultDate) {
             this.cfg.defaultDate = moment(this.cfg.defaultDate);
         }
