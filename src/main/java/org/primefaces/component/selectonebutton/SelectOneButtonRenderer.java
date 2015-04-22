@@ -94,7 +94,9 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         String itemValueAsString = getOptionAsString(context, button, converter, option.getValue());
        
         String buttonStyle = HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS;
-        if(idx == 0)
+        if(size == 1) 
+            buttonStyle = buttonStyle + " ui-corner-all";
+        else if(idx == 0)
             buttonStyle = buttonStyle + " ui-corner-left";
         else if(idx == (size - 1))
             buttonStyle = buttonStyle + " ui-corner-right";
