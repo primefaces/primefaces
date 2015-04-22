@@ -47,7 +47,7 @@ xmlns:p="http://primefaces.org/ui"
 For PrimeFaces **Mobile**, the namespace would be:
 
 ```xml
-xmlns:p="http://primefaces.org/mobile"  
+xmlns:pm="http://primefaces.org/mobile"  
 ```
 
 ##### Test Run
@@ -73,7 +73,7 @@ xmlns:p="http://primefaces.org/mobile"
 
 ### Demo
 ***
-Please refer to the [showcase](http://www.primefaces.org/showcase) in order to see the full usage of the components.
+Please refer to the [showcase](http://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase is available as separate [project]( https://github.com/primefaces/showcase).
 
 ### Documentation
 ***
