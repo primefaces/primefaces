@@ -193,6 +193,11 @@ public class ScheduleRenderer extends CoreRenderer {
             wb.attr("columnFormat", columnFormat, null);
         }
             
+        String viewFormat = schedule.getViewFormat();
+        if(viewFormat != null) {
+            wb.attr("viewFormat", viewFormat, null);
+        }
+
         encodeClientBehaviors(context, schedule);
 
         wb.finish();	

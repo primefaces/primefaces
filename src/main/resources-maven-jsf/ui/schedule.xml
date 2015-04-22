@@ -211,6 +211,13 @@
             <defaultValue>false</defaultValue>
             <description>Displays description of events on a tooltip, default value is false.</description>
         </attribute>
+        <attribute>
+           <name>viewFormat</name>
+           <required>false</required>
+           <type>java.lang.String</type>
+           <description>Complete view format configuration as JSON Object, see http://fullcalendar.io/docs/views/View-Specific-Options/ 
+ WARNING!! The JSON object text given here must be parseable with jQuery.parseJSON(). Remember to enclose all property names in double quotes!</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>

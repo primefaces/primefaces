@@ -9810,6 +9810,14 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.defaultDate = moment(this.cfg.defaultDate);
         }
         
+        if (this.cfg.viewFormat) {
+            try {
+                this.cfg["views"] = $.parseJSON(this.cfg.viewFormat);
+            } catch (e) {
+                console.log("Cannot parse viewFormat: " + e.message);
+            }
+        }
+
         this.setupEventSource();
         
         this.configureLocale();
