@@ -12,6 +12,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.SelectRangeEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.model.ScheduleModel;
@@ -19,7 +20,7 @@ import org.primefaces.model.ScheduleEvent;
 
     private static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("UTC");
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","eventSelect", "eventMove", "eventResize", "viewChange"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","rangeSelect","eventSelect", "eventMove", "eventResize", "viewChange"));
 
 	private java.util.Locale appropriateLocale;
 	
@@ -61,6 +62,12 @@ import org.primefaces.model.ScheduleEvent;
 		return appropriateTimeZone;
 	}
 
+    private Date UTCMillisToTimezoneDate(TimeZone tz, Long milliseconds) {
+        Calendar calendar = Calendar.getInstance(tz);
+        calendar.setTimeInMillis(milliseconds - tz.getOffset(milliseconds));
+        return calendar.getTime();
+    }
+
 	@Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
@@ -75,14 +82,19 @@ import org.primefaces.model.ScheduleEvent;
             FacesEvent wrapperEvent = null;
 
             if(eventName.equals("dateSelect")) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(Long.valueOf(params.get(clientId + "_selectedDate")));
-                calendar.setTimeZone(tz);
-                Date selectedDate = calendar.getTime();
+                Date selectedDate = UTCMillisToTimezoneDate(tz, Long.valueOf(params.get(clientId + "_selectedDate")));
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 wrapperEvent = selectEvent;
+            }
+            else if(eventName.equals("rangeSelect")) {
+                Date startDate = UTCMillisToTimezoneDate(tz, Long.valueOf(params.get(clientId + "_startDate")));
+                Date endDate = UTCMillisToTimezoneDate(tz, Long.valueOf(params.get(clientId + "_endDate")));
+                SelectRangeEvent selectRangeEvent = new SelectRangeEvent(this, behaviorEvent.getBehavior(), startDate, endDate);
+                selectRangeEvent.setPhaseId(behaviorEvent.getPhaseId());
+
+                wrapperEvent = selectRangeEvent;
             }
             else if(eventName.equals("eventSelect")) {
                 String selectedEventId = params.get(clientId + "_selectedEventId");

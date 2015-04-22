@@ -9867,6 +9867,22 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
+        this.cfg.select = function(startDate, endDate, jsEvent, view) {
+            if($this.cfg.behaviors) {
+                var rangeSelectBehavior = $this.cfg.behaviors['rangeSelect'];
+                if(rangeSelectBehavior) {
+                    var ext = {
+                        params: [
+                            {name: $this.id + '_startDate', value: startDate.valueOf() - startDate.zone()*60000 - $this.cfg.offset},
+                            {name: $this.id + '_endDate', value: endDate.valueOf() - endDate.zone()*60000 - $this.cfg.offset}
+                        ]
+                    };
+
+                    rangeSelectBehavior.call($this, ext);
+                }
+            }
+        };
+
         this.cfg.eventClick = function(calEvent, jsEvent, view) {
             if($this.cfg.behaviors) {
                 var eventSelectBehavior = $this.cfg.behaviors['eventSelect'];

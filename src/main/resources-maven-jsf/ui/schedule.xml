@@ -211,6 +211,13 @@
             <defaultValue>false</defaultValue>
             <description>Displays description of events on a tooltip, default value is false.</description>
         </attribute>
+        <attribute>
+            <name>rangeSelect</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Enables selection of time ranges by clicking and dragging on the schedule, see http://fullcalendar.io/docs/selection/selectable/. Uses the ajax-event "rangeSelect" instead of "dateSelect".</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>

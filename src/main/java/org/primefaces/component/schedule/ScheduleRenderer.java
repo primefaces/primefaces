@@ -131,7 +131,7 @@ public class ScheduleRenderer extends CoreRenderer {
         wb.initWithDomReady("Schedule", schedule.resolveWidgetVar(), clientId, "schedule")
             .attr("defaultView", schedule.getView())
             .attr("locale", schedule.calculateLocale(context).toString())
-            .attr("offset", schedule.calculateTimeZone().getRawOffset())
+            .attr("offset", 0)
             .attr("tooltip", schedule.isTooltip(), false)
             .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false);
         
@@ -186,7 +186,8 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("eventStartEditable", schedule.isDraggable(), true)
             .attr("eventDurationEditable", schedule.isResizable(), true)    
             .attr("axisFormat", schedule.getAxisFormat(), null)
-            .attr("timeFormat", schedule.getTimeFormat(), null);
+            .attr("timeFormat", schedule.getTimeFormat(), null)
+            .attr("selectable", schedule.isRangeSelect(), false);
                 
         String columnFormat = schedule.getColumnFormat();
         if(columnFormat != null) {
