@@ -9806,6 +9806,44 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.jqc = $(this.jqId + '_container');
         this.viewNameState = $(this.jqId + '_view');
         
+        var monthFormat = this.cfg.monthFormat;
+        var weekFormat = this.cfg.weekFormat;
+        var dayFormat = this.cfg.dayFormat;
+
+        /* Try to decode legacy columnFormat 
+         * The new formats have priority
+         */
+        if (this.cfg.columnFormat) {
+            if (! monthFormat) {
+                var monthMatch = this.cfg.columnFormat.match(/['"]?month['"]?[\s]*:[\s]*['"](.*?)['"]/i);
+                monthFormat = ($.isArray(monthMatch) && monthMatch.length > 1) ? monthMatch[1] : null;
+            }
+            if (!weekFormat) {
+                var weekMatch = this.cfg.columnFormat.match(/['"]?week['"]?[\s]*:[\s]*['"](.*?)['"]/i);
+                weekFormat = ($.isArray(weekMatch) && weekMatch.length > 1) ? weekMatch[1] : null;
+            }
+            if (!dayFormat) {
+                var dayMatch = this.cfg.columnFormat.match(/['"]?day['"]?[\s]*:[\s]*['"](.*?)['"]/i);
+                dayFormat = dayFormat || ($.isArray(dayMatch) && dayMatch.length > 1) ? dayMatch[1] : null;
+            }
+        }
+
+        if (monthFormat || weekFormat || dayFormat) {
+            this.cfg["views"] = {};
+
+            if (monthFormat) {
+                this.cfg.views["month"] = { columnFormat: monthFormat };
+            }
+            if (weekFormat) {
+                this.cfg.views["week"] = { columnFormat: weekFormat };
+            }
+            if (dayFormat) {
+                this.cfg.views["day"] = { columnFormat: dayFormat };
+            }
+            
+            delete this.cfg.columnFormat;
+        }
+
         if(this.cfg.defaultDate) {
             this.cfg.defaultDate = moment(this.cfg.defaultDate);
         }
