@@ -1,7 +1,7 @@
 (function(window) {
     
     if(window.PrimeFaces) {
-        PrimeFaces.debug("PrimeFaces already loaded, ignoring duplicate execution.");
+        window.PrimeFaces.debug("PrimeFaces already loaded, ignoring duplicate execution.");
         return;
     }
     
