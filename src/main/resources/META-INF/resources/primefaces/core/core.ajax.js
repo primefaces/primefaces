@@ -135,14 +135,13 @@ PrimeFaces.ajax = {
 
         delays: {},
 
-        requests: new Array(),
+        requests: [],
 
-        xhrs: new Array(),
+        xhrs: [],
 
         offer: function(request) {
             if(request.delay) {
-                var sourceId = null,
-                $this = this,
+                var $this = this,
                 sourceId = (typeof(request.source) === 'string') ? request.source: $(request.source).attr('id'),
                 createTimeout = function() {
                         return setTimeout(function() {
@@ -216,8 +215,8 @@ PrimeFaces.ajax = {
                 this.xhrs[i].abort();
             }
 
-            this.xhrs = new Array();
-            this.requests = new Array();
+            this.xhrs = [];
+            this.requests = [];
         }
     },
 
