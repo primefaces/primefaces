@@ -20,15 +20,13 @@
         },
 
         addSubmitParam : function(parent, params) {
-            var form = $(this.escapeClientId(parent));
-
             var hiddenInputs = [];
             for(var key in params) {
                 hiddenInputs.push("<input type=\"hidden\" name=\"" + key + "\" value=\"" + params[key] + "\" class=\"ui-submit-param\"/>");
             }
             
             if (hiddenInputs.length > 0) {
-                form.append(hiddenInputs.join(''));
+                $(this.escapeClientId(parent)).append(hiddenInputs.join(''));
             }
 
             return this;
