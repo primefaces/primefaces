@@ -9878,6 +9878,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     };
 
                     eventSelectBehavior.call($this, ext);
+                    return false;
                 }
             }
         };

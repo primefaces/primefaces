@@ -99,6 +99,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 ScheduleEvent event = iterator.next();
                 String className = event.getStyleClass();
                 String description = event.getDescription();
+                String url = event.getUrl();
                
                 writer.write("{");
                 writer.write("\"id\": \"" + event.getId() + "\"");	
@@ -112,6 +113,9 @@ public class ScheduleRenderer extends CoreRenderer {
                 }
                 if(description != null) {
                     writer.write(",\"description\":\"" + escapeText(description) + "\"");
+                }
+                if(url != null) {
+                    writer.write(",\"url\":\"" + escapeText(url) + "\"");
                 }
                 
                 writer.write("}");
