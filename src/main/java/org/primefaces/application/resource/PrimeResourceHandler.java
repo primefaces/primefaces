@@ -61,6 +61,18 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             return resource;
         }
     }
+
+    @Override
+    public Resource createResource(String resourceName, String libraryName, String contentType) {
+        Resource resource = super.createResource(resourceName, libraryName, contentType);
+        
+        if(resource != null && libraryName != null && libraryName.equalsIgnoreCase(Constants.LIBRARY)) {
+            return new PrimeResource(resource);
+        }
+        else {
+            return resource;
+        }
+    }
     
     @Override
     public void handleResourceRequest(FacesContext context) throws IOException {
