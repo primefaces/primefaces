@@ -9815,15 +9815,15 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
          */
         if (this.cfg.columnFormat) {
             if (! monthFormat) {
-                var monthMatch = this.cfg.columnFormat.match(/(['"]?)month\1?[\s]*:[\s]*(['"])(.*?)\2/i);
+                var monthMatch = this.cfg.columnFormat.match(/(['"]?)month\1[\s]*:[\s]*(['"])(.*?)\2/i);
                 monthFormat = ($.isArray(monthMatch) && monthMatch.length == 4) ? monthMatch[3] : null;
             }
             if (!weekFormat) {
-                var weekMatch = this.cfg.columnFormat.match(/(['"]?)week\1?[\s]*:[\s]*(['"])(.*?)\2/i);
+                var weekMatch = this.cfg.columnFormat.match(/(['"]?)week\1[\s]*:[\s]*(['"])(.*?)\2/i);
                 weekFormat = ($.isArray(weekMatch) && weekMatch.length == 4) ? weekMatch[3] : null;
             }
             if (!dayFormat) {
-                var dayMatch = this.cfg.columnFormat.match(/(['"]?)day\1?[\s]*:[\s]*(['"])(.*?)\2/i);
+                var dayMatch = this.cfg.columnFormat.match(/(['"]?)day\1[\s]*:[\s]*(['"])(.*?)\2/i);
                 dayFormat = ($.isArray(dayMatch) && dayMatch.length == 4) ? dayMatch[3] : null;
             }
         }
