@@ -9824,7 +9824,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
             if (!dayFormat) {
                 var dayMatch = this.cfg.columnFormat.match(/['"]?day['"]?[\s]*:[\s]*['"](.*?)['"]/i);
-                dayFormat = dayFormat || ($.isArray(dayMatch) && dayMatch.length > 1) ? dayMatch[1] : null;
+                dayFormat = ($.isArray(dayMatch) && dayMatch.length > 1) ? dayMatch[1] : null;
             }
         }
 
