@@ -25,9 +25,9 @@
     </licenses>
     
     <scm>
-        <connection>scm:svn:http://primefaces.googlecode.com/svn/primefaces/trunk</connection>
-        <developerConnection>scm:svn:https://primefaces.googlecode.com/svn/primefaces/trunk</developerConnection>
-        <url>http://primefaces.googlecode.com/svn/primefaces/trunk</url>
+        <connection>scm:git:https://github.com/primefaces/primefaces.git</connection>
+        <developerConnection>scm:git:https://github.com/primefaces/primefaces.git</developerConnection>
+        <url>https://github.com/primefaces/primefaces</url>
     </scm>
     
     <developers>
