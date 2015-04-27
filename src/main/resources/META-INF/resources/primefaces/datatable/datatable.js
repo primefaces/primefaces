@@ -2493,6 +2493,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 else {
                     PrimeFaces.ajax.Request.handle(options);
                 }
+            },
+            change: function(event, ui) {
+                if($this.cfg.scrollable) {
+                    PrimeFaces.scrollInView($this.scrollBody, ui.placeholder);
+                }
             }
         });
     },
