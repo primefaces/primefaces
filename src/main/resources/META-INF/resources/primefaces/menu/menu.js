@@ -1413,7 +1413,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.stateful) {
             var expandedNodeIds = this.expandedNodes.join(',');
 
-            PrimeFaces.setCookie(this.stateKey, expandedNodeIds);
+            PrimeFaces.setCookie(this.stateKey, expandedNodeIds, {path:'/'});
         }
     },
     
@@ -1469,7 +1469,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     
     clearState: function() {
         if(this.cfg.stateful) {
-            PrimeFaces.setCookie(this.stateKey, null);
+            PrimeFaces.deleteCookie(this.stateKey, {path:'/'});
         }
     },
     
