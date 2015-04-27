@@ -501,18 +501,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     _render: function() {
-        var userStyle = this.jq.attr('style');
-
-        //do not adjust width of container if there is user width defined
-        if(!userStyle||userStyle.indexOf('width') == -1) {
-            this.jq.width(this.input.outerWidth(true) + 5);
-        }
-
-        //width of label
-        this.label.width(this.jq.width() - this.menuIcon.width());
-
         //align panel and container
-        var jqWidth = this.jq.innerWidth();
+        var jqWidth = this.jq.outerWidth();
         if(this.panel.outerWidth() < jqWidth) {
             this.panel.width(jqWidth);
         }
