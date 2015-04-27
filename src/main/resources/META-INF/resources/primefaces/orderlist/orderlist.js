@@ -106,71 +106,109 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
     },
     
     moveUp: function() {
-        var $this = this;
+        var $this = this,
+        selectedItems = this.items.filter('.ui-state-highlight'),
+        itemsToMoveCount = selectedItems.length,
+        movedItemsCount = 0;
 
-        this.items.filter('.ui-state-highlight').each(function() {
+        selectedItems.each(function() {
             var item = $(this);
 
             if(!item.is(':first-child')) {
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.insertBefore(item.prev()).show($this.cfg.effect, {}, 'fast', function() {
                         $this.saveState();
-                        $this.fireReorderEvent();
+                        movedItemsCount++;
+                        
+                        if(itemsToMoveCount === movedItemsCount) {
+                            $this.fireReorderEvent();
+                        }
                     });
                 });
+            }
+            else {
+                itemsToMoveCount--;
             }
         });
     },
     
     moveTop: function() {
-        var $this = this;
+        var $this = this,
+        selectedItems = this.items.filter('.ui-state-highlight'),
+        itemsToMoveCount = selectedItems.length,
+        movedItemsCount = 0;
 
-        this.items.filter('.ui-state-highlight').each(function() {
+        selectedItems.each(function() {
             var item = $(this);
 
             if(!item.is(':first-child')) {
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.prependTo(item.parent()).show($this.cfg.effect, {}, 'fast', function(){
                         $this.saveState();
-                        $this.fireReorderEvent();
+                        movedItemsCount++;
+                        
+                        if(itemsToMoveCount === movedItemsCount) {
+                            $this.fireReorderEvent();
+                        }
                     });
                 });
             }
-
+            else {
+                itemsToMoveCount--;
+            }
         });
     },
     
     moveDown: function() {
-        var $this = this;
+        var $this = this,
+        selectedItems = $(this.items.filter('.ui-state-highlight').get().reverse()),
+        itemsToMoveCount = selectedItems.length,
+        movedItemsCount = 0;
 
-        $(this.items.filter('.ui-state-highlight').get().reverse()).each(function() {
+        selectedItems.each(function() {
             var item = $(this);
 
-            if(!item.is(':last-child')) {
+            if(!item.is(':last-child')) {                
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.insertAfter(item.next()).show($this.cfg.effect, {}, 'fast', function() {
                         $this.saveState();
-                        $this.fireReorderEvent();
+                        movedItemsCount++;
+                        
+                        if(itemsToMoveCount === movedItemsCount) {
+                            $this.fireReorderEvent();
+                        }
                     });
                 });
             }
-
+            else {
+                itemsToMoveCount--;
+            }
         });
     },
     
     moveBottom: function() {
-        var $this = this;
+        var $this = this,
+        selectedItems = this.items.filter('.ui-state-highlight'),
+        itemsToMoveCount = selectedItems.length,
+        movedItemsCount = 0;
 
-        this.items.filter('.ui-state-highlight').each(function() {
+        selectedItems.each(function() {
             var item = $(this);
 
             if(!item.is(':last-child')) {
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.appendTo(item.parent()).show($this.cfg.effect, {}, 'fast', function() {
                         $this.saveState();
-                        $this.fireReorderEvent();
+                        movedItemsCount++;
+                        
+                        if(itemsToMoveCount === movedItemsCount) {
+                            $this.fireReorderEvent();
+                        }
                     });
                 });
+            }
+            else {
+                itemsToMoveCount--;
             }
         });
     },
