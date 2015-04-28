@@ -9805,6 +9805,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.theme = true;
         this.jqc = $(this.jqId + '_container');
         this.viewNameState = $(this.jqId + '_view');
+        this.cfg.urlTarget = this.cfg.urlTarget || "_blank";
         
         if(this.cfg.defaultDate) {
             this.cfg.defaultDate = moment(this.cfg.defaultDate);
