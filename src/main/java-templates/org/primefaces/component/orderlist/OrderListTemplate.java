@@ -72,7 +72,9 @@ import javax.faces.event.PhaseId;
 
                 if(eventName.equals("select")) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
-                    wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex));
+                    boolean metaKey = Boolean.valueOf(params.get(clientId + "_metaKey"));
+                    boolean ctrlKey = Boolean.valueOf(params.get(clientId + "_ctrlKey"));
+                    wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
                 }
                 else if(eventName.equals("unselect")) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));

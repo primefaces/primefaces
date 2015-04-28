@@ -67,7 +67,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
                 element.removeClass('ui-state-hover').addClass('ui-state-highlight')
                 .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
         
-                $this.fireItemSelectEvent(element);
+                $this.fireItemSelectEvent(element, e);
             }
             else {
                 if(element.hasClass('ui-state-highlight')) {
@@ -76,7 +76,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
                 }
                 else {
                     element.removeClass('ui-state-hover').addClass('ui-state-highlight');
-                    $this.fireItemSelectEvent(element);
+                    $this.fireItemSelectEvent(element, e);
                 }
             }
         });
@@ -221,12 +221,14 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         return false;
     },
     
-    fireItemSelectEvent: function(item) {
+    fireItemSelectEvent: function(item, event) {
         if(this.hasBehavior('select')) {
             var itemSelectBehavior = this.cfg.behaviors['select'],
             ext = {
                 params: [
-                    {name: this.id + '_itemIndex', value: item.index()}
+                    {name: this.id + '_itemIndex', value: item.index()},
+                    {name: this.id + '_metaKey', value: event.metaKey},
+                    {name: this.id + '_ctrlKey', value: event.ctrlKey}
                 ]
             };
 
