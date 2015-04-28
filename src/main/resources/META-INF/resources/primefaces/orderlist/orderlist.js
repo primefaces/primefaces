@@ -221,14 +221,14 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         return false;
     },
     
-    fireItemSelectEvent: function(item, event) {
+    fireItemSelectEvent: function(item, e) {
         if(this.hasBehavior('select')) {
             var itemSelectBehavior = this.cfg.behaviors['select'],
             ext = {
                 params: [
                     {name: this.id + '_itemIndex', value: item.index()},
-                    {name: this.id + '_metaKey', value: event.metaKey},
-                    {name: this.id + '_ctrlKey', value: event.ctrlKey}
+                    {name: this.id + '_metaKey', value: e.metaKey},
+                    {name: this.id + '_ctrlKey', value: e.ctrlKey}
                 ]
             };
 
