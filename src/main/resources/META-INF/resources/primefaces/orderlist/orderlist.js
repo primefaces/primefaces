@@ -117,10 +117,10 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             if(!item.is(':first-child')) {
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.insertBefore(item.prev()).show($this.cfg.effect, {}, 'fast', function() {
-                        $this.saveState();
                         movedItemsCount++;
                         
                         if(itemsToMoveCount === movedItemsCount) {
+                            $this.saveState();
                             $this.fireReorderEvent();
                         }
                     });
@@ -144,10 +144,10 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             if(!item.is(':first-child')) {
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.prependTo(item.parent()).show($this.cfg.effect, {}, 'fast', function(){
-                        $this.saveState();
                         movedItemsCount++;
                         
                         if(itemsToMoveCount === movedItemsCount) {
+                            $this.saveState();
                             $this.fireReorderEvent();
                         }
                     });
@@ -171,10 +171,10 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             if(!item.is(':last-child')) {                
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.insertAfter(item.next()).show($this.cfg.effect, {}, 'fast', function() {
-                        $this.saveState();
                         movedItemsCount++;
                         
                         if(itemsToMoveCount === movedItemsCount) {
+                            $this.saveState();
                             $this.fireReorderEvent();
                         }
                     });
@@ -198,10 +198,10 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             if(!item.is(':last-child')) {
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.appendTo(item.parent()).show($this.cfg.effect, {}, 'fast', function() {
-                        $this.saveState();
                         movedItemsCount++;
                         
                         if(itemsToMoveCount === movedItemsCount) {
+                            $this.saveState();
                             $this.fireReorderEvent();
                         }
                     });
