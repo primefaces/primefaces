@@ -211,6 +211,13 @@
             <defaultValue>false</defaultValue>
             <description>Displays description of events on a tooltip, default value is false.</description>
         </attribute>
+        <attribute>
+            <name>urlTarget</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>_blank</defaultValue>
+            <description>Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>

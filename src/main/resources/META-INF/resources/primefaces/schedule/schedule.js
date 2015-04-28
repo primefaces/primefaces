@@ -9868,7 +9868,12 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         this.cfg.eventClick = function(calEvent, jsEvent, view) {
-            if($this.cfg.behaviors && ! calEvent.url) {
+            if (calEvent.url) {
+                window.open(calEvent.url, this.cfg.urlTarget);
+                return false;
+            }
+
+            if($this.cfg.behaviors) {
                 var eventSelectBehavior = $this.cfg.behaviors['eventSelect'];
                 if(eventSelectBehavior) {
                     var ext = {
