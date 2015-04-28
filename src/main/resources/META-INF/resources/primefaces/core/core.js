@@ -491,10 +491,10 @@
             }
         },
           
-        bcnu: function(ext, fns) {
+        bcnu: function(ext, event, fns) {
             if(fns) {
                 for(var i = 0; i < fns.length; i++) {
-                    var retVal = fns[i].call(ext);
+                    var retVal = fns[i].call(ext, event);
                     if(retVal === false) {
                         break;
                     }
