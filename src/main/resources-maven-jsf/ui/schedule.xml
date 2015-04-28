@@ -183,8 +183,26 @@
 			<name>columnFormat</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Format for column headers.</description>
+            <description>Format for column headers. DEPRECATED: Please use dayFormat, weekFormat and monthFormat for headers of the separate views instead.</description>
 		</attribute>
+        <attribute>
+            <name>dayFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Set column headers for the view 'day'.</description>
+        </attribute>
+        <attribute>
+            <name>weekFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Set column headers for the view 'week'.</description>
+        </attribute>
+        <attribute>
+            <name>monthFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Set column headers for the view 'month'.</description>
+        </attribute>
         <attribute>
             <name>timeZone</name>
             <required>false</required>
