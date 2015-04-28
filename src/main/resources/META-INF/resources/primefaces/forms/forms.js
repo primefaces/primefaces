@@ -417,7 +417,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
 /**
  * PrimeFaces SelectOneMenu Widget
  */
-PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
@@ -487,8 +487,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if (PrimeFaces.env.touch) {
             this.focusInput.attr('readonly', true);
         }
-
-        this.renderDeferred();
     },
 
     appendPanel: function() {
@@ -500,11 +498,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-    _render: function() {
+    alignPanelWidth: function() {
         //align panel and container
-        var jqWidth = this.jq.outerWidth();
-        if(this.panel.outerWidth() < jqWidth) {
-            this.panel.width(jqWidth);
+        if(!this.panelWidthAdjusted) {
+            var jqWidth = this.jq.outerWidth();
+            if(this.panel.outerWidth() < jqWidth) {
+                this.panel.width(jqWidth);
+            }
+            
+            this.panelWidthAdjusted = true;
         }
     },
 
@@ -1041,6 +1043,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     alignPanel: function() {
+        this.alignPanelWidth();
+        
         if(this.panel.parent().is(this.jq)) {
             this.panel.css({
                 left: 0,
