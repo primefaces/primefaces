@@ -1174,7 +1174,8 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
 
         //custom layout
         if(this.cfg.custom) {
-            this.inputs = $('input:radio[name="' + this.id + '"]:not(:disabled)');
+            this.originalInputs = this.jq.find(':radio');
+            this.inputs = $('input:radio[name="' + this.id + '"].ui-radio-clone');
             this.outputs = this.inputs.parent().next('.ui-radiobutton-box');
             this.labels = $();
 
@@ -1184,7 +1185,6 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             }
             
             //update radio state
-            this.originalInputs = this.jq.find(':radio');
             for(var i = 0; i < this.inputs.length; i++) {
                 var input = this.inputs.eq(i),
                 itemindex = input.data('itemindex'),
@@ -1201,8 +1201,8 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         //regular layout
         else {
             this.outputs = this.jq.find('.ui-radiobutton-box');
-            this.inputs = this.jq.find(':radio:not(:disabled)');
-            this.labels = this.jq.find('label:not(.ui-state-disabled)');
+            this.inputs = this.jq.find(':radio');
+            this.labels = this.jq.find('label');
         }
 
         this.checkedRadio = this.outputs.filter('.ui-state-active');
@@ -1252,7 +1252,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
-        this.inputs.on('focus.selectOneRadio', function() {
+        this.inputs.filter(':not(:disabled)').on('focus.selectOneRadio', function() {
             var input = $(this),
             radio = input.parent().next();
 
