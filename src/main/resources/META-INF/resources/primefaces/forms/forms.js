@@ -1716,7 +1716,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                         for(var i = startIndex ; i < endIndex; i++) {
                             var it = $this.allItems.eq(i);
 
-                            if(!it.hasClass('ui-state-disabled')) {
+                            if(it.is(':visible') && !it.hasClass('ui-state-disabled')) {
                                 $this.selectItem(it);
                             }
                         }
