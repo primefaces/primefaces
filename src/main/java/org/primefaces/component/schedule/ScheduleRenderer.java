@@ -192,6 +192,11 @@ public class ScheduleRenderer extends CoreRenderer {
         if(columnFormat != null) {
             wb.attr("columnFormat", columnFormat, null);
         }
+
+        String extender = schedule.getExtender();
+        if(extender != null) {
+            wb.attr("extender", extender, null);
+        }
             
         encodeClientBehaviors(context, schedule);
 

@@ -9820,6 +9820,14 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
         this.setupEventHandlers();
 
+        if (this.cfg.extender) {
+            if ($.type(this.cfg.extender) == "string") {
+                window[this.cfg.extender].call(this);
+            } else if ($.type(this.cfg.extender) == "function") {
+                this.cfg.extender.call(this);
+            }
+        }
+
         this.renderDeferred();
     },
     

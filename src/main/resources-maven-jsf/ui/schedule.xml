@@ -211,6 +211,12 @@
             <defaultValue>false</defaultValue>
             <description>Displays description of events on a tooltip, default value is false.</description>
         </attribute>
+        <attribute>
+            <name>extender</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Name of a javascript function to extend the options of the schedule.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
