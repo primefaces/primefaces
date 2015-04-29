@@ -218,6 +218,12 @@
             <defaultValue>false</defaultValue>
             <description>Display week numbers in schedule.</description>
         </attribute>
+        <attribute>
+			<name>extender</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Name of javascript function to extend the options of the underlying fullcalendar plugin.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

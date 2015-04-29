@@ -9819,6 +9819,10 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.setupEventHandlers();
+        
+        if(this.cfg.extender) {
+            this.cfg.extender.call(this);
+        }
 
         this.renderDeferred();
     },
