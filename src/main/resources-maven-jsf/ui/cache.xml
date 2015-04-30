@@ -33,5 +33,12 @@
 			<type>java.lang.String</type>
             <description>Unique id of the cache entry in region, defaults to client id of component.</description>
 		</attribute>
+        <attribute>
+			<name>processEvents</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, lifecycle events such as button actions are executed. Default is false.</description>
+		</attribute>
 	</attributes>
 </component>

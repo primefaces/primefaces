@@ -16,7 +16,7 @@ import javax.faces.component.visit.VisitContext;
     }
 
     protected boolean shouldProcess() {
-        return this.isDisabled() || this.isCacheSetInCurrentRequest();
+        return this.isDisabled() || this.isCacheSetInCurrentRequest() || this.isProcessEvents();
     }
 
     @Override
