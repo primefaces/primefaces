@@ -1201,10 +1201,11 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         //regular layout
         else {
             this.outputs = this.jq.find('.ui-radiobutton-box');
-            this.inputs = this.jq.find(':radio');
+            this.inputs = this.jq.find(':radio');       
             this.labels = this.jq.find('label');
         }
 
+        this.enabledInputs = this.inputs.filter(':not(:disabled)');
         this.checkedRadio = this.outputs.filter('.ui-state-active');
 
         this.bindEvents();
@@ -1252,7 +1253,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
-        this.inputs.filter(':not(:disabled)').on('focus.selectOneRadio', function() {
+        this.enabledInputs.on('focus.selectOneRadio', function() {
             var input = $(this),
             radio = input.parent().next();
 
@@ -1275,15 +1276,15 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         .on('keydown.selectOneRadio', function(e) {
             var input = $(this),
             currentRadio = input.parent().next(),
-            index = $this.inputs.index(input),
-            size = $this.inputs.length,
+            index = $this.enabledInputs.index(input),
+            size = $this.enabledInputs.length,
             keyCode = $.ui.keyCode,
             key = e.which;
 
             switch(key) {
                 case keyCode.UP:
                 case keyCode.LEFT:
-                    var prevRadioInput = (index === 0) ? $this.inputs.eq((size - 1)) : $this.inputs.eq(--index),
+                    var prevRadioInput = (index === 0) ? $this.enabledInputs.eq((size - 1)) : $this.enabledInputs.eq(--index),
                     prevRadio = prevRadioInput.parent().next();
 
                     input.blur();
@@ -1295,7 +1296,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
 
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
-                    var nextRadioInput = (index === (size - 1)) ? $this.inputs.eq(0) : $this.inputs.eq(++index),
+                    var nextRadioInput = (index === (size - 1)) ? $this.enabledInputs.eq(0) : $this.enabledInputs.eq(++index),
                     nextRadio = nextRadioInput.parent().next();
 
                     input.blur();
