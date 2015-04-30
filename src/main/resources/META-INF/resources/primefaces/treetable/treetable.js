@@ -776,10 +776,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     alignScrollBody: function() {
-        if(this.hasVerticalOverflow())
-            this.scrollBody.css('padding-right', 0);
-        else
-            this.scrollBody.css('padding-right', this.getScrollbarWidth());
+        if(!this.cfg.scrollWidth) {
+            if(this.hasVerticalOverflow())
+                this.scrollBody.css('padding-right', 0);
+            else
+                this.scrollBody.css('padding-right', this.getScrollbarWidth());
+        }
     },
     
     getScrollbarWidth: function() {        
