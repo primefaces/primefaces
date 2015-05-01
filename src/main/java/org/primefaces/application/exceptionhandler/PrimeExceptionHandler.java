@@ -30,6 +30,7 @@ import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.ViewExpiredException;
 import javax.faces.application.ViewHandler;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
@@ -165,7 +166,10 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
 
             writer.startDocument();
-            writer.startElement("changes", null);
+            // write "changes" if not namespaced (webapp), "changes" already written if namespaced (portlet)
+            if (!(context.getViewRoot() instanceof NamingContainer)) {
+                writer.startElement("changes", null);
+            }
 
             if (!ComponentUtils.isValueBlank(handlerComponent.getUpdate())) {
                 List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
@@ -200,7 +204,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 writer.endElement("eval");
             }
 
-            writer.endElement("changes");
+            if (!(context.getViewRoot() instanceof NamingContainer)) {
+                writer.endElement("changes");
+            }
             writer.endDocument();
 
             context.responseComplete();
