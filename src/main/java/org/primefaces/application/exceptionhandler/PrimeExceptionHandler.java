@@ -166,7 +166,10 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
 
             writer.startDocument();
-            // write "changes" if not namespaced (webapp), "changes" already written if namespaced (portlet)
+            // only start a new "changes" node if the viewroot isn't namespaced (just occurs in portlets)
+            // PrimePartialResponseWriter#startDocument creates a new "extension" node to write the parameter namespace,
+            // which internally already creates a "changes" node
+            // see GitHub #211
             if (!(context.getViewRoot() instanceof NamingContainer)) {
                 writer.startElement("changes", null);
             }
