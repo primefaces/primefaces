@@ -271,8 +271,8 @@
             return this.getSelection().length > 0;
         },
 
-        cw : function(widgetConstructor, widgetVar, cfg, resource) {
-            PrimeFaces.createWidget(widgetConstructor, widgetVar, cfg, resource);
+        cw : function(widgetConstructor, cfg, resource) {
+            PrimeFaces.createWidget(widgetConstructor, cfg.widgetVar, cfg, resource);
         },
 
         createWidget : function(widgetConstructor, widgetVar, cfg, resource) { 

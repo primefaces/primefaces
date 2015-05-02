@@ -91,8 +91,9 @@ public class WizardRenderer extends CoreRenderer {
 
         writer.write("$(function() {");
         
-        writer.write("PrimeFaces.cw('Wizard','" + wizard.resolveWidgetVar() + "',{");
+        writer.write("PrimeFaces.cw('Wizard',{");
         writer.write("id:'" + clientId + "'");
+        writer.write(",widgetVar:'" + wizard.resolveWidgetVar() + "'");
         writer.write(",showStepStatus:" + wizard.isShowStepStatus());
         writer.write(",showNavBar:" + wizard.isShowNavBar());
 

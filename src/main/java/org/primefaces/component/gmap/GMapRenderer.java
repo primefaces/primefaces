@@ -73,8 +73,9 @@ public class GMapRenderer extends CoreRenderer {
 
         writer.write("$(function() {");
         
-        writer.write("PrimeFaces.cw('GMap','" + widgetVar + "',{");
+        writer.write("PrimeFaces.cw('GMap',{");
         writer.write("id:'" + clientId + "'");
+        writer.write(",widgetVar:'" + widgetVar + "'");
 		
 		//Required configuration
 		writer.write(",mapTypeId:google.maps.MapTypeId." + map.getType().toUpperCase());

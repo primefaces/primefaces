@@ -46,18 +46,12 @@ public class WidgetBuilder {
     	
         context.getResponseWriter().write("PrimeFaces.cw(\"");
         context.getResponseWriter().write(widgetClass);
-        context.getResponseWriter().write("\",\"");
-        context.getResponseWriter().write(widgetVar);
         context.getResponseWriter().write("\",{");
         context.getResponseWriter().write("id:\"");
         context.getResponseWriter().write(id);
-        if (widgetVar == null) {
-        	context.getResponseWriter().write("\"");
-        } else {
-	        context.getResponseWriter().write("\",widgetVar:\"");
-	        context.getResponseWriter().write(widgetVar);
-	        context.getResponseWriter().write("\"");
-        }
+        context.getResponseWriter().write("\",widgetVar:\"");
+        context.getResponseWriter().write(widgetVar);
+        context.getResponseWriter().write("\"");
 
         return this;
     }
