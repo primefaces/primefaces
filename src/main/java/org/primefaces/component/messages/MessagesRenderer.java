@@ -29,7 +29,6 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.UINotificationRenderer;
-import org.primefaces.util.IteratorChain;
 
 public class MessagesRenderer extends UINotificationRenderer {
 
@@ -46,27 +45,38 @@ public class MessagesRenderer extends UINotificationRenderer {
         styleClass = (styleClass == null) ? containerClass: containerClass + " " + styleClass;
 
         String _for = uiMessages.getFor();
-        Iterator<FacesMessage> messages;
+        List<FacesMessage> messages = new ArrayList<FacesMessage>();
         if(_for != null) {
             // key case
-            messages = context.getMessages(_for);
+            Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
+            while (messagesIterator.hasNext()) {
+                messages.add(messagesIterator.next());
+            }
 
             // clientId / SearchExpression case
             UIComponent forComponent = SearchExpressionFacade.resolveComponent(
             		context, uiMessages, _for, SearchExpressionFacade.Options.IGNORE_NO_RESULT);
             if (forComponent != null) {
-                Iterator<FacesMessage> temp = context.getMessages(forComponent.getClientId(context));
-                if (temp != null && temp.hasNext()) {
-                    messages = new IteratorChain(messages, temp);
+                String forComponentClientId = forComponent.getClientId(context);
+                if (!_for.equals(forComponentClientId)) {
+                    messagesIterator = context.getMessages(forComponentClientId);
+                    while (messagesIterator.hasNext()) {
+                        FacesMessage next = messagesIterator.next();
+                        if (!messages.contains(next)) {
+                            messages.add(next);
+                        }
+                    }
                 }
             }
         }
         else {
-            messages = uiMessages.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
+            Iterator<FacesMessage> messagesIterator = uiMessages.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
+            while (messagesIterator.hasNext()) {
+                messages.add(messagesIterator.next());
+            }
         }
 
-        while(messages.hasNext()) {
-            FacesMessage message = messages.next();
+        for (FacesMessage message : messages) {
             FacesMessage.Severity severity = message.getSeverity();
 
             if(severity.equals(FacesMessage.SEVERITY_INFO))
