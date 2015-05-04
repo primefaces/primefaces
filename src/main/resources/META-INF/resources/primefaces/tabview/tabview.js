@@ -1,7 +1,7 @@
 /**
  * PrimeFaces TabView Widget
  */
-PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
@@ -42,26 +42,29 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             this.markAsLoaded(this.panelContainer.children().eq(this.cfg.selected));
         }
         
-        if(this.cfg.scrollable) {
-            if(this.jq.is(':visible')) {
-                this.initScrolling();
+        this.renderDeferred();
+    },
+    
+    //@Override
+    renderDeferred: function() {     
+        if(this.jq.is(':visible')) {
+            this._render();
+        }
+        else {
+            var container = this.jq.parent().closest('.ui-hidden-container'),
+            $this = this;
+    
+            if(container.length) {
+                this.addDeferredRender(this.id, container, function() {
+                    return $this.render();
+                });
             }
-            else {
-                var hiddenParent = this.jq.parent().closest('.ui-hidden-container'),
-                hiddenParentWidgetVar = hiddenParent.data('widget'),
-                $this = this;
-
-                if(hiddenParentWidgetVar) {
-                    var hiddenParentWidget = PF(hiddenParentWidgetVar);
-                    
-                    if(hiddenParentWidget) {
-                        hiddenParentWidget.addOnshowHandler(this.id, function() {
-                            return $this.initScrolling();
-                        });
-                    }
-                    
-                }
-            } 
+        }
+    },
+    
+    _render: function() {
+        if(this.cfg.scrollable) {
+            this.initScrolling();
         }
     },
     
@@ -244,19 +247,12 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
     },
         
     initScrolling: function() {
-        if(this.jq.is(':visible')) {
-            var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
-            if(overflown) {
-                this.navscroller.css('padding-left', '18px');
-                this.navcrollerLeft.show();
-                this.navcrollerRight.show();
-                this.restoreScrollState();
-            }
-            
-            return true;
-        }
-        else {
-            return false;
+        var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
+        if(overflown) {
+            this.navscroller.css('padding-left', '18px');
+            this.navcrollerLeft.show();
+            this.navcrollerRight.show();
+            this.restoreScrollState();
         }
     },
         

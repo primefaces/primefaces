@@ -1,7 +1,7 @@
 (function(window) {
     
     if(window.PrimeFaces) {
-        PrimeFaces.debug("PrimeFaces already loaded, ignoring duplicate execution.");
+        window.PrimeFaces.debug("PrimeFaces already loaded, ignoring duplicate execution.");
         return;
     }
     
@@ -275,7 +275,9 @@
             PrimeFaces.createWidget(widgetConstructor, widgetVar, cfg, resource);
         },
 
-        createWidget : function(widgetConstructor, widgetVar, cfg, resource) { 
+        createWidget : function(widgetConstructor, widgetVar, cfg, resource) {
+            cfg.widgetVar = widgetVar;
+            
             if(PrimeFaces.widget[widgetConstructor]) {
                 var widget = PrimeFaces.widgets[widgetVar];
                 
@@ -491,10 +493,10 @@
             }
         },
           
-        bcnu: function(ext, fns) {
+        bcnu: function(ext, event, fns) {
             if(fns) {
                 for(var i = 0; i < fns.length; i++) {
-                    var retVal = fns[i].call(ext);
+                    var retVal = fns[i].call(ext, event);
                     if(retVal === false) {
                         break;
                     }

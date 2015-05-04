@@ -21,11 +21,19 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
             this.bindCloser();
         }
         
+        if(this.cfg.hasMenu) {
+            $(this.jqId + '_menu').on('click.panel', function(e) {
+                e.preventDefault();
+            });
+        }
+        
         //visuals for action items
         this.header.find('.ui-panel-titlebar-icon').on('mouseover.panel',function() {
             $(this).addClass('ui-state-hover');
         }).on('mouseout.panel',function() {
             $(this).removeClass('ui-state-hover');
+        }).on('click.panel', function(e) {
+            e.preventDefault();
         });
     },
             
@@ -158,12 +166,15 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindCloser: function() {
-        var _self = this;
+        var $this = this;
         
         this.closer = $(this.jqId + '_closer');
         this.visibleStateHolder = $(this.jqId + "_visible");
 
-        this.closer.click(function() {_self.close();});
+        this.closer.click(function(e) {
+            $this.close();
+            e.preventDefault();
+        });
     }
 
 });

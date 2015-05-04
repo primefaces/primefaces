@@ -25,9 +25,9 @@
     </licenses>
     
     <scm>
-        <connection>scm:svn:http://primefaces.googlecode.com/svn/primefaces/trunk</connection>
-        <developerConnection>scm:svn:https://primefaces.googlecode.com/svn/primefaces/trunk</developerConnection>
-        <url>http://primefaces.googlecode.com/svn/primefaces/trunk</url>
+        <connection>scm:git:https://github.com/primefaces/primefaces.git</connection>
+        <developerConnection>scm:git:https://github.com/primefaces/primefaces.git</developerConnection>
+        <url>https://github.com/primefaces/primefaces</url>
     </scm>
     
     <developers>
@@ -40,10 +40,6 @@
             <name>Thomas Andraschko</name>
         </developer>
         <developer>
-            <id>sudheer.jonna</id>
-            <name>Sudheer Jonna</name>
-        </developer>
-        <developer>
             <id>jfarcand.oss</id>
             <name>Jeanfrancois Arcand</name>
         </developer>
@@ -54,6 +50,10 @@
         <developer>
             <id>sincan.mert</id>
             <name>Mert Sincan</name>
+        </developer>
+        <developer>
+            <id>jamaltun</id>
+            <name>Cem Altun</name>
         </developer>
     </developers>
     
@@ -170,7 +170,7 @@
         <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-runtime</artifactId>
-            <version>2.3.0-RC6</version>
+            <version>2.3.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -748,4 +748,5 @@
             </build>
         </profile>
     </profiles>
+    
 </project>

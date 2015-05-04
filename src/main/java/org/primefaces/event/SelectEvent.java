@@ -24,10 +24,19 @@ import javax.faces.event.FacesListener;
 public class SelectEvent extends AjaxBehaviorEvent {
 
 	private Object object;
+    private boolean metaKey;
+    private boolean ctrlKey;
 	
 	public SelectEvent(UIComponent component, Behavior behavior, Object object) {
 		super(component, behavior);
 		this.object = object;
+	}
+    
+    public SelectEvent(UIComponent component, Behavior behavior, Object object, boolean metaKey, boolean ctrlKey) {
+		super(component, behavior);
+		this.object = object;
+        this.metaKey = metaKey;
+        this.ctrlKey = ctrlKey;
 	}
 
 	@Override
@@ -43,4 +52,12 @@ public class SelectEvent extends AjaxBehaviorEvent {
 	public Object getObject() {
 		return object;
 	}
+
+    public boolean isMetaKey() {
+        return metaKey;
+    }
+
+    public boolean isCtrlKey() {
+        return ctrlKey;
+    }
 }

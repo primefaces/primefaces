@@ -22374,20 +22374,21 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         else {
             this.cfg.cursor = {
                 show: false
-            }
+            };
         }
         
         //highlighter
         if(this.cfg.datatip) {
             this.cfg.highlighter = {
                 show: true,
-                formatString: this.cfg.datatipFormat
-            }
+                formatString: this.cfg.datatipFormat,
+                tooltipContentEditor: this.cfg.datatipEditor
+            };
         }
         else {
             this.cfg.highlighter = {
                 show: false
-            }
+            };
         }
         
         PrimeFaces.widget.ChartUtils.CONFIGURATORS[this.cfg.type].configure(this);

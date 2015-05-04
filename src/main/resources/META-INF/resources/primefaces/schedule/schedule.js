@@ -9819,6 +9819,10 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.setupEventHandlers();
+        
+        if(this.cfg.extender) {
+            this.cfg.extender.call(this);
+        }
 
         this.renderDeferred();
     },
@@ -9925,7 +9929,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                             'top': jsEvent.pageY + 15,
                             'z-index': ++PrimeFaces.zindex
                         })
-                        .text(event.description)
+                        .html(event.description)
                         .show();
                     }, 150);
                 }

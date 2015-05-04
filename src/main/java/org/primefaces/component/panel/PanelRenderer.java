@@ -235,7 +235,7 @@ public class PanelRenderer extends CoreRenderer {
         if(id != null) {
             writer.writeAttribute("id", id, null);
         }
-        writer.writeAttribute("href", "javascript:void(0)", null);
+        writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", Panel.PANEL_TITLE_ICON_CLASS, null);
         if(title != null) {
             writer.writeAttribute("title", title, null);

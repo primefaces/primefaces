@@ -222,6 +222,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                             node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
                             node.attr('aria-expanded', true);
                             $this.indeterminateNodes($this.tbody.children('tr.ui-treetable-partialselected'));
+                            
+                            if(this.cfg.scrollable) {
+                                this.alignScrollBody();
+                            }
                         }
                     });
 
@@ -259,6 +263,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     
         node.attr('aria-expanded', false).find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
         node.data('processing', false);
+        
+        if(this.cfg.scrollable) {
+            this.alignScrollBody();
+        }
 
         if(this.hasBehavior('collapse')) {
             var collapseBehavior = this.cfg.behaviors['collapse'],
@@ -646,12 +654,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.adjustScrollHeight();
             }
         
-            if(this.hasVerticalOverflow()) {
-                var marginRight = this.getScrollbarWidth();
-                this.scrollHeaderBox.css('margin-right', marginRight);
-                this.scrollBody.css('padding-right', marginRight);
-                this.scrollFooterBox.css('margin-right', marginRight);
-            }
+            var marginRight = this.getScrollbarWidth();
+            this.scrollHeaderBox.css('margin-right', marginRight);
+            this.scrollFooterBox.css('margin-right', marginRight);
+            this.alignScrollBody();
         }
         
         this.fixColumnWidths();
@@ -767,6 +773,15 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.scrollHeader.width(width);
         this.scrollBody.css('padding-right', 0).width(width);
         this.scrollFooter.width(width);
+    },
+    
+    alignScrollBody: function() {
+        if(!this.cfg.scrollWidth) {
+            if(this.hasVerticalOverflow())
+                this.scrollBody.css('padding-right', 0);
+            else
+                this.scrollBody.css('padding-right', this.getScrollbarWidth());
+        }
     },
     
     getScrollbarWidth: function() {        

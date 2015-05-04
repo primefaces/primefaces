@@ -186,11 +186,17 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("eventStartEditable", schedule.isDraggable(), true)
             .attr("eventDurationEditable", schedule.isResizable(), true)    
             .attr("axisFormat", schedule.getAxisFormat(), null)
-            .attr("timeFormat", schedule.getTimeFormat(), null);
+            .attr("timeFormat", schedule.getTimeFormat(), null)
+            .attr("weekNumbers", schedule.isShowWeekNumbers(), false);
                 
         String columnFormat = schedule.getColumnFormat();
         if(columnFormat != null) {
             wb.attr("columnFormat", columnFormat, null);
+        }
+        
+        String extender = schedule.getExtender();
+        if(extender != null) {
+            wb.nativeAttr("extender", extender);
         }
             
         encodeClientBehaviors(context, schedule);

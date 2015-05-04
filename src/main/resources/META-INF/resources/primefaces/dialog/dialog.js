@@ -127,7 +127,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                     var target = $(event.target);
 
                     if(event.keyCode === $.ui.keyCode.TAB) {
-                        var tabbables = $this.content.find(':tabbable').add($this.footer.find(':tabbable'));
+                        var tabbables = $this.jq.find(':tabbable').add($this.footer.find(':tabbable'));
                         if(tabbables.length) {
                             var first = tabbables.filter(':first'),
                             last = tabbables.filter(':last'),
@@ -289,13 +289,17 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        this.icons.mouseover(function() {
+        this.icons.on('mouseover', function() {
             $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
+        }).on('mouseout', function() {
             $(this).removeClass('ui-state-hover');
+        }).on('focus', function() {
+            $(this).addClass('ui-state-focus');
+        }).on('blur', function() {
+            $(this).removeClass('ui-state-focus');
         });
 
-        this.closeIcon.click(function(e) {
+        this.closeIcon.on('click', function(e) {
             $this.hide();
             e.preventDefault();
         });

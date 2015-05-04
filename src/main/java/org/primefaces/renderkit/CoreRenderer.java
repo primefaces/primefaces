@@ -432,7 +432,7 @@ public abstract class CoreRenderer extends Renderer {
 		return request.toString();
 	}
 
-protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
+    protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String,List<ClientBehavior>> clientBehaviors = component.getClientBehaviors();
 
@@ -457,11 +457,11 @@ protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder 
                     int eventBehaviorsSize = eventBehaviors.size();
 
                     writer.write(eventName + ":");
-                    writer.write("function(ext) {");
+                    writer.write("function(ext,event) {");
                     
                     if(eventBehaviorsSize > 1) {
                         boolean chained = false;
-                        writer.write("PrimeFaces.bcnu(ext,[");
+                        writer.write("PrimeFaces.bcnu(ext,event,[");
                         
                         for(int i = 0; i < eventBehaviorsSize; i++) {
                             ClientBehavior behavior = eventBehaviors.get(i);
@@ -473,7 +473,7 @@ protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder 
                                     writer.write(",");
                                 }
                                 
-                                writer.write("function(ext) {");
+                                writer.write("function(ext,event) {");
                                 writer.write(script);
                                 writer.write("}");
                                 
