@@ -36,9 +36,8 @@ PrimeFaces.dialog.DialogHandler = {
             titleElement = $frame.contents().find('title');
             
             if(!$frame.data('initialized')) {
-                PrimeFaces.cw('DynamicDialog', {
+                PrimeFaces.cw('DynamicDialog', dialogWidgetVar, {
                     id: dialogId,
-                    widgetVar: dialogWidgetVar,
                     position: 'center',
                     sourceComponentId: cfg.sourceComponentId,
                     sourceWidget: cfg.sourceWidget,
@@ -127,9 +126,8 @@ PrimeFaces.dialog.DialogHandler = {
                         '<div class="ui-dialog-content ui-widget-content" style="height: auto;"></div>')
                         .appendTo(document.body);
 
-            PrimeFaces.cw('Dialog', {
-                id: 'primefacesmessagedlg',
-                widgetVar: 'primefacesmessagedialog',
+            PrimeFaces.cw('Dialog', 'primefacesmessagedialog', {
+                id: 'primefacesmessagedlg', 
                 modal:true,
                 draggable: false,
                 resizable: false,

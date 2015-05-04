@@ -53,9 +53,8 @@ public class GrowlRenderer extends UINotificationRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('Growl',{");
+        writer.write("PrimeFaces.cw('Growl','" + widgetVar + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",widgetVar:'" + widgetVar + "'");
         writer.write(",sticky:" + growl.isSticky());
         writer.write(",life:" + growl.getLife());
         writer.write(",escape:" + growl.isEscape());

@@ -53,9 +53,8 @@ public class MindmapRenderer extends CoreRenderer {
         startScript(writer, clientId);
         
         writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('Mindmap',{");
+        writer.write("PrimeFaces.cw('Mindmap','" + map.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",widgetVar:'" + map.resolveWidgetVar() + "'");
       
         if(root != null) {
             writer.write(",model:");

@@ -89,9 +89,8 @@ public class ChartRenderer extends CoreRenderer {
         startScript(writer, clientId);
 		
 		writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('Chart',{");
+        writer.write("PrimeFaces.cw('Chart','" + chart.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
-        writer.write(",widgetVar:'" + chart.resolveWidgetVar() + "'");
         writer.write(",type:'" + type + "'");
         
         if(chart.isResponsive()) writer.write(",responsive:true");
