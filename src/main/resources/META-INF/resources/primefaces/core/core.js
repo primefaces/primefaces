@@ -275,7 +275,9 @@
             PrimeFaces.createWidget(widgetConstructor, widgetVar, cfg, resource);
         },
 
-        createWidget : function(widgetConstructor, widgetVar, cfg, resource) { 
+        createWidget : function(widgetConstructor, widgetVar, cfg, resource) {
+            cfg.widgetVar = widgetVar;
+            
             if(PrimeFaces.widget[widgetConstructor]) {
                 var widget = PrimeFaces.widgets[widgetVar];
                 
