@@ -33,7 +33,7 @@ public class WidgetBuilderTest {
         builder.finish();
 
         assertEquals(
-        		"<script id=\"accoId_s\" type=\"text/javascript\">PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\",widgetVar:\"acco\"});</script>",
+        		"<script id=\"accoId_s\" type=\"text/javascript\">PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});</script>",
         		writer.toString());
     }
     
@@ -46,7 +46,7 @@ public class WidgetBuilderTest {
         builder.finish();
 
         assertEquals(
-        		"<script id=\"accoId_s\" type=\"text/javascript\">$(window).load(function(){PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\",widgetVar:\"acco\"});});</script>",
+        		"<script id=\"accoId_s\" type=\"text/javascript\">$(window).load(function(){PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});});</script>",
         		writer.toString());
     }
 
@@ -59,7 +59,7 @@ public class WidgetBuilderTest {
         builder.finish();
 
         assertEquals(
-        		"<script id=\"accoId_s\" type=\"text/javascript\">$(PrimeFaces.escapeClientId(\"test\")).load(function(){PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\",widgetVar:\"acco\"});});</script>",
+        		"<script id=\"accoId_s\" type=\"text/javascript\">$(PrimeFaces.escapeClientId(\"test\")).load(function(){PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});});</script>",
         		writer.toString());
     }
 
@@ -76,7 +76,7 @@ public class WidgetBuilderTest {
         builder.finish();
         
         assertEquals(
-        		"<script id=\"dt1_s\" type=\"text/javascript\">$(function(){PrimeFaces.cw(\"DataTable\",\"dt\",{id:\"dt1\",widgetVar:\"dt\",selectionMode:\"single\",lazy:true});});</script>",
+        		"<script id=\"dt1_s\" type=\"text/javascript\">$(function(){PrimeFaces.cw(\"DataTable\",\"dt\",{id:\"dt1\",selectionMode:\"single\",lazy:true});});</script>",
         		writer.toString());
     }
     
@@ -93,7 +93,7 @@ public class WidgetBuilderTest {
         builder.callback("onRowSelect", "function(row)", "alert(row);");
         builder.finish();
         
-        assertEquals("<script id=\"dt1_s\" type=\"text/javascript\">PrimeFaces.cw(\"DataTable\",\"dt\",{id:\"dt1\",widgetVar:\"dt\",selectionMode:\"single\",lazy:true,onRowSelect:function(row){alert(row);}});</script>", writer.toString());
+        assertEquals("<script id=\"dt1_s\" type=\"text/javascript\">PrimeFaces.cw(\"DataTable\",\"dt\",{id:\"dt1\",selectionMode:\"single\",lazy:true,onRowSelect:function(row){alert(row);}});</script>", writer.toString());
     }
 
     @Test
@@ -104,6 +104,6 @@ public class WidgetBuilderTest {
         builder.init("AccordionPanel", "acco", "accoId", "accordion");
         builder.finish();
         
-        assertEquals("<script id=\"accoId_s\" type=\"text/javascript\">PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\",widgetVar:\"acco\"},\"accordion\");</script>", writer.toString());
+        assertEquals("<script id=\"accoId_s\" type=\"text/javascript\">PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"},\"accordion\");</script>", writer.toString());
     }
 }
