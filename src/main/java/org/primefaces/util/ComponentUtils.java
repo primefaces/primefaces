@@ -47,17 +47,25 @@ public class ComponentUtils {
 
     private static final String SB_ESCAPE_TEXT = ComponentUtils.class.getName() + "#escapeText";
 
+    // marker for a undefined value when a null check is not reliable enough
+    private static final Object UNDEFINED_VALUE = new Object();
+
+    public static String getValueToRender(FacesContext context, UIComponent component) {
+        return getValueToRender(context, component, UNDEFINED_VALUE);
+    }
+
     /**
      * Algorithm works as follows;
      * - If it's an input component, submitted value is checked first since it'd be the value to be used in case validation errors
      * terminates jsf lifecycle
      * - Finally the value of the component is retrieved from backing bean and if there's a converter, converted value is returned
      *
-     * @param context			FacesContext instance
-     * @param component			UIComponent instance whose value will be returned
-     * @return					End text
+     * @param context       FacesContext instance
+     * @param component     UIComponent instance whose value will be returned
+     * @param value         The value of UIComponent if already evaluated outside. E.g. in the renderer.
+     * @return              End text
      */
-    public static String getValueToRender(FacesContext context, UIComponent component) {
+    public static String getValueToRender(FacesContext context, UIComponent component, Object value) {
         if (component instanceof ValueHolder) {
 
             if (component instanceof EditableValueHolder) {
@@ -78,7 +86,9 @@ public class ComponentUtils {
             }
 
             ValueHolder valueHolder = (ValueHolder) component;
-            Object value = valueHolder.getValue();
+            if (value == UNDEFINED_VALUE) {
+                value = valueHolder.getValue();
+            }
 
             //format the value as string
             if (value != null) {
