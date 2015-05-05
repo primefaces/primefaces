@@ -9842,13 +9842,15 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.monthNamesShort = lang.monthNamesShort;
             this.cfg.dayNames = lang.dayNames;
             this.cfg.dayNamesShort = lang.dayNamesShort;
-            this.cfg.buttonText = {today: lang.currentText
-                                    ,month: lang.month
+            this.cfg.buttonText = {month: lang.month
                                     ,week: lang.week
                                     ,day: lang.day};
             this.cfg.allDayText = lang.allDayText;
             if(lang.eventLimitText) {
                 this.cfg.eventLimitText = lang.eventLimitText;
+            }
+            if(lang.weekNumberTitle) {
+                this.cfg.weekNumberTitle = lang.weekNumberTitle;
             }
         }
     },
