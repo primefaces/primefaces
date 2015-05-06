@@ -32,6 +32,19 @@ import java.util.Map;
     public final static String FILTER_CONTAINER_CLASS = "ui-selectonemenu-filter-container";
     public final static String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public final static String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
+    
+    private static final Collection<String> EVENT_NAMES =
+    		Collections.unmodifiableCollection(Arrays.asList("itemSelect","blur","change","valueChange","click","dblclick",
+    				"focus","keydown","keypress","keyup","mousedown","mousemove","mouseout",
+    				"mouseover","mouseup","select"));
+    		 
+    public Collection<String> getEventNames() {
+    		  return EVENT_NAMES;    
+    }
+
+    public String getDefaultEventName() {
+    		 return "valueChange";    
+    }
 
     public List<Column> getColums() {
         List<Column> columns = new ArrayList<Column>();
