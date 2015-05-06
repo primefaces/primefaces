@@ -1342,8 +1342,8 @@ $.fn.cycle.transitions.wipe = function($cont, $slides, opts) {
         this.jq.cycle(this.cfg);
     },
     
-    startSlideshow: function() {
-        this.jq.cycle('start');
+    resumeSlideshow: function() {
+        this.jq.cycle('resume');
     },
     
     stopSlideshow: function() {
