@@ -31,7 +31,7 @@ public class RowEditorRenderer extends CoreRenderer {
         String style = rowEditor.getStyle();
         String styleClass = rowEditor.getStyleClass();
         styleClass = (styleClass == null) ? DataTable.ROW_EDITOR_CLASS : DataTable.ROW_EDITOR_CLASS + " " + styleClass;
-
+        
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
@@ -39,18 +39,19 @@ public class RowEditorRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-pencil", null);
-        writer.endElement("span");
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-check", null);
-        writer.endElement("span");
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-icon ui-icon-close", null);
-        writer.endElement("span");
-
+        encodeIcon(writer, "ui-icon ui-icon-pencil", rowEditor.getEditTitle());
+        encodeIcon(writer, "ui-icon ui-icon-check", rowEditor.getSaveTitle());
+        encodeIcon(writer, "ui-icon ui-icon-close", rowEditor.getCancelTitle());
+        
         writer.endElement("div");
+    }
+    
+    protected void encodeIcon(ResponseWriter writer, String styleClass, String title) throws IOException {
+        writer.startElement("span", null);
+        if(title != null) {
+            writer.writeAttribute("title", title, null);
+        }
+        writer.writeAttribute("class", styleClass, null);
+        writer.endElement("span");
     }
 }

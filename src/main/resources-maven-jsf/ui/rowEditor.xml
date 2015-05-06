@@ -26,5 +26,23 @@
             <type>java.lang.String</type>
             <description>Style class of the component.</description>
         </attribute>
+        <attribute>
+            <name>editTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Title attribute for edit icon.</description>
+        </attribute>
+        <attribute>
+            <name>cancelTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Title attribute for cancel icon.</description>
+        </attribute>
+        <attribute>
+            <name>saveTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Title attribute for save icon.</description>
+        </attribute>
 	</attributes>
 </component>
