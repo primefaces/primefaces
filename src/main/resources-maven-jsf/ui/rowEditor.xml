@@ -26,5 +26,23 @@
             <type>java.lang.String</type>
             <description>Style class of the component.</description>
         </attribute>
+        <attribute>
+            <name>editTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Title label for edit icon of rowEditor component.</description>
+        </attribute>
+        <attribute>
+            <name>saveTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Title label for save icon of rowEditor component.</description>
+        </attribute>
+        <attribute>
+            <name>cancelTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Title label for cancel icon of rowEditor component.</description>
+        </attribute>
 	</attributes>
 </component>
