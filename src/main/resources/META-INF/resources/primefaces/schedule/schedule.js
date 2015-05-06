@@ -9850,6 +9850,9 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             if(lang.eventLimitText) {
                 this.cfg.eventLimitText = lang.eventLimitText;
             }
+            if(lang.weekNumberTitle) {
+                this.cfg.weekNumberTitle = lang.weekNumberTitle;
+            }
         }
     },
     

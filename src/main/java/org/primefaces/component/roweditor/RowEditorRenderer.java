@@ -41,14 +41,23 @@ public class RowEditorRenderer extends CoreRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-pencil", null);
+        if(rowEditor.getEditTitle() != null){
+        	writer.writeAttribute("title", rowEditor.getEditTitle(), null);
+        }
         writer.endElement("span");
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-check", null);
+        if(rowEditor.getSaveTitle() != null){
+        	writer.writeAttribute("title", rowEditor.getSaveTitle(), null);
+        }
         writer.endElement("span");
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-close", null);
+        if(rowEditor.getCancelTitle() != null){
+        	writer.writeAttribute("title", rowEditor.getCancelTitle(), null);
+        }
         writer.endElement("span");
 
         writer.endElement("div");
