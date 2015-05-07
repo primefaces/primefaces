@@ -45,19 +45,28 @@ public class DashboardRenderer extends CoreRenderer {
 	protected void encodeMarkup(FacesContext contextr, Dashboard dashboard) throws IOException {
 		ResponseWriter writer = contextr.getResponseWriter();
 		String clientId = dashboard.getClientId(contextr);
+		String style = dashboard.getStyle();
+		String styleClass = dashboard.getStyleClass();
+	    styleClass = styleClass != null ? Dashboard.CONTAINER_CLASS + " " + styleClass : Dashboard.CONTAINER_CLASS;
 		
 		writer.startElement("div", dashboard);
 		writer.writeAttribute("id", clientId, "id");
-		String styleClass = dashboard.getStyleClass() != null ? Dashboard.CONTAINER_CLASS + " " + dashboard.getStyleClass() : Dashboard.CONTAINER_CLASS;
 		writer.writeAttribute("class", styleClass, "styleClass");
-		if(dashboard.getStyle() != null) 
-            writer.writeAttribute("style", dashboard.getStyle(), "style");
+		if(style != null) 
+            writer.writeAttribute("style", style, "style");
 		
 		DashboardModel model = dashboard.getModel();
 		if(model != null) {
 			for(DashboardColumn column : model.getColumns()) {
+				String columnStyle = column.getStyle();
+				String columnStyleClass = column.getStyleClass();
+				columnStyleClass = columnStyleClass != null ? Dashboard.COLUMN_CLASS + " " + columnStyleClass : Dashboard.COLUMN_CLASS;
+				
 				writer.startElement("div", null);
-				writer.writeAttribute("class", Dashboard.COLUMN_CLASS, null);
+				writer.writeAttribute("class", columnStyleClass, null);
+				if(columnStyle != null) {
+					writer.writeAttribute("style", columnStyle, null);
+				}
 				
 				for(String widgetId : column.getWidgets()) {
 					Panel widget = findWidget(widgetId, dashboard);

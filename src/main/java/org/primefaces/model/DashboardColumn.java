@@ -32,4 +32,13 @@ public interface DashboardColumn {
 	public void addWidget(int index, String widgetId);
 	
 	public void reorderWidget(int index, String widgetId);
+	
+	public void setStyle(String style);
+	
+	public void setStyleClass(String styleClass);
+	
+	public String getStyle();
+	
+	public String getStyleClass();
+	
 }
