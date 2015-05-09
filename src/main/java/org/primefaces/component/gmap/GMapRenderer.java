@@ -95,6 +95,7 @@ public class GMapRenderer extends CoreRenderer {
 		//Options
 		if(!map.isDraggable()) writer.write(",draggable:false");
 		if(map.isDisableDoubleClickZoom()) writer.write(",disableDoubleClickZoom:true");
+		if(!map.isScrollwheel()) writer.write(",scrollwheel:false");
 		
 		//Client events
 		if(map.getOnPointClick() != null) writer.write(",onPointClick:function(event) {" + map.getOnPointClick() + ";}");
