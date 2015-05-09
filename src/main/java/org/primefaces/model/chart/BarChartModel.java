@@ -25,6 +25,7 @@ public class BarChartModel extends CartesianChartModel {
     
     private int barPadding = 8;
     private int barMargin = 10;
+    private int barWidth;
     private boolean stacked = false;
         
     @Override
@@ -54,7 +55,15 @@ public class BarChartModel extends CartesianChartModel {
         this.barMargin = barMargin;
     }
     
-    public boolean isStacked() {
+	public int getBarWidth() {
+		return barWidth;
+	}
+
+	public void setBarWidth(int barWidth) {
+		this.barWidth = barWidth;
+	}
+
+	public boolean isStacked() {
         return stacked;
     }
     public void setStacked(boolean stacked) {
