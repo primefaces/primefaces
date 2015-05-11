@@ -142,10 +142,10 @@ public class DefaultRequestContext extends RequestContext {
     @Override
     public void update(Collection<String> clientIds) {
 
-        if (clientIds != null) {
-            for (String clientId : clientIds) {
-                // call SEF to validate if a component with the clientId exists
-                if (context.isProjectStage(ProjectStage.Development)) {
+        // call SEF to validate if a component with the clientId exists
+        if (context.isProjectStage(ProjectStage.Development)) {
+            if (clientIds != null) {
+                for (String clientId : clientIds) {               
                     SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
                 }
             }
