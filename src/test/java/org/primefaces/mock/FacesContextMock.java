@@ -25,6 +25,7 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
@@ -33,6 +34,7 @@ public class FacesContextMock extends FacesContext {
 
     private ExternalContext externalContext = new ExternalContextMock();
     private Application application = new ApplicationMock();
+    private PartialViewContext partialViewContext = new PartialViewContextMock();
     
 	private Map<Object, Object> attributes;
 	private ResponseWriter writer;
@@ -84,6 +86,11 @@ public class FacesContextMock extends FacesContext {
 		return externalContext;
 	}
 
+    @Override
+    public PartialViewContext getPartialViewContext() {
+        return partialViewContext;
+    }
+    
 	@Override
 	public Severity getMaximumSeverity() {
 		return null;

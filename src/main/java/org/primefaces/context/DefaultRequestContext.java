@@ -26,6 +26,7 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
@@ -130,12 +131,27 @@ public class DefaultRequestContext extends RequestContext {
 
     @Override
     public void update(String clientId) {
+        // call SEF to validate if a component with the clientId exists
+        if (context.isProjectStage(ProjectStage.Development)) {
+            SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
+        }
+
     	context.getPartialViewContext().getRenderIds().add(clientId);
     }
 
     @Override
-    public void update(Collection<String> collection) {
-    	context.getPartialViewContext().getRenderIds().addAll(collection);
+    public void update(Collection<String> clientIds) {
+
+        if (clientIds != null) {
+            for (String clientId : clientIds) {
+                // call SEF to validate if a component with the clientId exists
+                if (context.isProjectStage(ProjectStage.Development)) {
+                    SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
+                }
+            }
+        }
+
+    	context.getPartialViewContext().getRenderIds().addAll(clientIds);
     }
 
     @Override

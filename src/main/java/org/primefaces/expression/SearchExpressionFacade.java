@@ -685,7 +685,7 @@ public class SearchExpressionFacade {
     
     protected static void cannotFindComponent(FacesContext context, UIComponent source, String expression)
     {
-        throw new FacesException("Cannot find component for expression \""
+        throw new ComponentNotFoundException("Cannot find component for expression \""
                 + expression + "\" referenced from \""
                 + source.getClientId(context) + "\".");
     }

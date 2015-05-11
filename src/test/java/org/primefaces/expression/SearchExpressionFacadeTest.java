@@ -28,11 +28,10 @@ import org.junit.Test;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.expression.SearchExpressionFacade;
 
-public class SearchExpressionFacadeTest
-{
+public class SearchExpressionFacadeTest {
+    
 	@Before
-	public void setup()
-	{
+	public void setup() {
 		Map<Object, Object> attributes = new HashMap<Object, Object>();
 		attributes.put(UINamingContainer.SEPARATOR_CHAR_PARAM_NAME, ':');
 
@@ -41,43 +40,37 @@ public class SearchExpressionFacadeTest
         FactoryFinder.setFactory(FactoryFinder.VISIT_CONTEXT_FACTORY, TestVisitContextFactory.class.getName());
 	}
 
-	private UIComponent resolveComponent(UIComponent source, String expression)
-	{
+	private UIComponent resolveComponent(UIComponent source, String expression) {
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		return SearchExpressionFacade.resolveComponent(context, source, expression);
 	}
 
-	private UIComponent resolveComponent(UIComponent source, String expression, int options)
-	{
+	private UIComponent resolveComponent(UIComponent source, String expression, int options) {
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		return SearchExpressionFacade.resolveComponent(context, source, expression, options);
 	}
 
-	private String resolveClientId(UIComponent source, String expression)
-	{
+	private String resolveClientId(UIComponent source, String expression) {
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		return SearchExpressionFacade.resolveClientId(context, source, expression);
 	}
 
-    private List<UIComponent> resolveComponents(UIComponent source, String expression)
-    {
+    private List<UIComponent> resolveComponents(UIComponent source, String expression) {
         FacesContext context = FacesContext.getCurrentInstance();
 
         return SearchExpressionFacade.resolveComponents(context, source, expression);
     }
 
-    private List<UIComponent> resolveComponents(UIComponent source, String expression, int options)
-    {
+    private List<UIComponent> resolveComponents(UIComponent source, String expression, int options) {
         FacesContext context = FacesContext.getCurrentInstance();
 
         return SearchExpressionFacade.resolveComponents(context, source, expression, options);
     }
 
-    private String resolveClientIds(UIComponent source, String expression)
-    {
+    private String resolveClientIds(UIComponent source, String expression) {
         FacesContext context = FacesContext.getCurrentInstance();
 
         return SearchExpressionFacade.resolveClientIds(context, source, expression);
@@ -1283,7 +1276,7 @@ public class SearchExpressionFacadeTest
 			resolveComponent(command3, " @next");
 			Assert.fail("This should actually raise an exception");
 		} catch (Exception e) {
-			assertEquals(FacesException.class, e.getClass());
+			assertEquals(ComponentNotFoundException.class, e.getClass());
 		}
 	}
 
@@ -1348,7 +1341,7 @@ public class SearchExpressionFacadeTest
 			resolveComponent(command1, " @previous");
 			Assert.fail("This should actually raise an exception");
 		} catch (Exception e) {
-			assertEquals(FacesException.class, e.getClass());
+			assertEquals(ComponentNotFoundException.class, e.getClass());
 		}
 	}
 	
