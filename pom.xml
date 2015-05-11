@@ -12,7 +12,7 @@
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
     <version>5.3-SNAPSHOT</version>
-    <name>primefaces</name>
+    <name>primefaces-mert</name>
     <url>http://www.primefaces.org</url>
     
     <licenses>
