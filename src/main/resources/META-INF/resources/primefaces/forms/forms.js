@@ -1437,25 +1437,50 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
  * PrimeFaces SelectManyCheckbox Widget
  */
 PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
-
+    
     init: function(cfg) {
         this._super(cfg);
 
-        this.outputs = this.jq.find('.ui-chkbox-box:not(.ui-state-disabled)');
-        this.inputs = this.jq.find(':checkbox:not(:disabled)');
+        if(this.cfg.custom) {
+            this.originalInputs = this.jq.find(':checkbox');
+            this.inputs = $('input:checkbox[name="' + this.id + '"].ui-chkbox-clone');
+            this.outputs = this.inputs.parent().next('.ui-chkbox-box');
+
+            //update checkbox state
+            for(var i = 0; i < this.inputs.length; i++) {
+                var input = this.inputs.eq(i),
+                itemindex = input.data('itemindex'),
+                original = this.originalInputs.eq(itemindex);
+
+                input.val(original.val());
+
+                if(original.is(':checked')) {
+                    input.prop('checked', true).parent().next().addClass('ui-state-active').children('.ui-chkbox-icon')
+                            .addClass('ui-icon-check').removeClass('ui-icon-blank');
+                }
+            }
+        }
+        else {
+            this.outputs = this.jq.find('.ui-chkbox-box:not(.ui-state-disabled)');
+            this.inputs = this.jq.find(':checkbox:not(:disabled)');
+        }
+
+        this.enabledInputs = this.inputs.filter(':not(:disabled)');
 
         this.bindEvents();
 
         //pfs metadata
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
-
+    
     bindEvents: function() {
-        this.outputs.mouseover(function() {
+        this.outputs.filter(':not(.ui-state-disabled)').on('mouseover', function() {
             $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
+        })
+        .on('mouseout', function() {
             $(this).removeClass('ui-state-hover');
-        }).click(function() {
+        })
+        .on('click', function() {
             var checkbox = $(this),
             input = checkbox.prev().children(':checkbox');
 
@@ -1467,7 +1492,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //delegate focus-blur-change states
-        this.inputs.focus(function() {
+        this.enabledInputs.on('focus', function() {
             var input = $(this),
             checkbox = input.parent().next();
 
@@ -1477,7 +1502,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
             checkbox.addClass('ui-state-focus');
         })
-        .blur(function() {
+        .on('blur', function() {
             var input = $(this),
             checkbox = input.parent().next();
 
@@ -1487,7 +1512,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
             checkbox.removeClass('ui-state-focus');
         })
-        .change(function(e) {
+        .on('change', function(e) {
             var input = $(this),
             checkbox = input.parent().next(),
             hasFocus = input.is(':focus'),
