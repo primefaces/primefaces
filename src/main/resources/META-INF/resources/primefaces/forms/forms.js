@@ -1132,7 +1132,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-        var firstVisibleItem = this.items.filter(':visible:first');
+        var itemGroup = this.itemsContainer.children('li.ui-selectonemenu-item-group'),
+            visibleItems = this.items.filter(':visible'),
+            firstVisibleItem = visibleItems.eq(0);
+
+        if(itemGroup.length) {
+            itemGroup.hide();
+            for(var i = 0; i < visibleItems.length; i++) {
+                visibleItems.eq(i).prevAll('li.ui-selectonemenu-item-group:first').show();
+            }
+        }
+        
         if(firstVisibleItem.length) {
             this.highlightItem(firstVisibleItem);
         }
