@@ -73,6 +73,20 @@
 			<type>java.lang.String</type>
             <description>Initial coordinates of the cropper area.</description>
 		</attribute>
+        <attribute>
+			<name>boxWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+        	<description>Maximum box width of the cropping area.</description>
+		</attribute>
+		<attribute>
+			<name>boxHeight</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+        	<description>Maximum box height of the cropping area.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
