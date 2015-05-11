@@ -72,9 +72,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         
         wb.attr("bgColor", cropper.getBackgroundColor(), null)
             .attr("bgOpacity", cropper.getBackgroundOpacity(), 0.6)
-            .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE)
-        	.attr("boxWidth", cropper.getBoxWidth(), null)
-        	.attr("boxHeight", cropper.getBoxHeight(), null);
+            .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE);
         
 		if(cropper.getValue() != null) {
             CroppedImage croppedImage = (CroppedImage) cropper.getValue();
