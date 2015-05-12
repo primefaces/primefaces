@@ -1118,6 +1118,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();
+            this.itemsContainer.children('.ui-selectonemenu-item-group').show();
         }
         else {
             for(var i = 0; i < this.options.length; i++) {
@@ -1129,6 +1130,25 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                     item.show();
                 else
                     item.hide();
+            }
+            
+            //Toggle groups
+            var groups = this.itemsContainer.children('.ui-selectonemenu-item-group');
+            for(var g = 0; g < groups.length; g++) {
+                var group = groups.eq(g);
+                
+                if(g === (groups.length - 1)) {
+                    if(group.nextAll().filter(':visible').length === 0)
+                        group.hide();
+                    else
+                        group.show();
+                }
+                else {
+                    if(group.nextUntil('.ui-selectonemenu-item-group').filter(':visible').length === 0)
+                        group.hide();
+                    else
+                        group.show();
+                }
             }
         }
 
