@@ -856,7 +856,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 default:
-                    var metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
+                    var metaKey = e.metaKey||e.ctrlKey;
                     
                     if(!metaKey) {
                         $this.filter($(this).val());
