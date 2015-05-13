@@ -77,6 +77,7 @@ public class BarRenderer extends CartesianPlotRenderer {
         String orientation = model.getOrientation();
         int barPadding = model.getBarPadding();
         int barMargin = model.getBarMargin();
+        int barWidth = model.getBarWidth();
         List<String> ticks = model.getTicks();
         
         writer.write(",series:[");
@@ -101,7 +102,8 @@ public class BarRenderer extends CartesianPlotRenderer {
 
         if(orientation != null) writer.write(",orientation:\"" + orientation + "\"");
         if(barPadding != 8) writer.write(",barPadding:" + barPadding);
-        if(barMargin != 10) writer.write(",barMargin:" + barMargin);        
+        if(barMargin != 10) writer.write(",barMargin:" + barMargin);
+        if(barWidth != 0) writer.write(",barWidth:" + barWidth);
         if(model.isStacked()) writer.write(",stackSeries:true");       
         if(model.isZoom()) writer.write(",zoom:true");        
         if(model.isAnimate()) writer.write(",animate:true");  

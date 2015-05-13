@@ -22166,6 +22166,7 @@ PrimeFaces.widget.ChartUtils = {
                         barDirection: chart.cfg.orientation,
                         barPadding: chart.cfg.barPadding,
                         barMargin: chart.cfg.barMargin,
+                        barWidth: chart.cfg.barWidth,
                         highlightMouseOver: chart.cfg.highlightMouseOver
                     },
                     fillToZero: true,
