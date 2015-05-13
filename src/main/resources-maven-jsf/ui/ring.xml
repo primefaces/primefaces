@@ -37,32 +37,32 @@
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<name>autoPlay</name>
+			<name>autoplay</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
             <description>When true, Ring will automatically advance the moving elements to the next child at a regular interval.Default is false.</description>
 		</attribute>
 		<attribute>
-			<name>autoPlayInterval</name>
+			<name>autoplayDuration</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>1000</defaultValue>
-            <description>Time in milliseconds between animation triggers when a Ring's autoPlay is playing.</description>
+            <description>Time in milliseconds between animation triggers when a Ring's autoplay is playing.</description>
 		</attribute>
 		<attribute>
-			<name>autoPlayPauseOnHover</name>
+			<name>autoplayPauseOnHover</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
             <description>When true, Ring will pause autoPlay when the user mouseover the Ring container. Default is false.</description>
 		</attribute>
 		<attribute>
-			<name>autoPlayInitialDelay</name>
+			<name>autoplayInitialDelay</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 			<defaultValue>0</defaultValue>
-            <description>Time in milliseconds to delay the start of Ring's configured autoPlay option.</description>
+            <description>Time in milliseconds to delay the start of Ring's configured autoplay option.</description>
 		</attribute>
 	</attributes>
 	<resources>
