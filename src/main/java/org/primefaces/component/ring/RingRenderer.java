@@ -69,7 +69,11 @@ public class RingRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Ring", ring.resolveWidgetVar(), clientId, "ring")
             .attr("startingChild", ring.getFirst())
-            .attr("easing", ring.getEasing(), null);
+            .attr("easing", ring.getEasing(), null)
+            .attr("autoplay", ring.isAutoPlay(), false)
+            .attr("autoplayDuration", ring.getAutoPlayInterval(), 1000)
+            .attr("autoplayPauseOnHover", ring.isAutoPlayPauseOnHover(), false)
+            .attr("autoplayInitialDelay", ring.getAutoPlayInitialDelay(), 0);
         wb.finish();
 	}
 
