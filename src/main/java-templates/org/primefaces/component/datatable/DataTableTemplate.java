@@ -710,30 +710,35 @@ import org.primefaces.util.SharedStringBuilder;
     }
 
     public Object getRowData(String rowKey) {
-        if (getDataModel() != null && getDataModel() instanceof LazyDataModel) {
-            DataModel model = getDataModel();
-            if(!(model instanceof SelectableDataModel)) {
-                throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled or you need to define rowKey attribute");
-            }
+        Object result = null;
+        DataModel model = getDataModel();
+        if (model != null) {
+            boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
+            if ((model instanceof LazyDataModel) || (!hasRowKeyVe)) {
+                if(!(model instanceof SelectableDataModel)) {
+                    throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled or you need to define rowKey attribute");
+                }
 
-            return ((SelectableDataModel) getDataModel()).getRowData(rowKey);
-        }
-        else {
+                result = ((SelectableDataModel) model).getRowData(rowKey);
+            }
+        } else {
             Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
             String var = this.getVar();
             Collection data = (Collection) getDataModel().getWrappedData();
 
             for(Iterator it = data.iterator(); it.hasNext();) {
                 Object object = it.next();
-                requestMap.put(var, object);
 
                 if(String.valueOf(this.getRowKey()).equals(rowKey)) {
-                    return object;
+                    result = object;
+                    break;
                 }
             }
-
-            return null;
+            if (result != null) {
+                requestMap.put(var, result);
+            }
         }
+        return result;
     }
 
     private List<Object> selectedRowKeys = new ArrayList<Object>();
