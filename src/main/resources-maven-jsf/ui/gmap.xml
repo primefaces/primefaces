@@ -117,11 +117,11 @@
             <description>Defines setting center and zoom values auto by included overlays on startup. Default value is false</description>
 		</attribute>
 		<attribute>
-            <name>scrollwheel</name>
+            <name>scrollWheel</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>true</defaultValue>
-            <description>If false, disables scrollwheel zooming on the map. Default is true.</description>
+            <description>Controls scrollwheel zooming on the map. Default is true.</description>
 		</attribute>
 	</attributes>
 	<resources>
