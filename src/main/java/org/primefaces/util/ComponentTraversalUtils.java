@@ -71,14 +71,14 @@ public class ComponentTraversalUtils {
     
     
     public static UIComponent closestForm(FacesContext context, UIComponent component) {
-        return ComponentTraversalUtils.closest(UIForm.class, component);
+        return closest(UIForm.class, component);
     }
 
     public static UniqueIdVendor closestUniqueIdVendor(UIComponent component) {
-        return (UniqueIdVendor) ComponentTraversalUtils.closest(UniqueIdVendor.class, component);
+        return (UniqueIdVendor) closest(UniqueIdVendor.class, component);
     }
 
     public static UIComponent closestNamingContainer(UIComponent component) {
-        return ComponentTraversalUtils.closest(NamingContainer.class, component);
+        return closest(NamingContainer.class, component);
     }
 }
