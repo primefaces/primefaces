@@ -1158,4 +1158,37 @@ import org.primefaces.util.SharedStringBuilder;
         return super.saveState(context);
     }
     
+    @Override
+    protected void preDecode(FacesContext context) {
+        resetDynamicColumns();
+        super.preDecode(context);
+    }
+    
+    @Override
+    protected void preValidate(FacesContext context) {
+        resetDynamicColumns();
+        super.preDecode(context);
+    }
+    
+    @Override
+    protected void preUpdate(FacesContext context) {
+        resetDynamicColumns();
+        super.preDecode(context);
+    }
+    
+    @Override
+    protected void preEncode(FacesContext context) {
+        resetDynamicColumns();
+        super.preDecode(context);
+    }
+    
+    private void resetDynamicColumns() {
+        Columns dynamicCols = this.getDynamicColumns();
+        if(dynamicCols != null && isNestedWithinIterator()) {
+            dynamicCols.setRowIndex(-1);
+            this.setColumns(null);
+        }
+    }
+        
+    
    

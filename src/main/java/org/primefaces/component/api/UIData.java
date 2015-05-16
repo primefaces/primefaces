@@ -1342,7 +1342,7 @@ public class UIData extends javax.faces.component.UIData {
         }
     }
     
-    private Boolean isNestedWithinIterator() {
+    protected Boolean isNestedWithinIterator() {
         if (isNested == null) {
             UIComponent parent = this;
             while (null != (parent = parent.getParent())) {
@@ -1360,7 +1360,7 @@ public class UIData extends javax.faces.component.UIData {
         }
     }
     
-    private void preDecode(FacesContext context) {
+    protected void preDecode(FacesContext context) {
         setDataModel(null);
         Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
         if (null == saved || !keepSaved(context)) {
@@ -1368,19 +1368,19 @@ public class UIData extends javax.faces.component.UIData {
         }
     }
     
-    private void preValidate(FacesContext context) {
+    protected void preValidate(FacesContext context) {
         if (isNestedWithinIterator()) {
             setDataModel(null);
         }
     }
 
-    private void preUpdate(FacesContext context) {
+    protected void preUpdate(FacesContext context) {
         if (isNestedWithinIterator()) {
             setDataModel(null);
         }
     }
     
-    private void preEncode(FacesContext context) {
+    protected void preEncode(FacesContext context) {
         setDataModel(null);
         if (!keepSaved(context)) {
  
