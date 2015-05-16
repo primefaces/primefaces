@@ -30,6 +30,7 @@ import org.primefaces.context.RequestContext;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CSVBuilder;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
@@ -93,7 +94,7 @@ public class CommandLinkRenderer extends CoreRenderer {
                 request = buildAjaxRequest(context, link, null);
             }
             else {
-                UIComponent form = ComponentUtils.findParentForm(context, link);
+                UIComponent form = ComponentTraversalUtils.closestForm(context, link);
                 if(form == null) {
                     throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
                 }

@@ -29,6 +29,7 @@ import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.mobile.util.MobileUtils;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 
 public abstract class BaseMenuRenderer extends org.primefaces.component.menu.BaseMenuRenderer {
@@ -87,7 +88,7 @@ public abstract class BaseMenuRenderer extends org.primefaces.component.menu.Bas
             else {
                 writer.writeAttribute("href", "#", null);
 
-                UIComponent form = ComponentUtils.findParentForm(context, menu);
+                UIComponent form = ComponentTraversalUtils.closestForm(context, menu);
                 if(form == null) {
                     throw new FacesException("MenuItem must be inside a form element.");
                 }

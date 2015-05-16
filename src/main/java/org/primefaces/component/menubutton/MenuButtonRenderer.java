@@ -29,6 +29,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -137,7 +138,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         MenuButton button = (MenuButton) abstractMenu;
 		String clientId = button.getClientId(context);
         
-        UIComponent form = ComponentUtils.findParentForm(context, button);
+        UIComponent form = ComponentTraversalUtils.closestForm(context, button);
 		if(form == null) {
 			throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
 		}

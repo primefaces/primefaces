@@ -27,6 +27,7 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 
 public class HotkeyRenderer extends CoreRenderer {
@@ -54,7 +55,7 @@ public class HotkeyRenderer extends CoreRenderer {
 		writer.write("$(document).bind('keydown', '" + hotkey.getBind() + "', function(){");
 	
 		if(hotkey.isAjaxified()) {
-			UIComponent form = ComponentUtils.findParentForm(context,hotkey);
+			UIComponent form = ComponentTraversalUtils.closestForm(context,hotkey);
 
 			if(form == null) {
 				throw new FacesException("Hotkey '"+ clientId+ "' needs to be enclosed in a form when ajax mode is enabled");

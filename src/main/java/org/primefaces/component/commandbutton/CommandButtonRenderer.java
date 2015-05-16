@@ -26,6 +26,7 @@ import org.primefaces.context.RequestContext;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CSVBuilder;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -123,7 +124,7 @@ public class CommandButtonRenderer extends CoreRenderer {
             request = buildAjaxRequest(context, button, null);
         }
         else {
-            UIComponent form = ComponentUtils.findParentForm(context, button);
+            UIComponent form = ComponentTraversalUtils.closestForm(context, button);
             if(form == null) {
                 throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
             }

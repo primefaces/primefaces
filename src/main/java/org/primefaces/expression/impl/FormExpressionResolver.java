@@ -15,28 +15,18 @@
  */
 package org.primefaces.expression.impl;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.expression.SearchExpressionResolver;
+import org.primefaces.expression.impl.base.AbstractClosestExpressionResolver;
 
 /**
  * {@link SearchExpressionResolver} for the "@form" keyword.
  */
-public class FormExpressionResolver implements SearchExpressionResolver {
+public class FormExpressionResolver extends AbstractClosestExpressionResolver implements SearchExpressionResolver {
 
-	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
-		UIComponent parent = last.getParent();
-
-		while (parent != null) {
-			if (parent instanceof UIForm) {
-				return parent;
-			}
-
-			parent = parent.getParent();
-		}
-
-		return null;
-	}
+    @Override
+    public Class<?> getType() {
+        return UIForm.class;
+    }
 }

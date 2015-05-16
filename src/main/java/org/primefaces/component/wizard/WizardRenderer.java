@@ -29,6 +29,7 @@ import org.primefaces.component.tabview.Tab;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
@@ -82,7 +83,7 @@ public class WizardRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = wizard.getClientId(context);
 
-        UIComponent form = ComponentUtils.findParentForm(context, wizard);
+        UIComponent form = ComponentTraversalUtils.closestForm(context, wizard);
         if (form == null) {
             throw new FacesException("Wizard : \"" + clientId + "\" must be inside a form element");
         }

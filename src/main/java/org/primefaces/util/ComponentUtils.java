@@ -153,75 +153,12 @@ public class ComponentUtils {
     	return context.getApplication().createConverter(converterType);
     }
 
-    // used by p:component
+    // used by p:component - don't remove!
     public static String findComponentClientId(String id) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        UIComponent component = findComponent(facesContext.getViewRoot(), id);
+        UIComponent component = ComponentTraversalUtils.firstById(id, facesContext.getViewRoot());
 
         return component.getClientId(facesContext);
-    }
-
-    private static UIComponent findComponent(UIComponent base, String id) {
-        if (id.equals(base.getId()))
-          return base;
-
-        UIComponent kid = null;
-        UIComponent result = null;
-        Iterator<UIComponent> kids = base.getFacetsAndChildren();
-        while (kids.hasNext() && (result == null)) {
-          kid = (UIComponent) kids.next();
-          if (id.equals(kid.getId())) {
-            result = kid;
-            break;
-          }
-          result = findComponent(kid, id);
-          if (result != null) {
-            break;
-          }
-        }
-        return result;
-    }
-
-    public static UIComponent findParentForm(FacesContext context, UIComponent component) {
-        UIComponent parent = component.getParent();
-
-        while(parent != null) {
-            if(parent instanceof UIForm) {
-                return parent;
-            }
-
-            parent = parent.getParent();
-        }
-
-        return null;
-    }
-
-    public static UniqueIdVendor findParentUniqueIdVendor(UIComponent component) {
-        UIComponent parent = component.getParent();
-
-        while(parent != null) {
-            if(parent instanceof UniqueIdVendor) {
-                return (UniqueIdVendor) parent;
-            }
-
-            parent = parent.getParent();
-        }
-
-        return null;
-    }
-
-    public static UIComponent findParentNamingContainer(UIComponent component) {
-        UIComponent parent = component.getParent();
-
-        while(parent != null) {
-            if(parent instanceof NamingContainer) {
-                return (UIComponent) parent;
-            }
-
-            parent = parent.getParent();
-        }
-
-        return null;
     }
 
     public static String escapeJQueryId(String id) {

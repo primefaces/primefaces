@@ -29,6 +29,7 @@ import org.primefaces.component.api.ClientBehaviorRenderingMode;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
@@ -77,7 +78,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
         // get the parent form
         FacesContext context = FacesContext.getCurrentInstance();
-        UIComponent form = ComponentUtils.findParentForm(context, component);
+        UIComponent form = ComponentTraversalUtils.closestForm(context, component);
         String formId = null;
         if (form != null){
             formId = form.getClientId(context);

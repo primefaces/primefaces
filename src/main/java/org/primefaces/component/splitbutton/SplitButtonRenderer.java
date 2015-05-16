@@ -30,6 +30,7 @@ import org.primefaces.component.menuitem.UIMenuItem;
 import org.primefaces.component.separator.UISeparator;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
@@ -179,7 +180,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
             onclick.append(buildAjaxRequest(context, button, null));
         }
         else {
-            UIComponent form = ComponentUtils.findParentForm(context, button);
+            UIComponent form = ComponentTraversalUtils.closestForm(context, button);
             if(form == null) {
                 throw new FacesException("SplitButton : \"" + button.getClientId(context) + "\" must be inside a form element");
             }
@@ -273,7 +274,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                 else {
                     writer.writeAttribute("href", "#", null);
 
-                    UIComponent form = ComponentUtils.findParentForm(context, menuitem);
+                    UIComponent form = ComponentTraversalUtils.closestForm(context, menuitem);
                     if(form == null) {
                         throw new FacesException("MenuItem must be inside a form element");
                     }

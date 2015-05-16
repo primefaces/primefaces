@@ -17,13 +17,7 @@ package org.primefaces.util;
 
 import static org.junit.Assert.*;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIOutput;
-
 import org.junit.Test;
-import org.primefaces.component.commandlink.CommandLink;
 
 public class ComponentUtilsTest {
 	
@@ -35,35 +29,5 @@ public class ComponentUtilsTest {
 		
 		id="form:test";
 		assertEquals("#form\\\\:test", ComponentUtils.escapeJQueryId(id));
-	}
-
-	@Test
-	public void shouldFindParentForm() {
-		UIForm outerForm = new UIForm();
-		UIForm innerForm = new UIForm();
-		UINamingContainer container = new UINamingContainer();
-		UIComponent cmp = new UIOutput();
-
-		innerForm.getChildren().add(cmp);
-		container.getChildren().add(innerForm);
-		outerForm.getChildren().add(container);
-
-		UIComponent result = ComponentUtils.findParentForm(null, cmp);
-		assertSame("Expected closest surrounding UIForm", innerForm, result);
-	}
-
-	@Test
-	public void shouldFindParentContainer() {
-		UINamingContainer outerContainer = new UINamingContainer();
-		UINamingContainer innerContainer = new UINamingContainer();
-		UIForm form = new UIForm();
-		UIComponent cmp = new UIOutput();
-
-		innerContainer.getChildren().add(cmp);
-		form.getChildren().add(innerContainer);
-		outerContainer.getChildren().add(form);
-
-		UIComponent result = ComponentUtils.findParentNamingContainer(cmp);
-		assertSame("Expected closest surrounding UIForm", innerContainer, result);
 	}
 }

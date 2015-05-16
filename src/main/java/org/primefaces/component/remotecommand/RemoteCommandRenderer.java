@@ -29,6 +29,7 @@ import org.primefaces.context.RequestContext;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 
 public class RemoteCommandRenderer extends CoreRenderer {
@@ -55,7 +56,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
         AjaxSource source = (AjaxSource) command;
         String clientId = command.getClientId(context);
         String name = resolveName(command, context);
-        UIComponent form = (UIComponent) ComponentUtils.findParentForm(context, command);
+        UIComponent form = (UIComponent) ComponentTraversalUtils.closestForm(context, command);
         if(form == null) {
             throw new FacesException("RemoteCommand '" + name + "'must be inside a form.");
         }
