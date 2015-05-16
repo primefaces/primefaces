@@ -473,8 +473,14 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                     
                     case keyCode.ENTER:
                     case keyCode.NUMPAD_ENTER:
-                        currentitem.children('.ui-menuitem-link').trigger('click');
+                        var currentLink = currentitem.children('.ui-menuitem-link');
+                        currentLink.trigger('click');
                         $this.jq.blur();
+                        var href = currentLink.attr('href');
+                        if(href && href !== '#') {
+                            window.location.href = href;
+                        }
+                        
                         e.preventDefault();
                     break;
                     
@@ -722,6 +728,11 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                     case keyCode.NUMPAD_ENTER:
                         currentLink.trigger('click');
                         $this.jq.blur();
+                        var href = currentLink.attr('href');
+                        if(href && href !== '#') {
+                            window.location.href = href;
+                        }
+                        
                         e.preventDefault();
                     break;
                     
