@@ -245,6 +245,12 @@ public abstract class Exporter {
         postRowExport(table, document);
     }
     
+    protected void exportRow(DataTable table, Object document) {       
+        preRowExport(table, document);
+        exportCells(table, document);
+        postRowExport(table, document);
+    }
+    
     protected void exportSelectionOnly(FacesContext context, DataTable table, Object document) {        
         Object selection = table.getSelection();
         String var = table.getVar();
@@ -257,7 +263,7 @@ public abstract class Exporter {
                 
                 for(int i = 0; i < size; i++) {
                     requestMap.put(var, Array.get(selection, i));
-                    exportRow(table, document,i);
+                    exportRow(table, document);
                 }
             }
             else if(List.class.isAssignableFrom(selection.getClass())) {
@@ -265,7 +271,7 @@ public abstract class Exporter {
                 
                 for(int i = 0; i < list.size(); i++) {
                     requestMap.put(var, list.get(i));
-                    exportRow(table, document,i);
+                    exportRow(table, document);
                 }
             }
             else {

@@ -35,11 +35,8 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.util.AgentUtils;
 import org.primefaces.util.Constants;
 
 public class PDFExporter extends Exporter {
