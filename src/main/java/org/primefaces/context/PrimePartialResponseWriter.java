@@ -41,7 +41,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     public PrimePartialResponseWriter(PartialResponseWriter writer) {
         super(writer);
-        wrapped = (PartialResponseWriter) writer;
+        this.wrapped = writer;
     }
 
     private void encodeCallbackParams(Map<String, Object> params) throws IOException, JSONException {
