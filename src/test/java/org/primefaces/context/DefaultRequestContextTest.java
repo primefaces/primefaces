@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;

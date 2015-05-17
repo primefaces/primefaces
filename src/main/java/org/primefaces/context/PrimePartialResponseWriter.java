@@ -37,69 +37,76 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         put("type", "args");
     }});
 
-    private PartialResponseWriter wrapped;
+    private final PartialResponseWriter wrapped;
 
-    public PrimePartialResponseWriter(PartialResponseWriter writer) {
-        super(writer);
-        this.wrapped = writer;
+    public PrimePartialResponseWriter(PartialResponseWriter wrapped) {
+        super(wrapped);
+        this.wrapped = wrapped;
     }
 
-    private void encodeCallbackParams(Map<String, Object> params) throws IOException, JSONException {
+    public void encodeJSONObject(String paramName, JSONObject jsonObject) throws IOException, JSONException {
+        String json = jsonObject.toString();
+        getWrapped().write("\"");
+        getWrapped().write(paramName);
+        getWrapped().write("\":");
+        getWrapped().write(json);
+    }
+    
+    public void encodeJSONArray(String paramName, JSONArray jsonArray) throws IOException, JSONException {
+        String json = jsonArray.toString();
+        getWrapped().write("\"");
+        getWrapped().write(paramName);
+        getWrapped().write("\":");
+        getWrapped().write(json);
+    }
+    
+    public void encodeJSONValue(String paramName, Object paramValue) throws IOException, JSONException {
+        String json = new JSONObject().put(paramName, paramValue).toString();
+        getWrapped().write(json.substring(1, json.length() - 1));
+    }
+        
+    public void encodeCallbackParams(Map<String, Object> params) throws IOException, JSONException {
 
         if (params != null && !params.isEmpty()) {
 
             startExtension(CALLBACK_EXTENSION_PARAMS);
-            write("{");
+            getWrapped().write("{");
 
             for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String paramName = it.next();
                 Object paramValue = params.get(paramName);
 
                 if (paramValue instanceof JSONObject) {
-                    String json = ((JSONObject) paramValue).toString();
-                    write("\"");
-                    write(paramName);
-                    write("\":{");
-                    write(json.substring(1, json.length() - 1));
-                    write("}");
+                    encodeJSONObject(paramName, (JSONObject) paramValue);
                 }
                 else if (paramValue instanceof JSONArray) {
-                    String json = ((JSONArray) paramValue).toString();
-                    write("\"");
-                    write(paramName);
-                    write("\":[");
-                    write(json.substring(1, json.length() - 1));
-                    write("]");
+                    encodeJSONArray(paramName, (JSONArray) paramValue);
                 }
                 else if (isBean(paramValue)) {
-                    write("\"");
-                    write(paramName);
-                    write("\":");
-                    write(new JSONObject(paramValue).toString());
+                    encodeJSONObject(paramName, (JSONObject) paramValue);
                 }
                 else {
-                    String json = new JSONObject().put(paramName, paramValue).toString();
-                    write(json.substring(1, json.length() - 1));
+                    encodeJSONValue(paramName, paramValue);
                 }
 
                 if (it.hasNext()) {
-                    write(",");
+                    getWrapped().write(",");
                 }
             }
 
-            write("}");
+            getWrapped().write("}");
             endExtension();
         }
     }
 
-    private void encodeScripts(RequestContext requestContext) throws IOException {
+    public void encodeScripts(RequestContext requestContext) throws IOException {
         List<String> scripts = requestContext.getScriptsToExecute();
         if (!scripts.isEmpty()) {
             startEval();
 
             for (int i = 0; i < scripts.size(); i++) {
-                write(scripts.get(i));
-                write(';');
+                getWrapped().write(scripts.get(i));
+                getWrapped().write(';');
             }
 
             endEval();
@@ -157,8 +164,8 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                     encodeCallbackParams(params);
                 }
             }
-            catch (Exception exception) {
-                throw new AbortProcessingException(exception);
+            catch (Exception e) {
+                throw new AbortProcessingException(e);
             }
         }
     }
