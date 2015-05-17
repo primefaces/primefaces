@@ -1167,19 +1167,19 @@ import org.primefaces.util.SharedStringBuilder;
     @Override
     protected void preValidate(FacesContext context) {
         resetDynamicColumns();
-        super.preDecode(context);
+        super.preValidate(context);
     }
     
     @Override
     protected void preUpdate(FacesContext context) {
         resetDynamicColumns();
-        super.preDecode(context);
+        super.preUpdate(context);
     }
     
     @Override
     protected void preEncode(FacesContext context) {
         resetDynamicColumns();
-        super.preDecode(context);
+        super.preEncode(context);
     }
     
     private void resetDynamicColumns() {
