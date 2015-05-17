@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.util;
+package org.primefaces.mock;
 
 import java.io.IOException;
 import java.io.Writer;

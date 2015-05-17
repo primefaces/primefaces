@@ -15,6 +15,7 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.mock.CollectingResponseWriter;
 import java.io.IOException;
 
 import org.junit.Test;
