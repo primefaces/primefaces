@@ -156,7 +156,7 @@ public class ComponentUtils {
     // used by p:component - don't remove!
     public static String findComponentClientId(String id) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        UIComponent component = ComponentTraversalUtils.firstById(id, facesContext.getViewRoot());
+        UIComponent component = ComponentTraversalUtils.firstWithId(id, facesContext.getViewRoot());
 
         return component.getClientId(facesContext);
     }

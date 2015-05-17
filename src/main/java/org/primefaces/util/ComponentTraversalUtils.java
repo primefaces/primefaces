@@ -15,6 +15,7 @@
  */
 package org.primefaces.util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -24,12 +25,12 @@ import javax.faces.context.FacesContext;
 
 public class ComponentTraversalUtils {
 
-    public static UIComponent closest(Class<?> type, UIComponent source) {
-        UIComponent parent = source.getParent();
+    public static <T> T closest(Class<T> type, UIComponent base) {
+        UIComponent parent = base.getParent();
 
         while (parent != null) {
             if (type.isAssignableFrom(parent.getClass())) {
-                return parent;
+                return (T) parent;
             }
 
             parent = parent.getParent();
@@ -38,6 +39,41 @@ public class ComponentTraversalUtils {
         return null;
     }
 
+    public static <T> T first(Class<T> type, UIComponent base) {
+        T result = null;
+
+        Iterator<UIComponent> kids = base.getFacetsAndChildren();
+        while (kids.hasNext() && (result == null)) {
+            UIComponent kid = (UIComponent) kids.next();
+            if (type.isAssignableFrom(kid.getClass())) {
+                result = (T) kid;
+                break;
+            }
+
+            result = first(type, base);
+            if (result != null) {
+                break;
+            }
+        }
+
+        return result;
+    }
+    
+    public static <T> ArrayList<T> children(Class<T> type, UIComponent base) {
+        
+        ArrayList<T> result = new ArrayList<T>();
+        
+        Iterator<UIComponent> kids = base.getFacetsAndChildren();
+        while (kids.hasNext()) {
+            UIComponent kid = (UIComponent) kids.next();
+            if (type.isAssignableFrom(kid.getClass())) {
+                result.add((T) kid);
+            }
+        }
+
+        return result;
+    }
+    
     /**
      * Finds the first component with the given id (NOT clientId!).
      * 
@@ -45,22 +81,21 @@ public class ComponentTraversalUtils {
      * @param base The base component to start the traversal.
      * @return The component or null.
      */
-    public static UIComponent firstById(String id, UIComponent base) {
+    public static UIComponent firstWithId(String id, UIComponent base) {
         if (id.equals(base.getId())) {
             return base;
         }
 
-        UIComponent kid = null;
         UIComponent result = null;
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext() && (result == null)) {
-            kid = (UIComponent) kids.next();
+            UIComponent kid = (UIComponent) kids.next();
             if (id.equals(kid.getId())) {
                 result = kid;
                 break;
             }
-            result = firstById(id, kid);
+            result = firstWithId(id, kid);
             if (result != null) {
                 break;
             }
@@ -70,7 +105,7 @@ public class ComponentTraversalUtils {
 
     
     
-    public static UIComponent closestForm(FacesContext context, UIComponent component) {
+    public static UIForm closestForm(FacesContext context, UIComponent component) {
         return closest(UIForm.class, component);
     }
 
@@ -79,6 +114,6 @@ public class ComponentTraversalUtils {
     }
 
     public static UIComponent closestNamingContainer(UIComponent component) {
-        return closest(NamingContainer.class, component);
+        return (UIComponent) closest(NamingContainer.class, component);
     }
 }
