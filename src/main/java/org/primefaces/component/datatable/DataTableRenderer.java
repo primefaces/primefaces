@@ -1063,7 +1063,7 @@ public class DataTableRenderer extends DataRenderer {
                                     List<DynamicColumn> dynamicColumns = ((Columns) footerRowChild).getDynamicColumns();
                                     for (DynamicColumn dynaColumn : dynamicColumns) {
                                         dynaColumn.applyModel();
-                                        encodeColumnHeader(context, table, dynaColumn);
+                                        encodeColumnFooter(context, table, dynaColumn);
                                     }
                                 }
                                 else {
