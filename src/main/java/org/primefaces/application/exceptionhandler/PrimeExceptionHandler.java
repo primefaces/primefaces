@@ -147,9 +147,15 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             }
         }
 
-        rootCause = buildView(context, rootCause, rootCause);
-
-        AjaxExceptionHandler handlerComponent = findHandlerComponent(context, rootCause);
+        AjaxExceptionHandler handlerComponent = null;
+        
+        try {
+            rootCause = buildView(context, rootCause, rootCause);
+            handlerComponent = findHandlerComponent(context, rootCause);
+        }
+        catch (Exception ex) {
+            LOG.log(Level.WARNING, "Could not build view or lookup a AjaxExceptionHandler component!", ex);
+        }
 
         context.getAttributes().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
@@ -262,8 +268,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
      * @return The unwrapped {@link Throwable}.
      * @throws java.io.IOException If building the view fails.
      */
-    protected Throwable buildView(FacesContext context, Throwable throwable, Throwable rootCause) throws IOException
-    {
+    protected Throwable buildView(FacesContext context, Throwable throwable, Throwable rootCause) throws IOException {
         if (context.getViewRoot() == null) {
             ViewHandler viewHandler = context.getApplication().getViewHandler();
 
