@@ -34,11 +34,11 @@ public class PrimePartialResponseWriterTest {
         jsonArray.put("test");
         jsonArray.put(12);
         jsonArray.put(1);
-        jsonArray.put("test123");
+        jsonArray.put("test123&");
         
         primePartialResponseWriter.encodeJSONArray("myArray", jsonArray);
         
-        Assert.assertEquals("\"myArray\":[\"test\",12,1,\"test123\"]", partialResponseWriter.toString());
+        Assert.assertEquals("\"myArray\":[\"test\",12,1,\"test123&amp;\"]", partialResponseWriter.toString());
     }
     
     @Test
@@ -47,12 +47,12 @@ public class PrimePartialResponseWriterTest {
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
         
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("myStrVal", "HelloWorld!");
+        jsonObject.put("myStrVal", "Hello<>World!");
         jsonObject.put("isThatTrue", false);
 
         primePartialResponseWriter.encodeJSONObject("myObj", jsonObject);
         
-        Assert.assertEquals("\"myObj\":{\"myStrVal\":\"HelloWorld!\",\"isThatTrue\":false}", partialResponseWriter.toString());
+        Assert.assertEquals("\"myObj\":{\"myStrVal\":\"Hello&lt;&gt;World!\",\"isThatTrue\":false}", partialResponseWriter.toString());
     }
     
     @Test
@@ -60,8 +60,8 @@ public class PrimePartialResponseWriterTest {
         CollectingPartialResponseWriter partialResponseWriter = new CollectingPartialResponseWriter();
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
         
-        primePartialResponseWriter.encodeJSONValue("myVal", "test123");
-        Assert.assertEquals("\"myVal\":\"test123\"", partialResponseWriter.toString());
+        primePartialResponseWriter.encodeJSONValue("myVal", "test123>");
+        Assert.assertEquals("\"myVal\":\"test123&gt;\"", partialResponseWriter.toString());
         
         
         partialResponseWriter = new CollectingPartialResponseWriter();

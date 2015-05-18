@@ -29,6 +29,7 @@ import javax.faces.event.AbortProcessingException;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
+import org.primefaces.util.ComponentUtils;
 
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
@@ -46,6 +47,8 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     public void encodeJSONObject(String paramName, JSONObject jsonObject) throws IOException, JSONException {
         String json = jsonObject.toString();
+        json = ComponentUtils.escapeXml(json);
+
         getWrapped().write("\"");
         getWrapped().write(paramName);
         getWrapped().write("\":");
@@ -54,6 +57,8 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     
     public void encodeJSONArray(String paramName, JSONArray jsonArray) throws IOException, JSONException {
         String json = jsonArray.toString();
+        json = ComponentUtils.escapeXml(json);
+
         getWrapped().write("\"");
         getWrapped().write(paramName);
         getWrapped().write("\":");
@@ -62,9 +67,11 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     
     public void encodeJSONValue(String paramName, Object paramValue) throws IOException, JSONException {
         String json = new JSONObject().put(paramName, paramValue).toString();
+        json = ComponentUtils.escapeXml(json);
+
         getWrapped().write(json.substring(1, json.length() - 1));
     }
-        
+
     public void encodeCallbackParams(Map<String, Object> params) throws IOException, JSONException {
 
         if (params != null && !params.isEmpty()) {
