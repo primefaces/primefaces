@@ -76,8 +76,9 @@ public class ImageCropperRenderer extends CoreRenderer {
             .attr("boxWidth", cropper.getBoxWidth(), 0)
             .attr("boxHeight", cropper.getBoxHeight(), 0);
         
-		if(cropper.getValue() != null) {
-            CroppedImage croppedImage = (CroppedImage) cropper.getValue();
+        Object value = cropper.getValue();
+		if(value != null) {
+            CroppedImage croppedImage = (CroppedImage) value;
             
             int x = croppedImage.getLeft();
             int y = croppedImage.getTop();
