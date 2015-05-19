@@ -28,6 +28,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.row.Row;
 import org.primefaces.mobile.renderkit.paginator.PaginatorRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
@@ -411,7 +412,10 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         if(table.isReflow()) {
             writer.startElement("b", table);
             writer.writeAttribute("class", DataTable.MOBILE_CELL_LABEL, null);
-            writer.writeText(column.getHeaderText(), null);
+            String headerText = column.getHeaderText();
+            if (!ComponentUtils.isValueBlank(headerText)) {
+                writer.writeText(headerText, null);
+            }
             writer.endElement("b");
         }
         
