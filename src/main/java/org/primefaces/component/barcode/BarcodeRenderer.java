@@ -53,7 +53,7 @@ public class BarcodeRenderer extends CoreRenderer {
             Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", "image/png");
             String resourcePath = resource.getRequestPath();
             StringEncrypter encrypter = RequestContext.getCurrentInstance().getEncrypter();
-            String rid = encrypter.encrypt((String) barcode.getValue());
+            String rid = encrypter.encrypt((String) value);
             StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
 
             src = builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid, "UTF-8"))

@@ -44,16 +44,16 @@ public class ColorPickerRenderer extends CoreRenderer {
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ColorPicker colorPicker = (ColorPicker) component;
-
-		encodeMarkup(context, colorPicker);
-		encodeScript(context, colorPicker);
+        String value = (String) colorPicker.getValue();
+        
+		encodeMarkup(context, colorPicker, value);
+		encodeScript(context, colorPicker, value);
 	}
 
-	protected void encodeMarkup(FacesContext context, ColorPicker colorPicker) throws IOException {
+	protected void encodeMarkup(FacesContext context, ColorPicker colorPicker, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = colorPicker.getClientId(context);
         String inputId = clientId + "_input";
-        String value = (String) colorPicker.getValue();
         boolean isPopup = colorPicker.getMode().equals("popup");
         String styleClass = colorPicker.getStyleClass();
         styleClass = styleClass == null ? ColorPicker.STYLE_CLASS : ColorPicker.STYLE_CLASS + " " + styleClass;
@@ -115,9 +115,8 @@ public class ColorPickerRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, ColorPicker colorPicker) throws IOException {
+    protected void encodeScript(FacesContext context, ColorPicker colorPicker, String value) throws IOException {
 		String clientId = colorPicker.getClientId(context);
-        String value = (String) colorPicker.getValue();
         WidgetBuilder wb = getWidgetBuilder(context);
         
         wb.initWithDomReady("ColorPicker", colorPicker.resolveWidgetVar(), clientId, "colorpicker")
