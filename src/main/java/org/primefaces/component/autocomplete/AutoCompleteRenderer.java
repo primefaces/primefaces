@@ -202,8 +202,10 @@ public class AutoCompleteRenderer extends InputRenderer {
                 Object submittedValue = ac.getSubmittedValue();
                 itemLabel = (submittedValue == null) ? null : String.valueOf(submittedValue);
                 
-                if(itemLabel == null && ac.getValue() != null) {
-                    requestMap.put(var, ac.getValue());
+                Object value = ac.getValue();
+                
+                if(itemLabel == null && value != null) {
+                    requestMap.put(var, value);
                     itemLabel = ac.getItemLabel();
                 }
             }
