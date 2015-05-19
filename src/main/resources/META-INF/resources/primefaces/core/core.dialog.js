@@ -13,9 +13,17 @@ PrimeFaces.dialog.DialogHandler = {
                 ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widgetvar="' + dialogWidgetVar + '"></div>')
                 .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span></div>');
         
+        var titlebar = dialogDOM.children('.ui-dialog-titlebar');
         if(cfg.options.closable !== false) {
-            dialogDOM.children('.ui-dialog-titlebar')
-                    .append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
+            titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
+        }
+        
+        if(cfg.options.minimizable) {
+            titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-minimize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-minus"></span></a>');
+        }
+        
+        if(cfg.options.maximizable) {
+            titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
         }
         
         dialogDOM.append('<div class="ui-dialog-content ui-widget-content" style="height: auto;">' +
@@ -65,7 +73,9 @@ PrimeFaces.dialog.DialogHandler = {
                     resizable: cfg.options.resizable,
                     draggable: cfg.options.draggable,
                     width: cfg.options.width,
-                    height: cfg.options.height
+                    height: cfg.options.height,
+                    minimizable: cfg.options.minimizable,
+                    maximizable: cfg.options.maximizable
                 });
             }
             
@@ -84,7 +94,7 @@ PrimeFaces.dialog.DialogHandler = {
         })
         .attr('src', frameURL);
     },
-
+    
     closeDialog: function(cfg) {
         var dlg = $(document.body).children('div.ui-dialog').filter(function() {
             return $(this).data('pfdlgcid') === cfg.pfdlgcid;
