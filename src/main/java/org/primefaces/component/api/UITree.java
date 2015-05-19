@@ -30,6 +30,7 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -710,9 +711,12 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             return false;
 
         FacesContext facesContext = context.getFacesContext();
+        boolean visitNodes = requiresIteration(facesContext, context);
 
         String oldRowKey= getRowKey();
-        setRowKey(null);
+        if(visitNodes) {
+            setRowKey(null);
+        }
         
         pushComponentToEL(facesContext, null);
 
@@ -723,16 +727,19 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                 return true;
 
             if((result == VisitResult.ACCEPT) && doVisitChildren(context)) {
-                if(visitFacets(context, callback))
+                if(visitFacets(context, callback, visitNodes))
                     return true;
 
-                if(visitNodes(context, callback))
+                if(visitNodes(context, callback, visitNodes))
                     return true;
             }
         }
         finally {
             popComponentFromEL(facesContext);
-            setRowKey(oldRowKey);
+            
+            if(visitNodes) {
+                setRowKey(oldRowKey);
+            }
         }
 
         return false;
@@ -744,7 +751,11 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return (!idsToVisit.isEmpty());
     }
     
-    protected boolean visitFacets(VisitContext context, VisitCallback callback) {
+    protected boolean visitFacets(VisitContext context, VisitCallback callback, boolean visitNodes) {
+        if(visitNodes) {
+            setRowKey(null);
+        }
+        
         if(getFacetCount() > 0) {
             for(UIComponent facet : getFacets().values()) {
                 if(facet.visitTree(context, callback))
@@ -800,16 +811,18 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
     
-    protected boolean visitNodes(VisitContext context, VisitCallback callback) {
-        TreeNode root = getValue();
-        if(root != null) {
-            if(visitNode(context, callback, root, null)) {
-                return true;
+    protected boolean visitNodes(VisitContext context, VisitCallback callback, boolean visitRows) {
+        if(visitRows) {
+            TreeNode root = getValue();
+            if(root != null) {
+                if(visitNode(context, callback, root, null)) {
+                    return true;
+                }
             }
-		}
 
-        setRowKey(null);
-        
+            setRowKey(null);
+        }
+
         return false;
     }
     
@@ -845,5 +858,18 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     
     protected boolean shouldVisitNode(TreeNode node) {
         return (node.isExpanded() || node.getParent() == null);
+    }
+    
+    protected boolean requiresIteration(FacesContext context, VisitContext visitContext) {
+        try {
+            //JSF 2.1
+            VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
+            return !visitContext.getHints().contains(skipHint);
+        }
+        catch(IllegalArgumentException e) {
+            //JSF 2.0
+            Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
+            return !Boolean.TRUE.equals(skipHint);
+        }
     }
 }
