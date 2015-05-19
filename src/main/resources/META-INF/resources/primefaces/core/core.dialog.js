@@ -18,6 +18,16 @@ PrimeFaces.dialog.DialogHandler = {
                     .append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
         }
         
+        if(cfg.options.maximizable) {
+            dialogDOM.children('.ui-dialog-titlebar')
+                    .append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
+        }
+        
+        if(cfg.options.minimizable) {
+            dialogDOM.children('.ui-dialog-titlebar')
+                    .append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-minimize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-minus"></span></a>');
+        }
+        
         dialogDOM.append('<div class="ui-dialog-content ui-widget-content" style="height: auto;">' +
                 '<iframe style="border:0 none" frameborder="0"/>' + 
                 '</div>');
@@ -65,7 +75,9 @@ PrimeFaces.dialog.DialogHandler = {
                     resizable: cfg.options.resizable,
                     draggable: cfg.options.draggable,
                     width: cfg.options.width,
-                    height: cfg.options.height
+                    height: cfg.options.height,
+                    minimizable: cfg.options.minimizable,
+                    maximizable: cfg.options.maximizable
                 });
             }
             
@@ -131,6 +143,8 @@ PrimeFaces.dialog.DialogHandler = {
                 modal:true,
                 draggable: false,
                 resizable: false,
+                minimizable: false,
+                maximizable: false,
                 showEffect: 'fade',
                 hideEffect: 'fade'
             });
