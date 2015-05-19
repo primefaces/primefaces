@@ -247,12 +247,14 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
         
     initScrolling: function() {
-        var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
-        if(overflown) {
-            this.navscroller.css('padding-left', '18px');
-            this.navcrollerLeft.show();
-            this.navcrollerRight.show();
-            this.restoreScrollState();
+        if(this.panelContainer.children().length) {
+            var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
+            if(overflown) {
+                this.navscroller.css('padding-left', '18px');
+                this.navcrollerLeft.show();
+                this.navcrollerRight.show();
+                this.restoreScrollState();
+            }
         }
     },
         
