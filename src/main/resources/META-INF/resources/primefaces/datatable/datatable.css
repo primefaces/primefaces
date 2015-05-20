@@ -363,6 +363,15 @@
 		float: left;
 		clear: left;
     }
+    
+    .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
+        border: 0px none;
+    }
+    
+    .ui-datatable-reflow .ui-datatable-data tr.ui-widget-content {
+        border-left: 0px none;
+        border-right: 0px none;
+    }
 
     .ui-datatable-reflow .ui-datatable-data td .ui-column-title { 
         padding: .4em; 
