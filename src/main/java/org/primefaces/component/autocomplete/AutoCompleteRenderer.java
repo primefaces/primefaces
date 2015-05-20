@@ -326,6 +326,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
         String listClass = disabled ? AutoComplete.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : AutoComplete.MULTIPLE_CONTAINER_CLASS;
+        listClass = ac.isValid() ? listClass : listClass + " ui-state-error";
         
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
