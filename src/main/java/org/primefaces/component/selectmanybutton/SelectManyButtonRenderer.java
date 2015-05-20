@@ -48,9 +48,12 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
     protected void encodeMarkup(FacesContext context, SelectManyButton button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
+        List<SelectItem> selectItems = getSelectItems(context, button);
+        int selectItemsSize = selectItems.size();
         String style = button.getStyle();
         String styleClass = button.getStyleClass();
         styleClass = styleClass == null ? SelectManyButton.STYLE_CLASS : SelectManyButton.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass + " ui-buttonset-" + selectItemsSize;
         styleClass = !button.isValid() ? styleClass + " ui-state-error" : styleClass;
 
         
@@ -61,13 +64,12 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeSelectItems(context, button);
+        encodeSelectItems(context, button, selectItems);
 
         writer.endElement("div");
     }
     
-    protected void encodeSelectItems(FacesContext context, SelectManyButton button) throws IOException {
-        List<SelectItem> selectItems = getSelectItems(context, button);
+    protected void encodeSelectItems(FacesContext context, SelectManyButton button, List<SelectItem> selectItems) throws IOException {
         Converter converter = button.getConverter();
         Object values = getValues(button);
         Object submittedValues = getSubmittedValues(button);

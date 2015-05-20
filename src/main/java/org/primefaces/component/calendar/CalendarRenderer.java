@@ -67,16 +67,17 @@ public class CalendarRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, Calendar calendar, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = calendar.getClientId(context);
+        String styleClass = calendar.getStyleClass();
+        styleClass = (styleClass == null) ? Calendar.CONTAINER_CLASS : Calendar.CONTAINER_CLASS + " " + styleClass;
         String inputId = clientId + "_input";
         boolean popup = calendar.isPopup();
 
         writer.startElement("span", calendar);
         writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", styleClass, null);
+        
         if (calendar.getStyle() != null) {
             writer.writeAttribute("style", calendar.getStyle(), null);
-        }
-        if (calendar.getStyleClass() != null) {
-            writer.writeAttribute("class", calendar.getStyleClass(), null);
         }
 
         //inline container

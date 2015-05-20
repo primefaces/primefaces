@@ -47,13 +47,14 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
     protected void encodeMarkup(FacesContext context, SelectOneButton button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
+        List<SelectItem> selectItems = getSelectItems(context, button);
+        int selectItemsSize = selectItems.size();
         String style = button.getStyle();
         String styleClass = button.getStyleClass();
         styleClass = styleClass == null ? SelectOneButton.STYLE_CLASS : SelectOneButton.STYLE_CLASS + " " + styleClass;
-        
+        styleClass = styleClass + " ui-buttonset-" + selectItemsSize;
         styleClass = !button.isValid() ? styleClass + " ui-state-error" : styleClass;
             
-        
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
@@ -61,13 +62,12 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeSelectItems(context, button);
+        encodeSelectItems(context, button, selectItems);
 
         writer.endElement("div");
     }
     
-    protected void encodeSelectItems(FacesContext context, SelectOneButton button) throws IOException {
-        List<SelectItem> selectItems = getSelectItems(context, button);
+    protected void encodeSelectItems(FacesContext context, SelectOneButton button, List<SelectItem> selectItems) throws IOException {
         int selectItemsSize = selectItems.size();
         Converter converter = button.getConverter();
         String name = button.getClientId(context);
