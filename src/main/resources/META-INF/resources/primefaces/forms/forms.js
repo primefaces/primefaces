@@ -792,7 +792,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 case 16: //shift
                 case 17: //keyCode.CONTROL:
                 case 18: //keyCode.ALT:
-                case 224:   //mac command 
+                case 91: //left window or cmd:
+                case 92: //right window:
+                case 93: //right cmd:
+                case 20: //capslock:
                 break;
 
                 default:
@@ -836,8 +839,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
             switch(key) {
                 case keyCode.UP:
-                case keyCode.DOWN:
                 case keyCode.LEFT:
+                case keyCode.DOWN:
                 case keyCode.RIGHT:
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
@@ -852,7 +855,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 case 16: //shift
                 case 17: //keyCode.CONTROL:
                 case 18: //keyCode.ALT:
-                case 224:   //mac command 
+                case 91: //left window or cmd:
+                case 92: //right window:
+                case 93: //right cmd:
+                case 20: //capslock:
                 break;
 
                 default:
