@@ -35,8 +35,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             this.multiItemContainer.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
             
-            if(this.cfg.selectLimit <= 0) {
-                this.input.css('visibility', 'hidden');
+            if(this.cfg.selectLimit >= 0 && this.multiItemContainer.children('li.ui-autocomplete-token').length === this.cfg.selectLimit) {
+                this.input.hide();
             }
         }
         else {
