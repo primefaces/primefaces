@@ -36,8 +36,7 @@
 /* Responsive */
 @media (max-width: 35em) {       
     .ui-panelgrid .ui-grid-responsive .ui-grid-row {
-        border-top: 1px solid;
-        border-top-color: inherit;
+        border-top: 1px solid #BCC7CF;
     }
     
     .ui-panelgrid .ui-grid-responsive .ui-grid-row:first-child {
