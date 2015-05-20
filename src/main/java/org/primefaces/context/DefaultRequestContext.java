@@ -210,8 +210,8 @@ public class DefaultRequestContext extends RequestContext {
 
     @Override
     public void showMessageInDialog(FacesMessage message) {
-        this.execute("PrimeFaces.showMessageInDialog({severity:'" + message.getSeverity() + 
-                    "',summary:'" + message.getSummary() + "',detail:'" + message.getDetail() + "'});"); 
+        this.execute("PrimeFaces.showMessageInDialog({severity:\"" + message.getSeverity() + 
+                    "\",summary:\"" + ComponentUtils.escapeText(message.getSummary()) + "\",detail:\"" + ComponentUtils.escapeText(message.getDetail()) + "\"});"); 
     }
     
     @Override
