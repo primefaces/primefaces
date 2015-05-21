@@ -65,7 +65,11 @@ PrimeFaces.dialog.DialogHandler = {
                     resizable: cfg.options.resizable,
                     draggable: cfg.options.draggable,
                     width: cfg.options.width,
-                    height: cfg.options.height
+                    height: cfg.options.height,
+                    minimizable: cfg.options.minimizable,
+                    maximizable: cfg.options.maximizable,
+                    showEffect: cfg.options.showEffect,
+                    hideEffect: cfg.options.hideEffect
                 });
             }
             

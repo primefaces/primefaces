@@ -713,9 +713,19 @@ PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
         
         this.moveToTop();
         
-        this.jq.show();
+        if(this.cfg.showEffect) {
+            var $this = this;
 
-        this.postShow();
+            this.jq.show(this.cfg.showEffect, null, 'normal', function() {
+                $this.postShow();
+            });
+        }
+        else {
+            //display dialog
+            this.jq.show();
+
+            this.postShow();
+        }
 
         if(this.cfg.modal) {
             this.enableModality();

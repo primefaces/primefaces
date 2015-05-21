@@ -77,7 +77,11 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
                     String optionName = it.next();
                     Object optionValue = options.get(optionName);
                     
-                    sb.append(optionName).append(":").append(optionValue);
+                    if(optionName.equalsIgnoreCase("showEffect") || optionName.equalsIgnoreCase("hideEffect")){
+                    	sb.append(optionName).append(":\"").append(optionValue).append("\"");
+                    } else{
+                    	sb.append(optionName).append(":").append(optionValue);
+                    }
                     
                     if(it.hasNext())
                         sb.append(",");
