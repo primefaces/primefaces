@@ -142,6 +142,11 @@
     vertical-align: top;
 }
 
+.ui-panelgrid .ui-selectoneradio.ui-grid-responsive .ui-grid-row,
+.ui-panelgrid .ui-selectmanycheckbox.ui-grid-responsive .ui-grid-row {
+    border-top: 0px none;
+}
+
 /** RadioButton **/
 .ui-radiobutton {
     margin: 3px 0;
