@@ -27,8 +27,10 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectManyRenderer;
+import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -49,12 +51,11 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
     protected void encodeMarkup(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = checkbox.getClientId(context);
-        String style = checkbox.getStyle();
-        String styleClass = checkbox.getStyleClass();
-        styleClass = styleClass == null ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
         String layout = checkbox.getLayout();
-        boolean custom = (layout != null && layout.equals("custom"));
+        if(layout == null) {
+            layout = "lineDirection";
+        }
+        boolean custom = (layout.equals("custom"));
                 
         if(custom) {
             writer.startElement("span", checkbox);
@@ -63,16 +64,11 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             encodeCustomLayout(context, checkbox);
             writer.endElement("span");
         }
+        else if(layout.equals("responsive")) {
+            encodeResponsiveLayout(context, checkbox);
+        }
         else {
-            writer.startElement("table", checkbox);
-            writer.writeAttribute("id", clientId, "id");
-            writer.writeAttribute("class", styleClass, "styleClass");
-            if(style != null)
-                writer.writeAttribute("style", style, "style");
-
-            encodeSelectItems(context, checkbox);
-
-            writer.endElement("table");
+            encodeTabularLayout(context, checkbox, layout);
         }
     }
 
@@ -84,6 +80,73 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         
         wb.initWithDomReady("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId)
             .attr("custom", custom, false).finish();
+    }
+    
+    protected void encodeResponsiveLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = checkbox.getClientId(context);
+        String style = checkbox.getStyle();
+        String styleClass = checkbox.getStyleClass();
+        styleClass = (styleClass == null) ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass + " ui-grid ui-grid-responsive";
+        int columns = checkbox.getColumns();
+        
+        if(columns <= 0) {
+            throw new FacesException("The value of columns attribute must be greater than zero.");
+        }
+        
+        writer.startElement("div", checkbox);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        
+        List<SelectItem> selectItems = getSelectItems(context, checkbox);
+        Converter converter = checkbox.getConverter();
+        Object values = getValues(checkbox);
+        Object submittedValues = getSubmittedValues(checkbox);
+        int idx = 0, colMod;
+        for(SelectItem selectItem : selectItems) {
+            colMod = idx % columns;
+            if(colMod == 0) {
+                writer.startElement("div", null);
+                writer.writeAttribute("class", "ui-grid-row", null);
+            }
+
+            writer.startElement("div", null);
+            writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
+            encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+            writer.endElement("div");
+            
+            idx++;
+            colMod = idx % columns;
+
+            if(colMod == 0) {
+                writer.endElement("div");
+            }
+        }
+        
+        writer.endElement("div");
+    }
+    
+    protected void encodeTabularLayout(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = checkbox.getClientId(context);
+        String style = checkbox.getStyle();
+        String styleClass = checkbox.getStyleClass();
+        styleClass = styleClass == null ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
+        
+        writer.startElement("table", checkbox);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+
+        encodeSelectItems(context, checkbox, layout);
+
+        writer.endElement("table");
     }
     
     protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked, boolean disabled, String value) throws IOException {
@@ -146,13 +209,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
         writer.endElement("div");
     }
-
-    protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
-        String layout = checkbox.getLayout();
-        if(layout == null) {
-            layout = "lineDirection";
-        }
-
+    
+    protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
         if(layout.equals("lineDirection"))
             encodeLineLayout(context, checkbox);
         else if(layout.equals("pageDirection"))

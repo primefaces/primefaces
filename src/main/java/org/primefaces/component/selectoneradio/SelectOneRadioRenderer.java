@@ -120,7 +120,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 colMod = idx % columns;
                 if (colMod == 0) {
                     writer.startElement("div", null);
-                    writer.writeAttribute("class", "ui-grid-row", name);
+                    writer.writeAttribute("class", "ui-grid-row", null);
                 }
 
                 writer.startElement("div", null);
