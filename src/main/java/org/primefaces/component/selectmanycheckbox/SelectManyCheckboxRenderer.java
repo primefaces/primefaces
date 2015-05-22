@@ -27,7 +27,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
-import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.GridLayoutUtils;
