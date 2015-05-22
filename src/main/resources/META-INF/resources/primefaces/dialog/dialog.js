@@ -366,7 +366,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 $this.jq.data('offset', $this.jq.offset());
             },
             stop: function(event, ui) {
-                var offset = $this.jq.data('offset')
+                var offset = $this.jq.data('offset');
 
                 $this.jq.css('position', 'fixed');
                 $this.jq.offset(offset);
