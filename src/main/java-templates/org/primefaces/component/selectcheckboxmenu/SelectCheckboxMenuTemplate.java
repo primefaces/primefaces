@@ -38,8 +38,10 @@ import org.primefaces.util.Constants;
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = this.getClientId(context);
             boolean checked = Boolean.valueOf(params.get(clientId + "_checked"));
+            ToggleSelectEvent toggleSelectEvent = new ToggleSelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), checked);
+            toggleSelectEvent.setPhaseId(event.getPhaseId());
 
-            super.queueEvent(new ToggleSelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), checked));
+            super.queueEvent(toggleSelectEvent);
         }
         else {
             super.queueEvent(event);
