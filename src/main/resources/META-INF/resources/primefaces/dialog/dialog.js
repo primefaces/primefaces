@@ -14,6 +14,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
         this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
         this.blockEvents = 'focus.' + this.id + ' mousedown.' + this.id + ' mouseup.' + this.id;
+        this.resizeNS = 'resize.' + this.id;
         this.cfg.absolutePositioned = this.jq.hasClass('ui-dialog-absolute');
 
         //configuration
@@ -246,6 +247,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.applyFocus();
+        
+        if(this.cfg.responsive) {
+            this.bindResizeListener();
+        }
     },
 
     hide: function() {
@@ -435,6 +440,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this, event, ui);
         }
+        
+        if(this.cfg.responsive) {
+            this.unbindResizeListener();
+        }
     },
 
     moveToTop: function() {
@@ -618,6 +627,17 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     
     isVisible: function() {
         return this.jq.is(':visible');
+    },
+    
+    bindResizeListener: function() {
+        var $this = this;
+        $(window).on(this.resizeNS, function() {
+            $this.initPosition();
+        });
+    },
+    
+    unbindResizeListener: function() {
+        $(window).off(this.resizeNS);
     }
 
 });

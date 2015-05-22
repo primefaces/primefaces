@@ -68,7 +68,8 @@ public class DialogRenderer extends CoreRenderer {
             .attr("hideEffect", dialog.getHideEffect(), null)
             .attr("position", dialog.getPosition(), null)
             .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
-            .attr("fitViewport", dialog.isFitViewport(), false)  
+            .attr("fitViewport", dialog.isFitViewport(), false) 
+            .attr("responsive", dialog.isResponsive(), false) 
             .callback("onHide", "function()", dialog.getOnHide())
             .callback("onShow", "function()", dialog.getOnShow());
         

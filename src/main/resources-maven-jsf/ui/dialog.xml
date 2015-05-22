@@ -212,6 +212,13 @@
             <defaultValue>fixed</defaultValue>
             <description>Defines whether dialog will be kept in viewport on scroll (fixed) or keep its position (absolute). Default is fixed.</description>
         </attribute>
+        <attribute>
+			<name>responsive</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+			<description>In responsive mode, dialog adjusts itself based on screen width.</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>
