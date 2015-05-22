@@ -1129,7 +1129,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             'top': top,
             'z-index': ++PrimeFaces.zindex
         }).show();
-
+        e.stopPropagation();
         e.preventDefault();
         e.stopPropagation();
     },
