@@ -28,6 +28,13 @@
     border: 0px none;
 }
 
+.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-content.ui-widget-content, 
+.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-header.ui-widget-header,
+.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-footer.ui-widget-header {
+    background: none;
+    border: 0 none;
+}
+
 /* Grid CSS */
 .ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
     border: 0 none;
