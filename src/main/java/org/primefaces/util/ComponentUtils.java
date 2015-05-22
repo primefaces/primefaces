@@ -441,4 +441,17 @@ public class ComponentUtils {
         }
         return sb.toString();
     }
+    
+    /**
+     * Use {@link ComponentTraversalUtils#closestForm(javax.faces.context.FacesContext, javax.faces.component.UIComponent)} instead.
+     * 
+     * @param context
+     * @param component
+     * @return
+     * @deprecated
+     */
+    @Deprecated
+    public static UIComponent findParentForm(FacesContext context, UIComponent component) {
+        return ComponentTraversalUtils.closestForm(context, component);
+    }
 }
