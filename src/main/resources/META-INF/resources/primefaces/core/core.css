@@ -33,3 +33,146 @@ ui-overlay-visible * {
 .ui-icon-blank { 
     background-position: 16px 16px; 
 }
+
+/** Fluid **/
+.ui-fluid * {
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
+}
+
+/** InputText **/
+.ui-fluid .ui-inputtext {
+    width: 100%;
+}
+
+/** InputTextarea **/
+.ui-fluid .ui-inputtextarea {
+    width: 100%;
+}
+
+/** SelectOneMenu **/
+.ui-fluid .ui-selectonemenu {
+    width: 100%;
+}
+.ui-selectonemenu .ui-selectonemenu-trigger {
+    width: 32px;
+    padding: 0 6px;
+}
+
+/** Caşendar **/
+.ui-calendar, .ui-calendar input {
+    width: 100%;
+}
+
+/** Spinner **/
+.ui-fluid .ui-spinner {
+    width: 100%;
+}
+.ui-fluid .ui-spinner .ui-spinner-input {
+    padding-right: 36px;
+    width: 100%;
+}
+.ui-fluid .ui-spinner .ui-spinner-button {
+    width: auto;
+}
+.ui-fluid .ui-spinner .ui-spinner-button .ui-icon {
+    left: 6px;
+}
+
+/** AutoComplete **/
+.ui-fluid .ui-autocomplete,
+.ui-fluid .ui-autocomplete-input {
+    width: 100%;
+}
+
+/** InputMask **/
+.ui-fluid .ui-inputmask {
+    width: 100%;
+}
+
+/** Password **/
+.ui-fluid .ui-password {
+    width: 100%;
+}
+
+/** Keyboard **/
+.ui-keyboard-input {
+    width: 100%;
+}
+
+/** CheckboxMenu **/
+.ui-fluid .ui-selectcheckboxmenu {
+    width: 100%;
+}
+
+.ui-fluid .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.ui-fluid .ui-selectcheckboxmenu-trigger {
+    width: 32px;
+}
+
+/** Button **/
+.ui-fluid .ui-button {
+    width: 100%;
+}
+
+/** ButtonSet **/
+.ui-fluid .ui-buttonset {
+    width: 100%;
+}
+
+.ui-fluid .ui-buttonset.ui-buttonset-1 .ui-button {width: 100%;}
+.ui-fluid .ui-buttonset.ui-buttonset-2 .ui-button {width: 50%;}
+.ui-fluid .ui-buttonset.ui-buttonset-3 .ui-button {width: 33%;}
+.ui-fluid .ui-buttonset.ui-buttonset-4 .ui-button {width: 25%;}
+.ui-fluid .ui-buttonset.ui-buttonset-5 .ui-button {width: 20%;}
+.ui-fluid .ui-buttonset.ui-buttonset-6 .ui-button {width: 16%;}
+
+@media (max-width: 35em) {
+    .ui-fluid .ui-buttonset.ui-buttonset-1 .ui-button,
+    .ui-fluid .ui-buttonset.ui-buttonset-2 .ui-button,
+    .ui-fluid .ui-buttonset.ui-buttonset-3 .ui-button,
+    .ui-fluid .ui-buttonset.ui-buttonset-4 .ui-button,
+    .ui-fluid .ui-buttonset.ui-buttonset-5 .ui-button,
+    .ui-fluid .ui-buttonset.ui-buttonset-6 .ui-button {
+        width: 100%;
+    }
+}
+
+/** SplitButton **/
+.ui-fluid .ui-splitbutton .ui-button {
+    width: 96%;
+}
+.ui-fluid .ui-splitbutton .ui-button.ui-splitbutton-menubutton {
+    width: 4%;
+}
+
+@media (max-width: 35em) {
+    .ui-fluid .ui-splitbutton .ui-button {
+        width: 90%;
+    }
+    .ui-fluid .ui-splitbutton .ui-button.ui-splitbutton-menubutton {
+        width: 10%;
+    }
+}
+
+/** Listbox **/
+.ui-selectonelistbox,
+.ui-selectmanymenu {
+    width: 100%;
+}
+
+/** Tree **/
+.ui-fluid .ui-tree {
+    width: 100%;
+}
+
+/** Menu **/
+.ui-fluid .ui-menu {
+    width: 100%;
+}
