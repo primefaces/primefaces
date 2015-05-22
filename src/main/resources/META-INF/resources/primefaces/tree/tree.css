@@ -215,3 +215,8 @@
 .ui-tree .ui-treenode-outline {
     outline: 1px dotted;
 }
+
+/** Fluid **/
+.ui-fluid .ui-tree {
+    width: 100%;
+}

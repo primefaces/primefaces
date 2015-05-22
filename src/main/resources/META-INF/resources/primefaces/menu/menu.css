@@ -486,5 +486,7 @@
     }
 }
 
-
-
+/* Fluid */
+.ui-fluid .ui-menu {
+    width: 100%;
+}
