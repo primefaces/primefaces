@@ -1032,7 +1032,6 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                     .on(event, rowSelector, null, function(e) {
                     	PrimeFaces.widgets[_self.cfg.targetWidgetVar].onRowRightClick(e, $(this));
                         _self.show(e);
-                        e.preventDefault();
                     });
     },
     
@@ -1049,7 +1048,6 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                         if($this.cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === $this.cfg.nodeType) {
                         	PrimeFaces.widgets[$this.cfg.targetWidgetVar].nodeRightClick(e, nodeContent);
                             $this.show(e);
-                            e.preventDefault();
                         }
                     });
                                     
@@ -1057,7 +1055,6 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                     .on(containerEvent, this.jqTargetId, null, function(e) {
                 if(PrimeFaces.widgets[$this.cfg.targetWidgetVar].isEmpty()) {
                     $this.show(e);
-                    e.preventDefault();
                 }
         });
     },
@@ -1134,6 +1131,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         }).show();
 
         e.preventDefault();
+        e.stopPropagation();
     },
     
     hide: function() {
