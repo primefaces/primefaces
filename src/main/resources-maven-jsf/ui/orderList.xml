@@ -104,6 +104,13 @@
 			<defaultValue>left</defaultValue>
             <description>Location of the order controls, valid values are "left" (default), "right" and none.</description>
 		</attribute>
+        <attribute>
+			<name>responsive</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>In responsive mode, orderList adjusts itself based on screen width.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

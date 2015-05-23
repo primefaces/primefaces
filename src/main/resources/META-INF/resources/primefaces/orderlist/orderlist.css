@@ -1,3 +1,11 @@
+.ui-orderlist {
+    display: table;
+}
+
+.ui-orderlist .ui-orderlist-caption {
+    width: 180px;
+}
+
 .ui-orderlist .ui-orderlist-list {
     list-style-type: none;
     margin: 0;
@@ -45,4 +53,34 @@
 
 .ui-orderlist.ui-state-disabled .ui-orderlist-list {
     overflow:hidden;
+}
+
+/** Responsive **/
+@media (max-width: 35em) { 
+    .ui-orderlist.ui-grid-responsive .ui-orderlist-controls {
+        text-align: center;
+    }
+
+    .ui-orderlist.ui-grid-responsive .ui-button {
+        display: inline;
+    }
+    
+    .ui-fluid .ui-orderlist.ui-grid-responsive .ui-orderlist-controls .ui-button {
+        width: 20%;
+    }
+}
+
+/** Fluid **/
+.ui-fluid .ui-orderlist {
+    display: block;
+    width: 100%;
+}
+
+.ui-fluid .ui-orderlist-controls {
+    margin-right: 10px
+}
+
+.ui-fluid .ui-orderlist .ui-orderlist-list,
+.ui-fluid .ui-orderlist .ui-orderlist-caption {
+    width: 100%;
 }

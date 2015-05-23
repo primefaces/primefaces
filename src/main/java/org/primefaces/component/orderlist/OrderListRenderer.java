@@ -65,15 +65,19 @@ public class OrderListRenderer extends CoreRenderer {
             styleClass = styleClass + " ui-state-disabled"; 
         }
         
-        writer.startElement("table", ol);
+        if(ol.isResponsive()) {
+            styleClass = styleClass + " ui-grid-responsive"; 
+        }
+        
+        writer.startElement("div", ol);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
         if(style != null) {
             writer.writeAttribute("style", style, null);
         }
         
-        writer.startElement("tbody", null);
-		writer.startElement("tr", null);
+		writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-grid-row", null);
         
         if(controlsLocation.equals("left")) {
             encodeControls(context, ol);
@@ -85,9 +89,8 @@ public class OrderListRenderer extends CoreRenderer {
             encodeControls(context, ol);
         }
 
-        writer.endElement("tr");
-        writer.endElement("tbody");
-        writer.endElement("table");
+        writer.endElement("div");
+        writer.endElement("div");
     }
     
     protected void encodeList(FacesContext context, OrderList ol) throws IOException {
@@ -95,8 +98,10 @@ public class OrderListRenderer extends CoreRenderer {
         String clientId = ol.getClientId(context);
         UIComponent caption = ol.getFacet("caption");
         String listStyleClass = OrderList.LIST_CLASS;
+        String columnGridClass = ol.getControlsLocation().equals("none") ? "ui-grid-col-12" : "ui-grid-col-10";
 
-        writer.startElement("td", null);
+        writer.startElement("div", null);
+        writer.writeAttribute("class", columnGridClass, null);
         
         if(caption != null) {
             encodeCaption(context, caption);
@@ -114,7 +119,7 @@ public class OrderListRenderer extends CoreRenderer {
 
         encodeInput(context, clientId + "_values");
 
-        writer.endElement("td");
+        writer.endElement("div");
     }
     
     protected void encodeInput(FacesContext context, String clientId) throws IOException {
@@ -134,13 +139,13 @@ public class OrderListRenderer extends CoreRenderer {
     protected void encodeControls(FacesContext context, OrderList ol) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
-        writer.startElement("td", null);
+        writer.startElement("div", null);
         writer.writeAttribute("class", OrderList.CONTROLS_CLASS, null);
         encodeButton(context, ol.getMoveUpLabel(), OrderList.MOVE_UP_BUTTON_CLASS, OrderList.MOVE_UP_BUTTON_ICON_CLASS);
         encodeButton(context, ol.getMoveTopLabel(), OrderList.MOVE_TOP_BUTTON_CLASS, OrderList.MOVE_TOP_BUTTON_ICON_CLASS);
         encodeButton(context, ol.getMoveDownLabel(), OrderList.MOVE_DOWN_BUTTON_CLASS, OrderList.MOVE_DOWN_BUTTON_ICON_CLASS);
         encodeButton(context, ol.getMoveBottomLabel(), OrderList.MOVE_BOTTOM_BUTTON_CLASS, OrderList.MOVE_BOTTOM_BUTTON_ICON_CLASS);
-        writer.endElement("td");
+        writer.endElement("div");
     }
     
     @SuppressWarnings("unchecked")

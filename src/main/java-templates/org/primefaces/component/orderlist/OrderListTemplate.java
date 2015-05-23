@@ -13,9 +13,9 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 
-    public static final String CONTAINER_CLASS = "ui-orderlist ui-widget";
+    public static final String CONTAINER_CLASS = "ui-orderlist ui-grid ui-widget";
     public static final String LIST_CLASS = "ui-widget-content ui-orderlist-list";
-    public static final String CONTROLS_CLASS = "ui-orderlist-controls";
+    public static final String CONTROLS_CLASS = "ui-orderlist-controls ui-grid-col-2";
     public static final String CAPTION_CLASS = "ui-orderlist-caption ui-widget-header ui-corner-top";
     public static final String ITEM_CLASS = "ui-orderlist-item ui-corner-all";
     public static final String MOVE_UP_BUTTON_CLASS = "ui-orderlist-button-move-up";
