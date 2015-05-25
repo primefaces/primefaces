@@ -581,7 +581,9 @@ PrimeFaces.ajax = {
                         break;
 
                     case "changes":
-                        var activeElementId = $(document.activeElement).attr('id');
+                        var activeElement = $(document.activeElement);
+                        var activeElementId = activeElement.attr('id');
+                        var activeElementSelection = activeElement.getSelection();
 
                         for (var j = 0; j < currentNode.childNodes.length; j++) {
                             var currentChangeNode = currentNode.childNodes[j];
@@ -607,7 +609,7 @@ PrimeFaces.ajax = {
                             }
                         }
 
-                        PrimeFaces.ajax.Response.handleReFocus(activeElementId);
+                        PrimeFaces.ajax.Response.handleReFocus(activeElementId, activeElementSelection);
                         PrimeFaces.ajax.Response.destroyDetachedWidgets();
                         break;
 
@@ -626,7 +628,7 @@ PrimeFaces.ajax = {
             }
         },
 
-        handleReFocus : function(activeElementId) {
+        handleReFocus : function(activeElementId, activeElementSelection) {
             // re-focus element
             if (PrimeFaces.customFocus === false
                     && activeElementId
@@ -636,12 +638,22 @@ PrimeFaces.ajax = {
                 var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));
                 elementToFocus.focus();
 
+                if (activeElementSelection && activeElementSelection.start) {
+                    elementToFocus.setSelection(activeElementSelection.start, activeElementSelection.end);
+                }
+
                 // double check it - required for IE
                 setTimeout(function() {
                     if (!elementToFocus.is(":focus")) {
                         elementToFocus.focus();
+                        if (activeElementSelection && activeElementSelection.start) {
+                            elementToFocus.setSelection(activeElementSelection.start, activeElementSelection.end);
+                        }
                     }
                 }, 150);
+                
+                
+                
             }
 
             PrimeFaces.customFocus = false;
