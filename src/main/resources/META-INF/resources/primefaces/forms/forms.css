@@ -605,6 +605,18 @@ div.ui-button, .ui-splitbutton {
     width: 100%;
 }
 
+/** Radio - Checkbox **/
+.ui-fluid .ui-radiobutton .ui-radiobutton-box {
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+}
+
+.ui-fluid .ui-chkbox .ui-chkbox-box {
+    width: 18px;
+    height: 18px;
+}
+
 /** Spinner **/
 .ui-fluid .ui-spinner {
     width: 100%;
