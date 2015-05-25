@@ -710,15 +710,13 @@ import org.primefaces.util.SharedStringBuilder;
     }
 
     public Object getRowData(String rowKey) {
-        if (getDataModel() != null && getDataModel() instanceof LazyDataModel) {
-            DataModel model = getDataModel();
-            if(!(model instanceof SelectableDataModel)) {
-                throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled or you need to define rowKey attribute");
-            }
-
-            return ((SelectableDataModel) getDataModel()).getRowData(rowKey);
-        }
-        else {
+        
+        boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
+        DataModel model = getDataModel();
+ 
+        // use rowKey if available and if != lazy
+        // lazy must implement #getRowData
+        if (hasRowKeyVe && !(model instanceof LazyDataModel)) {
             Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
             String var = this.getVar();
             Collection data = (Collection) getDataModel().getWrappedData();
@@ -731,8 +729,15 @@ import org.primefaces.util.SharedStringBuilder;
                     return object;
                 }
             }
-
+            
             return null;
+        }
+        else {
+            if(!(model instanceof SelectableDataModel)) {
+                throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled or you need to define rowKey attribute");
+            }
+
+            return ((SelectableDataModel) model).getRowData(rowKey);
         }
     }
 
