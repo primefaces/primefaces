@@ -135,6 +135,12 @@ public class OutputLabelRenderer extends CoreRenderer {
     
     protected boolean isNotNullDefined(UIInput input, FacesContext context) {
 
+        // skip @NotNull check
+        // see GitHub #14
+        if (!RequestContext.getCurrentInstance().getApplicationContext().getConfig().isInterpretEmptyStringAsNull()) {
+            return false;
+        }
+        
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
                     context, RequestContext.getCurrentInstance(), input.getValueExpression("value"));

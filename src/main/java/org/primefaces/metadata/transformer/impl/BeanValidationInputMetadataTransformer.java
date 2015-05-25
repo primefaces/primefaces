@@ -77,7 +77,9 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         }
         
         if (!editableValueHolder.isRequired()) {
-            if (constraint.annotationType().equals(NotNull.class)) {
+            if (constraint.annotationType().equals(NotNull.class)
+                    // see GitHub #14
+                    && RequestContext.getCurrentInstance().getApplicationContext().getConfig().isInterpretEmptyStringAsNull()) {
                 markAsRequired(input, true);
             }
         }
