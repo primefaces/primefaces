@@ -30,6 +30,7 @@ import org.primefaces.component.api.AjaxSource;
 
 @ResourceDependencies({
 	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
+    @ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
 	@ResourceDependency(library="primefaces", name="primefaces.js")
 })
 public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
