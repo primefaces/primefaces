@@ -120,7 +120,7 @@ public abstract class InputRenderer extends CoreRenderer {
 
         String itemLabel = itemLabelValue == null ? String.valueOf(value) : String.valueOf(itemLabelValue);
         boolean disabled = itemDisabled == null ? false : Boolean.valueOf(itemDisabled.toString());
-        boolean escaped = itemEscaped == null ? false : Boolean.valueOf(itemEscaped.toString());
+        boolean escaped = itemEscaped == null ? true : Boolean.valueOf(itemEscaped.toString());
         boolean noSelectionOption = noSelection == null ? false : Boolean.valueOf(noSelection.toString());
         
         if(var != null) {
