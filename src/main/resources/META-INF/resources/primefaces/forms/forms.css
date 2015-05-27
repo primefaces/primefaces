@@ -595,7 +595,7 @@ div.ui-button, .ui-splitbutton {
 .ui-fluid .ui-selectonemenu {
     width: 100%;
 }
-.ui-selectonemenu .ui-selectonemenu-trigger {
+.ui-fluid .ui-selectonemenu .ui-selectonemenu-trigger {
     width: 32px;
     padding: 0 6px;
 }
