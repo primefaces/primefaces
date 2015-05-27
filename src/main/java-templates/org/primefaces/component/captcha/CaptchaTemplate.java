@@ -77,7 +77,7 @@ import org.primefaces.context.PrimeExternalContext;
     private String createPostParameters(FacesContext facesContext, Verification verification) throws UnsupportedEncodingException {
 		String challenge = verification.getChallenge();
 		String answer = verification.getAnswer();
-		String remoteAddress = ((PrimeExternalContext) facesContext.getExternalContext()).getRemoteAddr();
+		String remoteAddress = PrimeExternalContext.getCurrentInstance(facesContext).getRemoteAddr();
         String privateKey = null;
 		String oldPrivateKey = facesContext.getExternalContext().getInitParameter(Captcha.OLD_PRIVATE_KEY);
         String newPrivateKey = facesContext.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);

@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.ExternalContextWrapper;
+import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 public class PrimeExternalContext extends ExternalContextWrapper {
@@ -67,5 +68,24 @@ public class PrimeExternalContext extends ExternalContextWrapper {
         catch (ClassNotFoundException e) {
             return false;
         }
+    }
+    
+    public static PrimeExternalContext getCurrentInstance(FacesContext facesContext) {
+        ExternalContext externalContext = facesContext.getExternalContext();
+
+        while (externalContext != null) {
+            if (externalContext instanceof PrimeExternalContext) {
+                return (PrimeExternalContext) externalContext;
+            }
+            
+            if (externalContext instanceof ExternalContextWrapper) {
+                externalContext = ((ExternalContextWrapper) externalContext).getWrapped();
+            }
+            else {
+                return null;
+            }
+        }
+        
+        return null;
     }
 }
