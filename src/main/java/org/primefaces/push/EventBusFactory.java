@@ -16,24 +16,32 @@
 package org.primefaces.push;
 
 import org.atmosphere.cpr.MetaBroadcaster;
-import org.primefaces.push.impl.EventBusImpl;
+
+import javax.inject.Inject;
 
 /**
  * A Factory for retrieving the current {@link EventBus}
+ * @Deprecated
+ * Used @Inject EventBus instead
  */
 public class EventBusFactory {
 
-    private final EventBus eventBus;
+    @Inject
+    private EventBus eventBus;
+
+    @Inject
+    private MetaBroadcaster metaBroadcaster;
+
     private static EventBusFactory f = null;
 
-    protected EventBusFactory(MetaBroadcaster metaBroadcaster) {
-        eventBus = new EventBusImpl(metaBroadcaster);
+    public EventBusFactory() {
         f = this;
     }
 
     /**
      * Return the default factory
      * @return the default factory
+     * @Deprecated Use @Inject EventBus instead
      */
     public final static EventBusFactory getDefault() {
         return f;

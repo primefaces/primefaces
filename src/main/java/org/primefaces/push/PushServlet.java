@@ -89,8 +89,11 @@ public class PushServlet extends AtmosphereServlet {
             framework().asyncSupportListener(PushContextImpl.class.cast(c));
         }
 
-        EventBusFactory f = new EventBusFactory(framework().getAtmosphereConfig().metaBroadcaster());
-        framework().getAtmosphereConfig().properties().put("evenBus", f.eventBus());
+        try {
+            framework().newClassInstance(EventBusFactory.class,EventBusFactory.class);
+        } catch (Exception ex) {
+            logger.warn("", ex);
+        }
 
         if (framework().getAtmosphereHandlers().size() == 0) {
             logger.error("No Annotated class using @PushEndpoint found. Push will not work.");

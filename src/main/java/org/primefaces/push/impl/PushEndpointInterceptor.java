@@ -48,7 +48,7 @@ public class PushEndpointInterceptor extends ManagedServiceInterceptor {
         return config.framework().newClassInstance(AnnotatedProxy.class, PushEndpointHandlerProxy.class);
     }
 
-    protected ManagedAnnotation managed(AnnotatedProxy ap, final AtmosphereResource r) {
+    protected ManagedAnnotation managed(AnnotatedProxy ap, final Class<? extends Broadcaster> aClass){
         final PushEndpoint a = ap.target().getClass().getAnnotation(PushEndpoint.class);
         if (a == null) return null;
 
@@ -58,7 +58,7 @@ public class PushEndpointInterceptor extends ManagedServiceInterceptor {
             }
 
             public Class<? extends Broadcaster> broadcaster() {
-                return r.getBroadcaster().getClass();
+                return aClass;
             }
         };
     }
