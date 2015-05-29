@@ -75,7 +75,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         $(document).off('keydown.dialog_' + cfg.id);
 
         if(cfg.appendTo) {
-            var jqs = $(this.jqId);
+            var jqs = $('[id=' + cfg.id + ']');
             if(jqs.length > 1) {
             	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.appendTo).children(this.jqId).remove();
             }
