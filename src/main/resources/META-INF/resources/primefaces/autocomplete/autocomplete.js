@@ -661,10 +661,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     removeItem: function(event, item) {
         var itemValue = item.attr('data-token-value'),
+        itemIndex = this.multiItemContainer.children('li.ui-autocomplete-token').index(item),
         $this = this;
 
         //remove from options
-        this.hinput.children('option').filter('[value="' + itemValue + '"]').remove();
+        this.hinput.children('option').eq(itemIndex).remove();
 
         //remove from items
         item.fadeOut('fast', function() {
