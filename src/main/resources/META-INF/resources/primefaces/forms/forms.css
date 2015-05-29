@@ -601,7 +601,7 @@ div.ui-button, .ui-splitbutton {
 }
 
 /** Calendar **/
-.ui-calendar, .ui-calendar input {
+.ui-fluid .ui-calendar, .ui-calendar input {
     width: 100%;
 }
 
@@ -649,7 +649,7 @@ div.ui-button, .ui-splitbutton {
 }
 
 /** Keyboard **/
-.ui-keyboard-input {
+.ui-fluid .ui-keyboard-input {
     width: 100%;
 }
 
@@ -714,7 +714,7 @@ div.ui-button, .ui-splitbutton {
 }
 
 /** Listbox **/
-.ui-selectonelistbox,
-.ui-selectmanymenu {
+.ui-fluid .ui-selectonelistbox,
+.ui-fluid .ui-selectmanymenu {
     width: 100%;
 }
