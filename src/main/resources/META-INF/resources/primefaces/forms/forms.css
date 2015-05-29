@@ -601,7 +601,7 @@ div.ui-button, .ui-splitbutton {
 }
 
 /** Calendar **/
-.ui-fluid .ui-calendar, .ui-calendar input {
+.ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
     width: 100%;
 }
 
