@@ -311,7 +311,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 return;
             }
             
-            encodeOptionInput(context, checkbox, id, name, selected, disabled, name);
+            encodeOptionInput(context, checkbox, id, name, selected, disabled, itemValueAsString);
             idx++;
         }
     }
