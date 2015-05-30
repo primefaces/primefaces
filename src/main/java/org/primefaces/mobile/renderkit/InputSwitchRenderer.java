@@ -45,6 +45,9 @@ public class InputSwitchRenderer extends org.primefaces.component.inputswitch.In
         String style = inputSwitch.getStyle();
         String styleClass = inputSwitch.getStyleClass();
         styleClass = (styleClass == null) ? UISwitch.CONTAINER_CLASS: UISwitch.CONTAINER_CLASS + " " + styleClass;
+        if(checked) {
+            styleClass = styleClass + "  ui-flipswitch-active";
+        }
         
         writer.startElement("div", inputSwitch);
         writer.writeAttribute("id", clientId, "id");
