@@ -62,6 +62,13 @@
 			<defaultValue>true</defaultValue>
             <description>Starts slideshow automatically on page load. Default is true.</description>
 		</attribute>
+        <attribute>
+			<name>activeIndex</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Index of the first image, default is 0.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
