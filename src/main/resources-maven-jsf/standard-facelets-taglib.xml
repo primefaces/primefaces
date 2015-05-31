@@ -287,6 +287,7 @@
         <tag-name>confirm</tag-name>
         <behavior>
             <behavior-id>org.primefaces.behavior.ConfirmBehavior</behavior-id>
+            <handler-class>org.primefaces.behavior.confirm.ConfirmBehaviorHandler</handler-class>
         </behavior>
 		<attribute>
 			<description>Header text of the confirmation dialog.</description>

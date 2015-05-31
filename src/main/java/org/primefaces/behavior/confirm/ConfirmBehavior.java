@@ -17,18 +17,28 @@ package org.primefaces.behavior.confirm;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
+import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.json.JSONObject;
 
-public class ConfirmBehavior extends ClientBehaviorBase {
+public class ConfirmBehavior extends AbstractBehavior {
 
-    private String header;
-    private String message;
-    private String icon;
+    public final static String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";
+    
+    public enum PropertyKeys {
+        header(String.class),
+        message(String.class),
+        icon(String.class);
+        
+        final Class<?> expectedType;
 
+        PropertyKeys(Class<?> expectedType) {
+            this.expectedType = expectedType;
+        }
+    }
+    
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
         FacesContext context = behaviorContext.getFacesContext();
@@ -46,28 +56,32 @@ public class ConfirmBehavior extends ClientBehaviorBase {
         }
         else {
             throw new FacesException("Component " + source + " is not a Confirmable. ConfirmBehavior can only be attached to components that implement org.primefaces.component.api.Confirmable interface");
-        }
-        
+        }   
+    }
+    
+    @Override
+    protected Enum<?>[] getAllProperties() {
+        return PropertyKeys.values();
     }
     
     public String getHeader() {
-        return header;
+        return eval(PropertyKeys.header, null);
     }
     public void setHeader(String header) {
-        this.header = header;
+        setLiteral(PropertyKeys.header, header);
     }
 
     public String getMessage() {
-        return message;
+        return eval(PropertyKeys.message, null);
     }
     public void setMessage(String message) {
-        this.message = message;
+        setLiteral(PropertyKeys.message, message);
     }
-
+    
     public String getIcon() {
-        return icon;
+        return eval(PropertyKeys.icon, null);
     }
     public void setIcon(String icon) {
-        this.icon = icon;
-    }    
+        setLiteral(PropertyKeys.icon, icon);
+    }
 }
