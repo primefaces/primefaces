@@ -101,10 +101,16 @@ public class DataGridRenderer extends DataRenderer {
         writer.writeAttribute("id", clientId + "_content", null);
         writer.writeAttribute("class", contentClass, null);
 
-        if(empty)
-            writer.write(grid.getEmptyMessage());
-        else
+        if(empty) {
+            UIComponent emptyFacet = grid.getFacet("emptyMessage");
+            if(emptyFacet != null)
+                emptyFacet.encodeAll(context);
+            else
+                writer.write(grid.getEmptyMessage());
+        }
+        else {
             encodeContent(context, grid);
+        }
         
         writer.endElement("div");
 
