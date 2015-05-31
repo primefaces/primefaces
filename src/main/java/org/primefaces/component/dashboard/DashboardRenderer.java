@@ -56,9 +56,16 @@ public class DashboardRenderer extends CoreRenderer {
 		DashboardModel model = dashboard.getModel();
 		if(model != null) {
 			for(DashboardColumn column : model.getColumns()) {
+                String columnStyle = column.getStyle();
+                String columnStyleClass = column.getStyleClass();
+                columnStyleClass = (columnStyleClass == null) ? Dashboard.COLUMN_CLASS : Dashboard.COLUMN_CLASS + " " + columnStyleClass;
+                
 				writer.startElement("div", null);
-				writer.writeAttribute("class", Dashboard.COLUMN_CLASS, null);
-				
+				writer.writeAttribute("class", columnStyleClass, null);
+                if(columnStyle != null) {
+                    writer.writeAttribute("style", columnStyle, null);
+                }
+                
 				for(String widgetId : column.getWidgets()) {
 					Panel widget = findWidget(widgetId, dashboard);
 					

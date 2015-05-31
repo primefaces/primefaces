@@ -22,6 +22,8 @@ import java.util.List;
 public class DefaultDashboardColumn implements DashboardColumn, Serializable {
 
 	private List<String> widgets;
+    private String style;
+    private String styleClass;
 	
 	public DefaultDashboardColumn() {
 		widgets = new LinkedList<String>();
@@ -55,4 +57,20 @@ public class DefaultDashboardColumn implements DashboardColumn, Serializable {
 	public void addWidget(String widgetId) {
 		widgets.add(widgetId);
 	}
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
 }
