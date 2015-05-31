@@ -26,6 +26,10 @@ PrimeFaces.dialog.DialogHandler = {
             titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
         }
         
+        if(cfg.options.positionType == 'absolute') {
+        	dialogDOM.addClass(' ui-dialog-absolute');
+        }
+        
         dialogDOM.append('<div class="ui-dialog-content ui-widget-content" style="height: auto;">' +
                 '<iframe style="border:0 none" frameborder="0"/>' + 
                 '</div>');
@@ -75,7 +79,8 @@ PrimeFaces.dialog.DialogHandler = {
                     width: cfg.options.width,
                     height: cfg.options.height,
                     minimizable: cfg.options.minimizable,
-                    maximizable: cfg.options.maximizable
+                    maximizable: cfg.options.maximizable,
+                    positionType: cfg.options.positionType
                 });
             }
             
