@@ -61,6 +61,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             this.target.off(showEvent + ' ' + hideEvent).on(showEvent, function(e) {
                 if(!$this.isVisible()) {
                     $this.show();
+                    if(showEvent === 'contextmenu.ui-overlaypanel') {
+                        e.preventDefault();
+                    }
                 }
             })
             .on(hideEvent, function(e) {
