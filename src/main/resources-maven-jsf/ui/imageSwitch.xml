@@ -24,6 +24,13 @@
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
 		<attribute>
+			<name>activeIndex</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>0</defaultValue>
+            <description>Index of the initial image to display. Default is 0.</description>
+		</attribute>
+		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
