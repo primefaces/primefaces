@@ -83,7 +83,7 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
         }
         
         writer.write(",tickOptions:{");
-        writer.write("angle:\"" + tickAngle+ "\"");
+        writer.write("angle:" + tickAngle);
         if(tickFormat != null) {
             writer.write(",formatString:\"" + tickFormat + "\"");
         }
