@@ -535,6 +535,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
 
     dock: function(zone) {
+        zone.css('z-index', this.jq.css('z-index'));
         this.jq.appendTo(zone).css('position', 'static');
         this.jq.css({'height':'auto', 'width':'auto', 'float': 'left'});
         this.content.hide();
