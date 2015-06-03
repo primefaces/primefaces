@@ -832,13 +832,13 @@ import org.primefaces.util.SharedStringBuilder;
                         }
                     }
                     else if(kid instanceof Column) {
-                        columnsCount++;
+                        columnsCount += ((Column) kid).getColspan();
                     } 
                     else if(kid instanceof SubTable) {
                         SubTable subTable = (SubTable) kid;
                         for(UIComponent subTableKid : subTable.getChildren()) {
                             if(subTableKid.isRendered() && subTableKid instanceof Column) {
-                                columnsCount++;
+                                columnsCount += ((Column) subTableKid).getColspan();
                             }
                         }
                     }
