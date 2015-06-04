@@ -44,8 +44,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.skinInput(this.input);
 
             this.input.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-            this.dropdown.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
         }
+        
+        this.dropdown.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
         //core events
         this.bindStaticEvents();

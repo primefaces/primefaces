@@ -39,6 +39,7 @@ import javax.faces.component.behavior.Behavior;
     public final static String TOKEN_ICON_CLASS = "ui-autocomplete-token-icon ui-icon ui-icon-close";
     public final static String TOKEN_INPUT_CLASS = "ui-autocomplete-input-token";
     public final static String MULTIPLE_CONTAINER_CLASS = "ui-autocomplete-multiple-container ui-widget ui-inputfield ui-state-default ui-corner-all";
+    public final static String MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS = "ui-autocomplete-multiple-container ui-widget ui-inputfield ui-state-default ui-corner-left";
     public final static String ITEMTIP_CONTENT_CLASS = "ui-autocomplete-itemtip-content";
 
     public final static String MOBILE_INPUT_CONTAINER_CLASS = "ui-input-search ui-body-inherit ui-corner-all ui-shadow-inset ui-input-has-clear";
