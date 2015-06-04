@@ -321,7 +321,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         List values = (List) ac.getValue();
         List<String> stringValues = new ArrayList<String>();
         boolean disabled = ac.isDisabled();
-        String tabindex = ac.getTabindex();
         
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
@@ -395,6 +394,10 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.endElement("li");
         
         writer.endElement("ul");
+        
+        if(ac.isDropdown()) {
+            encodeDropDown(context, ac);
+        }
                         
         encodePanel(context, ac);
         
