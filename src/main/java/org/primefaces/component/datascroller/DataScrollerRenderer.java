@@ -60,10 +60,6 @@ public class DataScrollerRenderer extends CoreRenderer {
         String userStyleClass = ds.getStyleClass();
         String styleClass = (userStyleClass == null) ? containerClass : containerClass + " " + userStyleClass;
         
-        if(ds.isLazy()) {
-            loadLazyData(ds, 0, chunkSize);
-        }
-        
         writer.startElement("div", ds);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
