@@ -790,7 +790,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.panel.position({
                     my: 'left top'
                     ,at: 'left bottom'
-                    ,of: this.input
+                    ,of: this.cfg.multiple ? this.jq : this.input
                 });
         }
     },
