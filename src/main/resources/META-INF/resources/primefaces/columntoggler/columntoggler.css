@@ -2,6 +2,7 @@
     padding: 0;
     position: absolute;
     overflow: auto;
+    display: none;
 }
 
 .ui-columntoggler .ui-columntoggler-items {
