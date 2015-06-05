@@ -1803,3 +1803,10 @@
 .fa-medium:before {
   content: "\f23a";
 }
+
+/* PrimeFaces icon reset */
+.ui-widget .ui-icon.fa, 
+.ui-icon.fa {
+    background: none repeat scroll 0 0 transparent !important;
+    text-indent: 0px !important;
+}
