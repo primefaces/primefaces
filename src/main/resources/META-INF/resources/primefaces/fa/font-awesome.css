@@ -1803,14 +1803,3 @@
 .fa-medium:before {
   content: "\f23a";
 }
-
-/* PrimeFaces icon reset */
-.ui-widget .ui-icon.fa, 
-.ui-icon.fa {
-    background-image: none;
-    text-indent: 0px;
-    background-repeat: no-repeat;
-    display: block;
-    overflow: visible;
-    text-indent: 0px;
-}
