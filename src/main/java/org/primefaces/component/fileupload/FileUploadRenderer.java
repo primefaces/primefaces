@@ -93,6 +93,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
                 .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                 .attr("disabled", fileUpload.isDisabled(), false)
+                .attr("sequentialUploads", fileUpload.isSequential(), false)
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete());

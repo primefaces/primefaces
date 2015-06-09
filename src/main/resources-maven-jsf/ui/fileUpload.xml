@@ -196,6 +196,13 @@
 			<type>java.lang.String</type>
             <description>To filter files in native file browser dialog.</description>
 		</attribute>
+        <attribute>
+			<name>sequential</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Uploads are concurrent by defaukt, set this option to false for sequential uploads.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
