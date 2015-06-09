@@ -73,9 +73,7 @@ public abstract class BasePlotRenderer {
         if(extender != null)
             writer.write(",extender:" + extender);
         
-        if(!model.isResetAxesOnResize()) {
-            writer.write(",resetAxesOnResize:" + false);
-        }
-        
+        if(!model.isResetAxesOnResize())
+            writer.write(",resetAxesOnResize:" + false);        
     }
 }
