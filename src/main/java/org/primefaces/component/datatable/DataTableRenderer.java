@@ -830,7 +830,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", DataTable.EMPTY_MESSAGE_ROW_CLASS, null);
 
             writer.startElement("td", null);
-            writer.writeAttribute("colspan", table.getColumnsCount(), null);
+            writer.writeAttribute("colspan", table.getColumnsCountWithSpan(), null);
             
             if(emptyFacet != null)
                 emptyFacet.encodeAll(context);

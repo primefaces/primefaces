@@ -849,6 +849,38 @@ import org.primefaces.util.SharedStringBuilder;
         return columnsCount;
     }
     
+    int columnsCountWithSpan = -1;
+    
+    public int getColumnsCountWithSpan() {
+        if(columnsCountWithSpan == -1) {
+            columnsCountWithSpan = 0;
+
+            for(UIComponent kid : getChildren()) {
+                if(kid.isRendered()) {
+                    if(kid instanceof Columns) {
+                        int dynamicColumnsCount = ((Columns) kid).getRowCount();
+                        if(dynamicColumnsCount > 0) {
+                            columnsCountWithSpan += dynamicColumnsCount;
+                        }
+                    }
+                    else if(kid instanceof Column) {
+                        columnsCountWithSpan += ((Column) kid).getColspan();
+                    } 
+                    else if(kid instanceof SubTable) {
+                        SubTable subTable = (SubTable) kid;
+                        for(UIComponent subTableKid : subTable.getChildren()) {
+                            if(subTableKid.isRendered() && subTableKid instanceof Column) {
+                                columnsCountWithSpan += ((Column) subTableKid).getColspan();
+                            }
+                        }
+                    }
+                } 
+            }
+        }
+
+        return columnsCountWithSpan;
+    }
+    
     private List<UIColumn> columns;
     
     public List<UIColumn> getColumns() {
