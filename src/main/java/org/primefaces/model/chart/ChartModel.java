@@ -29,6 +29,7 @@ public class ChartModel implements Serializable {
     private LegendPlacement legendPlacement;
     private boolean mouseoverHighlight = true;
     private String extender;
+    private boolean resetAxesOnResize = true;
 
     public String getTitle() {
         return title;
@@ -101,7 +102,15 @@ public class ChartModel implements Serializable {
     public void setMouseoverHighlight(boolean mouseoverHighlight) {
         this.mouseoverHighlight = mouseoverHighlight;
     }
-    
+
+    public boolean isResetAxesOnResize() {
+        return resetAxesOnResize;
+    }
+
+    public void setResetAxesOnResize(boolean resetAxesOnResize) {
+        this.resetAxesOnResize = resetAxesOnResize;
+    }
+ 
     public String getExtender() {
         return extender;
     }
