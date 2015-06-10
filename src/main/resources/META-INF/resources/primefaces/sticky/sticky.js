@@ -17,6 +17,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
         var win = $(window),
         $this = this;
         
+        
         $(window).on('scroll.' + this.cfg.id, function() {
             if(win.scrollTop() > $this.initialState.top) {
                 $this.fix();
@@ -24,6 +25,15 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
             else {
                 $this.restore();
             }
+           
+        });
+
+        var offset = this.target.offset();
+        var offsetLeft = offset.left;
+        var offsetRight = win.width() - (offsetLeft + this.target.width());
+        
+        $(window).resize(function() {
+            $this.target.css({'width': win.width()-(offsetLeft+offsetRight)});
         });
     },
             
@@ -53,8 +63,8 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
     restore: function() {
         if(this.fixed) {
             this.target.css({
-                position: 'static',
-                top: 'auto',
+                'position': 'static',
+                'top': 'auto',
                 'width': this.initialState.width
             })
             .removeClass('ui-shadow ui-sticky');
