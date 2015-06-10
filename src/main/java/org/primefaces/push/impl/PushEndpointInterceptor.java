@@ -19,7 +19,6 @@ import org.atmosphere.config.managed.ManagedServiceInterceptor;
 import org.atmosphere.config.service.AtmosphereInterceptorService;
 import org.atmosphere.cpr.AtmosphereFramework;
 import org.atmosphere.cpr.AtmosphereRequest;
-import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.handler.AnnotatedProxy;
 import org.primefaces.push.annotation.PathParam;
@@ -48,7 +47,7 @@ public class PushEndpointInterceptor extends ManagedServiceInterceptor {
         return config.framework().newClassInstance(AnnotatedProxy.class, PushEndpointHandlerProxy.class);
     }
 
-    protected ManagedAnnotation managed(AnnotatedProxy ap, final Class<? extends Broadcaster> aClass){
+    protected ManagedAnnotation managed(AnnotatedProxy ap, final Class<? extends Broadcaster> aClass) {
         final PushEndpoint a = ap.target().getClass().getAnnotation(PushEndpoint.class);
         if (a == null) return null;
 
@@ -63,7 +62,7 @@ public class PushEndpointInterceptor extends ManagedServiceInterceptor {
         };
     }
 
-    protected void injectPathParams(Object o, Map<String, String> annotatedPathVars){
+    protected void injectPathParams(Object o, Map<String, String> annotatedPathVars) {
         /* now look for appropriate annotations and fill the variables accordingly */
         for (Field field : o.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(PathParam.class)) {

@@ -103,7 +103,7 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
         return this;
     }
 
-    AtmosphereResource resource() {
+    public AtmosphereResource resource() {
         return request.resource();
     }
 
