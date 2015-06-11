@@ -1957,7 +1957,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Displays row editors in invalid format
      */
     invalidateRow: function(index) {
-        this.tbody.children('tr').eq(index).addClass('ui-widget-content ui-row-editing ui-state-error');
+        var i = (this.paginator) ? (index % this.paginator.getRows()) : index;
+        this.tbody.children('tr').eq(i).addClass('ui-widget-content ui-row-editing ui-state-error');
     },
     
     /**
