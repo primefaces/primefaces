@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.context.RequestContext;
 
 import org.primefaces.expression.SearchExpressionFacade;
@@ -39,7 +40,7 @@ public class MessageRenderer extends UINotificationRenderer {
         String targetClientId = target.getClientId(context);
 
         encodeMarkup(context, uiMessage, targetClientId);
-        encodeScript(context, uiMessage, targetClientId);
+        encodeScript(context, uiMessage, target);
 	}
     
     protected void encodeMarkup(FacesContext context, Message uiMessage, String targetClientId) throws IOException {        
@@ -130,9 +131,10 @@ public class MessageRenderer extends UINotificationRenderer {
 		writer.endElement("span");
 	}
 
-    protected void encodeScript(FacesContext context, Message uiMessage, String targetClientId) throws IOException {
+    protected void encodeScript(FacesContext context, Message uiMessage, UIComponent target) throws IOException {
         if(uiMessage.getDisplay().equals("tooltip")) {
             String clientId = uiMessage.getClientId(context);
+            String targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
             WidgetBuilder wb = getWidgetBuilder(context);
 
             wb.initWithDomReady("Message", uiMessage.resolveWidgetVar(), clientId)
