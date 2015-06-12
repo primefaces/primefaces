@@ -1,0 +1,22 @@
+## Readme
+
+## Part 1
+### copy following files form JQM distribution 
+jquery.mobile.js, 
+jquery.mobile.css, 
+jquery.mobile.icons.css, 
+jquery.mobile.structure.css
+
+### note the change to file name
+jquery-mobile.js, 
+jquery-mobile.css, 
+jquery-mobile-icons.css, 
+jquery-mobile-structure.css
+
+### Update png and gif image location to jsf resource path location for following files
+jquery-mobile.css, 
+jquery-mobile-icons.css, 
+
+## Part 2
+Replace images folder with distribution images folder. 
+On JQM 1.4.5 release all images are exactly same as 1.4.4 release
