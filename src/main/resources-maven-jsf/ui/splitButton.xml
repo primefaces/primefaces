@@ -338,6 +338,12 @@
 			<type>java.lang.String</type>
             <description>Selector to use when partial submit is on, default is ":input" to select all descendant inputs of a partially processed components.</description>
 		</attribute>
+        <attribute>
+        <name>menuStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the overlay menu element.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
