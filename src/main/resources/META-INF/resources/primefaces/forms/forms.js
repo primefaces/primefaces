@@ -488,6 +488,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             this.focusInput.attr('readonly', true);
         }
     },
+    
+    refresh: function(cfg) {
+        this.panelWidthAdjusted = false;
+        
+        this._super(cfg);
+    },
 
     appendPanel: function() {
         var container = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo): $(document.body);
