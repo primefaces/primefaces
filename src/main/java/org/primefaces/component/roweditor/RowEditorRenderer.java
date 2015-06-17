@@ -31,6 +31,7 @@ public class RowEditorRenderer extends CoreRenderer {
         String style = rowEditor.getStyle();
         String styleClass = rowEditor.getStyleClass();
         styleClass = (styleClass == null) ? DataTable.ROW_EDITOR_CLASS : DataTable.ROW_EDITOR_CLASS + " " + styleClass;
+        boolean editMode = context.getAttributes().containsKey("editMode")||context.isValidationFailed();
         
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);
@@ -39,10 +40,14 @@ public class RowEditorRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeIcon(writer, "ui-icon ui-icon-pencil", rowEditor.getEditTitle());
-        encodeIcon(writer, "ui-icon ui-icon-check", rowEditor.getSaveTitle());
-        encodeIcon(writer, "ui-icon ui-icon-close", rowEditor.getCancelTitle());
-        
+        if(editMode) {
+            encodeIcon(writer, "ui-icon ui-icon-check", rowEditor.getSaveTitle());
+            encodeIcon(writer, "ui-icon ui-icon-close", rowEditor.getCancelTitle());            
+        }
+        else {
+            encodeIcon(writer, "ui-icon ui-icon-pencil", rowEditor.getEditTitle());
+        }
+
         writer.endElement("div");
     }
     

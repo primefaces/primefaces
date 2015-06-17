@@ -28,6 +28,7 @@ public class CellEditorRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CellEditor editor = (CellEditor) component;
+        boolean editMode = context.getAttributes().containsKey("editMode");
         
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);
@@ -35,12 +36,16 @@ public class CellEditorRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_OUTPUT_CLASS, null);
-        editor.getFacet("output").encodeAll(context);
+        if(!editMode) {
+            editor.getFacet("output").encodeAll(context);
+        }
         writer.endElement("div");
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);
-        editor.getFacet("input").encodeAll(context);
+        if(editMode) {
+            editor.getFacet("input").encodeAll(context);
+        }
         writer.endElement("div");
 
         writer.endElement("div");
