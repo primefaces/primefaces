@@ -1643,6 +1643,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             
                             if(element.hasClass('ui-icon-pencil')) {
                                 $this.switchToRowEdit(row);
+                                element.hide().siblings().show();
                             }
                             else if(element.hasClass('ui-icon-check')) {
                                 $this.saveRowEdit(row);
@@ -1675,6 +1676,30 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             $this.contextMenuClick = false;
                         });
         }
+    },
+    
+    switchToRowEdit: function(row) {
+        this.showRowEditors(row);
+        
+        if(this.hasBehavior('rowEditInit')) {
+            var rowEditInitBehavior = this.cfg.behaviors['rowEditInit'],
+            rowIndex = this.getRowMeta(row).index;
+            
+            var ext = {
+                params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
+            };
+
+            rowEditInitBehavior.call(this, ext);
+        }
+    },
+    
+    showRowEditors: function(row) {
+        row.addClass('ui-state-highlight ui-row-editing').children('td.ui-editable-column').each(function() {
+            var column = $(this);
+
+            column.find('.ui-cell-editor-output').hide();
+            column.find('.ui-cell-editor-input').show();
+        });
     },
     
     showCellEditor: function(c) {
@@ -1853,18 +1878,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
-    //for backward compatibility
-    showRowEditors: function(row) {
-        this.switchToRowEdit(row);
-    },
-    
-    /**
-     * Updates row content with edit mode
-     */
-    switchToRowEdit: function(row) {
-        this.doRowEditRequest(row, 'init');
-    },
-    
     /**
      * Saves the edited row
      */
@@ -1910,10 +1923,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 return true;
             },
             oncomplete: function(xhr, status, args) {
-                if(action === 'init') {
-                    $this.highlightRowForEdit(rowIndex);
-                }
-
                 if(args && args.validationFailed) {
                     $this.invalidateRow(rowIndex);
                 }
@@ -1931,9 +1940,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else if(action === 'cancel' && this.hasBehavior('rowEditCancel')) {
             this.cfg.behaviors['rowEditCancel'].call(this, options);
-        }
-        else if(action === 'init' && this.hasBehavior('rowEditInit')) {
-            this.cfg.behaviors['rowEditInit'].call(this, options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options); 
@@ -1953,14 +1959,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     invalidateRow: function(index) {
         var i = (this.paginator) ? (index % this.paginator.getRows()) : index;
         this.tbody.children('tr').eq(i).addClass('ui-widget-content ui-row-editing ui-state-error');
-    },
-    
-    /**
-     * Displays row editors in invalid format
-     */
-    highlightRowForEdit: function(index) {
-        var i = (this.paginator) ? (index % this.paginator.getRows()) : index;
-        this.tbody.children('tr').eq(i).addClass('ui-state-highlight ui-row-editing');
     },
     
     /**
@@ -3162,4 +3160,4 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
     }
     
-});  
+});

@@ -44,12 +44,8 @@ public class RowEditFeature implements DataTableFeature {
         int editedRowId = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
         String action = params.get(clientId + "_rowEditAction");
         table.setRowIndex(editedRowId);
-        boolean editMode = action.equals("init")||context.isValidationFailed();
 
-        if (editMode) {
-            context.getAttributes().put("editMode", true);
-        }
-        else if (action.equals("cancel")) {
+        if (action.equals("cancel")) {
             VisitContext visitContext = null;
 
             for (UIColumn column : table.getColumns()) {
@@ -73,10 +69,6 @@ public class RowEditFeature implements DataTableFeature {
 
         if (table.isRowAvailable()) {                    
             renderer.encodeRow(context, table, clientId, editedRowId);
-        }
-        
-        if (editMode) {
-            context.getAttributes().remove("editMode");
         }
     }
 
