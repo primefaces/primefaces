@@ -22175,10 +22175,17 @@ PrimeFaces.widget.ChartUtils = {
                     }
                 };
 
-                if(chart.cfg.orientation === 'horizontal')
+                if(chart.cfg.orientation === 'horizontal') {
                     chart.cfg.axes.yaxis.ticks = chart.cfg.ticks;
-                else
-                    chart.cfg.axes.xaxis.ticks = chart.cfg.ticks;
+                }
+                else {
+                    if(chart.cfg.axes.xaxis.renderer === $.jqplot.DateAxisRenderer) {
+                        PrimeFaces.widget.ChartUtils.transformDateData(chart);
+                    }
+                    else {
+                        chart.cfg.axes.xaxis.ticks = chart.cfg.ticks;
+                    }
+                }
             }
 
         },
@@ -22286,6 +22293,22 @@ PrimeFaces.widget.ChartUtils = {
         }
         
         chart.cfg.axes.xaxis.ticks = ticks;
+    },
+    
+    transformDateData: function(chart) {
+        var data = chart.cfg.data,
+        ticks = chart.cfg.ticks;
+
+        for(var i = 0; i < data.length; i++) {
+            for(var j = 0; j < data[i].length; j++) {
+                var newData = new Array(2);
+                newData[0] = ticks[j];
+                newData[1] = data[i][j];
+                data[i][j] = newData;
+            }
+        }
+        
+        chart.cfg.data = data;
     }
 };
 
