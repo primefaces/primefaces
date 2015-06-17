@@ -201,7 +201,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Uploads are concurrent by defaukt, set this option to false for sequential uploads.</description>
+            <description>Uploads are concurrent by default set this option to true for sequential uploads.</description>
 		</attribute>
 	</attributes>
 	<resources>
