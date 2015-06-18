@@ -15,3 +15,5 @@
 
 Extensions
 - Added z-index to highlighter
+- Applied following patch to fix #452
+https://bitbucket.org/cleonello/jqplot/pull-request/22/fix-for-issue-514-adjusting-position-with/diff

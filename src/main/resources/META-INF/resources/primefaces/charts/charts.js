@@ -20748,7 +20748,18 @@ if (!document.createElement('canvas').getContext) {
         var alpha = (rgba[3] >= 0.6) ? rgba[3]*0.6 : rgba[3]*(2-rgba[3]);
         mr.color = 'rgba('+newrgb[0]+','+newrgb[1]+','+newrgb[2]+','+alpha+')';
         mr.init();
-        mr.draw(s.gridData[neighbor.pointIndex][0], s.gridData[neighbor.pointIndex][1], hl.highlightCanvas._ctx);
+        var x_pos = s.gridData[neighbor.pointIndex][0];
+        var y_pos = s.gridData[neighbor.pointIndex][1];
+        // Adjusting with s._barNudge
+        if (s.renderer.constructor == $.jqplot.BarRenderer) {
+            if (s.barDirection == "vertical") {
+                x_pos += s._barNudge;
+            }
+            else {
+                y_pos -= s._barNudge;
+            }
+        }
+        mr.draw(x_pos, y_pos, hl.highlightCanvas._ctx);
     }
     
     function showTooltip(plot, series, neighbor) {
@@ -20908,6 +20919,14 @@ if (!document.createElement('canvas').getContext) {
                 var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
                 break;
         }
+        if (series.renderer.constructor == $.jqplot.BarRenderer) {        
+    	    if (series.barDirection == 'vertical') {                        
+    	        x += series._barNudge;
+    	    }
+    	    else {                                                          
+    	        y -= series._barNudge;
+    	    } 
+    	}
         elem.css('left', x);
         elem.css('top', y);
         if (opts.fadeTooltip) {
