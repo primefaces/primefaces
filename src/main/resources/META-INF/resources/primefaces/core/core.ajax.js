@@ -277,7 +277,7 @@ PrimeFaces.ajax = {
             }
             else {
                 //look for a parent of source
-                form = $(PrimeFaces.escapeClientId(sourceId)).parents('form:first');
+                form = $(PrimeFaces.escapeClientId(sourceId)).closest('form');
 
                 //source has no parent form so use first form in document
                 if (form.length === 0) {
