@@ -62,6 +62,29 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
         
+        this.itemsContainer.swipe({
+            swipe:function(event, direction) {
+                if(direction === 'left') {
+                    if($this.page === ($this.totalPages - 1)) {
+                        if($this.cfg.circular)
+                            $this.setPage(0);
+                    }
+                    else {
+                        $this.setPage($this.page + 1);
+                    }
+                }
+                else if(direction === 'right') {
+                    if($this.page === 0) {
+                        if($this.cfg.circular)
+                            $this.setPage($this.totalPages - 1);
+                    }
+                    else {
+                        $this.setPage($this.page - 1);
+                    }
+                }
+            }
+        });
+        
         if(this.pageLinks.length) {
             this.pageLinks.on('click', function(e) {
                 $this.setPage($(this).index());

@@ -161,5 +161,8 @@
 		<resource>
 			<name>primefaces.js</name>
 		</resource>
+        <resource>
+			<name>touch/touchswipe.js</name>
+		</resource>
     </resources>
 </component>
