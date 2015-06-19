@@ -18,6 +18,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.numVisible = this.cfg.numVisible||3;
         this.cfg.firstVisible = this.cfg.firstVisible||0;
         this.cfg.effectDuration = this.cfg.effectDuration||500;
+        this.cfg.circular = this.cfg.circular||false;
         this.page = this.cfg.firstVisible / this.cfg.numVisible;
         this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
         
@@ -39,7 +40,6 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         
         if(this.cfg.firstVisible === 0) {
             this.itemsContainer.css('left',0);
-            this.prevNav.addClass('ui-state-disabled');
         }
     },
     
@@ -48,29 +48,21 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         
         this.prevNav.on('click', function() {
             if($this.page !== 0) {
-                var currentLeft = parseFloat($this.itemsContainer.css('left'));
-                
-                $this.itemsContainer.animate({
-                    left: currentLeft + $this.viewport.innerWidth()
-                    ,easing: $this.cfg.easing
-                }, $this.cfg.effectDuration, function() {
-                    $this.page--;
-                    $this.updateNavigators();
-                });
+                $this.setPage($this.page - 1);
+            }
+            else if($this.cfg.circular) {
+                $this.setPage($this.totalPages - 1);
             }
         });
         
         this.nextNav.on('click', function() {
-            if($this.page !== ($this.totalPages - 1)) {
-                var currentLeft = parseFloat($this.itemsContainer.css('left'));
-                
-                $this.itemsContainer.animate({
-                    left: currentLeft - $this.viewport.innerWidth()
-                    ,easing: $this.cfg.easing
-                }, $this.cfg.effectDuration, function() {
-                    $this.page++;
-                    $this.updateNavigators();
-                });
+            var lastPage = ($this.page === ($this.totalPages - 1));
+            
+            if(!lastPage) {
+                $this.setPage($this.page + 1);
+            }
+            else if($this.cfg.circular) {
+                $this.setPage(0);
             }
         });
         
@@ -86,20 +78,27 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                 $this.setPage(parseInt($(this).val()) - 1);
             });
         }
+        
+        if(this.cfg.autoplayInterval) {
+            this.cfg.circular = true;
+            this.startAutoplay();
+        }
     },
     
     updateNavigators: function() {
-        if(this.page === 0) {
-            this.prevNav.addClass('ui-state-disabled');
-            this.nextNav.removeClass('ui-state-disabled');   
-        }
-        else if(this.page === (this.totalPages - 1)) {
-            this.prevNav.removeClass('ui-state-disabled');
-            this.nextNav.addClass('ui-state-disabled');
-        }
-        else {
-            this.prevNav.removeClass('ui-state-disabled');
-            this.nextNav.removeClass('ui-state-disabled');   
+        if(!this.cfg.circular) {
+            if(this.page === 0) {
+                this.prevNav.addClass('ui-state-disabled');
+                this.nextNav.removeClass('ui-state-disabled');   
+            }
+            else if(this.page === (this.totalPages - 1)) {
+                this.prevNav.removeClass('ui-state-disabled');
+                this.nextNav.addClass('ui-state-disabled');
+            }
+            else {
+                this.prevNav.removeClass('ui-state-disabled');
+                this.nextNav.removeClass('ui-state-disabled');   
+            }
         }
         
         if(this.pageLinks.length) {
@@ -109,7 +108,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     setPage: function(p) {                
-        if(p !== this.page) {
+        if(p !== this.page && !this.itemsContainer.is(':animated')) {
             var $this = this;
             
             this.itemsContainer.animate({
@@ -120,5 +119,21 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                 $this.updateNavigators();
             });
         }
+    },
+    
+    startAutoplay: function() {
+        var $this = this;
+        
+        this.interval = setInterval(function() {
+            if($this.page === ($this.totalPages - 1))
+                $this.setPage(0);
+            else
+                $this.setPage($this.page + 1);
+        }, this.cfg.autoplayInterval);
+    },
+    
+    stopAutoplay: function() {
+        clearInterval(this.interval);
     }
-});   
+    
+});

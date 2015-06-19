@@ -61,7 +61,8 @@ public class CarouselRenderer extends CoreRenderer {
             .attr("pageLinks", carousel.getPageLinks(), 3)
             .attr("effect", carousel.getEffect(), null)
             .attr("effectDuration", carousel.getEffectDuration(), Integer.MIN_VALUE)
-            .attr("easing", carousel.getEasing(), null);
+            .attr("easing", carousel.getEasing(), null)
+            .attr("responsive", carousel.isResponsive(), false);
 		
         wb.finish();
 	}

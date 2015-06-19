@@ -140,6 +140,13 @@
 			<type>java.lang.String</type>
             <description>Shortcut for footer facet.</description>
 		</attribute>
+        <attribute>
+			<name>responsive</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>In responsive mode, carousel adjusts its content based on screen size.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
