@@ -1,7 +1,7 @@
 /**
  * PrimeFaces Carousel Widget
  */
-PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
@@ -21,6 +21,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.BaseWidget.extend({
         this.page = this.cfg.firstVisible / this.cfg.numVisible;
         this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
         
+        this.renderDeferred();        
+    },
+    
+    _render: function() {
         this.updateNavigators();
         this.initDimensions();
         this.bindEvents();
