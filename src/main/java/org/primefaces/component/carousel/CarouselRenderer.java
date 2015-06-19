@@ -99,6 +99,7 @@ public class CarouselRenderer extends CoreRenderer {
         writer.writeAttribute("class", carousel.isVertical() ? Carousel.VERTICAL_VIEWPORT_CLASS : Carousel.VIEWPORT_CLASS, null);
 
 		writer.startElement("ul", null);
+         writer.writeAttribute("class", Carousel.ITEMS_CLASS, null);
 		
 		if(carousel.getVar() != null) {		
 			for(int i=0; i < carousel.getRowCount(); i++) {
