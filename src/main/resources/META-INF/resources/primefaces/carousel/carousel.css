@@ -3,7 +3,7 @@
     padding: 1px;
 }
 
-.ui-carousel .ui-carousel-viewport ul {
+.ui-carousel .ui-carousel-viewport .ui-carousel-items {
     list-style: none outside none;
     margin: 0;
     padding:0;
@@ -12,7 +12,7 @@
     left: 0;
 }
 
-.ui-carousel .ui-carousel-viewport ul li {
+.ui-carousel .ui-carousel-viewport .ui-carousel-items .ui-carousel-item {
     margin: 1px;
     padding: 0;
     float: left;
@@ -22,14 +22,6 @@
     overflow: hidden;
     position: relative;
     border: 0;
-}
-
-.ui-carousel .ui-carousel-vertical-viewport ul li {
-    float: none !important;
-}
-
-.ui-carousel .ui-carousel-vertical-viewport ul {
-    width: auto !important;
 }
 
 .ui-carousel .ui-carousel-footer {
@@ -42,7 +34,6 @@
     overflow: hidden;
 }
 
-/* header */
 .ui-carousel .ui-carousel-header {
     margin: 0 1px;
     height: 16px;

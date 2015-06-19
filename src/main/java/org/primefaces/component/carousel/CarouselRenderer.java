@@ -57,7 +57,6 @@ public class CarouselRenderer extends CoreRenderer {
             .attr("vertical", carousel.isVertical(), false)
             .attr("numVisible", carousel.getNumVisible(), 3)
             .attr("autoplayInterval", carousel.getAutoPlayInterval(), 0)
-            .attr("dropDownTemplate", carousel.getDropdownTemplate(), null)
             .attr("pageLinks", carousel.getPageLinks(), 3)
             .attr("effect", carousel.getEffect(), null)
             .attr("effectDuration", carousel.getEffectDuration(), Integer.MIN_VALUE)

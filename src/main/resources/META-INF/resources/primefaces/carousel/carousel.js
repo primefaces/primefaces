@@ -1,4 +1,4 @@
-/**
+            /**
  * PrimeFaces Carousel Widget
  */
 PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
@@ -27,19 +27,15 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     
     _render: function() {
         this.updateNavigators();
-        this.initDimensions();
+        this.initDimensions(this.cfg.numVisible);
         this.bindEvents();
     },
     
-    initDimensions: function() {
+    initDimensions: function(columns) {
         var firstItem = this.items.eq(0);
         if(firstItem.length) {
             var itemFrameWidth = firstItem.outerWidth(true) - firstItem.width();    //sum of margin, border and padding
-            this.items.width(this.viewport.innerWidth()/this.cfg.numVisible - itemFrameWidth);
-        }
-        
-        if(this.cfg.firstVisible === 0) {
-            this.itemsContainer.css('left',0);
+            this.items.width(this.viewport.innerWidth()/columns- itemFrameWidth);
         }
     },
     
@@ -82,6 +78,20 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.autoplayInterval) {
             this.cfg.circular = true;
             this.startAutoplay();
+        }
+        
+        if(this.cfg.responsive) {
+            var resizeNS = 'resize.' + this.id,
+            $this = this;
+    
+            $(window).off(resizeNS).on(resizeNS, function() {
+                if($this.viewport.innerWidth() < 560) {
+                    $this.initDimensions(1);
+                }
+                else {
+                    $this.initDimensions($this.cfg.numVisible);
+                }
+            });
         }
     },
     
