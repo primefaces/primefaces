@@ -51,13 +51,15 @@
     overflow: hidden;
 }
 
-.ui-carousel .ui-carousel-dropdown {
+.ui-carousel .ui-carousel-dropdown,
+.ui-carousel .ui-carousel-mobiledropdown {
     float: right;
     margin: 0px 10px;
     background-image: none;
 }
 
-.ui-carousel .ui-carousel-dropdown option {
+.ui-carousel .ui-carousel-dropdown option,
+.ui-carousel .ui-carousel-mobiledropdown option{
     background-image: none;
     border:0 none;
     box-shadow:none;
@@ -85,4 +87,23 @@
     margin-top: 1px;
     display: inline-table;
     float: right;
+}
+
+.ui-carousel .ui-carousel-mobiledropdown {
+    display: none;
+}
+                
+/* Responsive */
+@media (max-width: 35em) {       
+    .ui-carousel .ui-carousel-dropdown {
+        display: none;
+    }
+    
+    .ui-carousel .ui-carousel-mobiledropdown {
+        display: inline;
+    }
+    
+    .ui-carousel .ui-carousel-page-links {
+        display: none;
+    }
 }

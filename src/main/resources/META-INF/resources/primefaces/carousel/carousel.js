@@ -1,4 +1,4 @@
-            /**
+             /**
  * PrimeFaces Carousel Widget
  */
 PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
@@ -14,6 +14,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.nextNav = this.header.children('.ui-carousel-next-button');
         this.pageLinks = this.header.find('> .ui-carousel-page-links > .ui-carousel-page-link');
         this.dropdown = this.header.children('.ui-carousel-dropdown');
+        this.mobileDropdown = this.header.children('.ui-carousel-mobiledropdown');
         
         this.cfg.numVisible = this.cfg.numVisible||3;
         this.cfg.firstVisible = this.cfg.firstVisible||0;
@@ -92,11 +93,9 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             });
         }
         
-        if(this.dropdown.length) {
-            this.dropdown.on('change', function() {
-                $this.setPage(parseInt($(this).val()) - 1);
-            });
-        }
+        this.header.children('select').on('change', function() {
+            $this.setPage(parseInt($(this).val()) - 1);
+        });
         
         if(this.cfg.autoplayInterval) {
             this.cfg.circular = true;
@@ -108,11 +107,13 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             $this = this;
     
             $(window).off(resizeNS).on(resizeNS, function() {
-                if($this.viewport.innerWidth() < 560) {
+                if($this.viewport.innerWidth() <= 560) {
                     $this.initDimensions(1);
+                    $this.totalPages = $this.itemsCount;
                 }
                 else {
                     $this.initDimensions($this.cfg.numVisible);
+                    $this.totalPages = Math.ceil($this.itemsCount / $this.cfg.numVisible)
                 }
             });
         }
@@ -141,6 +142,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         
         if(this.dropdown.length) {
             this.dropdown.val(this.page + 1);
+        }
+        
+        if(this.mobileDropdown.length) {
+            this.mobileDropdown.val(this.page + 1);
         }
     },
     

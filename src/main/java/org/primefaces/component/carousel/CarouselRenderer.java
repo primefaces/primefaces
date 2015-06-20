@@ -141,8 +141,13 @@ public class CarouselRenderer extends CoreRenderer {
     protected void encodeHeader(FacesContext context, Carousel carousel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean vertical = carousel.isVertical();
+        String clientId = carousel.getClientId(context);
         int numVisible = carousel.getNumVisible();
-        int pageCount = carousel.getVar() != null ? (int) (Math.ceil(carousel.getRowCount() / (1d * numVisible))) : carousel.getRenderedChildCount();
+        String var = carousel.getVar();
+        int rowCount = carousel.getRowCount();
+        int renderedChildCount = carousel.getRenderedChildCount();
+        int pageCount = var != null ? (int) (Math.ceil(rowCount / (1d * numVisible))) : renderedChildCount;
+        int itemCount = var != null ? rowCount : renderedChildCount;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.HEADER_CLASS, null);
@@ -174,7 +179,11 @@ public class CarouselRenderer extends CoreRenderer {
         if(pageCount <= carousel.getPageLinks())
             encodePageLinks(context, carousel, pageCount);
         else
-            encodeDropDown(context, carousel, pageCount);
+            encodeDropDown(context, carousel, clientId + "_dropdown", Carousel.DROPDOWN_CLASS, pageCount);
+        
+        if(carousel.isResponsive()) {
+            encodeDropDown(context, carousel, clientId + "_mobiledropdown", Carousel.MOBILE_DROPDOWN_CLASS, itemCount);
+        }
 
         writer.endElement("div");
     }
@@ -195,13 +204,13 @@ public class CarouselRenderer extends CoreRenderer {
         writer.endElement("div");
     }
     
-     protected void encodeDropDown(FacesContext context, Carousel carousel, int pageCount) throws IOException {
+    protected void encodeDropDown(FacesContext context, Carousel carousel, String name, String styleClass, int pageCount) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String template = carousel.getDropdownTemplate();
         
         writer.startElement("select", null);
-        writer.writeAttribute("name", carousel.getClientId(context) + "_dropdown", null);
-        writer.writeAttribute("class", Carousel.DROPDOWN_CLASS, null);
+        writer.writeAttribute("name", name, null);
+        writer.writeAttribute("class", styleClass, null);
         
         for(int i = 0; i < pageCount; i++) {
             writer.startElement("option", null);
