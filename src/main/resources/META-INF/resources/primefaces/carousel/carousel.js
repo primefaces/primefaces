@@ -138,6 +138,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.pageLinks.filter('.ui-icon-radio-on').removeClass('ui-icon-radio-on');
             this.pageLinks.eq(this.page).addClass('ui-icon-radio-on');
         }
+        
+        if(this.dropdown.length) {
+            this.dropdown.val(this.page + 1);
+        }
     },
     
     setPage: function(p) {                
@@ -169,4 +173,4 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         clearInterval(this.interval);
     }
     
-});
+});  
