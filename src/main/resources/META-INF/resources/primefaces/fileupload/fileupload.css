@@ -85,6 +85,11 @@
     position: relative;
     overflow: hidden;
 }
+
+.ui-fileupload-simple .ui-button {
+    overflow: hidden;
+}
+
 .ui-fileupload-simple input[type=file] {
     position: absolute;
     top: 0;
