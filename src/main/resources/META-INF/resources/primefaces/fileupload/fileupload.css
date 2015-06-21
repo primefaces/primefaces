@@ -15,7 +15,6 @@
     margin: 0;
     opacity: 0;
     filter: alpha(opacity=0);
-    transform: translate(-300px, 0) scale(4);
     font-size: 23px;
     direction: ltr;
     cursor: pointer;
