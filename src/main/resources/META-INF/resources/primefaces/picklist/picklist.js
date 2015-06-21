@@ -263,11 +263,22 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         
         this.sourceFilter.on('keyup', function(e) {
             _self.filter(this.value, _self.sourceList);
-        });
+        })
+        .on('keydown', this.blockEnterKey);
         
         this.targetFilter.on('keyup', function(e) {
             _self.filter(this.value, _self.targetList);
-        });
+        })
+        .on('keydown', this.blockEnterKey);
+    },
+    
+    blockEnterKey: function(e) {
+        var key = e.which,
+        keyCode = $.ui.keyCode;
+
+        if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            e.preventDefault();
+        }
     },
     
     setupFilterMatcher: function() {
