@@ -48,7 +48,7 @@ public class SpotlightRenderer extends CoreRenderer {
         wb.initWithDomReady("Spotlight", spotlight.resolveWidgetVar(), clientId);
         
         wb.attr("target", SearchExpressionFacade.resolveClientIds(context, spotlight, spotlight.getTarget()));
-        wb.attr("animate", spotlight.isAnimate(), true);
+        wb.attr("active", spotlight.isActive(), false);
         
         wb.finish();
     }

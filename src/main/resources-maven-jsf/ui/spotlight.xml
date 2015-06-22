@@ -28,11 +28,11 @@
             <description>Component to highlight.</description>
 		</attribute>
         <attribute>
-			<name>animate</name>
+			<name>active</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>When disabled, Displays block without animation effect</description>
+            <defaultValue>false</defaultValue>
+            <description>When true, spotlight is activated initially.</description>
 		</attribute>
 	</attributes>
 	<resources>
