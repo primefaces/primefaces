@@ -41,27 +41,31 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
     back: function() {
         if(this.cfg.onback) {
             var value = this.cfg.onback.call(this);
-            if(value == false) {
+            if(value === false) {
                 return;
             }
         }
 
-        var stepToGo = this.cfg.steps[this.getStepIndex(this.currentStep) - 1];
-
-        this.loadStep(stepToGo, true);
+        var targetStepIndex = this.getStepIndex(this.currentStep) - 1;
+        if(targetStepIndex >= 0) {
+            var stepToGo = this.cfg.steps[targetStepIndex];
+            this.loadStep(stepToGo, true);
+        }
     },
     
     next: function() {
         if(this.cfg.onnext) {
             var value = this.cfg.onnext.call(this);
-            if(value == false) {
+            if(value === false) {
                 return;
             }
         }
 
-        var stepToGo = this.cfg.steps[this.getStepIndex(this.currentStep) + 1];
-
-        this.loadStep(stepToGo, false);
+        var targetStepIndex = this.getStepIndex(this.currentStep) + 1;
+        if(targetStepIndex < this.cfg.steps.length) {
+            var stepToGo = this.cfg.steps[targetStepIndex];
+            this.loadStep(stepToGo, false);
+        }
     },
     
     loadStep: function(stepToGo, isBack) {

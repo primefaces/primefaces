@@ -67,16 +67,21 @@ public class WizardRenderer extends CoreRenderer {
     
     protected void encodeStep(FacesContext context, Wizard wizard) throws IOException {
         String stepToDisplay = wizard.getStep();
-        UIComponent tabToDisplay = null;
-        for(UIComponent child : wizard.getChildren()) {
-            if(child.getId().equals(stepToDisplay)) {
-                tabToDisplay = child;
+        
+        if(!isValueBlank(stepToDisplay)) {
+            UIComponent tabToDisplay = null;
+            for(UIComponent child : wizard.getChildren()) {
+                if(child.getId().equals(stepToDisplay)) {
+                    tabToDisplay = child;
+                }
             }
+
+            if(tabToDisplay != null) {
+                tabToDisplay.encodeAll(context);
+            }
+
+            RequestContext.getCurrentInstance().addCallbackParam("currentStep", wizard.getStep());
         }
-
-        tabToDisplay.encodeAll(context);
-
-        RequestContext.getCurrentInstance().addCallbackParam("currentStep", wizard.getStep());
     }
 
     protected void encodeScript(FacesContext context, Wizard wizard) throws IOException {
