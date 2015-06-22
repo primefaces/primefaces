@@ -365,19 +365,19 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.effect) {
                 oldPanel.hide(this.cfg.effect, null, this.cfg.effectDuration, function() {
-                oldHeader.removeClass('ui-state-focus ui-tabs-selected ui-state-active');
+                oldHeader.removeClass('ui-tabs-selected ui-state-active');
 
-                newHeader.addClass('ui-state-focus ui-tabs-selected ui-state-active');
+                newHeader.addClass('ui-tabs-selected ui-state-active');
                 newPanel.show(_self.cfg.effect, null, _self.cfg.effectDuration, function() {
                     _self.postTabShow(newPanel);
                 });
             });
         }
         else {
-            oldHeader.removeClass('ui-state-focus ui-tabs-selected ui-state-active');
+            oldHeader.removeClass('ui-tabs-selected ui-state-active');
             oldPanel.hide();
 
-            newHeader.addClass('ui-state-focus ui-tabs-selected ui-state-active');
+            newHeader.addClass('ui-tabs-selected ui-state-active');
             newPanel.show();
 
             this.postTabShow(newPanel);
