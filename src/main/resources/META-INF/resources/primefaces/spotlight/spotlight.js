@@ -11,6 +11,10 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         if(!$(document.body).children('.ui-spotlight').length) {
             this.createMasks();
         }
+        
+        if(this.cfg.active) {
+            this.show();
+        }
     },
     
     createMasks: function() {
