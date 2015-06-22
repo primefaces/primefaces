@@ -1845,6 +1845,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         cellInfo = rowMeta.index + ',' + cellIndex,
         $this = this;
 
+        if(rowMeta.key) {
+            cellInfo = cellInfo + ',' + rowMeta.key;
+        }
+
         var options = {
             source: this.id,
             process: this.id,

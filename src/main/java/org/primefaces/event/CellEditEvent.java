@@ -37,12 +37,19 @@ public class CellEditEvent extends AjaxBehaviorEvent {
     private int rowIndex;
     
     private UIColumn column;
+    
+    private String rowKey;
 
     public CellEditEvent(UIComponent component, Behavior behavior, int rowIndex, UIColumn column) {
         super(component, behavior);
         this.rowIndex = rowIndex;
         this.column = column;
         this.oldValue = resolveValue();
+    }
+    
+    public CellEditEvent(UIComponent component, Behavior behavior, int rowIndex, UIColumn column, String rowKey) {
+        this(component, behavior, rowIndex, column);
+        this.rowKey = rowKey;
     }
 
 	@Override
@@ -70,18 +77,14 @@ public class CellEditEvent extends AjaxBehaviorEvent {
         return rowIndex;
     }
 
-    public void setRowIndex(int rowIndex) {
-        this.rowIndex = rowIndex;
-    }
-
     public UIColumn getColumn() {
         return column;
     }
 
-    public void setColumn(UIColumn column) {
-        this.column = column;
+    public String getRowKey() {
+        return rowKey;
     }
-    
+
     private Object resolveValue() {
         DataTable data = (DataTable) source;
         data.setRowModel(rowIndex);

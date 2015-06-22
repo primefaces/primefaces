@@ -338,6 +338,10 @@ import org.primefaces.util.SharedStringBuilder;
                 String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
                 int rowIndex = Integer.parseInt(cellInfo[0]);
                 int cellIndex = Integer.parseInt(cellInfo[1]);
+                String rowKey = null;
+                if(cellInfo.length == 3) {
+                    rowKey = cellInfo[2];
+                }
                 int i = -1;
                 UIColumn column = null;
                 
@@ -352,7 +356,7 @@ import org.primefaces.util.SharedStringBuilder;
                     }
                 }
 
-                wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), rowIndex, column);
+                wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), rowIndex, column, rowKey);
             }
             else if(eventName.equals("rowReorder")) {
                 int fromIndex = Integer.parseInt(params.get(clientId + "_fromIndex"));
