@@ -770,7 +770,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     getScrollbarWidth: function() {
         if(!this.scrollbarWidth) {
-            this.scrollbarWidth = $.browser.webkit ? '15' : PrimeFaces.calculateScrollbarWidth();
+            this.scrollbarWidth = PrimeFaces.env.browser.webkit ? '15' : PrimeFaces.calculateScrollbarWidth();
         }
         
         return this.scrollbarWidth;
