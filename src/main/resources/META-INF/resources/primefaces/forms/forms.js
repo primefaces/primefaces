@@ -21,25 +21,24 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
 /**
  * PrimeFaces InputTextarea Widget
  */
-PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
 
-        this.cfg.rowsDefault = this.jq.attr('rows');
-        this.cfg.colsDefault = this.jq.attr('cols');
-
+        if(this.cfg.autoResize)
+            this.renderDeferred();
+        else
+            this._render();
+    },
+    
+    _render: function() {
         //Visuals
         PrimeFaces.skinInput(this.jq);
 
         //autoComplete
         if(this.cfg.autoComplete) {
             this.setupAutoComplete();
-        }
-
-        //autoResize
-        if(this.cfg.autoResize) {
-            this.setupAutoResize();
         }
         
         //Counter
@@ -53,6 +52,11 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.maxlength) {
             this.applyMaxlength();
         }
+        
+        //autoResize
+        if(this.cfg.autoResize) {
+            this.setupAutoResize();
+        }
     },
 
     refresh: function(cfg) {
@@ -65,9 +69,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.BaseWidget.extend({
     },
 
     setupAutoResize: function() {
-        this.jq.on('focus', function() {
-            autosize(this);
-        });
+        autosize(this.jq);
     },
 
     applyMaxlength: function() {
