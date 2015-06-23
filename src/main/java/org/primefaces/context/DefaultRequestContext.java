@@ -114,7 +114,7 @@ public class DefaultRequestContext extends RequestContext {
 
 		return ajaxRequestBuilder;
 	}
-    
+
     @Override
 	public CSVBuilder getCSVBuilder() {
 		if (this.csvBuilder == null) {
@@ -123,7 +123,7 @@ public class DefaultRequestContext extends RequestContext {
 
 		return csvBuilder;
 	}
-    
+
     @Override
     public void scrollTo(String clientId) {
         this.execute("PrimeFaces.scrollTo('" + clientId +  "');");
@@ -145,7 +145,7 @@ public class DefaultRequestContext extends RequestContext {
         // call SEF to validate if a component with the clientId exists
         if (context.isProjectStage(ProjectStage.Development)) {
             if (clientIds != null) {
-                for (String clientId : clientIds) {               
+                for (String clientId : clientIds) {
                     SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
                 }
             }
@@ -169,28 +169,28 @@ public class DefaultRequestContext extends RequestContext {
 
         reset(visitContext, expressions);
     }
-    
+
     private void reset(VisitContext visitContext, String expressions) {
         UIViewRoot root = context.getViewRoot();
-        
+
         List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, root, expressions);
         for (UIComponent component : components) {
             component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
         }
     }
-    
+
     @Override
     public void openDialog(String outcome) {
         this.getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
     }
-        
+
     @Override
     public void openDialog(String outcome, Map<String,Object> options, Map<String,List<String>> params) {
         this.getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
-        
+
         if(options != null)
             this.getAttributes().put(Constants.DIALOG_FRAMEWORK.OPTIONS, options);
-        
+
         if(params != null)
             this.getAttributes().put(Constants.DIALOG_FRAMEWORK.PARAMS, params);
     }
@@ -199,9 +199,9 @@ public class DefaultRequestContext extends RequestContext {
     public void closeDialog(Object data) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String pfdlgcid = params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
-            
+
         if(data != null) {
-            Map<String,Object> session = context.getExternalContext().getSessionMap();            
+            Map<String,Object> session = context.getExternalContext().getSessionMap();
             session.put(pfdlgcid, data);
         }
 
@@ -210,14 +210,22 @@ public class DefaultRequestContext extends RequestContext {
 
     @Override
     public void showMessageInDialog(FacesMessage message) {
-        this.execute("PrimeFaces.showMessageInDialog({severity:\"" + message.getSeverity() + 
-                    "\",summary:\"" + ComponentUtils.escapeText(message.getSummary()) + "\",detail:\"" + ComponentUtils.escapeText(message.getDetail()) + "\"});"); 
+
+        String summary = ComponentUtils.escapeText(message.getSummary());
+        summary = ComponentUtils.replaceNewLineWithHtml(summary);
+
+        String detail = ComponentUtils.escapeText(message.getDetail());
+        detail = ComponentUtils.replaceNewLineWithHtml(detail);
+
+        this.execute("PrimeFaces.showMessageInDialog({severity:\"" + message.getSeverity()
+                + "\",summary:\"" + summary
+                + "\",detail:\"" + detail + "\"});");
     }
-    
+
     @Override
     public void release() {
         setCurrentInstance(null, context);
-        
+
         attributes = null;
         widgetBuilder = null;
         ajaxRequestBuilder = null;
@@ -262,7 +270,7 @@ public class DefaultRequestContext extends RequestContext {
     @Override
     public boolean isSecure() {
         Object request = context.getExternalContext().getRequest();
-        
+
         if(request instanceof HttpServletRequest) {
             return ((HttpServletRequest) request).isSecure();
         }

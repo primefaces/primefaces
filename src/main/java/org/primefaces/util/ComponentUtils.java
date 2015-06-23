@@ -22,6 +22,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -351,6 +353,21 @@ public class ComponentUtils {
         }
     }
 
+    private static final Pattern PATTERN_NEW_LINE = Pattern.compile("(\r\n|\n\r|\r|\n)");
+
+    public static String replaceNewLineWithHtml(String text) {
+        if (text == null) {
+            return null;
+        }
+
+        Matcher match = PATTERN_NEW_LINE.matcher(text);
+        if (match.find()) {
+            return match.replaceAll("<br/>");
+        }
+
+        return text;
+    }
+
     /**
      * Duplicate code from json-simple project under apache license
      * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
@@ -406,7 +423,7 @@ public class ComponentUtils {
 
         return sb.toString();
     }
-    
+
     /**
      * Replace special characters with XML escapes:
      * <pre>
@@ -441,10 +458,10 @@ public class ComponentUtils {
         }
         return sb.toString();
     }
-    
+
     /**
      * Use {@link ComponentTraversalUtils#closestForm(javax.faces.context.FacesContext, javax.faces.component.UIComponent)} instead.
-     * 
+     *
      * @param context
      * @param component
      * @return
