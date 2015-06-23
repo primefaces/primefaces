@@ -82,7 +82,7 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
             list.calculateFirst();
         }
         
-        writer.startElement("div", list);
+        writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if(style != null) {
@@ -95,7 +95,7 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
             paginatorRenderer.encodeMarkup(context, list, "top");
         }
         
-        writer.startElement("div", list);
+        writer.startElement("div", null);
         writer.writeAttribute("class", DataList.MOBILE_CONTENT_CLASS, null);
         encodeList(context, list);
         writer.endElement("div");
@@ -118,12 +118,14 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
         String varStatus = list.getVarStatus();
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         String listTag = list.getListTag();
-        writer.startElement(listTag, list);
+        writer.startElement(listTag, null);
         writer.writeAttribute("id", list.getClientId(context) + "_list", "id");
 
         if(list.getItemType() != null) {
             writer.writeAttribute("type", list.getItemType(), null);
         }
+        
+        renderDynamicPassThruAttributes(context, list);
 
         for (int i = first; i < pageSize; i++) {
             if(varStatus != null) {
