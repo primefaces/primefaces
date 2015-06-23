@@ -28,11 +28,13 @@ public class FieldRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Field field = (Field) component;
 
-        writer.startElement("div", field);
+        writer.startElement("div", null);
         if (shouldWriteId(field)) {
             writer.writeAttribute("id", field.getClientId(context), "id");
         }
         writer.writeAttribute("class", "ui-field-contain", null);
+        
+        renderDynamicPassThruAttributes(context, component);
     }
 
     @Override

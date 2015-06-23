@@ -28,8 +28,10 @@ public class PageRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Page page = (Page) component;
         
-        writer.startElement("div", page);
+        writer.startElement("div", null);
         writer.writeAttribute("id", page.getClientId(context), "id");
+        
+        renderDynamicPassThruAttributes(context, component);
         
         if(page.isLazyloadRequest(context)) {
             encodeContent(context, page);

@@ -30,9 +30,8 @@ public class FooterRenderer extends CoreRenderer {
         String swatch = footer.getSwatch();
         String title = footer.getTitle();
 
-        writer.startElement("div", footer);
+        writer.startElement("div", null);
         writer.writeAttribute("data-role", "footer", null);
-        
         
         if(footer.getStyle() != null) writer.writeAttribute("style", footer.getStyle(), null);
         if(footer.getStyleClass() != null) writer.writeAttribute("class", footer.getStyleClass(), null);

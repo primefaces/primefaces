@@ -38,12 +38,14 @@ public class RangeSliderRenderer extends CoreRenderer {
         String style = rangeSlider.getStyle();
         String styleClass = rangeSlider.getStyleClass();
         
-        writer.startElement("div", rangeSlider);
+        writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
 
         if (style != null) writer.writeAttribute("style", style, null);  
         if (styleClass != null) writer.writeAttribute("class", styleClass, null); 
         if (!rangeSlider.isHighlight()) writer.writeAttribute("data-highlight", "false", null);
+        
+        renderDynamicPassThruAttributes(context, rangeSlider);
         
         renderChildren(context, rangeSlider);
         

@@ -32,7 +32,7 @@ public class HeaderRenderer extends CoreRenderer {
         UIComponent left = header.getFacet("left");
         UIComponent right = header.getFacet("right");
         
-        writer.startElement("div", header);
+        writer.startElement("div", null);
         writer.writeAttribute("id", header.getClientId(context), "id");
         writer.writeAttribute("data-role", "header", null);
         writer.writeAttribute("data-backbtn", "false", null);
