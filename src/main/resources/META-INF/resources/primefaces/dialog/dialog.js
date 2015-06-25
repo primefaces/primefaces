@@ -692,14 +692,14 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
     },
 
     showMessage: function(msg) {
+        var icon = (msg.icon === 'null') ? 'ui-icon-alert' : msg.icon;
+        this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + icon);
+        
         if(msg.header)
             this.title.text(msg.header);
 
         if(msg.message)
             this.message.text(msg.message);
-
-        if(msg.icon)
-            this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + msg.icon);
 
         this.show();
     }
