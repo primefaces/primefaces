@@ -2411,6 +2411,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     draggedCells.each(function(i, item) {
                         $(this).insertAfter(droppedCells.eq(i));
                     });
+                    
+                    //sync clone
+                    if($this.cfg.scrollable) {
+                        var draggedColumnClone = $(document.getElementById(draggedColumn.attr('id') + '_clone')),
+                        droppedColumnClone = $(document.getElementById(droppedColumn.attr('id') + '_clone'));
+                        draggedColumnClone.insertAfter(droppedColumnClone);
+                    }
                 }
                 //drop left
                 else {
@@ -2419,14 +2426,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     draggedCells.each(function(i, item) {
                         $(this).insertBefore(droppedCells.eq(i));
                     });
+                    
+                    //sync clone
+                    if($this.cfg.scrollable) {
+                        var draggedColumnClone = $(document.getElementById(draggedColumn.attr('id') + '_clone')),
+                        droppedColumnClone = $(document.getElementById(droppedColumn.attr('id') + '_clone'));
+                        draggedColumnClone.insertBefore(droppedColumnClone);
+                    }
                 }
-                
-                //align widths
-                if($this.cfg.scrollable) {
-                    $this.columnWidthsFixed = false;
-                    $this.fixColumnWidths();
-                }
-               
+                               
                 //save order
                 $this.saveColumnOrder();
 
