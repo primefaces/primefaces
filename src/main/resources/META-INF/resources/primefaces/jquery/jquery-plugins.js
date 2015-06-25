@@ -13833,10 +13833,12 @@ $(function() {
 
 			var endHeight = ta.scrollHeight + heightOffset;
             
-            var rows = (!ta.rows ? 1 : ta.rows);
-            var lineHeight = getLineHeight(ta)
-            var minHeight = (lineHeight * rows) + heightOffset;
-            if (endHeight < minHeight) endHeight = minHeight;
+            if(PrimeFaces.isIE(10) || PrimeFaces.isIE(9)) {
+                var rows = (!ta.rows ? 1 : ta.rows);
+                var lineHeight = getLineHeight(ta);
+                var minHeight = (lineHeight * rows) + heightOffset;
+                if (endHeight < minHeight) endHeight = minHeight;
+            }
 
 			if (ta.scrollHeight === 0) {
 				// If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
