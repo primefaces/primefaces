@@ -446,7 +446,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             }
             else {
                 TreeNode[] selectionArray = (TreeNode[]) selection;
-                if(selectionArray == null || selectionArray.length == 0) {
+                if(selectionArray.length == 0) {
                     valid = false;
                 }
             } 
