@@ -77,6 +77,8 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         
         encodeRegularTable(context, table);
         
+        renderDynamicPassThruAttributes(context, table);
+        
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
             paginatorRenderer.encodeMarkup(context, table, "bottom");
         }

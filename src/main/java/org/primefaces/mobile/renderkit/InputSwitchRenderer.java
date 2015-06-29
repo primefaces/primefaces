@@ -54,17 +54,19 @@ public class InputSwitchRenderer extends org.primefaces.component.inputswitch.In
         if(style != null) writer.writeAttribute("style", style, "style");
         if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
         
-        writer.startElement("span", inputSwitch);
+        renderDynamicPassThruAttributes(context, inputSwitch);
+        
+        writer.startElement("span", null);
         writer.writeAttribute("class", UISwitch.ON_CLASS, null);
         writer.writeText(onLabel, null);
         writer.endElement("span");
         
-        writer.startElement("span", inputSwitch);
+        writer.startElement("span", null);
         writer.writeAttribute("class", UISwitch.OFF_CLASS, null);
         writer.writeText(offLabel, null);
         writer.endElement("span");
         
-        writer.startElement("input", inputSwitch);
+        writer.startElement("input", null);
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("data-role", "none", null);

@@ -54,7 +54,7 @@ public class SelectBooleanCheckboxRenderer extends org.primefaces.component.sele
         if(itemLabel != null) {
             String labelClass = checked ? SelectBooleanCheckbox.MOBILE_LABEL_ON_CLASS: SelectBooleanCheckbox.MOBILE_LABEL_OFF_CLASS;
             ResponseWriter writer = context.getResponseWriter();            
-            writer.startElement("label", checkbox);
+            writer.startElement("label", null);
             writer.writeAttribute("for", inputId, null);
             writer.writeAttribute("class", labelClass, null);
             writer.writeText(itemLabel, null);

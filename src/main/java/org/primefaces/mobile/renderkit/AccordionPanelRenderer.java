@@ -35,7 +35,7 @@ public class AccordionPanelRenderer extends org.primefaces.component.accordionpa
         String styleClass = acco.getStyleClass();
         styleClass = styleClass == null ? AccordionPanel.MOBILE_CONTAINER_CLASS : AccordionPanel.MOBILE_CONTAINER_CLASS + " " + styleClass;
         
-		writer.startElement("div", null);
+		writer.startElement("div", acco);
 		writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
 		if(acco.getStyle() != null) {
@@ -48,6 +48,8 @@ public class AccordionPanelRenderer extends org.primefaces.component.accordionpa
 
 		encodeTabs(context, acco);
         encodeStateHolder(context, acco);
+        
+        renderDynamicPassThruAttributes(context, acco);
 
 		writer.endElement("div");
 	}

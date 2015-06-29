@@ -38,6 +38,9 @@ public class GrowlRenderer extends org.primefaces.component.growl.GrowlRenderer 
         
         writer.startElement("div", growl);
 		writer.writeAttribute("id", clientId, "id");
+        
+        renderDynamicPassThruAttributes(context, growl);
+        
 		writer.endElement("div");
     }
     

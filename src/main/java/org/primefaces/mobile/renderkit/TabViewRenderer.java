@@ -69,6 +69,8 @@ public class TabViewRenderer extends org.primefaces.component.tabview.TabViewRen
         
         encodeStateHolder(context, tabView, clientId + "_activeIndex", String.valueOf(tabView.getActiveIndex()));
     
+        renderDynamicPassThruAttributes(context, tabView);
+        
         writer.endElement("div");
     }
     
