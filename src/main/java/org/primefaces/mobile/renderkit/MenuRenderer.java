@@ -38,7 +38,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         String styleClass = menu.getStyleClass();
         styleClass = (styleClass == null) ? Menu.MOBILE_CONTAINER_CLASS: Menu.MOBILE_CONTAINER_CLASS + " " + styleClass;
         
-        writer.startElement("ul", null);
+        writer.startElement("ul", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {

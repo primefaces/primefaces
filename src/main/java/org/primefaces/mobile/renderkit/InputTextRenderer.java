@@ -73,7 +73,7 @@ public class InputTextRenderer extends org.primefaces.component.inputtext.InputT
         ResponseWriter writer = context.getResponseWriter();
         String valueToRender = ComponentUtils.getValueToRender(context, inputText);
         
-        writer.startElement("input", null);
+        writer.startElement("input", inputText);
         writer.writeAttribute("data-role", "none", null);
         writer.writeAttribute("id", inputId, null);
 		writer.writeAttribute("name", inputId, null);

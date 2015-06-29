@@ -35,7 +35,7 @@ public class FileUploadRenderer extends org.primefaces.component.fileupload.File
             styleClass = styleClass + " ui-state-disabled";
         }
         
-        writer.startElement("div", fileUpload);
+        writer.startElement("div", null);
         writer.writeAttribute("id", this, null);
         if(style != null) {
             writer.writeAttribute("style", style, null);
@@ -52,7 +52,7 @@ public class FileUploadRenderer extends org.primefaces.component.fileupload.File
     protected void encodeInputField(FacesContext context, FileUpload fileUpload, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
-        writer.startElement("input", null);
+        writer.startElement("input", fileUpload);
         writer.writeAttribute("data-role", "none", null);
 		writer.writeAttribute("type", "file", null);
 		writer.writeAttribute("name", clientId, null);
@@ -61,6 +61,8 @@ public class FileUploadRenderer extends org.primefaces.component.fileupload.File
         if(fileUpload.getStyle() != null) writer.writeAttribute("style", fileUpload.getStyle(), "style");
         if(fileUpload.getStyleClass() != null) writer.writeAttribute("class", fileUpload.getStyleClass(), "styleClass");
         if(fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        
+        renderDynamicPassThruAttributes(context, fileUpload);
         
 		writer.endElement("input");
     }

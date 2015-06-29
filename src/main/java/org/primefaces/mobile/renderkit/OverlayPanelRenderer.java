@@ -41,6 +41,8 @@ public class OverlayPanelRenderer extends org.primefaces.component.overlaypanel.
             renderChildren(context, panel);
         }
         
+        renderDynamicPassThruAttributes(context, panel);
+        
         writer.endElement("div");
     }
     

@@ -43,7 +43,7 @@ public class SelectOneButtonRenderer extends org.primefaces.component.selectoneb
             writer.writeAttribute("style", style, "style");
         }
         
-        writer.startElement("div", button);
+        writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneButton.MOBILE_ITEMS_CLASS, "id");
         
         if (selectItems != null && !selectItems.isEmpty()) {
@@ -83,7 +83,7 @@ public class SelectOneButtonRenderer extends org.primefaces.component.selectoneb
             labelStyleClass = labelStyleClass + " ui-state-disabled";
         }
 
-        writer.startElement("div", button);
+        writer.startElement("div", null);
         writer.writeAttribute("class", "ui-radio", null);
         
         //label
