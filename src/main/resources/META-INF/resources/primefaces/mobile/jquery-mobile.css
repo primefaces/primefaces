@@ -1,6 +1,6 @@
 /*!
-* jQuery Mobile 1.4.4
-* Git HEAD hash: b4150fb1c561b614da796c210877fb25e74cf622 <> Date: Fri Sep 12 2014 16:43:26 UTC
+* jQuery Mobile 1.4.5
+* Git HEAD hash: 68e55e78b292634d3991c795f06f5e37a512decc <> Date: Fri Oct 31 2014 17:33:30 UTC
 * http://jquerymobile.com
 *
 * Copyright 2010, 2014 jQuery Foundation, Inc. and othercontributors
@@ -4088,6 +4088,9 @@ div.ui-rangeslider label {
 	border-width: 1px;
 	border-style: solid;
 }
+.ui-mini {
+	margin: .446em;
+}
 .ui-input-text input,
 .ui-input-search input,
 textarea.ui-input-text {
@@ -4495,6 +4498,8 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 	max-height: 100%;
 	overflow: hidden;
 	visibility: hidden;
+	left: 0;
+	clip: rect(1px,1px,1px,1px);
 }
 .ui-panel-fixed {
 	position: fixed;
