@@ -45,7 +45,7 @@ public class SelectManyButtonRenderer extends org.primefaces.component.selectman
             writer.writeAttribute("style", style, "style");
         }
         
-        writer.startElement("div", button);
+        writer.startElement("div", null);
         writer.writeAttribute("class", SelectManyButton.MOBILE_ITEMS_CLASS, "id");
         
         if (selectItems != null && !selectItems.isEmpty()) {
@@ -99,7 +99,7 @@ public class SelectManyButtonRenderer extends org.primefaces.component.selectman
             labelStyleClass = labelStyleClass + " ui-state-disabled";
         }
         
-        writer.startElement("div", button);
+        writer.startElement("div", null);
         writer.writeAttribute("class", "ui-checkbox", null);
         
         //label

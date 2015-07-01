@@ -83,13 +83,14 @@ public class DataGridRenderer extends org.primefaces.component.datagrid.DataGrid
             writer.writeAttribute("style", style, "style");
         }
         
+        renderDynamicPassThruAttributes(context, grid);    
         encodeFacet(context, grid, "header", DataGrid.MOBILE_HEADER_CLASS);
 
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             paginatorRenderer.encodeMarkup(context, grid, "top");
         }
 
-        writer.startElement("div", grid);
+        writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_content", null);
         writer.writeAttribute("class", contentClass, null);
 

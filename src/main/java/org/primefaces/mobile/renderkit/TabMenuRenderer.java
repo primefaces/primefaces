@@ -44,7 +44,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
         
-        writer.startElement("ul", tabMenu);
+        writer.startElement("ul", null);
         if(tabMenu.getElementsCount() > 0) {
             for(MenuElement element : elements) {
                 if(element.isRendered() && element instanceof MenuItem) {
@@ -55,6 +55,9 @@ public class TabMenuRenderer extends BaseMenuRenderer {
             }
         }
         writer.endElement("ul");
+        
+        renderDynamicPassThruAttributes(context, tabMenu);
+        
         writer.endElement("div");
     }
     

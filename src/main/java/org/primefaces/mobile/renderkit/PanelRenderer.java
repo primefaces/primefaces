@@ -64,6 +64,8 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
         encodeHeader(context, panel, collapsed, toggleable);
         encodeContent(context, panel, collapsed);
         
+        renderDynamicPassThruAttributes(context, panel);
+        
         if (toggleable) {
             encodeStateHolder(context, panel, clientId + "_collapsed", String.valueOf(collapsed));
         }

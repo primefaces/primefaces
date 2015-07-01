@@ -45,6 +45,8 @@ public class PanelGridRenderer extends org.primefaces.component.panelgrid.PanelG
             writer.writeAttribute("style", style, "style");
         }
         
+        renderDynamicPassThruAttributes(context, grid);
+        
         int i = 0;
         for(UIComponent child : grid.getChildren()) {
             if(child.isRendered()) {

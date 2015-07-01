@@ -34,7 +34,7 @@ public class InputTextareaRenderer extends org.primefaces.component.inputtextare
         String styleClass = inputTextarea.getStyleClass();
         styleClass = (styleClass == null) ? InputTextarea.MOBILE_STYLE_CLASS: InputTextarea.MOBILE_STYLE_CLASS + " " + styleClass;
 
-		writer.startElement("textarea", null);
+		writer.startElement("textarea", inputTextarea);
         writer.writeAttribute("data-role", "none", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);

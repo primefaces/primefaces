@@ -63,7 +63,7 @@ public class PasswordRenderer extends org.primefaces.component.password.Password
         ResponseWriter writer = context.getResponseWriter();
         String valueToRender = ComponentUtils.getValueToRender(context, password);
         
-        writer.startElement("input", null);
+        writer.startElement("input", password);
         writer.writeAttribute("data-role", "none", null);
         writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);

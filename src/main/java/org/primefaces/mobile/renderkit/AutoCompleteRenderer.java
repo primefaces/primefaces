@@ -54,7 +54,7 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
         String style = ac.getStyle();
         String styleClass = ac.getStyleClass();
         
-        writer.startElement("div", ac);
+        writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         if(style != null) writer.writeAttribute("style", style, null);
         if(styleClass != null) writer.writeAttribute("class", styleClass, null);
@@ -71,7 +71,7 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
         String inputId = clientId + "_input";
         String valueToRender = ComponentUtils.getValueToRender(context, ac);
             
-        writer.startElement("div", ac);
+        writer.startElement("div", null);
         writer.writeAttribute("class", AutoComplete.MOBILE_INPUT_CONTAINER_CLASS, null);
         
         writer.startElement("input", ac);
@@ -88,7 +88,7 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
         
         writer.endElement("input");
         
-        writer.startElement("a", ac);
+        writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", AutoComplete.MOBILE_CLEAR_ICON_CLASS, null);
         writer.endElement("a");

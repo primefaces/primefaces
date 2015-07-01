@@ -46,6 +46,8 @@ public class ToolbarRenderer extends org.primefaces.component.toolbar.ToolbarRen
         
         encodeGroup(context, toolbar.getFacet("right"), Toolbar.MOBILE_RIGHT_GROUP_CLASS);
         
+        renderDynamicPassThruAttributes(context, toolbar);
+        
         writer.endElement("div");
     }
     
