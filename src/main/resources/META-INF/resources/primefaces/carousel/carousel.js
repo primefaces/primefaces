@@ -1,4 +1,4 @@
-             /**
+/**
  * PrimeFaces Carousel Widget
  */
 PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
@@ -15,29 +15,57 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.pageLinks = this.header.find('> .ui-carousel-page-links > .ui-carousel-page-link');
         this.dropdown = this.header.children('.ui-carousel-dropdown');
         this.mobileDropdown = this.header.children('.ui-carousel-mobiledropdown');
+        PrimeFaces.calculateScrollbarWidth();
         
         this.cfg.numVisible = this.cfg.numVisible||3;
         this.cfg.firstVisible = this.cfg.firstVisible||0;
         this.cfg.effectDuration = this.cfg.effectDuration||500;
         this.cfg.circular = this.cfg.circular||false;
+        this.cfg.breakpoint = this.cfg.breakpoint||560;
         this.page = this.cfg.firstVisible / this.cfg.numVisible;
         this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
         
-        this.renderDeferred();        
+        this.renderDeferred();       
     },
     
     _render: function() {
         this.updateNavigators();
-        this.initDimensions(this.cfg.numVisible);
         this.bindEvents();
+        
+        if(this.cfg.responsive) {
+            this.refreshDimensions();
+        }
+        else {
+            this.calculateItemWidths(this.cfg.numVisible);
+            this.jq.width(this.jq.width());
+        }
     },
     
-    initDimensions: function(columns) {
+    calculateItemWidths: function(columns) {
         var firstItem = this.items.eq(0);
         if(firstItem.length) {
             var itemFrameWidth = firstItem.outerWidth(true) - firstItem.width();    //sum of margin, border and padding
             this.items.width(this.viewport.innerWidth()/columns- itemFrameWidth);
         }
+    },
+    
+    refreshDimensions: function() {
+        var win = $(window);
+        
+        if((win.width() + PrimeFaces.scrollbarWidth) <= this.cfg.breakpoint) {
+            this.calculateItemWidths(1);
+            this.totalPages = this.itemsCount;
+            this.mobileDropdown.show();
+            this.pageLinks.hide();
+        }
+        else {
+            this.calculateItemWidths(this.cfg.numVisible);
+            this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
+            this.mobileDropdown.hide();
+            this.pageLinks.show();
+        }
+
+        this.itemsContainer.css('left', (-1 * (this.viewport.innerWidth() * this.page) + 'px'));
     },
     
     bindEvents: function() {
@@ -103,18 +131,9 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
         
         if(this.cfg.responsive) {
-            var resizeNS = 'resize.' + this.id,
-            $this = this;
-    
+            var resizeNS = 'resize.' + this.id;
             $(window).off(resizeNS).on(resizeNS, function() {
-                if($this.viewport.innerWidth() <= 560) {
-                    $this.initDimensions(1);
-                    $this.totalPages = $this.itemsCount;
-                }
-                else {
-                    $this.initDimensions($this.cfg.numVisible);
-                    $this.totalPages = Math.ceil($this.itemsCount / $this.cfg.numVisible)
-                }
+                $this.refreshDimensions();
             });
         }
     },
@@ -178,4 +197,4 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         clearInterval(this.interval);
     }
     
-});  
+});              

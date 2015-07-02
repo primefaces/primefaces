@@ -92,18 +92,3 @@
 .ui-carousel .ui-carousel-mobiledropdown {
     display: none;
 }
-                
-/* Responsive */
-@media (max-width: 35em) {       
-    .ui-carousel .ui-carousel-dropdown {
-        display: none;
-    }
-    
-    .ui-carousel .ui-carousel-mobiledropdown {
-        display: inline;
-    }
-    
-    .ui-carousel .ui-carousel-page-links {
-        display: none;
-    }
-}

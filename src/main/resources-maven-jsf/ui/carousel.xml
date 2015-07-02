@@ -147,6 +147,13 @@
 			<defaultValue>false</defaultValue>
             <description>In responsive mode, carousel adjusts its content based on screen size.</description>
 		</attribute>
+        <attribute>
+			<name>breakpoint</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>560</defaultValue>
+            <description>Breakpoint value in pixels to switch between small and large viewport. Default is 560.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

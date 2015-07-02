@@ -61,7 +61,8 @@ public class CarouselRenderer extends CoreRenderer {
             .attr("effect", carousel.getEffect(), null)
             .attr("effectDuration", carousel.getEffectDuration(), Integer.MIN_VALUE)
             .attr("easing", carousel.getEasing(), null)
-            .attr("responsive", carousel.isResponsive(), false);
+            .attr("responsive", carousel.isResponsive(), false)
+            .attr("breakpoint", carousel.getBreakpoint(), 560);
 		
         wb.finish();
 	}
