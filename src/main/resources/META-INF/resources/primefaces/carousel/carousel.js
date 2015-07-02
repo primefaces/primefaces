@@ -15,6 +15,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.pageLinks = this.header.find('> .ui-carousel-page-links > .ui-carousel-page-link');
         this.dropdown = this.header.children('.ui-carousel-dropdown');
         this.mobileDropdown = this.header.children('.ui-carousel-mobiledropdown');
+        this.stateholder = $(this.jqId + '_page');
         PrimeFaces.calculateScrollbarWidth();
         
         this.cfg.numVisible = this.cfg.numVisible||3;
@@ -25,7 +26,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.page = this.cfg.firstVisible / this.cfg.numVisible;
         this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
         
-        this.renderDeferred();       
+        this.renderDeferred();
     },
     
     _render: function() {
@@ -168,16 +169,22 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
-    setPage: function(p) {                
+    setPage: function(p) {      
         if(p !== this.page && !this.itemsContainer.is(':animated')) {
             var $this = this;
             
             this.itemsContainer.animate({
                 left: -1 * (this.viewport.innerWidth() * p)
                 ,easing: this.cfg.easing
-            }, this.cfg.effectDuration, function() {
-                $this.page = p;
-                $this.updateNavigators();
+            }, 
+            {
+                duration: this.cfg.effectDuration,
+                easing: this.cfg.easing,
+                complete: function() {
+                    $this.page = p;
+                    $this.updateNavigators();
+                    $this.stateholder.val($this.page);
+                }
             });
         }
     },

@@ -32,10 +32,10 @@ public class CarouselRenderer extends CoreRenderer {
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		Carousel carousel = (Carousel) component;
 		String clientId = carousel.getClientId(context);
-		String firstParam = clientId + "_first";
+		String param = clientId + "_page";
 		
-		if(params.containsKey(firstParam)) {
-			carousel.setFirstVisible(Integer.parseInt(params.get(firstParam)));
+		if(params.containsKey(param)) {
+			carousel.setFirstVisible(Integer.parseInt(params.get(param)) * carousel.getNumVisible());
 		}
 	}
 
@@ -245,13 +245,14 @@ public class CarouselRenderer extends CoreRenderer {
 
 	protected void encodeStateField(FacesContext context, Carousel carousel) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        String id = carousel.getClientId(context) + "_first";
+        String id = carousel.getClientId(context) + "_page";
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("id", id, null);
 		writer.writeAttribute("name", id, null);
 		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("value", carousel.getFirst(), null);
+        writer.writeAttribute("autocomplete", "off", null);
+		writer.writeAttribute("value", carousel.getPage(), null);
 		writer.endElement("input");
 	}
 
