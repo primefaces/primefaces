@@ -4711,6 +4711,6 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 }
 
 .ui-tabs-panels > div {
-    margin: 16px 0px;
+    padding: 16px 0px;
     word-spacing: 0px;
 }
