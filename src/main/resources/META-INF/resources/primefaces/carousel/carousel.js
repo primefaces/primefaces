@@ -46,7 +46,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         var firstItem = this.items.eq(0);
         if(firstItem.length) {
             var itemFrameWidth = firstItem.outerWidth(true) - firstItem.width();    //sum of margin, border and padding
-            this.items.width(this.viewport.innerWidth()/columns- itemFrameWidth);
+            this.items.width((this.viewport.innerWidth() - itemFrameWidth * columns) / columns);
         }
     },
     

@@ -50,7 +50,7 @@ public class CarouselRenderer extends CoreRenderer {
 	private void encodeScript(FacesContext context, Carousel carousel) throws IOException{
 		String clientId = carousel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Carousel", carousel.resolveWidgetVar(), clientId);
+        wb.initWithDomReady("Carousel", carousel.resolveWidgetVar(), clientId);
         
         wb.attr("firstVisible", carousel.getFirstVisible(), 0)
             .attr("circular", carousel.isCircular(), false)
