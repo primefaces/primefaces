@@ -139,7 +139,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            newPanel.children('p').html(content);
+                            newPanel.html(content);
 
                             if(this.cfg.cache) {
                                 this.markAsLoaded(newPanel);

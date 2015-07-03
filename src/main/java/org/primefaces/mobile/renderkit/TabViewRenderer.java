@@ -191,8 +191,6 @@ public class TabViewRenderer extends org.primefaces.component.tabview.TabViewRen
         writer.writeAttribute("style", visibility, null);
         writer.writeAttribute("role", "tabpanel", null);
         writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
-        
-        writer.startElement("p", null);
 
         if(dynamic) {
             if(active) {
@@ -203,8 +201,6 @@ public class TabViewRenderer extends org.primefaces.component.tabview.TabViewRen
         else {
             tab.encodeAll(context);
         }
-        
-        writer.endElement("p");
 
         writer.endElement("div");
     }
