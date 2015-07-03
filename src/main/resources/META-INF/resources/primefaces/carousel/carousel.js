@@ -19,12 +19,13 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         
         this.cfg.numVisible = this.cfg.numVisible||3;
         this.cfg.firstVisible = this.cfg.firstVisible||0;
+        this.columns = this.cfg.numVisible;
+        this.first = this.cfg.firstVisible;
         this.cfg.effectDuration = this.cfg.effectDuration||500;
         this.cfg.circular = this.cfg.circular||false;
         this.cfg.breakpoint = this.cfg.breakpoint||560;
-        this.page = this.cfg.firstVisible / this.cfg.numVisible;
-        this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
-        
+        this.page = parseInt(this.first/this.columns);
+        this.totalPages = Math.ceil(this.itemsCount/this.cfg.numVisible);
         this.renderDeferred();
     },
     
@@ -36,36 +37,40 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.refreshDimensions();
         }
         else {
-            this.calculateItemWidths(this.cfg.numVisible);
+            this.calculateItemWidths(this.columns);
             this.jq.width(this.jq.width());
+            this.updateNavigators();
         }
     },
     
-    calculateItemWidths: function(columns) {
+    calculateItemWidths: function() {
         var firstItem = this.items.eq(0);
         if(firstItem.length) {
             var itemFrameWidth = firstItem.outerWidth(true) - firstItem.width();    //sum of margin, border and padding
-            this.items.width((this.viewport.innerWidth() - itemFrameWidth * columns) / columns);
+            this.items.width((this.viewport.innerWidth() - itemFrameWidth * this.columns) / this.columns);
         }
     },
     
     refreshDimensions: function() {
         var win = $(window);
-        
         if(win.width() <= this.cfg.breakpoint) {
-            this.calculateItemWidths(1);
+            this.columns = 1;
+            this.calculateItemWidths(this.columns);
             this.totalPages = this.itemsCount;
             this.mobileDropdown.show();
             this.pageLinks.hide();
         }
         else {
-            this.calculateItemWidths(this.cfg.numVisible);
+            this.columns = this.cfg.numVisible;
+            this.calculateItemWidths();
             this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
             this.mobileDropdown.hide();
             this.pageLinks.show();
         }
-
-        this.itemsContainer.css('left', (-1 * (this.viewport.innerWidth() * this.page) + 'px'));
+        
+        this.page = parseInt(this.first / this.columns);
+        this.updateNavigators();
+        this.itemsContainer.css('left', (-1 * (this.viewport.innerWidth() * this.page)));
     },
     
     bindEvents: function() {
@@ -181,6 +186,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                 easing: this.cfg.easing,
                 complete: function() {
                     $this.page = p;
+                    $this.first = $this.page * $this.columns;
                     $this.updateNavigators();
                     $this.stateholder.val($this.page);
                 }
@@ -203,4 +209,4 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         clearInterval(this.interval);
     }
     
-});
+});  
