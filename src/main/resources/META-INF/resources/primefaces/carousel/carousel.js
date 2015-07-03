@@ -16,7 +16,6 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.dropdown = this.header.children('.ui-carousel-dropdown');
         this.mobileDropdown = this.header.children('.ui-carousel-mobiledropdown');
         this.stateholder = $(this.jqId + '_page');
-        PrimeFaces.calculateScrollbarWidth();
         
         this.cfg.numVisible = this.cfg.numVisible||3;
         this.cfg.firstVisible = this.cfg.firstVisible||0;
@@ -53,7 +52,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     refreshDimensions: function() {
         var win = $(window);
         
-        if((win.width() + PrimeFaces.scrollbarWidth) <= this.cfg.breakpoint) {
+        if(win.width() <= this.cfg.breakpoint) {
             this.calculateItemWidths(1);
             this.totalPages = this.itemsCount;
             this.mobileDropdown.show();
@@ -204,4 +203,4 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         clearInterval(this.interval);
     }
     
-});              
+});
