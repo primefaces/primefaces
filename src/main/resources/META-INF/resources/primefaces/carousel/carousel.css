@@ -26,7 +26,6 @@
 
 .ui-carousel .ui-carousel-footer {
     margin: 1px 1px 0px 1px;
-    height: 16px;
     padding-top: 9px;
     padding-bottom: 6px;
     padding-right: 10px;
@@ -36,7 +35,6 @@
 
 .ui-carousel .ui-carousel-header {
     margin: 0 1px;
-    height: 16px;
     overflow: hidden;
     padding-top: 7px;
     padding-bottom: 8px;
