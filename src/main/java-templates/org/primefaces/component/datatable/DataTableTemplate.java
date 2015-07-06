@@ -725,15 +725,17 @@ import org.primefaces.util.SharedStringBuilder;
             String var = this.getVar();
             Collection data = (Collection) getDataModel().getWrappedData();
 
-            for(Iterator it = data.iterator(); it.hasNext();) {
-                Object object = it.next();
-                requestMap.put(var, object);
+            if(data != null) {
+                for(Iterator it = data.iterator(); it.hasNext();) {
+                    Object object = it.next();
+                    requestMap.put(var, object);
 
-                if(String.valueOf(this.getRowKey()).equals(rowKey)) {
-                    return object;
+                    if(String.valueOf(this.getRowKey()).equals(rowKey)) {
+                        return object;
+                    }
                 }
             }
-            
+
             return null;
         }
         else {
