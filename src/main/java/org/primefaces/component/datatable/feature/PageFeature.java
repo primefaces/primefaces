@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.event.data.PostPageEvent;
 
 public class PageFeature implements DataTableFeature {
 
@@ -34,6 +35,8 @@ public class PageFeature implements DataTableFeature {
         }
         
         renderer.encodeTbody(context, table, true);
+        
+        context.getApplication().publishEvent(context, PostPageEvent.class, table);
     }
 
     public boolean shouldDecode(FacesContext context, DataTable table) {
