@@ -22373,7 +22373,9 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.resetAxesOnResize = (this.cfg.resetAxesOnResize === false) ? false : true;
         
         $(window).off(resizeNS).on(resizeNS, function() {
-            $this.plot.replot({resetAxes: $this.cfg.resetAxesOnResize});
+            if($this.jq.is(':visible')) {
+                $this.plot.replot({resetAxes: $this.cfg.resetAxesOnResize});
+            }
         });
     },
             
