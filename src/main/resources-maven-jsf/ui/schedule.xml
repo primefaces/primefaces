@@ -224,6 +224,13 @@
 			<type>java.lang.String</type>
 			<description>Name of javascript function to extend the options of the underlying fullcalendar plugin.</description>
 		</attribute>
+        <attribute>
+			<name>displayEventEnd</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for 
+            all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

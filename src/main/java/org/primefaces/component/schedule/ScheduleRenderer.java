@@ -194,6 +194,14 @@ public class ScheduleRenderer extends CoreRenderer {
             wb.attr("columnFormat", columnFormat, null);
         }
         
+        String displayEventEnd = schedule.getDisplayEventEnd();
+        if(displayEventEnd != null) {
+            if(displayEventEnd.equals("true")||displayEventEnd.equals("false"))
+                wb.nativeAttr("displayEventEnd", displayEventEnd);
+            else
+                wb.nativeAttr("displayEventEnd", "{" + displayEventEnd + "}");
+        }
+        
         String extender = schedule.getExtender();
         if(extender != null) {
             wb.nativeAttr("extender", extender);
