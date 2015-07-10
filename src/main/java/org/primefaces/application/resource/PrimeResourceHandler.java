@@ -18,14 +18,18 @@ package org.primefaces.application.resource;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.FacesContext;
 import org.primefaces.application.resource.barcode.BarcodeHandler;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
+    
+    private static final Logger LOG = Logger.getLogger(PrimeResourceHandler.class.getName());
     
     private final Map<String,DynamicContentHandler> handlers;
     
@@ -78,12 +82,18 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     public void handleResourceRequest(FacesContext context) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String handlerType = params.get(Constants.DYNAMIC_CONTENT_TYPE_PARAM);
-        DynamicContentHandler handler = handlers.get(handlerType);
         
-        if(handler != null) {
-            handler.handle(context);
-        } else {
+        if (ComponentUtils.isValueBlank(handlerType)) {
             super.handleResourceRequest(context);
+        }
+        else {
+            DynamicContentHandler handler = handlers.get(handlerType);
+            if (handler == null) {
+                LOG.warning("No dynamic resource handler registered for: " + handlerType + ". Do you miss a dependency?");
+                super.handleResourceRequest(context);
+            } else {
+                handler.handle(context);
+            }
         }
     }
     
