@@ -280,10 +280,16 @@ public class ConfigContainer {
                 factory.setValidating(false);
                 factory.setNamespaceAware(false);
                 factory.setExpandEntityReferences(false);
-                factory.setFeature("http://xml.org/sax/features/namespaces", false);
-                factory.setFeature("http://xml.org/sax/features/validation", false);
-                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                
+                try {
+                    factory.setFeature("http://xml.org/sax/features/namespaces", false);
+                    factory.setFeature("http://xml.org/sax/features/validation", false);
+                    factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+                    factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                }
+                catch (Throwable e) {
+                    LOG.warning("DocumentBuilderFactory#setFeature not implemented. Skipping...");
+                }
 
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document document = builder.parse(is);
@@ -291,7 +297,7 @@ public class ConfigContainer {
                 initErrorPages(document.getDocumentElement());
             }
         }
-        catch (Exception e) {
+        catch (Throwable e) {
             LOG.log(Level.SEVERE, "Could not load or parse web.xml", e);
         }
         finally {
