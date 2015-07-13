@@ -160,8 +160,7 @@ public class TreeTableRenderer extends CoreRenderer {
             .attr("scrollable", tt.isScrollable(), false)
             .attr("scrollHeight", tt.getScrollHeight(), null)
             .attr("scrollWidth", tt.getScrollWidth(), null)
-            .attr("nativeElements", tt.isNativeElements(), false)
-            .attr("reflow", tt.isReflow(), false);
+            .attr("nativeElements", tt.isNativeElements(), false);
         
         encodeClientBehaviors(context, tt);
 
@@ -189,10 +188,6 @@ public class TreeTableRenderer extends CoreRenderer {
         containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
         containerClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
         containerClass = tt.isShowUnselectableCheckbox() ? containerClass + " ui-treetable-checkbox-all" : containerClass;
-        
-        if(tt.isReflow()) {
-            containerClass = containerClass + " " + TreeTable.REFLOW_CLASS;
-        }
         
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
