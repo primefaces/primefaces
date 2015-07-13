@@ -159,3 +159,43 @@
   display: block;
   height: 0px;
 }
+
+/** Reflow **/
+.ui-treetable-reflow .ui-treetable-data td .ui-column-title {
+    display: none;
+}
+
+@media ( max-width: 35em ) {
+    .ui-treetable-reflow thead th,
+    .ui-treetable-reflow tfoot td {
+        display: none;
+    }
+
+    .ui-treetable-reflow .ui-treetable-data td { 
+        text-align: left;
+        display: block;
+        border: 0px none;
+        width: 100%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		float: left;
+		clear: left;
+    }
+    
+    .ui-treetable-reflow .ui-treetable-data.ui-widget-content {
+        border: 0px none;
+    }
+    
+    .ui-treetable-reflow .ui-treetable-data tr.ui-widget-content {
+        border-left: 0px none;
+        border-right: 0px none;
+    }
+
+    .ui-treetable-reflow .ui-treetable-data td .ui-column-title { 
+        padding: .4em; 
+        min-width: 30%; 
+        display: inline-block;
+        margin: -.4em 1em -.4em -.4em;
+    }
+}

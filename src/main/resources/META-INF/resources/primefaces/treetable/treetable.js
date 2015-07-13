@@ -20,6 +20,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.setupResizableColumns();
         }
         
+        if(this.cfg.reflow) {
+            this.initReflow(this.tbody.children('tr'));
+        }
+        
         this.bindEvents();
     },
     
@@ -218,6 +222,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
+                            var nextRow = node.next();
                             node.after(content);
                             node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
                             node.attr('aria-expanded', true);
@@ -225,6 +230,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                             
                             if(this.cfg.scrollable) {
                                 this.alignScrollBody();
+                            }
+                            
+                            if(this.cfg.reflow) {
+                                this.initReflow(node.nextUntil(nextRow));
                             }
                         }
                     });
@@ -900,5 +909,15 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         }
-    }
+    },
+    
+    initReflow: function(rows) {
+        var headerColumns = this.thead.find('> tr > th');
+        
+        for(var i = 0; i < headerColumns.length; i++) {
+            var headerColumn = headerColumns.eq(i),
+            title = headerColumn.children('.ui-column-title').text();
+            rows.find('> td:nth-child(' + (i + 1) + ')').prepend('<span class="ui-column-title">' + title + '</span>');
+        }
+    },
 });

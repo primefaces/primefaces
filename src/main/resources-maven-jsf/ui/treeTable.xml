@@ -200,6 +200,13 @@
             <description>Name of the request-scoped variable that'll be used to refer current treenode using EL.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>reflow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Reflow mode is a responsive mode to display columns as stacked depending on screen size.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

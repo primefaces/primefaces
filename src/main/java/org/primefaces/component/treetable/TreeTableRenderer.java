@@ -160,7 +160,8 @@ public class TreeTableRenderer extends CoreRenderer {
             .attr("scrollable", tt.isScrollable(), false)
             .attr("scrollHeight", tt.getScrollHeight(), null)
             .attr("scrollWidth", tt.getScrollWidth(), null)
-            .attr("nativeElements", tt.isNativeElements(), false);
+            .attr("nativeElements", tt.isNativeElements(), false)
+            .attr("reflow", tt.isReflow(), false);
         
         encodeClientBehaviors(context, tt);
 
@@ -188,7 +189,11 @@ public class TreeTableRenderer extends CoreRenderer {
         containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
         containerClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
         containerClass = tt.isShowUnselectableCheckbox() ? containerClass + " ui-treetable-checkbox-all" : containerClass;
-	
+        
+        if(tt.isReflow()) {
+            containerClass = containerClass + " " + TreeTable.REFLOW_CLASS;
+        }
+        
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("class", containerClass, null);
@@ -441,6 +446,11 @@ public class TreeTableRenderer extends CoreRenderer {
                 String columnStyle = column.getStyle();
                 int rowspan = column.getRowspan();
                 int colspan = column.getColspan();
+                int priority = column.getPriority();
+                
+                if(priority > 0) {
+                    columnStyleClass = (columnStyleClass == null) ? "ui-column-p-" + priority : columnStyleClass + " ui-column-p-" + priority; 
+                }
                 
                 writer.startElement("td", null);
                 writer.writeAttribute("role", "gridcell", null);
@@ -514,6 +524,11 @@ public class TreeTableRenderer extends CoreRenderer {
             else
                 columnClass += " ui-state-active";
         }
+        
+        int priority = column.getPriority();
+        if(priority > 0) {
+            columnClass = columnClass + " ui-column-p-" + priority; 
+        }
 
         writer.startElement("th", null);
         writer.writeAttribute("id", column.getClientId(context), null);
@@ -524,6 +539,7 @@ public class TreeTableRenderer extends CoreRenderer {
         if(colspan != 1) writer.writeAttribute("colspan", colspan, null);
 
         writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-column-title", null);
         
         if(header != null) 
             header.encodeAll(context);
@@ -631,6 +647,11 @@ public class TreeTableRenderer extends CoreRenderer {
         String columnStyleClass = column.getStyleClass();
         columnStyleClass = (columnStyleClass == null) ? TreeTable.COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS + " " + columnStyleClass;
 
+        int priority = column.getPriority();
+        if(priority > 0) {
+            columnStyleClass = columnStyleClass + " ui-column-p-" + priority; 
+        }
+        
         writer.startElement("td", null);
         writer.writeAttribute("class", columnStyleClass, null);
         if(style != null) writer.writeAttribute("style", style, null);
