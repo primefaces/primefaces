@@ -37,7 +37,7 @@
 
 .ui-orderlist .ui-orderlist-caption {
     text-align: center;
-    padding:4px 10px 4px 10px;
+    padding:4px 0px;
     border-bottom:0px none;
 }
 
@@ -55,32 +55,32 @@
     overflow:hidden;
 }
 
-/** Responsive **/
+/* Responsive */
+.ui-orderlist.ui-grid-responsive {
+    display: block;
+    width: 100%;
+}
+
+.ui-orderlist.ui-grid-responsive .ui-orderlist-controls {
+    margin-right: 10px;
+}
+
+.ui-orderlist.ui-grid-responsive .ui-orderlist-list,
+.ui-orderlist.ui-grid-responsive .ui-orderlist-caption {
+    width: 100%;
+}  
+
+.ui-orderlist.ui-grid-responsive .ui-orderlist-controls .ui-button {
+    width: 100%;
+}
+
 @media (max-width: 35em) { 
     .ui-orderlist.ui-grid-responsive .ui-orderlist-controls {
         text-align: center;
     }
 
-    .ui-orderlist.ui-grid-responsive .ui-button {
+    .ui-orderlist.ui-grid-responsive .ui-orderlist-controls .ui-button {
         display: inline;
-    }
-    
-    .ui-fluid .ui-orderlist.ui-grid-responsive .ui-orderlist-controls .ui-button {
         width: 20%;
     }
-}
-
-/** Fluid **/
-.ui-fluid .ui-orderlist {
-    display: block;
-    width: 100%;
-}
-
-.ui-fluid .ui-orderlist-controls {
-    margin-right: 10px
-}
-
-.ui-fluid .ui-orderlist .ui-orderlist-list,
-.ui-fluid .ui-orderlist .ui-orderlist-caption {
-    width: 100%;
 }
