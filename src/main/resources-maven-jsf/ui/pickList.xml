@@ -213,6 +213,13 @@
 			<defaultValue>horizontal</defaultValue>
             <description>Displays lists horizontally, valid values are "horizontal" (default) and "vertical".</description>
 		</attribute>
+        <attribute>
+			<name>responsive</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>In responsive mode, component adjusts itself based on screen width.</description>
+		</attribute>
 	</attributes>
 	    <resources>
         <resource>

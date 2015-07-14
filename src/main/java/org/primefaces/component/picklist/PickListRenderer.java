@@ -72,6 +72,10 @@ public class PickListRenderer extends CoreRenderer {
             styleClass += " ui-picklist-vertical"; 
         }
         
+        if(pickList.isResponsive()) {
+            styleClass += " ui-picklist-responsive"; 
+        }
+        
 		writer.startElement("div", pickList);
 		writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
