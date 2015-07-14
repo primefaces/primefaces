@@ -200,6 +200,7 @@ public class PickListRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
                 
         writer.startElement("div", null);
+        writer.writeAttribute("class", PickList.LIST_WRAPPER_CLASS, null);
         
         if(filter) {
             encodeFilter(context, pickList, listId + "_filter");

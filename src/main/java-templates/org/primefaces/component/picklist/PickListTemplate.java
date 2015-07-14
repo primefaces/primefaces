@@ -22,6 +22,7 @@ import org.primefaces.event.ReorderEvent;
 
     public static final String CONTAINER_CLASS = "ui-picklist ui-widget ui-helper-clearfix";
     public static final String LIST_CLASS = "ui-widget-content ui-picklist-list";
+    public static final String LIST_WRAPPER_CLASS = "ui-picklist-list-wrapper";
     public static final String SOURCE_CLASS = LIST_CLASS + " ui-picklist-source";
     public static final String TARGET_CLASS = LIST_CLASS + " ui-picklist-target";
     public static final String BUTTONS_CLASS = "ui-picklist-buttons";
