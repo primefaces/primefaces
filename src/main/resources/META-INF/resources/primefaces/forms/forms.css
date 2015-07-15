@@ -523,6 +523,14 @@ button.ui-button::-moz-focus-inner {
 
 .ui-splitbutton {
     position: relative;
+    padding-right: 2em;
+}
+
+.ui-splitbutton .ui-button.ui-splitbutton-menubutton {
+    width: 32px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
 }
 
 /** IE Hacks **/
@@ -697,20 +705,16 @@ div.ui-button, .ui-splitbutton {
 }
 
 /** SplitButton **/
-.ui-fluid .ui-splitbutton .ui-button {
-    width: 96%;
-}
-.ui-fluid .ui-splitbutton .ui-button.ui-splitbutton-menubutton {
-    width: 4%;
+.ui-fluid .ui-splitbutton {
+    width: 100%;
 }
 
-@media (max-width: 35em) {
-    .ui-fluid .ui-splitbutton .ui-button {
-        width: 90%;
-    }
-    .ui-fluid .ui-splitbutton .ui-button.ui-splitbutton-menubutton {
-        width: 10%;
-    }
+.ui-fluid .ui-splitbutton .ui-button {
+    width: 100%;
+}
+
+.ui-fluid .ui-splitbutton .ui-button.ui-splitbutton-menubutton {
+    width: 32px;
 }
 
 /** Listbox **/
