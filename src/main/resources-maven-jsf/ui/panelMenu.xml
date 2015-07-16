@@ -13,7 +13,7 @@
 	<rendererClass>org.primefaces.component.panelmenu.PanelMenuRenderer</rendererClass>
     <parent>org.primefaces.component.menu.AbstractMenu</parent>
     <description>
-      TreeMenu is a hybrid of accordion-tree components used for navigations and actions.
+      PanelMenu is a hybrid of accordion-tree components used for navigations and actions.
     </description>
     <interfaces>
 		<interface>
