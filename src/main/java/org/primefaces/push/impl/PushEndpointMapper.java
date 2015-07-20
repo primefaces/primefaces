@@ -75,48 +75,17 @@ public class PushEndpointMapper<U> extends DefaultEndpointMapper<U> {
 
     @Override
     public U map(AtmosphereRequest req, Map<String, U> handlers) {
-        String path = computePath(req);
-
-        if (path == null || path.isEmpty()) {
-            path = "/";
-        }
-
-        U handler = match(path, handlers);
-        if (handler == null) {
-            // (2) First, try exact match
-            handler = match(path + (path.endsWith("/") ? "all" : "/all"), handlers);
-
-            if (handler == null) {
-                // (3) Wildcard
-                handler = match(path + "*", handlers);
-
-                // (4) try without a path
-                if (handler == null) {
-                    String p = path.lastIndexOf("/") <= 0 ? "/" : path.substring(0, path.lastIndexOf("/"));
-                    while (p.length() > 0 && p.indexOf("/") != -1) {
-                        handler = match(p, handlers);
-
-                        // (3.1) Try path wildcard
-                        if (handler != null) {
-                            break;
-                        }
-                        p = p.substring(0, p.lastIndexOf("/"));
-                    }
-                }
-            }
-        }
-
+        U handler = super.map(req, handlers);
         if (handler == null) {
             synchronized (config) {
                 logger.trace("Preserving backward PrimeFaces behavior");
                 PrimeAtmosphereHandler pah = new PrimeAtmosphereHandler(configureRules(config.getServletConfig()));
-                path = computePath(req);
+                String path = computePath(req);
                 config.framework().addAtmosphereHandler(path, pah);
                 handler = (U) config.framework().getAtmosphereHandlers().get(path);
+                req.setAttribute(FrameworkConfig.MAPPED_PATH, path);
             }
         }
-
-        req.setAttribute(FrameworkConfig.MAPPED_PATH, path);
         return handler;
     }
 
