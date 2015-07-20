@@ -635,25 +635,23 @@ PrimeFaces.ajax = {
                     // do we really need to refocus? we just check the current activeElement here
                     && activeElementId !== $(document.activeElement).attr('id')) {
 
-                var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));
-                elementToFocus.focus();
+                var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));                
+                var refocus = function() {
+                    elementToFocus.focus();
 
-                if (activeElementSelection && activeElementSelection.start) {
-                    elementToFocus.setSelection(activeElementSelection.start, activeElementSelection.end);
-                }
+                    if (activeElementSelection && activeElementSelection.start) {
+                        elementToFocus.setSelection(activeElementSelection.start, activeElementSelection.end);
+                    }
+                };
+                
+                refocus();
 
                 // double check it - required for IE
                 setTimeout(function() {
                     if (!elementToFocus.is(":focus")) {
-                        elementToFocus.focus();
-                        if (activeElementSelection && activeElementSelection.start) {
-                            elementToFocus.setSelection(activeElementSelection.start, activeElementSelection.end);
-                        }
+                        refocus();
                     }
-                }, 150);
-                
-                
-                
+                }, 50);
             }
 
             PrimeFaces.customFocus = false;
