@@ -15,8 +15,8 @@
  */
 package org.primefaces.push.inject;
 
-import org.atmosphere.config.service.PathParam;
 import org.atmosphere.inject.annotation.RequestScoped;
+import org.primefaces.push.annotation.PathParam;
 
 import java.lang.reflect.Field;
 
