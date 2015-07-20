@@ -31,12 +31,6 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
         this.active = false;
     },
 
-    handleComplete: function(xhr, status, args) {
-        if(args.stop) {
-            this.stop();
-        }
-    },
-
     isActive: function() {
         return this.active;
     }
