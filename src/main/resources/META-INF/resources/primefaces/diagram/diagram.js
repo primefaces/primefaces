@@ -79,6 +79,11 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         this.canvas.bind('click', function(connection, orignalEvent) {
             $this.onConnectionClick(connection);
         });
+        
+        this.jq.children('.ui-diagram-element').click(function() {
+            var elementId = $(this).attr('id');
+            $this.onElementClick(elementId);
+        });
     },
     
     onConnect: function(info) {
@@ -175,6 +180,23 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         
         if (this.hasBehavior('connectionClick')) {
             var behavior = this.cfg.behaviors['connectionClick'];
+            
+            behavior.call(this, options);
+        }
+    },
+    
+    onElementClick: function(elementId) {
+        var options = {
+            source: this.id,
+            process: this.id,
+            params: [
+                {name: this.id + "_elementClick", value: true},
+                {name: this.id + "_elementId", value: elementId.substring(this.id.length + 1)}
+            ]
+        };
+        
+        if (this.hasBehavior('elementClick')) {
+            var behavior = this.cfg.behaviors['elementClick'];
             
             behavior.call(this, options);
         }

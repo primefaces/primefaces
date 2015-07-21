@@ -12,12 +12,13 @@ import org.primefaces.event.diagram.DisconnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import java.util.Map;
 import org.primefaces.event.diagram.ConnectionClickEvent;
+import org.primefaces.event.diagram.ElementClickEvent;
 
     public static final String CONTAINER_CLASS = "ui-diagram ui-widget";
     public static final String ELEMENT_CLASS = "ui-diagram-element";
     public static final String DRAGGABLE_ELEMENT_CLASS = "ui-diagram-draggable";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("connect","disconnect", "connectionChange", "connectionClick"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("connect","disconnect", "connectionChange", "connectionClick", "elementClick"));
 
     @Override
     public Collection<String> getEventNames() {
@@ -97,6 +98,13 @@ import org.primefaces.event.diagram.ConnectionClickEvent;
                     
                     connectionClickEvent.setPhaseId(behaviorEvent.getPhaseId());
                     super.queueEvent(connectionClickEvent);
+                }
+                else if (eventName.equals("elementClick")) {
+                    Element element = model.findElement(params.get(clientId + "_elementId"));
+                    
+                    ElementClickEvent elementClickEvent = new ElementClickEvent(this, behaviorEvent.getBehavior(),
+                            element);
+                    super.queueEvent(elementClickEvent);
                 }
             }
         }
