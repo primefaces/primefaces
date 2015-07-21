@@ -100,6 +100,6 @@ public interface RemoteEndpoint {
      *
      * @return {@link AtmosphereResource}
      */
-    public AtmosphereResource resource();
+    AtmosphereResource resource();
 
 }
