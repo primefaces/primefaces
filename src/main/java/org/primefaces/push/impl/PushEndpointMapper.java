@@ -48,24 +48,7 @@ public class PushEndpointMapper<U> extends DefaultEndpointMapper<U> {
     }
 
     public String computePath(AtmosphereRequest req) {
-        String path;
-        String pathInfo = null;
-        try {
-            pathInfo = req.getPathInfo();
-        } catch (IllegalStateException ex) {
-            // http://java.net/jira/browse/GRIZZLY-1301
-        }
-
-        if (pathInfo != null) {
-            path = req.getServletPath() + pathInfo;
-        } else {
-            path = req.getServletPath();
-        }
-
-        if (path == null || path.isEmpty()) {
-            path = "/";
-        }
-
+        String path = super.computePath(req);
         if (servletPath != null && path.startsWith(servletPath)) {
             path = path.substring(servletPath.length());
         }
