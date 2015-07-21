@@ -11,16 +11,21 @@ import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import java.util.Map;
+import org.primefaces.event.diagram.ConnectionClickEvent;
 
     public static final String CONTAINER_CLASS = "ui-diagram ui-widget";
     public static final String ELEMENT_CLASS = "ui-diagram-element";
     public static final String DRAGGABLE_ELEMENT_CLASS = "ui-diagram-draggable";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("connect","disconnect", "connectionChange"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("connect","disconnect", "connectionChange", "connectionClick"));
 
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
+    }
+
+    public boolean isConnectionClickRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_connectionClick");
     }
 
     public boolean isConnectRequest(FacesContext context) {
@@ -82,6 +87,16 @@ import java.util.Map;
 
                     connectionChangeEvent.setPhaseId(behaviorEvent.getPhaseId());
                     super.queueEvent(connectionChangeEvent);
+                }
+                else if (eventName.equals("connectionClick")) {
+                    Element sourceElement = model.findElement(params.get(clientId + "_sourceId"));
+                    Element targetElement = model.findElement(params.get(clientId + "_targetId"));
+                    
+                    ConnectionClickEvent connectionClickEvent = new ConnectionClickEvent(this, behaviorEvent.getBehavior(),
+                            sourceElement, targetElement);
+                    
+                    connectionClickEvent.setPhaseId(behaviorEvent.getPhaseId());
+                    super.queueEvent(connectionClickEvent);
                 }
             }
         }
