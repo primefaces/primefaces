@@ -45,6 +45,8 @@ public class DiagramRenderer extends CoreRenderer {
             decodeDisconnection(context, diagram);
         } else if(diagram.isConnectionChangeRequest(context)) {
             decodeConnectionChange(context, diagram);
+        } else if (diagram.isElementDragStopRequest(context)) {
+            decodeElementDragStop(context, diagram);
         }
         
         decodeBehaviors(context, component);
@@ -92,6 +94,18 @@ public class DiagramRenderer extends CoreRenderer {
         
             model.disconnect(findConnection(model, originalSourceEndPoint, originalTargetEndPoint));
             model.connect(new Connection(newSourceEndPoint, newTargetEndPoint));
+        }
+    }
+    
+    private void decodeElementDragStop(FacesContext context, Diagram diagram) {
+        DiagramModel model = (DiagramModel) diagram.getValue();
+        if (model != null) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String clientId = diagram.getClientId(context);
+            
+            Element element = model.findElement(params.get(clientId + "_elementId"));
+            element.setX(params.get(clientId + "_left"));
+            element.setY(params.get(clientId + "_top"));
         }
     }
     

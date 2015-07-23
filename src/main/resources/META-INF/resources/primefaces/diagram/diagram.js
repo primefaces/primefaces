@@ -35,7 +35,13 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
                 $this.initConnections();
                 
                 $this.canvas.draggable($this.jq.children('.ui-diagram-draggable'), {
-                    containment: true
+                    containment: true,
+                    stop: function(event) {
+                        var element = $(event.el);
+                        $this.onElementDragStop(element.attr('id'),
+                                                element.css('left'),
+                                                element.css('top'));
+                    }
                 });
             });
             
@@ -199,6 +205,27 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
             var behavior = this.cfg.behaviors['elementClick'];
             
             behavior.call(this, options);
+        }
+    },
+    
+    onElementDragStop: function(elementId, left, top) {
+        var options = {
+            source: this.id,
+            process: this.id,
+            params: [
+                {name: this.id + "_elementDragStop", value: true},
+                {name: this.id + "_elementId", value: elementId.substring(this.id.length + 1)},
+                {name: this.id + "_top", value: top},
+                {name: this.id + "_left", value: left}
+            ]
+        };
+        
+        if (this.hasBehavior('elementDragStop')) {
+            var behavior = this.cfg.behaviors['elementDragStop'];
+
+            behavior.call(this, options);
+        } else {
+            PrimeFaces.ajax.Request.handle(options); 
         }
     },
     

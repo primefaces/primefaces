@@ -13,12 +13,13 @@ import org.primefaces.event.diagram.ConnectionChangeEvent;
 import java.util.Map;
 import org.primefaces.event.diagram.ConnectionClickEvent;
 import org.primefaces.event.diagram.ElementClickEvent;
+import org.primefaces.event.diagram.ElementDragStopEvent;
 
     public static final String CONTAINER_CLASS = "ui-diagram ui-widget";
     public static final String ELEMENT_CLASS = "ui-diagram-element";
     public static final String DRAGGABLE_ELEMENT_CLASS = "ui-diagram-draggable";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("connect","disconnect", "connectionChange", "connectionClick", "elementClick"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("connect","disconnect", "connectionChange", "connectionClick", "elementClick", "elementDragStop"));
 
     @Override
     public Collection<String> getEventNames() {
@@ -39,6 +40,10 @@ import org.primefaces.event.diagram.ElementClickEvent;
 
     public boolean isConnectionChangeRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_connectionChange");
+    }
+
+    public boolean isElementDragStopRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_elementDragStop");
     }
 
     private boolean isRequestSource(FacesContext context) {
@@ -105,6 +110,13 @@ import org.primefaces.event.diagram.ElementClickEvent;
                     ElementClickEvent elementClickEvent = new ElementClickEvent(this, behaviorEvent.getBehavior(),
                             element);
                     super.queueEvent(elementClickEvent);
+                }
+                else if (eventName.equals("elementDragStop")) {
+                    Element element = model.findElement(params.get(clientId + "_elementId"));
+                    
+                    ElementDragStopEvent elementDragStopEvent = new ElementDragStopEvent(this, behaviorEvent.getBehavior(),
+                            element);
+                    super.queueEvent(elementDragStopEvent);
                 }
             }
         }
