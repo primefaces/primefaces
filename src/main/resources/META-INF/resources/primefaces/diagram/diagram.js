@@ -34,7 +34,7 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
                 $this.initEndPoints();
                 $this.initConnections();
                 
-                $this.canvas.draggable($this.jq.children('.ui-diagram-draggable'), {
+                $this.canvas.draggable($this.jq.children('.' + $this.cfg.draggableClass), {
                     containment: true,
                     stop: function(event) {
                         var element = $(event.el);
@@ -86,7 +86,7 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
             $this.onConnectionClick(connection);
         });
         
-        this.jq.children('.ui-diagram-element').click(function() {
+        this.jq.children('.' + $this.cfg.elementClass).click(function() {
             var elementId = $(this).attr('id');
             $this.onElementClick(elementId);
         });

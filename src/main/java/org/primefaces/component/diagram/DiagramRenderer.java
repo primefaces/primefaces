@@ -157,7 +157,7 @@ public class DiagramRenderer extends CoreRenderer {
         Diagram diagram = (Diagram) component;
 
         encodeMarkup(context, diagram);
-		encodeScript(context, diagram);
+        encodeScript(context, diagram);
     }
     
     protected void encodeScript(FacesContext context, Diagram diagram) throws IOException {
@@ -181,6 +181,9 @@ public class DiagramRenderer extends CoreRenderer {
     
     protected void encodeDefaults(WidgetBuilder wb, DiagramModel  model) throws IOException {
         StringBuilder sb = SharedStringBuilder.get(SB_DIAGRAM);
+        
+        wb.append(",elementClass:'").append(Diagram.ELEMENT_CLASS).append("'");
+        wb.append(",draggableClass:'").append(Diagram.DRAGGABLE_ELEMENT_CLASS).append("'");
         
         Connector defaultConnector = model.getDefaultConnector();
         if(defaultConnector != null) {
