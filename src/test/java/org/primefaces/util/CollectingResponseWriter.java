@@ -6,8 +6,6 @@ import java.io.Writer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 
-import org.bouncycastle.crypto.RuntimeCryptoException;
-
 public class CollectingResponseWriter extends ResponseWriter {
 
 	private StringBuilder builder = new StringBuilder();

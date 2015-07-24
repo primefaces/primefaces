@@ -11,7 +11,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>4.0</version>
+    <version>4.1</version>
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
     
@@ -29,6 +29,12 @@
         <developerConnection>scm:svn:https://primefaces.googlecode.com/svn/primefaces/trunk</developerConnection>
         <url>http://primefaces.googlecode.com/svn/primefaces/trunk</url>
     </scm>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>primeFaces_repository</id>
+            <url>http://repository.primefaces.org/</url>
+        </pluginRepository>
+    </pluginRepositories>
     
     <developers>
         <developer>
@@ -92,9 +98,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>2.1.7</version>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.6</version>
             <scope>provided</scope>
         </dependency>
 		
