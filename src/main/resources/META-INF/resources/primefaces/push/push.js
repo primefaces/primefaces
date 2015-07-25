@@ -27,6 +27,9 @@
     if (typeof define === "function" && define.amd) {
         // AMD
         define(factory);
+    } else if(typeof exports !== 'undefined') {
+        // CommonJS
+        module.exports = factory();
     } else {
         // Browser globals, Window
         root.atmosphere = factory();
@@ -35,7 +38,7 @@
 
     "use strict";
 
-    var version = "2.2.9-javascript",
+    var version = "2.2.12-javascript",
         atmosphere = {},
         guid,
         offline = false,
@@ -192,7 +195,6 @@
                 ackInterval: 0,
                 closeAsync: false,
                 reconnectOnServerError: true,
-                reconnectOnWindowLocationChange: false,
                 onError: function (response) {
                 },
                 onClose: function (response) {
@@ -301,7 +303,7 @@
              * @type {string}
              * @private
              */
-            var _heartbeatPadding = ' ';
+            var _heartbeatPadding = 'X';
 
             /**
              * {boolean} If request is currently aborted.
@@ -343,6 +345,14 @@
 
             /** Key for connection sharing */
             var _sharingKey;
+
+            /**
+             * {boolean} If window beforeUnload event has been called.
+             * Flag will be reset after 5000 ms
+             *
+             * @private
+             */
+            var _beforeUnloadState = false;
 
             // Automatic call to subscribe
             _subscribe(options);
@@ -441,6 +451,7 @@
                     closeR.transport = 'polling';
                     closeR.method = 'GET';
                     closeR.data = '';
+                    closeR.heartbeat = null;
                     if (_request.enableXDR) {
                         closeR.enableXDR = _request.enableXDR
                     }
@@ -455,9 +466,8 @@
              * @private
              */
             function _close() {
-                if (_canLog('debug')) {
-                    atmosphere.util.debug("Closing");
-                }
+                _debug("Closing (AtmosphereRequest._close() called)");
+
                 _abortingConnection = true;
                 if (_request.reconnectId) {
                     clearTimeout(_request.reconnectId);
@@ -509,6 +519,7 @@
                 }
                 if (_websocket != null) {
                     if (_websocket.canSendMessage) {
+                        _debug("invoking .close() on WebSocket object");
                         _websocket.close();
                     }
                     _websocket = null;
@@ -1355,8 +1366,7 @@
 
                 var location = _buildWebSocketUrl(_request.url);
                 if (_canLog('debug')) {
-                    atmosphere.util.debug("Invoking executeWebSocket");
-                    atmosphere.util.debug("Using URL: " + location);
+                    atmosphere.util.debug("Invoking executeWebSocket, using URL: " + location);
                 }
 
                 if (webSocketOpened && !_request.reconnect) {
@@ -1501,8 +1511,7 @@
                     }
 
                     if (_canLog('warn')) {
-                        atmosphere.util.warn("Websocket closed, reason: " + reason);
-                        atmosphere.util.warn("Websocket closed, wasClean: " + message.wasClean);
+                        atmosphere.util.warn("Websocket closed, reason: " + reason + ' - wasClean: ' + message.wasClean);
                     }
 
                     if (_response.closedByClientTimeout || offline) {
@@ -1520,9 +1529,9 @@
                     if (_abortingConnection) {
                         atmosphere.util.log(_request.logLevel, ["Websocket closed normally"]);
                     } else if (!webSocketOpened) {
-                        _reconnectWithFallbackTransport("Websocket failed. Downgrading to Comet and resending");
+                        _reconnectWithFallbackTransport("Websocket failed on first connection attempt. Downgrading to " + _request.fallbackTransport + " and resending");
 
-                    } else if (_request.reconnect && _response.transport === 'websocket' && (_request.reconnectOnWindowLocationChange || message.code !== 1001)) {
+                    } else if (_request.reconnect && _response.transport === 'websocket' ) {
                         _clearState();
                         if (_requestCount++ < _request.maxReconnectOnClose) {
                             _open('re-connecting', _request.transport, _request);
@@ -1867,7 +1876,7 @@
                     }
                 }
 
-                var reconnectF = function (force) {
+                var reconnectFExec = function (force) {
                     rq.lastIndex = 0;
                     if (force || (rq.reconnect && _requestCount++ < rq.maxReconnectOnClose)) {
                         _response.ffTryingReconnect = true;
@@ -1875,6 +1884,18 @@
                         _reconnect(ajaxRequest, rq, request.reconnectInterval);
                     } else {
                         _onError(0, "maxReconnectOnClose reached");
+                    }
+                };
+
+                var reconnectF = function (force){
+                    if(atmosphere._beforeUnloadState){
+                        // ATMOSPHERE-JAVASCRIPT-143: Delay reconnect to avoid reconnect attempts before an actual unload (we don't know if an unload will happen, yet)
+                        atmosphere.util.debug(new Date() + " Atmosphere: reconnectF: execution delayed due to _beforeUnloadState flag");
+                        setTimeout(function () {
+                            reconnectFExec(force);
+                        }, 5000);
+                    }else {
+                        reconnectFExec(force);
                     }
                 };
 
@@ -1928,6 +1949,7 @@
                     ajaxRequest.onreadystatechange = function () {
                         _debug("ajaxRequest.onreadystatechange, new state: " + ajaxRequest.readyState);
                         if (_abortingConnection) {
+                            _debug("onreadystatechange has been ignored due to _abortingConnection flag");
                             return;
                         }
 
@@ -2146,7 +2168,7 @@
                 }
 
                 if (!_request.dropHeaders) {
-                    ajaxRequest.setRequestHeader("X-Atmosphere-Framework", atmosphere.util.version);
+                    ajaxRequest.setRequestHeader("X-Atmosphere-Framework", version);
                     ajaxRequest.setRequestHeader("X-Atmosphere-Transport", request.transport);
 
                     if (request.heartbeat !== null && request.heartbeat.server !== null) {
@@ -2673,7 +2695,7 @@
                     };
                     _clearState();
 
-                    _reconnectWithFallbackTransport("Websocket failed. Downgrading to Comet and resending " + message);
+                    _reconnectWithFallbackTransport("Websocket failed. Downgrading to " + _request.fallbackTransport + " and resending " + message);
                     _pushAjaxMessage(message);
                 }
             }
@@ -2735,7 +2757,8 @@
                             f.onmessage(response);
                         break;
                     case "error":
-                        _debug("Firing onError");
+                        var dbgReasonPhrase = (typeof(response.reasonPhrase) != 'undefined') ? response.reasonPhrase : 'n/a';
+                        _debug("Firing onError, reasonPhrase: " + dbgReasonPhrase);
                         if (typeof (f.onError) !== 'undefined')
                             f.onError(response);
 
@@ -2782,7 +2805,7 @@
                         var closed = typeof (_request.closed) !== 'undefined' ? _request.closed : false;
 
                         if (!closed) {
-                            _debug("Firing onClose");
+                            _debug("Firing onClose (" + response.state + " case)");
                             if (typeof (f.onClose) !== 'undefined') {
                                 f.onClose(response);
                             }
@@ -2791,7 +2814,7 @@
                                 f.onclose(response);
                             }
                         } else {
-                            _debug("Closed but not firing onClose");
+                            _debug("Request already closed, not firing onClose (" + response.state + " case)");
                         }
                         _request.closed = true;
                         break;
@@ -3387,8 +3410,19 @@
     })();
 
     atmosphere.util.on(window, "unload", function (event) {
-    	atmosphere.util.debug(new Date() + " Atmosphere: " + "unload event");
+        atmosphere.util.debug(new Date() + " Atmosphere: " + "unload event");
         atmosphere.unsubscribe();
+    });
+
+    atmosphere.util.on(window, "beforeunload", function (event) {
+        atmosphere.util.debug(new Date() + " Atmosphere: " + "beforeunload event");
+
+        // ATMOSPHERE-JAVASCRIPT-143: Delay reconnect to avoid reconnect attempts before an actual unload (we don't know if an unload will happen, yet)
+        atmosphere._beforeUnloadState = true;
+        setTimeout(function () {
+            atmosphere.util.debug(new Date() + " Atmosphere: " + "beforeunload event timeout reached. Reset _beforeUnloadState flag");
+            atmosphere._beforeUnloadState = false;
+        }, 5000);
     });
 
     // Pressing ESC key in Firefox kills the connection
@@ -3403,6 +3437,7 @@
     });
 
     atmosphere.util.on(window, "offline", function () {
+        atmosphere.util.debug(new Date() + " Atmosphere: offline event");
         offline = true;
         if (requests.length > 0) {
             var requestsClone = [].concat(requests);
@@ -3419,6 +3454,7 @@
     });
 
     atmosphere.util.on(window, "online", function () {
+        atmosphere.util.debug(new Date() + " Atmosphere: online event");
         if (requests.length > 0) {
             for (var i = 0; i < requests.length; i++) {
                 requests[i].init();
