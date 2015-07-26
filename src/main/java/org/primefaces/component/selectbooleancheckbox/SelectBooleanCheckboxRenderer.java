@@ -112,6 +112,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         }
         
         renderOnchange(context, checkbox);
+        renderDomEvents(context, checkbox, HTML.BLUR_FOCUS_EVENTS);
         
         writer.endElement("input");
 
