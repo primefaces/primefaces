@@ -87,6 +87,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
         
         renderOnchange(context, button);
+        renderDomEvents(context, button, HTML.BLUR_FOCUS_EVENTS);
 
         // tabindex
         if (button.getTabindex() != null) {

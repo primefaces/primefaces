@@ -86,6 +86,20 @@
             <ignoreInComponent>true</ignoreInComponent>
             <description>Advisory tooltip information.</description>
         </attribute>
+        <attribute>
+			<name>onfocus</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when button receives focus.</description>
+		</attribute>
+        <attribute>
+			<name>onblur</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when button loses focus.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
