@@ -68,6 +68,20 @@
             <ignoreInComponent>true</ignoreInComponent>
             <description>The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.</description>
         </attribute>
+        <attribute>
+			<name>onfocus</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when checkbox receives focus.</description>
+		</attribute>
+        <attribute>
+			<name>onblur</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when checkbox loses focus.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
