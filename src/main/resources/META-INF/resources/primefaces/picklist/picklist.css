@@ -49,7 +49,8 @@
 
 .ui-picklist .ui-picklist-filter {
     padding-right: 15px;
-    width: 90%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .ui-picklist .ui-picklist-filter-container {
@@ -125,10 +126,6 @@
 
 .ui-picklist.ui-picklist-responsive .ui-picklist-list {
     width: auto;
-}
-
-.ui-picklist .ui-picklist-filter {
-    width: 100%;
 }
         
 /* Responsive */
