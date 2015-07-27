@@ -11,11 +11,8 @@
 
 .ui-autocomplete .ui-autocomplete-dropdown {
     position: absolute;
-    top: 0;
-    bottom: 0;
     height: 100%;
     width: 2.4em;
-    right: -2.4em;
 }
 
 .ui-autocomplete-query{
