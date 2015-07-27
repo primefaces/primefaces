@@ -85,6 +85,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     
     render: function() {   
         this.blocker = $('<div id="' + this.id + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
+        
+        if(this.cfg.styleClass) {
+            this.block.addClass(this.cfg.styleClass);
+        }
 
         if(this.block.hasClass('ui-corner-all')) {
             this.blocker.addClass('ui-corner-all');

@@ -49,6 +49,12 @@
             <defaultValue>true</defaultValue>
             <description>When disabled, Displays block without animation effect</description>
 		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the component.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
