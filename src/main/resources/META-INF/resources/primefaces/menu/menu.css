@@ -460,7 +460,8 @@
     text-align: center;
 }
 
-.ui-steps.ui-steps-readonly .ui-steps-item .ui-menuitem-link {
+.ui-steps .ui-steps-item.ui-state-highlight .ui-menuitem-link,
+.ui-steps .ui-steps-item.ui-state-disabled .ui-menuitem-link {
     cursor: default;
 }
 

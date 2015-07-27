@@ -61,7 +61,7 @@ public class StepsRenderer extends BaseMenuRenderer {
         if(elements != null && !elements.isEmpty()) {
             for(MenuElement element : elements) {
                 if(element.isRendered() && (element instanceof MenuItem)) {
-                    encodeItem(context, steps, (MenuItem) element, (i == activeIndex), i);
+                    encodeItem(context, steps, (MenuItem) element, activeIndex, i);
                     i++;
                 }
             }
@@ -72,21 +72,33 @@ public class StepsRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
     
-    protected void encodeItem(FacesContext context, Steps steps, MenuItem item, boolean active, int index) throws IOException {
+    protected void encodeItem(FacesContext context, Steps steps, MenuItem item, int activeIndex, int index) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String itemClass = active ? Steps.ACTIVE_ITEM_CLASS : Steps.INACTIVE_ITEM_CLASS;
+        String itemClass;
+        
+        if(steps.isReadonly()) {
+            itemClass = (index == activeIndex) ? Steps.ACTIVE_ITEM_CLASS: Steps.INACTIVE_ITEM_CLASS;
+        }
+        else {
+            if(index == activeIndex) 
+                itemClass = Steps.ACTIVE_ITEM_CLASS;
+            else if(index < activeIndex)
+                itemClass = Steps.VISITED_ITEM_CLASS;
+            else
+                itemClass = Steps.INACTIVE_ITEM_CLASS;
+        }
         
         //header container
         writer.startElement("li", null);
         writer.writeAttribute("class", itemClass, null);
         writer.writeAttribute("role", "tab", null);
 
-        encodeMenuItem(context, steps, item, index);
+        encodeMenuItem(context, steps, item, activeIndex, index);
         
         writer.endElement("li");
     }
    
-    protected void encodeMenuItem(FacesContext context, Steps steps, MenuItem menuitem, int index) throws IOException {
+    protected void encodeMenuItem(FacesContext context, Steps steps, MenuItem menuitem, int activeIndex, int index) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
         String style = menuitem.getStyle();
@@ -107,7 +119,7 @@ public class StepsRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        if(steps.isReadonly() || menuitem.isDisabled()) {
+        if(steps.isReadonly() || menuitem.isDisabled() || (activeIndex <= index)) {
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("onclick", "return false;", null);
         }
