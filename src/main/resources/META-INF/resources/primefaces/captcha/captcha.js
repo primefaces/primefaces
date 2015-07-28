@@ -1,3 +1,6 @@
+/**
+ * PrimeFaces Captcha Widget
+ */
 PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
