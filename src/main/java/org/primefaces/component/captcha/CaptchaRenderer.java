@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.primefaces.component.captcha;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Logger;
 import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
@@ -25,10 +24,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class CaptchaRenderer extends CoreRenderer {
-
-    private static final Logger LOG = Logger.getLogger(CaptchaRenderer.class.getName());
 
     private final static String RESPONSE_FIELD = "g-recaptcha-response";
 
@@ -39,33 +37,24 @@ public class CaptchaRenderer extends CoreRenderer {
 
         String answer = params.get(RESPONSE_FIELD);
 
-        if (answer != null) {
+        if(answer != null)
             captcha.setSubmittedValue(answer);
-        }
-        else {
+        else
             captcha.setSubmittedValue("");
-        }
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Captcha captcha = (Captcha) component;
-        String protocol = captcha.isSecure() ? "https" : "http";
         String publicKey = getPublicKey(context, captcha);
 
         if (publicKey == null) {
             throw new FacesException("Cannot find public key for catpcha, use primefaces.PUBLIC_CAPTCHA_KEY context-param to define one");
         }
-        
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
-        writer.writeAttribute("src", protocol + "://www.google.com/recaptcha/api.js?hl=" + captcha.getLanguage(), null);
-        writer.endElement("script");
-        
+                
         encodeMarkup(context, captcha, publicKey);
         encodeScript(context, captcha, publicKey);
-        
     }
     
     protected void encodeMarkup(FacesContext context, Captcha captcha, String publicKey) throws IOException {
@@ -76,31 +65,20 @@ public class CaptchaRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", "g-recaptcha", null);
-        writer.writeAttribute("data-sitekey", publicKey, null);
         writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, Captcha captcha, String publicKey) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = captcha.getClientId(context);
-        String widgetVar = captcha.resolveWidgetVar();
-
-        startScript(writer, clientId);
-
-        writer.write("$(function() {");
-        writer.write("PrimeFaces.cw('Captcha','" + widgetVar + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",render:{");
-        writer.write("\"sitekey\":\"" + publicKey + "\"");
-        writer.write(",\"theme\":\"" + captcha.getTheme() + "\"");
-        if (captcha.getTabindex() != 0) {
-            writer.write(",\"tabIndex\":" + captcha.getTabindex());
-        }
-        writer.write("}");
-        writer.write("});});");
-
-        endScript(writer);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.initWithDomReady("Captcha", captcha.resolveWidgetVar(), clientId);
+        
+        wb.attr("sitekey", publicKey)
+            .attr("theme", captcha.getTheme(), "light")
+            .attr("languagage", captcha.getLanguage(), "en")
+            .attr("tabindex", captcha.getTabindex(), 0);
+        
+        wb.finish();
     }
 
     protected String getPublicKey(FacesContext context, Captcha captcha) {

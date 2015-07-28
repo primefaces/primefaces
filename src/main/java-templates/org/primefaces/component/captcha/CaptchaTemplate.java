@@ -8,18 +8,14 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import javax.faces.application.FacesMessage;
 import javax.faces.FacesException;
-import javax.servlet.http.HttpServletRequest;
-import java.util.logging.Logger;
+import org.primefaces.context.RequestContext;
+import org.primefaces.component.captcha.Captcha;
 import org.primefaces.context.PrimeExternalContext;
 import org.primefaces.json.JSONObject;
 
     public final static String PUBLIC_KEY = "primefaces.PUBLIC_CAPTCHA_KEY";
     public final static String PRIVATE_KEY = "primefaces.PRIVATE_CAPTCHA_KEY";
     public final static String INVALID_MESSAGE_ID = "primefaces.captcha.INVALID";
-
-    public final static String OLD_PRIVATE_KEY = "org.primefaces.component.captcha.PRIVATE_KEY";
-
-    private static final Logger logger = Logger.getLogger(Captcha.class.getName());
 
     @Override
 	protected void validateValue(FacesContext context, Object value) {
@@ -79,23 +75,16 @@ import org.primefaces.json.JSONObject;
                 context.addMessage(getClientId(context), msg);
             }
         }
+        
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        if(requestContext.isAjaxRequest()) {
+            requestContext.execute("grecaptcha.reset()");
+        }
 	}
 
     private String createPostParameters(FacesContext facesContext, Object value) throws UnsupportedEncodingException {
 		String remoteAddress = PrimeExternalContext.getCurrentInstance(facesContext).getRemoteAddr();
-        String privateKey = null;
-		String oldPrivateKey = facesContext.getExternalContext().getInitParameter(Captcha.OLD_PRIVATE_KEY);
-        String newPrivateKey = facesContext.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);
-
-        //Backward compatibility
-        if(oldPrivateKey != null) {
-            logger.warning("PrivateKey definition on captcha is deprecated, use primefaces.PRIVATE_CAPTCHA_KEY context-param instead");
-
-            privateKey = oldPrivateKey;
-        }
-        else {
-            privateKey = newPrivateKey;
-        }
+        String privateKey = facesContext.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);
 
         if(privateKey == null) {
             throw new FacesException("Cannot find private key for catpcha, use primefaces.PRIVATE_CAPTCHA_KEY context-param to define one");
@@ -106,5 +95,8 @@ import org.primefaces.json.JSONObject;
 		postParams.append("&remoteip=").append(URLEncoder.encode(remoteAddress, "UTF-8"));
 		postParams.append("&response=").append(URLEncoder.encode((String) value, "UTF-8"));
 
-		return postParams.toString();
+        String params = postParams.toString();
+        postParams.setLength(0);
+        
+		return params;
 	}

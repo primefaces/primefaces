@@ -49,13 +49,6 @@
 			<type>java.lang.String</type>
             <description>A localized user presentable name.</description>
 		</attribute>
-        <attribute>
-			<name>secure</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Enables https support.</description>
-		</attribute>
 	</attributes>
     <resources>
 		<resource>
