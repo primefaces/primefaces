@@ -83,7 +83,6 @@ import org.primefaces.json.JSONObject;
 	}
 
     private String createPostParameters(FacesContext facesContext, Object value) throws UnsupportedEncodingException {
-		String remoteAddress = PrimeExternalContext.getCurrentInstance(facesContext).getRemoteAddr();
         String privateKey = facesContext.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);
 
         if(privateKey == null) {
@@ -92,7 +91,6 @@ import org.primefaces.json.JSONObject;
 
 		StringBuilder postParams = new StringBuilder();
 		postParams.append("secret=").append(URLEncoder.encode(privateKey, "UTF-8"));
-		postParams.append("&remoteip=").append(URLEncoder.encode(remoteAddress, "UTF-8"));
 		postParams.append("&response=").append(URLEncoder.encode((String) value, "UTF-8"));
 
         String params = postParams.toString();
