@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.faces.FacesException;
-import javax.faces.component.NamingContainer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,24 +30,17 @@ public class CaptchaRenderer extends CoreRenderer {
 
     private static final Logger LOG = Logger.getLogger(CaptchaRenderer.class.getName());
 
-    private final static String CHALLENGE_FIELD = "recaptcha_challenge_field";
-    private final static String RESPONSE_FIELD = "recaptcha_response_field";
+    private final static String RESPONSE_FIELD = "g-recaptcha-response";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Captcha captcha = (Captcha) component;
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 
-        String challenge = params.get(CHALLENGE_FIELD);
         String answer = params.get(RESPONSE_FIELD);
 
         if (answer != null) {
-            if (answer.equals("")) {
-                captcha.setSubmittedValue(answer);
-            }
-            else {
-                captcha.setSubmittedValue(new Verification(challenge, answer));
-            }
+            captcha.setSubmittedValue(answer);
         }
         else {
             captcha.setSubmittedValue("");
@@ -59,51 +51,56 @@ public class CaptchaRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Captcha captcha = (Captcha) component;
-        captcha.setRequired(true);
         String protocol = captcha.isSecure() ? "https" : "http";
-
         String publicKey = getPublicKey(context, captcha);
 
         if (publicKey == null) {
             throw new FacesException("Cannot find public key for catpcha, use primefaces.PUBLIC_CAPTCHA_KEY context-param to define one");
         }
-
+        
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
+        writer.writeAttribute("src", protocol + "://www.google.com/recaptcha/api.js?hl=" + captcha.getLanguage(), null);
+        writer.endElement("script");
+        
+        encodeMarkup(context, captcha, publicKey);
+        encodeScript(context, captcha, publicKey);
+        
+    }
+    
+    protected void encodeMarkup(FacesContext context, Captcha captcha, String publicKey) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = captcha.getClientId(context);
 
-        writer.write("var RecaptchaOptions = {");
-        writer.write("theme:\"" + captcha.getTheme() + "\"");
+        captcha.setRequired(true);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", "g-recaptcha", null);
+        writer.writeAttribute("data-sitekey", publicKey, null);
+        writer.endElement("div");
+    }
+
+    protected void encodeScript(FacesContext context, Captcha captcha, String publicKey) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = captcha.getClientId(context);
+        String widgetVar = captcha.resolveWidgetVar();
+
+        startScript(writer, clientId);
+
+        writer.write("$(function() {");
+        writer.write("PrimeFaces.cw('Captcha','" + widgetVar + "',{");
+        writer.write("id:'" + clientId + "'");
+        writer.write(",render:{");
+        writer.write("\"sitekey\":\"" + publicKey + "\"");
+        writer.write(",\"theme\":\"" + captcha.getTheme() + "\"");
         if (captcha.getTabindex() != 0) {
-            writer.write(",tabIndex:" + captcha.getTabindex());
+            writer.write(",\"tabIndex\":" + captcha.getTabindex());
         }
-        writer.write("};");
-        writer.endElement("script");
+        writer.write("}");
+        writer.write("});});");
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
-        writer.writeAttribute("src", protocol + "://www.google.com/recaptcha/api/challenge?k=" + publicKey + "&hl=" + captcha.getLanguage(), null);
-        writer.endElement("script");
-
-        writer.startElement("noscript", null);
-        writer.startElement("iframe", null);
-        writer.writeAttribute("src", protocol + "://www.google.com/recaptcha/api/noscript?k=" + publicKey + "&hl=" + captcha.getLanguage(), null);
-        writer.endElement("iframe");
-
-        writer.startElement("textarea", null);
-        writer.writeAttribute("id", CHALLENGE_FIELD, null);
-        writer.writeAttribute("name", CHALLENGE_FIELD, null);
-        writer.writeAttribute("rows", "3", null);
-        writer.writeAttribute("columns", "40", null);
-        writer.endElement("textarea");
-
-        writer.startElement("input", null);
-        writer.writeAttribute("id", RESPONSE_FIELD, null);
-        writer.writeAttribute("name", RESPONSE_FIELD, null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("value", "manual_challenge", null);
-        writer.endElement("input");
-
-        writer.endElement("noscript");
+        endScript(writer);
     }
 
     protected String getPublicKey(FacesContext context, Captcha captcha) {

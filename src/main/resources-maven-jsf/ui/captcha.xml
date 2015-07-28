@@ -14,14 +14,20 @@
 	<rendererClass>org.primefaces.component.captcha.CaptchaRenderer</rendererClass>
 	<parent>javax.faces.component.UIInput</parent>
     <description>Captcha is a form validation component based on Recaptcha API.</description>
-	<attributes>
+	<interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+    <attributes>
 		&input_component_attributes;
+        &widget_var_attribute;
 		<attribute>
 			<name>theme</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<defaultValue>red</defaultValue>
-            <description>Theme of the captcha. Default is red.</description>
+			<defaultValue>light</defaultValue>
+            <description>Theme of the captcha. Default is light.</description>
 		</attribute>
 		<attribute>
 			<name>language</name>
@@ -51,4 +57,15 @@
             <description>Enables https support.</description>
 		</attribute>
 	</attributes>
+    <resources>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+        <resource>
+			<name>captcha/captcha.js</name>
+		</resource>
+	</resources>
 </component>
