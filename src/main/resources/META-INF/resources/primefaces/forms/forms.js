@@ -2212,14 +2212,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>');
             
             var itemLabel = $('<label></label>');
-            if(escaped) {
+            if(escaped)
                 itemLabel.text(label.text());
-                console.log('escaping');
-            }
-            else {
-                console.log('no escape');
+            else
                 itemLabel.html(label.html());
-            }
+            
+            itemLabel.appendTo(item);
         
             if(title) {
                 item.attr('title', title);
