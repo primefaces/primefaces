@@ -2193,7 +2193,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             checked = input.is(':checked'),
             title = input.attr('title'),
             boxClass = 'ui-chkbox-box ui-widget ui-corner-all ui-state-default',
-            itemClass = 'ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all';
+            itemClass = 'ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all',
+            escaped = input.data('escaped');
 
             if(disabled) {
                 boxClass += " ui-state-disabled";
@@ -2208,8 +2209,17 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             var item = $('<li class="' + itemClass + '"></li>');
             item.append('<div class="ui-chkbox ui-widget"><div class="ui-helper-hidden-accessible"><input type="checkbox" readonly="readonly"></input></div>' +
-                    '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>')
-                .append('<label></label>').children('label').text(label.text());
+                    '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>');
+            
+            var itemLabel = $('<label></label>');
+            if(escaped) {
+                itemLabel.text(label.text());
+                console.log('escaping');
+            }
+            else {
+                console.log('no escape');
+                itemLabel.html(label.html());
+            }
         
             if(title) {
                 item.attr('title', title);

@@ -96,6 +96,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String name = menu.getClientId(context);
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
         boolean disabled = option.isDisabled() || menu.isDisabled();
+        boolean escaped = option.isEscape();
         
         Object valuesArray;
         Object itemValue;
@@ -118,6 +119,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("value", itemValueAsString, null);
+        writer.writeAttribute("data-escaped", String.valueOf(escaped), null);
 
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
@@ -132,7 +134,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if(disabled)
             writer.writeAttribute("class", "ui-state-disabled", null);
         
-        if(option.isEscape())
+        if(escaped)
             writer.writeText(option.getLabel(),null);
         else
             writer.write(option.getLabel());
