@@ -125,6 +125,7 @@ PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
     renderDeferred: function() {     
         if(this.jq.is(':visible')) {
             this._render();
+            this.postRender();
         }
         else {
             var container = this.jq.closest('.ui-hidden-container'),
@@ -141,6 +142,7 @@ PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
     render: function() {
         if(this.jq.is(':visible')) {
             this._render();
+            this.postRender();
             return true;
         }
         else {
@@ -153,6 +155,10 @@ PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
      */
     _render: function() {
         throw 'Unsupported Operation';
+    },
+    
+    postRender: function() {
+        
     },
     
     destroy: function() {
