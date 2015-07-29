@@ -127,6 +127,11 @@
 .ui-picklist.ui-picklist-responsive .ui-picklist-list {
     width: auto;
 }
+
+.ui-picklist.ui-picklist-responsive .ui-chkbox-box {
+    width: 18px;
+    height: 18px;
+}
         
 /* Responsive */
 @media (max-width: 35em) {
