@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_textarea_attributes			SYSTEM "../entities/html_input_textarea_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>signature</tag>
+	<tagClass>org.primefaces.component.signature.SignatureTag</tagClass>
+	<componentClass>org.primefaces.component.signature.Signature</componentClass>
+	<componentType>org.primefaces.component.Signature</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.SignatureRenderer</rendererType>
+	<rendererClass>org.primefaces.component.signature.SignatureRenderer</rendererClass>
+	<parent>javax.faces.component.UIInput</parent>
+    <description>Signature is an input component to provide a signature.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&widget_var_attribute;
+        <attribute>
+			<name>backgroundColor</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Background color, default is #ffffff.</description>
+		</attribute>
+        <attribute>
+			<name>color</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Foreground color, default is #000000.</description>
+		</attribute>
+        <attribute>
+			<name>thickness</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>2</defaultValue>
+            <description>Thickness of lines, default is 2.</description>
+		</attribute>
+        <attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the component.</description>
+		</attribute>
+        <attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the component.</description>
+		</attribute>
+        <attribute>
+			<name>readonly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, signature is used for display purposes only.</description>
+		</attribute>
+        <attribute>
+			<name>guideline</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Adds a guideline when enabled, default is false.</description>
+		</attribute>
+        <attribute>
+			<name>guidelineColor</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Color of the guideline, default is #a0a0a0.</description>
+		</attribute>
+        <attribute>
+			<name>guidelineOffset</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>25</defaultValue>
+            <description>Offset of guideline from bottom.</description>
+		</attribute>
+        <attribute>
+			<name>guidelineIndent</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+            <defaultValue>10</defaultValue>
+            <description>Guide line indent from the edges.</description>
+		</attribute>
+        <attribute>
+			<name>onchange</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute when signature changes.</description>
+		</attribute>
+	</attributes>
+	<resources>
+		<resource>
+			<name>signature/signature.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>signature/signature.js</name>
+		</resource>
+	</resources>
+</component>
