@@ -1784,7 +1784,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         e.preventDefault();
                     }
                 })
-                .on('focus.datatable-cell click.datatable-cell', function(e) {
+                .one('focus.datatable-cell click.datatable-cell', function(e) {
                     $this.currentCell = cell;
                 });
         }        
