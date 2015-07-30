@@ -20918,8 +20918,6 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         this.init(cfg);
     },
     
-    
-    
     _render: function() {
         if(PrimeFaces.env.isCanvasSupported()) {
             this._draw();
