@@ -256,7 +256,7 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
         this.input = this.jq.children('input');
         this.cfg.syncField = this.input;
       
-        if(PrimeFaces.env.isCanvasSupported) {
+        if(PrimeFaces.env.isCanvasSupported()) {
             this.render();
         }
         else {
