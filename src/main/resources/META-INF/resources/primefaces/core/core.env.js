@@ -121,6 +121,11 @@ PrimeFaces.env = {
     
     isLtIE: function(version) {
         return (this.browser.msie) ? parseInt(this.browser.version, 10) < version : false;
+    },
+    
+    isCanvasSupported: function() {
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
     }
 };
 

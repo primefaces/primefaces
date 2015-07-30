@@ -255,11 +255,15 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.input = this.jq.children('input');
         this.cfg.syncField = this.input;
-        this.jq.signature(this.cfg);
-
-        var value = this.input.val();
-        if(value) {
-            this.draw(value);
+      
+        if(PrimeFaces.env.isCanvasSupported) {
+            this.render();
+        }
+        else {
+            var $this = this;
+            $.getScript(PrimeFaces.getFacesResource("excanvas/excanvas.js", "primefaces"), function() {
+                $this.render();
+            });
         }
     },
 
@@ -270,6 +274,15 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
 
     draw: function(value) {
         this.jq.signature('draw', value);
+    },
+    
+    render: function() {
+        this.jq.signature(this.cfg);
+
+        var value = this.input.val();
+        if(value) {
+            this.draw(value);
+        }
     }
 
 });
