@@ -265,6 +265,7 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
 
     clear: function() {
         this.jq.signature('clear');
+        this.input.val('');
     },
 
     draw: function(value) {
