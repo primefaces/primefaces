@@ -76,14 +76,17 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
         if (title != null) writer.writeAttribute("title", title, null);
         if (style != null) writer.writeAttribute("style", style, "style");
-
+        
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        
         //input
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-
+        
         if (checked) writer.writeAttribute("checked", "checked", null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
@@ -99,6 +102,8 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         }
         
         writer.endElement("input");
+        
+        writer.endElement("div");
         
         //icon
         if (icon != null) {
@@ -131,5 +136,10 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         return ((submittedValue instanceof Boolean) ? submittedValue : Boolean.valueOf(submittedValue.toString()));
+    }
+
+    @Override
+    protected String getHighlighter() {
+        return "booleanbutton";
     }
 }

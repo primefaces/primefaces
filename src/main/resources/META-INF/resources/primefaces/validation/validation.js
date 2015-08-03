@@ -1117,6 +1117,18 @@ if (window.PrimeFaces) {
                     }
                 }
 
+            },
+            
+            'booleanbutton': {
+
+                highlight: function(element) {
+                    element.parent().parent().addClass('ui-state-error');
+                },
+
+                unhighlight: function(element) {
+                    element.parent().parent().removeClass('ui-state-error');
+                }
+
             }
         }
     };
