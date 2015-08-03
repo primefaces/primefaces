@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -85,6 +86,9 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 
         if (checked) writer.writeAttribute("checked", "checked", null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, button);
+        }
         
         renderOnchange(context, button);
         renderDomEvents(context, button, HTML.BLUR_FOCUS_EVENTS);
