@@ -125,7 +125,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         //hidden select
         writer.startElement("div", menu);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         writer.startElement("select", menu);
         writer.writeAttribute("id", inputId, "id");
