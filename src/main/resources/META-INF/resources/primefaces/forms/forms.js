@@ -440,7 +440,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.optGroupsSize = this.itemsContainer.children('li.ui-selectonemenu-item-group').length;
 
         var $this = this,
-        selectedOption = this.options.filter(':selected');
+        selectedOption = this.options.filter(':selected'),
+        highlightedItem = this.items.eq(selectedOption.index());
 
         //disable options
         this.options.filter(':disabled').each(function() {
@@ -456,7 +457,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
             //predefined input
             if(customInputVal === selectedOption.text()) {
-                this.highlightItem(this.items.eq(selectedOption.index()));
+                this.highlightItem(highlightedItem);
             }
             //custom input
             else {
@@ -466,7 +467,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            this.highlightItem(this.items.eq(selectedOption.index()));
+            this.highlightItem(highlightedItem);
         }
         
         if(this.cfg.syncTooltip) {
@@ -489,6 +490,19 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         if (PrimeFaces.env.touch) {
             this.focusInput.attr('readonly', true);
         }
+        
+        //for Screen Readers
+        for(var i = 0; i < this.items.size(); i++) {
+            this.items.eq(i).attr('id', this.id + '_' + i);
+        }
+        
+        var highlightedItemId = highlightedItem.attr('id');
+        this.focusInput.attr('aria-autocomplete', 'list')
+            .attr('aria-owns', this.itemsContainer.attr('id'))
+            .attr('aria-activedescendant', highlightedItemId)
+            .attr('aria-labelledby', highlightedItemId)
+            .attr('aria-disabled', this.disabled);
+        this.itemsContainer.attr('aria-activedescendant', highlightedItemId);
     },
     
     refresh: function(cfg) {
@@ -533,6 +547,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         })
         .on('click.selectonemenu', function() {
             $this.selectItem($(this));
+            $this.changeAriaValue($(this));
         });
 
         //Triggers
@@ -554,6 +569,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 $this.hide();
 
                 $this.revert();
+                $this.changeAriaValue($this.getActiveItem());
             }
 
             $this.jq.removeClass('ui-state-hover');
@@ -621,6 +637,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 $this.hide();
 
                 $this.revert();
+                $this.changeAriaValue($this.getActiveItem());
             }
         });
 
@@ -776,6 +793,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.ESCAPE:
                     $this.handleEscapeKey(e);
                 break;
+                
+                case keyCode.SPACE:
+                    $this.handleSpaceKey(e);
+                break;
             }
         })
         .on('keyup.ui-selectonemenu', function(e) {
@@ -903,6 +924,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.ESCAPE:
                     $this.handleEscapeKey(e);
                 break;
+                
+                case keyCode.SPACE:
+                    $this.handleSpaceKey(e);
+                break;
 
                 default:
                 break;
@@ -926,6 +951,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.highlightItem(next);
                 PrimeFaces.scrollInView(this.itemsWrapper, next);
             }
+            this.changeAriaValue(next);
         }
 
         event.preventDefault();
@@ -944,21 +970,41 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.highlightItem(prev);
                 PrimeFaces.scrollInView(this.itemsWrapper, prev);
             }
+            this.changeAriaValue(prev);
         }
 
         event.preventDefault();
     },
 
     handleEnterKey: function(event) {
-        if(this.panel.is(':hidden'))
-            this.show();
-        else
+        if(this.panel.is(':visible')) {
             this.selectItem(this.getActiveItem());
+        }
 
         event.preventDefault();
         event.stopPropagation();
     },
+    
+    handleSpaceKey: function(event) {
+        var target = $(event.target);
+        
+        if(target.is('input') && target.hasClass('ui-selectonemenu-filter')) {
+            return;
+        }
+        
+        if(this.panel.is(":hidden")) {
+            this.show();
+        }
+        else {
+            this.hide();
 
+            this.revert();
+            this.changeAriaValue(this.getActiveItem());
+        }
+        
+        event.preventDefault();
+    },
+    
     handleEscapeKey: function(event) {
         if(this.panel.is(':visible')) {
             this.revert();
@@ -1002,6 +1048,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
         //value before panel is shown
         this.preShowValue = this.options.filter(':selected');
+        this.focusInput.attr('aria-expanded', true);
     },
 
     hide: function() {
@@ -1010,6 +1057,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.panel.css('z-index', '').hide();
+        this.focusInput.attr('aria-expanded', false);
     },
 
     focus: function() {
@@ -1194,7 +1242,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             return this.cfg.labelTemplate.replace('{0}', value);
         }
         return value;
-    }        
+    },
+    
+    changeAriaValue: function (item) {
+        var itemId = item.attr('id');
+
+        this.focusInput.attr('aria-activedescendant', itemId)
+                .attr('aria-labelledby', itemId);
+        this.itemsContainer.attr('aria-activedescendant', itemId);
+    }       
 
 });
 
