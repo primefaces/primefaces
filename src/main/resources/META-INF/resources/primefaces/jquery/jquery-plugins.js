@@ -14002,6 +14002,7 @@ $(function() {
       var mouseProto = $.ui.mouse.prototype,
           _mouseInit = mouseProto._mouseInit,
           _mouseDestroy = mouseProto._mouseDestroy,
+          startEvent,
           touchHandled;
 
       /**
@@ -14062,6 +14063,9 @@ $(function() {
 
         // Track movement to determine if interaction was a click
         self._touchMoved = false;
+        
+        // Track starting event
+        startEvent = event;
 
         // Simulate the mouseover event
         simulateMouseEvent(event, 'mouseover');
@@ -14081,6 +14085,22 @@ $(function() {
 
         // Ignore event if not handled
         if (!touchHandled) {
+          return;
+        }
+        
+        // Ignore event if not handled
+        if (!touchHandled) {
+          return;
+        }
+
+        // Ignore event if no change in position from starting event
+        var startX = startEvent.originalEvent.touches[0].screenX,
+            startY = startEvent.originalEvent.touches[0].screenY,
+            endX = event.originalEvent.touches[0].screenX,
+            endY = event.originalEvent.touches[0].screenY;
+
+        if (startX === endX && startY === endY) {
+          this._touchMoved = false;
           return;
         }
 
