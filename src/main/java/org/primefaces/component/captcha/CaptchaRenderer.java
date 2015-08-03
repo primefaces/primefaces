@@ -75,7 +75,7 @@ public class CaptchaRenderer extends CoreRenderer {
         
         wb.attr("sitekey", publicKey)
             .attr("theme", captcha.getTheme(), "light")
-            .attr("languagage", captcha.getLanguage(), "en")
+            .attr("language", captcha.getLanguage(), "en")
             .attr("tabindex", captcha.getTabindex(), 0);
         
         wb.finish();
