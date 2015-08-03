@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.model.DataModel;
+import javax.faces.model.DataModelEvent;
+import javax.faces.model.DataModelListener;
 
 /**
  * Custom lazy loading DataModel to deal with huge datasets
@@ -59,10 +61,29 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     }
     
     public void setRowIndex(int rowIndex) {
+        int oldIndex = this.rowIndex;
+        
         if(rowIndex == -1 || pageSize == 0)
             this.rowIndex = -1;
         else
             this.rowIndex = (rowIndex % pageSize);
+        
+        if(data == null) {
+            return;
+        }
+        
+        DataModelListener[] listeners = getDataModelListeners();
+        if(listeners != null && oldIndex != this.rowIndex) {
+            Object rowData = null;
+            if(isRowAvailable()) {
+                rowData = getRowData();
+            }
+            
+            DataModelEvent dataModelEvent = new DataModelEvent(this, rowIndex, rowData);
+            for (int i = 0; i < listeners.length; i++) {
+                listeners[i].rowSelected(dataModelEvent);
+            }
+        }
     }
 
 	public Object getWrappedData() {
