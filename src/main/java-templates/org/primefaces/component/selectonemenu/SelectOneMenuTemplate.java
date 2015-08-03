@@ -142,10 +142,6 @@ import java.util.Map;
         }
     }
 
-    public String getInputClientId() {
-        return this.getClientId(getFacesContext()) + "_focus";
-    }
-
     public String getValidatableInputClientId() {
         return this.getClientId(getFacesContext()) + "_input";
     }
