@@ -1477,12 +1477,6 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
                     e.preventDefault();
                 }
-            })
-            .on('change.selectBooleanCheckbox', function(e) {
-                if($this.isChecked())
-                    $this.box.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
-                else
-                    $this.box.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
             });
 
             //toggle state on label click
@@ -1511,6 +1505,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
         if(!this.isChecked()) {
             this.input.prop('checked', true).trigger('change');
             this.input.attr('aria-checked', true);
+            this.box.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
         }
     },
 
@@ -1518,6 +1513,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
         if(this.isChecked()) {
             this.input.prop('checked', false).trigger('change');
             this.input.attr('aria-checked', false);
+            this.box.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
         }
     }
 
