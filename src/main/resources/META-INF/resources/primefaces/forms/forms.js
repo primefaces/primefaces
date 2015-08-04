@@ -535,6 +535,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
+        // Screen Reader(JAWS) hack on Chrome
+        if(PrimeFaces.env.browser.webkit) {
+            this.input.on('focus', function(){
+                setTimeout(function(){
+                    $this.focusInput.trigger('focus.ui-selectonemenu');
+                },2);
+            });
+        }
+        
         //Items
         this.items.filter(':not(.ui-state-disabled)').on('mouseover.selectonemenu', function() {
             var el = $(this);
