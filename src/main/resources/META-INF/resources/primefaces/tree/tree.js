@@ -477,12 +477,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         });
         }
         
-        if(this.cfg.selectionMode) {
-            this.jq.off('click.tree-content', nodeContentSelector)
-                            .on('click.tree-content', nodeContentSelector, null, function(e) {
-                                $this.nodeClick(e, $(this));
-                            });
-        }
+        this.jq.off('click.tree-content', nodeContentSelector)
+                        .on('click.tree-content', nodeContentSelector, null, function(e) {
+                            $this.nodeClick(e, $(this));
+                        });
                         
         this.bindKeyEvents();                
     },
