@@ -993,15 +993,16 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     },
     
     bindDataTable: function() {
-        var rowSelector = this.jqTargetId + ' tbody.ui-datatable-data > tr.ui-widget-content.ui-datatable-selectable:not(.ui-datatable-empty-message)',
+        var rowSelector = this.jqTargetId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)',
         event = this.cfg.event + '.datatable',
         $this = this;
         
         $(document).off(event, rowSelector)
                     .on(event, rowSelector, null, function(e) {
-                        var widget = PrimeFaces.widgets[$this.cfg.targetWidgetVar];
-                        
-                        if(widget.cfg.selectionMode) {
+                        var widget = PrimeFaces.widgets[$this.cfg.targetWidgetVar],
+                        row = $(this);
+                
+                        if(widget.cfg.selectionMode && row.hasClass('ui-datatable-selectable')) {
                             widget.onRowRightClick(e, this, $this.cfg.selectionMode);
 
                             $this.show(e);
