@@ -2868,6 +2868,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             this.frozenTbody.children().remove();
             this.scrollTbody.children().remove();
         }
+        
+        //find slice index by checking how many rendered columns there are in frozen part
+        var firstRow = this.frozenTbody.children('tr:first'),
+        frozenColumnCount = firstRow.length ? firstRow.children('td').length: this.cfg.frozenColumns;
 
         for(var i = 0; i < rows.length; i++) {
             var row = rows.eq(i),
@@ -2875,8 +2879,8 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             frozenRow = this.copyRow(row),
             scrollableRow = this.copyRow(row);
     
-            frozenRow.append(columns.slice(0, this.cfg.frozenColumns));
-            scrollableRow.append(columns.slice(this.cfg.frozenColumns));
+            frozenRow.append(columns.slice(0, frozenColumnCount));
+            scrollableRow.append(columns.slice(frozenColumnCount));
             
             this.frozenTbody.append(frozenRow);
             this.scrollTbody.append(scrollableRow);
