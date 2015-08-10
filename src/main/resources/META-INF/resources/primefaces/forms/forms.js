@@ -500,7 +500,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.focusInput.attr('aria-autocomplete', 'list')
             .attr('aria-owns', this.itemsContainer.attr('id'))
             .attr('aria-activedescendant', highlightedItemId)
-            .attr('aria-labelledby', highlightedItemId)
+            .attr('aria-describedby', highlightedItemId)
             .attr('aria-disabled', this.disabled);
         this.itemsContainer.attr('aria-activedescendant', highlightedItemId);
     },
@@ -1257,7 +1257,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         var itemId = item.attr('id');
 
         this.focusInput.attr('aria-activedescendant', itemId)
-                .attr('aria-labelledby', itemId);
+                .attr('aria-describedby', itemId);
         this.itemsContainer.attr('aria-activedescendant', itemId);
     }       
 

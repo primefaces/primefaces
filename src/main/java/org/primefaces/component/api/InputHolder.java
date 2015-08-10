@@ -29,4 +29,14 @@ public interface InputHolder {
      * @return Client id of the validatable input element
      */
     public String getValidatableInputClientId();
+    
+    /**
+     * @return Client id of the label for aria
+     */
+    public String getLabelledBy();
+    
+    /**
+     * @return Sets the id of the label for aria
+     */
+    public void setLabelledBy(String id);
 }

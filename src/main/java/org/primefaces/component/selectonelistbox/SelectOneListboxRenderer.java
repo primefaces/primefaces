@@ -91,6 +91,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
     protected void encodeInput(FacesContext context, SelectOneListbox listbox, String clientId, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
+        String labelledBy = listbox.getLabelledBy();
 
         writer.startElement("div", listbox);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -104,6 +105,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         
         if(listbox.getTabindex() != null) {
             writer.writeAttribute("tabindex", listbox.getTabindex(), null);
+        }
+        
+        if(labelledBy != null) {
+            writer.writeAttribute("aria-labelledby", labelledBy, null);
         }
         
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {

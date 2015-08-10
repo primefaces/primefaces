@@ -169,6 +169,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String inputStyle = ac.getInputStyle();
         String inputStyleClass = ac.getInputStyleClass();
         inputStyleClass = (inputStyleClass == null) ? styleClass : styleClass + " " + inputStyleClass; 
+        String labelledBy = ac.getLabelledBy();
             
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
@@ -176,6 +177,10 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("class", inputStyleClass, null);
         writer.writeAttribute("autocomplete", "off", null);
+        
+        if(labelledBy != null) {
+            writer.writeAttribute("aria-labelledby", labelledBy, null);
+        }
         
         if(inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);

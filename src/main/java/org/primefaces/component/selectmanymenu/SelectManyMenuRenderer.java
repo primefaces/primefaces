@@ -94,6 +94,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     protected void encodeInput(FacesContext context, SelectManyMenu menu, String clientId, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
+        String labelledBy = menu.getLabelledBy();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -105,6 +106,10 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
         
         renderDomEvents(context, menu, SelectManyMenu.DOM_EVENTS);
+        
+        if(labelledBy != null) {
+            writer.writeAttribute("aria-labelledby", labelledBy, null);
+        }
         
         if(menu.getTabindex() != null) {
             writer.writeAttribute("tabindex", menu.getTabindex(), null);

@@ -110,7 +110,8 @@ public class SpinnerRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = spinner.getClientId(context) + "_input";
         String inputClass = spinner.isValid() ? Spinner.INPUT_CLASS : Spinner.INPUT_CLASS + " ui-state-error";
-
+        String labelledBy = spinner.getLabelledBy();
+        
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
@@ -131,6 +132,7 @@ public class SpinnerRenderer extends InputRenderer {
         if(spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(spinner.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if(labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
         
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, spinner);

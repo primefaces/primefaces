@@ -178,6 +178,13 @@ import javax.faces.event.PhaseId;
         return this.getClientId(getFacesContext()) + "_input";
     }
 
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
+    }
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
     private boolean isRequestSource(FacesContext context) {
         return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }

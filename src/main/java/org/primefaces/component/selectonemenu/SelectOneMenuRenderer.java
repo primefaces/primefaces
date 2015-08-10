@@ -102,6 +102,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
         String focusId = clientId + "_focus";
+        String labelledBy = menu.getLabelledBy();
         
         //input for accessibility
         writer.startElement("div", menu);
@@ -116,6 +117,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("role", "combobox", null);
         writer.writeAttribute("aria-haspopup", "true", null);
         writer.writeAttribute("aria-expanded", "false", null);
+        if(labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
         if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         

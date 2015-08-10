@@ -97,6 +97,7 @@ public class CalendarRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, Calendar calendar, String id, String value, boolean popup) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String type = popup ? "text" : "hidden";
+        String labelledBy = calendar.getLabelledBy();
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
@@ -121,6 +122,10 @@ public class CalendarRenderer extends InputRenderer {
 
             renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
             renderDomEvents(context, calendar, HTML.INPUT_TEXT_EVENTS);
+        }
+        
+        if(labelledBy != null) {
+            writer.writeAttribute("aria-labelledby", labelledBy, null);
         }
 
         if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {

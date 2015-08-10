@@ -57,7 +57,15 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         if(_for != null) {
             target = SearchExpressionFacade.resolveComponent(context, label, _for);
-            targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
+            
+            if(target instanceof InputHolder) {
+                InputHolder inputHolder = ((InputHolder) target);
+                targetClientId = inputHolder.getInputClientId();
+                inputHolder.setLabelledBy(clientId);
+            }
+            else {
+                target.getClientId(context);
+            }
             
             if(target instanceof UIInput) {
                 input = (UIInput) target;

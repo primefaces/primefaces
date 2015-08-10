@@ -16,6 +16,13 @@ import javax.faces.component.UINamingContainer;
         return this.getInputClientId();
     }
 
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
+    }
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
     public static String[] DOM_EVENTS = {
 		"onchange",
 		"onclick",
