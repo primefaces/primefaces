@@ -29,7 +29,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
             else
                 $this.restore();
         })
-        .on(resizeNS).on(resizeNS, function() {
+        .off(resizeNS).on(resizeNS, function() {
             if ($this.fixed) {
                 $this.target.width($this.ghost.outerWidth() - ($this.target.outerWidth() - $this.target.width()));
             }
