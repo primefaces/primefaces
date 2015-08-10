@@ -14061,7 +14061,7 @@ $(function() {
     touchHandled = true;
 
     // Track movement to determine if interaction was a click
-    self._touchMoved = false;
+    self._touchMoved = 0;
 
     // Simulate the mouseover event
     simulateMouseEvent(event, 'mouseover');
@@ -14084,8 +14084,8 @@ $(function() {
       return;
     }
 
-    // Interaction was not a click
-    this._touchMoved = true;
+    // Interaction was less likely to be a click
+    this._touchMoved +=1;
 
     // Simulate the mousemove event
     simulateMouseEvent(event, 'mousemove');
@@ -14108,8 +14108,8 @@ $(function() {
     // Simulate the mouseout event
     simulateMouseEvent(event, 'mouseout');
 
-    // If the touch interaction did not move, it should trigger a click
-    if (!this._touchMoved) {
+    // If the touch interaction did not move (much), it should trigger a click
+    if (this._touchMoved<=5) {
 
       // Simulate the click event
       simulateMouseEvent(event, 'click');
