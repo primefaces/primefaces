@@ -914,7 +914,7 @@ public class DataTableRenderer extends DataRenderer {
     }
     
     public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex) throws IOException {
-        return this.encodeRow(context, table, clientId, rowIndex, 0, table.getColumnsCount());
+        return this.encodeRow(context, table, clientId, rowIndex, 0, table.getColumns().size());
     }
 
     public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, int columnStart, int columnEnd) throws IOException {
