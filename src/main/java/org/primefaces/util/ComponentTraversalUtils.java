@@ -17,6 +17,7 @@ package org.primefaces.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -103,6 +104,38 @@ public class ComponentTraversalUtils {
         return result;
     }
 
+    /**
+     * Finds the first component by the given id expression or client id.
+     * 
+     * @param id The id.
+     * @param base The base component to start the traversal.
+     * @param separatorString The seperatorString (e.g. :).
+     * @param context The FacesContext.
+     * @return The component or null.
+     */
+    public static UIComponent firstById(String id, UIComponent base, String separatorString, FacesContext context) {
+
+        // try #findComponent first
+        UIComponent component = base.findComponent(id);
+
+        // try #invokeOnComponent
+        // it's required to support e.g. a full client id for a component which is placed inside UIData components
+        if (component == null) {
+            // #invokeOnComponent doesn't support the leading seperator char
+            String tempExpression = id;
+            if (tempExpression.startsWith(separatorString)) {
+                tempExpression = tempExpression.substring(1);
+            }
+
+            IdContextCallback callback = new IdContextCallback();
+            context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
+
+            component = callback.getComponent();
+        }
+        
+        return component;
+    }
+    
     
     
     public static UIForm closestForm(FacesContext context, UIComponent component) {
@@ -115,5 +148,23 @@ public class ComponentTraversalUtils {
 
     public static UIComponent closestNamingContainer(UIComponent component) {
         return (UIComponent) closest(NamingContainer.class, component);
+    }
+    
+    
+    public static class IdContextCallback implements ContextCallback {
+
+        private UIComponent component;
+
+        public void invokeContextCallback(FacesContext context, UIComponent target) {
+            component = target;
+        }
+
+        public UIComponent getComponent() {
+            return component;
+        }
+
+        public void setComponent(UIComponent component) {
+            this.component = component;
+        }   
     }
 }

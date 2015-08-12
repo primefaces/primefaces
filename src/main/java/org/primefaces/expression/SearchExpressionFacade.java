@@ -24,7 +24,7 @@ import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-import org.primefaces.expression.impl.IdContextCallback;
+import org.primefaces.util.ComponentTraversalUtils;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
@@ -484,23 +484,7 @@ public class SearchExpressionFacade {
 
     private static UIComponent resolveComponentById(UIComponent source, String expression, String separatorString, FacesContext context, int options) {
 
-        // try #findComponent first
-        UIComponent component = source.findComponent(expression);
-
-        // try #invokeOnComponent
-        // it's required to support e.g. a full client id for a component which is placed inside UIData components
-        if (component == null) {
-            // #invokeOnComponent doesn't support the leading seperator char
-            String tempExpression = expression;
-            if (tempExpression.startsWith(separatorString)) {
-                tempExpression = tempExpression.substring(1);
-            }
-
-            IdContextCallback callback = new IdContextCallback();
-            context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
-
-            component = callback.getComponent();
-        }
+        UIComponent component = ComponentTraversalUtils.firstById(expression, source, separatorString, context);
 
         if (component == null && !isOptionSet(options, Options.IGNORE_NO_RESULT)) {
             cannotFindComponent(context, source, expression);
