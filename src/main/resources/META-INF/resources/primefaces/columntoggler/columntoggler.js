@@ -126,6 +126,12 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.tbody.children('tr').find('td:nth-child(' + index + ')').show();
         this.tfoot.children('tr').find('td:nth-child(' + index + ')').show();
         
+        this.theadclone = $('.ui-datatable-scrollable-theadclone');
+        
+        if(this.theadclone) {
+        	this.theadclone.children('tr').find('th:nth-child(' + index + ')').show();
+        }
+        
         this.fireToggleEvent(true, (index - 1));
     },
     
@@ -137,6 +143,12 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.thead.children('tr').find('th:nth-child(' + index + ')').hide();
         this.tbody.children('tr').find('td:nth-child(' + index + ')').hide();
         this.tfoot.children('tr').find('td:nth-child(' + index + ')').hide();
+        
+        this.theadclone = $('.ui-datatable-scrollable-theadclone');
+        
+        if(this.theadclone) {
+        	this.theadclone.children('tr').find('th:nth-child(' + index + ')').hide();
+        }
         
         this.fireToggleEvent(false, (index - 1));
     },
