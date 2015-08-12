@@ -15,6 +15,7 @@
  */
 package org.primefaces.renderkit;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,7 +24,10 @@ import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionListener;
+import javax.faces.flow.FlowHandler;
 import javax.faces.lifecycle.ClientWindow;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.context.RequestContext;
@@ -31,14 +35,24 @@ import org.primefaces.context.RequestContext;
 public class OutcomeTargetRenderer extends CoreRenderer {
     
     protected NavigationCase findNavigationCase(FacesContext context, UIOutcomeTarget outcomeTarget) {
-        ConfigurableNavigationHandler navHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
+        ConfigurableNavigationHandler navigationHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
         String outcome = outcomeTarget.getOutcome();
         
         if (outcome == null) {
             outcome = context.getViewRoot().getViewId();
         }
         
-        return navHandler.getNavigationCase(context, null, outcome);
+        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
+            if (outcomeTarget instanceof UIComponent) {
+                String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
+
+                if (toFlowDocumentId != null) {
+                    return navigationHandler.getNavigationCase(context, null, outcome, toFlowDocumentId);
+                }
+            }
+        }
+        
+        return navigationHandler.getNavigationCase(context, null, outcome);
     }
 
     /**
@@ -65,6 +79,25 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             }
         }
 
+        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
+            String toFlowDocumentId = navCase.getToFlowDocumentId();
+            if (toFlowDocumentId != null) {
+                if (params == null) {
+                    params = new LinkedHashMap<String, List<String>>();
+                }
+
+                List<String> flowDocumentIdValues = new ArrayList<String>();
+                flowDocumentIdValues.add(toFlowDocumentId);
+                params.put(FlowHandler.TO_FLOW_DOCUMENT_ID_REQUEST_PARAM_NAME, flowDocumentIdValues);
+                
+                if (!FlowHandler.NULL_FLOW.equals(toFlowDocumentId)) {
+                    List<String> flowIdValues = new ArrayList<String>();
+                    flowIdValues.add(navCase.getFromOutcome());
+                    params.put(FlowHandler.FLOW_ID_REQUEST_PARAM_NAME, flowIdValues);
+                }
+            }
+        }
+        
         return params;
     }
 
