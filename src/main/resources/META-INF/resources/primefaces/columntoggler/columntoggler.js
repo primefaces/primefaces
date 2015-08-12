@@ -1,4 +1,4 @@
-/**
+          /**
  * PrimeFaces ColumnToggler Widget
  */
 PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
@@ -120,9 +120,11 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     check: function(chkbox) {
         chkbox.addClass('ui-state-active').removeClass('ui-state-hover').children('.ui-chkbox-icon').addClass('ui-icon-check').removeClass('ui-icon-blank');
         
-        var index = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))).index() + 1;
+        var index = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))).index() + 1,
+        columnHeader = this.thead.children('tr').find('th:nth-child(' + index + ')');
 
-        this.thead.children('tr').find('th:nth-child(' + index + ')').show();
+        columnHeader.show();
+        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).show();
         this.tbody.children('tr').find('td:nth-child(' + index + ')').show();
         this.tfoot.children('tr').find('td:nth-child(' + index + ')').show();
         
@@ -132,12 +134,14 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     uncheck: function(chkbox) {
         chkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
         
-        var index = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))).index() + 1;
+        var index = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))).index() + 1,
+        columnHeader = this.thead.children('tr').find('th:nth-child(' + index + ')');
         
-        this.thead.children('tr').find('th:nth-child(' + index + ')').hide();
+        columnHeader.hide();
+        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).hide();
         this.tbody.children('tr').find('td:nth-child(' + index + ')').hide();
         this.tfoot.children('tr').find('td:nth-child(' + index + ')').hide();
-        
+
         this.fireToggleEvent(false, (index - 1));
     },
     
@@ -183,4 +187,4 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         }
     }
 
-});
+});  
