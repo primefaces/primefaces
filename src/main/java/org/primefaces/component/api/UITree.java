@@ -405,6 +405,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     
     @Override
     public void processDecodes(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+        
         pushComponentToEL(context, this);
         
         Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
@@ -427,6 +431,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     
     @Override
     public void processValidators(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+        
         pushComponentToEL(context, this);
         processNodes(context, PhaseId.PROCESS_VALIDATIONS);
         validateSelection(context);
@@ -469,6 +477,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
       
     @Override
     public void processUpdates(FacesContext context) {
+        if(!isRendered()) {
+            return;
+        }
+        
 		pushComponentToEL(context, this);
         
         processNodes(context, PhaseId.UPDATE_MODEL_VALUES);
