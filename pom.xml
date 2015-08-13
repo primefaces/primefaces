@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    
+
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>7</version>
     </parent>
-    
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
@@ -14,7 +14,7 @@
     <version>5.3-SNAPSHOT</version>
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
-    
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -23,13 +23,13 @@
             <comments>A business-friendly OSS license</comments>
         </license>
     </licenses>
-    
+
     <scm>
         <connection>scm:git:https://github.com/primefaces/primefaces.git</connection>
         <developerConnection>scm:git:https://github.com/primefaces/primefaces.git</developerConnection>
         <url>https://github.com/primefaces/primefaces</url>
     </scm>
-    
+
     <developers>
         <developer>
             <id>cagatay.civici</id>
@@ -56,11 +56,11 @@
             <name>Cem Altun</name>
         </developer>
     </developers>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-	
+
     <dependencies>
         <dependency>
             <groupId>org.glassfish</groupId>
@@ -75,19 +75,19 @@
             <scope>provided</scope>
         </dependency>
 
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>1.0.0.GA</version>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>javax.el</groupId>
             <artifactId>el-api</artifactId>
             <version>2.2</version>
             <scope>provided</scope>
         </dependency>
-		
+
         <!-- Data Exporter -->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -107,7 +107,7 @@
             <version>2.1.7</version>
             <scope>provided</scope>
         </dependency>
-		
+
         <!-- File Upload -->
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -115,7 +115,7 @@
             <version>1.3</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- FeedReader -->
         <dependency>
             <groupId>rome</groupId>
@@ -123,7 +123,7 @@
             <version>1.0</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- PhotoCam for Java5 -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
@@ -131,7 +131,7 @@
             <version>2.0</version>
             <scope>provided</scope>
         </dependency>
-                
+
         <!-- Barcode -->
         <dependency>
             <groupId>net.glxn</groupId>
@@ -145,7 +145,7 @@
             <version>2.0</version>
             <scope>provided</scope>
         </dependency>
-		
+
         <!-- Test  -->
         <dependency>
             <groupId>junit</groupId>
@@ -160,12 +160,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.shale</groupId>
-            <artifactId>shale-test</artifactId>
-            <version>1.0.5</version>
+            <groupId>de.odysseus.juel</groupId>
+            <artifactId>juel-impl</artifactId>
+            <version>2.2.7</version>
             <scope>test</scope>
         </dependency>
-        
+
         <!-- Atmosphere -->
         <dependency>
             <groupId>org.atmosphere</groupId>
@@ -180,7 +180,7 @@
           <version>1</version>
           <scope>provided</scope>
         </dependency>
-        
+
         <!-- Cache -->
         <dependency>
             <groupId>com.hazelcast</groupId>
@@ -204,7 +204,7 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
-		
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -322,7 +322,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -331,7 +331,7 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
@@ -399,7 +399,7 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces.js</output>
-                            <includes>                                
+                            <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
@@ -454,7 +454,7 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces-mobile.js</output>
-                            <includes>                             
+                            <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
@@ -480,7 +480,7 @@
                     </aggregations>
                 </configuration>
             </plugin>
- 
+
         </plugins>
 
     </build>
@@ -544,7 +544,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -684,7 +684,7 @@
                                 <aggregation>
                                     <insertNewLine>true</insertNewLine>
                                     <output>${project.build.directory}/classes/META-INF/resources/primefaces/primefaces-mobile.js</output>
-                                    <includes>                             
+                                    <includes>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
@@ -728,7 +728,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -748,5 +748,5 @@
             </build>
         </profile>
     </profiles>
-    
+
 </project>

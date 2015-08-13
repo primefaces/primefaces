@@ -73,4 +73,13 @@ public class InterceptingResolver extends ELResolver {
     public Class<?> getCommonPropertyType(ELContext context, Object base) {
         return delegate.getCommonPropertyType(context, base);
     }
+
+    @Override
+    public Object invoke(ELContext context,
+                         Object base,
+                         Object method,
+                         Class<?>[] paramTypes,
+                         Object[] params) {
+        return delegate.invoke(context, base, method, paramTypes, params);
+    }
 }
