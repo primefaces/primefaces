@@ -949,6 +949,9 @@ public class DataTableRenderer extends DataRenderer {
         if(userRowStyleClass != null)
             rowStyleClass = rowStyleClass + " " + userRowStyleClass;
 
+        if(table.isExpandedRow())
+            rowStyleClass = rowStyleClass + " " + DataTable.EXPANDED_ROW_CLASS;
+        
         writer.startElement("tr", null);
         writer.writeAttribute("data-ri", rowIndex, null);
         if(rowKey != null) {
