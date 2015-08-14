@@ -34,8 +34,14 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
                 $this.initEndPoints();
                 $this.initConnections();
                 
-                $this.canvas.draggable($this.jq.children('.ui-diagram-draggable'), {
-                    containment: true
+                $this.canvas.draggable($this.jq.children('.' + $this.cfg.draggableClass), {
+                    containment: true,
+                    stop: function(event) {
+                        var element = $(event.el);
+                        $this.onElementDragStop(element.attr('id'),
+                                                element.css('left'),
+                                                element.css('top'));
+                    }
                 });
             });
             
@@ -74,6 +80,15 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
 
         this.canvas.bind('connectionMoved', function(info) {
             $this.onConnectionChange(info);
+        });
+        
+        this.canvas.bind('click', function(connection, orignalEvent) {
+            $this.onConnectionClick(connection);
+        });
+        
+        this.jq.children('.' + $this.cfg.elementClass).click(function() {
+            var elementId = $(this).attr('id');
+            $this.onElementClick(elementId);
         });
     },
     
@@ -154,6 +169,62 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
             behavior.call(this, options);
         } 
         else {
+            PrimeFaces.ajax.Request.handle(options); 
+        }
+    },
+    
+    onConnectionClick: function(connection) {
+        var options = {
+            source: this.id,
+            process: this.id,
+            params: [
+                {name: this.id + '_connectionClick', value: true},
+                {name: this.id + '_sourceId', value: connection.sourceId.substring(this.id.length + 1)},
+                {name: this.id + '_targetId', value: connection.targetId.substring(this.id.length + 1)}
+            ]
+        };
+        
+        if (this.hasBehavior('connectionClick')) {
+            var behavior = this.cfg.behaviors['connectionClick'];
+            
+            behavior.call(this, options);
+        }
+    },
+    
+    onElementClick: function(elementId) {
+        var options = {
+            source: this.id,
+            process: this.id,
+            params: [
+                {name: this.id + "_elementClick", value: true},
+                {name: this.id + "_elementId", value: elementId.substring(this.id.length + 1)}
+            ]
+        };
+        
+        if (this.hasBehavior('elementClick')) {
+            var behavior = this.cfg.behaviors['elementClick'];
+            
+            behavior.call(this, options);
+        }
+    },
+    
+    onElementDragStop: function(elementId, left, top) {
+        var options = {
+            source: this.id,
+            process: this.id,
+            params: [
+                {name: this.id + "_elementDragStop", value: true},
+                {name: this.id + "_elementId", value: elementId.substring(this.id.length + 1)},
+                {name: this.id + "_top", value: top},
+                {name: this.id + "_left", value: left}
+            ]
+        };
+        
+        if (this.hasBehavior('elementDragStop')) {
+            var behavior = this.cfg.behaviors['elementDragStop'];
+
+            behavior.call(this, options);
+        } else {
             PrimeFaces.ajax.Request.handle(options); 
         }
     },
