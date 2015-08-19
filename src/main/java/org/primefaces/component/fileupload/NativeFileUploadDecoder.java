@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.NativeUploadedFile;
+import org.primefaces.model.UploadedFileWrapper;
 
 public class NativeFileUploadDecoder {
 
@@ -36,35 +37,33 @@ public class NativeFileUploadDecoder {
             else {
                 decodeAdvanced(context, fileUpload, request);
             }
-        } 
+        }
         catch (IOException ioe) {
             throw new FacesException(ioe);
-        } 
+        }
         catch (ServletException se) {
             throw new FacesException(se);
         }
     }
-    
+
     private static void decodeSimple(FacesContext context, FileUpload fileUpload, HttpServletRequest request) throws IOException, ServletException {
         Part part = request.getPart(fileUpload.getSimpleInputDecodeId(context));
-        
+
         if(part != null) {
-            fileUpload.setTransient(true);
-            fileUpload.setSubmittedValue(new NativeUploadedFile(part));
+            fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(part)));
         }
         else {
             fileUpload.setSubmittedValue("");
         }
-	}
-    
+    }
+
     private static void decodeAdvanced(FacesContext context, FileUpload fileUpload, HttpServletRequest request) throws IOException, ServletException {
         String clientId = fileUpload.getClientId(context);
         Part part = request.getPart(clientId);
 
         if(part != null) {
-            fileUpload.setTransient(true);
             fileUpload.queueEvent(new FileUploadEvent(fileUpload, new NativeUploadedFile(part)));
         }
-	}
-    
+    }
+
 }
