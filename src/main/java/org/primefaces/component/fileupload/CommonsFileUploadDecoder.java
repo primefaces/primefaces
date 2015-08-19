@@ -26,7 +26,7 @@ import org.primefaces.webapp.MultipartRequest;
 public class CommonsFileUploadDecoder{
 
     public static void decode(FacesContext context, FileUpload fileUpload) {
-		MultipartRequest multipartRequest = null;
+        MultipartRequest multipartRequest = null;
         Object request = context.getExternalContext().getRequest();
 
         while(request instanceof ServletRequestWrapper) {
