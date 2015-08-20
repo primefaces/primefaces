@@ -113,16 +113,16 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
 
     protected boolean isLogException(FacesContext context, Throwable rootCause) {
-        
+
         if (context.isProjectStage(ProjectStage.Production)) {
             if (rootCause != null && rootCause instanceof ViewExpiredException) {
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     @Override
     public Throwable getRootCause(Throwable throwable) {
         while ((ELException.class.isInstance(throwable) || FacesException.class.isInstance(throwable)) && throwable.getCause() != null) {
@@ -148,7 +148,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         }
 
         AjaxExceptionHandler handlerComponent = null;
-        
+
         try {
             rootCause = buildView(context, rootCause, rootCause);
             handlerComponent = findHandlerComponent(context, rootCause);
@@ -318,19 +318,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         context.getExternalContext().getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
         Map<String, String> errorPages = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getErrorPages();
-
-        // get error page by exception type
-        String errorPage = errorPages.get(rootCause.getClass().getName());
-
-        // get default error page
-        if (errorPage == null) {
-            errorPage = errorPages.get(null);
-        }
-
-        if (errorPage == null) {
-            throw new IllegalArgumentException(
-                    "No default error page (Status 500 or java.lang.Throwable) and no error page for type \"" + rootCause.getClass() + "\" defined!");
-        }
+        String errorPage = evaluateErrorPage(errorPages, rootCause);
 
         String url = context.getExternalContext().getRequestContextPath() + errorPage;
 
@@ -354,5 +342,32 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         }
 
         context.responseComplete();
+    }
+
+    protected String evaluateErrorPage(Map<String, String> errorPages, Throwable rootCause) {
+
+        // get error page by exception type
+        String errorPage = errorPages.get(rootCause.getClass().getName());
+
+        // lookup by inheritance hierarchy
+        if (errorPage == null) {
+            Class throwableClass = rootCause.getClass();
+            while (errorPage == null && throwableClass.getSuperclass() != Object.class) {
+                throwableClass = throwableClass.getSuperclass();
+                errorPage = errorPages.get(throwableClass.getName());
+            }
+        }
+
+        // get default error page
+        if (errorPage == null) {
+            errorPage = errorPages.get(null);
+        }
+
+        if (errorPage == null) {
+            throw new IllegalArgumentException(
+                    "No default error page (Status 500 or java.lang.Throwable) and no error page for type \"" + rootCause.getClass() + "\" defined!");
+        }
+
+        return errorPage;
     }
 }
