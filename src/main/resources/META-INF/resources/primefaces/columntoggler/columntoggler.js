@@ -123,10 +123,10 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         var index = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))).index() + 1,
         columnHeader = this.thead.children('tr').find('th:nth-child(' + index + ')');
 
-        columnHeader.show();
-        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).show();
-        this.tbody.children('tr').find('td:nth-child(' + index + ')').show();
-        this.tfoot.children('tr').find('td:nth-child(' + index + ')').show();
+        columnHeader.removeClass('ui-helper-hidden');
+        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).removeClass('ui-helper-hidden');
+        this.tbody.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
+        this.tfoot.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
         
         this.fireToggleEvent(true, (index - 1));
     },
@@ -137,10 +137,10 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         var index = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))).index() + 1,
         columnHeader = this.thead.children('tr').find('th:nth-child(' + index + ')');
         
-        columnHeader.hide();
-        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).hide();
-        this.tbody.children('tr').find('td:nth-child(' + index + ')').hide();
-        this.tfoot.children('tr').find('td:nth-child(' + index + ')').hide();
+        columnHeader.addClass('ui-helper-hidden');
+        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).addClass('ui-helper-hidden');
+        this.tbody.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
+        this.tfoot.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
 
         this.fireToggleEvent(false, (index - 1));
     },
