@@ -78,6 +78,15 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                 }
             }
             
+            UIComponent optionsFacet = menu.getFacet("options");
+            if(optionsFacet != null) {
+                writer.startElement("li", null);
+                writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
+                writer.writeAttribute("role", "menuitem", null);
+                optionsFacet.encodeAll(context);
+                writer.endElement("li");
+            }
+            
             writer.endElement("ul");
         }
         		
