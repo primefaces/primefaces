@@ -95,7 +95,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
             }
             finally {
                 //cleanup
-                if(streamedContent != null) {
+                if(streamedContent != null && streamedContent.getStream() != null) {
                     streamedContent.getStream().close();
                 }
             }
