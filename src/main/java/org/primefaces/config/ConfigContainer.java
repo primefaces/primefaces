@@ -17,6 +17,8 @@ package org.primefaces.config;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -40,6 +42,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 /**
  * Container for all config parameters.
@@ -75,7 +78,7 @@ public class ConfigContainer {
     private String buildVersion = null;
 
     // web.xml
-    private Map<String, String> errorPages;
+    private Map<String, String> errorPages = new HashMap<String, String>();
 
     protected ConfigContainer() {
 
@@ -272,30 +275,55 @@ public class ConfigContainer {
         InputStream is = null;
 
         try {
-            is = context.getExternalContext().getResourceAsStream("/WEB-INF/web.xml");
-
+            URL url = context.getExternalContext().getResource("/WEB-INF/web.xml");
+            
             // web.xml is optional
-            if (is != null) {
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                factory.setValidating(false);
-                factory.setNamespaceAware(false);
-                factory.setExpandEntityReferences(false);
-                
-                try {
-                    factory.setFeature("http://xml.org/sax/features/namespaces", false);
-                    factory.setFeature("http://xml.org/sax/features/validation", false);
-                    factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-                    factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-                }
-                catch (Throwable e) {
-                    LOG.warning("DocumentBuilderFactory#setFeature not implemented. Skipping...");
-                }
-
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                Document document = builder.parse(is);
-
-                initErrorPages(document.getDocumentElement());
+            if (url == null) {
+                return;
             }
+            
+            is = url.openStream();
+
+            if (is == null) {
+                return;
+            }
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setValidating(false);
+            factory.setNamespaceAware(false);
+            factory.setExpandEntityReferences(false);
+
+            try {
+                factory.setFeature("http://xml.org/sax/features/namespaces", false);
+                factory.setFeature("http://xml.org/sax/features/validation", false);
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            }
+            catch (Throwable e) {
+                LOG.warning("DocumentBuilderFactory#setFeature not implemented. Skipping...");
+            }
+
+            boolean absolute = false;
+            try {
+                absolute = url.toURI().isAbsolute();
+            }
+            catch (URISyntaxException e) {
+                // noop
+            }
+
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document;
+
+            if (absolute) {
+                InputSource source = new InputSource(url.toExternalForm());
+                source.setByteStream(is);
+                document = builder.parse(source);
+            }
+            else {
+                document = builder.parse(is);
+            }
+
+            initErrorPages(document.getDocumentElement());
         }
         catch (Throwable e) {
             LOG.log(Level.SEVERE, "Could not load or parse web.xml", e);
@@ -313,7 +341,6 @@ public class ConfigContainer {
     }
 
     private void initErrorPages(Element webXml) throws Exception {
-        errorPages = new HashMap<String, String>();
 
         XPath xpath = XPathFactory.newInstance().newXPath();
 
