@@ -22,6 +22,8 @@ import org.primefaces.util.HTML;
 public class LengthValidator extends javax.faces.validator.LengthValidator implements ClientValidator {
 
     private Map<String,Object> metadata;
+    private boolean maximumSet;
+    private boolean minimumSet;
     
     public Map<String, Object> getMetadata() {
         int min = this.getMinimum();
@@ -30,10 +32,10 @@ public class LengthValidator extends javax.faces.validator.LengthValidator imple
         if(metadata == null) {
             metadata = new HashMap<String, Object>();
             
-            if(min != 0)
+            if(minimumSet)
                 metadata.put(HTML.VALIDATION_METADATA.MIN_LENGTH, min);
             
-            if(max != 0)
+            if(maximumSet)
                 metadata.put(HTML.VALIDATION_METADATA.MAX_LENGTH, max);
         }
         
@@ -43,4 +45,15 @@ public class LengthValidator extends javax.faces.validator.LengthValidator imple
     public String getValidatorId() {
         return LengthValidator.VALIDATOR_ID;
     }
+    
+    public void setMaximum(int maximum) {
+        super.setMaximum(maximum);
+        maximumSet=true;
+    }
+    
+    public void setMinimum(int minimum) {
+        super.setMinimum(minimum);
+        minimumSet=true;
+    }
+
 }
