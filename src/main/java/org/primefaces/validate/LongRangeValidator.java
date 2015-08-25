@@ -22,19 +22,17 @@ import org.primefaces.util.HTML;
 public class LongRangeValidator extends javax.faces.validator.LongRangeValidator implements ClientValidator {
 
     private Map<String,Object> metadata;
-    private boolean minimumSet;
-    private boolean maximumSet;
+    private Long minimum;
+    private Long maximum;
     
     public Map<String, Object> getMetadata() {
         metadata = new HashMap<String, Object>();
-        long min = this.getMinimum();
-        long max = this.getMaximum();
         
-        if(minimumSet)
-            metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, min);
+        if(minimum!=null)
+            metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, minimum);
             
-        if(maximumSet)
-            metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, max);
+        if(maximum!=null)
+            metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, maximum);
         
         return metadata;
     }
@@ -45,11 +43,11 @@ public class LongRangeValidator extends javax.faces.validator.LongRangeValidator
     
     public void setMaximum(long maximum) {
         super.setMaximum(maximum);
-        maximumSet=true;
+        this.maximum=maximum;
     }
     
     public void setMinimum(long minimum) {
         super.setMinimum(minimum);
-        minimumSet=true;
+        this.minimum=minimum;
     }
 }
