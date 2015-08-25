@@ -77,7 +77,13 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
                     String optionName = it.next();
                     Object optionValue = options.get(optionName);
                     
-                    sb.append(optionName).append(":").append(optionValue);
+                    sb.append(optionName).append(":");
+                    if(optionName == "headerElement") {
+                        sb.append("'").append(optionValue).append("'");
+                    }
+                    else {
+                        sb.append(optionValue);
+                    }
                     
                     if(it.hasNext())
                         sb.append(",");

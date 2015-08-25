@@ -41,7 +41,18 @@ PrimeFaces.dialog.DialogHandler = {
 
         dialogFrame.on('load', function() {
             var $frame = $(this),
-            titleElement = $frame.contents().find('title');
+            headerElement = $frame.contents().find('title'),
+            isCustomHeader = false;
+            
+            if(cfg.options.headerElement) {
+                var customHeaderId = PrimeFaces.escapeClientId(cfg.options.headerElement),
+                customHeaderElement = dialogFrame.contents().find(customHeaderId);
+                
+                if(customHeaderElement.length > 0) {
+                    headerElement = customHeaderElement;
+                    isCustomHeader = true;
+                }
+            }
             
             if(!$frame.data('initialized')) {
                 PrimeFaces.cw('DynamicDialog', dialogWidgetVar, {
@@ -75,12 +86,19 @@ PrimeFaces.dialog.DialogHandler = {
                     width: cfg.options.width,
                     height: cfg.options.height,
                     minimizable: cfg.options.minimizable,
-                    maximizable: cfg.options.maximizable
+                    maximizable: cfg.options.maximizable,
+                    headerElement: cfg.options.headerElement
                 });
             }
             
-            if(titleElement.length > 0) {
-                PF(dialogWidgetVar).titlebar.children('span.ui-dialog-title').html(titleElement.text());
+            var title = PF(dialogWidgetVar).titlebar.children('span.ui-dialog-title');
+            if(headerElement.length > 0) {
+                if(isCustomHeader) {
+                    title.append(headerElement);
+                }
+                else {
+                    title.text(headerElement.text());
+                }
             }
             
             //adjust height
