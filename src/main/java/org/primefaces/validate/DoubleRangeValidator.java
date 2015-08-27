@@ -22,17 +22,17 @@ import org.primefaces.util.HTML;
 public class DoubleRangeValidator extends javax.faces.validator.DoubleRangeValidator implements ClientValidator {
 
     private Map<String,Object> metadata;
+    private Double minimum;
+    private Double maximum;
     
     public Map<String, Object> getMetadata() {
         metadata = new HashMap<String, Object>();
-        double min = this.getMinimum();
-        double max = this.getMaximum();
         
-        if(min != 0)
-            metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, min);
+        if(minimum != null)
+            metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, minimum);
             
-        if(max != 0)
-            metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, max);
+        if(maximum != null)
+            metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, maximum);
         
         return metadata;
     }
@@ -40,4 +40,15 @@ public class DoubleRangeValidator extends javax.faces.validator.DoubleRangeValid
     public String getValidatorId() {
         return DoubleRangeValidator.VALIDATOR_ID;
     }
+    
+    public void setMaximum(double maximum) {
+        super.setMaximum(maximum);
+        this.maximum=maximum;
+    }
+    
+    public void setMinimum(double minimum) {
+        super.setMinimum(minimum);
+        this.minimum=minimum;
+    }
+
 }
