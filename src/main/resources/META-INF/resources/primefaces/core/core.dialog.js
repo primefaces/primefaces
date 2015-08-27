@@ -48,7 +48,7 @@ PrimeFaces.dialog.DialogHandler = {
                 var customHeaderId = PrimeFaces.escapeClientId(cfg.options.headerElement),
                 customHeaderElement = dialogFrame.contents().find(customHeaderId);
                 
-                if(customHeaderElement.length > 0) {
+                if(customHeaderElement.length) {
                     headerElement = customHeaderElement;
                     isCustomHeader = true;
                 }
@@ -96,6 +96,7 @@ PrimeFaces.dialog.DialogHandler = {
             if(headerElement.length > 0) {
                 if(isCustomHeader) {
                     title.append(headerElement);
+                    headerElement.show();
                 }
                 else {
                     title.text(headerElement.text());
