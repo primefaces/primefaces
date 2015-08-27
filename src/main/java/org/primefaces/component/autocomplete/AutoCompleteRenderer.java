@@ -275,7 +275,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeDropDown(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String dropdownClass = AutoComplete.DROPDOWN_CLASS;
-        boolean disabled = ac.isDisabled();
+        boolean disabled = ac.isDisabled()||ac.isReadonly();
         if(disabled) {
             dropdownClass += " ui-state-disabled";
         }
