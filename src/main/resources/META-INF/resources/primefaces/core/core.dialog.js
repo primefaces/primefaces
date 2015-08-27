@@ -26,7 +26,7 @@ PrimeFaces.dialog.DialogHandler = {
             titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
         }
         
-        dialogDOM.append('<div class="ui-dialog-content ui-widget-content" style="height: auto;">' +
+        dialogDOM.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto;">' +
                 '<iframe style="border:0 none" frameborder="0"/>' + 
                 '</div>');
         
@@ -82,6 +82,7 @@ PrimeFaces.dialog.DialogHandler = {
                     },
                     modal: cfg.options.modal,
                     resizable: cfg.options.resizable,
+                    hasIframe: true,
                     draggable: cfg.options.draggable,
                     width: cfg.options.width,
                     height: cfg.options.height,
@@ -102,9 +103,8 @@ PrimeFaces.dialog.DialogHandler = {
             }
             
             //adjust height
-            var offset = PrimeFaces.env.browser.webkit ? 5 : 20,
-            frameHeight = cfg.options.contentHeight||$frame.get(0).contentWindow.document.body.scrollHeight + offset;
-            $frame.height(frameHeight);
+            var frameHeight = cfg.options.contentHeight||$frame.get(0).contentWindow.document.body.scrollHeight;
+            $frame.css('height', frameHeight);
             
             dialogFrame.data('initialized', true);
             

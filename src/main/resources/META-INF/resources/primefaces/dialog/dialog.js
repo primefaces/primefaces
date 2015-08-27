@@ -364,12 +364,20 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             containment: 'document',
             start: function(event, ui) {
                 $this.jq.data('offset', $this.jq.offset());
+
+                if($this.cfg.hasIframe) {
+                    $this.iframeFix = $('<div style="position:absolute;background-color:transparent;width:100%;height:100%;top:0;left:0;"></div>').appendTo($this.content);
+                }
             },
             stop: function(event, ui) {
                 var offset = $this.jq.data('offset');
 
                 $this.jq.css('position', 'fixed');
                 $this.jq.offset(offset);
+
+                if($this.cfg.hasIframe) {
+                    $this.iframeFix.remove();
+                }
             }
         });
 
