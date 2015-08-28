@@ -1,4 +1,4 @@
-/**
+ /**
  * PrimeFaces DataTable Widget
  */
 PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
@@ -14,6 +14,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         
         this.thead = this.getThead(); 
         this.tbody = this.getTbody();
+        this.tfoot = this.getTfoot();
         
         if(this.cfg.paginator) {
             this.bindPaginator();
@@ -77,6 +78,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     getTbody: function() {
         return $(this.jqId + '_data');
+    },
+    
+    getTfoot: function() {
+        return $(this.jqId + '_foot');
     },
         
     updateData: function(data, clear) {
@@ -2390,47 +2395,63 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 ui.helper.data('droppable-column', $(this));
             },
             drop: function(event, ui) {
-                var draggedColumn = ui.draggable,
+                var draggedColumnHeader = ui.draggable,
                 dropLocation = ui.helper.data('drop-location'),
-                droppedColumn =  $(this);
-                                
-                var draggedCells = $this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (draggedColumn.index() + 1) + ')'),
-                droppedCells = $this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (droppedColumn.index() + 1) + ')');
+                droppedColumnHeader =  $(this),
+                draggedColumnFooter = null,
+                droppedColumnFooter = null;
+                                        
+                var draggedCells = $this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (draggedColumnHeader.index() + 1) + ')'),
+                droppedCells = $this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (droppedColumnHeader.index() + 1) + ')');
+                
+                if($this.tfoot.length) {
+                    var footerColumns = $this.tfoot.find('> tr > td'),
+                    draggedColumnFooter = footerColumns.eq(draggedColumnHeader.index()),
+                    droppedColumnFooter = footerColumns.eq(droppedColumnHeader.index());
+                }
                 
                 //drop right
                 if(dropLocation > 0) {
                     if($this.cfg.resizableColumns) {
-                        if(droppedColumn.next().length == 0) {
-                            droppedColumn.children('span.ui-column-resizer').show();
-                            draggedColumn.children('span.ui-column-resizer').hide();
+                        if(droppedColumnHeader.next().length) {
+                            droppedColumnHeader.children('span.ui-column-resizer').show();
+                            draggedColumnHeader.children('span.ui-column-resizer').hide();
                         }
                     }
-                    
-                    draggedColumn.insertAfter(droppedColumn);
+                                        
+                    draggedColumnHeader.insertAfter(droppedColumnHeader);
 
                     draggedCells.each(function(i, item) {
                         $(this).insertAfter(droppedCells.eq(i));
                     });
                     
+                    if(draggedColumnFooter && droppedColumnFooter) {
+                        draggedColumnFooter.insertAfter(droppedColumnFooter);
+                    }
+                    
                     //sync clone
                     if($this.cfg.scrollable) {
-                        var draggedColumnClone = $(document.getElementById(draggedColumn.attr('id') + '_clone')),
-                        droppedColumnClone = $(document.getElementById(droppedColumn.attr('id') + '_clone'));
+                        var draggedColumnClone = $(document.getElementById(draggedColumnHeader.attr('id') + '_clone')),
+                        droppedColumnClone = $(document.getElementById(droppedColumnHeader.attr('id') + '_clone'));
                         draggedColumnClone.insertAfter(droppedColumnClone);
                     }
                 }
                 //drop left
                 else {
-                    draggedColumn.insertBefore(droppedColumn);
+                    draggedColumnHeader.insertBefore(droppedColumnHeader);
 
                     draggedCells.each(function(i, item) {
                         $(this).insertBefore(droppedCells.eq(i));
                     });
                     
+                    if(draggedColumnFooter && droppedColumnFooter) {
+                        draggedColumnFooter.insertBefore(droppedColumnFooter);
+                    }
+                    
                     //sync clone
                     if($this.cfg.scrollable) {
-                        var draggedColumnClone = $(document.getElementById(draggedColumn.attr('id') + '_clone')),
-                        droppedColumnClone = $(document.getElementById(droppedColumn.attr('id') + '_clone'));
+                        var draggedColumnClone = $(document.getElementById(draggedColumnHeader.attr('id') + '_clone')),
+                        droppedColumnClone = $(document.getElementById(droppedColumnHeader.attr('id') + '_clone'));
                         draggedColumnClone.insertBefore(droppedColumnClone);
                     }
                 }
@@ -2901,6 +2922,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         return $(this.jqId + '_frozenTbody,' + this.jqId + '_scrollableTbody');
     },
     
+    getTfoot: function() {
+        return $(this.jqId + '_frozenTfoot,' + this.jqId + '_scrollableTfoot');
+    },
+    
     bindRowHover: function(selector) {
         var $this = this;
         
@@ -3176,4 +3201,4 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
     }
     
-});
+}); 

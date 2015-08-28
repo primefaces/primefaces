@@ -311,7 +311,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns, clientId + "_frozenTbody");
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeTFoot(context, table, 0, frozenColumns, "frozenFooter");
+            encodeTFoot(context, table, 0, frozenColumns, clientId + "_frozenTfoot", "frozenFooter");
             encodeScrollAreaEnd(context);
             writer.endElement("div");
             writer.endElement("td");
@@ -329,7 +329,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, columnsCount, clientId + "_scrollableTbody");
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeTFoot(context, table, frozenColumns, columnsCount, "scrollableFooter");
+            encodeTFoot(context, table, frozenColumns, columnsCount, clientId + "_scrollableTfoot", "scrollableFooter");
             encodeScrollAreaEnd(context);
             writer.endElement("div");
             writer.endElement("td");
@@ -1025,12 +1025,13 @@ public class DataTableRenderer extends DataRenderer {
     }
     
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
-        this.encodeTFoot(context, table, 0, table.getColumns().size(), null);
+        this.encodeTFoot(context, table, 0, table.getColumns().size(), null, null);
     }
 
-    protected void encodeTFoot(FacesContext context, DataTable table, int columnStart, int columnEnd, String columnGroupType) throws IOException {
+    protected void encodeTFoot(FacesContext context, DataTable table, int columnStart, int columnEnd, String tfootId, String columnGroupType) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<UIColumn> columns = table.getColumns();
+        String tfootClientId = (tfootId == null) ? table.getClientId(context) + "_foot" : tfootId;
         String colGroupType = (columnGroupType == null) ? "footer" : columnGroupType;
         ColumnGroup group = table.getColumnGroup(colGroupType);
         boolean hasFooterColumn = table.hasFooterColumn();
@@ -1041,7 +1042,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         writer.startElement("tfoot", null);
-        writer.writeAttribute("id", table.getClientId(context) + "_foot", null);
+        writer.writeAttribute("id", tfootClientId, null);
 
         if(group != null && group.isRendered()) {
             context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
