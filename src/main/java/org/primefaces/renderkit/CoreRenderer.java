@@ -360,6 +360,7 @@ public abstract class CoreRenderer extends Renderer {
 
         builder.init()
                 .source(clientId)
+                .form(source.getForm())
                 .process(component, source.getProcess())
                 .update(component, source.getUpdate())
                 .async(source.isAsync())

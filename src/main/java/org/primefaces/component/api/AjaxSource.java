@@ -54,4 +54,6 @@ public interface AjaxSource {
     public String getDelay();
     
     public int getTimeout();
+    
+    public String getForm();
 }

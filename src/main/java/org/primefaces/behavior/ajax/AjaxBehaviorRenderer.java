@@ -30,7 +30,6 @@ import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
 
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
@@ -76,20 +75,12 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             process = "@this";
         }
 
-        // get the parent form
-        FacesContext context = FacesContext.getCurrentInstance();
-        UIComponent form = ComponentTraversalUtils.closestForm(context, component);
-        String formId = null;
-        if (form != null){
-            formId = form.getClientId(context);
-        }
-
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
 
         String request = builder.init()
                         .source(source)
                         .event(behaviorContext.getEventName())
-                        .form(formId)
+                        .form(ajaxBehavior.getForm())
                         .process(component, process)
                         .update(component, ajaxBehavior.getUpdate())
                         .async(ajaxBehavior.isAsync())

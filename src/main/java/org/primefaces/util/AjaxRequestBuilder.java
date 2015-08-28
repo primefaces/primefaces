@@ -67,7 +67,7 @@ public class AjaxRequestBuilder {
         
         return this;
     }
-    
+        
     private boolean isValueBlank(String value) {
 		if(value == null)
 			return true;

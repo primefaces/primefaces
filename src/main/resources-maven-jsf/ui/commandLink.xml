@@ -322,6 +322,12 @@
 			<type>java.lang.String</type>
             <description>Selector to use when partial submit is on, default is ":input" to select all descendant inputs of a partially processed components.</description>
 		</attribute>
+        <attribute>
+			<name>form</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Form to serialize for an ajax request. Default is the enclosing form.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>

@@ -45,6 +45,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
     private final TagAttribute delay;
     private final TagAttribute timeout;
     private final TagAttribute partialSubmitFilter;
+    private final TagAttribute form;
 
     public AjaxBehaviorHandler(BehaviorConfig config) {
         super(config);
@@ -65,6 +66,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         this.delay = this.getAttribute(AjaxBehavior.PropertyKeys.delay.name());
         this.timeout = this.getAttribute(AjaxBehavior.PropertyKeys.timeout.name());
         this.partialSubmitFilter = this.getAttribute(AjaxBehavior.PropertyKeys.partialSubmitFilter.name());
+        this.form = this.getAttribute(AjaxBehavior.PropertyKeys.form.name());
     }
 
     @Override
@@ -89,7 +91,8 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         setBehaviorAttribute(ctx, behavior, this.delay, AjaxBehavior.PropertyKeys.delay.expectedType);
         setBehaviorAttribute(ctx, behavior, this.timeout, AjaxBehavior.PropertyKeys.timeout.expectedType);
         setBehaviorAttribute(ctx, behavior, this.partialSubmitFilter, AjaxBehavior.PropertyKeys.partialSubmitFilter.expectedType);
-
+        setBehaviorAttribute(ctx, behavior, this.form, AjaxBehavior.PropertyKeys.form.expectedType);
+        
         if (listener != null) {
             behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
                 this.listener.getMethodExpression(ctx, Object.class, EMPTY_PARAMS) ,
