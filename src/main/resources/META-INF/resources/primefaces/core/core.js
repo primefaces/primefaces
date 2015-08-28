@@ -242,7 +242,7 @@
         },
 
         escapeRegExp: function(text) {
-            return text.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+            return this.escapeHTML(text.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"));
         },
 
         escapeHTML: function(value) {
