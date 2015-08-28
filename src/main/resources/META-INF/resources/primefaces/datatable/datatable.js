@@ -2311,12 +2311,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     
     setupDraggableColumns: function() {
         this.orderStateHolder = $(this.jqId + '_columnOrder');
+        this.footer = $(this.jqId + '_foot');
         this.saveColumnOrder();
         
         this.dragIndicatorTop = $('<span class="ui-icon ui-icon-arrowthick-1-s" style="position:absolute"/></span>').hide().appendTo(this.jq);
         this.dragIndicatorBottom = $('<span class="ui-icon ui-icon-arrowthick-1-n" style="position:absolute"/></span>').hide().appendTo(this.jq);
 
-        var $this = this;
+        var $this = this,
+            isFooter = this.footer.length > 0;
 
         $(this.jqId + ' thead th').draggable({
             appendTo: 'body',
@@ -2397,6 +2399,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 var draggedCells = $this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (draggedColumn.index() + 1) + ')'),
                 droppedCells = $this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (droppedColumn.index() + 1) + ')');
                 
+                //footer
+                if(isFooter) {
+                    var draggedFooter = $this.footer.find('> tr > td:nth-child(' + (draggedColumn.index() + 1) + ')'),
+                    droppedFooter = $this.footer.find('> tr > td:nth-child(' + (droppedColumn.index() + 1) + ')');
+                }
+                
                 //drop right
                 if(dropLocation > 0) {
                     if($this.cfg.resizableColumns) {
@@ -2412,6 +2420,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         $(this).insertAfter(droppedCells.eq(i));
                     });
                     
+                    if(isFooter) {
+                        draggedFooter.insertAfter(droppedFooter);
+                    }
+                    
                     //sync clone
                     if($this.cfg.scrollable) {
                         var draggedColumnClone = $(document.getElementById(draggedColumn.attr('id') + '_clone')),
@@ -2426,6 +2438,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     draggedCells.each(function(i, item) {
                         $(this).insertBefore(droppedCells.eq(i));
                     });
+                    
+                    if(isFooter) {
+                        draggedFooter.insertBefore(droppedFooter);
+                    }
                     
                     //sync clone
                     if($this.cfg.scrollable) {
