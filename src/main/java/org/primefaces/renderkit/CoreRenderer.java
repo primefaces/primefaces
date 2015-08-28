@@ -45,6 +45,7 @@ import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.context.RequestContext;
 import org.primefaces.convert.ClientConverter;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -360,7 +361,7 @@ public abstract class CoreRenderer extends Renderer {
 
         builder.init()
                 .source(clientId)
-                .form(source.getForm())
+                .form(SearchExpressionFacade.resolveClientId(context, component, source.getForm()))
                 .process(component, source.getProcess())
                 .update(component, source.getUpdate())
                 .async(source.isAsync())

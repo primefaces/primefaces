@@ -273,7 +273,7 @@ PrimeFaces.ajax = {
 
             if(cfg.formId) {
                 //Explicit form is defined
-                form = $(PrimeFaces.escapeClientId(cfg.formId));
+                form = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.formId);
             }
             else {
                 //look for a parent of source

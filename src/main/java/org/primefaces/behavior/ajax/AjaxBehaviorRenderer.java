@@ -28,8 +28,8 @@ import javax.faces.render.ClientBehaviorRenderer;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.ComponentTraversalUtils;
 
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
@@ -80,7 +80,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         String request = builder.init()
                         .source(source)
                         .event(behaviorContext.getEventName())
-                        .form(ajaxBehavior.getForm())
+                        .form(SearchExpressionFacade.resolveClientId(behaviorContext.getFacesContext(), component, ajaxBehavior.getForm()))
                         .process(component, process)
                         .update(component, ajaxBehavior.getUpdate())
                         .async(ajaxBehavior.isAsync())
