@@ -270,10 +270,14 @@ import org.primefaces.util.SharedStringBuilder;
             if(eventName.equals("rowSelect")||eventName.equals("rowSelectRadio")||eventName.equals("contextMenu")
                     ||eventName.equals("rowSelectCheckbox")||eventName.equals("rowDblselect")) {
                 String rowKey = params.get(clientId + "_instantSelectedRowKey");
+                String rowIndex = params.get(clientId + "_instantSelectedRowIndex");
+                setRowIndex(Integer.parseInt(rowIndex));
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey)); 
             }
             else if(eventName.equals("rowUnselect")||eventName.equals("rowUnselectCheckbox")) {
-                String rowKey = params.get(clientId + "_instantUnselectedRowKey");
+            	String rowKey = params.get(clientId + "_instantUnselectedRowKey");
+                String rowIndex = params.get(clientId + "_instantUnselectedRowIndex");
+                setRowIndex(Integer.parseInt(rowIndex));
                 wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowKey));
             }
             else if(eventName.equals("page")) {

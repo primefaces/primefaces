@@ -1108,7 +1108,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if($(event.target).is('td,span:not(.ui-c)')) {
             var rowMeta = this.getRowMeta(row);
 
-            this.fireRowSelectEvent(rowMeta.key, 'rowDblselect');
+            this.fireRowSelectEvent(rowMeta, 'rowDblselect');
         }
     },
     
@@ -1123,7 +1123,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.selectRow(row, true);
 
-        this.fireRowSelectEvent(rowMeta.key, 'contextMenu');
+        this.fireRowSelectEvent(rowMeta, 'contextMenu');
 
         if(this.cfg.disabledTextSelection) {
             PrimeFaces.clearSelection();
@@ -1167,7 +1167,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.selectRow($(item), true);
         });
         
-        this.fireRowSelectEvent(rowMeta.key, 'rowSelect');
+        this.fireRowSelectEvent(rowMeta, 'rowSelect');
     },
     
     selectRow: function(r, silent) {
@@ -1190,7 +1190,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.writeSelections();
 
         if(!silent) {
-            this.fireRowSelectEvent(rowMeta.key, 'rowSelect');
+            this.fireRowSelectEvent(rowMeta, 'rowSelect');
         }
     },
     
@@ -1214,7 +1214,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.writeSelections();
 
         if(!silent) {
-            this.fireRowUnselectEvent(rowMeta.key, "rowUnselect");
+            this.fireRowUnselectEvent(rowMeta, "rowUnselect");
         }
     },
     
@@ -1235,16 +1235,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Sends a rowSelectEvent on server side to invoke a rowSelectListener if defined
      */
-    fireRowSelectEvent: function(rowKey, behaviorEvent) {
+    fireRowSelectEvent: function(rowMeta, behaviorEvent) {
         if(this.cfg.behaviors) {
             var selectBehavior = this.cfg.behaviors[behaviorEvent];
-
             if(selectBehavior) {
-                var ext = {
-                        params: [{name: this.id + '_instantSelectedRowKey', value: rowKey}
-                    ]
+            	var ext = {
+                        params: [{name: this.id + '_instantSelectedRowKey', value: rowMeta.key},
+                                 {name: this.id + '_instantSelectedRowIndex', value: rowMeta.index}
+                        ]
                 };
-
+                
                 selectBehavior.call(this, ext);
             }
         }
@@ -1253,17 +1253,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Sends a rowUnselectEvent on server side to invoke a rowUnselectListener if defined
      */
-    fireRowUnselectEvent: function(rowKey, behaviorEvent) {
+    fireRowUnselectEvent: function(rowMeta, behaviorEvent) {
         if(this.cfg.behaviors) {
             var unselectBehavior = this.cfg.behaviors[behaviorEvent];
 
             if(unselectBehavior) {
                 var ext = {
-                    params: [
-                    {
-                        name: this.id + '_instantUnselectedRowKey', 
-                        value: rowKey
-                    }
+                    params: [{name: this.id + '_instantUnselectedRowKey', value: rowMeta.key},
+                              {name: this.id + '_instantUnselectedRowIndex', value: rowMeta.index}
+                    
                     ]
                 };
 
@@ -1290,7 +1288,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.highlightRow(row);
         this.addSelection(rowMeta.key);
         this.writeSelections();
-        this.fireRowSelectEvent(rowMeta.key, 'rowSelectRadio');
+        this.fireRowSelectEvent(rowMeta, 'rowSelectRadio');
     },
     
     /**
@@ -1312,7 +1310,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(!silent) {
             this.updateHeaderCheckbox();
-            this.fireRowSelectEvent(rowMeta.key, "rowSelectCheckbox");
+            this.fireRowSelectEvent(rowMeta, "rowSelectCheckbox");
         }
     },
     
@@ -1336,7 +1334,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.writeSelections();
 
         if(!silent) {
-            this.fireRowUnselectEvent(rowMeta.key, "rowUnselectCheckbox");
+            this.fireRowUnselectEvent(rowMeta, "rowUnselectCheckbox");
         }
     },
     
