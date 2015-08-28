@@ -221,8 +221,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.queryEvent !== 'enter') {
             this.input.on('input propertychange', function(e) {
                 if($this.suppressInput) {
-                    e.preventDefault();
                     return;
+                } else {
+                    $this.suppressInput = true;
                 }
                 
                 // for touch event on mobile
