@@ -30,6 +30,8 @@ import javax.faces.event.ActionListener;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.expression.SearchExpressionFacade;
 
+import org.primefaces.component.export.CSVExporter;
+
 public class DataExporter implements ActionListener, StateHolder {
 
 	private ValueExpression target;
@@ -50,7 +52,7 @@ public class DataExporter implements ActionListener, StateHolder {
 	
 	public DataExporter() {}
 
-	public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly, ValueExpression selectionOnly, ValueExpression encoding, MethodExpression preProcessor, MethodExpression postProcessor) {
+	public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly, ValueExpression selectionOnly, ValueExpression encoding, ValueExpression csvSeparator, MethodExpression preProcessor, MethodExpression postProcessor) {
 		this.target = target;
 		this.type = type;
 		this.fileName = fileName;
@@ -59,6 +61,7 @@ public class DataExporter implements ActionListener, StateHolder {
 		this.preProcessor = preProcessor;
 		this.postProcessor = postProcessor;
 		this.encoding = encoding;
+		this.csvSeparator = csvSeparator;
 	}
 
 	public void processAction(ActionEvent event){
@@ -91,6 +94,14 @@ public class DataExporter implements ActionListener, StateHolder {
             
 			if(!(component instanceof DataTable)) {
 				throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName() + "\", exporter must target a PrimeFaces DataTable.");
+            }
+
+            // Set CSVExporter separator here, so we don't have to override
+            // the Exporter.export() method for all Exporter sub-classes.
+            if(exporter instanceof CSVExporter) {
+                if(csvSeparator != null) {
+                    ((CSVExporter) exporter).setSeparator((String) csvSeparator.getValue(elContext));
+                }
             }
             
 			DataTable table = (DataTable) component;
