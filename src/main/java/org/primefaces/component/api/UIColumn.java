@@ -47,8 +47,6 @@ public interface UIColumn {
     
     public int getColspan();
             
-    public boolean isDisabledSelection();
-    
     public String getFilterPosition();
     
     public UIComponent getFacet(String facet);

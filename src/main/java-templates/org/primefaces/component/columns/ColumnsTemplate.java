@@ -11,10 +11,6 @@ import org.primefaces.component.celleditor.CellEditor;
         return null;
     }
 
-    public boolean isDisabledSelection() {
-        return false;
-    }
-
     private CellEditor cellEditor = null;
 
     public CellEditor getCellEditor() {
