@@ -232,6 +232,13 @@
             <type>java.lang.String</type>
             <description>Position of panel with respect to input. Default is "left bottom".</description>
         </attribute>
+        <attribute>
+            <name>active</name>
+            <required>false</required>
+            <defaultValue>true</defaultValue>
+            <type>java.lang.Boolean</type>
+            <description>Defines if autocomplete functionality is enabled. Default is true and a false value simply turns the component into a simple inputtext.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

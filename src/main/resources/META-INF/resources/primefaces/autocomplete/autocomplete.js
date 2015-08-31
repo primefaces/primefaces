@@ -21,6 +21,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.autoHighlight = (this.cfg.autoHighlight === undefined) ? true : this.cfg.autoHighlight;
         this.cfg.myPos = this.cfg.myPos||'left top';
         this.cfg.atPos = this.cfg.atPos||'left bottom';
+        this.cfg.active = (this.cfg.active === false) ? false : true;
         this.suppressInput = true;
         this.touchToDropdownButton = false;
         
@@ -550,7 +551,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     search: function(query) {
         //allow empty string but not undefined or null
-        if(query === undefined || query === null) {
+        if(!this.cfg.active || query === undefined || query === null) {
             return;
         }
 
