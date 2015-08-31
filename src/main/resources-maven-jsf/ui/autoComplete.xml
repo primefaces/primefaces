@@ -220,6 +220,18 @@
             <type>java.lang.String</type>
             <description>Tooltip to display on group headers.</description>
         </attribute>
+        <attribute>
+            <name>my</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of panel with respect to input Default is "left top".</description>
+        </attribute>
+        <attribute>
+            <name>at</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of panel with respect to input. Default is "left bottom".</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

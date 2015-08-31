@@ -579,7 +579,9 @@ public class AutoCompleteRenderer extends InputRenderer {
             .attr("grouping", ac.getValueExpression("groupBy") != null, false)
             .attr("queryEvent", ac.getQueryEvent(), null)
             .attr("dropdownMode", ac.getDropdownMode(), null)
-            .attr("autoHighlight", ac.isAutoHighlight(), true);
+            .attr("autoHighlight", ac.isAutoHighlight(), true)
+            .attr("myPos", ac.getMy(), null)
+            .attr("atPos", ac.getAt(), null);
         
         if(ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());            

@@ -19,6 +19,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.ariaEmptyMessage = this.cfg.emptyMessage||'No search results are available.';
         this.cfg.dropdownMode = this.cfg.dropdownMode||'blank';
         this.cfg.autoHighlight = (this.cfg.autoHighlight === undefined) ? true : this.cfg.autoHighlight;
+        this.cfg.myPos = this.cfg.myPos||'left top';
+        this.cfg.atPos = this.cfg.atPos||'left bottom';
         this.suppressInput = true;
         this.touchToDropdownButton = false;
         
@@ -788,8 +790,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             this.panel.position({
-                    my: 'left top'
-                    ,at: 'left bottom'
+                    my: this.cfg.myPos
+                    ,at: this.cfg.atPos
                     ,of: this.cfg.multiple ? this.jq : this.input
                     ,collision: 'flipfit'
                 });
