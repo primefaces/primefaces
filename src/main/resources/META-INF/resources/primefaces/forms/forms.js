@@ -1971,6 +1971,10 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
         this.inputs = this.jq.find(':checkbox:not(:disabled)');
         var _self = this;
 
+        for(var i=0; i < this.buttons.length; i++) {
+            this.buttons.eq(i).attr('tabindex', '0');
+        }
+        
         this.buttons.mouseover(function() {
             var button = $(this);
             if(!button.hasClass('ui-state-active'))
@@ -1986,6 +1990,43 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
                 _self.select(button);
         });
 
+        /* For keyboard accessibility */
+        this.buttons.on('focus.selectManyButton', function(){
+            var checkbox = $(this).children(':checkbox');
+        
+            if(checkbox.prop('checked')) { 
+                $(this).removeClass('ui-state-active');
+            }
+            
+            $(this).addClass('ui-state-focus');
+        })
+        .on('blur.selectManyButton', function(){
+            var checkbox = $(this).children(':checkbox');
+    
+            if(checkbox.prop('checked')) { 
+                $(this).addClass('ui-state-active');
+            }
+            
+            $(this).removeClass('ui-state-focus');
+        })
+        .on('keydown.selectManyButton', function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+
+            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                var checkbox = $(this).children(':checkbox');
+                
+                if(checkbox.prop('checked')) {
+                    _self.unselect($(this));
+                    $(this).removeClass('ui-state-hover');
+                }
+                else {
+                    _self.select($(this));
+                }
+                e.preventDefault();
+            }  
+        });
+        
         //pfs metadata
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
@@ -2014,6 +2055,10 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
         this.buttons = this.jq.children('div:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':radio:not(:disabled)');
 
+        for(var i=0; i < this.buttons.length; i++) {
+            this.buttons.eq(i).attr('tabindex', '0');
+        }
+        
         this.bindEvents();
 
         //pfs metadata
@@ -2038,6 +2083,39 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
             if(!button.hasClass('ui-state-active')) {
                 _self.select(button);
             }
+        });
+        
+        /* For keyboard accessibility */
+        this.buttons.on('focus.selectOneButton', function(){
+            var radio = $(this).children(':radio');
+        
+            if(radio.prop('checked')) { 
+                $(this).removeClass('ui-state-active');
+            }
+            
+            $(this).addClass('ui-state-focus');
+        })
+        .on('blur.selectOneButton', function(){
+            var radio = $(this).children(':radio');
+    
+            if(radio.prop('checked')) { 
+                $(this).addClass('ui-state-active');
+            }
+            
+            $(this).removeClass('ui-state-focus');
+        })
+        .on('keydown.selectOneButton', function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+
+            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                var radio = $(this).children(':radio');
+                
+                if(!radio.prop('checked')) {
+                    _self.select($(this));
+                }
+                e.preventDefault();
+            }  
         });
     },
 
