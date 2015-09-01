@@ -104,7 +104,12 @@ PrimeFaces.dialog.DialogHandler = {
             }
             
             //adjust height
-            var frameHeight = cfg.options.contentHeight||$frame.get(0).contentWindow.document.body.scrollHeight;
+            var frameHeight = null;
+            if(cfg.options.contentHeight)
+                frameHeight = cfg.options.contentHeight;
+            else
+                frameHeight = $frame.get(0).contentWindow.document.body.scrollHeight + (PrimeFaces.env.browser.webkit ? 5 : 20);
+            
             $frame.css('height', frameHeight);
             
             dialogFrame.data('initialized', true);
