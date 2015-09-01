@@ -17,6 +17,15 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
     },
     
+    refresh: function(cfg) {        
+        this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
+        
+        if(this.fixed) {
+            this.ghost.remove();
+            this.fix(true);
+        }
+    },
+    
     bindEvents: function() {
         var $this = this,
         win = $(window),
@@ -36,8 +45,8 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
         });
     },
     
-    fix: function() {
-        if(!this.fixed) {
+    fix: function(force) {
+        if(!this.fixed || force) {
             this.target.css({
                 'position': 'fixed',
                 'top': this.cfg.margin,
@@ -65,4 +74,4 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
         }
     }
 
-}); 
+});   
