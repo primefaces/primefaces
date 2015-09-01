@@ -1969,12 +1969,8 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
 
         this.buttons = this.jq.children('div:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':checkbox:not(:disabled)');
-        var _self = this;
-        
-        for(var i=0; i < this.buttons.length; i++) {
-            this.buttons.eq(i).attr('tabindex', '0');
-        }
-        
+        var $this = this;
+                
         this.buttons.mouseover(function() {
             var button = $(this);
             if(!button.hasClass('ui-state-active'))
@@ -1985,9 +1981,9 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
             var button = $(this);
 
             if(button.hasClass('ui-state-active'))
-                _self.unselect(button);
+                $this.unselect(button);
             else
-                _self.select(button);
+                $this.select(button);
         });
 
         /* For keyboard accessibility */
@@ -2020,11 +2016,11 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
                 checkbox = button.children(':checkbox');
                 
                 if(checkbox.prop('checked')) {
-                    _self.unselect(button);
+                    $this.unselect(button);
                     button.removeClass('ui-state-hover');
                 }
                 else {
-                    _self.select(button);
+                    $this.select(button);
                 }
                 e.preventDefault();
             }  
@@ -2057,11 +2053,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
 
         this.buttons = this.jq.children('div:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':radio:not(:disabled)');
-        
-        for(var i=0; i < this.buttons.length; i++) {
-            this.buttons.eq(i).attr('tabindex', '0');
-        }
-        
+                
         this.bindEvents();
 
         //pfs metadata
@@ -2069,7 +2061,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindEvents: function() {
-        var _self = this;
+        var $this = this;
 
         this.buttons.on('mouseover', function() {
             var button = $(this);
@@ -2084,7 +2076,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
             var button = $(this);
 
             if(!button.hasClass('ui-state-active')) {
-                _self.select(button);
+                $this.select(button);
             }
         });
         
@@ -2118,7 +2110,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
                 radio = button.children(':radio');
                 
                 if(!radio.prop('checked')) {
-                    _self.select(button);
+                    $this.select(button);
                 }
                 e.preventDefault();
             }  
