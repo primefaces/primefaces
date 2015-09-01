@@ -432,13 +432,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
 
     onHide: function(event, ui) {
-        if(this.cfg.behaviors) {
-            var closeBehavior = this.cfg.behaviors['close'];
-
-            if(closeBehavior) {
-                closeBehavior.call(this);
-            }
-        }
+        this.fireBehaviorEvent('close');
 
         this.jq.attr({
             'aria-hidden': true
@@ -469,11 +463,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
             this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-newwin').addClass('ui-icon-extlink');
             this.maximized = false;
+            
+            this.fireBehaviorEvent('restoreMaximize');
         }
         else {
             this.saveState();
-
-            var win = $(window);
+ 
+           var win = $(window);
 
             this.jq.addClass('ui-dialog-maximized').css({
                 'width': win.width() - 6
@@ -492,13 +488,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
             this.maximized = true;
 
-            if(this.cfg.behaviors) {
-                var maximizeBehavior = this.cfg.behaviors['maximize'];
-
-                if(maximizeBehavior) {
-                    maximizeBehavior.call(this);
-                }
-            }
+            this.fireBehaviorEvent('maximize');
         }
     },
 
@@ -520,8 +510,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
             this.minimized = false;
 
-            if(this.cfg.resizable)
+            if(this.cfg.resizable) {
                 this.resizers.show();
+            }
+            
+            this.fireBehaviorEvent('restoreMinimize');
         }
         else {
             this.saveState();
@@ -554,13 +547,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.resizers.hide();
         }
 
-        if(this.cfg.behaviors) {
-            var minimizeBehavior = this.cfg.behaviors['minimize'];
-
-            if(minimizeBehavior) {
-                minimizeBehavior.call(this);
-            }
-        }
+        this.fireBehaviorEvent('minimize');
     },
 
     saveState: function() {
@@ -647,6 +634,16 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     
     unbindResizeListener: function() {
         $(window).off(this.resizeNS);
+    },
+    
+    fireBehaviorEvent: function(event) {
+        if(this.cfg.behaviors) {
+            var behavior = this.cfg.behaviors[event];
+
+            if(behavior) {
+                behavior.call(this);
+            }
+        }
     }
 
 });
