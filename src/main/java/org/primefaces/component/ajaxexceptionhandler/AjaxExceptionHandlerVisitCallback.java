@@ -15,6 +15,8 @@
  */
 package org.primefaces.component.ajaxexceptionhandler;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -28,14 +30,12 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
 
     private final Throwable throwable;
     
-    private AjaxExceptionHandler handler;
-    private AjaxExceptionHandler defaultHandler;
+    private Map<String, AjaxExceptionHandler> handlers;
 
     public AjaxExceptionHandlerVisitCallback(Throwable throwable) {
         this.throwable = throwable;
         
-        this.handler = null;
-        this.defaultHandler = null;
+        this.handlers = new HashMap<String, AjaxExceptionHandler>();
     }
     
     public VisitResult visit(VisitContext context, UIComponent target) {;
@@ -44,19 +44,22 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
             AjaxExceptionHandler currentHandler = (AjaxExceptionHandler) target;
 
             if (ComponentUtils.isValueBlank(currentHandler.getType())) {
-                defaultHandler = currentHandler;
+                handlers.put(null, currentHandler);
             }
-
-            if (throwable.getClass().getName().equals(currentHandler.getType())) {
-                handler = currentHandler;
-                return VisitResult.COMPLETE;
+            else {
+                handlers.put(currentHandler.getType(), currentHandler);
+                
+                // exact type matched - we don't need to search more generic handlers
+                if (throwable.getClass().getName().equals(currentHandler.getType())) {
+                    return VisitResult.COMPLETE;
+                }
             }
         }
         
         return VisitResult.ACCEPT;
     }
     
-    public AjaxExceptionHandler getHandler() {
-        return handler == null ? defaultHandler : handler;
+    public Map<String, AjaxExceptionHandler> getHandlers() {
+        return handlers;
     }
 }

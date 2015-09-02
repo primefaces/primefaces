@@ -247,15 +247,34 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
      * Finds the proper {@link AjaxExceptionHandler} for the given {@link Throwable}.
      *
      * @param context The {@link FacesContext}.
-     * @param throwable The occurred {@link Throwable}.
+     * @param rootCause The occurred {@link Throwable}.
      * @return The {@link UIAjaxExceptionHandler} or <code>null</code>.
      */
-    protected AjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable throwable) {
-        AjaxExceptionHandlerVisitCallback visitCallback = new AjaxExceptionHandlerVisitCallback(throwable);
+    protected AjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable rootCause) {
+        AjaxExceptionHandlerVisitCallback visitCallback = new AjaxExceptionHandlerVisitCallback(rootCause);
 
         context.getViewRoot().visitTree(VisitContext.createVisitContext(context), visitCallback);
 
-        return visitCallback.getHandler();
+        Map<String, AjaxExceptionHandler> handlers = visitCallback.getHandlers();
+        
+        // get handler by exception type
+        AjaxExceptionHandler handler = handlers.get(rootCause.getClass().getName());
+
+        // lookup by inheritance hierarchy
+        if (handler == null) {
+            Class throwableClass = rootCause.getClass();
+            while (handler == null && throwableClass.getSuperclass() != Object.class) {
+                throwableClass = throwableClass.getSuperclass();
+                handler = handlers.get(throwableClass.getName());
+            }
+        }
+
+        // get default handler
+        if (handler == null) {
+            handler = handlers.get(null);
+        }
+        
+        return handler;
     }
 
     /**
