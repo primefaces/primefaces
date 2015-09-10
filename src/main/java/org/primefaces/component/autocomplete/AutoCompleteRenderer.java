@@ -470,43 +470,45 @@ public class AutoCompleteRenderer extends InputRenderer {
         }
         
         writer.startElement("tbody", ac);
+        
+        if(items != null) {
+            for(Object item : items) {
+                writer.startElement("tr", null);
+                writer.writeAttribute("class", AutoComplete.ROW_CLASS, null);
 
-        for(Object item : items) {
-            writer.startElement("tr", null);
-            writer.writeAttribute("class", AutoComplete.ROW_CLASS, null);
+                if(pojo) {
+                    requestMap.put(var, item);
+                    String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
+                    writer.writeAttribute("data-item-value", value, null);
+                    writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                    writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
-            if(pojo) {
-                requestMap.put(var, item);
-                String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
-                writer.writeAttribute("data-item-value", value, null);
-                writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
-                writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
-                
-                if(hasGroupByTooltip) {
-                    writer.writeAttribute("data-item-group-tooltip", ac.getGroupByTooltip(), null);
+                    if(hasGroupByTooltip) {
+                        writer.writeAttribute("data-item-group-tooltip", ac.getGroupByTooltip(), null);
+                    }
                 }
-            }
-            
-            for(Column column : ac.getColums()) {
-                if(column.isRendered()) {
+
+                for(Column column : ac.getColums()) {
+                    if(column.isRendered()) {
+                        writer.startElement("td", null);
+                        if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
+                        if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+
+                        column.encodeAll(context);
+
+                        writer.endElement("td");
+                    }
+                }
+
+                if(itemtip != null && itemtip.isRendered()) {
                     writer.startElement("td", null);
-                    if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-                    if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
-                    
-                    column.encodeAll(context);
-                    
+                    writer.writeAttribute("class", AutoComplete.ITEMTIP_CONTENT_CLASS, null);
+                    itemtip.encodeAll(context);
                     writer.endElement("td");
                 }
-            }
-            
-            if(itemtip != null && itemtip.isRendered()) {
-                writer.startElement("td", null);
-                writer.writeAttribute("class", AutoComplete.ITEMTIP_CONTENT_CLASS, null);
-                itemtip.encodeAll(context);
-                writer.endElement("td");
-            }
 
-            writer.endElement("tr");     
+                writer.endElement("tr");     
+            }
         }
 
         writer.endElement("tbody");
@@ -524,37 +526,39 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("ul", ac);
         writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
 
-        for(Object item : items) {
-            writer.startElement("li", null);
-            writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
-            
-            if(pojo) {
-                requestMap.put(var, item);
-                String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
-                writer.writeAttribute("data-item-value", value, null);
-                writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
-                writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
-                
-                if(hasGroupByTooltip) {
-                    writer.writeAttribute("data-item-group-tooltip", ac.getGroupByTooltip(), null);
-                }
-                
-                writer.writeText(ac.getItemLabel(), null);
-            }
-            else {
-                writer.writeAttribute("data-item-label", item, null);
-                writer.writeAttribute("data-item-value", item, null);
-                
-                writer.writeText(item, null);
-            }
-            
-            writer.endElement("li");
-            
-            if(itemtip != null && itemtip.isRendered()) {
+        if(items != null) {
+            for(Object item : items) {
                 writer.startElement("li", null);
-                writer.writeAttribute("class", AutoComplete.ITEMTIP_CONTENT_CLASS, null);
-                itemtip.encodeAll(context);
+                writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
+
+                if(pojo) {
+                    requestMap.put(var, item);
+                    String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
+                    writer.writeAttribute("data-item-value", value, null);
+                    writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                    writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
+
+                    if(hasGroupByTooltip) {
+                        writer.writeAttribute("data-item-group-tooltip", ac.getGroupByTooltip(), null);
+                    }
+
+                    writer.writeText(ac.getItemLabel(), null);
+                }
+                else {
+                    writer.writeAttribute("data-item-label", item, null);
+                    writer.writeAttribute("data-item-value", item, null);
+
+                    writer.writeText(item, null);
+                }
+
                 writer.endElement("li");
+
+                if(itemtip != null && itemtip.isRendered()) {
+                    writer.startElement("li", null);
+                    writer.writeAttribute("class", AutoComplete.ITEMTIP_CONTENT_CLASS, null);
+                    itemtip.encodeAll(context);
+                    writer.endElement("li");
+                }
             }
         }
         
