@@ -115,7 +115,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         List results = ac.getSuggestions();
         int maxResults = ac.getMaxResults();
         
-        if(maxResults != Integer.MAX_VALUE && results.size() > maxResults) {
+        if(maxResults != Integer.MAX_VALUE && results != null && results.size() > maxResults) {
             results = results.subList(0, ac.getMaxResults());
         }
 
