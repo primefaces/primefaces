@@ -78,7 +78,7 @@ public class ConfigContainer {
     private String buildVersion = null;
 
     // web.xml
-    private Map<String, String> errorPages = new HashMap<String, String>();
+    private Map<String, String> errorPages = null;
 
     protected ConfigContainer() {
 
@@ -272,103 +272,9 @@ public class ConfigContainer {
     }
 
     protected void initConfigFromWebXml(FacesContext context) {
-        InputStream is = null;
-
-        try {
-            URL url = context.getExternalContext().getResource("/WEB-INF/web.xml");
-            
-            // web.xml is optional
-            if (url == null) {
-                return;
-            }
-            
-            is = url.openStream();
-
-            if (is == null) {
-                return;
-            }
-
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setValidating(false);
-            factory.setNamespaceAware(false);
-            factory.setExpandEntityReferences(false);
-
-            try {
-                factory.setFeature("http://xml.org/sax/features/namespaces", false);
-                factory.setFeature("http://xml.org/sax/features/validation", false);
-                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            }
-            catch (Throwable e) {
-                LOG.warning("DocumentBuilderFactory#setFeature not implemented. Skipping...");
-            }
-
-            boolean absolute = false;
-            try {
-                absolute = url.toURI().isAbsolute();
-            }
-            catch (URISyntaxException e) {
-                // noop
-            }
-
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document;
-
-            if (absolute) {
-                InputSource source = new InputSource(url.toExternalForm());
-                source.setByteStream(is);
-                document = builder.parse(source);
-            }
-            else {
-                document = builder.parse(is);
-            }
-
-            initErrorPages(document.getDocumentElement());
-        }
-        catch (Throwable e) {
-            LOG.log(Level.SEVERE, "Could not load or parse web.xml", e);
-        }
-        finally {
-            if (is != null) {
-                try {
-                    is.close();
-                }
-                catch (IOException e) {
-                    LOG.log(Level.INFO, "Could not close web.xml stream", e);
-                }
-            }
-        }
-    }
-
-    private void initErrorPages(Element webXml) throws Exception {
-
-        XPath xpath = XPathFactory.newInstance().newXPath();
-
-        NodeList exceptionTypes = (NodeList) xpath.compile("error-page/exception-type").evaluate(webXml, XPathConstants.NODESET);
-
-        for (int i = 0; i < exceptionTypes.getLength(); i++) {
-            Node node = exceptionTypes.item(i);
-
-            String exceptionType = node.getTextContent().trim();
-            String key = Throwable.class.getName().equals(exceptionType) ? null : exceptionType;
-
-            String location = xpath.compile("location").evaluate(node.getParentNode()).trim();
-
-            if (!errorPages.containsKey(key)) {
-                errorPages.put(key, location);
-            }
-        }
-
-        if (!errorPages.containsKey(null)) {
-            String defaultLocation = xpath.compile("error-page[error-code=500]/location").evaluate(webXml).trim();
-
-            if (ComponentUtils.isValueBlank(defaultLocation)) {
-                defaultLocation = xpath.compile("error-page[not(error-code) and not(exception-type)]/location").evaluate(webXml).trim();
-            }
-
-            if (!ComponentUtils.isValueBlank(defaultLocation)) {
-                errorPages.put(null, defaultLocation);
-            }
+        errorPages = WebXmlParser.getErrorPages(context);
+        if (errorPages == null) {
+            errorPages = new HashMap<String, String>();
         }
     }
 
