@@ -23,7 +23,7 @@
 
             for (var widgetVar in PrimeFaces.widgets) {
                 var widget = PrimeFaces.widgets[widgetVar];
-                if (widget.id === id) {
+                if (widget && widget.id === id) {
                     return widget;
                 }
             }
