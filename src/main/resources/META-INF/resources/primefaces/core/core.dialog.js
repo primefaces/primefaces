@@ -26,6 +26,11 @@ PrimeFaces.dialog.DialogHandler = {
             titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
         }
         
+        if(cfg.options.header){
+	   titlebar.children('.ui-dialog-title')
+                    .append(cfg.options.header);
+	}
+        
         dialogDOM.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto;">' +
                 '<iframe style="border:0 none" frameborder="0"/>' + 
                 '</div>');
