@@ -128,95 +128,89 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
+        String style = menuitem.getStyle();
+        boolean disabled = menuitem.isDisabled();
 
-		if(menuitem.shouldRenderChildren()) {
-			renderChildren(context, (UIComponent) menuitem);
-		}
+        writer.startElement("a", null);
+        writer.writeAttribute("tabindex", "-1", null);
+        if(shouldRenderId(menuitem)) {
+            writer.writeAttribute("id", menuitem.getClientId(), null);
+        }
+        if(title != null) {
+            writer.writeAttribute("title", title, null);
+        }
+
+        String styleClass = this.getLinkStyleClass(menuitem);
+        if(disabled) {
+            styleClass = styleClass + " ui-state-disabled";
+        }
+
+        writer.writeAttribute("class", styleClass, null);
+
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+
+        if(disabled) {
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("onclick", "return false;", null);
+        }
         else {
-            boolean disabled = menuitem.isDisabled();
-            String style = menuitem.getStyle();
-            
-            writer.startElement("a", null);
-            writer.writeAttribute("tabindex", "-1", null);
-            if(shouldRenderId(menuitem)) {
-                writer.writeAttribute("id", menuitem.getClientId(), null);
+            setConfirmationScript(context, menuitem);
+            String onclick = menuitem.getOnclick();
+
+            //GET
+            if(menuitem.getUrl() != null || menuitem.getOutcome() != null) {                
+                String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
+                writer.writeAttribute("href", targetURL, null);
+
+                if(menuitem.getTarget() != null) {
+                    writer.writeAttribute("target", menuitem.getTarget(), null);
+                }
             }
-            if(title != null) {
-                writer.writeAttribute("title", title, null);
-            }
-            
-            String styleClass = this.getLinkStyleClass(menuitem);
-            if(disabled) {
-                styleClass = styleClass + " ui-state-disabled";
-            }
-            
-            writer.writeAttribute("class", styleClass, null);
-            
-            if(style != null) {
-                writer.writeAttribute("style", style, null);
-            }
-                  
-            if(disabled) {
-                writer.writeAttribute("href", "#", null);
-                writer.writeAttribute("onclick", "return false;", null);
-            }
+            //POST
             else {
-                setConfirmationScript(context, menuitem);
-                String onclick = menuitem.getOnclick();
-                
-                //GET
-                if(menuitem.getUrl() != null || menuitem.getOutcome() != null) {                
-                    String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
-                    writer.writeAttribute("href", targetURL, null);
+                writer.writeAttribute("href", "#", null);
 
-                    if(menuitem.getTarget() != null) {
-                        writer.writeAttribute("target", menuitem.getTarget(), null);
-                    }
+                UIComponent form = ComponentTraversalUtils.closestForm(context, menu);
+                if(form == null) {
+                    throw new FacesException("MenuItem must be inside a form element");
                 }
-                //POST
+
+                String command;
+                if(menuitem.isDynamic()) {
+                    String menuClientId = menu.getClientId(context);
+                    Map<String,List<String>> params = menuitem.getParams();
+                    if(params == null) {
+                        params = new LinkedHashMap<String, List<String>>();
+                    }
+                    List<String> idParams = new ArrayList<String>();
+                    idParams.add(menuitem.getId());
+                    params.put(menuClientId + "_menuid", idParams);
+
+                    command = menuitem.isAjax() ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params) : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
+                } 
                 else {
-                    writer.writeAttribute("href", "#", null);
-
-                    UIComponent form = ComponentTraversalUtils.closestForm(context, menu);
-                    if(form == null) {
-                        throw new FacesException("MenuItem must be inside a form element");
-                    }
-
-                    String command;
-                    if(menuitem.isDynamic()) {
-                        String menuClientId = menu.getClientId(context);
-                        Map<String,List<String>> params = menuitem.getParams();
-                        if(params == null) {
-                            params = new LinkedHashMap<String, List<String>>();
-                        }
-                        List<String> idParams = new ArrayList<String>();
-                        idParams.add(menuitem.getId());
-                        params.put(menuClientId + "_menuid", idParams);
-
-                        command = menuitem.isAjax() ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params) : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
-                    } 
-                    else {
-                        command = menuitem.isAjax() ? buildAjaxRequest(context, (AjaxSource) menuitem, form) : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
-                    }
-
-                    onclick = (onclick == null) ? command : onclick + ";" + command;
+                    command = menuitem.isAjax() ? buildAjaxRequest(context, (AjaxSource) menuitem, form) : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
-                
-                if(onclick != null) {
-                    if(menuitem.requiresConfirmation()) {
-                        writer.writeAttribute("data-pfconfirmcommand", onclick, null);
-                        writer.writeAttribute("onclick", menuitem.getConfirmationScript(), "onclick");
-                    }
-                    else {
-                        writer.writeAttribute("onclick", onclick, null);
-                    }
-                }
+
+                onclick = (onclick == null) ? command : onclick + ";" + command;
             }
 
-            encodeMenuItemContent(context, menu, menuitem);
+            if(onclick != null) {
+                if(menuitem.requiresConfirmation()) {
+                    writer.writeAttribute("data-pfconfirmcommand", onclick, null);
+                    writer.writeAttribute("onclick", menuitem.getConfirmationScript(), "onclick");
+                }
+                else {
+                    writer.writeAttribute("onclick", onclick, null);
+                }
+            }
+        }
 
-            writer.endElement("a");
-		}
+        encodeMenuItemContent(context, menu, menuitem);
+
+        writer.endElement("a");
 	}
     
     protected void setConfirmationScript(FacesContext context, MenuItem item) {
@@ -255,12 +249,15 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             writer.endElement("span");
         }
 
-        if(value != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
+        writer.startElement("span", null);
+        writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
+        
+        if(value != null)
             writer.writeText(value, "value");
-            writer.endElement("span");
-        }
+        else if(menuitem.shouldRenderChildren())
+            renderChildren(context, (UIComponent) menuitem);
+
+        writer.endElement("span");
     }
 
     protected void encodeSeparator(FacesContext context, Separator separator) throws IOException {
