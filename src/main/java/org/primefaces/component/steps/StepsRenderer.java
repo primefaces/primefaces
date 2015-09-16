@@ -87,10 +87,20 @@ public class StepsRenderer extends BaseMenuRenderer {
                 itemClass = Steps.INACTIVE_ITEM_CLASS;
         }
         
+        String containerStyle = item.getContainerStyle();
+        String containerStyleClass = item.getContainerStyleClass();
+                        
+        if(containerStyleClass != null) { 
+            itemClass = itemClass + " " + containerStyleClass;
+        }
+        
         //header container
         writer.startElement("li", null);
         writer.writeAttribute("class", itemClass, null);
         writer.writeAttribute("role", "tab", null);
+        if(containerStyle != null) {
+            writer.writeAttribute("style", containerStyle, null);
+        }
 
         encodeMenuItem(context, steps, item, activeIndex, index);
         
