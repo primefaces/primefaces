@@ -612,6 +612,14 @@ if (window.PrimeFaces) {
             else {
                 vc.renderMessages(form);
             }
+            
+            //focus first element
+            for(var key in vc.messages) {
+                if(vc.messages.hasOwnProperty(key)) {
+                    $(PrimeFaces.escapeClientId(key)).focus();
+                    break;
+                }
+            }
 
             vc.clear();
 
