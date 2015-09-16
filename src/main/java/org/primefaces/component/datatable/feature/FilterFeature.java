@@ -94,17 +94,26 @@ public class FilterFeature implements DataTableFeature {
     }
             
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        
         //reset state
+        String clientId = table.getClientId(context);
         table.updateFilteredValue(context, null);
         table.setValue(null);
         table.setFirst(0);
         table.setRowIndex(-1);
         
+        //update rows with rpp value
+        String rppValue = params.get(clientId + "_rppDD");
+        if(rppValue != null) {
+            table.setRows(Integer.parseInt(rppValue));
+        }
+        
         if(table.isLazy()) {
             table.loadLazyData();
         }
         else {
-            String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+            String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
             filter(context, table, table.getFilterMetadata(), globalFilterParam);
                                   
             //sort new filtered data to restore sort state
