@@ -29,7 +29,7 @@ import java.lang.reflect.Field;
 public class PathParamIntrospector extends org.atmosphere.inject.PathParamIntrospector {
 
     @Override
-    public void introspectField(Field f) {
+    public void introspectField(Class clazz, Field f) {
         if (f.isAnnotationPresent(PathParam.class)) {
             String name = f.getAnnotation(PathParam.class).value();
 
