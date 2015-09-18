@@ -39,7 +39,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         documentBody.children('div.ui-spotlight-top').css({
             'left': 0,
             'top': 0,
-            'width': doc.width(),
+            'width': documentBody.width(),
             'height': offset.top
         });
         
@@ -47,7 +47,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         documentBody.children('div.ui-spotlight-bottom').css({
             'left': 0,
             'top': bottomTop,
-            'width': doc.width(),
+            'width': documentBody.width(),
             'height': doc.height() - bottomTop
         });
         
@@ -62,7 +62,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         documentBody.children('div.ui-spotlight-right').css({
             'left': rightLeft,
             'top': offset.top,
-            'width': doc.width() - rightLeft,
+            'width': documentBody.width() - rightLeft,
             'height': this.target.outerHeight()
         });
     },
