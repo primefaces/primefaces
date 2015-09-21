@@ -18,6 +18,7 @@ import java.util.Map;
 import org.primefaces.util.Constants;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
+import org.primefaces.event.data.PageEvent;
 
 	public static final String DATALIST_CLASS = "ui-datalist ui-widget";
     public static final String CONTENT_CLASS = "ui-datalist-content ui-widget-content";
@@ -30,7 +31,7 @@ import javax.faces.event.FacesEvent;
 
     public static final String MOBILE_CONTENT_CLASS = "ui-datalist-content";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("swipeleft","swiperight","tap","taphold"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","swipeleft","swiperight","tap","taphold"));
 
     @Override
     public Collection<String> getEventNames() {
@@ -90,11 +91,22 @@ import javax.faces.event.FacesEvent;
 
         if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
             setRowIndex(-1);
+            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if(eventName.equals("swipeleft")||eventName.equals("swiperight")) {
-                AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+            if(eventName.equals("page")) {
+                String clientId = this.getClientId(context);
+                int rows = this.getRowsToRender();
+                int first = Integer.parseInt(params.get(clientId + "_first"));
+                int page = rows > 0 ? (int) (first / rows) : 0;
+        
+                PageEvent pageEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
+                pageEvent.setPhaseId(behaviorEvent.getPhaseId());
+
+                super.queueEvent(pageEvent);
+            }
+            else if(eventName.equals("swipeleft")||eventName.equals("swiperight")) {
                 String clientId = this.getClientId(context);
                 int index = Integer.parseInt(params.get(clientId + "_item"));
                 this.setRowIndex(index);
@@ -106,7 +118,6 @@ import javax.faces.event.FacesEvent;
                 super.queueEvent(swipeEvent);
             }
             else if(eventName.equals("tap")||eventName.equals("taphold")) {
-                AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 String clientId = this.getClientId(context);
                 int index = Integer.parseInt(params.get(clientId + "_item"));
                 this.setRowIndex(index);

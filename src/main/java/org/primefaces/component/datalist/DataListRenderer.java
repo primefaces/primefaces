@@ -26,6 +26,11 @@ import org.primefaces.util.WidgetBuilder;
 public class DataListRenderer extends DataRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);        
+    }
+    
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DataList list = (DataList) component;
 
@@ -109,6 +114,8 @@ public class DataListRenderer extends DataRenderer {
         if(list.isPaginator()) {
             encodePaginatorConfig(context, list, wb);
         }
+        
+        encodeClientBehaviors(context, list);
 
         wb.finish();
     }

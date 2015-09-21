@@ -51,11 +51,25 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.AjaxRequest(options);
+        if(this.hasBehavior('page')) {
+            var pageBehavior = this.cfg.behaviors['page'];
+            pageBehavior.call(this, options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
     
     getPaginator: function() {
         return this.paginator;
+    },
+    
+    hasBehavior: function(event) {
+        if(this.cfg.behaviors) {
+            return this.cfg.behaviors[event] !== undefined;
+        }
+    
+        return false;
     }
     
 });
