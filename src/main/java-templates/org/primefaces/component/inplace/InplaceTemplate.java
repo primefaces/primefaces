@@ -30,7 +30,7 @@ import org.primefaces.util.Constants;
 
     @Override
     public void processDecodes(FacesContext context) {
-        if(isCancelRequest(context)) {
+        if(shouldSkipChildren(context)) {
             this.decode(context);
         }
         else {
@@ -40,14 +40,14 @@ import org.primefaces.util.Constants;
 
     @Override
     public void processValidators(FacesContext context) {
-        if(!isCancelRequest(context)) {
+        if(!shouldSkipChildren(context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if(!isCancelRequest(context)) {
+        if(!shouldSkipChildren(context)) {
             super.processUpdates(context);
         }
     }
@@ -55,8 +55,8 @@ import org.primefaces.util.Constants;
         return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
-    private boolean isCancelRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cancel");
+    private boolean shouldSkipChildren(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cancel")||this.isDisabled();
     }
 
     public boolean isValid() {
