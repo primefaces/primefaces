@@ -27,6 +27,7 @@ import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.Constants;
+import org.primefaces.util.XMLUtils;
 
 public class XMLExporter extends Exporter {
 
@@ -106,7 +107,8 @@ public class XMLExporter extends Exporter {
             throw new FacesException("No suitable xml tag found for " + column);
         }
         
-        return columnTag.replaceAll(" ", "_");
+        // #459 return columnTag.replaceAll(" ", "_");
+        return XMLUtils.escapeTag(columnTag);
     }
     		
 	protected void addColumnValue(Writer writer, List<UIComponent> components, String tag) throws IOException {
