@@ -75,9 +75,9 @@ import org.primefaces.model.ScheduleEvent;
             FacesEvent wrapperEvent = null;
 
             if(eventName.equals("dateSelect")) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(Long.valueOf(params.get(clientId + "_selectedDate")));
-                calendar.setTimeZone(tz);
+                Long milliseconds = Long.valueOf(params.get(clientId + "_selectedDate"));
+                Calendar calendar = Calendar.getInstance(tz);
+                calendar.setTimeInMillis(milliseconds - tz.getOffset(milliseconds));
                 Date selectedDate = calendar.getTime();
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
