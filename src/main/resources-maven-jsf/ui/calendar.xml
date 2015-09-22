@@ -252,6 +252,12 @@
             <type>java.lang.String</type>
             <description>Callback to execute before displaying calendar, element and calendar instance are passed as parameters.</description>
         </attribute>
+        <attribute>
+            <name>maskSlotChar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>PlaceHolder in mask template..</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

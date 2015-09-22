@@ -215,7 +215,7 @@ public class CalendarRenderer extends InputRenderer {
         if (mask != null && !mask.equals("false")) {
             String patternTemplate = calendar.getPattern() == null ? pattern : calendar.getPattern();
             String maskTemplate = (mask.equals("true")) ? patternTemplate.replaceAll("[a-zA-Z]", "9") : mask;
-            wb.attr("mask", maskTemplate);
+            wb.attr("mask", maskTemplate).attr("maskSlotChar", calendar.getMaskSlotChar(), null);
         }
 
         encodeClientBehaviors(context, calendar);

@@ -107,7 +107,8 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
         if (this.cfg.mask) {
-            this.input.mask(this.cfg.mask);
+            var maskCfg = {placeholder:this.cfg.maskSlotChar||'_'};
+            this.input.mask(this.cfg.mask, maskCfg);
         }
     },
 
