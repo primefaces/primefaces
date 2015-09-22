@@ -256,7 +256,7 @@
             <name>maskSlotChar</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>PlaceHolder in mask template..</description>
+            <description>PlaceHolder in mask template.</description>
         </attribute>
     </attributes>
     <resources>
