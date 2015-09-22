@@ -315,5 +315,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             
     enableElement: function(element) {
         element.removeClass('ui-state-disabled').attr('tabindex', 0);
+    },
+    
+    next: function() {
+        this.setPage(this.cfg.page + 1);
+    },
+    
+    prev: function() {
+        this.setPage(this.cfg.page - 1);
     }
 });

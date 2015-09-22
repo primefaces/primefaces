@@ -166,8 +166,8 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Atmosphere -->
-        <dependency>
+        <!-- Atmosphere --> 
+       <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-runtime</artifactId>
             <version>2.4.0-RC5</version>
