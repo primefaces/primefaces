@@ -446,7 +446,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.startElement("thead", ac);
             for(Column column : ac.getColums()) {
                 if(!column.isRendered()) {
-                    return;
+                    continue;
                 }
 
                 String headerText = column.getHeaderText();
