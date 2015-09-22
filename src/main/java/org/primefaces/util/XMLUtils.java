@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,7 @@ package org.primefaces.util;
 
 import org.apache.xmlbeans.impl.common.XMLChar;
 
-
-/**
- * Useful XML element name generation for XMLExporter etc.<br>
- * Issue: #459
- * 
- * needs: org.apache.xmlbeans:xmlbeans:2.3.0
- * already implied by: org.apache.poi:poi-ooxml:3.7
- * 
- * @author dieter57
- */
 public class XMLUtils {
-    
     
     /**
      * Ensure a valid XMLElement name is returned.<br>
