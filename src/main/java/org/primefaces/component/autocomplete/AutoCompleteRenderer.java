@@ -174,7 +174,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("name", clientId + "_input", null);
-        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("type", ac.getType(), null);
         writer.writeAttribute("class", inputStyleClass, null);
         writer.writeAttribute("autocomplete", "off", null);
         

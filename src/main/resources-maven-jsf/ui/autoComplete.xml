@@ -239,6 +239,13 @@
             <type>java.lang.Boolean</type>
             <description>Defines if autocomplete functionality is enabled. Default is true and a false value simply turns the component into a simple inputtext.</description>
         </attribute>
+        <attribute>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>text</defaultValue>
+            <description>Input field type. Default is text.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
