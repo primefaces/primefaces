@@ -9862,7 +9862,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 if(dateSelectBehavior) {
                     var ext = {
                         params: [
-							{name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.zone()*60000 - $this.cfg.offset}
+							{name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.zone()*60000}
                         ]
                     };
 
@@ -9951,7 +9951,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     
     setupEventSource: function() {
         var $this = this,
-        offset = moment().zone()*60000 + this.cfg.offset;
+        offset = moment().zone()*60000;
 
         this.cfg.events = function(start, end, timezone, callback) {
             var options = {
