@@ -24,9 +24,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.el.PropertyNotFoundException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.validation.MessageInterpolator;
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.DecimalMax;
@@ -41,9 +43,9 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
-import org.primefaces.metadata.BeanValidationMetadataExtractor;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.metadata.BeanValidationMetadataExtractor;
 
 public class BeanValidationMetadataMapper {
 
@@ -78,7 +80,9 @@ public class BeanValidationMetadataMapper {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractAllConstraintDescriptors(
                     context, requestContext, component.getValueExpression("value"));
 
+            MessageInterpolator messageInterpolator = requestContext.getApplicationContext().getValidatorFactory().getMessageInterpolator();
             if (constraints != null && !constraints.isEmpty()) {
+              
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                     Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
                     ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType);
@@ -103,7 +107,10 @@ public class BeanValidationMetadataMapper {
                                     ClientValidationConstraint customClientValidationConstraint = (ClientValidationConstraint) resolvedBy.newInstance();
 
                                     String validatorId = customClientValidationConstraint.getValidatorId();
-                                    Map<String,Object> constraintMetadata = customClientValidationConstraint.getMetadata(constraintDescriptor);
+                                    
+                                    
+                                    MessageInterpolatingConstraint interpolatingConstraint = new MessageInterpolatingConstraint(messageInterpolator, constraintDescriptor);
+                                    Map<String,Object> constraintMetadata = customClientValidationConstraint.getMetadata(interpolatingConstraint);
 
                                     if (constraintMetadata != null)
                                         metadata.putAll(constraintMetadata);
