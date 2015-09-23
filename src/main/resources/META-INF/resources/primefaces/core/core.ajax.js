@@ -581,9 +581,7 @@ PrimeFaces.ajax = {
                         break;
 
                     case "changes":
-                        var activeElement = $(document.activeElement);
-                        var activeElementId = activeElement.attr('id');
-                        var activeElementSelection = activeElement.getSelection();
+                        var activeElementId = $(document.activeElement).attr('id');
 
                         for (var j = 0; j < currentNode.childNodes.length; j++) {
                             var currentChangeNode = currentNode.childNodes[j];
@@ -609,7 +607,7 @@ PrimeFaces.ajax = {
                             }
                         }
 
-                        PrimeFaces.ajax.Response.handleReFocus(activeElementId, activeElementSelection);
+                        PrimeFaces.ajax.Response.handleReFocus(activeElementId);
                         PrimeFaces.ajax.Response.destroyDetachedWidgets();
                         break;
 
@@ -628,30 +626,22 @@ PrimeFaces.ajax = {
             }
         },
 
-        handleReFocus : function(activeElementId, activeElementSelection) {
+        handleReFocus : function(activeElementId) {
             // re-focus element
             if (PrimeFaces.customFocus === false
                     && activeElementId
                     // do we really need to refocus? we just check the current activeElement here
                     && activeElementId !== $(document.activeElement).attr('id')) {
 
-                var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));                
-                var refocus = function() {
-                    elementToFocus.focus();
-
-                    if (activeElementSelection && activeElementSelection.start) {
-                        elementToFocus.setSelection(activeElementSelection.start, activeElementSelection.end);
-                    }
-                };
-                
-                refocus();
+                var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));
+                elementToFocus.focus();
 
                 // double check it - required for IE
                 setTimeout(function() {
                     if (!elementToFocus.is(":focus")) {
-                        refocus();
+                        elementToFocus.focus();
                     }
-                }, 50);
+                }, 150);
             }
 
             PrimeFaces.customFocus = false;
