@@ -11,7 +11,7 @@
 	<componentClass>org.primefaces.component.colorpicker.ColorPicker</componentClass>
 	<componentType>org.primefaces.component.ColorPicker</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>corg.primefaces.component.ColorPickerRenderer</rendererType>
+	<rendererType>org.primefaces.component.ColorPickerRenderer</rendererType>
 	<rendererClass>org.primefaces.component.colorpicker.ColorPickerRenderer</rendererClass>
 	<parent>javax.faces.component.UIInput</parent>
     <interfaces>
