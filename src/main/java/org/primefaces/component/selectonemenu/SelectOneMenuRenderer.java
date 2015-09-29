@@ -255,11 +255,15 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             String itemLabel = selectItem.getLabel();
             itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
             Object itemValue = selectItem.getValue();
+            String itemStyleClass = SelectOneMenu.ROW_CLASS;
+            if(selectItem.isNoSelectionOption()) {
+                itemStyleClass = itemStyleClass + " ui-noselection-option"; 
+            }
             
             context.getExternalContext().getRequestMap().put(var, selectItem.getValue());
             
             writer.startElement("tr", null);
-            writer.writeAttribute("class", SelectOneMenu.ROW_CLASS, null);
+            writer.writeAttribute("class", itemStyleClass, null);
             writer.writeAttribute("data-label", itemLabel, null);
             if(selectItem.getDescription() != null) {
                 writer.writeAttribute("title", selectItem.getDescription(), null);
@@ -305,9 +309,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String itemLabel = selectItem.getLabel();
         itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
-
+        String itemStyleClass = styleClass;
+        if(selectItem.isNoSelectionOption()) {
+            itemStyleClass = itemStyleClass + " ui-noselection-option"; 
+        }
+        
         writer.startElement("li", null);
-        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("class", itemStyleClass, null);
         writer.writeAttribute("data-label", itemLabel, null);
         writer.writeAttribute("tabindex", "-1", null);
         writer.writeAttribute("role", "option", null);

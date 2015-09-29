@@ -1197,10 +1197,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
                 itemLabel = this.cfg.caseSensitive ? option.text() : option.text().toLowerCase(),
                 item = this.items.eq(i);
 
-                if(this.filterMatcher(itemLabel, filterValue))
-                    item.show();
-                else
+                if(item.hasClass('ui-noselection-option')) {
                     item.hide();
+                }
+                else {
+                    if(this.filterMatcher(itemLabel, filterValue))
+                        item.show();
+                    else
+                        item.hide();
+                }
             }
             
             //Toggle groups
