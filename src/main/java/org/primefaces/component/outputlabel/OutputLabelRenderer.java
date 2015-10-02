@@ -64,7 +64,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                 inputHolder.setLabelledBy(clientId);
             }
             else {
-                target.getClientId(context);
+                targetClientId = target.getClientId(context);
             }
             
             if(target instanceof UIInput) {
