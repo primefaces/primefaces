@@ -654,6 +654,10 @@ div.ui-button, .ui-splitbutton {
     width: 100%;
 }
 
+.ui-fluid .ui-autocomplete .ui-autocomplete-dropdown.ui-button {
+    width: 2.4em;
+}
+
 /** InputMask **/
 .ui-fluid .ui-inputmask {
     width: 100%;
