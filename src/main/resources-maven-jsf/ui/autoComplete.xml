@@ -230,7 +230,7 @@
             <name>at</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Position of panel with respect to input. Default is "left bottom".</description>
+            <description>Position of input with respect to panel Default is "left bottom".</description>
         </attribute>
         <attribute>
             <name>active</name>
