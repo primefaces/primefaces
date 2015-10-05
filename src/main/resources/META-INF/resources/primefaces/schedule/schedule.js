@@ -9941,9 +9941,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 
                 if($this.tip.is(':visible')) {
-                    $this.tip.fadeOut('fast', function() {
-                        $(this).text('');
-                    });
+                    $this.tip.hide();
+                    $this.tip.text('');
                 }
             };
         }
