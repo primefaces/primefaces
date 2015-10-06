@@ -44,22 +44,24 @@ public class FileUploadRenderer extends CoreRenderer {
             ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
             String uploader = cc.getUploader();
             boolean isAtLeastJSF22 = cc.isAtLeastJSF22();
-
+            String inputToDecodeId = getSimpleInputDecodeId(fileUpload, context);
+            
+            
             if (uploader.equals("auto")) {
                 if (isAtLeastJSF22)
-                    NativeFileUploadDecoder.decode(context, fileUpload);
+                    NativeFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
                 else
-                    CommonsFileUploadDecoder.decode(context, fileUpload);
+                    CommonsFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
             }
             else if (uploader.equals("native")) {
                 if (!isAtLeastJSF22) {
                     throw new FacesException("native uploader requires at least a JSF 2.2 runtime");
                 }
 
-                NativeFileUploadDecoder.decode(context, fileUpload);
+                NativeFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
             }
             else if (uploader.equals("commons")) {
-                CommonsFileUploadDecoder.decode(context, fileUpload);
+                CommonsFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
             }
         }
     }

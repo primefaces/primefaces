@@ -25,7 +25,7 @@ import org.primefaces.webapp.MultipartRequest;
 
 public class CommonsFileUploadDecoder{
 
-    public static void decode(FacesContext context, FileUpload fileUpload) {
+    public static void decode(FacesContext context, FileUpload fileUpload, String inputToDecodeId) {
         MultipartRequest multipartRequest = null;
         Object request = context.getExternalContext().getRequest();
 
@@ -41,7 +41,7 @@ public class CommonsFileUploadDecoder{
 
         if(multipartRequest != null) {
             if(fileUpload.getMode().equals("simple")) {
-                decodeSimple(context, fileUpload, multipartRequest);
+                decodeSimple(context, fileUpload, multipartRequest, inputToDecodeId);
             }
             else {
                 decodeAdvanced(context, fileUpload, multipartRequest);
@@ -49,8 +49,8 @@ public class CommonsFileUploadDecoder{
         }
     }
 
-    private static void decodeSimple(FacesContext context, FileUpload fileUpload, MultipartRequest request) {
-        FileItem file = request.getFileItem(fileUpload.getSimpleInputDecodeId(context));
+    private static void decodeSimple(FacesContext context, FileUpload fileUpload, MultipartRequest request, String inputToDecodeId) {
+        FileItem file = request.getFileItem(inputToDecodeId);
 
         if(file != null) {
             if(file.getName().equals("")) {

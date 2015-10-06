@@ -27,12 +27,12 @@ import org.primefaces.model.UploadedFileWrapper;
 
 public class NativeFileUploadDecoder {
 
-    public static void decode(FacesContext context, FileUpload fileUpload) {
+    public static void decode(FacesContext context, FileUpload fileUpload, String inputToDecodeId) {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
         try {
             if(fileUpload.getMode().equals("simple")) {
-                decodeSimple(context, fileUpload, request);
+                decodeSimple(context, fileUpload, request, inputToDecodeId);
             }
             else {
                 decodeAdvanced(context, fileUpload, request);
@@ -46,8 +46,10 @@ public class NativeFileUploadDecoder {
         }
     }
 
-    private static void decodeSimple(FacesContext context, FileUpload fileUpload, HttpServletRequest request) throws IOException, ServletException {
-        Part part = request.getPart(fileUpload.getSimpleInputDecodeId(context));
+    private static void decodeSimple(FacesContext context, FileUpload fileUpload, HttpServletRequest request, String inputToDecodeId)
+            throws IOException, ServletException {
+
+        Part part = request.getPart(inputToDecodeId);
 
         if(part != null) {
             fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(part)));

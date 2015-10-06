@@ -21,7 +21,3 @@
 			me.invoke(facesContext.getELContext(), new Object[] {event});
 		}
 	}
-
-    public String getSimpleInputDecodeId(FacesContext context) {
-        return ((FileUploadRenderer) this.getRenderer(context)).getSimpleInputDecodeId(this, context);
-    }
