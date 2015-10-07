@@ -151,8 +151,8 @@
 			<name>breakpoint</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-			<defaultValue>560</defaultValue>
-            <description>Breakpoint value in pixels to switch between small and large viewport. Default is 560.</description>
+			<defaultValue>640</defaultValue>
+            <description>Breakpoint value in pixels to switch between small and large viewport. Default is 640</description>
 		</attribute>
 	</attributes>
     <resources>
