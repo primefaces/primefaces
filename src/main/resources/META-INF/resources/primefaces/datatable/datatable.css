@@ -280,7 +280,7 @@
     display: none;
 }
 
-@media ( max-width: 35em ) {
+@media ( max-width: 640px ) {
     .ui-datatable-reflow thead th,
     .ui-datatable-reflow tfoot td {
         display: none;

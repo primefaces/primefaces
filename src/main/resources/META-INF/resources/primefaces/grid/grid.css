@@ -119,7 +119,7 @@
 }
 
 /* Responsive */
-@media (max-width: 35em) {
+@media (max-width: 640px) {
     .ui-grid-responsive .ui-grid-row {
         display: block;
     }

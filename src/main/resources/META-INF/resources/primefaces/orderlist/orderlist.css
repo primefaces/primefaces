@@ -74,7 +74,7 @@
     width: 100%;
 }
 
-@media (max-width: 35em) { 
+@media (max-width: 640px) { 
     .ui-orderlist.ui-grid-responsive .ui-orderlist-controls {
         text-align: center;
     }

@@ -166,7 +166,7 @@
     display: none;
 }
 
-@media ( max-width: 35em ) {
+@media ( max-width: 640px ) {
     .ui-treetable-reflow thead th,
     .ui-treetable-reflow tfoot td {
         display: none;

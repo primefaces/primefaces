@@ -705,7 +705,7 @@ div.ui-button, .ui-splitbutton {
 .ui-fluid .ui-buttonset.ui-buttonset-5 .ui-button {width: 20%;}
 .ui-fluid .ui-buttonset.ui-buttonset-6 .ui-button {width: 16%;}
 
-@media (max-width: 35em) {
+@media (max-width: 640px) {
     .ui-fluid .ui-buttonset.ui-buttonset-1 .ui-button,
     .ui-fluid .ui-buttonset.ui-buttonset-2 .ui-button,
     .ui-fluid .ui-buttonset.ui-buttonset-3 .ui-button,

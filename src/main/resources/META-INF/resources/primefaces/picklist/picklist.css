@@ -134,7 +134,7 @@
 }
         
 /* Responsive */
-@media (max-width: 35em) {
+@media (max-width: 640px) {
     .ui-picklist.ui-picklist-responsive {
         display: block;
     }
