@@ -23,7 +23,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.first = this.cfg.firstVisible;
         this.cfg.effectDuration = this.cfg.effectDuration||500;
         this.cfg.circular = this.cfg.circular||false;
-        this.cfg.breakpoint = this.cfg.breakpoint||560;
+        this.cfg.breakpoint = this.cfg.breakpoint||640;
         this.page = parseInt(this.first/this.columns);
         this.totalPages = Math.ceil(this.itemsCount/this.cfg.numVisible);
         this.renderDeferred();
