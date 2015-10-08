@@ -34,12 +34,6 @@ ui-overlay-visible * {
     background-position: 16px 16px; 
 }
 
-.ui-fluid * {
-    box-sizing: border-box;
-    -webkit-box-sizing:border-box;
-    -moz-box-sizing: border-box;
-}
-
 /* Column Priorities */
 @media only all {
 	th.ui-column-p-6,

@@ -597,6 +597,12 @@ div.ui-button, .ui-splitbutton {
 }
 
 /** Fluid **/
+.ui-fluid .ui-inputfield {
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
+}
+
 /** InputText **/
 .ui-fluid .ui-inputtext {
     width: 100%;
@@ -610,27 +616,21 @@ div.ui-button, .ui-splitbutton {
 /** SelectOneMenu **/
 .ui-fluid .ui-selectonemenu {
     width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
 }
 .ui-fluid .ui-selectonemenu .ui-selectonemenu-trigger {
     width: 32px;
     padding: 0 6px;
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
 }
 
 /** Calendar **/
 .ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
     width: 100%;
-}
-
-/** Radio - Checkbox **/
-.ui-fluid .ui-radiobutton .ui-radiobutton-box {
-    width: 18px;
-    height: 18px;
-    line-height: 18px;
-}
-
-.ui-fluid .ui-chkbox .ui-chkbox-box {
-    width: 18px;
-    height: 18px;
 }
 
 /** Spinner **/
@@ -683,14 +683,19 @@ div.ui-button, .ui-splitbutton {
     margin-right: auto;
 }
 
-
 .ui-fluid .ui-selectcheckboxmenu-trigger {
     width: 32px;
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
 }
 
 /** Button **/
 .ui-fluid .ui-button {
     width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
 }
 
 /** ButtonSet **/
@@ -719,6 +724,9 @@ div.ui-button, .ui-splitbutton {
 /** SplitButton **/
 .ui-fluid .ui-splitbutton {
     width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
 }
 
 .ui-fluid .ui-splitbutton .ui-button {
@@ -727,6 +735,9 @@ div.ui-button, .ui-splitbutton {
 
 .ui-fluid .ui-splitbutton .ui-button.ui-splitbutton-menubutton {
     width: 32px;
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
 }
 
 /** Listbox **/
