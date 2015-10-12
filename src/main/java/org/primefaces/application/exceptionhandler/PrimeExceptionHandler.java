@@ -91,7 +91,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                     }
 
                     if (isLogException(context, rootCause)) {
-                        LOG.log(Level.SEVERE, rootCause.getMessage(), rootCause);
+                        logException(rootCause);
                     }
 
                     if (context.getPartialViewContext().isAjaxRequest()) {
@@ -110,6 +110,11 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 unhandledExceptionQueuedEvents.remove();
             }
         }
+    }
+
+    protected void logException(Throwable rootCause)
+    {
+        LOG.log(Level.SEVERE, rootCause.getMessage(), rootCause);
     }
 
     protected boolean isLogException(FacesContext context, Throwable rootCause) {
@@ -256,7 +261,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         context.getViewRoot().visitTree(VisitContext.createVisitContext(context), visitCallback);
 
         Map<String, AjaxExceptionHandler> handlers = visitCallback.getHandlers();
-        
+
         // get handler by exception type
         AjaxExceptionHandler handler = handlers.get(rootCause.getClass().getName());
 
@@ -273,7 +278,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         if (handler == null) {
             handler = handlers.get(null);
         }
-        
+
         return handler;
     }
 
