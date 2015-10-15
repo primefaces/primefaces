@@ -37,7 +37,6 @@ public class EventBusFactory {
      * Return the default factory
      *
      * @return the default factory
-     * @Deprecated Use @Inject EventBus instead
      */
     public final static EventBusFactory getDefault() {
         return f;
