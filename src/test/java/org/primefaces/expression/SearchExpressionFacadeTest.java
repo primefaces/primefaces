@@ -58,6 +58,12 @@ public class SearchExpressionFacadeTest {
 		return SearchExpressionFacade.resolveClientId(context, source, expression);
 	}
 
+	private String resolveClientId(UIComponent source, String expression, int options) {
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		return SearchExpressionFacade.resolveClientId(context, source, expression, options);
+	}
+    
     private List<UIComponent> resolveComponents(UIComponent source, String expression) {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -1592,6 +1598,67 @@ public class SearchExpressionFacadeTest {
 		assertEquals("Failed", "outerContainer:innerContainer:source", resolveClientId(source, " outerContainer:innerContainer:source "));
 	}
 
+	@Test
+	public void resolveClientId_AbsoluteWithFormPrependIdFalse_InvokeOnComponentSkipUnrendered() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+        form.setPrependId(false);
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("outerContainer");
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("innerContainer");
+		outerContainer.getChildren().add(innerContainer);
+
+		UIComponent component = new UIOutput();
+		innerContainer.getChildren().add(component);
+
+		UIComponent source = new UICommand();
+		source.setId("source");
+		innerContainer.getChildren().add(source);
+
+		assertEquals("Failed", "outerContainer:innerContainer:source",
+                resolveClientId(source, " outerContainer:innerContainer:source ", SearchExpressionFacade.Options.IGNORE_NO_RESULT));
+	}
+    
+	@Test
+	public void resolveClientId_AbsoluteWithFormPrependIdFalse_InvokeOnComponentSkipUnrendered_Unredered() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+        form.setPrependId(false);
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("outerContainer");
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("innerContainer");
+        innerContainer.setRendered(false);
+		outerContainer.getChildren().add(innerContainer);
+
+		UIComponent component = new UIOutput();
+		innerContainer.getChildren().add(component);
+
+		UIComponent source = new UICommand();
+		source.setId("source");
+		innerContainer.getChildren().add(source);
+
+		assertEquals("Failed", null,
+                resolveClientId(source, " outerContainer:innerContainer:source ", SearchExpressionFacade.Options.IGNORE_NO_RESULT));
+	}
+    
 	@Test
 	public void resolveComponents_SimpleMultiSearchExpressionResolver() {
 

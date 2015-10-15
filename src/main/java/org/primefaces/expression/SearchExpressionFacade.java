@@ -484,7 +484,8 @@ public class SearchExpressionFacade {
 
     private static UIComponent resolveComponentById(UIComponent source, String expression, String separatorString, FacesContext context, int options) {
 
-        UIComponent component = ComponentTraversalUtils.firstById(expression, source, separatorString, context);
+        UIComponent component = ComponentTraversalUtils.firstById(expression, source, separatorString, context,
+                isOptionSet(options, Options.IGNORE_NO_RESULT));
 
         if (component == null && !isOptionSet(options, Options.IGNORE_NO_RESULT)) {
             cannotFindComponent(context, source, expression);
