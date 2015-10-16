@@ -285,6 +285,12 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.page = 0;
         this.updateUI();
     },
+    
+    updateTotalRecords: function(value) {
+        this.cfg.rowCount = value;
+        this.cfg.pageCount = Math.ceil(value / this.cfg.rows)||1;
+        this.updateUI();
+    },
             
     getCurrentPage: function() {
         return this.cfg.page;
