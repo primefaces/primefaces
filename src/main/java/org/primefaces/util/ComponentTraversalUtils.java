@@ -150,7 +150,7 @@ public class ComponentTraversalUtils {
                 IdVisitCallback callback = new IdVisitCallback(tempExpression);
                 context.getViewRoot().visitTree(visitContext, callback);
                 
-                return callback.getComponent();
+                component = callback.getComponent();
             }
             else
             {                
