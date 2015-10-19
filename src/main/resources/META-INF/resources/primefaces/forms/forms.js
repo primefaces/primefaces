@@ -1460,7 +1460,11 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 $this.box.removeClass('ui-state-hover');
             })
             .on('click.selectBooleanCheckbox', function() {
-                $this.toggle();
+                $this.input.trigger('click');
+                
+                if(PrimeFaces.env.browser.msie && PrimeFaces.isLtIE(9)) {
+                    $this.input.trigger('change');
+                }
             });
 
             this.input.on('focus.selectBooleanCheckbox', function() {
@@ -1477,22 +1481,13 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
                 $this.box.removeClass('ui-state-focus');
             })
-            .on('keydown.selectBooleanCheckbox', function(e) {
-                var keyCode = $.ui.keyCode;
-                if(e.which === keyCode.SPACE) {
-                    e.preventDefault();
-                }
-            })
-            .on('keyup.selectBooleanCheckbox', function(e) {
-                var keyCode = $.ui.keyCode;
-                if(e.which === keyCode.SPACE) {
-                    $this.toggle();
-                    $this.input.trigger('focus');
-
-                    e.preventDefault();
-                }
+            .on('change.selectBooleanCheckbox', function(e) {         
+                if($this.isChecked())
+                    $this.box.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
+                else
+                    $this.box.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
             });
-
+            
             //toggle state on label click
             this.itemLabel.click(function() {
                 $this.toggle();
@@ -1517,7 +1512,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
     check: function() {
         if(!this.isChecked()) {
-            this.input.prop('checked', true).trigger('change');
+            this.input.prop('checked', true).trigger('change');            
             this.input.attr('aria-checked', true);
             this.box.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
         }
