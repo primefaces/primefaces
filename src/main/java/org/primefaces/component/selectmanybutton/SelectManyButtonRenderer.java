@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under PrimeFaces Commercial License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.primefaces.org/elite/license.xhtml
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -90,7 +90,8 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         String name = button.getClientId(context);
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
         boolean disabled = option.isDisabled() || button.isDisabled();
-
+        String tabindex = button.getTabindex();
+        
         Object valuesArray;
         Object itemValue;
         if(submittedValues != null) {
@@ -129,12 +130,13 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("value", itemValueAsString, null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         renderOnchange(context, button);
         
         if(selected) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
 
         writer.endElement("input");
         
