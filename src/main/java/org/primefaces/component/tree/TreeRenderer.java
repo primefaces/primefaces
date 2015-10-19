@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under PrimeFaces Commercial License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.primefaces.org/elite/license.xhtml
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -87,7 +87,10 @@ public class TreeRenderer extends CoreRenderer {
 
                 for(int i = 0 ; i < selectedRowKeys.length; i++) {
                     tree.setRowKey(selectedRowKeys[i]);
-                    selectedNodes[i] = tree.getRowNode();
+                    TreeNode rowNode = tree.getRowNode();
+                    if(rowNode != null) {
+                        selectedNodes[i] = rowNode;
+                    }
                 }
 
                 tree.setSelection(selectedNodes);
