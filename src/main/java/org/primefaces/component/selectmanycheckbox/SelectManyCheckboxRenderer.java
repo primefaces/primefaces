@@ -27,6 +27,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.GridLayoutUtils;
@@ -181,7 +182,9 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.writeAttribute("for", containerClientId, null);
         if(disabled)
             writer.writeAttribute("class", "ui-state-disabled", null);
-        
+        if (option instanceof SelectItemGroup) {
+            writer.writeAttribute("class", "ui-selectmanycheckbox-item-group", null);
+        }
         if(option.isEscape())
             writer.writeText(option.getLabel(),null);
         else
@@ -244,14 +247,24 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(checkbox);
         
         int idx = 0;
-        for(SelectItem selectItem : selectItems) {
-            writer.startElement("tr", null);
-            
-            encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
-            
-            writer.endElement("tr");
-            idx++;        
-        }           
+        for (SelectItem selectItem : selectItems) {
+            if (selectItem instanceof SelectItemGroup) {
+                writer.startElement("tr", null);
+                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+                writer.endElement("tr");
+                idx++;
+                for (SelectItem childSelectItem : ((SelectItemGroup) selectItem).getSelectItems()) {
+                    writer.startElement("tr", null);
+                    encodeOption(context, checkbox, values, submittedValues, converter, childSelectItem, idx);
+                    writer.endElement("tr");
+                    idx++;
+                }
+            } else {
+                writer.startElement("tr", null);
+                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+                idx++;
+            }
+        }       
     }
     
     protected void encodeGridLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException{
@@ -339,17 +352,22 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         }
         
         writer.startElement("td", null);
-        
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
+        // skip checkbox element if SelectItemGroup
+        if (option instanceof SelectItemGroup) {
+            //take both columns for label
+            writer.writeAttribute("colspan", "2", null);
+        }else{
+            writer.startElement("div", null);
+            writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
 
-        encodeOptionInput(context, checkbox, id, name, selected, disabled, itemValueAsString);
-        encodeOptionOutput(context, checkbox, selected, disabled);
+            encodeOptionInput(context, checkbox, id, name, selected, disabled, itemValueAsString);
+            encodeOptionOutput(context, checkbox, selected, disabled);
 
-        writer.endElement("div");
-        writer.endElement("td");
+            writer.endElement("div");
+            writer.endElement("td");
 
-        writer.startElement("td", null);
+            writer.startElement("td", null);
+        }
         encodeOptionLabel(context, checkbox, id, option, disabled);
         writer.endElement("td");
     }
