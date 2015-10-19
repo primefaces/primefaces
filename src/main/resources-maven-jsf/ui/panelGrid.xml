@@ -49,6 +49,13 @@
             <defaultValue>tabular</defaultValue>
             <description>Displays data in a 'table' layout or 'grid' layout. The grid layout is a responsive layout. Default value is 'tabular'.</description>
 		</attribute>
+        <attribute>
+			<name>role</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>grid</defaultValue>
+            <description>Role for aria.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

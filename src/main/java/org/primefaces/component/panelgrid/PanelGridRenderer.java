@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under PrimeFaces Commercial License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.primefaces.org/elite/license.xhtml
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,7 +58,7 @@ public class PanelGridRenderer extends CoreRenderer {
         if(style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("role", "grid", null);
+        writer.writeAttribute("role", grid.getRole(), null);
                 
         encodeTableFacet(context, grid, columns, "header", "thead", PanelGrid.HEADER_CLASS);
         encodeTableFacet(context, grid, columns, "footer", "tfoot", PanelGrid.FOOTER_CLASS);
