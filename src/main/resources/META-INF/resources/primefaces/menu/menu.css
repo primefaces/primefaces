@@ -272,7 +272,7 @@
 .ui-breadcrumb .ui-breadcrumb-options {
     float: right;
 }
-
+           
 /** SlideMenu **/
 .ui-slidemenu .ui-slidemenu-wrapper {
     position: relative;
@@ -350,6 +350,7 @@
     top: 1px; 
     overflow: auto; 
     zoom: 1; 
+    outline: none;
 }
 
 .ui-panelmenu .ui-panelmenu-header.ui-state-disabled, 
@@ -405,6 +406,11 @@
 
 .ui-panelmenu .ui-menu-parent .ui-menu-list {
     margin-left: 20px;
+}
+
+.ui-panelmenu .ui-menuitem-outline {
+    outline: 1px dotted;
+    z-index: 1;
 }
 
 /** TabMenu **/
@@ -491,10 +497,11 @@
     }
 }
 
-/* Fluid */
+/** Fluid **/
 .ui-fluid .ui-menu {
     width: 100%;
     box-sizing: border-box;
     -webkit-box-sizing:border-box;
     -moz-box-sizing: border-box;
 }
+
