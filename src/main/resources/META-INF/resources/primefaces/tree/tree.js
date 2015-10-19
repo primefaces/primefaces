@@ -258,8 +258,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
        
     nodeClick: function(event, nodeContent) {
-        PrimeFaces.clearSelection();
-        
         if($(event.target).is(':not(.ui-tree-toggler)')) {
             var node = nodeContent.parent(),
             selectable = nodeContent.hasClass('ui-tree-selectable');
@@ -291,6 +289,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 }
 
                 if($(event.target).is(':not(:input:enabled)')) {
+                    PrimeFaces.clearSelection();
                     this.focusNode(node);
                 }
             }
