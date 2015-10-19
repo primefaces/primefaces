@@ -97,10 +97,6 @@ public class DynamicColumn implements UIColumn {
         return this.columns.getColspan();
     }
 
-    public boolean isDisabledSelection() {
-        return this.columns.isDisabledSelection();
-    }
-
     public String getFilterPosition() {
         return this.columns.getFilterPosition();
     }

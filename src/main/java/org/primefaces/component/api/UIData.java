@@ -65,7 +65,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.model.CollectionDataModel;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ComponentTraversalUtils;
 
 public class UIData extends javax.faces.component.UIData {
 
@@ -395,7 +395,7 @@ public class UIData extends javax.faces.component.UIData {
 
         String id = getId();
         if(id == null) {
-            UniqueIdVendor parentUniqueIdVendor = ComponentUtils.findParentUniqueIdVendor(this);
+            UniqueIdVendor parentUniqueIdVendor = ComponentTraversalUtils.closestUniqueIdVendor(this);
             
             if(parentUniqueIdVendor == null) {
                 UIViewRoot viewRoot = context.getViewRoot();
@@ -414,7 +414,7 @@ public class UIData extends javax.faces.component.UIData {
             this.setId(id);
         }
 
-        UIComponent namingContainer = ComponentUtils.findParentNamingContainer(this);
+        UIComponent namingContainer = ComponentTraversalUtils.closestNamingContainer(this);
         if(namingContainer != null) {
             String containerClientId = namingContainer.getContainerClientId(context);
             
