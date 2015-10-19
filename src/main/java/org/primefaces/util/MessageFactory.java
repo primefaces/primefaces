@@ -95,6 +95,12 @@ public class MessageFactory {
         
         return new FacesMessage(summary, detail);
     }
+    
+    public static String getMessage(String messageId, Object params[]) {
+        FacesMessage message = getMessage(getLocale(), messageId, params);
+        
+        return message.getSummary();
+    }
 	
 	public static String getFormattedText(Locale locale, String message, Object params[]) {
 		MessageFormat messageFormat = null;

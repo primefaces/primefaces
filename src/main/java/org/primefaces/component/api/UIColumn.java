@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under PrimeFaces Commercial License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.primefaces.org/elite/license.xhtml
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,6 +47,8 @@ public interface UIColumn {
     
     public int getColspan();
             
+    public boolean isDisabledSelection();
+    
     public String getFilterPosition();
     
     public UIComponent getFacet(String facet);
@@ -104,4 +106,6 @@ public interface UIColumn {
     public boolean isVisible();
     
     public boolean isSelectRow();
+    
+    public String getAriaHeaderText();
 }

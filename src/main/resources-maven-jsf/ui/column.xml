@@ -119,6 +119,13 @@
             <description>Enables selection mode, valid values are "single" and "multiple".</description>
 		</attribute>
         <attribute>
+			<name>disabledSelection</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Disables row selection when true.</description>
+		</attribute>
+        <attribute>
 			<name>filterMaxLength</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
@@ -205,6 +212,12 @@
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Whether clicking the column selects the row when datatable has row selection enabled, default is true.</description>
+		</attribute>
+        <attribute>
+			<name>ariaHeaderText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label to read by screen readers, when not specified headerText is used.</description>
 		</attribute>
 	</attributes>
 </component>

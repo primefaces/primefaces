@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under PrimeFaces Commercial License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.primefaces.org/elite/license.xhtml
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.UIData;
+import org.primefaces.util.MessageFactory;
 
 public class PageLinksRenderer implements PaginatorElementRenderer {
 
@@ -43,11 +44,12 @@ public class PageLinksRenderer implements PaginatorElementRenderer {
         for(int i = start; i <= end; i++){
             String styleClass = currentPage == i ? UIData.PAGINATOR_ACTIVE_PAGE_CLASS : UIData.PAGINATOR_PAGE_CLASS;
             
-            writer.startElement("span", null);
+            writer.startElement("a", null);
             writer.writeAttribute("class", styleClass, null);
             writer.writeAttribute("tabindex", 0, null);
+            writer.writeAttribute("href", "#", null);
             writer.writeText((i + 1), null);
-            writer.endElement("span");
+            writer.endElement("a");
         }
             
         writer.endElement("span");
