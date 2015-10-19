@@ -10,7 +10,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.stateHolder = $(this.jqId + '_activeIndex');
         this.cfg.selected = parseInt(this.stateHolder.val());
         this.focusedTabHeader = null;
-        this.cfg.tabindex = this.cfg.tabindex||'0';
+        this.tabindex = this.cfg.tabindex||0;
         
         if(this.cfg.scrollable) {
             this.navscroller = this.jq.children('.ui-tabs-navscroller');
@@ -23,16 +23,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             this.navContainer = this.jq.children('.ui-tabs-nav');
-        }
-
-        this.navContainerItems = this.navContainer.children('li');
-        for(var i = 0; i < this.navContainerItems.length; i++) {
-            if(this.cfg.selected === i && !this.navContainerItems.eq(i).hasClass('ui-state-disabled')) {
-                this.navContainerItems.eq(i).attr('tabindex', this.cfg.tabindex);
-            }
-            else {
-                this.navContainerItems.eq(i).attr('tabindex', '-1');
-            }
         }
         
         this.bindEvents();
@@ -93,7 +83,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
                         if(!element.hasClass('ui-state-disabled') && index !== $this.cfg.selected) {
                             $this.select(index);
-                            element.trigger('focus.tabview');
                         }
                     }
 
@@ -141,6 +130,12 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                                 var el = $(this);
                                 if(!el.hasClass('ui-state-disabled'))
                                     $(this).addClass('ui-state-hover').removeClass('ui-state-active');
+                            })
+                            .on('focus.tabview', function() {
+                                $(this).addClass('ui-state-focus');
+                            })
+                            .on('blur.tabview', function() {
+                                $(this).removeClass('ui-state-focus');
                             });
             
             
@@ -161,89 +156,54 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     bindKeyEvents: function() {
         var $this = this;
         
-        this.navContainer.children('li').on('focus.tabview', function() {
-            $this.focusedTabHeader = $(this);
-            if(!$this.focusedTabHeader.hasClass('ui-state-disabled')) {
-                $this.navContainer.children('li[tabindex="'+ $this.cfg.tabindex +'"]').attr('tabindex', '-1').removeClass('ui-tabs-outline');
-                $this.focusedTabHeader.attr('tabindex', $this.cfg.tabindex).addClass('ui-tabs-outline');
+        this.navContainer.find('> li > a').on('focus.tabview', function(e) {
+            var focusedTab = $(this).parent();
+            focusedTab.addClass('ui-tabs-outline');
+            
+            if($this.cfg.scrollable) {
+                if(focusedTab.position().left + focusedTab.width() > $this.navcrollerRight.position().left) {
+                    $this.navcrollerRight.trigger('click.tabview');
+                }
+                else if(focusedTab.position().left < $this.navcrollerLeft.position().left) {
+                    $this.navcrollerLeft.trigger('click.tabview');
+                }
             }
         })
         .on('blur.tabview', function(){
-            if($this.focusedTabHeader) {
-                $this.focusedTabHeader.removeClass('ui-tabs-outline');                
-            }
+            $(this).parent().removeClass('ui-tabs-outline');
         })
         .on('keydown.tabview', function(e) {
-            var keyCode = $.ui.keyCode;
- 
-            switch(e.which) {
-                case keyCode.LEFT:
-                case keyCode.UP: 
-                    if($this.focusedTabHeader) {
-                        if($this.cfg.scrollable && ($this.focusedTabHeader.index() === 0)) {
-                            break;
-                        }
-                      
-                        if($this.focusedTabHeader.index() === 0) {
-                            $this.focusedTabHeader = $this.navContainer.children('li:not(.ui-state-disabled):last');
-                        }
-                        else {
-                            $this.focusedTabHeader = $this.focusedTabHeader.prevAll('li:not(.ui-state-disabled):first');
-                            if(!$this.focusedTabHeader.length) {
-                                $this.focusedTabHeader = $this.navContainer.children('li:not(.ui-state-disabled):last');
-                            }
-                        }
-                        $this.focusedTabHeader.trigger('focus.tabview');
+            var keyCode = $.ui.keyCode,
+            key = e.which;
 
-                        if($this.cfg.scrollable) {
-                            var leftScroll = $this.focusedTabHeader.position().left < $this.navcrollerLeft.position().left;
-                            if(leftScroll) {
-                                $this.navcrollerLeft.trigger('click.tabview');
-                            }
-                        }
-                    }
-                    e.preventDefault();
-                    clearTimeout($this.activating);
-                    
-                    $this.activating = setTimeout(function() {                
-                        $this.focusedTabHeader.trigger('click');
-                    }, 500);
-                break;
-
-                case keyCode.RIGHT:
-                case keyCode.DOWN:
-                    if($this.focusedTabHeader) {
-                        if($this.cfg.scrollable && ($this.focusedTabHeader.index() === ($this.getLength() - 1))) {
-                            break;
-                        }
-                        
-                        if($this.focusedTabHeader.index() === ($this.getLength() - 1)) {
-                            $this.focusedTabHeader = $this.navContainer.children('li:not(.ui-state-disabled):first');
-                        }
-                        else {
-                            $this.focusedTabHeader = $this.focusedTabHeader.nextAll('li:not(.ui-state-disabled):first');
-                            if(!$this.focusedTabHeader.length) {
-                                $this.focusedTabHeader = $this.navContainer.children('li:not(.ui-state-disabled):first');
-                            }
-                        } 
-                        $this.focusedTabHeader.trigger('focus.tabview');
-
-                        if($this.cfg.scrollable) {
-                            var rightScroll = $this.focusedTabHeader.position().left + $this.focusedTabHeader.width() > $this.navcrollerRight.position().left;
-                            if(rightScroll) {
-                                $this.navcrollerRight.trigger('click.tabview');
-                            }
-                        }
-                    }
-                    e.preventDefault();
-                    clearTimeout($this.activating);
-                    
-                    $this.activating = setTimeout(function() {
-                        $this.focusedTabHeader.trigger('click');
-                    }, 500);
-                break;
-            }       
+            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                $this.select($(this).parent().index());
+                e.preventDefault();
+            }
         });
+        
+        //Scrolling
+        if(this.cfg.scrollable) {
+            this.navcrollerLeft.on('keydown.tabview', function(e) {
+                var keyCode = $.ui.keyCode,
+                key = e.which;
+
+                if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                    $this.scroll(100);
+                    e.preventDefault();
+                }
+            });
+                            
+            this.navcrollerRight.on('keydown.tabview', function(e) {
+                var keyCode = $.ui.keyCode,
+                key = e.which;
+
+                if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                    $this.scroll(-100);
+                    e.preventDefault();
+                }
+            });
+        }
     },
         
     initScrolling: function() {
@@ -251,8 +211,8 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
             if(overflown) {
                 this.navscroller.css('padding-left', '18px');
-                this.navcrollerLeft.show();
-                this.navcrollerRight.show();
+                this.navcrollerLeft.attr('tabindex', this.tabindex).show();
+                this.navcrollerRight.attr('tabindex', this.tabindex).show();
                 this.restoreScrollState();
             }
         }
@@ -296,11 +256,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     disableScrollerButton: function(btn) {
-        btn.addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active');
+        btn.addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active ui-state-focus').attr('tabindex', -1);
     },
             
     enableScrollerButton: function(btn) {
-        btn.removeClass('ui-state-disabled');
+        btn.removeClass('ui-state-disabled').attr('tabindex', this.tabindex);
     },
             
     saveScrollState: function(value) {
@@ -523,4 +483,4 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         PrimeFaces.invokeDeferredRenders(this.id);
     }
 
-});
+});      

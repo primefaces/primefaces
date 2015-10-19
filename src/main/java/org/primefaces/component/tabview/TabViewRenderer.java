@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under PrimeFaces Commercial License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.primefaces.org/elite/license.xhtml
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -217,6 +217,7 @@ public class TabViewRenderer extends CoreRenderer {
         String styleClass = tab.getTitleStyleClass();
         styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
         UIComponent titleFacet = tab.getFacet("title");
+        String tabindex = tab.isDisabled() ? "-1" : tabView.getTabindex();
         
         //header container
         writer.startElement("li", null);
@@ -231,7 +232,7 @@ public class TabViewRenderer extends CoreRenderer {
         //title
         writer.startElement("a", null);
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
-        writer.writeAttribute("tabindex", "-1", null);
+        if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
         if(titleFacet == null) {
         	String tabTitle = tab.getTitle(); 
         	if(tabTitle != null) {
