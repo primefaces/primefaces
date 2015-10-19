@@ -172,7 +172,7 @@ import org.primefaces.model.TreeNode;
 
     @Override
     public void processValidators(FacesContext context) {
-        if(shouldSkipNodes(context)) {
+        if(!shouldSkipNodes(context)) {
             super.processValidators(context);
         } 
     }
