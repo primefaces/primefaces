@@ -56,11 +56,16 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.blocker.css('z-index', ++PrimeFaces.zindex);
         
         //center position of content
-        this.content.css({
-            'left': (this.blocker.width() - this.content.outerWidth()) / 2,
-            'top': (this.blocker.height() - this.content.outerHeight()) / 2,
-            'z-index': ++PrimeFaces.zindex
-        });
+        for(var i = 0; i < this.block.length; i++) {
+            var blocker = $(this.blocker[i]),
+                content = $(this.content[i]);
+           
+            content.css({
+                'left': (blocker.width() - content.outerWidth()) / 2,
+                'top': (blocker.height() - content.outerHeight()) / 2,
+                'z-index': ++PrimeFaces.zindex
+            });
+        }
 
         if(this.cfg.animate)
             this.blocker.fadeIn();    
@@ -95,6 +100,11 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.block.css('position', 'relative').append(this.blocker).append(this.content);
+        
+        if(this.block.length > 1) {
+            this.blocker = $(PrimeFaces.escapeClientId(this.id + '_blocker'));
+            this.content = this.block.children('.ui-blockui-content');
+        }
     },
     
     hasContent: function() {
