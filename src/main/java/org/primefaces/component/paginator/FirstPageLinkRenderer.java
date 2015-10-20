@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,15 @@ package org.primefaces.component.paginator;
 import java.io.IOException;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.api.UIData;
+import org.primefaces.util.MessageFactory;
 
 public class FirstPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 
     public void render(FacesContext context, UIData uidata) throws IOException {
         boolean disabled = uidata.getPage() == 0;
+        
+        String ariaMessage = MessageFactory.getMessage(UIData.ARIA_FIRST_PAGE_LABEL, new Object[]{});
        
-        super.render(context, uidata, UIData.PAGINATOR_FIRST_PAGE_LINK_CLASS, UIData.PAGINATOR_FIRST_PAGE_ICON_CLASS, disabled);
+        super.render(context, uidata, UIData.PAGINATOR_FIRST_PAGE_LINK_CLASS, UIData.PAGINATOR_FIRST_PAGE_ICON_CLASS, disabled, ariaMessage);
     }
 }

@@ -31,6 +31,7 @@ import org.primefaces.component.paginator.PageLinksRenderer;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataRenderer extends CoreRenderer {
@@ -76,10 +77,13 @@ public class DataRenderer extends CoreRenderer {
             styleClass = styleClass + " ui-corner-top";
         }
         
+        String ariaMessage = MessageFactory.getMessage(UIData.ARIA_HEADER_LABEL, new Object[]{});
+        
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "navigation", null);
+        writer.writeAttribute("aria-label", ariaMessage, null);
         
         String[] elements = uidata.getPaginatorTemplate().split(" ");
         for(String element : elements) {            

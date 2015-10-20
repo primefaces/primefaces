@@ -15,22 +15,17 @@
  */
 package org.primefaces.push;
 
-import org.atmosphere.cpr.MetaBroadcaster;
-
 import javax.inject.Inject;
 
 /**
  * A Factory for retrieving the current {@link EventBus}
- * @Deprecated
- * Used @Inject EventBus instead
+ * <p/>
+ * It is recommended to use the @Inject EventBus instead from your @PushEndpoint.
  */
 public class EventBusFactory {
 
     @Inject
     private EventBus eventBus;
-
-    @Inject
-    private MetaBroadcaster metaBroadcaster;
 
     private static EventBusFactory f = null;
 
@@ -40,8 +35,8 @@ public class EventBusFactory {
 
     /**
      * Return the default factory
+     *
      * @return the default factory
-     * @Deprecated Use @Inject EventBus instead
      */
     public final static EventBusFactory getDefault() {
         return f;
@@ -49,9 +44,10 @@ public class EventBusFactory {
 
     /**
      * Return a {@link EventBus}
+     *
      * @return a {@link EventBus}
      */
-    public EventBus eventBus(){
+    public EventBus eventBus() {
         return eventBus;
     }
 

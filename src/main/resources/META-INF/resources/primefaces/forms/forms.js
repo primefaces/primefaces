@@ -534,7 +534,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
 
     bindEvents: function() {
         var $this = this;
-
+        
         // Screen Reader(JAWS) hack on Chrome
         if(PrimeFaces.env.browser.webkit) {
             this.input.on('focus', function(){
@@ -989,7 +989,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         if(this.panel.is(':visible')) {
             this.selectItem(this.getActiveItem());
         }
-
+        
         event.preventDefault();
         event.stopPropagation();
     },
@@ -1013,7 +1013,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         
         event.preventDefault();
     },
-    
+
     handleEscapeKey: function(event) {
         if(this.panel.is(':visible')) {
             this.revert();
@@ -1264,7 +1264,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
         this.focusInput.attr('aria-activedescendant', itemId)
                 .attr('aria-describedby', itemId);
         this.itemsContainer.attr('aria-activedescendant', itemId);
-    }       
+    }         
 
 });
 
@@ -1287,7 +1287,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             for(var i=0; i < this.outputs.length; i++) {
                 this.labels = this.labels.add('label[for="' + this.outputs.eq(i).parent().attr('id') + '"]');
             }
-            
+
             //update radio state
             for(var i = 0; i < this.inputs.length; i++) {
                 var input = this.inputs.eq(i),
@@ -1305,7 +1305,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         //regular layout
         else {
             this.outputs = this.jq.find('.ui-radiobutton-box');
-            this.inputs = this.jq.find(':radio');       
+            this.inputs = this.jq.find(':radio');
             this.labels = this.jq.find('label');
         }
 
@@ -1411,9 +1411,9 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.SPACE:
-                    input.blur();
                     if(!input.prop('checked')) {
                         $this.select(currentRadio);
+                        input.parent().next().addClass('ui-state-focus').removeClass('ui-state-active');
                     }
 
                     e.preventDefault();
@@ -1460,7 +1460,11 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 $this.box.removeClass('ui-state-hover');
             })
             .on('click.selectBooleanCheckbox', function() {
-                $this.toggle();
+                $this.input.trigger('click');
+                
+                if(PrimeFaces.env.browser.msie && PrimeFaces.isLtIE(9)) {
+                    $this.input.trigger('change');
+                }
             });
 
             this.input.on('focus.selectBooleanCheckbox', function() {
@@ -1477,22 +1481,13 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
                 $this.box.removeClass('ui-state-focus');
             })
-            .on('keydown.selectBooleanCheckbox', function(e) {
-                var keyCode = $.ui.keyCode;
-                if(e.which === keyCode.SPACE) {
-                    e.preventDefault();
-                }
-            })
-            .on('keyup.selectBooleanCheckbox', function(e) {
-                var keyCode = $.ui.keyCode;
-                if(e.which === keyCode.SPACE) {
-                    $this.toggle();
-                    $this.input.trigger('focus');
-
-                    e.preventDefault();
-                }
+            .on('change.selectBooleanCheckbox', function(e) {         
+                if($this.isChecked())
+                    $this.box.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
+                else
+                    $this.box.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
             });
-
+            
             //toggle state on label click
             this.itemLabel.click(function() {
                 $this.toggle();
@@ -1517,7 +1512,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
     check: function() {
         if(!this.isChecked()) {
-            this.input.prop('checked', true).trigger('change');
+            this.input.prop('checked', true).trigger('change');            
             this.input.attr('aria-checked', true);
             this.box.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
         }
@@ -1974,76 +1969,92 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
 
         this.buttons = this.jq.children('div:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':checkbox:not(:disabled)');
+        this.bindEvents();
+
+        //pfs metadata
+        this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+    },
+    
+    bindEvents: function() {
         var $this = this;
-                
-        this.buttons.mouseover(function() {
+
+        this.buttons.on('mouseover', function() {
             var button = $(this);
-            if(!button.hasClass('ui-state-active'))
+            if(!button.hasClass('ui-state-active')) {
                 button.addClass('ui-state-hover');
-        }).mouseout(function() {
+            }
+        })
+        .on('mouseout', function() {
             $(this).removeClass('ui-state-hover');
-        }).click(function() {
+        })
+        .on('click', function() {
             var button = $(this);
 
-            if(button.hasClass('ui-state-active'))
+            if(button.hasClass('ui-state-active')) {
+                button.addClass('ui-state-hover');
                 $this.unselect(button);
-            else
+            }
+            else {
+                button.removeClass('ui-state-hover');
                 $this.select(button);
+            }
         });
-
-        /* For keyboard accessibility */
-        this.buttons.on('focus.selectManyButton', function(){
-            var button = $(this),
-            checkbox = button.children(':checkbox');
         
-            if(checkbox.prop('checked')) { 
+        /* Keyboard support */
+        this.inputs.on('focus', function() {
+            var input = $(this),
+            button = input.parent();
+            
+            if(input.prop('checked')) {
                 button.removeClass('ui-state-active');
             }
             
             button.addClass('ui-state-focus');
         })
-        .on('blur.selectManyButton', function(){
-            var button = $(this),
-            checkbox = button.children(':checkbox');
-    
-            if(checkbox.prop('checked')) { 
+        .on('blur', function() {
+            var input = $(this),
+            button = input.parent();
+            
+            if(input.prop('checked')) {
                 button.addClass('ui-state-active');
             }
             
             button.removeClass('ui-state-focus');
         })
-        .on('keydown.selectManyButton', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
-                var button = $(this),
-                checkbox = button.children(':checkbox');
-                
-                if(checkbox.prop('checked')) {
-                    $this.unselect(button);
-                    button.removeClass('ui-state-hover');
+        .on('change', function() {
+            var input = $(this),
+            button = input.parent();
+            
+            if(input.prop('checked'))
+                button.addClass('ui-state-active');
+            else
+                button.removeClass('ui-state-active');
+        })
+        .on('keydown', function(e) {
+            var input = $(this);
+    
+            if(e.which === $.ui.keyCode.SPACE) {
+                if(input.prop('checked')) {
+                    input.prop('checked', false).change();
+                    input.parent().addClass('ui-state-focus');
                 }
+                    
                 else {
-                    $this.select(button);
+                    input.prop('checked', true).change();
+                    input.parent().removeClass('ui-state-focus');
                 }
+                    
                 e.preventDefault();
-            }  
+            }
         });
-        
-        //pfs metadata
-        this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
     select: function(button) {
-        button.removeClass('ui-state-hover').addClass('ui-state-active')
-                                .children(':checkbox').prop('checked', true).change();
-
+        button.children(':checkbox').prop('checked', true).change();
     },
 
     unselect: function(button) {
-        button.removeClass('ui-state-active').addClass('ui-state-hover')
-                                .children(':checkbox').prop('checked', false).change();
+        button.children(':checkbox').prop('checked', false).change();
     }
 
 });
@@ -2058,7 +2069,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
 
         this.buttons = this.jq.children('div:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':radio:not(:disabled)');
-                
+
         this.bindEvents();
 
         //pfs metadata
@@ -2236,12 +2247,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.inputs = this.jq.find(':checkbox');
         this.panelId = this.id + '_panel';
         this.keyboardTarget = $(this.jqId + '_focus');
-        this.tabindex = this.keyboardTarget.attr('tabindex');
+        this.tabindex = this.keyboardTarget.attr('tabindex'); 
         this.cfg.showHeader = (this.cfg.showHeader === undefined) ? true : this.cfg.showHeader;
         
         if(!this.disabled) {
             this.renderPanel();
-            
+
             if(this.tabindex) {
                 this.panel.find('a, input').attr('tabindex', this.tabindex);  
             }
@@ -2665,9 +2676,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         
         if(!this.togglerBox.hasClass('ui-state-disabled')) {
             this.togglerBox.prev().children('input').trigger('focus.selectCheckboxMenu');
-            this.togglerBox.addClass('ui-state-active');    
+            this.togglerBox.addClass('ui-state-active');  
         }
-        
+
         this.fireToggleSelectEvent(true);
     },
 
@@ -2681,11 +2692,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.uncheck(this.togglerBox);
-        
+
         if(!this.togglerBox.hasClass('ui-state-disabled')) {
             this.togglerBox.prev().children('input').trigger('focus.selectCheckboxMenu');
         }
-
+        
         this.fireToggleSelectEvent(false);
     },
 
@@ -2711,7 +2722,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             if(updateInput) {
                 checkedInput.trigger('focus.selectCheckboxMenu');
             }
-
+            
             checkbox.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
             checkbox.closest('li.ui-selectcheckboxmenu-item').removeClass('ui-selectcheckboxmenu-unchecked').addClass('ui-selectcheckboxmenu-checked');
 

@@ -156,9 +156,13 @@ import org.primefaces.model.TreeNode;
         return clientId.equals(source) && params.get(clientId + "_dragdrop") != null;
     }
 
+    private boolean shouldSkipNodes(FacesContext context) {
+        return this.isToggleRequest(context)||this.isDragDropRequest(context);
+    }
+
     @Override
     public void processDecodes(FacesContext context) {
-        if(isToggleRequest(context)) {
+        if(shouldSkipNodes(context)) {
             this.decode(context);
         } 
         else {
@@ -168,14 +172,14 @@ import org.primefaces.model.TreeNode;
 
     @Override
     public void processValidators(FacesContext context) {
-        if(!isToggleRequest(context)) {
+        if(!shouldSkipNodes(context)) {
             super.processValidators(context);
         } 
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if(isToggleRequest(context)) {
+        if(shouldSkipNodes(context)) {
             this.updateSelection(context);
         }
         else {

@@ -1,4 +1,4 @@
- /**
+/**
  * PrimeFaces DataTable Widget
  */
 PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
@@ -135,6 +135,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
         
+        //aria messages
+        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
+        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.DESC');
+        
         if(this.cfg.multiSort) {
             this.sortMeta = [];
         }
@@ -142,13 +146,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         for(var i = 0; i < this.sortableColumns.length; i++) {
             var columnHeader = this.sortableColumns.eq(i),
             sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
-            sortOrder = null;
-    
+            sortOrder = null,
+            ariaLabel = columnHeader.attr('aria-label');
+            
             if(columnHeader.hasClass('ui-state-active')) {
-                if(sortIcon.hasClass('ui-icon-triangle-1-n'))
+                if(sortIcon.hasClass('ui-icon-triangle-1-n')) {
                     sortOrder = this.SORT_ORDER.ASCENDING;
-                else
+                    columnHeader.attr('aria-sort', 'ascending').attr('aria-label', this.getSortMessage(ariaLabel, this.descMessage));
+                }
+                else {
                     sortOrder = this.SORT_ORDER.DESCENDING;
+                    columnHeader.attr('aria-sort', 'descending').attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                }
                 
                 if($this.cfg.multiSort) {
                     $this.addSortMeta({
@@ -159,6 +168,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
             else {
                 sortOrder = this.SORT_ORDER.UNSORTED;
+                columnHeader.attr('aria-sort', 'other').attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
             }
             
             columnHeader.data('sortorder', sortOrder);
@@ -225,6 +235,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
         });
+    },
+    
+    getSortMessage: function(ariaLabel, sortOrderMessage) {
+        var headerName = ariaLabel ? ariaLabel.split(':')[0] : '';
+        return headerName + ': ' + sortOrderMessage;
     },
     
     shouldSort: function(event, column) {
@@ -484,6 +499,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.nativeElements) {
             this.checkAllToggler = this.thead.find('> tr > th.ui-selection-column > :checkbox');
+            this.checkAllTogglerInput = this.checkAllToggler;
             
             this.checkAllToggler.on('click', function() {
                 $this.toggleCheckAll();
@@ -500,6 +516,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             this.checkAllToggler = this.thead.find('> tr > th.ui-selection-column > .ui-chkbox.ui-chkbox-all > .ui-chkbox-box');
+            this.checkAllTogglerInput = this.checkAllToggler.prev().children(':checkbox');
             
             this.checkAllToggler.on('mouseover', function() {
                 var box = $(this);
@@ -540,7 +557,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         
         //keyboard support
-        this.tbody.off('focus.dataTable blur.dataTable keydown.dataTable keyup.dataTable', checkboxInputSelector)
+        this.tbody.off('focus.dataTable blur.dataTable change.dataTable', checkboxInputSelector)
                     .on('focus.dataTable', checkboxInputSelector, null, function() {
                         var input = $(this),
                         box = input.parent().next();
@@ -561,27 +578,54 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                         box.removeClass('ui-state-focus');
                     })
-                    .on('keydown.dataTable', checkboxInputSelector, null, function(e) {
-                        var keyCode = $.ui.keyCode;
-                        if(e.which === keyCode.SPACE) {
-                            e.preventDefault();
+                    .on('change.dataTable', checkboxInputSelector, null, function(e) {
+                        var input = $(this),
+                        box = input.parent().next();
+
+                        if(input.prop('checked')) {
+                            $this.selectRowWithCheckbox(box);
+                        } 
+                        else {                        
+                            $this.unselectRowWithCheckbox(box);
                         }
-                    })
-                    .on('keyup.dataTable', checkboxInputSelector, null, function(e) {
-                        var keyCode = $.ui.keyCode;
+                    });
+                    
+        this.checkAllTogglerInput.on('focus.dataTable', function(e) {
+                        var input = $(this),
+                        box = input.parent().next();
 
-                        if(e.which === keyCode.SPACE) {
-                            var input = $(this),
-                            box = input.parent().next();
-
+                        if(!box.hasClass('ui-state-disabled')) {
                             if(input.prop('checked')) {
-                                $this.unselectRowWithCheckbox(box);
-                            } 
-                            else {                        
-                                $this.selectRowWithCheckbox(box);
+                                box.removeClass('ui-state-active');
                             }
 
-                            e.preventDefault();
+                            box.addClass('ui-state-focus');
+                        }
+                    })
+                    .on('blur.dataTable', function(e) {
+                        var input = $(this),
+                        box = input.parent().next();
+
+                        if(input.prop('checked')) {
+                            box.addClass('ui-state-active');
+                        }
+
+                        box.removeClass('ui-state-focus');
+                    })
+                    .on('change.dataTable', function(e) {
+                        var input = $(this),
+                        box = input.parent().next();
+
+                        if(!box.hasClass('ui-state-disabled')) {
+                            if(!input.prop('checked')) {
+                                box.addClass('ui-state-active');
+                            }
+                            
+                            $this.toggleCheckAll();
+                            
+                            if(input.prop('checked')) {
+                                box.removeClass('ui-state-active').addClass('ui-state-focus');
+                            }
                         }
                     });
     },
@@ -957,16 +1001,29 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             }
                             
                             if(!multi) {
-                                this.sortableColumns.filter('.ui-state-active').data('sortorder', this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
+                                var activeColumns = this.sortableColumns.filter('.ui-state-active');
+                                
+                                //aria reset
+                                for(var i = 0; i < activeColumns.length; i++) {
+                                    var activeColumn = $(activeColumns.get(i)),
+                                        ariaLabelOfActive = activeColumn.attr('aria-label');
+
+                                    activeColumn.attr('aria-sort', 'other').attr('aria-label', this.getSortMessage(ariaLabelOfActive, this.ascMessage));
+                                }
+                                
+                                activeColumns.data('sortorder', this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
                                             .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
                             }
 
                             columnHeader.data('sortorder', order).removeClass('ui-state-hover').addClass('ui-state-active');
-                            var sortIcon = columnHeader.find('.ui-sortable-column-icon');
+                            var sortIcon = columnHeader.find('.ui-sortable-column-icon'),
+                                ariaLabel = columnHeader.attr('aria-label');
                             if(order === this.SORT_ORDER.DESCENDING) {
                                 sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
+                                columnHeader.attr('aria-sort', 'descending').attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
                             } else if(order === this.SORT_ORDER.ASCENDING) {
                                 sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                                columnHeader.attr('aria-sort', 'ascending').attr('aria-label', this.getSortMessage(ariaLabel, this.descMessage));
                             }
                         }
                     });
@@ -1423,14 +1480,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             if(checked) {
                 this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
-
+                this.checkAllTogglerInput.prop('checked', false).attr('aria-checked', false);
+                
                 checkboxes.each(function() {
                     $this.unselectRowWithCheckbox($(this), true);
                 });
             } 
             else {
                 this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
-
+                this.checkAllTogglerInput.prop('checked', true).attr('aria-checked', true);
+                
                 checkboxes.each(function() {
                     $this.selectRowWithCheckbox($(this), true);
                 });
@@ -1460,13 +1519,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             checkbox.addClass('ui-state-active');
         }
         checkbox.children('span.ui-chkbox-icon:first').removeClass('ui-icon-blank').addClass(' ui-icon-check');
-        checkbox.prev().children('input').prop('checked', true);
+        checkbox.prev().children('input').prop('checked', true).attr('aria-checked', true);
     },
     
     unselectCheckbox: function(checkbox) {
         checkbox.removeClass('ui-state-active');
         checkbox.children('span.ui-chkbox-icon:first').addClass('ui-icon-blank').removeClass('ui-icon-check');
-        checkbox.prev().children('input').prop('checked', false); 
+        checkbox.prev().children('input').prop('checked', false).attr('aria-checked', false); 
     },
     
     selectRadio: function(radio){
@@ -1525,7 +1584,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     labels.eq(0).addClass('ui-helper-hidden');
                     labels.eq(1).removeClass('ui-helper-hidden');
                 }
-
+                
                 this.loadExpandedRowContent(row);
             }
         }
@@ -2082,7 +2141,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     });  
                 }                
             },
-            stop: function(event, ui) {
+            stop: function(event, ui) {                
                 ui.helper.css({
                     'left': '',
                     'top': '0px'
@@ -2582,7 +2641,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 checkboxes = this.tbody.find('> tr > td.ui-selection-column .ui-chkbox-box');
                 enabledCheckboxes = checkboxes.filter(':not(.ui-state-disabled)');
                 disabledCheckboxes = checkboxes.filter('.ui-state-disabled');
-                selectedCheckboxes = enabledCheckboxes.filter('.ui-state-active');
+                selectedCheckboxes = enabledCheckboxes.prev().children(':checked');
             }
                         
             if(enabledCheckboxes.length && enabledCheckboxes.length === selectedCheckboxes.length)
@@ -2598,17 +2657,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     checkHeaderCheckbox: function() {
-        if(this.cfg.nativeElements)
+        if(this.cfg.nativeElements) {
             this.checkAllToggler.prop('checked', true);
-        else
+        }
+        else {
             this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
+            this.checkAllTogglerInput.prop('checked', true).attr('aria-checked', true);
+        }
     },
     
     uncheckHeaderCheckbox: function() {
-        if(this.cfg.nativeElements)
+        if(this.cfg.nativeElements) {
             this.checkAllToggler.prop('checked', false);
-        else
+        }
+        else {
             this.checkAllToggler.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
+            this.checkAllTogglerInput.prop('checked', false).attr('aria-checked', false);
+        }
     },
     
     disableHeaderCheckbox: function() {
@@ -3201,4 +3266,4 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
     }
     
-}); 
+});

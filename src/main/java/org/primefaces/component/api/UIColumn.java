@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public interface UIColumn {
     public int getRowspan();
     
     public int getColspan();
-            
+    
     public String getFilterPosition();
     
     public UIComponent getFacet(String facet);
@@ -104,4 +104,6 @@ public interface UIColumn {
     public boolean isVisible();
     
     public boolean isSelectRow();
+    
+    public String getAriaHeaderText();
 }

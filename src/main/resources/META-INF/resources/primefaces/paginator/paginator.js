@@ -22,9 +22,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //metadata
         this.cfg.rows = this.cfg.rows == 0 ? this.cfg.rowCount : this.cfg.rows;
+        this.cfg.prevRows = this.cfg.rows;
         this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows)||1;
         this.cfg.pageLinks = this.cfg.pageLinks||10;
         this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPages})';
+        
+        //aria message
+        this.cfg.ariaPageLabel = PrimeFaces.getAriaLabel('paginator.PAGE');
 
         //event bindings
         this.bindEvents();
@@ -34,7 +38,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         //visuals for first,prev,next,last buttons
-        this.jq.children('span.ui-state-default').on('mouseover.paginator', function(){
+        this.jq.children('a.ui-state-default').on('mouseover.paginator', function(){
             var item = $(this);
             if(!item.hasClass('ui-state-disabled')) {
                 item.addClass('ui-state-hover');
@@ -82,51 +86,70 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //First page link
-        this.firstLink.click(function() {
+        this.firstLink.click(function(e) {
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setPage(0);
             }
+            
+            e.preventDefault();
         });
 
         //Prev page link
-        this.prevLink.click(function() {
+        this.prevLink.click(function(e) {
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setPage($this.cfg.page - 1);
             }
+            
+            e.preventDefault();
         });
 
         //Next page link
-        this.nextLink.click(function() {
+        this.nextLink.click(function(e) {
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setPage($this.cfg.page + 1);
             }
+            
+            e.preventDefault();
         });
 
         //Last page link
-        this.endLink.click(function() {
+        this.endLink.click(function(e) {
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setPage($this.cfg.pageCount - 1);
             }
+            
+            e.preventDefault();
         });
     },
             
     bindPageLinkEvents: function(){
-        var $this = this;
+        var $this = this,
+        pageLinks = this.pagesContainer.children('.ui-paginator-page');
 
-        this.pagesContainer.children('.ui-paginator-page').on('click.paginator', function(e) {
-            var link = $(this);
+        pageLinks.each(function() {
+            var link = $(this),
+            pageNumber = parseInt(link.text());
+            
+            link.attr('aria-label', $this.cfg.ariaPageLabel.replace('{0}', (pageNumber)));
+        });
+
+        pageLinks.on('click.paginator', function(e) {
+            var link = $(this),
+            pageNumber = parseInt(link.text());
 
             if(!link.hasClass('ui-state-disabled')&&!link.hasClass('ui-state-active')) {
-                $this.setPage(parseInt(link.text()) - 1);
+                $this.setPage(pageNumber - 1);
             }
+            
+            e.preventDefault();
         })
         .on('mouseover.paginator', function() {
             var item = $(this);
@@ -190,7 +213,10 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.currentReport.text(text);
 
         //rows per page dropdown
-        this.rppSelect.children('option').prop('selected', false).filter('option[value=' + this.cfg.rows + ']').prop('selected', true);
+        if(this.cfg.prevRows !== this.cfg.rows) {
+            this.rppSelect.filter(':not(.ui-state-focus)').children('option').filter('option[value=' + this.cfg.rows + ']').prop('selected', true);
+            this.cfg.prevRows = this.cfg.rows;
+        }
 
         //jump to page dropdown
         if(this.jtpSelect.length > 0) {
@@ -234,12 +260,14 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         //update dom
         this.pagesContainer.children().remove();
         for(var i = start; i <= end; i++) {
-            var styleClass = 'ui-paginator-page ui-state-default ui-corner-all';
+            var styleClass = 'ui-paginator-page ui-state-default ui-corner-all',
+            ariaLabel = this.cfg.ariaPageLabel.replace('{0}', (i+1));
+            
             if(this.cfg.page == i) {
                 styleClass += " ui-state-active";
             }
 
-            this.pagesContainer.append('<span class="' + styleClass + '" tabindex="0">' + (i + 1) + '</span>')   
+            this.pagesContainer.append('<a class="' + styleClass + '" aria-label="' + ariaLabel + '" tabindex="0" href="#">' + (i + 1) + '</a>');   
         }
         
         if(focusContainer) {

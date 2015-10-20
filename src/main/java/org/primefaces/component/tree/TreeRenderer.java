@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,7 +87,10 @@ public class TreeRenderer extends CoreRenderer {
 
                 for(int i = 0 ; i < selectedRowKeys.length; i++) {
                     tree.setRowKey(selectedRowKeys[i]);
-                    selectedNodes[i] = tree.getRowNode();
+                    TreeNode rowNode = tree.getRowNode();
+                    if(rowNode != null) {
+                        selectedNodes[i] = rowNode;
+                    }
                 }
 
                 tree.setSelection(selectedNodes);

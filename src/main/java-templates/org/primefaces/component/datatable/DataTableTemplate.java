@@ -123,6 +123,9 @@ import org.primefaces.util.SharedStringBuilder;
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
     public static final String STICKY_HEADER_CLASS = "ui-datatable-sticky";
     
+    public static final String ARIA_FILTER_BY = "primefaces.datatable.aria.FILTER_BY";
+    public static final String ARIA_HEADER_CHECKBOX_ALL = "primefaces.datatable.aria.HEADER_CHECKBOX_ALL";
+    
     public static final String MOBILE_CONTAINER_CLASS = "ui-datatable ui-shadow";
     public static final String MOBILE_TABLE_CLASS = "ui-responsive ui-table table-stripe";
     public static final String MOBILE_COLUMN_HEADER_CLASS = "ui-column-header";

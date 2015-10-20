@@ -457,6 +457,12 @@
             <defaultValue>fit</defaultValue>
             <description>Defines the resize behavior, valid values are "fit" (default) and expand.</description>
 		</attribute>
+        <attribute>
+			<name>ariaRowLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label to read by screen readers on checkbox selection.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

@@ -22,6 +22,9 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UniqueIdVendor;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 
 public class ComponentTraversalUtils {
@@ -114,6 +117,20 @@ public class ComponentTraversalUtils {
      * @return The component or null.
      */
     public static UIComponent firstById(String id, UIComponent base, String separatorString, FacesContext context) {
+        return firstById(id, base, separatorString, context, false);
+    }
+    
+    /**
+     * Finds the first component by the given id expression or client id.
+     * 
+     * @param id The id.
+     * @param base The base component to start the traversal.
+     * @param separatorString The seperatorString (e.g. :).
+     * @param context The FacesContext.
+     * @param skipUnrendered Defined if unrendered components should be skipped.
+     * @return The component or null.
+     */
+    public static UIComponent firstById(String id, UIComponent base, String separatorString, FacesContext context, boolean skipUnrendered) {
 
         // try #findComponent first
         UIComponent component = base.findComponent(id);
@@ -127,10 +144,21 @@ public class ComponentTraversalUtils {
                 tempExpression = tempExpression.substring(1);
             }
 
-            IdContextCallback callback = new IdContextCallback();
-            context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
+            if (skipUnrendered)
+            {
+                VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                IdVisitCallback callback = new IdVisitCallback(tempExpression);
+                context.getViewRoot().visitTree(visitContext, callback);
+                
+                component = callback.getComponent();
+            }
+            else
+            {                
+                IdContextCallback callback = new IdContextCallback();
+                context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
 
-            component = callback.getComponent();
+                component = callback.getComponent();
+            }
         }
         
         return component;
@@ -151,6 +179,30 @@ public class ComponentTraversalUtils {
     }
     
     
+    public static class IdVisitCallback implements VisitCallback {
+
+        private final String targetClientId;
+        private UIComponent component;
+        
+        public IdVisitCallback(String targetClientId) {
+            this.targetClientId = targetClientId;
+        }
+        
+        public VisitResult visit(VisitContext context, UIComponent target) {
+            
+            if (target.getClientId().equals(targetClientId)) {
+                this.component = target;
+                return VisitResult.COMPLETE;
+            }
+            
+            return VisitResult.ACCEPT;
+        }
+        
+        public UIComponent getComponent() {
+            return component;
+        }
+    }
+    
     public static class IdContextCallback implements ContextCallback {
 
         private UIComponent component;
@@ -162,9 +214,5 @@ public class ComponentTraversalUtils {
         public UIComponent getComponent() {
             return component;
         }
-
-        public void setComponent(UIComponent component) {
-            this.component = component;
-        }   
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,14 @@ import org.primefaces.component.api.UIData;
 
 public class PageLinkRenderer {
 
-    public void render(FacesContext context, UIData uidata, String linkClass, String iconClass, boolean disabled) throws IOException {
+    public void render(FacesContext context, UIData uidata, String linkClass, String iconClass, boolean disabled, String ariaLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = disabled ? linkClass + " ui-state-disabled" : linkClass;
 
-        writer.startElement("span", null);
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("aria-label", ariaLabel, null);
         if(!disabled) {
             writer.writeAttribute("tabindex", 0, null);
         }
@@ -37,6 +39,6 @@ public class PageLinkRenderer {
 //        writer.writeText("p", null);
         writer.endElement("span");
         
-        writer.endElement("span");
+        writer.endElement("a");
     }    
 }

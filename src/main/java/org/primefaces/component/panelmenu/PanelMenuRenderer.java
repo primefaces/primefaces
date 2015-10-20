@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         PanelMenu menu = (PanelMenu) abstractMenu;
 		String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PanelMenu", menu.resolveWidgetVar(), clientId)
+        wb.initWithDomReady("PanelMenu", menu.resolveWidgetVar(), clientId)
             .attr("stateful", menu.isStateful());
         wb.finish();
     }
@@ -90,6 +90,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.startElement("h3", null);
         writer.writeAttribute("class", headerClass, null);
         writer.writeAttribute("role", "tab", null);
+        writer.writeAttribute("tabindex", "0", null);
 
         //icon
         writer.startElement("span", null);
@@ -109,6 +110,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("class", contentClass, null);
         writer.writeAttribute("role", "tabpanel", null);
         writer.writeAttribute("id", menu.getClientId(context) + "_" + submenu.getId(), null);
+        writer.writeAttribute("tabindex", "0", null);
         
         if(submenu.getElementsCount() > 0) {
             List<MenuElement> elements = submenu.getElements();
@@ -126,7 +128,6 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                         
                         writer.startElement("li", null);
                         writer.writeAttribute("class", containerStyleClass, null);
-                        writer.writeAttribute("role", "menuitem", null);
                         if(containerStyle != null) {
                             writer.writeAttribute("style", containerStyle, null);
                         }
@@ -165,7 +166,6 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         if(style != null) {
             writer.writeAttribute("style", style, null);
         }
-        writer.writeAttribute("role", "menuitem", null);
         
         writer.startElement("a", null);
         writer.writeAttribute("class", linkClass, null);
@@ -202,7 +202,6 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                     if(element instanceof MenuItem) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                        writer.writeAttribute("role", "menuitem", null);
                         encodeMenuItem(context, menu, (MenuItem) element);
                         writer.endElement("li");
                     }

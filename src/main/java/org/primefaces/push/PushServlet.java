@@ -98,6 +98,7 @@ public class PushServlet extends AtmosphereServlet {
         if (framework().getAtmosphereHandlers().size() == 0) {
             logger.error("No Annotated class using @PushEndpoint found. Push will not work.");
         }
+        logger.debug("EventBus installed {}", EventBusFactory.getDefault().eventBus());
         return this;
     }
 

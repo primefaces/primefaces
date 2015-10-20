@@ -32,102 +32,108 @@ import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
 
 public class HeadRenderer extends Renderer {
-    
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
         ProjectStage projectStage = context.getApplication().getProjectStage();
         writer.startElement("head", component);
-        
+
         //First facet
         UIComponent first = component.getFacet("first");
         if(first != null) {
             first.encodeAll(context);
         }
-                
+
         writer.write("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>");
-        
+
         String theme = resolveTheme(context);
         if(theme == null) {
             renderCSS(context, "mobile/jquery-mobile.css", "primefaces");
         }
-        else {            
+        else {
             renderCSS(context, "theme.css", "primefaces-" + theme);
             renderCSS(context, "mobile/jquery-mobile-icons.css", "primefaces");
             renderCSS(context, "mobile/jquery-mobile-structure.css", "primefaces");
         }
-        
+
         renderCSS(context, "mobile/primefaces-mobile.css", "primefaces");
-        
+
         if(cc.isFontAwesomeEnabled()) {
             renderCSS(context, "fa/font-awesome.css", "primefaces");
         }
-        
+
         renderJS(context, "jquery/jquery.js", "primefaces");
-        
+
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("$(document).on('mobileinit', function(){");
-        writer.write("$.mobile.ajaxEnabled = false;");               
-        writer.write("$.mobile.pushStateEnabled = false;");        
+        writer.write("$.mobile.ajaxEnabled = false;");
+        writer.write("$.mobile.pushStateEnabled = false;");
         writer.write("$.mobile.page.prototype.options.domCache = true;");
-        
+
         UIComponent init = component.getFacet("init");
         if(init != null) {
             init.encodeAll(context);
         }
-        
-        writer.write("});");        
+
+        writer.write("});");
         writer.endElement("script");
-        
+
         renderJS(context, "mobile/jquery-mobile.js", "primefaces");
         renderJS(context, "primefaces-mobile.js", "primefaces");
-        
+
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
         for(UIComponent resource : viewRoot.getComponentResources(context, "head")) {
             boolean shouldRender = true;
             Map<String,Object> attrs = resource.getAttributes();
             String library = (String) attrs.get("library");
-            
+
             if(library != null && library.equals("primefaces")) {
                 String resourceName = (String) attrs.get("name");
                 if(resourceName.startsWith("jquery")||resourceName.startsWith("primefaces")) {
                     shouldRender = false;
                 }
             }
-            
+
             if(shouldRender) {
                 resource.encodeAll(context);
             }
         }
-        
-        if(cc.isLegacyWidgetNamespace()) {
+
+        if (!projectStage.equals(ProjectStage.Production) || cc.isLegacyWidgetNamespace()) {
             writer.startElement("script", null);
             writer.writeAttribute("type", "text/javascript", null);
-            writer.write("PrimeFaces.settings.legacyWidgetNamespace = true;");
+            writer.write("if(window.PrimeFaces){");
+
+            if(cc.isLegacyWidgetNamespace()) {
+                writer.write("PrimeFaces.settings.legacyWidgetNamespace = true;");
+            }
+
+            if (!projectStage.equals(ProjectStage.Production)) {
+                writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
+            }
+
+            writer.write("}");
             writer.endElement("script");
-        }
-        
-        if (!projectStage.equals(ProjectStage.Production)) {
-            writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
         }
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         //Last facet
         UIComponent last = component.getFacet("last");
         if(last != null) {
             last.encodeAll(context);
         }
-        
+
         writer.endElement("head");
     }
-    
+
     protected String resolveTheme(FacesContext context) {
         String theme = null;
         String themeConfigValue = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getMobileTheme();
@@ -139,14 +145,14 @@ public class HeadRenderer extends Renderer {
 
             theme = ve.isLiteralText() ? themeConfigValue: (String) ve.getValue(elContext);
         }
-        
+
         return theme;
     }
-    
+
     private void renderJS(FacesContext context, String name, String library) throws IOException  {
         ResponseWriter writer = context.getResponseWriter();
         Resource resource = context.getApplication().getResourceHandler().createResource(name, library);
-        
+
         if(resource != null) {
             writer.startElement("script", null);
             writer.writeAttribute("type", "text/javascript", null);
@@ -154,11 +160,11 @@ public class HeadRenderer extends Renderer {
             writer.endElement("script");
         }
     }
-    
+
     private void renderCSS(FacesContext context, String name, String library) throws IOException  {
         ResponseWriter writer = context.getResponseWriter();
         Resource resource = context.getApplication().getResourceHandler().createResource(name, library);
-        
+
         if(resource != null) {
             writer.startElement("link", null);
             writer.writeAttribute("type", "text/css", null);

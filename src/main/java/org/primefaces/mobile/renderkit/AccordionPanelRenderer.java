@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ public class AccordionPanelRenderer extends org.primefaces.component.accordionpa
 	}
     
     @Override
-    protected void encodeTab(FacesContext context, Tab tab, boolean active, boolean dynamic, boolean rtl) throws IOException {
+    protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, boolean active, boolean dynamic, boolean rtl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         String containerClass = active ? AccordionPanel.MOBILE_ACTIVE_TAB_CONTAINER_CLASS : AccordionPanel.MOBILE_INACTIVE_TAB_CONTAINER_CLASS;

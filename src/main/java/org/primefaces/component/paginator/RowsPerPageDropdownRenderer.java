@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2015 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,16 @@
 package org.primefaces.component.paginator;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.UIData;
+import org.primefaces.util.MessageFactory;
 
 public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
+    private final static Logger logger = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
+    
     public void render(FacesContext context, UIData uidata) throws IOException {        
         String template = uidata.getRowsPerPageTemplate();
         
@@ -30,6 +34,11 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             int actualRows = uidata.getRows();
             String[] options = uidata.getRowsPerPageTemplate().split("[,\\s]+");
             String label = uidata.getRowsPerPageLabel();
+            if(label != null)
+                logger.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
+            else 
+                label = MessageFactory.getMessage(UIData.ROWS_PER_PAGE_LABEL, null);
+            
             String clientId = uidata.getClientId(context);
             String ddId = clientId + "_rppDD";
             String labelId = null;
@@ -44,7 +53,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 writer.writeText(label, null);
                 writer.endElement("label");
             }
-        
+                    
             writer.startElement("select", null);
             writer.writeAttribute("id", ddId, null);
             writer.writeAttribute("name", ddId, null);
@@ -52,6 +61,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 writer.writeAttribute("aria-labelledby", labelId, null);
             }
             writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
+            writer.writeAttribute("value", uidata.getRows(), null);
             writer.writeAttribute("autocomplete", "off", null);
 
             for( String option : options){

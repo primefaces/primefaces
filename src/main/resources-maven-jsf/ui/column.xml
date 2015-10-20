@@ -206,5 +206,11 @@
             <defaultValue>true</defaultValue>
             <description>Whether clicking the column selects the row when datatable has row selection enabled, default is true.</description>
 		</attribute>
+        <attribute>
+			<name>ariaHeaderText</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label to read by screen readers, when not specified headerText is used.</description>
+		</attribute>
 	</attributes>
 </component>

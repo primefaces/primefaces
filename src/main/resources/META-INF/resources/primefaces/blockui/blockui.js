@@ -10,6 +10,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.block = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
         this.content = $(this.jqId);
         this.cfg.animate = (this.cfg.animate === false)? false : true;
+        this.cfg.blocked = (this.cfg.blocked === true)? true : false;
         
         this.render();
 
@@ -25,6 +26,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     },
             
     refresh: function(cfg) {
+        this.blocker.remove();
+        this.block.children('.ui-blockui-content').remove();
         $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
         
         this._super(cfg);
@@ -38,7 +41,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
             var sourceId = $.type(settings.source) === 'string' ? settings.source : settings.source.name;
             
-            if($.inArray(sourceId, triggers) !== -1) {
+            if($.inArray(sourceId, triggers) !== -1 && !$this.cfg.blocked) {
                 $this.show();
             }
         });
@@ -46,7 +49,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         $(document).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             var sourceId = $.type(settings.source) === 'string' ? settings.source : settings.source.name;
             
-            if($.inArray(sourceId, triggers) !== -1) {
+            if($.inArray(sourceId, triggers) !== -1 && !$this.cfg.blocked) {
                 $this.hide();
             }
         });
@@ -56,11 +59,16 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.blocker.css('z-index', ++PrimeFaces.zindex);
         
         //center position of content
-        this.content.css({
-            'left': (this.blocker.width() - this.content.outerWidth()) / 2,
-            'top': (this.blocker.height() - this.content.outerHeight()) / 2,
-            'z-index': ++PrimeFaces.zindex
-        });
+        for(var i = 0; i < this.block.length; i++) {
+            var blocker = $(this.blocker[i]),
+                content = $(this.content[i]);
+           
+            content.css({
+                'left': (blocker.width() - content.outerWidth()) / 2,
+                'top': (blocker.height() - content.outerHeight()) / 2,
+                'z-index': ++PrimeFaces.zindex
+            });
+        }
 
         if(this.cfg.animate)
             this.blocker.fadeIn();    
@@ -85,7 +93,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     
     render: function() {   
         this.blocker = $('<div id="' + this.id + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
-        
+
         if(this.cfg.styleClass) {
             this.blocker.addClass(this.cfg.styleClass);
         }
@@ -93,8 +101,17 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if(this.block.hasClass('ui-corner-all')) {
             this.blocker.addClass('ui-corner-all');
         }
-
+        
+        if(this.block.length > 1) {
+            this.content = this.content.clone();
+        }
+        
         this.block.css('position', 'relative').append(this.blocker).append(this.content);
+    
+        if(this.block.length > 1) {
+            this.blocker = $(PrimeFaces.escapeClientId(this.id + '_blocker'));
+            this.content = this.block.children('.ui-blockui-content');
+        }
     },
     
     hasContent: function() {

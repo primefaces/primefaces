@@ -566,6 +566,27 @@
             }
         },
 
+        getLocaleSettings: function() {
+            if(!this.localeSettings) {
+                var localeKey = PrimeFaces.settings.locale;
+                this.localeSettings = PrimeFaces.locales[localeKey];
+
+                if(!this.localeSettings) {
+                    this.localeSettings = PrimeFaces.locales[localeKey.split('_')[0]];
+
+                    if(!this.localeSettings)
+                        this.localeSettings = PrimeFaces.locales['en_US'];
+                }
+            }
+
+            return this.localeSettings;
+        },
+        
+        getAriaLabel: function(key) {
+            var ariaKeys = this.getLocaleSettings()['aria']||PrimeFaces.locales['en_US']['aria'];
+            return ariaKeys[key];
+        },
+        
         zindex : 1000,
 
         customFocus : false,
@@ -633,7 +654,13 @@
             month: 'Month',
             week: 'week',
             day: 'Day',
-            allDayText: 'All Day'
+            allDayText: 'All Day',
+            aria: {
+                'paginator.PAGE': 'Page {0}',
+                'calendar.BUTTON': 'Show Calendar',
+                'datatable.sort.ASC': 'activate to sort column ascending',
+                'datatable.sort.DESC': 'activate to sort column descending'
+            }
         }
 
     };
