@@ -89,6 +89,7 @@ public class InputMaskRenderer extends InputRenderer {
         String defaultClass = InputMask.STYLE_CLASS;
         defaultClass = !inputMask.isValid() ? defaultClass + " ui-state-error" : defaultClass;
         defaultClass = inputMask.isDisabled() ? defaultClass + " ui-state-disabled" : defaultClass;
+        defaultClass = inputMask.isResponsive() ? defaultClass + " form-control" : defaultClass;
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
 		
 		writer.startElement("input", null);

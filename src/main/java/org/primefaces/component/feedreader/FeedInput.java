@@ -4,6 +4,8 @@
  */
 package org.primefaces.component.feedreader;
 
+import com.sun.syndication.feed.synd.SyndContent;
+import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
@@ -21,6 +23,7 @@ public class FeedInput {
         int i = 0;
         
         for(Object f : feed.getEntries()) {
+            changeContentLinksFromHttpToHttps((SyndEntry) f);
             if(i == size)
                 break;
 
@@ -29,5 +32,25 @@ public class FeedInput {
         }
         
         return entries;
+    }
+    
+    //refs #2468
+    public void changeContentLinksFromHttpToHttps(SyndEntry entry) {
+        for (Object c : entry.getContents()) {
+            SyndContent content = (SyndContent) c;
+            int indexImg = content.getValue().indexOf("img");
+            while (indexImg != -1) {
+                int nextIndexImg = content.getValue().indexOf("img", indexImg + 1);
+                int nextHttpIndex = content.getValue().indexOf("http", indexImg + 1);
+                if (indexImg != -1 && nextHttpIndex < nextIndexImg) {
+                    content.setValue(
+                            content.getValue().substring(0, nextHttpIndex)
+                            + "https"
+                            + content.getValue().substring(nextHttpIndex + 4)
+                    );
+                }
+                indexImg = content.getValue().indexOf("img", nextHttpIndex);
+            }
+        }
     }
 }

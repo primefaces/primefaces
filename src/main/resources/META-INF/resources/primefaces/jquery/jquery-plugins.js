@@ -4591,7 +4591,7 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 			// no useless actions that have been done before
 			// no action if the item moved is the parent of the item checked
 			if (itemElement !== this.currentItem[0] &&
-				this.placeholder[intersection === 1 ? "next" : "prev"]()[0] !== itemElement &&
+				this.placeholder[intersection === 1 ? "" : ""]()[0] !== itemElement &&
 				!$.contains(this.placeholder[0], itemElement) &&
 				(this.options.type === "semi-dynamic" ? !$.contains(this.element[0], itemElement) : true)
 			) {

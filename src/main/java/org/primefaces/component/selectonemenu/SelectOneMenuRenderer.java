@@ -83,6 +83,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         styleClass = styleClass == null ? SelectOneMenu.STYLE_CLASS : SelectOneMenu.STYLE_CLASS + " " + styleClass;
         styleClass = !valid ? styleClass + " ui-state-error" : styleClass;
         styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
+        styleClass = menu.isResponsive() ? styleClass + " form-control" : styleClass;
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
