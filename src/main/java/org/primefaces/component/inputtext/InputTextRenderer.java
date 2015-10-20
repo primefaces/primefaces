@@ -94,6 +94,7 @@ public class InputTextRenderer extends InputRenderer {
         String defaultClass = InputText.STYLE_CLASS;
         defaultClass = inputText.isValid() ? defaultClass : defaultClass + " ui-state-error";
         defaultClass = !inputText.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
+        defaultClass = inputText.isResponsive() ? defaultClass + " form-control" : defaultClass;
         
         String styleClass = inputText.getStyleClass();
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;

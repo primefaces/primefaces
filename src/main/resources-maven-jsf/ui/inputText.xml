@@ -7,21 +7,21 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>inputText</tag>
-	<tagClass>org.primefaces.component.inputtext.InputText</tagClass>
-	<componentClass>org.primefaces.component.inputtext.InputText</componentClass>
-	<componentType>org.primefaces.component.InputText</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.InputTextRenderer</rendererType>
-	<rendererClass>org.primefaces.component.inputtext.InputTextRenderer</rendererClass>
-	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <tag>inputText</tag>
+    <tagClass>org.primefaces.component.inputtext.InputText</tagClass>
+    <componentClass>org.primefaces.component.inputtext.InputText</componentClass>
+    <componentType>org.primefaces.component.InputText</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.InputTextRenderer</rendererType>
+    <rendererClass>org.primefaces.component.inputtext.InputTextRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlInputText</parent>
     <description>InputText is an extension to standard inputText with skinning capabilities.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
 		&input_component_attributes;
 		&html_input_text_attributes;
         &widget_var_attribute;
@@ -32,16 +32,23 @@
             <defaultValue>text</defaultValue>
             <description>Input field type. Default is text.</description>
         </attribute>
-	</attributes>
-	<resources>
+        <attribute>
+            <name>responsive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Adds form-control style to input for responsive grids. Default is true.</description>
+        </attribute>
+    </attributes>
+    <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>primefaces.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+    </resources>
 </component>

@@ -6,20 +6,20 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>selectOneRadio</tag>
-	<tagClass>org.primefaces.component.selectoneradio.SelectOneRadioTag</tagClass>
-	<componentClass>org.primefaces.component.selectoneradio.SelectOneRadio</componentClass>
-	<componentType>org.primefaces.component.SelectOneRadio</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.SelectOneRadioRenderer</rendererType>
-	<rendererClass>org.primefaces.component.selectoneradio.SelectOneRadioRenderer</rendererClass>
-	<parent>javax.faces.component.html.HtmlSelectOneRadio</parent>
+    <tag>selectOneRadio</tag>
+    <tagClass>org.primefaces.component.selectoneradio.SelectOneRadioTag</tagClass>
+    <componentClass>org.primefaces.component.selectoneradio.SelectOneRadio</componentClass>
+    <componentType>org.primefaces.component.SelectOneRadio</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.SelectOneRadioRenderer</rendererType>
+    <rendererClass>org.primefaces.component.selectoneradio.SelectOneRadioRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlSelectOneRadio</parent>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
 		&input_component_attributes;
         &widget_var_attribute;
         <attribute>
@@ -41,12 +41,12 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-			<name>columns</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
+            <name>columns</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
             <description>Defines the number of columns in grid layout.</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>onchange</name>
             <required></required>
@@ -82,19 +82,19 @@
             <name>plain</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
+            <defaultValue>true</defaultValue>
             <description>Plain mode displays radiobuttons using native browser rendering instead of themes.</description>
         </attribute>
-	</attributes>
+    </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>primefaces.css</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+    </resources>
 </component>

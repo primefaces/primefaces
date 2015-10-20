@@ -34,138 +34,146 @@ import org.primefaces.util.WidgetBuilder;
 public class InputTextareaRenderer extends InputRenderer {
 
     @Override
-	public void decode(FacesContext context, UIComponent component) {
-		InputTextarea inputTextarea = (InputTextarea) component;
+    public void decode(FacesContext context, UIComponent component) {
+        InputTextarea inputTextarea = (InputTextarea) component;
 
-        if(inputTextarea.isDisabled() || inputTextarea.isReadonly()) {
+        if (inputTextarea.isDisabled() || inputTextarea.isReadonly()) {
             return;
         }
 
         decodeBehaviors(context, inputTextarea);
 
-		String clientId = inputTextarea.getClientId(context);
+        String clientId = inputTextarea.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-		String submittedValue = params.get(clientId);
-        
-		inputTextarea.setSubmittedValue(submittedValue);
-        
+        String submittedValue = params.get(clientId);
+
+        inputTextarea.setSubmittedValue(submittedValue);
+
         //AutoComplete event
         String query = params.get(clientId + "_query");
-        if(query != null) {
+        if (query != null) {
             AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(inputTextarea, query);
             autoCompleteEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             inputTextarea.queueEvent(autoCompleteEvent);
         }
-	}
+    }
 
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		InputTextarea inputTextarea = (InputTextarea) component;
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        InputTextarea inputTextarea = (InputTextarea) component;
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String query = params.get(inputTextarea.getClientId(context) + "_query");
 
-        if(query != null) {
+        if (query != null) {
             encodeSuggestions(context, inputTextarea, query);
-        }
-        else {
+        } else {
             encodeMarkup(context, inputTextarea);
             encodeScript(context, inputTextarea);
         }
-	}
-    
+    }
+
     @SuppressWarnings("unchecked")
-    public void encodeSuggestions(FacesContext context, InputTextarea inputTextarea, String query) throws IOException {        
+    public void encodeSuggestions(FacesContext context, InputTextarea inputTextarea, String query) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<Object> items = inputTextarea.getSuggestions();
 
         writer.startElement("ul", inputTextarea);
         writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
 
-        for(Object item : items) {
+        for (Object item : items) {
             writer.startElement("li", null);
             writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
             writer.writeAttribute("data-item-value", item, null);
-            writer.writeText(item, null); 
-            
+            writer.writeText(item, null);
+
             writer.endElement("li");
         }
-        
+
         writer.endElement("ul");
     }
 
-	protected void encodeScript(FacesContext context, InputTextarea inputTextarea) throws IOException {
-		String clientId = inputTextarea.getClientId(context);
+    protected void encodeScript(FacesContext context, InputTextarea inputTextarea) throws IOException {
+        String clientId = inputTextarea.getClientId(context);
         boolean autoResize = inputTextarea.isAutoResize();
         String counter = inputTextarea.getCounter();
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("InputTextarea", inputTextarea.resolveWidgetVar(), clientId)
-            .attr("autoResize", autoResize)
-            .attr("maxlength", inputTextarea.getMaxlength(), Integer.MAX_VALUE);
-        
-        if(counter != null) {
+                .attr("autoResize", autoResize)
+                .attr("maxlength", inputTextarea.getMaxlength(), Integer.MAX_VALUE);
+
+        if (counter != null) {
             UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputTextarea, counter);
 
-        	wb.attr("counter", counterComponent.getClientId(context))
-            	.attr("counterTemplate", inputTextarea.getCounterTemplate(), null);
+            wb.attr("counter", counterComponent.getClientId(context))
+                    .attr("counterTemplate", inputTextarea.getCounterTemplate(), null);
         }
-        
-        if(inputTextarea.getCompleteMethod() != null) {
+
+        if (inputTextarea.getCompleteMethod() != null) {
             wb.attr("autoComplete", true)
-                .attr("minQueryLength", inputTextarea.getMinQueryLength())
-                .attr("queryDelay", inputTextarea.getQueryDelay())
-                .attr("scrollHeight", inputTextarea.getScrollHeight(), Integer.MAX_VALUE);
+                    .attr("minQueryLength", inputTextarea.getMinQueryLength())
+                    .attr("queryDelay", inputTextarea.getQueryDelay())
+                    .attr("scrollHeight", inputTextarea.getScrollHeight(), Integer.MAX_VALUE);
         }
 
         wb.finish();
-	}
+    }
 
-	protected void encodeMarkup(FacesContext context, InputTextarea inputTextarea) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = inputTextarea.getClientId(context);
-                
-		writer.startElement("textarea", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("name", clientId, null);
+    protected void encodeMarkup(FacesContext context, InputTextarea inputTextarea) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = inputTextarea.getClientId(context);
 
-		renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS_WITHOUT_EVENTS);
+        writer.startElement("textarea", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("name", clientId, null);
+
+        renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
-        
-        if(inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if(inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if(inputTextarea.getStyle() != null) writer.writeAttribute("style", inputTextarea.getStyle(), null);
-        if(inputTextarea.isRequired()) writer.writeAttribute("aria-required", "true", null);
-        
+
+        if (inputTextarea.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (inputTextarea.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", null);
+        }
+        if (inputTextarea.getStyle() != null) {
+            writer.writeAttribute("style", inputTextarea.getStyle(), null);
+        }
+        if (inputTextarea.isRequired()) {
+            writer.writeAttribute("aria-required", "true", null);
+        }
+
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
-        
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+
+        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputTextarea);
         }
 
         String valueToRender = ComponentUtils.getValueToRender(context, inputTextarea);
-		if(valueToRender != null) {
-            if(inputTextarea.isAddLine()) {
+        if (valueToRender != null) {
+            if (inputTextarea.isAddLine()) {
                 writer.writeText("\n", null);
             }
-            
-			writer.writeText(valueToRender, "value");
-		}
+
+            writer.writeText(valueToRender, "value");
+        }
 
         writer.endElement("textarea");
-	}
-    
+    }
+
     protected String createStyleClass(InputTextarea inputTextarea) {
         String defaultClass = InputTextarea.STYLE_CLASS;
         defaultClass = inputTextarea.isValid() ? defaultClass : defaultClass + " ui-state-error";
         defaultClass = !inputTextarea.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
-        
+        defaultClass = inputTextarea.isResponsive() ? defaultClass + " form-control" : defaultClass;
+
         String styleClass = inputTextarea.getStyleClass();
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
-        
-        if(inputTextarea.isAutoResize()) {
+
+        if (inputTextarea.isAutoResize()) {
             styleClass = styleClass + " ui-inputtextarea-resizable";
         }
-        
+
         return styleClass;
     }
 }

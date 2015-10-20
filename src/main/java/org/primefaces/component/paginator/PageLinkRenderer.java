@@ -34,7 +34,7 @@ public class PageLinkRenderer {
         
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
-        writer.writeText("p", null);
+//        writer.writeText("p", null);
         writer.endElement("span");
         
         writer.endElement("span");

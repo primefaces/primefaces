@@ -7,54 +7,54 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>inputTextarea</tag>
-	<tagClass>org.primefaces.component.inputtextarea.InputTextarea</tagClass>
+    <tag>inputTextarea</tag>
+    <tagClass>org.primefaces.component.inputtextarea.InputTextarea</tagClass>
     <componentHandlerClass>org.primefaces.component.inputtextarea.InputTextareaHandler</componentHandlerClass>
-	<componentClass>org.primefaces.component.inputtextarea.InputTextarea</componentClass>
-	<componentType>org.primefaces.component.InputTextarea</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.InputTextareaRenderer</rendererType>
-	<rendererClass>org.primefaces.component.inputtextarea.InputTextareaRenderer</rendererClass>
-	<parent>javax.faces.component.html.HtmlInputTextarea</parent>
+    <componentClass>org.primefaces.component.inputtextarea.InputTextarea</componentClass>
+    <componentType>org.primefaces.component.InputTextarea</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.InputTextareaRenderer</rendererType>
+    <rendererClass>org.primefaces.component.inputtextarea.InputTextareaRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlInputTextarea</parent>
     <description>InputTextarea is an extension to standard inputTextara with skinning capabilities and auto growing.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>org.primefaces.component.api.MixedClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.MixedClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
 		&input_component_attributes;
 		&html_input_textarea_attributes;
         &widget_var_attribute;
         <attribute>
-			<name>autoResize</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>autoResize</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Allows to expand height automatically when text input overflows.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>maxlength</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
+            <name>maxlength</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Sets maximum character number of text area container. Default is 0, means no limit.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>counter</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>counter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Id of the label component to display remaining characters.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>counterTemplate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>counterTemplate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Template text to display in counter, default value is "{0}".</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>completeMethod</name>
             <required>false</required>
@@ -90,19 +90,26 @@
             <defaultValue>false</defaultValue>
             <description>Adds a new line at start as a workaround to SGML specification B.3.1.</description>
         </attribute>
-	</attributes>
-	<resources>
+        <attribute>
+            <name>responsive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Adds form-control style to input for responsive grids. Default is true.</description>
+        </attribute>
+    </attributes>
+    <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>primefaces.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+    </resources>
 </component>

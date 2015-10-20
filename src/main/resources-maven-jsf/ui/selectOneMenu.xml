@@ -6,23 +6,23 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>selectOneMenu</tag>
-	<tagClass>org.primefaces.component.selectonemenu.SelectOneMenuTag</tagClass>
-	<componentClass>org.primefaces.component.selectonemenu.SelectOneMenu</componentClass>
-	<componentType>org.primefaces.component.SelectOneMenu</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.SelectOneMenuRenderer</rendererType>
-	<rendererClass>org.primefaces.component.selectonemenu.SelectOneMenuRenderer</rendererClass>
-	<parent>javax.faces.component.html.HtmlSelectOneMenu</parent>
+    <tag>selectOneMenu</tag>
+    <tagClass>org.primefaces.component.selectonemenu.SelectOneMenuTag</tagClass>
+    <componentClass>org.primefaces.component.selectonemenu.SelectOneMenu</componentClass>
+    <componentType>org.primefaces.component.SelectOneMenu</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.SelectOneMenuRenderer</rendererType>
+    <rendererClass>org.primefaces.component.selectonemenu.SelectOneMenuRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlSelectOneMenu</parent>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>org.primefaces.component.api.InputHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.InputHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
 		&input_component_attributes;
         &widget_var_attribute;
         <attribute>
@@ -111,31 +111,31 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-			<name>filter</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+            <name>filter</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
             <description>Displays an input filter for the list.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>filterMatchMode</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>filterMatchMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>filterFunction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>filterFunction</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Client side function to use in custom filterMatchMode.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>caseSensitive</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>caseSensitive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Defines if filtering would be case sensitive. Default is false.</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>maxlength</name>
             <required>false</required>
@@ -168,19 +168,26 @@
             <type>java.lang.String</type>
             <description>Displays label of the element in a custom template. Valid placeholder is {0}.</description>
         </attribute>
-	</attributes>
+        <attribute>
+            <name>responsive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Adds form-control style to input for responsive grids. Default is true.</description>
+        </attribute>
+    </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>primefaces.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+    </resources>
 </component>
