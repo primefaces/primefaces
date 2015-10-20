@@ -22,6 +22,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //metadata
         this.cfg.rows = this.cfg.rows == 0 ? this.cfg.rowCount : this.cfg.rows;
+        this.cfg.prevRows = this.cfg.rows;
         this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows)||1;
         this.cfg.pageLinks = this.cfg.pageLinks||10;
         this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPages})';
@@ -212,7 +213,10 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.currentReport.text(text);
 
         //rows per page dropdown
-        this.rppSelect.children('option').prop('selected', false).filter('option[value=' + this.cfg.rows + ']').prop('selected', true);
+        if(this.cfg.prevRows !== this.cfg.rows) {
+            this.rppSelect.filter(':not(.ui-state-focus)').children('option').filter('option[value=' + this.cfg.rows + ']').prop('selected', true);
+            this.cfg.prevRows = this.cfg.rows;
+        }
 
         //jump to page dropdown
         if(this.jtpSelect.length > 0) {
