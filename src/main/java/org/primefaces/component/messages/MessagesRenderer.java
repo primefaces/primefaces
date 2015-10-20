@@ -55,7 +55,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
             // clientId / SearchExpression case
             UIComponent forComponent = SearchExpressionFacade.resolveComponent(
-            		context, uiMessages, _for, SearchExpressionFacade.Options.IGNORE_NO_RESULT);
+            		context, uiMessages, _for, SearchExpressionFacade.Options.IGNORE_NO_RESULT | SearchExpressionFacade.Options.SKIP_UNRENDERED);
             if (forComponent != null) {
                 String forComponentClientId = forComponent.getClientId(context);
                 if (!_for.equals(forComponentClientId)) {
