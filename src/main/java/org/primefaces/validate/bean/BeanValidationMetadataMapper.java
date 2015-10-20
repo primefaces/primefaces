@@ -75,13 +75,39 @@ public class BeanValidationMetadataMapper {
         List<String> validatorIds = new ArrayList<String>();
         
         try {
+            // get BV ConstraintDescriptors
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractAllConstraintDescriptors(
                     context, requestContext, component.getValueExpression("value"));
 
             if (constraints != null && !constraints.isEmpty()) {
+                // loop BV ConstraintDescriptors
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                     Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
+                    // lookup ClientValidationConstraint by constraint annotation (e.g. @NotNull)
                     ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType);
+
+                    // mapping available? Otherwise try to lookup custom constraint
+                    if (clientValidationConstraint == null) {
+                        // custom constraint must use @ClientConstraint to map the ClientValidationConstraint
+                        ClientConstraint clientConstraint = annotationType.getAnnotation(ClientConstraint.class);
+                        if (clientConstraint != null) {
+                            Class<?> resolvedBy = clientConstraint.resolvedBy();
+
+                            if (resolvedBy != null) {
+                                try {
+                                    // TODO AppScoped instances?
+                                    // instantiate ClientValidationConstraint
+                                    clientValidationConstraint = (ClientValidationConstraint) resolvedBy.newInstance();
+                                }
+                                catch (InstantiationException ex) {
+                                    LOG.log(Level.SEVERE, null, ex);
+                                }
+                                catch (IllegalAccessException ex) {
+                                    LOG.log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }
+                    }
 
                     if (clientValidationConstraint != null) {
                         String validatorId = clientValidationConstraint.getValidatorId();
@@ -92,34 +118,6 @@ public class BeanValidationMetadataMapper {
 
                         if (validatorId != null)
                             validatorIds.add(validatorId);
-                    }
-                    else {
-                        ClientConstraint clientConstraint = annotationType.getAnnotation(ClientConstraint.class);
-                        if (clientConstraint != null) {
-                            Class<?> resolvedBy = clientConstraint.resolvedBy();
-
-                            if (resolvedBy != null) {
-                                try {
-                                    ClientValidationConstraint customClientValidationConstraint = (ClientValidationConstraint) resolvedBy.newInstance();
-
-                                    String validatorId = customClientValidationConstraint.getValidatorId();
-                                    Map<String,Object> constraintMetadata = customClientValidationConstraint.getMetadata(constraintDescriptor);
-
-                                    if (constraintMetadata != null)
-                                        metadata.putAll(constraintMetadata);
-
-                                    if (validatorId != null)
-                                        validatorIds.add(validatorId);
-
-                                }
-                                catch (InstantiationException ex) {
-                                    LOG.log(Level.SEVERE, null, ex);
-                                }
-                                catch (IllegalAccessException ex) {
-                                    LOG.log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        }
                     }
                 }
             }

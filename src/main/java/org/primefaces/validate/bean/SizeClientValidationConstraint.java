@@ -29,7 +29,7 @@ public class SizeClientValidationConstraint implements ClientValidationConstrain
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
         Map<String,Object> metadata = new HashMap<String, Object>();
         Map attrs = constraintDescriptor.getAttributes();
-        Object message = attrs.get("message");
+        Object message = attrs.get(ATTR_MESSAGE);
 
         metadata.put(HTML.VALIDATION_METADATA.MIN_LENGTH, attrs.get("min"));
         metadata.put(HTML.VALIDATION_METADATA.MAX_LENGTH, attrs.get("max"));
