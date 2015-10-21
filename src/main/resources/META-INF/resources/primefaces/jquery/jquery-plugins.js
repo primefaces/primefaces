@@ -13077,9 +13077,9 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 
 /*
     jQuery Masked Input Plugin
-    Copyright (c) 2007 - 2014 Josh Bush (digitalbush.com)
+    Copyright (c) 2007 - 2015 Josh Bush (digitalbush.com)
     Licensed under the MIT license (http://digitalbush.com/projects/masked-input-plugin/#license)
-    Version: 1.4.0
+    Version: 1.4.1
 */
 !function(factory) {
     "function" == typeof define && define.amd ? define([ "jquery" ], factory) : factory("object" == typeof exports ? require("jquery") : jQuery);
@@ -13164,7 +13164,7 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
                 }
                 function androidInputEvent() {
                     var curVal = input.val(), pos = input.caret();
-                    if (curVal.length < oldVal.length) {
+                    if (oldVal && oldVal.length && oldVal.length > curVal.length) {
                         for (checkVal(!0); pos.begin > 0 && !tests[pos.begin - 1]; ) pos.begin--;
                         if (0 === pos.begin) for (;pos.begin < firstNonMaskPos && !tests[pos.begin]; ) pos.begin++;
                         input.caret(pos.begin, pos.begin);
@@ -13243,7 +13243,7 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
                         clearTimeout(caretTimeoutId);
                         var pos;
                         focusText = input.val(), pos = checkVal(), caretTimeoutId = setTimeout(function() {
-                            writeBuffer(), pos == mask.replace("?", "").length ? input.caret(0, pos) : input.caret(pos);
+                            input.get(0) === document.activeElement && (writeBuffer(), pos == mask.replace("?", "").length ? input.caret(0, pos) : input.caret(pos));
                         }, 10);
                     }
                 }).on("blur.mask", blurEvent).on("keydown.mask", keydownEvent).on("keypress.mask", keypressEvent).on("input.mask paste.mask", function() {
