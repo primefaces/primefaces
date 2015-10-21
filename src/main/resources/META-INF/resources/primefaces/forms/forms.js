@@ -2033,20 +2033,6 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
             else
                 button.removeClass('ui-state-active');
         })
-        .on('keyup', function(e) {
-            var keyCode = $.ui.keyCode;
-            if(e.which === keyCode.SPACE) {
-                var input = $(this),
-                button = input.parent();
-            
-                if(input.prop('checked'))
-                    $this.unselect(button);
-                else
-                    $this.select(button);
-                    
-                e.preventDefault();
-            }
-        })
         .on('click', function(e) {            
             e.stopPropagation();
         })
