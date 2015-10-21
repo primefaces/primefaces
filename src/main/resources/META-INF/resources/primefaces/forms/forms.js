@@ -1987,16 +1987,19 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
         .on('mouseout', function() {
             $(this).removeClass('ui-state-hover');
         })
-        .on('click', function() {
-            var button = $(this);
+        .on('click', function(e) {
+            var button = $(this),
+            input = $this.inputs.eq(button.index());
 
-            if(button.hasClass('ui-state-active')) {
+            if(button.hasClass('ui-state-active'))
                 button.addClass('ui-state-hover');
-                $this.unselect(button);
-            }
-            else {
+            else
                 button.removeClass('ui-state-hover');
-                $this.select(button);
+            
+            input.trigger('click');
+            
+            if(PrimeFaces.env.browser.msie && PrimeFaces.isLtIE(9)) {
+                input.trigger('change');
             }
         });
         
@@ -2030,25 +2033,25 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
             else
                 button.removeClass('ui-state-active');
         })
-        .on('keydown', function(e) {
-            var input = $(this);
-    
-            if(e.which === $.ui.keyCode.SPACE) {
-                if(input.prop('checked')) {
-                    input.prop('checked', false).change();
-                    input.parent().addClass('ui-state-focus');
-                }
-                    
-                else {
-                    input.prop('checked', true).change();
-                    input.parent().removeClass('ui-state-focus');
-                }
+        .on('keyup', function(e) {
+            var keyCode = $.ui.keyCode;
+            if(e.which === keyCode.SPACE) {
+                var input = $(this),
+                button = input.parent();
+            
+                if(input.prop('checked'))
+                    $this.unselect(button);
+                else
+                    $this.select(button);
                     
                 e.preventDefault();
             }
-        });
+        })
+        .on('click', function(e) {            
+            e.stopPropagation();
+        })
     },
-
+    
     select: function(button) {
         button.children(':checkbox').prop('checked', true).change();
     },
