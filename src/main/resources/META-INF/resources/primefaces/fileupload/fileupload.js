@@ -1736,7 +1736,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             paramName: this.id,
             dataType: 'xml',
             dropZone: (this.cfg.dnd === false) ? null : this.jq,
-            forceIframeTransport: PrimeFaces.isIE(10),
             sequentialUploads: this.cfg.sequentialUploads,
             formData: function() {
                 return $this.createPostData();
