@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
+import org.primefaces.component.api.UIData;
 import org.primefaces.util.ComponentUtils;
 
 /**
@@ -54,6 +55,9 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
                     return VisitResult.COMPLETE;
                 }
             }
+        }
+        else if (target instanceof UIData) {
+            return VisitResult.REJECT;
         }
         
         return VisitResult.ACCEPT;
