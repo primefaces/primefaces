@@ -139,11 +139,19 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
     protected void handleAjaxException(FacesContext context, Throwable rootCause, ExceptionInfo info) throws Exception {
         ExternalContext externalContext = context.getExternalContext();
-
+        PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
+        
         boolean responseResetted = false;
 
         if (context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
             if (!externalContext.isResponseCommitted()) {
+                //mojarra workaround to avoid invalid partial output due to open tags
+                if(writer != null) {
+                    writer.endCDATA();
+                    writer.endUpdate();
+                    writer.endDocument();
+                }
+                
                 String characterEncoding = externalContext.getResponseCharacterEncoding();
                 externalContext.responseReset();
                 externalContext.setResponseCharacterEncoding(characterEncoding);
@@ -173,8 +181,6 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getResponseCharacterEncoding());
             externalContext.addResponseHeader("Cache-Control", "no-cache");
             externalContext.setResponseContentType("text/xml");
-
-            PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
 
             writer.startDocument();
             // only start a new "changes" node if the viewroot isn't namespaced (just occurs in portlets)
@@ -353,7 +359,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getResponseCharacterEncoding());
             externalContext.addResponseHeader("Cache-Control", "no-cache");
             externalContext.setResponseContentType("text/xml");
-
+            
             writer.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
             writer.startElement("partial-response", null);
             writer.startElement("redirect", null);
