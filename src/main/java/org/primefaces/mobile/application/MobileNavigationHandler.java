@@ -39,7 +39,7 @@ public class MobileNavigationHandler extends ConfigurableNavigationHandler {
 
             RequestContext requestContext = RequestContext.getCurrentInstance();
             if(requestContext != null) {
-                requestContext.execute(command.toString());
+                requestContext.execute(command);
             }
         }
         else {

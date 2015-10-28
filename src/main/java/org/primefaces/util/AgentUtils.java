@@ -43,7 +43,7 @@ public class AgentUtils {
                 return false;
             }
             else {
-                int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(";", index))).intValue();
+                int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(';', index))).intValue();
                 
                 return version == value;
             }
@@ -63,7 +63,7 @@ public class AgentUtils {
                 return false;
             }
             else {
-                int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(";", index))).intValue();
+                int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(';', index))).intValue();
                 
                 return version > value;
             }

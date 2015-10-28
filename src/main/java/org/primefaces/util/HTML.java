@@ -203,7 +203,7 @@ public class HTML {
     
     public final static String WIDGET_VAR = "data-widget";
     
-    public class VALIDATION_METADATA {
+    public static class VALIDATION_METADATA {
         public static final String LABEL = "data-p-label";
         public static final String REQUIRED = "data-p-required";
         public static final String MIN_LENGTH = "data-p-minlength";

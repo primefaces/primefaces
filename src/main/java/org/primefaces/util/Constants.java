@@ -17,7 +17,7 @@ package org.primefaces.util;
 
 public class Constants {
 
-    public class ContextParams {
+    public static class ContextParams {
         // JSF context params
         public static final String INTERPRET_EMPTY_STRING_AS_NULL = "javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL";
         
@@ -39,7 +39,7 @@ public class Constants {
         public static final String BEAN_VALIDATION_DISABLED = "javax.faces.validator.DISABLE_DEFAULT_BEAN_VALIDATOR";
     }
 
-    public class RequestParams {
+    public static class RequestParams {
         // JSF request params
         public static final String PARTIAL_REQUEST_PARAM = "javax.faces.partial.ajax";
         public static final String PARTIAL_UPDATE_PARAM = "javax.faces.partial.render";
@@ -65,7 +65,7 @@ public class Constants {
     public final static String FRAGMENT_ID = "primefaces.fragment";
     public final static String FRAGMENT_AUTO_RENDERED = "primefaces.fragment.autorendered";
     
-    public class DIALOG_FRAMEWORK {
+    public static class DIALOG_FRAMEWORK {
         public final static String OUTCOME = "dialog.outcome";
         public final static String OPTIONS = "dialog.options";
         public final static String PARAMS = "dialog.params";

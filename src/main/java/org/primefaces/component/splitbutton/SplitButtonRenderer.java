@@ -106,7 +106,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
         
 		if(onclick.length() > 0) {
-			writer.writeAttribute("onclick", onclick.toString(), "onclick");
+			writer.writeAttribute("onclick", onclick, "onclick");
 		}
 		
 		renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);

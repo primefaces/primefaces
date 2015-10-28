@@ -44,7 +44,7 @@ public class DialogViewHandler extends ViewHandlerWrapper {
             return url;
         }
         else {
-            if(url.indexOf("?") == -1)
+            if(url.indexOf('?') == -1)
                 return url + "?pfdlgcid=" + pfdlgcid;
             else
                 return url + "&pfdlgcid=" + pfdlgcid;

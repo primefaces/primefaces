@@ -54,7 +54,7 @@ public class MobileUtils {
         }
         
         String viewMeta = outcome.split("pm:")[1];
-        int optionsIndex = viewMeta.indexOf("?");
+        int optionsIndex = viewMeta.indexOf('?');
         String viewName = (optionsIndex == -1) ? viewMeta : viewMeta.substring(0, optionsIndex);
         StringBuilder command = new StringBuilder();
         

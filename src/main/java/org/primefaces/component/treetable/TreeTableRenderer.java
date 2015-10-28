@@ -230,7 +230,7 @@ public class TreeTableRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", TreeTable.SCROLLABLE_BODY_CLASS, null);
-        if(scrollHeight != null && scrollHeight.indexOf("%") == -1) {
+        if(scrollHeight != null && scrollHeight.indexOf('%') == -1) {
             writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
         }
         writer.startElement("table", null);

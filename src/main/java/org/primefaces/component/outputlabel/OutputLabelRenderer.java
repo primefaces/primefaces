@@ -78,7 +78,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                     }
                     else {
                         String labelString = value;
-                        int colonPos = labelString.lastIndexOf(":");
+                        int colonPos = labelString.lastIndexOf(':');
                         
                         if(colonPos != -1) {
                             labelString = labelString.substring(0, colonPos);

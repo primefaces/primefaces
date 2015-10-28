@@ -42,7 +42,7 @@ public class SearchExpressionFacade {
 
     private static final char[] EXPRESSION_SEPARATORS = new char[] { ',', ' ' };
 
-    public class Options {
+    public static class Options {
         public static final int NONE = 0x0;
 
         /**

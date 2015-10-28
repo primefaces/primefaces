@@ -126,7 +126,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         
         //remove query string
         String imagePath = cropper.getImage();
-        int queryStringIndex = imagePath.indexOf("?");
+        int queryStringIndex = imagePath.indexOf('?');
         if(queryStringIndex != -1 ) {
             imagePath = imagePath.substring(0, queryStringIndex);
         }
