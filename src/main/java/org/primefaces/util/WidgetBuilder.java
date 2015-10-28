@@ -245,6 +245,20 @@ public class WidgetBuilder {
         return this;
     }
     
+    public WidgetBuilder returnCallback(String name, String signature, String callback) throws IOException {
+        if(callback != null) {
+            context.getResponseWriter().write(",");
+	        context.getResponseWriter().write(name);
+	        context.getResponseWriter().write(":");
+	        context.getResponseWriter().write(signature);
+	        context.getResponseWriter().write("{return ");
+	        context.getResponseWriter().write(callback);
+	        context.getResponseWriter().write("}");
+        }
+        
+        return this;
+    }
+    
     public WidgetBuilder callback(String name, String callback) throws IOException {
         if(callback != null) {
             context.getResponseWriter().write(",");
