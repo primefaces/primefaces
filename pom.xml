@@ -477,6 +477,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/tabview.js</include>
                             </includes>
                         </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/inputnumber.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/0-autoNumeric.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/1-jquery.metadata.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/2-inputnumber.js</include>
+                            </includes>
+                        </aggregation>
                     </aggregations>
                 </configuration>
             </plugin>
@@ -705,6 +714,15 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/overlaypanel.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/panel.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/tabview.js</include>
+                                    </includes>
+                                </aggregation>
+                                <aggregation>
+                                    <insertNewLine>true</insertNewLine>
+                                    <output>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/inputnumber.js</output>
+                                    <includes>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/0-autoNumeric.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/1-jquery.metadata.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/2-inputnumber.js</include>
                                     </includes>
                                 </aggregation>
                             </aggregations>

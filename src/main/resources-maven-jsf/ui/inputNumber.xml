@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>inputNumber</tag>
+	<tagClass>org.primefaces.component.inputnumber.InputNumber</tagClass>
+	<componentClass>org.primefaces.component.inputnumber.InputNumber</componentClass>
+	<componentType>org.primefaces.component.InputNumber</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.InputNumberRenderer</rendererType>
+	<rendererClass>org.primefaces.component.inputnumber.InputNumberRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <description>InputNumber is an extension to the inputText with optimized handling for numbers.</description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+		&html_input_text_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>text</defaultValue>
+            <description>Input field type. Default is text.</description>
+        </attribute>
+        <attribute>
+            <name>decimalSeparator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>.</defaultValue>
+            <description>Decimal separator char. Default is '.'.</description>
+        </attribute>
+        <attribute>
+            <name>thousandSeparator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>,</defaultValue>
+            <description>Thousand separator char. Default is ','.</description>
+        </attribute>
+        <attribute>
+            <name>symbol</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue></defaultValue>
+            <description>Desired symbol or unit. Default is none.</description>
+        </attribute>
+        <attribute>
+            <name>symbolPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue></defaultValue>
+            <description>Symbol suffix. Default is prefix.</description>
+        </attribute>
+        <attribute>
+            <name>minValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue></defaultValue>
+            <description>Minimum values. Default is 0.00.</description>
+        </attribute>
+        <attribute>
+            <name>maxValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue></defaultValue>
+            <description>Maximum values. Default is 999999999.99.</description>
+        </attribute>
+        <attribute>
+            <name>roundMethod</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue></defaultValue>
+            <description>Controls the rounding method. Default is Round-Half-Up Symmetric.</description>
+        </attribute>
+        <attribute>
+            <name>decimalPlaces</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue></defaultValue>
+            <description>Number of decimal places. Default are taken from minValue and MaxValue.</description>
+        </attribute>
+        <attribute>
+            <name>emptyValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>empty</defaultValue>
+            <description>Controls empty input display behavior, options are empty, zero, sign. Default is empty.</description>
+        </attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>primefaces.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+		<resource>
+			<name>primefaces.js</name>
+		</resource>
+		<resource>
+			<name>inputnumber/inputnumber.js</name>
+		</resource>
+		<resource>
+			<name>inputnumber/inputnumber.css</name>
+		</resource>
+	</resources>
+</component>
