@@ -258,6 +258,13 @@
             <type>java.lang.String</type>
             <description>PlaceHolder in mask template.</description>
         </attribute>
+        <attribute>
+			<name>maskAutoClear</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Clears the field on blur when incomplete input is entered.</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>

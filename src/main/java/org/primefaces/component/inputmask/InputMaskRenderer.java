@@ -76,7 +76,8 @@ public class InputMaskRenderer extends InputRenderer {
         
         if(mask != null) {
             wb.attr("mask", mask)
-                .attr("placeholder", slotChar, null);
+                .attr("placeholder", slotChar, null)
+                .attr("autoclear", inputMask.isAutoClear(), true);
         }
 
         wb.finish();
