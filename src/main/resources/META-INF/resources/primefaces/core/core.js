@@ -583,8 +583,8 @@
         },
         
         getAriaLabel: function(key) {
-            var ariaKeys = this.getLocaleSettings()['aria']||PrimeFaces.locales['en_US']['aria'];
-            return ariaKeys[key];
+            var ariaLocaleSettings = this.getLocaleSettings()['aria'];
+            return (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
         },
         
         zindex : 1000,
@@ -664,6 +664,8 @@
         }
 
     };
+    
+    PrimeFaces.locales['en'] = PrimeFaces.locales['en_US'];
 
     PF = function(widgetVar) {
     	var widgetInstance = PrimeFaces.widgets[widgetVar];
