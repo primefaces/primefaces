@@ -38,6 +38,7 @@ public class RowTogglerRenderer extends CoreRenderer {
         
         writer.startElement("div", toggler);
         writer.writeAttribute("class", togglerClass, null);
+        writer.writeAttribute("tabindex", toggler.getTabindex(), null);
         
         if(!iconOnly) {
             writeLabel(writer, expandLabel, !expanded);

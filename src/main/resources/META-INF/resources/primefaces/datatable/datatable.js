@@ -638,9 +638,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         togglerSelector = '> tr > td > div.ui-row-toggler';
         
         this.tbody.off('click.datatable-expansion', togglerSelector)
-                    .on('click.datatable-expansion', togglerSelector, null, function() {
-                        $this.toggleExpansion($(this));
-                    });
+            .on('click.datatable-expansion', togglerSelector, null, function() {
+                $this.toggleExpansion($(this));
+            })
+            .on('keydown.datatable-expansion', togglerSelector, null, function(e) {
+                var key = e.which,
+                keyCode = $.ui.keyCode;
+
+                if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                    $this.toggleExpansion($(this));
+                    e.preventDefault();
+                }
+            });
     },
     
     initReflow: function() {
