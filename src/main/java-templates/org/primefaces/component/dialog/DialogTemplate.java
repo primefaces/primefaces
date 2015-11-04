@@ -30,6 +30,8 @@ import javax.el.ELContext;
     public static final String MOBILE_CONTENT_CLASS = "ui-content";
     public static final String MOBILE_CLOSE_ICON_CLASS = "ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext ui-btn-left";
 
+    public static final String ARIA_CLOSE = "primefaces.dialog.aria.CLOSE";
+
     private final static String DEFAULT_EVENT = "close";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("close","minimize","maximize","move","restoreMinimize","restoreMaximize"));

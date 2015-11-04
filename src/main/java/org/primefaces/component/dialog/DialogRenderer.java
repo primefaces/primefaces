@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class DialogRenderer extends CoreRenderer {
@@ -140,15 +141,15 @@ public class DialogRenderer extends CoreRenderer {
         writer.endElement("span");
         
         if(dialog.isClosable()) {
-            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS);
+            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS, MessageFactory.getMessage(Dialog.ARIA_CLOSE, null));
         }
         
         if(dialog.isMaximizable()) {
-            encodeIcon(context, Dialog.TITLE_BAR_MAXIMIZE_CLASS, Dialog.MAXIMIZE_ICON_CLASS);
+            encodeIcon(context, Dialog.TITLE_BAR_MAXIMIZE_CLASS, Dialog.MAXIMIZE_ICON_CLASS, null);
         }
                 
         if(dialog.isMinimizable()) {
-            encodeIcon(context, Dialog.TITLE_BAR_MINIMIZE_CLASS, Dialog.MINIMIZE_ICON_CLASS);
+            encodeIcon(context, Dialog.TITLE_BAR_MINIMIZE_CLASS, Dialog.MINIMIZE_ICON_CLASS, null);
         }
         
         writer.endElement("div");
@@ -189,12 +190,15 @@ public class DialogRenderer extends CoreRenderer {
         writer.endElement("div");
     }
     
-    protected void encodeIcon(FacesContext context, String anchorClass, String iconClass) throws IOException {
+    protected void encodeIcon(FacesContext context, String anchorClass, String iconClass, String ariaLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", anchorClass, null);
+        if(ariaLabel != null) {
+            writer.writeAttribute("aria-label", ariaLabel, null);
+        }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
