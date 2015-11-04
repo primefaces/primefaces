@@ -33,3 +33,18 @@
     display: block;
     padding-left: 2.2em;
 }
+
+.ui-columntoggler .ui-columntoggler-close {
+    float: right;
+    margin-top: 1px;
+    margin-right: 1px;
+
+}
+
+.ui-columntoggler .ui-columntoggler-close:focus {
+    outline: dotted thin;
+}
+
+.ui-columntoggler .ui-columntoggler-items {
+    padding:1em 0.4em 0.4em 0.4em;
+}
