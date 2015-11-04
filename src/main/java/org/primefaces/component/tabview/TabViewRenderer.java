@@ -228,11 +228,13 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("aria-label", tab.getAriaLabel(), null);
         if(tab.getTitleStyle() != null)  writer.writeAttribute("style", tab.getTitleStyle(), null);
         if(tab.getTitletip() != null)  writer.writeAttribute("title", tab.getTitletip(), null);
-
+        if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+        
         //title
         writer.startElement("a", null);
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
-        if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+        writer.writeAttribute("role", "presentation", null);
+        writer.writeAttribute("tabindex", "-1", null);
         if(titleFacet == null) {
         	String tabTitle = tab.getTitle(); 
         	if(tabTitle != null) {
