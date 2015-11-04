@@ -33,7 +33,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                     
             var item = $('<li class="ui-columntoggler-item">' + 
                     '<div class="ui-chkbox ui-widget">' +
-                    '<div class="ui-helper-hidden-accessible"><input type="checkbox" readonly="readonly" aria-label="' + columnTitle +'"></div>' +
+                    '<div class="ui-helper-hidden-accessible"><input type="checkbox" readonly="readonly"></div>' +
                     '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div>' + 
                     '</div>'
                     + '<label>' + columnTitle + '</label></li>').data('column', column.attr('id'));
