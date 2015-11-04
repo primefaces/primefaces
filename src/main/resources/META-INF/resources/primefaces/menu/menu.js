@@ -1729,6 +1729,7 @@ PrimeFaces.widget.TabMenu = PrimeFaces.widget.Menu.extend({
         this.items = this.jq.find('> .ui-tabmenu-nav > li:not(.ui-state-disabled)');
 
         this.bindEvents();
+        this.bindKeyEvents();
     },
     
     bindEvents: function() {
@@ -1741,5 +1742,31 @@ PrimeFaces.widget.TabMenu = PrimeFaces.widget.Menu.extend({
                 .on('mouseout.tabmenu', function(e) {
                     $(this).removeClass('ui-state-hover');
                 });
+    },
+    
+    bindKeyEvents: function() {
+        
+        this.items.attr('tabindex', 0);
+        
+        this.items.on('focus.tabmenu', function(e) {
+            $(this).addClass('ui-menuitem-outline');
+        })
+        .on('blur.tabmenu', function(){
+            $(this).removeClass('ui-menuitem-outline');
+        })
+        .on('keydown.tabmenu', function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+
+            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                var currentLink = $(this).children('a');
+                currentLink.trigger('click');
+                var href = currentLink.attr('href');
+                if(href && href !== '#') {
+                    window.location.href = href;
+                }
+                e.preventDefault();
+            }
+        });
     }
 });

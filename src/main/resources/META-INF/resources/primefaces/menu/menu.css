@@ -408,7 +408,7 @@
     margin-left: 20px;
 }
 
-.ui-panelmenu .ui-menuitem-outline {
+.ui-menuitem-outline {
     outline: 1px dotted;
     z-index: 1;
 }
