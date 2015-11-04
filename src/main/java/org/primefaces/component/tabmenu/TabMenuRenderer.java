@@ -85,6 +85,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("class", containerClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute("aria-expanded", String.valueOf(active), null);
+        writer.writeAttribute("aria-selected", String.valueOf(active), null);
 
         encodeMenuItem(context, menu, item);
         
