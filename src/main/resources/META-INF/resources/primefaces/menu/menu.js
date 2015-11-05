@@ -1745,8 +1745,8 @@ PrimeFaces.widget.TabMenu = PrimeFaces.widget.Menu.extend({
     },
     
     bindKeyEvents: function() {
-        /* For Screen Readers */
-        this.items.attr('tabindex', 0).children('a').attr('role','presentation');
+        /* For Keyboard accessibility and Screen Readers */
+        this.items.attr('tabindex', 0);
         
         this.items.on('focus.tabmenu', function(e) {
             $(this).addClass('ui-menuitem-outline');
