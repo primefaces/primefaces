@@ -233,6 +233,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         //text
         writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_label", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
         writer.writeText(fileUpload.getLabel(), "value");
         writer.endElement("span");
