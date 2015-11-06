@@ -1568,7 +1568,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             
             if(expanded) {
                 if(iconOnly) {
-                    toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
+                    toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s').attr('aria-expanded', false);
                 }
                 else {
                     labels.eq(0).removeClass('ui-helper-hidden');
@@ -1587,7 +1587,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 
                 if(iconOnly) {
-                    toggler.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
+                    toggler.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e').attr('aria-expanded', true);
                 }
                 else {
                     labels.eq(0).addClass('ui-helper-hidden');

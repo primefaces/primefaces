@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.MessageFactory;
 
 public class RowTogglerRenderer extends CoreRenderer {
 
@@ -35,10 +36,14 @@ public class RowTogglerRenderer extends CoreRenderer {
         String collapseLabel = toggler.getCollapseLabel();
         boolean iconOnly = (expandLabel == null && collapseLabel == null);
         String togglerClass = iconOnly ? DataTable.ROW_TOGGLER_CLASS + " " + icon : DataTable.ROW_TOGGLER_CLASS;
+        String ariaLabel = MessageFactory.getMessage(RowToggler.ROW_TOGGLER, null);
         
         writer.startElement("div", toggler);
         writer.writeAttribute("class", togglerClass, null);
         writer.writeAttribute("tabindex", toggler.getTabindex(), null);
+        writer.writeAttribute("role", "menuitem", null);
+        writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
+        writer.writeAttribute("aria-label", ariaLabel, null);
         
         if(!iconOnly) {
             writeLabel(writer, expandLabel, !expanded);
