@@ -228,5 +228,12 @@
 			<type>java.lang.String</type>
             <description>Form to serialize for an ajax request. Default is the enclosing form.</description>
 		</attribute>
+        <attribute>
+			<name>escape</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether value would be escaped or not, defaults to true.</description>
+		</attribute>
 	</attributes>
 </component>

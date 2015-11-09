@@ -252,10 +252,15 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
         
-        if(value != null)
-            writer.writeText(value, "value");
-        else if(menuitem.shouldRenderChildren())
+        if(value != null) {
+            if(menuitem.isEscape())
+                writer.writeText(value, "value");
+            else
+                writer.write(value.toString());
+        }
+        else if(menuitem.shouldRenderChildren()) {
             renderChildren(context, (UIComponent) menuitem);
+        }
 
         writer.endElement("span");
     }

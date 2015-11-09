@@ -66,6 +66,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String partialSubmitFilter;
     private String confirmationScript;
     private String form;
+    private boolean escape = true;
     
     public DefaultMenuItem() {}
     
@@ -430,5 +431,13 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     
     public boolean requiresConfirmation() {
         return this.confirmationScript != null;
+    }
+
+    public boolean isEscape() {
+        return escape;
+    }
+
+    public void setEscape(boolean escape) {
+        this.escape = escape;
     }
 }
