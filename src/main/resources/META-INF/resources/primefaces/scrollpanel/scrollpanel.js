@@ -1394,10 +1394,15 @@
 /* 
  * PrimeFaces ScrollPanel Widget 
  */
-PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.DeferredWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
+        
+        this.renderDeferred();
+    },
+    
+    _render: function() {
         this.jsp = this.jq.jScrollPane(this.cfg).data('jsp');
     },
     
