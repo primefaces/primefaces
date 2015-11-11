@@ -41,7 +41,7 @@ public class RowTogglerRenderer extends CoreRenderer {
         writer.startElement("div", toggler);
         writer.writeAttribute("class", togglerClass, null);
         writer.writeAttribute("tabindex", toggler.getTabindex(), null);
-        writer.writeAttribute("role", "menuitem", null);
+        writer.writeAttribute("role", "button", null);
         writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
         writer.writeAttribute("aria-label", ariaLabel, null);
         
