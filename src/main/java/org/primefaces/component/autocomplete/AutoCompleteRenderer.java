@@ -205,14 +205,23 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
             else {
                 Object submittedValue = ac.getSubmittedValue();
-                itemLabel = (submittedValue == null) ? null : String.valueOf(submittedValue);
                 
                 Object value = ac.getValue();
                 
-                if(itemLabel == null && value != null) {
+                if(submittedValue == null && value != null) {
                     requestMap.put(var, value);
                     itemLabel = ac.getItemLabel();
                 }
+                else if(submittedValue != null) {
+                    // retrieve the actual item (pojo) from the converter
+                	Object item = getConvertedValue(context, ac, String.valueOf(submittedValue));
+                    requestMap.put(var, item);
+                    itemLabel = ac.getItemLabel();
+                }
+                else {
+                	itemLabel = null;
+                }
+
             }
 
             if(itemLabel != null) {
