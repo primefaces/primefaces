@@ -332,7 +332,16 @@ public class AutoCompleteRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         String inputId = clientId + "_input";
-        List values = (List) ac.getValue();
+        
+        List values;
+        if(ac.isValid()) {
+            values = (List) ac.getValue();
+        }
+        else {
+            Object submittedValue = ac.getSubmittedValue();
+            values = (List) getConvertedValue(context, ac, submittedValue);
+        }
+        
         List<String> stringValues = new ArrayList<String>();
         boolean disabled = ac.isDisabled();
         
