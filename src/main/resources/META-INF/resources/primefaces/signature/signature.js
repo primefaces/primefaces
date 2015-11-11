@@ -253,9 +253,15 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
         this._super(cfg);
-        this.input = this.jq.children('input');
+        this.input = this.jq.children(this.jqId + '_value');
+        this.base64Input = this.jq.children(this.jqId + '_base64');
         this.cfg.syncField = this.input;
-      
+        
+        var $this = this;
+        this.cfg.change = function() {
+            $this.handleChange();
+        }
+        
         if(PrimeFaces.env.isCanvasSupported()) {
             this.render();
         }
@@ -270,18 +276,34 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
     clear: function() {
         this.jq.signature('clear');
         this.input.val('');
+        this.base64Input.val('');
     },
 
     draw: function(value) {
         this.jq.signature('draw', value);
+        if(this.cfg.base64) {
+            this.base64Input.val(this.canvasEL.toDataURL());
+        }
     },
     
     render: function() {
         this.jq.signature(this.cfg);
+        
+        this.canvasEL = this.jq.children('canvas').get(0);
 
         var value = this.input.val();
         if(value) {
             this.draw(value);
+        }
+    },
+    
+    handleChange: function() {
+        if(this.cfg.base64) {
+            this.base64Input.val(this.canvasEL.toDataURL());
+        }
+        
+        if(this.cfg.onchange) {
+            this.cfg.onchange.call(this);
         }
     }
 

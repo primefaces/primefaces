@@ -30,7 +30,12 @@ public class SignatureRenderer extends CoreRenderer {
         Signature signature = (Signature) component;
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(signature.getClientId(context) + "_value");
+        String base64Value = params.get(signature.getClientId(context) + "_base64");
         signature.setSubmittedValue(value);
+        
+        if(base64Value != null) {
+            signature.setBase64Value(base64Value);
+        }
     }
 
     @Override
@@ -52,7 +57,11 @@ public class SignatureRenderer extends CoreRenderer {
         if(style != null) writer.writeAttribute("style", style, null);
         if(styleClass != null) writer.writeAttribute("class", styleClass, null);
         
-        encodeInputField(context, signature);
+        encodeInputField(context, signature, clientId + "_value", signature.getValue());
+        
+        if(signature.getValueExpression("base64Value") != null) {
+            encodeInputField(context, signature, clientId + "_base64", null);
+        }
         
         writer.endElement("div");
     }
@@ -69,20 +78,22 @@ public class SignatureRenderer extends CoreRenderer {
             .attr("guidelineColor", signature.getGuidelineColor(), null)
             .attr("guidelineOffset", signature.getGuidelineOffset(), 25)
             .attr("guidelineIndent", signature.getGuidelineIndent(), 10)
-            .callback("change", "function()", signature.getOnchange());
+            .callback("onchange", "function()", signature.getOnchange());
+        
+        if(signature.getValueExpression("base64Value") != null) {
+            wb.attr("base64", true);
+        }
             
         wb.finish();
     }
     
-    protected void encodeInputField(FacesContext context, Signature signature) throws IOException {
+    protected void encodeInputField(FacesContext context, Signature signature, String name, Object value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String inputId = signature.getClientId(context) + "_value";
-        Object value = signature.getValue();
 
 		writer.startElement("input", null);
 		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", inputId, null);
-		writer.writeAttribute("name", inputId, null);
+		writer.writeAttribute("id", name, null);
+		writer.writeAttribute("name", name, null);
         writer.writeAttribute("autocomplete", "off", null);
         if(value != null) {
             writer.writeAttribute("value", value, null);

@@ -95,6 +95,12 @@
 			<type>java.lang.String</type>
             <description>Client side callback to execute when signature changes.</description>
 		</attribute>
+        <attribute>
+			<name>base64Value</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Write-only value used to pass the value in base64 to backing bean.</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
