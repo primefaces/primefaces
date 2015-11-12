@@ -17,6 +17,7 @@ package org.primefaces.component.autocomplete;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -214,9 +215,16 @@ public class AutoCompleteRenderer extends InputRenderer {
                 }
                 else if(submittedValue != null) {
                     // retrieve the actual item (pojo) from the converter
-                	Object item = getConvertedValue(context, ac, String.valueOf(submittedValue));
-                    requestMap.put(var, item);
-                    itemLabel = ac.getItemLabel();
+                    try {
+                        Object item = getConvertedValue(context, ac,
+                                String.valueOf(submittedValue));
+                        requestMap.put(var, item);
+                        itemLabel = ac.getItemLabel();
+                    }
+                    catch (ConverterException ce) {
+                        itemLabel = String.valueOf(submittedValue);
+                    }
+
                 }
                 else {
                 	itemLabel = null;
@@ -339,7 +347,11 @@ public class AutoCompleteRenderer extends InputRenderer {
         }
         else {
             Object submittedValue = ac.getSubmittedValue();
-            values = (List) getConvertedValue(context, ac, submittedValue);
+            try {
+                values = (List) getConvertedValue(context, ac, submittedValue);
+            } catch (ConverterException ce) {
+                values = Arrays.asList((String[]) submittedValue);
+            }
         }
         
         List<String> stringValues = new ArrayList<String>();
