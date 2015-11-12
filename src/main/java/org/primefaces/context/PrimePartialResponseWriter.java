@@ -90,7 +90,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                     encodeJSONArray(paramName, (JSONArray) paramValue);
                 }
                 else if (isBean(paramValue)) {
-                    encodeJSONObject(paramName, (JSONObject) paramValue);
+                    encodeJSONObject(paramName, new JSONObject(paramValue));
                 }
                 else {
                     encodeJSONValue(paramName, paramValue);
