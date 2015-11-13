@@ -19,8 +19,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     
     render: function() {
         this.columns = this.thead.find('> tr > th:not(.ui-static-column)');
-        this.panel = $('<div></div>').attr('id', this.cfg.id).addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow ui-corner-all')
-                .append('<ul class="ui-columntoggler-items"></ul').appendTo(document.body);
+        this.panel = $('<div></div>').attr('id', this.cfg.id).attr('role', 'dialog').addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow ui-corner-all')
+                .append('<ul class="ui-columntoggler-items" role="group"></ul').appendTo(document.body);
         this.itemContainer = this.panel.children('ul');
           
         //items
@@ -33,7 +33,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                     
             var item = $('<li class="ui-columntoggler-item">' + 
                     '<div class="ui-chkbox ui-widget">' +
-                    '<div class="ui-helper-hidden-accessible"><input type="checkbox"></div>' +
+                    '<div class="ui-helper-hidden-accessible"><input type="checkbox" role="checkbox"></div>' +
                     '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div>' + 
                     '</div>'
                     + '<label>' + columnTitle + '</label></li>').data('column', column.attr('id'));
