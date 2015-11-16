@@ -153,6 +153,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         
         writer.startElement("table", radio);
         writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("role", "presentation", null);
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
