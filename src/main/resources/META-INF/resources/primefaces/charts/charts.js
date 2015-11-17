@@ -20856,6 +20856,8 @@ PrimeFaces.widget.ChartUtils = {
                         max: chart.cfg.max
                     }
                 }; 
+                
+                chart.cfg.replotMode = 'reinit';
             }
         }
     },
@@ -20946,8 +20948,16 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.resetAxesOnResize = (this.cfg.resetAxesOnResize === false) ? false : true;
         
         $(window).off(resizeNS).on(resizeNS, function() {
-            if($this.jq.is(':visible')) {
-                $this.plot.replot({resetAxes: $this.cfg.resetAxesOnResize});
+            if($this.jq.is(':visible')) {   
+                var replotOptions = {
+                    resetAxes: $this.cfg.resetAxesOnResize
+                };
+                
+                if($this.cfg.replotMode) {
+                    replotOptions.replotMode = $this.cfg.replotMode;
+                }
+                
+                $this.plot.replot(replotOptions);
             }
         });
     },
