@@ -35,6 +35,7 @@ public class ToolbarRenderer extends CoreRenderer {
         writer.startElement("div", toolbar);
         writer.writeAttribute("id", toolbar.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("role", "toolbar", null);
         if(style != null) {
             writer.writeAttribute("style", style, null);
         }
