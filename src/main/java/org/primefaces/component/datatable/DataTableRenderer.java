@@ -24,6 +24,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
@@ -471,16 +472,13 @@ public class DataTableRenderer extends DataRenderer {
                 style = "width:" + width + unit;
         }
         
-        String ariaHeaderText = column.getAriaHeaderText();
-        if(ariaHeaderText == null) {
-            ariaHeaderText = column.getHeaderText();
-        }
+        String ariaHeaderLabel = getHeaderLabel(context, column);
         
         writer.startElement("th", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
-        writer.writeAttribute("aria-label", ariaHeaderText, null);
+        writer.writeAttribute("aria-label", ariaHeaderLabel, null);
         if(style != null) writer.writeAttribute("style", style, null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
@@ -1316,5 +1314,38 @@ public class DataTableRenderer extends DataRenderer {
         }
         
         return false;
+    }
+    
+    protected String getHeaderLabel(FacesContext context, UIColumn column) {
+        String ariaHeaderText = column.getAriaHeaderText();
+        
+        // for headerText of column 
+        if(ariaHeaderText == null) {
+            ariaHeaderText = column.getHeaderText();
+        }
+
+        // for header facet
+        if(ariaHeaderText == null) {
+            UIComponent header = column.getFacet("header");
+            if(header != null) {
+                if(header instanceof UIPanel) {
+                    for(UIComponent child : header.getChildren()) {
+                        if(child.isRendered()) {
+                            String value = ComponentUtils.getValueToRender(context, child);
+
+                            if(value != null) {
+                                ariaHeaderText = value;
+                                break;
+                            }         
+                        }
+                    }
+                }
+                else {
+                    ariaHeaderText = ComponentUtils.getValueToRender(context, header);
+                }
+            }
+        }
+
+        return ariaHeaderText;
     }
 }
