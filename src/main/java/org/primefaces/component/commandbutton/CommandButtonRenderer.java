@@ -62,6 +62,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         boolean pushButton = (type.equals("reset")||type.equals("button"));
         Object value = button.getValue();
         String icon = button.resolveIcon();
+        String title = button.getTitle();
         String request = pushButton ? null: buildRequest(context, button, clientId);        
         String onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
         
@@ -83,7 +84,8 @@ public class CommandButtonRenderer extends CoreRenderer {
 
         if(button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(button.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
-		
+		if(title != null) writer.writeAttribute("aria-label", title, null);
+        
         //icon
         if(icon != null && !icon.trim().equals("")) {
             String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS; 
