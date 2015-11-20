@@ -66,6 +66,8 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         }
         writer.writeAttribute("role", "menubar", null);
 
+        encodeKeyboardTarget(context, menu);
+        
 		writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
@@ -131,7 +133,8 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", Menu.SUBMENU_LINK_CLASS, null);
-
+        writer.writeAttribute("tabindex", "-1", null);
+        
         if(icon != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
