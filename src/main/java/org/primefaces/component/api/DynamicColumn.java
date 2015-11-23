@@ -64,6 +64,10 @@ public class DynamicColumn implements UIColumn {
     public String getContainerClientId(FacesContext context) {
         return this.columns.getContainerClientId(context);
     }
+    
+    public String getId() {
+    	return this.columns.getId();
+    }
 
     public String getClientId() {
         return this.columns.getClientId();
