@@ -187,7 +187,7 @@ public class PickListRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
         if(tooltip) {
-            writer.write("ui-button");
+            writer.write(title);
         } else {
             writer.writeText(title, null);
         }
