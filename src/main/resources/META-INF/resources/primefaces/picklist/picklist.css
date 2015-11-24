@@ -103,6 +103,16 @@
     margin-top: 0.3em;
 }
 
+.ui-picklist-outline {
+    outline: 1px dotted black;
+    z-index: 1;
+}
+
+.ui-picklist-list.ui-picklist-source,
+.ui-picklist-list.ui-picklist-target {
+    outline: none;
+}
+
 /* Responsive */
 .ui-picklist.ui-picklist-responsive * {
     box-sizing: border-box;

@@ -14,6 +14,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.showCheckbox) {
             this.checkboxes = this.items.find('div.ui-chkbox > div.ui-chkbox-box');
         }
+        this.focusedItem = null;
                 
         //generate input options
         this.generateItems(this.sourceList, this.sourceInput);
@@ -69,6 +70,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.bindButtonEvents();
             
             this.bindFilterEvents();
+            
+            this.bindKeyEvents();
         }
     },
     
@@ -93,6 +96,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
             
             var item = $(this),
+            parentList = item.parent(),
             metaKey = (e.metaKey||e.ctrlKey);
             
             if(!e.shiftKey) {
@@ -115,8 +119,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     var currentItemIndex = item.index(),
                     cursorItemIndex = $this.cursorItem.index(),
                     startIndex = (currentItemIndex > cursorItemIndex) ? cursorItemIndex : currentItemIndex,
-                    endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1),
-                    parentList = item.parent();
+                    endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
                     
                     for(var i = startIndex ; i < endIndex; i++) {
                         var it = parentList.children('li.ui-picklist-item').eq(i);
@@ -134,6 +137,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     $this.cursorItem = item;
                 }
             }
+            
+            /* For keyboard navigation */
+            $this.removeOutline();
+            $this.focusedItem = item;
+            parentList.trigger('focus.pickList');
         })
         .on('dblclick.pickList', function() {
             var item = $(this);
@@ -143,6 +151,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             else
                 $this.transfer(item, $this.targetList, $this.sourceList, 'dblclick');
 
+            /* For keyboard navigation */
+            $this.removeOutline();
+            $this.focusedItem = null;
+            
             PrimeFaces.clearSelection();
         });
         
@@ -166,7 +178,99 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 else {
                     $this.selectItem(item, true);
                 }
+                $this.focusedItem = item;
             });
+        }
+    },
+    
+    bindKeyEvents: function() {
+        var $this = this,
+            listSelector = 'ul.ui-picklist-source, ul.ui-picklist-target';
+
+        this.jq.off('focus.pickList blur.pickList keydown.pickList', listSelector).on('focus.pickList', listSelector, null, function(e) {
+            var list = $(this),
+                activeItem = $this.focusedItem||list.children('.ui-state-highlight:visible:first');
+            if(activeItem.length) {
+                $this.focusedItem = activeItem;
+            }
+            else {
+                $this.focusedItem = list.children('.ui-picklist-item:visible:first');
+            }
+            PrimeFaces.scrollInView(list, $this.focusedItem);
+            $this.focusedItem.addClass('ui-picklist-outline');
+        })
+        .on('blur.pickList', listSelector, null, function() {
+            $this.removeOutline();
+            $this.focusedItem = null;
+        })
+        .on('keydown.pickList', listSelector, null, function(e) {
+            
+            if(!$this.focusedItem) {
+                return;
+            }
+            
+            var list = $(this), 
+                keyCode = $.ui.keyCode,
+                key = e.which;
+    
+            switch(key) {
+                case keyCode.UP:
+                    $this.removeOutline();
+                    
+                    if(!$this.focusedItem.hasClass('ui-state-highlight')) {
+                        $this.selectItem($this.focusedItem); 
+                    }
+                    else {
+                        var prevItem = $this.focusedItem.prevAll('.ui-picklist-item:visible:first');
+                        if(prevItem.length) {
+                            $this.unselectAll();
+                            $this.selectItem(prevItem);
+                            $this.focusedItem = prevItem;
+
+                            PrimeFaces.scrollInView(list, $this.focusedItem);
+                        }
+                    }
+                    
+                    e.preventDefault();
+                break;
+
+                case keyCode.DOWN:
+                    $this.removeOutline();
+                    
+                    if(!$this.focusedItem.hasClass('ui-state-highlight')) {
+                        $this.selectItem($this.focusedItem); 
+                    }
+                    else {
+                        var nextItem = $this.focusedItem.nextAll('.ui-picklist-item:visible:first');
+                        if(nextItem.length) {
+                            $this.unselectAll();
+                            $this.selectItem(nextItem);
+                            $this.focusedItem = nextItem;
+                            
+                            PrimeFaces.scrollInView(list, $this.focusedItem);
+                        }
+                    }
+                    
+                    e.preventDefault();
+                break;
+                
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.SPACE:
+                    if($this.focusedItem && $this.focusedItem.hasClass('ui-state-highlight')) {
+                        $this.focusedItem.trigger('dblclick.pickList');
+                        $this.focusedItem = null;
+                    }
+                    e.preventDefault();
+                break;    
+            };
+        }); 
+        
+    },
+    
+    removeOutline: function() {
+        if(this.focusedItem && this.focusedItem.hasClass('ui-picklist-outline')) {
+            this.focusedItem.removeClass('ui-picklist-outline');
         }
     },
     

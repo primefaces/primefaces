@@ -216,7 +216,8 @@ public class PickListRenderer extends CoreRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
-
+        writer.writeAttribute("tabindex", "0", null);
+        
         encodeOptions(context, pickList, model);
 
         writer.endElement("ul");
