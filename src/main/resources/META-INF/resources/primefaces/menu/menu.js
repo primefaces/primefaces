@@ -1377,6 +1377,23 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                     break;
                     
+                    case keyCode.ESCAPE:
+                        if(currentitem.hasClass('ui-menu-parent')) {
+                            var submenu = currentitem.children('ul.ui-menu-list:visible');
+                            if(submenu.length > 0) {
+                                submenu.hide();
+                            }
+                        }
+                        else {
+                            var parentItem = currentitem.closest('ul.ui-menu-child').parent();
+                            if(parentItem.length) {
+                                $this.deactivate(currentitem);
+                                $this.deactivate(parentItem);
+                                $this.highlight(parentItem);
+                            }
+                        }
+                        e.preventDefault();
+                    break;    
             }        
         });
     },
