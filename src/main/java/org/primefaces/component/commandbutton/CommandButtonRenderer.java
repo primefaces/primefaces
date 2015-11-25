@@ -84,7 +84,6 @@ public class CommandButtonRenderer extends CoreRenderer {
 
         if(button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if(button.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
-		if(title != null) writer.writeAttribute("aria-label", title, null);
         
         //icon
         if(icon != null && !icon.trim().equals("")) {
@@ -101,7 +100,10 @@ public class CommandButtonRenderer extends CoreRenderer {
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
         
         if(value == null) {
-            writer.write("ui-button");
+            //For ScreenReader
+            String text = (title != null) ? title: "ui-button";
+            
+            writer.write(text);
         }
         else {
             if(button.isEscape())
