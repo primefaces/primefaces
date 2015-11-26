@@ -400,8 +400,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.bindRowHover(this.rowSelector);
 
-        this.tbody.off('click.dataTable', this.rowSelector).on('click.dataTable', this.rowSelector, null, function(e) {
+        this.tbody.off('click.dataTable mousedown.dataTable', this.rowSelector).on('mousedown.dataTable', this.rowSelector, null, function(e) {
+            $this.mousedownOnRow = true;
+        })
+        .on('click.dataTable', this.rowSelector, null, function(e) {
             $this.onRowClick(e, this);
+            $this.mousedownOnRow = false;
         });
         
         //double click
@@ -410,6 +414,66 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.onRowDblclick(e, $(this));
             });
         };
+        
+        this.bindSelectionKeyEvents();
+    },
+    
+    bindSelectionKeyEvents: function() {
+        var $this = this;
+        
+        this.tbody.attr('tabindex', "0").on('focus', function(e) {
+            //ignore mouse click on row
+            if(!$this.mousedownOnRow) {
+                $this.focusedRow = $this.tbody.children('tr.ui-widget-content.ui-datatable-selectable').eq(0);
+                $this.focusedRow.addClass('ui-state-hover');
+            }
+        })
+        .on('blur', function() {
+            if($this.focusedRow) {
+                $this.focusedRow.removeClass('ui-state-hover');
+                $this.focusedRow = null;
+            }
+        })
+        .on('keydown', function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+            
+            if($this.focusedRow) {
+                switch(key) {
+                    case keyCode.UP:
+                        var prevRow = $this.focusedRow.prev('tr.ui-widget-content.ui-datatable-selectable');
+                        if(prevRow.length) {
+                            $this.focusedRow.removeClass('ui-state-hover');
+                            $this.focusedRow = prevRow;
+                            $this.focusedRow.addClass('ui-state-hover');
+                        }
+                        e.preventDefault();
+                    break;
+
+                    case keyCode.DOWN:
+                        var nextRow = $this.focusedRow.next('tr.ui-widget-content.ui-datatable-selectable');
+                        if(nextRow.length) {
+                            $this.focusedRow.removeClass('ui-state-hover');
+                            $this.focusedRow = nextRow;
+                            $this.focusedRow.addClass('ui-state-hover');
+                        }
+                        e.preventDefault();
+                    break;
+                    
+                    case keyCode.ENTER:
+                    case keyCode.NUMPAD_ENTER:
+                    case keyCode.SPACE:
+                        e.target = $this.focusedRow.children().eq(0).get(0);
+                        $this.onRowClick(e,$this.focusedRow.get(0));
+                        e.preventDefault();
+                    break;
+                        
+                    default:
+                    break;
+                };
+            }
+        });
+
     },
     
     bindRowHover: function(selector) {
@@ -1137,13 +1201,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
-    onRowClick: function(event, rowElement, silent) {    
+    onRowClick: function(event, rowElement, silent) {
         //Check if rowclick triggered this event not a clickable element in row content
         if($(event.target).is('td:not(.ui-column-unselectable),span:not(.ui-c)')) {
             var row = $(rowElement),
             selected = row.hasClass('ui-state-highlight'),
             metaKey = event.metaKey||event.ctrlKey,
             shiftKey = event.shiftKey;
+    
+            this.focusedRow = row;
 
             //unselect a selected row if metakey is on
             if(selected && metaKey) {
@@ -1171,6 +1237,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.clearSelection();
             }
         }
+        
+        event.preventDefault();
     },
     
     onRowDblclick: function(event, row) {
@@ -3283,4 +3351,4 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
     }
     
-});  
+}); 
