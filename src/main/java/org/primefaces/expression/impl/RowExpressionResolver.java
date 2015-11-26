@@ -1,5 +1,6 @@
 package org.primefaces.expression.impl;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
@@ -36,17 +37,18 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
         for (UIComponent column : data.getChildren()) {
         	// handle dynamic columns
 			if (column instanceof Columns) {
-				int colIndex = 0;
-				for (DynamicColumn col : ((Columns) column).getDynamicColumns()) {
+                
+                List<DynamicColumn> dynamicColumns = ((Columns) column).getDynamicColumns();
+                for (int i = 0; i < dynamicColumns.size(); i++) {
+                    DynamicColumn dynamicColumn = dynamicColumns.get(i);
 					for (UIComponent comp : column.getChildren()) {
 
 						if (clientIds.length() > 0) {
 							clientIds += " ";
 						}
 						
-						clientIds += data.getClientId(context) + seperatorChar + row + seperatorChar + col.getId() + seperatorChar + colIndex + seperatorChar + comp.getId();
+						clientIds += data.getClientId(context) + seperatorChar + row + seperatorChar + dynamicColumn.getId() + seperatorChar + i + seperatorChar + comp.getId();
 					}
-					colIndex++;
 				}
 			}
 			else if (column instanceof UIColumn) {
