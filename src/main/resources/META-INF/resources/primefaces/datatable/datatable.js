@@ -233,6 +233,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             else {
                 $this.sort(columnHeader, sortOrder);
             }
+            
+            if($this.cfg.scrollable) {
+                $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).trigger('focus');
+            }
 
         });
     },
@@ -761,9 +765,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
         this.theadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.bodyTable);
         
-        //align horizontal scroller on keyboard tab
-        if(this.cfg.scrollWidth) {
-            this.sortableColumns.attr('tabindex', "-1").off('blur.dataTable focus.dataTable keydown.dataTable');
+        //reflect events from clone to original
+        if(this.sortableColumns.length) {
+            this.sortableColumns.removeAttr('tabindex').off('blur.dataTable focus.dataTable keydown.dataTable');
             
             var clonedSortableColumns = this.theadClone.find('> tr > th.ui-sortable-column');
             clonedSortableColumns.each(function() {
@@ -1018,6 +1022,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                         ariaLabelOfActive = activeColumn.attr('aria-label');
 
                                     activeColumn.attr('aria-sort', 'other').attr('aria-label', this.getSortMessage(ariaLabelOfActive, this.ascMessage));
+                                    $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).attr('aria-sort', 'other').attr('aria-label', this.getSortMessage(ariaLabelOfActive, this.ascMessage));
                                 }
                                 
                                 activeColumns.data('sortorder', this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
@@ -1026,13 +1031,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                             columnHeader.data('sortorder', order).removeClass('ui-state-hover').addClass('ui-state-active');
                             var sortIcon = columnHeader.find('.ui-sortable-column-icon'),
-                                ariaLabel = columnHeader.attr('aria-label');
+                            ariaLabel = columnHeader.attr('aria-label');
+                        
                             if(order === this.SORT_ORDER.DESCENDING) {
                                 sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
                                 columnHeader.attr('aria-sort', 'descending').attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                                $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending').attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
                             } else if(order === this.SORT_ORDER.ASCENDING) {
                                 sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
                                 columnHeader.attr('aria-sort', 'ascending').attr('aria-label', this.getSortMessage(ariaLabel, this.descMessage));
+                                $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending').attr('aria-label', this.getSortMessage(ariaLabel, this.descMessage));
                             }
                         }
                     });
@@ -3275,4 +3283,4 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
     }
     
-});
+});  
