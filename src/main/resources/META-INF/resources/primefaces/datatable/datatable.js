@@ -1237,8 +1237,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.clearSelection();
             }
         }
-        
-        event.preventDefault();
     },
     
     onRowDblclick: function(event, row) {
