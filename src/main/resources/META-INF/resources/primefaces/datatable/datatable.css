@@ -36,6 +36,10 @@
     border-style: solid;
 }
 
+.ui-datatable tbody.ui-datatable-data {
+    outline: 0;
+}
+
 .ui-datatable tbody td {
     border-color: inherit;
 }

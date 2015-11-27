@@ -838,6 +838,9 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("tbody", null);
             writer.writeAttribute("id", tbodyClientId, null);
             writer.writeAttribute("class", DataTable.DATA_CLASS, null);
+            
+            if(table.isRowSelectionEnabled())
+                writer.writeAttribute("tabindex", table.getTabindex(), null);
         }
 
         if(hasData) {

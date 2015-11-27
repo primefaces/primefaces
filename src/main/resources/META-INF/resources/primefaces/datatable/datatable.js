@@ -421,7 +421,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindSelectionKeyEvents: function() {
         var $this = this;
         
-        this.tbody.attr('tabindex', "0").on('focus', function(e) {
+        this.tbody.on('focus', function(e) {
             //ignore mouse click on row
             if(!$this.mousedownOnRow) {
                 $this.focusedRow = $this.tbody.children('tr.ui-widget-content.ui-datatable-selectable').eq(0);
