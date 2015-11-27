@@ -15,6 +15,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.checkboxes = this.items.find('div.ui-chkbox > div.ui-chkbox-box');
         }
         this.focusedItem = null;
+        this.ariaRegion = $(this.jqId + '_ariaRegion');
                 
         //generate input options
         this.generateItems(this.sourceList, this.sourceInput);
@@ -198,6 +199,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
             PrimeFaces.scrollInView(list, $this.focusedItem);
             $this.focusedItem.addClass('ui-picklist-outline');
+            $this.ariaRegion.text($this.focusedItem.data('item-label'));
         })
         .on('blur.pickList', listSelector, null, function() {
             $this.removeOutline();
@@ -230,7 +232,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
-                    
+                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
                     e.preventDefault();
                 break;
 
@@ -250,7 +252,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
-                    
+                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
                     e.preventDefault();
                 break;
                 

@@ -31,6 +31,7 @@ import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class PickListRenderer extends CoreRenderer {
@@ -67,6 +68,8 @@ public class PickListRenderer extends CoreRenderer {
         String styleClass = pickList.getStyleClass();
         styleClass = styleClass == null ? PickList.CONTAINER_CLASS : PickList.CONTAINER_CLASS + " " + styleClass;
         String labelDisplay = pickList.getLabelDisplay();
+        String ariaSourceMessage = MessageFactory.getMessage(PickList.ARIA_SOURCE_LIST, null);
+        String ariaTargetMessage = MessageFactory.getMessage(PickList.ARIA_TARGET_LIST, null);
         boolean vertical = pickList.getOrientation().equals("vertical");
         if(vertical) {
             styleClass += " ui-picklist-vertical"; 
@@ -89,7 +92,7 @@ public class PickListRenderer extends CoreRenderer {
         }
  
 		//Source List
-		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(), pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter());
+		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(), pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter(), ariaSourceMessage);
 
 		//Buttons
 		writer.startElement("div", null);
@@ -112,13 +115,16 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("div");
 
 		//Target List
-		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), pickList.getFacet("targetCaption"), pickList.isShowTargetFilter());
+		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), pickList.getFacet("targetCaption"), pickList.isShowTargetFilter(), ariaTargetMessage);
 
         //Target List Reorder Buttons
         if(pickList.isShowTargetControls()) {
             encodeListControls(context, pickList, PickList.TARGET_CONTROLS, labelDisplay);
         }
 
+        /* For ScreenReader */
+        encodeAriaRegion(context, clientId);
+        
 		writer.endElement("div");
 	}
 	
@@ -196,7 +202,7 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("button");
 	}
 	
-	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption, boolean filter) throws IOException {
+	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption, boolean filter, String ariaMessage) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
                 
         writer.startElement("div", null);
@@ -217,6 +223,8 @@ public class PickListRenderer extends CoreRenderer {
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("tabindex", "0", null);
+        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute("aria-label", ariaMessage, null);
         
         encodeOptions(context, pickList, model);
 
@@ -259,7 +267,8 @@ public class PickListRenderer extends CoreRenderer {
             writer.writeAttribute("class", itemClass, null);
             writer.writeAttribute("data-item-value", itemValue, null);
             writer.writeAttribute("data-item-label", itemLabel, null);
-			
+			writer.writeAttribute("role", "menuitem", null);
+            
             if(pickList.getChildCount() > 0) {
                 writer.startElement("table", null);
                 writer.startElement("tbody", null);
@@ -341,7 +350,19 @@ public class PickListRenderer extends CoreRenderer {
         
         writer.endElement("div");
     }
-        
+    
+    protected void encodeAriaRegion(FacesContext context, String clientId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId + "_ariaRegion", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("role", "region", null);
+        writer.writeAttribute("aria-live", "polite", null);
+        writer.writeAttribute("aria-atomic", "true", null);
+        writer.endElement("div");
+    }
+    
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Rendering happens on encodeEnd
