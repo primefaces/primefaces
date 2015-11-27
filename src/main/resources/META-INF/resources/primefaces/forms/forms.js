@@ -3368,9 +3368,14 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
                 selectedIndexMap.push(ancestor.index());
             }
             else if(ancestor.is('ul')) {
-                var groupContainer = $('<div class="ui-multiselectlistbox-listcontainer ui-inputfield ui-widget-content ui-corner-all" style="display:none"></div>');
-                ancestor.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list').removeClass('ui-helper-hidden');
-
+                var groupContainer = $('<div class="ui-multiselectlistbox-listcontainer" style="display:none"></div>');
+                ancestor.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list ui-inputfield ui-widget-content ui-corner-all').removeClass('ui-helper-hidden');
+                
+                if(this.cfg.showHeaders) {
+                   groupContainer.prepend('<div class="ui-multiselectlistbox-header ui-widget-header ui-corner-top">' + ancestor.prev('span').text() + '</div>')
+                           .children('.ui-multiselectlistbox-list').addClass('ui-corner-bottom').removeClass('ui-corner-all');
+                } 
+               
                 $this.jq.append(groupContainer);
             }
         }
