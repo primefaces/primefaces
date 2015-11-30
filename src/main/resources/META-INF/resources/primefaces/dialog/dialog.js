@@ -115,12 +115,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         var $this = this,
         doc = $(document);
 
-        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay"></div>')
-                        .children(this.jqId + '_modal').css({
-                            'width' : doc.width(),
-                            'height' : doc.height(),
-                            'z-index' : this.jq.css('z-index') - 1
-                        });
+        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay ui-dialog-mask"></div>')
+                        .children(this.jqId + '_modal').css('z-index' , this.jq.css('z-index') - 1);
 
         //Disable tabbing out of modal dialog and stop events from targets outside of dialog
         doc.on('keydown.' + this.id,
