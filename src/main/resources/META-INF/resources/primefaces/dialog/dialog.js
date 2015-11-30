@@ -40,10 +40,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.setupResizable();
         }
 
-        if(this.cfg.modal) {
-            this.syncWindowResize();
-        }
-
         if(this.cfg.appendTo) {
         	this.jq.appendTo(PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo));
         }
@@ -172,15 +168,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     disableModality: function(){
         $(document.body).children(this.jqId + '_modal').remove();
         $(document).off(this.blockEvents).off('keydown.' + this.id);
-    },
-
-    syncWindowResize: function() {
-        $(window).resize(function() {
-            $(document.body).children('.ui-widget-overlay').css({
-                'width': $(document).width()
-                ,'height': $(document).height()
-            });
-        });
     },
 
     show: function() {
