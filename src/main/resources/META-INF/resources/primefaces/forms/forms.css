@@ -705,10 +705,10 @@ div.ui-button, .ui-splitbutton {
 
 .ui-fluid .ui-buttonset.ui-buttonset-1 .ui-button {width: 100%;}
 .ui-fluid .ui-buttonset.ui-buttonset-2 .ui-button {width: 50%;}
-.ui-fluid .ui-buttonset.ui-buttonset-3 .ui-button {width: 33%;}
+.ui-fluid .ui-buttonset.ui-buttonset-3 .ui-button {width: 33.3%;}
 .ui-fluid .ui-buttonset.ui-buttonset-4 .ui-button {width: 25%;}
 .ui-fluid .ui-buttonset.ui-buttonset-5 .ui-button {width: 20%;}
-.ui-fluid .ui-buttonset.ui-buttonset-6 .ui-button {width: 16%;}
+.ui-fluid .ui-buttonset.ui-buttonset-6 .ui-button {width: 16.6%;}
 
 @media (max-width: 640px) {
     .ui-fluid .ui-buttonset.ui-buttonset-1 .ui-button,
