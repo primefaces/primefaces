@@ -196,7 +196,7 @@ public class DataTableRenderer extends DataRenderer {
             wb.attr("stickyHeader", true);
         }
 
-        wb.attr("tabindex", table.getTabindex(), null)
+        wb.attr("tabindex", table.getTabindex(), "0")
             .attr("reflow", table.isReflow(), false)
             .attr("rowHover", table.isRowHover(), false);
         
@@ -388,7 +388,6 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
-        writer.writeAttribute("tabindex", "-1", null);
         if(scrollHeight != null && scrollHeight.indexOf('%') == -1) {
             writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
         }
