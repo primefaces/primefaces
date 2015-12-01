@@ -594,12 +594,9 @@ public class DataTableRenderer extends DataRenderer {
             
             //aria
             String ariaLabelId = filterId + "_label";
-            String ariaHeaderText = column.getAriaHeaderText();
-            if(ariaHeaderText == null) {
-                ariaHeaderText = column.getHeaderText();
-            }
+            String ariaHeaderLabel = getHeaderLabel(context, column);
             
-            String ariaMessage = MessageFactory.getMessage(DataTable.ARIA_FILTER_BY, new Object[]{ariaHeaderText});
+            String ariaMessage = MessageFactory.getMessage(DataTable.ARIA_FILTER_BY, new Object[]{ariaHeaderLabel});
 
             writer.startElement("label", null);
             writer.writeAttribute("id", ariaLabelId, null);
