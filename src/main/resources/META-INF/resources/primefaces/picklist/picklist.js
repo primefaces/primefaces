@@ -24,6 +24,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.disabled) {
             $(this.jqId + ' li.ui-picklist-item').addClass('ui-state-disabled');
             $(this.jqId + ' button').attr('disabled', 'disabled').addClass('ui-state-disabled');
+            $(this.jqId + ' .ui-picklist-filter-container').addClass('ui-state-disabled').children('input').attr('disabled', 'disabled');
         }
         else {
             var $this = this,
