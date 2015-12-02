@@ -31,7 +31,6 @@ import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class PickListRenderer extends CoreRenderer {
