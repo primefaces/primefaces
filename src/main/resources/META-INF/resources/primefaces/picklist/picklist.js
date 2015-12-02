@@ -16,6 +16,12 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
         this.focusedItem = null;
         this.ariaRegion = $(this.jqId + '_ariaRegion');
+        
+        var sourceCaption = this.sourceList.prev('.ui-picklist-caption'),
+            targetCaption = this.targetList.prev('.ui-picklist-caption');
+    
+        if(sourceCaption.length) {this.sourceList.attr('aria-label', sourceCaption.text());}
+        if(targetCaption.length) {this.targetList.attr('aria-label', targetCaption.text());}
                 
         //generate input options
         this.generateItems(this.sourceList, this.sourceInput);
