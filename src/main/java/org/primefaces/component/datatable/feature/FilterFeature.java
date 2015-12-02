@@ -337,6 +337,7 @@ public class FilterFeature implements DataTableFeature {
                     DynamicColumn dynamicColumn = (DynamicColumn) column;
                     dynamicColumn.applyStatelessModel();
                     filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
+                    filterFacet = null;
                     dynamicColumn.cleanStatelessModel();
                 }
 
