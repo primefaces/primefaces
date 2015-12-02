@@ -4,7 +4,8 @@
 
 .ui-fieldset-toggleable .ui-fieldset-legend {
     padding: 0.5em 1em 0.5em 0.5em;
-    cursor:pointer;
+    cursor: pointer;
+    outline: 0;
 }
 
 .ui-fieldset .ui-fieldset-toggler {

@@ -123,6 +123,9 @@ public class FieldsetRenderer extends CoreRenderer {
             writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
 
             if(fieldset.isToggleable()) {
+                writer.writeAttribute("role", "button", null);
+                writer.writeAttribute("tabindex", fieldset.getTabindex(), null);
+            
                 String togglerClass = fieldset.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
                                
                 writer.startElement("span", null);

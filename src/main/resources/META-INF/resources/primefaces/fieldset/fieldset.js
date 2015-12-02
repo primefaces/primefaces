@@ -16,11 +16,36 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
             this.stateHolder = $(this.jqId + '_collapsed');
 
             //Add clickable legend state behavior
-            this.legend.click(function(e) {$this.toggle(e);})
-                            .mouseover(function() {$this.legend.toggleClass('ui-state-hover');})
-                            .mouseout(function() {$this.legend.toggleClass('ui-state-hover');})
-                            .mousedown(function() {$this.legend.toggleClass('ui-state-active');})
-                            .mouseup(function() {$this.legend.toggleClass('ui-state-active');})
+            this.legend.on('click', function(e) {
+                $this.toggle(e);
+            })
+            .on('mouseover', function() {
+                $this.legend.toggleClass('ui-state-hover');
+            })
+            .on('mouseout', function() {
+                $this.legend.toggleClass('ui-state-hover');
+            })
+            .on('mousedown', function() {
+                $this.legend.toggleClass('ui-state-active');
+            })
+            .on('mouseup', function() {
+                $this.legend.toggleClass('ui-state-active');
+            })
+            .on('focus', function() {
+                $this.legend.toggleClass('ui-state-focus');
+            })
+            .on('blur', function() {
+                $this.legend.toggleClass('ui-state-focus');
+            })
+            .on('keydown', function(e) {
+                var key = e.which,
+                keyCode = $.ui.keyCode;
+
+                if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                    $this.toggle(e);
+                    e.preventDefault();
+                }
+            });
         }
     },
     
