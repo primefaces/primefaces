@@ -68,8 +68,6 @@ public class PickListRenderer extends CoreRenderer {
         String styleClass = pickList.getStyleClass();
         styleClass = styleClass == null ? PickList.CONTAINER_CLASS : PickList.CONTAINER_CLASS + " " + styleClass;
         String labelDisplay = pickList.getLabelDisplay();
-        String ariaSourceMessage = MessageFactory.getMessage(PickList.ARIA_SOURCE_LIST, null);
-        String ariaTargetMessage = MessageFactory.getMessage(PickList.ARIA_TARGET_LIST, null);
         boolean vertical = pickList.getOrientation().equals("vertical");
         if(vertical) {
             styleClass += " ui-picklist-vertical"; 
@@ -92,7 +90,7 @@ public class PickListRenderer extends CoreRenderer {
         }
  
 		//Source List
-		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(), pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter(), ariaSourceMessage);
+		encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(), pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter());
 
 		//Buttons
 		writer.startElement("div", null);
@@ -115,7 +113,7 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("div");
 
 		//Target List
-		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), pickList.getFacet("targetCaption"), pickList.isShowTargetFilter(), ariaTargetMessage);
+		encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), pickList.getFacet("targetCaption"), pickList.isShowTargetFilter());
 
         //Target List Reorder Buttons
         if(pickList.isShowTargetControls()) {
@@ -202,7 +200,7 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("button");
 	}
 	
-	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption, boolean filter, String ariaMessage) throws IOException {
+	protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption, boolean filter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
                 
         writer.startElement("div", null);
@@ -224,7 +222,6 @@ public class PickListRenderer extends CoreRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("tabindex", "0", null);
         writer.writeAttribute("role", "menu", null);
-        writer.writeAttribute("aria-label", ariaMessage, null);
         
         encodeOptions(context, pickList, model);
 

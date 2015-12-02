@@ -55,9 +55,6 @@ import org.primefaces.event.ReorderEvent;
     public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
 
-    public static final String ARIA_SOURCE_LIST = "primefaces.picklist.aria.SOURCE_LIST";
-    public static final String ARIA_TARGET_LIST = "primefaces.picklist.aria.TARGET_LIST";
-
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("transfer", "select", "unselect", "reorder"));
 
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
