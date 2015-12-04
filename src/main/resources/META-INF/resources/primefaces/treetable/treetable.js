@@ -7,6 +7,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this._super(cfg);        
         this.thead = $(this.jqId + '_head');
         this.tbody = $(this.jqId + '_data');
+        this.cfg.expandMode = this.cfg.expandMode||"children";
 
         this.renderDeferred();
     },
@@ -218,8 +219,11 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            var nextRow = node.next();
-                            node.after(content);
+                            if($this.cfg.expandMode === "self")
+                                node.replaceWith(content);
+                            else
+                                node.after(content);
+                            
                             node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
                             node.attr('aria-expanded', true);
                             $this.indeterminateNodes($this.tbody.children('tr.ui-treetable-partialselected'));

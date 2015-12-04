@@ -200,6 +200,13 @@
             <description>Name of the request-scoped variable that'll be used to refer current treenode using EL.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>expandMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>children</defaultValue>
+            <description>Updates children nodes in the expanded row or children nodes and expanded row. Valid values are "children" and "self".</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

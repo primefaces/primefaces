@@ -131,7 +131,10 @@ public class TreeTableRenderer extends CoreRenderer {
             TreeNode node = tt.getRowNode();
             node.setExpanded(true);
             
-            encodeNodeChildren(context, tt, node);
+            if(tt.getExpandMode().equals("self"))
+                encodeNode(context, tt, node);
+            else
+                encodeNodeChildren(context, tt, node);
         }
         else if(tt.isSortRequest(context)) {
             encodeSort(context, tt);
@@ -160,8 +163,9 @@ public class TreeTableRenderer extends CoreRenderer {
             .attr("scrollable", tt.isScrollable(), false)
             .attr("scrollHeight", tt.getScrollHeight(), null)
             .attr("scrollWidth", tt.getScrollWidth(), null)
-            .attr("nativeElements", tt.isNativeElements(), false);
-        
+            .attr("nativeElements", tt.isNativeElements(), false)
+            .attr("expandMode", tt.getExpandMode(), "children");
+            
         encodeClientBehaviors(context, tt);
 
         wb.finish();
