@@ -650,7 +650,7 @@ if (window.PrimeFaces) {
         valid = true,
         converterId = element.data('p-con');
 
-        if(PrimeFaces.settings.considerEmptyStringNull && submittedValue.length === 0) {
+        if(PrimeFaces.settings.considerEmptyStringNull && ((!submittedValue) || submittedValue.length === 0)) {
             submittedValue = null;
         }
 
