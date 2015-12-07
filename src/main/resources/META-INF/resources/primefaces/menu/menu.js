@@ -577,23 +577,25 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
     },
     
     back: function() {
-        var _self = this,
-        last = this.pop(),
-        depth = this.depth();
-            
-        var rootLeft = -1 * (depth * this.jqWidth);
+        if(!this.rootList.is(':animated')) {
+            var _self = this,
+            last = this.pop(),
+            depth = this.depth();
 
-        this.rootList.animate({
-            left: rootLeft
-        }, 500, 'easeInOutCirc', function() {
-            if(last !== null) {
-                last.hide();
-            }
-            
-            if(depth == 0) {
-                _self.backward.fadeOut('fast');
-            }
-        });
+            var rootLeft = -1 * (depth * this.jqWidth);
+
+            this.rootList.animate({
+                left: rootLeft
+            }, 500, 'easeInOutCirc', function() {
+                if(last !== null) {
+                    last.hide();
+                }
+
+                if(depth == 0) {
+                    _self.backward.fadeOut('fast');
+                }
+            });
+        }
     },
     
     push: function(submenu) {
