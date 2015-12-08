@@ -109,6 +109,7 @@ public class MenuRenderer extends BaseMenuRenderer {
     protected void encodeSubmenu(FacesContext context, Menu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
+        String icon = submenu.getIcon();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
         styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : Menu.SUBMENU_TITLE_CLASS + " " + styleClass;
@@ -125,9 +126,13 @@ public class MenuRenderer extends BaseMenuRenderer {
         }
         
         writer.startElement("h3", null);
-
+        
         if(menu.isToggleable()) {
-            encodeIcon(context, label);
+            encodeIcon(context, label, Menu.EXPANDED_SUBMENU_HEADER_ICON_CLASS);
+        }
+        
+        if(icon != null) {
+            encodeIcon(context, label, "ui-submenu-icon ui-icon " + icon);
         }
         
         if(label != null) {
@@ -141,11 +146,11 @@ public class MenuRenderer extends BaseMenuRenderer {
         encodeElements(context, menu, submenu.getElements());          
 	}
     
-     protected void encodeIcon(FacesContext context, String label) throws IOException {
+    protected void encodeIcon(FacesContext context, String label, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("span", null);
-        writer.writeAttribute("class", Menu.EXPANDED_SUBMENU_HEADER_ICON_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
         writer.endElement("span");
     }
 }

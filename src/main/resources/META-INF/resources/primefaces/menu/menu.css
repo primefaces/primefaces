@@ -55,7 +55,8 @@
     cursor: pointer;
 }
 
-.ui-menu .ui-menuitem-link .ui-menuitem-icon {
+.ui-menu .ui-menuitem-link .ui-menuitem-icon,
+.ui-menu .ui-submenu-icon {
     display:inline-block;
     float:left;
 }
