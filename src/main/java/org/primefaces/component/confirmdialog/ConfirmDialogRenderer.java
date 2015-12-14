@@ -16,7 +16,6 @@
 package org.primefaces.component.confirmdialog;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,8 +28,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmDialogRenderer extends CoreRenderer {
-
-	private static final Logger LOG = Logger.getLogger(ConfirmDialogRenderer.class.getName());
 	
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -78,7 +75,8 @@ public class ConfirmDialogRenderer extends CoreRenderer {
             .attr("showEffect", dialog.getShowEffect(), null)
             .attr("hideEffect", dialog.getHideEffect(), null)
             .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
-            .attr("global", dialog.isGlobal(), false);
+            .attr("global", dialog.isGlobal(), false)             
+            .attr("responsive", dialog.isResponsive(), false);
   
         wb.finish();
 	}

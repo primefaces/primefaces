@@ -123,6 +123,13 @@
             <defaultValue>false</defaultValue>
             <description>When enabled, confirmDialog becomes a shared for other components that require confirmation.</description>
         </attribute>
+        <attribute>
+			<name>responsive</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+			<description>In responsive mode, dialog adjusts itself based on screen width.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
