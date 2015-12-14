@@ -2656,6 +2656,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cursor: 'move',
             handle: 'td,span:not(.ui-c)',
             appendTo: document.body,
+            start: function(event, ui) {
+                ui.helper.css('z-index', ++PrimeFaces.zindex);
+            },
             helper: function(event, ui) {
                 var cells = ui.children(),
                 helper = $('<div class="ui-datatable ui-widget"><table><tbody></tbody></table></div>'),
