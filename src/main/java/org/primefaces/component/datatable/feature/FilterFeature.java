@@ -332,18 +332,15 @@ public class FilterFeature implements DataTableFeature {
 
                 if(column instanceof Column) {
                     filterId = column.getClientId(context) + separator + "filter";
+                    filterValue = (filterFacet == null) ? params.get(filterId): ((ValueHolder) filterFacet).getLocalValue();
                 }
                 else if(column instanceof DynamicColumn) {
                     DynamicColumn dynamicColumn = (DynamicColumn) column;
-                    dynamicColumn.applyStatelessModel();
+                    dynamicColumn.applyModel();
                     filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
-                    dynamicColumn.cleanStatelessModel();
+                    filterValue = (filterFacet == null) ? params.get(filterId): ((ValueHolder) filterFacet).getLocalValue();
+                    dynamicColumn.cleanModel();
                 }
-
-                if(filterFacet == null)
-                    filterValue = params.get(filterId);
-                else
-                    filterValue = ((ValueHolder) filterFacet).getLocalValue();
 
                 filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
             }
