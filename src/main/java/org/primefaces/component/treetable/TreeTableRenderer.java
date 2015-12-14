@@ -530,7 +530,7 @@ public class TreeTableRenderer extends CoreRenderer {
         }
 
         writer.startElement("th", null);
-        writer.writeAttribute("id", column.getClientId(context), null);
+        writer.writeAttribute("id", column.getContainerClientId(context), null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
         if(style != null) writer.writeAttribute("style", style, null);
