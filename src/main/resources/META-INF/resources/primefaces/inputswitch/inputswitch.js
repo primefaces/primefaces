@@ -60,6 +60,7 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
         
         this.jq.on('click.inputSwitch', function(e) {
             $this.toggle();
+            $this.input.trigger('focus');
         });
 
         this.input.on('focus.inputSwitch', function(e) {
