@@ -61,6 +61,10 @@
     float:left;
 }
 
+.ui-menu .ui-submenu-icon {
+    margin-top: 1px;
+}
+
 .ui-menu .ui-menuitem-text {
     float:left;
 }
