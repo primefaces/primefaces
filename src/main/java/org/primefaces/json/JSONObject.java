@@ -30,6 +30,7 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.*;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -91,7 +92,7 @@ import java.util.Set;
  * </ul>
  *
  * @author JSON.org
- * @version 2014-05-03
+ * @version 2015-12-09
  */
 public class JSONObject {
     /**
@@ -164,10 +165,6 @@ public class JSONObject {
      *            A JSONObject.
      * @param names
      *            An array of strings.
-     * @throws JSONException
-     * @exception JSONException
-     *                If a value is a non-finite number or if a name is
-     *                duplicated.
      */
     public JSONObject(JSONObject jo, String[] names) {
         this();
@@ -240,17 +237,14 @@ public class JSONObject {
      * @param map
      *            A map object that can be used to initialize the contents of
      *            the JSONObject.
-     * @throws JSONException
      */
-    public JSONObject(Map<String, Object> map) {
+    public JSONObject(Map<?, ?> map) {
         this.map = new HashMap<String, Object>();
         if (map != null) {
-            Iterator<Entry<String, Object>> i = map.entrySet().iterator();
-            while (i.hasNext()) {
-                Entry<String, Object> entry = i.next();
-                Object value = entry.getValue();
+        	for (final Entry<?, ?> e : map.entrySet()) {
+                final Object value = e.getValue();
                 if (value != null) {
-                    this.map.put(entry.getKey(), wrap(value));
+                    this.map.put(String.valueOf(e.getKey()), wrap(value));
                 }
             }
         }
@@ -298,7 +292,7 @@ public class JSONObject {
      */
     public JSONObject(Object object, String names[]) {
         this();
-        Class c = object.getClass();
+        Class<?> c = object.getClass();
         for (int i = 0; i < names.length; i += 1) {
             String name = names[i];
             try {
@@ -479,6 +473,31 @@ public class JSONObject {
     }
 
     /**
+    * Get the enum value associated with a key.
+    * 
+    * @param clazz
+    *           The type of enum to retrieve.
+    * @param key
+    *           A key string.
+    * @return The enum value associated with the key
+    * @throws JSONException
+    *             if the key is not found or if the value cannot be converted
+    *             to an enum.
+    */
+    public <E extends Enum<E>> E getEnum(Class<E> clazz, String key) throws JSONException {
+        E val = optEnum(clazz, key);
+        if(val==null) {
+            // JSONException should really take a throwable argument.
+            // If it did, I would re-implement this with the Enum.valueOf
+            // method and place any thrown exception in the JSONException
+            throw new JSONException("JSONObject[" + quote(key)
+                    + "] is not an enum of type " + quote(clazz.getSimpleName())
+                    + ".");
+        }
+        return val;
+    }
+
+    /**
      * Get the boolean value associated with a key.
      *
      * @param key
@@ -501,6 +520,46 @@ public class JSONObject {
         }
         throw new JSONException("JSONObject[" + quote(key)
                 + "] is not a Boolean.");
+    }
+
+    /**
+     * Get the BigInteger value associated with a key.
+     *
+     * @param key
+     *            A key string.
+     * @return The numeric value.
+     * @throws JSONException
+     *             if the key is not found or if the value cannot 
+     *             be converted to BigInteger.
+     */
+    public BigInteger getBigInteger(String key) throws JSONException {
+        Object object = this.get(key);
+        try {
+            return new BigInteger(object.toString());
+        } catch (Exception e) {
+            throw new JSONException("JSONObject[" + quote(key)
+                    + "] could not be converted to BigInteger.");
+        }
+    }
+
+    /**
+     * Get the BigDecimal value associated with a key.
+     *
+     * @param key
+     *            A key string.
+     * @return The numeric value.
+     * @throws JSONException
+     *             if the key is not found or if the value
+     *             cannot be converted to BigDecimal.
+     */
+    public BigDecimal getBigDecimal(String key) throws JSONException {
+        Object object = this.get(key);
+        try {
+            return new BigDecimal(object.toString());
+        } catch (Exception e) {
+            throw new JSONException("JSONObject[" + quote(key)
+                    + "] could not be converted to BigDecimal.");
+        }
     }
 
     /**
@@ -631,7 +690,7 @@ public class JSONObject {
         if (object == null) {
             return null;
         }
-        Class klass = object.getClass();
+        Class<?> klass = object.getClass();
         Field[] fields = klass.getFields();
         int length = fields.length;
         if (length == 0) {
@@ -688,6 +747,10 @@ public class JSONObject {
         Object value = this.opt(key);
         if (value == null) {
             this.put(key, 1);
+        } else if (value instanceof BigInteger) {
+            this.put(key, ((BigInteger)value).add(BigInteger.ONE));
+        } else if (value instanceof BigDecimal) {
+            this.put(key, ((BigDecimal)value).add(BigDecimal.ONE));
         } else if (value instanceof Integer) {
             this.put(key, (Integer) value + 1);
         } else if (value instanceof Long) {
@@ -800,6 +863,51 @@ public class JSONObject {
     }
 
     /**
+     * Get the enum value associated with a key.
+     * 
+     * @param clazz
+     *            The type of enum to retrieve.
+     * @param key
+     *            A key string.
+     * @return The enum value associated with the key or null if not found
+     */
+    public <E extends Enum<E>> E optEnum(Class<E> clazz, String key) {
+        return this.optEnum(clazz, key, null);
+    }
+
+    /**
+     * Get the enum value associated with a key.
+     * 
+     * @param clazz
+     *            The type of enum to retrieve.
+     * @param key
+     *            A key string.
+     * @param defaultValue
+     *            The default in case the value is not found
+     * @return The enum value associated with the key or defaultValue
+     *            if the value is not found or cannot be assigned to clazz
+     */
+    public <E extends Enum<E>> E optEnum(Class<E> clazz, String key, E defaultValue) {
+        try {
+            Object val = this.opt(key);
+            if (NULL.equals(val)) {
+                return defaultValue;
+            }
+            if (clazz.isAssignableFrom(val.getClass())) {
+                // we just checked it!
+                @SuppressWarnings("unchecked")
+                E myE = (E) val;
+                return myE;
+            }
+            return Enum.valueOf(clazz, val.toString());
+        } catch (IllegalArgumentException e) {
+            return defaultValue;
+        } catch (NullPointerException e) {
+            return defaultValue;
+        }
+    }
+
+    /**
      * Get an optional boolean associated with a key. It returns false if there
      * is no such key, or if the value is not Boolean.TRUE or the String "true".
      *
@@ -841,6 +949,44 @@ public class JSONObject {
      */
     public double optDouble(String key) {
         return this.optDouble(key, Double.NaN);
+    }
+
+    /**
+     * Get an optional BigInteger associated with a key, or the defaultValue if
+     * there is no such key or if its value is not a number. If the value is a
+     * string, an attempt will be made to evaluate it as a number.
+     *
+     * @param key
+     *            A key string.
+     * @param defaultValue
+     *            The default.
+     * @return An object which is the value.
+     */
+    public BigInteger optBigInteger(String key, BigInteger defaultValue) {
+        try {
+            return this.getBigInteger(key);
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Get an optional BigDecimal associated with a key, or the defaultValue if
+     * there is no such key or if its value is not a number. If the value is a
+     * string, an attempt will be made to evaluate it as a number.
+     *
+     * @param key
+     *            A key string.
+     * @param defaultValue
+     *            The default.
+     * @return An object which is the value.
+     */
+    public BigDecimal optBigDecimal(String key, BigDecimal defaultValue) {
+        try {
+            return this.getBigDecimal(key);
+        } catch (Exception e) {
+            return defaultValue;
+        }
     }
 
     /**
@@ -981,7 +1127,7 @@ public class JSONObject {
     }
 
     private void populateMap(Object bean) {
-        Class klass = bean.getClass();
+        Class<?> klass = bean.getClass();
 
 // If klass is a System class then set includeSuperClass to false.
 
@@ -1053,7 +1199,7 @@ public class JSONObject {
      * @return this.
      * @throws JSONException
      */
-    public JSONObject put(String key, Collection<Object> value) throws JSONException {
+    public JSONObject put(String key, Collection<?> value) throws JSONException {
         this.put(key, new JSONArray(value));
         return this;
     }
@@ -1117,7 +1263,7 @@ public class JSONObject {
      * @return this.
      * @throws JSONException
      */
-    public JSONObject put(String key, Map<String, Object> value) throws JSONException {
+    public JSONObject put(String key, Map<?, ?> value) throws JSONException {
         this.put(key, new JSONObject(value));
         return this;
     }
@@ -1512,10 +1658,12 @@ public class JSONObject {
             return value.toString();
         }
         if (value instanceof Map) {
-            return new JSONObject((Map<String, Object>)value).toString();
+            Map<?, ?> map = (Map<?, ?>) value;
+            return new JSONObject(map).toString();
         }
         if (value instanceof Collection) {
-            return new JSONArray((Collection<Object>) value).toString();
+            Collection<?> coll = (Collection<?>) value;
+            return new JSONArray(coll).toString();
         }
         if (value.getClass().isArray()) {
             return new JSONArray(value).toString();
@@ -1546,18 +1694,21 @@ public class JSONObject {
                     || object instanceof Short || object instanceof Integer
                     || object instanceof Long || object instanceof Boolean
                     || object instanceof Float || object instanceof Double
-                    || object instanceof String) {
+                    || object instanceof String || object instanceof BigInteger
+                    || object instanceof BigDecimal) {
                 return object;
             }
 
             if (object instanceof Collection) {
-                return new JSONArray((Collection<Object>) object);
+                Collection<?> coll = (Collection<?>) object;
+                return new JSONArray(coll);
             }
             if (object.getClass().isArray()) {
                 return new JSONArray(object);
             }
             if (object instanceof Map) {
-                return new JSONObject((Map<String, Object>) object);
+                Map<?, ?> map = (Map<?, ?>) object;
+                return new JSONObject(map);
             }
             Package objectPackage = object.getClass().getPackage();
             String objectPackageName = objectPackage != null ? objectPackage
@@ -1595,10 +1746,11 @@ public class JSONObject {
         } else if (value instanceof JSONArray) {
             ((JSONArray) value).write(writer, indentFactor, indent);
         } else if (value instanceof Map) {
-            new JSONObject((Map<String, Object>) value).write(writer, indentFactor, indent);
+            Map<?, ?> map = (Map<?, ?>) value;
+            new JSONObject(map).write(writer, indentFactor, indent);
         } else if (value instanceof Collection) {
-            new JSONArray((Collection<Object>) value).write(writer, indentFactor,
-                    indent);
+            Collection<?> coll = (Collection<?>) value;
+            new JSONArray(coll).write(writer, indentFactor, indent);
         } else if (value.getClass().isArray()) {
             new JSONArray(value).write(writer, indentFactor, indent);
         } else if (value instanceof Number) {
