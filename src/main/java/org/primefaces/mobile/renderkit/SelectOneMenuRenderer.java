@@ -41,8 +41,11 @@ public class SelectOneMenuRenderer extends org.primefaces.component.selectonemen
         Object submittedValues = getSubmittedValues(menu);
         String clientId = menu.getClientId(context);
 
-        writer.startElement("select", menu);
+        writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
+        
+        writer.startElement("select", null);
+        writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("data-role", "none", null);
         
@@ -58,6 +61,8 @@ public class SelectOneMenuRenderer extends org.primefaces.component.selectonemen
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 
         writer.endElement("select");
+        
+        writer.endElement("div");
     }
     
     @Override

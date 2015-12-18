@@ -178,8 +178,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.jq.selectmenu(this.cfg).removeAttr('id');
-        this.jq.closest('.ui-select').attr('id', this.id);
+        this.jq.children('select').selectmenu(this.cfg);
     }
     
 });
