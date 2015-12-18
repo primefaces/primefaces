@@ -284,6 +284,12 @@
     display: none;
 }
 
+.ui-datatable-reflow .ui-reflow-label,
+.ui-datatable-reflow .ui-reflow-dropdown {
+    margin-bottom: 10px;
+    display: none;
+}
+
 @media ( max-width: 640px ) {
     .ui-datatable-reflow thead th,
     .ui-datatable-reflow tfoot td {
@@ -316,5 +322,16 @@
         min-width: 30%; 
         display: inline-block;
         margin: -.4em 1em -.4em -.4em;
+    }
+    
+    .ui-datatable-reflow .ui-reflow-label,
+    .ui-datatable-reflow .ui-reflow-dropdown {
+        display: inline-block;
+    }
+    
+    .ui-datatable-reflow .ui-reflow-dropdown {
+        margin-left: 5px;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
     }
 }

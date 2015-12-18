@@ -232,6 +232,10 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("style", style, "style");
         }
         
+        if(table.isReflow()) {
+            encodeSortableHeaderOnReflow(context, table);
+        }
+        
         encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
         
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
@@ -1347,5 +1351,58 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         return ariaHeaderText;
+    }
+    
+    protected void encodeSortableHeaderOnReflow(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        List<String> options = getSortableHeadersText(context, table);
+        
+        if(!options.isEmpty()) {
+            String reflowId = table.getContainerClientId(context) + "_reflowDD";
+            
+            writer.startElement("label", null);
+            writer.writeAttribute("id", reflowId + "_label", null);
+            writer.writeAttribute("for", reflowId, null);
+            writer.writeAttribute("class", "ui-reflow-label", null);
+            writer.writeText("Sort: ", null);
+            writer.endElement("label");
+            
+            writer.startElement("select", null);
+            writer.writeAttribute("id", reflowId, null);
+            writer.writeAttribute("name", reflowId, null);
+            writer.writeAttribute("class", "ui-reflow-dropdown ui-state-default", null);
+            
+            for(int headerIndex = 0; headerIndex < options.size(); headerIndex++) {
+                for(int order = 0; order < 2; order++) {
+                    String orderVal = (order==0) ? "ASC" : "DESC";
+                    
+                    writer.startElement("option", null);
+                    writer.writeAttribute("value", headerIndex + "_" + order, null);
+                    writer.write(options.get(headerIndex) + " " + orderVal);
+                    writer.endElement("option");
+                }
+            }
+            
+            writer.endElement("select");
+        }
+    }
+    
+    protected List<String> getSortableHeadersText(FacesContext context, DataTable table) {
+        List<UIColumn> columns = table.getColumns();
+        List<String> headersText = new ArrayList<String>();
+        ValueExpression columnSortByVE = null;
+        boolean sortable = false;
+        
+        for(UIColumn column : columns) {
+            columnSortByVE = column.getValueExpression("sortBy");
+            sortable = (columnSortByVE != null && column.isSortable());
+            if(sortable) {
+                String headerText = getHeaderLabel(context, column);
+                if(headerText != null) {
+                    headersText.add(headerText);
+                }
+            }
+        }
+        return headersText;
     }
 }

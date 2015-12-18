@@ -239,6 +239,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
         });
+        
+        var reflowDD = $(this.jqId + '_reflowDD');
+        if(reflowDD && this.cfg.reflow) { 
+            PrimeFaces.skinSelect(reflowDD);
+            reflowDD.change(function(e) {
+                var arrVal = $(this).val().split('_'),
+                    columnHeader = $this.sortableColumns.eq(parseInt(arrVal[0])),
+                    sortOrder = parseInt(arrVal[1]);
+                    
+                    columnHeader.data('sortorder', sortOrder);
+                    columnHeader.trigger('click.dataTable');
+            });
+        }
     },
     
     getSortMessage: function(ariaLabel, sortOrderMessage) {
