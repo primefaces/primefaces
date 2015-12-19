@@ -99,3 +99,10 @@ ui-overlay-visible * {
 		display: table-cell;
 	}
 }
+
+/* FontAwesome */
+.ui-widget .ui-icon.fa, 
+.ui-icon.fa {
+    background: none repeat scroll 0 0 transparent !important;
+    text-indent: 0px !important;
+}
