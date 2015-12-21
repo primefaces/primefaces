@@ -30,6 +30,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             boxClass = hidden ? 'ui-chkbox-box ui-widget ui-corner-all ui-state-default' : 'ui-chkbox-box ui-widget ui-corner-all ui-state-default ui-state-active',
             iconClass = (hidden) ? 'ui-chkbox-icon ui-icon ui-icon-blank' : 'ui-chkbox-icon ui-icon ui-icon-check',
             columnTitle = column.children('.ui-column-title').text();
+    
+            this.hasPriorityColumns = column.is('[class*="ui-column-p-"]');
                     
             var item = $('<li class="ui-columntoggler-item">' + 
                     '<div class="ui-chkbox ui-widget">' +
@@ -37,6 +39,17 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                     '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div>' + 
                     '</div>'
                     + '<label>' + columnTitle + '</label></li>').data('column', column.attr('id'));
+            
+            if(this.hasPriorityColumns) {
+                var columnClasses = column.attr('class').split(' ');
+                for(var j = 0; j < columnClasses.length; j++) {
+                    var columnClass = columnClasses[j],
+                    pindex = columnClass.indexOf('ui-column-p-');
+                    if(pindex !== -1) {
+                        item.addClass(columnClass.substring(pindex , pindex + 13));
+                    }
+                }
+            }
             
             if(!hidden) {
                 item.find('> .ui-chkbox > .ui-helper-hidden-accessible > input').prop('checked', true).attr('aria-checked', true);
@@ -285,8 +298,16 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                             ,at: 'left bottom'
                             ,of: this.trigger
                         });
-                        
-        if(!this.widthAligned && (this.panel.width() < this.trigger.width())) {
+                                
+        if(this.hasPriorityColumns) {
+            if(this.panel.outerWidth() <= this.trigger.outerWidth()) {
+                this.panel.css('width','auto');
+            }
+            
+            this.widthAligned = false;
+        }
+        
+        if(!this.widthAligned && (this.panel.outerWidth() < this.trigger.outerWidth())) {
             this.panel.width(this.trigger.width());
             this.widthAligned = true;
         }
@@ -324,4 +345,4 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         }
     }
 
-});   
+});
