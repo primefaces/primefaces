@@ -126,6 +126,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             }
         }
         
+        if(idx != 0 && (idx % columns) != 0) {
+            writer.endElement("div");
+        }
+        
         writer.endElement("div");
     }
     

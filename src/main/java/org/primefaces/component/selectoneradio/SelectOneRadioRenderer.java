@@ -135,6 +135,11 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                     writer.endElement("div");
                 }
             }
+            
+            if(idx != 0 && (idx % columns) != 0) {
+                writer.endElement("div");
+            }
+            
         } else {
             throw new FacesException("The value of columns attribute must be greater than zero.");
         }
