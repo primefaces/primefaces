@@ -34,7 +34,7 @@ import javax.el.ELContext;
 
     private final static String DEFAULT_EVENT = "close";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("close","minimize","maximize","move","restoreMinimize","restoreMaximize"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("close","minimize","maximize","move","restoreMinimize","restoreMaximize", "open"));
 
     @Override
     public Collection<String> getEventNames() {

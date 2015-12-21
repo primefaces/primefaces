@@ -217,6 +217,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
 
     postShow: function() {
+        this.fireBehaviorEvent('open');
+        
         PrimeFaces.invokeDeferredRenders(this.id);
         
         //execute user defined callback
