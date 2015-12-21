@@ -1,6 +1,6 @@
 /*
  * This plugin filters keyboard input by specified regular expression.
- * Version 1.7
+ * Version 1.8
  * $Id$
  *
  * Source code inspired by Ext.JS (Ext.form.TextField, Ext.EventManager)
@@ -29,6 +29,37 @@
 
 (function($)
 {
+	// $.browser fallback for jQuery 1.9+.
+	if ($.browser === undefined) {
+		$.browser = (function () {
+			var ua_match = function (ua) {
+				ua = ua.toLowerCase();
+				var match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
+				/(webkit)[ \/]([\w.]+)/.exec(ua) ||
+				/(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
+				/(msie) ([\w.]+)/.exec(ua) ||
+				ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
+				[];
+				
+				return { browser:match[ 1 ] || "", version:match[ 2 ] || "0" };
+			},
+			matched = ua_match(navigator.userAgent),
+			browser = {};
+			
+			if (matched.browser) {
+				browser[ matched.browser ] = true;
+				browser.version = matched.version;
+			}
+			
+			if (browser.chrome) {
+				browser.webkit = true;
+			} else if (browser.webkit) {
+				browser.safari = true;
+			}
+			return browser;
+		})();
+	}
+
 	var defaultMasks = {
 		pint:     /[\d]/,
 		'int':    /[\d\-]/,
@@ -73,11 +104,10 @@
 	{
 		var k = e.keyCode;
 		var c = e.charCode;
-		return k == 9 || k == 13 //|| (k == 40 && (!$.browser.opera || !e.shiftKey))
-			|| k == 27 ||
+		return k == 9 || k == 13 || k == 27 ||
 			k == 16 || k == 17 ||
 			(k >= 18 && k <= 20) ||
-			($.browser.opera && !e.shiftKey && (k == 8 || (k >= 33 && k <= 35) || (k >= 36 && k < 39)))
+			($.browser.opera && !e.shiftKey && (k == 8 || (k >= 33 && k <= 35) || (k >= 36 && k <= 39) || (k >= 44 && k <= 45)))
 			;
 
         };
@@ -150,3 +180,4 @@
 	}); */
 
 })(jQuery);
+
