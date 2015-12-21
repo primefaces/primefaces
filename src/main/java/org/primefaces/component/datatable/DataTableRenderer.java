@@ -1364,7 +1364,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("id", reflowId + "_label", null);
             writer.writeAttribute("for", reflowId, null);
             writer.writeAttribute("class", "ui-reflow-label", null);
-            writer.writeText("Sort: ", null);
+            writer.writeText(MessageFactory.getMessage(DataTable.SORT_LABEL, null), null);
             writer.endElement("label");
             
             writer.startElement("select", null);
@@ -1374,7 +1374,7 @@ public class DataTableRenderer extends DataRenderer {
             
             for(int headerIndex = 0; headerIndex < options.size(); headerIndex++) {
                 for(int order = 0; order < 2; order++) {
-                    String orderVal = (order==0) ? "ASC" : "DESC";
+                    String orderVal = (order==0) ? MessageFactory.getMessage(DataTable.SORT_ASC, null) : MessageFactory.getMessage(DataTable.SORT_DESC, null);
                     
                     writer.startElement("option", null);
                     writer.writeAttribute("value", headerIndex + "_" + order, null);
