@@ -568,6 +568,7 @@
                         <version>2.9.1</version>
                         <configuration>
                             <sourcepath>${basedir}/src/main/java;${basedir}/target/generated-sources/maven-jsf-plugin</sourcepath>
+                            <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
                         <executions>
                             <execution>
