@@ -61,6 +61,11 @@ public class CSVExporter extends Exporter {
         externalContext.responseFlushBuffer();
 	}
     
+    @Override
+    public void export(FacesContext facesContext, List<UIComponent> components, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+        
+    }
+    
     protected void addColumnFacets(Writer writer, DataTable table, ColumnType columnType) throws IOException {
         boolean firstCellWritten = false;
         

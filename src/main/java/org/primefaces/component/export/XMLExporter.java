@@ -63,6 +63,11 @@ public class XMLExporter extends Exporter {
 	}
     
     @Override
+    public void export(FacesContext facesContext, List<UIComponent> components, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+        
+    }
+    
+    @Override
     protected void preRowExport(DataTable table, Object document) {
         ((PrintWriter) document).write("\t<" + table.getVar() + ">\n");
     }

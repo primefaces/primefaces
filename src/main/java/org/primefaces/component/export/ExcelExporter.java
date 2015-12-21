@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.el.MethodExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -40,32 +41,44 @@ import org.primefaces.util.Constants;
 public class ExcelExporter extends Exporter {
 
     @Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
-    	Workbook wb = createWorkBook();
-    	Sheet sheet = wb.createSheet();
+    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+        Workbook wb = createWorkBook();
+        String id = table.getId();
+    	Sheet sheet = wb.createSheet(id);
         
     	if(preProcessor != null) {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
 
-        addColumnFacets(table, sheet, Exporter.ColumnType.HEADER);
-        
-        if (pageOnly) {
-            exportPageOnly(context, table, sheet);
-        }
-        else if (selectionOnly) {
-            exportSelectionOnly(context, table, sheet);
-        }
-        else {
-            exportAll(context, table, sheet);
-        }
-        
-        if (table.hasFooterColumn()) {
-            addColumnFacets(table, sheet, Exporter.ColumnType.FOOTER);
-        }
-    	
-    	table.setRowIndex(-1);
+        addValuesInSheet(context, table, sheet, pageOnly, selectionOnly);
             	
+    	if(postProcessor != null) {
+    		postProcessor.invoke(context.getELContext(), new Object[]{wb});
+    	}
+    	
+    	writeExcelToResponse(context.getExternalContext(), wb, filename);
+    }
+
+    @Override
+	public void export(FacesContext context, List<UIComponent> components, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
+    	Workbook wb = createWorkBook();
+        
+        if(preProcessor != null) {
+    		preProcessor.invoke(context.getELContext(), new Object[]{wb});
+    	}
+        
+        for(UIComponent component : components) {
+            if(!(component instanceof DataTable)) {
+                throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName() + "\", exporter must target a PrimeFaces DataTable.");
+            }
+            
+            DataTable table = (DataTable) component;
+            String id = table.getId();
+            Sheet sheet = wb.createSheet(id);
+
+            addValuesInSheet(context, table, sheet, pageOnly, selectionOnly);
+        }
+        
     	if(postProcessor != null) {
     		postProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
@@ -179,5 +192,25 @@ public class ExcelExporter extends Exporter {
 
     protected String getContentDisposition(String filename) {
         return "attachment;filename="+ filename + ".xls";
+    }
+    
+    protected void addValuesInSheet(FacesContext context, DataTable table, Sheet sheet, boolean pageOnly, boolean selectionOnly) {
+        addColumnFacets(table, sheet, Exporter.ColumnType.HEADER);
+        
+        if (pageOnly) {
+            exportPageOnly(context, table, sheet);
+        }
+        else if (selectionOnly) {
+            exportSelectionOnly(context, table, sheet);
+        }
+        else {
+            exportAll(context, table, sheet);
+        }
+        
+        if (table.hasFooterColumn()) {
+            addColumnFacets(table, sheet, Exporter.ColumnType.FOOTER);
+        }
+    	
+    	table.setRowIndex(-1);
     }
 }

@@ -16,6 +16,7 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -65,7 +66,7 @@ public class DataExporter implements ActionListener, StateHolder {
 		FacesContext context = FacesContext.getCurrentInstance();
 		ELContext elContext = context.getELContext();
 		
-		String tableId = (String) target.getValue(elContext);
+		String tables = (String) target.getValue(elContext);
 		String exportAs = (String) type.getValue(elContext);
 		String outputFileName = (String) fileName.getValue(elContext);
 	
@@ -86,16 +87,22 @@ public class DataExporter implements ActionListener, StateHolder {
 		
 		try {
 			Exporter exporter = ExporterFactory.getExporterForType(exportAs);
-            
-			UIComponent component = SearchExpressionFacade.resolveComponent(context, event.getComponent(), tableId);
-            
-			if(!(component instanceof DataTable)) {
-				throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName() + "\", exporter must target a PrimeFaces DataTable.");
+
+			List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
+
+            if(components.size() > 1) {
+                exporter.export(context, components, outputFileName, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor);
+            }
+            else {
+                UIComponent component = components.get(0);
+                if(!(component instanceof DataTable)) {
+                    throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName() + "\", exporter must target a PrimeFaces DataTable.");
+                }
+                
+                DataTable table = (DataTable) component;
+                exporter.export(context, table, outputFileName, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor);
             }
             
-			DataTable table = (DataTable) component;
-			exporter.export(context, table, outputFileName, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor);
-			
 			context.responseComplete();
 		} 
         catch (IOException e) {

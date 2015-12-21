@@ -74,6 +74,11 @@ public class PDFExporter extends Exporter {
 		}
 	}
 	
+    @Override
+    public void export(FacesContext facesContext, List<UIComponent> components, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+        
+    }
+    
 	protected PdfPTable exportPDFTable(FacesContext context, DataTable table, boolean pageOnly, boolean selectionOnly, String encoding) {
     	int columnsCount = getColumnsCount(table);
     	PdfPTable pdfTable = new PdfPTable(columnsCount);
