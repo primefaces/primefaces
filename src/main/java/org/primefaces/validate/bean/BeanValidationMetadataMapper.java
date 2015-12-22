@@ -74,8 +74,8 @@ public class BeanValidationMetadataMapper {
     public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, RequestContext requestContext)
             throws IOException {
 
-        Map<String,Object> metadata = new HashMap<String, Object>();
-        List<String> validatorIds = new ArrayList<String>();
+        Map<String,Object> metadata = null;
+        List<String> validatorIds = null;
         
         try {
             // get BV ConstraintDescriptors
@@ -135,10 +135,16 @@ public class BeanValidationMetadataMapper {
                         }
 
                         if (constraintMetadata != null) {
+                            if (metadata == null) {
+                                metadata = new HashMap<String, Object>();
+                            }
                             metadata.putAll(constraintMetadata);
                         }
 
                         if (validatorId != null) {
+                            if (validatorIds == null) {
+                                validatorIds = new ArrayList<String>();
+                            }
                             validatorIds.add(validatorId);
                         }
                     }
@@ -150,6 +156,10 @@ public class BeanValidationMetadataMapper {
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
             LOG.log(Level.FINE, message);
+        }
+
+        if (metadata == null && validatorIds == null) {
+            return null;
         }
 
         return new BeanValidationMetadata(metadata, validatorIds);

@@ -635,8 +635,14 @@ public abstract class CoreRenderer extends Renderer {
         //bean validation
         if(requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
             BeanValidationMetadata beanValidationMetadata = BeanValidationMetadataMapper.resolveValidationMetadata(context, comp, requestContext);
-            renderValidationMetadataMap(context, beanValidationMetadata.getAttributes());
-            validatorIds.addAll(beanValidationMetadata.getValidatorIds());
+            if (beanValidationMetadata != null) {
+                if (beanValidationMetadata.getAttributes() != null) {
+                    renderValidationMetadataMap(context, beanValidationMetadata.getAttributes());
+                }
+                if (beanValidationMetadata.getValidatorIds() != null) {
+                    validatorIds.addAll(beanValidationMetadata.getValidatorIds());
+                }
+            }
         }
 
         //required validation
