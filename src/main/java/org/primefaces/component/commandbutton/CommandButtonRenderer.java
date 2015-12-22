@@ -63,9 +63,13 @@ public class CommandButtonRenderer extends CoreRenderer {
         Object value = button.getValue();
         String icon = button.resolveIcon();
         String title = button.getTitle();
-        String request = pushButton ? null: buildRequest(context, button, clientId);        
-        String onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
+        String onclick = null;
         
+        if (!button.isDisabled()) {
+            String request = pushButton ? null : buildRequest(context, button, clientId);        
+            onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
+        }
+
 		writer.startElement("button", button);
 		writer.writeAttribute("id", clientId, "id");
 		writer.writeAttribute("name", clientId, "name");
