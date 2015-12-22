@@ -66,6 +66,7 @@ public class ConfigContainer {
     private boolean transformMetadataEnabled = false;
     private boolean legacyWidgetNamespace = false;
     private boolean beanValidationDisabled = false;
+    private boolean interpolateClientSideValidationMessages = false;
 
     // internal config
     private boolean beanValidationAvailable = false;
@@ -147,6 +148,9 @@ public class ConfigContainer {
     
         value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
         beanValidationDisabled = (value == null) ? false : Boolean.valueOf(value);
+        
+        value = externalContext.getInitParameter(Constants.ContextParams.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES);
+        interpolateClientSideValidationMessages = (value == null) ? false : Boolean.valueOf(value);
     }
 
     protected void initValidateEmptyFields(FacesContext context) {
@@ -356,5 +360,9 @@ public class ConfigContainer {
 
     public boolean isFontAwesomeEnabled() {
         return fontAwesomeEnabled;
+    }
+
+    public boolean isInterpolateClientSideValidationMessages() {
+        return interpolateClientSideValidationMessages;
     }
 }
