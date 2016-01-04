@@ -2508,6 +2508,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cursor: 'move',
             scope: this.id,
             cancel: ':input,.ui-column-resizer',
+            start: function(event, ui) {
+                ui.helper.css('z-index', ++PrimeFaces.zindex);
+            },
             drag: function(event, ui) {
                 var droppable = ui.helper.data('droppable-column');
 
