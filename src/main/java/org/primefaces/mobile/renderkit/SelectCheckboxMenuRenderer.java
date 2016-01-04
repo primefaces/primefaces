@@ -44,8 +44,11 @@ public class SelectCheckboxMenuRenderer extends org.primefaces.component.selectc
         Object submittedValues = getSubmittedValues(menu);
         String clientId = menu.getClientId(context);
 
-        writer.startElement("select", menu);
+        writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
+
+        writer.startElement("select", null);
+        writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("data-role", "none", null);
@@ -60,6 +63,8 @@ public class SelectCheckboxMenuRenderer extends org.primefaces.component.selectc
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 
         writer.endElement("select");
+        
+        writer.endElement("div");
     }
     
     protected void encodeSelectItems(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, Object values, Object submittedValues, Converter converter) throws IOException {

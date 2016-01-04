@@ -257,8 +257,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.cfg.nativeMenu = false;
         
-        this.jq.selectmenu(this.cfg).removeAttr('id');
-        this.jq.closest('.ui-select').attr('id', this.id);
+        this.jq.children('select').selectmenu(this.cfg);
     }
     
 });
