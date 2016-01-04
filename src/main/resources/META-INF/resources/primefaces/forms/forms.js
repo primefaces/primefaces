@@ -1989,7 +1989,7 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
         })
         .on('click', function(e) {
             var button = $(this),
-            input = $this.inputs.eq(button.index());
+            input = button.children(':checkbox');
 
             if(button.hasClass('ui-state-active'))
                 button.addClass('ui-state-hover');
