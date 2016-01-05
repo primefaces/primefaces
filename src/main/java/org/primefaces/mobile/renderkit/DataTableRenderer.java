@@ -464,31 +464,38 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         if(!options.isEmpty()) {
             String reflowId = table.getContainerClientId(context) + "_reflowDD";
             
-            writer.startElement("label", null);
-            writer.writeAttribute("id", reflowId + "_label", null);
-            writer.writeAttribute("for", reflowId, null);
-            writer.writeAttribute("class", "ui-reflow-label", null);
-            writer.writeText(MessageFactory.getMessage(DataTable.SORT_LABEL, null), null);
-            writer.endElement("label");
+            writer.startElement("div", null);
+            writer.writeAttribute("class", "ui-reflow-dropdown", null);
             
             writer.startElement("select", null);
             writer.writeAttribute("id", reflowId, null);
             writer.writeAttribute("name", reflowId, null);
-            writer.writeAttribute("class", "ui-reflow-dropdown ui-state-default", null);
             writer.writeAttribute("data-role", "none", null);
+            
+            encodeOptionOnReflow(context, "", MessageFactory.getMessage(DataTable.SORT_LABEL, null));
             
             for(int headerIndex = 0; headerIndex < options.size(); headerIndex++) {
                 for(int order = 0; order < 2; order++) {
                     String orderVal = (order==0) ? MessageFactory.getMessage(DataTable.SORT_ASC, null) : MessageFactory.getMessage(DataTable.SORT_DESC, null);
+                    String value = headerIndex + "_" + order;
+                    String label = options.get(headerIndex) + " " + orderVal;
                     
-                    writer.startElement("option", null);
-                    writer.writeAttribute("value", headerIndex + "_" + order, null);
-                    writer.write(options.get(headerIndex) + " " + orderVal);
-                    writer.endElement("option");
+                    encodeOptionOnReflow(context, value, label);
                 }
             }
             
             writer.endElement("select");
+            
+            writer.endElement("div");
         }
+    }
+    
+    protected void encodeOptionOnReflow(FacesContext context, String value, String label) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("option", null);
+        writer.writeAttribute("value", value, null);
+        writer.write(label);
+        writer.endElement("option");
     }
 }

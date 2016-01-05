@@ -72,9 +72,7 @@
     text-align: center;
 }
 
-.ui-datatable .ui-reflow-label,
 .ui-datatable .ui-reflow-dropdown {
-    margin-bottom: 10px;
     display: none;
 }
 
@@ -84,14 +82,10 @@
         display: none;
     }
     
-    .ui-datatable .ui-reflow-label,
     .ui-datatable .ui-reflow-dropdown {
-        display: inline-block;
+        display: block;
     }
     
-    .ui-datatable .ui-reflow-dropdown {
-        margin-left: 5px;
-    }
 }
 
 /** DataGrid **/
