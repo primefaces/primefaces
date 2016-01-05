@@ -531,6 +531,7 @@ button.ui-button::-moz-focus-inner {
     position: absolute;
     top: 0px;
     margin-left: -1px;
+    right: 0px;
 }
 
 /** IE Hacks **/
@@ -676,6 +677,9 @@ div.ui-button, .ui-splitbutton {
 /** CheckboxMenu **/
 .ui-fluid .ui-selectcheckboxmenu {
     width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
 }
 
 .ui-fluid .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon {
