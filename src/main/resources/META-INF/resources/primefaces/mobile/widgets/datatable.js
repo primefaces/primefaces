@@ -75,6 +75,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             
             $this.sort(columnHeader, sortOrder);
         });
+        
+        var reflowDD = $(this.jqId + '_reflowDD');
+        if(reflowDD && this.cfg.reflow) { 
+            reflowDD.change(function(e) {
+                var arrVal = $(this).val().split('_'),
+                columnHeader = $this.sortableColumns.eq(parseInt(arrVal[0])),
+                sortOrder = parseInt(arrVal[1]);
+                    
+                columnHeader.data('sortorder', sortOrder);
+                columnHeader.trigger('click.dataTable');
+            });
+        }
     },
     
     bindMobileEvents: function() {
