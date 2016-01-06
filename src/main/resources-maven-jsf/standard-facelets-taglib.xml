@@ -346,3 +346,10 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
     </tag>
+    
+    <tag>
+		<tag-name>repeat</tag-name>
+        <component>
+            <component-type>org.primefaces.component.UIRepeat</component-type>
+        </component>
+	</tag>

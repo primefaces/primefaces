@@ -42,7 +42,7 @@
             <source-class>org.primefaces.component.calendar.Calendar</source-class>
         </system-event-listener>
     </application>
-    
+        
     <behavior>
         <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
         <behavior-class>org.primefaces.behavior.ajax.AjaxBehavior</behavior-class>
@@ -227,7 +227,12 @@
 		<component-type>org.primefaces.mobile.UISwitch</component-type>
 		<component-class>org.primefaces.mobile.component.uiswitch.UISwitch</component-class>
 	</component>
-
+    
+    <component>
+        <component-type>org.primefaces.component.UIRepeat</component-type>
+        <component-class>org.primefaces.component.repeat.UIRepeat</component-class>
+    </component>
+    
     <render-kit>
         <render-kit-id>PRIMEFACES_MOBILE</render-kit-id>
         <render-kit-class>org.primefaces.mobile.renderkit.MobileRenderKit</render-kit-class>
