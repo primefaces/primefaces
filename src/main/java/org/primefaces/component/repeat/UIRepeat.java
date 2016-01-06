@@ -124,6 +124,7 @@ public class UIRepeat extends UINamingContainer {
     private Integer end;
     private Integer step;
     private Integer size;
+    private Boolean isNested = null;
     
     private Map<String, SavedState> initialChildState;
     private String initialClientId;
@@ -464,15 +465,22 @@ public class UIRepeat extends UINamingContainer {
 
     
     private boolean isNestedInIterator() {
-        UIComponent parent = this.getParent();
-        while (parent != null) {
-            if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat") 
+        if (isNested == null) {
+            UIComponent parent = this;
+            while (null != (parent = parent.getParent())) {
+                if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat") 
                         ||(parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
-                return true;
+                    isNested = Boolean.TRUE;
+                    break;
+                }
             }
-            parent = parent.getParent();
+            if (isNested == null) {
+                isNested = Boolean.FALSE;
+            }
+            return isNested;
+        } else {
+            return isNested;
         }
-        return false;
     }
 
     /**
