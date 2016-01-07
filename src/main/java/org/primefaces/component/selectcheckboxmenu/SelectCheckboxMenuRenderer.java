@@ -134,7 +134,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if(disabled)
             writer.writeAttribute("class", "ui-state-disabled", null);
 
-        //2015.12.10:BS: height of empty item(line) in ListBox is not correct !
+        //2015.12.10:BS: height of empty item(line) in ListBox is not correctly displayed !
         // The square of empty item is overriden by the square of next item.
         // For this correction, I fill the empty line with a &nb; character 
         // I have seen this solution in your code for another correction :-)
