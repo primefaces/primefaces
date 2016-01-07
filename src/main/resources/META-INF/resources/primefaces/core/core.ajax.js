@@ -648,14 +648,16 @@ PrimeFaces.ajax = {
                     }
                 };
 
-                refocus();
+                if(elementToFocus.length) {
+                    refocus();
 
-                // double check it - required for IE
-                setTimeout(function() {
-                    if (!elementToFocus.is(":focus")) {
-                        refocus();
-                    }
-                }, 50);
+                    // double check it - required for IE
+                    setTimeout(function() {
+                        if (!elementToFocus.is(":focus")) {
+                            refocus();
+                        }
+                    }, 50);
+                }
             }
 
             PrimeFaces.customFocus = false;
