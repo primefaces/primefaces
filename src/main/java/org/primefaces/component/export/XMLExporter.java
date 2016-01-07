@@ -63,7 +63,7 @@ public class XMLExporter extends Exporter {
 	}
     
     @Override
-    public void export(FacesContext facesContext, List<UIComponent> components, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+    public void export(FacesContext facesContext, String expression, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
         
     }
     

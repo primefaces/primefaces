@@ -91,7 +91,7 @@ public class DataExporter implements ActionListener, StateHolder {
 			List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
 
             if(components.size() > 1) {
-                exporter.export(context, components, outputFileName, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor);
+                exporter.export(context, tables, outputFileName, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor);
             }
             else {
                 UIComponent component = components.get(0);

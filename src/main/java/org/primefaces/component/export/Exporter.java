@@ -65,7 +65,7 @@ public abstract class Exporter {
 			String encodingType, MethodExpression preProcessor,
 			MethodExpression postProcessor) throws IOException;
 
-    public abstract void export(FacesContext facesContext, List<UIComponent> components,
+    public abstract void export(FacesContext facesContext, String expression,
 			String outputFileName, boolean pageOnly, boolean selectionOnly,
 			String encodingType, MethodExpression preProcessor,
 			MethodExpression postProcessor) throws IOException;

@@ -17,12 +17,14 @@ package org.primefaces.component.export;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.el.MethodExpression;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
@@ -50,7 +52,7 @@ public class ExcelExporter extends Exporter {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
 
-        addValuesInSheet(context, table, sheet, pageOnly, selectionOnly);
+        exportTable(context, table, sheet, pageOnly, selectionOnly);
             	
     	if(postProcessor != null) {
     		postProcessor.invoke(context.getELContext(), new Object[]{wb});
@@ -60,24 +62,16 @@ public class ExcelExporter extends Exporter {
     }
 
     @Override
-	public void export(FacesContext context, List<UIComponent> components, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
+	public void export(FacesContext context, String expression, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
     	Workbook wb = createWorkBook();
         
         if(preProcessor != null) {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
         
-        for(UIComponent component : components) {
-            if(!(component instanceof DataTable)) {
-                throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName() + "\", exporter must target a PrimeFaces DataTable.");
-            }
-            
-            DataTable table = (DataTable) component;
-            String id = table.getId();
-            Sheet sheet = wb.createSheet(id);
-
-            addValuesInSheet(context, table, sheet, pageOnly, selectionOnly);
-        }
+        VisitContext visitContext = VisitContext.createVisitContext(context, Arrays.asList(expression.split(",")), null);
+        VisitCallback visitCallback = new ExcelExportVisitCallback(this, wb, pageOnly, selectionOnly);
+        context.getViewRoot().visitTree(visitContext, visitCallback);
         
     	if(postProcessor != null) {
     		postProcessor.invoke(context.getELContext(), new Object[]{wb});
@@ -194,7 +188,7 @@ public class ExcelExporter extends Exporter {
         return "attachment;filename="+ filename + ".xls";
     }
     
-    protected void addValuesInSheet(FacesContext context, DataTable table, Sheet sheet, boolean pageOnly, boolean selectionOnly) {
+    public void exportTable(FacesContext context, DataTable table, Sheet sheet, boolean pageOnly, boolean selectionOnly) {
         addColumnFacets(table, sheet, Exporter.ColumnType.HEADER);
         
         if (pageOnly) {
