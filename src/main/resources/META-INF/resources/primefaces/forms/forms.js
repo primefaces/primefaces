@@ -2661,7 +2661,19 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             $this.check($(this).children('.ui-chkbox').children('.ui-chkbox-box'));
         });
 
+        //2015.12.10:BS: add true to allow immediate refresh of filtered data
+        // when user click on ALL Button in Header of ListBox
+        // to select all items in SelectManyheckBox
+
+        //<UPDATE>
+        this.check(this.togglerBox, true);
+	//</UPDATE>
+	
+	//<REMOVE>
+	/*
         this.check(this.togglerBox);
+        */
+	//</REMOVE>
         
         if(!this.togglerBox.hasClass('ui-state-disabled')) {
             this.togglerBox.prev().children('input').trigger('focus.selectCheckboxMenu');
@@ -2680,7 +2692,20 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             $this.uncheck($(this).children('.ui-chkbox').children('.ui-chkbox-box'));
         });
 
+        //2015.12.10:BS: add true to allow immediate refresh of filtered data
+        // when user click on ALL Button in Header of ListBox
+        // to unselect all items in SelectManyheckBox
+
+        //<UPDATE>
+        this.uncheck(this.togglerBox, true);
+	//</UPDATE>
+	
+	//<REMOVE>
+	/*
         this.uncheck(this.togglerBox);
+        */
+	//</REMOVE>
+
 
         if(!this.togglerBox.hasClass('ui-state-disabled')) {
             this.togglerBox.prev().children('input').trigger('focus.selectCheckboxMenu');
