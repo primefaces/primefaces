@@ -34,6 +34,7 @@ import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -82,11 +83,18 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
     
     protected void decodeMultiple(FacesContext context, AutoComplete ac) {
-        Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
+        Map<String, String[]> paramValues = context.getExternalContext().getRequestParameterValuesMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = ac.getClientId(context);
-        String[] submittedValues = params.get(clientId + "_hinput");
+        String[] hinputValues = paramValues.get(clientId + "_hinput");
+        String[] submittedValues = (hinputValues != null) ? hinputValues : new String[]{};
+        String inputValue = params.get(clientId + "_input");
         
-        if(submittedValues != null) {
+        if(inputValue != null && !inputValue.trim().equals("")) {
+            submittedValues = ArrayUtils.concat(submittedValues, new String[]{inputValue});
+        }
+
+        if(submittedValues.length > 0) {
             ac.setSubmittedValue(submittedValues);
         }
         else {
