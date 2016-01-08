@@ -223,53 +223,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.queryEvent !== 'enter') {
             this.input.on('input propertychange', function(e) {
-                if($this.suppressInput) {
-                    e.preventDefault();
-                    return;
-                }
-                
-                // for touch event on mobile
-                if(PrimeFaces.env.browser.mobile) {
-                    $this.touchToDropdownButton = false;
-                    if($this.itemClick) {
-                        $this.itemClick = false;
-                        return;
-                    }
-                }
-                
-                // for click event on IE8
-                if(PrimeFaces.isIE(8) && ($this.itemClick || e.originalEvent.propertyName !== 'value')) {
-                    $this.itemClick = false;
-                    return;
-                }
-                
-                var value = $this.input.val();
-
-                if($this.cfg.pojo && !$this.cfg.multiple) {
-                    $this.hinput.val(value);
-                }
-
-                if(!value.length) {
-                    $this.hide();
-                }
-
-                if(value.length >= $this.cfg.minLength) {
-                    if($this.timeout) {
-                        $this.deleteTimeout();
-                    }
-
-                    var delay = $this.cfg.delay;
-                    $this.timeout = setTimeout(function() {
-                        $this.timeout = null;
-                        $this.search(value);
-                    }, delay);
-                }
+                $this.processKeyEvent(e);
             });
         }
         
         this.input.on('keyup.autoComplete', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
+            
+            if(PrimeFaces.isIE(9) && key === keyCode.BACKSPACE) {
+                $this.processKeyEvent(e);
+            }
             
             if($this.cfg.queryEvent === 'enter' && (key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER)) {
                 if($this.itemSelectedWithEnter)
@@ -448,6 +412,52 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    processKeyEvent: function(e) {
+        var $this = this;
+        
+        if($this.suppressInput) {
+            e.preventDefault();
+            return;
+        }
+
+        // for touch event on mobile
+        if(PrimeFaces.env.browser.mobile) {
+            $this.touchToDropdownButton = false;
+            if($this.itemClick) {
+                $this.itemClick = false;
+                return;
+            }
+        }
+
+        // for click event on IE8
+        if(PrimeFaces.isIE(8) && ($this.itemClick || e.originalEvent.propertyName !== 'value')) {
+            $this.itemClick = false;
+            return;
+        }
+
+        var value = $this.input.val();
+
+        if($this.cfg.pojo && !$this.cfg.multiple) {
+            $this.hinput.val(value);
+        }
+
+        if(!value.length) {
+            $this.hide();
+        }
+
+        if(value.length >= $this.cfg.minLength) {
+            if($this.timeout) {
+                $this.deleteTimeout();
+            }
+
+            var delay = $this.cfg.delay;
+            $this.timeout = setTimeout(function() {
+                $this.timeout = null;
+                $this.search(value);
+            }, delay);
+        }
+    },
+    
     showItemtip: function(item) {
         var content = item.is('li') ? item.next('.ui-autocomplete-itemtip-content') : item.children('td:last');
 
