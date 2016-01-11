@@ -97,6 +97,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
         boolean disabled = option.isDisabled() || menu.isDisabled();
         boolean escaped = option.isEscape();
+        String itemLabel = option.getLabel();
+        itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
         
         Object valuesArray;
         Object itemValue;
@@ -134,10 +136,14 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if(disabled)
             writer.writeAttribute("class", "ui-state-disabled", null);
         
-        if(escaped)
-            writer.writeText(option.getLabel(),null);
-        else
-            writer.write(option.getLabel());
+        if(itemLabel.equals("&nbsp;"))
+            writer.write(itemLabel);
+        else {
+            if(escaped)
+                writer.writeText(itemLabel, "value");
+            else
+                writer.write(itemLabel);
+        }
         
         writer.endElement("label");
     }
