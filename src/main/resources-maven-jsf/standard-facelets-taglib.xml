@@ -105,6 +105,12 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
+        <attribute>
+			<description>When enabled, dynamic datatables would be exported.</description>
+			<name>repeat</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
 	</tag>
 	
 	<tag>

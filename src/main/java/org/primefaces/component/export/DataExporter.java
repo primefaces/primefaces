@@ -72,13 +72,17 @@ public class DataExporter implements ActionListener, StateHolder {
 		String tables = (String) target.getValue(elContext);
 		String exportAs = (String) type.getValue(elContext);
 		String outputFileName = (String) fileName.getValue(elContext);
-        boolean repeating = (this.repeat != null && ((Boolean) this.repeat.getValue(elContext)));
 	
 		String encodingType = "UTF-8";
 		if(encoding != null) {
 			encodingType = (String) encoding.getValue(elContext);
         }
 
+        boolean repeating = false;
+		if(repeat != null) {
+			repeating = repeat.isLiteralText() ? Boolean.valueOf(repeat.getValue(context.getELContext()).toString()) : (Boolean) repeat.getValue(context.getELContext());
+		}
+        
 		boolean isPageOnly = false;
 		if(pageOnly != null) {
 			isPageOnly = pageOnly.isLiteralText() ? Boolean.valueOf(pageOnly.getValue(context.getELContext()).toString()) : (Boolean) pageOnly.getValue(context.getELContext());
