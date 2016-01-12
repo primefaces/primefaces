@@ -65,8 +65,13 @@ public abstract class Exporter {
 			String encodingType, MethodExpression preProcessor,
 			MethodExpression postProcessor) throws IOException;
 
-    public abstract void export(FacesContext facesContext, String expression,
+    public abstract void export(FacesContext facesContext, List<String> clientIds,
 			String outputFileName, boolean pageOnly, boolean selectionOnly,
+			String encodingType, MethodExpression preProcessor,
+			MethodExpression postProcessor) throws IOException;
+    
+    public abstract void export(FacesContext facesContext,
+			String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
 			String encodingType, MethodExpression preProcessor,
 			MethodExpression postProcessor) throws IOException;
 	
