@@ -125,6 +125,10 @@ public class PDFExporter extends Exporter {
 	        
             for(DataTable table : tables) {
                 document.add(exportPDFTable(context, table, pageOnly, selectionOnly, encodingType));
+                
+                Paragraph preface = new Paragraph();
+                addEmptyLine(preface, 3);
+                document.add(preface);
             }
 	    	
 	    	if(postProcessor != null) {
@@ -267,5 +271,11 @@ public class PDFExporter extends Exporter {
         }
         
         return count;
+    }
+    
+    protected void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
     }
 }

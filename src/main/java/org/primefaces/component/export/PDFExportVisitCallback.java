@@ -47,7 +47,7 @@ public class PDFExportVisitCallback implements VisitCallback {
             document.add(exporter.exportPDFTable(context.getFacesContext(), dt, pageOnly, selectionOnly, encoding));
             
             Paragraph preface = new Paragraph();
-            addEmptyLine(preface, 3);
+            exporter.addEmptyLine(preface, 3);
             document.add(preface);
             
         } catch (DocumentException e) {
@@ -55,12 +55,6 @@ public class PDFExportVisitCallback implements VisitCallback {
         }
         
         return VisitResult.ACCEPT;
-    }
-    
-    private static void addEmptyLine(Paragraph paragraph, int number) {
-        for (int i = 0; i < number; i++) {
-            paragraph.add(new Paragraph(" "));
-        }
     }
     
 }
