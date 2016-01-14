@@ -31,6 +31,19 @@
             <type>boolean</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
+        <!--2016-01-14:BS: new attribute PROTECTED
+        -->
+        <!-- ADD -->
+        <attribute>
+            <name>protectedx</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <ignoreInComponent>false</ignoreInComponent>
+            <defaultValue>false</defaultValue>
+            <description>Protects the component (input prohibited).</description>
+        </attribute>
+        <!-- /ADD -->
+
         <attribute>
             <name>label</name>
             <required></required>
