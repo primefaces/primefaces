@@ -284,40 +284,40 @@
         },
 
         cw : function(widgetConstructor, widgetVar, cfg, resource) {
-            PrimeFaces.createWidget(widgetConstructor, widgetVar, cfg, resource);
+            this.createWidget(widgetConstructor, widgetVar, cfg, resource);
         },
 
         createWidget : function(widgetConstructor, widgetVar, cfg, resource) {
             cfg.widgetVar = widgetVar;
 
-            if(PrimeFaces.widget[widgetConstructor]) {
-                var widget = PrimeFaces.widgets[widgetVar];
+            if(this.widget[widgetConstructor]) {
+                var widget = this.widgets[widgetVar];
 
                 //ajax update
-                if(widget && (widget.constructor === PrimeFaces.widget[widgetConstructor])) {
+                if(widget && (widget.constructor === this.widget[widgetConstructor])) {
                     widget.refresh(cfg);
                 }
                 //page init
                 else {
-                    PrimeFaces.widgets[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);
-                    if(PrimeFaces.settings.legacyWidgetNamespace) {
-                        window[widgetVar] = PrimeFaces.widgets[widgetVar];
+                    this.widgets[widgetVar] = new this.widget[widgetConstructor](cfg);
+                    if(this.settings.legacyWidgetNamespace) {
+                        window[widgetVar] = this.widgets[widgetVar];
                     }
                 }
             }
             // widget script not loaded -> lazy load script + stylesheet
             else {
-                var scriptURI = PrimeFaces.getFacesResource(resource + '/' + resource + '.js', 'primefaces');
-                var cssURI = PrimeFaces.getFacesResource(resource + '/' + resource + '.css', 'primefaces');
+                var scriptURI = this.getFacesResource(resource + '/' + resource + '.js', 'primefaces');
+                var cssURI = this.getFacesResource(resource + '/' + resource + '.css', 'primefaces');
 
                 //load css
                 var cssResource = '<link type="text/css" rel="stylesheet" href="' + cssURI + '" />';
                 $('head').append(cssResource);
 
                 //load script and initialize widget
-                PrimeFaces.getScript(scriptURI, function() {
+                this.getScript(scriptURI, function() {
                     setTimeout(function() {
-                        PrimeFaces.widgets[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);
+                        this.widgets[widgetVar] = new this.widget[widgetConstructor](cfg);
                     }, 100);
                 });
             }
