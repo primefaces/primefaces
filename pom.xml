@@ -494,6 +494,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/keyfilter/1-keyfilter.js</include>
                             </includes>
                         </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/knob/knob.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/excanvas/excanvas.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/1-jquery.knob.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/2-knob.js</include>
+                            </includes>
+                        </aggregation>
                     </aggregations>
                 </configuration>
             </plugin>
@@ -740,6 +749,15 @@
                                     <includes>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/keyfilter/0-jquery.keyfilter.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/keyfilter/1-keyfilter.js</include>
+                                    </includes>
+                                </aggregation>
+                                <aggregation>
+                                    <insertNewLine>true</insertNewLine>
+                                    <output>${project.build.directory}/classes/META-INF/resources/primefaces/knob/knob.js</output>
+                                    <includes>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/excanvas/excanvas.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/1-jquery.knob.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/2-knob.js</include>
                                     </includes>
                                 </aggregation>
                             </aggregations>
