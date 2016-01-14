@@ -132,6 +132,19 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         styleClass = !checkbox.isValid() ? styleClass + " ui-state-error" : styleClass;
         styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 
+        //2016-01-14:BS: new attribute PROTECTED
+        
+        //<REMOVE>
+        //styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+        //</REMOVE>
+        
+        //<ADD>
+        if (disabled && !checkbox.isProtectedx())
+            {
+            styleClass += " ui-state-disabled";
+            }
+        //</ADD>
+
         String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 
         writer.startElement("div", null);
