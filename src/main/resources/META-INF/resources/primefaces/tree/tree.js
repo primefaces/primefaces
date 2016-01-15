@@ -266,7 +266,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 this.cfg.onNodeClick.call(this, node, event);
             }
             
-            if(selectable && (this.cfg.selectionMode||this.cfg.draggable)) {
+            if(selectable && this.cfg.selectionMode) {
                 var selected = this.isNodeSelected(node),
                 metaKey = event.metaKey||event.ctrlKey,
                 shiftKey = event.shiftKey;
