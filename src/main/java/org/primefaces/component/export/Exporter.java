@@ -28,6 +28,7 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.UIPanel;
 import javax.faces.component.UISelectMany;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.html.HtmlCommandLink;
@@ -37,6 +38,7 @@ import javax.faces.convert.Converter;
 import org.primefaces.component.celleditor.CellEditor;
 
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.util.ComponentUtils;
 
 public abstract class Exporter {
 	    
@@ -288,6 +290,28 @@ public abstract class Exporter {
                 exportCells(table, document);
             }
         }
+    }
+    
+    public String getSheetName(FacesContext context, DataTable table) {
+        UIComponent header = table.getFacet("header");
+        if(header != null) {
+            if(header instanceof UIPanel) {
+                for(UIComponent child : header.getChildren()) {
+                    if(child.isRendered()) {
+                        String value = ComponentUtils.getValueToRender(context, child);
+
+                        if(value != null) {
+                            return value;
+                        }         
+                    }
+                }
+            }
+            else {
+                return ComponentUtils.getValueToRender(context, header);
+            }
+        }
+        
+        return null;
     }
     
     protected void preRowExport(DataTable table, Object document) {}

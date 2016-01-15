@@ -19,6 +19,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
+import javax.faces.context.FacesContext;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.component.datatable.DataTable;
@@ -39,8 +40,14 @@ public class ExcelExportVisitCallback implements VisitCallback {
 
     public VisitResult visit(VisitContext context, UIComponent target) {
         DataTable dt = (DataTable) target;
-        Sheet sheet = workbook.createSheet(dt.getClientId().replaceAll(":", "_"));
-        exporter.exportTable(context.getFacesContext(), dt, sheet, pageOnly, selectionOnly);
+        FacesContext facesContext = context.getFacesContext();
+        String sheetName = exporter.getSheetName(facesContext, dt);
+        if(sheetName == null) {
+            sheetName = dt.getClientId().replaceAll(":", "_");
+        }
+        
+        Sheet sheet = workbook.createSheet(sheetName);
+        exporter.exportTable(facesContext, dt, sheet, pageOnly, selectionOnly);
         return VisitResult.ACCEPT;
     }
     

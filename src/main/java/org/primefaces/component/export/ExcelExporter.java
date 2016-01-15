@@ -44,8 +44,12 @@ public class ExcelExporter extends Exporter {
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
         Workbook wb = createWorkBook();
-        String id = table.getId();
-    	Sheet sheet = wb.createSheet(id);
+        String sheetName = getSheetName(context, table);
+        if(sheetName == null) {
+            sheetName = table.getId();
+        }
+        
+    	Sheet sheet = wb.createSheet(sheetName);
         
     	if(preProcessor != null) {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
@@ -69,8 +73,12 @@ public class ExcelExporter extends Exporter {
     	}
 
         for(DataTable table : tables) {
-            String id = table.getId();
-            Sheet sheet = wb.createSheet(id);
+            String sheetName = getSheetName(context, table);
+            if(sheetName == null) {
+                sheetName = table.getId();
+            }
+            
+            Sheet sheet = wb.createSheet(sheetName);
             exportTable(context, table, sheet, pageOnly, selectionOnly);
         }
             	
