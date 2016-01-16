@@ -821,7 +821,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.scrollFooterBox.css('margin-left', -scrollLeft);
 
             if($this.shouldLiveScroll) {
-                var scrollTop = this.scrollTop,
+                var scrollTop = Math.ceil(this.scrollTop),
                 scrollHeight = this.scrollHeight,
                 viewportHeight = this.clientHeight;
 
@@ -2966,7 +2966,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             $this.frozenBody.scrollTop(scrollTop);
 
             if($this.shouldLiveScroll) {
-                var scrollTop = this.scrollTop,
+                var scrollTop = Math.ceil(this.scrollTop),
                 scrollHeight = this.scrollHeight,
                 viewportHeight = this.clientHeight;
 
