@@ -1215,6 +1215,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             if(this.isCheckboxSelectionEnabled()) {
                                 this.updateHeaderCheckbox();
                             }
+                            
+                            if(this.cfg.stickyHeader) {
+                                $this.thead.find('.ui-column-filter').prop('disabled', false);
+                                $this.clone = $this.thead.clone(true);
+                                $this.cloneContainer.find('thead').remove();
+                                $this.cloneContainer.children('table').append($this.clone);
+                                $this.thead.find('.ui-column-filter').prop('disabled', true);
+                            }
                         }
                     });
 
