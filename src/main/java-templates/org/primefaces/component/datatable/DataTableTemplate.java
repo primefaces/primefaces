@@ -1277,11 +1277,31 @@ import org.primefaces.util.SharedStringBuilder;
     }
 
     public void setLazyCacheData(Map<String,List> data) {
-        getStateHelper().put("lazyCacheData", data);
+        List<String> keys = new ArrayList<String>();
+        List<List<?>> values = new ArrayList<List<?>>();
+        for (Map.Entry<String, List> entry : data.entrySet()) {
+            keys.add(entry.getKey());
+            values.add(entry.getValue());        
+        }
+        
+        getStateHelper().put("lazyCacheDataKeys", keys);
+        getStateHelper().put("lazyCacheDataValues", values);
     }
     
     public Map<String,List> getLazyCacheData() {
-        return (Map<String,List>) getStateHelper().get("lazyCacheData");
+        List<String> keys = (List<String>) getStateHelper().get("lazyCacheDataKeys");
+        List<List<?>> values = (List<List<?>>) getStateHelper().get("lazyCacheDataValues");
+        
+        if(keys != null) {
+            Map<String,List> map = new LinkedHashMap<String, List>();
+            for (int i = 0; i < keys.size(); i++) {
+                map.put(keys.get(i), values.get(i));
+            }
+            return map;
+        }
+        else {
+            return null;
+        }
     }
 
     private void insertIntoLazyCache(int offset, List<?> data) {
