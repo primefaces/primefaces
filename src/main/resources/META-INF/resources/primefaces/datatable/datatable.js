@@ -124,6 +124,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+        
+        if(this.cfg.lazyCache) {
+            this.fetchNextPage();
+        }
     },
     
     /**
@@ -1077,8 +1081,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             oncomplete: function() {
                 $this.paginator.cfg.page = newState.page;
                 $this.paginator.updateUI();
+                
+                if($this.cfg.lazyCache) {
+                    $this.fetchNextPage();
+                }
             }
-            
         };
 
         if(this.hasBehavior('page')) {
@@ -1089,6 +1096,34 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options); 
         }
+    },
+    
+    /**
+     * Loads next lazy page asynchronously to keep it at viewstate
+     */
+    fetchNextPage: function() {
+        var $this = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            params: [
+                    {name: this.id + '_pagination', value: true},
+                    {name: this.id + '_loadlazycache', value: true},
+                    {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        //do nothing
+                    }
+                });
+                
+                return true;
+            }    
+        };
+                
+        PrimeFaces.ajax.Request.handle(options);      
     },
     
     /**

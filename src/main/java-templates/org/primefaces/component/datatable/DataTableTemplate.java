@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,6 +21,7 @@ import javax.faces.application.NavigationHandler;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import org.primefaces.model.LazyDataModel;
 import java.lang.StringBuilder;
 import java.util.List;
@@ -474,17 +474,32 @@ import org.primefaces.util.SharedStringBuilder;
         
         if(model != null && model instanceof LazyDataModel) {            
             LazyDataModel lazyModel = (LazyDataModel) model;
-            
             List<?> data = null;
+            boolean lazyCache = this.isLazyCache();
             
-			// #7176
-			calculateFirst();
-			
-            if(this.isMultiSort()) {
-                data = lazyModel.load(getFirst(), getRows(), getMultiSortMeta(), getFilters());
+            //#7176
+            calculateFirst();
+
+            int first = this.getFirst();
+
+            //try to load from cache
+            if(lazyCache) {
+                Map<String,List> lazyCacheData = this.getLazyCacheData();
+                if(lazyCacheData != null) {
+                    data = lazyCacheData.get(String.valueOf(first));
+                }
             }
-            else {
-                data = lazyModel.load(getFirst(), getRows(),  resolveSortField(), convertSortOrder(), getFilters());
+            
+            if(data == null) {
+                if(this.isMultiSort())
+                    data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilters());
+                else
+                    data = lazyModel.load(first, getRows(),  resolveSortField(), convertSortOrder(), getFilters());
+            
+                //save in cache
+                if(lazyCache) {
+                    this.insertIntoLazyCache(first, data);
+                }
             }
             
             lazyModel.setPageSize(getRows());
@@ -500,8 +515,30 @@ import org.primefaces.util.SharedStringBuilder;
             }
         }
     }
+
+    public void loadLazyDataToCache(int offset) {
+        DataModel model = getDataModel();
+        
+        if(model != null && model instanceof LazyDataModel) {            
+            LazyDataModel lazyModel = (LazyDataModel) model;
+            List<?> data = null;
+            Map<String,List> lazyCacheData = this.getLazyCacheData();
+            if(lazyCacheData != null) {
+                data = lazyCacheData.get(String.valueOf(offset));
+            }
+			
+            if(data == null) {
+                if(this.isMultiSort())
+                    data = lazyModel.load(offset, getRows(), getMultiSortMeta(), getFilters());
+                else
+                    data = lazyModel.load(offset, getRows(),  resolveSortField(), convertSortOrder(), getFilters());
+
+                this.insertIntoLazyCache(offset, data);
+            }
+        }
+    }
     
-     public void loadLazyScrollData(int offset, int rows) {
+    public void loadLazyScrollData(int offset, int rows) {
         DataModel model = getDataModel();
         
         if(model != null && model instanceof LazyDataModel) {            
@@ -1238,6 +1275,26 @@ import org.primefaces.util.SharedStringBuilder;
             this.setColumns(null);
         }
     }
-        
+
+    public void setLazyCacheData(Map<String,List> data) {
+        getStateHelper().put("lazyCacheData", data);
+    }
+    
+    public Map<String,List> getLazyCacheData() {
+        return (Map<String,List>) getStateHelper().get("lazyCacheData");
+    }
+
+    private void insertIntoLazyCache(int offset, List<?> data) {
+        Map<String,List> lazyCacheData = this.getLazyCacheData();
+        if(lazyCacheData == null) {
+            lazyCacheData = new LinkedHashMap<String,List>();
+        }
+        else if(this.getLazyCacheSize() == lazyCacheData.size()) {
+            //remove first-in to make room
+            lazyCacheData.remove(lazyCacheData.keySet().iterator().next());
+        }
+        lazyCacheData.put(String.valueOf(offset), data);
+        this.setLazyCacheData(lazyCacheData);
+    }       
     
    
