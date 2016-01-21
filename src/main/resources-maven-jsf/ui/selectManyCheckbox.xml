@@ -65,6 +65,12 @@
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
+        <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
