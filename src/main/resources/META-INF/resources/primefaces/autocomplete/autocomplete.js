@@ -710,11 +710,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
             if(!valid) {
-                if($this.cfg.multiple) {
-                    $this.input.val('');
-                }
-                else {
-                    $this.input.val('');
+                $this.input.val('');
+                if(!$this.cfg.multiple) {
                     $this.hinput.val('');
                 }
             }
