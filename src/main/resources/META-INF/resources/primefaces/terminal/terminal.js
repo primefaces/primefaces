@@ -52,8 +52,9 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
             }
         });
         
-         this.jq.on('click', function(){
-        	$this.focus()});
+        this.jq.on('click', function() {
+            $this.focus();
+        });
     },
             
     processCommand: function() {
