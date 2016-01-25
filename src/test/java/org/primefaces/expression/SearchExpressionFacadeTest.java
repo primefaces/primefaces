@@ -1837,4 +1837,44 @@ public class SearchExpressionFacadeTest {
         SearchExpressionResolverFactory.removeResolver("@test");
         SearchExpressionResolverFactory.removeResolver("@test2");
 	}
+    
+    @Test
+    public void resolveComponents_Id() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+        
+		UIForm form = new UIForm();
+		form.setId("form");
+		root.getChildren().add(form);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("myContainer");
+		form.getChildren().add(innerContainer);
+        
+		UINamingContainer innerContainer2 = new UINamingContainer();
+		innerContainer2.setId("myContainer2");
+		form.getChildren().add(innerContainer2);
+
+        List<UIComponent> result = resolveComponents(root, " @id(myContainer) ");
+        assertTrue(result.size() == 2);
+        assertTrue(result.contains(outerContainer));
+        assertTrue(result.contains(innerContainer));
+    }
+    
+    @Test(expected = FacesException.class)
+    // resolveComponent should thrown an exception cause @id likely returns multiple components
+    public void resolveComponent_Id() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+
+        resolveComponent(root, " @id(myContainer) ");
+    }
 }

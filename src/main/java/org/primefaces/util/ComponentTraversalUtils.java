@@ -17,6 +17,7 @@ package org.primefaces.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -78,6 +79,26 @@ public class ComponentTraversalUtils {
         return result;
     }
     
+    public static void withId(String id, UIComponent base, List<UIComponent> components) {
+        
+        if (id.equals(base.getId())) {
+            components.add(base);
+        }
+
+    	if (base.getFacetCount() > 0) {
+    		for (UIComponent facet : base.getFacets().values()) {
+    			withId(id, facet, components);
+    		}
+    	}
+
+    	if (base.getChildCount() > 0) {
+	    	for (int i = 0, childCount = base.getChildCount(); i < childCount; i++) {
+	    		UIComponent child = base.getChildren().get(i);
+	    		withId(id, child, components);
+	    	}
+    	}
+    }
+    
     /**
      * Finds the first component with the given id (NOT clientId!).
      * 
@@ -127,7 +148,7 @@ public class ComponentTraversalUtils {
      * @param base The base component to start the traversal.
      * @param separatorString The seperatorString (e.g. :).
      * @param context The FacesContext.
-     * @param skipUnrendered Defined if unrendered components should be skipped.
+     * @param skipUnrendered Defines if unrendered components should be skipped.
      * @return The component or null.
      */
     public static UIComponent firstById(String id, UIComponent base, String separatorString, FacesContext context, boolean skipUnrendered) {

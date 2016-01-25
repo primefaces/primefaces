@@ -23,6 +23,7 @@ import org.primefaces.expression.impl.AllExpressionResolver;
 import org.primefaces.expression.impl.ChildExpressionResolver;
 import org.primefaces.expression.impl.CompositeExpressionResolver;
 import org.primefaces.expression.impl.FormExpressionResolver;
+import org.primefaces.expression.impl.FindComponentExpressionResolver;
 import org.primefaces.expression.impl.IdExpressionResolver;
 import org.primefaces.expression.impl.JQuerySelectorExpressionResolver;
 import org.primefaces.expression.impl.NamingContainerExpressionResolver;
@@ -42,7 +43,7 @@ public class SearchExpressionResolverFactory {
 
     private static final HashMap<String, SearchExpressionResolver> RESOLVER_MAPPING = new HashMap<String, SearchExpressionResolver>();
 
-    private static final IdExpressionResolver ID_EXPRESSION_RESOLVER = new IdExpressionResolver();
+    private static final FindComponentExpressionResolver FIND_COMPONENT_EXPRESSION_RESOLVER = new FindComponentExpressionResolver();
 
     static {
         RESOLVER_MAPPING.put(SearchExpressionConstants.THIS_KEYWORD, new ThisExpressionResolver());
@@ -58,6 +59,7 @@ public class SearchExpressionResolverFactory {
         RESOLVER_MAPPING.put(SearchExpressionConstants.WIDGETVAR_KEYWORD, new WidgetVarExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.KEYWORD_PREFIX, new JQuerySelectorExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.ROW_KEYWORD, new RowExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.ID_KEYWORD, new IdExpressionResolver());
     }
 
     /**
@@ -79,8 +81,8 @@ public class SearchExpressionResolverFactory {
                 resolver = RESOLVER_MAPPING.get(expression);
             }
         } else {
-            // if it's not a keyword, take it as id
-            resolver = ID_EXPRESSION_RESOLVER;
+            // if it's not a keyword, just delegate it to JSF
+            resolver = FIND_COMPONENT_EXPRESSION_RESOLVER;
         }
 
         if (resolver == null) {
