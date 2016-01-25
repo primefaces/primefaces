@@ -56,16 +56,18 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             layout = "lineDirection";
         }
         boolean custom = (layout.equals("custom"));
-
+			
         if(custom) {
             writer.startElement("span", checkbox);
             writer.writeAttribute("id", checkbox.getClientId(context), "id");
             writer.writeAttribute("class", "ui-helper-hidden", null);
             encodeCustomLayout(context, checkbox);
             writer.endElement("span");
-        } else if(layout.equals("responsive")) {
+        }
+		else if(layout.equals("responsive")) {
             encodeResponsiveLayout(context, checkbox);
-        } else {
+        }
+		else {
             encodeTabularLayout(context, checkbox, layout);
         }
     }
@@ -79,7 +81,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 		wb.initWithDomReady("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId)
             .attr("custom", custom, false).finish();
     }
-
+	
     protected void encodeResponsiveLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
