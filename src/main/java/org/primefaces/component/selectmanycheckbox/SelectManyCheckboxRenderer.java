@@ -37,9 +37,9 @@ import org.primefaces.util.WidgetBuilder;
 public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         return context.getRenderKit().getRenderer("javax.faces.SelectMany", "javax.faces.Checkbox").getConvertedValue(context, component, submittedValue);
-    }
+	}
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -52,18 +52,18 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     protected void encodeMarkup(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String layout = checkbox.getLayout();
-        if (layout == null) {
+        if(layout == null) {
             layout = "lineDirection";
         }
         boolean custom = (layout.equals("custom"));
 
-        if (custom) {
+        if(custom) {
             writer.startElement("span", checkbox);
             writer.writeAttribute("id", checkbox.getClientId(context), "id");
             writer.writeAttribute("class", "ui-helper-hidden", null);
             encodeCustomLayout(context, checkbox);
             writer.endElement("span");
-        } else if (layout.equals("responsive")) {
+        } else if(layout.equals("responsive")) {
             encodeResponsiveLayout(context, checkbox);
         } else {
             encodeTabularLayout(context, checkbox, layout);
@@ -75,9 +75,9 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         String layout = checkbox.getLayout();
         boolean custom = (layout != null && layout.equals("custom"));
-
-        wb.initWithDomReady("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId)
-                .attr("custom", custom, false).finish();
+		
+		wb.initWithDomReady("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId)
+            .attr("custom", custom, false).finish();
     }
 
     protected void encodeResponsiveLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
@@ -88,26 +88,26 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         styleClass = (styleClass == null) ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
         styleClass = styleClass + " ui-grid ui-grid-responsive";
         int columns = checkbox.getColumns();
-
-        if (columns <= 0) {
+		
+        if(columns <= 0) {
             throw new FacesException("The value of columns attribute must be greater than zero.");
         }
-
+		
         writer.startElement("div", checkbox);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (style != null) {
+        if(style != null) {
             writer.writeAttribute("style", style, "style");
         }
-
+		
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
         Converter converter = checkbox.getConverter();
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
         int idx = 0, colMod;
-        for (SelectItem selectItem : selectItems) {
+        for(SelectItem selectItem : selectItems) {
             colMod = idx % columns;
-            if (colMod == 0) {
+            if(colMod == 0) {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", "ui-grid-row", null);
             }
@@ -120,25 +120,25 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             idx++;
             colMod = idx % columns;
 
-            if (colMod == 0) {
+            if(colMod == 0) {
                 writer.endElement("div");
             }
         }
 
         writer.endElement("div");
     }
-
+		
     protected void encodeTabularLayout(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
         styleClass = styleClass == null ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
-
+		
         writer.startElement("table", checkbox);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (style != null) {
+        if(style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
@@ -146,10 +146,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
         writer.endElement("table");
     }
-
+		
     protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked, boolean disabled, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
+		
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
@@ -161,14 +161,14 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
         renderOnchange(context, checkbox);
 
-        if (checked) {
+        if(checked) {
             writer.writeAttribute("checked", "checked", null);
         }
-        if (disabled) {
+        if(disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, checkbox);
         }
 
@@ -179,16 +179,16 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
     protected void encodeOptionLabel(FacesContext context, SelectManyCheckbox checkbox, String containerClientId, SelectItem option, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
+		
         writer.startElement("label", null);
         writer.writeAttribute("for", containerClientId, null);
-        if (disabled) {
+        if(disabled) {
             writer.writeAttribute("class", "ui-state-disabled", null);
         }
-        if (option instanceof SelectItemGroup) {
+        if(option instanceof SelectItemGroup) {
             writer.writeAttribute("class", "ui-selectmanycheckbox-item-group", null);
         }
-        if (option.isEscape()) {
+        if(option.isEscape()) {
             writer.writeText(option.getLabel(), null);
         } else {
             writer.write(option.getLabel());
@@ -196,9 +196,9 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
         writer.endElement("label");
     }
-
+		
     protected void encodeOptionOutput(FacesContext context, SelectManyCheckbox checkbox, boolean checked, boolean disabled) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+		ResponseWriter writer = context.getResponseWriter();
         String boxClass = HTML.CHECKBOX_BOX_CLASS;
         boxClass = checked ? boxClass + " ui-state-active" : boxClass;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
@@ -212,16 +212,16 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
-
+		
         writer.endElement("div");
     }
 
     protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
-        if (layout.equals("lineDirection")) {
+        if(layout.equals("lineDirection")) {
             encodeLineLayout(context, checkbox);
-        } else if (layout.equals("pageDirection")) {
+        } else if(layout.equals("pageDirection")) {
             encodePageLayout(context, checkbox);
-        } else if (layout.equals("grid")) {
+        } else if(layout.equals("grid")) {
             encodeGridLayout(context, checkbox);
         } else {
             throw new FacesException("Invalid '" + layout + "' type for component '" + checkbox.getClientId(context) + "'.");
@@ -234,10 +234,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Converter converter = checkbox.getConverter();
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
-
+		
         writer.startElement("tr", null);
         int idx = 0;
-        for (SelectItem selectItem : selectItems) {
+        for(SelectItem selectItem : selectItems) {
             encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
             idx++;
         }
@@ -250,15 +250,15 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Converter converter = checkbox.getConverter();
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
-
+		
         int idx = 0;
-        for (SelectItem selectItem : selectItems) {
-            if (selectItem instanceof SelectItemGroup) {
+        for(SelectItem selectItem : selectItems) {
+            if(selectItem instanceof SelectItemGroup) {
                 writer.startElement("tr", null);
                 encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
                 writer.endElement("tr");
                 idx++;
-                for (SelectItem childSelectItem : ((SelectItemGroup) selectItem).getSelectItems()) {
+                for(SelectItem childSelectItem : ((SelectItemGroup) selectItem).getSelectItems()) {
                     writer.startElement("tr", null);
                     encodeOption(context, checkbox, values, submittedValues, converter, childSelectItem, idx);
                     writer.endElement("tr");
@@ -280,12 +280,12 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
         int columns = checkbox.getColumns();
-
-        if (columns != 0) {
+		
+        if(columns != 0) {
             int idx = 0, colMod;
-            for (SelectItem selectItem : selectItems) {
+            for(SelectItem selectItem : selectItems) {
                 colMod = idx % columns;
-                if (colMod == 0) {
+                if(colMod == 0) {
                     writer.startElement("tr", null);
                 }
 
@@ -294,7 +294,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 idx++;
                 colMod = idx % columns;
 
-                if (colMod == 0) {
+                if(colMod == 0) {
                     writer.endElement("tr");
                 }
             }
@@ -308,16 +308,16 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Converter converter = checkbox.getConverter();
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
-
+		
         int idx = 0;
-        for (SelectItem selectItem : selectItems) {
+        for(SelectItem selectItem : selectItems) {
             String itemValueAsString = getOptionAsString(context, checkbox, converter, selectItem.getValue());
             String name = checkbox.getClientId(context);
             String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-
+			
             Object valuesArray;
             Object itemValue;
-            if (submittedValues != null) {
+            if(submittedValues != null) {
                 valuesArray = submittedValues;
                 itemValue = itemValueAsString;
             } else {
@@ -326,10 +326,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             }
 
             boolean selected = isSelected(context, checkbox, itemValue, valuesArray, converter);
-            if (selectItem.isNoSelectionOption() && values != null && !selected) {
+            if(selectItem.isNoSelectionOption() && values != null && !selected) {
                 return;
             }
-
+			
             encodeOptionInput(context, checkbox, id, name, selected, true, itemValueAsString);
             idx++;
         }
@@ -342,25 +342,25 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         String name = checkbox.getClientId(context);
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
         boolean disabled = option.isDisabled() || checkbox.isDisabled();
-
+		
         Object valuesArray;
         Object itemValue;
-        if (submittedValues != null) {
+        if(submittedValues != null) {
             valuesArray = submittedValues;
             itemValue = itemValueAsString;
         } else {
             valuesArray = values;
             itemValue = option.getValue();
         }
-
+		
         boolean selected = isSelected(context, component, itemValue, valuesArray, converter);
-        if (option.isNoSelectionOption() && values != null && !selected) {
+        if(option.isNoSelectionOption() && values != null && !selected) {
             return;
         }
 
         writer.startElement("td", null);
         // skip checkbox element if SelectItemGroup
-        if (option instanceof SelectItemGroup) {
+        if(option instanceof SelectItemGroup) {
             //take both columns for label
             writer.writeAttribute("colspan", "2", null);
         } else {
@@ -378,17 +378,17 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         encodeOptionLabel(context, checkbox, id, option, disabled);
         writer.endElement("td");
     }
-
+	
     @Override
     protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
         return selectMany.getClientId(context);
     }
-
+	
     @Override
     public String getHighlighter() {
         return "manychkbox";
     }
-
+	
     @Override
     protected boolean isGrouped() {
         return true;
