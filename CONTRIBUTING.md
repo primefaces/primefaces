@@ -61,14 +61,12 @@ About the code you contribute
   - All comments, names of classes and variables, log messages, etc. must be **in English**.
   - All `.java` files must include the standard PrimeFaces copyright header.
   - All your code should follow the Java Code Conventions regarding variable/method/class naming.
-  - Maximum line size is 120 characters.
+  - Maximum line size is 160 characters.
   - Indentation should be made with 4 spaces, not tabs.
   - Line feeds should be UNIX-like (`\n`).
   - All .java source files should be pure ASCII. All .properties files should be ISO-8859-1. 
   - Number autoboxing and/or autounboxing is forbidden.
   - Every class should define a constructor, even if it is the default one, and include a call to `super()`.
-  - Every non-nullable argument in a public method should be first validated with a `Validate.notNull(...)` call.
-  - All method arguments should include the `final` modifier, so that their value is never changed.
   - Include `/* ... */` comments for every algorithm you develop with a minimum of complexity. *"Minimum 
     of complexity"* usually means you had to take some design decisions in order to write it the way you did. Do 
     not write obvious comments.
@@ -79,7 +77,7 @@ About the code you contribute
   - All tags, CSS styles, file names, etc. must be **in English**.
   - Lower case should be prefered for HTML/XML artifacts. The only exceptions are `DOCTYPE` and `CDATA` clauses.
   - All HTML code should be XML-valid (i.e. all tags should be closed, attributes surrounded by commas, etc.)
-  - Maximum line size is 120 characters.
+  - Maximum line size is 160 characters.
   - Indentation should be made with 4 spaces, not tabs.
   - Line feeds should be UNIX-like (`\n`).
   - All .html and .xml source files should be pure ASCII, even if _content-type_ is set to a different encoding. 
