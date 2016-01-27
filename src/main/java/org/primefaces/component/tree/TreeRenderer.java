@@ -83,17 +83,17 @@ public class TreeRenderer extends CoreRenderer {
                 tree.setSelection(tree.getRowNode());
             }
             else {
-                TreeNode[] selectedNodes = new TreeNode[selectedRowKeys.length];
+                List<TreeNode> selectedNodes = new ArrayList<TreeNode>();
 
                 for(int i = 0 ; i < selectedRowKeys.length; i++) {
                     tree.setRowKey(selectedRowKeys[i]);
                     TreeNode rowNode = tree.getRowNode();
                     if(rowNode != null) {
-                        selectedNodes[i] = rowNode;
+                        selectedNodes.add(rowNode);
                     }
                 }
 
-                tree.setSelection(selectedNodes);
+                tree.setSelection(selectedNodes.toArray(new TreeNode[selectedNodes.size()]));
             }
 
             tree.setRowKey(null);
