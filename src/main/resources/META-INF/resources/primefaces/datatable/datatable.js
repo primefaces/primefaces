@@ -2469,19 +2469,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     /**
-     * Adds given rowIndex to selection if it doesn't exist already
+     * Adds given rowKey to selection if it doesn't exist already
      */
-    addSelection: function(rowIndex) {
-        if(!this.isSelected(rowIndex)) {
-            this.selection.push(rowIndex);
+    addSelection: function(rowKey) {
+        if(!this.isSelected(rowKey)) {
+            this.selection.push(rowKey);
         }
     },
     
     /**
-     * Finds if given rowIndex is in selection
+     * Finds if given rowKey is in selection
      */
-    isSelected: function(rowIndex) {
-        return PrimeFaces.inArray(this.selection, rowIndex);
+    isSelected: function(rowKey) {
+        return PrimeFaces.inArray(this.selection, rowKey);
     },
     
     getRowMeta: function(row) {
