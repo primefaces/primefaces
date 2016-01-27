@@ -607,7 +607,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         }
         
         wb.attr("emptyMessage", ac.getEmptyMessage(), null)
-            .attr("resultsMesage", ac.getResultsMessage(), null);
+            .attr("resultsMessage", ac.getResultsMessage(), null);
         
         if(ac.getFacet("itemtip") != null) {
             wb.attr("itemtip", true, false)
