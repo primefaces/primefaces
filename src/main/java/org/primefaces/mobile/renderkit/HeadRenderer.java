@@ -39,6 +39,7 @@ public class HeadRenderer extends Renderer {
         ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
         ProjectStage projectStage = context.getApplication().getProjectStage();
         writer.startElement("head", component);
+        writer.writeAttribute("id", component.getClientId(context), "id");
 
         //First facet
         UIComponent first = component.getFacet("first");
