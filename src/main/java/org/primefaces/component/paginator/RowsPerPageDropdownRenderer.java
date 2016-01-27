@@ -64,8 +64,14 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             writer.writeAttribute("value", uidata.getRows(), null);
             writer.writeAttribute("autocomplete", "off", null);
 
+            int rows = 0;
+            
             for( String option : options){
-                int rows = Integer.parseInt(option);
+            	if(option.equalsIgnoreCase("*")){
+            		rows = uidata.getRowCount();
+            	}else{
+            		rows = Integer.parseInt(option);
+            	}
                 writer.startElement("option", null);
                 writer.writeAttribute("value", rows, null);
 
