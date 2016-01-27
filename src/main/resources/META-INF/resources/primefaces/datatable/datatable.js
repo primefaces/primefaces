@@ -1250,14 +1250,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             if(this.isCheckboxSelectionEnabled()) {
                                 this.updateHeaderCheckbox();
                             }
-                            
-                            if(this.cfg.stickyHeader) {
-                                $this.thead.find('.ui-column-filter').prop('disabled', false);
-                                $this.clone = $this.thead.clone(true);
-                                $this.cloneContainer.find('thead').remove();
-                                $this.cloneContainer.children('table').append($this.clone);
-                                $this.thead.find('.ui-column-filter').prop('disabled', true);
-                            }
                         }
                     });
 
@@ -2288,7 +2280,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.jq.css('cursor', 'col-resize');
                 }
                 else {
-                    var height = $this.cfg.scrollable ? $this.scrollBody.height() : $this.thead.parent().height() - $this.thead.height() - 1;
+                    var header = $this.cfg.stickyHeader ? $this.clone : $this.thead,
+                        height = $this.cfg.scrollable ? $this.scrollBody.height() : header.parent().height() - header.height() - 1;
+                
+                    if($this.cfg.stickyHeader) {
+                        height = height - $this.relativeHeight;
+                    }
+                    
                     $this.resizerHelper.height(height);
                     $this.resizerHelper.show();
                 }
@@ -2327,11 +2325,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 
                 if($this.cfg.stickyHeader) {
-                    $this.thead.find('.ui-column-filter').prop('disabled', false);
-                    $this.clone = $this.thead.clone(true);
-                    $this.cloneContainer.find('thead').remove();
-                    $this.cloneContainer.children('table').append($this.clone);
-                    $this.thead.find('.ui-column-filter').prop('disabled', true);
+                    $this.reclone();
                 }
             },
             containment: this.jq
@@ -2867,53 +2861,77 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         stickyNS = 'scroll.' + this.id,
         resizeNS = 'resize.sticky-' + this.id; 
 
-        this.cloneContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
-        this.clone = this.thead.clone(true);
-        this.cloneContainer.children('table').append(this.clone);
+        this.stickyContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
+        this.clone = this.thead.clone(false);
+        this.stickyContainer.children('table').append(this.thead);
+        table.append(this.clone);
         
-        this.cloneContainer.css({
+        this.stickyContainer.css({
             position: 'absolute',
             width: table.outerWidth(),
             top: offset.top,
             left: offset.left,
             'z-index': ++PrimeFaces.zindex
-        })
-        .appendTo(this.jq);
+        });
+        
+        this.jq.prepend(this.stickyContainer);
 
+        if(this.cfg.resizableColumns) {
+            this.relativeHeight = 0;
+        }
+        
         win.off(stickyNS).on(stickyNS, function() {
             var scrollTop = win.scrollTop(),
             tableOffset = table.offset();
             
             if(scrollTop > tableOffset.top) {
-                $this.cloneContainer.css({
+                $this.stickyContainer.css({
                                         'position': 'fixed',
                                         'top': '0px'
                                     })
                                     .addClass('ui-shadow ui-sticky');
                 
+                if($this.cfg.resizableColumns) {
+                    $this.relativeHeight = scrollTop - tableOffset.top;
+                }
+                
                 if(scrollTop >= (tableOffset.top + $this.tbody.height()))
-                    $this.cloneContainer.hide();
+                    $this.stickyContainer.hide();
                 else
-                    $this.cloneContainer.show();
+                    $this.stickyContainer.show();
             }
             else {
-                $this.cloneContainer.css({
+                $this.stickyContainer.css({
                                         'position': 'absolute',
                                         'top': tableOffset.top
                                     })
                                     .removeClass('ui-shadow ui-sticky');
+                
+                if($this.stickyContainer.is(':hidden')) {
+                    $this.stickyContainer.show(); 
+                }
+                
+                if($this.cfg.resizableColumns) {
+                    $this.relativeHeight = 0;
+                }
             }
         })
         .off(resizeNS).on(resizeNS, function() {
-            $this.cloneContainer.width(table.outerWidth());
+            $this.stickyContainer.width(table.outerWidth());
         });
         
         //filter support
-        this.thead.find('.ui-column-filter').prop('disabled', true);
+        this.clone.find('.ui-column-filter').prop('disabled', true);
     },
     
     getFocusableTbody: function() {
         return this.tbody;
+    },
+    
+    reclone: function() {
+        this.clone.remove();
+        this.clone = this.thead.clone(false);
+        this.jq.find('.ui-datatable-tablewrapper > table').append(this.clone);
     }
 
 });
