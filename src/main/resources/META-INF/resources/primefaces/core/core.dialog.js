@@ -104,19 +104,19 @@ PrimeFaces.dialog.DialogHandler = {
                     title.text(headerElement.text());
                 }
             }
+                        
+            dialogFrame.data('initialized', true);
+
+            rootWindow.PF(dialogWidgetVar).show();
             
             //adjust height
             var frameHeight = null;
             if(cfg.options.contentHeight)
                 frameHeight = cfg.options.contentHeight;
             else
-                frameHeight = $($frame.get(0).contentWindow.document.body).outerHeight() + (PrimeFaces.env.browser.webkit ? 5 : 20);
+                frameHeight = $frame.get(0).contentWindow.document.body.scrollHeight + (PrimeFaces.env.browser.webkit ? 5 : 25);
 
             $frame.css('height', frameHeight);
-            
-            dialogFrame.data('initialized', true);
-
-            rootWindow.PF(dialogWidgetVar).show();
         })
         .attr('src', frameURL);
     },
