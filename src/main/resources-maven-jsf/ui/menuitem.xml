@@ -235,5 +235,11 @@
             <defaultValue>true</defaultValue>
             <description>Defines whether value would be escaped or not, defaults to true.</description>
 		</attribute>
+	<attribute>
+			<name>rel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Defines the relationship between the current document and the linked document.</description>
+		</attribute>
 	</attributes>
 </component>
