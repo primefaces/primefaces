@@ -2082,7 +2082,11 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
 
             if(!button.hasClass('ui-state-active')) {
                 $this.select(button);
+            } 
+            else{
+            	$this.unselect(button);
             }
+            
         });
         
         /* For keyboard accessibility */
@@ -2117,6 +2121,9 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
                 if(!radio.prop('checked')) {
                     $this.select(button);
                 }
+                else{
+                	$this.unselect(button);
+                }
                 e.preventDefault();
             }  
         });
@@ -2126,6 +2133,10 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
         this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').prop('checked', false);
 
         button.addClass('ui-state-active').children(':radio').prop('checked', true).change();
+    },
+    
+    unselect: function(button) {
+    	button.removeClass('ui-state-active ui-state-hover ui-state-focus').children(':radio').prop('checked', false).change();
     }
 
 });
