@@ -157,11 +157,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
         
         writer.startElement("span", null);
-        writer.writeAttribute("class", SelectCheckboxMenu.LABEL_CONTAINER_CLASS, null);
-        if(menu.getTabindex() != null) {
-            writer.writeAttribute("tabindex", menu.getTabindex(), null);
-        }
-        
+        writer.writeAttribute("class", SelectCheckboxMenu.LABEL_CONTAINER_CLASS, null);        
         writer.startElement("label", null);
         writer.writeAttribute("class", labelClass, null);
         writer.writeText(label, null);
