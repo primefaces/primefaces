@@ -338,6 +338,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             e.preventDefault();
                         }
                     break;
+
+                    case keyCode.BACKSPACE:
+                        if ($this.cfg.multiple && !$this.input.val().length) {
+                            $this.removeItem(event, $(this).parent().prev());
+
+                            e.preventDefault();
+                        }
+                    break;
                 };
             }
             
