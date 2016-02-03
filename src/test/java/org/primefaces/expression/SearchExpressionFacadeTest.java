@@ -1625,11 +1625,11 @@ public class SearchExpressionFacadeTest {
 		innerContainer.getChildren().add(source);
 
 		assertEquals("Failed", "outerContainer:innerContainer:source",
-                resolveClientId(source, " outerContainer:innerContainer:source ", SearchExpressionFacade.Options.SKIP_UNRENDERED));
+                resolveClientId(source, " outerContainer:innerContainer:source "));
 	}
 
 	@Test(expected = ComponentNotFoundException.class)
-	public void resolveClientId_AbsoluteWithFormPrependIdFalse_InvokeOnComponentSkipUnrendered_Unredered() {
+	public void resolveClientId_AbsoluteWithFormPrependIdFalse_InvokeOnComponentSkipUnrendered_Unrendered() {
 
 		UIComponent root = new UIPanel();
         FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
@@ -1656,11 +1656,73 @@ public class SearchExpressionFacadeTest {
 		innerContainer.getChildren().add(source);
 
 		assertEquals("Failed", null,
-                resolveClientId(source, " outerContainer:innerContainer:source ", SearchExpressionFacade.Options.SKIP_UNRENDERED));
+                resolveClientId(source, " outerContainer:innerContainer:source "));
 	}
 
+    @Test
+	public void resolveClientId_AbsoluteWithFormPrependIdFalse_InvokeOnComponentVisitUnrendered() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+        form.setPrependId(false);
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("outerContainer");
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("innerContainer");
+        innerContainer.setRendered(false);
+		outerContainer.getChildren().add(innerContainer);
+
+		UIComponent component = new UIOutput();
+		innerContainer.getChildren().add(component);
+
+		UIComponent source = new UICommand();
+		source.setId("source");
+		innerContainer.getChildren().add(source);
+
+		assertEquals(source.getClientId(),
+                resolveClientId(source, " outerContainer:innerContainer:source ", SearchExpressionFacade.Options.VISIT_UNRENDERED));
+	}
+    
+    @Test
+	public void resolveComponent_AbsoluteWithFormPrependIdFalse_InvokeOnComponentVisitUnrendered() {
+
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+        form.setPrependId(false);
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("outerContainer");
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("innerContainer");
+        innerContainer.setRendered(false);
+		outerContainer.getChildren().add(innerContainer);
+
+		UIComponent component = new UIOutput();
+		innerContainer.getChildren().add(component);
+
+		UIComponent source = new UICommand();
+		source.setId("source");
+		innerContainer.getChildren().add(source);
+
+		assertEquals(source,
+                resolveComponent(source, " outerContainer:innerContainer:source ", SearchExpressionFacade.Options.VISIT_UNRENDERED));
+	}
+    
 	@Test
-	public void resolveClientId_AbsoluteWithFormPrependIdFalse_InvokeOnComponentSkipUnrendered_IgnoreNoResult_Unredered() {
+	public void resolveClientId_AbsoluteWithFormPrependIdFalse_InvokeOnComponentSkipUnrendered_IgnoreNoResult_Unrendered() {
 
 		UIComponent root = new UIPanel();
         FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
@@ -1689,7 +1751,7 @@ public class SearchExpressionFacadeTest {
 		assertEquals("Failed", null, resolveClientId(
                         source,
                         " outerContainer:innerContainer:source ",
-                        SearchExpressionFacade.Options.IGNORE_NO_RESULT | SearchExpressionFacade.Options.SKIP_UNRENDERED));
+                        SearchExpressionFacade.Options.IGNORE_NO_RESULT));
 	}
 
 	@Test

@@ -192,7 +192,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             }
 
             if (!ComponentUtils.isValueBlank(handlerComponent.getUpdate())) {
-                List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
+                List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate(), SearchExpressionFacade.Options.VISIT_UNRENDERED);
 
                 if (updates != null && updates.size() > 0) {
                     context.setResponseWriter(writer);

@@ -133,8 +133,7 @@ public class DefaultRequestContext extends RequestContext {
     public void update(String clientId) {
         // call SEF to validate if a component with the clientId exists
         if (context.isProjectStage(ProjectStage.Development)) {
-            SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId,
-                    SearchExpressionFacade.Options.SKIP_UNRENDERED);
+            SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
         }
 
     	context.getPartialViewContext().getRenderIds().add(clientId);
@@ -147,8 +146,7 @@ public class DefaultRequestContext extends RequestContext {
         if (context.isProjectStage(ProjectStage.Development)) {
             if (clientIds != null) {
                 for (String clientId : clientIds) {
-                    SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId,
-                            SearchExpressionFacade.Options.SKIP_UNRENDERED);
+                    SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
                 }
             }
         }
@@ -175,7 +173,7 @@ public class DefaultRequestContext extends RequestContext {
     private void reset(VisitContext visitContext, String expressions) {
         UIViewRoot root = context.getViewRoot();
 
-        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, root, expressions);
+        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, root, expressions, SearchExpressionFacade.Options.VISIT_UNRENDERED);
         for (UIComponent component : components) {
             component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
         }

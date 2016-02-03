@@ -56,7 +56,7 @@ public class CSVBuilder {
     
     public CSVBuilder process(UIComponent component, String expressions) {        
         if(expressions != null && expressions.trim().length() > 0) {
-        	String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, SearchExpressionFacade.Options.NONE);
+        	String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, SearchExpressionFacade.Options.VISIT_UNRENDERED);
             buffer.append(",p:'").append(resolvedExpressions).append("'");
         }
         
@@ -66,7 +66,7 @@ public class CSVBuilder {
     public CSVBuilder update(UIComponent component, String expressions) {        
         if(expressions != null && expressions.trim().length() > 0) {
         	String resolvedExpressions = SearchExpressionFacade.resolveClientIds(
-        			context, component, expressions, SearchExpressionFacade.Options.VALIDATE_RENDERER);
+        			context, component, expressions, SearchExpressionFacade.Options.VALIDATE_RENDERER | SearchExpressionFacade.Options.VISIT_UNRENDERED);
             buffer.append(",u:'").append(resolvedExpressions).append("'");
         }
         

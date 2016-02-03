@@ -76,13 +76,13 @@ public class AjaxRequestBuilder {
 	}
     
     public AjaxRequestBuilder process(UIComponent component, String expressions) {        
-        addExpressions(component, expressions, "p", SearchExpressionFacade.Options.NONE);
+        addExpressions(component, expressions, "p", SearchExpressionFacade.Options.VISIT_UNRENDERED);
         
         return this;
     }
     
     public AjaxRequestBuilder update(UIComponent component, String expressions) {        
-        addExpressions(component, expressions, "u", SearchExpressionFacade.Options.VALIDATE_RENDERER);
+        addExpressions(component, expressions, "u", SearchExpressionFacade.Options.VALIDATE_RENDERER | SearchExpressionFacade.Options.VISIT_UNRENDERED);
         
         return this;
     }

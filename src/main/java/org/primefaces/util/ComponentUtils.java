@@ -175,7 +175,8 @@ public class ComponentUtils {
     	UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(
     			FacesContext.getCurrentInstance(),
     			component,
-    			expression);
+    			expression,
+                SearchExpressionFacade.Options.VISIT_UNRENDERED);
 
         if(resolvedComponent instanceof Widget) {
             return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar() + "')";

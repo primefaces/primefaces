@@ -54,8 +54,8 @@ public class SearchExpressionFacade {
         public static final int IGNORE_NO_RESULT = 0x2;
 
         public static final int PARENT_FALLBACK = 0x4;
-
-        public static final int SKIP_UNRENDERED = 0x8;
+        
+        public static final int VISIT_UNRENDERED = 0x8;
     }
 
     /**
@@ -487,7 +487,7 @@ public class SearchExpressionFacade {
     private static UIComponent resolveComponentById(UIComponent source, String expression, String separatorString, FacesContext context, int options) {
 
         UIComponent component = ComponentTraversalUtils.firstById(expression, source, separatorString, context,
-                isOptionSet(options, Options.SKIP_UNRENDERED));
+                !isOptionSet(options, Options.VISIT_UNRENDERED));
 
         if (component == null && !isOptionSet(options, Options.IGNORE_NO_RESULT)) {
             cannotFindComponent(context, source, expression);
