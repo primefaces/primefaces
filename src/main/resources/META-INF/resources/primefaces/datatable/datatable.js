@@ -488,7 +488,31 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
                         e.preventDefault();
                     break;
-                    
+
+                    case keyCode.RIGHT:
+                        PrimeFaces.clearSelection();
+
+                        if (e.shiftKey) {
+                            $this.paginator.end();
+                        } else {
+                            $this.paginator.next();
+                        }
+
+                        e.preventDefault();
+                    break;
+
+                    case keyCode.LEFT:
+                        PrimeFaces.clearSelection();
+
+                        if (e.shiftKey) {
+                            $this.paginator.first();
+                        } else {
+                            $this.paginator.prev();
+                        }
+
+                        e.preventDefault();
+                    break;
+
                     case keyCode.ENTER:
                     case keyCode.NUMPAD_ENTER:
                     case keyCode.SPACE:
