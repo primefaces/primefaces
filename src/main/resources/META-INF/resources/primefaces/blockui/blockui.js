@@ -76,7 +76,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             this.blocker.show();
 
         if(this.hasContent()) {
-            this.content.fadeIn();
+            if(this.cfg.animate)
+                this.content.fadeIn();
+            else
+                this.content.show();
         }
         
         this.block.attr('aria-busy', true);
@@ -89,7 +92,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             this.blocker.hide();
 
         if(this.hasContent()) {
-            this.content.fadeOut();
+            if(this.cfg.animate)
+                this.content.fadeOut();
+            else
+                this.content.hide();
         }
         
         this.block.attr('aria-busy', false);

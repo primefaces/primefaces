@@ -409,8 +409,19 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 this.cfg.selected--;
             }
             else if(index === this.cfg.selected) {
-                var newIndex = (this.cfg.selected === (length)) ? (this.cfg.selected - 1): this.cfg.selected;
-                this.select(newIndex, true);
+                var newIndex = (this.cfg.selected === (length)) ? (this.cfg.selected - 1): this.cfg.selected,
+                headers = this.navContainer.children('li'),
+                newPanelHeader = headers.eq(newIndex);
+        
+                if(newPanelHeader.hasClass('ui-state-disabled')) {
+                    var newHeader = headers.filter(':not(.ui-state-disabled):first');
+                    if(newHeader.length) {
+                        this.select(newHeader.index(), true);
+                    }
+                }
+                else {
+                    this.select(newIndex, true);
+                }
             }
         }
         else {

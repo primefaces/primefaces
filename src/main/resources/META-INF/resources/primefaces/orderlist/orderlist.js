@@ -107,10 +107,15 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
     
     moveUp: function() {
         var $this = this,
-        selectedItems = this.items.filter('.ui-state-highlight'),
+        selectedItems = $this.list.children('.ui-orderlist-item.ui-state-highlight'),
         itemsToMoveCount = selectedItems.length,
-        movedItemsCount = 0;
+        movedItemsCount = 0,
+        hasFirstChild = selectedItems.is(':first-child');
 
+        if(hasFirstChild) {
+            return;
+        }
+        
         selectedItems.each(function() {
             var item = $(this);
 
@@ -134,16 +139,23 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
     
     moveTop: function() {
         var $this = this,
-        selectedItems = this.items.filter('.ui-state-highlight'),
+        selectedItems = $this.list.children('.ui-orderlist-item.ui-state-highlight'),
         itemsToMoveCount = selectedItems.length,
-        movedItemsCount = 0;
+        movedItemsCount = 0,
+        hasFirstChild = selectedItems.is(':first-child'),
+        firstSelectedItemIndex = selectedItems.eq(0).index();
 
-        selectedItems.each(function() {
-            var item = $(this);
+        if(hasFirstChild) {
+            return;
+        }
+
+        selectedItems.each(function(index) {
+            var item = $(this),
+                currentIndex = (index === 0) ? 0 : (item.index() - firstSelectedItemIndex);
 
             if(!item.is(':first-child')) {
                 item.hide($this.cfg.effect, {}, 'fast', function() {
-                    item.prependTo(item.parent()).show($this.cfg.effect, {}, 'fast', function(){
+                    item.insertBefore($this.list.children('.ui-orderlist-item').eq(currentIndex)).show($this.cfg.effect, {}, 'fast', function(){
                         movedItemsCount++;
                         
                         if(itemsToMoveCount === movedItemsCount) {
@@ -161,9 +173,14 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
     
     moveDown: function() {
         var $this = this,
-        selectedItems = $(this.items.filter('.ui-state-highlight').get().reverse()),
+        selectedItems = $($this.list.children('.ui-orderlist-item.ui-state-highlight').get().reverse()),
         itemsToMoveCount = selectedItems.length,
-        movedItemsCount = 0;
+        movedItemsCount = 0,
+        hasFirstChild = selectedItems.is(':last-child');
+
+        if(hasFirstChild) {
+            return;
+        }
 
         selectedItems.each(function() {
             var item = $(this);
@@ -188,16 +205,24 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
     
     moveBottom: function() {
         var $this = this,
-        selectedItems = this.items.filter('.ui-state-highlight'),
+        selectedItems = $($this.list.children('.ui-orderlist-item.ui-state-highlight').get().reverse()),
         itemsToMoveCount = selectedItems.length,
-        movedItemsCount = 0;
+        movedItemsCount = 0,
+        hasFirstChild = selectedItems.is(':last-child'),
+        lastSelectedItemIndex = selectedItems.eq(0).index(),
+        itemsLength = this.items.length;
+        
+        if(hasFirstChild) {
+            return;
+        }
 
-        selectedItems.each(function() {
-            var item = $(this);
+        selectedItems.each(function(index) {
+            var item = $(this),
+                currentIndex = (index === 0) ? itemsLength - 1 : (item.index() - lastSelectedItemIndex) - 1;
 
             if(!item.is(':last-child')) {
                 item.hide($this.cfg.effect, {}, 'fast', function() {
-                    item.appendTo(item.parent()).show($this.cfg.effect, {}, 'fast', function() {
+                    item.insertAfter($this.list.children('.ui-orderlist-item').eq(currentIndex)).show($this.cfg.effect, {}, 'fast', function() {
                         movedItemsCount++;
                         
                         if(itemsToMoveCount === movedItemsCount) {

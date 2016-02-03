@@ -231,6 +231,19 @@
 			<description>Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for 
             all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.</description>
 		</attribute>
+        <attribute>
+			<name>weekNumberCalculation</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>local</defaultValue>
+			<description>The method for calculating week numbers that are displayed. Valid values are "local" (default), "ISO" and "custom".</description>
+		</attribute>
+        <attribute>
+			<name>weekNumberCalculater</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<description>Client side function to use in custom weekNumberCalculation.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

@@ -16,6 +16,7 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.el.ELContext;
@@ -48,6 +49,8 @@ public class DataExporter implements ActionListener, StateHolder {
 	private MethodExpression preProcessor;
 	
 	private MethodExpression postProcessor;
+    
+    private ValueExpression repeat;
 	
 	public DataExporter() {}
 
@@ -75,6 +78,11 @@ public class DataExporter implements ActionListener, StateHolder {
 			encodingType = (String) encoding.getValue(elContext);
         }
 
+        boolean repeating = false;
+		if(repeat != null) {
+			repeating = repeat.isLiteralText() ? Boolean.valueOf(repeat.getValue(context.getELContext()).toString()) : (Boolean) repeat.getValue(context.getELContext());
+		}
+        
 		boolean isPageOnly = false;
 		if(pageOnly != null) {
 			isPageOnly = pageOnly.isLiteralText() ? Boolean.valueOf(pageOnly.getValue(context.getELContext()).toString()) : (Boolean) pageOnly.getValue(context.getELContext());
@@ -87,20 +95,26 @@ public class DataExporter implements ActionListener, StateHolder {
 		
 		try {
 			Exporter exporter = ExporterFactory.getExporterForType(exportAs);
+            
+            if(!repeating) {
+                List components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
 
-			List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
+                if(components.size() > 1) {
+                    exporter.export(context, outputFileName, (List<DataTable>) components, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor);
+                }
+                else {
+                    UIComponent component = (UIComponent) components.get(0);
+                    if(!(component instanceof DataTable)) {
+                        throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName() + "\", exporter must target a PrimeFaces DataTable.");
+                    }
 
-            if(components.size() > 1) {
-                exporter.export(context, components, outputFileName, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor);
+                    DataTable table = (DataTable) component;
+                    exporter.export(context, table, outputFileName, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor);
+                }
             }
             else {
-                UIComponent component = components.get(0);
-                if(!(component instanceof DataTable)) {
-                    throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName() + "\", exporter must target a PrimeFaces DataTable.");
-                }
-                
-                DataTable table = (DataTable) component;
-                exporter.export(context, table, outputFileName, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor);
+                String[] clientIds = tables.split("\\s+|,");
+                exporter.export(context, Arrays.asList(clientIds), outputFileName, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor);
             }
             
 			context.responseComplete();
@@ -110,22 +124,6 @@ public class DataExporter implements ActionListener, StateHolder {
 		}
 	}
 
-	private int[] resolveExcludedColumnIndexes(Object columnsToExclude) {
-        if(columnsToExclude == null || columnsToExclude.equals("")) {
-            return null;
-        }
-        else {
-            String[] columnIndexesAsString = ((String) columnsToExclude).split(",");
-            int[] indexes = new int[columnIndexesAsString.length];
-
-            for(int i=0; i < indexes.length; i++) {
-                indexes[i] = Integer.parseInt(columnIndexesAsString[i].trim());
-            }
-
-            return indexes;
-        }
-	}
-
 	public boolean isTransient() {
 		return false;
 	}
@@ -133,6 +131,10 @@ public class DataExporter implements ActionListener, StateHolder {
 	public void setTransient(boolean value) {
 		//NoOp
 	}
+    
+    public void setRepeat(ValueExpression ve) {
+        this.repeat = ve;
+    }
 	
 	 public void restoreState(FacesContext context, Object state) {
 		Object values[] = (Object[]) state;
@@ -145,10 +147,11 @@ public class DataExporter implements ActionListener, StateHolder {
 		preProcessor = (MethodExpression) values[5];
 		postProcessor = (MethodExpression) values[6];
 		encoding = (ValueExpression) values[7];
+        repeat = (ValueExpression) values[8];
 	}
 
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[8];
+		Object values[] = new Object[9];
 
 		values[0] = target;
 		values[1] = type;
@@ -158,6 +161,7 @@ public class DataExporter implements ActionListener, StateHolder {
 		values[5] = preProcessor;
 		values[6] = postProcessor;
 		values[7] = encoding;
+        values[8] = repeat;
 		
 		return ((Object[]) values);
 	}

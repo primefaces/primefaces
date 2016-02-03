@@ -40,14 +40,19 @@ public class DialogViewHandler extends ViewHandlerWrapper {
         String pfdlgcid = params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
         String url = super.getActionURL(context, viewId);
         
-        if(pfdlgcid == null) {
+        if(url.contains(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM)) {
             return url;
         }
         else {
-            if(url.indexOf('?') == -1)
-                return url + "?pfdlgcid=" + pfdlgcid;
-            else
-                return url + "&pfdlgcid=" + pfdlgcid;
-        }
+            if(pfdlgcid == null) {
+                return url;
+            }
+            else {
+                if(url.indexOf('?') == -1)
+                    return url + "?pfdlgcid=" + pfdlgcid;
+                else
+                    return url + "&pfdlgcid=" + pfdlgcid;
+            }
+        }       
     }
 }

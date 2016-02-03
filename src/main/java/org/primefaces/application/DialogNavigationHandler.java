@@ -43,6 +43,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
         String dialogOutcome = (String) attrs.get(Constants.DIALOG_FRAMEWORK.OUTCOME);
         
         if(dialogOutcome != null) {
+            Map<String,String> requestParams = context.getExternalContext().getRequestParameterMap();
             NavigationCase navCase = getNavigationCase(context, fromAction, dialogOutcome);
             String toViewId = navCase.getToViewId(context);
             Map<String,Object> options = (Map<String,Object>) attrs.get(Constants.DIALOG_FRAMEWORK.OPTIONS);
@@ -58,17 +59,20 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             }
 
             String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, includeViewParams);
-            
+
             StringBuilder sb = new StringBuilder();
             String sourceComponentId = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_COMPONENT);
             String sourceWidget = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_WIDGET);
-            String pfdlgcid = UUID.randomUUID().toString();
+            String pfdlgcid = requestParams.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
+            if(pfdlgcid == null) {
+                pfdlgcid = UUID.randomUUID().toString();
+            }
                         
             sb.append("PrimeFaces.openDialog({url:'").append(url).append("',pfdlgcid:'").append(pfdlgcid)
                                     .append("',sourceComponentId:'").append(sourceComponentId).append("'");
 
             if(sourceWidget != null) {
-                sb.append(",sourceWidget:PF('").append(sourceWidget).append("')");
+                sb.append(",sourceWidgetVar:'").append(sourceWidget).append("'");
             }
             
             sb.append(",options:{");

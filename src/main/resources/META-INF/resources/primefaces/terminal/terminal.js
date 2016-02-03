@@ -12,6 +12,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         this.input = this.promptContainer.next('');
         this.commands = [];
         this.commandIndex = 0;
+        this.promptContainerParent = this.promptContainer.parent();
         
         this.bindEvents();
     },
@@ -51,12 +52,24 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                 break;
             }
         });
+        
+        this.jq.on('click', function() {
+            $this.focus();
+        });
     },
             
     processCommand: function() {
         this.commands.push(this.input.val());
         this.commandIndex++;
-        
+
+        // print the previous command, the response will be appenend async when the ajax response is received
+        var item = $('<div></div>');
+        item.append('<span>' + this.cfg.prompt + '</span><span class="ui-terminal-command"></span>').appendTo(this.content);
+        item.find('.ui-terminal-command').text(this.input.val());
+
+        // hide the prompt until the command finishes
+        this.promptContainerParent.hide();
+
         var $this = this,
         options = {
             source : this.id,
@@ -69,11 +82,15 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            var commandResponseContainer = $('<div></div>');
-                            commandResponseContainer.append('<span>' + this.cfg.prompt + '</span><span class="ui-terminal-command">' + this.input.val() + '</span>')
-                                                .append('<div>' + content + '</div>').appendTo(this.content);
-                                        
-                            this.input.val('');
+                            // clear input
+                            $this.input.val('');
+                            
+                            // show promt again and focus input
+                            $this.promptContainerParent.show();
+                            $this.focus();
+
+                            // add response
+                            $this.processResponse(content);
                         }
                     });
 
@@ -91,5 +108,18 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
     clear: function() {
         this.content.html('');
         this.input.val('');
+    },
+
+    /**
+     * Internally used to add the content from the ajax response to the terminal.
+     * Can also be used e.g. by a websocket.
+     * 
+     * @param {string} content
+     */
+    processResponse: function(content) {
+        $('<div>' + content + "</div>").appendTo(this.content.children().last());
+
+        // always scroll down to the last item
+        this.jq.scrollTop(this.jq[0].scrollHeight);
     }
 });

@@ -30,6 +30,7 @@ import org.primefaces.component.row.Row;
 import org.primefaces.mobile.renderkit.paginator.PaginatorRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataTableRenderer extends org.primefaces.component.datatable.DataTableRenderer {
@@ -40,7 +41,8 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DataTable", table.resolveWidgetVar(), clientId);
                 
-        wb.attr("selectionMode", table.getSelectionMode(), null);
+        wb.attr("selectionMode", table.getSelectionMode(), null)
+            .attr("reflow", table.isReflow(), false);
         
         if(table.isPaginator()) {
             PaginatorRenderer paginatorRenderer = getPaginatorRenderer(context);
@@ -69,6 +71,10 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         writer.writeAttribute("class", styleClass, "styleClass");
         if(style != null) {
             writer.writeAttribute("style", style, "style");
+        }
+        
+        if(table.isReflow()) {
+            encodeSortableHeaderOnReflow(context, table);
         }
         
         if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
@@ -448,5 +454,48 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
     
     private PaginatorRenderer getPaginatorRenderer(FacesContext context) {
         return (PaginatorRenderer) context.getRenderKit().getRenderer("org.primefaces.component", "org.primefaces.component.PaginatorRenderer");
+    }
+    
+    @Override
+    protected void encodeSortableHeaderOnReflow(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        List<String> options = getSortableHeadersText(context, table);
+        
+        if(!options.isEmpty()) {
+            String reflowId = table.getContainerClientId(context) + "_reflowDD";
+            
+            writer.startElement("div", null);
+            writer.writeAttribute("class", "ui-reflow-dropdown", null);
+            
+            writer.startElement("select", null);
+            writer.writeAttribute("id", reflowId, null);
+            writer.writeAttribute("name", reflowId, null);
+            writer.writeAttribute("data-role", "none", null);
+            
+            encodeOptionOnReflow(context, "", MessageFactory.getMessage(DataTable.SORT_LABEL, null));
+            
+            for(int headerIndex = 0; headerIndex < options.size(); headerIndex++) {
+                for(int order = 0; order < 2; order++) {
+                    String orderVal = (order==0) ? MessageFactory.getMessage(DataTable.SORT_ASC, null) : MessageFactory.getMessage(DataTable.SORT_DESC, null);
+                    String value = headerIndex + "_" + order;
+                    String label = options.get(headerIndex) + " " + orderVal;
+                    
+                    encodeOptionOnReflow(context, value, label);
+                }
+            }
+            
+            writer.endElement("select");
+            
+            writer.endElement("div");
+        }
+    }
+    
+    protected void encodeOptionOnReflow(FacesContext context, String value, String label) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("option", null);
+        writer.writeAttribute("value", value, null);
+        writer.write(label);
+        writer.endElement("option");
     }
 }

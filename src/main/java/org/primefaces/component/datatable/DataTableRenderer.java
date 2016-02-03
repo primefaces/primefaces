@@ -198,7 +198,8 @@ public class DataTableRenderer extends DataRenderer {
 
         wb.attr("tabindex", table.getTabindex(), "0")
             .attr("reflow", table.isReflow(), false)
-            .attr("rowHover", table.isRowHover(), false);
+            .attr("rowHover", table.isRowHover(), false)
+            .attr("lazyCache", table.isLazyCache(), false);
         
         //Behaviors
         encodeClientBehaviors(context, table);

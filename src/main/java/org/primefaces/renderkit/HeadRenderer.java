@@ -50,6 +50,7 @@ public class HeadRenderer extends Renderer {
         boolean csvEnabled = cc.isClientSideValidationEnabled();
                 
         writer.startElement("head", component);
+        writer.writeAttribute("id", component.getClientId(context), "id");
         
         //First facet
         UIComponent first = component.getFacet("first");

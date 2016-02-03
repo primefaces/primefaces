@@ -40,6 +40,7 @@ public class DataExporterTagHandler extends TagHandler {
 	private final TagAttribute preProcessor;
 	private final TagAttribute postProcessor;
 	private final TagAttribute encoding;
+    private final TagAttribute repeat;
 
 	public DataExporterTagHandler(TagConfig tagConfig) {
 		super(tagConfig);
@@ -51,6 +52,7 @@ public class DataExporterTagHandler extends TagHandler {
 		this.encoding = getAttribute("encoding");
 		this.preProcessor = getAttribute("preProcessor");
 		this.postProcessor = getAttribute("postProcessor");
+        this.repeat = getAttribute("repeat");
 	}
 
 	public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
@@ -63,6 +65,7 @@ public class DataExporterTagHandler extends TagHandler {
 			ValueExpression encodingVE = null;
 			MethodExpression preProcessorME = null;
 			MethodExpression postProcessorME = null;
+            ValueExpression repeatVE = null;
 			
 			if(encoding != null) {
 				encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -79,11 +82,15 @@ public class DataExporterTagHandler extends TagHandler {
 			if(postProcessor != null) {
 				postProcessorME = postProcessor.getMethodExpression(faceletContext, null, new Class[]{Object.class});
 			}
+            if(repeat != null) {
+				repeatVE = repeat.getValueExpression(faceletContext, Object.class);
+			}
 			
 			ActionSource actionSource = (ActionSource) parent;
-			actionSource.addActionListener(new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE, encodingVE, preProcessorME, postProcessorME));
+            DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE, encodingVE, preProcessorME, postProcessorME);
+            dataExporter.setRepeat(repeatVE);
+			actionSource.addActionListener(dataExporter);
 		}
 	}
 
 }
-

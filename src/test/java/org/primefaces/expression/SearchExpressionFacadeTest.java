@@ -777,7 +777,7 @@ public class SearchExpressionFacadeTest {
 	}
 
 	@Test
-	public void resolveClientId_Root() {
+	public void resolveClientId_AbsoluteId() {
 
 		UIComponent root = new UIPanel();
         FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
@@ -1837,4 +1837,135 @@ public class SearchExpressionFacadeTest {
         SearchExpressionResolverFactory.removeResolver("@test");
         SearchExpressionResolverFactory.removeResolver("@test2");
 	}
+    
+    @Test
+    public void resolveComponent_Root() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+        
+		UIForm form = new UIForm();
+		form.setId("form");
+		root.getChildren().add(form);
+
+        Assert.assertEquals(FacesContext.getCurrentInstance().getViewRoot(), resolveComponent(form, " @root "));
+    }
+    
+    @Test
+    public void resolveComponents_Root() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+        
+		UIForm form = new UIForm();
+		form.setId("form");
+		root.getChildren().add(form);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("myContainer");
+		form.getChildren().add(innerContainer);
+        
+		UINamingContainer innerContainer2 = new UINamingContainer();
+		innerContainer2.setId("myContainer2");
+		form.getChildren().add(innerContainer2);
+
+        List<UIComponent> result = resolveComponents(innerContainer2, " @root ");
+        assertTrue(result.size() == 1);
+        assertTrue(result.contains(FacesContext.getCurrentInstance().getViewRoot()));
+    }
+    
+	@Test
+	public void resolveClientId_Root() {
+
+		UIComponent root = new UIPanel();
+
+		UIForm form = new UIForm();
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		outerContainer.getChildren().add(innerContainer);
+
+		UIComponent component = new UIOutput();
+		innerContainer.getChildren().add(component);
+
+		UIComponent source = new UICommand();
+		innerContainer.getChildren().add(source);
+
+		assertEquals("Failed", "@all", resolveClientId(source, "@root"));
+	}
+    
+    @Test
+    public void resolveComponents_Id_FromRoot() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+        
+		UIForm form = new UIForm();
+		form.setId("form");
+		root.getChildren().add(form);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("myContainer");
+		form.getChildren().add(innerContainer);
+        
+		UINamingContainer innerContainer2 = new UINamingContainer();
+		innerContainer2.setId("myContainer2");
+		form.getChildren().add(innerContainer2);
+
+        List<UIComponent> result = resolveComponents(innerContainer2, " @root:@id(myContainer) ");
+        assertTrue(result.size() == 2);
+        assertTrue(result.contains(outerContainer));
+        assertTrue(result.contains(innerContainer));
+    }
+    
+    @Test(expected = FacesException.class)
+    // resolveComponent should thrown an exception cause @id likely returns multiple components
+    public void resolveComponent_Id() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+
+        resolveComponent(root, " @id(myContainer) ");
+    }
+    
+    @Test
+    public void resolveComponents_Id() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+        
+		UIForm form = new UIForm();
+		form.setId("form");
+		root.getChildren().add(form);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("myContainer");
+		form.getChildren().add(innerContainer);
+        
+		UINamingContainer innerContainer2 = new UINamingContainer();
+		innerContainer2.setId("myContainer2");
+		form.getChildren().add(innerContainer2);
+
+        List<UIComponent> result = resolveComponents(form, " @id(myContainer) ");
+        assertTrue(result.size() == 1);
+        assertTrue(result.contains(innerContainer));
+    }
 }

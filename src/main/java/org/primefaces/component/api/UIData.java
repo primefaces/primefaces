@@ -1352,7 +1352,8 @@ public class UIData extends javax.faces.component.UIData {
         if (isNested == null) {
             UIComponent parent = this;
             while (null != (parent = parent.getParent())) {
-                if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")) {
+                if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat") 
+                        ||(parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
                     isNested = Boolean.TRUE;
                     break;
                 }

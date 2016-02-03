@@ -174,6 +174,8 @@ public class ScheduleRenderer extends CoreRenderer {
             clientTimezone = "local";
         }
         
+        boolean isShowWeekNumbers = schedule.isShowWeekNumbers();
+        
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
             .attr("slotDuration", slotDuration, "00:30:00")
             .attr("scrollTime", scrollTime, "06:00:00")
@@ -186,7 +188,7 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("eventDurationEditable", schedule.isResizable(), true)    
             .attr("axisFormat", schedule.getAxisFormat(), null)
             .attr("timeFormat", schedule.getTimeFormat(), null)
-            .attr("weekNumbers", schedule.isShowWeekNumbers(), false);
+            .attr("weekNumbers", isShowWeekNumbers, false);
                 
         String columnFormat = schedule.getColumnFormat();
         if(columnFormat != null) {
@@ -205,7 +207,23 @@ public class ScheduleRenderer extends CoreRenderer {
         if(extender != null) {
             wb.nativeAttr("extender", extender);
         }
+        
+        if(isShowWeekNumbers) {
+            String weekNumCalculation = schedule.getWeekNumberCalculation();
+            String weekNumCalculater = schedule.getWeekNumberCalculater();
             
+            if(weekNumCalculation.equals("custom")) {
+                if(weekNumCalculater != null) {
+                    wb.append(",weekNumberCalculation: function(){ return ")
+                        .append(schedule.getWeekNumberCalculater())
+                        .append("}");
+                }
+            }
+            else {
+                wb.attr("weekNumberCalculation", weekNumCalculation, "local");
+            }
+        }
+        
         encodeClientBehaviors(context, schedule);
 
         wb.finish();	

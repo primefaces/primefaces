@@ -3,8 +3,10 @@ PrimeFaces.dialog = {};
 PrimeFaces.dialog.DialogHandler = {
 		
     openDialog: function(cfg) {
-        var dialogId = cfg.sourceComponentId + '_dlg';
-        if(document.getElementById(dialogId)) {
+        var rootWindow = this.findRootWindow(),
+        dialogId = cfg.sourceComponentId + '_dlg';
+
+        if(rootWindow.document.getElementById(dialogId)) {
             return;
         }
 
@@ -12,7 +14,7 @@ PrimeFaces.dialog.DialogHandler = {
         dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container ui-overlay-hidden"' + 
                 ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widgetvar="' + dialogWidgetVar + '"></div>')
                 .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span></div>');
-        
+
         var titlebar = dialogDOM.children('.ui-dialog-titlebar');
         if(cfg.options.closable !== false) {
             titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
@@ -30,11 +32,11 @@ PrimeFaces.dialog.DialogHandler = {
                 '<iframe style="border:0 none" frameborder="0"/>' + 
                 '</div>');
         
-        dialogDOM.appendTo(document.body);
+        dialogDOM.appendTo(rootWindow.document.body);
         
         var dialogFrame = dialogDOM.find('iframe'),
         symbol = cfg.url.indexOf('?') === -1 ? '?' : '&',
-        frameURL = cfg.url + symbol + 'pfdlgcid=' + cfg.pfdlgcid,
+        frameURL = cfg.url.indexOf('pfdlgcid') === -1 ? cfg.url + symbol + 'pfdlgcid=' + cfg.pfdlgcid: cfg.url,
         frameWidth = cfg.options.contentWidth||640;
 
         dialogFrame.width(frameWidth);
@@ -55,11 +57,11 @@ PrimeFaces.dialog.DialogHandler = {
             }
             
             if(!$frame.data('initialized')) {
-                PrimeFaces.cw('DynamicDialog', dialogWidgetVar, {
+                PrimeFaces.cw.call(rootWindow.PrimeFaces, 'DynamicDialog', dialogWidgetVar, {
                     id: dialogId,
                     position: 'center',
                     sourceComponentId: cfg.sourceComponentId,
-                    sourceWidget: cfg.sourceWidget,
+                    sourceWidgetVar: cfg.sourceWidgetVar,
                     onHide: function() {
                         var $dialogWidget = this,
                         dialogFrame = this.content.children('iframe');
@@ -78,7 +80,7 @@ PrimeFaces.dialog.DialogHandler = {
                             $dialogWidget.jq.remove();
                         }
                         
-                        PF[dialogWidgetVar] = undefined;
+                        rootWindow.PF[dialogWidgetVar] = undefined;
                     },
                     modal: cfg.options.modal,
                     resizable: cfg.options.resizable,
@@ -92,7 +94,7 @@ PrimeFaces.dialog.DialogHandler = {
                 });
             }
             
-            var title = PF(dialogWidgetVar).titlebar.children('span.ui-dialog-title');
+            var title = rootWindow.PF(dialogWidgetVar).titlebar.children('span.ui-dialog-title');
             if(headerElement.length > 0) {
                 if(isCustomHeader) {
                     title.append(headerElement);
@@ -109,34 +111,48 @@ PrimeFaces.dialog.DialogHandler = {
                 frameHeight = cfg.options.contentHeight;
             else
                 frameHeight = $frame.get(0).contentWindow.document.body.scrollHeight + (PrimeFaces.env.browser.webkit ? 5 : 20);
-            
+
             $frame.css('height', frameHeight);
             
             dialogFrame.data('initialized', true);
-            
-            PF(dialogWidgetVar).show();
+
+            rootWindow.PF(dialogWidgetVar).show();
         })
         .attr('src', frameURL);
     },
     
     closeDialog: function(cfg) {
-        var dlg = $(document.body).children('div.ui-dialog').filter(function() {
-            return $(this).data('pfdlgcid') === cfg.pfdlgcid;
-        }),
-        dlgWidget = PF(dlg.data('widgetvar')),
-        sourceWidget = dlgWidget.cfg.sourceWidget,
+        var rootWindow = this.findRootWindow(),
+        dlgs = $(rootWindow.document.body).children('div.ui-dialog[data-pfdlgcid="' + cfg.pfdlgcid +'"]').not('[data-queuedforremoval]'),
+        dlgsLength = dlgs.length,
+        dlg = dlgs.eq(dlgsLength - 1),
+        parentDlg = dlgsLength > 1 ? dlgs.eq(dlgsLength - 2) : null,
+        dlgWidget = rootWindow.PF(dlg.data('widgetvar')),
+        sourceWidgetVar = dlgWidget.cfg.sourceWidgetVar,
         sourceComponentId = dlgWidget.cfg.sourceComponentId,
-        dialogReturnBehavior = null;
+        dialogReturnBehavior = null,
+        windowContext = null;
 
-        if(sourceWidget && sourceWidget.cfg.behaviors) {
-            dialogReturnBehavior = sourceWidget.cfg.behaviors['dialogReturn'];
+        dlg.attr('data-queuedforremoval', true);
+
+        if(parentDlg) {
+            var parentDlgFrame = parentDlg.find('> .ui-dialog-content > iframe').get(0),
+            windowContext = parentDlgFrame.contentWindow||parentDlgFrame;
+            sourceWidget = windowContext.PF(sourceWidgetVar);
+        }
+        else {
+            windowContext = rootWindow;
+        }
+        
+        if(sourceWidgetVar) {
+            var sourceWidget = windowContext.PF(sourceWidgetVar);
+            dialogReturnBehavior = sourceWidget.cfg.behaviors ? sourceWidget.cfg.behaviors['dialogReturn']: null;
         }
         else if(sourceComponentId) {
-            var dialogReturnBehaviorStr = $(document.getElementById(sourceComponentId)).data('dialogreturn');
+            var dialogReturnBehaviorStr = $(windowContext.document.getElementById(sourceComponentId)).data('dialogreturn');
             if(dialogReturnBehaviorStr) {
                 dialogReturnBehavior = eval('(function(ext){' + dialogReturnBehaviorStr + '})');
             }
-
         }
                     
         if(dialogReturnBehavior) {
@@ -185,5 +201,14 @@ PrimeFaces.dialog.DialogHandler = {
         else {
             PrimeFaces.warn('No global confirmation dialog available.');
         }
+    },
+    
+    findRootWindow: function() {
+        var w = window;
+        while(w.frameElement) {
+            w = window.parent;
+        };
+        
+        return w;
     }
 };

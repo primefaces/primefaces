@@ -91,6 +91,23 @@ PrimeFaces.ajax = {
             }
         },
 
+        updateHead: function(content) {
+            var cache = $.ajaxSetup()['cache'];
+            $.ajaxSetup()['cache'] = true;
+
+            var headStartTag = new RegExp("<head[^>]*>", "gi").exec(content)[0];
+            var headStartIndex = content.indexOf(headStartTag) + headStartTag.length;
+            $('head').html(content.substring(headStartIndex, content.lastIndexOf("</head>")));
+
+            $.ajaxSetup()['cache'] = cache;
+        },
+        
+        updateBody: function(content) {
+            var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
+            var bodyStartIndex = content.indexOf(bodyStartTag) + bodyStartTag.length;
+            $('body').html(content.substring(bodyStartIndex, content.lastIndexOf("</body>")));
+        },
+
         updateElement: function(id, content, xhr) {
             if (id.indexOf(PrimeFaces.VIEW_STATE) !== -1) {
                 PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.VIEW_STATE, content, xhr);
@@ -98,32 +115,23 @@ PrimeFaces.ajax = {
             else if (id.indexOf(PrimeFaces.CLIENT_WINDOW) !== -1) {
                 PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.CLIENT_WINDOW, content, xhr);
             }
+            // used by @all
             else if (id === PrimeFaces.VIEW_ROOT) {
-                // reset PrimeFaces JS state
+                // reset PrimeFaces JS state because the view is completely replaced with a new one
                 window.PrimeFaces = null;
 
-                var cache = $.ajaxSetup()['cache'];
-                $.ajaxSetup()['cache'] = true;
-                $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
-                $.ajaxSetup()['cache'] = cache;
+                PrimeFaces.ajax.Utils.updateHead(content);
 
-                var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
-                var bodyStartIndex = content.indexOf(bodyStartTag) + bodyStartTag.length;
-                $('body').html(content.substring(bodyStartIndex, content.lastIndexOf("</body>")));
+                PrimeFaces.ajax.Utils.updateBody(content);
             }
             else if (id === PrimeFaces.ajax.VIEW_HEAD) {
-                // reset PrimeFaces JS state
-                window.PrimeFaces = null;
-
-                var cache = $.ajaxSetup()['cache'];
-                $.ajaxSetup()['cache'] = true;
-                $('head').html(content.substring(content.indexOf("<head>") + 6, content.lastIndexOf("</head>")));
-                $.ajaxSetup()['cache'] = cache;
+                PrimeFaces.ajax.Utils.updateHead(content);
             }
             else if (id === PrimeFaces.ajax.VIEW_BODY) {
-                var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
-                var bodyStartIndex = content.indexOf(bodyStartTag) + bodyStartTag.length;
-                $('body').html(content.substring(bodyStartIndex, content.lastIndexOf("</body>")));
+                PrimeFaces.ajax.Utils.updateBody(content);
+            }
+            else if (id === $('head')[0].id) {
+                PrimeFaces.ajax.Utils.updateHead(content);
             }
             else {
                 $(PrimeFaces.escapeClientId(id)).replaceWith(content);
@@ -648,14 +656,16 @@ PrimeFaces.ajax = {
                     }
                 };
 
-                refocus();
+                if(elementToFocus.length) {
+                    refocus();
 
-                // double check it - required for IE
-                setTimeout(function() {
-                    if (!elementToFocus.is(":focus")) {
-                        refocus();
-                    }
-                }, 50);
+                    // double check it - required for IE
+                    setTimeout(function() {
+                        if (!elementToFocus.is(":focus")) {
+                            refocus();
+                        }
+                    }, 50);
+                }
             }
 
             PrimeFaces.customFocus = false;

@@ -35,6 +35,8 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.util.Constants;
@@ -73,10 +75,73 @@ public class PDFExporter extends Exporter {
 			throw new IOException(e.getMessage());
 		}
 	}
-	
+	    
     @Override
-    public void export(FacesContext facesContext, List<UIComponent> components, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
-        
+    public void export(FacesContext context, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+        try {
+            Document document = new Document();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PdfWriter.getInstance(document, baos);
+            
+            if (preProcessor != null) {
+	    		preProcessor.invoke(context.getELContext(), new Object[]{document});
+	    	}
+
+            if (!document.isOpen()) {
+                document.open();
+            }
+            
+            VisitContext visitContext = VisitContext.createVisitContext(context, clientIds, null);
+            VisitCallback visitCallback = new PDFExportVisitCallback(this, document, pageOnly, selectionOnly, encodingType);
+            context.getViewRoot().visitTree(visitContext, visitCallback);
+            
+            if(postProcessor != null) {
+	    		postProcessor.invoke(context.getELContext(), new Object[]{document});
+	    	}
+	    	
+	        document.close();
+	    	
+	        writePDFToResponse(context.getExternalContext(), baos, outputFileName);
+            
+        } catch (DocumentException e) {
+            throw new IOException(e.getMessage());
+        }
+    }
+    
+    @Override
+    public void export(FacesContext context, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+        try {
+	        Document document = new Document();
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        PdfWriter.getInstance(document, baos);
+	        
+	        if (preProcessor != null) {
+	    		preProcessor.invoke(context.getELContext(), new Object[]{document});
+	    	}
+
+            if (!document.isOpen()) {
+                document.open();
+            }
+	        
+            for(DataTable table : tables) {
+                document.add(exportPDFTable(context, table, pageOnly, selectionOnly, encodingType));
+                
+                Paragraph preface = new Paragraph();
+                addEmptyLine(preface, 3);
+                document.add(preface);
+            }
+	    	
+	    	if(postProcessor != null) {
+	    		postProcessor.invoke(context.getELContext(), new Object[]{document});
+	    	}
+	    	
+	        document.close();
+	    	
+	        writePDFToResponse(context.getExternalContext(), baos, outputFileName);
+	        
+		} catch(DocumentException e) {
+			throw new IOException(e.getMessage());
+		}
     }
     
 	protected PdfPTable exportPDFTable(FacesContext context, DataTable table, boolean pageOnly, boolean selectionOnly, String encoding) {
@@ -206,5 +271,11 @@ public class PDFExporter extends Exporter {
         }
         
         return count;
+    }
+    
+    protected void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
     }
 }

@@ -75,6 +75,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
             
             $this.sort(columnHeader, sortOrder);
         });
+        
+        var reflowDD = $(this.jqId + '_reflowDD');
+        if(reflowDD && this.cfg.reflow) {
+            reflowDD.selectmenu();
+            
+            reflowDD.change(function(e) {
+                var arrVal = $(this).val().split('_');
+                if(arrVal.length > 1) {
+                    var columnHeader = $this.sortableColumns.eq(parseInt(arrVal[0])),
+                    sortOrder = parseInt(arrVal[1]);
+                    
+                    columnHeader.data('sortorder', sortOrder);
+                    columnHeader.trigger('click.dataTable');
+                }
+            });
+        }
     },
     
     bindMobileEvents: function() {

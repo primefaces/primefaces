@@ -28,15 +28,20 @@ public class PageFeature implements DataTableFeature {
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        table.updatePaginationData(context, table);
-        
-        if(table.isLazy()) {
-            table.loadLazyData();
+        if(table.isLazy() && table.isLazyCache() && this.isLazyCacheLoadRequest(context, table)) {
+            table.loadLazyDataToCache(table.getFirst() + table.getRows());
         }
+        else {
+            table.updatePaginationData(context, table);
         
-        renderer.encodeTbody(context, table, true);
-        
-        context.getApplication().publishEvent(context, PostPageEvent.class, table);
+            if(table.isLazy()) {
+                table.loadLazyData();
+            }
+
+            renderer.encodeTbody(context, table, true);
+
+            context.getApplication().publishEvent(context, PostPageEvent.class, table);
+        }
     }
 
     public boolean shouldDecode(FacesContext context, DataTable table) {
@@ -45,6 +50,10 @@ public class PageFeature implements DataTableFeature {
 
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return table.isPaginationRequest(context);
+    }
+    
+    private boolean isLazyCacheLoadRequest(FacesContext context, DataTable table) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_loadlazycache");
     }
     
 }
