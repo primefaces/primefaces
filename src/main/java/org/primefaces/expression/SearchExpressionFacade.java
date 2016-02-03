@@ -53,9 +53,9 @@ public class SearchExpressionFacade {
 
         public static final int IGNORE_NO_RESULT = 0x2;
 
-        public static final int PARENT_FALLBACK = 0x3;
+        public static final int PARENT_FALLBACK = 0x4;
 
-        public static final int SKIP_UNRENDERED = 0x4;
+        public static final int SKIP_UNRENDERED = 0x8;
     }
 
     /**
