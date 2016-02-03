@@ -133,7 +133,8 @@ public class DefaultRequestContext extends RequestContext {
     public void update(String clientId) {
         // call SEF to validate if a component with the clientId exists
         if (context.isProjectStage(ProjectStage.Development)) {
-            SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
+            SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId,
+                    SearchExpressionFacade.Options.SKIP_UNRENDERED);
         }
 
     	context.getPartialViewContext().getRenderIds().add(clientId);
@@ -146,7 +147,8 @@ public class DefaultRequestContext extends RequestContext {
         if (context.isProjectStage(ProjectStage.Development)) {
             if (clientIds != null) {
                 for (String clientId : clientIds) {
-                    SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
+                    SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId,
+                            SearchExpressionFacade.Options.SKIP_UNRENDERED);
                 }
             }
         }
