@@ -317,7 +317,7 @@
                 //load script and initialize widget
                 this.getScript(scriptURI, function() {
                     setTimeout(function() {
-                        this.widgets[widgetVar] = new this.widget[widgetConstructor](cfg);
+                        PrimeFaces.widgets[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);
                     }, 100);
                 });
             }
