@@ -441,7 +441,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.getFocusableTbody().on('focus', function(e) {
             //ignore mouse click on row
             if(!$this.mousedownOnRow) {
-                $this.focusedRow = $this.tbody.children('tr.ui-widget-content.ui-datatable-selectable').eq(0);
+                $this.focusedRow = $this.tbody.children('tr.ui-widget-content.ui-datatable-selectable:first');
                 $this.highlightFocusedRow();
                 
                 if($this.cfg.scrollable) {
@@ -463,11 +463,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 switch(key) {
                     case keyCode.UP:
                         var prevRow = $this.focusedRow.prev('tr.ui-widget-content.ui-datatable-selectable');
-                        if(prevRow.length) {
+
+                        if (!prevRow.length && !$this.tbody.children('tr.ui-state-hover').length) {
+                            prevRow = $this.tbody.children('tr.ui-widget-content.ui-datatable-selectable:last');
+                        }
+
+                        if (prevRow.length) {
                             $this.unhighlightFocusedRow();
                             $this.focusedRow = prevRow;
                             $this.highlightFocusedRow();
-                            
+
                             if($this.cfg.scrollable) {
                                 PrimeFaces.scrollInView($this.scrollBody, $this.focusedRow);
                             }
@@ -477,11 +482,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                     case keyCode.DOWN:
                         var nextRow = $this.focusedRow.next('tr.ui-widget-content.ui-datatable-selectable');
-                        if(nextRow.length) {
+
+                        if (!nextRow.length && !$this.tbody.children('tr.ui-state-hover').length) {
+                            nextRow = $this.tbody.children('tr.ui-widget-content.ui-datatable-selectable:first');
+                        }
+
+                        if (nextRow.length) {
                             $this.unhighlightFocusedRow();
                             $this.focusedRow = nextRow;
                             $this.highlightFocusedRow();
-                            
+
                             if($this.cfg.scrollable) {
                                 PrimeFaces.scrollInView($this.scrollBody, $this.focusedRow);
                             }
