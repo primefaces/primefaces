@@ -38,13 +38,13 @@ public class SelectOneButtonRenderer extends org.primefaces.component.selectoneb
         
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
         
         writer.startElement("div", null);
-        writer.writeAttribute("class", SelectOneButton.MOBILE_ITEMS_CLASS, "id");
+        writer.writeAttribute("class", SelectOneButton.MOBILE_ITEMS_CLASS, null);
         
         if (selectItems != null && !selectItems.isEmpty()) {
             int itemCount = selectItems.size();
