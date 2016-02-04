@@ -199,6 +199,8 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         if (calendar.hasTime()) {
+            String timeControlType = calendar.getTimeControlType();
+            
             wb.attr("timeOnly", calendar.isTimeOnly())
                 .attr("stepHour", calendar.getStepHour())
                 .attr("stepMinute", calendar.getStepMinute())
@@ -209,7 +211,12 @@ public class CalendarRenderer extends InputRenderer {
                 .attr("minuteMax", calendar.getMaxMinute())
                 .attr("secondMin", calendar.getMinSecond())
                 .attr("secondMax", calendar.getMaxSecond())
-                .attr("controlType", calendar.getTimeControlType(), null);
+                .attr("controlType", timeControlType, null);
+            
+            String customTimeObject = calendar.getCustomTimeObject();
+            if (customTimeObject != null && timeControlType.equalsIgnoreCase("custom")) {
+                wb.nativeAttr("customTimeObject", customTimeObject);
+            }
         }
 
         if (mask != null && !mask.equals("false")) {

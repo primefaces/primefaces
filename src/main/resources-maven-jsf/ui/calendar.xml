@@ -244,7 +244,8 @@
             <name>timeControlType</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Defines the type of element to use for time picker, valid values are "slider" and "select".</description>
+            <defaultValue>slider</defaultValue>
+            <description>Defines the type of element to use for time picker, valid values are "slider" , "select" and "custom"(with "customTimeObject" attribute).</description>
         </attribute>
         <attribute>
             <name>beforeShow</name>
@@ -265,6 +266,12 @@
             <defaultValue>true</defaultValue>
             <description>Clears the field on blur when incomplete input is entered.</description>
 		</attribute>
+        <attribute>
+            <name>customTimeObject</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side object to use in custom timeControlType.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
