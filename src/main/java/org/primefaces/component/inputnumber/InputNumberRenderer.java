@@ -114,6 +114,14 @@ public class InputNumberRenderer extends InputRenderer {
         if (inputNumber.getOnchange() != null) {
             writer.writeAttribute("onchange", inputNumber.getOnchange(), null);
         }
+        
+        if (inputNumber.getOnkeydown() != null) {
+            writer.writeAttribute("onkeydown", inputNumber.getOnkeydown(), null);
+        }
+        
+        if (inputNumber.getOnkeyup() != null) {
+            writer.writeAttribute("onkeyup", inputNumber.getOnkeyup(), null);
+        }
 
         writer.endElement("input");
 

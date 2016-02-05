@@ -52,6 +52,27 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
                 eval(originalOnchange);
             }
         });
+        
+        var originalOnkeydown = this.inputExternal.attr('onkeydown'),
+            originalOnkeyup = this.inputExternal.attr('onkeyup');
+    
+        this.inputExternal.attr('onkeydown', null).attr('onkeyup', null);
+        this.inputExternal.off('keydown keyup').on('keydown', function(event) {
+            setTimeout(function(){
+                $this.copyValueToHiddenInput();
+
+                if (originalOnkeydown) {
+                    eval(originalOnkeydown);
+                }
+            },1);
+        })
+        .on('keyup', function(event) {
+            $this.copyValueToHiddenInput();
+
+            if (originalOnkeyup) {
+                eval(originalOnkeyup);
+            }
+        });
 
         this.inputExternal.autoNumeric('init', this.plugOptArray);
 
