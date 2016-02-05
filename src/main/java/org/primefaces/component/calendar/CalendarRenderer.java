@@ -211,11 +211,12 @@ public class CalendarRenderer extends InputRenderer {
                 .attr("minuteMax", calendar.getMaxMinute())
                 .attr("secondMin", calendar.getMinSecond())
                 .attr("secondMax", calendar.getMaxSecond())
+                .attr("timeInput", calendar.isTimeInput())
                 .attr("controlType", timeControlType, null);
             
-            String customTimeObject = calendar.getCustomTimeObject();
-            if (customTimeObject != null && timeControlType.equalsIgnoreCase("custom")) {
-                wb.nativeAttr("customTimeObject", customTimeObject);
+            String timeControlObject = calendar.getTimeControlObject();
+            if (timeControlObject != null && timeControlType.equalsIgnoreCase("custom")) {
+                wb.nativeAttr("timeControlObject", timeControlObject);
             }
         }
 

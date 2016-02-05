@@ -215,8 +215,8 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.showButtonPanel = false;
         }
         
-        if(this.cfg.controlType == 'custom' && this.cfg.customTimeObject) {
-            this.cfg.controlType = this.cfg.customTimeObject;
+        if(this.cfg.controlType == 'custom' && this.cfg.timeControlObject) {
+            this.cfg.controlType = this.cfg.timeControlObject;
         }
     },
 
