@@ -64,7 +64,7 @@ public class InputNumberRenderer extends InputRenderer {
 
         decodeBehaviors(context, inputNumber);
 
-        String inputId = inputNumber.getClientId(context) + "_input";
+        String inputId = inputNumber.getClientId(context) + "_hinput";
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(inputId);
 
         if (submittedValue != null) {
