@@ -345,16 +345,16 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
 
     protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info, boolean responseResetted) throws IOException {
-        context.getExternalContext().getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
+        ExternalContext externalContext = context.getExternalContext();
+        externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
         Map<String, String> errorPages = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getErrorPages();
         String errorPage = evaluateErrorPage(errorPages, rootCause);
 
-        String url = context.getExternalContext().getRequestContextPath() + errorPage;
+        String url = externalContext.getRequestContextPath() + errorPage;
 
         // workaround for mojarra -> mojarra doesn't reset PartialResponseWriter#inChanges if we call externalContext#resetResponse
         if (responseResetted && context.getPartialViewContext().isAjaxRequest()) {
-            ExternalContext externalContext = context.getExternalContext();
             PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
             externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getResponseCharacterEncoding());
             externalContext.addResponseHeader("Cache-Control", "no-cache");
@@ -368,7 +368,16 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             writer.endElement("partial-response");
         }
         else {
-            context.getExternalContext().redirect(url);
+            // workaround for IllegalStateException from redirect of committed response
+            if(externalContext.isResponseCommitted() && !context.getPartialViewContext().isAjaxRequest()) {
+                PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
+                writer.startElement("script", null);
+                writer.write("window.location.href = '" + url + "';");
+                writer.endElement("script");
+                writer.getWrapped().endDocument();
+            } else {
+                externalContext.redirect(url);
+            }
         }
 
         context.responseComplete();
