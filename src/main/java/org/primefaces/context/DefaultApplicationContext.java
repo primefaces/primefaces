@@ -15,6 +15,9 @@
  */
 package org.primefaces.context;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.validation.Validation;
@@ -30,6 +33,8 @@ public class DefaultApplicationContext extends ApplicationContext {
 	private ConfigContainer config;
 	private ValidatorFactory validatorFactory;
     private CacheProvider cacheProvider;
+    private Map<Class<?>, Map<String, Object>> enumCacheMap;
+    private Map<Class<?>, Map<String, Object>> constantsCacheMap;
 
     public DefaultApplicationContext(FacesContext context) {
     	this.config = new ConfigContainer(context);
@@ -37,6 +42,9 @@ public class DefaultApplicationContext extends ApplicationContext {
     	if (this.config.isBeanValidationAvailable()) {
     	    this.validatorFactory = Validation.buildDefaultValidatorFactory();
     	}
+        
+        enumCacheMap = new ConcurrentHashMap<Class<?>, Map<String, Object>>();
+        constantsCacheMap = new ConcurrentHashMap<Class<?>, Map<String, Object>>();
     }
 
 	@Override
@@ -80,5 +88,15 @@ public class DefaultApplicationContext extends ApplicationContext {
                 }
             }
         }
+    }
+
+    @Override
+    public Map<Class<?>, Map<String, Object>> getEnumCacheMap() {
+        return enumCacheMap;
+    }
+
+    @Override
+    public Map<Class<?>, Map<String, Object>> getConstantsCacheMap() {
+        return constantsCacheMap;
     }
 }

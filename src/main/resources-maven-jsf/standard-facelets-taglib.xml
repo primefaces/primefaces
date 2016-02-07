@@ -395,3 +395,53 @@
             <type>java.lang.Integer</type>
         </attribute>
     </tag>
+    <tag>
+        <description><![CDATA[Util tag to import constants.]]>
+        </description>
+        <tag-name>importConstants</tag-name>
+        <handler-class>org.primefaces.component.importconstants.ImportConstantsTagHandler</handler-class>
+        <attribute>
+            <description><![CDATA[The constants class.]]>
+            </description>
+            <name>type</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The EL variable which can be used to obtain the constants. Default value: Name of the class without package.]]>
+            </description>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description><![CDATA[Util tag to import enums.]]>
+        </description>
+        <tag-name>importEnum</tag-name>
+        <handler-class>org.primefaces.component.importenum.ImportEnumTagHandler</handler-class>
+        <attribute>
+            <description><![CDATA[The enum class.]]>
+            </description>
+            <name>type</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The EL variable which can be used to obtain the enum values. Default value: Name of the class without package.]]>
+            </description>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The suffix mapping for a array with all enum values. Default value: ALL_VALUES.]]>
+            </description>
+            <name>allSuffix</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>

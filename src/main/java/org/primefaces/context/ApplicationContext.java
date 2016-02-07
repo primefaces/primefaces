@@ -15,6 +15,7 @@
  */
 package org.primefaces.context;
 
+import java.util.Map;
 import javax.validation.ValidatorFactory;
 import org.primefaces.cache.CacheProvider;
 
@@ -36,4 +37,8 @@ public abstract class ApplicationContext {
 	public abstract ValidatorFactory getValidatorFactory();
     
     public abstract CacheProvider getCacheProvider();
+    
+    public abstract Map<Class<?>, Map<String, Object>> getEnumCacheMap();
+    
+    public abstract Map<Class<?>, Map<String, Object>> getConstantsCacheMap();
 }
