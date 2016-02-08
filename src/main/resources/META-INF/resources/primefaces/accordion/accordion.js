@@ -1,4 +1,4 @@
-/**
+  /**
  * PrimeFaces Accordion Panel Widget
  */
 PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
@@ -125,11 +125,19 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             this.loadDynamicTab(panel);
         }
         else {
-            this.show(panel);
-            
-            if(this.hasBehavior('tabChange')) {
-                this.fireTabChangeEvent(panel);
+            if(this.cfg.controlled) {
+                if(this.hasBehavior('tabChange')) {
+                    this.fireTabChangeEvent(panel);
+                }
             }
+            else {
+                this.show(panel);
+            
+                if(this.hasBehavior('tabChange')) {
+                    this.fireTabChangeEvent(panel);
+                }
+            }
+            
         }
 
         return true;
@@ -139,19 +147,17 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      *  Deactivates a tab with given index
      */
     unselect: function(index) {
-        var panel = this.panels.eq(index),
-        header = panel.prev();
-
-        header.attr('aria-selected', false);
-        header.attr('aria-expanded', false).children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
-        header.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all');
-        panel.attr('aria-hidden', true).slideUp();
-
-        this.removeFromSelection(index);
-        this.saveState();
-        
-        if(this.hasBehavior('tabClose')) {
-            this.fireTabCloseEvent(panel);
+        if(this.cfg.controlled) {
+            if(this.hasBehavior('tabClose')) {
+                this.fireTabCloseEvent(index);
+            }
+        }
+        else {
+            this.hide(index);
+            
+            if(this.hasBehavior('tabClose')) {
+                this.fireTabCloseEvent(index);
+            }
         }
     },
     
@@ -175,6 +181,19 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         panel.attr('aria-hidden', false).slideDown('normal', function() {
             _self.postTabShow(panel);
         });
+    },
+    
+    hide: function(index) {
+        var panel = this.panels.eq(index),
+        header = panel.prev();
+
+        header.attr('aria-selected', false);
+        header.attr('aria-expanded', false).children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
+        header.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all');
+        panel.attr('aria-hidden', true).slideUp();
+
+        this.removeFromSelection(index);
+        this.saveState();
     },
     
     loadDynamicTab: function(panel) {
@@ -226,17 +245,36 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             ]
         };
         
+        if(this.cfg.controlled) {
+            var $this = this;
+            ext.oncomplete = function(xhr, status, args) {
+                if(args.access && !args.validationFailed) {
+                    $this.show(panel);
+                }
+            }
+        }
+        
         tabChangeBehavior.call(this, ext);
     },
 
-    fireTabCloseEvent : function(panel) {
-        var tabCloseBehavior = this.cfg.behaviors['tabClose'],
+    fireTabCloseEvent : function(index) {
+        var panel = this.panels.eq(index),
+        tabCloseBehavior = this.cfg.behaviors['tabClose'],
         ext = {
             params: [
                 {name: this.id + '_tabId', value: panel.attr('id')},
-                {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
+                {name: this.id + '_tabindex', value: parseInt(index / 2)}
             ]
         };
+        
+        if(this.cfg.controlled) {
+            var $this = this;
+            ext.oncomplete = function(xhr, status, args) {
+                if(args.access && !args.validationFailed) {
+                    $this.hide(index);
+                }
+            }
+        }
         
         tabCloseBehavior.call(this, ext);
     },
@@ -283,4 +321,4 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.invokeDeferredRenders(this.id);
     }
     
-});    
+});   

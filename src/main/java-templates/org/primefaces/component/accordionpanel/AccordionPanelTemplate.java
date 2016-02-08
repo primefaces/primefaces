@@ -1,6 +1,7 @@
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
+import org.primefaces.event.TabEvent;
 import javax.el.ValueExpression;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
@@ -19,6 +21,8 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
+import javax.faces.event.AbortProcessingException;
+import org.primefaces.context.RequestContext;
 
     public final static String CONTAINER_CLASS = "ui-accordion ui-widget ui-helper-reset ui-hidden-container";
     public final static String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top";
@@ -146,4 +150,17 @@ import javax.faces.component.visit.VisitResult;
 
     public boolean isRTL() {
         return this.getDir().equalsIgnoreCase("rtl");
+    }
+
+    @Override
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        super.broadcast(event);
+        
+        if(event instanceof TabEvent) {
+            MethodExpression me = this.getTabController();
+            if(me != null) {
+                boolean retVal = (Boolean) me.invoke(getFacesContext().getELContext(), new Object[]{event});
+                RequestContext.getCurrentInstance().addCallbackParam("access", retVal);
+            }
+        }
     }

@@ -22,7 +22,7 @@ import javax.faces.event.AjaxBehaviorListener;
 import javax.faces.event.FacesListener;
 import org.primefaces.component.tabview.Tab;
 
-public class TabChangeEvent extends AjaxBehaviorEvent {
+public class TabChangeEvent extends AjaxBehaviorEvent implements TabEvent {
 
     private Tab tab;
     private Object data;

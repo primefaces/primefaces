@@ -122,6 +122,10 @@ public class AccordionPanelRenderer extends CoreRenderer {
         .callback("onTabChange", "function(panel)", acco.getOnTabChange())
         .callback("onTabShow", "function(panel)", acco.getOnTabShow());
         
+        if(acco.getTabController() != null) {
+            wb.attr("controlled", true);
+        }
+        
         encodeClientBehaviors(context, acco);
         
         wb.finish();
