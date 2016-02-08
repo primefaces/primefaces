@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.faces.FacesWrapper;
+import javax.validation.ConstraintTarget;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.Payload;
@@ -71,5 +72,15 @@ public class ConstraintDescriptorWrapper<T extends Annotation> implements Constr
     @Override
     public ConstraintDescriptor<T> getWrapped() {
         return wrapped;
+    }
+
+    //@Override - BV 1.1
+    public String getMessageTemplate() {
+        return wrapped.getMessageTemplate();
+    }
+
+    //@Override - BV 1.1
+    public ConstraintTarget getValidationAppliesTo() {
+        return wrapped.getValidationAppliesTo();
     }
 }

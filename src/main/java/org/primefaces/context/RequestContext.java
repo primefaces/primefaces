@@ -39,7 +39,7 @@ public abstract class RequestContext {
 
 	private static final ThreadLocal<RequestContext> INSTANCE = new ThreadLocal<RequestContext>();
 
-    private static final String INSTANCE_KEY = RequestContext.class.getName();
+    public static final String INSTANCE_KEY = RequestContext.class.getName();
     
     public static RequestContext getCurrentInstance() {
         

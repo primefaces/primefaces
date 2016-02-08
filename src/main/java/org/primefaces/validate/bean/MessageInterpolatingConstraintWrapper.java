@@ -71,5 +71,10 @@ public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorW
         public Object getValidatedValue() {
             return validatedValue;
         }
+
+        //@Override - BV 1.1
+        public <T> T unwrap(Class<T> type) {
+            return null;
+        }
     }
 }

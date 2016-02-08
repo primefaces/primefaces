@@ -64,7 +64,7 @@ public class BeanValidationMetadataExtractor {
             ValueReference vr = ValueExpressionAnalyzer.getReference(elContext, ve);
             
             if (vr != null) {
-                Validator validator = requestContext.getApplicationContext().getValidatorFactory().getValidator();
+                Validator validator = requestContext.getApplicationContext().getValidator();
                 Object base = vr.getBase();
                 Object property = vr.getProperty();
                 

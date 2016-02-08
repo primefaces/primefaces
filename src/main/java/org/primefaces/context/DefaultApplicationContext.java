@@ -15,12 +15,12 @@
  */
 package org.primefaces.context;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.validation.Validation;
+import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import org.primefaces.cache.CacheProvider;
 import org.primefaces.cache.DefaultCacheProvider;
@@ -32,6 +32,7 @@ public class DefaultApplicationContext extends ApplicationContext {
 
 	private ConfigContainer config;
 	private ValidatorFactory validatorFactory;
+    private Validator validator;
     private CacheProvider cacheProvider;
     private Map<Class<?>, Map<String, Object>> enumCacheMap;
     private Map<Class<?>, Map<String, Object>> constantsCacheMap;
@@ -41,6 +42,7 @@ public class DefaultApplicationContext extends ApplicationContext {
     	
     	if (this.config.isBeanValidationAvailable()) {
     	    this.validatorFactory = Validation.buildDefaultValidatorFactory();
+            this.validator = validatorFactory.getValidator();
     	}
         
         enumCacheMap = new ConcurrentHashMap<Class<?>, Map<String, Object>>();
@@ -79,11 +81,14 @@ public class DefaultApplicationContext extends ApplicationContext {
             else {
                 try {
                     cacheProvider = (CacheProvider) Class.forName(cacheProviderConfigValue).newInstance();
-                } catch (ClassNotFoundException ex) {
+                } 
+                catch (ClassNotFoundException ex) {
                     throw new FacesException(ex);
-                } catch (InstantiationException ex) {
+                } 
+                catch (InstantiationException ex) {
                     throw new FacesException(ex);
-                } catch (IllegalAccessException ex) {
+                } 
+                catch (IllegalAccessException ex) {
                     throw new FacesException(ex);
                 }
             }
@@ -99,4 +104,17 @@ public class DefaultApplicationContext extends ApplicationContext {
     public Map<Class<?>, Map<String, Object>> getConstantsCacheMap() {
         return constantsCacheMap;
     }
+
+    @Override
+    public Validator getValidator() {
+        return validator;
+    }
+
+    @Override
+    public void release() {
+        if (validatorFactory != null && config != null && config.isAtLeastBV11()) {
+            validatorFactory.close();
+        }
+    }
+
 }

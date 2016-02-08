@@ -62,6 +62,7 @@ public class ConfigContainer {
     private boolean el22Available = false;
     private boolean jsf22 = false;
     private boolean jsf21 = false;
+    private boolean bv11 = false;
 
     // build properties
     private String buildVersion = null;
@@ -92,6 +93,8 @@ public class ConfigContainer {
         else {
             jsf21 = detectJSF21();
         }
+        
+        bv11 = detectBV11();
 
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
     }
@@ -263,6 +266,17 @@ public class ConfigContainer {
         }
     }
 
+    private boolean detectBV11()
+    {
+        try {
+            Class.forName("javax.validation.executable.ExecutableValidator");
+            return true;
+        }
+        catch (ClassNotFoundException ex) {
+            return false;
+        }        
+    }
+    
     protected void initConfigFromWebXml(FacesContext context) {
         errorPages = WebXmlParser.getErrorPages(context);
         if (errorPages == null) {
@@ -353,4 +367,9 @@ public class ConfigContainer {
     public boolean isInterpolateClientSideValidationMessages() {
         return interpolateClientSideValidationMessages;
     }
+
+    public boolean isAtLeastBV11() {
+        return bv11;
+    }
+    
 }
