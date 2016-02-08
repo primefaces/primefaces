@@ -207,6 +207,13 @@
             <defaultValue>children</defaultValue>
             <description>Updates children nodes in the expanded row or children nodes and expanded row. Valid values are "children" and "self".</description>
 		</attribute>
+        <attribute>
+			<name>stickyHeader</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Sticky header stays in window viewport during scrolling.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

@@ -174,7 +174,11 @@ public class TreeTableRenderer extends CoreRenderer {
             .attr("scrollWidth", tt.getScrollWidth(), null)
             .attr("nativeElements", tt.isNativeElements(), false)
             .attr("expandMode", tt.getExpandMode(), "children");
-            
+        
+        if(tt.isStickyHeader()) {
+            wb.attr("stickyHeader", true);
+        }
+        
         encodeClientBehaviors(context, tt);
 
         wb.finish();
