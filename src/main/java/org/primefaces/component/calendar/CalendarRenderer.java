@@ -212,7 +212,11 @@ public class CalendarRenderer extends InputRenderer {
                 .attr("secondMin", calendar.getMinSecond())
                 .attr("secondMax", calendar.getMaxSecond())
                 .attr("timeInput", calendar.isTimeInput())
-                .attr("controlType", timeControlType, null);
+                .attr("controlType", timeControlType, null)
+                .attr("showHour", calendar.getShowHour(), null)
+                .attr("showMinute", calendar.getShowMinute(), null)
+                .attr("showSecond", calendar.getShowSecond(), null)
+                .attr("showMillisec", calendar.getShowMillisec(), null);
             
             String timeControlObject = calendar.getTimeControlObject();
             if (timeControlObject != null && timeControlType.equalsIgnoreCase("custom")) {

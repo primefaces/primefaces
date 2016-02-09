@@ -192,11 +192,6 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.dateFormat = pattern.substring(0, timeSeparatorIndex - 1);
         this.cfg.timeFormat = pattern.substring(timeSeparatorIndex, pattern.length);
 
-        //second
-        if(this.cfg.timeFormat.indexOf('ss') != -1) {
-            this.cfg.showSecond = true;
-        }
-
         //ampm
         if(this.cfg.timeFormat.indexOf('TT') != -1) {
             this.cfg.ampm = true;
@@ -217,6 +212,22 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         
         if(this.cfg.controlType == 'custom' && this.cfg.timeControlObject) {
             this.cfg.controlType = this.cfg.timeControlObject;
+        }
+        
+        if(this.cfg.showHour) {
+            this.cfg.showHour = (this.cfg.showHour == "true") ? true : false;
+        }
+        
+        if(this.cfg.showMinute) {
+            this.cfg.showMinute = (this.cfg.showMinute == "true") ? true : false;
+        }
+        
+        if(this.cfg.showSecond) {
+            this.cfg.showSecond = (this.cfg.showSecond == "true") ? true : false;
+        }
+        
+        if(this.cfg.showMillisec) {
+            this.cfg.showMillisec = (this.cfg.showMillisec == "true") ? true : false;
         }
     },
 
