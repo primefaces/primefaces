@@ -332,6 +332,13 @@
          * @returns {string} The resource URL.
          */
         getFacesResource : function(name, library, version) {
+            
+            // just get sure - name shoudln't start with a slash
+            if (name.indexOf('/') === 0)
+            {
+                name = name.substring(1, name.length);
+            }
+            
             var scriptURI = $('script[src*="/javax.faces.resource/' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
             // portlet
             if (!scriptURI) {
