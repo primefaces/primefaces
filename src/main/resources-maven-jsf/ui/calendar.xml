@@ -279,6 +279,30 @@
             <defaultValue>false</defaultValue>
             <description>Allows direct input in time field. Default is false.</description>
         </attribute>
+        <attribute>
+			<name>showHour</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Whether to show the hour control, valid values are "true" and "false".</description>
+		</attribute>
+        <attribute>
+			<name>showMinute</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Whether to show the minute control, valid values are "true" and "false".</description>
+		</attribute>
+        <attribute>
+			<name>showSecond</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Whether to show the second control, valid values are "true" and "false".</description>
+		</attribute>
+        <attribute>
+			<name>showMillisec</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Whether to show the millisecond control, valid values are "true" and "false".</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>

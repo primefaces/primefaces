@@ -105,6 +105,9 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
             styleClass = styleClass + " ui-table-reflow";
         }           
         
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.TABLE_WRAPPER_CLASS, null);
+        
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
         writer.writeAttribute("class", styleClass, null);
@@ -116,6 +119,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         encodeTbody(context, table, false);
         
         writer.endElement("table");
+        writer.endElement("div");
     }
     
     @Override
@@ -218,6 +222,15 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
             else {
                 styleClass = styleClass + " " + DataTable.MOBILE_SORTED_COLUMN_CLASS;;
             }
+        }
+        
+        String width = column.getWidth();
+        if(width != null) {
+            String unit = width.endsWith("%") ? "" : "px";
+            if(style != null)
+                style = style + ";width:" + width + unit;
+            else
+                style = "width:" + width + unit;
         }
         
         writer.startElement("th", null);
