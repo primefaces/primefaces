@@ -226,10 +226,10 @@
 
         changeTheme: function(newTheme) {
             if(newTheme && newTheme !== '') {
-                var themeLink = $('link[href*="javax.faces.resource/theme.css"]');
+                var themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '/theme.css"]');
                 // portlet
                 if (themeLink.length === 0) {
-                    themeLink = $('link[href*="javax.faces.resource=theme.css"]');
+                    themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=theme.css"]');
                 }
 
                 var themeURL = themeLink.attr('href'),
@@ -339,10 +339,10 @@
                 name = name.substring(1, name.length);
             }
             
-            var scriptURI = $('script[src*="/javax.faces.resource/' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
+            var scriptURI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
             // portlet
             if (!scriptURI) {
-                scriptURI = $('script[src*="javax.faces.resource=' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
+                scriptURI = $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
             }
 
             scriptURI = scriptURI.replace(PrimeFaces.getCoreScriptName(), name);
@@ -622,7 +622,9 @@
 
         VIEW_ROOT : "javax.faces.ViewRoot",
 
-        CLIENT_ID_DATA : "primefaces.clientid"
+        CLIENT_ID_DATA : "primefaces.clientid",
+
+        RESOURCE_IDENTIFIER: 'javax.faces.resource'
     };
 
     /**
