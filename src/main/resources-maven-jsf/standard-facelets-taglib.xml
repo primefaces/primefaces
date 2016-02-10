@@ -332,6 +332,12 @@
 			<required>true</required>
 			<type>java.lang.String</type>
 		</attribute>
+        <attribute>
+			<description>Whether to assign null values to bound values as well.</description>
+			<name>clearModel</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
 	</tag>
     
     <tag>

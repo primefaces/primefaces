@@ -15,6 +15,7 @@
  */
 package org.primefaces.visit;
 
+import javax.el.ValueExpression;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
@@ -23,12 +24,36 @@ import javax.faces.component.visit.VisitResult;
 
 public class ResetInputVisitCallback implements VisitCallback {
 
-	public static final ResetInputVisitCallback INSTANCE = new ResetInputVisitCallback();
-	
+    public static final ResetInputVisitCallback INSTANCE = new ResetInputVisitCallback();
+    
+    private boolean clearModel;
+
+    public ResetInputVisitCallback() {
+    }
+
+    public ResetInputVisitCallback(boolean clearModel) {
+        this.clearModel = clearModel;
+    }
+
+    public boolean isClearModel() {
+        return clearModel;
+    }
+
+    public void setClearModel(boolean clearModel) {
+        this.clearModel = clearModel;
+    }
+
     public VisitResult visit(VisitContext context, UIComponent target) {
         if(target instanceof EditableValueHolder) {
             EditableValueHolder input = (EditableValueHolder) target;
             input.resetValue();
+            
+            if(this.clearModel) {
+                ValueExpression ve = target.getValueExpression("value");
+                if(ve != null) {
+                    ve.setValue(context.getFacesContext().getELContext(), null);
+                }
+            }
         }
         
         return VisitResult.ACCEPT;
