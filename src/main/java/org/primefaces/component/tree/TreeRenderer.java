@@ -99,7 +99,7 @@ public class TreeRenderer extends CoreRenderer {
             tree.setRowKey(null);
         }
         
-        if(tree.isCheckboxSelection() && tree.isDynamic() && tree.isSelectionRequest(context)) {
+        if(tree.isCheckboxSelection() && tree.isDynamic() && tree.isSelectionRequest(context) && tree.isPropagateSelectionDown()) {
             String selectedNodeRowKey = params.get(clientId + "_instantSelection");
             tree.setRowKey(selectedNodeRowKey);
             TreeNode selectedNode = tree.getRowNode();
