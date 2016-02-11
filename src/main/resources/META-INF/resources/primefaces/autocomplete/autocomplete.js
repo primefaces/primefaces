@@ -40,6 +40,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             
             if(this.cfg.selectLimit >= 0 && this.multiItemContainer.children('li.ui-autocomplete-token').length === this.cfg.selectLimit) {
                 this.input.hide();
+                this.disableDropdown();
             }
         }
         else {
@@ -135,6 +136,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     $this.input.val('');
                 }
                 $this.input.css('display', 'inline');
+                $this.enableDropdown();
             }
             $this.removeItem(event, $(this).parent());
         });
@@ -145,6 +147,45 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         this.bindKeyEvents();
 
+        this.bindDropdownEvents();
+
+        if(PrimeFaces.env.browser.mobile) {
+            this.dropdown.bind('touchstart', function() {
+                $this.touchToDropdownButton = true;
+            });
+        }
+        
+        //hide overlay when outside is clicked
+        this.hideNS = 'mousedown.' + this.id;
+        $(document.body).off(this.hideNS).on(this.hideNS, function (e) {
+            if($this.panel.is(":hidden")) {
+                return;
+            }
+            
+            var offset = $this.panel.offset();
+            if(e.target === $this.input.get(0)) {
+                return;
+            }
+            
+            if (e.pageX < offset.left ||
+                e.pageX > offset.left + $this.panel.width() ||
+                e.pageY < offset.top ||
+                e.pageY > offset.top + $this.panel.height()) {
+                $this.hide();
+            }
+        });
+
+        this.resizeNS = 'resize.' + this.id;
+        $(window).off(this.resizeNS).on(this.resizeNS, function(e) {
+            if($this.panel.is(':visible')) {
+                $this.alignPanel();
+            }
+        });
+    },
+    
+    bindDropdownEvents: function() {
+        var $this = this;
+        
         this.dropdown.mouseover(function() {
             $(this).addClass('ui-state-hover');
         }).mouseout(function() {
@@ -183,41 +224,21 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 e.stopPropagation();
             }
         });
-
-        if(PrimeFaces.env.browser.mobile) {
-            this.dropdown.bind('touchstart', function() {
-                $this.touchToDropdownButton = true;
-            });
-        }
-        
-        //hide overlay when outside is clicked
-        this.hideNS = 'mousedown.' + this.id;
-        $(document.body).off(this.hideNS).on(this.hideNS, function (e) {
-            if($this.panel.is(":hidden")) {
-                return;
-            }
-            
-            var offset = $this.panel.offset();
-            if(e.target === $this.input.get(0)) {
-                return;
-            }
-            
-            if (e.pageX < offset.left ||
-                e.pageX > offset.left + $this.panel.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.panel.height()) {
-                $this.hide();
-            }
-        });
-
-        this.resizeNS = 'resize.' + this.id;
-        $(window).off(this.resizeNS).on(this.resizeNS, function(e) {
-            if($this.panel.is(':visible')) {
-                $this.alignPanel();
-            }
-        });
     },
-
+    
+    disableDropdown: function() {
+        if(this.dropdown.length) {
+            this.dropdown.off().prop('disabled', true).addClass('ui-state-disabled');
+        }
+    },
+    
+    enableDropdown: function() {
+        if(this.dropdown.length && this.dropdown.prop('disabled')) {
+            this.bindDropdownEvents();
+            this.dropdown.prop('disabled', false).removeClass('ui-state-disabled');
+        }
+    },
+    
     bindKeyEvents: function() {
         var $this = this;
 
@@ -388,6 +409,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
                 if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
                     $this.input.css('display', 'none').blur();
+                    $this.disableDropdown();
                 }
             }
             else {
