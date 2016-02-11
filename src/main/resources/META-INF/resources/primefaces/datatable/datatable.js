@@ -988,13 +988,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 });
             }
             else {
-                this.jq.find('> .ui-datatable-tablewrapper > table > thead > tr > th').each(function() {
-                    var col = $(this);
-                    col.width(col.width());
-                });
+                var columns = this.jq.find('> .ui-datatable-tablewrapper > table > thead > tr > th'),
+                    visibleColumns = columns.filter(':visible'),
+                    hiddenColumns = columns.filter(':hidden');
+                
+                this.setColumnsWidth(visibleColumns);
+                /* IE fixes */
+                this.setColumnsWidth(hiddenColumns);
             }
 
             this.columnWidthsFixed = true;
+        }
+    },
+    
+    setColumnsWidth: function(columns) {
+        if(columns.length) {
+            columns.each(function() {
+                var col = $(this);
+                col.width(col.width());
+            });
         }
     },
     
@@ -2410,7 +2422,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             columnHeader = ui.helper.parent();
         }
         
-        var nextColumnHeader = columnHeader.next();
+        var nextColumnHeader = columnHeader.nextAll(':visible:first');
         
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
