@@ -1014,7 +1014,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Loads rows on-the-fly when scrolling live
      */
     loadLiveRows: function() {
-        if(this.liveScrollActive) {
+        if(this.liveScrollActive||(this.scrollOffset + this.cfg.scrollStep > this.cfg.scrollLimit)) {
             return;
         }
         
@@ -1049,7 +1049,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function() {
+            oncomplete: function(xhr, status, args) {
+                if(args.totalRecords) {
+                    $this.cfg.scrollLimit = args.totalRecords;
+                }
+ 
                 $this.loadingLiveScroll = false;
                 $this.allLoadedLiveScroll = ($this.scrollOffset + $this.cfg.scrollStep) >= $this.cfg.scrollLimit;
             }

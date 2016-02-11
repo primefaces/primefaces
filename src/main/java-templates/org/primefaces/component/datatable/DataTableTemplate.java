@@ -505,8 +505,8 @@ import org.primefaces.util.SharedStringBuilder;
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
 
-            //Update paginator for callback
-            if(this.isPaginator()) {
+            //Update paginator/livescroller for callback
+            if(this.isPaginator()||this.isLiveScroll()) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {
@@ -556,8 +556,8 @@ import org.primefaces.util.SharedStringBuilder;
             lazyModel.setPageSize(rows);
             lazyModel.setWrappedData(data);
 
-            //Update paginator for callback
-            if(this.isPaginator()) {
+            //Update paginator/livescroller  for callback
+            if(this.isPaginator()||this.isLiveScroll()) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {
