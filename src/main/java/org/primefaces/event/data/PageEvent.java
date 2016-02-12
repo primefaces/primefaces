@@ -17,27 +17,15 @@ package org.primefaces.event.data;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
-public class PageEvent extends AjaxBehaviorEvent {
+public class PageEvent extends AbstractAjaxBehaviorEvent {
 
 	private int page;
 	
 	public PageEvent(UIComponent component, Behavior behavior, int page) {
 		super(component, behavior);
 		this.page = page;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
     public int getPage() {

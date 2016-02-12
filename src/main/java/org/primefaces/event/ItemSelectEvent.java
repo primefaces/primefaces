@@ -17,11 +17,8 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
-public class ItemSelectEvent extends AjaxBehaviorEvent {
+public class ItemSelectEvent extends AbstractAjaxBehaviorEvent {
 	
 	private int itemIndex;
 	
@@ -33,16 +30,6 @@ public class ItemSelectEvent extends AjaxBehaviorEvent {
 		this.seriesIndex = seriesIndex;
 	}
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-        return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-	
 	public int getItemIndex() {
 		return itemIndex;
 	}

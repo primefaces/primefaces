@@ -17,27 +17,14 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
-public class UnselectEvent extends AjaxBehaviorEvent {
+public class UnselectEvent extends AbstractAjaxBehaviorEvent {
 
 	private Object object;
 
 	public UnselectEvent(UIComponent component, Behavior behavior, Object object) {
 		super(component, behavior);
 		this.object = object;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
 	public Object getObject() {

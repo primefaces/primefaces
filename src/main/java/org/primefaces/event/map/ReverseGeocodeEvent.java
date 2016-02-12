@@ -18,12 +18,10 @@ package org.primefaces.event.map;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.LatLng;
 
-public class ReverseGeocodeEvent extends AjaxBehaviorEvent {
+public class ReverseGeocodeEvent extends AbstractAjaxBehaviorEvent {
 	
     private final LatLng latlng;
 	private final List<String> addresses;
@@ -34,16 +32,6 @@ public class ReverseGeocodeEvent extends AjaxBehaviorEvent {
 		this.addresses = addresses;
 	}
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-    
     public LatLng getLatlng() {
         return latlng;
     }

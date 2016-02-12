@@ -17,11 +17,8 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
-public class SelectEvent extends AjaxBehaviorEvent {
+public class SelectEvent extends AbstractAjaxBehaviorEvent {
 
 	private Object object;
     private boolean metaKey;
@@ -37,16 +34,6 @@ public class SelectEvent extends AjaxBehaviorEvent {
 		this.object = object;
         this.metaKey = metaKey;
         this.ctrlKey = ctrlKey;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 	
 	public Object getObject() {

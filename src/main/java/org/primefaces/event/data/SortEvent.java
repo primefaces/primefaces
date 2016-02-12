@@ -17,13 +17,11 @@ package org.primefaces.event.data;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.SortOrder;
 
-public class SortEvent extends AjaxBehaviorEvent {
+public class SortEvent extends AbstractAjaxBehaviorEvent {
 
 	private UIColumn sortColumn;
     
@@ -36,16 +34,6 @@ public class SortEvent extends AjaxBehaviorEvent {
 		this.sortColumn = sortColumn;
         this.ascending = order.equals(SortOrder.ASCENDING);
         this.sortColumnIndex = sortColumnIndex;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
     public boolean isAscending() {

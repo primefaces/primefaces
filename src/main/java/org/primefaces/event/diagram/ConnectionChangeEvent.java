@@ -17,13 +17,11 @@ package org.primefaces.event.diagram;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.diagram.Element;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 
-public class ConnectionChangeEvent extends AjaxBehaviorEvent {
+public class ConnectionChangeEvent extends AbstractAjaxBehaviorEvent {
     
     private Element originalSourceElement;
     private Element newSourceElement;
@@ -45,16 +43,6 @@ public class ConnectionChangeEvent extends AjaxBehaviorEvent {
         this.originalTargetEndPoint = originalTargetEndPoint;
         this.newTargetEndPoint = newTargetEndPoint;
     }
-    
-    @Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
 
     public Element getOriginalSourceElement() {
         return originalSourceElement;

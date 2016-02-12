@@ -17,30 +17,17 @@ package org.primefaces.event.map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 import org.primefaces.model.map.LatLng;
 
-public class PointSelectEvent extends AjaxBehaviorEvent {
+public class PointSelectEvent extends AbstractAjaxBehaviorEvent {
 	
 	private LatLng latLng;
 	
 	public PointSelectEvent(UIComponent component, Behavior behavior, LatLng latLng) {
 		super(component, behavior);
 		this.latLng = latLng;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 	
 	public LatLng getLatLng() {
