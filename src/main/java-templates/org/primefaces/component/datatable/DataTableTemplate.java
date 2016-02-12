@@ -881,7 +881,9 @@ import org.primefaces.util.SharedStringBuilder;
                         }
                     }
                     else if(kid instanceof Column) {
-                        columnsCount++;
+                        if(((UIColumn)kid).isVisible()) {
+                            columnsCount++;
+                        }
                     } 
                     else if(kid instanceof SubTable) {
                         SubTable subTable = (SubTable) kid;
