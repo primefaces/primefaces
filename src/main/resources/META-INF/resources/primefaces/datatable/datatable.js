@@ -1094,7 +1094,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function() {
+            oncomplete: function(xhr, status, args) {
                 $this.paginator.cfg.page = newState.page;
                 $this.paginator.updateTotalRecords(args.totalRecords);
                 
