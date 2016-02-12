@@ -280,7 +280,7 @@
 }
 
 /** Reflow **/
-.ui-datatable-reflow .ui-datatable-data td .ui-column-title {
+.ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title {
     display: none;
 }
 
@@ -296,7 +296,7 @@
         display: none;
     }
 
-    .ui-datatable-reflow .ui-datatable-data td { 
+    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"] { 
         text-align: left;
         display: block;
         border: 0px none;
@@ -317,7 +317,7 @@
         border-right: 0px none;
     }
 
-    .ui-datatable-reflow .ui-datatable-data td .ui-column-title { 
+    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title { 
         padding: .4em; 
         min-width: 30%; 
         display: inline-block;
