@@ -104,10 +104,10 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         if (input instanceof Calendar) {
             Calendar calendar = (Calendar) input;
 
-            if (constraint.annotationType().equals(Past.class) && calendar.getMaxdate() != null) {
+            if (constraint.annotationType().equals(Past.class) && calendar.getMaxdate() == null) {
                 calendar.setMaxdate(new Date());
             }
-            if (constraint.annotationType().equals(Future.class) && calendar.getMindate() != null) {
+            if (constraint.annotationType().equals(Future.class) && calendar.getMindate() == null) {
                 calendar.setMindate(new Date());
             }
         }
