@@ -11544,7 +11544,7 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 				else {
 					this.$timeObj.val($.datepicker.formatTime(pickerTimeFormat, this, o) + pickerTimeSuffix);
 				}
-				this.$timeObj[0].setSelectionRange(sPos, ePos);
+				//this.$timeObj[0].setSelectionRange(sPos, ePos); //https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848
 			}
 
 			this.timeDefined = true;
