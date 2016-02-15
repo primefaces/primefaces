@@ -49,7 +49,9 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
             try {
                 ExternalContext externalContext = context.getExternalContext();
                 Map<String,Object> session = externalContext.getSessionMap();
+                Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
                 String sessionKey = strEn.decrypt(dynamicContentId);
+                String dynamicContentEL = null;
                 try {
                     UUID.fromString(sessionKey);
                 } catch (IllegalArgumentException illegalArgumentException) {
@@ -57,8 +59,14 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                     throw new IOException("Not a valid key", illegalArgumentException);
                 }
                 
-                String dynamicContentEL = (String) session.get(sessionKey);
-                session.remove(sessionKey);
+                if(dynamicResourcesMapping != null) {
+                    dynamicContentEL = dynamicResourcesMapping.get(sessionKey);
+                    dynamicResourcesMapping.remove(sessionKey);
+                    
+                    if(dynamicResourcesMapping.isEmpty()) {
+                        session.remove(Constants.DYNAMIC_RESOURCES_MAPPING);
+                    }
+                }
 
                 if(dynamicContentEL != null) {
                     ELContext eLContext = context.getELContext();
