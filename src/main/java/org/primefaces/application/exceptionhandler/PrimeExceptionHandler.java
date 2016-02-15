@@ -244,7 +244,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         rootCause.printStackTrace(pw);
-        info.setFormattedStackTrace(sw.toString().replaceAll("(\r\n|\n)", "<br/>"));
+        info.setFormattedStackTrace(ComponentUtils.escapeXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
         pw.close();
         sw.close();
 
