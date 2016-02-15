@@ -54,10 +54,12 @@ public class DynamicResourceBuilder {
             ValueExpression expression = ValueExpressionAnalyzer.getExpression(context.getELContext(), component.getValueExpression("value"));
             String sessionKey = UUID.randomUUID().toString();
             Map<String,Object> session = context.getExternalContext().getSessionMap();
-            if(!session.containsKey(Constants.DYNAMIC_RESOURCES_MAPPING)) {
-                session.put(Constants.DYNAMIC_RESOURCES_MAPPING, new HashMap<String, String>());
+            Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+            if(dynamicResourcesMapping == null) {
+                dynamicResourcesMapping = new HashMap<String, String>();
+                session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
             }
-            ((Map) context.getExternalContext().getSessionMap().get(Constants.DYNAMIC_RESOURCES_MAPPING)).put(sessionKey, expression.getExpressionString());
+            dynamicResourcesMapping.put(sessionKey, expression.getExpressionString());
             String rid = encrypter.encrypt(sessionKey);
             StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
 
