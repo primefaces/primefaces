@@ -17,31 +17,25 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import org.primefaces.component.tabview.Tab;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.AjaxBehaviorListener;
+import javax.faces.event.FacesListener;
 
-public class TabChangeEvent extends AbstractAjaxBehaviorEvent implements TabEvent {
+public abstract class AbstractAjaxBehaviorEvent extends AjaxBehaviorEvent {
 
-    private Tab tab;
-    private Object data;
-
-	public TabChangeEvent(UIComponent component, Behavior behavior, Tab tab) {
-		super(component, behavior);
-        this.tab = tab;
-	}
-
-    public Tab getTab() {
-        return tab;
+    public AbstractAjaxBehaviorEvent(UIComponent component, Behavior behavior) {
+        super(component, behavior);
     }
-    
-    public void setTab(Tab tab) {
-        this.tab = tab;
+
+    @Override
+    public boolean isAppropriateListener(FacesListener facesListener) {
+        return (facesListener instanceof AjaxBehaviorListener);
     }
-    
-    public Object getData() {
-        return data;
-    }
-    
-    public void setData(Object data) {
-        this.data = data;
+
+    @Override
+    public void processListener(FacesListener facesListener) {
+        if (facesListener instanceof AjaxBehaviorListener) {
+            ((AjaxBehaviorListener) facesListener).processAjaxBehavior(this);
+        }
     }
 }

@@ -17,6 +17,7 @@ package org.primefaces.metadata.transformer.impl;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.Date;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,11 +25,14 @@ import javax.el.PropertyNotFoundException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
+import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.spinner.Spinner;
 import org.primefaces.context.RequestContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
@@ -94,6 +98,17 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             if (constraint.annotationType().equals(Min.class) && spinner.getMin() == Double.MIN_VALUE) {
                 Min min = (Min) constraint;
                 spinner.setMin(min.value());
+            }
+        }
+        
+        if (input instanceof Calendar) {
+            Calendar calendar = (Calendar) input;
+
+            if (constraint.annotationType().equals(Past.class) && calendar.getMaxdate() == null) {
+                calendar.setMaxdate(new Date());
+            }
+            if (constraint.annotationType().equals(Future.class) && calendar.getMindate() == null) {
+                calendar.setMindate(new Date());
             }
         }
     }

@@ -18,11 +18,8 @@ package org.primefaces.event;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
-public class TransferEvent extends AjaxBehaviorEvent {
+public class TransferEvent extends AbstractAjaxBehaviorEvent {
 
     private List<?> items;
     private boolean add;
@@ -31,16 +28,6 @@ public class TransferEvent extends AjaxBehaviorEvent {
 		super(component, behavior);
         this.items = items;
         this.add = add;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-        ((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
     public boolean isAdd() {

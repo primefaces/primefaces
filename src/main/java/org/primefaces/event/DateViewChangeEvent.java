@@ -17,11 +17,8 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
-public class DateViewChangeEvent extends AjaxBehaviorEvent {
+public class DateViewChangeEvent extends AbstractAjaxBehaviorEvent {
 
 	private int month;
     private int year;
@@ -30,16 +27,6 @@ public class DateViewChangeEvent extends AjaxBehaviorEvent {
 		super(component, behavior);
 		this.month = month;
         this.year = year;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
     public int getMonth() {

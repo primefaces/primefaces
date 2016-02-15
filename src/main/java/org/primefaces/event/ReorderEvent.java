@@ -17,11 +17,8 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
-public class ReorderEvent extends AjaxBehaviorEvent {
+public class ReorderEvent extends AbstractAjaxBehaviorEvent {
 
     private int fromIndex;
     private int toIndex;
@@ -30,16 +27,6 @@ public class ReorderEvent extends AjaxBehaviorEvent {
 		super(component, behavior);
         this.fromIndex = fromIndex;
         this.toIndex = toIndex;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-        ((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
     public int getFromIndex() {
