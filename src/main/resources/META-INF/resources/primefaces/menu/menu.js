@@ -1169,7 +1169,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         this.keyboardTarget = this.jq.children('.ui-helper-hidden-accessible');
         
         if(this.cfg.activeIndex !== undefined) {
-            this.rootLinks.eq(this.cfg.activeIndex).addClass('ui-state-active');
+            this.rootLinks.eq(this.cfg.activeIndex).addClass('ui-state-hover').closest('li.ui-menuitem').addClass('ui-menuitem-active');
         }
         
         this.bindEvents();
