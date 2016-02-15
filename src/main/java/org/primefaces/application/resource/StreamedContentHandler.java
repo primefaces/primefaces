@@ -18,6 +18,7 @@ package org.primefaces.application.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ELContext;
@@ -46,11 +47,18 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
             boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
             try {
-                // see #6448
-                dynamicContentId = dynamicContentId.replaceAll(" ", "+");
-
-                String dynamicContentEL = strEn.decrypt(dynamicContentId);
                 ExternalContext externalContext = context.getExternalContext();
+                Map<String,Object> session = externalContext.getSessionMap();
+                String sessionKey = strEn.decrypt(dynamicContentId);
+                try {
+                    UUID.fromString(sessionKey);
+                } catch (IllegalArgumentException illegalArgumentException) {
+                    session.remove(sessionKey);
+                    throw new IOException("Not a valid key", illegalArgumentException);
+                }
+                
+                String dynamicContentEL = (String) session.get(sessionKey);
+                session.remove(sessionKey);
 
                 if(dynamicContentEL != null) {
                     ELContext eLContext = context.getELContext();

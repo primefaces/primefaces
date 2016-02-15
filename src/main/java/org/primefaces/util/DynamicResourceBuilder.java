@@ -50,8 +50,10 @@ public class DynamicResourceBuilder {
             StringEncrypter encrypter = RequestContext.getCurrentInstance().getEncrypter();
 
             ValueExpression expression = ValueExpressionAnalyzer.getExpression(context.getELContext(), component.getValueExpression("value"));
-            String rid = encrypter.encrypt(expression.getExpressionString());
-
+            String sessionKey = UUID.randomUUID().toString();
+            String rid = encrypter.encrypt(sessionKey);
+            context.getExternalContext().getSessionMap().put(sessionKey, expression.getExpressionString());
+            
             StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
 
             builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid,"UTF-8"))
