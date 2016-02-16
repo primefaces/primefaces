@@ -49,7 +49,6 @@ public class DynamicResourceBuilder {
             StreamedContent streamedContent = (StreamedContent) value;
             Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
             String resourcePath = resource.getRequestPath();
-            StringEncrypter encrypter = RequestContext.getCurrentInstance().getEncrypter();
 
             ValueExpression expression = ValueExpressionAnalyzer.getExpression(context.getELContext(), component.getValueExpression("value"));
             String sessionKey = UUID.randomUUID().toString();
@@ -60,10 +59,9 @@ public class DynamicResourceBuilder {
                 session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
             }
             dynamicResourcesMapping.put(sessionKey, expression.getExpressionString());
-            String rid = encrypter.encrypt(sessionKey);
             StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
 
-            builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(rid,"UTF-8"))
+            builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(sessionKey, "UTF-8"))
                     .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
 
             for (UIComponent kid : component.getChildren()) {

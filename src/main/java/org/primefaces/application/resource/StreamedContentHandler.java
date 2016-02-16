@@ -27,10 +27,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.Constants;
-import org.primefaces.util.StringEncrypter;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
@@ -39,10 +37,9 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
     public void handle(FacesContext context) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");
-        String dynamicContentId = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
-        StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
+        String sessionKey = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
 
-        if(dynamicContentId != null && library != null && library.equals(Constants.LIBRARY)) {
+        if(sessionKey != null && library != null && library.equals(Constants.LIBRARY)) {
             StreamedContent streamedContent = null;
             boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
@@ -50,7 +47,6 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                 ExternalContext externalContext = context.getExternalContext();
                 Map<String,Object> session = externalContext.getSessionMap();
                 Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
-                String sessionKey = strEn.decrypt(dynamicContentId);
                 String dynamicContentEL = null;
                 try {
                     UUID.fromString(sessionKey);
