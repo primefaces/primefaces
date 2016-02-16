@@ -26,7 +26,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import org.primefaces.application.resource.DynamicContentType;
-import org.primefaces.context.RequestContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
 
