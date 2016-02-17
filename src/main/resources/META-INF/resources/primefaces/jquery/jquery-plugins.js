@@ -10851,13 +10851,13 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 						return tp_inst._defaults.evnts.beforeShow.call($input[0], input, dp_inst, tp_inst);
 					}
 				},
-				onChangeMonthYear: function (year, month, dp_inst) {
+				/*onChangeMonthYear: function (year, month, dp_inst) {
 					// Update the time as well : this prevents the time from disappearing from the $input field.
 					// tp_inst._updateDateTime(dp_inst);
 					if ($.isFunction(tp_inst._defaults.evnts.onChangeMonthYear)) {
 						tp_inst._defaults.evnts.onChangeMonthYear.call($input[0], year, month, dp_inst, tp_inst);
 					}
-				},
+				},*/
 				onClose: function (dateText, dp_inst) {
 					if (tp_inst.timeDefined === true && $input.val() !== '') {
 						tp_inst._updateDateTime(dp_inst);
@@ -11642,7 +11642,7 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 				this.$input.val(formattedDateTime);
 			}
 
-			this.$input.trigger("change");
+			//this.$input.trigger("change"); Issue #5702
 		},
 
 		_onFocus: function () {
@@ -12223,15 +12223,18 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 	*/
 	$.datepicker._base_gotoToday = $.datepicker._gotoToday;
 	$.datepicker._gotoToday = function (id) {
-		var inst = this._getInst($(id)[0]);
+		var inst = this._getInst($(id)[0]),
+			$dp = inst.dpDiv;
 		this._base_gotoToday(id);
 		var tp_inst = this._get(inst, 'timepicker');
-		var tzoffset = $.timepicker.timezoneOffsetNumber(tp_inst.timezone);
+		selectLocalTimezone(tp_inst);
+		//var tzoffset = $.timepicker.timezoneOffsetNumber(tp_inst.timezone); //https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/281
 		var now = new Date();
-		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + tzoffset);
+		//now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + tzoffset);
 		this._setTime(inst, now);
-		this._setDate(inst, now);
-		tp_inst._onSelectHandler();
+		//this._setDate(inst, now);
+		//tp_inst._onSelectHandler();
+		$('.ui-datepicker-today', $dp).click();
 	};
 
 	/*
@@ -12883,9 +12886,7 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 	 * @return {void}
 	 */
 	$.timepicker.log = function () {
-		if (window.console) {
-			window.console.log.apply(window.console, Array.prototype.slice.call(arguments));
-		}
+		
 	};
 
 	/*
