@@ -26,5 +26,6 @@ public enum DataTableFeatureKey {
     ROW_EXPAND,
     SCROLL,
     SELECT,
-    DRAGGABLE_ROWS;
+    DRAGGABLE_ROWS,
+    ADD_ROW;
 }

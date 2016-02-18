@@ -160,6 +160,7 @@ import org.primefaces.util.SharedStringBuilder;
         FEATURES.put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature());
         FEATURES.put(DataTableFeatureKey.SCROLL, new ScrollFeature());
         FEATURES.put(DataTableFeatureKey.DRAGGABLE_ROWS, new DraggableRowsFeature());
+        FEATURES.put(DataTableFeatureKey.ADD_ROW, new AddRowFeature());
     }
     
     public DataTableFeature getFeature(DataTableFeatureKey key) {

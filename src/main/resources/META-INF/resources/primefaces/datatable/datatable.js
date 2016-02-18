@@ -2953,6 +2953,30 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.clone.remove();
         this.clone = this.thead.clone(false);
         this.jq.find('.ui-datatable-tablewrapper > table').append(this.clone);
+    },
+    
+    addRow: function() {
+        var $this = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            params: [{name: this.id + '_addrow', value: true},
+                    {name: this.id + '_skipChildren', value: true},
+                    {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        this.tbody.append(content);
+                    }
+                });
+
+                return true;
+            }
+        };
+
+        PrimeFaces.ajax.Request.handle(options);
     }
 
 });
