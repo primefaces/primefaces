@@ -357,5 +357,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     
     prev: function() {
         this.setPage(this.cfg.page - 1);
+    },
+
+    end: function() {
+        this.setPage(this.cfg.pageCount - 1);
+    },
+
+    first: function() {
+        this.setPage(0);
     }
 });
