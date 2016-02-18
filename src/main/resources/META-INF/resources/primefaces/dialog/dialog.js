@@ -454,7 +454,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         else {
             this.saveState();
  
-           var win = $(window);
+            var win = $(window);
 
             this.jq.addClass('ui-dialog-maximized').css({
                 'width': win.width() - 6
@@ -465,9 +465,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             });
 
             //maximize content
+            var contentPadding = this.content.innerHeight() - this.content.height();
             this.content.css({
                 width: 'auto',
-                height: 'auto'
+                height: this.jq.height() - this.titlebar.outerHeight() - contentPadding
             });
 
             this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
