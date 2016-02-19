@@ -2170,7 +2170,29 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
     select: function(button) {
         this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').prop('checked', false);
 
-        button.addClass('ui-state-active').children(':radio').prop('checked', true).change();
+        button.addClass('ui-state-active').children(':radio').prop('checked', true);
+        this.triggerChange();
+    },
+    
+    triggerChange: function() {
+        if(this.cfg.change) {
+            this.cfg.change.call(this);
+        }
+        
+        if(this.hasBehavior('change')) {
+            var changeBehavior = this.cfg.behaviors['change'];
+            if(changeBehavior) {
+                changeBehavior.call(this);
+            }
+        }
+    },
+
+    hasBehavior: function(event) {
+        if(this.cfg.behaviors) {
+            return this.cfg.behaviors[event] != undefined;
+        }
+
+        return false;
     }
 
 });

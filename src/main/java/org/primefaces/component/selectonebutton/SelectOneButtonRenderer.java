@@ -118,8 +118,6 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("class", "ui-helper-hidden", null);
-
-        renderOnchange(context, button);
         
         if(selected) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
@@ -138,7 +136,12 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneButton button) throws IOException {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneButton", button.resolveWidgetVar(), clientId).finish();
+        wb.init("SelectOneButton", button.resolveWidgetVar(), clientId)
+            .callback("change", "function()", button.getOnchange());
+        
+        encodeClientBehaviors(context, button);
+        
+        wb.finish();
     }
     
     @Override
