@@ -2885,7 +2885,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.stickyContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
         this.clone = this.thead.clone(false);
         this.stickyContainer.children('table').append(this.thead);
-        table.append(this.clone);
+        table.prepend(this.clone);
         
         this.stickyContainer.css({
             position: 'absolute',
@@ -2952,7 +2952,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     reclone: function() {
         this.clone.remove();
         this.clone = this.thead.clone(false);
-        this.jq.find('.ui-datatable-tablewrapper > table').append(this.clone);
+        this.jq.find('.ui-datatable-tablewrapper > table').prepend(this.clone);
     },
     
     addRow: function() {
