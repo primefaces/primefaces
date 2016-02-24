@@ -105,7 +105,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-            <description>When enabled, only values related to partially processed components would be serialized for ajax 
+            <description>When enabled, only values related to partially processed components would be serialized for ajax
             instead of whole form.</description>
 		</attribute>
         <attribute>
@@ -191,13 +191,6 @@
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
             <description>Sets the behavior of the button. Default is submit.</description>
-		</attribute>
-		<attribute>
-			<name>readonly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<ignoreInComponent>true</ignoreInComponent>
-            <description>Flag indicating that this component will prevent changes by the user.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
