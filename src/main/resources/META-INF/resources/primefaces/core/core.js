@@ -385,7 +385,7 @@
             });
         },
 
-        focus : function(id, context) {
+        focus: function(id, context) {
             var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
 
             setTimeout(function() {
@@ -403,9 +403,20 @@
                     $(PrimeFaces.escapeClientId(context)).find(selector).eq(0).focus();
                 }
                 else {
-                    $(selector).eq(0).focus();
+                    var elements = $(selector),
+                    firstElement = elements.eq(0);
+                    if(firstElement.is(':radio')) {
+                        var checkedRadio = $(':radio[name="' + firstElement.attr('name') + '"]').filter(':checked');
+                        if(checkedRadio.length)
+                            checkedRadio.focus();
+                        else
+                            firstElement.focus();
+                    }
+                    else {
+                        firstElement.focus();
+                    }
                 }
-            }, 250);
+            }, 50);
 
             // remember that a custom focus has been rendered
             // this avoids to retain the last focus after ajax update
