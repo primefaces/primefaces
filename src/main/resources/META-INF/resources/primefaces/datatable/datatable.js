@@ -1182,18 +1182,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     }
 
                     if(!multi) {
-                        var activeColumns = this.sortableColumns.filter('.ui-state-active');
+                        var activeColumns = $this.sortableColumns.filter('.ui-state-active');
 
                         //aria reset
                         for(var i = 0; i < activeColumns.length; i++) {
                             var activeColumn = $(activeColumns.get(i)),
                                 ariaLabelOfActive = activeColumn.attr('aria-label');
 
-                            activeColumn.attr('aria-sort', 'other').attr('aria-label', this.getSortMessage(ariaLabelOfActive, this.ascMessage));
-                            $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).attr('aria-sort', 'other').attr('aria-label', this.getSortMessage(ariaLabelOfActive, this.ascMessage));
+                            activeColumn.attr('aria-sort', 'other').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
+                            $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).attr('aria-sort', 'other').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
                         }
 
-                        activeColumns.data('sortorder', this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
+                        activeColumns.data('sortorder', $this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
                                     .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
                     }
 
@@ -1201,14 +1201,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     var sortIcon = columnHeader.find('.ui-sortable-column-icon'),
                     ariaLabel = columnHeader.attr('aria-label');
 
-                    if(order === this.SORT_ORDER.DESCENDING) {
+                    if(order === $this.SORT_ORDER.DESCENDING) {
                         sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
-                        columnHeader.attr('aria-sort', 'descending').attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
-                        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending').attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
-                    } else if(order === this.SORT_ORDER.ASCENDING) {
+                        columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
+                        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
+                    } else if(order === $this.SORT_ORDER.ASCENDING) {
                         sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
-                        columnHeader.attr('aria-sort', 'ascending').attr('aria-label', this.getSortMessage(ariaLabel, this.descMessage));
-                        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending').attr('aria-label', this.getSortMessage(ariaLabel, this.descMessage));
+                        columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                     }
                 }
             }
