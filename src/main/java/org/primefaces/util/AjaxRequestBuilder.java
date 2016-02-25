@@ -110,6 +110,14 @@ public class AjaxRequestBuilder {
         return this;
     }
     
+    public AjaxRequestBuilder skipChildren(boolean skipChildren) {
+        if(!skipChildren) {
+            buffer.append(",sc:false");
+        }
+        
+        return this;
+    }
+    
     public AjaxRequestBuilder global(boolean global) {
         if(!global) {
             buffer.append(",g:false");

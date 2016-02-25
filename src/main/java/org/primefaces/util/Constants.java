@@ -51,6 +51,7 @@ public class Constants {
         // PF request params
         public static final String RESET_VALUES_PARAM = "primefaces.resetvalues";
         public static final String IGNORE_AUTO_UPDATE_PARAM = "primefaces.ignoreautoupdate";
+        public static final String SKIP_CHILDREN_PARAM = "primefaces.skipchildren";
     }
 
     public static final String DOWNLOAD_COOKIE = "primefaces.download";

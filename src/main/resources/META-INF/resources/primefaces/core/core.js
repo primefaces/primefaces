@@ -626,6 +626,8 @@
         RESET_VALUES_PARAM : "primefaces.resetvalues",
 
         IGNORE_AUTO_UPDATE_PARAM : "primefaces.ignoreautoupdate",
+        
+        SKIP_CHILDREN_PARAM : "primefaces.skipchildren",
 
         VIEW_STATE : "javax.faces.ViewState",
 

@@ -11,6 +11,7 @@ PrimeFaces.AB_MAPPING = {
     'g': 'global',
     'd': 'delay',
     't': 'timeout',
+    'sc': 'skipChildren',
     'iau': 'ignoreAutoUpdate',
     'ps': 'partialSubmit',
     'psf': 'partialSubmitFilter',
@@ -325,6 +326,11 @@ PrimeFaces.ajax = {
             //ignoreAutoUpdate
             if (cfg.ignoreAutoUpdate) {
                 PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, true, parameterNamespace);
+            }
+            
+            //skip children
+            if (cfg.skipChildren === false) {
+                PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.SKIP_CHILDREN_PARAM, false, parameterNamespace);
             }
 
             //process

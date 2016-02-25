@@ -46,6 +46,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
     private final TagAttribute timeout;
     private final TagAttribute partialSubmitFilter;
     private final TagAttribute form;
+    private final TagAttribute skipChildren;
 
     public AjaxBehaviorHandler(BehaviorConfig config) {
         super(config);
@@ -67,6 +68,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         this.timeout = this.getAttribute(AjaxBehavior.PropertyKeys.timeout.name());
         this.partialSubmitFilter = this.getAttribute(AjaxBehavior.PropertyKeys.partialSubmitFilter.name());
         this.form = this.getAttribute(AjaxBehavior.PropertyKeys.form.name());
+        this.skipChildren = this.getAttribute(AjaxBehavior.PropertyKeys.skipChildren.name());
     }
 
     @Override
@@ -92,6 +94,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         setBehaviorAttribute(ctx, behavior, this.timeout, AjaxBehavior.PropertyKeys.timeout.expectedType);
         setBehaviorAttribute(ctx, behavior, this.partialSubmitFilter, AjaxBehavior.PropertyKeys.partialSubmitFilter.expectedType);
         setBehaviorAttribute(ctx, behavior, this.form, AjaxBehavior.PropertyKeys.form.expectedType);
+        setBehaviorAttribute(ctx, behavior, this.skipChildren, AjaxBehavior.PropertyKeys.skipChildren.expectedType);
         
         if (listener != null) {
             behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(

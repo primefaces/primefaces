@@ -57,7 +57,8 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     	delay(String.class),
         timeout(Integer.class),
         partialSubmitFilter(String.class),
-        form(String.class);
+        form(String.class),
+        skipChildren(Boolean.class);
 
         final Class<?> expectedType;
 
@@ -223,6 +224,14 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     
     public void setForm(String form) {
         setLiteral(PropertyKeys.form, form);
+    }
+    
+    public boolean isSkipChildren() {
+    	return eval(PropertyKeys.skipChildren, Boolean.TRUE);
+    }
+
+    public void setSkipChildren(Boolean skipChildren) {
+    	setLiteral(PropertyKeys.skipChildren, skipChildren);
     }
     
     public boolean isImmediateSet() {

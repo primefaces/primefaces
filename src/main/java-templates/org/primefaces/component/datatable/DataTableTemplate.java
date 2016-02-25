@@ -7,6 +7,7 @@ import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.contextmenu.ContextMenu;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.context.RequestContext;
+import org.primefaces.util.Constants;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -975,7 +976,12 @@ import org.primefaces.util.SharedStringBuilder;
     
     @Override
     protected boolean shouldSkipChildren(FacesContext context) {
-        return this.isSkipChildren() || context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_skipChildren");
+        Map<String,String> params =  context.getExternalContext().getRequestParameterMap();
+        String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
+        if(paramValue != null && Boolean.valueOf(paramValue) == false)
+            return false;
+        else
+            return (this.isSkipChildren() || params.containsKey(this.getClientId(context) + "_skipChildren"));
     }
     
     private UIColumn sortColumn;

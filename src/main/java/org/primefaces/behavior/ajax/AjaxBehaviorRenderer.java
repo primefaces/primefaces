@@ -90,6 +90,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
                         .partialSubmit(ajaxBehavior.isPartialSubmit(), ajaxBehavior.isPartialSubmitSet(), ajaxBehavior.getPartialSubmitFilter())
                         .resetValues(ajaxBehavior.isResetValues(), ajaxBehavior.isResetValuesSet())
                         .ignoreAutoUpdate(ajaxBehavior.isIgnoreAutoUpdate())
+                        .skipChildren(ajaxBehavior.isSkipChildren())
                         .onstart(ajaxBehavior.getOnstart())
                         .onerror(ajaxBehavior.getOnerror())
                         .onsuccess(ajaxBehavior.getOnsuccess())
