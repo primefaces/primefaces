@@ -168,6 +168,20 @@
             <type>java.lang.String</type>
             <description>Displays label of the element in a custom template. Valid placeholder is {0}.</description>
         </attribute>
+        <attribute>
+			<name>onfocus</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when element receives focus.</description>
+		</attribute>
+        <attribute>
+			<name>onblur</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when element loses focus.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

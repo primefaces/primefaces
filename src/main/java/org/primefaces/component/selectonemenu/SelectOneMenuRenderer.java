@@ -32,6 +32,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
@@ -120,6 +121,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if(labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
         if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        
+        renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
         
         writer.endElement("input");
         
