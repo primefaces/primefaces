@@ -503,6 +503,14 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/2-knob.js</include>
                             </includes>
                         </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/timeline.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/1-timeline.js</include>
+                            </includes>
+                        </aggregation>
                     </aggregations>
                 </configuration>
             </plugin>
@@ -758,6 +766,14 @@
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/excanvas/excanvas.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/1-jquery.knob.js</include>
                                         <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/2-knob.js</include>
+                                    </includes>
+                                </aggregation>
+                                <aggregation>
+                                    <insertNewLine>true</insertNewLine>
+                                    <output>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/timeline.js</output>
+                                    <includes>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.js</include>
+                                        <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/1-timeline.js</include>
                                     </includes>
                                 </aggregation>
                             </aggregations>

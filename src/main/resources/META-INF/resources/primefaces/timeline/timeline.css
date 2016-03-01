@@ -1,0 +1,158 @@
+div.timeline-frame {
+    position: relative;
+    overflow: hidden;
+}
+
+div.timeline-content {
+    position: relative;
+    overflow: hidden;
+}
+
+div.timeline-axis {
+    filter: alpha(opacity=60);
+    -khtml-opacity: 0.6;
+    -moz-opacity: 0.6;
+    opacity: 0.6;
+    border-width: 1px;
+    border-top-style: solid;
+}
+
+div.timeline-axis-grid {
+    border-left-style: solid;
+    border-width: 1px;
+}
+
+div.timeline-axis-grid-minor {
+    filter: alpha(opacity=30);
+    -khtml-opacity: 0.3;
+    -moz-opacity: 0.3;
+    opacity: 0.3;
+}
+
+div.timeline-axis-grid-major {
+    filter: alpha(opacity=50);
+    -khtml-opacity: 0.5;
+    -moz-opacity: 0.5;
+    opacity: 0.5;
+}
+
+div.timeline-axis-text {
+    padding: 3px;
+    white-space: nowrap;
+}
+
+div.timeline-event {
+    display: inline-block;
+}
+
+div.timeline-event-selected {
+    z-index: 999;
+}
+
+div.timeline-event.timeline-event-box {
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    -moz-border-radius: 5px; /* For Firefox 3.6 and older */
+}
+
+div.timeline-event.timeline-event-dot {
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 5px;
+    -moz-border-radius: 5px; /* For Firefox 3.6 and older */
+}
+
+div.timeline-event.timeline-event-range {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 2px;
+    -moz-border-radius: 2px; /* For Firefox 3.6 and older */
+}
+
+div.timeline-frame div.timeline-event-dot-container {
+    border: none;
+}
+
+div.timeline-event-range-drag-left {
+    cursor: w-resize;
+    z-index: 1000;
+}
+
+div.timeline-event-range-drag-right {
+    cursor: e-resize;
+    z-index: 1000;
+}
+
+div.timeline-event-line {
+    border-left-width: 1px;
+    border-left-style: solid;
+}
+
+div.timeline-event-content {
+    margin: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+div.timeline-groups-axis {
+    border-width: 1px;
+}
+
+div.timeline-groups-axis-onleft {
+    border-style: none groove none none;
+}
+
+div.timeline-groups-axis-onright {
+    border-style: none none none groove;
+}
+
+div.timeline-groups-text {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+div.timeline-currenttime {
+    background-color: #FF7F6E;
+    width: 2px;
+}
+
+div.timeline-customtime {
+    background-color: #6E94FF;
+    width: 2px;
+    cursor: move;
+}
+
+div.timeline-navigation-new, div.timeline-navigation-delete,
+div.timeline-navigation-zoom-in, div.timeline-navigation-zoom-out,
+div.timeline-navigation-move-left, div.timeline-navigation-move-right {
+    cursor: pointer;
+    float: left;
+    padding: 5px;
+    text-decoration: none;
+}
+
+div.timeline-navigation-new-line {
+    border-right: dotted 1px;
+}
+
+div.timeline-selectable div.timeline-event {
+    cursor: pointer;
+}
+
+div.timeline-selectable div.timeline-event-content {
+    cursor: pointer;
+}
+
+div.timeline-event-selected div.timeline-event-content {
+    cursor: move;
+}
+
+/* Fixed css background image for delete icon */
+div.timeline-navigation-delete {
+    padding: 0 0 0 5px;
+    background: url("#{resource['primefaces:timeline/deleteEvent.png']}") no-repeat center;
+    width: 13px;
+    height: 13px;
+}
