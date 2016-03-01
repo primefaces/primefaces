@@ -46,7 +46,7 @@ public class ExporterFactory {
                     exporter = new ExcelXExporter();
                 break;
                 case XLSXSTREAM:
-                    exporter = new ExcelXExporter();
+                    exporter = new ExcelXStreamExporter();
                 break;    
                 
             }
