@@ -6072,7 +6072,7 @@ $.extend(Datepicker.prototype, {
 
 		inst._keyEvent = true;
 		if ($.datepicker._datepickerShowing) {
-			switch (event.keyCode) {
+			switch (event.which) {
 				case 9: $.datepicker._hideDatepicker();
 						handled = false;
 						break; // hide on tab out
@@ -6149,7 +6149,7 @@ $.extend(Datepicker.prototype, {
 						break; // +1 week on ctrl or command +down
 				default: handled = false;
 			}
-		} else if (event.keyCode === 36 && event.ctrlKey) { // display the date picker on ctrl+home
+		} else if (event.which === 36 && event.ctrlKey) { // display the date picker on ctrl+home
 			$.datepicker._showDatepicker(this);
 		} else {
 			handled = false;
@@ -6168,7 +6168,7 @@ $.extend(Datepicker.prototype, {
 
 		if ($.datepicker._get(inst, "constrainInput")) {
 			chars = $.datepicker._possibleChars($.datepicker._get(inst, "dateFormat"));
-			chr = String.fromCharCode(event.charCode == null ? event.keyCode : event.charCode);
+			chr = String.fromCharCode(event.which);
 			return event.ctrlKey || event.metaKey || (chr < " " || !chars || chars.indexOf(chr) > -1);
 		}
 	},
@@ -8161,7 +8161,7 @@ var slider = $.widget( "ui.slider", $.ui.mouse, {
 			var allowed, curVal, newVal, step,
 				index = $( event.target ).data( "ui-slider-handle-index" );
 
-			switch ( event.keyCode ) {
+			switch ( event.which ) {
 				case $.ui.keyCode.HOME:
 				case $.ui.keyCode.END:
 				case $.ui.keyCode.PAGE_UP:
@@ -8189,7 +8189,7 @@ var slider = $.widget( "ui.slider", $.ui.mouse, {
 				curVal = newVal = this.value();
 			}
 
-			switch ( event.keyCode ) {
+			switch ( event.which ) {
 				case $.ui.keyCode.HOME:
 					newVal = this._valueMin();
 					break;
@@ -12154,7 +12154,7 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 											(tz ? tp_inst._defaults.timezoneList.join('') : '') + 
 											(tp_inst._defaults.amNames.join('')) + (tp_inst._defaults.pmNames.join('')) + 
 											dateChars,
-					chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
+					chr = String.fromCharCode(event.which);
 				return event.ctrlKey || (chr < ' ' || !dateChars || datetimeChars.indexOf(chr) > -1);
 			}
 		}
