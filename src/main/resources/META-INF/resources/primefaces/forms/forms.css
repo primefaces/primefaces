@@ -147,6 +147,10 @@
     border-top: 0px none;
 }
 
+.ui-selectmanycheckbox .ui-selectmanycheckbox-item-group{
+    font-weight: bold;
+}
+
 /** RadioButton **/
 .ui-radiobutton {
     margin: 3px 0;
