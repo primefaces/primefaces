@@ -20,5 +20,6 @@ public enum ExporterType {
     PDF,
     CSV,
     XML,
-    XLSX
+    XLSX,
+    XLSXSTREAM
 }
