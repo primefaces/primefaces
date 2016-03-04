@@ -52,7 +52,7 @@ public class EffectRenderer extends CoreRenderer {
 	}
 	
 	private EffectBuilder getEffectBuilder(Effect effect, String effectedComponentClientId) {
-		EffectBuilder effectBuilder = new EffectBuilder(effect.getType(), effectedComponentClientId);
+		EffectBuilder effectBuilder = new EffectBuilder(effect.getType(), effectedComponentClientId, effect.isQueue());
 		
 		for(UIComponent child : effect.getChildren()) {
 			if(child instanceof UIParameter) {

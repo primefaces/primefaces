@@ -23,11 +23,14 @@ public class EffectBuilder implements JSObjectBuilder {
 	
 	private boolean hasOption = false;
 
-	public EffectBuilder(String type, String id) {
+	public EffectBuilder(String type, String id, boolean queue) {
 		buffer = new StringBuffer();
 		buffer.append("$(PrimeFaces.escapeClientId('");
         buffer.append(id);
         buffer.append("'))");
+        	if (!queue) {
+        	    buffer.append(".stop(true,true)");
+        	}
 		buffer.append(".effect('");
 		buffer.append(type);
 		buffer.append("',{");
