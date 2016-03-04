@@ -53,12 +53,12 @@
 			<type>java.lang.Integer</type>
             <description>Startup delay on firing animation.</description>
 		</attribute>
-        <attribute>
+		<attribute>
 			<name>queue</name>
 			<required>false</required>
 			<defaultValue>true</defaultValue>
 			<type>java.lang.Boolean</type>
-            <description>Specifies if effects should be queued. Default is true.</description>
+			<description>Specifies if effects should be queued. Default is true.</description>
 		</attribute>		
 	</attributes>
 	<resources>
