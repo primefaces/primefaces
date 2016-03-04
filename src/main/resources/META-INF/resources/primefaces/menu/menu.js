@@ -1102,6 +1102,13 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         //hide other contextmenus if any
         $(document.body).children('.ui-contextmenu:visible').hide();
 
+        if(this.cfg.beforeShow) {
+            var retVal = this.cfg.beforeShow.call(this, e);
+            if(retVal === false) {
+                return;
+            }
+        }
+        
         var win = $(window),
         left = e.pageX,
         top = e.pageY,
@@ -1116,13 +1123,6 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             top = top - height;
         }
         
-        if(this.cfg.beforeShow) {
-            var retVal = this.cfg.beforeShow.call(this, e);
-            if(retVal === false) {
-                return;
-            }
-        }
-
         this.jq.css({
             'left': left,
             'top': top,
