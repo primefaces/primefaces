@@ -761,6 +761,35 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             });
     },
     
+    bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
+        var targetSelector = targetId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)';
+        var targetEvent = cfg.event + '.datatable';
+        
+        $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
+            var row = $(this);
+
+            if(targetWidget.cfg.selectionMode && row.hasClass('ui-datatable-selectable')) {
+                targetWidget.onRowRightClick(e, this, cfg.selectionMode);
+
+                menuWidget.show(e);
+            }
+            else if(targetWidget.cfg.editMode === 'cell') {
+                var target = $(e.target),
+                cell = target.is('td.ui-editable-column') ? target : target.parents('td.ui-editable-column:first');
+
+                if(targetWidget.contextMenuCell) {
+                    targetWidget.contextMenuCell.removeClass('ui-state-highlight');
+                }
+
+                targetWidget.contextMenuClick = true;
+                targetWidget.contextMenuCell = cell;
+                targetWidget.contextMenuCell.addClass('ui-state-highlight');
+
+                menuWidget.show(e);
+            }
+        });
+    },
+    
     initReflow: function() {
         var headerColumns = this.thead.find('> tr > th');
         

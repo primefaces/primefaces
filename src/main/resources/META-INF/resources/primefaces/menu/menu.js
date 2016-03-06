@@ -962,7 +962,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         if(!this.jq.parent().is(document.body)) {
             this.jq.appendTo('body');
         }
-        
+
         //attach contextmenu
         if(documentTarget) {
             $(document).off('contextmenu.ui-contextmenu').on('contextmenu.ui-contextmenu', function(e) {
@@ -970,92 +970,25 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             });
         }
         else {
-            if(this.cfg.type === 'DataTable') {
-                this.bindDataTable();
+            var binded = false;
+
+            if (this.cfg.targetWidgetVar) {
+                var targetWidget = PrimeFaces.widgets[this.cfg.targetWidgetVar];
+          
+                if (targetWidget && typeof targetWidget.bindContextMenu === 'function') {
+                    targetWidget.bindContextMenu(this, targetWidget, this.jqTargetId, this.cfg);
+                    binded = true;
+                }
             }
-            else if(this.cfg.type === 'TreeTable') {
-                this.bindTreeTable();
-            }
-            else if(this.cfg.type === 'Tree') {
-                this.bindTree();
-            }
-            else {                
+            
+            if (binded === false) {
                 var event = this.cfg.event + '.ui-contextmenu';
-                
+
                 $(document).off(event, this.jqTargetId).on(event, this.jqTargetId, null, function(e) {
                     _self.show(e);
                 });
             }
-            
         }
-    },
-    
-    bindDataTable: function() {
-        var rowSelector = this.jqTargetId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)',
-        event = this.cfg.event + '.datatable',
-        $this = this;
-        
-        $(document).off(event, rowSelector)
-                    .on(event, rowSelector, null, function(e) {
-                        var widget = PrimeFaces.widgets[$this.cfg.targetWidgetVar],
-                        row = $(this);
-                
-                        if(widget.cfg.selectionMode && row.hasClass('ui-datatable-selectable')) {
-                            widget.onRowRightClick(e, this, $this.cfg.selectionMode);
-
-                            $this.show(e);
-                        }
-                        else if(widget.cfg.editMode === 'cell') {
-                            var target = $(e.target),
-                            cell = target.is('td.ui-editable-column') ? target : target.parents('td.ui-editable-column:first');
-                            
-                            if(widget.contextMenuCell) {
-                                widget.contextMenuCell.removeClass('ui-state-highlight');
-                            }
-                            
-                            widget.contextMenuClick = true;
-                            widget.contextMenuCell = cell;
-                            widget.contextMenuCell.addClass('ui-state-highlight');
-                            
-                            $this.show(e);
-                        }
-                    });
-    },
-    
-    bindTreeTable: function() {
-        var rowSelector = this.jqTargetId + ' .ui-treetable-data > ' + (this.cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + this.cfg.nodeType : 'tr.ui-treetable-selectable-node'),
-        event = this.cfg.event + '.treetable',
-        _self = this;
-        
-        $(document).off(event, rowSelector)
-                    .on(event, rowSelector, null, function(e) {
-                    	PrimeFaces.widgets[_self.cfg.targetWidgetVar].onRowRightClick(e, $(this));
-                        _self.show(e);
-                    });
-    },
-    
-    bindTree: function() {
-        var nodeContentSelector = this.jqTargetId + ' .ui-tree-selectable',
-        nodeEvent = this.cfg.nodeType ? this.cfg.event + '.treenode.' + this.cfg.nodeType : this.cfg.event + '.treenode',
-        containerEvent = this.cfg.event + '.tree',
-        $this = this;
-                
-        $(document).off(nodeEvent, nodeContentSelector)
-                    .on(nodeEvent, nodeContentSelector, null, function(e) {
-                        var nodeContent = $(this);
-                        
-                        if($this.cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === $this.cfg.nodeType) {
-                        	PrimeFaces.widgets[$this.cfg.targetWidgetVar].nodeRightClick(e, nodeContent);
-                            $this.show(e);
-                        }
-                    });
-                                    
-        $(document).off(containerEvent, this.jqTargetId)
-                    .on(containerEvent, this.jqTargetId, null, function(e) {
-                if(PrimeFaces.widgets[$this.cfg.targetWidgetVar].isEmpty()) {
-                    $this.show(e);
-                }
-        });
     },
     
     refresh: function(cfg) {

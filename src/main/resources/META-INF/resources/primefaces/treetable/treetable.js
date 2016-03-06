@@ -160,6 +160,16 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
     
+    bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
+        var targetSelector = targetId + ' .ui-treetable-data > ' + (cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + cfg.nodeType : 'tr.ui-treetable-selectable-node');
+        var targetEvent = cfg.event + '.treetable';
+        
+        $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
+            targetWidget.onRowRightClick(e, $(this));
+            menuWidget.show(e);
+        });
+    },
+    
     setupStickyHeader: function() {
         var table = this.thead.parent(),
         offset = table.offset(),

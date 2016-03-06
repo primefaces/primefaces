@@ -641,6 +641,27 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         });
     },
     
+    bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
+        var nodeContentSelector = targetId + ' .ui-tree-selectable',
+        nodeEvent = cfg.nodeType ? cfg.event + '.treenode.' + cfg.nodeType : cfg.event + '.treenode',
+        containerEvent = cfg.event + '.tree';
+                
+        $(document).off(nodeEvent, nodeContentSelector).on(nodeEvent, nodeContentSelector, null, function(e) {
+            var nodeContent = $(this);
+
+            if(cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === cfg.nodeType) {
+                targetWidget.nodeRightClick(e, nodeContent);
+                menuWidget.show(e);
+            }
+        });
+                                    
+        $(document).off(containerEvent, this.jqTargetId).on(containerEvent, this.jqTargetId, null, function(e) {
+            if(targetWidget.isEmpty()) {
+                menuWidget.show(e);
+            }
+        });
+    },
+    
     searchDown: function(node) {
         var nextOfParent = node.closest('ul').parent('li').next(),
         nodeToFocus = null;
