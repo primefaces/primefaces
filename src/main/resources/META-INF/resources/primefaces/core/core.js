@@ -637,7 +637,9 @@
 
         CLIENT_ID_DATA : "primefaces.clientid",
 
-        RESOURCE_IDENTIFIER: 'javax.faces.resource'
+        RESOURCE_IDENTIFIER: 'javax.faces.resource',
+
+        VERSION: '${project.version}'
     };
 
     /**
