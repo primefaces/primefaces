@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.primefaces.util;
+package org.primefaces.event.timeline;
 
 import java.io.Serializable;
 import java.util.Comparator;

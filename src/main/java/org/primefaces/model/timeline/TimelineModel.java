@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TreeSet;
 import org.primefaces.component.timeline.TimelineUpdater;
-import org.primefaces.util.TimelineEventComparator;
+import org.primefaces.event.timeline.TimelineEventComparator;
 
 public class TimelineModel implements Serializable {
 
