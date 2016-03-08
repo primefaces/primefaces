@@ -702,7 +702,11 @@ PrimeFaces.ajax = {
     ResponseProcessor: {
 
         doRedirect : function(node) {
-            window.location = node.getAttribute('url');
+            try {
+        		window.location.assign(node.getAttribute('url'));
+        	} catch (error) {
+        		PrimeFaces.warn('Error redirecting to URL');
+        	}
         },
 
         doUpdate : function(node, xhr, updateHandler) {
