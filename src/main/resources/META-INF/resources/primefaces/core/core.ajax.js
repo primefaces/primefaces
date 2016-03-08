@@ -705,7 +705,7 @@ PrimeFaces.ajax = {
             try {
         		window.location.assign(node.getAttribute('url'));
         	} catch (error) {
-        		PrimeFaces.warn('Error redirecting to URL');
+        		PrimeFaces.warn('Error redirecting to URL: ' + node.getAttribute('url'));
         	}
         },
 
