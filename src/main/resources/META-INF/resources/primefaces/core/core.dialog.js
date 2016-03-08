@@ -151,7 +151,7 @@ PrimeFaces.dialog.DialogHandler = {
         else if(sourceComponentId) {
             var dialogReturnBehaviorStr = $(windowContext.document.getElementById(sourceComponentId)).data('dialogreturn');
             if(dialogReturnBehaviorStr) {
-                dialogReturnBehavior = eval('(function(ext){' + dialogReturnBehaviorStr + '})');
+                dialogReturnBehavior = eval('(function(ext){this.' + dialogReturnBehaviorStr + '})');
             }
         }
                     
@@ -162,7 +162,7 @@ PrimeFaces.dialog.DialogHandler = {
                     ]
                 };
             
-            dialogReturnBehavior.call(this, ext);
+            dialogReturnBehavior.call(windowContext, ext);
         }
         
         dlgWidget.hide();
