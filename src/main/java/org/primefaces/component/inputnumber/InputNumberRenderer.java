@@ -176,7 +176,7 @@ public class InputNumberRenderer extends InputRenderer {
         wb.finish();
     }
 
-    private String getOptions(InputNumber inputNumber) {
+    protected String getOptions(InputNumber inputNumber) {
 
         String decimalSeparator = inputNumber.getDecimalSeparator();
         String thousandSeparator = inputNumber.getThousandSeparator();
