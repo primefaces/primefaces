@@ -28,6 +28,8 @@ import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.event.data.SortEvent;
+import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
 
 	public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
@@ -58,7 +60,7 @@ import org.primefaces.util.ComponentUtils;
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
     public static final String REFLOW_CLASS = "ui-treetable-reflow";
     
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize", "sort"));
 
     private List<String> selectedRowKeys = new ArrayList<String>();
 
@@ -130,6 +132,12 @@ import org.primefaces.util.ComponentUtils;
                 int height = Integer.parseInt(params.get(clientId + "_height"));
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
+            }
+            else if(eventName.equals("sort")) {
+                SortOrder order = SortOrder.valueOf(params.get(clientId + "_sortDir"));
+                UIColumn sortColumn = findColumn(params.get(clientId + "_sortKey"));
+                
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order, 0);
             }
             
             super.queueEvent(wrapperEvent);
