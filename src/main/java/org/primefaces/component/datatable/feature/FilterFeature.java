@@ -110,7 +110,10 @@ public class FilterFeature implements DataTableFeature {
         }
         
         if(table.isLazy()) {
-            table.loadLazyData();
+            if(table.isLiveScroll())
+                table.loadLazyScrollData(0, table.getScrollRows());
+            else
+                table.loadLazyData();
         }
         else {
             String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
