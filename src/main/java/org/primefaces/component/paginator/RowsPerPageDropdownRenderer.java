@@ -17,6 +17,8 @@ package org.primefaces.component.paginator;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.UIData;
@@ -28,6 +30,8 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
     
     public void render(FacesContext context, UIData uidata) throws IOException {        
         String template = uidata.getRowsPerPageTemplate();
+        UIViewRoot viewroot = context.getViewRoot();
+        char separator = UINamingContainer.getSeparatorChar(context);
         
         if(template != null) {
             ResponseWriter writer = context.getResponseWriter();
@@ -40,7 +44,8 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 label = MessageFactory.getMessage(UIData.ROWS_PER_PAGE_LABEL, null);
             
             String clientId = uidata.getClientId(context);
-            String ddId = clientId + "_rppDD";
+            String ddId = clientId + separator + viewroot.createUniqueId();
+            String ddName = clientId + "_rppDD";
             String labelId = null;
             
             if(label != null) {
@@ -56,7 +61,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                     
             writer.startElement("select", null);
             writer.writeAttribute("id", ddId, null);
-            writer.writeAttribute("name", ddId, null);
+            writer.writeAttribute("name", ddName, null);
             if(label != null) {
                 writer.writeAttribute("aria-labelledby", labelId, null);
             }
