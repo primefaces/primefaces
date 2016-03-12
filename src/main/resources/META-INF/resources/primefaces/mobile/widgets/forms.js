@@ -235,8 +235,6 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
             this.uncheck();
         else
             this.check();
-        
-        this.input.trigger('change');
     },
     
     check: function() {
