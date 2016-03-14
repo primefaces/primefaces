@@ -331,4 +331,9 @@
         border-top-left-radius: 3px;
         border-bottom-left-radius: 3px;
     }
+    
+    .ui-datatable-reflow tr.ui-datatable-empty-message > td {
+        display: block;
+        border: 0 none;
+    }
 }
