@@ -130,6 +130,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         String title = menuitem.getTitle();
         String style = menuitem.getStyle();
         boolean disabled = menuitem.isDisabled();
+        String rel = menuitem.getRel();
 
         writer.startElement("a", null);
         writer.writeAttribute("tabindex", "-1", null);
@@ -149,6 +150,10 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
         if(style != null) {
             writer.writeAttribute("style", style, null);
+        }
+        
+        if(rel != null) {
+            writer.writeAttribute("rel", rel, null);
         }
 
         if(disabled) {
