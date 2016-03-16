@@ -10,12 +10,10 @@ import org.primefaces.model.menu.MenuModel;
 
 
     public CellEditor getCellEditor() {
-        if(cellEditor == null) {
             for(UIComponent child : getChildren()) {
-                if(child instanceof CellEditor)
+                if(child instanceof CellEditor && ((CellEditor)child).isRendered())
                     cellEditor = (CellEditor) child;
             }
-        }
 
         return cellEditor;
     }
