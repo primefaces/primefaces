@@ -75,16 +75,14 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     applyMaxlength: function() {
         var _self = this;
 
-        if(!this.nativeMaxlengthSupported()) {
             this.jq.on('keyup.inputtextarea-maxlength', function(e) {
-                var value = _self.jq.val(),
+            	var value = _self.normalizeNewlines(_self.jq.val());
                 length = value.length;
 
                 if(length > _self.cfg.maxlength) {
                     _self.jq.val(value.substr(0, _self.cfg.maxlength));
                 }
             });
-        }
         
         if(_self.counter) {
             this.jq.on('keyup.inputtextarea-counter', function(e) {
@@ -94,7 +92,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     updateCounter: function() {
-        var value = this.jq.val(),
+        var value = this.normalizeNewlines(this.jq.val());
         length = value.length;
 
         if(this.counter) {
@@ -107,6 +105,10 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
             this.counter.html(remainingText);
         }
+    },
+    
+   normalizeNewlines: function(text) {
+        return text.replace(/(\r\n|\r|\n)/g, '\r\n');
     },
 
     setupAutoComplete: function() {
@@ -403,15 +405,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         if(dialog.length == 1) {
             this.panel.css('position', 'fixed');
         }
-    },
-    
-    nativeMaxlengthSupported: function() {
-        if(PrimeFaces.env.browser.msie)
-            return (parseInt(PrimeFaces.env.browser.version, 10) > 9);
-        else if(PrimeFaces.env.browser.opera)
-            return (parseInt(PrimeFaces.env.browser.version, 10) > 12);
-        else
-            return true;
     }
 
 });
