@@ -20,6 +20,7 @@
 		</interface>
 	</interfaces>
 	<attributes>
+        &standard_uicomponent_attributes;
 		&widget_var_attribute;
         <attribute>
             <name>value</name>
