@@ -75,14 +75,14 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     applyMaxlength: function() {
         var _self = this;
 
-            this.jq.on('keyup.inputtextarea-maxlength', function(e) {
-            	var value = _self.normalizeNewlines(_self.jq.val());
-                length = value.length;
+        this.jq.on('keyup.inputtextarea-maxlength', function(e) {
+            var value = _self.normalizeNewlines(_self.jq.val()),
+            length = value.length;
 
-                if(length > _self.cfg.maxlength) {
-                    _self.jq.val(value.substr(0, _self.cfg.maxlength));
-                }
-            });
+            if(length > _self.cfg.maxlength) {
+                _self.jq.val(value.substr(0, _self.cfg.maxlength));
+            }
+        });
         
         if(_self.counter) {
             this.jq.on('keyup.inputtextarea-counter', function(e) {
@@ -92,7 +92,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     updateCounter: function() {
-        var value = this.normalizeNewlines(this.jq.val());
+        var value = this.normalizeNewlines(this.jq.val()),
         length = value.length;
 
         if(this.counter) {
@@ -107,7 +107,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
-   normalizeNewlines: function(text) {
+    normalizeNewlines: function(text) {
         return text.replace(/(\r\n|\r|\n)/g, '\r\n');
     },
 
