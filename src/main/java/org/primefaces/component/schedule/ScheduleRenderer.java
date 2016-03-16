@@ -132,7 +132,8 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("defaultView", schedule.getView())
             .attr("locale", schedule.calculateLocale(context).toString())
             .attr("tooltip", schedule.isTooltip(), false)
-            .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false);
+            .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false)
+            .attr("lazyFetching", false);
         
         Object initialDate = schedule.getInitialDate();
         if(initialDate != null) {
