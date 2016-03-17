@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
@@ -36,7 +37,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.component.columns.Columns;
+import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.SharedStringBuilder;
@@ -786,6 +789,14 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if(rowKey == null)
             return false;
         
+		// Patch for nodeType support!
+        TreeNode rowNode = this.getRowNode();
+        String treeNodeType = null;
+        if(rowNode!=null) {
+        	treeNodeType = rowNode.getType();
+        }
+		// Patch for nodeType support!
+        
         if(getChildCount() > 0) {
             for(UIComponent child : getChildren()) {
                 if(child instanceof Columns) {
@@ -803,6 +814,13 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                     uicolumns.setRowIndex(-1);
                 }
                 else if(child instanceof UIColumn) {
+					// Patch for nodeType support!
+					if (child instanceof UITreeNode) {
+						UITreeNode uiTreeNode = (UITreeNode) child;
+						if (treeNodeType!=null && !treeNodeType.equals(uiTreeNode.getType()))
+							continue;
+					}
+					// Patch for nodeType support!
                     if(child.visitTree(context, callback)) {
                         return true;
                     }
