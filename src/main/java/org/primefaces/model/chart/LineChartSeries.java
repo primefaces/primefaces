@@ -25,6 +25,7 @@ public class LineChartSeries extends ChartSeries {
     private boolean showMarker = true;
     private boolean fill = false;
     private double fillAlpha = 1;
+	private boolean smoothLine = false;
     private boolean disableStack;
 
     public LineChartSeries() {}
@@ -80,6 +81,15 @@ public class LineChartSeries extends ChartSeries {
     public void setDisableStack(boolean disableStack) {
         this.disableStack = disableStack;
     }
+	
+	public boolean isSmoothLine() {
+        return smoothLine;
+    }
+
+    public void setSmoothLine(boolean smoothLine) {
+        this.smoothLine = smoothLine;
+    }
+    
 
     @Override
     public String getRenderer() {
@@ -107,7 +117,9 @@ public class LineChartSeries extends ChartSeries {
 
         writer.write(",showLine:" + this.isShowLine());
         writer.write(",markerOptions:{show:" + this.isShowMarker()+ ", style:'" + this.getMarkerStyle() + "'}");
-
+        if(showLine){
+            writer.write(",rendererOptions:{smooth: true }");
+        }
         writer.write("}");
     }
 
