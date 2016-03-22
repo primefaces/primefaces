@@ -102,7 +102,7 @@ PrimeFaces.ajax = {
 
             $.ajaxSetup()['cache'] = cache;
         },
-        
+
         updateBody: function(content) {
             var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
             var bodyStartIndex = content.indexOf(bodyStartTag) + bodyStartTag.length;
@@ -327,7 +327,7 @@ PrimeFaces.ajax = {
             if (cfg.ignoreAutoUpdate) {
                 PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, true, parameterNamespace);
             }
-            
+
             //skip children
             if (cfg.skipChildren === false) {
                 PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.SKIP_CHILDREN_PARAM, false, parameterNamespace);
@@ -338,7 +338,20 @@ PrimeFaces.ajax = {
             if(cfg.fragmentId) {
                 processArray.push(cfg.fragmentId);
             }
-            var processIds = processArray.length > 0 ? processArray.join(' ') : '@all';
+            // default == @none
+            var processIds = '@none';
+            // use defined process + resolved keywords (@widget, PFS)?
+            if (processArray.length > 0) {
+                processIds = processArray.join(' ');
+            }
+            // fallback to @all if no process was defined by the user
+            else {
+                var definedProcess = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'process');
+                definedProcess = $.trim(definedProcess);
+                if (definedProcess === '') {
+                    processIds = '@all';
+                }
+            }
             if (processIds !== '@none') {
                 PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_PROCESS_PARAM, processIds, parameterNamespace);
             }
@@ -514,8 +527,7 @@ PrimeFaces.ajax = {
             PrimeFaces.ajax.Queue.addXHR($.ajax(xhrOptions));
         },
 
-        resolveComponentsForAjaxCall: function(cfg, type) {
-
+        resolveExpressionsForAjaxCall: function(cfg, type) {
             var expressions = '';
 
             if (cfg[type]) {
@@ -526,6 +538,11 @@ PrimeFaces.ajax = {
                 expressions += " " + cfg.ext[type];
             }
 
+            return expressions;
+        },
+
+        resolveComponentsForAjaxCall: function(cfg, type) {
+            var expressions = PrimeFaces.ajax.Request.resolveExpressionsForAjaxCall(cfg, type);
             return PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(expressions);
         },
 
