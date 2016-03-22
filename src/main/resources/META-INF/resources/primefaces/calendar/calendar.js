@@ -96,6 +96,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
             PrimeFaces.skinButton(triggerButton);
             $('#ui-datepicker-div').addClass('ui-shadow');
+            this.jq.addClass('ui-trigger-calendar');
         }
 
         //mark target and descandants of target as a trigger for a primefaces overlay

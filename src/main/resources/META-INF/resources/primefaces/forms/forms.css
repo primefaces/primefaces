@@ -638,6 +638,24 @@ div.ui-button, .ui-splitbutton {
     width: 100%;
 }
 
+.ui-fluid .ui-calendar {
+    position: relative;
+}
+
+.ui-fluid .ui-trigger-calendar .ui-datepicker-trigger.ui-button {
+    position: absolute;
+    right: -2px;
+    width: 2.4em;
+}
+
+.ui-fluid .ui-trigger-calendar .ui-button-icon-only .ui-button-text {
+    padding: 0.28em;
+}
+
+.ui-fluid .ui-trigger-calendar input.hasDatepicker {
+    padding-right: 2.4em;
+}
+
 /** Spinner **/
 .ui-fluid .ui-spinner {
     width: 100%;
