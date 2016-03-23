@@ -22,8 +22,11 @@ import javax.faces.component.UIPanel;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.Behavior;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.UITree;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.treetable.TreeTable;
 
 public class CellEditEvent extends AbstractAjaxBehaviorEvent {
 
@@ -47,6 +50,13 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
     public CellEditEvent(UIComponent component, Behavior behavior, int rowIndex, UIColumn column, String rowKey) {
         this(component, behavior, rowIndex, column);
         this.rowKey = rowKey;
+    }
+    
+    public CellEditEvent(UIComponent component, Behavior behavior, UIColumn column, String rowKey) {
+        super(component, behavior);
+        this.rowKey = rowKey;
+        this.column = column;
+        this.oldValue = resolveValue();
     }
     
     public Object getOldValue() {
@@ -73,8 +83,15 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
     }
 
     private Object resolveValue() {
-        DataTable data = (DataTable) source;
-        data.setRowModel(rowIndex);
+        if(source instanceof UIData) {
+            DataTable data = (DataTable) source;
+            data.setRowModel(rowIndex);
+        }
+        else if(source instanceof UITree) {
+            TreeTable data = (TreeTable) source;
+            data.setRowKey(rowKey);
+        }
+        
         Object value = null;
         
         for(UIComponent child : column.getChildren()) {

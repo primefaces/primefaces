@@ -28,6 +28,8 @@ import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
@@ -60,7 +62,11 @@ import org.primefaces.util.ComponentUtils;
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
     public static final String REFLOW_CLASS = "ui-treetable-reflow";
     
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize", "sort"));
+    public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
+    public static final String EDITING_ROW_CLASS = "ui-row-editing";
+ 
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize", "sort",
+                                                        "rowEdit", "rowEditInit", "rowEditCancel", "cellEdit"));
 
     private List<String> selectedRowKeys = new ArrayList<String>();
 
@@ -80,6 +86,14 @@ import org.primefaces.util.ComponentUtils;
     public boolean isSortRequest(FacesContext context) {
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_sorting");
 	}
+
+    public boolean isRowEditRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEditAction");
+    }
+
+    public boolean isCellEditRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellInfo");
+    }
 
     @Override
     public void queueEvent(FacesEvent event) {
@@ -138,6 +152,33 @@ import org.primefaces.util.ComponentUtils;
                 UIColumn sortColumn = findColumn(params.get(clientId + "_sortKey"));
                 
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order, 0);
+            }
+            else if(eventName.equals("rowEdit")||eventName.equals("rowEditCancel")||eventName.equals("rowEditInit")) {
+                String nodeKey = params.get(clientId + "_rowEditIndex");
+                this.setRowKey(nodeKey);
+                wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            }
+            else if(eventName.equals("cellEdit")) {
+                String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
+                String rowKey = cellInfo[0];
+                int cellIndex = Integer.parseInt(cellInfo[1]);
+                int i = -1;
+                UIColumn column = null;
+             
+                for(UIColumn col : this.getColumns()) {
+                    if(col.isRendered()) {
+                        i++;
+                        
+                        if(i == cellIndex) {
+                            column = col;
+                            break;
+                        }
+                    }
+                }
+
+                wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), column, rowKey);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             
             super.queueEvent(wrapperEvent);

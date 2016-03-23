@@ -214,6 +214,33 @@
             <defaultValue>false</defaultValue>
             <description>Sticky header stays in window viewport during scrolling.</description>
 		</attribute>
+        <attribute>
+			<name>editable</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Controls incell editing.</description>
+		</attribute>
+        <attribute>
+			<name>editMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>row</defaultValue>
+            <description>Defines edit mode, valid values are "row" (default) and "cell".</description>
+		</attribute>
+        <attribute>
+			<name>editingRow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if cell editors of row should be displayed as editable or not. Default is false meaning display mode.</description>
+		</attribute>
+        <attribute>
+			<name>cellSeparator</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Separator text to use in output mode of editable cells with multiple components.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
