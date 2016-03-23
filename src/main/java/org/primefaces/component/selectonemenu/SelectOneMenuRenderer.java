@@ -280,7 +280,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             } 
             else {
                 for(Column column : columns) {
+                    String style = column.getStyle();
+                    String styleClass = column.getStyleClass();
+                    
                     writer.startElement("td", null);
+                    if(style != null) writer.writeAttribute("style", style, null);
+                    if(styleClass != null) writer.writeAttribute("class", styleClass, null);
+                    
                     renderChildren(context, column);
                     writer.endElement("td");
                 }
