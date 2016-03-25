@@ -250,7 +250,7 @@
 			<name>schedule/schedule.css</name>
 		</resource>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>moment/moment.js</name>
@@ -262,7 +262,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
 		<resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+        <resource>
+			<name>components.js</name>
 		</resource>
         <resource>
 			<name>schedule/schedule.js</name>

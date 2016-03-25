@@ -27,7 +27,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
 	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
 	@ResourceDependency(library="primefaces", name="printer/printer.js"),
-    @ResourceDependency(library="primefaces", name="primefaces.js")
+    @ResourceDependency(library="primefaces", name="core.js")
 })
 public class PrinterBehavior extends ClientBehaviorBase {
     

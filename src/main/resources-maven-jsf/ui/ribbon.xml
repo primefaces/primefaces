@@ -45,7 +45,7 @@
 	</attributes>
 	<resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
         <resource>
 			<name>ribbon/ribbon.css</name>
@@ -57,7 +57,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
 		<resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
 		</resource>
         <resource>
 			<name>ribbon/ribbon.js</name>

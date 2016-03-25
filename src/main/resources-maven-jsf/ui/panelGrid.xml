@@ -59,7 +59,7 @@
 	</attributes>
 	<resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 	</resources>
 </component>

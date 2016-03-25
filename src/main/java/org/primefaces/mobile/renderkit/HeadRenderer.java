@@ -83,7 +83,8 @@ public class HeadRenderer extends Renderer {
         writer.endElement("script");
 
         renderJS(context, "mobile/jquery-mobile.js", "primefaces");
-        renderJS(context, "primefaces-mobile.js", "primefaces");
+        renderJS(context, "core.js", "primefaces");
+        renderJS(context, "components-mobile.js", "primefaces");
 
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();

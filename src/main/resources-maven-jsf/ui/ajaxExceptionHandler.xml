@@ -37,7 +37,10 @@
             <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>primefaces.js</name>
+            <name>core.js</name>
         </resource>
+		<resource>
+			<name>components.js</name>
+		</resource>
     </resources>
 </component>
