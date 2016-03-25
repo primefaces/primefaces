@@ -184,13 +184,17 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function(index) {
-        var panel = this.panels.eq(index),
+        var $this = this,
+        panel = this.panels.eq(index),
         header = panel.prev();
 
         header.attr('aria-selected', false);
         header.attr('aria-expanded', false).children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
         header.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all');
-        panel.attr('aria-hidden', true).slideUp();
+        panel.attr('aria-hidden', true).slideUp(function(){
+            if($this.cfg.onTabClose)
+                $this.cfg.onTabClose.call($this, panel);
+        });
 
         this.removeFromSelection(index);
         this.saveState();
