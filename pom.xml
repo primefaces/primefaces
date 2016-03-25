@@ -405,6 +405,9 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
+                                
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -413,7 +416,6 @@
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.dialog.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/accordion/accordion.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/autocomplete/autocomplete.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/blockui/blockui.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/calendar/calendar.js</include>
@@ -436,7 +438,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/orderlist/orderlist.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/outputpanel/outputpanel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/overlaypanel/overlaypanel.js</include>
