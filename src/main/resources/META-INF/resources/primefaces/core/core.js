@@ -339,13 +339,13 @@
                 name = name.substring(1, name.length);
             }
             
-            var scriptURI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
+            var scriptURI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/core.js"]').attr('src');
             // portlet
             if (!scriptURI) {
-                scriptURI = $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
+                scriptURI = $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=core.js"]').attr('src');
             }
 
-            scriptURI = scriptURI.replace(PrimeFaces.getCoreScriptName(), name);
+            scriptURI = scriptURI.replace('core.js', name);
             scriptURI = scriptURI.replace('ln=primefaces', 'ln=' + library);
 
             if (version) {
@@ -355,10 +355,6 @@
 
             var prefix = window.location.protocol + '//' + window.location.host;
             return scriptURI.indexOf(prefix) >= 0 ? scriptURI : prefix + scriptURI;
-        },
-
-        getCoreScriptName: function() {
-            return 'primefaces.js';
         },
 
         inArray: function(arr, item) {
