@@ -75,9 +75,6 @@
         <resource>
 			<name>core.js</name>
 		</resource>
-		<resource>
-			<name>components.js</name>
-		</resource>
         <resource>
 			<name>keyfilter/keyfilter.js</name>
 		</resource>
