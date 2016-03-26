@@ -1314,3 +1314,8 @@ a {
 .aui .ui-tabs .ui-state-default a {
 	color: #4f4f4f;
 }
+
+/*ImageCropper*/
+.aui .jcrop-holder img {
+	max-width: none;
+}
