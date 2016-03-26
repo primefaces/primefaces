@@ -72,7 +72,7 @@ public class GraphicImageRenderer extends CoreRenderer {
             }
         }
         else {
-            return DynamicResourceBuilder.build(context, image.getValue(), image, image.isCache(), DynamicContentType.STREAMED_CONTENT);
+            return DynamicResourceBuilder.build(context, image.getValue(), image, image.isCache(), DynamicContentType.STREAMED_CONTENT, image.isStream());
         }
 	}
 }

@@ -15,16 +15,20 @@
  */
 package org.primefaces.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
+import javax.xml.bind.DatatypeConverter;
 import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
@@ -33,7 +37,7 @@ public class DynamicResourceBuilder {
     
     private static final String SB_BUILD = DynamicResourceBuilder.class.getName() + "#build";
     
-    public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type)
+    public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type, boolean stream)
             throws UnsupportedEncodingException {
         
         String src = null;
@@ -46,39 +50,47 @@ public class DynamicResourceBuilder {
         }
         else if (value instanceof StreamedContent) {
             StreamedContent streamedContent = (StreamedContent) value;
-            Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
-            String resourcePath = resource.getRequestPath();
 
-            ValueExpression expression = ValueExpressionAnalyzer.getExpression(context.getELContext(), component.getValueExpression("value"));
-            String sessionKey = UUID.randomUUID().toString();
-            Map<String,Object> session = context.getExternalContext().getSessionMap();
-            Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
-            if(dynamicResourcesMapping == null) {
-                dynamicResourcesMapping = new HashMap<String, String>();
-                session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
-            }
-            dynamicResourcesMapping.put(sessionKey, expression.getExpressionString());
-            StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
+            if (stream) {
+                Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
+                String resourcePath = resource.getRequestPath();
 
-            builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(sessionKey, "UTF-8"))
-                    .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
+                ValueExpression expression = ValueExpressionAnalyzer.getExpression(context.getELContext(), component.getValueExpression("value"));
+                String sessionKey = UUID.randomUUID().toString();
+                Map<String,Object> session = context.getExternalContext().getSessionMap();
+                Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+                if(dynamicResourcesMapping == null) {
+                    dynamicResourcesMapping = new HashMap<String, String>();
+                    session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
+                }
+                dynamicResourcesMapping.put(sessionKey, expression.getExpressionString());
+                StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
 
-            for (UIComponent kid : component.getChildren()) {
-                if (kid instanceof UIParameter) {
-                    UIParameter param = (UIParameter) kid;
-                    if (!param.isDisable()) {
-                        Object paramValue = param.getValue();
+                builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(sessionKey, "UTF-8"))
+                        .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
 
-                        builder.append("&").append(param.getName()).append("=");
+                for (UIComponent kid : component.getChildren()) {
+                    if (kid instanceof UIParameter) {
+                        UIParameter param = (UIParameter) kid;
+                        if (!param.isDisable()) {
+                            Object paramValue = param.getValue();
 
-                        if (paramValue != null) {
-                            builder.append(URLEncoder.encode(paramValue.toString(), "UTF-8"));
+                            builder.append("&").append(param.getName()).append("=");
+
+                            if (paramValue != null) {
+                                builder.append(URLEncoder.encode(paramValue.toString(), "UTF-8"));
+                            }
                         }
                     }
                 }
-            }
 
-            src = builder.toString();
+                src = builder.toString();
+            }
+            else {
+                byte[] bytes = toByteArray(streamedContent.getStream());
+                String base64 = DatatypeConverter.printBase64Binary(bytes);
+                return "data:" + streamedContent.getContentType() + ";base64," + base64;
+            }
         }
 
         if (src != null) {
@@ -91,5 +103,25 @@ public class DynamicResourceBuilder {
         }
 
         return context.getExternalContext().encodeResourceURL(src);
+    }
+    
+    public static byte[] toByteArray(InputStream stream) {
+        try {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+            int nRead;
+            byte[] data = new byte[16384];
+
+            while ((nRead = stream.read(data, 0, data.length)) != -1) {
+              buffer.write(data, 0, nRead);
+            }
+
+            buffer.flush();
+
+            return buffer.toByteArray();
+        }
+        catch (Exception e) {
+            throw new FacesException("Could not read InputStream to byte[]", e);
+        }
     }
 }
