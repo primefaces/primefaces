@@ -136,6 +136,7 @@ public class ImageCropperRenderer extends CoreRenderer {
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         String coords = (String) submittedValue;
+        
         if(isValueBlank(coords)) {
             return null;
         }
@@ -156,21 +157,20 @@ public class ImageCropperRenderer extends CoreRenderer {
         try {
 
             if (resource != null && !"RES_NOT_FOUND".equals(resource.toString())) {
-
                 inputStream = resource.getInputStream();
                 contentType = resource.getContentType();
-            } else {
+            }
+            else {
 
                 boolean isExternal = imagePath.startsWith("http");
 
                 if (isExternal) {
-
                     URL url = new URL(imagePath);
                     URLConnection urlConnection = url.openConnection();
                     inputStream = urlConnection.getInputStream();
                     contentType = urlConnection.getContentType();
-                } else {
-
+                }
+                else {
                     ExternalContext externalContext = context.getExternalContext();
                     File file = new File(externalContext.getRealPath("") + imagePath);
                     inputStream = new FileInputStream(file);
@@ -185,17 +185,17 @@ public class ImageCropperRenderer extends CoreRenderer {
             ImageIO.write(cropped, format, croppedOutImage);
             
             return new CroppedImage(cropper.getImage(), croppedOutImage.toByteArray(), x, y, w, h);
-
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new ConverterException(e);
         }
     }
 
-    /*
-        Attempt to obtain the resource from the server by parsing the valueExpression of the image attribute. Returns null
-        if the valueExpression is not of the form #{resource['path/to/resource']} or #{resource['library:name']}. Otherwise
-        returns the value obtained by ResourceHandler.createResource().
-    */
+    /**
+     * Attempt to obtain the resource from the server by parsing the valueExpression of the image attribute. Returns null
+     * if the valueExpression is not of the form #{resource['path/to/resource']} or #{resource['library:name']}. Otherwise
+     * returns the value obtained by ResourceHandler.createResource().
+     */
     private Resource getImageResource(FacesContext facesContext, ImageCropper imageCropper) {
 
         Resource resource = null;
@@ -213,21 +213,21 @@ public class ImageCropperRenderer extends CoreRenderer {
                 String[] resourceInfo = imageValueExpressionString.split(":");
 
                 if (resourceInfo.length == 2) {
-
                     resourceLibrary = resourceInfo[0];
                     resourceName = resourceInfo[1];
-                } else {
+                }
+                else {
                     resourceName = resourceInfo[0];
                 }
 
                 if (resourceName != null) {
-
                     Application application = facesContext.getApplication();
                     ResourceHandler resourceHandler = application.getResourceHandler();
 
                     if (resourceLibrary != null) {
                         resource = resourceHandler.createResource(resourceName, resourceLibrary);
-                    } else {
+                    }
+                    else {
                         resource = resourceHandler.createResource(resourceName);
                     }
                 }
@@ -237,9 +237,9 @@ public class ImageCropperRenderer extends CoreRenderer {
         return resource;
     }
 
-    /*
-        Attempt to obtain the image format used to write the image from the contentType or the image's file extension.
-    */
+    /**
+     * Attempt to obtain the image format used to write the image from the contentType or the image's file extension.
+     */
     private String guessImageFormat(String contentType, String imagePath) throws IOException {
 
         String format = "png";
@@ -250,11 +250,11 @@ public class ImageCropperRenderer extends CoreRenderer {
 
         if (contentType != null) {
             format = contentType.replaceFirst("^image/([^;]+)[;]?.*$", "$1");
-        } else {
-
+        }
+        else {
             int queryStringIndex = imagePath.indexOf('?');
 
-            if(queryStringIndex != -1 ) {
+            if (queryStringIndex != -1 ) {
                 imagePath = imagePath.substring(0, queryStringIndex);
             }
 
