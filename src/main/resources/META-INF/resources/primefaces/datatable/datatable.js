@@ -1939,7 +1939,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         
             $(document).off('click.datatable-cell-blur' + this.id)
                         .on('click.datatable-cell-blur' + this.id, function(e) {                            
-                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick) {
+                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing) {
                                 $this.saveCell($this.currentCell);
                             }
                             
