@@ -120,7 +120,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         
         wb.attr("multiple", multiple, false)
         .callback("onTabChange", "function(panel)", acco.getOnTabChange())
-        .callback("onTabShow", "function(panel)", acco.getOnTabShow());
+        .callback("onTabShow", "function(panel)", acco.getOnTabShow())
+        .callback("onTabClose", "function(panel)", acco.getOnTabClose());
         
         if(acco.getTabController() != null) {
             wb.attr("controlled", true);
