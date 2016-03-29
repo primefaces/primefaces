@@ -62,6 +62,12 @@
             <description>Client side callback to execute when a tab is shown.</description>
         </attribute>
         <attribute>
+            <name>onTabClose</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when a tab is closed.</description>
+        </attribute>
+        <attribute>
             <name>dynamic</name>
             <required>false</required>
             <type>java.lang.Boolean</type>

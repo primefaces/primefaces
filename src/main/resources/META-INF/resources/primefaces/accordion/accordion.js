@@ -169,7 +169,11 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             var oldHeader = this.headers.filter('.ui-state-active');
             oldHeader.children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
             oldHeader.attr('aria-selected', false);
-            oldHeader.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all').next().attr('aria-hidden', true).slideUp();
+            oldHeader.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all')
+                .next().attr('aria-hidden', true).slideUp(function(){
+                    if(_self.cfg.onTabClose)
+                        _self.cfg.onTabClose.call(_self, panel);
+                });
         }
 
         //activate selected
@@ -184,13 +188,17 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function(index) {
-        var panel = this.panels.eq(index),
+        var _self = this,
+        panel = this.panels.eq(index),
         header = panel.prev();
 
         header.attr('aria-selected', false);
         header.attr('aria-expanded', false).children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
         header.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all');
-        panel.attr('aria-hidden', true).slideUp();
+        panel.attr('aria-hidden', true).slideUp(function(){
+            if(_self.cfg.onTabClose)
+                _self.cfg.onTabClose.call(_self, panel);
+        });
 
         this.removeFromSelection(index);
         this.saveState();
