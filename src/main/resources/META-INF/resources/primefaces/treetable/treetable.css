@@ -235,8 +235,13 @@
     display: inline-block;
 }
 
-.ui-treetable .ui-datatable-data tr.ui-row-editing td.ui-editable-column,
-.ui-treetable .ui-datatable-data td.ui-cell-editing {
+.ui-treetable .ui-treetable-data tr.ui-row-editing td.ui-editable-column,
+.ui-treetable .ui-treetable-data td.ui-cell-editing {
     padding:0;
     margin:0;
+}
+
+.ui-treetable .ui-treetable-data tr.ui-row-editing td.ui-editable-column:first-child,
+.ui-treetable .ui-treetable-data td.ui-cell-editing:first-child {
+    padding-left: 10px;
 } 
