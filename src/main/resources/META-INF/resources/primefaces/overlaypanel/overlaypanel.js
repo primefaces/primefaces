@@ -109,6 +109,12 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             .on('click.ui-overlaypanel', function(e) {
                 $this.hide();
                 e.preventDefault();
+            })
+            .on('focus.ui-overlaypanel', function() {
+                $(this).addClass('ui-state-focus');
+            })
+            .on('blur.ui-overlaypanel', function() {
+                $(this).removeClass('ui-state-focus');
             });
         }
         
@@ -306,6 +312,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay ui-overlaypanel-mask"></div>')
                         .children(this.jqId + '_modal').css('z-index' , this.jq.css('z-index') - 1);
         
+        this.blockEvents = 'focus.' + this.id + ' mousedown.' + this.id + ' mouseup.' + this.id;
         if(this.targetElement) {
             this.targetElement.css('z-index', this.jq.css('z-index'));
         }
