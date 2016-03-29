@@ -116,6 +116,13 @@
             <defaultValue>false</defaultValue>
             <description>Displays a close icon to hide the overlay, default is false.</description>
 		</attribute>
+        <attribute>
+            <name>modal</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document. Default is false.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
