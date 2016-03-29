@@ -25,6 +25,12 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             this.jq = $(this.jqId);
         }
         
+        //remove related modality if there is one
+        var modal = $(this.jqId + '_modal');
+        if(modal.length > 0) {
+            modal.remove();
+        }
+        
         if(this.cfg.appendToBody) {
             this.jq.appendTo(document.body);
         }
@@ -103,11 +109,17 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             .on('click.ui-overlaypanel', function(e) {
                 $this.hide();
                 e.preventDefault();
+            })
+            .on('focus.ui-overlaypanel', function() {
+                $(this).addClass('ui-state-focus');
+            })
+            .on('blur.ui-overlaypanel', function() {
+                $(this).removeClass('ui-state-focus');
             });
         }
         
         //hide overlay when mousedown is at outside of overlay
-        if(this.cfg.dismissable) {
+        if(this.cfg.dismissable && !this.cfg.modal) {
             var hideNS = 'mousedown.' + this.id;
             $(document.body).off(hideNS).on(hideNS, function (e) {
                 if($this.jq.hasClass('ui-overlay-hidden')) {
@@ -158,7 +170,11 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     _show: function(target) {
-        var $this = this;
+        var $this = this,
+            targetId = target||this.cfg.target;
+    
+        this.targetElement = $(document.getElementById(targetId));
+        this.targetZindex = this.targetElement.zIndex();
 
         this.align(target);
 
@@ -176,6 +192,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         else {
             this.jq.show();
             this.postShow();
+        }
+        
+        if(this.cfg.modal) {
+            this.enableModality();
         }
     },
     
@@ -199,11 +219,17 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.hideEffect) {
             this.jq.hide(this.cfg.hideEffect, {}, 200, function() {
+                if($this.cfg.modal) {
+                    $this.disableModality();
+                }
                 $this.postHide();
             });
         }
         else {
             this.jq.hide();
+            if($this.cfg.modal) {
+                $this.disableModality();
+            }
             this.postHide();
         }
     },
@@ -276,6 +302,88 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     
     applyFocus: function() {
         this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').focus();
+    },
+    
+    enableModality: function() {
+        var $this = this,
+        doc = $(document);
+
+        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay ui-overlaypanel-mask"></div>')
+                        .children(this.jqId + '_modal').css('z-index' , this.jq.css('z-index') - 1);
+        
+        this.blockEvents = 'focus.' + this.id + ' mousedown.' + this.id + ' mouseup.' + this.id;
+        if(this.targetElement) {
+            this.targetElement.css('z-index', this.jq.css('z-index'));
+        }
+        
+        //Disable tabbing out of modal overlaypanel and stop events from targets outside of overlaypanel
+        doc.on('keydown.' + this.id,
+                function(event) {
+                    var target = $(event.target);
+
+                    if(event.keyCode === $.ui.keyCode.TAB) {  
+                        var tabbables = $this.getTabbables();
+
+                        if(tabbables.length) {
+                            var first = tabbables.filter(':first'),
+                            last = tabbables.filter(':last'),
+                            focusingRadioItem = null;
+
+                            if(first.is(':radio')) {
+                                focusingRadioItem = tabbables.filter('[name="' + first.attr('name') + '"]').filter(':checked');
+                                if(focusingRadioItem.length > 0) {
+                                    first = focusingRadioItem;
+                                }
+                            }
+
+                            if(last.is(':radio')) {
+                                focusingRadioItem = tabbables.filter('[name="' + last.attr('name') + '"]').filter(':checked');
+                                if(focusingRadioItem.length > 0) {
+                                    last = focusingRadioItem;
+                                }
+                            }
+
+                            if(target.is(document.body)) {
+                                first.focus(1);
+                                event.preventDefault();
+                            }
+                            else if(event.target === last[0] && !event.shiftKey) {
+                                first.focus(1);
+                                event.preventDefault();
+                            }
+                            else if (event.target === first[0] && event.shiftKey) {
+                                last.focus(1);
+                                event.preventDefault();
+                            }
+                        }
+                    }
+                    else if(!target.is(document.body) && (target.zIndex() < $this.jq.zIndex())) {
+                        event.preventDefault();
+                    }
+                })
+                .on(this.blockEvents, function(event) {
+                    if ($(event.target).zIndex() < $this.jq.zIndex()) {
+                        event.preventDefault();
+                    }
+                });
+    },
+
+    disableModality: function(){
+        if(this.targetElement) {
+            this.targetElement.css('z-index', this.targetZindex);
+        }
+        
+        $(document.body).children(this.jqId + '_modal').remove();
+        $(document).off(this.blockEvents).off('keydown.' + this.id);
+    },
+    
+    getTabbables: function(){
+        var tabbableTarget;
+        if(this.targetElement && this.targetElement.is(':tabbable')) {
+            tabbableTarget = this.targetElement;
+        }
+        
+        return this.jq.find(':tabbable').add(tabbableTarget);
     }
 
 });
