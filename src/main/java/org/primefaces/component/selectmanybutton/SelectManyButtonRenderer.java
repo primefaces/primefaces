@@ -121,7 +121,6 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         //button
         writer.startElement("div", null);
 		writer.writeAttribute("class", buttonStyle, null);
-        writer.writeAttribute("tabindex", button.getTabindex(), null);
         if(option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
               
         //input
