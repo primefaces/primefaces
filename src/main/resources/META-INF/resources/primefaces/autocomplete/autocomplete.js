@@ -553,6 +553,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                     item.html(highlighedText);
                 });
+            } else if(this.panel.children().find('td').length > 0) {
+                this.panel.children().find('tr').each(function() {
+                    $(this).find('.ui-autocomplete-item').each(function() {
+                        if (this.childElementCount == 0) {
+                            var item = $(this),
+                            text = item.html(),
+                            re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
+                            highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
+
+                            item.html(highlighedText);
+                        }
+                    });
+                });
             }
 
             if(this.cfg.forceSelection) {
