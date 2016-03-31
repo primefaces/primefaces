@@ -1314,7 +1314,7 @@ public class DataTableRenderer extends DataRenderer {
             return false;
         
         Object nextGroupByData = groupByVE.getValue(eLContext);
-        if(currentGroupByData != null && nextGroupByData.equals(currentGroupByData)) {
+        if(nextGroupByData != null && nextGroupByData.equals(currentGroupByData)) {
             return true;
         }
         
