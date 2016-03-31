@@ -3519,6 +3519,9 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
     },
 
     disconnect: function () {
+        // reset url and ignore appended uniquePath
+        this.cfg.request.url = this.cfg.url;
+
         this.connection.close();
     },
 
