@@ -1008,7 +1008,14 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         var _self = this;
         
         //hide menu on item click
-        this.links.bind('click', function() {
+        this.links.bind('click', function(e) {
+            var target = $(e.target),
+                submenuLink = target.hasClass('ui-submenu-link') ? target : target.closest('.ui-submenu-link');
+                
+            if(submenuLink.length) {
+                return;
+            }
+            
             _self.hide();
         });
     },
@@ -1019,7 +1026,10 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         
         //hide overlay when document is clicked
         $(document.body).off(clickNS).on(clickNS, function(e) {
-            if($this.jq.is(":hidden")) {
+            var target = $(e.target),
+                link = target.hasClass('ui-menuitem-link') ? target : target.closest('.ui-menuitem-link');
+            
+            if($this.jq.is(":hidden") || link.is('.ui-menuitem-link,.ui-state-disabled')) {
                 return;
             }
                         
