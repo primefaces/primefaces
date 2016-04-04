@@ -136,7 +136,7 @@ public class InputSwitchRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, InputSwitch inputSwitch) throws IOException {
         String clientId = inputSwitch.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputSwitch", inputSwitch.resolveWidgetVar(), clientId, "inputswitch").finish();
+        wb.init("InputSwitch", inputSwitch.resolveWidgetVar(), clientId).finish();
     }
     
     protected boolean isChecked(String value) {

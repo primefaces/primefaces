@@ -108,9 +108,9 @@ public class GalleriaRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         
         if (context.isPostback()) {
-        	wb.initWithDomReady("Galleria", galleria.resolveWidgetVar(), clientId, "galleria");
+        	wb.initWithDomReady("Galleria", galleria.resolveWidgetVar(), clientId);
         } else {
-        	wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(), clientId, "galleria");
+        	wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(), clientId);
         }
 
         wb.attr("showFilmstrip", galleria.isShowFilmstrip(), true)

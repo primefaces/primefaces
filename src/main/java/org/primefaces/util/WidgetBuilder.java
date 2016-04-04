@@ -25,7 +25,6 @@ import javax.faces.context.FacesContext;
 public class WidgetBuilder {
 
     protected boolean endFunction = false;
-    protected String resourcePath = null;
     protected FacesContext context;
         
     public WidgetBuilder(FacesContext context) {
@@ -40,8 +39,7 @@ public class WidgetBuilder {
      * @param onload        Flag to define if widget should be created on document load
      * @throws IOException 
      */
-    protected WidgetBuilder init(String widgetClass, String widgetVar, String id, String resourcePath, boolean endFunction) throws IOException {
-    	this.resourcePath = resourcePath;
+    protected WidgetBuilder init(String widgetClass, String widgetVar, String id, boolean endFunction) throws IOException {
     	this.endFunction = endFunction;
     	
         context.getResponseWriter().write("PrimeFaces.cw(\"");
@@ -58,14 +56,7 @@ public class WidgetBuilder {
 
     public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
     	this.renderScriptBlock(id);
-    	this.init(widgetClass, widgetVar, id, null, false);
-        
-        return this;
-    }
-    
-    public WidgetBuilder init(String widgetClass, String widgetVar, String id, String resourcePath) throws IOException {
-    	this.renderScriptBlock(id);
-    	this.init(widgetClass, widgetVar, id, resourcePath, false);
+    	this.init(widgetClass, widgetVar, id,  false);
         
         return this;
     }
@@ -74,16 +65,7 @@ public class WidgetBuilder {
 
     	this.renderScriptBlock(id);
     	context.getResponseWriter().write("$(function(){");
-    	this.init(widgetClass, widgetVar, id, null, true);
-        
-        return this;
-    }
-    
-    public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id, String resourcePath) throws IOException {
-
-    	this.renderScriptBlock(id);
-    	context.getResponseWriter().write("$(function(){");
-    	this.init(widgetClass, widgetVar, id, resourcePath, true);
+    	this.init(widgetClass, widgetVar, id, true);
         
         return this;
     }
@@ -92,16 +74,7 @@ public class WidgetBuilder {
     	
     	this.renderScriptBlock(id);
     	context.getResponseWriter().write("$(window).load(function(){");
-    	this.init(widgetClass, widgetVar, id, null, true);
-        
-        return this;
-    }
-
-    public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id, String resourcePath) throws IOException {
-    	
-    	this.renderScriptBlock(id);
-    	context.getResponseWriter().write("$(window).load(function(){");
-    	this.init(widgetClass, widgetVar, id, resourcePath, true);
+    	this.init(widgetClass, widgetVar, id, true);
         
         return this;
     }
@@ -110,16 +83,7 @@ public class WidgetBuilder {
     	
     	this.renderScriptBlock(id);
     	context.getResponseWriter().write("$(PrimeFaces.escapeClientId(\"" + targetId + "\")).load(function(){");
-    	this.init(widgetClass, widgetVar, id, null, true);
-        
-        return this;
-    }
-    
-    public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId, String resourcePath) throws IOException {
-    	
-    	this.renderScriptBlock(id);
-    	context.getResponseWriter().write("$(PrimeFaces.escapeClientId(\"" + targetId + "\")).load(function(){");
-    	this.init(widgetClass, widgetVar, id, resourcePath, true);
+    	this.init(widgetClass, widgetVar, id, true);
         
         return this;
     }
@@ -290,12 +254,6 @@ public class WidgetBuilder {
     
     public void finish() throws IOException {
         context.getResponseWriter().write("}");
-        
-        if(this.resourcePath != null) {
-            context.getResponseWriter().write(",\"");
-	        context.getResponseWriter().write(this.resourcePath);
-	        context.getResponseWriter().write("\"");
-        } 
         
         context.getResponseWriter().write(");");
         

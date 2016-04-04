@@ -81,7 +81,7 @@ public class FileUploadRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (fileUpload.getMode().equals("advanced")) {
-            wb.initWithDomReady("FileUpload", fileUpload.resolveWidgetVar(), clientId, "fileupload");
+            wb.initWithDomReady("FileUpload", fileUpload.resolveWidgetVar(), clientId);
             
             wb.attr("auto", fileUpload.isAuto(), false)
                 .attr("dnd", fileUpload.isDragDropSupport(), true)

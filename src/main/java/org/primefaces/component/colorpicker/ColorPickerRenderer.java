@@ -119,7 +119,7 @@ public class ColorPickerRenderer extends CoreRenderer {
 		String clientId = colorPicker.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         
-        wb.initWithDomReady("ColorPicker", colorPicker.resolveWidgetVar(), clientId, "colorpicker")
+        wb.initWithDomReady("ColorPicker", colorPicker.resolveWidgetVar(), clientId)
             .attr("mode", colorPicker.getMode())
             .attr("color", value, null);
 

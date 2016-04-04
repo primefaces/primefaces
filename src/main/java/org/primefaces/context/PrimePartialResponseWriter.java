@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.faces.FacesException;
 import javax.faces.component.NamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;

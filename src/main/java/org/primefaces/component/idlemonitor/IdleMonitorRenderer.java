@@ -37,7 +37,7 @@ public class IdleMonitorRenderer extends CoreRenderer {
         String clientId = monitor.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("IdleMonitor", monitor.resolveWidgetVar(), clientId, "idlemonitor")
+        wb.initWithDomReady("IdleMonitor", monitor.resolveWidgetVar(), clientId)
             .attr("timeout", monitor.getTimeout())
             .callback("onidle", "function()", monitor.getOnidle())
             .callback("onactive", "function()", monitor.getOnactive());

@@ -283,11 +283,11 @@
             return this.getSelection().length > 0;
         },
 
-        cw : function(widgetConstructor, widgetVar, cfg, resource) {
-            this.createWidget(widgetConstructor, widgetVar, cfg, resource);
+        cw : function(widgetConstructor, widgetVar, cfg) {
+            this.createWidget(widgetConstructor, widgetVar, cfg);
         },
 
-        createWidget : function(widgetConstructor, widgetVar, cfg, resource) {
+        createWidget : function(widgetConstructor, widgetVar, cfg) {
             cfg.widgetVar = widgetVar;
 
             if(this.widget[widgetConstructor]) {

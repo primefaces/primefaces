@@ -36,7 +36,7 @@ public class DockRenderer extends BaseMenuRenderer {
 		String clientId = dock.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dock", dock.resolveWidgetVar(), clientId, "dock")
+        wb.init("Dock", dock.resolveWidgetVar(), clientId)
                 .attr("position", dock.getPosition())
                 .attr("maxWidth", dock.getMaxWidth())
                 .attr("itemWidth", dock.getItemWidth())

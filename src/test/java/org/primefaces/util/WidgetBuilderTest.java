@@ -102,9 +102,9 @@ public class WidgetBuilderTest {
     	CollectingResponseWriter writer = new CollectingResponseWriter();
 
         WidgetBuilder builder = new WidgetBuilder(new FacesContextMock(writer));
-        builder.init("AccordionPanel", "acco", "accoId", "accordion");
+        builder.init("AccordionPanel", "acco", "accoId");
         builder.finish();
         
-        assertEquals("<script id=\"accoId_s\" type=\"text/javascript\">PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"},\"accordion\");</script>", writer.toString());
+        assertEquals("<script id=\"accoId_s\" type=\"text/javascript\">PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});</script>", writer.toString());
     }
 }

@@ -128,7 +128,7 @@ public class ScheduleRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
 		String clientId = schedule.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Schedule", schedule.resolveWidgetVar(), clientId, "schedule")
+        wb.initWithDomReady("Schedule", schedule.resolveWidgetVar(), clientId)
             .attr("defaultView", schedule.getView())
             .attr("locale", schedule.calculateLocale(context).toString())
             .attr("tooltip", schedule.isTooltip(), false)

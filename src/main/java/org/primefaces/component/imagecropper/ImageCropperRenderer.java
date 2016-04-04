@@ -68,7 +68,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         String select = null;
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, clientId + "_image", "imagecropper")
+        wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, clientId + "_image")
             .attr("image", image);
         
         if(cropper.getMinSize() != null) 

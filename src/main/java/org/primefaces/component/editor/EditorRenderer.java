@@ -89,7 +89,7 @@ public class EditorRenderer extends CoreRenderer{
 	private void encodeScript(FacesContext context, Editor editor) throws IOException{
 		String clientId = editor.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Editor", editor.resolveWidgetVar(), clientId, "editor")
+        wb.initWithDomReady("Editor", editor.resolveWidgetVar(), clientId)
                 .attr("disabled", editor.isDisabled(), false)
                 .attr("invalid", editor.isValid(), true)
                 .attr("controls", editor.getControls(), null)

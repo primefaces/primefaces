@@ -150,7 +150,7 @@ public class DiagramRenderer extends CoreRenderer {
         String clientId = diagram.getClientId(context);
         StringBuilder sb = SharedStringBuilder.get(SB_DIAGRAM);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Diagram", diagram.resolveWidgetVar(), clientId, "diagram");
+        wb.init("Diagram", diagram.resolveWidgetVar(), clientId);
         
         DiagramModel model = (DiagramModel) diagram.getValue();
         if(model != null) {
