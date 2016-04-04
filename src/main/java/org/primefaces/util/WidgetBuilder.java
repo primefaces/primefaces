@@ -36,8 +36,9 @@ public class WidgetBuilder {
      * @param widgetClass   Constructor name of the widget
      * @param widgetVar     Name of the client side widget
      * @param id            Client id of the component
-     * @param onload        Flag to define if widget should be created on document load
-     * @throws IOException 
+     * @param endFunction   If the init script is wrapped by a method and if the endFunction parentheses should be rendered.
+     * @throws IOException
+     * @return              The current instance.
      */
     protected WidgetBuilder init(String widgetClass, String widgetVar, String id, boolean endFunction) throws IOException {
     	this.endFunction = endFunction;
