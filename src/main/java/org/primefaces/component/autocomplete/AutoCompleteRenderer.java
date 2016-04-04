@@ -28,11 +28,11 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
-
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.ComponentUtils;
@@ -334,7 +334,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         List values = (List) ac.getValue();
         List<String> stringValues = new ArrayList<String>();
         boolean disabled = ac.isDisabled();
+        String title = ac.getTitle();
         
+        String style = ac.getStyle();
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
         String listClass = disabled ? AutoComplete.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : AutoComplete.MULTIPLE_CONTAINER_CLASS;
@@ -343,8 +345,11 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if(ac.getStyle() != null) {
-            writer.writeAttribute("style", ac.getStyle(), null);
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if(title != null) {
+            writer.writeAttribute("title", title, null);
         }
         
         writer.startElement("ul", null);
