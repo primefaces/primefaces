@@ -283,23 +283,23 @@
             return this.getSelection().length > 0;
         },
 
-        cw : function(widgetConstructor, widgetVar, cfg) {
-            this.createWidget(widgetConstructor, widgetVar, cfg);
+        cw : function(widgetName, widgetVar, cfg) {
+            this.createWidget(widgetName, widgetVar, cfg);
         },
 
-        createWidget : function(widgetConstructor, widgetVar, cfg) {
+        createWidget : function(widgetName, widgetVar, cfg) {
             cfg.widgetVar = widgetVar;
 
-            if(this.widget[widgetConstructor]) {
+            if(this.widget[widgetName]) {
                 var widget = this.widgets[widgetVar];
 
                 //ajax update
-                if(widget && (widget.constructor === this.widget[widgetConstructor])) {
+                if(widget && (widget.constructor === this.widget[widgetName])) {
                     widget.refresh(cfg);
                 }
                 //page init
                 else {
-                    this.widgets[widgetVar] = new this.widget[widgetConstructor](cfg);
+                    this.widgets[widgetVar] = new this.widget[widgetName](cfg);
                     if(this.settings.legacyWidgetNamespace) {
                         window[widgetVar] = this.widgets[widgetVar];
                     }
@@ -308,7 +308,7 @@
             // widget script not loaded
             else {
                 // should be loaded by our dynamic resource handling, log a error
-                PrimeFaces.error("Widget not available: " + widgetConstructor);
+                PrimeFaces.error("Widget not available: " + widgetName);
             }
         },
 
