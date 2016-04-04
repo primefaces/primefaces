@@ -305,21 +305,10 @@
                     }
                 }
             }
-            // widget script not loaded -> lazy load script + stylesheet
+            // widget script not loaded
             else {
-                var scriptURI = this.getFacesResource(resource + '/' + resource + '.js', 'primefaces');
-                var cssURI = this.getFacesResource(resource + '/' + resource + '.css', 'primefaces');
-
-                //load css
-                var cssResource = '<link type="text/css" rel="stylesheet" href="' + cssURI + '" />';
-                $('head').append(cssResource);
-
-                //load script and initialize widget
-                this.getScript(scriptURI, function() {
-                    setTimeout(function() {
-                        PrimeFaces.widgets[widgetVar] = new PrimeFaces.widget[widgetConstructor](cfg);
-                    }, 100);
-                });
+                // should be loaded by our dynamic resource handling, log a error
+                PrimeFaces.error("Widget not available: " + widgetConstructor);
             }
         },
 
@@ -377,7 +366,8 @@
                 url: url,
                 success: callback,
                 dataType: "script",
-                cache: true
+                cache: true,
+                async: false
             });
         },
 

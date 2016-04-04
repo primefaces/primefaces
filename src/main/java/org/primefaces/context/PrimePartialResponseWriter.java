@@ -16,20 +16,25 @@
 package org.primefaces.context;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.faces.FacesException;
 import javax.faces.component.NamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.AbortProcessingException;
+import org.primefaces.application.resource.DynamicResourcesPhaseListener;
 
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
+import org.primefaces.util.CollectionUtils;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ResourceUtils;
 
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
@@ -39,11 +44,140 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     }});
 
     private final PartialResponseWriter wrapped;
+    private boolean metadataRendered = false;
 
     public PrimePartialResponseWriter(PartialResponseWriter wrapped) {
         super(wrapped);
         this.wrapped = wrapped;
     }
+
+    @Override
+    public void endError() throws IOException {
+        wrapped.endError();
+    }
+
+    @Override
+    public void endEval() throws IOException {
+        wrapped.endEval();
+    }
+
+    @Override
+    public void endExtension() throws IOException {
+        wrapped.endExtension();
+    }
+
+    @Override
+    public void endInsert() throws IOException {
+        wrapped.endInsert();
+    }
+
+    @Override
+    public void endUpdate() throws IOException {
+        wrapped.endUpdate();
+    }
+
+    @Override
+    public void endDocument() throws IOException {
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+
+        if (requestContext != null) {
+            try {
+                FacesContext context = FacesContext.getCurrentInstance();
+                if (context.isValidationFailed()) {
+                    requestContext.addCallbackParam("validationFailed", true);
+                }
+
+                encodeCallbackParams(requestContext.getCallbackParams());
+                encodeScripts(requestContext);
+            }
+            catch (Exception exception) {
+                throw new AbortProcessingException(exception);
+            }
+        }
+
+        wrapped.endDocument();
+    }
+    
+    @Override
+    public void startDocument() throws IOException {
+        wrapped.startDocument();
+    }
+
+    @Override
+    public void startError(String errorName) throws IOException {
+        startMetadataIfNecessary();
+        
+        wrapped.startError(errorName);
+    }
+
+    @Override
+    public void startEval() throws IOException {
+        startMetadataIfNecessary();
+        
+        wrapped.startEval();
+    }
+
+    @Override
+    public void startExtension(Map<String, String> attributes) throws IOException {
+        startMetadataIfNecessary();
+
+        wrapped.startExtension(attributes);
+    }
+
+    @Override
+    public void startInsertAfter(String targetId) throws IOException {
+        startMetadataIfNecessary();
+
+        wrapped.startInsertAfter(targetId);
+    }
+
+    @Override
+    public void startInsertBefore(String targetId) throws IOException {
+        startMetadataIfNecessary();
+        
+        wrapped.startInsertBefore(targetId);
+    }
+
+    @Override
+    public void startUpdate(String targetId) throws IOException {
+        startMetadataIfNecessary();
+        
+        wrapped.startUpdate(targetId);
+    }
+
+    @Override
+    public void updateAttributes(String targetId, Map<String, String> attributes) throws IOException {
+        startMetadataIfNecessary();
+        
+        wrapped.updateAttributes(targetId, attributes);
+    }
+    
+    @Override
+    public void redirect(String url) throws IOException {
+        startMetadataIfNecessary();
+        
+        wrapped.redirect(url);
+    }
+
+    @Override
+    public void delete(String targetId) throws IOException {
+        startMetadataIfNecessary();
+        
+        wrapped.delete(targetId);
+    }
+
+    private boolean isBean(Object value) {
+        if (value == null) {
+            return false;
+        }
+
+        if (value instanceof Boolean || value instanceof String || value instanceof Number) {
+            return false;
+        }
+
+        return true;
+    }
+    
 
     public void encodeJSONObject(String paramName, JSONObject jsonObject) throws IOException, JSONException {
         String json = jsonObject.toString();
@@ -106,7 +240,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         }
     }
 
-    public void encodeScripts(RequestContext requestContext) throws IOException {
+    protected void encodeScripts(RequestContext requestContext) throws IOException {
         List<String> scripts = requestContext.getScriptsToExecute();
         if (!scripts.isEmpty()) {
             startEval();
@@ -120,55 +254,50 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         }
     }
 
-    @Override
-    public void delete(String targetId) throws IOException {
-        wrapped.delete(targetId);
-    }
-
-    @Override
-    public void endError() throws IOException {
-        wrapped.endError();
-    }
-
-    @Override
-    public void endEval() throws IOException {
-        wrapped.endEval();
-    }
-
-    @Override
-    public void endExtension() throws IOException {
-        wrapped.endExtension();
-    }
-
-    @Override
-    public void endInsert() throws IOException {
-        wrapped.endInsert();
-    }
-
-    @Override
-    public void endUpdate() throws IOException {
-        wrapped.endUpdate();
-    }
-
-    @Override
-    public void redirect(String url) throws IOException {
-        wrapped.redirect(url);
-    }
-
-    @Override
-    public void startDocument() throws IOException {
-        wrapped.startDocument();
-
-
+    
+    protected void startMetadataIfNecessary() throws IOException {
+        
+        if (metadataRendered) {
+            return;
+        }
+        
+        metadataRendered = true;
+        
         RequestContext requestContext = RequestContext.getCurrentInstance();
 
         if (requestContext != null) {
             try {
                 FacesContext context = FacesContext.getCurrentInstance();
+
+                // portlet parameter namespacing
                 if (context.getViewRoot() instanceof NamingContainer) {
                     Map<String, Object> params = new HashMap<String, Object>();
                     params.put("parameterNamespace", context.getViewRoot().getContainerClientId(context));
                     encodeCallbackParams(params);
+                }
+
+                // dynamic resource loading
+                ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
+                ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
+                if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
+                    startEval();
+
+                    ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<ResourceUtils.ResourceInfo>(currentResources);
+                    newResources.removeAll(initialResources);
+
+                    ArrayList<String> stylesheets = ResourceUtils.filterStylesheets(context, newResources);
+                    if (stylesheets != null && !stylesheets.isEmpty()) {
+                        String script = "PrimeFaces.ajax.Utils.loadStylesheets(['" + CollectionUtils.join(stylesheets, "','") + "']);";
+                        getWrapped().write(script);
+                    }
+                    
+                    ArrayList<String> scripts = ResourceUtils.filterScripts(context, newResources);
+                    if (scripts != null && !scripts.isEmpty()) {
+                        String script = "PrimeFaces.ajax.Utils.loadScripts(['" + CollectionUtils.join(scripts, "','") + "']);";
+                        getWrapped().write(script);
+                    }
+
+                    endEval();
                 }
             }
             catch (Exception e) {
@@ -176,73 +305,5 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             }
         }
     }
-
-    @Override
-    public void endDocument() throws IOException {
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-
-        if (requestContext != null) {
-            try {
-                FacesContext context = FacesContext.getCurrentInstance();
-                if (context.isValidationFailed()) {
-                    requestContext.addCallbackParam("validationFailed", true);
-                }
-
-                encodeCallbackParams(requestContext.getCallbackParams());
-                encodeScripts(requestContext);
-            }
-            catch (Exception exception) {
-                throw new AbortProcessingException(exception);
-            }
-        }
-
-        wrapped.endDocument();
-    }
-
-    @Override
-    public void startError(String errorName) throws IOException {
-        wrapped.startError(errorName);
-    }
-
-    @Override
-    public void startEval() throws IOException {
-        wrapped.startEval();
-    }
-
-    @Override
-    public void startExtension(Map<String, String> attributes) throws IOException {
-        wrapped.startExtension(attributes);
-    }
-
-    @Override
-    public void startInsertAfter(String targetId) throws IOException {
-        wrapped.startInsertAfter(targetId);
-    }
-
-    @Override
-    public void startInsertBefore(String targetId) throws IOException {
-        wrapped.startInsertBefore(targetId);
-    }
-
-    @Override
-    public void startUpdate(String targetId) throws IOException {
-        wrapped.startUpdate(targetId);
-    }
-
-    @Override
-    public void updateAttributes(String targetId, Map<String, String> attributes) throws IOException {
-        wrapped.updateAttributes(targetId, attributes);
-    }
-
-    private boolean isBean(Object value) {
-        if (value == null) {
-            return false;
-        }
-
-        if (value instanceof Boolean || value instanceof String || value instanceof Number) {
-            return false;
-        }
-
-        return true;
-    }
+    
 }
