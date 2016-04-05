@@ -100,6 +100,16 @@ public abstract class Exporter {
         return false;
     }
 
+    protected String exportColumnByFunction(FacesContext context, org.primefaces.component.api.UIColumn column) {
+        MethodExpression exportFunction = column.getExportFunction();
+        
+        if(exportFunction != null) {
+            return (String) exportFunction.invoke(context.getELContext(), new Object[]{column});
+        }
+        
+        return "";
+    }
+    
     protected String exportValue(FacesContext context, UIComponent component) {
 
         if(component instanceof HtmlCommandLink) {  //support for PrimeFaces and standard HtmlCommandLink

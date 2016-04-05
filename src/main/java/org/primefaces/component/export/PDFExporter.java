@@ -180,7 +180,7 @@ public class PDFExporter extends Exporter {
             }
             
             if (col.isRendered() && col.isExportable()) {
-                addColumnValue(pdfTable, col.getChildren(), this.cellFont);
+                addColumnValue(pdfTable, col.getChildren(), this.cellFont, col);
             }
         }
     }
@@ -226,20 +226,25 @@ public class PDFExporter extends Exporter {
         pdfTable.addCell(new Paragraph(value, font));
     }
     
-    protected void addColumnValue(PdfPTable pdfTable, List<UIComponent> components, Font font) {
-        StringBuilder builder = new StringBuilder();
+    protected void addColumnValue(PdfPTable pdfTable, List<UIComponent> components, Font font, UIColumn column) {
         FacesContext context = FacesContext.getCurrentInstance();
         
-        for (UIComponent component : components) {
-        	if(component.isRendered() ) {
-        		String value = exportValue(context, component);
+        if(column.getExportFunction() != null) {            
+            pdfTable.addCell(new Paragraph(exportColumnByFunction(context, column), font));
+        }
+        else {
+            StringBuilder builder = new StringBuilder();
+            for (UIComponent component : components) {
+                if(component.isRendered() ) {
+                    String value = exportValue(context, component);
                 
-                if (value != null)
-                	builder.append(value);
-            }
-		}  
+                    if (value != null)
+                        builder.append(value);
+                }
+            }  
         
-        pdfTable.addCell(new Paragraph(builder.toString(), font));
+            pdfTable.addCell(new Paragraph(builder.toString(), font));
+        }
     }
     
     protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException, DocumentException {     

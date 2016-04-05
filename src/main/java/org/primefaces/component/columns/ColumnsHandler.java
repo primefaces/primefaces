@@ -20,6 +20,7 @@ import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.facelets.MethodRule;
 
 public class ColumnsHandler extends ComponentHandler {
@@ -29,6 +30,9 @@ public class ColumnsHandler extends ComponentHandler {
     
     private static final MetaRule FILTER_FUNCTION =
 			new MethodRule("filterFunction", Integer.class, new Class[]{Object.class, Object.class, Locale.class});
+    
+    private static final MetaRule EXPORT_FUNCTION =
+			new MethodRule("exportFunction", Integer.class, new Class[]{UIColumn.class});
 	
 	public ColumnsHandler(ComponentConfig config) {
 		super(config);
@@ -40,6 +44,7 @@ public class ColumnsHandler extends ComponentHandler {
  
 		metaRuleset.addRule(SORT_FUNCTION);
         metaRuleset.addRule(FILTER_FUNCTION);
+        metaRuleset.addRule(EXPORT_FUNCTION);
 		
 		return metaRuleset; 
 	} 

@@ -232,4 +232,8 @@ public class DynamicColumn implements UIColumn {
     public String getAriaHeaderText() {
         return this.columns.getAriaHeaderText();
     }
+    
+    public MethodExpression getExportFunction() {
+        return this.columns.getExportFunction();
+    }
 }

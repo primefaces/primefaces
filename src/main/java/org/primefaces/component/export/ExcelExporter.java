@@ -120,7 +120,7 @@ public class ExcelExporter extends Exporter {
             }
                         
             if (col.isRendered() && col.isExportable()) {
-                addColumnValue(row, col.getChildren());
+                addColumnValue(row, col.getChildren(), col);
             }
         }
     }
@@ -173,22 +173,27 @@ public class ExcelExporter extends Exporter {
         cell.setCellValue(createRichTextString(value));
     }
     
-    protected void addColumnValue(Row row, List<UIComponent> components) {
+    protected void addColumnValue(Row row, List<UIComponent> components, UIColumn column) {
         int cellIndex = row.getLastCellNum() == -1 ? 0 : row.getLastCellNum();
         Cell cell = row.createCell(cellIndex);
-        StringBuilder builder = new StringBuilder();
         FacesContext context = FacesContext.getCurrentInstance();
         
-        for (UIComponent component : components) {
-        	if(component.isRendered()) {
-                String value = exportValue(context, component);
+        if(column.getExportFunction() != null) {
+            cell.setCellValue(createRichTextString(exportColumnByFunction(context, column)));
+        }
+        else {
+            StringBuilder builder = new StringBuilder();
+            for (UIComponent component : components) {
+                if(component.isRendered()) {
+                    String value = exportValue(context, component);
                 
-                if (value != null)
-                	builder.append(value);
-            }
-		}  
+                    if (value != null)
+                        builder.append(value);
+                }
+            }  
         
-        cell.setCellValue(createRichTextString(builder.toString()));
+            cell.setCellValue(createRichTextString(builder.toString()));
+        }
     }
     
     protected RichTextString createRichTextString(String value) {

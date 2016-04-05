@@ -93,7 +93,7 @@ public class XMLExporter extends Exporter {
             if (col.isRendered() && col.isExportable()) {
                 String columnTag = getColumnTag(col);
                 try {
-                    addColumnValue(writer, col.getChildren(), columnTag);
+                    addColumnValue(writer, col.getChildren(), columnTag, col);
                 } 
                 catch (IOException ex) {
                     throw new FacesException(ex);
@@ -121,18 +121,23 @@ public class XMLExporter extends Exporter {
         return XMLUtils.escapeTag(columnTag);
     }
     		
-	protected void addColumnValue(Writer writer, List<UIComponent> components, String tag) throws IOException {
+	protected void addColumnValue(Writer writer, List<UIComponent> components, String tag, UIColumn column) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-
+        
 		writer.write("\t\t<" + tag + ">");
 
-		for (UIComponent component : components) {
-			if(component.isRendered()) {
-				String value = exportValue(context, component);
+        if(column.getExportFunction() != null) {
+            writer.write(exportColumnByFunction(context, column));
+        }
+        else {
+            for (UIComponent component : components) {
+                if(component.isRendered()) {
+                    String value = exportValue(context, component);
 
-				writer.write(value);
-			}
-		}
+                    writer.write(value);
+                }
+            }
+        }
 
 		writer.write("</" + tag + ">\n");
 	}

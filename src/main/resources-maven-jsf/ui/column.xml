@@ -212,5 +212,12 @@
 			<type>java.lang.String</type>
             <description>Label to read by screen readers, when not specified headerText is used.</description>
 		</attribute>
+        <attribute>
+			<name>exportFunction</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>java.lang.String exportValue(org.primefaces.component.api.UIColumn)</method-signature>
+            <description>Custom pluggable exportFunction.</description>
+		</attribute>
 	</attributes>
 </component>
