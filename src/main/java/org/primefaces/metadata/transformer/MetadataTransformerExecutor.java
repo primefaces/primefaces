@@ -20,55 +20,33 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
 import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
 
-public class MetadataTransformerExecutor implements SystemEventListener {
+public class MetadataTransformerExecutor {
 
     private final static List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<MetadataTransformer>();
 
     private final static MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
+    
+    public static void execute(ConfigContainer config, UIComponent component) throws IOException {
+        if (config.isTransformMetadataEnabled()) {
 
-    static {
+            FacesContext context = FacesContext.getCurrentInstance();
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            
+            if (config.isBeanValidationAvailable()) {
+                BV_INPUT_METADATA_TRANSFORMER.transform(context, requestContext, component);
+            }
 
-    }
-
-    public void processEvent(SystemEvent event) throws AbortProcessingException {
-        try {
-            if (event instanceof PostAddToViewEvent) {
-                PostAddToViewEvent postAddToViewEvent = (PostAddToViewEvent) event;
-
-                FacesContext context = FacesContext.getCurrentInstance();
-                RequestContext requestContext = RequestContext.getCurrentInstance();
-                ConfigContainer config = requestContext.getApplicationContext().getConfig();
-
-                if (config.isTransformMetadataEnabled()) {
-                    if (config.isBeanValidationAvailable()) {
-                        BV_INPUT_METADATA_TRANSFORMER.transform(context, requestContext, postAddToViewEvent.getComponent());
-                    }
-
-                    if (METADATA_TRANSFORMERS.size() > 0) {
-                        for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
-                            METADATA_TRANSFORMERS.get(i).transform(context, requestContext, postAddToViewEvent.getComponent());
-                        }
-                    }
+            if (METADATA_TRANSFORMERS.size() > 0) {
+                for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
+                    METADATA_TRANSFORMERS.get(i).transform(context, requestContext, component);
                 }
             }
         }
-        catch (IOException e) {
-            throw new FacesException(e);
-        }
-    }
-
-    public boolean isListenerForSource(Object source) {
-        return source instanceof UIComponent;
     }
 
 	public static void registerMetadataTransformer(final MetadataTransformer metadataTransformer) {
