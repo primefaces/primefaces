@@ -252,4 +252,20 @@ import org.primefaces.model.TreeNode;
             }
         }
     }
+
+    @Override
+    protected void validateSelection(FacesContext context) {
+        String selectionMode = this.getSelectionMode();
+
+        if(selectionMode != null && this.isRequired()) {
+            Object selection = this.getLocalSelectedNodes();
+            boolean isValueBlank = (selectionMode.equalsIgnoreCase("single")) ? (selection == null) : (((TreeNode[]) selection).length == 0);
+            
+            if(isValueBlank) {
+                super.updateSelection(context);
+            }
+        }
+ 
+        super.validateSelection(context);
+    }
     
