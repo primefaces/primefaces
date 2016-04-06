@@ -2298,6 +2298,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.keyboardTarget = $(this.jqId + '_focus');
         this.tabindex = this.keyboardTarget.attr('tabindex'); 
         this.cfg.showHeader = (this.cfg.showHeader === undefined) ? true : this.cfg.showHeader;
+        this.defaultLabel = this.label.text();
         
         if(!this.disabled) {
             this.renderPanel();
@@ -2313,6 +2314,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             
             //mark trigger and descandants of trigger as a trigger for a primefaces overlay
             this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+        
+            this.updateLabel();
         }
 
         //pfs metadata
@@ -2781,6 +2784,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
                 this.updateToggler();
             }
+            
+            this.updateLabel();
         }
     },
 
@@ -2797,6 +2802,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 uncheckedInput.trigger('focus.selectCheckboxMenu');
                 this.updateToggler();
             }
+            
+            this.updateLabel();
         }
     },
 
@@ -2922,6 +2929,26 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 e.preventDefault();
             }
         });
+    },
+    
+    updateLabel: function() {
+        var checkedItems = this.jq.find(':checked'),
+            labelText = '';
+        
+        if(checkedItems && checkedItems.length) {
+            for(var i = 0; i < checkedItems.length; i++) {
+                if(i != 0) {
+                    labelText = labelText + ',';
+                }
+                labelText = labelText + $(checkedItems[i]).next().text();
+            }
+        }
+        else {
+            labelText = this.defaultLabel;
+        }
+        
+        this.label.text(labelText);
+        this.labelContainer.attr('title', labelText);
     }
 
 });
