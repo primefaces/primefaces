@@ -151,7 +151,7 @@ PrimeFaces.dialog.DialogHandler = {
         else if(sourceComponentId) {
             var dialogReturnBehaviorStr = $(windowContext.document.getElementById(sourceComponentId)).data('dialogreturn');
             if(dialogReturnBehaviorStr) {
-                dialogReturnBehavior = eval('(function(ext){this.' + dialogReturnBehaviorStr + '})');
+                dialogReturnBehavior = windowContext.eval('(function(ext){this.' + dialogReturnBehaviorStr + '})');
             }
         }
                     
