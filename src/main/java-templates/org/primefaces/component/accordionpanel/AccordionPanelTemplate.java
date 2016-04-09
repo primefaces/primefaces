@@ -23,6 +23,7 @@ import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.event.AbortProcessingException;
 import org.primefaces.context.RequestContext;
+import javax.faces.event.BehaviorEvent;
 
     public final static String CONTAINER_CLASS = "ui-accordion ui-widget ui-helper-reset ui-hidden-container";
     public final static String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top";
@@ -45,7 +46,17 @@ import org.primefaces.context.RequestContext;
 
     private final static String DEFAULT_EVENT = "tabChange";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("tabChange","tabClose"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("tabChange", TabChangeEvent.class);
+        put("tabClose", TabCloseEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING ;
+    }
 
     @Override
     public Collection<String> getEventNames() {

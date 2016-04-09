@@ -46,16 +46,16 @@ import javax.faces.event.BehaviorEvent;
     public static final String MOBILE_ACTIVE_TAB_HEADER_TITLE_CLASS = "ui-link ui-btn ui-tabs-anchor ui-btn-active";
     public static final String MOBILE_TAB_CONTENT_CLASS = "ui-content";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("tabChange","tabClose"));
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("tabChange", TabChangeEvent.class);
         put("tabClose", TabCloseEvent.class);
     }});
 
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-         return BEHAVIOR_EVENT_MAPPING ;
+         return BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
