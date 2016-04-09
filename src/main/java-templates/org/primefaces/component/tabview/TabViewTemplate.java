@@ -20,6 +20,8 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
+import javax.faces.event.BehaviorEvent;
+
 
     public static final String CONTAINER_CLASS = "ui-tabs ui-widget ui-widget-content ui-corner-all ui-hidden-container";
     public static final String NAVIGATOR_CLASS = "ui-tabs-nav ui-helper-reset ui-widget-header ui-corner-all";
@@ -45,6 +47,16 @@ import javax.faces.context.FacesContext;
     public static final String MOBILE_TAB_CONTENT_CLASS = "ui-content";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("tabChange","tabClose"));
+
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("tabChange", TabChangeEvent.class);
+        put("tabClose", TabCloseEvent.class);
+    }});
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING ;
+    }
 
     @Override
     public Collection<String> getEventNames() {
