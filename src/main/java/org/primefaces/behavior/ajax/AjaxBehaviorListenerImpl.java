@@ -97,6 +97,10 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
             argListener.invoke(elContext, new Object[]{event});
         }
         else {
+            if (LOG.isLoggable(Level.FINE)) {
+                LOG.fine("Try to invoke customListener: " + listenerWithCustomArg.getExpressionString());
+            }
+            
             listenerWithCustomArg.invoke(elContext, new Object[]{event});
         }
     }
