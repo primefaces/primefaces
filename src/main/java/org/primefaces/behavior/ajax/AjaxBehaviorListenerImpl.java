@@ -33,13 +33,19 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
 
     private MethodExpression listener;
     private MethodExpression listenerWithArg;
+    private MethodExpression listenerWithCustomArg;
 
     // required by serialization
     public AjaxBehaviorListenerImpl() {}
 
     public AjaxBehaviorListenerImpl(MethodExpression listener, MethodExpression listenerWithArg) {
+        this(listener, listenerWithArg, null);
+    }
+    
+    public AjaxBehaviorListenerImpl(MethodExpression listener, MethodExpression listenerWithArg, MethodExpression listenerWithCustomArg) {
         this.listener = listener;
         this.listenerWithArg = listenerWithArg;
+        this.listenerWithCustomArg = listenerWithCustomArg;
     }
 
     public void processAjaxBehavior(AjaxBehaviorEvent event) throws AbortProcessingException {
@@ -70,21 +76,28 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
             listenerWithArg.invoke(elContext , new Object[]{event});
         }
         catch (MethodNotFoundException mnfe) {
-            processCustomListener(context, elContext, event);
+            processCustomArgListener(context, elContext, event);
         }
         catch (IllegalArgumentException e) {
-            processCustomListener(context, elContext, event);
+            processCustomArgListener(context, elContext, event);
         }
     }
 
-    private void processCustomListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
-    	MethodExpression argListener = context.getApplication().getExpressionFactory().
-                    createMethodExpression(elContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
+    private void processCustomArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
+        
+        if (listenerWithCustomArg == null) {
+        
+            MethodExpression argListener = context.getApplication().getExpressionFactory().
+                        createMethodExpression(elContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
 
-    	if (LOG.isLoggable(Level.FINE)) {
-            LOG.fine("Try to invoke customListener: " + argListener.getExpressionString());
-    	}
+            if (LOG.isLoggable(Level.FINE)) {
+                LOG.fine("Try to invoke customListener: " + argListener.getExpressionString());
+            }
 
-        argListener.invoke(elContext, new Object[]{event});
+            argListener.invoke(elContext, new Object[]{event});
+        }
+        else {
+            listenerWithCustomArg.invoke(elContext, new Object[]{event});
+        }
     }
 }

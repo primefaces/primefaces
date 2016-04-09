@@ -16,6 +16,7 @@
 package org.primefaces.behavior.confirm;
 
 import javax.faces.application.Application;
+import javax.faces.component.UIComponent;
 import javax.faces.view.facelets.BehaviorConfig;
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
@@ -35,7 +36,7 @@ public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehav
     }
     
     @Override
-    protected ConfirmBehavior createBehavior(FaceletContext ctx, String eventName) {
+    protected ConfirmBehavior createBehavior(FaceletContext ctx, String eventName, UIComponent parent) {
         Application application = ctx.getFacesContext().getApplication();
         ConfirmBehavior behavior = (ConfirmBehavior)application.createBehavior(ConfirmBehavior.BEHAVIOR_ID);
         
