@@ -20,8 +20,28 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
 import org.primefaces.context.RequestContext;
+import javax.faces.event.BehaviorEvent;
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("overlaySelect","stateChange", "pointSelect", "markerDrag", "geocode", "reverseGeocode"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("overlaySelect", OverlaySelectEvent.class);
+        put("stateChange", StateChangeEvent.class);
+        put("pointSelect", PointSelectEvent.class);
+        put("markerDrag", MarkerDragEvent.class);
+        put("geocode", GeocodeEvent.class);
+        put("reverseGeocode", ReverseGeocodeEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
 
     @Override
     public void queueEvent(FacesEvent event) {
@@ -119,9 +139,6 @@ import org.primefaces.context.RequestContext;
         return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
+
 
     
