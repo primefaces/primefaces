@@ -23,6 +23,9 @@
         <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
@@ -67,14 +70,14 @@
             <name>timeZone</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>Target time zone to convert start / end dates for displaying. This time zone is the time zone the user would like to see dates in UI. 
+            <description>Target time zone to convert start / end dates for displaying. This time zone is the time zone the user would like to see dates in UI.
                 The attribute can be either a String or TimeZone object or null. If null, timeZone defaults to the server's time zone the application is running in.</description>
         </attribute>
         <attribute>
             <name>browserTimeZone</name>
             <required>false</required>
             <type>java.lang.Object</type>
-            <description>Time zone the user's browser / PC is running in. This time zone allows to correct the conversion of start / end dates to the target timeZone for displaying. 
+            <description>Time zone the user's browser / PC is running in. This time zone allows to correct the conversion of start / end dates to the target timeZone for displaying.
                 The attribute can be either a String or TimeZone object or null. Note: browserTimeZone should be provided if the target timeZone is provided. If null, browserTimeZone defaults to the server's timeZone.</description>
         </attribute>
         <attribute>
@@ -82,7 +85,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>auto</defaultValue>
-            <description>The height of the timeline in pixels, as a percentage, or "auto". When the height is set to "auto", the height of the timeline is automatically adjusted to fit the contents. 
+            <description>The height of the timeline in pixels, as a percentage, or "auto". When the height is set to "auto", the height of the timeline is automatically adjusted to fit the contents.
                 If not, it is possible that events get stacked so high, that they are not visible in the timeline. When height is set to "auto", a minimum height can be specified with the option minHeight. Default is "auto".</description>
         </attribute>
         <attribute>
@@ -104,7 +107,7 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>Check if the timeline container is resized, and if so, resize the timeline. 
+            <description>Check if the timeline container is resized, and if so, resize the timeline.
                 Useful when the webpage (browser window) or a layout pane / unit containing the timeline component is resized. Default is true.</description>
         </attribute>
         <attribute>
@@ -119,7 +122,7 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>10</defaultValue>
-            <description>The width of the drag areas in pixels. When an event with date range is selected, it has a drag area on the left and right side, with which the start or end dates of the event can be manipulated. 
+            <description>The width of the drag areas in pixels. When an event with date range is selected, it has a drag area on the left and right side, with which the start or end dates of the event can be manipulated.
                 Default is 10.</description>
         </attribute>
         <attribute>
@@ -301,8 +304,8 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>By default, the timeline shows both minor and major date labels on the horizontal axis. 
-                For example the minor labels show minutes and the major labels show hours. When "showMajorLabels" is false, no major labels are shown. 
+            <description>By default, the timeline shows both minor and major date labels on the horizontal axis.
+                For example the minor labels show minutes and the major labels show hours. When "showMajorLabels" is false, no major labels are shown.
                 Default is true.
             </description>
         </attribute>
@@ -311,8 +314,8 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>By default, the timeline shows both minor and major date labels on the horizontal axis. 
-                For example the minor labels show minutes and the major labels show hours. When "showMinorLabels" is false, no minor labels are shown. 
+            <description>By default, the timeline shows both minor and major date labels on the horizontal axis.
+                For example the minor labels show minutes and the major labels show hours. When "showMinorLabels" is false, no minor labels are shown.
                 When both "showMajorLabels" and "showMinorLabels" are false, no horizontal axis will be visible. Default is true.
             </description>
         </attribute>
@@ -335,8 +338,8 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>If false, items can not be moved or dragged horizontally (neither start time nor end time is changable). 
-                This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events). 
+            <description>If false, items can not be moved or dragged horizontally (neither start time nor end time is changable).
+                This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events).
                 Default is true.
             </description>
         </attribute>

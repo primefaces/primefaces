@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
@@ -35,11 +36,29 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.DateUtils;
 import org.primefaces.visit.UIDataContextCallback;
+import javax.faces.event.BehaviorEvent;
 
     private final static Logger logger = Logger.getLogger(Timeline.class.getName());
+    
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("add", TimelineAddEvent.class);
+        put("change", TimelineModificationEvent.class);
+        put("changed", TimelineModificationEvent.class);
+        put("edit", TimelineModificationEvent.class);
+        put("delete", TimelineModificationEvent.class);
+        put("select", TimelineSelectEvent.class);
+        put("rangechange", TimelineRangeEvent.class);
+        put("rangechanged", TimelineRangeEvent.class);
+        put("lazyload", TimelineLazyLoadEvent.class);
+        put("drop", TimelineDragDropEvent.class);
+    }});
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("add", "change", "changed", "edit",
-                                                                         "delete", "select", "rangechange", "rangechanged", "lazyload", "drop"));
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
     
     @Override
     public Collection<String> getEventNames() {

@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Iterator;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
@@ -33,6 +34,7 @@ import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
+import javax.faces.event.BehaviorEvent;
 
 	public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
     public final static String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
@@ -64,11 +66,28 @@ import org.primefaces.util.ComponentUtils;
     
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
- 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize", "sort",
-                                                        "rowEdit", "rowEditInit", "rowEditCancel", "cellEdit"));
 
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("select", NodeSelectEvent.class);
+        put("unselect", NodeUnselectEvent.class);
+        put("expand", NodeExpandEvent.class);
+        put("collapse", NodeCollapseEvent.class);
+        put("colResize", ColumnResizeEvent.class);
+        put("sort", SortEvent.class);
+        put("rowEdit", RowEditEvent.class);
+        put("rowEditInit", RowEditEvent.class);
+        put("rowEditCancel", RowEditEvent.class);
+        put("cellEdit", CellEditEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    
     private List<String> selectedRowKeys = new ArrayList<String>();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
 
     @Override
     public Collection<String> getEventNames() {
