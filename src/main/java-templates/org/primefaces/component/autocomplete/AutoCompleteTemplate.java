@@ -23,6 +23,7 @@ import javax.faces.convert.Converter;
 import javax.faces.component.behavior.Behavior;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "itemSelect", "itemUnselect", "query"));
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect", "query"));
     
     public final static String STYLE_CLASS = "ui-autocomplete";
     public final static String MULTIPLE_STYLE_CLASS = "ui-autocomplete ui-autocomplete-multiple";
@@ -52,8 +53,9 @@ import javax.faces.component.behavior.Behavior;
         return EVENT_NAMES;
     }
 
+    @Override
     public Collection<String> getUnobstrusiveEventNames() {
-        return Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect", "query"));
+        return UNOBSTRUSIVE_EVENT_NAMES;
     }
 
     @Override

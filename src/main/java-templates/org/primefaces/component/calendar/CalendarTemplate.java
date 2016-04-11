@@ -26,6 +26,7 @@ import javax.faces.event.PhaseId;
     public final static String MOBILE_INLINE_CONTAINER_CLASS = "ui-calendar ui-calendar-inline";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select","dateSelect","viewChange"));
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","viewChange"));
 
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
 
@@ -84,8 +85,9 @@ import javax.faces.event.PhaseId;
         return EVENT_NAMES;
     }
 
+    @Override
     public Collection<String> getUnobstrusiveEventNames() {
-        return Collections.unmodifiableCollection(Arrays.asList("dateSelect","viewChange"));
+        return UNOBSTRUSIVE_EVENT_NAMES;
     }
 
     @Override
