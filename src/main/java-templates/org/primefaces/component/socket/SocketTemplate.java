@@ -29,10 +29,6 @@ import javax.faces.event.BehaviorEvent;
         return EVENT_NAMES;
     }
 
-    public boolean isContentLoadRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
-    }
-
     @Override
     public String getDefaultEventName() {
         return DEFAULT_EVENT;
