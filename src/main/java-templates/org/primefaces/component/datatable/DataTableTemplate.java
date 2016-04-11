@@ -65,6 +65,7 @@ import org.primefaces.component.datatable.feature.*;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
+import javax.faces.event.BehaviorEvent;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
@@ -140,11 +141,33 @@ import org.primefaces.util.SharedStringBuilder;
     public static final String MOBILE_SORTED_COLUMN_CLASS = "ui-column-sorted";
     public static final String MOBILE_CELL_LABEL = "ui-table-cell-label";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","sort","filter", "rowSelect", 
-                                                        "rowUnselect", "rowEdit", "rowEditInit", "rowEditCancel", "colResize", "toggleSelect", "colReorder", "contextMenu"
-                                                        ,"rowSelectRadio", "rowSelectCheckbox", "rowUnselectCheckbox", "rowDblselect", "rowToggle"
-                                                        ,"cellEdit", "rowReorder", "swipeleft","swiperight","tap","taphold"));
-
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("page", PageEvent.class);
+        put("sort", SortEvent.class);
+        put("filter", FilterEvent.class);
+        put("rowSelect", SelectEvent.class);
+        put("rowUnselect", UnselectEvent.class);
+        put("rowEdit", RowEditEvent.class);
+        put("rowEditInit", RowEditEvent.class);
+        put("rowEditCancel", RowEditEvent.class);
+        put("colResize", ColumnResizeEvent.class);
+        put("toggleSelect", ToggleSelectEvent.class);
+        put("colReorder", null);
+        put("contextMenu", SelectEvent.class);
+        put("rowSelectRadio", SelectEvent.class);
+        put("rowSelectCheckbox", SelectEvent.class);
+        put("rowUnselectCheckbox", UnselectEvent.class);
+        put("rowDblselect", SelectEvent.class);
+        put("rowToggle", ToggleEvent.class);
+        put("cellEdit", CellEditEvent.class);
+        put("rowReorder", ReorderEvent.class);
+        put("swipeleft", SwipeEvent.class);
+        put("swiperight", SwipeEvent.class);
+        put("tap", SelectEvent.class);
+        put("taphold", SelectEvent.class);
+    }});
+    
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
                                                         
     static Map<DataTableFeatureKey,DataTableFeature> FEATURES;
     
@@ -722,6 +745,11 @@ import org.primefaces.util.SharedStringBuilder;
     public Object getLocalSelection() {
 		return getStateHelper().get(PropertyKeys.selection);
 	}
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
 
     @Override
     public Collection<String> getEventNames() {
