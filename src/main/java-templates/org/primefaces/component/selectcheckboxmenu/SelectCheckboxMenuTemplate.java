@@ -6,6 +6,8 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.util.Constants;
+import java.util.HashMap;
+import javax.faces.event.BehaviorEvent;
 
     public final static String STYLE_CLASS = "ui-selectcheckboxmenu ui-widget ui-state-default ui-corner-all";
     public final static String LABEL_CONTAINER_CLASS = "ui-selectcheckboxmenu-label-container";
@@ -17,7 +19,17 @@ import org.primefaces.util.Constants;
 
     private final static String DEFAULT_EVENT = "change";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(DEFAULT_EVENT, "toggleSelect"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put(DEFAULT_EVENT, null);
+        put("toggleSelect", ToggleSelectEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
 
     @Override
     public Collection<String> getEventNames() {
