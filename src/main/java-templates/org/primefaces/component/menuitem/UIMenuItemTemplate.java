@@ -14,7 +14,7 @@ import java.util.Collections;
     private final static String DEFAULT_EVENT = "click";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put(DEFAULT_EVENT, null);
+        put("click", null);
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
