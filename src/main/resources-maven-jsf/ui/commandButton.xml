@@ -26,6 +26,9 @@
         <interface>
 			<name>org.primefaces.component.api.Confirmable</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&command_component_attributes;
