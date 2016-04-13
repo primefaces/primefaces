@@ -19,6 +19,7 @@ import java.util.Iterator;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.event.ReorderEvent;
+import javax.faces.event.BehaviorEvent;
 
     public static final String CONTAINER_CLASS = "ui-picklist ui-widget ui-helper-clearfix";
     public static final String LIST_CLASS = "ui-widget-content ui-picklist-list";
@@ -55,9 +56,21 @@ import org.primefaces.event.ReorderEvent;
     public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("transfer", "select", "unselect", "reorder"));
-
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
+
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("transfer", TransferEvent.class);
+        put("select", null);
+        put("unselect", null);
+        put("reorder", null);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
 
     @Override
     public Collection<String> getEventNames() {
