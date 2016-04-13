@@ -85,7 +85,7 @@ public abstract class RequestContext {
      * Currently supported values are plain objects, primitives, JSONObject and JSONArray.
      * 
      * @param name name of the parameter.
-     * @param object value of the parameter.
+     * @param value value of the parameter.
      */
     public abstract void addCallbackParam(String name, Object value);
 
