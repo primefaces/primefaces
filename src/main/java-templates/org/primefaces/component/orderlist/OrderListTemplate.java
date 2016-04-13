@@ -12,6 +12,7 @@ import org.primefaces.util.Constants;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import javax.faces.event.BehaviorEvent;
 
     public static final String CONTAINER_CLASS = "ui-orderlist ui-grid ui-widget";
     public static final String LIST_CLASS = "ui-widget-content ui-orderlist-list";
@@ -27,10 +28,21 @@ import javax.faces.event.PhaseId;
     public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect","reorder"));
-
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
     
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("select", SelectEvent.class);
+        put("unselect", UnselectEvent.class);
+        put("reorder", null);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
