@@ -13,10 +13,30 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.FacesException;
 import org.primefaces.util.Constants;
 import org.primefaces.expression.SearchExpressionFacade;
+import javax.faces.event.BehaviorEvent;
 
     private final static String DEFAULT_EVENT = "drop";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(DEFAULT_EVENT));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put(DEFAULT_EVENT, null);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return DEFAULT_EVENT;
+    }
 
     @Override
     public void queueEvent(FacesEvent event) {
@@ -60,16 +80,6 @@ import org.primefaces.expression.SearchExpressionFacade;
 
     private boolean isRequestSource(FacesContext context) {
         return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
-    
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
     }
 
     protected UIData findDatasource(FacesContext context, Droppable droppable, String datasourceId) {
