@@ -13,7 +13,7 @@
 	<rendererClass>org.primefaces.component.resizable.ResizableRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
     <description>
-      PrimeFaces features a resizable component that has the ability to make a JSF component resizable. 
+      PrimeFaces features a resizable component that has the ability to make a JSF component resizable.
       Resizable can be used on various components like resize an input fields, panels, menus, images and more.
     </description>
      <interfaces>
@@ -22,6 +22,9 @@
 		</interface>
         <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
 	<attributes>
