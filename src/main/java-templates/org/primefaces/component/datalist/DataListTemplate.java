@@ -15,10 +15,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import org.primefaces.util.Constants;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.event.data.PageEvent;
+import javax.faces.event.BehaviorEvent;
 
 	public static final String DATALIST_CLASS = "ui-datalist ui-widget";
     public static final String CONTENT_CLASS = "ui-datalist-content ui-widget-content";
@@ -31,7 +33,20 @@ import org.primefaces.event.data.PageEvent;
 
     public static final String MOBILE_CONTENT_CLASS = "ui-datalist-content";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","swipeleft","swiperight","tap","taphold"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("page", PageEvent.class);
+        put("swipeleft", SwipeEvent.class);
+        put("swiperight", SwipeEvent.class);
+        put("tap", SelectEvent.class);
+        put("taphold", SelectEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
 
     @Override
     public Collection<String> getEventNames() {
