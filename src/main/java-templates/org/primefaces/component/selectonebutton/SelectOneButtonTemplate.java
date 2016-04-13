@@ -27,3 +27,8 @@ import javax.faces.event.BehaviorEvent;
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
     }
+
+    @Override
+    public String getDefaultEventName() {
+        return DEFAULT_EVENT;
+    }
