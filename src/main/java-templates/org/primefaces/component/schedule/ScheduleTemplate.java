@@ -16,10 +16,30 @@ import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.model.ScheduleEvent;
+import javax.faces.event.BehaviorEvent;
 
     private static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("UTC");
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","eventSelect", "eventMove", "eventResize", "viewChange"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("dateSelect", SelectEvent.class);
+        put("eventSelect", SelectEvent.class);
+        put("eventMove", ScheduleEntryMoveEvent.class);
+        put("eventResize", ScheduleEntryResizeEvent.class);
+        put("viewChange", SelectEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
 
 	private java.util.Locale appropriateLocale;
 	
@@ -142,11 +162,6 @@ import org.primefaces.model.ScheduleEvent;
 
     private boolean isSelfRequest(FacesContext context) {
         return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
     }
 
     @Override

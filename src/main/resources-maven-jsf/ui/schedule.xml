@@ -13,7 +13,7 @@
 	<rendererClass>org.primefaces.component.schedule.ScheduleRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
     <description>
-      Schedule provides an Outlook Calendar, iCal like JSF component to manage events. 
+      Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
       Schedule is highly customizable featuring various views (month, day, week), built-in I18N, drag-drop, resize, customizable event dialog and skinning.
     </description>
      <interfaces>
@@ -22,6 +22,9 @@
 		</interface>
         <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
 	<attributes>
@@ -228,7 +231,7 @@
 			<name>displayEventEnd</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for 
+			<description>Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for
             all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.</description>
 		</attribute>
         <attribute>
