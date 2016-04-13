@@ -12,11 +12,26 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 import javax.faces.event.PhaseId;
+import javax.faces.event.BehaviorEvent;
 
     public static final String CONTAINER_CLASS = "ui-dashboard";
 	public static final String COLUMN_CLASS = "ui-dashboard-column";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("reorder"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("reorder", DashboardReorderEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
 
     @Override
     public void queueEvent(FacesEvent event) {
@@ -69,10 +84,6 @@ import javax.faces.event.PhaseId;
 		}
 	}
 
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     @Override
     public void processDecodes(FacesContext context) {
