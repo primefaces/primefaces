@@ -11,12 +11,25 @@ import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import java.util.Map;
+import java.util.HashMap;
+import javax.faces.event.BehaviorEvent;
 
     public static final String CONTAINER_CLASS = "ui-diagram ui-widget";
     public static final String ELEMENT_CLASS = "ui-diagram-element";
     public static final String DRAGGABLE_ELEMENT_CLASS = "ui-diagram-draggable";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("connect","disconnect", "connectionChange"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("connect", ConnectEvent.class);
+        put("disconnect", DisconnectEvent.class);
+        put("connectionChange", ConnectionChangeEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
 
     @Override
     public Collection<String> getEventNames() {
