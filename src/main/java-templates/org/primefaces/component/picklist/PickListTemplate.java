@@ -60,8 +60,8 @@ import javax.faces.event.BehaviorEvent;
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("transfer", TransferEvent.class);
-        put("select", null);
-        put("unselect", null);
+        put("select", SelectEvent.class);
+        put("unselect", UnselectEvent.class);
         put("reorder", null);
     }});
 

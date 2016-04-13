@@ -21,7 +21,7 @@ import javax.faces.event.PhaseId;
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put(DEFAULT_EVENT, null);
+        put(DEFAULT_EVENT, RateEvent.class);
         put("cancel", null);
     }});
 
