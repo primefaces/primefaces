@@ -1,6 +1,8 @@
 import java.util.List;
 import javax.faces.component.UIComponent;
 import java.util.Map;
+import java.util.HashMap;
+import javax.faces.event.BehaviorEvent;
 import javax.faces.event.ActionEvent;
 import javax.el.MethodExpression;
 import javax.faces.component.UIParameter;
@@ -9,7 +11,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("click"));
+    private final static String DEFAULT_EVENT = "click";
+
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put(DEFAULT_EVENT, null);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
 
     @Override
     public Collection<String> getEventNames() {
@@ -18,7 +31,7 @@ import java.util.Collections;
 
     @Override
     public String getDefaultEventName() {
-        return "click";
+        return DEFAULT_EVENT;
     }
 
 	public void decode(FacesContext facesContext) {
