@@ -17,11 +17,8 @@ package org.primefaces.model;
 
 import java.io.InputStream;
 
-/**
- * Default implementation of a StreamedContent
- */
-public class DefaultStreamedContent implements StreamedContent {
-	
+public abstract class LazyDefaultStreamedContent implements StreamedContent {
+    
 	private InputStream stream;
 	
 	private String contentType;
@@ -30,32 +27,36 @@ public class DefaultStreamedContent implements StreamedContent {
     
     private String contentEncoding;
 	
-	public DefaultStreamedContent() {}
+	public LazyDefaultStreamedContent() {}
 	
-    public DefaultStreamedContent(InputStream stream) {
+    public LazyDefaultStreamedContent(InputStream stream) {
 		this.stream = stream;
 	}
 	
-	public DefaultStreamedContent(InputStream stream, String contentType) {
+	public LazyDefaultStreamedContent(InputStream stream, String contentType) {
         this(stream);
 		this.contentType = contentType;
 	}
 	
-	public DefaultStreamedContent(InputStream stream, String contentType, String name) {
+	public LazyDefaultStreamedContent(InputStream stream, String contentType, String name) {
 		this(stream, contentType);
 		this.name = name;
 	}
     
-    public DefaultStreamedContent(InputStream stream, String contentType, String name, String contentEncoding) {
+    public LazyDefaultStreamedContent(InputStream stream, String contentType, String name, String contentEncoding) {
 		this(stream, contentType, name);
         this.contentEncoding = contentEncoding;
 	}
 
     @Override
-	public InputStream getStream() {
-		return stream;
-	}
+    public InputStream getStream() {
+        if (stream == null) {
+            stream = initializeStream();
+        }
 
+        return stream;
+    }
+    
 	public void setStream(InputStream stream) {
 		this.stream = stream;
 	}
@@ -64,7 +65,7 @@ public class DefaultStreamedContent implements StreamedContent {
 	public String getContentType() {
 		return contentType;
 	}
-    
+	
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
@@ -77,13 +78,16 @@ public class DefaultStreamedContent implements StreamedContent {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+    
     @Override
     public String getContentEncoding() {
         return contentEncoding;
     }
-    
+
     public void setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
     }    
+
+    public abstract InputStream initializeStream();
+
 }
