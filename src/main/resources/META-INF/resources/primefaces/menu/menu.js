@@ -974,10 +974,15 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
             if (this.cfg.targetWidgetVar) {
                 var targetWidget = PrimeFaces.widgets[this.cfg.targetWidgetVar];
-          
-                if (targetWidget && typeof targetWidget.bindContextMenu === 'function') {
-                    targetWidget.bindContextMenu(this, targetWidget, this.jqTargetId, this.cfg);
-                    binded = true;
+
+                if (targetWidget) {
+                    if (typeof targetWidget.bindContextMenu === 'function') {
+                        targetWidget.bindContextMenu(this, targetWidget, this.jqTargetId, this.cfg);
+                        binded = true;
+                    }
+                }
+                else {
+                    PrimeFaces.warn("ContextMenu targets a widget which is not available yet. Please place the contextMenu after the target component. targetWidgetVar: " + this.cfg.targetWidgetVar);
                 }
             }
             
