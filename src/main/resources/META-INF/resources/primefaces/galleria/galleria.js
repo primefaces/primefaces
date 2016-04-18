@@ -66,7 +66,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
                 .height(this.cfg.frameHeight)
                 .appendTo(this.jq);
                 
-        this.strip = $('<ul class="ui-galleria-filmstrip"></div>').appendTo(this.stripWrapper);
+        this.strip = $('<ul class="ui-galleria-filmstrip"></ul>').appendTo(this.stripWrapper);
                     
         for(var i = 0; i < this.panels.length; i++) {
             var image = this.panels.eq(i).children('img'),
