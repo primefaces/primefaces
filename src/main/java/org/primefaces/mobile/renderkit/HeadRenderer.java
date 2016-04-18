@@ -95,7 +95,10 @@ public class HeadRenderer extends Renderer {
 
             if(library != null && library.equals("primefaces")) {
                 String resourceName = (String) attrs.get("name");
-                if(resourceName.startsWith("jquery")||resourceName.startsWith("primefaces")) {
+                if(resourceName.startsWith("jquery")
+                        || resourceName.startsWith("primefaces")
+                        || resourceName.startsWith("components")
+                        || resourceName.startsWith("core")) {
                     shouldRender = false;
                 }
             }
