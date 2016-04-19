@@ -78,6 +78,10 @@ import javax.faces.event.BehaviorEvent;
     }
 
 	protected void validateValue(FacesContext facesContext, Object newValue) {
+        if(newValue != null) {
+            this.updateValue(facesContext, newValue);
+        }
+
 		super.validateValue(facesContext, newValue);
 		
 		DualListModel model = (DualListModel) newValue;
@@ -207,3 +211,10 @@ import javax.faces.event.BehaviorEvent;
 			}
 		}
 	}
+
+    public void updateValue(FacesContext context, Object newValue) {
+        setValue(newValue);
+        setSubmittedValue(null);
+        updateModel(context);
+    }
+
