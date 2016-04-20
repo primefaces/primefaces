@@ -500,32 +500,13 @@ import javax.faces.event.BehaviorEvent;
         if(model != null && model instanceof LazyDataModel) {            
             LazyDataModel lazyModel = (LazyDataModel) model;
             List<?> data = null;
-            boolean lazyCache = this.isLazyCache();
             
-            //#7176
             calculateFirst();
-
-            int first = this.getFirst();
-
-            //try to load from cache
-            if(lazyCache) {
-                Map<String,List> lazyCacheData = this.getLazyCacheData();
-                if(lazyCacheData != null) {
-                    data = lazyCacheData.get(String.valueOf(first));
-                }
-            }
             
-            if(data == null) {
-                if(this.isMultiSort())
-                    data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilters());
-                else
-                    data = lazyModel.load(first, getRows(),  resolveSortField(), convertSortOrder(), getFilters());
-            
-                //save in cache
-                if(lazyCache) {
-                    this.insertIntoLazyCache(first, data);
-                }
-            }
+            if(this.isMultiSort())
+                data = lazyModel.load(getFirst(), getRows(), getMultiSortMeta(), getFilters());
+            else
+                data = lazyModel.load(getFirst(), getRows(),  resolveSortField(), convertSortOrder(), getFilters());
             
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -537,28 +518,6 @@ import javax.faces.event.BehaviorEvent;
                 if(requestContext != null) {
                     requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
                 }
-            }
-        }
-    }
-
-    public void loadLazyDataToCache(int offset) {
-        DataModel model = getDataModel();
-        
-        if(model != null && model instanceof LazyDataModel) {            
-            LazyDataModel lazyModel = (LazyDataModel) model;
-            List<?> data = null;
-            Map<String,List> lazyCacheData = this.getLazyCacheData();
-            if(lazyCacheData != null) {
-                data = lazyCacheData.get(String.valueOf(offset));
-            }
-			
-            if(data == null) {
-                if(this.isMultiSort())
-                    data = lazyModel.load(offset, getRows(), getMultiSortMeta(), getFilters());
-                else
-                    data = lazyModel.load(offset, getRows(),  resolveSortField(), convertSortOrder(), getFilters());
-
-                this.insertIntoLazyCache(offset, data);
             }
         }
     }
@@ -1312,46 +1271,3 @@ import javax.faces.event.BehaviorEvent;
             this.setColumns(null);
         }
     }
-
-    public void setLazyCacheData(Map<String,List> data) {
-        List<String> keys = new ArrayList<String>();
-        List<List<?>> values = new ArrayList<List<?>>();
-        for (Map.Entry<String, List> entry : data.entrySet()) {
-            keys.add(entry.getKey());
-            values.add(entry.getValue());        
-        }
-        
-        getStateHelper().put("lazyCacheDataKeys", keys);
-        getStateHelper().put("lazyCacheDataValues", values);
-    }
-    
-    public Map<String,List> getLazyCacheData() {
-        List<String> keys = (List<String>) getStateHelper().get("lazyCacheDataKeys");
-        List<List<?>> values = (List<List<?>>) getStateHelper().get("lazyCacheDataValues");
-        
-        if(keys != null) {
-            Map<String,List> map = new LinkedHashMap<String, List>();
-            for (int i = 0; i < keys.size(); i++) {
-                map.put(keys.get(i), values.get(i));
-            }
-            return map;
-        }
-        else {
-            return null;
-        }
-    }
-
-    private void insertIntoLazyCache(int offset, List<?> data) {
-        Map<String,List> lazyCacheData = this.getLazyCacheData();
-        if(lazyCacheData == null) {
-            lazyCacheData = new LinkedHashMap<String,List>();
-        }
-        else if(this.getLazyCacheSize() == lazyCacheData.size()) {
-            //remove first-in to make room
-            lazyCacheData.remove(lazyCacheData.keySet().iterator().next());
-        }
-        lazyCacheData.put(String.valueOf(offset), data);
-        this.setLazyCacheData(lazyCacheData);
-    }       
-    
-   

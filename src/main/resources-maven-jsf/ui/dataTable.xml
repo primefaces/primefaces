@@ -467,20 +467,6 @@
 			<type>java.lang.String</type>
             <description>Label to read by screen readers on checkbox selection.</description>
 		</attribute>
-        <attribute>
-			<name>lazyCache</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Caches the next page asynchronously, default is false.</description>
-		</attribute>
-         <attribute>
-			<name>lazyCacheSize</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-            <defaultValue>5</defaultValue>
-            <description>Number of entries in lazy cache buffer</description>
-		</attribute>
 	</attributes>
 	<resources>
         <resource>
