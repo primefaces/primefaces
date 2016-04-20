@@ -206,7 +206,7 @@ PrimeFaces.dialog.DialogHandler = {
     findRootWindow: function() {
         var w = window;
         while(w.frameElement) {
-            w = window.parent;
+            w = w.parent;
         };
         
         return w;
