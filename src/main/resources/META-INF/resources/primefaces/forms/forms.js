@@ -412,7 +412,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 /**
  * PrimeFaces SelectOneMenu Widget
  */
-PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
@@ -496,6 +496,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
             .attr('aria-describedby', highlightedItemId)
             .attr('aria-disabled', this.disabled);
         this.itemsContainer.attr('aria-activedescendant', highlightedItemId);
+        
+        this.renderDeferred();
+    },
+    
+    _render: function() {
+        this.jq.css('min-width', this.input.outerWidth());
     },
     
     refresh: function(cfg) {
