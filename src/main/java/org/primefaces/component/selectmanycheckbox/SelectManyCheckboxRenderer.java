@@ -28,8 +28,10 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
+import javax.faces.render.Renderer;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectManyRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -38,7 +40,12 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return context.getRenderKit().getRenderer("javax.faces.SelectMany", "javax.faces.Checkbox").getConvertedValue(context, component, submittedValue);
+        Renderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                "javax.faces.SelectMany",
+                "javax.faces.Checkbox",
+                Renderer.class);
+        return renderer.getConvertedValue(context, component, submittedValue);
 	}
 
     @Override

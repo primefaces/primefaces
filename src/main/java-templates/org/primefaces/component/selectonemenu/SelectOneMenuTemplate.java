@@ -18,6 +18,7 @@ import org.primefaces.util.MessageFactory;
 import org.primefaces.util.Constants;
 import org.primefaces.event.SelectEvent;
 import java.util.Map;
+import javax.faces.render.Renderer;
 
     public final static String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default ui-corner-all";
     public final static String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield ui-corner-all";
@@ -64,7 +65,13 @@ import java.util.Map;
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             
             if("itemSelect".equals(eventName)) {
-                Object item = context.getRenderKit().getRenderer("javax.faces.SelectOne", "javax.faces.Menu").getConvertedValue(context, this, this.getSubmittedValue());
+                Renderer renderer = ComponentUtils.getUnwrappedRenderer(
+                    context,
+                    "javax.faces.SelectOne",
+                    "javax.faces.Menu",
+                    Renderer.class);
+                
+                Object item = renderer.getConvertedValue(context, this, this.getSubmittedValue());
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
                 selectEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(selectEvent);

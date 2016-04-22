@@ -99,8 +99,11 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 		FastStringWriter fswHtml = new FastStringWriter();
 
 		Timeline timeline = (Timeline) fc.getViewRoot().findComponent(id);
-		TimelineRenderer timelineRenderer =
-		    (TimelineRenderer) fc.getRenderKit().getRenderer(Timeline.COMPONENT_FAMILY, "org.primefaces.component.TimelineRenderer");
+		TimelineRenderer timelineRenderer = ComponentUtils.getUnwrappedRenderer(
+                fc,
+                Timeline.COMPONENT_FAMILY,
+                "org.primefaces.component.TimelineRenderer",
+                TimelineRenderer.class);
 
         Map<String, String> groupsContent = null;
         List<TimelineGroup> groups = timeline.getValue().getGroups();

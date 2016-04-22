@@ -17,7 +17,6 @@ package org.primefaces.util;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +27,7 @@ import java.util.regex.Pattern;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.FacesWrapper;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.application.ResourceHandler;
@@ -36,8 +36,10 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.render.Renderer;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.config.ConfigContainer;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -488,5 +490,15 @@ public class ComponentUtils {
         } else {
             return TimeZone.getDefault();
         }
+    }
+    
+    public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType, Class<T> rendererClass) {
+        Renderer renderer = context.getRenderKit().getRenderer(family, rendererType);
+        
+        while (renderer instanceof FacesWrapper) {
+            renderer = (Renderer) ((FacesWrapper) renderer).getWrapped();
+        }
+
+        return (T) renderer;
     }
 }

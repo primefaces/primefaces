@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.datalist.DataList;
 import org.primefaces.mobile.renderkit.paginator.PaginatorRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataListRenderer extends org.primefaces.component.datalist.DataListRenderer {
@@ -166,6 +167,11 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
     }
     
     private PaginatorRenderer getPaginatorRenderer(FacesContext context) {
-        return (PaginatorRenderer) context.getRenderKit().getRenderer("org.primefaces.component", "org.primefaces.component.PaginatorRenderer");
+        PaginatorRenderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                "org.primefaces.component",
+                "org.primefaces.component.PaginatorRenderer",
+                PaginatorRenderer.class);
+        return renderer;
     }
 }

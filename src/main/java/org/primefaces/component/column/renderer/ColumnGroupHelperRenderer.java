@@ -22,6 +22,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
 
@@ -29,8 +30,12 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
         ColumnGroup group = findGroup(column);
         DataTable table = (DataTable) group.getParent();
         String type = group.getType();
-        DataTableRenderer renderer = (DataTableRenderer) context.getRenderKit().getRenderer("org.primefaces.component", "org.primefaces.component.DataTableRenderer");
-        
+        DataTableRenderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                "org.primefaces.component",
+                "org.primefaces.component.DataTableRenderer",
+                DataTableRenderer.class);
+
         if(type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader"))
             renderer.encodeColumnHeader(context, table, column);
         else if(type.equals("footer") || type.equals("frozenFooter") || type.equals("scrollableFooter"))

@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.mobile.renderkit.paginator.PaginatorRenderer;
 import org.primefaces.mobile.util.MobileUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataGridRenderer extends org.primefaces.component.datagrid.DataGridRenderer {
@@ -140,7 +141,13 @@ public class DataGridRenderer extends org.primefaces.component.datagrid.DataGrid
     }
     
     private PaginatorRenderer getPaginatorRenderer(FacesContext context) {
-        return (PaginatorRenderer) context.getRenderKit().getRenderer("org.primefaces.component", "org.primefaces.component.PaginatorRenderer");
+        PaginatorRenderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                "org.primefaces.component",
+                "org.primefaces.component.PaginatorRenderer",
+                PaginatorRenderer.class);
+        
+        return renderer;
     }
 }
 
