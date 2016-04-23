@@ -619,35 +619,20 @@
                         </executions>
                     </plugin>
 
-                    <plugin>
-                        <groupId>org.primefaces</groupId>
-                        <artifactId>maven-jsf-plugin</artifactId>
-                        <version>1.3.2</version>
-                        <executions>
-                            <execution>
-                                <id>css-compressor</id>
-                                <phase>process-resources</phase>
-                                <configuration>
-                                    <theme>false</theme>
-                                </configuration>
-                                <goals>
-                                    <goal>compress-css</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                     <!-- 
-                        in release mode, don't skip *.js, we need to minify it.
-                        we still skip *.css as our maven-jsf-plugin does the job.
+                        don't skip *.js and *.css, we need to minify
                     -->
                     <plugin>
                         <groupId>net.alchim31.maven</groupId>
                         <artifactId>yuicompressor-maven-plugin</artifactId>
                         <configuration>
                             <excludes>
-                                <exclude>**/*.css</exclude>
+                                <exclude>**/*.something</exclude>
                             </excludes>
+                            <includes>
+                                <include>**/*.js</include>
+                                <include>**/*.css</include>
+                            </includes>
                         </configuration>
                     </plugin>
                 </plugins>
