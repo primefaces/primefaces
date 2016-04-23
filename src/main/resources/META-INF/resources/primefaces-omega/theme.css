@@ -1,3 +1,5 @@
+/* Omega Theme */
+
 /* Component containers
 ----------------------------------*/
 .ui-widget { font-family: Arial,Helvetica,sans-serif; font-size: 1em; }
@@ -9,7 +11,6 @@
 .ui-widget-header {
 	border: 1px solid #d9d9d9;
 	color: #1b1d1f;
-	text-shadow: 0 1px 0 rgba(255,255,255,0.5);
 	background: #f6f7f9 0 0 repeat-x;  /* Old browsers */
 	background: -moz-linear-gradient(top, #f6f7f9 0%, #ebedf0 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f7f9), color-stop(100%,#ebedf0)); /* Chrome,Safari4+ */
@@ -601,7 +602,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     background-image: url("#{resource['primefaces-delta:images/ui-icons_ffffff_256x240.png']}");
 }
 
-/* DataTable */
+/* DataTable  */
 .ui-datatable th {
     font-weight: bold;
 }
@@ -630,6 +631,16 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 
 .ui-datatable tbody > tr.ui-widget-content {
     border-color: #d9d9d9;
+}
+
+.ui-datatable .ui-selection-column .ui-radiobutton-box.ui-state-active,
+.ui-datatable .ui-selection-column .ui-chkbox-box.ui-state-active {
+    background-color: #ffffff;
+}
+
+.ui-datatable .ui-selection-column .ui-radiobutton-box .ui-icon,
+.ui-datatable .ui-selection-column .ui-chkbox-box .ui-icon{
+    background-image: url("#{resource['primefaces-delta:images/ui-icons_454545_256x240.png']}");
 }
 
 /* Panel */
@@ -674,18 +685,35 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 }
 
 /* TreeTable */
+.ui-treetable th {
+    font-weight: bold;
+}
+.ui-treetable th.ui-state-default{
+    background: #ebedf0;
+    border-color: #d9d9d9;
+}
 .ui-treetable th.ui-state-hover{
     background: #d3d5d8;
-    border-color: #d3d3d3;
+    border-color: #d9d9d9;
 }
-
-.ui-treetable th.ui-state-active {
+.ui-treetable th.ui-state-active{
     background: #186ba0;
     color: #ffffff;
 }
-
 .ui-treetable th.ui-state-active .ui-icon-carat-2-n-s {
     background-image: url("#{resource['primefaces-delta:images/ui-icons_ffffff_256x240.png']}");
+}
+
+.ui-treetable tbody > tr.ui-widget-content {
+    border-color: #d9d9d9;
+}
+
+.ui-treetable .ui-selection .ui-chkbox-box {
+    background-color: #ffffff;
+}
+
+.ui-treetable .ui-selection .ui-chkbox-box .ui-icon {
+    background-image: url("#{resource['primefaces-delta:images/ui-icons_454545_256x240.png']}");
 }
 
 /* Inputs */
@@ -702,8 +730,8 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     border: 1px solid #d6d6d6; background: #ffffff; font-weight: normal; color: #555555;
 }
 
-.ui-selectonebutton .ui-button.ui-state-hover,
-.ui-selectmanybutton .ui-button.ui-state-hover {
+.ui-selectonebutton .ui-button.ui-state-hover,.ui-selectonebutton .ui-button.ui-state-focus,
+.ui-selectmanybutton .ui-button.ui-state-hover,.ui-selectmanybutton .ui-button.ui-state-focus {
    border: 1px solid #c0c0c0; background: #eeeeee; font-weight: normal; color: #212121;
 }
 
@@ -716,4 +744,30 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 .ui-selectonemenu .ui-selectonemenu-trigger,
 .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger {
     border-color: #ffffff;
+}
+
+.ui-selectcheckboxmenu.ui-state-focus .ui-selectcheckboxmenu-label,
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-label.ui-state-hover {
+    background-color: #ffffff;
+}
+
+
+/* TabMenu */
+.ui-tabmenu li.ui-state-active {
+    border: 1px solid #156090; 
+    background: #186ba0; 
+    color: #FFFFFF;
+}
+
+.ui-tabmenu li.ui-state-active .ui-menuitem-text {
+    color: #FFFFFF;
+}
+
+.ui-tabmenu li.ui-state-active .ui-menuitem-icon {
+    background-image: url("#{resource['primefaces-delta:images/ui-icons_ffffff_256x240.png']}");
+}
+
+/* Steps */
+.ui-steps .ui-state-highlight span {
+    color: #ffffff;
 }
