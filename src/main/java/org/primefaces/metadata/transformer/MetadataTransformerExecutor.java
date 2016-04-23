@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 
 public class MetadataTransformerExecutor {
@@ -31,7 +31,7 @@ public class MetadataTransformerExecutor {
 
     private final static MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
     
-    public static void execute(ConfigContainer config, UIComponent component) throws IOException {
+    public static void execute(PrimeConfiguration config, UIComponent component) throws IOException {
         if (config.isTransformMetadataEnabled()) {
 
             FacesContext context = FacesContext.getCurrentInstance();

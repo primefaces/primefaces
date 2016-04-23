@@ -40,7 +40,7 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 
@@ -76,7 +76,7 @@ public class ComponentUtils {
             if (component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
-                ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+                PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
 
                 if (config.isInterpretEmptyStringAsNull()
                         && submittedValue == null

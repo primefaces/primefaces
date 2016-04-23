@@ -25,12 +25,12 @@ import javax.validation.ValidatorFactory;
 import org.primefaces.cache.CacheProvider;
 import org.primefaces.cache.DefaultCacheProvider;
 
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.util.Constants;
 
 public class DefaultApplicationContext extends ApplicationContext {
 
-	private ConfigContainer config;
+	private PrimeConfiguration config;
 	private ValidatorFactory validatorFactory;
     private Validator validator;
     private CacheProvider cacheProvider;
@@ -38,7 +38,7 @@ public class DefaultApplicationContext extends ApplicationContext {
     private Map<Class<?>, Map<String, Object>> constantsCacheMap;
 
     public DefaultApplicationContext(FacesContext context) {
-    	this.config = new ConfigContainer(context);
+    	this.config = new PrimeConfiguration(context);
     	
     	if (this.config.isBeanValidationAvailable()) {
     	    this.validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -50,7 +50,7 @@ public class DefaultApplicationContext extends ApplicationContext {
     }
 
 	@Override
-	public ConfigContainer getConfig() {
+	public PrimeConfiguration getConfig() {
 		return config;
 	}
 

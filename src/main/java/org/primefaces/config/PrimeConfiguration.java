@@ -35,9 +35,9 @@ import org.primefaces.util.Constants;
 /**
  * Container for all config parameters.
  */
-public class ConfigContainer {
+public class PrimeConfiguration {
 
-    private static final Logger LOG = Logger.getLogger(ConfigContainer.class.getName());
+    private static final Logger LOG = Logger.getLogger(PrimeConfiguration.class.getName());
 
     // context params
     private boolean validateEmptyFields = false;
@@ -70,11 +70,11 @@ public class ConfigContainer {
     // web.xml
     private Map<String, String> errorPages = null;
 
-    protected ConfigContainer() {
+    protected PrimeConfiguration() {
 
     }
 
-    public ConfigContainer(FacesContext context) {
+    public PrimeConfiguration(FacesContext context) {
         initConfigFromContextParams(context);
         initConfig(context);
         initBuildProperties();

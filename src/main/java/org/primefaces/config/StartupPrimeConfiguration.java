@@ -17,9 +17,9 @@ package org.primefaces.config;
 
 import javax.faces.context.FacesContext;
 
-public class StartupConfigContainer extends ConfigContainer {
+public class StartupPrimeConfiguration extends PrimeConfiguration {
 
-    public StartupConfigContainer(FacesContext context) {
+    public StartupPrimeConfiguration(FacesContext context) {
         initBuildProperties();
     }
 }

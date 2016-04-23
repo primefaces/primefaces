@@ -28,7 +28,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
 
 import org.primefaces.context.RequestContext;
 
@@ -45,7 +45,7 @@ public class HeadRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
         ProjectStage projectStage = context.getApplication().getProjectStage();
         boolean csvEnabled = cc.isClientSideValidationEnabled();
                 

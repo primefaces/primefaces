@@ -21,7 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
 import javax.faces.render.Renderer;
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 import org.primefaces.metadata.transformer.MetadataTransformerExecutor;
 
@@ -30,7 +30,7 @@ public class PrimeRendererWrapper extends Renderer implements FacesWrapper<Rende
 
     private final Renderer wrapped;
     private boolean initialized = false;
-    private ConfigContainer config;
+    private PrimeConfiguration config;
     
     public PrimeRendererWrapper(Renderer wrapped) {
         this.wrapped = wrapped;

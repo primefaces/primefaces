@@ -21,7 +21,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import org.primefaces.cache.CacheProvider;
 
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
 import static org.primefaces.context.RequestContext.INSTANCE_KEY;
 
 /**
@@ -47,7 +47,7 @@ public abstract class ApplicationContext {
         facesContext.getExternalContext().getApplicationMap().put(INSTANCE_KEY, context);
     }
     
-	public abstract ConfigContainer getConfig();
+	public abstract PrimeConfiguration getConfig();
 	
 	public abstract ValidatorFactory getValidatorFactory();
     

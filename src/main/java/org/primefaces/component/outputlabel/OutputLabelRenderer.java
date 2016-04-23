@@ -28,7 +28,7 @@ import javax.faces.context.ResponseWriter;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
@@ -114,7 +114,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         if (input != null && label.isIndicateRequired()) {
 
-            ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+            PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
             
             if (input.isRequired()) {
                 encodeRequiredIndicator(writer, label);
