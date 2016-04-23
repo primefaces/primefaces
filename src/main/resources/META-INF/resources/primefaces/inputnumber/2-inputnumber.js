@@ -30,47 +30,44 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.skinInput(this.inputExternal);
 
         // copy the value from the external input to the hidden input
-        this.inputExternal.on('keyup', function(event) {
-            //filter keys
-            var keyCode = event.keyCode;
-            if (keyCode === 8 || keyCode === 13 || keyCode === 32
-                || ( keyCode >= 46 && keyCode <= 90)
-                || ( keyCode >= 96 && keyCode <= 111)
-                || ( keyCode >= 186 && keyCode <= 222)) {
-                $this.copyValueToHiddenInput();
+        var originalOnkeyup = this.inputExternal.prop('onkeyup');
+        this.inputExternal.removeProp('onkeyup').off('keyup').on('keyup', function(e) {
+            var proceed = true;
+            if (originalOnkeyup) {
+                proceed = originalOnkeyup.call(this, e);
+            }
+            if (proceed !== false) {
+                var keyCode = e.keyCode;
+                if (keyCode === 8 || keyCode === 13 || keyCode === 32
+                    || ( keyCode >= 46 && keyCode <= 90)
+                    || ( keyCode >= 96 && keyCode <= 111)
+                    || ( keyCode >= 186 && keyCode <= 222)) {
+                    $this.copyValueToHiddenInput();
+                }
             }
         });
 
         // also copy values on onchange - see #293
         // backup onchange, should be executed after our onchange
-        var originalOnchange = this.inputExternal.attr('onchange');
-        this.inputExternal.attr('onchange', null);
-        this.inputExternal.off('change').on('change', function(event) {
-            $this.copyValueToHiddenInput();
-
+        var originalOnchange = this.inputExternal.prop('onchange');
+        this.inputExternal.removeProp('onchange').off('change').on('change', function(e) {
+            var proceed = true;
             if (originalOnchange) {
-                eval(originalOnchange);
+                proceed = originalOnchange.call(this, e);
+            }
+            if (proceed !== false) {
+                $this.copyValueToHiddenInput();
             }
         });
-        
-        var originalOnkeydown = this.inputExternal.attr('onkeydown'),
-            originalOnkeyup = this.inputExternal.attr('onkeyup');
-    
-        this.inputExternal.attr('onkeydown', null).attr('onkeyup', null);
-        this.inputExternal.off('keydown keyup').on('keydown', function(event) {
-            setTimeout(function(){
+
+        var originalOnkeydown = this.inputExternal.prop('onkeydown');
+        this.inputExternal.removeProp('onkeydown').off('keydown').on('keydown', function(e) {
+            var proceed = true;
+            if (originalOnkeydown) {
+                proceed = originalOnkeydown.call(this, e);
+            }
+            if (proceed !== false) {
                 $this.copyValueToHiddenInput();
-
-                if (originalOnkeydown) {
-                    eval(originalOnkeydown);
-                }
-            },1);
-        })
-        .on('keyup', function(event) {
-            $this.copyValueToHiddenInput();
-
-            if (originalOnkeyup) {
-                eval(originalOnkeyup);
             }
         });
 
