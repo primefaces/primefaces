@@ -49,6 +49,18 @@
 			<type>java.lang.String</type>
             <description>A localized user presentable name.</description>
 		</attribute>
+            <attribute>
+                    <name>callback</name>
+                    <required>false</required>
+                    <type>java.lang.String</type>
+        <description>Callback executed when the user submits a successful captcha response.</description>
+            </attribute>
+            <attribute>
+                    <name>expired</name>
+                    <required>false</required>
+                    <type>java.lang.String</type>
+        <description>Callback executed when the captcha response expires and the user needs to solve a new captcha.</description>
+            </attribute>
 	</attributes>
     <resources>
 		<resource>
