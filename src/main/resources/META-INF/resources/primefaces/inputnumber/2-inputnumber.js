@@ -37,7 +37,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
                 proceed = originalOnkeyup.call(this, e);
             }
             if (proceed !== false) {
-                var keyCode = e.keyCode;
+                var keyCode = e.which;
                 if (keyCode === 8 || keyCode === 13 || keyCode === 32
                     || ( keyCode >= 46 && keyCode <= 90)
                     || ( keyCode >= 96 && keyCode <= 111)

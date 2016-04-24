@@ -321,7 +321,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
                 function(event) {
                     var target = $(event.target);
 
-                    if(event.keyCode === $.ui.keyCode.TAB) {  
+                    if(event.which === $.ui.keyCode.TAB) {  
                         var tabbables = $this.getTabbables();
 
                         if(tabbables.length) {

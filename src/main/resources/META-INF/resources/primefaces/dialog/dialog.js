@@ -119,7 +119,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 function(event) {
                     var target = $(event.target);
 
-                    if(event.keyCode === $.ui.keyCode.TAB) {
+                    if(event.which === $.ui.keyCode.TAB) {
                         var tabbables = $this.jq.find(':tabbable').add($this.footer.find(':tabbable'));
                         if(tabbables.length) {
                             var first = tabbables.filter(':first'),
