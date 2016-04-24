@@ -26,3 +26,4 @@ Extensions
 - Added fix to autosize from https://github.com/jackmoore/autosize/issues/225
 - Added fix to timepicker from https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848
 - Added some fixes to timepicker _gotoToday (Issue; https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/281 )
+- Use e.which instead e.keyCode

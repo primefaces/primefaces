@@ -1262,7 +1262,7 @@
         shift_down = e.shiftKey ? true : false;
         var nudge = shift_down ? 10 : 1;
 
-        switch (e.keyCode) {
+        switch (e.which) {
         case 37:
           doNudge(e, -nudge, 0);
           break;
