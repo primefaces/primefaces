@@ -17,15 +17,12 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
     },
     
     render: function() {
-        $this = this;
         grecaptcha.render(this.jq.get(0), {
             'sitekey' : this.cfg.sitekey,
             'tabindex': this.cfg.tabindex,
-            'theme': this.cfg.theme,
-            'callback': new Function($this.cfg.callback),
-            'expired-callback': new Function($this.cfg.expired)   
+            'theme': this.cfg.theme
         });
-
+        
         window[this.cfg.widgetVar + '_initCallback'] = undefined;
     }
     

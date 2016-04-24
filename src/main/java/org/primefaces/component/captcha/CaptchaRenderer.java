@@ -76,9 +76,7 @@ public class CaptchaRenderer extends CoreRenderer {
         wb.attr("sitekey", publicKey)
             .attr("theme", captcha.getTheme(), "light")
             .attr("language", captcha.getLanguage(), "en")
-            .attr("tabindex", captcha.getTabindex(), 0)
-            .attr("callback", captcha.getCallback(), null)
-            .attr("expired", captcha.getExpired(), null);
+            .attr("tabindex", captcha.getTabindex(), 0);
         
         wb.finish();
     }
