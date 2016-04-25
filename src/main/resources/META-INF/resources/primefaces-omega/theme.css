@@ -1,11 +1,11 @@
 /* Omega Theme */
 @font-face {
     font-family: 'latoregular';
-    src: url("#{resource['primefaces-delta:fonts/lato-regular-webfont.eot']}");
-    src: url("#{resource['primefaces-delta:fonts/lato-regular-webfont.eot']}#iefix") format('embedded-opentype'),
-         url("#{resource['primefaces-delta:fonts/lato-regular-webfont.woff']}") format('woff'),
-         url("#{resource['primefaces-delta:fonts/lato-regular-webfont.ttf']}") format('truetype'),
-         url("#{resource['primefaces-delta:fonts/lato-regular-webfont.svg']}#latoregular") format('svg');
+    src: url("#{resource['primefaces-omega:fonts/lato-regular-webfont.eot']}");
+    src: url("#{resource['primefaces-omega:fonts/lato-regular-webfont.eot']}#iefix") format('embedded-opentype'),
+         url("#{resource['primefaces-omega:fonts/lato-regular-webfont.woff']}") format('woff'),
+         url("#{resource['primefaces-omega:fonts/lato-regular-webfont.ttf']}") format('truetype'),
+         url("#{resource['primefaces-omega:fonts/lato-regular-webfont.svg']}#latoregular") format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -56,14 +56,14 @@
 ----------------------------------*/
 
 /* states and images */
-.ui-icon { width: 16px; height: 16px; background-image: url("#{resource['primefaces-delta:images/ui-icons_222222_256x240.png']}"); }
-.ui-widget-content .ui-icon {background-image: url("#{resource['primefaces-delta:images/ui-icons_222222_256x240.png']}"); }
-.ui-widget-header .ui-icon {background-image: url("#{resource['primefaces-delta:images/ui-icons_222222_256x240.png']}"); }
-.ui-state-default .ui-icon { background-image: url("#{resource['primefaces-delta:images/ui-icons_454545_256x240.png']}"); }
-.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url("#{resource['primefaces-delta:images/ui-icons_454545_256x240.png']}"); }
-.ui-state-active .ui-icon {background-image: url("#{resource['primefaces-delta:images/ui-icons_454545_256x240.png']}"); }
-.ui-state-highlight .ui-icon {background-image: url("#{resource['primefaces-delta:images/ui-icons_ffffff_256x240.png']}"); }
-.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url("#{resource['primefaces-delta:images/ui-icons_cd0a0a_256x240.png']}"); }
+.ui-icon { width: 16px; height: 16px; background-image: url("#{resource['primefaces-omega:images/ui-icons_222222_256x240.png']}"); }
+.ui-widget-content .ui-icon {background-image: url("#{resource['primefaces-omega:images/ui-icons_222222_256x240.png']}"); }
+.ui-widget-header .ui-icon {background-image: url("#{resource['primefaces-omega:images/ui-icons_222222_256x240.png']}"); }
+.ui-state-default .ui-icon { background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}"); }
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}"); }
+.ui-state-active .ui-icon {background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}"); }
+.ui-state-highlight .ui-icon {background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}"); }
+.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url("#{resource['primefaces-omega:images/ui-icons_cd0a0a_256x240.png']}"); }
 
 /* positioning */
 .ui-icon-carat-1-n { background-position: 0 0; }
@@ -343,7 +343,7 @@
  *
  * http://docs.jquery.com/UI/Button#theming
  */
-.ui-button .ui-icon { background-image: url("#{resource['primefaces-delta:images/ui-icons_ffffff_256x240.png']}"); }
+.ui-button .ui-icon { background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}"); }
 /*
  * jQuery UI Dialog 1.8.16
  *
@@ -372,7 +372,7 @@
  * http://docs.jquery.com/UI/Slider#theming
  */
 .ui-slider { position: relative; text-align: left; background: #838688; border: none; -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.6) inset; -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.6) inset; box-shadow: 0 1px 3px rgba(0,0,0,0.6) inset;}
-.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 17px !important; height: 21px  !important; cursor: default; background: url("#{resource['primefaces-delta:images/slider_handles.png']}") 0 0 no-repeat; outline: none; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; border: none; }
+.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 17px !important; height: 21px  !important; cursor: default; background: url("#{resource['primefaces-omega:images/slider_handles.png']}") 0 0 no-repeat; outline: none; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; border: none; }
 .ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background: #14a4ff; -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.6) inset; -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.6) inset; box-shadow: 0 1px 3px rgba(0,0,0,0.6) inset; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
 .ui-slider .ui-slider-handle.ui-state-active { background-position: -17px 0; }
 
@@ -486,8 +486,8 @@ td.ui-datepicker-unselectable {
 .ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
 .ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
 .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
-.ui-datepicker .ui-icon-circle-triangle-w { background: url("#{resource['primefaces-delta:images/icons_16.png']}") 0 -128px no-repeat !important; }
-.ui-datepicker .ui-icon-circle-triangle-e { background: url("#{resource['primefaces-delta:images/icons_16.png']}") 0 -112px no-repeat !important; }
+.ui-datepicker .ui-icon-circle-triangle-w { background: url("#{resource['primefaces-omega:images/icons_16.png']}") 0 -128px no-repeat !important; }
+.ui-datepicker .ui-icon-circle-triangle-e { background: url("#{resource['primefaces-omega:images/icons_16.png']}") 0 -112px no-repeat !important; }
 .ui-datepicker-header .ui-state-hover { border: 0; background: none; }
 
 /* with multiple calendars */
@@ -552,7 +552,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 /* Checkbox and Radio */
 .ui-state-highlight .ui-chkbox-box .ui-icon, 
 .ui-state-highlight .ui-radiobutton-box .ui-icon {
-    background-image: url("#{resource['primefaces-delta:images/ui-icons_2e83ff_256x240.png']}");
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_2e83ff_256x240.png']}");
 }
 
 .ui-chkbox-box.ui-state-active,
@@ -566,7 +566,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 
 .ui-chkbox-box.ui-state-active .ui-icon,
 .ui-radiobutton-box.ui-state-active .ui-icon {
-    background-image: url("#{resource['primefaces-delta:images/ui-icons_ffffff_256x240.png']}");
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
 
 /* TimeLine */
@@ -609,7 +609,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 }
 
 .ui-panelmenu .ui-panelmenu-header.ui-state-active .ui-icon {
-    background-image: url("#{resource['primefaces-delta:images/ui-icons_ffffff_256x240.png']}");
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
 
 /* DataTable  */
@@ -629,7 +629,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     color: #ffffff;
 }
 .ui-datatable th.ui-state-active .ui-icon-carat-2-n-s {
-    background-image: url("#{resource['primefaces-delta:images/ui-icons_ffffff_256x240.png']}");
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
 .ui-datatable-odd {
     background-color: #fafafb;
@@ -650,7 +650,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 
 .ui-datatable .ui-selection-column .ui-radiobutton-box .ui-icon,
 .ui-datatable .ui-selection-column .ui-chkbox-box .ui-icon{
-    background-image: url("#{resource['primefaces-delta:images/ui-icons_454545_256x240.png']}");
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
 /* Panel */
@@ -711,7 +711,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     color: #ffffff;
 }
 .ui-treetable th.ui-state-active .ui-icon-carat-2-n-s {
-    background-image: url("#{resource['primefaces-delta:images/ui-icons_ffffff_256x240.png']}");
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
 
 .ui-treetable tbody > tr.ui-widget-content {
@@ -723,7 +723,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 }
 
 .ui-treetable .ui-selection .ui-chkbox-box .ui-icon {
-    background-image: url("#{resource['primefaces-delta:images/ui-icons_454545_256x240.png']}");
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
 /* Inputs */
@@ -754,16 +754,16 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 }
 
 .ui-selectbooleanbutton.ui-button.ui-state-default .ui-icon {
-    background-image: url("#{resource['primefaces-delta:images/ui-icons_454545_256x240.png']}");
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
 .ui-selectbooleanbutton.ui-button.ui-state-hover.ui-icon,
 .ui-selectbooleanbutton.ui-button.ui-state-focus .ui-icon {
-    background-image: url("#{resource['primefaces-delta:images/ui-icons_454545_256x240.png']}");
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
 .ui-selectbooleanbutton.ui-button.ui-state-active .ui-icon {
-    background-image: url("#{resource['primefaces-delta:images/ui-icons_ffffff_256x240.png']}");
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
 
 /* SelectOneMenu */
@@ -790,7 +790,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 }
 
 .ui-tabmenu li.ui-state-active .ui-menuitem-icon {
-    background-image: url("#{resource['primefaces-delta:images/ui-icons_ffffff_256x240.png']}");
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
 
 /* Steps */
