@@ -438,7 +438,7 @@
 .ui-datepicker select.ui-datepicker-month-year {width: 100%;}
 .ui-datepicker select.ui-datepicker-month,
 .ui-datepicker select.ui-datepicker-year { width: 49%;}
-.ui-datepicker table {width: 1px; font-size: .9em; border-collapse: collapse; margin: -1px 0 0 0 !important; }
+.ui-datepicker table {font-size: .9em; border-collapse: collapse; margin: -1px 0 0 0 !important; }
 .ui-datepicker th { padding: .7em 0; text-align: center; font-weight: bold; border: 0; font-size: 10px; color: #acacac; border-bottom: 1px solid #cdcdcd !important; }
 .ui-datepicker td { border: 0; padding: 0 !important; border: 1px solid #cdcdcd; }
 .ui-datepicker td a { display: block; padding: 0 !important; border: 0 none !important;/*border: 1px solid #cdcdcd !important;*/ line-height: 30px; text-align: center !important; font-size: 12px; text-decoration: none; font-weight: bold !important; }
