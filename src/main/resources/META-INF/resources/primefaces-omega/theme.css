@@ -463,7 +463,7 @@
 }
 
 .ui-datepicker-today a.ui-state-highlight {
-	border: 1px solid #156090 !important;
+    text-shadow: 1px 1px 1px #156090;
 }
 
 .ui-datepicker td a.ui-state-default.ui-state-hover {
