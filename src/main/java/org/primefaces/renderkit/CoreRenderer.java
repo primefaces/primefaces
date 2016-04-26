@@ -239,73 +239,96 @@ public abstract class CoreRenderer extends Renderer {
 
     protected String buildDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent, String behaviorEventAlias, String command) {
         StringBuilder builder = null;
-        Map<String,List<ClientBehavior>> behaviors = null;
+        
+        boolean hasCommand = (command != null);
+        
+        Map<String,List<ClientBehavior>> allBehaviors = null;
         if(component instanceof ClientBehaviorHolder) {
-            behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
+            allBehaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
         }
-        Object eventValue = component.getAttributes().get(domEvent);
+        
+        Object event = component.getAttributes().get(domEvent);
+        boolean hasEvent = (event != null);
+        
         String behaviorEventName = behaviorEventAlias;
-        if (behaviors != null && behaviors.containsKey(behaviorEvent)) {
+        if (allBehaviors != null && allBehaviors.containsKey(behaviorEvent)) {
             behaviorEventName = behaviorEvent;
         }
 
-        List<ClientBehavior> eventBehaviors = (behaviors == null) ? null : behaviors.get(behaviorEventName);
-        boolean hasEventValue = (eventValue != null);
-        boolean hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
+        List<ClientBehavior> behaviors = (allBehaviors == null) ? null : allBehaviors.get(behaviorEventName);
+        boolean hasBehaviors = (behaviors != null && !behaviors.isEmpty());
 
-        if (hasEventValue || hasEventBehaviors || command != null) {
+        if (hasEvent || hasBehaviors || hasCommand) {
             if (builder == null) {
                 builder = SharedStringBuilder.get(context, SB_RENDER_DOM_EVENTS);
             }
 
-            if (hasEventValue) {
-                builder.append(eventValue).append(";");
+            int commandSize = 0;
+            if (hasBehaviors) {
+                commandSize += behaviors.size();
+            }
+            if (hasEvent) {
+                commandSize++;
+            }
+            if (hasCommand) {
+                commandSize++;
             }
 
-            if (hasEventBehaviors) {
-                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
-                int eventBehaviorSize = eventBehaviors.size();
-                int commandSize = (command != null) ? (eventBehaviorSize + 1): eventBehaviorSize;
+            if (commandSize > 1) {
+                boolean first = true;
+                builder.append("PrimeFaces.bcn(this,event,[");
 
-                if (commandSize > 1) {
-                    boolean behaviorRendered = false;
-                    builder.append("PrimeFaces.bcn(this,event,[");
+                if (hasEvent) {
+                    builder.append("function(event){").append(event).append("}");
+                    first = false;
+                }
 
-                    for (int i = 0; i < eventBehaviorSize; i++) {
-                        ClientBehavior behavior = eventBehaviors.get(i);
+                if (hasBehaviors) {
+                    ClientBehaviorContext cbc = null;
+                    for (int i = 0; i < behaviors.size(); i++) {
+                        ClientBehavior behavior = behaviors.get(i);
+                        if (cbc == null) {
+                            cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
+                        }
                         String script = behavior.getScript(cbc);
 
                         if (script != null) {
-                            if(!behaviorRendered) {
-                                behaviorRendered = true;
-                            } else {
+                            if(!first) {
                                 builder.append(",");
                             }
 
                             builder.append("function(event){").append(script).append("}");
+                            first = false;
                         }
                     }
-
-                    if (command != null) {
-                        if(behaviorRendered) {
-                            builder.append(",");
-                        }
-
-                        builder.append("function(event){").append(command).append("}");
-                    }
-
-                    builder.append("]);");
                 }
-                else {
-                    ClientBehavior behavior = eventBehaviors.get(0);
+
+                if (hasCommand) {
+                    if (!first) {
+                        builder.append(",");
+                    }
+
+                    builder.append("function(event){").append(command).append("}");
+                    first = false;
+                }
+
+                builder.append("]);");
+            }
+            else {
+                if (hasBehaviors) {
+                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
+                    ClientBehavior behavior = behaviors.get(0);
                     String script = behavior.getScript(cbc);
                     if (script != null) {
                         builder.append(script);
                     }
                 }
-            }
-            else if (command != null) {
-                builder.append(command);
+                else if (hasCommand) {
+                    builder.append(command);
+                }
+                else if (hasEvent) {
+                    builder.append(event);
+                }
             }
         }
 
