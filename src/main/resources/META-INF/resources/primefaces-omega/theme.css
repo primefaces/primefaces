@@ -14,7 +14,6 @@
 ----------------------------------*/
 .ui-widget { font-family: "latoregular", "Trebuchet MS", Arial, Helvetica, sans-serif; font-size: 1em; font-size: 1em; }
 .ui-widget .ui-widget { font-size: 1em; }
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Arial,Helvetica,sans-serif; font-size: 1em; }
 .ui-widget-content { border: 1px solid #D5D5D5; background: #ffffff; color: #222222; }
 .ui-widget-content a { color: #222222; }
 .ui-widget-header { border: 1px solid #D5D5D5; background: #cccccc; color: #222222; font-weight: bold; }
