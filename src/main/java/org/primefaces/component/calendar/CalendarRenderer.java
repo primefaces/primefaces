@@ -166,6 +166,7 @@ public class CalendarRenderer extends InputRenderer {
             .attr("minDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMindate()), null)
             .attr("maxDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMaxdate()), null)
             .attr("showButtonPanel", calendar.isShowButtonPanel(), false)
+            .attr("showTodayButton", calendar.isShowTodayButton(), true)
             .attr("showWeek", calendar.isShowWeek(), false)
             .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
             .attr("disabled", calendar.isDisabled(), false)

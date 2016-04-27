@@ -303,6 +303,13 @@
 			<type>java.lang.String</type>
             <description>Whether to show the millisecond control, valid values are "true" and "false".</description>
 		</attribute>
+        <attribute>
+			<name>showTodayButton</name>
+			<required>false</required>
+                        <type>java.lang.Boolean</type>
+                        <defaultValue>true</defaultValue>
+            <description>Wheter to show the "Current Date" button if showButtonPanel is rendered. Default is "true".</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>

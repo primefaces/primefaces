@@ -48,13 +48,17 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 //display on top
                 setTimeout(function() {
                     $('#ui-datepicker-div').css('z-index', ++PrimeFaces.zindex);
+
+                    if (_self.cfg.showTodayButton === false) {
+                        $(input).datepicker("widget").find(".ui-datepicker-current").hide();
+                    }
                 }, 1);
-                
+
                 // touch support - prevents keyboard popup
                 if(PrimeFaces.env.touch && !_self.input.attr("readonly") && _self.cfg.showOn && _self.cfg.showOn === 'button') {
                     $(this).prop("readonly", true);
                 }
-                
+
                 //user callback
                 var preShow = _self.cfg.preShow;
                 if(preShow) {
@@ -102,6 +106,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         //mark target and descandants of target as a trigger for a primefaces overlay
         if(this.cfg.popup) {
             this.jq.data('primefaces-overlay-target', this.id).find('*').data('primefaces-overlay-target', this.id);
+        }
+
+        if (!this.cfg.popup && this.cfg.showTodayButton === false) {
+            this.jqEl.parent().find(".ui-datepicker-current").hide();
         }
 
         //pfs metadata
@@ -210,23 +218,23 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         if(!this.cfg.showButtonPanel) {
             this.cfg.showButtonPanel = false;
         }
-        
+
         if(this.cfg.controlType == 'custom' && this.cfg.timeControlObject) {
             this.cfg.controlType = this.cfg.timeControlObject;
         }
-        
+
         if(this.cfg.showHour) {
             this.cfg.showHour = (this.cfg.showHour == "true") ? true : false;
         }
-        
+
         if(this.cfg.showMinute) {
             this.cfg.showMinute = (this.cfg.showMinute == "true") ? true : false;
         }
-        
+
         if(this.cfg.showSecond) {
             this.cfg.showSecond = (this.cfg.showSecond == "true") ? true : false;
         }
-        
+
         if(this.cfg.showMillisec) {
             this.cfg.showMillisec = (this.cfg.showMillisec == "true") ? true : false;
         }
