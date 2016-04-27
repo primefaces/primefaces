@@ -20,8 +20,11 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -60,7 +63,8 @@ public class SelectionFeature implements DataTableFeature {
 	}
 
 	void decodeMultipleSelection(FacesContext context, DataTable table, String selection) {
-		Class<?> clazz = table.getValueExpression("selection").getType(context.getELContext());
+		ValueExpression selectionByVE = table.getValueExpression("selection");
+		Class<?> clazz = selectionByVE == null ? null : selectionByVE.getType(context.getELContext());
         boolean isArray = clazz == null ? false : clazz.isArray();
         
         if(clazz != null && !isArray && !List.class.isAssignableFrom(clazz)) {
