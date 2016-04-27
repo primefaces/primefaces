@@ -76,6 +76,9 @@ public class ColorPickerRenderer extends CoreRenderer {
 		writer.writeAttribute("id", inputId, null);
 		writer.writeAttribute("name", inputId, null);
 		writer.writeAttribute("type", "hidden", null);
+                
+                renderPassThruAttributes(context, colorPicker, null);
+                
 		if(value != null) {
 			writer.writeAttribute("value", value, null);
 		}
