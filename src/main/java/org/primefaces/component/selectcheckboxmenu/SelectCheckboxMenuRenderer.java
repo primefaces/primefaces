@@ -195,6 +195,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             .callback("onHide", "function()", menu.getOnHide())
             .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
             .attr("showHeader", menu.isShowHeader(), true)
+            .attr("updateLabel", menu.isUpdateLabel(), false)
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null);
         
         if(menu.isFilter()) {

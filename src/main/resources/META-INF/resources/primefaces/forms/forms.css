@@ -425,8 +425,6 @@ button.ui-button::-moz-focus-inner {
     width: auto;
     border: none;
     cursor: pointer;
-    text-overflow: ellipsis;
-    overflow:hidden;
 }
 
 .ui-selectcheckboxmenu.ui-state-disabled .ui-selectcheckboxmenu-trigger,

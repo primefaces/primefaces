@@ -134,6 +134,13 @@
             <defaultValue>true</defaultValue>
             <description>When enabled, the header of panel is displayed. Default is true.</description>
 		</attribute>
+        <attribute>
+			<name>updateLabel</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, the selected items are displayed on label. Default is false.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

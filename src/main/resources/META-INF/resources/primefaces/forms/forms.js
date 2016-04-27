@@ -2314,7 +2314,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.keyboardTarget = $(this.jqId + '_focus');
         this.tabindex = this.keyboardTarget.attr('tabindex'); 
         this.cfg.showHeader = (this.cfg.showHeader === undefined) ? true : this.cfg.showHeader;
-        this.defaultLabel = this.label.text();
         
         if(!this.disabled) {
             this.renderPanel();
@@ -2331,7 +2330,15 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             //mark trigger and descandants of trigger as a trigger for a primefaces overlay
             this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
         
-            this.updateLabel();
+            if(this.cfg.updateLabel) {
+                this.defaultLabel = this.label.text();
+                this.label.css({
+                    'text-overflow': 'ellipsis',
+                    overflow: 'hidden'
+                });
+                
+                this.updateLabel();
+            }
         }
 
         //pfs metadata
@@ -2801,7 +2808,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.updateToggler();
             }
             
-            this.updateLabel();
+            if(this.cfg.updateLabel) {
+                this.updateLabel();
+            }
         }
     },
 
@@ -2819,7 +2828,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.updateToggler();
             }
             
-            this.updateLabel();
+            if(this.cfg.updateLabel) {
+                this.updateLabel();
+            }
         }
     },
 
