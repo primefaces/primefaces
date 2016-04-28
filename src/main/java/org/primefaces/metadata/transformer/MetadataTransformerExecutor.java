@@ -20,16 +20,41 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.PreRenderComponentEvent;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 
-public class MetadataTransformerExecutor {
+public class MetadataTransformerExecutor implements SystemEventListener {
 
     private final static List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<MetadataTransformer>();
 
     private final static MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
+    
+    @Override
+    public void processEvent(SystemEvent event) throws AbortProcessingException {
+        try {
+            if (event instanceof PreRenderComponentEvent) {
+                PreRenderComponentEvent preRenderComponentEvent = (PreRenderComponentEvent) event;
+
+                execute(RequestContext.getCurrentInstance().getApplicationContext().getConfig(), preRenderComponentEvent.getComponent());
+            }
+        }
+        catch (IOException e) {
+            throw new FacesException(e);
+        }
+    }
+    
+    @Override
+    public boolean isListenerForSource(Object source) {
+        return source instanceof UIComponent;
+    }
     
     public static void execute(PrimeConfiguration config, UIComponent component) throws IOException {
         if (config.isTransformMetadataEnabled()) {
