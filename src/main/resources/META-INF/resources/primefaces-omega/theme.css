@@ -798,7 +798,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 /* Growl and Messages */
 .ui-growl-info,
 .ui-messages .ui-messages-info, 
-.ui-message .ui-message-info{
+.ui-message.ui-message-info{
     color: #ffffff !important;
     background-color: #2196f3 !important;
     border-color: #2196f3 !important;
@@ -806,15 +806,15 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 
 .ui-growl-warn,
 .ui-messages .ui-messages-warn,
-.ui-message .ui-message-warn{
+.ui-message.ui-message-warn{
     color: #ffffff !important;
     background-color: #ff9800 !important;
     border-color: #ff9800 !important;
 }
 
 .ui-growl-error,.ui-growl-fatal,
-.ui-messages .ui-messages-error, .ui-message .ui-message-error,
-.ui-messages .ui-messages-fatal, .ui-message .ui-message-fatal {
+.ui-messages .ui-messages-error, .ui-message.ui-message-error,
+.ui-messages .ui-messages-fatal, .ui-message.ui-message-fatal {
     color: #ffffff !important;
     background-color: #f44336 !important;
     border-color: #f44336 !important;
