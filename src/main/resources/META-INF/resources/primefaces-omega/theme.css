@@ -44,7 +44,7 @@
 ----------------------------------*/
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {border: 1px solid #156090; background: #186ba0; color: #FFFFFF; }
 .ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a { color: #363636; }
-.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border-left: 2px solid #f44336;}
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border-left: 2px solid #EF5350;}
 .ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary { font-weight: bold; }
 .ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
 .ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
@@ -799,23 +799,27 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 .ui-growl-info,
 .ui-messages .ui-messages-info, 
 .ui-message.ui-message-info{
-    color: #ffffff !important;
-    background-color: #2196f3 !important;
-    border-color: #2196f3 !important;
+    color: #ffffff;
+    background-color: #9CCC65;
+    border-color: #9CCC65;
 }
 
 .ui-growl-warn,
 .ui-messages .ui-messages-warn,
 .ui-message.ui-message-warn{
-    color: #ffffff !important;
-    background-color: #ff9800 !important;
-    border-color: #ff9800 !important;
+    color: #ffffff;
+    background-color: #FFA726;
+    border-color: #FFA726;
 }
 
 .ui-growl-error,.ui-growl-fatal,
 .ui-messages .ui-messages-error, .ui-message.ui-message-error,
 .ui-messages .ui-messages-fatal, .ui-message.ui-message-fatal {
-    color: #ffffff !important;
-    background-color: #f44336 !important;
-    border-color: #f44336 !important;
+    color: #ffffff;
+    background-color: #EF5350;
+    border-color: #EF5350;
+}
+
+.ui-messages .ui-icon {
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
