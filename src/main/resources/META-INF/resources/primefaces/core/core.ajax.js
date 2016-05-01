@@ -135,12 +135,15 @@ PrimeFaces.ajax = {
             }
             // used by @all
             else if (id === PrimeFaces.VIEW_ROOT) {
+                
+                // backup our utils, we reset it soon
+                var ajaxUtils = PrimeFaces.ajax.Utils;
+                
                 // reset PrimeFaces JS state because the view is completely replaced with a new one
                 window.PrimeFaces = null;
 
-                PrimeFaces.ajax.Utils.updateHead(content);
-
-                PrimeFaces.ajax.Utils.updateBody(content);
+                ajaxUtils.updateHead(content);
+                ajaxUtils.updateBody(content);
             }
             else if (id === PrimeFaces.ajax.VIEW_HEAD) {
                 PrimeFaces.ajax.Utils.updateHead(content);
