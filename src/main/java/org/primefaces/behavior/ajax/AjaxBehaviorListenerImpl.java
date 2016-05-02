@@ -65,6 +65,9 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         catch (IllegalArgumentException iae) {
             processArgListener(context, elContext, event);
         }
+        catch (ArrayIndexOutOfBoundsException ex) {
+            processArgListener(context, elContext, event);
+        }
     }
 
     private void processArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
