@@ -30,7 +30,8 @@ public class ConfirmBehavior extends AbstractBehavior {
     public enum PropertyKeys {
         header(String.class),
         message(String.class),
-        icon(String.class);
+        icon(String.class),
+        disabled(Boolean.class);
         
         final Class<?> expectedType;
 
@@ -41,6 +42,10 @@ public class ConfirmBehavior extends AbstractBehavior {
     
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
+        if (isDisabled()) {
+            return null;
+        }
+        
         FacesContext context = behaviorContext.getFacesContext();
         UIComponent component = behaviorContext.getComponent();
         String source = component.getClientId(context);
@@ -84,4 +89,11 @@ public class ConfirmBehavior extends AbstractBehavior {
     public void setIcon(String icon) {
         setLiteral(PropertyKeys.icon, icon);
     }
+    
+    public boolean isDisabled() {
+        return eval(PropertyKeys.disabled, Boolean.FALSE);
+    }
+    public void setDisabled(boolean disabled) {
+        setLiteral(PropertyKeys.disabled, disabled);
+    }    
 }

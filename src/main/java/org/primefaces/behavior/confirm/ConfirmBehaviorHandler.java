@@ -27,12 +27,14 @@ public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehav
     private final TagAttribute header;
     private final TagAttribute message;
     private final TagAttribute icon;
+    private final TagAttribute disabled;
     
     public ConfirmBehaviorHandler(BehaviorConfig config) {
         super(config);
         this.header = this.getAttribute(ConfirmBehavior.PropertyKeys.header.name());
         this.message = this.getAttribute(ConfirmBehavior.PropertyKeys.message.name());
         this.icon = this.getAttribute(ConfirmBehavior.PropertyKeys.icon.name());
+        this.disabled = this.getAttribute(ConfirmBehavior.PropertyKeys.disabled.name());
     }
     
     @Override
@@ -43,6 +45,7 @@ public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehav
         setBehaviorAttribute(ctx, behavior, this.header, ConfirmBehavior.PropertyKeys.header.expectedType);
         setBehaviorAttribute(ctx, behavior, this.message, ConfirmBehavior.PropertyKeys.message.expectedType);
         setBehaviorAttribute(ctx, behavior, this.icon, ConfirmBehavior.PropertyKeys.icon.expectedType);
+        setBehaviorAttribute(ctx, behavior, this.disabled, ConfirmBehavior.PropertyKeys.disabled.expectedType);
         
         return behavior;
     }
