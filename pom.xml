@@ -11,7 +11,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>6.0.RC3</version>
+    <version>6.0.RC4-SNAPSHOT</version>
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
 
