@@ -90,13 +90,13 @@
 			<name>onfocus</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Client side callback to execute when button receives focus.</description>
+            <description>Client side callback to execute when component receives focus.</description>
 		</attribute>
         <attribute>
 			<name>onblur</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-            <description>Client side callback to execute when button loses focus.</description>
+            <description>Client side callback to execute when component loses focus.</description>
 		</attribute>
 	</attributes>
     <resources>
