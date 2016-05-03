@@ -360,7 +360,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("editable", menu.isEditable(), false)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null)
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
-                .attr("labelTemplate", menu.getLabelTemplate(), null);
+                .attr("labelTemplate", menu.getLabelTemplate(), null)
+                .attr("autoWidth", menu.isAutoWidth(), true);
         
         if(menu.isFilter()) {
             wb.attr("filter", true)

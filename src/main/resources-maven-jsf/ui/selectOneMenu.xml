@@ -182,6 +182,13 @@
 			<ignoreInComponent>true</ignoreInComponent>
             <description>Client side callback to execute when element loses focus.</description>
 		</attribute>
+        <attribute>
+            <name>autoWidth</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Calculates a fixed width based on the width of the maximum option label. Set to false for custom width.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>

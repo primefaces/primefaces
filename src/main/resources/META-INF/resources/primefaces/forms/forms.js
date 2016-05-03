@@ -431,6 +431,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.effect = this.cfg.effect||'fade';
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.optGroupsSize = this.itemsContainer.children('li.ui-selectonemenu-item-group').length;
+        this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
 
         var $this = this,
         selectedOption = this.options.filter(':selected'),
@@ -501,7 +502,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     _render: function() {
-        this.jq.css('min-width', this.input.outerWidth());
+        if(this.cfg.autoWidth) {
+            this.jq.css('min-width', this.input.outerWidth());
+        }        
     },
     
     refresh: function(cfg) {
