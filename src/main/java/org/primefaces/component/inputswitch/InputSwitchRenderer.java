@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputSwitchRenderer extends InputRenderer {
@@ -127,6 +128,7 @@ public class InputSwitchRenderer extends InputRenderer {
         }
         
         renderOnchange(context, inputSwitch);
+        renderDomEvents(context, inputSwitch, HTML.BLUR_FOCUS_EVENTS);
         
         writer.endElement("input");
 
