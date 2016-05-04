@@ -3219,7 +3219,6 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
-
         this.button = $(this.jqId + '_button');
         this.menuButton = $(this.jqId + '_menuButton');
         this.menuId = this.jqId + "_menu";
@@ -3259,12 +3258,10 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
         //toggle menu
         this.menuButton.click(function() {
-            if($this.menu.is(':hidden')) {
+            if($this.menu.is(':hidden'))
                 $this.show();
-            }
-            else {
+            else
                 $this.hide();
-            }
         });
 
         //menuitem visuals
@@ -3279,6 +3276,54 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-state-hover');
         }).click(function() {
             $this.hide();
+        });
+        
+        //keyboard support
+        this.menuButton.keydown(function(e) {
+            var keyCode = $.ui.keyCode;
+
+            switch(e.which) {
+                case keyCode.UP:
+                    var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
+                    prevItems = highlightedItem.length ? highlightedItem.prevAll(':not(.ui-separator)') : null;
+                    
+                    if(prevItems && prevItems.length) {
+                        highlightedItem.removeClass('ui-state-hover');
+                        prevItems.eq(0).addClass('ui-state-hover');
+                    }
+                    
+                    e.preventDefault();
+                break;
+                
+                case keyCode.DOWN:
+                    var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
+                    nextItems = highlightedItem.length ? highlightedItem.nextAll(':not(.ui-separator)') : $this.menuitems.eq(0);
+                    
+                    if(nextItems.length) {
+                        highlightedItem.removeClass('ui-state-hover');
+                        nextItems.eq(0).addClass('ui-state-hover');
+                    }
+                    
+                    e.preventDefault();
+                break;
+                
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.SPACE:
+                    if($this.menu.is(':visible'))
+                        $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');
+                    else
+                        $this.show();
+                    
+                    e.preventDefault();
+                break;
+                
+
+                case keyCode.ESCAPE:
+                case keyCode.TAB:
+                    $this.hide();
+                break;
+            }
         });
 
         var hideNS = 'mousedown.' + this.id;
