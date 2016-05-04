@@ -274,6 +274,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.tfoot.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
         
         this.fireToggleEvent(true, (index - 1));
+        this.updateColspan();
     },
     
     uncheck: function(chkbox) {
@@ -290,6 +291,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.tfoot.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
 
         this.fireToggleEvent(false, (index - 1));
+        this.updateColspan();
     },
     
     alignPanel: function() {
@@ -341,6 +343,19 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 };
 
                 toggleBehavior.call(this, ext);
+            }
+        }
+    },
+    
+    updateColspan: function() {
+        var emptyRow = this.tbody.children('tr:first');
+        if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
+            var activeboxes = this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box.ui-state-active');
+            if(activeboxes.length) {
+                emptyRow.children('td').removeClass('ui-helper-hidden').attr('colspan', activeboxes.length);
+            }
+            else {
+                emptyRow.children('td').addClass('ui-helper-hidden');
             }
         }
     }

@@ -904,7 +904,10 @@ import javax.faces.event.BehaviorEvent;
                         }
                     }
                     else if(kid instanceof Column) {
-                        columnsCountWithSpan += ((Column) kid).getColspan();
+                        Column col = (Column) kid;
+                        if(col.isVisible()) {
+                            columnsCountWithSpan += col.getColspan();
+                        }
                     } 
                     else if(kid instanceof SubTable) {
                         SubTable subTable = (SubTable) kid;
