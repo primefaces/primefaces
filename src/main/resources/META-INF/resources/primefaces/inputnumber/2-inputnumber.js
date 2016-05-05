@@ -22,9 +22,6 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             this.inputInternal.attr("disabled", "disabled");
         }
 
-        if (this.plugOptArray.vMin) {
-            this.inputExternal.attr('value', this.plugOptArray.vMin);
-        }
 
         //Visual effects
         PrimeFaces.skinInput(this.inputExternal);
