@@ -134,3 +134,8 @@
     font-weight: bold;
     cursor: default;
 }
+
+/* fluid */
+.ui-fluid .ui-autocomplete-multiple-container {
+    width: 100%;
+}
