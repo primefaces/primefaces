@@ -3387,6 +3387,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
     },
 
     hide: function() {
+        this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
         this.menuButton.removeClass('ui-state-focus');
 
         this.menu.fadeOut('fast');
