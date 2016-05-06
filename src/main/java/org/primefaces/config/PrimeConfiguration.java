@@ -55,6 +55,7 @@ public class PrimeConfiguration {
     private boolean legacyWidgetNamespace = false;
     private boolean beanValidationDisabled = false;
     private boolean interpolateClientSideValidationMessages = false;
+    private boolean earlyPostParamEvaluation = false;
 
     // internal config
     private boolean beanValidationAvailable = false;
@@ -142,6 +143,9 @@ public class PrimeConfiguration {
         
         value = externalContext.getInitParameter(Constants.ContextParams.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES);
         interpolateClientSideValidationMessages = (value == null) ? false : Boolean.valueOf(value);
+
+        value = externalContext.getInitParameter(Constants.ContextParams.EARLY_POST_PARAM_EVALUATION);
+        earlyPostParamEvaluation = (value == null) ? false : Boolean.valueOf(value);
     }
 
     protected void initValidateEmptyFields(FacesContext context) {
@@ -371,5 +375,8 @@ public class PrimeConfiguration {
     public boolean isAtLeastBV11() {
         return bv11;
     }
-    
+
+    public boolean isEarlyPostParamEvaluation() {
+        return earlyPostParamEvaluation;
+    }
 }

@@ -135,10 +135,10 @@ PrimeFaces.ajax = {
             }
             // used by @all
             else if (id === PrimeFaces.VIEW_ROOT) {
-                
+
                 // backup our utils, we reset it soon
                 var ajaxUtils = PrimeFaces.ajax.Utils;
-                
+
                 // reset PrimeFaces JS state because the view is completely replaced with a new one
                 window.PrimeFaces = null;
 
@@ -255,12 +255,48 @@ PrimeFaces.ajax = {
         handle: function(cfg, ext) {
             cfg.ext = ext;
 
+            if (PrimeFaces.settings.earlyPostParamEvaluation) {
+                cfg.earlyPostParams = PrimeFaces.ajax.Request.collectEarlyPostParams(cfg);
+            }
+
             if(cfg.async) {
                 PrimeFaces.ajax.Request.send(cfg);
             }
             else {
                 PrimeFaces.ajax.Queue.offer(cfg);
             }
+        },
+
+        collectEarlyPostParams: function(cfg) {
+
+            var earlyPostParams;
+
+            var sourceElement;
+            if (typeof(cfg.source) === 'string') {
+                sourceElement = $(PrimeFaces.escapeClientId(cfg.source));
+            }
+            else {
+                sourceElement = $(cfg.source);
+            }
+            if (sourceElement.is(':input') && sourceElement.is(':not(:button)')) {
+                earlyPostParams = [];
+                earlyPostParams.push({
+                    name: sourceElement.attr('name'),
+                    value: sourceElement.is(':checkbox') ? sourceElement.is(':checked') : sourceElement.val()
+                });
+            }
+            else {
+                earlyPostParams = sourceElement.find(':input').serializeArray();
+                // jQuery doesn't add unchecked checkboxes
+                earlyPostParams = earlyPostParams.concat(
+                    sourceElement.find('input[type=checkbox]:not(:checked)').map(function() {
+                        var $this = $(this);
+                        return { 'name': $this.attr('name'), 'value': $this.is(':checked') };
+                    }).get()
+                );
+            }
+
+            return earlyPostParams;
         },
 
         send: function(cfg) {
@@ -449,6 +485,22 @@ PrimeFaces.ajax = {
             }
             else {
                 $.merge(postParams, form.serializeArray());
+            }
+
+            // remove postParam if already available in earlyPostParams
+            if (PrimeFaces.settings.earlyPostParamEvaluation && cfg.earlyPostParams) {
+                // loop early post params
+                $.each(cfg.earlyPostParams, function(earlyPostParamIndex, earlyPostParam) {
+                    // loop post params and remove it, if it's the same param as the early post param
+                    postParams = $.grep(postParams, function(postParam, postParamIndex) {
+                        if (postParam.name === earlyPostParam.name) {
+                            return false;
+                        }
+                        return true;
+                    });
+                });
+
+                $.merge(postParams, cfg.earlyPostParams);
             }
 
             //serialize
