@@ -42,7 +42,7 @@ public class LifecycleRenderer extends CoreRenderer {
                 encodePhase(phaseId, phaseId.toString(), context, writer);
             }
         }
-        encodePhase(PhaseId.ANY_PHASE, "All", context, writer);
+        encodePhase(PhaseId.ANY_PHASE, "ALL", context, writer);
         writer.endElement("tr");
         
         writer.endElement("table");
