@@ -21,17 +21,19 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
             }
         });
         
-        jsf.ajax.addOnEvent(function(data) {
-            if (data.status === 'success') {
-                if (!$this.updating) {
-                    setTimeout(function() {
-                        if (!$this.updating) {
-                            $this.update();
-                        }
-                    }, 25);
+        if (window.jsf && window.jsf.ajax) {
+            jsf.ajax.addOnEvent(function(data) {
+                if (data.status === 'success') {
+                    if (!$this.updating) {
+                        setTimeout(function() {
+                            if (!$this.updating) {
+                                $this.update();
+                            }
+                        }, 25);
+                    }
                 }
-            }
-        });
+            });
+        }
 	},
     
     update: function() {
