@@ -25,14 +25,14 @@ public class ValueExpressionAnalyzer {
     public static ValueReference getReference(ELContext elContext, ValueExpression expression) {
 
         ValueReference reference = intercept(elContext, expression);
-        if (reference != null) {
-            Object base = reference.getBase();
-            if (base != null && base instanceof CompositeComponentExpressionHolder) {
-                ValueExpression ve = ((CompositeComponentExpressionHolder) base).getExpression((String) reference.getProperty());
-                if (ve != null)
-                {
-                    reference = getReference(elContext, ve);
-                }
+
+        // check for a CC expression
+        if (reference != null && isCompositeComponentReference(reference)) {
+            ValueExpression ve = unwrapCompositeComponentReference(reference);
+            
+            // check for nested CC expressions
+            if (ve != null && isCompositeComponentReference(ve.getValueReference(elContext))) {    
+                reference = getReference(elContext, ve);
             }
         }
 
@@ -42,18 +42,31 @@ public class ValueExpressionAnalyzer {
     public static ValueExpression getExpression(ELContext elContext, ValueExpression expression) {
 
         ValueReference reference = intercept(elContext, expression);
-        if (reference != null) {
-            Object base = reference.getBase();
-            if (base != null && base instanceof CompositeComponentExpressionHolder) {
-                ValueExpression ve = ((CompositeComponentExpressionHolder) base).getExpression((String) reference.getProperty());
-                if (ve != null)
-                {
+
+        // check for a CC expression
+        if (reference != null && isCompositeComponentReference(reference)) {
+            ValueExpression ve = unwrapCompositeComponentReference(reference);
+
+            if (ve != null) {
+                // check for nested CC expressions
+                if (isCompositeComponentReference(ve.getValueReference(elContext))) {
+                    return getExpression(elContext, ve);
+                }
+                else {
                     return ve;
                 }
             }
         }
 
         return expression;
+    }
+    
+    public static boolean isCompositeComponentReference(ValueReference vr) {
+        return vr != null && vr.getBase() != null && vr.getBase() instanceof CompositeComponentExpressionHolder;
+    }
+    
+    public static ValueExpression unwrapCompositeComponentReference(ValueReference vr) {
+        return ((CompositeComponentExpressionHolder) vr.getBase()).getExpression((String) vr.getProperty());
     }
 
     public static ValueReference intercept(ELContext elContext, ValueExpression expression) {
@@ -64,10 +77,10 @@ public class ValueExpressionAnalyzer {
 
         InterceptingResolver resolver = new InterceptingResolver(elContext.getELResolver());
         ELContext interceptingContext = new InterceptingContext(elContext, resolver);
-        
+
         // #getType throws a PropertyNotFoundException when a sub-expression is null
         expression.getType(interceptingContext);
-        
+
         // intercept EL calls
         expression.getValue(interceptingContext);
 
