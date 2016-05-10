@@ -108,3 +108,12 @@
 .ui-fileupload-simple .ui-fileupload-filename {
     margin-left: 0.5em;
 }
+
+/* Responsive */
+.ui-fluid .ui-fileupload .ui-button {
+    width: auto;
+}
+
+.ui-fluid .ui-fileupload-content .ui-button-icon-only {
+    width: 2.4em;
+}
