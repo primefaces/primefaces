@@ -24,15 +24,15 @@ public class ValueExpressionAnalyzer {
 
     public static ValueReference getReference(ELContext elContext, ValueExpression expression) {
 
-        ValueReference reference = intercept(elContext, expression);
+        ValueReference reference = toValueReference(expression, elContext);
 
         // check for a CC expression
         if (reference != null && isCompositeComponentReference(reference)) {
-            ValueExpression ve = unwrapCompositeComponentReference(reference);
+            ValueExpression unwrapped = unwrapCompositeComponentReference(reference);
             
             // check for nested CC expressions
-            if (ve != null && isCompositeComponentReference(ve.getValueReference(elContext))) {    
-                reference = getReference(elContext, ve);
+            if (unwrapped != null && isCompositeComponentReference(toValueReference(unwrapped, elContext))) {    
+                reference = getReference(elContext, unwrapped);
             }
         }
 
@@ -41,19 +41,19 @@ public class ValueExpressionAnalyzer {
 
     public static ValueExpression getExpression(ELContext elContext, ValueExpression expression) {
 
-        ValueReference reference = intercept(elContext, expression);
+        ValueReference reference = toValueReference(expression, elContext);
 
         // check for a CC expression
         if (reference != null && isCompositeComponentReference(reference)) {
-            ValueExpression ve = unwrapCompositeComponentReference(reference);
+            ValueExpression unwrapped = unwrapCompositeComponentReference(reference);
 
-            if (ve != null) {
+            if (unwrapped != null) {
                 // check for nested CC expressions
-                if (isCompositeComponentReference(ve.getValueReference(elContext))) {
-                    return getExpression(elContext, ve);
+                if (isCompositeComponentReference(toValueReference(unwrapped, elContext))) {
+                    return getExpression(elContext, unwrapped);
                 }
                 else {
-                    return ve;
+                    return unwrapped;
                 }
             }
         }
@@ -85,5 +85,16 @@ public class ValueExpressionAnalyzer {
         expression.getValue(interceptingContext);
 
         return resolver.getValueReference();
+    }
+    
+    public static ValueReference toValueReference(ValueExpression ve, ELContext elContext) {
+        ValueReference reference = ve.getValueReference(elContext);
+
+        // e.g. TagValueExpression returns null
+        if (reference == null) {
+            reference = intercept(elContext, ve);
+        }
+
+        return reference;
     }
 }
