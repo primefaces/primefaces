@@ -2057,6 +2057,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         
                         e.preventDefault();
                     }
+                    else if(key === keyCode.ESCAPE) {
+                        $this.doCellEditEscapeRequest(cell);
+                        $this.currentCell = null;
+                        e.preventDefault();
+                    }
                 })
                 .on('focus.datatable-cell click.datatable-cell', function(e) {
                     $this.currentCell = cell;
@@ -2154,6 +2159,43 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
+    },
+    
+    doCellEditEscapeRequest: function(cell) {
+        var rowMeta = this.getRowMeta(cell.closest('tr')),
+        cellEditor = cell.children('.ui-cell-editor'),
+        cellIndex = cell.index(),
+        cellInfo = rowMeta.index + ',' + cellIndex,
+        $this = this;
+
+        if(rowMeta.key) {
+            cellInfo = cellInfo + ',' + rowMeta.key;
+        }
+
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            params: [{name: this.id + '_encodeFeature', value: true},
+                     {name: this.id + '_cellEscape', value: true},
+                     {name: this.id + '_cellInfo', value: cellInfo}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            cellEditor.children('.ui-cell-editor-input').html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {                            
+                $this.viewMode(cell);
+                cell.data('edit-events-bound', false);
+            }
+        };
+        
+        PrimeFaces.ajax.Request.handle(options);
     },
     
     /**

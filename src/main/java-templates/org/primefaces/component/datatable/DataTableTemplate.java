@@ -198,6 +198,10 @@ import javax.faces.event.BehaviorEvent;
     public boolean isRowEditRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEditAction");
     }
+
+    public boolean isCellEditEscapeRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellEscape");
+    }
     
     public boolean isRowEditCancelRequest(FacesContext context) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
