@@ -2519,8 +2519,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             newWidth = (columnHeader.width() + change),
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
-                        
-        if((newWidth > 15 && nextColumnWidth > 15) || (expandMode && newWidth > 15)) {          
+         
+        var minWidth = parseInt(columnHeader.css('min-width'));
+        minWidth = (minWidth == 0) ? 15 : minWidth;
+        
+        if((newWidth > minWidth && nextColumnWidth > minWidth) || (expandMode && newWidth > minWidth)) {          
             if(expandMode) {
                 table.width(table.width() + change);
                 setTimeout(function() {
@@ -3481,7 +3484,9 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
         
-        var shouldChange = (expandMode && newWidth > 15) || (lastFrozen ? (newWidth > 15) : (newWidth > 15 && nextColumnWidth > 15)); 
+        var minWidth = parseInt(columnHeader.css('min-width'));
+        minWidth = (minWidth == 0) ? 15 : minWidth;
+        var shouldChange = (expandMode && newWidth > minWidth) || (lastFrozen ? (newWidth > minWidth) : (newWidth > minWidth && nextColumnWidth > minWidth)); 
         if(shouldChange) {
             var frozenColumn = columnHeader.hasClass('ui-frozen-column'),
             theadClone = frozenColumn ? this.frozenTheadClone : this.scrollTheadClone,
