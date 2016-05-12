@@ -302,7 +302,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         if (context.getViewRoot() == null) {
             ViewHandler viewHandler = context.getApplication().getViewHandler();
 
-            String viewId = viewHandler.deriveViewId(context, calculateViewId(context));
+            String viewId = viewHandler.deriveViewId(context, ComponentUtils.calculateViewId(context));
             ViewDeclarationLanguage vdl = viewHandler.getViewDeclarationLanguage(context, viewId);
             UIViewRoot viewRoot = vdl.createView(context, viewId);
             context.setViewRoot(viewRoot);
@@ -317,31 +317,6 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         }
 
         return rootCause;
-    }
-
-    /**
-     * Calculates the current viewId - we can't get it from the ViewRoot if it's not available.
-     *
-     * @param context The {@link FacesContext}.
-     * @return The current viewId.
-     */
-    protected String calculateViewId(FacesContext context) {
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        String viewId = (String) requestMap.get("javax.servlet.include.path_info");
-
-        if (viewId == null) {
-            viewId = context.getExternalContext().getRequestPathInfo();
-        }
-
-        if (viewId == null) {
-            viewId = (String) requestMap.get("javax.servlet.include.servlet_path");
-        }
-
-        if (viewId == null) {
-            viewId = context.getExternalContext().getRequestServletPath();
-        }
-
-        return viewId;
     }
 
     protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info, boolean responseResetted) throws IOException {

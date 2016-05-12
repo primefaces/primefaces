@@ -39,7 +39,6 @@ import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
-import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -500,5 +499,30 @@ public class ComponentUtils {
         }
 
         return (T) renderer;
+    }
+    
+    /**
+     * Calculates the current viewId - we can't get it from the ViewRoot if it's not available.
+     *
+     * @param context The {@link FacesContext}.
+     * @return The current viewId.
+     */
+    public static String calculateViewId(FacesContext context) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        String viewId = (String) requestMap.get("javax.servlet.include.path_info");
+
+        if (viewId == null) {
+            viewId = context.getExternalContext().getRequestPathInfo();
+        }
+
+        if (viewId == null) {
+            viewId = (String) requestMap.get("javax.servlet.include.servlet_path");
+        }
+
+        if (viewId == null) {
+            viewId = context.getExternalContext().getRequestServletPath();
+        }
+
+        return viewId;
     }
 }

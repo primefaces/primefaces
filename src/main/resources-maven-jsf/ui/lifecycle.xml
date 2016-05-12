@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>lifecycle</tag>
+    <tagClass>org.primefaces.component.lifecycle.LifecycleTag</tagClass>
+	<componentClass>org.primefaces.component.lifecycle.Lifecycle</componentClass>
+	<componentType>org.primefaces.component.Lifecycle</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.LifecycleRenderer</rendererType>
+	<rendererClass>org.primefaces.component.lifecycle.LifecycleRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description></description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+	</attributes>
+	<resources>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
+		<resource>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>lifecycle/lifecycle.js</name>
+		</resource>
+		<resource>
+			<name>lifecycle/lifecycle.css</name>
+		</resource>
+	</resources>
+</component>
