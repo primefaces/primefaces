@@ -839,6 +839,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 default:
+                    //function keys (F1,F2 etc.)
+                    if(key >= 112 && key <= 123) {
+                        break;
+                    }
+                    
                     var text = $(this).val(),
                     matchedOptions = null,
                     metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
@@ -902,6 +907,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 default:
+                    //function keys (F1,F2 etc.)
+                    if(key >= 112 && key <= 123) {
+                        break;
+                    }
+                    
                     var metaKey = e.metaKey||e.ctrlKey;
                     
                     if(!metaKey) {
