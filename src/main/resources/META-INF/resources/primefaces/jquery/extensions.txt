@@ -19,11 +19,5 @@ List of Plugins
 - Browser
 
 Extensions
-- Remove change event trigger on timepicker _updateDateTime
-- Remove onChangeMonthYear override of timepicker to avoid updating the input
-- Remove window.console message on timepicker.log function
-- Add blur event trigger on datepicker _gotoToday
 - Added fix to autosize from https://github.com/jackmoore/autosize/issues/225
-- Added fix to timepicker from https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848
-- Added some fixes to timepicker _gotoToday (Issue; https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/281 )
-- Use e.which instead e.keyCode
+- Added fix to timepicker from https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848 (line 11548)
