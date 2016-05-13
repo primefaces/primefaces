@@ -57,7 +57,7 @@ public class CellEditFeature implements DataTableFeature {
             dynamicColumn.applyStatelessModel();
         }
         
-        if(table.isCellEditEscapeRequest(context)) {
+        if(table.isCellEditCancelRequest(context)) {
             column.getCellEditor().getFacet("input").encodeAll(context);
         } 
         else {

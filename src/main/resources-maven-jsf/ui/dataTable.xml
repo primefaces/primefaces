@@ -467,6 +467,13 @@
 			<type>java.lang.String</type>
             <description>Label to read by screen readers on checkbox selection.</description>
 		</attribute>
+         <attribute>
+			<name>saveOnCellBlur</name>
+			<required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Saves the changes in cell editing on blur, when set to false changes are discarded.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
