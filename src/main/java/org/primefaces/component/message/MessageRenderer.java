@@ -48,13 +48,20 @@ public class MessageRenderer extends UINotificationRenderer {
         String display = uiMessage.getDisplay();
         boolean iconOnly = display.equals("icon");
         boolean escape = uiMessage.isEscape();
-        String styleClass = display.equals("tooltip") ? "ui-message ui-helper-hidden" : "ui-message";
+        String style = uiMessage.getStyle();
+        String containerClass = display.equals("tooltip") ? "ui-message ui-helper-hidden" : "ui-message";
+        String styleClass = uiMessage.getStyleClass();
+        styleClass = styleClass == null ? containerClass : styleClass + " " + containerClass;
         
 		Iterator<FacesMessage> msgs = context.getMessages(targetClientId);
 
 		writer.startElement("div", uiMessage);
 		writer.writeAttribute("id", uiMessage.getClientId(context), null);
         writer.writeAttribute("aria-live", "polite", null);
+        
+        if(style != null) {
+            writer.writeAttribute("style", style, null);
+        }
         
         if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-display", display, null);
