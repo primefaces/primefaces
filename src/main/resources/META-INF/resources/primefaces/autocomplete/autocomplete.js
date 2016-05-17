@@ -427,8 +427,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     $this.input.setSelection(length,length);
                 }
             }
-
-            $this.invokeItemSelectBehavior(event, itemValue);
+            
+            if(item.hasClass('ui-autocomplete-moretext')) {
+                $this.invokeMoreTextBehavior(); 
+            }
+            else {
+                $this.invokeItemSelectBehavior(event, itemValue);
+            }
 
             $this.hide();
         });
@@ -545,7 +550,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             //highlight query string
             if(this.panel.children().is('ul') && query.length > 0) {
-                this.items.each(function() {
+                this.items.filter(':not(.ui-autocomplete-moretext)').each(function() {
                     var item = $(this),
                     text = item.html(),
                     re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
@@ -700,6 +705,16 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 itemUnselectBehavior.call(this, ext);
             }
         }
+    },
+    
+    invokeMoreTextBehavior: function() {
+        if(this.cfg.behaviors) {
+            var moreTextBehavior = this.cfg.behaviors['moreText'];
+
+            if(moreTextBehavior) {            
+                moreTextBehavior.call(this);
+            }
+        }  
     },
 
     removeItem: function(event, item) {

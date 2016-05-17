@@ -246,6 +246,13 @@
             <defaultValue>text</defaultValue>
             <description>Input field type. Default is text.</description>
         </attribute>
+        <attribute>
+            <name>moreText</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>...</defaultValue>
+            <description>The text shown in panel when the suggested list is greater than maxResults.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

@@ -22,8 +22,8 @@ import javax.el.ValueExpression;
 import javax.faces.convert.Converter;
 import javax.faces.component.behavior.Behavior;
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "itemSelect", "itemUnselect", "query"));
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect", "query"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "itemSelect", "itemUnselect", "query", "moreText"));
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect", "query", "moreText"));
     
     public final static String STYLE_CLASS = "ui-autocomplete";
     public final static String MULTIPLE_STYLE_CLASS = "ui-autocomplete ui-autocomplete-multiple";
@@ -41,6 +41,7 @@ import javax.faces.component.behavior.Behavior;
     public final static String TOKEN_INPUT_CLASS = "ui-autocomplete-input-token";
     public final static String MULTIPLE_CONTAINER_CLASS = "ui-autocomplete-multiple-container ui-widget ui-inputfield ui-state-default ui-corner-all";
     public final static String ITEMTIP_CONTENT_CLASS = "ui-autocomplete-itemtip-content";
+    public final static String MORE_TEXT_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-corner-all";
 
     public final static String MOBILE_INPUT_CONTAINER_CLASS = "ui-input-search ui-body-inherit ui-corner-all ui-shadow-inset ui-input-has-clear";
     public final static String MOBILE_PANEL_CLASS = "ui-controlgroup ui-controlgroup-vertical ui-corner-all ui-screen-hidden";
@@ -78,6 +79,10 @@ import javax.faces.component.behavior.Behavior;
                 UnselectEvent unselectEvent = new UnselectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
+            }
+            else if(eventName.equals("moreText")) {
+                ajaxBehaviorEvent.setPhaseId(event.getPhaseId());
+                super.queueEvent(ajaxBehaviorEvent);
             }
             else {
                 //e.g. blur, focus, change

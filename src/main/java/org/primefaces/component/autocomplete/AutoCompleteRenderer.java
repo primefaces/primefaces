@@ -575,6 +575,10 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
         }
         
+        if(ac.getSuggestions().size() > ac.getMaxResults()) {
+            encodeMoreText(context, ac);
+        }
+        
         writer.endElement("ul");
         
         if(pojo) {
@@ -672,5 +676,13 @@ public class AutoCompleteRenderer extends InputRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+    
+    public void encodeMoreText(FacesContext context, AutoComplete ac) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("li", null);
+        writer.writeAttribute("class", AutoComplete.MORE_TEXT_CLASS, null);
+        writer.write(ac.getMoreText());
+        writer.endElement("li");
     }
 }
