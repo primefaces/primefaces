@@ -143,10 +143,10 @@ public class ImageCropperRenderer extends CoreRenderer {
 
         String[] cropCoords = coords.split("_");
         
-        int x = Integer.parseInt(cropCoords[0]);
-        int y = Integer.parseInt(cropCoords[1]);
-        int w = Integer.parseInt(cropCoords[2]);
-        int h = Integer.parseInt(cropCoords[3]);
+        int x = (int) Double.parseDouble(cropCoords[0]);
+        int y = (int) Double.parseDouble(cropCoords[1]);
+        int w = (int) Double.parseDouble(cropCoords[2]);
+        int h = (int) Double.parseDouble(cropCoords[3]);
 
         ImageCropper cropper = (ImageCropper) component;
         Resource resource = getImageResource(context, cropper);
