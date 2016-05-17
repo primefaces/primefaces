@@ -132,9 +132,17 @@ public class InputNumberRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
-        String defaultClass = InputText.STYLE_CLASS;
-        defaultClass = inputNumber.isValid() ? defaultClass : defaultClass + " ui-state-error";
-        defaultClass = !inputNumber.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
+        String inputStyle = inputNumber.getInputStyle();
+        String inputStyleClass = inputNumber.getInputStyleClass();
+
+        String style = inputStyle;
+        
+        String styleClass = InputText.STYLE_CLASS;
+        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error";
+        styleClass = !inputNumber.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
+        if (!isValueBlank(inputStyleClass)) {
+            styleClass += " " + inputStyleClass;
+        }
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
@@ -151,7 +159,11 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        writer.writeAttribute("class", defaultClass, "");
+        if (!isValueBlank(style)) {
+            writer.writeAttribute("style", style, null);
+        }
+        
+        writer.writeAttribute("class", styleClass, null);
 
         writer.endElement("input");
     }

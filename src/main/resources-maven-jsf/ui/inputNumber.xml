@@ -98,6 +98,18 @@
             <defaultValue>empty</defaultValue>
             <description>Controls empty input display behavior, options are empty, zero, sign. Default is empty.</description>
         </attribute>
+        <attribute>
+            <name>inputStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the input element.</description>
+        </attribute>
+        <attribute>
+            <name>inputStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the input element.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
