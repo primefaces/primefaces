@@ -240,6 +240,11 @@ public class AjaxRequestBuilder {
         for(UIComponent child : component.getChildren()) {
             if(child instanceof UIParameter) {
                 UIParameter parameter = (UIParameter) child;
+                Object paramValue = parameter.getValue();
+
+                if (paramValue == null) {
+                    continue;
+                }
 
                 if(!paramWritten) {
                     paramWritten = true;
@@ -248,7 +253,7 @@ public class AjaxRequestBuilder {
                     buffer.append(",");
                 }
 
-                buffer.append("{name:").append("\"").append(parameter.getName()).append("\",value:\"").append(parameter.getValue()).append("\"}");
+                buffer.append("{name:").append("\"").append(parameter.getName()).append("\",value:\"").append(paramValue).append("\"}");
             }
         }
 
@@ -269,6 +274,9 @@ public class AjaxRequestBuilder {
                 int size = paramValues.size();
                 for(int i = 0; i < size; i++) {
                     String paramValue = paramValues.get(i);
+                    if (paramValue == null) {
+                        paramValue = "";
+                    }
                     buffer.append("{name:").append("\"").append(name).append("\",value:\"").append(paramValue).append("\"}");
                     
                     if(i < (size - 1)) {
