@@ -2184,7 +2184,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             update: this.id,
             params: [{name: this.id + '_encodeFeature', value: true},
-                     {name: this.id + '_cellEscape', value: true},
+                     {name: this.id + '_cellEditCancel', value: true},
                      {name: this.id + '_cellInfo', value: cellInfo}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -2202,7 +2202,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
         
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.hasBehavior('cellEditCancel')) {
+            this.cfg.behaviors['cellEditCancel'].call(this, options);
+        } 
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
     
     /**

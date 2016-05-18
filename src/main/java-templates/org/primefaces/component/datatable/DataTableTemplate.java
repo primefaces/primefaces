@@ -165,6 +165,7 @@ import javax.faces.event.BehaviorEvent;
         put("swiperight", SwipeEvent.class);
         put("tap", SelectEvent.class);
         put("taphold", SelectEvent.class);
+        put("cellEditCancel", CellEditEvent.class);
     }});
     
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -369,7 +370,7 @@ import javax.faces.event.BehaviorEvent;
                 
                 wrapperEvent = new ToggleEvent(this, behaviorEvent.getBehavior(), visibility, getRowData());
             }
-            else if(eventName.equals("cellEdit")) {
+            else if(eventName.equals("cellEdit")||eventName.equals("cellEditCancel")) {
                 String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
                 int rowIndex = Integer.parseInt(cellInfo[0]);
                 int cellIndex = Integer.parseInt(cellInfo[1]);
