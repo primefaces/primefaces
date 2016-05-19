@@ -196,6 +196,8 @@ public class PanelGridRenderer extends CoreRenderer {
                 renderChildren(context, column);
                 
                 writer.endElement("td");
+            }else {
+                child.encodeAll(context);
             }
         }
         
