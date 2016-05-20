@@ -662,7 +662,7 @@
             currentText: 'Current Date',
             ampm: false,
             month: 'Month',
-            week: 'week',
+            week: 'Week',
             day: 'Day',
             allDayText: 'All Day',
             aria: {
