@@ -58,8 +58,6 @@
 
 package org.primefaces.component.repeat;
 
-import com.sun.faces.facelets.tag.IterationStatus;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -67,7 +65,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitCallback;
