@@ -118,6 +118,13 @@
 			<type>java.lang.String</type>
             <description>Client side callback to execute after tooltip is shown.</description>
 		</attribute>
+        <attribute>
+			<name>position</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>right</defaultValue>
+            <description>Position of the tooltip, valid values are right, left, top and bottom.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
