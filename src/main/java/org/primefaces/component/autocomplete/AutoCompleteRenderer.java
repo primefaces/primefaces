@@ -523,6 +523,10 @@ public class AutoCompleteRenderer extends InputRenderer {
                 writer.endElement("tr");     
             }
         }
+        
+        if(ac.getSuggestions().size() > ac.getMaxResults()) {
+            encodeMoreText(context, ac);
+        }
 
         writer.endElement("tbody");
         writer.endElement("table");
@@ -635,11 +639,12 @@ public class AutoCompleteRenderer extends InputRenderer {
     
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {        
-        if(submittedValue == null || submittedValue.equals("")) {
+        AutoComplete ac = (AutoComplete) component;
+        
+        if(submittedValue == null || submittedValue.equals("") || ac.isMoreTextRequest(context)) {
             return null;
         }
         
-        AutoComplete ac = (AutoComplete) component;
 		Converter converter = ComponentUtils.getConverter(context, component);
 
         if(ac.isMultiple()) {
@@ -679,10 +684,26 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
     
     public void encodeMoreText(FacesContext context, AutoComplete ac) throws IOException {
+        int colSize = ac.getColums().size();
+        String moreText = ac.getMoreText();
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("li", null);
-        writer.writeAttribute("class", AutoComplete.MORE_TEXT_CLASS, null);
-        writer.write(ac.getMoreText());
-        writer.endElement("li");
+        
+        if(colSize > 0) {
+            writer.startElement("tr", null);
+            writer.writeAttribute("class", AutoComplete.MORE_TEXT_TABLE_CLASS, null);
+
+            writer.startElement("td", null);
+            writer.writeAttribute("colspan", colSize, null);
+            writer.write(moreText);
+            writer.endElement("td");
+            
+            writer.endElement("tr");
+        }
+        else {
+            writer.startElement("li", null);
+            writer.writeAttribute("class", AutoComplete.MORE_TEXT_LIST_CLASS, null);
+            writer.write(moreText);
+            writer.endElement("li");
+        }
     }
 }
