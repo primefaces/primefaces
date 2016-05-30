@@ -35,6 +35,8 @@ public class DefaultDiagramModel implements DiagramModel {
     
     private int maxConnections = 1;
 
+    private boolean containment = true;
+
     public DefaultDiagramModel() {
         elements = new ElementList();
         connections = new ArrayList<Connection>();
@@ -133,5 +135,13 @@ public class DefaultDiagramModel implements DiagramModel {
         }
         
         return endPoint;
+    }
+
+    public boolean isContainment() {
+        return containment;
+    }
+
+    public void setContainment(boolean containment) {
+        this.containment = containment;
     }
 }
