@@ -68,7 +68,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     public void handle() throws FacesException {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if (context.getResponseComplete()) {
+        if (context == null || context.getResponseComplete()) {
             return;
         }
 
