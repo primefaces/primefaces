@@ -512,7 +512,7 @@
         bcnu: function(ext, event, fns) {
             if(fns) {
                 for(var i = 0; i < fns.length; i++) {
-                    var retVal = fns[i].call(ext, event);
+                    var retVal = fns[i].call(this, ext, event);
                     if(retVal === false) {
                         break;
                     }

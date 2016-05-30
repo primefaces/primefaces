@@ -13,6 +13,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.showDelay = this.cfg.showDelay||150;
         this.cfg.hideDelay = this.cfg.hideDelay||0;
         this.cfg.hideEffectDuration = this.cfg.target ? 250 : 1;
+        this.cfg.position = this.cfg.position||'right';
         
         if(this.cfg.target)
             this.bindTarget();
@@ -35,7 +36,10 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindGlobal: function() {
-        this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-widget-content ui-corner-all ui-shadow" />').appendTo('body');
+        this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-tooltip-' + this.cfg.position + '"></div>')
+            .appendTo('body');
+        this.jq.append('<div class="ui-tooltip-arrow"></div><div class="ui-tooltip-text ui-shadow ui-corner-all"></div>');
+        
         this.cfg.globalSelector = this.cfg.globalSelector||'a,:input,:button';
         this.cfg.escape = (this.cfg.escape === undefined) ? true : this.cfg.escape;
         var $this = this;
@@ -63,9 +67,9 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                         var text = element.data('tooltip');
                         if(text) {
                             if($this.cfg.escape)
-                                $this.jq.text(text);
+                                $this.jq.children('.ui-tooltip-text').text(text);
                             else
-                                $this.jq.html(text);
+                                $this.jq.children('.ui-tooltip-text').html(text);
                                 
                             $this.globalTitle = text;
                             $this.target = element;
@@ -113,8 +117,8 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.appendTo(document.body);
 
-        if($.trim(this.jq.html()) === '') {
-            this.jq.html(this.target.attr('title'));
+        if($.trim(this.jq.children('.ui-tooltip-text').html()) === '') {
+            this.jq.children('.ui-tooltip-text').html(this.target.attr('title'));
         }
 
         this.target.removeAttr('title');
@@ -145,9 +149,33 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             this.mouseEvent = null;
         }
         else {
+            var _my, _at;
+            
+            switch(this.cfg.position) {
+                case 'right':
+                    _my = 'left center';
+                    _at = 'right center';
+                break;
+                        
+                case 'left':
+                    _my = 'right center';
+                    _at = 'left center';
+                break;
+                        
+                case 'top':
+                    _my = 'center bottom';
+                    _at = 'center top';
+                break;
+                        
+                case 'bottom':
+                    _my = 'center top';
+                    _at = 'center bottom';
+                break;
+            }
+    
             this.jq.position({
-                my: 'left top',
-                at: 'right bottom',
+                my: _my,
+                at: _at,
                 of: this.target,
                 collision: 'flipfit'
             });

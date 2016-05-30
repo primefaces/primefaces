@@ -15,13 +15,14 @@
  */
 package org.primefaces.model.diagram;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 
-public class DefaultDiagramModel implements DiagramModel {
+public class DefaultDiagramModel implements DiagramModel, Serializable {
     
     private List<Element> elements;
     
