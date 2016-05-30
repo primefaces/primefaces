@@ -53,6 +53,12 @@
 			<type>javax.el.MethodExpression</type>
             <description>Method to execute by passing command and the arguments.</description>
 		</attribute>
+        <attribute>
+			<name>commandModel</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+            <description>Method that returns the command model used for autocompletion.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
