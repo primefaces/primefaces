@@ -391,47 +391,49 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         })
         .bind('click', function(event) {
             var item = $(this),
-            itemValue = item.attr('data-item-value');
+            itemValue = item.attr('data-item-value'),
+            isMoreText = item.hasClass('ui-autocomplete-moretext');
             
             if(PrimeFaces.isIE(8)) {
                 $this.itemClick = true;
             }
-
-            if($this.cfg.multiple) {
-                var itemDisplayMarkup = '<li data-token-value="' + item.attr('data-item-value') + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
-                itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
-                itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + item.attr('data-item-label') + '</span></li>';
-
-                $this.inputContainer.before(itemDisplayMarkup);
-                $this.multiItemContainer.children('.ui-helper-hidden').fadeIn();
-                $this.input.val('').focus();
-
-                $this.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
-                if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
-                    $this.input.css('display', 'none').blur();
-                    $this.disableDropdown();
-                }
-            }
-            else {
-                $this.input.val(item.attr('data-item-label')).focus();
-
-                this.currentText = $this.input.val();
-                this.previousText = $this.input.val();
-
-                if($this.cfg.pojo) {
-                    $this.hinput.val(itemValue);
-                }
-                
-                if(PrimeFaces.env.isLtIE(10)) {
-                    var length = $this.input.val().length;
-                    $this.input.setSelection(length,length);
-                }
-            }
             
-            if(item.hasClass('ui-autocomplete-moretext')) {
+            if(isMoreText) {
+                $this.input.focus();
                 $this.invokeMoreTextBehavior(); 
             }
             else {
+                if($this.cfg.multiple) {
+                    var itemDisplayMarkup = '<li data-token-value="' + item.attr('data-item-value') + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
+                    itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
+                    itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + item.attr('data-item-label') + '</span></li>';
+
+                    $this.inputContainer.before(itemDisplayMarkup);
+                    $this.multiItemContainer.children('.ui-helper-hidden').fadeIn();
+                    $this.input.val('').focus();
+
+                    $this.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
+                    if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
+                        $this.input.css('display', 'none').blur();
+                        $this.disableDropdown();
+                    }
+                }
+                else {
+                    $this.input.val(item.attr('data-item-label')).focus();
+
+                    this.currentText = $this.input.val();
+                    this.previousText = $this.input.val();
+
+                    if($this.cfg.pojo) {
+                        $this.hinput.val(itemValue);
+                    }
+
+                    if(PrimeFaces.env.isLtIE(10)) {
+                        var length = $this.input.val().length;
+                        $this.input.setSelection(length,length);
+                    }
+                }
+
                 $this.invokeItemSelectBehavior(event, itemValue);
             }
 
@@ -494,30 +496,35 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
     
     showItemtip: function(item) {
-        var content = item.is('li') ? item.next('.ui-autocomplete-itemtip-content') : item.children('td:last');
-
-        this.itemtip.html(content.html())
-                    .css({
-                        'left':'',
-                        'top':'',
-                        'z-index': ++PrimeFaces.zindex,
-                        'width': content.outerWidth()
-                    })
-                    .position({
-                        my: this.cfg.itemtipMyPosition
-                        ,at: this.cfg.itemtipAtPosition
-                        ,of: item
-                    });
-
-        //scrollbar offset
-        if(this.cfg.checkForScrollbar) {
-            if(this.panel.innerHeight() < this.panel.children('.ui-autocomplete-items').outerHeight(true)) {
-                var panelOffset = this.panel.offset();
-                this.itemtip.css('left', panelOffset.left + this.panel.outerWidth());
-            }
+        if(item.hasClass('ui-autocomplete-moretext')) {
+            this.itemtip.hide();
         }
+        else {
+            var content = item.is('li') ? item.next('.ui-autocomplete-itemtip-content') : item.children('td:last');
 
-        this.itemtip.show();
+            this.itemtip.html(content.html())
+                        .css({
+                            'left':'',
+                            'top':'',
+                            'z-index': ++PrimeFaces.zindex,
+                            'width': content.outerWidth()
+                        })
+                        .position({
+                            my: this.cfg.itemtipMyPosition
+                            ,at: this.cfg.itemtipAtPosition
+                            ,of: item
+                        });
+
+            //scrollbar offset
+            if(this.cfg.checkForScrollbar) {
+                if(this.panel.innerHeight() < this.panel.children('.ui-autocomplete-items').outerHeight(true)) {
+                    var panelOffset = this.panel.offset();
+                    this.itemtip.css('left', panelOffset.left + this.panel.outerWidth());
+                }
+            }
+
+            this.itemtip.show();
+        }
     },
 
     showSuggestions: function(query) {
@@ -712,7 +719,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             var moreTextBehavior = this.cfg.behaviors['moreText'];
 
             if(moreTextBehavior) {            
-                moreTextBehavior.call(this);
+                var ext = {
+                    params : [
+                        {name: this.id + '_moreText', value: true}
+                    ]
+                };
+                
+                moreTextBehavior.call(this, ext);
             }
         }  
     },
@@ -860,12 +873,16 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         
         if(this.items.length) {
             this.itemContainer = this.panel.children('.ui-autocomplete-items');
-            this.currentGroup = this.items.eq(0).data('item-group');
-            var currentGroupTooltip = this.items.eq(0).data('item-group-tooltip');
             
-            this.items.eq(0).before(this.getGroupItem($this.currentGroup, $this.itemContainer, currentGroupTooltip));
+            var firstItem = this.items.eq(0);
+            if(!firstItem.hasClass('ui-autocomplete-moretext')) {
+                this.currentGroup = firstItem.data('item-group');
+                var currentGroupTooltip = firstItem.data('item-group-tooltip');
+
+                firstItem.before(this.getGroupItem($this.currentGroup, $this.itemContainer, currentGroupTooltip));
+            }
             
-            this.items.each(function(i) {
+            this.items.filter(':not(.ui-autocomplete-moretext)').each(function(i) {
                 var item = $this.items.eq(i),
                 itemGroup = item.data('item-group'),
                 itemGroupTooltip = item.data('item-group-tooltip');
