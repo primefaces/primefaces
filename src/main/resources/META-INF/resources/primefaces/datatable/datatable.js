@@ -1082,8 +1082,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 return true;
             },
             oncomplete: function(xhr, status, args) {
-                if(args.totalRecords) {
-                    $this.cfg.scrollLimit = args.totalRecords;
+                if(args[$this.id + '_totalRecords']) {
+                    $this.cfg.scrollLimit = args[$this.id + '_totalRecords'];
                 }
  
                 $this.loadingLiveScroll = false;
@@ -1129,8 +1129,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             oncomplete: function(xhr, status, args) {
                 $this.paginator.cfg.page = newState.page;
-                if(args && args.totalRecords) {
-                    $this.paginator.updateTotalRecords(args.totalRecords);
+                if(args && args[$this.id + '_totalRecords']) {
+                    $this.paginator.updateTotalRecords(args[$this.id + '_totalRecords']);
                 }
                 else {
                     $this.paginator.updateUI();
@@ -1204,8 +1204,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             oncomplete: function(xhr, status, args) {
                 var paginator = $this.getPaginator();             
-                if(paginator && args && paginator.cfg.rowCount !== args.totalRecords) {
-                    paginator.setTotalRecords(args.totalRecords);
+                if(paginator && args && paginator.cfg.rowCount !== args[$this.id + '_totalRecords']) {
+                    paginator.setTotalRecords(args[$this.id + '_totalRecords']);
                 }
                 
                 if(!args.validationFailed) {
@@ -1313,7 +1313,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             oncomplete: function(xhr, status, args) {
                 var paginator = $this.getPaginator();
                 if(paginator) {
-                    paginator.setTotalRecords(args.totalRecords);
+                    paginator.setTotalRecords(args[$this.id + '_totalRecords']);
                 }
             }
         };

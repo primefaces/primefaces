@@ -519,9 +519,11 @@ import javax.faces.event.BehaviorEvent;
             //Update paginator/livescroller for callback
             if(this.isPaginator()||this.isLiveScroll()) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
+                FacesContext context = getFacesContext();
+                String clientId = this.getClientId(context);
 
                 if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
+                    requestContext.addCallbackParam(clientId + "_totalRecords", lazyModel.getRowCount());
                 }
             }
         }
@@ -550,7 +552,10 @@ import javax.faces.event.BehaviorEvent;
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
+                    FacesContext context = getFacesContext();
+                    String clientId = this.getClientId(context);
+
+                    requestContext.addCallbackParam(clientId + "_totalRecords", lazyModel.getRowCount());
                 }
             }
         }

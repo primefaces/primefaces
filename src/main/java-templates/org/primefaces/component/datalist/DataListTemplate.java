@@ -86,9 +86,11 @@ import javax.faces.event.BehaviorEvent;
             //Update paginator for callback
             if(this.isPaginator()) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
+                FacesContext context = getFacesContext();
+                String clientId = this.getClientId(context);
 
                 if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
+                    requestContext.addCallbackParam(clientId + "_totalRecords", lazyModel.getRowCount());
                 }
             }
         }
