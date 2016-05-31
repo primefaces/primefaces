@@ -64,6 +64,9 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         boolean isIconLeft = button.getIconPos().equals("left");
         String value = button.getValue();
         String buttonTextClass = isIconLeft ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
+        if(isValueBlank(value)) {
+            buttonTextClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
+        }
         String buttonClass = disabled ? buttonTextClass + " ui-state-disabled" : buttonTextClass;
 
         writer.startElement("button", null);
