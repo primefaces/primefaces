@@ -92,7 +92,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (value == null) {
+        if (isValueBlank(value)) {
             writer.write("ui-button");
         } else {
             writer.writeText(value, "value");
