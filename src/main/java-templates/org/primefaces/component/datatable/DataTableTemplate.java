@@ -517,7 +517,7 @@ import javax.faces.event.BehaviorEvent;
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller for callback
-            if(this.isPaginator()||this.isLiveScroll()) {
+            if(this.isRequestSource(getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {
@@ -546,7 +546,7 @@ import javax.faces.event.BehaviorEvent;
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller  for callback
-            if(this.isPaginator()||this.isLiveScroll()) {
+            if(this.isRequestSource(getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {
