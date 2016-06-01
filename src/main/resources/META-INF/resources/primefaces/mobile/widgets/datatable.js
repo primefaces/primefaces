@@ -195,8 +195,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
                 return true;
             },
             oncomplete: function(xhr, status, args) {           
-                if($this.paginator && args && $this.paginator.cfg.rowCount !== args.totalRecords) {
-                    $this.paginator.setTotalRecords(args.totalRecords);
+                if($this.paginator && args && $this.paginator.cfg.rowCount !==
+                        args[$this.id + '_totalRecords']) {
+                    $this.paginator.setTotalRecords(args[$this.id + '_totalRecords']);
                 }
             }
         };

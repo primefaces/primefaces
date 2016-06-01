@@ -109,7 +109,8 @@ public class SortFeature implements DataTableFeature {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", table.getRowCount());
+                    String clientId = table.getClientId(context);
+                    requestContext.addCallbackParam(clientId + "_totalRecords", table.getRowCount());
                 }
             }
             
