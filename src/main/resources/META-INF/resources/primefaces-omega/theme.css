@@ -790,6 +790,13 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
 
+/* SlideMenu */
+.ui-slidemenu .ui-menu-child {
+    -webkit-box-shadow: none !important; 
+    -moz-box-shadow: none !important; 
+    box-shadow: none !important;
+}
+
 /* Steps */
 .ui-steps .ui-state-highlight span {
     color: #ffffff;
