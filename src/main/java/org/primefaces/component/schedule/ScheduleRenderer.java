@@ -211,12 +211,12 @@ public class ScheduleRenderer extends CoreRenderer {
         
         if(isShowWeekNumbers) {
             String weekNumCalculation = schedule.getWeekNumberCalculation();
-            String weekNumCalculater = schedule.getWeekNumberCalculater();
+            String weekNumCalculator = schedule.getWeekNumberCalculator();
             
             if(weekNumCalculation.equals("custom")) {
-                if(weekNumCalculater != null) {
+                if(weekNumCalculator != null) {
                     wb.append(",weekNumberCalculation: function(){ return ")
-                        .append(schedule.getWeekNumberCalculater())
+                        .append(schedule.getWeekNumberCalculator())
                         .append("}");
                 }
             }

@@ -208,7 +208,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
             <defaultValue>children</defaultValue>
-            <description>Updates children nodes in the expanded row or children nodes and expanded row. Valid values are "children" and "self".</description>
+            <description>Updates children only when set to “children” or the node itself with children when set to “self” on node expand.</description>
 		</attribute>
         <attribute>
 			<name>stickyHeader</name>
