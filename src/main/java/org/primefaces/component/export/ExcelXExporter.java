@@ -37,5 +37,19 @@ public class ExcelXExporter extends ExcelExporter {
         return "attachment;filename="+ filename + ".xlsx";
     }
 
+    @Override
+    protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {
+    	externalContext.setResponseContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    	externalContext.setResponseHeader("Expires", "0");
+    	externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+    	externalContext.setResponseHeader("Pragma", "public");
+    	externalContext.setResponseHeader("Content-disposition", getContentDisposition(filename));
+    	externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+
+        OutputStream out = externalContext.getResponseOutputStream();
+        generatedExcel.write(out);
+        externalContext.responseFlushBuffer();        
+    }
+
 }
 
