@@ -441,7 +441,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.getFocusableTbody().on('focus', function(e) {
             //ignore mouse click on row
             if(!$this.mousedownOnRow) {
-                $this.focusedRow = $this.tbody.children('tr.ui-widget-content.ui-datatable-selectable').eq(0);
+                $this.focusedRow = $this.tbody.children('tr.ui-widget-content.ui-datatable-selectable.ui-state-highlight').eq(0);
+                if ($this.focusedRow.length == 0) {
+                    $this.focusedRow = $this.tbody.children('tr.ui-widget-content.ui-datatable-selectable').eq(0);
+                }
+
                 $this.highlightFocusedRow();
                 
                 if($this.cfg.scrollable) {
