@@ -174,6 +174,7 @@ public class DiagramRenderer extends CoreRenderer {
             String hoverPaintStyle = defaultConnector.getHoverPaintStyle();
             
             wb.append(",defaultConnector:").append(defaultConnector.toJS(sb));
+            wb.append(",containment:").append("" + model.isContainment());
 
             if(paintStyle != null) wb.append(",paintStyle:").append(paintStyle);
             if(hoverPaintStyle != null) wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
