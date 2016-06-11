@@ -443,7 +443,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         boolean pojo = var != null;
         UIComponent itemtip = ac.getFacet("itemtip");
         boolean hasHeader = false;
-        boolean hasGroupByTooltip = (ac.getValueExpression("groupByTooltip") != null);
+        boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
         
         for(Column column : ac.getColums()) {
             if(column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
@@ -538,7 +538,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         boolean pojo = var != null;
         UIComponent itemtip = ac.getFacet("itemtip");
-        boolean hasGroupByTooltip = (ac.getValueExpression("groupByTooltip") != null);
+        boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
         
         writer.startElement("ul", ac);
         writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
@@ -601,7 +601,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
             .attr("multiple", ac.isMultiple(), false)
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, ac, ac.getAppendTo()), null)
-            .attr("grouping", ac.getValueExpression("groupBy") != null, false)
+            .attr("grouping", ac.getValueExpression(AutoComplete.PropertyKeys.groupBy.toString()) != null, false)
             .attr("queryEvent", ac.getQueryEvent(), null)
             .attr("dropdownMode", ac.getDropdownMode(), null)
             .attr("autoHighlight", ac.isAutoHighlight(), true)

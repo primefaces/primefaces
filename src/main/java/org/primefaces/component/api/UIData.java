@@ -102,7 +102,7 @@ public class UIData extends javax.faces.component.UIData {
     private Object _initialDescendantFullComponentState = null;
     private Boolean isNested = null;
     
-    protected enum PropertyKeys {
+    public enum PropertyKeys {
         paginator
 		,paginatorTemplate
 		,rowsPerPageTemplate

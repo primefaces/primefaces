@@ -195,7 +195,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
-        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
         int priority = column.getPriority();
         boolean sortable = (columnSortByVE != null);
         String sortIcon = null;
@@ -209,7 +209,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         }
         
         if(sortable) {
-            ValueExpression tableSortByVE = table.getValueExpression("sortBy");
+            ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             boolean defaultSorted = (tableSortByVE != null);
                     
             if(defaultSorted) {
@@ -447,8 +447,8 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
     
     @Override
     protected String resolveDefaultSortIcon(DataTable table, UIColumn column, String sortOrder) {
-        ValueExpression tableSortByVE = table.getValueExpression("sortBy");
-        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
         String columnSortByExpression = columnSortByVE.getExpressionString();
         String tableSortByExpression = tableSortByVE.getExpressionString();
         String field = column.getField();

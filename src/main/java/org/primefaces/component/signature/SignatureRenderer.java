@@ -59,7 +59,7 @@ public class SignatureRenderer extends CoreRenderer {
         
         encodeInputField(context, signature, clientId + "_value", signature.getValue());
         
-        if(signature.getValueExpression("base64Value") != null) {
+        if(signature.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {
             encodeInputField(context, signature, clientId + "_base64", null);
         }
         
@@ -80,7 +80,7 @@ public class SignatureRenderer extends CoreRenderer {
             .attr("guidelineIndent", signature.getGuidelineIndent(), 10)
             .callback("onchange", "function()", signature.getOnchange());
         
-        if(signature.getValueExpression("base64Value") != null) {
+        if(signature.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {
             wb.attr("base64", true);
         }
             

@@ -68,7 +68,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     private static final Object[] LEAF_NO_STATE = new Object[]{null, null};
 
-    protected enum PropertyKeys {
+    public enum PropertyKeys {
         value,
         var,
         size,

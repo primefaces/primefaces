@@ -262,7 +262,7 @@ import javax.faces.event.BehaviorEvent;
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
 
-        ValueExpression selectionVE = this.getValueExpression("selection");
+        ValueExpression selectionVE = this.getValueExpression(PropertyKeys.selection.toString());
 
         if(selectionVE != null) {
             selectionVE.setValue(context.getELContext(), this.getLocalSelection());
@@ -275,7 +275,7 @@ import javax.faces.event.BehaviorEvent;
             ELContext eLContext = context.getELContext();
             for(FilterMeta fm : filterMeta) {
                 UIColumn column = fm.getColumn();
-                ValueExpression columnFilterValueVE = column.getValueExpression("filterValue");
+                ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
                 if(columnFilterValueVE != null) {
                     if(column.isDynamic()) { 
                         DynamicColumn dynamicColumn = (DynamicColumn) column;
@@ -559,7 +559,7 @@ import javax.faces.event.BehaviorEvent;
     protected String resolveSortField() {
         String sortField = null;
         UIColumn column = this.getSortColumn();
-        ValueExpression tableSortByVE = this.getValueExpression("sortBy");
+        ValueExpression tableSortByVE = this.getValueExpression(PropertyKeys.sortBy.toString());
         Object tableSortByProperty = this.getSortBy();
         
         if(column == null) {
@@ -570,7 +570,7 @@ import javax.faces.event.BehaviorEvent;
                 sortField = field;
         }
         else {
-            ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+            ValueExpression columnSortByVE = column.getValueExpression(PropertyKeys.sortBy.toString());
             
             if(column.isDynamic()) {
                 ((DynamicColumn) sortColumn).applyStatelessModel();
@@ -752,7 +752,7 @@ import javax.faces.event.BehaviorEvent;
 
     public Object getRowData(String rowKey) {
         
-        boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
+        boolean hasRowKeyVe = this.getValueExpression(PropertyKeys.rowKey.toString()) != null;
         DataModel model = getDataModel();
  
         // use rowKey if available and if != lazy
@@ -789,7 +789,7 @@ import javax.faces.event.BehaviorEvent;
     public void findSelectedRowKeys() {
         Object selection = this.getSelection();
         selectedRowKeys = new ArrayList<Object>();
-        boolean hasRowKeyVe = this.getValueExpression("rowKey") != null;
+        boolean hasRowKeyVe = this.getValueExpression(PropertyKeys.rowKey.toString()) != null;
         String var = this.getVar();
         Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
 
@@ -1028,7 +1028,7 @@ import javax.faces.event.BehaviorEvent;
             }
         }
         else {
-            ValueExpression ve = this.getValueExpression("sortBy");
+            ValueExpression ve = this.getValueExpression(PropertyKeys.sortBy.toString());
             if(ve != null) {
                 multiSortMeta = (List<SortMeta>) ve.getValue(getFacesContext().getELContext());
             }
@@ -1221,7 +1221,7 @@ import javax.faces.event.BehaviorEvent;
     }
     
     public void updateFilteredValue(FacesContext context,  List<?> value) {
-        ValueExpression ve = this.getValueExpression("filteredValue");
+        ValueExpression ve = this.getValueExpression(PropertyKeys.filteredValue.toString());
         
         if(ve != null) {
             ve.setValue(context.getELContext(), value);
