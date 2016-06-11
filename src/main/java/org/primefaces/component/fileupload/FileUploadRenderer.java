@@ -218,7 +218,9 @@ public class FileUploadRenderer extends CoreRenderer {
     protected void encodeChooseButton(FacesContext context, FileUpload fileUpload, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fileUpload.getClientId(context);
-        String cssClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + FileUpload.CHOOSE_BUTTON_CLASS;
+        String label = fileUpload.getLabel();
+        String buttonClass = isValueBlank(label) ? HTML.BUTTON_ICON_ONLY_BUTTON_CLASS : HTML.BUTTON_LEFT_ICON_CLASS;
+        String cssClass = buttonClass + " " + FileUpload.CHOOSE_BUTTON_CLASS;
         if (disabled) {
             cssClass += " ui-state-disabled";
         }
@@ -235,7 +237,11 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId + "_label", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.writeText(fileUpload.getLabel(), "value");
+        if (isValueBlank(label)) {
+            writer.write("ui-button");
+        } else {
+            writer.writeText(label, "value");
+        }
         writer.endElement("span");
 
         if (!disabled) {
@@ -286,7 +292,8 @@ public class FileUploadRenderer extends CoreRenderer {
 
     protected void encodeButton(FacesContext context, String label, String styleClass, String icon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String cssClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " ui-state-disabled " + styleClass;
+        String buttonlass = isValueBlank(label) ? HTML.BUTTON_ICON_ONLY_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
+        String cssClass = buttonlass + " ui-state-disabled " + styleClass;
 
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
@@ -302,7 +309,11 @@ public class FileUploadRenderer extends CoreRenderer {
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.writeText(label, "value");
+        if (isValueBlank(label)) {
+            writer.write("ui-button");
+        } else {
+            writer.writeText(label, "value");
+        }
         writer.endElement("span");
 
         writer.endElement("button");
