@@ -33,6 +33,11 @@ public class ExcelXExporter extends ExcelExporter {
     }
 
     @Override
+    protected String getContentType() {
+        return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    }
+    
+    @Override
     protected String getContentDisposition(String filename) {
         return "attachment;filename="+ filename + ".xlsx";
     }

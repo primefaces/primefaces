@@ -205,7 +205,7 @@ public class ExcelExporter extends Exporter {
     }
     
     protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {
-    	externalContext.setResponseContentType("application/vnd.ms-excel");
+    	externalContext.setResponseContentType(getContentType());
     	externalContext.setResponseHeader("Expires", "0");
     	externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
     	externalContext.setResponseHeader("Pragma", "public");
@@ -217,6 +217,10 @@ public class ExcelExporter extends Exporter {
         externalContext.responseFlushBuffer();        
     }
 
+    protected String getContentType() {
+        return "application/vnd.ms-excel";
+    }
+    
     protected String getContentDisposition(String filename) {
         return "attachment;filename="+ filename + ".xls";
     }
