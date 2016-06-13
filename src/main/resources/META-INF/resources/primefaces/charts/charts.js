@@ -9255,7 +9255,9 @@
             }
 
             else if (tagname == 'canvas') {
-                newContext.drawImage(el, left, top);
+                if(!$(el).hasClass('jqplot-series-hidden')) { // PrimeFaces Github Issue; #1505
+                    newContext.drawImage(el, left, top);
+                }
             }
         }
         $(this).children().each(function() {
