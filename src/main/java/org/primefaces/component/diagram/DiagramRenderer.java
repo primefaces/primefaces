@@ -353,11 +353,13 @@ public class DiagramRenderer extends CoreRenderer {
                     String x = element.getX();
                     String y = element.getY();
                     String coords = "left:" + x + ";top:" + y;
+                    String title = element.getTitle();
                     
                     writer.startElement("div", null);
                     writer.writeAttribute("id", clientId + "-" + element.getId(), null);
                     writer.writeAttribute("class", elementClass, null);
                     writer.writeAttribute("style", coords, null);
+                    writer.writeAttribute("data-tooltip", title , null);
                     
                     if(elementFacet != null && var != null) {
                         requestMap.put(var, data);
