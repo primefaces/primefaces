@@ -744,7 +744,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         header.attr('aria-expanded', false)
                 .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
 
-        items.hide();
+        items.filter('.ui-submenu-child').hide();
 
         if(stateful) {
             this.collapsedIds.push(header.attr('id'));
@@ -758,7 +758,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         header.attr('aria-expanded', false)
                 .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
 
-        items.show();
+        items.filter('.ui-submenu-child').show();
 
         if(stateful) {
             var id = header.attr('id');        
