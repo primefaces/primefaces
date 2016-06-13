@@ -189,7 +189,8 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("eventDurationEditable", schedule.isResizable(), true)    
             .attr("axisFormat", schedule.getAxisFormat(), null)
             .attr("timeFormat", schedule.getTimeFormat(), null)
-            .attr("weekNumbers", isShowWeekNumbers, false);
+            .attr("weekNumbers", isShowWeekNumbers, false)
+            .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00");
                 
         String columnFormat = schedule.getColumnFormat();
         if(columnFormat != null) {
