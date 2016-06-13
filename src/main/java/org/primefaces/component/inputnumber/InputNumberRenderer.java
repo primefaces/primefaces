@@ -164,6 +164,10 @@ public class InputNumberRenderer extends InputRenderer {
         }
         
         writer.writeAttribute("class", styleClass, null);
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, inputNumber);
+        }
 
         writer.endElement("input");
     }
