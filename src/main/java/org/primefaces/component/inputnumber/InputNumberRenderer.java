@@ -234,7 +234,7 @@ public class InputNumberRenderer extends InputRenderer {
         else {
             try {
                 Object objectToRender;
-                if (value instanceof BigDecimal) {
+                if (value instanceof BigDecimal || doubleValueCheck(valueToRender)) {
                     objectToRender = new BigDecimal(valueToRender);
                 } else {
                     objectToRender = new Double(valueToRender);
@@ -256,6 +256,19 @@ public class InputNumberRenderer extends InputRenderer {
                 throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a double value;", e);
             }
         }
+    }
+    
+    protected boolean doubleValueCheck(String valueToRender) {
+        int counter = 0;
+        int length = valueToRender.length();
+
+        for (int i = 0; i < length; i++) {
+            if (valueToRender.charAt(i) == '9') {
+                counter++;
+            }
+        }
+
+        return (counter > 15 || length > 15);
     }
 
 }
