@@ -2001,7 +2001,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.currentCell) {
             if(this.cfg.saveOnCellBlur)
                 this.saveCell(this.currentCell);
-            else
+            else if(!this.currentCell.is(cell))
                 this.doCellEditCancelRequest(this.currentCell);
         }
         
@@ -2066,6 +2066,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     }
                     else if(key === keyCode.ESCAPE) {
                         $this.doCellEditCancelRequest(cell);
+                        $this.currentCell = null;
                         e.preventDefault();
                     }
                 })
@@ -2198,7 +2199,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             oncomplete: function(xhr, status, args) {                            
                 $this.viewMode(cell);
                 cell.data('edit-events-bound', false);
-                $this.currentCell = null;
             }
         };
         
