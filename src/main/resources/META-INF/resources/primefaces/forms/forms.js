@@ -502,7 +502,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     _render: function() {
-        if(this.cfg.autoWidth) {
+        var contentStyle = this.jq.attr('style');
+        if(this.cfg.autoWidth && (!contentStyle || (contentStyle && contentStyle.indexOf('width') == -1))) {
             this.jq.css('min-width', this.input.outerWidth());
         }        
     },
