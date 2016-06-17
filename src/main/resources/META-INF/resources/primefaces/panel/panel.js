@@ -33,7 +33,10 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         }).on('mouseout.panel',function() {
             $(this).removeClass('ui-state-hover');
         }).on('click.panel', function(e) {
-            e.preventDefault();
+            var href = $(this).attr('href');
+            if(!href || href == '#') {
+                e.preventDefault();
+            }
         });
     },
             
