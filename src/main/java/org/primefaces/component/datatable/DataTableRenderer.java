@@ -201,7 +201,8 @@ public class DataTableRenderer extends DataRenderer {
 
         wb.attr("tabindex", table.getTabindex(), "0")
             .attr("reflow", table.isReflow(), false)
-            .attr("rowHover", table.isRowHover(), false);
+            .attr("rowHover", table.isRowHover(), false)
+            .attr("clientCache", table.isClientCache(), false);
         
         //Behaviors
         encodeClientBehaviors(context, table);
@@ -822,13 +823,14 @@ public class DataTableRenderer extends DataRenderer {
         UIComponent emptyFacet = table.getFacet("emptyMessage");
         SubTable subTable = table.getSubTable();
         String tbodyClientId = (tbodyId == null) ? clientId + "_data" : tbodyId;
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         
         if(table.isSelectionEnabled()) {
             table.findSelectedRowKeys();
         }
                
         int rows = table.getRows();
-		int first = table.getFirst();
+		int first = table.isClientCacheRequest(context) ? Integer.valueOf(params.get(clientId + "_first")) + rows : table.getFirst();
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? (table.getScrollRows() + table.getScrollOffset()) : rowCount) : rows;
         int frozenRows = table.getFrozenRows();
