@@ -158,13 +158,14 @@ public abstract class InputRenderer extends CoreRenderer {
 
         if(ve != null) {
             Class<?> valueType = ve.getType(context.getELContext());
+
+            if (valueType != null) {
+                if (valueType.isArray()) {
+                    valueType = valueType.getComponentType();
+                }
                 
-            if (valueType.isArray()) {
-                valueType = valueType.getComponentType();
-            }
-            
-            if(valueType != null)
                 return context.getApplication().createConverter(valueType);
+            }
         }
 
         return null;
