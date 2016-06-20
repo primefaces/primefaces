@@ -32,7 +32,6 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
-import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -119,13 +118,6 @@ public class OutputLabelRenderer extends CoreRenderer {
             if (input.isRequired()) {
                 encodeRequiredIndicator(writer, label);
             }
-            // if transformMetadataEnabled, skip the @NotNull checking...
-            // the BeanValidationInputMetadataTransformer will set the marker to true or false
-            else if (config.isTransformMetadataEnabled()) {
-                if (AbstractInputMetadataTransformer.isMarkedAsRequired(input)) {
-                    encodeRequiredIndicator(writer, label);    
-                }
-            }
             else if (config.isBeanValidationAvailable() && isNotNullDefined(input, context)) {
                 encodeRequiredIndicator(writer, label);
             }
@@ -161,7 +153,7 @@ public class OutputLabelRenderer extends CoreRenderer {
             }
         }
         catch (PropertyNotFoundException e)  {
-            String message = "Skip evaluating @NotNull for outputPanel and referenced component \"" + input.getClientId(context) + "\" because"
+            String message = "Skip evaluating @NotNull for outputLabel and referenced component \"" + input.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
             LOG.log(Level.FINE, message);
