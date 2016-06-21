@@ -456,6 +456,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tristatecheckbox/tristatecheckbox.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
