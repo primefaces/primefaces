@@ -15,6 +15,7 @@
  */
 package org.primefaces.util;
 
+import java.beans.BeanInfo;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
@@ -37,6 +38,8 @@ import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
+import javax.faces.view.AttachedObjectTarget;
+import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
@@ -524,5 +527,25 @@ public class ComponentUtils {
         }
 
         return viewId;
+    }
+    
+    public static UIComponent extractEditableValueHolderFromComposite(UIComponent composite) {
+        BeanInfo info = (BeanInfo) composite.getAttributes().get(UIComponent.BEANINFO_KEY);
+        List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
+                .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
+
+        for (AttachedObjectTarget target : targets) {
+            if (target instanceof EditableValueHolderAttachedObjectTarget) {
+                UIComponent children = composite.findComponent(target.getName());
+                if (children == null) {
+                    throw new FacesException(
+                            "Cannot find editableValueHolder with name: \"" + target.getName() + "\"");
+                }
+
+                return children;
+            }
+        }
+
+        return null;
     }
 }
