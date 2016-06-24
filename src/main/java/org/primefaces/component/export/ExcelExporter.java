@@ -33,6 +33,7 @@ import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 
@@ -47,6 +48,11 @@ public class ExcelExporter extends Exporter {
         String sheetName = getSheetName(context, table);
         if(sheetName == null) {
             sheetName = table.getId();
+        }
+        
+        sheetName = WorkbookUtil.createSafeSheetName(sheetName);
+        if(sheetName.equals("empty") || sheetName.equals("null")) {
+            sheetName = "Sheet";
         }
         
     	Sheet sheet = wb.createSheet(sheetName);
@@ -72,10 +78,16 @@ public class ExcelExporter extends Exporter {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
 
-        for(DataTable table : tables) {
+        for(int i = 0; i < tables.size(); i++) {
+            DataTable table = tables.get(i);
             String sheetName = getSheetName(context, table);
             if(sheetName == null) {
                 sheetName = table.getId();
+            }
+            
+            sheetName = WorkbookUtil.createSafeSheetName(sheetName);
+            if(sheetName.equals("empty") || sheetName.equals("null")) {
+                sheetName = "Sheet" + String.valueOf(i + 1);
             }
             
             Sheet sheet = wb.createSheet(sheetName);
