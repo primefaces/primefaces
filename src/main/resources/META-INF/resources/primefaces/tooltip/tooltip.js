@@ -106,8 +106,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             $this.mouseEvent = e;
                         }
                         
-                        var text = $.trim($this.jq.text());
-                        if($this.jq.children().length > 0 || text !== '') {
+                        if($.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
                             $this.show();
                         }
                     })
