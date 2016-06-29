@@ -110,6 +110,13 @@
             <type>java.lang.String</type>
             <description>Style class of the input element.</description>
         </attribute>
+        <attribute>
+			<name>padControl</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Controls padding of the decimal places. If true, always pads the decimal with zeros.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
