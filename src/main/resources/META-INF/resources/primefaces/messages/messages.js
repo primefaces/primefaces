@@ -10,6 +10,7 @@ PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
         
         if(text) {
            $(PrimeFaces.escapeClientId(this.cfg.target)).data('tooltip', text);
+           $(PrimeFaces.escapeClientId(this.cfg.target)).data('tooltipError', true);
         }
     }
 });

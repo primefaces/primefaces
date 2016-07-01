@@ -57,7 +57,10 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 
                         var title = element.attr('title');
                         if(title) {
-                            element.data('tooltip', title).removeAttr('title');
+                            if (!element.data('tooltipError')) {
+                                element.data('tooltip', title);
+                            }
+                            element.removeAttr('title');
                         }
                         
                         if(element.hasClass('ui-state-error')) {
