@@ -380,16 +380,19 @@ public class AutoCompleteRenderer extends InputRenderer {
                 writer.startElement("li", null);
                 writer.writeAttribute("data-token-value", tokenValue, null);
                 writer.writeAttribute("class", AutoComplete.TOKEN_DISPLAY_CLASS, null);
-                
+
+                String labelClass = disabled ? AutoComplete.TOKEN_LABEL_DISABLED_CLASS : AutoComplete.TOKEN_LABEL_CLASS;
                 writer.startElement("span", null);
-                writer.writeAttribute("class", AutoComplete.TOKEN_LABEL_CLASS, null);
+                writer.writeAttribute("class", labelClass, null);
                 writer.writeText(itemLabel, null);
                 writer.endElement("span");
-                
-                writer.startElement("span", null);
-                writer.writeAttribute("class", AutoComplete.TOKEN_ICON_CLASS, null);
-                writer.endElement("span");
-                
+
+                if (!disabled) {
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", AutoComplete.TOKEN_ICON_CLASS, null);
+                    writer.endElement("span");
+                }
+
                 writer.endElement("li");
                 
                 stringValues.add(tokenValue);
