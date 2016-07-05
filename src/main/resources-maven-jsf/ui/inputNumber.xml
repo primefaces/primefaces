@@ -39,15 +39,15 @@
             <name>decimalSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>.</defaultValue>
-            <description>Decimal separator char. Default is '.'.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Decimal separator char. Default is taken from the view's locale.</description>
         </attribute>
         <attribute>
             <name>thousandSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>,</defaultValue>
-            <description>Thousand separator char. Default is ','.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Thousand separator char. Default is taken from the view's locale.</description>
         </attribute>
         <attribute>
             <name>symbol</name>
