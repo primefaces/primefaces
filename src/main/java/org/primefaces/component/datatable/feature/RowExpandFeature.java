@@ -32,7 +32,9 @@ public class RowExpandFeature implements DataTableFeature {
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
-        
+		if (table.isLazy()) {
+			table.loadLazyData();
+		}
         encodeExpansion(context, renderer, table, expandedRowIndex);
         table.setRowIndex(-1);
     }
