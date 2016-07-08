@@ -16,21 +16,20 @@
 package org.primefaces.component.lifecycle;
 
 import java.io.Serializable;
-import javax.faces.event.PhaseId;
 
 public class PhaseInfo implements Serializable {
     
-    private PhaseId phaseId;
+    private int phase;
     private long start;
     private long end;
     private long duration;
 
-    public PhaseId getPhaseId() {
-        return phaseId;
+    public int getPhase() {
+        return phase;
     }
 
-    public void setPhaseId(PhaseId phaseId) {
-        this.phaseId = phaseId;
+    public void setPhase(int phase) {
+        this.phase = phase;
     }
 
     public long getStart() {
