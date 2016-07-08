@@ -137,10 +137,6 @@
     direction: rtl;
 }
 
-.ui-tabs-rtl .ui-tabs-nav li, .ui-tabs-rtl .ui-tabs-nav li a {
-    float: right;
-}
-
 /** Scroll **/
 .ui-tabs-scrollable .ui-tabs-nav {
     width:5000px;
