@@ -68,26 +68,26 @@ public class LifecyclePhaseListener implements PhaseListener {
     public static PhaseInfo getPhaseInfo(PhaseId id, FacesContext facesContext) {
         
         Map<String, Object> session = facesContext.getExternalContext().getSessionMap(); 
-        Map<String, LinkedHashMap<PhaseId, PhaseInfo>> storePerView = (Map<String, LinkedHashMap<PhaseId, PhaseInfo>>) session.get(LifecyclePhaseListener.class.getName());
+        Map<String, LinkedHashMap<Integer, PhaseInfo>> storePerView = (Map<String, LinkedHashMap<Integer, PhaseInfo>>) session.get(LifecyclePhaseListener.class.getName());
         
         if (storePerView == null) {
-            storePerView = new HashMap<String, LinkedHashMap<PhaseId, PhaseInfo>>();
+            storePerView = new HashMap<String, LinkedHashMap<Integer, PhaseInfo>>();
             session.put(LifecyclePhaseListener.class.getName(), storePerView);
         }
 
         String viewId = ComponentUtils.calculateViewId(facesContext);
         
-        LinkedHashMap<PhaseId, PhaseInfo> store = storePerView.get(viewId);
+        LinkedHashMap<Integer, PhaseInfo> store = storePerView.get(viewId);
         if (store == null) {
-            store = new LinkedHashMap<PhaseId, PhaseInfo>();
+            store = new LinkedHashMap<Integer, PhaseInfo>();
             storePerView.put(viewId, store);
         }
 
-        PhaseInfo phaseInfo = store.get(id);
+        PhaseInfo phaseInfo = store.get(id.getOrdinal());
         if (phaseInfo == null) {
             phaseInfo = new PhaseInfo();
-            phaseInfo.setPhaseId(id);
-            store.put(id, phaseInfo);
+            phaseInfo.setPhase(id.getOrdinal());
+            store.put(id.getOrdinal(), phaseInfo);
         }
         
         return phaseInfo;

@@ -158,6 +158,7 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
+                result = prime * result + ((rowKey == null) ? 0 : rowKey.hashCode());
 		return result;
 	}
 
@@ -176,6 +177,12 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 				return false;
 		} else if (!data.equals(other.data))
 			return false;
+
+                if (rowKey == null) {
+                    if (other.rowKey != null)
+                        return false;
+                } else if (!rowKey.equals(other.rowKey))
+                        return false;
 		
 		return true;
 	}
