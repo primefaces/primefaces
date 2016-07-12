@@ -45,20 +45,22 @@ public class FileUploadRenderer extends CoreRenderer {
             String uploader = cc.getUploader();
             boolean isAtLeastJSF22 = cc.isAtLeastJSF22();
             String inputToDecodeId = getSimpleInputDecodeId(fileUpload, context);
-
+            
+            
             if (uploader.equals("auto")) {
-                if (isAtLeastJSF22) {
+                if (isAtLeastJSF22)
                     NativeFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
-                } else {
+                else
                     CommonsFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
-                }
-            } else if (uploader.equals("native")) {
+            }
+            else if (uploader.equals("native")) {
                 if (!isAtLeastJSF22) {
                     throw new FacesException("native uploader requires at least a JSF 2.2 runtime");
                 }
 
                 NativeFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
-            } else if (uploader.equals("commons")) {
+            }
+            else if (uploader.equals("commons")) {
                 CommonsFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
             }
         }
@@ -80,41 +82,41 @@ public class FileUploadRenderer extends CoreRenderer {
 
         if (fileUpload.getMode().equals("advanced")) {
             wb.initWithDomReady("FileUpload", fileUpload.resolveWidgetVar(), clientId);
-
+            
             wb.attr("auto", fileUpload.isAuto(), false)
-                    .attr("dnd", fileUpload.isDragDropSupport(), true)
-                    .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update, SearchExpressionFacade.Options.VISIT_UNRENDERED), null)
-                    .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process, SearchExpressionFacade.Options.VISIT_UNRENDERED), null)
-                    .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
-                    .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
-                    .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
-                    .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
-                    .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
-                    .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
-                    .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
-                    .attr("disabled", fileUpload.isDisabled(), false)
-                    .attr("sequentialUploads", fileUpload.isSequential(), false)
-                    .callback("onstart", "function()", fileUpload.getOnstart())
-                    .callback("onerror", "function()", fileUpload.getOnerror())
-                    .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
+                .attr("dnd", fileUpload.isDragDropSupport(), true)
+                .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update, SearchExpressionFacade.Options.VISIT_UNRENDERED), null)
+                .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process, SearchExpressionFacade.Options.VISIT_UNRENDERED), null)
+                .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
+                .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
+                .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
+                .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
+                .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
+                .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
+                .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
+                .attr("disabled", fileUpload.isDisabled(), false)
+                .attr("sequentialUploads", fileUpload.isSequential(), false)
+                .callback("onstart", "function()", fileUpload.getOnstart())
+                .callback("onerror", "function()", fileUpload.getOnerror())
+                .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
 
             if (fileUpload.getAllowTypes() != null) {
                 wb.append(",allowTypes:").append(fileUpload.getAllowTypes());
             }
-        } else {
+        }
+        else {
             wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(), clientId)
-                    .attr("skinSimple", fileUpload.isSkinSimple(), false);
+               .attr("skinSimple", fileUpload.isSkinSimple(), false);
         }
 
         wb.finish();
-    }
+	}
 
     protected void encodeMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
-        if (fileUpload.getMode().equals("simple")) {
+        if (fileUpload.getMode().equals("simple"))
             encodeSimpleMarkup(context, fileUpload);
-        } else {
+        else
             encodeAdvancedMarkup(context, fileUpload);
-        }
     }
 
     protected void encodeAdvancedMarkup(FacesContext context, FileUpload fileUpload) throws IOException {
@@ -147,7 +149,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("div");
 
         renderChildren(context, fileUpload);
-
+        
         //content
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
@@ -210,9 +212,10 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.startElement("span", fileUpload);
             writer.writeAttribute("class", FileUpload.FILENAME_CLASS, null);
             writer.endElement("span");
-
+            
             writer.endElement("span");
-        } else {
+        }
+        else {
             encodeSimpleInputField(context, fileUpload, fileUpload.getClientId(context), style, styleClass);
         }
     }
@@ -259,7 +262,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         writer.startElement("input", null);
         writer.writeAttribute("type", "file", null);
-        writer.writeAttribute("id", inputId, null);
+        writer.writeAttribute("id", inputId , null);
         writer.writeAttribute("name", inputId, null);
 
         if (fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
@@ -267,18 +270,18 @@ public class FileUploadRenderer extends CoreRenderer {
         if (fileUpload.getAccept() != null) writer.writeAttribute("accept", fileUpload.getAccept(), null);
         
         renderDynamicPassThruAttributes(context, fileUpload);
-
+        
         writer.writeAttribute("aria-labelledby", clientId + "_label", null);
 
         writer.endElement("input");
     }
-
+    
     protected void encodeSimpleInputField(FacesContext context, FileUpload fileUpload, String clientId, String style, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("input", null);
         writer.writeAttribute("type", "file", null);
-        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("id", clientId , null);
         writer.writeAttribute("name", clientId, null);
 
         if (fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
@@ -303,7 +306,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("disabled", "disabled", null);
 
         //button icon
-        String iconClass = HTML.BUTTON_LEFT_ICON_CLASS;
+        String iconClass = HTML.BUTTON_LEFT_ICON_CLASS ;
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass + " " + icon, null);
         writer.endElement("span");
@@ -320,28 +323,28 @@ public class FileUploadRenderer extends CoreRenderer {
 
         writer.endElement("button");
     }
-
+    
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         FileUpload fileUpload = (FileUpload) component;
-
+        
         if (fileUpload.getMode().equals("simple") && submittedValue != null && submittedValue.equals("")) {
             return null;
-        } else {
+        }
+        else {
             return submittedValue;
         }
     }
-
+    
     public String getSimpleInputDecodeId(FileUpload fileUpload, FacesContext context) {
         String clientId = fileUpload.getClientId(context);
-
-        if (fileUpload.getMode().equals("simple") && !fileUpload.isSkinSimple()) {
+    
+        if(fileUpload.getMode().equals("simple") && !fileUpload.isSkinSimple())
             return clientId;
-        } else {
+        else
             return clientId + "_input";
-        }
     }
-
+    
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         // Do nothing
