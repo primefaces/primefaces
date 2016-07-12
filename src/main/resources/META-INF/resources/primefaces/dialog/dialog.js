@@ -42,13 +42,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.appendTo) {
             this.parent = this.jq.parent();
-            this.targetParet = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo);
+            this.targetParent = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo);
 
             // skip when the parent currently is already the same
             // this likely happens when the dialog is updated directly instead of a container
             // as our ajax update mechanism just updates by id
-            if (!this.parent.is(this.targetParet)) {
-                this.jq.appendTo(this.targetParet);
+            if (!this.parent.is(this.targetParent)) {
+                this.jq.appendTo(this.targetParent);
             }
         }
 
