@@ -87,7 +87,14 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                             
                             // show promt again and focus input
                             $this.promptContainerParent.show();
-                            $this.focus();
+                            
+                            if(PrimeFaces.isIE()) {
+                            	window.setTimeout(function(){
+                            		$this.focus();
+                             	}, 50);
+                            } else {
+                            	$this.focus();
+                            }
 
                             // add response
                             $this.processResponse(content);
