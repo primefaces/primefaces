@@ -79,6 +79,9 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         }else{
             $this.inputInternal.removeAttr('value');
         }
+        
+        //pfs metadata
+        this.inputExternal.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
     copyValueToHiddenInput : function() {

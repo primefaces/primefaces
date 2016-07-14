@@ -84,7 +84,7 @@ import javax.faces.event.BehaviorEvent;
             lazyModel.setWrappedData(data);
 
             //Update paginator for callback
-            if(this.isPaginator()) {
+            if(isRequestSource(getFacesContext()) && this.isPaginator()) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {

@@ -199,7 +199,7 @@ public class ImageCropperRenderer extends CoreRenderer {
     private Resource getImageResource(FacesContext facesContext, ImageCropper imageCropper) {
 
         Resource resource = null;
-        ValueExpression imageValueExpression = imageCropper.getValueExpression("image");
+        ValueExpression imageValueExpression = imageCropper.getValueExpression(ImageCropper.PropertyKeys.image.toString());
 
         if (imageValueExpression != null) {
             String imageValueExpressionString = imageValueExpression.getExpressionString();

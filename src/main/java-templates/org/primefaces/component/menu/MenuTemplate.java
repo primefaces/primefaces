@@ -5,6 +5,7 @@
     public static final String EXPANDED_SUBMENU_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
     public static final String COLLAPSED_SUBMENU_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
     public static final String TOGGLEABLE_MENU_CLASS = "ui-menu-toggleable";
+    public static final String SUBMENU_CHILD_CLASS = "ui-submenu-child";
 
     public static final String MOBILE_CONTAINER_CLASS = "ui-menu ui-listview";
     public static final String MOBILE_DIVIDER_CLASS = "ui-li-divider ui-bar-inherit";

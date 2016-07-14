@@ -151,7 +151,7 @@ import javax.faces.event.BehaviorEvent;
 
         super.processUpdates(context);
 
-        ValueExpression expr = this.getValueExpression("activeIndex");
+        ValueExpression expr = this.getValueExpression(PropertyKeys.activeIndex.toString());
         if(expr != null) {
             expr.setValue(getFacesContext().getELContext(), getActiveIndex());
             resetActiveIndex();

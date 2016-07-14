@@ -37,7 +37,7 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
                 $this.initConnections();
                 
                 $this.canvas.draggable($this.jq.children('.ui-diagram-draggable'), {
-                    containment: true
+                    containment: $this.cfg.containment
                 });
             });
             

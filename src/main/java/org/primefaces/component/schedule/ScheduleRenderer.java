@@ -189,11 +189,12 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("eventDurationEditable", schedule.isResizable(), true)    
             .attr("axisFormat", schedule.getAxisFormat(), null)
             .attr("timeFormat", schedule.getTimeFormat(), null)
-            .attr("weekNumbers", isShowWeekNumbers, false);
+            .attr("weekNumbers", isShowWeekNumbers, false)
+            .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00");
                 
         String columnFormat = schedule.getColumnFormat();
         if(columnFormat != null) {
-            wb.attr("columnFormat", columnFormat, null);
+            wb.append(",columnFormatOptions:{" + columnFormat + "}");
         }
         
         String displayEventEnd = schedule.getDisplayEventEnd();
@@ -211,12 +212,12 @@ public class ScheduleRenderer extends CoreRenderer {
         
         if(isShowWeekNumbers) {
             String weekNumCalculation = schedule.getWeekNumberCalculation();
-            String weekNumCalculater = schedule.getWeekNumberCalculater();
+            String weekNumCalculator = schedule.getWeekNumberCalculator();
             
             if(weekNumCalculation.equals("custom")) {
-                if(weekNumCalculater != null) {
+                if(weekNumCalculator != null) {
                     wb.append(",weekNumberCalculation: function(){ return ")
-                        .append(schedule.getWeekNumberCalculater())
+                        .append(schedule.getWeekNumberCalculator())
                         .append("}");
                 }
             }

@@ -172,7 +172,7 @@ import javax.faces.event.BehaviorEvent;
 
         super.processUpdates(context);
 
-        ValueExpression expr = this.getValueExpression("view");
+        ValueExpression expr = this.getValueExpression(PropertyKeys.view.toString());
         if(expr != null) {
             expr.setValue(getFacesContext().getELContext(), this.getView());
             getStateHelper().remove(PropertyKeys.view);

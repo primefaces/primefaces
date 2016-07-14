@@ -28,6 +28,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.context.RequestContext;
@@ -58,7 +59,7 @@ public class SortFeature implements DataTableFeature {
             
             for(int i = 0; i < sortKeys.length; i++) {
                 UIColumn sortColumn = table.findColumn(sortKeys[i]);
-                ValueExpression columnSortByVE = sortColumn.getValueExpression("sortBy");
+                ValueExpression columnSortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
                 String sortField;
             
                 if(sortColumn.isDynamic()) {
@@ -84,8 +85,8 @@ public class SortFeature implements DataTableFeature {
         }
         else {
             UIColumn sortColumn = table.findColumn(sortKey);
-            ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
-            table.setValueExpression("sortBy", sortByVE);
+            ValueExpression sortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
+            table.setValueExpression(DataTable.PropertyKeys.sortBy.toString(), sortByVE);
             table.setSortColumn(sortColumn);
             table.setSortFunction(sortColumn.getSortFunction());
             table.setSortOrder(convertSortOrderParam(sortDir));
@@ -128,7 +129,7 @@ public class SortFeature implements DataTableFeature {
         if(value == null)
             return;
         
-        ValueExpression sortByVE = table.getValueExpression("sortBy");        
+        ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());        
         SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
         MethodExpression sortFunction = table.getSortFunction();
         List list = null;
@@ -173,7 +174,7 @@ public class SortFeature implements DataTableFeature {
         for(SortMeta meta : sortMeta) { 
             BeanPropertyComparator comparator;
             UIColumn sortColumn = meta.getColumn();
-            ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
+            ValueExpression sortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
             
             if(sortColumn.isDynamic()) {
                 ((DynamicColumn) sortColumn).applyStatelessModel();                

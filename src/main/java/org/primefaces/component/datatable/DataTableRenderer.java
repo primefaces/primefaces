@@ -97,9 +97,9 @@ public class DataTableRenderer extends DataRenderer {
                 table.loadLazyData();
         }
 
-        boolean defaultSorted = (table.getValueExpression("sortBy") != null || table.getSortBy() != null);
+        boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null);
         if(defaultSorted && !table.isLazy()) {
-            table.setDefaultSortByVE(table.getValueExpression("sortBy"));
+            table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
             table.setDefaultSortOrder(table.getSortOrder());
             table.setDefaultSortFunction(table.getSortFunction());
             
@@ -201,7 +201,8 @@ public class DataTableRenderer extends DataRenderer {
 
         wb.attr("tabindex", table.getTabindex(), "0")
             .attr("reflow", table.isReflow(), false)
-            .attr("rowHover", table.isRowHover(), false);
+            .attr("rowHover", table.isRowHover(), false)
+            .attr("clientCache", table.isClientCache(), false);
         
         //Behaviors
         encodeClientBehaviors(context, table);
@@ -419,9 +420,9 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
 
-        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
         boolean sortable = (columnSortByVE != null && column.isSortable());
-        boolean filterable = (column.getValueExpression("filterBy") != null && column.isFilterable());
+        boolean filterable = (column.getValueExpression(Column.PropertyKeys.filterBy.toString()) != null && column.isFilterable());
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
@@ -440,7 +441,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         
         if(sortable) {
-            ValueExpression tableSortByVE = table.getValueExpression("sortBy");
+            ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
             boolean defaultSorted = (tableSortByVE != null || tableSortBy != null);
                     
@@ -533,8 +534,8 @@ public class DataTableRenderer extends DataRenderer {
     }
     
     protected String resolveDefaultSortIcon(DataTable table, UIColumn column, String sortOrder) {
-        ValueExpression tableSortByVE = table.getValueExpression("sortBy");
-        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
         String columnSortByExpression = columnSortByVE.getExpressionString();
         String tableSortByExpression = tableSortByVE.getExpressionString();
         String field = column.getField();
@@ -613,7 +614,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeText(ariaMessage, null);
             writer.endElement("label");
             
-            if(column.getValueExpression("filterOptions") == null) {
+            if(column.getValueExpression(Column.PropertyKeys.filterOptions.toString()) == null) {
                 filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_INPUT_FILTER_CLASS : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
 
                 writer.startElement("input", null);
@@ -822,13 +823,14 @@ public class DataTableRenderer extends DataRenderer {
         UIComponent emptyFacet = table.getFacet("emptyMessage");
         SubTable subTable = table.getSubTable();
         String tbodyClientId = (tbodyId == null) ? clientId + "_data" : tbodyId;
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         
         if(table.isSelectionEnabled()) {
             table.findSelectedRowKeys();
         }
                
         int rows = table.getRows();
-		int first = table.getFirst();
+		int first = table.isClientCacheRequest(context) ? Integer.valueOf(params.get(clientId + "_first")) + rows : table.getFirst();
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? (table.getScrollRows() + table.getScrollOffset()) : rowCount) : rows;
         int frozenRows = table.getFrozenRows();
@@ -887,7 +889,7 @@ public class DataTableRenderer extends DataRenderer {
         SummaryRow summaryRow = table.getSummaryRow();
         ELContext eLContext = context.getELContext();
         ValueExpression groupByVE = null;
-        ValueExpression tableSortByVE = table.getValueExpression("sortBy");
+        ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
         if(tableSortByVE != null) {
             groupByVE = tableSortByVE;
         }
@@ -1397,7 +1399,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean sortable = false;
         
         for(UIColumn column : columns) {
-            columnSortByVE = column.getValueExpression("sortBy");
+            columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
             sortable = (columnSortByVE != null && column.isSortable());
             if(sortable) {
                 String headerText = getHeaderLabel(context, column);

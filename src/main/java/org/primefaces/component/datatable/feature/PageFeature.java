@@ -34,7 +34,9 @@ public class PageFeature implements DataTableFeature {
             table.loadLazyData();
         }
 
-        renderer.encodeTbody(context, table, true);
+        if(!table.isPageStateRequest(context)) {
+            renderer.encodeTbody(context, table, true);
+        }
 
         context.getApplication().publishEvent(context, PostPageEvent.class, table);
     }
@@ -45,10 +47,6 @@ public class PageFeature implements DataTableFeature {
 
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return table.isPaginationRequest(context);
-    }
-    
-    private boolean isLazyCacheLoadRequest(FacesContext context, DataTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_loadlazycache");
     }
     
 }

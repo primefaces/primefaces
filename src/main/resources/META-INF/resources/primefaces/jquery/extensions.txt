@@ -22,3 +22,4 @@ Extensions
 - Added fix to autosize from https://github.com/jackmoore/autosize/issues/225
 - Added fix to timepicker from https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848 (line 11548)
 - Added gotoToday selection fix. https://github.com/primefaces/primefaces/issues/1420 (line 14248)
+- Added arrow keys fix to mask. https://github.com/primefaces/primefaces/issues/1481 (line 13277)

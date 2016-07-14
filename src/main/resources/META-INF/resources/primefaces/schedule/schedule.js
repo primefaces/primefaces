@@ -9824,6 +9824,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.extender.call(this);
         }
 
+        this.setViewOptions();
+        
         this.renderDeferred();
     },
     
@@ -10010,6 +10012,26 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         });
+    },
+    
+    setViewOptions: function() {
+        var views = {
+            month: {},       // month view
+            week: {},        // basicWeek & agendaWeek views
+            day: {},         // basicDay & agendaDay views
+            agenda: {},      // agendaDay & agendaWeek views
+            agendaDay: {},   // agendaDay view
+            agendaWeek: {}   // agendaWeek view
+        };
+
+        var columnFormat = this.cfg.columnFormatOptions;
+        if(columnFormat) {
+            for (var view in views) {
+                views[view] = {columnFormat: columnFormat[view]};
+            }
+        }
+        
+        this.cfg.views = views;
     }
 
 });

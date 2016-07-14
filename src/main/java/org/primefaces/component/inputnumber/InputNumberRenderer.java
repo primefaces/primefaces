@@ -164,6 +164,10 @@ public class InputNumberRenderer extends InputRenderer {
         }
         
         writer.writeAttribute("class", styleClass, null);
+        
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, inputNumber);
+        }
 
         writer.endElement("input");
     }
@@ -199,6 +203,7 @@ public class InputNumberRenderer extends InputRenderer {
         String roundMethod = inputNumber.getRoundMethod();
         String decimalPlaces = inputNumber.getDecimalPlaces();
         String emptyValue = inputNumber.getEmptyValue();
+        boolean padControl = inputNumber.isPadControl();
 
         String options = "";
         options += isValueBlank(decimalSeparator) ? "" : "aDec:\"" + escapeText(decimalSeparator) + "\",";
@@ -211,6 +216,7 @@ public class InputNumberRenderer extends InputRenderer {
         options += isValueBlank(roundMethod) ? "" : "mRound:\"" + escapeText(roundMethod) + "\",";
         options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + escapeText(decimalPlaces) + "\",";
         options += "wEmpty:\"" + escapeText(emptyValue) + "\",";
+        options += "aPad:" + padControl + ",";
 
         //if all options are empty return empty
         if (options.isEmpty()) {
@@ -234,7 +240,7 @@ public class InputNumberRenderer extends InputRenderer {
         else {
             try {
                 Object objectToRender;
-                if (value instanceof BigDecimal) {
+                if (value instanceof BigDecimal || doubleValueCheck(valueToRender)) {
                     objectToRender = new BigDecimal(valueToRender);
                 } else {
                     objectToRender = new Double(valueToRender);
@@ -256,6 +262,19 @@ public class InputNumberRenderer extends InputRenderer {
                 throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a double value;", e);
             }
         }
+    }
+    
+    protected boolean doubleValueCheck(String valueToRender) {
+        int counter = 0;
+        int length = valueToRender.length();
+
+        for (int i = 0; i < length; i++) {
+            if (valueToRender.charAt(i) == '9') {
+                counter++;
+            }
+        }
+
+        return (counter > 15 || length > 15);
     }
 
 }

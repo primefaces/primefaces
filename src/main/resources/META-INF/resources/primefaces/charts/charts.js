@@ -9181,7 +9181,13 @@
                 }
                 context.fillText(w, templeft, temptop);
             }
-
+            
+            if($(el).is('td.jqplot-table-legend-label') && $(el).hasClass('jqplot-series-hidden')) {
+                context.strokeStyle = $(el).css('color');
+                context.moveTo(templeft, top + (lineheight/2));
+                context.lineTo(templeft + tagwidth, top + (lineheight/2));
+                context.stroke();
+            }
         }
 
         function _jqpToImage(el, x_offset, y_offset) {
@@ -9255,7 +9261,9 @@
             }
 
             else if (tagname == 'canvas') {
-                newContext.drawImage(el, left, top);
+                if(!$(el).hasClass('jqplot-series-hidden')) { // PrimeFaces Github Issue; #1505
+                    newContext.drawImage(el, left, top);
+                }
             }
         }
         $(this).children().each(function() {

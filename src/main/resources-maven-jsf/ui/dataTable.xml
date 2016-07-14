@@ -474,6 +474,13 @@
             <defaultValue>true</defaultValue>
             <description>Saves the changes in cell editing on blur, when set to false changes are discarded.</description>
 		</attribute>
+        <attribute>
+			<name>clientCache</name>
+			<required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Caches the next page asynchronously, default is false.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

@@ -35,6 +35,8 @@ public class Element implements Serializable {
     private List<EndPoint> endPoints;
     
     private boolean draggable = true;
+    
+    private String title;
 
     public Element() {
         endPoints = new EndPointList();
@@ -113,6 +115,14 @@ public class Element implements Serializable {
 
     public void setDraggable(boolean draggable) {
         this.draggable = draggable;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
     
     @Override

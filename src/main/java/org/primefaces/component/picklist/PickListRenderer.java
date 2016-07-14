@@ -63,7 +63,7 @@ public class PickListRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, PickList pickList) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = pickList.getClientId(context);
-		DualListModel model = (DualListModel) pickList.getValue();
+		DualListModel model = getModelValueToRender(context, pickList);
         String styleClass = pickList.getStyleClass();
         styleClass = styleClass == null ? PickList.CONTAINER_CLASS : PickList.CONTAINER_CLASS + " " + styleClass;
         String labelDisplay = pickList.getLabelDisplay();
@@ -367,5 +367,14 @@ public class PickListRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+    
+    protected DualListModel getModelValueToRender(FacesContext context, PickList pickList) {
+        Object submittedValue = pickList.getSubmittedValue();
+        if(submittedValue != null) {
+            return (DualListModel)getConvertedValue(context, pickList, submittedValue);
+        }
+        
+		return (DualListModel) pickList.getValue();
     }
 }

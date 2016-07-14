@@ -17,6 +17,7 @@ package org.primefaces.component.menu;
 
 import java.io.IOException;
 import java.util.List;
+import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -78,6 +79,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 
     protected void encodeElements(FacesContext context, Menu menu, List<MenuElement> elements) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
+        boolean toggleable = menu.isToggleable();
         
         for(MenuElement element : elements) {
             if(element.isRendered()) {
@@ -87,6 +89,11 @@ public class MenuRenderer extends BaseMenuRenderer {
                     String containerStyleClass = menuItem.getContainerStyleClass();
                     containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS: Menu.MENUITEM_CLASS + " " + containerStyleClass; 
                             
+                    if(toggleable) {
+                        UIComponent parent = ((UIComponent)menuItem).getParent();
+                        containerStyleClass = (parent instanceof Submenu) ? containerStyleClass + " " + Menu.SUBMENU_CHILD_CLASS: containerStyleClass; 
+                    }
+                    
                     writer.startElement("li", null);
                     writer.writeAttribute("class", containerStyleClass, null);
                     writer.writeAttribute("role", "menuitem", null);

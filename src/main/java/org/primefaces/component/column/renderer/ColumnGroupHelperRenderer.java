@@ -32,8 +32,8 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
         String type = group.getType();
         DataTableRenderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
-                "org.primefaces.component",
-                "org.primefaces.component.DataTableRenderer",
+                DataTable.COMPONENT_FAMILY,
+                DataTable.DEFAULT_RENDERER,
                 DataTableRenderer.class);
 
         if(type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader"))

@@ -113,14 +113,14 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
             
             if (eventMappingClass == null) {
                 behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
-                    this.listener.getMethodExpression(ctx, Object.class, EMPTY_PARAMS),
-                    this.listener.getMethodExpression(ctx, Object.class, ARG_PARAMS)));
+                    this.listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
+                    this.listener.getMethodExpression(ctx, Void.class, ARG_PARAMS)));
             }
             else {
                 behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
-                    this.listener.getMethodExpression(ctx, Object.class, EMPTY_PARAMS),
-                    this.listener.getMethodExpression(ctx, Object.class, ARG_PARAMS),
-                    this.listener.getMethodExpression(ctx, Object.class, new Class[] { eventMappingClass } )));
+                    this.listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
+                    this.listener.getMethodExpression(ctx, Void.class, ARG_PARAMS),
+                    this.listener.getMethodExpression(ctx, Void.class, new Class[] { eventMappingClass } )));
             }
         }
 

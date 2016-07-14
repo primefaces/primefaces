@@ -238,7 +238,7 @@
             <defaultValue>true</defaultValue>
             <description>Defines whether value would be escaped or not, defaults to true.</description>
 		</attribute>
-	<attribute>
+        <attribute>
 			<name>rel</name>
 			<required>false</required>
 			<type>java.lang.String</type>

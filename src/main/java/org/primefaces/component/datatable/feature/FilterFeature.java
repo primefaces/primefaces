@@ -120,7 +120,7 @@ public class FilterFeature implements DataTableFeature {
             filter(context, table, table.getFilterMetadata(), globalFilterParam);
                                   
             //sort new filtered data to restore sort state
-            boolean sorted = (table.getValueExpression("sortBy") != null || table.getSortBy() != null);
+            boolean sorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null);
             if(sorted) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
                 
@@ -217,7 +217,7 @@ public class FilterFeature implements DataTableFeature {
             
             if(filterValue != null && !filterValue.toString().trim().equals(Constants.EMPTY_STRING)) {
                 String filterField = null;
-                ValueExpression filterByVE = column.getValueExpression("filterBy");
+                ValueExpression filterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
                 
                 if(column.isDynamic()) {
                     ((DynamicColumn) column).applyStatelessModel();
@@ -290,7 +290,7 @@ public class FilterFeature implements DataTableFeature {
                     if(headerRowChild instanceof Column) {
                         Column column = (Column) headerRowChild;
                         if(column.isRendered()) {
-                            ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
+                            ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
                             if(columnFilterByVE != null) {
                                 ValueExpression filterByVE = columnFilterByVE;
                                 UIComponent filterFacet = column.getFacet("filter");
@@ -307,7 +307,7 @@ public class FilterFeature implements DataTableFeature {
                         for(DynamicColumn dynaColumn : dynamicColumns) {
                             dynaColumn.applyStatelessModel();
                             if(dynaColumn.isRendered()) {
-                                ValueExpression columnFilterByVE = dynaColumn.getValueExpression("filterBy");
+                                ValueExpression columnFilterByVE = dynaColumn.getValueExpression(Column.PropertyKeys.filterBy.toString());
                                 if(columnFilterByVE != null) {
                                     String filterId = dynaColumn.getContainerClientId(context) + separator + "filter";
                                     UIComponent filterFacet = dynaColumn.getFacet("filter"); 
@@ -325,7 +325,7 @@ public class FilterFeature implements DataTableFeature {
    
    private void populateFilterMetaDataWithoutColumnGroups(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, Map<String,String> params, String separator) {
        for(UIColumn column : table.getColumns()) {
-            ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
+            ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
 
             if (columnFilterByVE != null) {
                 UIComponent filterFacet = column.getFacet("filter");                    

@@ -60,7 +60,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     
     private List<TreeNode> preselection;
             
-    protected enum PropertyKeys {
+    public enum PropertyKeys {
 		var
         ,selectionMode
         ,selection
@@ -279,7 +279,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
         
     public void initPreselection() {
-        ValueExpression ve = this.getValueExpression("selection");
+        ValueExpression ve = this.getValueExpression(UITree.PropertyKeys.selection.toString());
         if(ve != null) {
             if(preselection != null) {
                 String selectionMode = this.getSelectionMode();
@@ -494,7 +494,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     
     public void updateSelection(FacesContext context) {
         String selectionMode = this.getSelectionMode();
-        ValueExpression selectionVE = this.getValueExpression("selection");
+        ValueExpression selectionVE = this.getValueExpression(UITree.PropertyKeys.selection.toString());
 
         if(selectionMode != null && selectionVE != null) {
             Object selection = this.getLocalSelectedNodes();

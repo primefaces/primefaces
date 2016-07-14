@@ -4,6 +4,7 @@
 PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
     
     GRID_MAP: {
+        '1': 'solo',
         '2': 'a',
         '3': 'b',
         '4': 'c',
@@ -40,10 +41,23 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
     initGrid: function() {
         var tabcount = this.headers.length;
         
-        this.navContainer.addClass('ui-grid-' + this.GRID_MAP[tabcount.toString()]);
+        if(tabcount <= 5) {
+            this.navContainer.addClass('ui-grid-' + this.GRID_MAP[tabcount.toString()]);
+        }
+        else {
+            this.navContainer.addClass('ui-grid-duo ui-grid-a');
+        }
         
         for(var i = 0; i < tabcount; i++) {
-            this.headers.eq(i).addClass('ui-block-' + this.BLOCK_MAP[(i % 5).toString()]);
+            var header = this.headers.eq(i);
+        
+            if(tabcount <= 5) {
+                header.addClass('ui-block-' + this.BLOCK_MAP[(i % 5).toString()]);
+            }
+            else {
+                var headerClass = ((i % 2) == 0) ? 'ui-block-a' : 'ui-block-b';
+                header.addClass(headerClass);
+            }
         }
     },
     

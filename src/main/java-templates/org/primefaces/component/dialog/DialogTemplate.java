@@ -118,7 +118,7 @@ import javax.faces.event.BehaviorEvent;
             super.processUpdates(context);
         }
         else {
-            ValueExpression visibleVE = this.getValueExpression("visible");
+            ValueExpression visibleVE = this.getValueExpression(PropertyKeys.visible.toString());
             if(visibleVE != null) {
                 FacesContext facesContext = getFacesContext();
                 ELContext eLContext = facesContext.getELContext();

@@ -91,7 +91,7 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         if (listenerWithCustomArg == null) {
         
             MethodExpression argListener = context.getApplication().getExpressionFactory().
-                        createMethodExpression(elContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
+                        createMethodExpression(elContext, listener.getExpressionString(), Void.class, new Class[]{event.getClass()});
 
             if (LOG.isLoggable(Level.FINE)) {
                 LOG.fine("Try to invoke customListener: " + argListener.getExpressionString());

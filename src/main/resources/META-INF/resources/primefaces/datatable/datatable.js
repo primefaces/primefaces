@@ -120,13 +120,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindPaginator: function() {
         var _self = this;
         this.cfg.paginator.paginate = function(newState) {
-            _self.paginate(newState);
+            if(_self.cfg.clientCache) {
+                _self.loadDataWithCache(newState);
+            }
+            else {
+                _self.paginate(newState);
+            }
         };
 
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
         
-        if(this.cfg.lazyCache) {
-            this.fetchNextPage();
+        if(this.cfg.clientCache) {
+            this.cacheRows = this.paginator.getRows();
+            var newState = {
+                first:  this.paginator.getFirst(),
+                rows: this.paginator.getRows(),
+                page: this.paginator.getCurrentPage()
+            };
+            this.clearCacheMap();
+            this.fetchNextPage(newState);
         }
     },
     
@@ -1122,6 +1134,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             if(this.cfg.scrollable) {
                                 this.alignScrollBody();
                             }
+                            
+                            if(this.cfg.clientCache) {
+                                this.cacheMap[newState.first] = content;
+                            }
                         }
                     });
 
@@ -1134,10 +1150,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 else {
                     $this.paginator.updateUI();
-                }
-                
-                if($this.cfg.lazyCache) {
-                    $this.fetchNextPage();
                 }
             }
         };
@@ -1153,23 +1165,31 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     /**
-     * Loads next lazy page asynchronously to keep it at viewstate
+     * Loads next page asynchronously to keep it at viewstate and Updates viewstate
      */
-    fetchNextPage: function() {
-        var $this = this,
+    fetchNextPage: function(newState) {
+        var rows = newState.rows,
+        first = newState.first,
+        $this = this,
         options = {
             source: this.id,
             process: this.id,
             update: this.id,
-            params: [
+            global: false,
+            params: [{name: this.id + '_skipChildren', value: true},
+                    {name: this.id + '_encodeFeature', value: true},
+                    {name: this.id + '_first', value: first},
+                    {name: this.id + '_rows', value: rows},
                     {name: this.id + '_pagination', value: true},
-                    {name: this.id + '_loadlazycache', value: true},
-                    {name: this.id + '_encodeFeature', value: true}],
+                    {name: this.id + '_clientCache', value: true}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
                     handle: function(content) {
-                        //do nothing
+                        if(content.length) {
+                            var nextFirstValue = first + rows;
+                            $this.cacheMap[nextFirstValue] = content;
+                        }
                     }
                 });
                 
@@ -1177,7 +1197,34 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }    
         };
                 
-        PrimeFaces.ajax.Request.handle(options);      
+        PrimeFaces.ajax.Request.handle(options);
+    },
+    
+    updatePageState: function(newState) {
+        var $this = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            global: false,
+            params: [{name: this.id + '_pagination', value: true},
+                    {name: this.id + '_encodeFeature', value: true},
+                    {name: this.id + '_pageState', value: true},
+                    {name: this.id + '_first', value: newState.first},
+                    {name: this.id + '_rows', value: newState.rows}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        // do nothing
+                    }
+                });
+                
+                return true;
+            }    
+        };
+                
+        PrimeFaces.ajax.Request.handle(options);
     },
     
     /**
@@ -1242,6 +1289,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                     }
+                }
+                
+                if($this.cfg.clientCache) {
+                    $this.clearCacheMap();
                 }
             }
         };
@@ -1314,6 +1365,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 var paginator = $this.getPaginator();
                 if(paginator) {
                     paginator.setTotalRecords(args.totalRecords);
+                }
+                
+                if($this.cfg.clientCache) {
+                    $this.clearCacheMap();
                 }
             }
         };
@@ -2001,7 +2056,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.currentCell) {
             if(this.cfg.saveOnCellBlur)
                 this.saveCell(this.currentCell);
-            else
+            else if(!this.currentCell.is(cell))
                 this.doCellEditCancelRequest(this.currentCell);
         }
         
@@ -2157,6 +2212,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     cell.addClass('ui-state-error');
                 else
                     $this.viewMode(cell);
+                
+                if($this.cfg.clientCache) {
+                    $this.clearCacheMap();
+                }
             }
         };
 
@@ -2199,6 +2258,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             oncomplete: function(xhr, status, args) {                            
                 $this.viewMode(cell);
                 cell.data('edit-events-bound', false);
+                
+                if($this.cfg.clientCache) {
+                    $this.clearCacheMap();
+                }
             }
         };
         
@@ -2257,6 +2320,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             oncomplete: function(xhr, status, args) {
                 if(args && args.validationFailed) {
                     $this.invalidateRow(rowIndex);
+                }
+                
+                if($this.cfg.clientCache) {
+                    $this.clearCacheMap();
                 }
             }
         };
@@ -3068,6 +3135,41 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         PrimeFaces.ajax.Request.handle(options);
+    },
+    
+    clearCacheMap: function() {
+        this.cacheMap = {};
+    },
+ 
+    loadDataWithCache: function(newState) {
+        var isRppChanged = false;
+        if(this.cacheRows != newState.rows) {
+            this.clearCacheMap();
+            this.cacheRows = newState.rows;
+            isRppChanged = true;
+        }
+
+        var pageFirst = newState.first,
+            nextPageFirst = newState.rows + pageFirst,
+            lastPageFirst = this.cfg.paginator.pageCount * newState.rows,
+            hasNextPage = (!this.cacheMap[nextPageFirst]) && nextPageFirst < lastPageFirst;
+
+        if(this.cacheMap[pageFirst] && !isRppChanged) {
+            this.updateData(this.cacheMap[pageFirst]);
+            this.paginator.cfg.page = newState.page;
+            this.paginator.updateUI();
+            
+            if(!hasNextPage) {
+                this.updatePageState(newState);
+            }
+        }
+        else {
+            this.paginate(newState);
+        }
+
+        if(hasNextPage) {
+            this.fetchNextPage(newState);
+        }
     }
 
 });

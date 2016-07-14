@@ -63,17 +63,8 @@ public class InputMaskRenderer extends InputRenderer {
         String mask = inputMask.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("InputMask", inputMask.resolveWidgetVar(), clientId);
-        String placeHolder = inputMask.getPlaceHolder();
         String slotChar = inputMask.getSlotChar();
-
-        if(placeHolder != null) {
-            logger.warning("placeHolder attribute is deprecated, use slotChar instead.");
-        }
-        
-        if(slotChar == null) {
-            slotChar = placeHolder;
-        }
-        
+                
         if(mask != null) {
             wb.attr("mask", mask)
                 .attr("placeholder", slotChar, null)

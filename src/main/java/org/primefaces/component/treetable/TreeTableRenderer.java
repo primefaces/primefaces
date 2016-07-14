@@ -213,7 +213,7 @@ public class TreeTableRenderer extends CoreRenderer {
         }
         
         //default sort
-        if(tt.getValueExpression("sortBy") != null && !tt.isDefaultSorted()) {
+        if(tt.getValueExpression(TreeTable.PropertyKeys.sortBy.toString()) != null && !tt.isDefaultSorted()) {
             sort(tt);
         }
         
@@ -540,7 +540,7 @@ public class TreeTableRenderer extends CoreRenderer {
         String headerText = column.getHeaderText();
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
-        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
         boolean sortable = (columnSortByVE != null);
         String sortIcon = null;
         String style = column.getStyle();
@@ -550,7 +550,7 @@ public class TreeTableRenderer extends CoreRenderer {
         if(userColumnClass != null) columnClass = columnClass + " " + userColumnClass;
         
         if(sortable) {
-            ValueExpression tableSortByVE = tt.getValueExpression("sortBy");
+            ValueExpression tableSortByVE = tt.getValueExpression(TreeTable.PropertyKeys.sortBy.toString());
             if(tableSortByVE != null) {
                 sortIcon = resolveSortIcon(columnSortByVE, tableSortByVE, tt.getSortOrder());
             }
@@ -745,7 +745,7 @@ public class TreeTableRenderer extends CoreRenderer {
 		String sortDir  = params.get(clientId + "_sortDir");
         
         UIColumn sortColumn = tt.findColumn(sortKey);
-        ValueExpression sortByVE = sortColumn.getValueExpression("sortBy");
+        ValueExpression sortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
         tt.setValueExpression("sortBy", sortByVE);
         tt.setSortColumn(sortColumn);
         tt.setSortFunction(sortColumn.getSortFunction());
@@ -768,7 +768,7 @@ public class TreeTableRenderer extends CoreRenderer {
             ((DynamicColumn) sortColumn).applyStatelessModel();
         }
         
-        ValueExpression sortByVE = tt.getValueExpression("sortBy");
+        ValueExpression sortByVE = tt.getValueExpression(TreeTable.PropertyKeys.sortBy.toString());
         SortOrder sortOrder = SortOrder.valueOf(tt.getSortOrder().toUpperCase(Locale.ENGLISH));
         TreeUtils.sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction(), tt.isCaseSensitiveSort(), tt.resolveDataLocale()));
         tt.updateRowKeys(root);
