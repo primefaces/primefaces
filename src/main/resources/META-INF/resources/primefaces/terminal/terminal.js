@@ -192,7 +192,13 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
     },
             
     focus: function() {
-        this.input.trigger('focus');
+    	if(PrimeFaces.isIE()) {
+    		window.setTimeout(function(terminal){
+    			terminal.input.trigger('focus');
+    		}, 50, this);
+    	} else {
+    		this.input.trigger('focus');
+    	}
     },
             
     clear: function() {
