@@ -16,6 +16,7 @@
     white-space: nowrap;
     display: inline-block;
     vertical-align: top;
+    float: none;
 }
 
 .ui-tabs .ui-tabs-nav li a {
