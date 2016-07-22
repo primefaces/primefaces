@@ -29,6 +29,8 @@ public class DefaultStreamedContent implements StreamedContent {
 	private String name;
     
     private String contentEncoding;
+    
+    private Integer contentLenght;
 	
 	public DefaultStreamedContent() {}
 	
@@ -49,9 +51,20 @@ public class DefaultStreamedContent implements StreamedContent {
     public DefaultStreamedContent(InputStream stream, String contentType, String name, String contentEncoding) {
 		this(stream, contentType, name);
         this.contentEncoding = contentEncoding;
+	}    
+
+    public DefaultStreamedContent(InputStream stream, String contentType, String name, Integer contentLenght) {
+    	this(stream, contentType, name);
+		this.contentLenght = contentLenght;
+	}    
+
+	public DefaultStreamedContent(InputStream stream, String contentType, String name, String contentEncoding, Integer contentLenght) {
+		this(stream, contentType, name);
+		this.contentEncoding = contentEncoding;
+		this.contentLenght = contentLenght;
 	}
 
-    @Override
+	@Override
 	public InputStream getStream() {
 		return stream;
 	}
@@ -85,5 +98,9 @@ public class DefaultStreamedContent implements StreamedContent {
     
     public void setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
-    }    
+    }
+
+	public Integer getContentLength() {
+		return contentLenght;
+	}    
 }

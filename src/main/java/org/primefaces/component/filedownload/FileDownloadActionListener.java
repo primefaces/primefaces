@@ -29,8 +29,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import org.primefaces.context.RequestContext;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.Constants;
 
@@ -67,6 +67,10 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
             externalContext.setResponseContentType(content.getContentType());
             externalContext.setResponseHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
             externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+            
+            if(content.getContentLength() != null){
+            	externalContext.setResponseContentLength(content.getContentLength().intValue());
+            }
 
             if(RequestContext.getCurrentInstance().isSecure()) {
                 externalContext.setResponseHeader("Cache-Control", "public");
