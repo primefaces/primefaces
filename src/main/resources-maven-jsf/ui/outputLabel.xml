@@ -7,7 +7,7 @@
 	<tag>outputLabel</tag>
 	<tagClass>org.primefaces.component.outputlabel.OutputLabelTag</tagClass>
 	<componentClass>org.primefaces.component.outputlabel.OutputLabel</componentClass>
-	<componentType>org.primefaces.component.Outputlabelk</componentType>
+	<componentType>org.primefaces.component.OutputLabel</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.OutputLabelRenderer</rendererType>
 	<rendererClass>org.primefaces.component.outputlabel.OutputLabelRenderer</rendererClass>
