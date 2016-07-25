@@ -273,7 +273,11 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(selected) writer.writeAttribute("selected", "selected", null);
 
-        writer.write(option.getLabel());
+        if(option.isEscape()) {
+            writer.writeText(option.getLabel(), null);
+        } else {
+            writer.write(option.getLabel());
+        }
 
         writer.endElement("option");
     }
