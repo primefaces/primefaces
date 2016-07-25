@@ -117,7 +117,7 @@ public class LineChartSeries extends ChartSeries {
 
         writer.write(",showLine:" + this.isShowLine());
         writer.write(",markerOptions:{show:" + this.isShowMarker()+ ", style:'" + this.getMarkerStyle() + "'}");
-        if(showLine){
+        if(smoothLine){
             writer.write(",rendererOptions:{smooth: true }");
         }
         writer.write("}");
