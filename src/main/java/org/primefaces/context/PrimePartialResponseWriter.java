@@ -268,35 +268,38 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             try {
                 FacesContext context = FacesContext.getCurrentInstance();
 
-                // portlet parameter namespacing
-                if (context.getViewRoot() instanceof NamingContainer) {
-                    Map<String, Object> params = new HashMap<String, Object>();
-                    params.put("parameterNamespace", context.getViewRoot().getContainerClientId(context));
-                    encodeCallbackParams(params);
-                }
-
-                // dynamic resource loading
-                ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
-                ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
-                if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
-                    startEval();
-
-                    ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<ResourceUtils.ResourceInfo>(currentResources);
-                    newResources.removeAll(initialResources);
-
-                    ArrayList<String> stylesheets = ResourceUtils.filterStylesheets(context, newResources);
-                    if (stylesheets != null && !stylesheets.isEmpty()) {
-                        String script = "PrimeFaces.ajax.Utils.loadStylesheets(['" + CollectionUtils.join(stylesheets, "','") + "']);";
-                        getWrapped().write(script);
-                    }
-                    
-                    ArrayList<String> scripts = ResourceUtils.filterScripts(context, newResources);
-                    if (scripts != null && !scripts.isEmpty()) {
-                        String script = "PrimeFaces.ajax.Utils.loadScripts(['" + CollectionUtils.join(scripts, "','") + "']);";
-                        getWrapped().write(script);
+                // catch possible ViewExpired
+                if (context.getViewRoot() != null) {
+                    // portlet parameter namespacing
+                    if (context.getViewRoot() instanceof NamingContainer) {
+                        Map<String, Object> params = new HashMap<String, Object>();
+                        params.put("parameterNamespace", context.getViewRoot().getContainerClientId(context));
+                        encodeCallbackParams(params);
                     }
 
-                    endEval();
+                    // dynamic resource loading
+                    ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
+                    ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
+                    if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
+                        startEval();
+
+                        ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<ResourceUtils.ResourceInfo>(currentResources);
+                        newResources.removeAll(initialResources);
+
+                        ArrayList<String> stylesheets = ResourceUtils.filterStylesheets(context, newResources);
+                        if (stylesheets != null && !stylesheets.isEmpty()) {
+                            String script = "PrimeFaces.ajax.Utils.loadStylesheets(['" + CollectionUtils.join(stylesheets, "','") + "']);";
+                            getWrapped().write(script);
+                        }
+
+                        ArrayList<String> scripts = ResourceUtils.filterScripts(context, newResources);
+                        if (scripts != null && !scripts.isEmpty()) {
+                            String script = "PrimeFaces.ajax.Utils.loadScripts(['" + CollectionUtils.join(scripts, "','") + "']);";
+                            getWrapped().write(script);
+                        }
+
+                        endEval();
+                    }
                 }
             }
             catch (Exception e) {
