@@ -23,6 +23,7 @@
     float: left;
     padding: .5em 1em;
     text-decoration: none;
+    outline: none;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a,
