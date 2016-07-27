@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.rowexpansion.RowExpansion;
+import org.primefaces.model.LazyDataModel;
 
 public class RowExpandFeature implements DataTableFeature {
 
@@ -32,9 +33,11 @@ public class RowExpandFeature implements DataTableFeature {
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
+
         if (table.isLazy() && ((LazyDataModel) table.getValue()).getWrappedData() == null) {
             table.loadLazyData();
         }
+
         encodeExpansion(context, renderer, table, expandedRowIndex);
         table.setRowIndex(-1);
     }
