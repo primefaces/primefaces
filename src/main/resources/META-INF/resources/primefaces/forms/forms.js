@@ -855,7 +855,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         clearTimeout($this.searchTimer);
 
                         matchedOptions = $this.options.filter(function() {
-                            return $(this).text().toLowerCase().indexOf(text.toLowerCase()) === 0;
+                            var option = $(this);
+                            return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text.toLowerCase()) === 0));
                         });
 
                         if(matchedOptions.length) {
@@ -1243,7 +1244,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
-        var firstVisibleItem = this.items.filter(':visible:first');
+        var firstVisibleItem = this.items.filter(':visible:not(.ui-state-disabled):first');
         if(firstVisibleItem.length) {
             this.highlightItem(firstVisibleItem);
         }
