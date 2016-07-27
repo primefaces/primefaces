@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 
 import javax.faces.component.UIComponent;
@@ -251,6 +252,25 @@ public class CalendarRenderer extends InputRenderer {
         	Converter converter = calendar.getConverter();
             if (converter != null) {
                 return converter.getAsObject(context, calendar, submittedValue);
+            }
+        }
+        catch(ConverterException e){
+            calendar.setConversionFailed(true);
+
+            throw e;
+        }
+        
+        //Delegate to global defined converter (e.g. joda or java8)
+        try {
+            ValueExpression ve = calendar.getValueExpression("value");
+            if (ve != null) {
+                Class type = ve.getType(context.getELContext());
+                if (type != null && type != Object.class && type != Date.class) {
+                    Converter converter = context.getApplication().createConverter(type);
+                    if (converter != null) {
+                        return converter.getAsObject(context, calendar, submittedValue);
+                    }
+                }
             }
         }
         catch(ConverterException e){
