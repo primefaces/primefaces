@@ -59,13 +59,15 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
         var originalOnkeydown = this.inputExternal.prop('onkeydown');
         this.inputExternal.removeProp('onkeydown').off('keydown').on('keydown', function(e) {
-            var proceed = true;
-            if (originalOnkeydown) {
-                proceed = originalOnkeydown.call(this, e);
-            }
-            if (proceed !== false) {
-                $this.copyValueToHiddenInput();
-            }
+            setTimeout(function(){
+                var proceed = true;
+                if (originalOnkeydown) {
+                    proceed = originalOnkeydown.call(this, e);
+                }
+                if (proceed !== false) {
+                    $this.copyValueToHiddenInput();
+                }
+            }, 1);
         });
 
         this.inputExternal.autoNumeric('init', this.plugOptArray);
