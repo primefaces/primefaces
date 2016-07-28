@@ -357,7 +357,7 @@
 			<name>renderDisabledClick</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
+            <defaultValue>true</defaultValue>
             <description>When enabled, click event can be added to disabled button</description>
 		</attribute>
 	</attributes>
