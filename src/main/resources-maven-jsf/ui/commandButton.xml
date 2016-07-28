@@ -353,6 +353,13 @@
 			<type>java.lang.String</type>
             <description>Form to serialize for an ajax request. Default is the enclosing form.</description>
 		</attribute>
+        <attribute>
+			<name>renderDisabledClick</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, click event can be added to disabled button</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
