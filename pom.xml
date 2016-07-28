@@ -353,6 +353,7 @@
                     <aggregations>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/components.css</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.css</include>
@@ -398,6 +399,7 @@
                         </aggregation>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/core.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
@@ -405,13 +407,14 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
-                                
+
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/components.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.dialog.js</include>
@@ -461,6 +464,7 @@
                         </aggregation>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/components-mobile.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.mobile.js</include>
@@ -482,6 +486,7 @@
                         </aggregation>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/inputnumber.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/0-autoNumeric.js</include>
@@ -491,6 +496,7 @@
                         </aggregation>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/keyfilter/keyfilter.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/keyfilter/0-jquery.keyfilter.js</include>
@@ -499,6 +505,7 @@
                         </aggregation>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/knob/knob.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/excanvas/excanvas.js</include>
@@ -508,6 +515,7 @@
                         </aggregation>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/timeline.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.js</include>
@@ -521,7 +529,7 @@
         </plugins>
 
     </build>
-    
+
     <profiles>
         <profile>
             <id>release</id>
@@ -600,8 +608,8 @@
                             </execution>
                         </executions>
                     </plugin>
-                    
-                    
+
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -617,7 +625,7 @@
                         </executions>
                     </plugin>
 
-                    <!-- 
+                    <!--
                         don't skip *.js and *.css, we need to minify
                     -->
                     <plugin>
