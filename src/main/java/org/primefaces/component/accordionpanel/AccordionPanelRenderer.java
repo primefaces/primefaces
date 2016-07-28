@@ -193,7 +193,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         String tabindex = tab.isDisabled() ? "-1" : accordionPanel.getTabindex();
         
         //header container
-        writer.startElement("h3", null);
+        writer.startElement("div", null);
         writer.writeAttribute("class", headerClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute("aria-expanded", String.valueOf(active), null);
@@ -215,7 +215,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         else
             writer.write("&nbsp;");
 
-        writer.endElement("h3");
+        writer.endElement("div");
 
         //content
         writer.startElement("div", null);
