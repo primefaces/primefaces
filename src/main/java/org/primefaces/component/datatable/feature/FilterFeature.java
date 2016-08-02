@@ -340,8 +340,19 @@ public class FilterFeature implements DataTableFeature {
                 else if(column instanceof DynamicColumn) {
                     DynamicColumn dynamicColumn = (DynamicColumn) column;
                     dynamicColumn.applyModel();
-                    filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
-                    filterValue = (filterFacet == null) ? params.get(filterId): ((ValueHolder) filterFacet).getLocalValue();
+                    
+                    Set<String> paramSet = params.keySet();
+                    for (String key : paramSet) {
+                        if (key.contains(dynamicColumn.getContainerClientId(context) + separator + "filter") && params.get(key) != null) {
+                            filterId = key;
+                            filterFacet = null;
+                            filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+                            break;
+                        }
+                    }
+                    
+//                    filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
+//                    filterValue = (filterFacet == null) ? params.get(filterId): ((ValueHolder) filterFacet).getLocalValue();
                     dynamicColumn.cleanModel();
                 }
 
