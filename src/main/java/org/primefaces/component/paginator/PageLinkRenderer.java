@@ -25,6 +25,8 @@ public class PageLinkRenderer {
     public void render(FacesContext context, UIData uidata, String linkClass, String iconClass, boolean disabled, String ariaLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = disabled ? linkClass + " ui-state-disabled" : linkClass;
+        int textIndex = iconClass.indexOf("seek-");
+        String text = String.valueOf(iconClass.charAt(textIndex + 5)).toUpperCase();
 
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
@@ -36,7 +38,7 @@ public class PageLinkRenderer {
         
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
-        writer.writeText("p", null);
+        writer.writeText(text, null);
         writer.endElement("span");
         
         writer.endElement("a");
