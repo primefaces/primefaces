@@ -34,6 +34,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.CompositeUtils;
 import org.primefaces.util.HTML;
 
 public class OutputLabelRenderer extends CoreRenderer {
@@ -56,6 +57,10 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         if(_for != null) {
             target = SearchExpressionFacade.resolveComponent(context, label, _for);
+            
+            if (CompositeUtils.isComposite(target)) {
+                target = CompositeUtils.extractDeepestEditableValueHolder(target);
+            }
             
             if(target instanceof InputHolder) {
                 InputHolder inputHolder = ((InputHolder) target);

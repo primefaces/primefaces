@@ -528,24 +528,5 @@ public class ComponentUtils {
 
         return viewId;
     }
-    
-    public static UIComponent extractEditableValueHolderFromComposite(UIComponent composite) {
-        BeanInfo info = (BeanInfo) composite.getAttributes().get(UIComponent.BEANINFO_KEY);
-        List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
-                .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
 
-        for (AttachedObjectTarget target : targets) {
-            if (target instanceof EditableValueHolderAttachedObjectTarget) {
-                UIComponent children = composite.findComponent(target.getName());
-                if (children == null) {
-                    throw new FacesException(
-                            "Cannot find editableValueHolder with name: \"" + target.getName() + "\"");
-                }
-
-                return children;
-            }
-        }
-
-        return null;
-    }
 }
