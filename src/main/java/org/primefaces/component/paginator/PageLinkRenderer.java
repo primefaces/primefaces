@@ -27,14 +27,13 @@ public class PageLinkRenderer {
         String styleClass = disabled ? linkClass + " ui-state-disabled" : linkClass;
         int textIndex = iconClass.indexOf("seek-");
         String text = String.valueOf(iconClass.charAt(textIndex + 5)).toUpperCase();
+        String tabindex = (disabled) ? "-1" : "0";
 
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("aria-label", ariaLabel, null);
-        if(!disabled) {
-            writer.writeAttribute("tabindex", 0, null);
-        }
+        writer.writeAttribute("tabindex", tabindex, null);
         
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
