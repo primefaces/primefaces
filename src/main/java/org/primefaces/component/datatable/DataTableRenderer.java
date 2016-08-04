@@ -487,6 +487,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute("aria-label", ariaHeaderLabel, null);
+        writer.writeAttribute("scope", "col", null);
         if(style != null) writer.writeAttribute("style", style, null);
         if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
         if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
