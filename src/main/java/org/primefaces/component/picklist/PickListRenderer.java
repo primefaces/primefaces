@@ -267,6 +267,8 @@ public class PickListRenderer extends CoreRenderer {
             
             if(pickList.getChildCount() > 0) {
                 writer.startElement("table", null);
+                writer.writeAttribute("role", "presentation", null);
+                
                 writer.startElement("tbody", null);
                 writer.startElement("tr", null);
                 

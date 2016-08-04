@@ -20,8 +20,19 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         var sourceCaption = this.sourceList.prev('.ui-picklist-caption'),
             targetCaption = this.targetList.prev('.ui-picklist-caption');
     
-        if(sourceCaption.length) {this.sourceList.attr('aria-label', sourceCaption.text());}
-        if(targetCaption.length) {this.targetList.attr('aria-label', targetCaption.text());}
+        if(sourceCaption.length) {
+            var captionText = sourceCaption.text();
+            
+            this.sourceList.attr('aria-label', captionText);
+            this.sourceInput.attr('title', captionText);
+        }
+        
+        if(targetCaption.length) {
+            var captionText = targetCaption.text();
+            
+            this.targetList.attr('aria-label', captionText);
+            this.targetInput.attr('title', captionText);
+        }
                 
         //generate input options
         this.generateItems(this.sourceList, this.sourceInput);
