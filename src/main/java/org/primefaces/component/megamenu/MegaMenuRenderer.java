@@ -164,6 +164,8 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("role", "menu", null);
             
             writer.startElement("table", null);
+            writer.writeAttribute("role", "presentation", null);
+            
             writer.startElement("tbody", null);
             writer.startElement("tr", null);
             
