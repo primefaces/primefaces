@@ -215,29 +215,51 @@ public class FilterFeature implements DataTableFeature {
             Object filterValue = filterMeta.getFilterValue();
             UIColumn column = filterMeta.getColumn();
             
-            if(filterValue != null && !filterValue.toString().trim().equals(Constants.EMPTY_STRING)) {
-                String filterField = null;
-                ValueExpression filterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
-                
-                if(column.isDynamic()) {
-                    ((DynamicColumn) column).applyStatelessModel();
-                    Object filterByProperty = column.getFilterBy();
-                    String field = column.getField();
-                    if(field == null)
-                        filterField = (filterByProperty == null) ? table.resolveDynamicField(filterByVE) : filterByProperty.toString();
-                    else
-                        filterField = field;
+            //2016.08.05:schlebe: at top of method for debugging facility
+            ValueExpression filterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
+
+            //2016.08.05:schlebe: filterValue can be an empty array !!!
+            //<correction>
+            //if(filterValue != null && !filterValue.toString().trim().equals(Constants.EMPTY_STRING)) {
+            
+            if (filterValue == null) continue;
+            
+            if (filterValue.toString().trim().equals(Constants.EMPTY_STRING)) continue;
+/*            
+            if (filterValue instanceof List<?>)
+                {
+                List<?> oList = (List<?>) filterValue;
+                if (oList.isEmpty()) continue;
                 }
-                else {
-                    String field = column.getField();
-                    if(field == null)
-                        filterField = (filterByVE == null) ? (String) column.getFilterBy(): table.resolveStaticField(filterByVE);
-                    else
-                        filterField = field;
+*/
+            if (filterValue instanceof Object[])
+                {
+                Object oList[] = (Object[]) filterValue;
+                if (oList.length == 0) continue;
                 }
 
-                filterParameterMap.put(filterField, filterValue);
+            //</correction>
+            
+            String filterField = null;
+                
+            if(column.isDynamic()) {
+                ((DynamicColumn) column).applyStatelessModel();
+                Object filterByProperty = column.getFilterBy();
+                String field = column.getField();
+                if(field == null)
+                    filterField = (filterByProperty == null) ? table.resolveDynamicField(filterByVE) : filterByProperty.toString();
+                else
+                    filterField = field;
             }
+            else {
+                String field = column.getField();
+                if(field == null)
+                    filterField = (filterByVE == null) ? (String) column.getFilterBy(): table.resolveStaticField(filterByVE);
+                else
+                    filterField = field;
+            }
+
+            filterParameterMap.put(filterField, filterValue);
         }
 
         if(params.containsKey(globalFilterParam)) {
