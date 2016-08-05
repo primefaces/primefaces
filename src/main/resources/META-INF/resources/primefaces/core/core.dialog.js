@@ -103,6 +103,8 @@ PrimeFaces.dialog.DialogHandler = {
                 else {
                     title.text(headerElement.text());
                 }
+                
+                dialogFrame.attr('title', title.text());
             }
                         
             dialogFrame.data('initialized', true);
