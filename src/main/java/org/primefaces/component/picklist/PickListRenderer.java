@@ -137,7 +137,8 @@ public class PickListRenderer extends CoreRenderer {
             .attr("filterMatchMode", pickList.getFilterMatchMode(), null)
             .nativeAttr("filterFunction", pickList.getFilterFunction(), null)
             .attr("showCheckbox", pickList.isShowCheckbox(), false)
-            .callback("onTransfer", "function(e)", pickList.getOnTransfer());
+            .callback("onTransfer", "function(e)", pickList.getOnTransfer())
+            .attr("tabindex", pickList.getTabindex(), "0");
         
         encodeClientBehaviors(context, pickList);
 
@@ -219,7 +220,6 @@ public class PickListRenderer extends CoreRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("tabindex", "0", null);
         writer.writeAttribute("role", "menu", null);
         
         encodeOptions(context, pickList, model);

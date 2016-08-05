@@ -33,6 +33,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.targetList.attr('aria-label', captionText);
             this.targetInput.attr('title', captionText);
         }
+        
+        this.setTabIndex();
                 
         //generate input options
         this.generateItems(this.sourceList, this.sourceInput);
@@ -770,6 +772,14 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             
     isAnimated: function() {
         return (this.cfg.effect && this.cfg.effect != 'none');
+    },
+    
+    setTabIndex: function() {
+        var tabindex = (this.cfg.disabled) ? "-1" : (this.cfg.tabindex||'0');
+        this.sourceList.attr('tabindex', tabindex);
+        this.targetList.attr('tabindex', tabindex);
+        $(this.jqId + ' button').attr('tabindex', tabindex);
+        $(this.jqId + ' .ui-picklist-filter-container > input').attr('tabindex', tabindex);
     }
 
 });
