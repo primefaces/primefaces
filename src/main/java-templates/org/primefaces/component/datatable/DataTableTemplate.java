@@ -625,8 +625,23 @@ import javax.faces.event.BehaviorEvent;
     public String resolveDynamicField(ValueExpression expression) {
         if(expression != null) {
             String expressionString = expression.getExpressionString();
+            
+            //2016.08.05:schlebe: valueExpr can be a method and it not necessary a element of an array !!!
+            //<correction>
             expressionString = expressionString.substring(expressionString.indexOf("[") + 1, expressionString.indexOf("]"));            
             expressionString = "#{" + expressionString + "}";
+            
+            int iOpen = expressionString.indexOf("[");
+            if (iOpen >= 0)
+                {   
+                int iClose = expressionString.indexOf("]");
+                expressionString = expressionString.substring(iOpen + 1, iClose);            
+                expressionString = "#{" + expressionString + "}";
+                }
+            //</correction>
+
+            //expressionString = expressionString.substring(expressionString.indexOf("[") + 1, expressionString.indexOf("]"));            
+            //expressionString = "#{" + expressionString + "}";
             
             FacesContext context = getFacesContext();
             ELContext eLContext = context.getELContext();
