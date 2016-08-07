@@ -233,11 +233,11 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
         
-        writer.startElement("h3", null);
+        writer.startElement("span", null);
         if(label != null) {
             writer.writeText(label, "value");
         }
-        writer.endElement("h3");
+        writer.endElement("span");
         
         writer.endElement("li");
 
