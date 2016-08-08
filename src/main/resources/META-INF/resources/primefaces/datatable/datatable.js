@@ -2183,9 +2183,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         cellEditor = cell.children('.ui-cell-editor'),
         cellEditorId = cellEditor.attr('id'),
         cellIndex = cell.index(),
-        cellInfo = rowMeta.index + ',' + cellIndex,
         $this = this;
 
+        if(this.cfg.scrollable && this.cfg.frozenColumns) {
+            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
+        }
+
+        var cellInfo = rowMeta.index + ',' + cellIndex;
         if(rowMeta.key) {
             cellInfo = cellInfo + ',' + rowMeta.key;
         }
@@ -2231,9 +2235,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var rowMeta = this.getRowMeta(cell.closest('tr')),
         cellEditor = cell.children('.ui-cell-editor'),
         cellIndex = cell.index(),
-        cellInfo = rowMeta.index + ',' + cellIndex,
         $this = this;
 
+        if(this.cfg.scrollable && this.cfg.frozenColumns) {
+            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
+        }
+
+        var cellInfo = rowMeta.index + ',' + cellIndex;
         if(rowMeta.key) {
             cellInfo = cellInfo + ',' + rowMeta.key;
         }
