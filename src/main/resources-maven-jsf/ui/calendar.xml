@@ -31,6 +31,19 @@
         &input_component_attributes;
         &html_input_text_attributes;
         &widget_var_attribute;
+        
+         <attribute>
+            <name>inputStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        
+        <attribute>
+            <name>inputStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        
         <attribute>
             <name>mindate</name>
             <required>false</required>
