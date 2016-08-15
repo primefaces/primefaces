@@ -21,12 +21,14 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.Constants;
 
@@ -81,9 +83,13 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                     }
 
                     externalContext.setResponseStatus(HttpServletResponse.SC_OK);
-                    externalContext.setResponseContentType(streamedContent.getContentType());
+                    externalContext.setResponseContentType(streamedContent.getContentType());                    
 
                     handleCache(externalContext, cache);
+                    
+                    if(streamedContent.getContentLength() != null){
+                    	externalContext.setResponseContentLength(streamedContent.getContentLength().intValue());
+                    }
 
                     if(streamedContent.getContentEncoding() != null) {
                         externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());

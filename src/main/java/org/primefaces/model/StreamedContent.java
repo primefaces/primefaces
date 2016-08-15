@@ -26,5 +26,7 @@ public interface StreamedContent {
 	public String getContentType();
     
     public String getContentEncoding();
+    
+    public Integer getContentLength();
 	
 }
