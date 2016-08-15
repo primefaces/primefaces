@@ -16,6 +16,7 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.logging.Logger;
 import javax.el.ELContext;
@@ -213,31 +214,41 @@ public class FilterFeature implements DataTableFeature {
 
         for(FilterMeta filterMeta : filterMetadata) {
             Object filterValue = filterMeta.getFilterValue();
-            UIColumn column = filterMeta.getColumn();
-            
-            if(filterValue != null && !filterValue.toString().trim().equals(Constants.EMPTY_STRING)) {
-                String filterField = null;
-                ValueExpression filterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
-                
-                if(column.isDynamic()) {
-                    ((DynamicColumn) column).applyStatelessModel();
-                    Object filterByProperty = column.getFilterBy();
-                    String field = column.getField();
-                    if(field == null)
-                        filterField = (filterByProperty == null) ? table.resolveDynamicField(filterByVE) : filterByProperty.toString();
-                    else
-                        filterField = field;
-                }
-                else {
-                    String field = column.getField();
-                    if(field == null)
-                        filterField = (filterByVE == null) ? (String) column.getFilterBy(): table.resolveStaticField(filterByVE);
-                    else
-                        filterField = field;
-                }
 
-                filterParameterMap.put(filterField, filterValue);
+            if (filterValue == null) {
+                continue;
             }
+            
+            if (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0) {
+                continue;
+            }
+            
+            if (filterValue.toString().trim().equals(Constants.EMPTY_STRING)) {
+                continue;
+            }
+
+            UIColumn column = filterMeta.getColumn();
+            String filterField = null;
+            ValueExpression filterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
+
+            if(column.isDynamic()) {
+                ((DynamicColumn) column).applyStatelessModel();
+                Object filterByProperty = column.getFilterBy();
+                String field = column.getField();
+                if(field == null)
+                    filterField = (filterByProperty == null) ? table.resolveDynamicField(filterByVE) : filterByProperty.toString();
+                else
+                    filterField = field;
+            }
+            else {
+                String field = column.getField();
+                if(field == null)
+                    filterField = (filterByVE == null) ? (String) column.getFilterBy(): table.resolveStaticField(filterByVE);
+                else
+                    filterField = field;
+            }
+
+            filterParameterMap.put(filterField, filterValue);
         }
 
         if(params.containsKey(globalFilterParam)) {
