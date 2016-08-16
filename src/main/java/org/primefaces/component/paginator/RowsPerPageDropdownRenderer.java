@@ -33,12 +33,13 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
         UIViewRoot viewroot = context.getViewRoot();
         char separator = UINamingContainer.getSeparatorChar(context);
         
-        if(template != null) {
+        if (template != null) {
             ResponseWriter writer = context.getResponseWriter();
             int actualRows = uidata.getRows();
             String[] options = uidata.getRowsPerPageTemplate().split("[,\\s]+");
             String label = uidata.getRowsPerPageLabel();
-            if(label != null)
+
+            if (label != null)
                 logger.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
             else 
                 label = MessageFactory.getMessage(UIData.ROWS_PER_PAGE_LABEL, null);
@@ -48,7 +49,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             String ddName = clientId + "_rppDD";
             String labelId = null;
             
-            if(label != null) {
+            if (label != null) {
                 labelId = clientId + "_rppLabel";
                 
                 writer.startElement("label", null);
@@ -62,7 +63,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             writer.startElement("select", null);
             writer.writeAttribute("id", ddId, null);
             writer.writeAttribute("name", ddName, null);
-            if(label != null) {
+            if (label != null) {
                 writer.writeAttribute("aria-labelledby", labelId, null);
             }
             writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
@@ -71,16 +72,18 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
             int rows = 0;
             
-            for( String option : options){
-            	if(option.equalsIgnoreCase("*")){
-            		rows = uidata.getRowCount();
-            	}else{
-            		rows = Integer.parseInt(option);
+            for (String option : options){
+            	if (option.equalsIgnoreCase("*")){
+                    rows = uidata.getRowCount();
             	}
+                else{
+                    rows = Integer.parseInt(option);
+            	}
+
                 writer.startElement("option", null);
                 writer.writeAttribute("value", rows, null);
 
-                if(actualRows == rows){
+                if (actualRows == rows){
                     writer.writeAttribute("selected", "selected", null);
                 }
 
