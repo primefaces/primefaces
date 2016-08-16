@@ -623,21 +623,30 @@ import javax.faces.event.BehaviorEvent;
     }
     
     public String resolveDynamicField(ValueExpression expression) {
-        if(expression != null) {
-            String expressionString = expression.getExpressionString();
-            expressionString = expressionString.substring(expressionString.indexOf("[") + 1, expressionString.indexOf("]"));            
-            expressionString = "#{" + expressionString + "}";
-            
-            FacesContext context = getFacesContext();
-            ELContext eLContext = context.getELContext();
-            ValueExpression dynaVE = context.getApplication()
-                                    .getExpressionFactory().createValueExpression(eLContext, expressionString, String.class);
-
-            return (String) dynaVE.getValue(eLContext);
-        }
-        else {
+        
+        if (expression == null){
             return null;
         }
+        
+        FacesContext context = getFacesContext();
+        ELContext elContext = context.getELContext();
+        
+        String expressionString = expression.getExpressionString();
+        
+        // old syntax compatibility
+        // #{car[column.property]}
+        // new syntax is:
+        // #{column.property} or even a method call
+        if (expressionString.startsWith("#{" + getVar() + "[")) {
+            expressionString = expressionString.substring(expressionString.indexOf("[") + 1, expressionString.indexOf("]"));            
+            expressionString = "#{" + expressionString + "}";
+
+            ValueExpression dynaVE = context.getApplication()
+                                    .getExpressionFactory().createValueExpression(elContext, expressionString, String.class);
+            return (String) dynaVE.getValue(elContext);
+        }
+
+        return (String) expression.getValue(elContext);
     }
 
     public void clearLazyCache() {
