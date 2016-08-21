@@ -16,8 +16,12 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -33,6 +37,8 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.expression.SearchExpressionFacade;
 
 public class DataExporter implements ActionListener, StateHolder {
+
+    private static final Logger LOGGER = Logger.getLogger(DataExporter.class.getName());
 
 	private ValueExpression target;
 	
@@ -78,6 +84,14 @@ public class DataExporter implements ActionListener, StateHolder {
 			encodingType = (String) encoding.getValue(elContext);
         }
 
+        try {
+            // encode filename, see #1603
+            outputFileName = URLEncoder.encode(outputFileName, encodingType);
+        }
+        catch (UnsupportedEncodingException ex) {
+            LOGGER.log(Level.WARNING, "Encoding '" + encodingType + "' not supported by URLEncoder", ex);
+        }
+        
         boolean repeating = false;
 		if(repeat != null) {
 			repeating = repeat.isLiteralText() ? Boolean.valueOf(repeat.getValue(context.getELContext()).toString()) : (Boolean) repeat.getValue(context.getELContext());
