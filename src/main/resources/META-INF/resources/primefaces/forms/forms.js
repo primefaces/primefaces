@@ -965,18 +965,20 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         next = this.panel.is(':hidden') ? activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):first')
                                 : activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
 
-        if(next.length === 1) {
-            if(this.panel.is(':hidden')) {
-                if(event.altKey)
-                    this.show();
-                else
+        if(event.altKey) {
+            this.show();
+        }
+        else {
+            if(next.length === 1) {
+                if(this.panel.is(':hidden')) {
                     this.selectItem(next);
+                }
+                else {
+                    this.highlightItem(next);
+                    PrimeFaces.scrollInView(this.itemsWrapper, next);
+                }
+                this.changeAriaValue(next);
             }
-            else {
-                this.highlightItem(next);
-                PrimeFaces.scrollInView(this.itemsWrapper, next);
-            }
-            this.changeAriaValue(next);
         }
 
         event.preventDefault();
