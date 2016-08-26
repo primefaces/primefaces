@@ -27,6 +27,7 @@
 .ui-fileupload-choose {
     position: relative;
     overflow: hidden;
+    outline: none;
 }
 
 .ui-fileupload-buttonbar {
