@@ -1912,11 +1912,39 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-state-active').addClass('ui-state-hover');
         });
 
-        this.chooseButton.children('input').on('focus.fileupload', function() {
-            $this.chooseButton.addClass('ui-state-focus');
+        var isChooseButtonClick = false;
+        this.chooseButton.on('focus.fileupload', function() {
+            $(this).addClass('ui-state-focus');
         })
         .on('blur.fileupload', function() {
-            $this.chooseButton.removeClass('ui-state-focus');
+            $(this).removeClass('ui-state-focus');
+            isChooseButtonClick = false;
+        });
+        
+        // For JAWS support
+        this.chooseButton.on('click.fileupload', function() {  
+            $this.chooseButton.children('input').trigger('click');
+        })
+        .on('keydown.fileupload', function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+            
+            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) { 
+                $this.chooseButton.children('input').trigger('click');
+                $(this).blur();
+                e.preventDefault();
+            }
+        });
+        
+        this.chooseButton.children('input').on('click', function(e){
+            if(isChooseButtonClick) {
+                isChooseButtonClick = false;
+                e.preventDefault();
+                e.stopPropagation(); 
+            }
+            else {
+                isChooseButtonClick = true;
+            }
         });
 
         this.uploadButton.on('click.fileupload', function(e) {
