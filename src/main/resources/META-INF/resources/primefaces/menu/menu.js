@@ -58,6 +58,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //hide overlay on document click
+        this.itemMouseDown = false;
         var hideNS = 'mousedown.' + this.id;
         $(document.body).off(hideNS).on(hideNS, function (e) {            
             if($this.jq.is(":hidden")) {
@@ -77,7 +78,18 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 e.pageY < offset.top ||
                 e.pageY > offset.top + $this.jq.height()) {
                 
+                if(target.is('.ui-menuitem-link'))
+                    $this.itemMouseDown = true;
+                else
+                    $this.hide(e);
+            }
+        });
+        
+        var hideUpNS = 'mouseup.' + this.id;
+        $(document.body).off(hideUpNS).on(hideUpNS, function (e) {
+            if($this.itemMouseDown) {
                 $this.hide(e);
+                $this.itemMouseDown = false;
             }
         });
 
