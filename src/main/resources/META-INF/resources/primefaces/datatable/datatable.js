@@ -1968,23 +1968,31 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.saveOnCellBlur = (this.cfg.saveOnCellBlur === false) ? false : true;
         
         if(this.cfg.editMode === 'row') {
-            var rowEditorSelector = '> tr > td > div.ui-row-editor';
+            var rowEditorSelector = '> tr > td > div.ui-row-editor > a';
             
-            this.tbody.off('click.datatable', rowEditorSelector)
+            this.tbody.off('click.datatable focus.datatable blur.datatable', rowEditorSelector)
                         .on('click.datatable', rowEditorSelector, null, function(e) {
-                            var element = $(e.target),
+                            var element = $(this),
                             row = element.closest('tr');
                             
-                            if(element.hasClass('ui-icon-pencil')) {
+                            if(element.hasClass('ui-row-editor-pencil')) {
                                 $this.switchToRowEdit(row);
                                 element.hide().siblings().show();
                             }
-                            else if(element.hasClass('ui-icon-check')) {
+                            else if(element.hasClass('ui-row-editor-check')) {
                                 $this.saveRowEdit(row);
                             }
-                            else if(element.hasClass('ui-icon-close')) {
+                            else if(element.hasClass('ui-row-editor-close')) {
                                 $this.cancelRowEdit(row);
                             }
+                            
+                            e.preventDefault();
+                        })
+                        .on('focus.datatable', rowEditorSelector, null, function(e) {
+                            $(this).addClass('ui-row-editor-outline');
+                        })
+                        .on('blur.datatable', rowEditorSelector, null, function(e) {
+                            $(this).removeClass('ui-row-editor-outline');
                         });
         }
         else if(this.cfg.editMode === 'cell') {
