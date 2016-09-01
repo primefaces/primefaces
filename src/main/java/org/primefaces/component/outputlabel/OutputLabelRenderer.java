@@ -19,8 +19,10 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -47,6 +49,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         OutputLabel label = (OutputLabel) component;
         String clientId = label.getClientId(context);
         String value = ComponentUtils.getValueToRender(context, label);
+        UIComponent targetParent = null;
         UIComponent target = null;
         String targetClientId = null;
         UIInput input = null;
@@ -59,6 +62,7 @@ public class OutputLabelRenderer extends CoreRenderer {
             target = SearchExpressionFacade.resolveComponent(context, label, _for);
             
             if (CompositeUtils.isComposite(target)) {
+                targetParent = target;
                 target = CompositeUtils.extractDeepestEditableValueHolder(target);
             }
             
@@ -119,8 +123,17 @@ public class OutputLabelRenderer extends CoreRenderer {
         if (input != null && label.isIndicateRequired()) {
 
             PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
-            
-            if (input.isRequired()) {
+
+            boolean required = false;
+            if(targetParent != null) {
+                RequiredContextCallBack requiredCallBack = new RequiredContextCallBack();
+                targetParent.invokeOnComponent(context, input.getClientId(), requiredCallBack);
+                required = requiredCallBack.isRequired();
+            } else {
+                required = input.isRequired();
+            }
+
+            if (required) {
                 encodeRequiredIndicator(writer, label);
             }
             else if (config.isBeanValidationAvailable() && isNotNullDefined(input, context)) {
@@ -175,5 +188,19 @@ public class OutputLabelRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    private static class RequiredContextCallBack implements ContextCallback {
+
+        private boolean required;
+
+        @Override
+        public void invokeContextCallback(FacesContext context, UIComponent target) {
+            required = target instanceof UIInput ? ((UIInput)target).isRequired() : false;
+        }
+
+        public boolean isRequired() {
+            return required;
+        }
     }
 }
