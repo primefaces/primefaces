@@ -4,15 +4,16 @@
 
 
 ## 1) Environment
-- PrimeFaces Version:
-- Application Server/Version:
-- Affected Browsers:
+- PrimeFaces version:
+- Does it work on the newest PrimeFaces version?
+- Application server + version:
+- Affected browsers:
 
-## 2) Expected Behavior
+## 2) Expected behavior
 
 ...
 
-## 3) Actual Behavior
+## 3) Actual behavior
 
 ..
 
@@ -24,6 +25,6 @@
 
 ..
 
-## 6) Sample Bean
+## 6) Sample bean
 
 ..
