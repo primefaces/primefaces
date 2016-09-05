@@ -3,22 +3,27 @@
 - Before you open a issue, test it with the current/newest version.
 
 
-## 1) Expected Behavior
+## 1) Environment
+⋅⋅* PrimeFaces Version:
+⋅⋅* Application Server/Version:
+⋅⋅* Affected Browsers:
+
+## 2) Expected Behavior
 
 ...
 
-## 2) Actual Behavior
+## 3) Actual Behavior
 
 ..
 
-## 3) Steps to reproduce
+## 4) Steps to reproduce
 
 .. 
 
-## 4) Sample XHTML
+## 5) Sample XHTML
 
 ..
 
-## 5) Sample Bean
+## 6) Sample Bean
 
 ..
