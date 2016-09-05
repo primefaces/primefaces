@@ -4,9 +4,9 @@
 
 
 ## 1) Environment
-⋅⋅* PrimeFaces Version:
-⋅⋅* Application Server/Version:
-⋅⋅* Affected Browsers:
+- PrimeFaces Version:
+- Application Server/Version:
+- Affected Browsers:
 
 ## 2) Expected Behavior
 
