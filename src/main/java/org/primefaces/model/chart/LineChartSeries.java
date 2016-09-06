@@ -17,6 +17,7 @@ package org.primefaces.model.chart;
 
 import java.io.IOException;
 import java.io.Writer;
+import org.primefaces.util.ComponentUtils;
 
 public class LineChartSeries extends ChartSeries {
 
@@ -103,7 +104,7 @@ public class LineChartSeries extends ChartSeries {
         AxisType yaxis = this.getYaxis();
         
         writer.write("{");
-        writer.write("label:'" + this.getLabel() + "'");
+        writer.write("label:\"" + ComponentUtils.escapeText(this.getLabel()) + "\"");
         writer.write(",renderer: $.jqplot." + renderer);
         
         if(xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
