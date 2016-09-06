@@ -244,6 +244,13 @@
 			<type>java.lang.String</type>
             <description>Separator text to use in output mode of editable cells with multiple components.</description>
 		</attribute>
+        <attribute>
+			<name>disabledTextSelection</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Disables text selection on row click. Default is true.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

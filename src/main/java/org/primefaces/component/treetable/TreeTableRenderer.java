@@ -184,7 +184,8 @@ public class TreeTableRenderer extends CoreRenderer {
             .attr("scrollHeight", tt.getScrollHeight(), null)
             .attr("scrollWidth", tt.getScrollWidth(), null)
             .attr("nativeElements", tt.isNativeElements(), false)
-            .attr("expandMode", tt.getExpandMode(), "children");
+            .attr("expandMode", tt.getExpandMode(), "children")
+            .attr("disabledTextSelection", tt.isDisabledTextSelection(), true);
         
         if(tt.isStickyHeader()) {
             wb.attr("stickyHeader", true);

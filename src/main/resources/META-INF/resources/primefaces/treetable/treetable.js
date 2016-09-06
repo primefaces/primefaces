@@ -62,6 +62,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.jqSelection = $(this.jqId + '_selection');
             var selectionValue = this.jqSelection.val();
             this.selections = selectionValue === "" ? [] : selectionValue.split(',');
+            this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
 
             this.bindSelectionEvents();
         }
@@ -451,7 +452,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
             
-            PrimeFaces.clearSelection();
+            if(this.cfg.disabledTextSelection) {
+                PrimeFaces.clearSelection();
+            }
         }
     },
             
@@ -470,7 +473,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.selectNode(node);
         }
  
-        PrimeFaces.clearSelection();        
+        if(this.cfg.disabledTextSelection) {
+            PrimeFaces.clearSelection();
+        }        
     },
     
     selectNode: function(node, silent) {
