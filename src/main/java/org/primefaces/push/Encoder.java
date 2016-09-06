@@ -49,6 +49,6 @@ public interface Encoder<U, T> extends org.atmosphere.config.managed.Encoder<U, 
      * @param s an object that has already been encoded or returned from an @Message annotated class.
      * @return an encoded object.
      */
-    //@Override
+    @Override
     T encode(U s);
 }

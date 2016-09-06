@@ -172,7 +172,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         context.getAttributes().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
-        // redirect if no UIAjaxExceptionHandler available
+        // redirect if no AjaxExceptionHandler available
         if (handlerComponent == null) {
             handleRedirect(context, rootCause, info, responseResetted);
         }
@@ -259,7 +259,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
      *
      * @param context The {@link FacesContext}.
      * @param rootCause The occurred {@link Throwable}.
-     * @return The {@link UIAjaxExceptionHandler} or <code>null</code>.
+     * @return The {@link AjaxExceptionHandler} or <code>null</code>.
      */
     protected AjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable rootCause) {
         AjaxExceptionHandlerVisitCallback visitCallback = new AjaxExceptionHandlerVisitCallback(rootCause);
