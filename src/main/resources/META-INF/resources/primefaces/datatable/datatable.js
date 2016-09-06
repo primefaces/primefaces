@@ -146,7 +146,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Applies events related to sorting in a non-obstrusive way
      */
     bindSortEvents: function() {
-        var $this = this;
+        var $this = this,
+            hasAriaSort = false;
         this.cfg.tabindex = this.cfg.tabindex||'0';
         this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
@@ -168,11 +169,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(columnHeader.hasClass('ui-state-active')) {
                 if(sortIcon.hasClass('ui-icon-triangle-1-n')) {
                     sortOrder = this.SORT_ORDER.ASCENDING;
-                    columnHeader.attr('aria-sort', 'ascending').attr('aria-label', this.getSortMessage(ariaLabel, this.descMessage));
+                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.descMessage));
+                    if(!hasAriaSort) {
+                        columnHeader.attr('aria-sort', 'ascending');
+                        hasAriaSort = true;
+                    }
                 }
                 else {
                     sortOrder = this.SORT_ORDER.DESCENDING;
-                    columnHeader.attr('aria-sort', 'descending').attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                    if(!hasAriaSort) {
+                        columnHeader.attr('aria-sort', 'descending');
+                        hasAriaSort = true;
+                    }
                 }
                 
                 if($this.cfg.multiSort) {
@@ -184,7 +193,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
             else {
                 sortOrder = this.SORT_ORDER.UNSORTED;
-                columnHeader.attr('aria-sort', 'other').attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                if(!hasAriaSort && i == (this.sortableColumns.length - 1)) {
+                    this.sortableColumns.eq(0).attr('aria-sort', 'other');
+                    hasAriaSort = true;
+                }
             }
             
             columnHeader.data('sortorder', sortOrder);
@@ -1263,17 +1276,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     if(paginator) {
                         paginator.setPage(0, true);
                     }
-
+                    
+                    // remove aria-sort
+                    var activeColumns = $this.sortableColumns.filter('.ui-state-active');
+                    if(activeColumns.length) {
+                        activeColumns.removeAttr('aria-sort');
+                    }
+                    else {
+                        $this.sortableColumns.eq(0).removeAttr('aria-sort');
+                    }
+                    
                     if(!multi) {
-                        var activeColumns = $this.sortableColumns.filter('.ui-state-active');
-
                         //aria reset
                         for(var i = 0; i < activeColumns.length; i++) {
                             var activeColumn = $(activeColumns.get(i)),
                                 ariaLabelOfActive = activeColumn.attr('aria-label');
 
-                            activeColumn.attr('aria-sort', 'other').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
-                            $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).attr('aria-sort', 'other').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
+                            activeColumn.attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
+                            $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).removeAttr('aria-sort').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
                         }
 
                         activeColumns.data('sortorder', $this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
