@@ -146,10 +146,17 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         if (context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
             if (!externalContext.isResponseCommitted()) {
                 //mojarra workaround to avoid invalid partial output due to open tags
-                if(writer != null) {
+                if (writer != null) {
+                    // this doesn't flush, just clears the internal state in mojarra
+                    writer.flush();
+                    
                     writer.endCDATA();
+
+                    writer.endInsert();                    
                     writer.endUpdate();
-                    writer.endDocument();
+                    
+                    writer.getWrapped().endElement("changes");
+                    writer.getWrapped().endElement("partial-response");
                 }
                 
                 String characterEncoding = externalContext.getResponseCharacterEncoding();
