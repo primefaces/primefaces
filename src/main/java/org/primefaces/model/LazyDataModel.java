@@ -126,7 +126,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         FacesContext facesContext = FacesContext.getCurrentInstance();
         String viewId = facesContext.getViewRoot().getViewId();
         UIComponent component = UIComponent.getCurrentComponent(facesContext);
-	String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
+        String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
         return String.format(format, getClass().getName(), clientId, viewId);
     }
 }
