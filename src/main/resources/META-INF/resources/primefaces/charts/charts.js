@@ -1339,9 +1339,13 @@
         var d = this.data;
         var temp = [], i, l;
         for (i=0, l=d.length; i<l; i++) {
-            if (! this.breakOnNull) {
-                if (d[i] == null || d[i][0] == null || d[i][1] == null) {
+        	if (! this.breakOnNull) {
+                if (d[i] == null || d[i][0] == null) {
                     continue;
+                }
+                else if (d[i][1] == null) {
+                    d[i][1] = "-";
+                    temp.push(d[i]);
                 }
                 else {
                     temp.push(d[i]);
@@ -9232,6 +9236,13 @@
                     templeft = left + (canvasWidth - context.measureText(w).width)/2  - transx;
                 }
                 context.fillText(w, templeft, temptop);
+            }
+            
+            if($(el).is('td.jqplot-table-legend-label') && $(el).hasClass('jqplot-series-hidden')) {
+                context.strokeStyle = $(el).css('color');
+                context.moveTo(templeft, top + (lineheight/2));
+                context.lineTo(templeft + tagwidth, top + (lineheight/2));
+                context.stroke();
             }
 
         }
@@ -19425,7 +19436,18 @@
         var alpha = (rgba[3] >= 0.6) ? rgba[3]*0.6 : rgba[3]*(2-rgba[3]);
         mr.color = 'rgba('+newrgb[0]+','+newrgb[1]+','+newrgb[2]+','+alpha+')';
         mr.init();
-        mr.draw(s.gridData[neighbor.pointIndex][0], s.gridData[neighbor.pointIndex][1], hl.highlightCanvas._ctx);
+        var x_pos = s.gridData[neighbor.pointIndex][0];
+        var y_pos = s.gridData[neighbor.pointIndex][1];
+        // Adjusting with s._barNudge
+        if (s.renderer.constructor == $.jqplot.BarRenderer) {
+            if (s.barDirection == "vertical") {
+                x_pos += s._barNudge;
+            }
+            else {
+                y_pos -= s._barNudge;
+            }
+        }
+        mr.draw(x_pos, y_pos, hl.highlightCanvas._ctx);
     }
     
     function showTooltip(plot, series, neighbor) {
@@ -19585,6 +19607,14 @@
                 var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
                 break;
         }
+        if (series.renderer.constructor == $.jqplot.BarRenderer) {        
+    	    if (series.barDirection == 'vertical') {                        
+    	        x += series._barNudge;
+    	    }
+    	    else {                                                          
+    	        y -= series._barNudge;
+    	    } 
+    	}
         elem.css('left', x);
         elem.css('top', y);
         if (opts.fadeTooltip) {
