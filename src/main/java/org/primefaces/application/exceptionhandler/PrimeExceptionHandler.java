@@ -155,6 +155,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                     writer.endInsert();                    
                     writer.endUpdate();
                     
+                    writer.startError("");
+                    writer.endError();
+                    
                     writer.getWrapped().endElement("changes");
                     writer.getWrapped().endElement("partial-response");
                 }
