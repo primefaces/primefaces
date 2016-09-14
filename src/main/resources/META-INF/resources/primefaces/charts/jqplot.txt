@@ -12,6 +12,9 @@
 -canvasaxislabelrenderer
 -cursor
 -highlighter
+-dateAxisRenderer
+-pointLabels
+
 
 Extensions
 - Added z-index to highlighter
