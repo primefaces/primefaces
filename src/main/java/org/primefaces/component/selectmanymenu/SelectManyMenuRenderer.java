@@ -205,7 +205,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             
             if(showCheckbox) {
                 writer.startElement("td", null);
-                RendererUtils.encodeCheckbox(context, selected);
+                RendererUtils.encodeCheckbox(context, selected, false, disabled, null);
                 writer.endElement("td");
             }
 
@@ -224,7 +224,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("class", itemClass, null);
             
             if(showCheckbox) {
-                RendererUtils.encodeCheckbox(context, selected);
+                RendererUtils.encodeCheckbox(context, selected, false, disabled, null);
             }
             
             if(option.isEscape()) {

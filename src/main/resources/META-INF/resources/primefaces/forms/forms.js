@@ -1921,7 +1921,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
             });
 
             if(this.cfg.showCheckbox) {
-                this.checkboxes = this.jq.find('div.ui-chkbox > div.ui-chkbox-box');
+                this.checkboxes = this.jq.find('div.ui-chkbox > div.ui-chkbox-box').filter(':not(.ui-state-disabled)');
 
                 this.checkboxes.on('mouseover.selectManyMenu', function(e) {
                     var chkbox = $(this);
