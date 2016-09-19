@@ -650,8 +650,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                 $this.hide();
 
-                $this.revert();
-                $this.changeAriaValue($this.getActiveItem());
+                setTimeout(function() {
+                    $this.revert();
+                    $this.changeAriaValue($this.getActiveItem());
+                }, 2);
             }
         });
 
