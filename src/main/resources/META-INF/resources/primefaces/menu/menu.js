@@ -78,7 +78,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 e.pageY < offset.top ||
                 e.pageY > offset.top + $this.jq.height()) {
                 
-                if(target.is('.ui-menuitem-link'))
+                if(target.is('.ui-menuitem-link') || target.closest('.ui-menuitem-link').length)
                     $this.itemMouseDown = true;
                 else
                     $this.hide(e);
