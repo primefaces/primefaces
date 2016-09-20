@@ -500,7 +500,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.itemtip.hide();
         }
         else {
-            var content = item.is('li') ? item.next('.ui-autocomplete-itemtip-content') : item.children('td:last');
+            var content;
+            if(item.is('li')) {
+                content = item.next('.ui-autocomplete-itemtip-content');
+            } else {
+                if(item.children('td:last').hasClass('ui-autocomplete-itemtip-content')) {
+                    content = item.children('td:last');
+                } else {
+                    this.itemtip.hide();
+                    return;
+                }
+            }
 
             this.itemtip.html(content.html())
                         .css({
