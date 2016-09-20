@@ -310,6 +310,12 @@
             <defaultValue>true</defaultValue>
             <description>Whether to show the "Current Date" button if showButtonPanel is rendered. Default is "true".</description>
 		</attribute>
+        <attribute>
+            <name>buttonTabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of the button in the tabbing order.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
