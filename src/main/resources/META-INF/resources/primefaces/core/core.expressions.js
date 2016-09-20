@@ -2,13 +2,13 @@ PrimeFaces.expressions = {};
 
 PrimeFaces.expressions.SearchExpressionFacade = {
 
-   /**
-     * Converts expressions into an array of Jquery Selector objects. 
-     * e.g. @(.ui-inputtext) to '$(.ui-inputtext)'
+	/**
+	 * Converts expressions into an array of Jquery Selector objects. 
+	 * e.g. @(.ui-inputtext) to '$(.ui-inputtext)'
 	 *
 	 * @param expressions the expressions to evaluate
 	 * @return an array of Jquery Selector objects
-     */
+	 */
 	resolveComponentsAsSelector: function(expressions) {
 		var elements = $();
 		var cssSelectors = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsCssSelectors(expressions);
@@ -26,12 +26,12 @@ PrimeFaces.expressions.SearchExpressionFacade = {
 	},
 	
 	/**
-     * Converts expressions into an array of Jquery CSS Selector strings. 
-     * e.g. @(div.mystyle :input) @(.ui-inputtext) to 'div.mystyle :input, .ui-inputtext'
+	 * Converts expressions into an array of Jquery CSS Selector strings. 
+	 * e.g. @(div.mystyle :input) @(.ui-inputtext) to 'div.mystyle :input, .ui-inputtext'
 	 *
 	 * @param expressions the expressions to evaluate
 	 * @return an array of String CSS selectors
-     */
+	 */
 	resolveComponentsAsCssSelectors: function(expressions) {
 		var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions);
 		var elements = [];
