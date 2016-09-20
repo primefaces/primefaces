@@ -2,10 +2,39 @@ PrimeFaces.expressions = {};
 
 PrimeFaces.expressions.SearchExpressionFacade = {
 
+   /**
+     * Converts expressions into an array of Jquery Selector objects. 
+     * e.g. @(.ui-inputtext) to '$(.ui-inputtext)'
+	 *
+	 * @param expressions the expressions to evaluate
+	 * @return an array of Jquery Selector objects
+     */
 	resolveComponentsAsSelector: function(expressions) {
-
-		var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions);
 		var elements = $();
+		var cssSelectors = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsCssSelectors(expressions);
+
+		if (cssSelectors) {
+			for (var i = 0; i < cssSelectors.length; ++i) {
+				var cssSelector =  $.trim(cssSelectors[i]);
+				if (cssSelector.length > 0) {
+                    elements = elements.add($(document.getElementById(cssSelector)));
+				}
+			}
+		}
+
+		return elements;
+	},
+	
+	/**
+     * Converts expressions into an array of Jquery CSS Selector strings. 
+     * e.g. @(div.mystyle :input) @(.ui-inputtext) to 'div.mystyle :input, .ui-inputtext'
+	 *
+	 * @param expressions the expressions to evaluate
+	 * @return an array of String CSS selectors
+     */
+	resolveComponentsAsCssSelectors: function(expressions) {
+		var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions);
+		var elements = [];
 
 		if (splittedExpressions) {
 			for (var i = 0; i < splittedExpressions.length; ++i) {
@@ -19,8 +48,7 @@ PrimeFaces.expressions.SearchExpressionFacade = {
 
 					// just a id
 					if (expression.indexOf("@") == -1) {
-						elements = elements.add(
-								$(document.getElementById(expression)));
+						elements.push(expression);
 					}
 					// @widget
 					else if (expression.indexOf("@widgetVar(") == 0) {
@@ -28,8 +56,7 @@ PrimeFaces.expressions.SearchExpressionFacade = {
 						var widget = PrimeFaces.widgets[widgetVar];
 
 						if (widget) {
-							elements = elements.add(
-									$(document.getElementById(widget.id)));
+							elements.push(widget.id);
 						} else {
 							PrimeFaces.error("Widget for widgetVar \"" + widgetVar + "\" not avaiable");
 						}
@@ -37,8 +64,7 @@ PrimeFaces.expressions.SearchExpressionFacade = {
 					// PFS
 					else if (expression.indexOf("@(") == 0) {
 						//converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
-						elements = elements.add(
-								$(expression.substring(2, expression.length - 1)));
+						elements.push(expression.substring(2, expression.length - 1));
 					}
 				}
 			}
