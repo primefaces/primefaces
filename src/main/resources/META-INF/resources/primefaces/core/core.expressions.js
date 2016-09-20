@@ -17,7 +17,7 @@ PrimeFaces.expressions.SearchExpressionFacade = {
 			for (var i = 0; i < cssSelectors.length; ++i) {
 				var cssSelector =  $.trim(cssSelectors[i]);
 				if (cssSelector.length > 0) {
-                    elements = elements.add($(document.getElementById(cssSelector)));
+					elements = elements.add($(document.getElementById(cssSelector)));
 				}
 			}
 		}
