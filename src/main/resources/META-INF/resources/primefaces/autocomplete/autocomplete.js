@@ -162,11 +162,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
             
-            var offset = $this.panel.offset();
             if(e.target === $this.input.get(0)) {
                 return;
             }
             
+            var itemtipOffset = $this.itemtip.offset();
+            if (e.pageX >= itemtipOffset.left &&
+                e.pageX <= itemtipOffset.left + $this.itemtip.width() &&
+                e.pageY >= itemtipOffset.top &&
+                e.pageY <= itemtipOffset.top + $this.itemtip.width()) {
+                return;
+            }
+            
+            var panelOffset = $this.panel.offset();
             if (e.pageX < offset.left ||
                 e.pageX > offset.left + $this.panel.width() ||
                 e.pageY < offset.top ||
