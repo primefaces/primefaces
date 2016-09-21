@@ -485,7 +485,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     },
             
     bindKeyEvents: function() {
-        var $this = this;
+        var $this = this,
+        pressTab = false;
 
         this.jq.on('mousedown.tree', function(e) {
             if($(e.target).is(':not(:input:enabled)')) {
@@ -493,7 +494,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             }
         })
         .on('focus.tree', function() {
-            if(!$this.focusedNode) {
+            if(!$this.focusedNode && !pressTab) {
                 $this.focusNode($this.getFirstNode());
             }
         });
@@ -630,6 +631,15 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     }
 
                     e.preventDefault();
+                break;
+                
+                case keyCode.TAB:
+                    pressTab = true;
+                    $this.jq.focus();
+                    setTimeout(function() {
+                        pressTab = false;
+                    }, 2);
+                    
                 break;
             }       
         })
