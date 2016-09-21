@@ -800,7 +800,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.adjustScrollHeight();
             }
         
-            var marginRight = this.getScrollbarWidth();
+            var marginRight = this.getScrollbarWidth() + 'px';
             this.scrollHeaderBox.css('margin-right', marginRight);
             this.scrollFooterBox.css('margin-right', marginRight);
             this.alignScrollBody();
