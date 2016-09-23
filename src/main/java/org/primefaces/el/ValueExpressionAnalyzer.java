@@ -31,8 +31,16 @@ public class ValueExpressionAnalyzer {
             ValueExpression unwrapped = unwrapCompositeComponentReference(reference);
             
             // check for nested CC expressions
-            if (unwrapped != null && isCompositeComponentReference(toValueReference(unwrapped, elContext))) {    
-                reference = getReference(elContext, unwrapped);
+            if (unwrapped != null) {
+                ValueReference unwrappedRef = toValueReference(unwrapped, elContext);
+                if (isCompositeComponentReference(unwrappedRef))
+                {
+                    return getReference(elContext, unwrapped);
+                }
+                else
+                {
+                    return unwrappedRef;
+                }
             }
         }
 
