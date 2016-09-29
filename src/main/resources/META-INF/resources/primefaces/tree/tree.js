@@ -481,6 +481,69 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                             $this.nodeClick(e, $(this));
                         });
                         
+        if(this.cfg.filter) {
+            this.filterInput = this.jq.find('.ui-tree-filter');
+            PrimeFaces.skinInput(this.filterInput);
+            
+            this.filterInput.on('keydown.tree-filter', function(e) {
+                var key = e.which,
+                keyCode = $.ui.keyCode;
+
+                if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                    e.preventDefault();
+                }
+            })
+            .on('keyup.tree-filter', function(e) {
+                var keyCode = $.ui.keyCode,
+                key = e.which;
+                
+                switch(key) {
+                    case keyCode.UP:
+                    case keyCode.LEFT:
+                    case keyCode.DOWN:
+                    case keyCode.RIGHT:
+                    case keyCode.ENTER:
+                    case keyCode.NUMPAD_ENTER:
+                    case keyCode.TAB:
+                    case keyCode.ESCAPE:
+                    case keyCode.SPACE:
+                    case keyCode.HOME:
+                    case keyCode.PAGE_DOWN:
+                    case keyCode.PAGE_UP:
+                    case keyCode.END:
+                    case keyCode.DELETE:
+                    case 16: //shift
+                    case 17: //keyCode.CONTROL:
+                    case 18: //keyCode.ALT:
+                    case 91: //left window or cmd:
+                    case 92: //right window:
+                    case 93: //right cmd:
+                    case 20: //capslock:
+                    break;
+
+                    default:
+                        //function keys (F1,F2 etc.)
+                        if(key >= 112 && key <= 123) {
+                            break;
+                        }
+
+                        var metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
+
+                        if(!metaKey) {
+                            if($this.filterTimeout) {
+                                clearTimeout($this.filterTimeout);
+                            }
+
+                            $this.filterTimeout = setTimeout(function() {
+                                $this.filter();
+                                $this.filterTimeout = null;
+                            }, 300);
+                        }
+                    break;
+                }
+            });
+        }
+                        
         this.bindKeyEvents();                
     },
             
@@ -1311,6 +1374,34 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
         this.getNodeLabel(node).addClass('ui-treenode-outline').focus();
         this.focusedNode = node;
+    },
+    
+    /**
+     * Ajax filter
+     */
+    filter: function() {
+        var $this = this,
+        options = {
+            source: this.id,
+            update: this.id,
+            process: this.id,
+            global: false,
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_filtering', value: true},
+                     {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        $this.container.html(content);
+                    }
+                });
+                
+                return true;
+            }    
+        };
+
+        PrimeFaces.ajax.Request.handle(options);
     }
 
 });
