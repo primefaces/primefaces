@@ -2143,9 +2143,10 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-state-hover');
         })
         .on('click', function() {
-            var button = $(this);
+            var button = $(this),
+            radio = button.children(':radio');
 
-            if(button.hasClass('ui-state-active')) {
+            if(button.hasClass('ui-state-active') || radio.prop('checked')) {
                 $this.unselect(button);
             }
             else {
