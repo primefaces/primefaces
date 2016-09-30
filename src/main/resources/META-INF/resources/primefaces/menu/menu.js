@@ -871,6 +871,56 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
             $this.hide();
         });
 
+        //keyboard support
+        this.button.keydown(function(e) {
+            var keyCode = $.ui.keyCode;
+
+            switch(e.which) {
+                case keyCode.UP:
+                    if($this.menu.is(':visible')) {
+                        var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
+                        prevItems = highlightedItem.length ? highlightedItem.prevAll(':not(.ui-separator)') : null;
+
+                        if(prevItems && prevItems.length) {
+                            highlightedItem.removeClass('ui-state-hover');
+                            prevItems.eq(0).addClass('ui-state-hover');
+                        }
+                    }
+                    e.preventDefault();
+                break;
+                
+                case keyCode.DOWN:
+                    if($this.menu.is(':visible')) {
+                        var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
+                        nextItems = highlightedItem.length ? highlightedItem.nextAll(':not(.ui-separator)') : $this.menuitems.eq(0);
+
+                        if(nextItems.length) {
+                            highlightedItem.removeClass('ui-state-hover');
+                            nextItems.eq(0).addClass('ui-state-hover');
+                        }
+                    }
+                    e.preventDefault();                    
+                break;
+                
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.SPACE:
+                    if($this.menu.is(':visible'))
+                        $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');
+                    else
+                        $this.show();
+                    
+                    e.preventDefault();
+                break;
+                
+
+                case keyCode.ESCAPE:
+                case keyCode.TAB:
+                    $this.hide();
+                break;
+            }
+        });
+        
         /**
         * handler for document mousedown to hide the overlay
         **/
@@ -927,6 +977,8 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function() {
+        this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
+        
         this.menu.fadeOut('fast');
     },
     
