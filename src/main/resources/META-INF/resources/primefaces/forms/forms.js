@@ -2526,6 +2526,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             this.filterInput.on('keyup.selectCheckboxMenu', function() {
                 $this.filter($(this).val());
+            }).on('keydown.selectCheckboxMenu', function(e) {
+                if(e.which === $.ui.keyCode.ESCAPE) {
+                    $this.hide();  
+                }
             });
         }
 
@@ -2646,6 +2650,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
                 break;
                 
+                case keyCode.ESCAPE:
+                    $this.hide();
+                break;
             };
         });
         
@@ -2659,10 +2666,18 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
             
-            if(key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
-                $this.hide(true);
-                e.preventDefault();
-            }
+            switch(key) {
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                    $this.hide(true);
+                    
+                    e.preventDefault();
+                break;
+                
+                case keyCode.ESCAPE:
+                    $this.hide();
+                break;
+            };
         });
         
         var togglerCheckboxInput = this.toggler.find('> div.ui-helper-hidden-accessible > input');
@@ -3002,8 +3017,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             box.removeClass('ui-state-focus');
         })
         .on('keydown.selectCheckboxMenu', function(e) {
-            if(e.which === $.ui.keyCode.SPACE) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+            
+            if(key === keyCode.SPACE) {
                 e.preventDefault();
+            }
+            else if(key === keyCode.ESCAPE) {
+                $this.hide();
             }
         });
     },
