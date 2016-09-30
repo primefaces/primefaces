@@ -142,6 +142,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute("aria-hidden", "true", null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
         if(menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
