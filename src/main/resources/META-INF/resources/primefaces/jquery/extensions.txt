@@ -8,7 +8,7 @@ List of Plugins
 - Masked Input (https://github.com/digitalBush/jquery.maskedinput/)
 - Rangy Text (https://github.com/timdown/rangy)
 - Cursor Position (https://github.com/beviz/jquery-caret-position-getter)
-- Browser
+- Browser (https://github.com/gabceb/jquery-browser-plugin/releases)
 
 Extensions
 - Added fix to autosize from https://github.com/jackmoore/autosize/issues/225
