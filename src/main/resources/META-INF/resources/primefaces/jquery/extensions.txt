@@ -1,21 +1,13 @@
 List of Plugins
 - jQuery UI Core
-- jQuery UI Widget
-- jQuery UI Mouse
-- jQuery UI Draggable
-- jQuery UI Droppable
-- jQuery UI Resizable
-- jQuery UI Selectable
-- jQuery UI Sortable
+- jQuery UI Interactions
+- jQuery UI Widgets: Datepicker, Slider
 - jQuery UI Effects
-- jQuery UI Datepicker
-- jQuery UI Slider
-- jQuery UI Position
-- Timepicker
-- MouseWheel
-- Masked Input
-- Rangy Text
-- Cursor Position
+- Timepicker (https://github.com/trentrichardson/jQuery-Timepicker-Addon)
+- MouseWheel (https://github.com/jquery/jquery-mousewheel)
+- Masked Input (https://github.com/digitalBush/jquery.maskedinput/)
+- Rangy Text (https://github.com/timdown/rangy)
+- Cursor Position (https://github.com/beviz/jquery-caret-position-getter)
 - Browser
 
 Extensions
