@@ -231,6 +231,10 @@ public class ExcelExporter extends Exporter {
         
             cell.setCellValue(createRichTextString(builder.toString()));
         }
+        
+        if(cellStyle != null) {
+            cell.setCellStyle(cellStyle);
+        }
     }
     
     protected RichTextString createRichTextString(String value) {
