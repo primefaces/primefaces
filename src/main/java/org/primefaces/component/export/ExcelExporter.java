@@ -287,15 +287,11 @@ public class ExcelExporter extends Exporter {
         facetStyle.setAlignment((short)CellStyle.ALIGN_CENTER);
         facetStyle.setVerticalAlignment((short)CellStyle.VERTICAL_CENTER);
         facetStyle.setWrapText(true);
-        if(options != null) {
-            applyFacetOptions(wb, options, facetStyle);
-        }
+        applyFacetOptions(wb, options, facetStyle);
         
         cellStyle = wb.createCellStyle();
         cellStyle.setAlignment((short)CellStyle.ALIGN_LEFT);
-        if(options != null) {
-            applyCellOptions(wb, options, cellStyle);
-        }
+        applyCellOptions(wb, options, cellStyle);
 
         PrintSetup printSetup = sheet.getPrintSetup();
         printSetup.setLandscape(true);
@@ -306,37 +302,39 @@ public class ExcelExporter extends Exporter {
     protected void applyFacetOptions(Workbook wb, ExporterOptions options, CellStyle facetStyle) {
         Font facetFont = wb.createFont();
         
-        String facetFontStyle = options.getFacetFontStyle();
-        if(facetFontStyle != null) {
-            if(facetFontStyle.equalsIgnoreCase("BOLD")) {
-                facetFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        if(options != null) {
+            String facetFontStyle = options.getFacetFontStyle();
+            if(facetFontStyle != null) {
+                if(facetFontStyle.equalsIgnoreCase("BOLD")) {
+                    facetFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                }
+                if(facetFontStyle.equalsIgnoreCase("ITALIC")) {
+                    facetFont.setItalic(true);
+                }
             }
-            if(facetFontStyle.equalsIgnoreCase("ITALIC")) {
-                facetFont.setItalic(true);
+
+            HSSFPalette palette = ((HSSFWorkbook)wb).getCustomPalette();
+            Color color = null;
+
+            String facetBackground = options.getFacetBgColor();
+            if (facetBackground != null) {
+                color = Color.decode(facetBackground);
+                HSSFColor backgroundColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
+                ((HSSFCellStyle) facetStyle).setFillForegroundColor(backgroundColor.getIndex());
+                facetStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
             }
-        }
-        
-        HSSFPalette palette = ((HSSFWorkbook)wb).getCustomPalette();
-        Color color = null;
-        
-        String facetBackground = options.getFacetBgColor();
-        if (facetBackground != null) {
-            color = Color.decode(facetBackground);
-            HSSFColor backgroundColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
-            ((HSSFCellStyle) facetStyle).setFillForegroundColor(backgroundColor.getIndex());
-            facetStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-        }
-        
-        String facetFontColor = options.getFacetFontColor();
-        if (facetFontColor != null) {
-            color = Color.decode(facetFontColor);
-            HSSFColor facetColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
-            ((HSSFFont) facetFont).setColor(facetColor.getIndex());
-        }
-        
-        String facetFontSize = options.getFacetFontSize();
-        if (facetFontSize != null) {
-            facetFont.setFontHeightInPoints(Short.valueOf(facetFontSize));
+
+            String facetFontColor = options.getFacetFontColor();
+            if (facetFontColor != null) {
+                color = Color.decode(facetFontColor);
+                HSSFColor facetColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
+                ((HSSFFont) facetFont).setColor(facetColor.getIndex());
+            }
+
+            String facetFontSize = options.getFacetFontSize();
+            if (facetFontSize != null) {
+                facetFont.setFontHeightInPoints(Short.valueOf(facetFontSize));
+            }
         }
         
         facetStyle.setFont(facetFont);
@@ -344,27 +342,29 @@ public class ExcelExporter extends Exporter {
  
     protected void applyCellOptions(Workbook wb, ExporterOptions options, CellStyle cellStyle) { 
         Font cellFont = wb.createFont();
-
-        String cellFontColor = options.getCellFontColor();
-        if (cellFontColor != null) {
-            HSSFPalette palette = ((HSSFWorkbook)wb).getCustomPalette();
-            Color color = Color.decode(cellFontColor);
-            HSSFColor cellColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
-            ((HSSFFont) cellFont).setColor(cellColor.getIndex());
-        }
         
-        String cellFontSize = options.getCellFontSize();
-        if (cellFontSize != null) {
-            cellFont.setFontHeightInPoints(Short.valueOf(cellFontSize));
-        }
-
-        String cellFontStyle = options.getCellFontStyle();
-        if(cellFontStyle != null) {
-            if(cellFontStyle.equalsIgnoreCase("BOLD")) {
-                cellFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        if(options != null) {
+            String cellFontColor = options.getCellFontColor();
+            if (cellFontColor != null) {
+                HSSFPalette palette = ((HSSFWorkbook)wb).getCustomPalette();
+                Color color = Color.decode(cellFontColor);
+                HSSFColor cellColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
+                ((HSSFFont) cellFont).setColor(cellColor.getIndex());
             }
-            if(cellFontStyle.equalsIgnoreCase("ITALIC")) {
-                cellFont.setItalic(true);
+
+            String cellFontSize = options.getCellFontSize();
+            if (cellFontSize != null) {
+                cellFont.setFontHeightInPoints(Short.valueOf(cellFontSize));
+            }
+
+            String cellFontStyle = options.getCellFontStyle();
+            if(cellFontStyle != null) {
+                if(cellFontStyle.equalsIgnoreCase("BOLD")) {
+                    cellFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                }
+                if(cellFontStyle.equalsIgnoreCase("ITALIC")) {
+                    cellFont.setItalic(true);
+                }
             }
         }
         

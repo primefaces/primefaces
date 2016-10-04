@@ -51,33 +51,36 @@ public class ExcelXExporter extends ExcelExporter {
     @Override
     protected void applyFacetOptions(Workbook wb, ExporterOptions options, CellStyle facetStyle) {
         Font facetFont = wb.createFont();
+        facetFont.setFontName("Arial");
         
-        String facetFontStyle = options.getFacetFontStyle();
-        if(facetFontStyle != null) {
-            if(facetFontStyle.equalsIgnoreCase("BOLD")) {
-                facetFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        if(options != null) {
+            String facetFontStyle = options.getFacetFontStyle();
+            if(facetFontStyle != null) {
+                if(facetFontStyle.equalsIgnoreCase("BOLD")) {
+                    facetFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                }
+                if(facetFontStyle.equalsIgnoreCase("ITALIC")) {
+                    facetFont.setItalic(true);
+                }
             }
-            if(facetFontStyle.equalsIgnoreCase("ITALIC")) {
-                facetFont.setItalic(true);
+
+            String facetBackground = options.getFacetBgColor();
+            if(facetBackground != null) {
+                XSSFColor backgroundColor = new XSSFColor(Color.decode(facetBackground));
+                ((XSSFCellStyle) facetStyle).setFillForegroundColor(backgroundColor);
+                facetStyle.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
             }
-        }
 
-        String facetBackground = options.getFacetBgColor();
-        if(facetBackground != null) {
-            XSSFColor backgroundColor = new XSSFColor(Color.decode(facetBackground));
-            ((XSSFCellStyle) facetStyle).setFillForegroundColor(backgroundColor);
-            facetStyle.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
-        }
+            String facetFontColor = options.getFacetFontColor();
+            if(facetFontColor != null) {
+                XSSFColor facetColor = new XSSFColor(Color.decode(facetFontColor));
+                ((XSSFFont) facetFont).setColor(facetColor);
+            }
 
-        String facetFontColor = options.getFacetFontColor();
-        if(facetFontColor != null) {
-            XSSFColor facetColor = new XSSFColor(Color.decode(facetFontColor));
-            ((XSSFFont) facetFont).setColor(facetColor);
-        }
-        
-        String facetFontSize = options.getFacetFontSize();
-        if(facetFontSize != null) {
-            facetFont.setFontHeightInPoints(Short.valueOf(facetFontSize));
+            String facetFontSize = options.getFacetFontSize();
+            if(facetFontSize != null) {
+                facetFont.setFontHeightInPoints(Short.valueOf(facetFontSize));
+            }
         }
         
         facetStyle.setFont(facetFont);
@@ -86,25 +89,28 @@ public class ExcelXExporter extends ExcelExporter {
     @Override
     protected void applyCellOptions(Workbook wb, ExporterOptions options, CellStyle cellStyle) { 
         Font cellFont = wb.createFont();
+        cellFont.setFontName("Arial");
         
-        String cellFontColor = options.getCellFontColor();
-        if(cellFontColor != null) {
-            XSSFColor cellColor = new XSSFColor(Color.decode(cellFontColor));
-            ((XSSFFont) cellFont).setColor(cellColor);
-        }
-        
-        String cellFontSize = options.getCellFontSize();
-        if(cellFontSize != null) {
-            cellFont.setFontHeightInPoints(Short.valueOf(cellFontSize));
-        }
-
-        String cellFontStyle = options.getCellFontStyle();
-        if(cellFontStyle != null) {
-            if(cellFontStyle.equalsIgnoreCase("BOLD")) {
-                cellFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        if(options != null) {
+            String cellFontColor = options.getCellFontColor();
+            if(cellFontColor != null) {
+                XSSFColor cellColor = new XSSFColor(Color.decode(cellFontColor));
+                ((XSSFFont) cellFont).setColor(cellColor);
             }
-            if(cellFontStyle.equalsIgnoreCase("ITALIC")) {
-                cellFont.setItalic(true);
+
+            String cellFontSize = options.getCellFontSize();
+            if(cellFontSize != null) {
+                cellFont.setFontHeightInPoints(Short.valueOf(cellFontSize));
+            }
+
+            String cellFontStyle = options.getCellFontStyle();
+            if(cellFontStyle != null) {
+                if(cellFontStyle.equalsIgnoreCase("BOLD")) {
+                    cellFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                }
+                if(cellFontStyle.equalsIgnoreCase("ITALIC")) {
+                    cellFont.setItalic(true);
+                }
             }
         }
         
