@@ -2466,7 +2466,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var columnFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter');
 
         if (columnFilters.length == 0) {
-            throw 'No filters to clear';
+            return;
         }
 
         columnFilters.val('');
