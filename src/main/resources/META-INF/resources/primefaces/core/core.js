@@ -253,7 +253,7 @@
             if(window.getSelection) {
                 if(window.getSelection().empty) {
                     window.getSelection().empty();
-                } else if(window.getSelection().removeAllRanges) {
+                } else if(window.getSelection().removeAllRanges && window.getSelection().rangeCount > 0 && window.getSelection().getRangeAt(0).getClientRects().length > 0) {
                     window.getSelection().removeAllRanges();
                 }
             }
