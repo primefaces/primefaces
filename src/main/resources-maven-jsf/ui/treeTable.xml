@@ -24,6 +24,9 @@
         <interface>
 			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.Pageable</name>
+		</interface>
 	</interfaces>
 	<attributes>
         &standard_uicomponent_attributes;
@@ -251,6 +254,72 @@
             <defaultValue>true</defaultValue>
             <description>Disables text selection on row click. Default is true.</description>
 		</attribute>
+        <attribute>
+			<name>paginator</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Enables pagination. Default is false.</description>
+		</attribute>
+		<attribute>
+			<name>paginatorTemplate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}</defaultValue>
+            <description>Template of the paginator.</description>
+		</attribute>
+		<attribute>
+			<name>rowsPerPageTemplate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Template of the rowsPerPage dropdown.</description>
+		</attribute>
+        <attribute>
+			<name>rowsPerPageLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Label for rowsPerPage dropdown.</description>
+		</attribute>
+		<attribute>
+			<name>currentPageReportTemplate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Template of the currentPageReport UI.</description>
+		</attribute>
+        <attribute>
+			<name>pageLinks</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>10</defaultValue>
+            <description>Maximum number of page links to display. Default is 10.</description>
+		</attribute>
+         <attribute>
+			<name>paginatorPosition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>both</defaultValue>
+            <description>Position of the paginator. Default is both.</description>
+		</attribute>
+         <attribute>
+			<name>paginatorAlwaysVisible</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines if paginator should be hidden if total data count is less than number of rows per page. Default is true.</description>
+		</attribute>
+        <attribute>
+            <name>rows</name>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Number of rows to display per page. Default value is 0 meaning to display all data available.</description>
+        </attribute>
+        <attribute>
+            <name>first</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Index of the first data to display.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>

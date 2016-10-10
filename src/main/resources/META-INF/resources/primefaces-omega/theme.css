@@ -723,6 +723,10 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
+.ui-treetable .ui-paginator.ui-paginator-bottom {
+    border-top: 1px solid #d9d9d9;
+}
+
 /* Inputs */
 .ui-inputfield {
     -webkit-transition: .2s;

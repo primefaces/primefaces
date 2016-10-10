@@ -69,6 +69,54 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         
         //sorting
         this.bindSortEvents();
+        
+        if(this.cfg.paginator) {
+            this.cfg.paginator.paginate = function(newState) {
+                $this.handlePagination(newState);
+            };
+
+            this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+        }
+    },
+    
+    handlePagination: function(newState) {
+        var $this = this,
+        options = {
+            source: this.id,
+            update: this.id,
+            process: this.id,
+            params: [
+                {name: this.id + '_pagination', value: true},
+                {name: this.id + '_first', value: newState.first},
+                {name: this.id + '_rows', value: newState.rows}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.tbody.html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function() {
+                $this.paginator.cfg.page = newState.page;
+                $this.paginator.updateUI();
+            }
+        };
+
+        if(this.hasBehavior('page')) {
+            var pageBehavior = this.cfg.behaviors['page'];
+            pageBehavior.call(this, options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    getPaginator: function() {
+        return this.paginator;
     },
     
     bindSelectionEvents: function() {
@@ -1354,4 +1402,4 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             PrimeFaces.ajax.Request.handle(options);
         }
     }
-});
+});            
