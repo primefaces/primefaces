@@ -10658,6 +10658,8 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 
 }));
 
+/* General Utilities */
+
 /*! jQuery Timepicker Addon - v1.6.3 - 2016-04-20
 * http://trentrichardson.com/examples/timepicker
 * Copyright (c) 2016 Trent Richardson; Licensed MIT */
@@ -12949,8 +12951,6 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 	$.timepicker.version = "1.6.3";
 
 }));
-
-/* General Utilities */
 
 /*!
  * jQuery Cookie Plugin v1.4.1
