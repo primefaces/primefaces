@@ -87,12 +87,15 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     },
 
     copyValueToHiddenInput : function() {
-        var cleanVal = this.inputExternal.autoNumeric('get');
-        if (cleanVal !== ""){
-            this.inputInternal.attr('value', cleanVal);
-        } else {
-            this.inputInternal.removeAttr('value');
-        }
+        var $this = this;
+        setTimeout(function() {
+            var cleanVal = $this.inputExternal.autoNumeric('get');
+            if (cleanVal !== ""){
+                $this.inputInternal.attr('value', cleanVal);
+            } else {
+                $this.inputInternal.removeAttr('value');
+            }
+        }, 1);
     },
 
     enable : function() {
