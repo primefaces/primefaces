@@ -31,4 +31,4 @@ This product includes software developed by JSPlumbToolkit Team (https://www.jsp
 This product includes software developed by Jack Moore (http://www.jacklmoore.com/autosize/)
 This product includes software developed by Matt Bryson (http://labs.rampinteractive.co.uk/touchSwipe)
 This product includes software developed by David Furfero (http://touchpunch.furf.com/)
-This product includes software developed by QuillJS (http://quilljs.com/)
+This product includes software developed by Jason Chen - Sales Force (http://quilljs.com/)
