@@ -22,3 +22,4 @@ Extensions
 https://bitbucket.org/cleonello/jqplot/pull-request/22/fix-for-issue-514-adjusting-position-with/diff
 - Added hidden series fix to exported image; https://github.com/primefaces/primefaces/issues/1505 (Line 9258)
 - Added the legend of hidden series fix to exported image; https://github.com/primefaces/primefaces/issues/1555 (Line 9185-9190)
+- Added fontWeight option fix; https://github.com/primefaces/primefaces/issues/1829 (Line 17594 and 17635)
