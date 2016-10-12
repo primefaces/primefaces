@@ -172,7 +172,7 @@ public class DefaultRequestContext extends RequestContext {
     private void reset(VisitContext visitContext, String expressions) {
         UIViewRoot root = context.getViewRoot();
 
-        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, root, expressions, SearchExpressionFacade.Options.VISIT_UNRENDERED);
+        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, root, expressions);
         for (UIComponent component : components) {
             component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
         }

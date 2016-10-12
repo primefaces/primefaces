@@ -15,7 +15,6 @@
  */
 package org.primefaces.util;
 
-import java.beans.BeanInfo;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
@@ -38,8 +37,6 @@ import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
-import javax.faces.view.AttachedObjectTarget;
-import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
@@ -180,8 +177,7 @@ public class ComponentUtils {
     	UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(
     			FacesContext.getCurrentInstance(),
     			component,
-    			expression,
-                SearchExpressionFacade.Options.VISIT_UNRENDERED);
+    			expression);
 
         if(resolvedComponent instanceof Widget) {
             return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar() + "')";
@@ -477,7 +473,7 @@ public class ComponentUtils {
     public static UIComponent findParentForm(FacesContext context, UIComponent component) {
         return ComponentTraversalUtils.closestForm(context, component);
     }
-    
+
     /**
      * Gets a {@link TimeZone} instance by the parameter "timeZone" which can be String or {@link TimeZone} or null.
      *
@@ -493,17 +489,17 @@ public class ComponentUtils {
             return TimeZone.getDefault();
         }
     }
-    
+
     public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType, Class<T> rendererClass) {
         Renderer renderer = context.getRenderKit().getRenderer(family, rendererType);
-        
+
         while (renderer instanceof FacesWrapper) {
             renderer = (Renderer) ((FacesWrapper) renderer).getWrapped();
         }
 
         return (T) renderer;
     }
-    
+
     /**
      * Calculates the current viewId - we can't get it from the ViewRoot if it's not available.
      *

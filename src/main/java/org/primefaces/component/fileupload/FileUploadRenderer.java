@@ -45,8 +45,8 @@ public class FileUploadRenderer extends CoreRenderer {
             String uploader = cc.getUploader();
             boolean isAtLeastJSF22 = cc.isAtLeastJSF22();
             String inputToDecodeId = getSimpleInputDecodeId(fileUpload, context);
-            
-            
+
+
             if (uploader.equals("auto")) {
                 if (isAtLeastJSF22)
                     NativeFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
@@ -82,11 +82,11 @@ public class FileUploadRenderer extends CoreRenderer {
 
         if (fileUpload.getMode().equals("advanced")) {
             wb.initWithDomReady("FileUpload", fileUpload.resolveWidgetVar(), clientId);
-            
+
             wb.attr("auto", fileUpload.isAuto(), false)
                 .attr("dnd", fileUpload.isDragDropSupport(), true)
-                .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update, SearchExpressionFacade.Options.VISIT_UNRENDERED), null)
-                .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process, SearchExpressionFacade.Options.VISIT_UNRENDERED), null)
+                .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update), null)
+                .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process), null)
                 .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                 .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
                 .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
@@ -149,7 +149,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("div");
 
         renderChildren(context, fileUpload);
-        
+
         //content
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
@@ -170,21 +170,21 @@ public class FileUploadRenderer extends CoreRenderer {
         String clientId = fileUpload.getClientId(context);
         String style = fileUpload.getStyle();
         String styleClass = fileUpload.getStyleClass();
-        
+
         if (fileUpload.isSkinSimple()) {
             styleClass = (styleClass == null) ? FileUpload.CONTAINER_CLASS_SIMPLE : FileUpload.CONTAINER_CLASS_SIMPLE + " " + styleClass;
             String buttonClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
             if (fileUpload.isDisabled()) {
                 buttonClass += " ui-state-disabled";
             }
-            
+
             writer.startElement("span", fileUpload);
             writer.writeAttribute("id", clientId, "id");
             writer.writeAttribute("class", styleClass, "styleClass");
             if (style != null) {
                 writer.writeAttribute("style", style, "style");
             }
-            
+
             writer.startElement("span", null);
             writer.writeAttribute("class", buttonClass, null);
 
@@ -207,7 +207,7 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.startElement("span", fileUpload);
             writer.writeAttribute("class", FileUpload.FILENAME_CLASS, null);
             writer.endElement("span");
-            
+
             writer.endElement("span");
         }
         else {
@@ -268,12 +268,12 @@ public class FileUploadRenderer extends CoreRenderer {
         if (fileUpload.isMultiple()) writer.writeAttribute("multiple", "multiple", null);
         if (fileUpload.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if (fileUpload.getAccept() != null) writer.writeAttribute("accept", fileUpload.getAccept(), null);
-        
+
         renderDynamicPassThruAttributes(context, fileUpload);
 
         writer.endElement("input");
     }
-    
+
     protected void encodeSimpleInputField(FacesContext context, FileUpload fileUpload, String clientId, String style, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -321,11 +321,11 @@ public class FileUploadRenderer extends CoreRenderer {
 
         writer.endElement("button");
     }
-    
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         FileUpload fileUpload = (FileUpload) component;
-        
+
         if (fileUpload.getMode().equals("simple") && submittedValue != null && submittedValue.equals("")) {
             return null;
         }
@@ -333,16 +333,16 @@ public class FileUploadRenderer extends CoreRenderer {
             return submittedValue;
         }
     }
-    
+
     public String getSimpleInputDecodeId(FileUpload fileUpload, FacesContext context) {
         String clientId = fileUpload.getClientId(context);
-    
+
         if(fileUpload.getMode().equals("simple") && !fileUpload.isSkinSimple())
             return clientId;
         else
             return clientId + "_input";
     }
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         // Do nothing

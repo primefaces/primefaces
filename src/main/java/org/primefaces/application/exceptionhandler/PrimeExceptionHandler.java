@@ -140,7 +140,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     protected void handleAjaxException(FacesContext context, Throwable rootCause, ExceptionInfo info) throws Exception {
         ExternalContext externalContext = context.getExternalContext();
         PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
-        
+
         boolean responseResetted = false;
 
         if (context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
@@ -149,19 +149,19 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 if (writer != null) {
                     // this doesn't flush, just clears the internal state in mojarra
                     writer.flush();
-                    
+
                     writer.endCDATA();
 
-                    writer.endInsert();                    
+                    writer.endInsert();
                     writer.endUpdate();
-                    
+
                     writer.startError("");
                     writer.endError();
-                    
+
                     writer.getWrapped().endElement("changes");
                     writer.getWrapped().endElement("partial-response");
                 }
-                
+
                 String characterEncoding = externalContext.getResponseCharacterEncoding();
                 externalContext.responseReset();
                 externalContext.setResponseCharacterEncoding(characterEncoding);
@@ -202,7 +202,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             }
 
             if (!ComponentUtils.isValueBlank(handlerComponent.getUpdate())) {
-                List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate(), SearchExpressionFacade.Options.VISIT_UNRENDERED);
+                List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
 
                 if (updates != null && updates.size() > 0) {
                     context.setResponseWriter(writer);
@@ -344,7 +344,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getResponseCharacterEncoding());
             externalContext.addResponseHeader("Cache-Control", "no-cache");
             externalContext.setResponseContentType("text/xml");
-            
+
             writer.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
             writer.startElement("partial-response", null);
             writer.startElement("redirect", null);
