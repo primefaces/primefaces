@@ -2123,6 +2123,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
 
         this.buttons = this.jq.children('div:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':radio:not(:disabled)');
+        this.cfg.unselectable = this.cfg.unselectable === false ? false : true;
 
         this.bindEvents();
 
@@ -2202,7 +2203,9 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
     },
     
     unselect: function(button) {
-        button.removeClass('ui-state-active ui-state-hover ui-state-focus').children(':radio').prop('checked', false).change();  
+        if(this.cfg.unselectable) {
+            button.removeClass('ui-state-active ui-state-hover ui-state-focus').children(':radio').prop('checked', false).change();  
+        }
     },
     
     triggerChange: function() {
