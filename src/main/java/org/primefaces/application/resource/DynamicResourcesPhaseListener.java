@@ -31,6 +31,11 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
         if (!context.isPostback()) {
             return;
         }
+        
+        // skip update=@all as the head will all resources will already be rendered
+        if (context.getPartialViewContext().isRenderAll()) {
+            return;
+        }
 
         // collect all current resources before new components can be added to the view in later phases
         ArrayList<ResourceUtils.ResourceInfo> initialResources = ResourceUtils.getComponentResources(context);
