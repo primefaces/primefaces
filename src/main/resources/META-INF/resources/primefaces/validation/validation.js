@@ -1137,6 +1137,18 @@ if (window.PrimeFaces) {
                     element.parent().parent().removeClass('ui-state-error');
                 }
 
+            },
+            
+            'inputnumber': {
+
+                highlight: function(element) {
+                    element.prev().addClass('ui-state-error');
+                },
+
+                unhighlight: function(element) {
+                    element.prev().removeClass('ui-state-error');
+                }
+
             }
         }
     };

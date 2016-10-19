@@ -123,6 +123,10 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("onkeyup", inputNumber.getOnkeyup(), null);
         }
 
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, inputNumber);
+        }
+        
         writer.endElement("input");
 
     }
@@ -164,10 +168,6 @@ public class InputNumberRenderer extends InputRenderer {
         }
         
         writer.writeAttribute("class", styleClass, null);
-        
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputNumber);
-        }
 
         writer.endElement("input");
     }
@@ -277,4 +277,9 @@ public class InputNumberRenderer extends InputRenderer {
         return (counter > 15 || length > 15);
     }
 
+    @Override
+    protected String getHighlighter() {
+        return "inputnumber";
+    }
+    
 }
