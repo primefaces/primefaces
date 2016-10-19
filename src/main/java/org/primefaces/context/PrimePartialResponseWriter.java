@@ -289,6 +289,8 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                             ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<ResourceUtils.ResourceInfo>(currentResources);
                             newResources.removeAll(initialResources);
 
+                            getWrapped().write("if(window.PrimeFaces){");
+
                             ArrayList<String> stylesheets = ResourceUtils.filterStylesheets(context, newResources);
                             if (stylesheets != null && !stylesheets.isEmpty()) {
                                 String script = "PrimeFaces.ajax.Utils.loadStylesheets(['" + CollectionUtils.join(stylesheets, "','") + "']);";
@@ -300,6 +302,8 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                                 String script = "PrimeFaces.ajax.Utils.loadScripts(['" + CollectionUtils.join(scripts, "','") + "']);";
                                 getWrapped().write(script);
                             }
+
+                            getWrapped().write("}");
 
                             endEval();
                         }
