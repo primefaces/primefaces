@@ -53,6 +53,15 @@
             form.submit().children('input.ui-submit-param').remove();
         },
 
+        onPost : function() {
+            this.nonAjaxPosted = true;
+            this.abortXHRs();
+        },
+        
+        abortXHRs : function() {
+            PrimeFaces.ajax.Queue.abortAll();
+        },
+        
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
                 element.bind(event, function(e) {

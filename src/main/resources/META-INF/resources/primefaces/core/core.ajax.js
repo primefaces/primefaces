@@ -586,7 +586,7 @@ PrimeFaces.ajax = {
 
                     PrimeFaces.ajax.Queue.removeXHR(xhr);
 
-                    if(!cfg.async) {
+                    if(!cfg.async && !PrimeFaces.nonAjaxPosted) {
                         PrimeFaces.ajax.Queue.poll();
                     }
                 }
@@ -895,3 +895,7 @@ PrimeFaces.ajax = {
         return PrimeFaces.ajax.Request.handle(cfg, ext);
     }
 };
+
+$(window).unload(function() {
+    PrimeFaces.ajax.Queue.abortAll();
+});
