@@ -34,9 +34,9 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
 
-public class DynamicResourceBuilder {
+public class DynamicContentSrcBuilder {
     
-    private static final String SB_BUILD = DynamicResourceBuilder.class.getName() + "#build";
+    private static final String SB_BUILD = DynamicContentSrcBuilder.class.getName() + "#build";
     
     public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type, boolean stream)
             throws UnsupportedEncodingException {
