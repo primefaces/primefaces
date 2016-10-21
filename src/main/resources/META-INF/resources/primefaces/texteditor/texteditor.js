@@ -95,12 +95,20 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         //initialize
         this.editor = new Quill(PrimeFaces.escapeClientId(this.id) + '_editor', this.cfg);
         
+        //set initial value
+        this.input.val(this.getEditorValue());
+        
         //update input on change
         this.editor.on('text-change', function(delta, oldDelta, source) {
-            var html = $this.editorContainer.get(0).children[0].innerHTML,
-            value = (html == '<p><br></p>') ? '' : html;
-            $this.input.val(value);
+            $this.input.val($this.getEditorValue());
         });
+    },
+    
+    getEditorValue: function() {
+        var html = this.editorContainer.get(0).children[0].innerHTML,
+        value = (html == '<p><br></p>') ? '' : html;
+        
+        return value;
     },
     
     clear: function() {
