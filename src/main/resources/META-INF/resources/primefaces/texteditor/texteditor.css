@@ -1,5 +1,5 @@
 /*!
- * Quill Editor v1.1.0
+ * Quill Editor v1.1.1
  * https://quilljs.com/
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
@@ -438,18 +438,18 @@
 .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke,
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
-.ql-snow.ql-toolbar button:hover .ql-stroke-mitter,
-.ql-snow .ql-toolbar button:hover .ql-stroke-mitter,
-.ql-snow.ql-toolbar button.ql-active .ql-stroke-mitter,
-.ql-snow .ql-toolbar button.ql-active .ql-stroke-mitter,
-.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-mitter,
-.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-mitter,
-.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-mitter,
-.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-mitter,
-.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-mitter,
-.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-mitter,
-.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-mitter,
-.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-mitter {
+.ql-snow.ql-toolbar button:hover .ql-stroke-miter,
+.ql-snow .ql-toolbar button:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke-miter,
+.ql-snow .ql-toolbar button.ql-active .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
   stroke: #06c;
 }
 .ql-snow {
@@ -488,10 +488,10 @@
   stroke-linejoin: round;
   stroke-width: 2;
 }
-.ql-snow .ql-stroke-mitter {
+.ql-snow .ql-stroke-miter {
   fill: none;
   stroke: #444;
-  stroke-mitterlimit: 10;
+  stroke-miterlimit: 10;
   stroke-width: 2;
 }
 .ql-snow .ql-fill,
