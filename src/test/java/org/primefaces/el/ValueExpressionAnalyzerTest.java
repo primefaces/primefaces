@@ -19,11 +19,30 @@ import de.odysseus.el.ExpressionFactoryImpl;
 import javax.el.ExpressionFactory;
 import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.primefaces.context.DefaultRequestContext;
+import org.primefaces.context.RequestContext;
+import org.primefaces.mock.FacesContextMock;
 
 public class ValueExpressionAnalyzerTest
 {
+    @Before
+    public void init() {
+        FacesContext facesContext = new FacesContextMock();
+        RequestContext requestContext = new DefaultRequestContext(facesContext);
+        RequestContext.setCurrentInstance(requestContext, facesContext);
+    }
+
+    @After
+    public void destroy() {
+        RequestContext.setCurrentInstance(null, FacesContext.getCurrentInstance());
+        FacesContext.getCurrentInstance().release();
+    }
+
     @Test
     public void firstLevelValueReference()
     {

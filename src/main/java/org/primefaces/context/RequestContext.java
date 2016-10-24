@@ -40,9 +40,9 @@ public abstract class RequestContext {
 	private static final ThreadLocal<RequestContext> INSTANCE = new ThreadLocal<RequestContext>();
 
     public static final String INSTANCE_KEY = RequestContext.class.getName();
-    
+
     public static RequestContext getCurrentInstance() {
-        
+
         RequestContext context = INSTANCE.get();
 
         // #6503 - it's valid that a FacesContext can be released during the request
@@ -64,7 +64,9 @@ public abstract class RequestContext {
     public static void setCurrentInstance(final RequestContext context, final FacesContext facesContext) {
         if (context == null) {
         	INSTANCE.remove();
+                if (facesContext != null) {
             facesContext.getAttributes().remove(INSTANCE_KEY);
+                }
         } else {
         	INSTANCE.set(context);
             facesContext.getAttributes().put(INSTANCE_KEY, context);
@@ -74,7 +76,7 @@ public abstract class RequestContext {
     public static void releaseThreadLocalCache() {
         INSTANCE.remove();
     }
-    
+
     /**
      * @return true if request is an ajax request, otherwise return false.
      */
@@ -83,7 +85,7 @@ public abstract class RequestContext {
     /**
      * Add a parameter for ajax oncomplete client side callbacks. Value would be serialized to json.
      * Currently supported values are plain objects, primitives, JSONObject and JSONArray.
-     * 
+     *
      * @param name name of the parameter.
      * @param value value of the parameter.
      */
@@ -144,12 +146,12 @@ public abstract class RequestContext {
      * @return Shared AjaxRequestBuilder instance of the current request
      */
     public abstract AjaxRequestBuilder getAjaxRequestBuilder();
-    
+
     /**
      * @return Shared Client Side Validation builder instance of the current request
      */
     public abstract CSVBuilder getCSVBuilder();
-    
+
     /**
      * @return Attributes map in RequestContext scope
      */
@@ -160,7 +162,7 @@ public abstract class RequestContext {
      * @param outcome The logical outcome used to resolve a navigation case.
      */
     public abstract void openDialog(String outcome);
-    
+
     /**
      * Open a view in dialog.
      * @param outcome The logical outcome used to resolve a navigation case.
@@ -168,13 +170,13 @@ public abstract class RequestContext {
      * @param params Parameters to send to the view displayed in a dialog.
      */
     public abstract void openDialog(String outcome, Map<String,Object> options, Map<String,List<String>> params);
-    
+
     /**
      * Close a dialog.
      * @param data Optional data to pass back to a dialogReturn event.
      */
     public abstract void closeDialog(Object data);
-    
+
     /**
      * Displays a message in a dialog.
      * @param message FacesMessage to be displayed.
@@ -190,12 +192,12 @@ public abstract class RequestContext {
      * @return StringEncrypter used to encode and decode a string.
      */
 	public abstract StringEncrypter getEncrypter();
-    
+
     /**
      * Clear resources.
      */
     public abstract void release();
-    
+
     /**
      * Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
      */

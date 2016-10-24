@@ -94,7 +94,7 @@ public class PrimeConfiguration {
         else {
             jsf21 = detectJSF21();
         }
-        
+
         bv11 = detectBV11();
 
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
@@ -137,10 +137,10 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
         legacyWidgetNamespace = (value == null) ? false : Boolean.valueOf(value);
-    
+
         value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
         beanValidationDisabled = (value == null) ? false : Boolean.valueOf(value);
-        
+
         value = externalContext.getInitParameter(Constants.ContextParams.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES);
         interpolateClientSideValidationMessages = (value == null) ? false : Boolean.valueOf(value);
 
@@ -221,7 +221,7 @@ public class PrimeConfiguration {
 
         return available && !beanValidationDisabled && el22Available;
     }
-    
+
     private boolean checkIfEL22IsAvailable() {
     	boolean available;
 
@@ -278,9 +278,9 @@ public class PrimeConfiguration {
         }
         catch (ClassNotFoundException ex) {
             return false;
-        }        
+        }
     }
-    
+
     protected void initConfigFromWebXml(FacesContext context) {
         errorPages = WebXmlParser.getErrorPages(context);
         if (errorPages == null) {
@@ -295,8 +295,8 @@ public class PrimeConfiguration {
     public boolean isBeanValidationAvailable() {
         return beanValidationAvailable;
     }
-    
-    public boolean isEL22Available() {
+
+    public boolean isAtLeastEL22() {
         return el22Available;
     }
 
