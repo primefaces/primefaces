@@ -163,7 +163,7 @@ public class TreeTableRenderer extends DataRenderer {
             int first = Integer.parseInt(params.get(clientId + "_first"));
             int rows = Integer.parseInt(params.get(clientId + "_rows"));
             TreeNode root = tt.getValue();
-            encodeNodeChildren(context, tt, root, first, first + rows);
+            encodeNodeChildren(context, tt, root, first, rows);
         } 
         else {
             encodeMarkup(context, tt);
@@ -437,7 +437,7 @@ public class TreeTableRenderer extends DataRenderer {
             if(tt.isPaginator()) {
                 int first = tt.getFirst();
                 int rows = tt.getRows() == 0 ? tt.getRowCount() : tt.getRows();
-                encodeNodeChildren(context, tt, root, first, first + rows);
+                encodeNodeChildren(context, tt, root, first, rows);
             }
             else {
                 encodeNodeChildren(context, tt, root);
@@ -634,7 +634,13 @@ public class TreeTableRenderer extends DataRenderer {
     protected void encodeNodeChildren(FacesContext context, TreeTable tt, TreeNode treeNode, int first, int size) throws IOException {
         if(size > 0) {
             List<TreeNode> children = treeNode.getChildren();
-            for(int i = first; i < size; i++) {
+            int childCount = treeNode.getChildCount();
+            int last = (first + size);
+            if(last > childCount) {
+                last = childCount;
+            }
+            
+            for(int i = first; i < last; i++) {
                 encodeNode(context, tt, children.get(i));
             }
         }
