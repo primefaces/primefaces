@@ -2067,11 +2067,51 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
     
+    cellEditInit: function(cell) {
+        var rowMeta = this.getRowMeta(cell.closest('tr')),
+        cellEditor = cell.children('.ui-cell-editor'),
+        cellIndex = cell.index(),
+        $this = this;
+
+        if(this.cfg.scrollable && this.cfg.frozenColumns) {
+            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
+        }
+
+        var cellInfo = rowMeta.index + ',' + cellIndex;
+        if(rowMeta.key) {
+            cellInfo = cellInfo + ',' + rowMeta.key;
+        }
+        
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            global: false,
+            params: [{name: this.id + '_encodeFeature', value: true},
+                    {name: this.id + '_cellEditInit', value: true},
+                    {name: this.id + '_cellInfo', value: cellInfo}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            cellEditor.children('.ui-cell-editor-input').html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {                            
+                $this.showCurrentCell(cell);
+            }
+        };
+
+        PrimeFaces.ajax.Request.handle(options);
+    },
+    
     showCellEditor: function(c) {
         this.incellClick = true;
         
-        var cell = null,
-        $this = this;
+        var cell = null;
                     
         if(c) {
             cell = c;
@@ -2085,6 +2125,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cell = this.contextMenuCell;
         }
         
+        var editorInput = cell.find('> .ui-cell-editor > .ui-cell-editor-input');
+        if(editorInput && editorInput.children().length === 0) {
+            this.cellEditInit(cell);
+        }
+        else {
+            this.showCurrentCell(cell);
+        }        
+    },
+    
+    showCurrentCell: function(cell) {
+        var $this = this;
+    
         if(this.currentCell) {
             if(this.cfg.saveOnCellBlur)
                 this.saveCell(this.currentCell);
@@ -2160,7 +2212,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 .on('focus.datatable-cell click.datatable-cell', function(e) {
                     $this.currentCell = cell;
                 });
-        }        
+        }
     },
     
     tabCell: function(cell, forward) {

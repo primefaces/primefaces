@@ -204,6 +204,10 @@ import javax.faces.event.BehaviorEvent;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellEditCancel");
     }
 
+    public boolean isCellEditInitRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellEditInit");
+    }
+
     public boolean isClientCacheRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_clientCache");
     }

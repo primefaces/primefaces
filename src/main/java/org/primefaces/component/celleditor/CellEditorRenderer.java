@@ -40,7 +40,6 @@ public class CellEditorRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);
-        editor.getFacet("input").encodeAll(context);
         writer.endElement("div");
 
         writer.endElement("div");
