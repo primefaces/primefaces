@@ -38,7 +38,11 @@ public class DefaultApplicationContext extends ApplicationContext {
     private Map<Class<?>, Map<String, Object>> constantsCacheMap;
 
     public DefaultApplicationContext(FacesContext context) {
-    	this.config = new PrimeConfiguration(context);
+        this(context, new PrimeConfiguration(context));
+    }
+    
+    public DefaultApplicationContext(FacesContext context, PrimeConfiguration config) {
+    	this.config = config;
     	
     	if (this.config.isBeanValidationAvailable()) {
     	    this.validatorFactory = Validation.buildDefaultValidatorFactory();

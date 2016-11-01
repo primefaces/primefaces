@@ -24,16 +24,25 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.primefaces.context.DefaultRequestContext;
+import org.primefaces.context.ApplicationContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.mock.FacesContextMock;
+import org.primefaces.mock.pf.ApplicationContextMock;
+import org.primefaces.mock.pf.PrimeConfigurationMock;
+import org.primefaces.mock.pf.RequestContextMock;
 
 public class ValueExpressionAnalyzerTest
 {
     @Before
     public void init() {
         FacesContext facesContext = new FacesContextMock();
-        RequestContext requestContext = new DefaultRequestContext(facesContext);
+        
+        PrimeConfigurationMock config = new PrimeConfigurationMock(facesContext);
+        config.setEl22Available(true);
+        
+        ApplicationContext applicationContext = new ApplicationContextMock(facesContext, config);
+        
+        RequestContext requestContext = new RequestContextMock(facesContext, applicationContext);
         RequestContext.setCurrentInstance(requestContext, facesContext);
     }
 
