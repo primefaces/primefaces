@@ -83,7 +83,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder update(UIComponent component, String expressions) {
-        addExpressions(component, expressions, "u", SearchExpressionHint.VALIDATE_RENDERER);
+        addExpressions(component, expressions, "u", SearchExpressionHint.VALIDATE_RENDERER | SearchExpressionHint.SKIP_UNRENDERED);
 
         return this;
     }

@@ -39,7 +39,9 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
             if (matcher.matches()) {
 
                 WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(matcher.group(1));
-                context.getViewRoot().visitTree(SearchExpressionUtils.createVisitContext(context, options), visitCallback);
+                context.getViewRoot().visitTree(
+                        SearchExpressionUtils.createVisitContext(context, options),
+                        visitCallback);
 
                 return visitCallback.getComponent();
 
