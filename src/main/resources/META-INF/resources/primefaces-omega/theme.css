@@ -845,3 +845,8 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     -moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.3) !important; 
     box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.3) !important;
 }
+
+/* ScrollPanel */
+.ui-scrollpanel .ui-scrollpanel-drag {
+    background-color: #dcdcdc;
+}
