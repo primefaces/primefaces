@@ -19,10 +19,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.expression.ClientIdSearchExpressionResolver;
 import org.primefaces.expression.SearchExpressionResolver;
+import org.primefaces.expression.SearchExpressionUtils;
 
 /**
  * {@link SearchExpressionResolver} for the "@widgetVar" keyword.
@@ -39,7 +39,7 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
             if (matcher.matches()) {
 
                 WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(matcher.group(1));
-                context.getViewRoot().visitTree(VisitContext.createVisitContext(context), visitCallback);
+                context.getViewRoot().visitTree(SearchExpressionUtils.createVisitContext(context, options), visitCallback);
 
                 return visitCallback.getComponent();
 
@@ -58,4 +58,6 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
         // e.g. @widgetVar(myWidget)
         return expression;
     }
+
+
 }

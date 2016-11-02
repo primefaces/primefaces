@@ -1228,12 +1228,12 @@ public class SearchExpressionFacadeTest {
 	    assertEquals(
 	    		root,
 	    		SearchExpressionFacade.resolveComponent(
-	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionFacade.Options.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionHint.PARENT_FALLBACK));
 
 	    assertEquals(
 	    		root,
 	    		SearchExpressionFacade.resolveComponent(
-	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionFacade.Options.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionHint.PARENT_FALLBACK));
 	}
 
 	@Test
@@ -1249,12 +1249,12 @@ public class SearchExpressionFacadeTest {
 	    assertEquals(
 	    		"test",
 	    		SearchExpressionFacade.resolveClientIds(
-	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionFacade.Options.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionHint.PARENT_FALLBACK));
 
 	    assertEquals(
 	    		"test",
 	    		SearchExpressionFacade.resolveClientIds(
-	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionFacade.Options.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionHint.PARENT_FALLBACK));
 	}
 
 	@Test
@@ -1443,7 +1443,7 @@ public class SearchExpressionFacadeTest {
 	    root.getChildren().add(command2);
 
 	    assertSame("Failed", null,
-	    		resolveComponent(command1, " command3 ", SearchExpressionFacade.Options.IGNORE_NO_RESULT));
+	    		resolveComponent(command1, " command3 ", SearchExpressionHint.IGNORE_NO_RESULT));
 	}
 
 	@Test
@@ -1804,7 +1804,7 @@ public class SearchExpressionFacadeTest {
         components.add(root);
 
         SearchExpressionResolverFactory.registerResolver("@test", new TestMultiSearchExpressionResolver(components));
-        List<UIComponent> result = resolveComponents(root, " @test:@parent:@parent ", SearchExpressionFacade.Options.IGNORE_NO_RESULT);
+        List<UIComponent> result = resolveComponents(root, " @test:@parent:@parent ", SearchExpressionHint.IGNORE_NO_RESULT);
         assertTrue(result.size() == 1);
         assertTrue(result.contains(FacesContext.getCurrentInstance().getViewRoot()));
 

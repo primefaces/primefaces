@@ -30,6 +30,7 @@ import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 
 /**
  * Helper to generate javascript code of an ajax call
@@ -76,13 +77,13 @@ public class AjaxRequestBuilder {
 	}
 
     public AjaxRequestBuilder process(UIComponent component, String expressions) {
-        addExpressions(component, expressions, "p", SearchExpressionFacade.Options.NONE);
+        addExpressions(component, expressions, "p", SearchExpressionHint.NONE);
 
         return this;
     }
 
     public AjaxRequestBuilder update(UIComponent component, String expressions) {
-        addExpressions(component, expressions, "u", SearchExpressionFacade.Options.VALIDATE_RENDERER);
+        addExpressions(component, expressions, "u", SearchExpressionHint.VALIDATE_RENDERER);
 
         return this;
     }
