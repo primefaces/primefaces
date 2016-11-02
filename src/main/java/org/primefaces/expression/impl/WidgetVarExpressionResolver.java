@@ -30,9 +30,9 @@ import org.primefaces.expression.SearchExpressionResolver;
 public class WidgetVarExpressionResolver implements SearchExpressionResolver, ClientIdSearchExpressionResolver {
 
     private static final Pattern PATTERN = Pattern.compile("@widgetVar\\((\\w+)\\)");
-        
-	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
-        
+
+	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+
         try {
             Matcher matcher = PATTERN.matcher(expression);
 
@@ -52,8 +52,8 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
         }
 	}
 
-    
-    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression) {
+
+    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         // just return the complete expression, the client side will take care of it
         // e.g. @widgetVar(myWidget)
         return expression;

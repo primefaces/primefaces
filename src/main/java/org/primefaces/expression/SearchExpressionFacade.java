@@ -106,10 +106,10 @@ public class SearchExpressionFacade {
                             SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
 
                             if (resolver instanceof MultiSearchExpressionResolver) {
-                                ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, source, expression, components);
+                                ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, source, expression, components, options);
                             }
                             else {
-                                UIComponent component = resolver.resolveComponent(context, source, source, expression);
+                                UIComponent component = resolver.resolveComponent(context, source, source, expression, options);
 
                                 if (component == null) {
                                     if (!isOptionSet(options, Options.IGNORE_NO_RESULT)) {
@@ -214,7 +214,7 @@ public class SearchExpressionFacade {
                             SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
 
                             if (resolver instanceof ClientIdSearchExpressionResolver) {
-                                String clientIds = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression);
+                                String clientIds = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression, options);
                                 if (!ComponentUtils.isValueBlank(clientIds)) {
                                     if (expressionsBuffer.length() > 0) {
                                         expressionsBuffer.append(" ");
@@ -224,7 +224,7 @@ public class SearchExpressionFacade {
                             }
                             else if (resolver instanceof MultiSearchExpressionResolver) {
                                 ArrayList<UIComponent> result = new ArrayList<UIComponent>();
-                                ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, source, expression, result);
+                                ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, source, expression, result, options);
                                 for (int j = 0; j < result.size(); j++) {
                                     UIComponent component = result.get(j);
                                     validateRenderer(context, source, component, expression, options);
@@ -235,7 +235,7 @@ public class SearchExpressionFacade {
                                 }
                             }
                             else {
-                                UIComponent component = resolver.resolveComponent(context, source, source, expression);
+                                UIComponent component = resolver.resolveComponent(context, source, source, expression, options);
 
                                 if (component == null) {
                                     if (!isOptionSet(options, Options.IGNORE_NO_RESULT)) {
@@ -340,9 +340,9 @@ public class SearchExpressionFacade {
             SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
 
             if (resolver instanceof ClientIdSearchExpressionResolver) {
-                return ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression);
+                return ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression, options);
             } else {
-                component = resolver.resolveComponent(context, source, source, expression);
+                component = resolver.resolveComponent(context, source, source, expression, options);
             }
         } // default ID case
         else {
@@ -417,7 +417,7 @@ public class SearchExpressionFacade {
         } // it's a keyword and not nested, just ask our resolvers
         else if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
             SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
-            component = resolver.resolveComponent(context, source, source, expression);
+            component = resolver.resolveComponent(context, source, source, expression, options);
         } // default ID case
         else {
             component = resolveComponentById(source, expression, separatorString, context, options);
@@ -462,7 +462,7 @@ public class SearchExpressionFacade {
                 }
 
                 SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
-                UIComponent temp = resolver.resolveComponent(context, source, last, subExpression);
+                UIComponent temp = resolver.resolveComponent(context, source, last, subExpression, options);
 
                 if (temp == null) {
                     if (!isOptionSet(options, Options.IGNORE_NO_RESULT)) {
@@ -537,9 +537,9 @@ public class SearchExpressionFacade {
                     UIComponent last = lastComponents.get(j);
 
                     if (resolver instanceof MultiSearchExpressionResolver) {
-                        ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, last, subExpression, tempComponents);
+                        ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, last, subExpression, tempComponents, options);
                     } else {
-                        UIComponent temp = resolver.resolveComponent(context, source, last, subExpression);
+                        UIComponent temp = resolver.resolveComponent(context, source, last, subExpression, options);
 
                         if (temp == null) {
                             if (!isOptionSet(options, Options.IGNORE_NO_RESULT)) {
@@ -611,7 +611,7 @@ public class SearchExpressionFacade {
 
                     // if it's the last expression and the resolver is a ClientIdSearchExpressionResolver, we can call it
                     if (i == subExpressions.length - 1 && resolver instanceof ClientIdSearchExpressionResolver) {
-                        String result = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, last, subExpression);
+                        String result = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, last, subExpression, options);
 
                         if (!ComponentUtils.isValueBlank(result)) {
 
@@ -626,9 +626,9 @@ public class SearchExpressionFacade {
                         }
                     }
                     else if (resolver instanceof MultiSearchExpressionResolver) {
-                        ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, last, subExpression, tempComponents);
+                        ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, last, subExpression, tempComponents, options);
                     } else {
-                        UIComponent temp = resolver.resolveComponent(context, source, last, subExpression);
+                        UIComponent temp = resolver.resolveComponent(context, source, last, subExpression, options);
 
                         if (temp == null) {
                             if (!isOptionSet(options, Options.IGNORE_NO_RESULT)) {
