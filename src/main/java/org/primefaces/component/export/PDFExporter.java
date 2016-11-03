@@ -30,6 +30,7 @@ import org.primefaces.component.datatable.DataTable;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Paragraph;
@@ -37,10 +38,12 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Color;
+import javax.faces.component.UIPanel;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class PDFExporter extends Exporter {
@@ -171,6 +174,8 @@ public class PDFExporter extends Exporter {
             applyCellOptions(this.expOptions);
         }
         
+        addTableFacets(context, table, pdfTable, "header");
+        
     	addColumnFacets(table, pdfTable, ColumnType.HEADER);
         
         if (pageOnly) {
@@ -187,10 +192,53 @@ public class PDFExporter extends Exporter {
             addColumnFacets(table, pdfTable, ColumnType.FOOTER);
         }
     	
+        addTableFacets(context, table, pdfTable, "footer");
+        
     	table.setRowIndex(-1);
     	
     	return pdfTable;
 	}
+    
+    protected void addTableFacets(FacesContext context, DataTable table, PdfPTable pdfTable, String facetType) {
+        String facetText = null;
+        UIComponent facet = table.getFacet(facetType);
+        if(facet != null) {
+            if(facet instanceof UIPanel) {
+                for(UIComponent child : facet.getChildren()) {
+                    if(child.isRendered()) {
+                        String value = ComponentUtils.getValueToRender(context, child);
+
+                        if(value != null) {
+                            facetText = value;
+                            break;
+                        }         
+                    }
+                }
+            }
+            else {
+                facetText = ComponentUtils.getValueToRender(context, facet);
+            }
+        }
+        
+        if(facetText != null) {
+            int colspan = 0;
+            
+            for (UIColumn col : table.getColumns()) {
+                if (col.isRendered() && col.isExportable()) {
+                    colspan++;
+                }
+            }
+            
+            PdfPCell cell = new PdfPCell(new Paragraph(facetText, this.facetFont));
+            if (this.facetBgColor != null) {
+                cell.setBackgroundColor(this.facetBgColor);
+            }
+            
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setColspan(colspan);
+            pdfTable.addCell(cell);
+        }
+    }
     
     @Override
     protected void exportCells(DataTable table, Object document) {
