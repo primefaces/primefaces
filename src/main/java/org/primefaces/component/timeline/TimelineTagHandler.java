@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseListener;
@@ -47,7 +48,7 @@ public class TimelineTagHandler extends ComponentHandler {
 
 		FacesContext fc = ctx.getFacesContext();
 		Timeline timeline = (Timeline) c;
-		String widgetVar = timeline.resolveWidgetVar();
+		String widgetVar = resolveWidgetVarForTimelineUpdater(timeline);
 
 		@SuppressWarnings("unchecked")
 		Map<String, TimelineUpdater> map = (Map<String, TimelineUpdater>) fc.getAttributes().get(TimelineUpdater.class.getName());
@@ -82,5 +83,15 @@ public class TimelineTagHandler extends ComponentHandler {
 		} while (c != null);
 
 		return ctx.getFacesContext().getViewRoot();
+	}
+    
+    public String resolveWidgetVarForTimelineUpdater(UIComponent c) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		String userWidgetVar = (String) c.getAttributes().get("widgetVar");
+
+		if(userWidgetVar != null)
+			return userWidgetVar;
+		 else
+			return "widget_" + c.getId().replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
 	}
 }
