@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute                           SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>organigramNode</tag>
+    <tagClass>org.primefaces.component.organigramnode.OrganigramNodeTag</tagClass>
+    <componentClass>org.primefaces.component.organigramnode.UIOrganigramNode</componentClass>
+    <componentType>org.primefaces.component.OrganigramNode</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description></description>
+    <attributes>
+        &standard_uicomponent_attributes;
+        <attribute>
+            <description>Type of the node. Default is "default"</description>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>style to apply to a node type.</description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>Style class to apply to a node type.</description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>The icon to be displayed</description>
+            <name>icon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>The icon position. Empty, "right" or "left".</description>
+            <name>iconPos</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>The expanded icon.</description>
+            <name>expandedIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>The collapsed icon.</description>
+            <name>collapsedIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>If the leaf handling should be skipped.</description>
+            <name>skipLeafHandling</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+    </attributes>
+</component>
