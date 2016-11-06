@@ -238,6 +238,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if(customContent) {
             writer.startElement("table", menu);
             writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
+            encodeColumnsHeader(context, menu);
             writer.startElement("tbody", menu);
             encodeOptionsAsTable(context, menu, selectItems);
             writer.endElement("tbody");
@@ -254,6 +255,45 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         writer.endElement("div");
         writer.endElement("div");
+    }
+    
+    protected void encodeColumnsHeader(FacesContext context, SelectOneMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        boolean hasHeader = false;
+        
+        for(Column column : menu.getColums()) {
+            if(column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
+                hasHeader = true;
+                break;
+            }
+        }
+        
+        if(hasHeader) { 
+            writer.startElement("thead", menu);
+            for(Column column : menu.getColums()) {
+                if(!column.isRendered()) {
+                    continue;
+                }
+
+                String headerText = column.getHeaderText();
+                UIComponent headerFacet = column.getFacet("header");
+                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
+                
+                writer.startElement("th", null);
+                writer.writeAttribute("class", styleClass, null);
+                
+                if(column.getStyle() != null) 
+                    writer.writeAttribute("style", column.getStyle(), null);
+                
+                if(headerFacet != null)
+                    headerFacet.encodeAll(context);
+                else if(headerText != null)
+                    writer.write(headerText);
+
+                writer.endElement("th");
+            }
+            writer.endElement("thead");
+        }
     }
 
     protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
