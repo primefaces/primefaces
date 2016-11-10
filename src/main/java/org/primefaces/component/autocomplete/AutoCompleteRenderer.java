@@ -331,7 +331,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         String inputId = clientId + "_input";
-        List values = (List) ac.getValue();
+        Object submittedValue = ac.getSubmittedValue();
         List<String> stringValues = new ArrayList<String>();
         boolean disabled = ac.isDisabled();
         String title = ac.getTitle();
@@ -355,12 +355,24 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("ul", null);
         writer.writeAttribute("class", listClass, null);
         
+        List<?> values = null;
+        if (submittedValue != null) {
+            // submittedValue are not null means that validation errors occurred, so we need to redraw submitted values
+            Object converted = getConvertedValue(context, ac, submittedValue);
+            if (converted instanceof List) {
+                values = (List<?>) converted;
+            }
+        } else {
+            // submittedValue are null, so values should be drawn from local component values or it's super.getValue()
+            values = (List<?>) ac.getValue();
+        }
+        
         if(values != null && !values.isEmpty()) {
         	Converter converter = ComponentUtils.getConverter(context, ac);
         	String var = ac.getVar();
         	boolean pojo = var != null;
 
-            for(Iterator<Object> it = values.iterator(); it.hasNext();) {
+            for(Iterator<?> it = values.iterator(); it.hasNext();) {
                 Object value = it.next();
                 Object itemValue = null;
                 String itemLabel = null;
