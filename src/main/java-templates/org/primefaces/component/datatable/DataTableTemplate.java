@@ -810,7 +810,7 @@ import javax.faces.event.BehaviorEvent;
         if (isSelectionEnabled()) {
         	Object selection = this.getSelection();
 
-			if (selection != null) {
+			if (selection == null) {
 				ValueExpression selectionVE = this.getValueExpression(PropertyKeys.selection.toString());
 				selection = selectionVE.getValue(getFacesContext().getELContext());
 			}
