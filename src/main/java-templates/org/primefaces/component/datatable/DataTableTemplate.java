@@ -277,7 +277,7 @@ import javax.faces.event.BehaviorEvent;
         ValueExpression selectionVE = this.getValueExpression(PropertyKeys.selection.toString());
 
         if(selectionVE != null) {
-            selectionVE.setValue(context.getELContext(), this.getLocalSelection());
+            selectionVE.setValue(context.getELContext(), this.getSelection());
 
             this.setSelection(null);
         }
@@ -727,10 +727,6 @@ import javax.faces.event.BehaviorEvent;
         return null;
     }
 
-    public Object getLocalSelection() {
-		return getStateHelper().get(PropertyKeys.selection);
-	}
-
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
          return BEHAVIOR_EVENT_MAPPING;
@@ -808,33 +804,44 @@ import javax.faces.event.BehaviorEvent;
     private List<Object> selectedRowKeys = new ArrayList<Object>();
 
     public void findSelectedRowKeys() {
-        Object selection = this.getSelection();
+        
         selectedRowKeys = new ArrayList<Object>();
-        boolean hasRowKeyVe = this.getValueExpression(PropertyKeys.rowKey.toString()) != null;
-        String var = this.getVar();
-        Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
 
-        if(isSelectionEnabled() && selection != null) {
-            if(this.isSingleSelectionMode()) {
-                addToSelectedRowKeys(selection, requestMap, var, hasRowKeyVe);
-            } 
-            else {
-                if(selection.getClass().isArray()) {
-                    for(int i = 0; i < Array.getLength(selection); i++) {
-                        addToSelectedRowKeys(Array.get(selection, i), requestMap, var, hasRowKeyVe);   
-                    }
-                }
-                else {
-                    List<?> list = (List<?>) selection;
-                    
-                    for(Iterator<? extends Object> it = list.iterator(); it.hasNext();) {
-                        addToSelectedRowKeys(it.next(), requestMap, var, hasRowKeyVe);   
-                    }
-                }
-                
-            }
-            
-            requestMap.remove(var);
+        if (isSelectionEnabled()) {
+        	Object selection = this.getSelection();
+
+			if (selection != null) {
+				ValueExpression selectionVE = this.getValueExpression(PropertyKeys.selection.toString());
+				selection = selectionVE.getValue(getFacesContext().getELContext());
+			}
+		
+			if (selection != null) {
+				
+				String var = this.getVar();
+				Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
+				boolean hasRowKeyVe = this.getValueExpression(PropertyKeys.rowKey.toString()) != null;
+				
+				if (this.isSingleSelectionMode()) {
+					addToSelectedRowKeys(selection, requestMap, var, hasRowKeyVe);
+				} 
+				else {
+					if(selection.getClass().isArray()) {
+						for(int i = 0; i < Array.getLength(selection); i++) {
+							addToSelectedRowKeys(Array.get(selection, i), requestMap, var, hasRowKeyVe);   
+						}
+					}
+					else {
+						List<?> list = (List<?>) selection;
+						
+						for(Iterator<? extends Object> it = list.iterator(); it.hasNext();) {
+							addToSelectedRowKeys(it.next(), requestMap, var, hasRowKeyVe);   
+						}
+					}
+					
+				}
+				
+				requestMap.remove(var);
+			}
         }
     }
     
