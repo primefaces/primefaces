@@ -120,13 +120,15 @@ public class DataRenderer extends CoreRenderer {
             .append(",rows:").append(pageable.getRows())
             .append(",rowCount:").append(pageable.getRowCount())
             .append(",page:").append(pageable.getPage());
-        
-        if(currentPageTemplate != null)
-            wb.append(",currentPageTemplate:'").append(currentPageTemplate).append("'");
 
-        if(pageable.getPageLinks() != 10) 
+        if(currentPageTemplate != null) {
+            String currentPageTemplateTmp = currentPageTemplate.replace("'", "\\'");
+            wb.append(",currentPageTemplate:'").append(currentPageTemplateTmp).append("'");
+        }
+
+        if(pageable.getPageLinks() != 10)
             wb.append(",pageLinks:").append(pageable.getPageLinks());
-        
+
         if(!pageable.isPaginatorAlwaysVisible()) 
             wb.append(",alwaysVisible:false");
 
