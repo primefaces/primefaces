@@ -521,6 +521,7 @@ PrimeFaces.ajax = {
                     xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                     xhr.pfSettings = settings;
                     xhr.pfArgs = {}; // default should be an empty object
+                    PrimeFaces.nonAjaxPosted = false;
 
                     if(global) {
                         $(document).trigger('pfAjaxSend', [xhr, this]);
