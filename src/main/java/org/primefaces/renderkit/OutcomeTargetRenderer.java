@@ -55,12 +55,12 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         return navigationHandler.getNavigationCase(context, null, outcome);
     }
 
-    private static boolean isExpression(String text)
+    protected boolean isExpression(String text)
     {
         return text.contains("#{") || text.contains("${");
     }
 
-    private static boolean containsEL(List<String> values)
+    protected boolean containsEL(List<String> values)
     {
         if (!values.isEmpty()) {
             for (String value : values) {
@@ -72,7 +72,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         return false;
     }
 
-    private static List<String> evaluateValueExpressions(FacesContext context, List<String> values)
+    protected List<String> evaluateValueExpressions(FacesContext context, List<String> values)
     {
         // note that we have to create a new List here, because if we
         // change any value on the given List, it will be changed in the
