@@ -68,13 +68,27 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             if (params == null) {
                 params = new LinkedHashMap<String, List<String>>();
             }
-            
+
             for (Map.Entry<String,List<String>> entry : navCaseParams.entrySet()) {
                 String key = entry.getKey();
 
                 //UIParams take precedence
                 if (!params.containsKey(key)) {
-                    params.put(key, entry.getValue());
+                    if (entry.getValue().size() == 1) {
+                        String value = entry.getValue().get(0);
+                        String sanitized = null != value && 2 < value.length() ? value.trim() : "";
+                        if (sanitized.contains("#{") || sanitized.contains("${")) {
+                            FacesContext fc = FacesContext.getCurrentInstance();
+                            value = fc.getApplication().evaluateExpressionGet(fc, value, String.class);
+                            List<String> values = new ArrayList<String>();
+                            values.add(value);
+                            params.put(key, values);
+                        } else {
+                            params.put(key, entry.getValue());
+                        }
+                    } else {
+                        params.put(key, entry.getValue());
+                    }
                 }
             }
         }
