@@ -523,17 +523,12 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
             
             if(this.jq.is(':not(:visible)')) {
                 var hiddenParent = this.jq.closest('.ui-hidden-container'),
-                hiddenParentWidgetVar = hiddenParent.data('widget'),
                 $this = this;
 
-                if(hiddenParentWidgetVar) {
-                    var hiddenParentWidget = PF(hiddenParentWidgetVar);
-                    
-                    if(hiddenParentWidget) {
-                        hiddenParentWidget.addOnshowHandler(function() {
-                            return $this.render();
-                        });
-                    }
+                if(hiddenParent.length) {
+                    PrimeFaces.addDeferredRender(this.id, hiddenParent.attr('id'), function() {
+                        return $this.render();
+                    });
                 }
             }
             else {
