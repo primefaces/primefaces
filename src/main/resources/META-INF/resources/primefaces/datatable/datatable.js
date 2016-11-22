@@ -2126,7 +2126,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         
         var editorInput = cell.find('> .ui-cell-editor > .ui-cell-editor-input');
-        if(editorInput && editorInput.children().length === 0 && this.cfg.editMode === 'cell') {
+        if(editorInput.length !== 0 && editorInput.children().length === 0 && this.cfg.editMode === 'cell') {
             this.cellEditInit(cell);
         }
         else {
@@ -2191,7 +2191,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         if(multi) {
                             var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
 
-                            if(focusIndex < 0 || (focusIndex === inputs.length)) {
+                            if(focusIndex < 0 || (focusIndex === inputs.length) || input.parent().hasClass('ui-inputnumber')) {
                                 $this.tabCell(cell, !shiftKey);                                
                             } else {
                                 inputs.eq(focusIndex).focus();
