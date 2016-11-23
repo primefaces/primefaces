@@ -55,13 +55,11 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         return navigationHandler.getNavigationCase(context, null, outcome);
     }
 
-    protected boolean isExpression(String text)
-    {
+    protected boolean isExpression(String text) {
         return text.contains("#{") || text.contains("${");
     }
 
-    protected boolean containsEL(List<String> values)
-    {
+    protected boolean containsEL(List<String> values) {
         if (!values.isEmpty()) {
             for (String value : values) {
                 if (isExpression(value))
@@ -72,8 +70,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         return false;
     }
 
-    protected List<String> evaluateValueExpressions(FacesContext context, List<String> values)
-    {
+    protected List<String> evaluateValueExpressions(FacesContext context, List<String> values) {
         // note that we have to create a new List here, because if we
         // change any value on the given List, it will be changed in the
         // NavigationCase too and the EL expression won't be evaluated again
