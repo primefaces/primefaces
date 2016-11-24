@@ -812,7 +812,9 @@ import javax.faces.event.BehaviorEvent;
 
 			if (selection == null) {
 				ValueExpression selectionVE = this.getValueExpression(PropertyKeys.selection.toString());
-				selection = selectionVE.getValue(getFacesContext().getELContext());
+                if (selectionVE != null) {
+                    selection = selectionVE.getValue(getFacesContext().getELContext());
+                }
 			}
 		
 			if (selection != null) {
