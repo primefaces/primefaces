@@ -31,10 +31,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.showFilmstrip) {
             this.renderStrip();
-            
-            if(this.panels.length) {
-                this.bindEvents();
-            }
+            this.bindEvents();
         }
 
         if(this.cfg.custom) {
@@ -55,7 +52,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
 
         this.jq.css('visibility', 'visible');
 
-        if(this.cfg.autoPlay && this.panels.length) {
+        if(this.cfg.autoPlay) {
             this.startSlideshow();
         }
     },
