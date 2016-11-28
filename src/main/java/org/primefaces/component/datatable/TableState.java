@@ -37,6 +37,8 @@ public class TableState implements Serializable {
     private String sortField;
     
     private MethodExpression sortFunction;
+    
+    private List<Object> rowKeys;
 
     public int getFirst() {
         return first;
@@ -93,6 +95,12 @@ public class TableState implements Serializable {
     public void setSortFunction(MethodExpression sortFunction) {
         this.sortFunction = sortFunction;
     }
-    
-    
+
+    public List<Object> getRowKeys() {
+        return rowKeys;
+    }
+
+    public void setRowKeys(List<Object> rowKeys) {
+        this.rowKeys = rowKeys;
+    }
 }

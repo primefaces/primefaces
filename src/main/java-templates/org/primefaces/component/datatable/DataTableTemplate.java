@@ -1333,6 +1333,10 @@ import org.primefaces.component.datatable.TableState;
             ts.setSortField(this.getSortField());
             ts.setSortFunction(this.getSortFunction());
         }
+
+        if(this.isSelectionEnabled()) {
+            ts.setRowKeys(selectedRowKeys);
+        }
     }
 
     public void restoreTableState() {
@@ -1354,6 +1358,10 @@ import org.primefaces.component.datatable.TableState;
                 this.setSortOrder(ts.getSortOrder());
                 this.setSortFunction(ts.getSortFunction());
                 this.setSortField(ts.getSortField());
+
+                if(this.isSelectionEnabled()) {
+                    this.selectedRowKeys = ts.getRowKeys();
+                }
             }
         }
     }

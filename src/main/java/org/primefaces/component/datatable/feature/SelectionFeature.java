@@ -53,6 +53,10 @@ public class SelectionFeature implements DataTableFeature {
         if(isFiltered) {
             table.setValue(originalValue);
         }
+        
+        if(table.isMultiViewState()) {
+            table.saveTableState();
+        }
     }
     
     void decodeSingleSelection(DataTable table, String selection) {
