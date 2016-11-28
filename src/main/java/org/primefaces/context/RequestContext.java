@@ -209,4 +209,6 @@ public abstract class RequestContext {
     public abstract boolean isIgnoreAutoUpdate();
 
     public abstract boolean isRTL();
+    
+    public abstract void clearTableState();
 }

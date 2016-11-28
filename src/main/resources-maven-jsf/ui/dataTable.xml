@@ -484,6 +484,13 @@
             <defaultValue>false</defaultValue>
             <description>Caches the next page asynchronously, default is false.</description>
 		</attribute>
+        <attribute>
+			<name>multiViewState</name>
+			<required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Whether to keep table state across views, defaults to false.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

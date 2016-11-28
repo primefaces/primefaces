@@ -122,6 +122,10 @@ public class SortFeature implements DataTableFeature {
         }
 
         renderer.encodeTbody(context, table, true);
+        
+        if(table.isMultiViewState()) {
+            table.saveTableState();
+        }
     }
             
     public void singleSort(FacesContext context, DataTable table) {

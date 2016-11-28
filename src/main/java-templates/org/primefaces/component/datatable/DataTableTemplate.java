@@ -66,6 +66,7 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.component.datatable.TableState;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
@@ -1298,5 +1299,61 @@ import javax.faces.event.BehaviorEvent;
         if(dynamicCols != null && isNestedWithinIterator()) {
             dynamicCols.setRowIndex(-1);
             this.setColumns(null);
+        }
+    }
+
+    public void saveTableState() {
+        FacesContext fc = this.getFacesContext();
+        Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
+        Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
+        String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
+        
+        if(dtState == null) {
+            dtState = new HashMap<String,TableState>();
+            sessionMap.put(Constants.TABLE_STATE, dtState);
+        }
+                
+        TableState ts = dtState.get(stateKey);
+        if(ts == null) {
+            ts = new TableState();
+            dtState.put(stateKey, ts);
+        }
+            
+        if(this.isPaginator()) {
+            ts.setFirst(this.getFirst());
+            ts.setRows(this.getRows());
+        }
+
+        ValueExpression sortByVE = this.getValueExpression("sortBy");
+        List<SortMeta> multiSortMeta = this.getMultiSortMeta();
+        if(sortByVE != null || multiSortMeta != null) {
+            ts.setSortBy(sortByVE);
+            ts.setMultiSortMeta(multiSortMeta);
+            ts.setSortOrder(this.getSortOrder());
+            ts.setSortField(this.getSortField());
+            ts.setSortFunction(this.getSortFunction());
+        }
+    }
+
+    public void restoreTableState() {
+        FacesContext fc = this.getFacesContext();
+        Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
+        Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
+        String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
+        
+        if(dtState != null) {
+            TableState ts = dtState.get(stateKey);
+            if(ts != null) {
+                if(this.isPaginator()) {
+                    this.setFirst(ts.getFirst());
+                    this.setRows(ts.getRows());
+                }
+            
+                this.setMultiSortMeta(ts.getMultiSortMeta());
+                this.setValueExpression("sortBy", ts.getSortBy());
+                this.setSortOrder(ts.getSortOrder());
+                this.setSortFunction(ts.getSortFunction());
+                this.setSortField(ts.getSortField());
+            }
         }
     }

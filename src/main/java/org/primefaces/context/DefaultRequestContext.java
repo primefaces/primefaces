@@ -311,4 +311,8 @@ public class DefaultRequestContext extends RequestContext {
 
 		return rtl;
 	}
+    
+    public void clearTableState() {
+        this.context.getExternalContext().getSessionMap().remove(Constants.TABLE_STATE);
+    }
 }

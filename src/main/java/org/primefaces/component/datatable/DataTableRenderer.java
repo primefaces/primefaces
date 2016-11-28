@@ -90,6 +90,10 @@ public class DataTableRenderer extends DataRenderer {
 	}
     
     protected void preRender(FacesContext context, DataTable table) {
+        if(table.isMultiViewState()) {
+            table.restoreTableState();
+        }
+            
         if(table.isLazy()) {
             if(table.isLiveScroll())
                 table.loadLazyScrollData(0, table.getScrollRows());
@@ -97,7 +101,7 @@ public class DataTableRenderer extends DataRenderer {
                 table.loadLazyData();
         }
 
-        boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null);
+        boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null || table.getMultiSortMeta() != null);
         if(defaultSorted && !table.isLazy()) {
             table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
             table.setDefaultSortOrder(table.getSortOrder());
@@ -443,7 +447,7 @@ public class DataTableRenderer extends DataRenderer {
         if(sortable) {
             ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
-            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null);
+            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || table.getMultiSortMeta() != null);
                     
             if(defaultSorted) {
                 if(table.isMultiSort()) {
