@@ -263,7 +263,7 @@ public class ExcelExporter extends Exporter {
     }
     
     protected String getContentDisposition(String filename) {
-        return "attachment;filename="+ filename + ".xls";
+        return "attachment;filename=\""+ filename + ".xls\"";
     }
     
     public void exportTable(FacesContext context, DataTable table, Sheet sheet, boolean pageOnly, boolean selectionOnly) {

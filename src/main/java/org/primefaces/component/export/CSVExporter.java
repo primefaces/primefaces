@@ -146,7 +146,7 @@ public class CSVExporter extends Exporter {
 		externalContext.setResponseHeader("Expires", "0");
 		externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
 		externalContext.setResponseHeader("Pragma", "public");
-		externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".csv");
+		externalContext.setResponseHeader("Content-disposition", "attachment;filename=\""+ filename + ".csv\"");
 		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
     }
     
