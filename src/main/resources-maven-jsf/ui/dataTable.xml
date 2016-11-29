@@ -491,6 +491,12 @@
             <defaultValue>false</defaultValue>
             <description>Whether to keep table state across views, defaults to false.</description>
 		</attribute>
+        <attribute>
+			<name>filterBy</name>
+			<required>false</required>
+            <type>java.util.List</type>
+            <description>List of FilterState objects to filter table by default.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

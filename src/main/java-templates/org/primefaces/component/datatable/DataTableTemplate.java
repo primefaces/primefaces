@@ -1337,6 +1337,8 @@ import org.primefaces.component.datatable.TableState;
         if(this.isSelectionEnabled()) {
             ts.setRowKeys(selectedRowKeys);
         }
+
+        ts.setFilters(this.filterStates);
     }
 
     public void restoreTableState() {
@@ -1362,6 +1364,15 @@ import org.primefaces.component.datatable.TableState;
                 if(this.isSelectionEnabled()) {
                     this.selectedRowKeys = ts.getRowKeys();
                 }
+
+                this.filterStates = ts.getFilters();
+                this.setFilterBy(this.filterStates);
             }
         }
+    }
+
+    private List<FilterState> filterStates;
+
+    public void setFilterStates(List<FilterState> _filterStates) {
+        this.filterStates = _filterStates;
     }

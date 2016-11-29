@@ -34,6 +34,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.FilterState;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.data.PostFilterEvent;
@@ -135,6 +136,10 @@ public class FilterFeature implements DataTableFeature {
         context.getApplication().publishEvent(context, PostFilterEvent.class, table);
                         
         renderer.encodeTbody(context, table, true);
+        
+        if(table.isMultiViewState()) {
+            updateTableState(table);
+        }
     }
     
     public void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
@@ -386,5 +391,17 @@ public class FilterFeature implements DataTableFeature {
         }
 
         return filterConstraint;
+    }
+    
+    private void updateTableState(DataTable dataTable) {
+        List<FilterMeta> filterMetadata = dataTable.getFilterMetadata();
+        List<FilterState> filters = new ArrayList<FilterState>();
+        
+        for(FilterMeta filterMeta : filterMetadata) {
+            filters.add(new FilterState(filterMeta.getColumn().getColumnKey(), filterMeta.getFilterValue()));
+        }
+        
+        dataTable.setFilterStates(filters);
+        dataTable.saveTableState();
     }
 }

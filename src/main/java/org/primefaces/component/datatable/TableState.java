@@ -20,7 +20,6 @@ import java.util.List;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import org.primefaces.model.SortMeta;
-import org.primefaces.model.SortOrder;
 
 public class TableState implements Serializable {
  
@@ -39,6 +38,8 @@ public class TableState implements Serializable {
     private MethodExpression sortFunction;
     
     private List<Object> rowKeys;
+    
+    private List<FilterState> filters;
 
     public int getFirst() {
         return first;
@@ -102,5 +103,13 @@ public class TableState implements Serializable {
 
     public void setRowKeys(List<Object> rowKeys) {
         this.rowKeys = rowKeys;
+    }
+
+    public List<FilterState> getFilters() {
+        return filters;
+    }
+
+    public void setFilters(List<FilterState> filters) {
+        this.filters = filters;
     }
 }
