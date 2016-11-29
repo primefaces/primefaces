@@ -42,6 +42,7 @@ import org.primefaces.component.datatable.feature.SortFeature;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
@@ -129,8 +130,16 @@ public class DataTableRenderer extends DataRenderer {
                     filterMetadata.add(new FilterMeta(column, column.getValueExpression("filterBy"), filterState.getFilterValue()));
                 }
                 
+                String globalFilter = table.getGlobalFilter();
+                if(globalFilter != null) {
+                    UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table, "globalFilter");
+                    if(globalFilterComponent != null) {
+                        ((ValueHolder) globalFilterComponent).setValue(globalFilter);
+                    }
+                }
+                                
                 table.setFilterMetadata(filterMetadata);
-                filterFeature.filter(context, table, filterMetadata, null);
+                filterFeature.filter(context, table, filterMetadata, globalFilter);
             }
         }
 

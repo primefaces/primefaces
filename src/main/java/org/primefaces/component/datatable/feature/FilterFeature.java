@@ -35,6 +35,7 @@ import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.FilterState;
+import org.primefaces.component.datatable.TableState;
 import org.primefaces.component.row.Row;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.data.PostFilterEvent;
@@ -97,6 +98,7 @@ public class FilterFeature implements DataTableFeature {
             
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String globalFilterValue = null;
         
         //reset state
         String clientId = table.getClientId(context);
@@ -119,7 +121,8 @@ public class FilterFeature implements DataTableFeature {
         }
         else {
             String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
-            filter(context, table, table.getFilterMetadata(), globalFilterParam);
+            globalFilterValue = params.get(globalFilterParam);
+            filter(context, table, table.getFilterMetadata(), globalFilterValue);
                                   
             //sort new filtered data to restore sort state
             boolean sorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null);
@@ -138,16 +141,14 @@ public class FilterFeature implements DataTableFeature {
         renderer.encodeTbody(context, table, true);
         
         if(table.isMultiViewState()) {
-            updateTableState(table);
+            updateTableState(table, globalFilterValue);
         }
     }
     
-    public void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+    public void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterValue) {
         List filteredData = new ArrayList();
         Locale filterLocale = table.resolveDataLocale();
-        boolean hasGlobalFilter = globalFilterParam != null ? params.containsKey(globalFilterParam) : false;
-        String globalFilterValue = hasGlobalFilter ? params.get(globalFilterParam): null;
+        boolean hasGlobalFilter = globalFilterValue != null && globalFilterValue.trim().length() > 0;
         GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(GLOBAL_MODE);
         ELContext elContext = context.getELContext();
         
@@ -393,7 +394,7 @@ public class FilterFeature implements DataTableFeature {
         return filterConstraint;
     }
     
-    private void updateTableState(DataTable dataTable) {
+    private void updateTableState(DataTable dataTable, String globalFilterValue) {
         List<FilterMeta> filterMetadata = dataTable.getFilterMetadata();
         List<FilterState> filters = new ArrayList<FilterState>();
         
@@ -401,7 +402,8 @@ public class FilterFeature implements DataTableFeature {
             filters.add(new FilterState(filterMeta.getColumn().getColumnKey(), filterMeta.getFilterValue()));
         }
         
-        dataTable.setFilterStates(filters);
-        dataTable.saveTableState();
+        TableState ts = dataTable.getTableState();
+        ts.setFilters(filters);
+        ts.setGlobalFilterValue(globalFilterValue);
     }
 }

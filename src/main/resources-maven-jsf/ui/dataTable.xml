@@ -497,6 +497,12 @@
             <type>java.util.List</type>
             <description>List of FilterState objects to filter table by default.</description>
 		</attribute>
+        <attribute>
+			<name>globalFilter</name>
+			<required>false</required>
+            <type>java.lang.String</type>
+            <description>Value of the global filter to use when filtering by default.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

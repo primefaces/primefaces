@@ -40,6 +40,8 @@ public class TableState implements Serializable {
     private List<Object> rowKeys;
     
     private List<FilterState> filters;
+    
+    private String globalFilterValue;
 
     public int getFirst() {
         return first;
@@ -111,5 +113,13 @@ public class TableState implements Serializable {
 
     public void setFilters(List<FilterState> filters) {
         this.filters = filters;
+    }
+
+    public String getGlobalFilterValue() {
+        return globalFilterValue;
+    }
+
+    public void setGlobalFilterValue(String globalFilterValue) {
+        this.globalFilterValue = globalFilterValue;
     }
 }

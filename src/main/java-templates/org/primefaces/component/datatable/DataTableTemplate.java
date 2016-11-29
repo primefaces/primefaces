@@ -1303,21 +1303,7 @@ import org.primefaces.component.datatable.TableState;
     }
 
     public void saveTableState() {
-        FacesContext fc = this.getFacesContext();
-        Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
-        Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
-        String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
-        
-        if(dtState == null) {
-            dtState = new HashMap<String,TableState>();
-            sessionMap.put(Constants.TABLE_STATE, dtState);
-        }
-                
-        TableState ts = dtState.get(stateKey);
-        if(ts == null) {
-            ts = new TableState();
-            dtState.put(stateKey, ts);
-        }
+        TableState ts = this.getTableState();
             
         if(this.isPaginator()) {
             ts.setFirst(this.getFirst());
@@ -1337,42 +1323,48 @@ import org.primefaces.component.datatable.TableState;
         if(this.isSelectionEnabled()) {
             ts.setRowKeys(selectedRowKeys);
         }
-
-        ts.setFilters(this.filterStates);
     }
 
     public void restoreTableState() {
+        TableState ts = this.getTableState();
+        if(ts != null) {
+            if(this.isPaginator()) {
+                this.setFirst(ts.getFirst());
+                this.setRows(ts.getRows());
+            }
+
+            this.setMultiSortMeta(ts.getMultiSortMeta());
+            this.setValueExpression("sortBy", ts.getSortBy());
+            this.setSortOrder(ts.getSortOrder());
+            this.setSortFunction(ts.getSortFunction());
+            this.setSortField(ts.getSortField());
+
+            if(this.isSelectionEnabled()) {
+                this.selectedRowKeys = ts.getRowKeys();
+            }
+
+            this.setFilterBy(ts.getFilters());
+            this.setGlobalFilter(ts.getGlobalFilterValue());
+        }
+    }
+
+    public TableState getTableState() {
         FacesContext fc = this.getFacesContext();
         Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
         Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
         String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
-        
-        if(dtState != null) {
-            TableState ts = dtState.get(stateKey);
-            if(ts != null) {
-                if(this.isPaginator()) {
-                    this.setFirst(ts.getFirst());
-                    this.setRows(ts.getRows());
-                }
-            
-                this.setMultiSortMeta(ts.getMultiSortMeta());
-                this.setValueExpression("sortBy", ts.getSortBy());
-                this.setSortOrder(ts.getSortOrder());
-                this.setSortFunction(ts.getSortFunction());
-                this.setSortField(ts.getSortField());
+        TableState ts;
 
-                if(this.isSelectionEnabled()) {
-                    this.selectedRowKeys = ts.getRowKeys();
-                }
-
-                this.filterStates = ts.getFilters();
-                this.setFilterBy(this.filterStates);
-            }
+        if(dtState == null) {
+            dtState = new HashMap<String,TableState>();
+            sessionMap.put(Constants.TABLE_STATE, dtState);
         }
-    }
 
-    private List<FilterState> filterStates;
+        ts = dtState.get(stateKey);
+        if(ts == null) {
+            ts = new TableState();
+            dtState.put(stateKey, ts);
+        }
 
-    public void setFilterStates(List<FilterState> _filterStates) {
-        this.filterStates = _filterStates;
+        return ts;
     }
