@@ -1304,6 +1304,16 @@ import org.primefaces.component.datatable.TableState;
 
     public void saveTableState() {
         TableState ts = this.getTableState();
+
+        if(ts == null) {
+            FacesContext fc = this.getFacesContext();
+            Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
+            Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
+            String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
+
+            ts = new TableState();
+            dtState.put(stateKey, ts);
+        }
             
         if(this.isPaginator()) {
             ts.setFirst(this.getFirst());
@@ -1330,8 +1340,7 @@ import org.primefaces.component.datatable.TableState;
         if(ts != null) {
             if(this.isPaginator()) {
                 this.setFirst(ts.getFirst());
-                int rows = ts.getRows() > 0 ? ts.getRows(): this.getRows();
-                this.setRows(rows);
+                this.setRows(ts.getRows());
             }
 
             this.setMultiSortMeta(ts.getMultiSortMeta());
@@ -1354,18 +1363,11 @@ import org.primefaces.component.datatable.TableState;
         Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
         Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
         String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
-        TableState ts;
 
         if(dtState == null) {
             dtState = new HashMap<String,TableState>();
             sessionMap.put(Constants.TABLE_STATE, dtState);
         }
 
-        ts = dtState.get(stateKey);
-        if(ts == null) {
-            ts = new TableState();
-            dtState.put(stateKey, ts);
-        }
-
-        return ts;
+        return dtState.get(stateKey);
     }
