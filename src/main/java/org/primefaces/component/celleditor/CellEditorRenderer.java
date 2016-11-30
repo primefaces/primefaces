@@ -28,8 +28,14 @@ public class CellEditorRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CellEditor editor = (CellEditor) component;
-        DataTable parentTable = editor.getParentTable(context);
-        boolean isCellEdit = (parentTable.getEditMode() != null && parentTable.getEditMode().equals("cell"));
+        UIComponent parentTable = editor.getParentTable(context);
+        boolean isDataTable = (parentTable != null && parentTable instanceof DataTable);
+        boolean isCellEdit = false;
+        
+        if(isDataTable) {
+            String editMode = ((DataTable)parentTable).getEditMode();
+            isCellEdit = (editMode != null && editMode.equals("cell"));
+        }
         
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);

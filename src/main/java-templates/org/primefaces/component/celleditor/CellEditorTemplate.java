@@ -2,6 +2,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.treetable.TreeTable;
 
     @Override
     public void processDecodes(FacesContext context) {
@@ -28,15 +29,15 @@ import org.primefaces.component.datatable.DataTable;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context));
     }
 
-    private DataTable parentTable = null;
+    private UIComponent parentTable = null;
 
-    public DataTable getParentTable(FacesContext context) {
+    public UIComponent getParentTable(FacesContext context) {
         if(parentTable == null) {
             UIComponent parent = this.getParent();
 
             while(parent != null) {
-                if(parent instanceof DataTable) {
-                    parentTable = (DataTable) parent;
+                if(parent instanceof DataTable || parent instanceof TreeTable) {
+                    parentTable = parent;
                     break;
                 }
 
