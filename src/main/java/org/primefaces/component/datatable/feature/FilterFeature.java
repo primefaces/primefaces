@@ -141,7 +141,21 @@ public class FilterFeature implements DataTableFeature {
         renderer.encodeTbody(context, table, true);
         
         if(table.isMultiViewState()) {
-            updateTableState(table, globalFilterValue);
+            List<FilterMeta> filterMetadata = table.getFilterMetadata();
+            List<FilterState> filters = new ArrayList<FilterState>();
+
+            for(FilterMeta filterMeta : filterMetadata) {
+                filters.add(new FilterState(filterMeta.getColumn().getColumnKey(), filterMeta.getFilterValue()));
+            }
+
+            TableState ts = table.getTableState(true);
+            ts.setFilters(filters);
+            ts.setGlobalFilterValue(globalFilterValue);
+            
+            if(table.isPaginator()) {
+                ts.setFirst(table.getFirst());
+                ts.setRows(table.getRows());
+            }
         }
     }
     
@@ -393,17 +407,5 @@ public class FilterFeature implements DataTableFeature {
 
         return filterConstraint;
     }
-    
-    private void updateTableState(DataTable dataTable, String globalFilterValue) {
-        List<FilterMeta> filterMetadata = dataTable.getFilterMetadata();
-        List<FilterState> filters = new ArrayList<FilterState>();
-        
-        for(FilterMeta filterMeta : filterMetadata) {
-            filters.add(new FilterState(filterMeta.getColumn().getColumnKey(), filterMeta.getFilterValue()));
-        }
-        
-        TableState ts = dataTable.getTableState();
-        ts.setFilters(filters);
-        ts.setGlobalFilterValue(globalFilterValue);
-    }
+
 }

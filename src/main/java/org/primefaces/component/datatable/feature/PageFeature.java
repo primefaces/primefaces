@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.TableState;
 import org.primefaces.event.data.PostPageEvent;
 
 public class PageFeature implements DataTableFeature {
@@ -41,7 +42,10 @@ public class PageFeature implements DataTableFeature {
         context.getApplication().publishEvent(context, PostPageEvent.class, table);
         
         if(table.isMultiViewState()) {
-            table.saveTableState();
+            TableState ts = table.getTableState(true);
+
+            ts.setFirst(table.getFirst());
+            ts.setRows(table.getRows());
         }
     }
 

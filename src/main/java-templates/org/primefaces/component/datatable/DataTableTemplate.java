@@ -1302,41 +1302,8 @@ import org.primefaces.component.datatable.TableState;
         }
     }
 
-    public void saveTableState() {
-        TableState ts = this.getTableState();
-
-        if(ts == null) {
-            FacesContext fc = this.getFacesContext();
-            Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
-            Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
-            String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
-
-            ts = new TableState();
-            dtState.put(stateKey, ts);
-        }
-            
-        if(this.isPaginator()) {
-            ts.setFirst(this.getFirst());
-            ts.setRows(this.getRows());
-        }
-
-        ValueExpression sortByVE = this.getValueExpression("sortBy");
-        List<SortMeta> multiSortMeta = this.getMultiSortMeta();
-        if(sortByVE != null || multiSortMeta != null) {
-            ts.setSortBy(sortByVE);
-            ts.setMultiSortMeta(multiSortMeta);
-            ts.setSortOrder(this.getSortOrder());
-            ts.setSortField(this.getSortField());
-            ts.setSortFunction(this.getSortFunction());
-        }
-
-        if(this.isSelectionEnabled()) {
-            ts.setRowKeys(selectedRowKeys);
-        }
-    }
-
     public void restoreTableState() {
-        TableState ts = this.getTableState();
+        TableState ts = this.getTableState(false);
         if(ts != null) {
             if(this.isPaginator()) {
                 this.setFirst(ts.getFirst());
@@ -1358,16 +1325,25 @@ import org.primefaces.component.datatable.TableState;
         }
     }
 
-    public TableState getTableState() {
+    public TableState getTableState(boolean create) {
         FacesContext fc = this.getFacesContext();
         Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
         Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
         String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
+        TableState ts;
 
         if(dtState == null) {
             dtState = new HashMap<String,TableState>();
             sessionMap.put(Constants.TABLE_STATE, dtState);
         }
 
-        return dtState.get(stateKey);
+        ts = dtState.get(stateKey);
+        if(ts == null && create) {
+            ts = new TableState();
+            dtState.put(stateKey, ts);
+        }
+
+        return ts;
     }
+
+
