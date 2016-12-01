@@ -210,5 +210,7 @@ public abstract class RequestContext {
 
     public abstract boolean isRTL();
     
-    public abstract void clearTableState();
+    public abstract void clearTableStates();
+    
+    public abstract void clearTableState(String clientId);
 }

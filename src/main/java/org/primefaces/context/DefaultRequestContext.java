@@ -32,6 +32,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.component.datatable.TableState;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -312,7 +313,15 @@ public class DefaultRequestContext extends RequestContext {
 		return rtl;
 	}
     
-    public void clearTableState() {
+    public void clearTableStates() {
         this.context.getExternalContext().getSessionMap().remove(Constants.TABLE_STATE);
+    }
+    
+    public void clearTableState(String key) {
+        Map<String,Object> sessionMap = this.context.getExternalContext().getSessionMap();
+        Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
+        if(dtState != null) {
+             dtState.remove(key);
+        }
     }
 }
