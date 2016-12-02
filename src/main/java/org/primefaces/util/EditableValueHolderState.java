@@ -20,15 +20,6 @@ public class EditableValueHolderState {
 
     private boolean required;
 
-    public EditableValueHolderState() {
-    }
-
-    public EditableValueHolderState(UIComponent target) {
-        super();
-        this.target = target;
-        parent = target.getParent();
-    }
-
     void setParent(UIComponent parent) {
         this.parent = parent;
     }
@@ -51,12 +42,6 @@ public class EditableValueHolderState {
 
     public boolean isRequired() {
         return required;
-    }
-
-    public boolean isEditableValueHolder(UIComponent component) {
-        return component instanceof EditableValueHolder
-                || component instanceof InputHolder
-                || component instanceof UIInput;
     }
 
     EditableValueHolderState eval(FacesContext context) {

@@ -60,7 +60,7 @@ public class CompositeUtils {
                     break;
                 }
             }
-        } else if (state.isEditableValueHolder(component)) {
+        } else if (ComponentUtils.hasInputFieldValueHolder(component)) {
             state.setTarget(component);
         }
     }

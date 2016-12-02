@@ -15,7 +15,6 @@
  */
 package org.primefaces.util;
 
-import java.beans.BeanInfo;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
@@ -32,14 +31,19 @@ import javax.faces.FacesWrapper;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.application.ResourceHandler;
-import javax.faces.component.*;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIParameter;
+import javax.faces.component.ValueHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
-import javax.faces.view.AttachedObjectTarget;
-import javax.faces.view.EditableValueHolderAttachedObjectTarget;
+
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
@@ -529,4 +533,14 @@ public class ComponentUtils {
         return viewId;
     }
 
+    /**
+     * Determines whether component is or has an input field along with it.
+     * @param component
+     * @return True whether component is or has an input field along with it, false otherwise.
+     */
+    public static boolean hasInputFieldValueHolder(UIComponent component) {
+        return component instanceof EditableValueHolder
+                || component instanceof InputHolder
+                || component instanceof UIInput;
+    }
 }
