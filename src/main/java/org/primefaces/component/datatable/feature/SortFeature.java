@@ -31,6 +31,7 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.TableState;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.data.PostSortEvent;
 import org.primefaces.model.BeanPropertyComparator;
@@ -122,6 +123,24 @@ public class SortFeature implements DataTableFeature {
         }
 
         renderer.encodeTbody(context, table, true);
+        
+        if(table.isMultiViewState()) {
+            ValueExpression sortByVE = table.getValueExpression("sortBy");
+            List<SortMeta> multiSortMeta = table.getMultiSortMeta();
+            if(sortByVE != null || multiSortMeta != null) {
+                TableState ts = table.getTableState(true);
+                ts.setSortBy(sortByVE);
+                ts.setMultiSortMeta(multiSortMeta);
+                ts.setSortOrder(table.getSortOrder());
+                ts.setSortField(table.getSortField());
+                ts.setSortFunction(table.getSortFunction());
+                
+                if(table.isPaginator()) {
+                    ts.setFirst(table.getFirst());
+                    ts.setRows(table.getRows());
+                }
+            }
+        }
     }
             
     public void singleSort(FacesContext context, DataTable table) {

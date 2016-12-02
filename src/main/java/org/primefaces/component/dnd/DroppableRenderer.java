@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -34,9 +35,9 @@ public class DroppableRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Droppable droppable = (Droppable) component;
-        
+
         UIComponent target = SearchExpressionFacade.resolveComponent(
-        		context, droppable, droppable.getFor(), SearchExpressionFacade.Options.PARENT_FALLBACK);
+        		context, droppable, droppable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
         String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -48,11 +49,11 @@ public class DroppableRenderer extends CoreRenderer {
                 .attr("accept", droppable.getAccept(), null)
                 .attr("scope", droppable.getScope(), null)
                 .attr("tolerance", droppable.getTolerance(), null);
-        
+
         if(droppable.getOnDrop() != null) {
             wb.append(",onDrop:").append(droppable.getOnDrop());
         }
-        
+
         encodeClientBehaviors(context, droppable);
 
         wb.finish();

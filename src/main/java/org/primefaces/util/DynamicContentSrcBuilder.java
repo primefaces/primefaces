@@ -30,12 +30,13 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.xml.bind.DatatypeConverter;
 import org.primefaces.application.resource.DynamicContentType;
+import org.primefaces.context.RequestContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
 
-public class DynamicResourceBuilder {
+public class DynamicContentSrcBuilder {
     
-    private static final String SB_BUILD = DynamicResourceBuilder.class.getName() + "#build";
+    private static final String SB_BUILD = DynamicContentSrcBuilder.class.getName() + "#build";
     
     public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type, boolean stream)
             throws UnsupportedEncodingException {
@@ -55,18 +56,23 @@ public class DynamicResourceBuilder {
                 Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
                 String resourcePath = resource.getRequestPath();
 
-                ValueExpression expression = ValueExpressionAnalyzer.getExpression(context.getELContext(), component.getValueExpression("value"));
-                String sessionKey = UUID.randomUUID().toString();
                 Map<String,Object> session = context.getExternalContext().getSessionMap();
                 Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
                 if(dynamicResourcesMapping == null) {
                     dynamicResourcesMapping = new HashMap<String, String>();
                     session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
                 }
-                dynamicResourcesMapping.put(sessionKey, expression.getExpressionString());
+                
+                String resourceKey = RequestContext.getCurrentInstance().getEncrypter().encrypt(
+                        context.getViewRoot().getViewId() + component.getClientId(context));
+                ValueExpression expression = ValueExpressionAnalyzer.getExpression(
+                        context.getELContext(), component.getValueExpression("value"));
+                
+                dynamicResourcesMapping.put(resourceKey, expression.getExpressionString());
+                
                 StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
-
-                builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(sessionKey, "UTF-8"))
+                builder.append(resourcePath)
+                        .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, "UTF-8"))
                         .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
 
                 for (UIComponent kid : component.getChildren()) {

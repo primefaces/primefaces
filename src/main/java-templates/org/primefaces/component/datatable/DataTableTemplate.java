@@ -66,6 +66,7 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.component.datatable.TableState;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
@@ -202,6 +203,10 @@ import javax.faces.event.BehaviorEvent;
 
     public boolean isCellEditCancelRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellEditCancel");
+    }
+
+    public boolean isCellEditInitRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellEditInit");
     }
 
     public boolean isClientCacheRequest(FacesContext context) {
@@ -1296,3 +1301,49 @@ import javax.faces.event.BehaviorEvent;
             this.setColumns(null);
         }
     }
+
+    public void restoreTableState() {
+        TableState ts = this.getTableState(false);
+        if(ts != null) {
+            if(this.isPaginator()) {
+                this.setFirst(ts.getFirst());
+                this.setRows(ts.getRows());
+            }
+
+            this.setMultiSortMeta(ts.getMultiSortMeta());
+            this.setValueExpression("sortBy", ts.getSortBy());
+            this.setSortOrder(ts.getSortOrder());
+            this.setSortFunction(ts.getSortFunction());
+            this.setSortField(ts.getSortField());
+
+            if(this.isSelectionEnabled()) {
+                this.selectedRowKeys = ts.getRowKeys();
+            }
+
+            this.setFilterBy(ts.getFilters());
+            this.setGlobalFilter(ts.getGlobalFilterValue());
+        }
+    }
+
+    public TableState getTableState(boolean create) {
+        FacesContext fc = this.getFacesContext();
+        Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
+        Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
+        String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
+        TableState ts;
+
+        if(dtState == null) {
+            dtState = new HashMap<String,TableState>();
+            sessionMap.put(Constants.TABLE_STATE, dtState);
+        }
+
+        ts = dtState.get(stateKey);
+        if(ts == null && create) {
+            ts = new TableState();
+            dtState.put(stateKey, ts);
+        }
+
+        return ts;
+    }
+
+

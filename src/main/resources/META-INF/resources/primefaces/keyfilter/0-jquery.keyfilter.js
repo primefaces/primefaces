@@ -131,7 +131,8 @@
 	{
 		return this.keypress(function(e)
 		{
-			if (e.ctrlKey || e.altKey)
+			var keyNo = e.which;
+			if (keyNo == 17 || keyNo == 18) //keyCode.CONTROL and keyCode.ALT
 			{
 				return;
 			}

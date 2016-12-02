@@ -723,6 +723,14 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
+.ui-treetable .ui-paginator.ui-paginator-bottom {
+    border-top: 1px solid #d9d9d9;
+}
+
+.ui-treetable .ui-treetable-data .ui-treetable-toggler {
+    margin-top: -1px;
+}
+
 /* Inputs */
 .ui-inputfield {
     -webkit-transition: .2s;
@@ -836,4 +844,9 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     -webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.3) !important; 
     -moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.3) !important; 
     box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.3) !important;
+}
+
+/* ScrollPanel */
+.ui-scrollpanel .ui-scrollpanel-drag {
+    background-color: #dcdcdc;
 }

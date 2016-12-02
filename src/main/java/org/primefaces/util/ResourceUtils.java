@@ -18,6 +18,8 @@ package org.primefaces.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
@@ -28,6 +30,8 @@ import javax.faces.context.FacesContext;
 
 public class ResourceUtils {
 
+    private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
+    
     public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
     public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
    
@@ -93,7 +97,13 @@ public class ResourceUtils {
                 else {
                     resource = resourceHandler.createResource(resourceInfo.getName(), resourceInfo.getLibrary());
                 }
-                stylesheets.add(resource.getRequestPath());
+
+                if (resource == null) {
+                    LOG.log(Level.WARNING, "Resource not found, ignore it. Name: " + resourceInfo.getName() + ", Library: " + resourceInfo.getLibrary());
+                }
+                else {
+                    stylesheets.add(resource.getRequestPath());
+                }
             }
         }
         return stylesheets;
@@ -116,7 +126,13 @@ public class ResourceUtils {
                 else {
                     resource = resourceHandler.createResource(resourceInfo.getName(), resourceInfo.getLibrary());
                 }
-                scripts.add(resource.getRequestPath());
+                
+                if (resource == null) {
+                    LOG.log(Level.WARNING, "Resource not found, ignore it. Name: " + resourceInfo.getName() + ", Library: " + resourceInfo.getLibrary());
+                }
+                else {
+                    scripts.add(resource.getRequestPath());
+                }
             }
         }
         return scripts;

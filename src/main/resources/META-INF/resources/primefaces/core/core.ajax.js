@@ -521,6 +521,7 @@ PrimeFaces.ajax = {
                     xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                     xhr.pfSettings = settings;
                     xhr.pfArgs = {}; // default should be an empty object
+                    PrimeFaces.nonAjaxPosted = false;
 
                     if(global) {
                         $(document).trigger('pfAjaxSend', [xhr, this]);
@@ -586,7 +587,7 @@ PrimeFaces.ajax = {
 
                     PrimeFaces.ajax.Queue.removeXHR(xhr);
 
-                    if(!cfg.async) {
+                    if(!cfg.async && !PrimeFaces.nonAjaxPosted) {
                         PrimeFaces.ajax.Queue.poll();
                     }
                 }
@@ -895,3 +896,7 @@ PrimeFaces.ajax = {
         return PrimeFaces.ajax.Request.handle(cfg, ext);
     }
 };
+
+$(window).unload(function() {
+    PrimeFaces.ajax.Queue.abortAll();
+});

@@ -24,15 +24,17 @@ import javax.faces.context.FacesContext;
  */
 public interface ClientIdSearchExpressionResolver {
 
-	/**
-	 * Resolves one or multiple clientId's for the given expression string.
-	 *
+    /**
+     * Resolves one or multiple clientId's for the given expression string.
+     *
      * @param context The {@link FacesContext}.
-	 * @param source The source component. E.g. a button.
-	 * @param last The last resolved component in the chain.
-	 * 		If it's not a nested expression, it's the same as the source component.
-	 * @param expression The search expression.
-	 * @return The resolved clientId's or <code>null</code>.
-	 */
-	String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression);
+     * @param source The source component. E.g. a button.
+     * @param last The last resolved component in the chain.
+     * If it's not a nested expression, it's the same as the source component.
+     * @param expression The search expression.
+     * @param options The options.
+     *
+     * @return The resolved clientId's or <code>null</code>.
+     */
+    String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options);
 }

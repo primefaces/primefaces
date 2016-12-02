@@ -58,6 +58,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //hide overlay on document click
+        this.itemMouseDown = false;
         var hideNS = 'mousedown.' + this.id;
         $(document.body).off(hideNS).on(hideNS, function (e) {            
             if($this.jq.is(":hidden")) {
@@ -77,7 +78,18 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 e.pageY < offset.top ||
                 e.pageY > offset.top + $this.jq.height()) {
                 
+                if(target.is('.ui-menuitem-link') || target.closest('.ui-menuitem-link').length)
+                    $this.itemMouseDown = true;
+                else
+                    $this.hide(e);
+            }
+        });
+        
+        var hideUpNS = 'mouseup.' + this.id;
+        $(document.body).off(hideUpNS).on(hideUpNS, function (e) {
+            if($this.itemMouseDown) {
                 $this.hide(e);
+                $this.itemMouseDown = false;
             }
         });
 
@@ -511,17 +523,12 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
             
             if(this.jq.is(':not(:visible)')) {
                 var hiddenParent = this.jq.closest('.ui-hidden-container'),
-                hiddenParentWidgetVar = hiddenParent.data('widget'),
                 $this = this;
 
-                if(hiddenParentWidgetVar) {
-                    var hiddenParentWidget = PF(hiddenParentWidgetVar);
-                    
-                    if(hiddenParentWidget) {
-                        hiddenParentWidget.addOnshowHandler(function() {
-                            return $this.render();
-                        });
-                    }
+                if(hiddenParent.length) {
+                    PrimeFaces.addDeferredRender(this.id, hiddenParent.attr('id'), function() {
+                        return $this.render();
+                    });
                 }
             }
             else {
@@ -859,6 +866,56 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
             $this.hide();
         });
 
+        //keyboard support
+        this.button.keydown(function(e) {
+            var keyCode = $.ui.keyCode;
+
+            switch(e.which) {
+                case keyCode.UP:
+                    if($this.menu.is(':visible')) {
+                        var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
+                        prevItems = highlightedItem.length ? highlightedItem.prevAll(':not(.ui-separator)') : null;
+
+                        if(prevItems && prevItems.length) {
+                            highlightedItem.removeClass('ui-state-hover');
+                            prevItems.eq(0).addClass('ui-state-hover');
+                        }
+                    }
+                    e.preventDefault();
+                break;
+                
+                case keyCode.DOWN:
+                    if($this.menu.is(':visible')) {
+                        var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
+                        nextItems = highlightedItem.length ? highlightedItem.nextAll(':not(.ui-separator)') : $this.menuitems.eq(0);
+
+                        if(nextItems.length) {
+                            highlightedItem.removeClass('ui-state-hover');
+                            nextItems.eq(0).addClass('ui-state-hover');
+                        }
+                    }
+                    e.preventDefault();                    
+                break;
+                
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.SPACE:
+                    if($this.menu.is(':visible'))
+                        $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');
+                    else
+                        $this.show();
+                    
+                    e.preventDefault();
+                break;
+                
+
+                case keyCode.ESCAPE:
+                case keyCode.TAB:
+                    $this.hide();
+                break;
+            }
+        });
+        
         /**
         * handler for document mousedown to hide the overlay
         **/
@@ -915,6 +972,8 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function() {
+        this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
+        
         this.menu.fadeOut('fast');
     },
     
@@ -1164,6 +1223,12 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                     else {                                        
                         $this.active = true;
                         $this.activate(menuitem);
+                    }
+                }
+                else {
+                    var href = link.attr('href');
+                    if(href && href !== '#') {
+                        window.location.href = href;
                     }
                 }
                 

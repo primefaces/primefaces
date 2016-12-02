@@ -18,11 +18,11 @@ package org.primefaces.component.paginator;
 import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.Pageable;
 
 public class PageLinkRenderer {
 
-    public void render(FacesContext context, UIData uidata, String linkClass, String iconClass, boolean disabled, String ariaLabel) throws IOException {
+    public void render(FacesContext context, Pageable pageable, String linkClass, String iconClass, boolean disabled, String ariaLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = disabled ? linkClass + " ui-state-disabled" : linkClass;
         int textIndex = iconClass.indexOf("seek-");

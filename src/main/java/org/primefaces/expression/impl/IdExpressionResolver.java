@@ -28,17 +28,17 @@ import org.primefaces.util.ComponentTraversalUtils;
 public class IdExpressionResolver implements SearchExpressionResolver, MultiSearchExpressionResolver {
 
     private static final Pattern PATTERN = Pattern.compile("@id\\((\\w+)\\)");
-    
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
+
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         throw new FacesException("@id likely returns multiple components, therefore it's not supported in #resolveComponent... expression \"" + expression
                 + "\" referenced from \"" + source.getClientId(context) + "\".");
     }
 
-    public void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components) {
+    public void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components, int options) {
         ComponentTraversalUtils.withId(
                 extractId(expression),
                 last,
-                components);        
+                components);
     }
 
     protected String extractId(String expression)
@@ -49,7 +49,7 @@ public class IdExpressionResolver implements SearchExpressionResolver, MultiSear
             if (matcher.matches()) {
 
                 return matcher.group(1);
-                
+
             } else {
                 throw new FacesException("Expression does not match following pattern @id(id). Expression: \"" + expression + "\"");
             }

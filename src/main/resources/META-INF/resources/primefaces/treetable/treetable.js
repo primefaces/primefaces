@@ -62,12 +62,61 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.jqSelection = $(this.jqId + '_selection');
             var selectionValue = this.jqSelection.val();
             this.selections = selectionValue === "" ? [] : selectionValue.split(',');
+            this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
 
             this.bindSelectionEvents();
         }
         
         //sorting
         this.bindSortEvents();
+        
+        if(this.cfg.paginator) {
+            this.cfg.paginator.paginate = function(newState) {
+                $this.handlePagination(newState);
+            };
+
+            this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+        }
+    },
+    
+    handlePagination: function(newState) {
+        var $this = this,
+        options = {
+            source: this.id,
+            update: this.id,
+            process: this.id,
+            params: [
+                {name: this.id + '_pagination', value: true},
+                {name: this.id + '_first', value: newState.first},
+                {name: this.id + '_rows', value: newState.rows}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.tbody.html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function() {
+                $this.paginator.cfg.page = newState.page;
+                $this.paginator.updateUI();
+            }
+        };
+
+        if(this.hasBehavior('page')) {
+            var pageBehavior = this.cfg.behaviors['page'];
+            pageBehavior.call(this, options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    getPaginator: function() {
+        return this.paginator;
     },
     
     bindSelectionEvents: function() {
@@ -451,7 +500,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
             
-            PrimeFaces.clearSelection();
+            if(this.cfg.disabledTextSelection) {
+                PrimeFaces.clearSelection();
+            }
         }
     },
             
@@ -470,7 +521,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.selectNode(node);
         }
  
-        PrimeFaces.clearSelection();        
+        if(this.cfg.disabledTextSelection) {
+            PrimeFaces.clearSelection();
+        }        
     },
     
     selectNode: function(node, silent) {
@@ -795,7 +848,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.adjustScrollHeight();
             }
         
-            var marginRight = this.getScrollbarWidth();
+            var marginRight = this.getScrollbarWidth() + 'px';
             this.scrollHeaderBox.css('margin-right', marginRight);
             this.scrollFooterBox.css('margin-right', marginRight);
             this.alignScrollBody();
@@ -1349,4 +1402,4 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             PrimeFaces.ajax.Request.handle(options);
         }
     }
-});
+});            

@@ -23,9 +23,6 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UniqueIdVendor;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 
 public class ComponentTraversalUtils {
@@ -63,11 +60,11 @@ public class ComponentTraversalUtils {
 
         return result;
     }
-    
+
     public static <T> ArrayList<T> children(Class<T> type, UIComponent base) {
-        
+
         ArrayList<T> result = new ArrayList<T>();
-        
+
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext()) {
             UIComponent kid = (UIComponent) kids.next();
@@ -78,9 +75,9 @@ public class ComponentTraversalUtils {
 
         return result;
     }
-    
+
     public static void withId(String id, UIComponent base, List<UIComponent> components) {
-        
+
         if (id.equals(base.getId())) {
             components.add(base);
         }
@@ -98,10 +95,10 @@ public class ComponentTraversalUtils {
 	    	}
     	}
     }
-    
+
     /**
      * Finds the first component with the given id (NOT clientId!).
-     * 
+     *
      * @param id The id.
      * @param base The base component to start the traversal.
      * @return The component or null.
@@ -130,7 +127,7 @@ public class ComponentTraversalUtils {
 
     /**
      * Finds the first component by the given id expression or client id.
-     * 
+     *
      * @param id The id.
      * @param base The base component to start the traversal.
      * @param separatorString The seperatorString (e.g. :).
@@ -138,20 +135,6 @@ public class ComponentTraversalUtils {
      * @return The component or null.
      */
     public static UIComponent firstById(String id, UIComponent base, String separatorString, FacesContext context) {
-        return firstById(id, base, separatorString, context, false);
-    }
-    
-    /**
-     * Finds the first component by the given id expression or client id.
-     * 
-     * @param id The id.
-     * @param base The base component to start the traversal.
-     * @param separatorString The seperatorString (e.g. :).
-     * @param context The FacesContext.
-     * @param skipUnrendered Defines if unrendered components should be skipped.
-     * @return The component or null.
-     */
-    public static UIComponent firstById(String id, UIComponent base, String separatorString, FacesContext context, boolean skipUnrendered) {
 
         // try #findComponent first
         UIComponent component = base.findComponent(id);
@@ -165,28 +148,17 @@ public class ComponentTraversalUtils {
                 tempExpression = tempExpression.substring(1);
             }
 
-            if (skipUnrendered)
-            {
-                VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-                IdVisitCallback callback = new IdVisitCallback(tempExpression);
-                context.getViewRoot().visitTree(visitContext, callback);
-                
-                component = callback.getComponent();
-            }
-            else
-            {                
-                IdContextCallback callback = new IdContextCallback();
-                context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
+            IdContextCallback callback = new IdContextCallback();
+            context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
 
-                component = callback.getComponent();
-            }
+            component = callback.getComponent();
         }
-        
+
         return component;
     }
-    
-    
-    
+
+
+
     public static UIForm closestForm(FacesContext context, UIComponent component) {
         return closest(UIForm.class, component);
     }
@@ -198,32 +170,7 @@ public class ComponentTraversalUtils {
     public static UIComponent closestNamingContainer(UIComponent component) {
         return (UIComponent) closest(NamingContainer.class, component);
     }
-    
-    
-    public static class IdVisitCallback implements VisitCallback {
 
-        private final String targetClientId;
-        private UIComponent component;
-        
-        public IdVisitCallback(String targetClientId) {
-            this.targetClientId = targetClientId;
-        }
-        
-        public VisitResult visit(VisitContext context, UIComponent target) {
-            
-            if (target.getClientId().equals(targetClientId)) {
-                this.component = target;
-                return VisitResult.COMPLETE;
-            }
-            
-            return VisitResult.ACCEPT;
-        }
-        
-        public UIComponent getComponent() {
-            return component;
-        }
-    }
-    
     public static class IdContextCallback implements ContextCallback {
 
         private UIComponent component;

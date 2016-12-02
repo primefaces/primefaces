@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2015 PrimeTek.
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIPanel;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
@@ -35,11 +36,14 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.feature.DataTableFeature;
 import org.primefaces.component.datatable.feature.DataTableFeatureKey;
+import org.primefaces.component.datatable.feature.FilterFeature;
 import org.primefaces.component.datatable.feature.RowExpandFeature;
 import org.primefaces.component.datatable.feature.SortFeature;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
@@ -90,27 +94,53 @@ public class DataTableRenderer extends DataRenderer {
 	}
     
     protected void preRender(FacesContext context, DataTable table) {
+        if(table.isMultiViewState()) {
+            table.restoreTableState();
+        }
+            
         if(table.isLazy()) {
             if(table.isLiveScroll())
                 table.loadLazyScrollData(0, table.getScrollRows());
             else
                 table.loadLazyData();
         }
+        else {
+            boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null || table.getMultiSortMeta() != null);
+            if(defaultSorted) {
+                table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
+                table.setDefaultSortOrder(table.getSortOrder());
+                table.setDefaultSortFunction(table.getSortFunction());
 
-        boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null);
-        if(defaultSorted && !table.isLazy()) {
-            table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
-            table.setDefaultSortOrder(table.getSortOrder());
-            table.setDefaultSortFunction(table.getSortFunction());
-            
-            SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
+                SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
 
-            if(table.isMultiSort())
-                sortFeature.multiSort(context, table);
-            else
-                sortFeature.singleSort(context, table);  
-            
-            table.setRowIndex(-1);
+                if(table.isMultiSort())
+                    sortFeature.multiSort(context, table);
+                else
+                    sortFeature.singleSort(context, table);  
+
+                table.setRowIndex(-1);
+            }
+
+            List<FilterState> filters = table.getFilterBy();
+            if(filters != null) {
+                FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
+                List<FilterMeta> filterMetadata = new ArrayList<FilterMeta>();
+                for(FilterState filterState : filters) {
+                    UIColumn column = table.findColumn(filterState.getColumnKey());
+                    filterMetadata.add(new FilterMeta(column, column.getValueExpression("filterBy"), filterState.getFilterValue()));
+                }
+                
+                String globalFilter = table.getGlobalFilter();
+                if(globalFilter != null) {
+                    UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table, "globalFilter");
+                    if(globalFilterComponent != null) {
+                        ((ValueHolder) globalFilterComponent).setValue(globalFilter);
+                    }
+                }
+                                
+                table.setFilterMetadata(filterMetadata);
+                filterFeature.filter(context, table, filterMetadata, globalFilter);
+            }
         }
 
         if(table.isPaginator()) {
@@ -443,7 +473,7 @@ public class DataTableRenderer extends DataRenderer {
         if(sortable) {
             ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
-            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null);
+            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || table.getMultiSortMeta() != null);
                     
             if(defaultSorted) {
                 if(table.isMultiSort()) {
@@ -520,6 +550,19 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("th");
     }
     
+    protected Object findFilterValue(DataTable table, UIColumn column) {
+        List<FilterState> filters = table.getFilterBy();
+        if(filters != null) {
+            for(FilterState filterState : filters) {
+                if(filterState.getColumnKey().equals(column.getColumnKey())) {
+                    return filterState.getFilterValue();
+                }
+            }
+        }
+        
+        return null;
+    }
+    
     protected String resolveDefaultSortIcon(UIColumn column, SortMeta sortMeta) {
         SortOrder sortOrder = sortMeta.getSortOrder();
         String sortIcon = null;
@@ -588,17 +631,20 @@ public class DataTableRenderer extends DataRenderer {
             String filterId = column.getContainerClientId(context) + separator + "filter";
             String filterStyleClass = column.getFilterStyleClass();
 
-            String filterValue = null;
+            Object filterValue = null;
             if(table.isReset()) {
                 filterValue = "";
             }
             else {
-                if(params.containsKey(filterId)) {
-                    filterValue = params.get(filterId);
-                }
-                else {
-                    Object columnFilterValue = column.getFilterValue();
-                    filterValue = (columnFilterValue == null) ? Constants.EMPTY_STRING: columnFilterValue.toString();
+                filterValue = this.findFilterValue(table, column);
+                if(filterValue == null) {
+                    if(params.containsKey(filterId)) {
+                        filterValue = params.get(filterId);
+                    }
+                    else {
+                        Object columnFilterValue = column.getFilterValue();
+                        filterValue = (columnFilterValue == null) ? Constants.EMPTY_STRING: columnFilterValue.toString();
+                    }
                 }
             }
             
@@ -672,6 +718,11 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
         else {
+            Object filterValue = this.findFilterValue(table, column);
+            if(filterValue != null) {
+                ((ValueHolder) filterFacet).setValue(filterValue);
+            }
+            
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CUSTOM_FILTER_CLASS, null);
             filterFacet.encodeAll(context);

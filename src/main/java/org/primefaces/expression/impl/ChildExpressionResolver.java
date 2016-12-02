@@ -31,7 +31,7 @@ public class ChildExpressionResolver implements SearchExpressionResolver {
 
     private static final Pattern PATTERN = Pattern.compile("@child\\((\\d+)\\)");
 
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
 
         try {
             Matcher matcher = PATTERN.matcher(expression);

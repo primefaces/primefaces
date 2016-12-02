@@ -193,7 +193,7 @@ public class CalendarRenderer extends InputRenderer {
 
         String showOn = calendar.getShowOn();
         if (!showOn.equalsIgnoreCase("focus")) {
-            wb.attr("showOn", showOn);
+            wb.attr("showOn", showOn).attr("buttonTabindex", calendar.getButtonTabindex());
         }
 
         if (calendar.isShowOtherMonths()) {

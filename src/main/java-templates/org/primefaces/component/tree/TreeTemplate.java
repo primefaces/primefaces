@@ -22,6 +22,18 @@ import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.util.Constants;
 import org.primefaces.model.TreeNode;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.model.filter.ContainsFilterConstraint;
+import org.primefaces.model.filter.EndsWithFilterConstraint;
+import org.primefaces.model.filter.EqualsFilterConstraint;
+import org.primefaces.model.filter.ExactFilterConstraint;
+import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.GlobalFilterConstraint;
+import org.primefaces.model.filter.GreaterThanEqualsFilterConstraint;
+import org.primefaces.model.filter.GreaterThanFilterConstraint;
+import org.primefaces.model.filter.InFilterConstraint;
+import org.primefaces.model.filter.LessThanEqualsFilterConstraint;
+import org.primefaces.model.filter.LessThanFilterConstraint;
+import org.primefaces.model.filter.StartsWithFilterConstraint;
 
 	private Map<String,UITreeNode> nodes;
 
@@ -46,6 +58,10 @@ import javax.faces.event.BehaviorEvent;
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelection");
 	}
 
+    public boolean isFilterRequest(FacesContext context) {
+    	return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_filtering");
+    }
+
     public static String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
     public static String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
     public static String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content ui-corner-all";
@@ -65,6 +81,8 @@ import javax.faces.event.BehaviorEvent;
     public static String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
     public static String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
     public static String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
+    public static final String FILTER_CLASS = "ui-tree-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CONTAINER = "ui-tree-filter-container";
 
     public Map<String,UITreeNode> getTreeNodes() {
         if(nodes == null) {
@@ -88,6 +106,35 @@ import javax.faces.event.BehaviorEvent;
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    private final static String STARTS_WITH_MATCH_MODE = "startsWith";
+    private final static String ENDS_WITH_MATCH_MODE = "endsWith";
+    private final static String CONTAINS_MATCH_MODE = "contains";
+    private final static String EXACT_MATCH_MODE = "exact";
+    private final static String LESS_THAN_MODE = "lt";
+    private final static String LESS_THAN_EQUALS_MODE = "lte";
+    private final static String GREATER_THAN_MODE = "gt";
+    private final static String GREATER_THAN_EQUALS_MODE = "gte";
+    private final static String EQUALS_MODE = "equals";
+    private final static String IN_MODE = "in";
+    private final static String GLOBAL_MODE = "global";
+  
+    final static Map<String,FilterConstraint> FILTER_CONSTRAINTS;
+    
+    static {
+        FILTER_CONSTRAINTS = new HashMap<String,FilterConstraint>();
+        FILTER_CONSTRAINTS.put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
+        FILTER_CONSTRAINTS.put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
+        FILTER_CONSTRAINTS.put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
+        FILTER_CONSTRAINTS.put(EXACT_MATCH_MODE, new ExactFilterConstraint());
+        FILTER_CONSTRAINTS.put(LESS_THAN_MODE, new LessThanFilterConstraint());
+        FILTER_CONSTRAINTS.put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
+        FILTER_CONSTRAINTS.put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(EQUALS_MODE, new EqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(IN_MODE, new InFilterConstraint());
+        FILTER_CONSTRAINTS.put(GLOBAL_MODE, new GlobalFilterConstraint());
+    }
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -284,3 +331,12 @@ import javax.faces.event.BehaviorEvent;
         super.validateSelection(context);
     }
     
+    private List<String> filteredRowKeys = new ArrayList<String>();
+    public List<String> getFilteredRowKeys() {
+        return filteredRowKeys;
+    }
+
+    public void setFilteredRowKeys(List<String> filteredRowKeys) {
+        this.filteredRowKeys = filteredRowKeys;
+    }
+

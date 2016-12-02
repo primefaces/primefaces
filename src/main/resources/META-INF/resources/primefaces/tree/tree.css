@@ -216,6 +216,27 @@
     outline: 1px dotted;
 }
 
+/** Filter **/
+.ui-tree-filter-container {
+    margin: 0.4em 0.5em 0.1em;
+    padding: 0;
+    position: relative;
+}
+
+.ui-tree-filter-container .ui-icon {
+    position: absolute;
+    right: 2px;
+    top: 5px;
+}
+
+.ui-tree-filter.ui-inputfield {
+    box-shadow: none;
+    padding-left: 2%;
+    padding-right: 12%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 /** Fluid **/
 .ui-fluid .ui-tree {
     width: 100%;

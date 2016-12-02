@@ -97,6 +97,11 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             if(title) {
                 triggerButton.attr('title', title);
             }
+            
+            var buttonIndex = this.cfg.buttonTabindex||this.jqEl.attr('tabindex');
+            if(buttonIndex) {
+                triggerButton.attr('tabindex', buttonIndex);
+            }
 
             PrimeFaces.skinButton(triggerButton);
             $('#ui-datepicker-div').addClass('ui-shadow');

@@ -18,24 +18,25 @@ package org.primefaces.component.paginator;
 import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 
 public class CurrentPageReportRenderer implements PaginatorElementRenderer {
 
-    public void render(FacesContext context, UIData uidata) throws IOException {
+    public void render(FacesContext context, Pageable pageable) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String template = uidata.getCurrentPageReportTemplate();
-        int currentPage = uidata.getPage() + 1;
-        int pageCount = uidata.getPageCount();
+        String template = pageable.getCurrentPageReportTemplate();
+        int currentPage = pageable.getPage() + 1;
+        int pageCount = pageable.getPageCount();
         if(pageCount == 0) {
             pageCount = 1;
         }
                 
         String output = template.replaceAll("\\{currentPage\\}", Integer.toString(currentPage))
         .replaceAll("\\{totalPages\\}", Integer.toString(pageCount))
-        .replaceAll("\\{totalRecords\\}", Integer.toString(uidata.getRowCount()))
-        .replaceAll("\\{startRecord\\}", Integer.toString(Math.min(uidata.getFirst() + 1, uidata.getRowCount())))
-        .replaceAll("\\{endRecord}", Integer.toString(Math.min(uidata.getFirst() + uidata.getRowsToRender(), uidata.getRowCount())));
+        .replaceAll("\\{totalRecords\\}", Integer.toString(pageable.getRowCount()))
+        .replaceAll("\\{startRecord\\}", Integer.toString(Math.min(pageable.getFirst() + 1, pageable.getRowCount())))
+        .replaceAll("\\{endRecord}", Integer.toString(Math.min(pageable.getFirst() + pageable.getRowsToRender(), pageable.getRowCount())));
         
         writer.startElement("span", null);
         writer.writeAttribute("class", UIData.PAGINATOR_CURRENT_CLASS, null);

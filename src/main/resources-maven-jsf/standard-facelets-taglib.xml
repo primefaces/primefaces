@@ -111,6 +111,12 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
+        <attribute>
+			<description>Exports the header and cell content according to the option.</description>
+			<name>options</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
 	</tag>
 
 	<tag>

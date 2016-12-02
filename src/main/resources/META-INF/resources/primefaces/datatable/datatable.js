@@ -146,7 +146,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Applies events related to sorting in a non-obstrusive way
      */
     bindSortEvents: function() {
-        var $this = this;
+        var $this = this,
+            hasAriaSort = false;
         this.cfg.tabindex = this.cfg.tabindex||'0';
         this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
@@ -168,11 +169,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(columnHeader.hasClass('ui-state-active')) {
                 if(sortIcon.hasClass('ui-icon-triangle-1-n')) {
                     sortOrder = this.SORT_ORDER.ASCENDING;
-                    columnHeader.attr('aria-sort', 'ascending').attr('aria-label', this.getSortMessage(ariaLabel, this.descMessage));
+                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.descMessage));
+                    if(!hasAriaSort) {
+                        columnHeader.attr('aria-sort', 'ascending');
+                        hasAriaSort = true;
+                    }
                 }
                 else {
                     sortOrder = this.SORT_ORDER.DESCENDING;
-                    columnHeader.attr('aria-sort', 'descending').attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                    if(!hasAriaSort) {
+                        columnHeader.attr('aria-sort', 'descending');
+                        hasAriaSort = true;
+                    }
                 }
                 
                 if($this.cfg.multiSort) {
@@ -184,7 +193,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
             else {
                 sortOrder = this.SORT_ORDER.UNSORTED;
-                columnHeader.attr('aria-sort', 'other').attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                if(!hasAriaSort && i == (this.sortableColumns.length - 1)) {
+                    this.sortableColumns.eq(0).attr('aria-sort', 'other');
+                    hasAriaSort = true;
+                }
             }
             
             columnHeader.data('sortorder', sortOrder);
@@ -1263,17 +1276,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     if(paginator) {
                         paginator.setPage(0, true);
                     }
-
+                    
+                    // remove aria-sort
+                    var activeColumns = $this.sortableColumns.filter('.ui-state-active');
+                    if(activeColumns.length) {
+                        activeColumns.removeAttr('aria-sort');
+                    }
+                    else {
+                        $this.sortableColumns.eq(0).removeAttr('aria-sort');
+                    }
+                    
                     if(!multi) {
-                        var activeColumns = $this.sortableColumns.filter('.ui-state-active');
-
                         //aria reset
                         for(var i = 0; i < activeColumns.length; i++) {
                             var activeColumn = $(activeColumns.get(i)),
                                 ariaLabelOfActive = activeColumn.attr('aria-label');
 
-                            activeColumn.attr('aria-sort', 'other').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
-                            $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).attr('aria-sort', 'other').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
+                            activeColumn.attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
+                            $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).removeAttr('aria-sort').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
                         }
 
                         activeColumns.data('sortorder', $this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
@@ -1968,23 +1988,31 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.saveOnCellBlur = (this.cfg.saveOnCellBlur === false) ? false : true;
         
         if(this.cfg.editMode === 'row') {
-            var rowEditorSelector = '> tr > td > div.ui-row-editor';
+            var rowEditorSelector = '> tr > td > div.ui-row-editor > a';
             
-            this.tbody.off('click.datatable', rowEditorSelector)
+            this.tbody.off('click.datatable focus.datatable blur.datatable', rowEditorSelector)
                         .on('click.datatable', rowEditorSelector, null, function(e) {
-                            var element = $(e.target),
+                            var element = $(this),
                             row = element.closest('tr');
                             
-                            if(element.hasClass('ui-icon-pencil')) {
+                            if(element.hasClass('ui-row-editor-pencil')) {
                                 $this.switchToRowEdit(row);
                                 element.hide().siblings().show();
                             }
-                            else if(element.hasClass('ui-icon-check')) {
+                            else if(element.hasClass('ui-row-editor-check')) {
                                 $this.saveRowEdit(row);
                             }
-                            else if(element.hasClass('ui-icon-close')) {
+                            else if(element.hasClass('ui-row-editor-close')) {
                                 $this.cancelRowEdit(row);
                             }
+                            
+                            e.preventDefault();
+                        })
+                        .on('focus.datatable', rowEditorSelector, null, function(e) {
+                            $(this).addClass('ui-row-editor-outline');
+                        })
+                        .on('blur.datatable', rowEditorSelector, null, function(e) {
+                            $(this).removeClass('ui-row-editor-outline');
                         });
         }
         else if(this.cfg.editMode === 'cell') {
@@ -2039,11 +2067,51 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
     
+    cellEditInit: function(cell) {
+        var rowMeta = this.getRowMeta(cell.closest('tr')),
+        cellEditor = cell.children('.ui-cell-editor'),
+        cellIndex = cell.index(),
+        $this = this;
+
+        if(this.cfg.scrollable && this.cfg.frozenColumns) {
+            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
+        }
+
+        var cellInfo = rowMeta.index + ',' + cellIndex;
+        if(rowMeta.key) {
+            cellInfo = cellInfo + ',' + rowMeta.key;
+        }
+        
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            global: false,
+            params: [{name: this.id + '_encodeFeature', value: true},
+                    {name: this.id + '_cellEditInit', value: true},
+                    {name: this.id + '_cellInfo', value: cellInfo}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            cellEditor.children('.ui-cell-editor-input').html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {                            
+                $this.showCurrentCell(cell);
+            }
+        };
+
+        PrimeFaces.ajax.Request.handle(options);
+    },
+    
     showCellEditor: function(c) {
         this.incellClick = true;
         
-        var cell = null,
-        $this = this;
+        var cell = null;
                     
         if(c) {
             cell = c;
@@ -2057,6 +2125,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cell = this.contextMenuCell;
         }
         
+        var editorInput = cell.find('> .ui-cell-editor > .ui-cell-editor-input');
+        if(editorInput.length !== 0 && editorInput.children().length === 0 && this.cfg.editMode === 'cell') {
+            this.cellEditInit(cell);
+        }
+        else {
+            this.showCurrentCell(cell);
+        }        
+    },
+    
+    showCurrentCell: function(cell) {
+        var $this = this;
+    
         if(this.currentCell) {
             if(this.cfg.saveOnCellBlur)
                 this.saveCell(this.currentCell);
@@ -2111,7 +2191,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         if(multi) {
                             var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
 
-                            if(focusIndex < 0 || (focusIndex === inputs.length)) {
+                            if(focusIndex < 0 || (focusIndex === inputs.length) || input.parent().hasClass('ui-inputnumber')) {
                                 $this.tabCell(cell, !shiftKey);                                
                             } else {
                                 inputs.eq(focusIndex).focus();
@@ -2132,7 +2212,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 .on('focus.datatable-cell click.datatable-cell', function(e) {
                     $this.currentCell = cell;
                 });
-        }        
+        }
     },
     
     tabCell: function(cell, forward) {
@@ -2435,7 +2515,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Clears table filters
      */
     clearFilters: function() {
-        this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
+        var columnFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter');
+
+        if (columnFilters.length == 0) {
+            return;
+        }
+
+        columnFilters.val('');
         $(this.jqId + '\\:globalFilter').val('');
 
         this.filter();
@@ -2598,6 +2684,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             columnHeader = ui.helper.parent();
         }
         
+        var title = columnHeader.children('.ui-column-title');
+        if(PrimeFaces.env.isIE()) {
+            title.css('display', 'none');
+        }
+        
         var nextColumnHeader = columnHeader.nextAll(':visible:first');
         
         if(this.cfg.liveResize) {
@@ -2613,6 +2704,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
          
         var minWidth = parseInt(columnHeader.css('min-width'));
         minWidth = (minWidth == 0) ? 15 : minWidth;
+        
+        if(PrimeFaces.env.isIE()) {
+            title.css('display', '');
+        }
         
         if((newWidth > minWidth && nextColumnWidth > minWidth) || (expandMode && newWidth > minWidth)) {          
             if(expandMode) {

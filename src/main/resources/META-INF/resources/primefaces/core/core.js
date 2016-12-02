@@ -53,6 +53,15 @@
             form.submit().children('input.ui-submit-param').remove();
         },
 
+        onPost : function() {
+            this.nonAjaxPosted = true;
+            this.abortXHRs();
+        },
+        
+        abortXHRs : function() {
+            PrimeFaces.ajax.Queue.abortAll();
+        },
+        
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
                 element.bind(event, function(e) {
@@ -253,7 +262,7 @@
             if(window.getSelection) {
                 if(window.getSelection().empty) {
                     window.getSelection().empty();
-                } else if(window.getSelection().removeAllRanges) {
+                } else if(window.getSelection().removeAllRanges && window.getSelection().rangeCount > 0 && window.getSelection().getRangeAt(0).getClientRects().length > 0) {
                     window.getSelection().removeAllRanges();
                 }
             }
