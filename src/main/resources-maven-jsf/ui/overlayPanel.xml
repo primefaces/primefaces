@@ -123,6 +123,13 @@
             <defaultValue>false</defaultValue>
             <description>Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document. Default is false.</description>
         </attribute>
+        <attribute>
+			<name>showDelay</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+			<defaultValue>0</defaultValue>
+            <description>Delay time to show overlay panel in milliseconds. Default is 0.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

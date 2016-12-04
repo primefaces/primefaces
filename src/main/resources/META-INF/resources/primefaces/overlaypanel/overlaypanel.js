@@ -14,6 +14,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.showEvent = this.cfg.showEvent||'click.ui-overlaypanel';
         this.cfg.hideEvent = this.cfg.hideEvent||'click.ui-overlaypanel';
         this.cfg.dismissable = (this.cfg.dismissable === false) ? false : true;
+        this.cfg.showDelay = this.cfg.showDelay || 0;
         
         if(this.cfg.showCloseIcon) {
             this.closerIcon = $('<a href="#" class="ui-overlaypanel-close ui-state-default" href="#"><span class="ui-icon ui-icon-closethick"></span></a>').appendTo(this.jq);
@@ -73,6 +74,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
                 }
             })
             .on(hideEvent, function(e) {
+            	clearTimeout($this.timeout);
                 if($this.isVisible()) {
                     $this.hide();
                 }
@@ -158,15 +160,20 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     toggle: function() {
         if(!this.isVisible())
             this.show();
-        else
-            this.hide();
+        else {
+			clearTimeout(this.timeout);
+			this.hide();
+		}
     },
     
     show: function(target) {
-        if(!this.loaded && this.cfg.dynamic)
-            this.loadContents(target);
-        else
-            this._show(target);
+    	var thisPanel = this;
+		this.timeout = setTimeout(function() {
+			if (!thisPanel.loaded && thisPanel.cfg.dynamic)
+				thisPanel.loadContents(target);
+			else
+				thisPanel._show(target);
+		}, this.cfg.showDelay);
     },
     
     _show: function(target) {
