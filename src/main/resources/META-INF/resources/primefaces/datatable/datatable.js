@@ -51,6 +51,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.initReflow();
         }
         
+        if(this.cfg.groupColumnIndexes) {
+            this.groupRows();
+        }
+        
         this.renderDeferred();
     },
     
@@ -3276,6 +3280,36 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(hasNextPage) {
             this.fetchNextPage(newState);
+        }
+    },
+    
+    groupRows: function() {
+        for(var i = 0; i < this.cfg.groupColumnIndexes.length; i++) {
+            this.groupRow(this.cfg.groupColumnIndexes[i]);
+        }
+    },
+    
+    groupRow: function(colIndex) {
+        var rows = this.tbody.children('tr');
+        var groupStartIndex = null, rowGroupCellData = null, rowGroupCount = null;
+        
+        for(var i = 0; i < rows.length; i++) {
+            var row = rows.eq(i);
+            var column = row.children('td').eq(colIndex);
+            var columnData = column.text();
+            if(rowGroupCellData != columnData) {                    
+                groupStartIndex = i;
+                rowGroupCellData = columnData;
+                rowGroupCount = 1;
+            }
+            else {
+                column.remove();
+                rowGroupCount++;
+            }
+            
+            if(groupStartIndex != null && rowGroupCount > 1) {
+                rows.eq(groupStartIndex).children('td').eq(colIndex).attr('rowspan', rowGroupCount);
+            }
         }
     }
 

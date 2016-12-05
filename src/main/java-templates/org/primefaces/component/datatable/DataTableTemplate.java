@@ -1346,4 +1346,29 @@ import org.primefaces.component.datatable.TableState;
         return ts;
     }
 
+     String getGroupedColumnIndexes() {
+        List<UIColumn> columns = this.getColumns();
+        int size = columns.size();
+        boolean hasIndex = false;
+        if(size > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for(int i = 0; i < size; i++) {
+                UIColumn column = columns.get(i);
+                if(column.isGroupRow()) {
+                    if(hasIndex) {
+                       sb.append(",");
+                    }
+
+                    sb.append(i);
+                    hasIndex = true;
+                }
+            }
+            sb.append("]");
+
+            return sb.toString();
+        }
+        return null;
+    }
+
 

@@ -232,7 +232,8 @@ public class DataTableRenderer extends DataRenderer {
         wb.attr("tabindex", table.getTabindex(), "0")
             .attr("reflow", table.isReflow(), false)
             .attr("rowHover", table.isRowHover(), false)
-            .attr("clientCache", table.isClientCache(), false);
+            .attr("clientCache", table.isClientCache(), false)
+            .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null);
         
         //Behaviors
         encodeClientBehaviors(context, table);

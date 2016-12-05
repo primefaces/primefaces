@@ -226,5 +226,12 @@
 			<method-signature>java.lang.String exportValue(org.primefaces.component.api.UIColumn)</method-signature>
             <description>Custom pluggable exportFunction.</description>
 		</attribute>
+        <attribute>
+			<name>groupRow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Speficies whether to group rows based on the column data.</description>
+		</attribute>
     </attributes>
 </component>
