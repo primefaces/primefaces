@@ -6,6 +6,7 @@ import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.contextmenu.ContextMenu;
 import org.primefaces.component.summaryrow.SummaryRow;
+import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.Constants;
 import java.util.List;
@@ -123,6 +124,7 @@ import org.primefaces.component.datatable.TableState;
     public static final String SUBTABLE_HEADER = "ui-datatable-subtable-header"; 
     public static final String SUBTABLE_FOOTER = "ui-datatable-subtable-footer"; 
     public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
+    public static final String HEADER_ROW_CLASS = "ui-datatable-headerrow ui-widget-header";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
     public static final String STICKY_HEADER_CLASS = "ui-datatable-sticky";
     
@@ -876,6 +878,16 @@ import org.primefaces.component.datatable.TableState;
         for(UIComponent kid : getChildren()) {
             if(kid.isRendered() && kid instanceof SummaryRow) {
                 return (SummaryRow) kid;
+            }
+        }
+
+        return null;
+    }
+
+    public HeaderRow getHeaderRow() {
+        for(UIComponent kid : getChildren()) {
+            if(kid.isRendered() && kid instanceof HeaderRow) {
+                return (HeaderRow) kid;
             }
         }
 

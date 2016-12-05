@@ -39,6 +39,7 @@ import org.primefaces.component.datatable.feature.DataTableFeatureKey;
 import org.primefaces.component.datatable.feature.FilterFeature;
 import org.primefaces.component.datatable.feature.RowExpandFeature;
 import org.primefaces.component.datatable.feature.SortFeature;
+import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
@@ -940,6 +941,7 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeRows(FacesContext context, DataTable table, int first, int last, int columnStart, int columnEnd) throws IOException {
         String clientId = table.getClientId(context);
         SummaryRow summaryRow = table.getSummaryRow();
+        HeaderRow headerRow = table.getHeaderRow();
         ELContext eLContext = context.getELContext();
         ValueExpression groupByVE = null;
         ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
@@ -952,16 +954,25 @@ public class DataTableRenderer extends DataRenderer {
         }
         
         boolean encodeSummaryRow = (summaryRow != null && groupByVE != null);
+        boolean encodeHeaderRow = (headerRow != null && groupByVE != null);
+        boolean sameGroup = false;
         
         for(int i = first; i < last; i++) {
             table.setRowIndex(i);
             if(!table.isRowAvailable()) {
                 break;
             }
+                        
+            table.setRowIndex(i);
+            
+            if(encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, groupByVE, eLContext))) {
+                table.setRowIndex(i);
+                encodeHeaderRow(context, table, headerRow);
+            }
 
             encodeRow(context, table, clientId, i, columnStart, columnEnd);
 
-            if(encodeSummaryRow && !isInSameGroup(context, table, i, groupByVE, eLContext)) {
+            if(encodeSummaryRow && !isInSameGroup(context, table, i, 1, groupByVE, eLContext)) {
                 table.setRowIndex(i);
                 encodeSummaryRow(context, table, summaryRow);
             }
@@ -995,6 +1006,10 @@ public class DataTableRenderer extends DataRenderer {
         }
         
         summaryRow.encodeAll(context);
+    }
+    
+    protected void encodeHeaderRow(FacesContext context, DataTable table, HeaderRow headerRow) throws IOException{
+        headerRow.encodeAll(context);
     }
     
     public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex) throws IOException {
@@ -1352,6 +1367,7 @@ public class DataTableRenderer extends DataRenderer {
     }
         
     protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int first, int last) throws IOException {
+        logger.info("SubTable has been deprecated, use row grouping instead");
         for(int i = first; i < last; i++) {
             table.setRowIndex(i);
             if(!table.isRowAvailable()) {
@@ -1362,11 +1378,11 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
     
-    boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, ValueExpression groupByVE, ELContext eLContext) {
+    boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE, ELContext eLContext) {
         table.setRowIndex(currentRowIndex); 
         Object currentGroupByData = groupByVE.getValue(eLContext);
 
-        table.setRowIndex(currentRowIndex + 1);
+        table.setRowIndex(currentRowIndex + step);
         if(!table.isRowAvailable())
             return false;
         

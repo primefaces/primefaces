@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+]>
+<component>
+	<tag>headerRow</tag>
+	<tagClass>org.primefaces.component.headerrow.HeaderRowTag</tagClass>
+	<componentClass>org.primefaces.component.headerrow.HeaderRow</componentClass>
+	<componentType>org.primefaces.component.HeaderRow</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.HeaderRowRenderer</rendererType>
+	<rendererClass>org.primefaces.component.headerrow.HeaderRowRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>HeaderRow is a helper component for row grouping.</description>
+	<attributes>
+		&standard_uicomponent_attributes;
+	</attributes>
+</component>
