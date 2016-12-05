@@ -107,6 +107,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.reflow) {
             this.initReflow();
         }
+        
+        if(this.cfg.groupColumnIndexes) {
+            this.groupRows();
+        }
     },
  
     /**
