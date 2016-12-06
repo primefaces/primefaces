@@ -148,9 +148,9 @@ public class ImageCropperRenderer extends CoreRenderer {
         int w = (int) Double.parseDouble(cropCoords[2]);
         int h = (int) Double.parseDouble(cropCoords[3]);
 
-	if((w==0)&&(h==0)){
+	if (w <= 0 || h <= 0) {
             return null;
-        }
+        }    
 	    
         ImageCropper cropper = (ImageCropper) component;
         Resource resource = getImageResource(context, cropper);
