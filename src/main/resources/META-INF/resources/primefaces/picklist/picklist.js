@@ -344,9 +344,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             var item = $(this),
             itemValue = PrimeFaces.escapeHTML(item.attr('data-item-value')),
             itemLabel = item.attr('data-item-label'),
-            escapedItemLabel = (itemLabel) ? PrimeFaces.escapeHTML(itemLabel) : '';
-            
-            input.append('<option value="' + itemValue + '" selected="selected">' + escapedItemLabel + '</option>');
+            escapedItemLabel = (itemLabel) ? PrimeFaces.escapeHTML(itemLabel) : '',
+            option = $('<option selected="selected"></option>');
+
+            option.prop('value', itemValue).text(escapedItemLabel);
+            input.append(option);
         });
     },
     
