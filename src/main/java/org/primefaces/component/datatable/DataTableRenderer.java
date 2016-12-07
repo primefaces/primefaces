@@ -1378,7 +1378,7 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
     
-    boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE, ELContext eLContext) {
+    protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE, ELContext eLContext) {
         table.setRowIndex(currentRowIndex); 
         Object currentGroupByData = groupByVE.getValue(eLContext);
 

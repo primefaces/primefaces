@@ -1358,7 +1358,7 @@ import org.primefaces.component.datatable.TableState;
         return ts;
     }
 
-     String getGroupedColumnIndexes() {
+    public String getGroupedColumnIndexes() {
         List<UIColumn> columns = this.getColumns();
         int size = columns.size();
         boolean hasIndex = false;
