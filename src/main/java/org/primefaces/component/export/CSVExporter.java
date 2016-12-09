@@ -81,7 +81,7 @@ public class CSVExporter extends Exporter {
             
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    writer.write(",");
+                    writer.write(";");
                 }
                 
                 UIComponent facet = col.getFacet(columnType.facet());
@@ -127,7 +127,7 @@ public class CSVExporter extends Exporter {
             
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    writer.write(",");
+                    writer.write(";");
                 }
                 
                 try {
@@ -156,7 +156,7 @@ public class CSVExporter extends Exporter {
             addColumnValue(writer, col.getChildren(), col);
 
             if (iterator.hasNext())
-                writer.write(",");
+                writer.write(";");
 		}
 	}
 
