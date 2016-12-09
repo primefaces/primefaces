@@ -20,11 +20,11 @@ PrimeFaces.dialog.DialogHandler = {
             titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
         }
         
-        if(cfg.options.minimizable) {
+        if(cfg.options.minimizable !== false) {
             titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-minimize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-minus"></span></a>');
         }
         
-        if(cfg.options.maximizable) {
+        if(cfg.options.maximizable !== false) {
             titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
         }
         
