@@ -2135,6 +2135,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         
         var editorInput = cell.find('> .ui-cell-editor > .ui-cell-editor-input');
         if(editorInput.length !== 0 && editorInput.children().length === 0 && this.cfg.editMode === 'cell') {
+            // for lazy cellEditMode
             this.cellEditInit(cell);
         }
         else {

@@ -503,6 +503,13 @@
             <type>java.lang.String</type>
             <description>Value of the global filter to use when filtering by default.</description>
 		</attribute>
+        <attribute>
+			<name>cellEditMode</name>
+			<required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>eager</defaultValue>
+            <description>Defines the cell edit behavior, valid values are "eager" (default) and "lazy".</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

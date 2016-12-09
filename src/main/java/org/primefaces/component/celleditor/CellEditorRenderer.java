@@ -30,11 +30,13 @@ public class CellEditorRenderer extends CoreRenderer {
         CellEditor editor = (CellEditor) component;
         UIComponent parentTable = editor.getParentTable(context);
         boolean isDataTable = (parentTable != null && parentTable instanceof DataTable);
-        boolean isCellEdit = false;
+        boolean isLazyCellEdit = false;
         
         if(isDataTable) {
-            String editMode = ((DataTable)parentTable).getEditMode();
-            isCellEdit = (editMode != null && editMode.equals("cell"));
+            DataTable dt = (DataTable)parentTable;
+            String editMode = dt.getEditMode();
+            String cellEditMode = dt.getCellEditMode();
+            isLazyCellEdit = (editMode != null && editMode.equals("cell") && cellEditMode.equals("lazy"));
         }
         
         writer.startElement("div", null);
@@ -49,7 +51,7 @@ public class CellEditorRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);  
         
-        if(!isCellEdit) {
+        if(!isLazyCellEdit) {
             editor.getFacet("input").encodeAll(context);
         }
         writer.endElement("div");
