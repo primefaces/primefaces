@@ -32,6 +32,7 @@ import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
+import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.renderkit.CoreRenderer;
@@ -161,7 +162,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                    context, RequestContext.getCurrentInstance(), input.getValueExpression("value"));
+                    context, RequestContext.getCurrentInstance(), ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
             if (constraints != null && !constraints.isEmpty()) {
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                     if (constraintDescriptor.getAnnotation().annotationType().equals(NotNull.class)) {
