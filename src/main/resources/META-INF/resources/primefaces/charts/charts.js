@@ -21112,10 +21112,10 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         var tableLegend = this.jq.find('table.jqplot-table-legend'),
             tr = tableLegend.find('tr.jqplot-table-legend');
         
-        if(tr.size() > 1) {
+        if(tr.length > 1) {
             var trFirst = tableLegend.find('tr.jqplot-table-legend:first'),
                 trLast = tableLegend.find('tr.jqplot-table-legend:last'),
-                length = trFirst.children('td').size() - trLast.children('td').size();
+                length = trFirst.children('td').length - trLast.children('td').length;
 
             for(var i = 0; i < length; i++) {
                 trLast.append('<td></td>');
