@@ -486,7 +486,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
         
         //for Screen Readers
-        for(var i = 0; i < this.items.size(); i++) {
+        for(var i = 0; i < this.items.length; i++) {
             this.items.eq(i).attr('id', this.id + '_' + i);
         }
         
