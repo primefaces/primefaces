@@ -1445,6 +1445,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("id", reflowId, null);
             writer.writeAttribute("name", reflowId, null);
             writer.writeAttribute("class", "ui-reflow-dropdown ui-state-default", null);
+            writer.writeAttribute("autocomplete", "off", null);
             
             for(int headerIndex = 0; headerIndex < options.size(); headerIndex++) {
                 for(int order = 0; order < 2; order++) {
