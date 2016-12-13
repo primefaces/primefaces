@@ -1,4 +1,4 @@
-// WebcamJS v1.0.12
+// WebcamJS v1.0.16+iOS
 // Webcam library for capturing JPEG/PNG images in JavaScript
 // Attempts getUserMedia, falls back to Flash
 // Author: Joseph Huckaby: http://github.com/jhuckaby
@@ -34,14 +34,17 @@ FlashError.prototype = new IntermediateInheritor();
 WebcamError.prototype = new IntermediateInheritor();
 
 var Webcam = {
-	version: '1.0.12',
+	version: '1.0.16',
 	
 	// globals
 	protocol: location.protocol.match(/https/i) ? 'https' : 'http',
 	loaded: false,   // true when webcam movie finishes loading
 	live: false,     // true when webcam is initialized and ready to snap
 	userMedia: true, // true when getUserMedia is supported natively
-	
+
+	iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
+	iOS_defImg: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+
 	params: {
 		width: 0,
 		height: 0,
@@ -49,6 +52,7 @@ var Webcam = {
 		dest_height: 0,        // these default to width/height
 		image_format: 'jpeg',  // image format (may be jpeg or png)
 		jpeg_quality: 90,      // jpeg image quality from 0 (worst) to 100 (best)
+		enable_flash: true,    // enable flash fallback,
 		force_flash: false,    // force flash mode,
 		flip_horiz: false,     // flip image horiz (mirror mode)
 		fps: 30,               // camera frames per second
@@ -56,6 +60,7 @@ var Webcam = {
 		constraints: null,     // custom user media constraints,
 		swfURL: '',            // URI to webcam.swf movie (defaults to the js location)
 		flashNotDetectedText: 'ERROR: No Adobe Flash Player detected.  Webcam.js relies on Flash for browsers that do not support getUserMedia (like yours).',
+		noInterfaceFoundText: 'No supported webcam interface found.',
 		unfreeze_snap: true    // Whether to unfreeze the camera after snap (defaults to true)
 	},
 
@@ -193,7 +198,7 @@ var Webcam = {
 			.catch( function(err) {
 				// JH 2016-07-31 Instead of dispatching error, now falling back to Flash if userMedia fails (thx @john2014)
 				// JH 2016-08-07 But only if flash is actually installed -- if not, dispatch error here and now.
-				if (self.detectFlash()) {
+				if (self.params.enable_flash && self.detectFlash()) {
 					setTimeout( function() { self.params.force_flash = 1; self.attach(elem); }, 1 );
 				}
 				else {
@@ -201,12 +206,46 @@ var Webcam = {
 				}
 			});
 		}
-		else {
+		else if (this.params.enable_flash && this.detectFlash()) {
 			// flash fallback
 			window.Webcam = Webcam; // needed for flash-to-js interface
 			var div = document.createElement('div');
 			div.innerHTML = this.getSWFHTML();
 			elem.appendChild( div );
+		}
+		else if (this.iOS) {
+			var div = document.createElement('div');
+			div.style.width = '' + this.params.dest_width + 'px';
+			div.style.height = '' + this.params.dest_height + 'px';
+			div.style.textAlign = 'center';
+			div.style.display = 'table-cell';
+			div.style.verticalAlign = 'middle';
+			var span = document.createElement('span');
+			span.innerHTML = 'No preview available';
+			div.appendChild(span);
+			var input = document.createElement('input');
+			input.id = this.container.id+'-ios_input';
+			input.setAttribute('type', 'file');
+			input.setAttribute('accept', 'image/*');
+			input.setAttribute('capture', 'camera');
+			var containerId = this.container.id;
+			var iosDefImg = this.iOS_defImg;
+			input.addEventListener('change', function(event) {
+				img = new Image();
+				img.onload = this.ondblclick;
+				img.ondblclick = '';
+				if(event.target.files.length == 1 && event.target.files[0].type.indexOf('image/') == 0) {
+					img.setAttribute('src', URL.createObjectURL(event.target.files[0]));
+				}
+			}, true);
+			div.appendChild(input);
+			elem.appendChild(div);
+			$(input).hide();
+			this.loaded = true;
+			this.live = true;
+		}
+		else {
+			this.dispatch('error', new WebcamError( this.params.noInterfaceFoundText ));
 		}
 		
 		// setup final crop for live preview
@@ -251,9 +290,10 @@ var Webcam = {
 			delete this.video;
 		}
 
-		if (this.userMedia !== true) {
+		if (this.userMedia !== true && !this.iOS) {
 			// call for turn off camera in flash
-			this.getMovie()._releaseCamera();
+			var movie = this.getMovie();
+			if (movie && movie._releaseCamera) movie._releaseCamera();
 		}
 
 		if (this.container) {
@@ -641,6 +681,11 @@ var Webcam = {
 			// fire callback right away
 			func();
 		}
+		else if (this.iOS) {
+			var input = document.getElementById(this.container.id+'-ios_input');
+			input.ondblclick = func;
+			$(input).show().focus().click().hide();
+		}
 		else {
 			// flash fallback
 			var raw_data = this.getMovie()._snap();
@@ -783,6 +828,7 @@ else {
  * PrimeFaces PhotoCam Widget
  */
 PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
+	attached: false,
     
     init: function(cfg) {
         this._super(cfg);
@@ -791,7 +837,10 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.photoWidth = this.cfg.photoWidth||this.cfg.width;
         this.cfg.photoHeight = this.cfg.photoHeight||this.cfg.height;
         this.cfg.jpegQuality = this.cfg.jpegQuality ||90;
-        
+        if (!("autoStart" in this.cfg)) {
+        	this.cfg.autoStart = true;
+        }
+
         Webcam.setSWFLocation(this.cfg.camera);
 
         Webcam.set({
@@ -804,24 +853,43 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
             force_flash: this.cfg.forceFlash
         });
 
-        Webcam.attach(this.id);
+        if (this.cfg.autoStart) {
+        	this.attach();
+        }
     },
-            
+
+    attach: function() {
+    	if (!this.attached) {
+    		Webcam.attach(this.id);
+    		this.attached = true;
+    	}
+    },
+    dettach: function() {
+    	if (this.attached) {
+    		Webcam.reset();
+    		this.attached = false;
+    	}
+    },
+
     capture: function() {
-        var $this = this;
-        
-        Webcam.snap(function(data) {
-            var options = {
-                source: $this.id,
-                process: $this.cfg.process ? $this.id + ' ' + $this.cfg.process : $this.id,
-                update: $this.cfg.update,
-                params: [
-                    {name: $this.id + '_data', value: data}
-                ]
-            };
-            
-            PrimeFaces.ajax.Request.handle(options);
-        });
+    	if (this.attached) {
+	        var $this = this;
+	        
+	        Webcam.snap(function(data) {
+	            var options = {
+	                source: $this.id,
+	                process: $this.cfg.process ? $this.id + ' ' + $this.cfg.process : $this.id,
+	                update: $this.cfg.update,
+	                params: [
+	                    {name: $this.id + '_data', value: data}
+	                ]
+	            };
+	            
+	            PrimeFaces.ajax.Request.handle(options);
+	        });
+    	} else {
+    		(console.error || console.log).call(console, 'Capture error: AdvancedPhotoCam not attached to the camera');
+	    }
     }
 
 });
