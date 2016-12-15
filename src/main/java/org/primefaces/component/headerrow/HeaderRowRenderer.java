@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.MessageFactory;
 
 public class HeaderRowRenderer extends CoreRenderer {
     @Override
@@ -48,8 +49,12 @@ public class HeaderRowRenderer extends CoreRenderer {
                 if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
                 if(isExpandableRowGroups && isFirstColumn) {
+                    String ariaLabel = MessageFactory.getMessage(DataTable.ROW_GROUP_TOGGLER, null);
+                    
                     writer.startElement("a", null);
                     writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_CLASS, null);
+                    writer.writeAttribute("aria-expanded", String.valueOf(true), null);
+                    writer.writeAttribute("aria-label", ariaLabel, null);
                     writer.writeAttribute("href", "#", null);
                         writer.startElement("span", null);
                         writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_ICON_CLASS, null);

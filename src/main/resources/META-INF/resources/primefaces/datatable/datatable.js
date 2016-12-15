@@ -3345,10 +3345,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
            parentRow = link.closest('tr.ui-rowgroup-header');
            
            if(togglerIcon.hasClass('ui-icon-circle-triangle-s')) {
+               link.attr('aria-expanded', false);
                togglerIcon.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
                parentRow.nextUntil('tr.ui-rowgroup-header').hide();
            }
            else {
+               link.attr('aria-expanded', true);
                togglerIcon.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
                parentRow.nextUntil('tr.ui-rowgroup-header').show();
            }

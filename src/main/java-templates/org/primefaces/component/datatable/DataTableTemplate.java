@@ -135,6 +135,7 @@ import org.primefaces.component.datatable.TableState;
     public static final String SORT_LABEL = "primefaces.datatable.SORT_LABEL";
     public static final String SORT_ASC = "primefaces.datatable.SORT_ASC";
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
+    public final static String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
     
     public static final String MOBILE_CONTAINER_CLASS = "ui-datatable ui-shadow";
     public static final String MOBILE_TABLE_CLASS = "ui-responsive ui-table table-stripe";
