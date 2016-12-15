@@ -230,7 +230,7 @@
 			<name>groupRow</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
+            <defaultValue>false</defaultValue>
             <description>Speficies whether to group rows based on the column data.</description>
 		</attribute>
     </attributes>
