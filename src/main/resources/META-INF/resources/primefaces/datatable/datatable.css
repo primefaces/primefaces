@@ -290,6 +290,19 @@
     display: none;
 }
 
+/* Row Group Toggler */
+.ui-datatable .ui-rowgroup-header > td > a.ui-rowgroup-toggler {
+    padding-right: 1.5em;
+    position: relative;
+}
+
+.ui-datatable .ui-rowgroup-header .ui-rowgroup-toggler-icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+}
+
 @media ( max-width: 640px ) {
     .ui-datatable-reflow thead th,
     .ui-datatable-reflow tfoot td {

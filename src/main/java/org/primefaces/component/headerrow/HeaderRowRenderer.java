@@ -27,11 +27,14 @@ public class HeaderRowRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         HeaderRow row = (HeaderRow) component;
+        DataTable table = (DataTable) row.getParent();
         ResponseWriter writer = context.getResponseWriter();
+        boolean isExpandableRowGroups = table.isExpandableRowGroups();
         
         writer.startElement("tr", null);
         writer.writeAttribute("class", DataTable.HEADER_ROW_CLASS, null);
 
+        boolean isFirstColumn = true;
         for(UIComponent kid : row.getChildren()) {
             if(kid.isRendered() && kid instanceof Column) {
                 Column column = (Column) kid;
@@ -44,6 +47,18 @@ public class HeaderRowRenderer extends CoreRenderer {
                 if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
                 if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
+                if(isExpandableRowGroups && isFirstColumn) {
+                    writer.startElement("a", null);
+                    writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_CLASS, null);
+                    writer.writeAttribute("href", "#", null);
+                        writer.startElement("span", null);
+                        writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_ICON_CLASS, null);
+                        writer.endElement("span");
+                    writer.endElement("a");
+                    
+                    isFirstColumn = false;
+                }
+                
                 column.encodeAll(context);
 
                 writer.endElement("td");

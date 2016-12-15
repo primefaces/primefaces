@@ -124,7 +124,9 @@ import org.primefaces.component.datatable.TableState;
     public static final String SUBTABLE_HEADER = "ui-datatable-subtable-header"; 
     public static final String SUBTABLE_FOOTER = "ui-datatable-subtable-footer"; 
     public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
-    public static final String HEADER_ROW_CLASS = "ui-datatable-headerrow ui-widget-header";
+    public static final String HEADER_ROW_CLASS = "ui-rowgroup-header ui-datatable-headerrow ui-widget-header";
+    public static final String ROW_GROUP_TOGGLER_CLASS = "ui-rowgroup-toggler";
+    public static final String ROW_GROUP_TOGGLER_ICON_CLASS = "ui-rowgroup-toggler-icon ui-icon ui-icon-circle-triangle-s";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
     public static final String STICKY_HEADER_CLASS = "ui-datatable-sticky";
     
