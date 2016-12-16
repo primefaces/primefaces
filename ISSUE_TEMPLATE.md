@@ -1,7 +1,7 @@
 # IMPORTANT 
 - If you open a issue, fill every item. Otherwise the issue might be closed as invalid.
 - Before you open a issue, test it with the current/newest version.
-
+- Clone this repository https://github.com/primefaces/primefaces-test.git in order to reproduce your problem, you'll have better chance to get a solution to your problem.
 
 ## 1) Environment
 - PrimeFaces version:
