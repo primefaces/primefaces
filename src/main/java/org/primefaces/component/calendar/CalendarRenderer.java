@@ -200,7 +200,7 @@ public class CalendarRenderer extends InputRenderer {
             wb.attr("showOtherMonths", true).attr("selectOtherMonths", calendar.isSelectOtherMonths());
         }
 
-        if (calendar.hasTime()) {
+       
             String timeControlType = calendar.getTimeControlType();
             
             wb.attr("timeOnly", calendar.isTimeOnly())
@@ -224,7 +224,7 @@ public class CalendarRenderer extends InputRenderer {
             if (timeControlObject != null && timeControlType.equalsIgnoreCase("custom")) {
                 wb.nativeAttr("timeControlObject", timeControlObject);
             }
-        }
+       
 
         if (mask != null && !mask.equals("false")) {
             String patternTemplate = calendar.getPattern() == null ? pattern : calendar.getPattern();
