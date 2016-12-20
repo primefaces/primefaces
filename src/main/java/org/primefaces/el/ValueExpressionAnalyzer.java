@@ -25,6 +25,10 @@ public class ValueExpressionAnalyzer {
 
     public static ValueReference getReference(ELContext elContext, ValueExpression expression) {
 
+        if (expression == null) {
+            return null;
+        }
+        
         ValueReference reference = toValueReference(expression, elContext);
 
         // check for a CC expression
@@ -48,6 +52,10 @@ public class ValueExpressionAnalyzer {
 
     public static ValueExpression getExpression(ELContext elContext, ValueExpression expression) {
 
+        if (expression == null) {
+            return null;
+        }
+        
         // Unwrapping is required e.g. for p:graphicImage to support nested expressions in composites
         // The unwrapping requires EL 2.2
         if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastEL22()) {
