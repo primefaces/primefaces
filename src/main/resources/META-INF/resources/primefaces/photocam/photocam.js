@@ -831,7 +831,7 @@ else {
  * PrimeFaces PhotoCam Widget
  */
 PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
-	attached: false,
+    attached: false,
     
     init: function(cfg) {
         this._super(cfg);
@@ -841,7 +841,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.photoHeight = this.cfg.photoHeight||this.cfg.height;
         this.cfg.jpegQuality = this.cfg.jpegQuality ||90;
         if (!("autoStart" in this.cfg)) {
-        	this.cfg.autoStart = true;
+            this.cfg.autoStart = true;
         }
 
         Webcam.setSWFLocation(this.cfg.camera);
@@ -857,42 +857,42 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if (this.cfg.autoStart) {
-        	this.attach();
+            this.attach();
         }
     },
 
     attach: function() {
-    	if (!this.attached) {
-    		Webcam.attach(this.id);
-    		this.attached = true;
-    	}
+        if (!this.attached) {
+            Webcam.attach(this.id);
+            this.attached = true;
+        }
     },
     dettach: function() {
-    	if (this.attached) {
-    		Webcam.reset();
-    		this.attached = false;
-    	}
+        if (this.attached) {
+            Webcam.reset();
+            this.attached = false;
+        }
     },
 
     capture: function() {
-    	if (this.attached) {
+        if (this.attached) {
 	        var $this = this;
 	        
-	        Webcam.snap(function(data) {
-	            var options = {
-	                source: $this.id,
-	                process: $this.cfg.process ? $this.id + ' ' + $this.cfg.process : $this.id,
-	                update: $this.cfg.update,
-	                params: [
-	                    {name: $this.id + '_data', value: data}
-	                ]
-	            };
+            Webcam.snap(function(data) {
+                var options = {
+                    source: $this.id,
+                    process: $this.cfg.process ? $this.id + ' ' + $this.cfg.process : $this.id,
+                    update: $this.cfg.update,
+                    params: [
+                        {name: $this.id + '_data', value: data}
+                    ]
+                };
 	            
-	            PrimeFaces.ajax.Request.handle(options);
-	        });
-    	} else {
-    		(console.error || console.log).call(console, 'Capture error: AdvancedPhotoCam not attached to the camera');
-	    }
+                PrimeFaces.ajax.Request.handle(options);
+            });
+        } else {
+            (console.error || console.log).call(console, 'Capture error: AdvancedPhotoCam not attached to the camera');
+        }
     }
 
 });

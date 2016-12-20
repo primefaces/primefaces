@@ -103,13 +103,13 @@
             <defaultValue>false</defaultValue>
             <description>Enables always using flash fallback even in an HTML5 environment.</description>
         </attribute>
-		<attribute>
-			<name>autoStart</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+        <attribute>
+            <name>autoStart</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-			<description>Disable camera start after initialize</description>
-		</attribute>
+            <description>Disable camera start after initialize</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
