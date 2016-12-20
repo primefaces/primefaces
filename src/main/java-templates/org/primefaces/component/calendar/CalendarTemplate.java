@@ -77,7 +77,7 @@ import javax.faces.event.PhaseId;
     public boolean hasTime() {
         String pattern = getPattern();
 
-        return (pattern != null && pattern.indexOf(":") != -1);
+        return (pattern != null && (pattern.contains("HH") || pattern.contains("mm") || pattern.contains("ss")));
     }
 
     @Override
