@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 import javax.faces.FacesException;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.UniqueIdVendor;
 import javax.faces.context.FacesContext;
@@ -226,6 +227,16 @@ import org.primefaces.util.ComponentTraversalUtils;
     }
 
     private String clientId = null;
+    private StringBuilder idBuilder = new StringBuilder();
+    private UIComponent parentComponent;
+
+    public UIComponent getParentComponent() {
+        return parentComponent;
+    }
+
+    public void setParentComponent(UIComponent parentComponent) {
+        this.parentComponent = parentComponent;
+    }
     
     @Override
     public String getClientId(FacesContext context) {
@@ -254,7 +265,27 @@ import org.primefaces.util.ComponentTraversalUtils;
             this.setId(id);
         }
 
-        this.clientId = id;
+        if(this.parentComponent != null && !(this.parentComponent instanceof UIForm)) {
+            this.setParent(this.parentComponent);
+        }
+
+        UIComponent namingContainer = ComponentTraversalUtils.closestNamingContainer(this);
+        if(namingContainer != null) {
+            String containerClientId = namingContainer.getContainerClientId(context);
+            
+            if(containerClientId != null) {                
+                this.clientId = this.idBuilder.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
+                this.idBuilder.setLength(0);
+            }
+            else
+            {
+                this.clientId = id;
+            }
+        }
+        else
+        {
+            this.clientId = id;
+        }
 
         Renderer renderer = getRenderer(context);
         if(renderer != null) {
