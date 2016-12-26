@@ -107,6 +107,7 @@
 .ui-chkbox .ui-chkbox-box {
     width: 16px;
     height: 16px;
+    display: inline-block;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
@@ -116,13 +117,26 @@
     overflow: visible;
 }
 
-.ui-selectmanycheckbox label {
+.ui-chkbox .ui-chkbox-label {
     cursor: pointer;
     margin: 0 16px 0 8px;
     outline: medium none;
     z-index: 1;
     display: inline-block;
+    vertical-align: top;
+}
+
+.ui-selectmanycheckbox label {
     vertical-align: middle;
+    cursor: pointer;
+    margin: 0 16px 0 8px;
+    outline: medium none;
+    z-index: 1;
+    display: inline-block;
+}
+
+.ui-selectmanycheckbox .ui-chkbox .ui-chkbox-box {
+    display: block;
 }
 
 .ui-selectoneradio label {
