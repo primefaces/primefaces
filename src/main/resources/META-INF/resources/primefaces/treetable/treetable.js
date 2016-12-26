@@ -312,6 +312,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                             else if(element.hasClass('ui-icon-close')) {
                                 $this.cancelRowEdit(row);
                             }
+                            
+                            e.preventDefault();
                         });
         }
         else if(this.cfg.editMode === 'cell') {
