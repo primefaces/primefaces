@@ -228,7 +228,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
             boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
 
+            writer.startElement("td", null);
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
+            writer.endElement("td");
             idx++;
         }
         writer.endElement("tr");
@@ -252,7 +254,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
 
             writer.startElement("tr", null);
+            writer.startElement("td", null);
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
+            writer.endElement("td");
             writer.endElement("tr");
             idx++;
         }
@@ -283,7 +287,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                     writer.startElement("tr", null);
                 }
 
+                writer.startElement("td", null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
+                writer.endElement("td");
                 idx++;
                 colMod = idx % columns;
 
@@ -305,8 +311,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String itemValueAsString = getOptionAsString(context, radio, converter, option.getValue());
         String styleClass = radio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
 
-        writer.startElement("td", null);
-
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
 
@@ -314,11 +318,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         encodeOptionOutput(context, radio, selected, disabled);
 
         writer.endElement("div");
-        writer.endElement("td");
-
-        writer.startElement("td", null);
+        
         encodeOptionLabel(context, radio, id, option, disabled);
-        writer.endElement("td");
     }
 
     protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, String id, String name, boolean checked, boolean disabled, String value) throws IOException {

@@ -101,12 +101,12 @@
  */
 .ui-chkbox {
     display: inline-block;
+    vertical-align: middle;
 }
 
 .ui-chkbox .ui-chkbox-box {
     width: 16px;
     height: 16px;
-    display: inline-block;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
@@ -116,18 +116,20 @@
     overflow: visible;
 }
 
-.ui-chkbox .ui-chkbox-label {
+.ui-selectmanycheckbox label {
     cursor: pointer;
-    margin: 3px 0 0 3px;
+    margin: 0 16px 0 8px;
     outline: medium none;
     z-index: 1;
     display: inline-block;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .ui-selectoneradio label {
-    display: block;
-    margin-top: 4px;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 16px 0 8px;
+    vertical-align: middle;
 }
 
 .ui-selectmanycheckbox.ui-widget td,
@@ -135,16 +137,14 @@
     border: 0 none;
 }
 
-.ui-selectmanycheckbox.ui-grid label,
-.ui-selectoneradio.ui-grid label {
-    display: inline-block;
-    margin-left: 4px;
-    vertical-align: top;
-}
-
 .ui-panelgrid .ui-selectoneradio.ui-grid-responsive .ui-grid-row,
 .ui-panelgrid .ui-selectmanycheckbox.ui-grid-responsive .ui-grid-row {
     border-top: 0px none;
+}
+
+.ui-selectoneradio.ui-grid-responsive .ui-grid-row > div,
+.ui-selectmanycheckbox.ui-grid-responsive .ui-grid-row > div {
+    padding: .5em;
 }
 
 .ui-selectmanycheckbox .ui-selectmanycheckbox-item-group{
@@ -157,6 +157,7 @@
     width: 16px;
     line-height: 16px;
     display: inline-block;
+    vertical-align: middle;
 }
 .ui-radiobutton .ui-radiobutton-box {
     width: 16px;
@@ -478,7 +479,7 @@ button.ui-button::-moz-focus-inner {
 
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label {
     display: block;
-    padding-left: 2.2em;
+    padding-left: 2em;
 }
 
 .ui-selectcheckboxmenu-header {

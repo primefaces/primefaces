@@ -26,25 +26,20 @@
     padding: 1px 0 0;
 }
 
-.ui-tree .ui-treenode-content {
-    
-}
-
 .ui-tree .ui-tree-toggler {
     cursor: pointer;
     display: inline-block;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .ui-tree .ui-treenode-icon {
     display: inline-block;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .ui-tree .ui-treenode-label {
     display: inline-block;
-    margin: 2px 0 0 0;
-    vertical-align: top;
+    vertical-align: middle;
     padding: 0 3px;
 }
 
