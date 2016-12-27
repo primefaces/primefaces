@@ -2120,7 +2120,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.hasBehavior('cellEditInit')) {
+            this.cfg.behaviors['cellEditInit'].call(this, options);
+        } 
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
     
     showCellEditor: function(c) {

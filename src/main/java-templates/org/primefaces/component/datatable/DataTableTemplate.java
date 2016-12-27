@@ -165,6 +165,7 @@ import org.primefaces.component.datatable.TableState;
         put("rowUnselectCheckbox", UnselectEvent.class);
         put("rowDblselect", SelectEvent.class);
         put("rowToggle", ToggleEvent.class);
+        put("cellEditInit", CellEditEvent.class);
         put("cellEdit", CellEditEvent.class);
         put("rowReorder", ReorderEvent.class);
         put("swipeleft", SwipeEvent.class);
@@ -388,7 +389,7 @@ import org.primefaces.component.datatable.TableState;
                 
                 wrapperEvent = new ToggleEvent(this, behaviorEvent.getBehavior(), visibility, getRowData());
             }
-            else if(eventName.equals("cellEdit")||eventName.equals("cellEditCancel")) {
+            else if(eventName.equals("cellEdit")||eventName.equals("cellEditCancel")||eventName.equals("cellEditInit")) {
                 String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
                 int rowIndex = Integer.parseInt(cellInfo[0]);
                 int cellIndex = Integer.parseInt(cellInfo[1]);
