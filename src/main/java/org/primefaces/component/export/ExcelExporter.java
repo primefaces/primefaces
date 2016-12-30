@@ -254,8 +254,7 @@ public class ExcelExporter extends Exporter {
     	externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
 
         OutputStream out = externalContext.getResponseOutputStream();
-        generatedExcel.write(out);
-        externalContext.responseFlushBuffer();        
+        generatedExcel.write(out);  
     }
 
     protected String getContentType() {
