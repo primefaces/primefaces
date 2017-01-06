@@ -356,17 +356,17 @@ PrimeFaces.ajax = {
             encodedURLfield = form.children("input[name*='javax.faces.encodedURL']"),
             postParams = [];
 
+            // See #6857 - parameter namespace for porlet
+            var parameterNamespace = PrimeFaces.ajax.Request.extractParameterNamespace(form);
+
             //portlet support
-            var porletFormsSelector = null;
+            var portletFormsSelector = null;
             if(encodedURLfield.length > 0) {
-                porletFormsSelector = 'form[action="' + postURL + '"]';
+                portletFormsSelector = 'form[id*="' + parameterNamespace + '"]';
                 postURL = encodedURLfield.val();
             }
 
             PrimeFaces.debug('URL to post ' + postURL + '.');
-
-            // See #6857 - parameter namespace for porlet
-            var parameterNamespace = PrimeFaces.ajax.Request.extractParameterNamespace(form);
 
             //partial ajax
             PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterNamespace);
@@ -514,7 +514,7 @@ PrimeFaces.ajax = {
                 cache : false,
                 dataType : "xml",
                 data : postData,
-                portletForms: porletFormsSelector,
+                portletForms: portletFormsSelector,
                 source: cfg.source,
                 global: false,
                 beforeSend: function(xhr, settings) {
