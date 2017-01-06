@@ -202,6 +202,8 @@ import org.primefaces.convert.DateTimeConverter;
             DateTimeConverter con = new DateTimeConverter();
             String pattern = this.isTimeOnly() ? this.calculateTimeOnlyPattern() : this.calculatePattern();
             con.setPattern(pattern);
+            con.setTimeZone(this.calculateTimeZone());
+            con.setLocale(this.calculateLocale(getFacesContext()));
 
             return con;
         }
