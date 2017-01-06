@@ -61,6 +61,7 @@ public class PrimeConfiguration {
     private boolean beanValidationAvailable = false;
     private boolean stringConverterAvailable = false;
     private boolean el22Available = false;
+    private boolean jsf23 = false;
     private boolean jsf22 = false;
     private boolean jsf21 = false;
     private boolean bv11 = false;
@@ -87,12 +88,17 @@ public class PrimeConfiguration {
         el22Available = checkIfEL22IsAvailable();
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
-        jsf22 = detectJSF22();
-        if (jsf22) {
+        jsf23 = detectJSF23();
+        if (jsf23) {
+            jsf22 = true;
             jsf21 = true;
-        }
-        else {
-            jsf21 = detectJSF21();
+        } else {
+            jsf22 = detectJSF22();
+            if (jsf22) {
+                jsf21 = true;
+            } else {
+                jsf21 = detectJSF21();
+            }
         }
 
         bv11 = detectBV11();
@@ -234,6 +240,24 @@ public class PrimeConfiguration {
         return available;
     }
 
+    private boolean detectJSF23() {
+        String version = FacesContext.class.getPackage().getImplementationVersion();
+
+        if(version != null) {
+            return version.startsWith("2.3");
+        }
+        else {
+            //fallback
+            try {
+                Class.forName("javax.faces.component.UIImportConstant");
+                return true;
+            }
+            catch (ClassNotFoundException ex) {
+                return false;
+            }
+        }
+    }
+
     private boolean detectJSF22() {
         String version = FacesContext.class.getPackage().getImplementationVersion();
 
@@ -314,6 +338,10 @@ public class PrimeConfiguration {
 
     public String getSecretKey() {
         return secretKey;
+    }
+
+    public boolean isAtLeastJSF23() {
+        return jsf23;
     }
 
     public boolean isAtLeastJSF22() {

@@ -23,11 +23,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.faces.component.NamingContainer;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import org.primefaces.application.resource.DynamicResourcesPhaseListener;
 
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -269,11 +272,19 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 FacesContext context = FacesContext.getCurrentInstance();
 
                 // catch possible ViewExpired
-                if (context.getViewRoot() != null) {
+                UIViewRoot viewRoot = context.getViewRoot();
+                if (viewRoot != null) {
                     // portlet parameter namespacing
-                    if (context.getViewRoot() instanceof NamingContainer) {
+                    if (viewRoot instanceof NamingContainer) {
                         Map<String, Object> params = new HashMap<String, Object>();
-                        params.put("parameterNamespace", context.getViewRoot().getContainerClientId(context));
+
+                        String parameterNamespace = viewRoot.getContainerClientId(context);
+                        if ((parameterNamespace != null) && requestContext.getApplicationContext().getConfig().isAtLeastJSF23()) {
+
+                            // https://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790
+                            parameterNamespace += UINamingContainer.getSeparatorChar(context);
+                        }
+                        params.put("parameterNamespace", parameterNamespace);
                         encodeCallbackParams(params);
                     }
 
