@@ -27,7 +27,7 @@ import org.primefaces.util.ComponentTraversalUtils;
 
 public class IdExpressionResolver implements SearchExpressionResolver, MultiSearchExpressionResolver {
 
-    private static final Pattern PATTERN = Pattern.compile("@id\\((\\w+)\\)");
+    private static final Pattern PATTERN = Pattern.compile("@id\\(([\\w-]+)\\)");
 
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         throw new FacesException("@id likely returns multiple components, therefore it's not supported in #resolveComponent... expression \"" + expression
