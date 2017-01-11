@@ -306,23 +306,25 @@ PrimeFaces.ajax = {
 
             var global = (cfg.global === true || cfg.global === undefined) ? true : false,
             form = null,
-            sourceId = null;
+            sourceId = null,
+            retVal = null;
 
             if(cfg.onstart) {
-                var retVal = cfg.onstart.call(this, cfg);
-                if(retVal === false) {
-                    PrimeFaces.debug('Ajax request cancelled by onstart callback.');
-
-                    //remove from queue
-                    if(!cfg.async) {
-                        PrimeFaces.ajax.Queue.poll();
-                    }
-
-                    return false;  //cancel request
-                }
+                retVal = cfg.onstart.call(this, cfg);  
             }
             if(cfg.ext && cfg.ext.onstart) {
-                cfg.ext.onstart.call(this, cfg);
+                retVal = cfg.ext.onstart.call(this, cfg);
+            }
+            
+            if(retVal === false) {
+                PrimeFaces.debug('Ajax request cancelled by onstart callback.');
+
+                //remove from queue
+                if(!cfg.async) {
+                    PrimeFaces.ajax.Queue.poll();
+                }
+
+                return false;  //cancel request
             }
 
             if(global) {
