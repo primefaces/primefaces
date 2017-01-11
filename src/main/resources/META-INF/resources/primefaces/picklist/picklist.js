@@ -741,11 +741,18 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     fireItemSelectEvent: function(item) {
         if(this.hasBehavior('select')) {
             var itemSelectBehavior = this.cfg.behaviors['select'],
+            listName = this.getListName(item),
+            inputContainer = (listName === "source") ? this.sourceInput : this.targetInput,
             ext = {
                 params: [
                     {name: this.id + '_itemIndex', value: item.index()},
-                    {name: this.id + '_listName', value: this.getListName(item)}
-                ]
+                    {name: this.id + '_listName', value: listName}
+                ],
+                onstart: function() {
+                    if(!inputContainer.children().length) {
+                        return false;
+                    }
+                }
             };
 
             itemSelectBehavior.call(this, ext);
