@@ -418,23 +418,24 @@
             PrimeFaces.customFocus = true;
         },
 
-        monitorDownload: function(start, complete) {
+        monitorDownload: function(start, complete, monitorKey) {
             if(this.cookiesEnabled()) {
                 if(start) {
                     start();
                 }
 
+                var cookieName = monitorKey ? 'primefaces.download_' + monitorKey : 'primefaces.download';
                 window.downloadMonitor = setInterval(function() {
-                    var downloadComplete = PrimeFaces.getCookie('primefaces.download');
+                    var downloadComplete = PrimeFaces.getCookie(cookieName);
 
                     if(downloadComplete === 'true') {
                         if(complete) {
                             complete();
                         }
                         clearInterval(window.downloadMonitor);
-                        PrimeFaces.setCookie('primefaces.download', null);
+                        PrimeFaces.setCookie(cookieName, null);
                     }
-                }, 250);
+                }, 1000);
             }
         },
 
