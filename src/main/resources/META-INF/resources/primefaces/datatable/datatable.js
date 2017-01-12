@@ -2281,6 +2281,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         displayContainer.show();
         editableContainer.hide();
         cell.removeData('old-value').removeData('multi-edit');
+        
+        if(this.cfg.cellEditMode === "lazy") {
+            editableContainer.children().remove();
+        }
     },
     
     doCellEditRequest: function(cell) {

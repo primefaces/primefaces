@@ -218,7 +218,8 @@ public class DataTableRenderer extends DataRenderer {
             wb.attr("editable", true)
                 .attr("editMode", table.getEditMode())
                 .attr("cellSeparator", table.getCellSeparator(), null)
-                .attr("saveOnCellBlur", table.isSaveOnCellBlur(), true);
+                .attr("saveOnCellBlur", table.isSaveOnCellBlur(), true)
+                .attr("cellEditMode", table.getCellEditMode(), "eager");
         }
         
         //MultiColumn Sorting
