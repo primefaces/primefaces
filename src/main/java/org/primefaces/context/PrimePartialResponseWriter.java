@@ -29,8 +29,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import org.primefaces.application.resource.DynamicResourcesPhaseListener;
-
-import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -156,8 +154,6 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     
     @Override
     public void redirect(String url) throws IOException {
-        startMetadataIfNecessary();
-        
         wrapped.redirect(url);
     }
 
