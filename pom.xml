@@ -395,6 +395,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/chips/chips.css</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -460,6 +461,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tristatecheckbox/tristatecheckbox.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/chips/chips.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
