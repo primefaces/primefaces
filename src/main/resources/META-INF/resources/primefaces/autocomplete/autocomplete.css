@@ -84,6 +84,7 @@
     min-height: 1px;
     overflow: hidden;
     width: 400px;
+    float: left;
 }
 
 .ui-autocomplete-multiple-container.ui-inputfield {
