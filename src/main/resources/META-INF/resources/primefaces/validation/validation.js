@@ -802,7 +802,7 @@ if (window.PrimeFaces) {
         },
 
         renderMessages: function(container) {
-            var uiMessagesAll = container.is('div.ui-messages') ? container : container.find('div.ui-messages'),
+            var uiMessagesAll = container.is('div.ui-messages') ? container : container.find('div.ui-messages:not(.ui-fileupload-messages)'),
                 uiMessages = uiMessagesAll.filter(function(idx) { return $(uiMessagesAll[idx]).data('severity').indexOf('error') !== -1; }),
                 uiMessageCollection = container.find('div.ui-message'),
                 growlPlaceholderAll = container.is('.ui-growl-pl') ? container : container.find('.ui-growl-pl'),
