@@ -287,7 +287,9 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                     // dynamic resource loading
                     // we just do it for postbacks, otherwise ajax requests without a form would reload all resources
                     // we also skip update=@all as the head will all resources will already be rendered
-                    if (context.isPostback() && !context.getPartialViewContext().isRenderAll()) {
+                    if (context.isPostback()
+                            && !context.getPartialViewContext().isRenderAll()
+                            && !requestContext.getApplicationContext().getConfig().isAtLeastJSF23()) {
                         ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
                         ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
                         if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {

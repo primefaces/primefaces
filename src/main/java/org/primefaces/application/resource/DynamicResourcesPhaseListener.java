@@ -6,6 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import org.primefaces.context.RequestContext;
 import org.primefaces.util.ResourceUtils;
 
 public class DynamicResourcesPhaseListener implements PhaseListener {
@@ -34,6 +35,11 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
         
         // skip update=@all as the head will all resources will already be rendered
         if (context.getPartialViewContext().isRenderAll()) {
+            return;
+        }
+
+        // JSF 2.3 contains a own dynamic resource handling
+        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF23()) {
             return;
         }
 
