@@ -62,121 +62,124 @@
   };
 })();
 
-PrimeFaces.widget = {};
+if (!PrimeFaces.widget) {
 
-/**
- * BaseWidget for PrimeFaces Widgets
- */
-PrimeFaces.widget.BaseWidget = Class.extend({
+    PrimeFaces.widget = {};
 
-    init: function(cfg) {
-        this.cfg = cfg;
-        this.id = cfg.id;
-        this.jqId = PrimeFaces.escapeClientId(this.id);
-        this.jq = $(this.jqId);
-        this.widgetVar = cfg.widgetVar;
-        
-        //remove script tag
-        $(this.jqId + '_s').remove();
-        
-        if (this.widgetVar) {
-            var $this = this;
-            this.jq.on("remove", function() {
-                if ($this.isDetached()) {
-                    PrimeFaces.detachedWidgets.push($this.widgetVar);
-                }
-            });
-        }
-    },
+    /**
+     * BaseWidget for PrimeFaces Widgets
+     */
+    PrimeFaces.widget.BaseWidget = Class.extend({
 
-    //used in ajax updates, reloads the widget configuration
-    refresh: function(cfg) {
-        return this.init(cfg);
-    },
-    
-    //will be called when the widget after a ajax request if the widget is detached
-    destroy: function() {
-    	PrimeFaces.debug("Destroyed detached widget: " + this.widgetVar);
-    },
+        init: function(cfg) {
+            this.cfg = cfg;
+            this.id = cfg.id;
+            this.jqId = PrimeFaces.escapeClientId(this.id);
+            this.jq = $(this.jqId);
+            this.widgetVar = cfg.widgetVar;
 
-    //checks if the given widget is detached
-    isDetached: function() {
-    	return document.getElementById(this.id) === null;
-    },
+            //remove script tag
+            $(this.jqId + '_s').remove();
 
-    //returns jquery object representing the main dom element related to the widget
-    getJQ: function(){
-        return this.jq;
-    },
-
-	/**
-	 * Removes the widget's script block from the DOM.
-	 *
-	 * @param {string} clientId The id of the widget.
-	 */
-    removeScriptElement: function(clientId) {
-    	$(PrimeFaces.escapeClientId(clientId) + '_s').remove();
-    }
-});
-    
-/**
- * Widgets that require to be visible to initialize properly for hidden container support
- */
-PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
-
-    renderDeferred: function() {     
-        if(this.jq.is(':visible')) {
-            this._render();
-            this.postRender();
-        }
-        else {
-            var container = this.jq.closest('.ui-hidden-container'),
-            $this = this;
-    
-            if(container.length) {
-                this.addDeferredRender(this.id, container, function() {
-                    return $this.render();
+            if (this.widgetVar) {
+                var $this = this;
+                this.jq.on("remove", function() {
+                    if ($this.isDetached()) {
+                        PrimeFaces.detachedWidgets.push($this.widgetVar);
+                    }
                 });
             }
+        },
+
+        //used in ajax updates, reloads the widget configuration
+        refresh: function(cfg) {
+            return this.init(cfg);
+        },
+
+        //will be called when the widget after a ajax request if the widget is detached
+        destroy: function() {
+            PrimeFaces.debug("Destroyed detached widget: " + this.widgetVar);
+        },
+
+        //checks if the given widget is detached
+        isDetached: function() {
+            return document.getElementById(this.id) === null;
+        },
+
+        //returns jquery object representing the main dom element related to the widget
+        getJQ: function(){
+            return this.jq;
+        },
+
+        /**
+         * Removes the widget's script block from the DOM.
+         *
+         * @param {string} clientId The id of the widget.
+         */
+        removeScriptElement: function(clientId) {
+            $(PrimeFaces.escapeClientId(clientId) + '_s').remove();
         }
-    },
-    
-    render: function() {
-        if(this.jq.is(':visible')) {
-            this._render();
-            this.postRender();
-            return true;
-        }
-        else {
-            return false;
-        }
-    },
-    
+    });
+
     /**
-     * Must be overriden
+     * Widgets that require to be visible to initialize properly for hidden container support
      */
-    _render: function() {
-        throw 'Unsupported Operation';
-    },
-    
-    postRender: function() {
-        
-    },
-    
-    destroy: function() {
-        this._super();
-        PrimeFaces.removeDeferredRenders(this.id);
-    },
-        
-    addDeferredRender: function(widgetId, container, callback) {
-        PrimeFaces.addDeferredRender(widgetId, container.attr('id'), callback);
-        
-        if(container.is(':hidden')) {
-            var parentContainer = this.jq.closest('.ui-hidden-container');
-            
-            if(parentContainer.length) {
-                this.addDeferredRender(widgetId, container.parent().closest('.ui-hidden-container'), callback);
+    PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
+
+        renderDeferred: function() {     
+            if(this.jq.is(':visible')) {
+                this._render();
+                this.postRender();
+            }
+            else {
+                var container = this.jq.closest('.ui-hidden-container'),
+                $this = this;
+
+                if(container.length) {
+                    this.addDeferredRender(this.id, container, function() {
+                        return $this.render();
+                    });
+                }
+            }
+        },
+
+        render: function() {
+            if(this.jq.is(':visible')) {
+                this._render();
+                this.postRender();
+                return true;
+            }
+            else {
+                return false;
+            }
+        },
+
+        /**
+         * Must be overriden
+         */
+        _render: function() {
+            throw 'Unsupported Operation';
+        },
+
+        postRender: function() {
+
+        },
+
+        destroy: function() {
+            this._super();
+            PrimeFaces.removeDeferredRenders(this.id);
+        },
+
+        addDeferredRender: function(widgetId, container, callback) {
+            PrimeFaces.addDeferredRender(widgetId, container.attr('id'), callback);
+
+            if(container.is(':hidden')) {
+                var parentContainer = this.jq.closest('.ui-hidden-container');
+
+                if(parentContainer.length) {
+                    this.addDeferredRender(widgetId, container.parent().closest('.ui-hidden-container'), callback);
+                }
             }
         }
-    }
-});
+    });
+}
