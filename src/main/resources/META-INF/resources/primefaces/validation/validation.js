@@ -1114,6 +1114,7 @@ if (window.PrimeFaces) {
                     for(var i = 0; i < radios.length; i++) {
                         radios.eq(i).addClass('ui-state-error');
                     }
+                    PrimeFaces.validator.Highlighter.highlightLabel(container);
                 },
 
                 unhighlight: function(element) {
@@ -1123,6 +1124,7 @@ if (window.PrimeFaces) {
                     for(var i = 0; i < radios.length; i++) {
                         radios.eq(i).removeClass('ui-state-error');
                     }
+                    PrimeFaces.validator.Highlighter.unhighlightLabel(container);
                 }
 
             },
