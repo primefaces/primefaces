@@ -1114,6 +1114,7 @@ if (window.PrimeFaces) {
                     for(var i = 0; i < radios.length; i++) {
                         radios.eq(i).addClass('ui-state-error');
                     }
+                    PrimeFaces.validator.Highlighter.highlightLabel(container);
                 },
 
                 unhighlight: function(element) {
@@ -1123,6 +1124,7 @@ if (window.PrimeFaces) {
                     for(var i = 0; i < radios.length; i++) {
                         radios.eq(i).removeClass('ui-state-error');
                     }
+                    PrimeFaces.validator.Highlighter.unhighlightLabel(container);
                 }
 
             },
@@ -1142,11 +1144,14 @@ if (window.PrimeFaces) {
             'inputnumber': {
 
                 highlight: function(element) {
-                    element.prev().addClass('ui-state-error');
+                    element.addClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.highlightLabel(element);
                 },
 
                 unhighlight: function(element) {
-                    element.prev().removeClass('ui-state-error');
+                    element.removeClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.unhighlightLabel(element);
+
                 }
 
             }
