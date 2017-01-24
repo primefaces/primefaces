@@ -33,7 +33,7 @@ import org.primefaces.util.Constants;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
-    private final static Logger logger = Logger.getLogger(StreamedContentHandler.class.getName());
+    private final static Logger LOG = Logger.getLogger(StreamedContentHandler.class.getName());
 
     public void handle(FacesContext context) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
@@ -51,11 +51,6 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
                 if (dynamicResourcesMapping != null) {
                     String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
-                    dynamicResourcesMapping.remove(resourceKey);
-                    
-                    if (dynamicResourcesMapping.isEmpty()) {
-                        session.remove(Constants.DYNAMIC_RESOURCES_MAPPING);
-                    }
 
                     if (dynamicContentEL != null) {
                         ELContext eLContext = context.getELContext();
@@ -79,7 +74,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                         handleCache(externalContext, cache);
 
                         if(streamedContent.getContentLength() != null){
-                            externalContext.setResponseContentLength(streamedContent.getContentLength().intValue());
+                            externalContext.setResponseContentLength(streamedContent.getContentLength());
                         }
 
                         if(streamedContent.getContentEncoding() != null) {
@@ -100,7 +95,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                 context.responseComplete();
 
             } catch(Exception e) {
-                logger.log(Level.SEVERE, "Error in streaming dynamic resource. {0}", new Object[]{e.getMessage()});
+                LOG.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
                 throw new IOException(e);
             }
             finally {

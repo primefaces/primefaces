@@ -19,7 +19,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import javax.el.ValueExpression;
@@ -59,7 +58,7 @@ public class DynamicContentSrcBuilder {
                 Map<String,Object> session = context.getExternalContext().getSessionMap();
                 Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
                 if(dynamicResourcesMapping == null) {
-                    dynamicResourcesMapping = new HashMap<String, String>();
+                    dynamicResourcesMapping = new LimitedSizeHashMap<String, String>(200);
                     session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
                 }
                 
