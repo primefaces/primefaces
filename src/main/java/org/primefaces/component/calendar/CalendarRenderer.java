@@ -99,6 +99,8 @@ public class CalendarRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String type = popup ? "text" : "hidden";
         String labelledBy = calendar.getLabelledBy();
+        String inputStyle = calendar.getInputStyle();
+        String inputStyleClass = calendar.getInputStyleClass();
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
@@ -112,12 +114,14 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         if (popup) {
-            String inputStyleClass = Calendar.INPUT_STYLE_CLASS;
+            inputStyleClass = (inputStyleClass == null) ? Calendar.INPUT_STYLE_CLASS
+                : Calendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
             if (calendar.isDisabled()) inputStyleClass = inputStyleClass + " ui-state-disabled";
             if (!calendar.isValid()) inputStyleClass = inputStyleClass + " ui-state-error";
 
             writer.writeAttribute("class", inputStyleClass, null);
 
+            if (inputStyle != null) writer.writeAttribute("style", inputStyle, null);
             if (calendar.isReadonly()||calendar.isReadonlyInput()) writer.writeAttribute("readonly", "readonly", null);
             if (calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 
