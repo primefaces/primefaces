@@ -970,7 +970,8 @@ public class DataTableRenderer extends DataRenderer {
                 table.setRowIndex(i);
                 encodeHeaderRow(context, table, headerRow);
             }
-
+            
+            table.setRowIndex(i);
             encodeRow(context, table, clientId, i, columnStart, columnEnd);
 
             if(encodeSummaryRow && !isInSameGroup(context, table, i, 1, groupByVE, eLContext)) {
