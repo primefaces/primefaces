@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -108,7 +109,9 @@ public class SearchExpressionFacade {
                             }
                         } // default ID case
                         else {
-                            UIComponent component = resolveComponentById(source, expression, separatorString, context, hints);
+                            ResolveComponentCallback callback = new ResolveComponentCallback();
+                            resolveComponentById(source, expression, separatorString, context, callback);
+                            UIComponent component = callback.getComponent();
 
                             if (component == null) {
                                 if (!SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
@@ -239,19 +242,19 @@ public class SearchExpressionFacade {
                         }
                         // default ID case
                         else {
-                            UIComponent component = resolveComponentById(source, expression, separatorString, context, hints);
+                            ResolveClientIdCallback callback = new ResolveClientIdCallback(source, hints, expression);
+                            resolveComponentById(source, expression, separatorString, context, callback);
 
-                            if (component == null) {
-                                if (!SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
-                                    cannotFindComponent(context, source, expression);
-                                }
+                            if (callback.getClientId() == null && !SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+                                cannotFindComponent(context, source, expression);
                             }
-                            else {
-                                validateRenderer(context, source, component, expression, hints);
+                            
+                            if (callback.getClientId() != null)
+                            {
                                 if (expressionsBuffer.length() > 0) {
                                     expressionsBuffer.append(" ");
                                 }
-                                expressionsBuffer.append(component.getClientId(context));
+                                expressionsBuffer.append(callback.getClientId());
                             }
                         }
                     }
@@ -332,7 +335,14 @@ public class SearchExpressionFacade {
             }
         } // default ID case
         else {
-            component = resolveComponentById(source, expression, separatorString, context, hints);
+            ResolveClientIdCallback callback = new ResolveClientIdCallback(source, hints, expression);
+            resolveComponentById(source, expression, separatorString, context, callback);
+            
+            if (callback.getClientId() == null && !SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+                cannotFindComponent(context, source, expression);
+            }
+            
+            return callback.getClientId();
         }
 
         if (component == null) {
@@ -348,6 +358,41 @@ public class SearchExpressionFacade {
         return component.getClientId(context);
     }
 
+    static class ResolveClientIdCallback implements ContextCallback {
+        private final UIComponent source;
+        private final int hints;
+        private final String expression;
+
+        private String clientId;
+
+        ResolveClientIdCallback(UIComponent source, int hints, String expression) {
+            this.source = source;
+            this.hints = hints;
+            this.expression = expression;
+        } 
+
+        public void invokeContextCallback(FacesContext context, UIComponent target) {
+            clientId = target.getClientId(context);
+            validateRenderer(context, source, target, expression, hints);
+        }
+
+        public String getClientId() {
+            return clientId;
+        }        
+    }
+    
+    static class ResolveComponentCallback implements ContextCallback {
+        private UIComponent component;
+
+        public void invokeContextCallback(FacesContext context, UIComponent target) {
+            component = target;
+        }
+
+        public UIComponent getComponent() {
+            return component;
+        }        
+    }
+    
     /**
      * Resolves a {@link UIComponent} for the given expression.
      *
@@ -406,7 +451,9 @@ public class SearchExpressionFacade {
             component = resolver.resolveComponent(context, source, source, expression, hints);
         } // default ID case
         else {
-            component = resolveComponentById(source, expression, separatorString, context, hints);
+            ResolveComponentCallback callback = new ResolveComponentCallback();
+            resolveComponentById(source, expression, separatorString, context, callback);
+            component = callback.getComponent();
         }
 
         if (component == null && !SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
@@ -468,15 +515,10 @@ public class SearchExpressionFacade {
         return last;
     }
 
-    private static UIComponent resolveComponentById(UIComponent source, String expression, String separatorString, FacesContext context, int hints) {
+    private static void resolveComponentById(UIComponent source, String expression, String separatorString, FacesContext context, 
+            ContextCallback callback) {
 
-        UIComponent component = ComponentTraversalUtils.firstById(expression, source, separatorString, context);
-
-        if (component == null && !SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
-            cannotFindComponent(context, source, expression);
-        }
-
-        return component;
+        ComponentTraversalUtils.firstById(expression, source, separatorString, context, callback);
     }
 
     private static ArrayList<UIComponent> resolveComponentsByExpressionChain(FacesContext context, UIComponent source, String expression, char separatorChar,

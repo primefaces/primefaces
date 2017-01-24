@@ -132,9 +132,9 @@ public class ComponentTraversalUtils {
      * @param base The base component to start the traversal.
      * @param separatorString The seperatorString (e.g. :).
      * @param context The FacesContext.
-     * @return The component or null.
+     * @param callback the callback for the found component
      */
-    public static UIComponent firstById(String id, UIComponent base, String separatorString, FacesContext context) {
+    public static void firstById(String id, UIComponent base, String separatorString, FacesContext context, ContextCallback callback) {
 
         // try #findComponent first
         UIComponent component = base.findComponent(id);
@@ -148,13 +148,12 @@ public class ComponentTraversalUtils {
                 tempExpression = tempExpression.substring(1);
             }
 
-            IdContextCallback callback = new IdContextCallback();
             context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
-
-            component = callback.getComponent();
         }
-
-        return component;
+        else
+        {
+            callback.invokeContextCallback(context, component);
+        }
     }
 
 
@@ -169,18 +168,5 @@ public class ComponentTraversalUtils {
 
     public static UIComponent closestNamingContainer(UIComponent component) {
         return (UIComponent) closest(NamingContainer.class, component);
-    }
-
-    public static class IdContextCallback implements ContextCallback {
-
-        private UIComponent component;
-
-        public void invokeContextCallback(FacesContext context, UIComponent target) {
-            component = target;
-        }
-
-        public UIComponent getComponent() {
-            return component;
-        }
     }
 }
