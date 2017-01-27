@@ -233,7 +233,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneMenu.ITEMS_WRAPPER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, selectItems.size()), null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
 
         if(customContent) {
             writer.startElement("table", menu);

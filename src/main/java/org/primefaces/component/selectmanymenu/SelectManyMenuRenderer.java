@@ -143,7 +143,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         
         writer.startElement("div", menu);
         writer.writeAttribute("class", SelectManyMenu.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, selectItems.size()), null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
 
         if(customContent) {
             writer.startElement("table", null);
