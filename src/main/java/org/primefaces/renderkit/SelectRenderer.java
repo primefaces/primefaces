@@ -16,7 +16,6 @@
 package org.primefaces.renderkit;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -70,10 +69,28 @@ public class SelectRenderer extends InputRenderer {
     }
     
     protected int countSelectItems(List<SelectItem> selectItems) {
+        if (selectItems == null) {
+            return 0;
+        }
+
         int count = selectItems.size();
         for (SelectItem selectItem : selectItems) {
             if(selectItem instanceof SelectItemGroup){
-                count += countSelectItems(Arrays.asList(((SelectItemGroup)selectItem).getSelectItems()));
+                count += countSelectItems(((SelectItemGroup) selectItem).getSelectItems());
+            }
+        }
+        return count;
+    }
+    
+    protected int countSelectItems(SelectItem[] selectItems) {
+        if (selectItems == null) {
+            return 0;
+        }
+
+        int count = selectItems.length;
+        for (SelectItem selectItem : selectItems) {
+            if(selectItem instanceof SelectItemGroup){
+                count += countSelectItems(((SelectItemGroup) selectItem).getSelectItems());
             }
         }
         return count;
