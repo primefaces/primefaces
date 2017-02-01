@@ -160,10 +160,9 @@ public class TreeTableRenderer extends DataRenderer {
             encodeCellEdit(context, tt);
         }
         else if(tt.isPaginationRequest(context)) {
-            int first = Integer.parseInt(params.get(clientId + "_first"));
-            int rows = Integer.parseInt(params.get(clientId + "_rows"));
+            tt.updatePaginationData(context);
             TreeNode root = tt.getValue();
-            encodeNodeChildren(context, tt, root, first, rows);
+            encodeNodeChildren(context, tt, root, tt.getFirst(), tt.getRows());
         } 
         else {
             encodeMarkup(context, tt);

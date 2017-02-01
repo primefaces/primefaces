@@ -477,3 +477,23 @@ import org.primefaces.component.api.UIData;
         }
     }
 
+    public void updatePaginationData(FacesContext context) {
+        String componentClientId = this.getClientId(context);
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        ELContext elContext = context.getELContext();
+        
+		String firstParam = params.get(componentClientId + "_first");
+		String rowsParam = params.get(componentClientId + "_rows");
+
+		this.setFirst(Integer.valueOf(firstParam));
+		this.setRows(Integer.valueOf(rowsParam));
+        
+        ValueExpression firstVe = this.getValueExpression("first");
+        ValueExpression rowsVe = this.getValueExpression("rows");
+
+        if(firstVe != null && !firstVe.isReadOnly(elContext))
+            firstVe.setValue(context.getELContext(), this.getFirst());
+        if(rowsVe != null && !rowsVe.isReadOnly(elContext))
+            rowsVe.setValue(context.getELContext(), this.getRows());
+    }
+
