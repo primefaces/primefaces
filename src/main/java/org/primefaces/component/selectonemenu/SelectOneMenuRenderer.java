@@ -170,7 +170,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.startElement("input", null);
             writer.writeAttribute("type", "text", null);
             writer.writeAttribute("name", menu.getClientId(context) + "_editableInput", null);
-            writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
+            writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS + " ui-widget", null);
             
             if(menu.getTabindex() != null) {
                 writer.writeAttribute("tabindex", menu.getTabindex(), null);
