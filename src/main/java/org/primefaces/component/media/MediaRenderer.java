@@ -26,6 +26,7 @@ import org.primefaces.application.resource.DynamicContentType;
 
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.DynamicContentSrcBuilder;
@@ -47,6 +48,13 @@ public class MediaRenderer extends CoreRenderer {
         boolean isIE = AgentUtils.isIE(context);
         String sourceParam = player.getSourceParam();
 
+        Object value = media.getValue();
+        if(value != null && value instanceof StreamedContent && player.getType().equals("application/pdf")) {
+            StreamedContent streamedContent = (StreamedContent) value;
+            int index = src.indexOf("?");
+            src = src.substring(0, index) + ";/" + streamedContent.getName() + "" + src.substring(index, src.length());
+        }
+        
 		writer.startElement("object", media);
         writer.writeAttribute("type", player.getType(), null);
         writer.writeAttribute("data", src, null);

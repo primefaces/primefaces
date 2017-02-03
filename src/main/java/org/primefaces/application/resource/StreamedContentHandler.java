@@ -80,6 +80,10 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                         if(streamedContent.getContentEncoding() != null) {
                             externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
                         }
+                        
+                        if(streamedContent.getName() != null) {
+                            externalContext.setResponseHeader("Content-Disposition", "inline;filename=\"" + streamedContent.getName() + "\"");
+                        }
 
                         byte[] buffer = new byte[2048];
 
