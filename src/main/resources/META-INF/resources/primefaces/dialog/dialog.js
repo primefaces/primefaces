@@ -330,7 +330,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.jq.draggable({
             cancel: '.ui-dialog-content, .ui-dialog-titlebar-close',
             handle: '.ui-dialog-titlebar',
-            containment : 'document',
+            containment : 'window',
             stop: function( event, ui ) {
                 if($this.hasBehavior('move')) {
                     var move = $this.cfg.behaviors['move'];
