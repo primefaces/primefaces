@@ -1327,7 +1327,8 @@ import org.primefaces.component.datatable.TableState;
         if(ts != null) {
             if(this.isPaginator()) {
                 this.setFirst(ts.getFirst());
-                this.setRows(ts.getRows());
+                int rows = (ts.getRows() == 0) ? this.getRows() : ts.getRows();
+                this.setRows(rows);
             }
 
             this.setMultiSortMeta(ts.getMultiSortMeta());
