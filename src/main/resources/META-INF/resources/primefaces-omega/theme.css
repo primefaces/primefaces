@@ -778,6 +778,18 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     background-color: #ffffff;
 }
 
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active,
+.ui-autocomplete .ui-autocomplete-token.ui-state-active,
+.ui-chips .ui-chips-token.ui-state-active{
+    background: #186ba0;
+    color: #FFFFFF;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token .ui-selectcheckboxmenu-token-icon,
+.ui-autocomplete .ui-autocomplete-token .ui-autocomplete-token-icon,
+.ui-chips .ui-chips-token .ui-chips-token-icon {
+    background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
+}
 
 /* TabMenu */
 .ui-tabmenu li.ui-state-active {

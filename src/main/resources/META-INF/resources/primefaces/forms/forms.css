@@ -544,6 +544,65 @@ button.ui-button::-moz-focus-inner {
     padding:0px;
 }
 
+.ui-selectcheckboxmenu-multiple-container {
+    clear: left;
+    cursor: pointer;
+    list-style-type: none;
+    margin: 0;
+    min-height: 24px;
+    overflow: hidden;
+    min-width: 100px;
+}
+
+.ui-selectcheckboxmenu-multiple-container.ui-inputfield {
+    padding:0 22px 0 0;
+    border: 0;
+}
+
+.ui-selectcheckboxmenu-token {
+    cursor: default;
+    float: left;
+    overflow: hidden;
+    padding: 1px 3px;
+    white-space: nowrap;
+    position: relative;
+    margin:2px;
+}
+
+.ui-selectcheckboxmenu-token-label {
+    display: block;
+    padding: 0em 2.1em 0em 0.5em;
+}
+
+.ui-selectcheckboxmenu-token-icon {
+    margin-top: -9px;
+    position: absolute;
+    right: 0.2em;
+    top: 50%;
+    cursor: pointer;
+}
+
+.ui-selectcheckboxmenu-input-token {
+    float: left;
+    list-style-type: none;
+    margin: 1px;
+    padding: 0;
+}
+
+.ui-selectcheckboxmenu-input-token input {
+    border: 0 none;
+    width: 140px;
+    outline: medium none;
+    background-color: transparent;
+    margin:2px;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger  .ui-icon {
+    position: relative;
+    top: 50%;
+    margin-top: -8px;
+}
+
 .ui-splitbutton {
     position: relative;
     padding-right: 2em;
