@@ -1009,7 +1009,7 @@ else {
  */
 PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
     attached: false,
-    
+
     init: function(cfg) {
         this._super(cfg);
         this.cfg.width = this.cfg.width||320;
@@ -1053,8 +1053,8 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
 
     capture: function() {
         if (this.attached) {
-	        var $this = this;
-	        
+            var $this = this;
+            
             Webcam.snap(function(data) {
                 var options = {
                     source: $this.id,
@@ -1068,7 +1068,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Request.handle(options);
             });
         } else {
-            (console.error || console.log).call(console, 'Capture error: AdvancedPhotoCam not attached to the camera');
+            PrimeFaces.error('Capture error: AdvancedPhotoCam not attached to the camera');
         }
     }
 
