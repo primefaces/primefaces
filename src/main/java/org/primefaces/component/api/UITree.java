@@ -791,8 +791,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         
         TreeNode rowNode = this.getRowNode();
         String treeNodeType = null;
-        if(rowNode!=null) {
-        	treeNodeType = rowNode.getType();
+        if (rowNode!=null) {
+            treeNodeType = rowNode.getType();
         }
         
         if(getChildCount() > 0) {
@@ -812,11 +812,12 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                     uicolumns.setRowIndex(-1);
                 }
                 else if(child instanceof UIColumn) {
-					if (child instanceof UITreeNode) {
-						UITreeNode uiTreeNode = (UITreeNode) child;
-						if (treeNodeType!=null && !treeNodeType.equals(uiTreeNode.getType()))
-							continue;
-					}
+                    if (child instanceof UITreeNode) {
+                        UITreeNode uiTreeNode = (UITreeNode) child;
+                        if (treeNodeType != null && !treeNodeType.equals(uiTreeNode.getType())) {
+                            continue;
+                        }
+                    }
                     if(child.visitTree(context, callback)) {
                         return true;
                     }
