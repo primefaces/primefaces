@@ -678,9 +678,19 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             }); 
             
             this.trigger.on('keydown.ui-menu', function(e) {
-                if(e.which === $.ui.keyCode.DOWN) {
-                    $this.keyboardTarget.trigger('focus.menu');
-                    e.preventDefault();
+                var keyCode = $.ui.keyCode;
+            
+                switch(e.which) {
+                    case keyCode.DOWN:
+                        $this.keyboardTarget.trigger('focus.menu');
+                        e.preventDefault();
+                    break;
+                    
+                    case keyCode.TAB:
+                        if($this.jq.is(':visible')) {
+                            $this.hide();
+                        }
+                    break;
                 }
             });
         }
