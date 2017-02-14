@@ -7,7 +7,8 @@
 
 ## 1) Environment
 - PrimeFaces version:
-- Does it work on the newest PrimeFaces version?
+- Does it work on the newest released PrimeFaces version? Version?
+- Does it work on the newest sources in GitHub? (Build by source -> https://github.com/primefaces/primefaces/wiki/Building-From-Source)
 - Application server + version:
 - Affected browsers:
 
