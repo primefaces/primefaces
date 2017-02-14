@@ -1843,13 +1843,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if(!window.FormData) {
                     for(var i = 0; i < data.files.length; i++) {
                         var file = data.files[i];
-
-                        file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value')
-                                .addClass('ui-progressbar-value-legacy')
-                                .css({
-                                    width: '100%',
-                                    display: 'block'
-                                });
+                        if(file.row) {
+                            file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value')
+                                    .addClass('ui-progressbar-value-legacy')
+                                    .css({
+                                        width: '100%',
+                                        display: 'block'
+                                    });
+                        }
                     }
                 }
             },
@@ -1864,11 +1865,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                     for(var i = 0; i < data.files.length; i++) {
                         var file = data.files[i];
-
-                        file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value').css({
-                            width: progress + '%',
-                            display: 'block'
-                        });
+                        if(file.row) {
+                            file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value').css({
+                                width: progress + '%',
+                                display: 'block'
+                            });
+                        }
                     }
                 }
             },
@@ -2066,9 +2068,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
 
     removeFileRow: function(row) {
-        row.fadeOut(function() {
-            $(this).remove();
-        });
+        if(row) {
+            row.fadeOut(function() {
+                $(this).remove();
+            });
+        }
     },
 
     clear: function() {
