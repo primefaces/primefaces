@@ -1406,12 +1406,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             oncomplete: function(xhr, status, args) {
                 var paginator = $this.getPaginator();
-                if(paginator) {
-                    paginator.setTotalRecords(args.totalRecords);
+                if(args && args.totalRecords) {
+                    $this.cfg.scrollLimit = args.totalRecords;
+                    
+                    if(paginator) {
+                        paginator.setTotalRecords(args.totalRecords);
+                    }
                 }
                 
                 if($this.cfg.clientCache) {
                     $this.clearCacheMap();
+                }
+                
+                if($this.cfg.liveScroll) {
+                    $this.scrollOffset = 0;
+                    $this.liveScrollActive = false;
+                    $this.shouldLiveScroll = true;       
+                    $this.loadingLiveScroll = false;
+                    $this.allLoadedLiveScroll = $this.cfg.scrollStep >= $this.cfg.scrollLimit;  
                 }
             }
         };
