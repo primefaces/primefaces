@@ -1761,10 +1761,49 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
             this.setupFilterMatcher();
         }
     },
+    
+    selectAll: function() {
+        var jqClone = this.selectAll0();
+        this.jq.replaceWith(jqClone);
+        this.jq = jqClone;
+        this.init(this.cfg);
+    },
+
+    selectAll0: function() {
+        var jqClone = this.jq.clone();
+
+        var input = jqClone.find(this.jqId + '_input');
+        var listContainer = jqClone.children('.ui-selectlistbox-listcontainer');
+        var listElement = listContainer.children('.ui-selectlistbox-list');
+        var options = $(input).children('option');
+        var allItems = listElement.find('.ui-selectlistbox-item');
+        var items = allItems.filter(':not(.ui-state-disabled)');
+        items.addClass("ui-state-highlight");
+        options.prop('selected', true);
+        
+        return jqClone;
+    },
 
     unselectAll: function() {
-        this.items.removeClass('ui-state-highlight ui-state-hover');
-        this.options.filter(':selected').prop('selected', false);
+        var jqClone = this.unselectAll0();
+        this.jq.replaceWith(jqClone);
+        this.jq = jqClone;
+        this.init(this.cfg);
+    },
+    
+    unselectAll0: function() {
+        var jqClone = this.jq.clone();
+
+        var input = jqClone.find(this.jqId + '_input');
+        var listContainer = jqClone.children('.ui-selectlistbox-listcontainer');
+        var listElement = listContainer.children('.ui-selectlistbox-list');
+        var options = $(input).children('option');
+        var allItems = listElement.find('.ui-selectlistbox-item');
+        var items = allItems.filter(':not(.ui-state-disabled)');
+        items.removeClass("ui-state-highlight");
+        options.prop('selected', false);
+
+        return jqClone;
     },
 
     selectItem: function(item) {
@@ -1949,10 +1988,38 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         }
     },
 
-    unselectAll: function() {
-        for(var i = 0; i < this.items.length; i++) {
-            this.unselectItem(this.items.eq(i));
+    selectAll: function() {
+        var jqClone = this.selectAll0();
+
+        this.jq.replaceWith(jqClone);
+        this.jq = jqClone;
+        this.init(this.cfg);
+    },
+    
+    selectAll0: function() {
+        var jqClone = this._super();
+        if(this.cfg.showCheckbox) {
+            var checkboxes = jqClone.find('.ui-selectlistbox-item:not(.ui-state-disabled) div.ui-chkbox > div.ui-chkbox-box');
+            checkboxes.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
         }
+        return jqClone;
+    },
+
+    unselectAll: function() {
+        var jqClone = this.unselectAll0();
+
+        this.jq.replaceWith(jqClone);
+        this.jq = jqClone;
+        this.init(this.cfg);
+    },
+    
+    unselectAll0: function() {
+        var jqClone = this._super();
+        if(this.cfg.showCheckbox) {
+            var checkboxes = jqClone.find('.ui-selectlistbox-item:not(.ui-state-disabled) div.ui-chkbox > div.ui-chkbox-box');
+            checkboxes.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
+        }
+        return jqClone;
     },
 
     selectItem: function(item) {
