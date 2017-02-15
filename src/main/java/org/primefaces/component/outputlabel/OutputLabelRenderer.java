@@ -22,13 +22,13 @@ import java.util.logging.Logger;
 
 import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
-import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
@@ -38,66 +38,59 @@ import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.CompositeUtils;
+import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.HTML;
 
 public class OutputLabelRenderer extends CoreRenderer {
 
     private static final Logger LOG = Logger.getLogger(OutputLabelRenderer.class.getName());
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         OutputLabel label = (OutputLabel) component;
         String clientId = label.getClientId(context);
         String value = ComponentUtils.getValueToRender(context, label);
-        UIComponent targetParent = null;
         UIComponent target = null;
-        String targetClientId = null;
+        EditableValueHolderState valueHolder = null;
         UIInput input = null;
         String styleClass = label.getStyleClass();
         styleClass = styleClass == null ? OutputLabel.STYLE_CLASS : OutputLabel.STYLE_CLASS + " " + styleClass;
-        
+
         String _for = label.getFor();
 
         if(_for != null) {
             target = SearchExpressionFacade.resolveComponent(context, label, _for);
-            
-            if (CompositeUtils.isComposite(target)) {
-                targetParent = target;
-                target = CompositeUtils.extractDeepestEditableValueHolder(target);
-            }
-            
+            valueHolder = CompositeUtils.lastEditableValueHolder(target, context);
+            target = valueHolder.getTarget();
+
             if(target instanceof InputHolder) {
                 InputHolder inputHolder = ((InputHolder) target);
-                targetClientId = inputHolder.getInputClientId();
                 inputHolder.setLabelledBy(clientId);
             }
-            else {
-                targetClientId = target.getClientId(context);
-            }
-            
+
             if(target instanceof UIInput) {
                 input = (UIInput) target;
-                
+
                 if(value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
                     ValueExpression ve = label.getValueExpression("value");
-                    
+
                     if(ve != null) {
                         input.setValueExpression("label", ve);
                     }
                     else {
                         String labelString = value;
                         int colonPos = labelString.lastIndexOf(':');
-                        
+
                         if(colonPos != -1) {
                             labelString = labelString.substring(0, colonPos);
                         }
-                        
+
                         input.getAttributes().put("label", labelString);
                     }
                 }
-                
-                if(!input.isValid()) {
+
+                if(!valueHolder.isValid()) {
                     styleClass = styleClass + " ui-state-error";
                 }
             }
@@ -107,51 +100,43 @@ public class OutputLabelRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
         renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
-        
+
         if(target != null) {
-            writer.writeAttribute("for", targetClientId, "for");
+            writer.writeAttribute("for", valueHolder.getClientId(), "for");
         }
-        
-        if(value != null) {            
-            if(label.isEscape())
+
+        if(value != null) {
+            if(label.isEscape()) {
                 writer.writeText(value, "value");
-            else
+            } else {
                 writer.write(value);
+            }
         }
-        
+
         renderChildren(context, label);
 
         if (input != null && label.isIndicateRequired()) {
 
             PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
 
-            boolean required = false;
-            if(targetParent != null) {
-                RequiredContextCallBack requiredCallBack = new RequiredContextCallBack();
-                targetParent.invokeOnComponent(context, input.getClientId(), requiredCallBack);
-                required = requiredCallBack.isRequired();
-            } else {
-                required = input.isRequired();
-            }
-
-            if (required) {
+            if (valueHolder.isRequired()) {
                 encodeRequiredIndicator(writer, label);
             }
             else if (config.isBeanValidationAvailable() && isNotNullDefined(input, context)) {
                 encodeRequiredIndicator(writer, label);
             }
         }
-        
-        writer.endElement("label");        
+
+        writer.endElement("label");
     }
-    
+
     protected void encodeRequiredIndicator(ResponseWriter writer, OutputLabel label) throws IOException {
         writer.startElement("span", label);
         writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
         writer.write("*");
-        writer.endElement("span");   
+        writer.endElement("span");
     }
-    
+
     protected boolean isNotNullDefined(UIInput input, FacesContext context) {
 
         // skip @NotNull check
@@ -159,7 +144,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         if (!RequestContext.getCurrentInstance().getApplicationContext().getConfig().isInterpretEmptyStringAsNull()) {
             return false;
         }
-        
+
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
                     context, RequestContext.getCurrentInstance(), ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
@@ -180,7 +165,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         return false;
     }
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing
@@ -189,19 +174,5 @@ public class OutputLabelRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
-    }
-
-    private static class RequiredContextCallBack implements ContextCallback {
-
-        private boolean required;
-
-        @Override
-        public void invokeContextCallback(FacesContext context, UIComponent target) {
-            required = target instanceof UIInput ? ((UIInput)target).isRequired() : false;
-        }
-
-        public boolean isRequired() {
-            return required;
-        }
     }
 }
