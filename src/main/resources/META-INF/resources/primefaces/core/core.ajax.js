@@ -50,6 +50,7 @@ if (!PrimeFaces.ajax) {
 
         VIEW_HEAD : "javax.faces.ViewHead",
         VIEW_BODY : "javax.faces.ViewBody",
+        RESOURCE : "javax.faces.Resource",
 
         Utils: {
 
@@ -129,6 +130,7 @@ if (!PrimeFaces.ajax) {
             },
 
             updateElement: function(id, content, xhr) {
+
                 if (id.indexOf(PrimeFaces.VIEW_STATE) !== -1) {
                     PrimeFaces.ajax.Utils.updateFormStateInput(PrimeFaces.VIEW_STATE, content, xhr);
                 }
@@ -152,6 +154,9 @@ if (!PrimeFaces.ajax) {
                 }
                 else if (id === PrimeFaces.ajax.VIEW_BODY) {
                     PrimeFaces.ajax.Utils.updateBody(content);
+                }
+                else if (id === PrimeFaces.ajax.RESOURCE) {
+                    $('head').append(content);
                 }
                 else if (id === $('head')[0].id) {
                     PrimeFaces.ajax.Utils.updateHead(content);
@@ -312,7 +317,7 @@ if (!PrimeFaces.ajax) {
                 retVal = null;
 
                 if(cfg.onstart) {
-                    retVal = cfg.onstart.call(this, cfg);  
+                    retVal = cfg.onstart.call(this, cfg);
                 }
                 if(cfg.ext && cfg.ext.onstart) {
                     retVal = cfg.ext.onstart.call(this, cfg);
