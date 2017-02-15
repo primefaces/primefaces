@@ -345,13 +345,26 @@ if (!PrimeFaces.ajax) {
                     sourceId = $(cfg.source).attr('id');
                 }
 
+                var $source = $(PrimeFaces.escapeClientId(sourceId));
+
+                // if the source doesn't exist in the DOM anymore, skip the request
+                // see #1900
+                if ($source.length === 0) {
+                    PrimeFaces.warn("Skip AJAX request as the source element doesn't exist anymore. Id: " + sourceId);
+                    //remove from queue
+                    if (!cfg.async) {
+                        PrimeFaces.ajax.Queue.poll();
+                    }
+                    return false;
+                }
+
                 if(cfg.formId) {
                     //Explicit form is defined
                     form = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.formId);
                 }
                 else {
                     //look for a parent of source
-                    form = $(PrimeFaces.escapeClientId(sourceId)).closest('form');
+                    form = $source.closest('form');
 
                     //source has no parent form so use first form in document
                     if (form.length === 0) {
