@@ -176,5 +176,13 @@
             <defaultValue>true</defaultValue>
             <description>Displays * symbol if the input is required, default value is true.</description>
 		</attribute>
+            <attribute>
+                    <name>converter</name>
+                    <required>false</required>
+                    <type>java.faces.convert.Converter</type>
+                    <ignoreInComponent>true</ignoreInComponent>
+                <description>An el expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
+                In case it's a static text, it must refer to a converter id.</description>
+            </attribute>
 	</attributes>
 </component>
