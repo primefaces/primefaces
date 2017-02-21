@@ -14256,4 +14256,53 @@ $(function() {
         original_gotoToday.call(this, id);
         this._selectDate(id, this._formatDate(inst, inst.selectedDay, inst.drawMonth, inst.drawYear));
     };
+    
+    $.datepicker._attachHandlers = function(inst) {
+        var stepMonths = this._get(inst, "stepMonths"),
+            id = "#" + inst.id.replace( /\\\\/g, "\\" );
+        inst.dpDiv.find("[data-handler]").map(function () {
+            var handler = {
+                prev: function () {
+                    $.datepicker._adjustDate(id, -stepMonths, "M");
+                    this.updateDatePickerPosition(inst);
+                },
+                next: function () {
+                    $.datepicker._adjustDate(id, +stepMonths, "M");
+                    this.updateDatePickerPosition(inst);
+                },
+                hide: function () {
+                    $.datepicker._hideDatepicker();
+                },
+                today: function () {
+                    $.datepicker._gotoToday(id);
+                },
+                selectDay: function () {
+                    $.datepicker._selectDay(id, +this.getAttribute("data-month"), +this.getAttribute("data-year"), this);
+                    return false;
+                },
+                selectMonth: function () {
+                    $.datepicker._selectMonthYear(id, this, "M");
+                    return false;
+                },
+                selectYear: function () {
+                    $.datepicker._selectMonthYear(id, this, "Y");
+                    return false;
+                }
+            };
+            $(this).bind(this.getAttribute("data-event"), handler[this.getAttribute("data-handler")]);
+
+            this.updateDatePickerPosition = function(inst) {
+                if (!$.datepicker._pos) { // position below input
+                        $.datepicker._pos = $.datepicker._findPos(inst.input[0]);
+                        $.datepicker._pos[1] += inst.input[0].offsetHeight; // add the height
+                    }
+
+                    var offset = {left: $.datepicker._pos[0], top: $.datepicker._pos[1]};
+                    $.datepicker._pos = null;
+                    var offset = $.datepicker._checkOffset(inst, offset, false);
+                    inst.dpDiv.css({top: offset.top + "px"});
+            };
+        });
+    };
+    
 })();
