@@ -151,6 +151,16 @@
     padding: 2px;
 }
 
+.ui-datatable .ui-datatable-virtualscroll-wrapper {
+    position: relative;
+}
+
+.ui-datatable .ui-datatable-virtualscroll-table {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+} 
+
 /* InCell Editing */
 .ui-datatable .ui-cell-editor-input {
     display: none;

@@ -201,7 +201,8 @@ public class DataTableRenderer extends DataRenderer {
                 .attr("scrollWidth", table.getScrollWidth(), null)
                 .attr("scrollHeight", table.getScrollHeight(), null)
                 .attr("frozenColumns", table.getFrozenColumns(), 0)
-                .attr("liveScrollBuffer", table.getLiveScrollBuffer());
+                .attr("liveScrollBuffer", table.getLiveScrollBuffer())
+                .attr("virtualScroll", table.isVirtualScroll());
         }
 
         //Resizable/Draggable Columns
@@ -335,6 +336,7 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = table.getClientId(context);
         int columnsCount = table.getColumns().size();
+        boolean isVirtualScroll = table.isVirtualScroll();
         
         if(hasFrozenColumns) {
             writer.startElement("table", null);
@@ -351,8 +353,13 @@ public class DataTableRenderer extends DataRenderer {
             encodeThead(context, table, 0, frozenColumns, clientId + "_frozenThead", "frozenHeader");
             encodeScrollAreaEnd(context);
 
-            encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns, clientId + "_frozenTbody");
-
+            if(isVirtualScroll) {
+                encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns, clientId + "_frozenTbody");
+            }
+            else {
+                encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns, clientId + "_frozenTbody");
+            }
+            
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
             encodeTFoot(context, table, 0, frozenColumns, clientId + "_frozenTfoot", "frozenFooter");
             encodeScrollAreaEnd(context);
@@ -369,8 +376,13 @@ public class DataTableRenderer extends DataRenderer {
             encodeThead(context, table, frozenColumns, columnsCount, clientId + "_scrollableThead", "scrollableHeader");
             encodeScrollAreaEnd(context);
 
-            encodeScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, columnsCount, clientId + "_scrollableTbody");
-
+            if(isVirtualScroll) {
+                encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, columnsCount, clientId + "_scrollableTbody");
+            }
+            else {
+                encodeScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, columnsCount, clientId + "_scrollableTbody");
+            }
+            
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
             encodeTFoot(context, table, frozenColumns, columnsCount, clientId + "_scrollableTfoot", "scrollableFooter");
             encodeScrollAreaEnd(context);
@@ -386,8 +398,13 @@ public class DataTableRenderer extends DataRenderer {
             encodeThead(context, table);
             encodeScrollAreaEnd(context);
 
-            encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, columnsCount, null);
-
+            if(isVirtualScroll) {
+                encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, 0, columnsCount, null);
+            }
+            else {
+                encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, columnsCount, null);
+            }
+            
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
             encodeTFoot(context, table);
             encodeScrollAreaEnd(context);
@@ -442,6 +459,35 @@ public class DataTableRenderer extends DataRenderer {
         encodeTbody(context, table, false, columnStart, columnEnd, tbodyId);
         
         writer.endElement("table");
+        writer.endElement("div");
+    }
+    
+    protected void encodeVirtualScrollBody(FacesContext context, DataTable table, String tableStyle, String tableStyleClass, int columnStart, int columnEnd, String tbodyId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String scrollHeight = table.getScrollHeight();
+        tableStyleClass = (tableStyleClass == null) ? DataTable.VIRTUALSCROLL_TABLE_CLASS : tableStyleClass + " " + DataTable.VIRTUALSCROLL_TABLE_CLASS;
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
+        writer.writeAttribute("tabindex", "-1", null);
+        if(scrollHeight != null && scrollHeight.indexOf('%') == -1) {
+            writer.writeAttribute("style", "max-height:" + scrollHeight + "px", null);
+        }
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.VIRTUALSCROLL_WRAPPER_CLASS, null);
+
+        writer.startElement("table", null);
+        writer.writeAttribute("role", "grid", null);
+        writer.writeAttribute("class", tableStyleClass, null);
+        
+        if(tableStyle != null) writer.writeAttribute("style", tableStyle, null);
+
+        encodeTbody(context, table, false, columnStart, columnEnd, tbodyId);
+        
+        writer.endElement("table");
+        writer.endElement("div");
+        
         writer.endElement("div");
     }
 
@@ -888,6 +934,12 @@ public class DataTableRenderer extends DataRenderer {
 		int first = table.isClientCacheRequest(context) ? Integer.valueOf(params.get(clientId + "_first")) + rows : table.getFirst();
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? (table.getScrollRows() + table.getScrollOffset()) : rowCount) : rows;
+        
+        if(table.isVirtualScroll()) {
+            int virtualScrollRowCount = (table.getScrollRows() * 2);
+            rowCountToRender = virtualScrollRowCount > rowCount ? rowCount : virtualScrollRowCount;
+        }
+        
         int frozenRows = table.getFrozenRows();
         boolean hasData = rowCount > 0;
         
