@@ -5,6 +5,7 @@
     public final static String CHOOSE_BUTTON_CLASS = "ui-fileupload-choose";
     public final static String UPLOAD_BUTTON_CLASS = "ui-fileupload-upload";
     public final static String CANCEL_BUTTON_CLASS = "ui-fileupload-cancel";
+    public final static String BUTTON_ICON_ONLY = "ui-fileupload-icon-only";
     
     public final static String CONTAINER_CLASS_SIMPLE = "ui-fileupload-simple ui-widget";
     public final static String FILENAME_CLASS = "ui-fileupload-filename";
