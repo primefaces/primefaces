@@ -5,3 +5,19 @@
     public final static String TOKEN_LABEL_CLASS = "ui-chips-token-label";
     public final static String TOKEN_CLOSE_ICON_CLASS = "ui-chips-token-icon ui-icon ui-icon-close";
     public final static String TOKEN_INPUT_CLASS = "ui-chips-input-token";
+
+    public String getInputClientId() {
+        return this.getClientId(getFacesContext()) + "_input";
+    }
+
+    public String getValidatableInputClientId() {
+        return this.getInputClientId();
+    }
+
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
+    }
+
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
