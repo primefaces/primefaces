@@ -11,7 +11,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>6.1.RC1</version>
+    <version>6.1.RC2-SNAPSHOT</version>
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
 
@@ -614,6 +614,7 @@
                         <version>2.10.4</version>
                         <configuration>
                             <sourcepath>${basedir}/src/main/java;${basedir}/target/generated-sources/maven-jsf-plugin</sourcepath>
+                             <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
                         <executions>
                             <execution>
