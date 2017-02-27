@@ -18,9 +18,14 @@ package org.primefaces.util;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
@@ -62,12 +67,13 @@ public class DynamicContentSrcBuilder {
                     session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
                 }
                 
-                String resourceKey = RequestContext.getCurrentInstance().getEncrypter().encrypt(
-                        context.getViewRoot().getViewId() + component.getClientId(context));
                 ValueExpression expression = ValueExpressionAnalyzer.getExpression(
                         context.getELContext(), component.getValueExpression("value"));
                 
-                dynamicResourcesMapping.put(resourceKey, expression.getExpressionString());
+                String expressionString = expression.getExpressionString();
+                String resourceKey = md5(expressionString);
+                
+                dynamicResourcesMapping.put(resourceKey, expressionString);
                 
                 StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
                 builder.append(resourcePath)
@@ -128,5 +134,20 @@ public class DynamicContentSrcBuilder {
         catch (Exception e) {
             throw new FacesException("Could not read InputStream to byte[]", e);
         }
+    }
+    
+    private static String md5(String input) {
+
+        MessageDigest messageDigest;
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+        }
+        catch (NoSuchAlgorithmException ex) {
+            throw new FacesException(ex);
+        }
+
+        byte[] bytes = messageDigest.digest(input.getBytes());
+
+        return new BigInteger(1, bytes).toString(16);
     }
 }

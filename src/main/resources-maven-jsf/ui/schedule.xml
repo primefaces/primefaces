@@ -254,6 +254,13 @@
 			<defaultValue>09:00:00</defaultValue>
             <description>When an event's end time spans into another day, the minimum time it must be in order for it to render as if it were on that day. Default is 09:00:00.</description>
 		</attribute>
+        <attribute>
+            <name>urlTarget</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>_blank</defaultValue>
+            <description>Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".</description>
+</attribute>
 	</attributes>
 	<resources>
         <resource>

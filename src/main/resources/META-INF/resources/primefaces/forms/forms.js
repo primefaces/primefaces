@@ -1859,6 +1859,12 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
  */
 PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
 
+    init: function(cfg) {
+        this._super(cfg);
+        
+        this.allItems.filter('.ui-state-highlight').find('> .ui-chkbox > .ui-chkbox-box').addClass('ui-state-active');
+    },
+    
     bindEvents: function() {
         this._super();
         var $this = this;

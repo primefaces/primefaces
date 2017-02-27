@@ -585,7 +585,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
             //show itemtip if defined
-            if(this.cfg.itemtip && firstItem.length === 1) {
+            if(this.cfg.autoHighlight && this.cfg.itemtip && firstItem.length === 1) {
                 this.showItemtip(firstItem);
             }
             

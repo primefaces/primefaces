@@ -15,13 +15,14 @@
  */
 package org.primefaces.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Default implementation for the {@link OrganigramNode}.
  */
-public class DefaultOrganigramNode implements OrganigramNode
+public class DefaultOrganigramNode implements OrganigramNode, Serializable
 {
     public static final String DEFAULT_TYPE = "default";
 

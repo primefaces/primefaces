@@ -36,7 +36,11 @@ import org.primefaces.context.RequestContext;
  * Renders head content based on the following order
  * - First Facet
  * - Theme CSS
+ * - FontAwesome
+ * - Middle Facet
  * - Registered Resources
+ * - Client Validation Scripts
+ * - PF Client Side Settings
  * - Head Content
  * - Last Facet
  */

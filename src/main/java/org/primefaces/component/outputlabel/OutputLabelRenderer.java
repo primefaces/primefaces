@@ -15,6 +15,7 @@
  */
 package org.primefaces.component.outputlabel;
 
+import org.primefaces.util.EditableValueHolderState;
 import java.io.IOException;
 import java.util.Set;
 import java.util.logging.Level;
@@ -39,109 +40,119 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.CompositeUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 
 public class OutputLabelRenderer extends CoreRenderer {
 
     private static final Logger LOG = Logger.getLogger(OutputLabelRenderer.class.getName());
     
+    private static final String SB_STYLE_CLASS = OutputLabelRenderer.class.getName() + "#styleClass";
+    
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        OutputLabel label = (OutputLabel) component;
-        String clientId = label.getClientId(context);
-        String value = ComponentUtils.getValueToRender(context, label);
-        UIComponent targetParent = null;
-        UIComponent target = null;
-        String targetClientId = null;
-        UIInput input = null;
-        String styleClass = label.getStyleClass();
-        styleClass = styleClass == null ? OutputLabel.STYLE_CLASS : OutputLabel.STYLE_CLASS + " " + styleClass;
+        final ResponseWriter writer = context.getResponseWriter();
+        final OutputLabel label = (OutputLabel) component;
+        final String clientId = label.getClientId(context);
+        final String value = ComponentUtils.getValueToRender(context, label);
+
+        final StringBuilder styleClass = SharedStringBuilder.get(context, SB_STYLE_CLASS);
+        styleClass.append(OutputLabel.STYLE_CLASS);
+        if (label.getStyleClass() != null) {
+            styleClass.append(" ");
+            styleClass.append(label.getStyleClass());
+        }
+        
+        final EditableValueHolderState state = new EditableValueHolderState();;
         
         String _for = label.getFor();
+        if (!isValueBlank(_for)) {
+            ContextCallback callback = new ContextCallback() {
+                @Override
+                public void invokeContextCallback(FacesContext context, UIComponent target) {
+                    if (target instanceof InputHolder) {
+                        InputHolder inputHolder = ((InputHolder) target);
+                        state.setClientId(inputHolder.getInputClientId());
 
-        if(_for != null) {
-            target = SearchExpressionFacade.resolveComponent(context, label, _for);
-            
-            if (CompositeUtils.isComposite(target)) {
-                targetParent = target;
-                target = CompositeUtils.extractDeepestEditableValueHolder(target);
-            }
-            
-            if(target instanceof InputHolder) {
-                InputHolder inputHolder = ((InputHolder) target);
-                targetClientId = inputHolder.getInputClientId();
-                inputHolder.setLabelledBy(clientId);
-            }
-            else {
-                targetClientId = target.getClientId(context);
-            }
-            
-            if(target instanceof UIInput) {
-                input = (UIInput) target;
-                
-                if(value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
-                    ValueExpression ve = label.getValueExpression("value");
-                    
-                    if(ve != null) {
-                        input.setValueExpression("label", ve);
+                        inputHolder.setLabelledBy(clientId);
                     }
                     else {
-                        String labelString = value;
-                        int colonPos = labelString.lastIndexOf(':');
-                        
-                        if(colonPos != -1) {
-                            labelString = labelString.substring(0, colonPos);
+                        state.setClientId(target.getClientId(context));
+                    }
+
+                    if (target instanceof UIInput) {
+                        UIInput input = (UIInput) target;
+
+                        if (value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
+                            ValueExpression ve = label.getValueExpression("value");
+
+                            if(ve != null) {
+                                input.setValueExpression("label", ve);
+                            }
+                            else {
+                                String labelString = value;
+                                int colonPos = labelString.lastIndexOf(':');
+
+                                if(colonPos != -1) {
+                                    labelString = labelString.substring(0, colonPos);
+                                }
+
+                                input.getAttributes().put("label", labelString);
+                            }
+                        }
+
+                        if (!input.isValid()) {
+                            styleClass.append(" ui-state-error");
                         }
                         
-                        input.getAttributes().put("label", labelString);
+                        if (label.isIndicateRequired()) {
+                            state.setRequired(input.isRequired());
+
+                            // fallback if required=false
+                            if (!state.isRequired()) {
+                                PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+                                if (config.isBeanValidationAvailable() && isNotNullDefined(input, context)) {
+                                    state.setRequired(true);
+                                }
+                            }
+                        }
                     }
                 }
-                
-                if(!input.isValid()) {
-                    styleClass = styleClass + " ui-state-error";
-                }
+            };
+            
+            UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, label, _for);
+
+            if (CompositeUtils.isComposite(forComponent)) {
+                CompositeUtils.invokeOnDeepestEditableValueHolder(context, forComponent, callback);
+            }
+            else {
+                callback.invokeContextCallback(context, forComponent);
             }
         }
 
         writer.startElement("label", label);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "id");
+        writer.writeAttribute("class", styleClass.toString(), "id");
         renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
         
-        if(target != null) {
-            writer.writeAttribute("for", targetClientId, "for");
+        if (!isValueBlank(_for)) {
+            writer.writeAttribute("for", state.getClientId(), "for");
         }
         
-        if(value != null) {            
-            if(label.isEscape())
+        if (value != null) {            
+            if (label.isEscape()) {
                 writer.writeText(value, "value");
-            else
+            }
+            else {
                 writer.write(value);
+            }
         }
         
         renderChildren(context, label);
 
-        if (input != null && label.isIndicateRequired()) {
-
-            PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
-
-            boolean required = false;
-            if(targetParent != null) {
-                RequiredContextCallBack requiredCallBack = new RequiredContextCallBack();
-                targetParent.invokeOnComponent(context, input.getClientId(), requiredCallBack);
-                required = requiredCallBack.isRequired();
-            } else {
-                required = input.isRequired();
-            }
-
-            if (required) {
-                encodeRequiredIndicator(writer, label);
-            }
-            else if (config.isBeanValidationAvailable() && isNotNullDefined(input, context)) {
-                encodeRequiredIndicator(writer, label);
-            }
+        if (!isValueBlank(_for) && label.isIndicateRequired() && state.isRequired()) {
+            encodeRequiredIndicator(writer, label);
         }
-        
+
         writer.endElement("label");        
     }
     
@@ -189,19 +200,5 @@ public class OutputLabelRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
-    }
-
-    private static class RequiredContextCallBack implements ContextCallback {
-
-        private boolean required;
-
-        @Override
-        public void invokeContextCallback(FacesContext context, UIComponent target) {
-            required = target instanceof UIInput ? ((UIInput)target).isRequired() : false;
-        }
-
-        public boolean isRequired() {
-            return required;
-        }
     }
 }
