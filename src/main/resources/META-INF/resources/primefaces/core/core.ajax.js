@@ -92,21 +92,21 @@ if (!PrimeFaces.ajax) {
                     forms = $('form');
                 }
 
-                var parameterNamespace = '';
-                if (xhr && xhr.pfArgs && xhr.pfArgs.parameterNamespace) {
-                    parameterNamespace = xhr.pfArgs.parameterNamespace;
+                var parameterPrefix = '';
+                if (xhr && xhr.pfArgs && xhr.pfArgs.parameterPrefix) {
+                    parameterPrefix = xhr.pfArgs.parameterPrefix;
                 }
 
                 for (var i = 0; i < forms.length; i++) {
                     var form = forms.eq(i);
 
                     if (form.attr('method') === 'post') {
-                        var input = form.children("input[name='" + parameterNamespace + name + "']");
+                        var input = form.children("input[name='" + parameterPrefix + name + "']");
 
                         if (input.length > 0) {
                             input.val(trimmedValue);
                         } else {
-                            form.append('<input type="hidden" name="' + parameterNamespace + name + '" value="' + trimmedValue + '" autocomplete="off" />');
+                            form.append('<input type="hidden" name="' + parameterPrefix + name + '" value="' + trimmedValue + '" autocomplete="off" />');
                         }
                     }
                 }
@@ -367,36 +367,36 @@ if (!PrimeFaces.ajax) {
                 postParams = [];
 
                 // See #6857 - parameter namespace for porlet
-                var parameterNamespace = PrimeFaces.ajax.Request.extractParameterNamespace(form);
+                var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(form);
 
                 //portlet support
                 var portletFormsSelector = null;
                 if(encodedURLfield.length > 0) {
-                    portletFormsSelector = 'form[id*="' + parameterNamespace + '"]';
+                    portletFormsSelector = 'form[id*="' + parameterPrefix + '"]';
                     postURL = encodedURLfield.val();
                 }
 
                 PrimeFaces.debug('URL to post ' + postURL + '.');
 
                 //partial ajax
-                PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterNamespace);
+                PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
 
                 //source
-                PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_SOURCE_PARAM, sourceId, parameterNamespace);
+                PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_SOURCE_PARAM, sourceId, parameterPrefix);
 
                 //resetValues
                 if (cfg.resetValues) {
-                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.RESET_VALUES_PARAM, true, parameterNamespace);
+                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.RESET_VALUES_PARAM, true, parameterPrefix);
                 }
 
                 //ignoreAutoUpdate
                 if (cfg.ignoreAutoUpdate) {
-                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, true, parameterNamespace);
+                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, true, parameterPrefix);
                 }
 
                 //skip children
                 if (cfg.skipChildren === false) {
-                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.SKIP_CHILDREN_PARAM, false, parameterNamespace);
+                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.SKIP_CHILDREN_PARAM, false, parameterPrefix);
                 }
 
                 //process
@@ -419,7 +419,7 @@ if (!PrimeFaces.ajax) {
                     }
                 }
                 if (processIds !== '@none') {
-                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_PROCESS_PARAM, processIds, parameterNamespace);
+                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_PROCESS_PARAM, processIds, parameterPrefix);
                 }
 
                 //update
@@ -428,12 +428,12 @@ if (!PrimeFaces.ajax) {
                     updateArray.push(cfg.fragmentId);
                 }
                 if(updateArray.length > 0) {
-                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_UPDATE_PARAM, updateArray.join(' '), parameterNamespace);
+                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_UPDATE_PARAM, updateArray.join(' '), parameterPrefix);
                 }
 
                 //behavior event
                 if(cfg.event) {
-                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.BEHAVIOR_EVENT_PARAM, cfg.event, parameterNamespace);
+                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.BEHAVIOR_EVENT_PARAM, cfg.event, parameterPrefix);
 
                     var domEvent = cfg.event;
 
@@ -442,18 +442,18 @@ if (!PrimeFaces.ajax) {
                     else if(cfg.event === 'action')
                         domEvent = 'click';
 
-                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_EVENT_PARAM, domEvent, parameterNamespace);
+                    PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_EVENT_PARAM, domEvent, parameterPrefix);
                 }
                 else {
-                    PrimeFaces.ajax.Request.addParam(postParams, sourceId, sourceId, parameterNamespace);
+                    PrimeFaces.ajax.Request.addParam(postParams, sourceId, sourceId, parameterPrefix);
                 }
 
                 //params
                 if(cfg.params) {
-                    PrimeFaces.ajax.Request.addParams(postParams, cfg.params, parameterNamespace);
+                    PrimeFaces.ajax.Request.addParams(postParams, cfg.params, parameterPrefix);
                 }
                 if(cfg.ext && cfg.ext.params) {
-                    PrimeFaces.ajax.Request.addParams(postParams, cfg.ext.params, parameterNamespace);
+                    PrimeFaces.ajax.Request.addParams(postParams, cfg.ext.params, parameterPrefix);
                 }
 
                 /**
@@ -486,10 +486,10 @@ if (!PrimeFaces.ajax) {
 
                     //add form state if necessary
                     if (!formProcessed) {
-                        PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.VIEW_STATE, form, parameterNamespace);
-                        PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.CLIENT_WINDOW, form, parameterNamespace);
-                        PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dsPostWindowId', form, parameterNamespace);
-                        PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dspwid', form, parameterNamespace);
+                        PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.VIEW_STATE, form, parameterPrefix);
+                        PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
+                        PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dsPostWindowId', form, parameterPrefix);
+                        PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dspwid', form, parameterPrefix);
                     }
 
                 }
@@ -629,10 +629,10 @@ if (!PrimeFaces.ajax) {
                 return PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(expressions);
             },
 
-            addParam: function(params, name, value, parameterNamespace) {
+            addParam: function(params, name, value, parameterPrefix) {
                 // add namespace if not available
-                if (parameterNamespace || !name.indexOf(parameterNamespace) === 0) {
-                    params.push({ name:parameterNamespace + name, value:value });
+                if (parameterPrefix || !name.indexOf(parameterPrefix) === 0) {
+                    params.push({ name:parameterPrefix + name, value:value });
                 }
                 else {
                     params.push({ name:name, value:value });
@@ -640,22 +640,22 @@ if (!PrimeFaces.ajax) {
 
             },
 
-            addParams: function(params, paramsToAdd, parameterNamespace) {
+            addParams: function(params, paramsToAdd, parameterPrefix) {
 
                 for (var i = 0; i < paramsToAdd.length; i++) {
                     var param = paramsToAdd[i];
                     // add namespace if not available
-                    if (parameterNamespace && !param.name.indexOf(parameterNamespace) === 0) {
-                        param.name = parameterNamespace + param.name;
+                    if (parameterPrefix && !param.name.indexOf(parameterPrefix) === 0) {
+                        param.name = parameterPrefix + param.name;
                     }
 
                     params.push(param);
                 }
             },
 
-            addParamFromInput: function(params, name, form, parameterNamespace) {
+            addParamFromInput: function(params, name, form, parameterPrefix) {
                 var input = null;
-                if (parameterNamespace) {
+                if (parameterPrefix) {
                     input = form.children("input[name*='" + name + "']");
                 }
                 else {
@@ -664,7 +664,7 @@ if (!PrimeFaces.ajax) {
 
                 if (input && input.length > 0) {
                     var value = input.val();
-                    PrimeFaces.ajax.Request.addParam(params, name, value, parameterNamespace);
+                    PrimeFaces.ajax.Request.addParam(params, name, value, parameterPrefix);
                 }
             },
 
@@ -830,7 +830,7 @@ if (!PrimeFaces.ajax) {
                     if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
                         var textContent = node.textContent || node.innerText || node.text;
                         // it's possible that pfArgs are already defined e.g. if portlet parameter namespacing is enabled
-                        // the "parameterNamespace" will be encoded on document start
+                        // the "parameterPrefix" will be encoded on document start
                         // the other parameters will be encoded on document end
                         // --> see PrimePartialResponseWriter
                         if (xhr.pfArgs) {

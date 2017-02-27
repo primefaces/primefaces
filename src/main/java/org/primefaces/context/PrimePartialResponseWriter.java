@@ -272,16 +272,22 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 if (viewRoot != null) {
                     // portlet parameter namespacing
                     if (viewRoot instanceof NamingContainer) {
-                        Map<String, Object> params = new HashMap<String, Object>();
 
                         String parameterNamespace = viewRoot.getContainerClientId(context);
-                        if ((parameterNamespace != null) && requestContext.getApplicationContext().getConfig().isAtLeastJSF23()) {
+                        if ((parameterNamespace != null) && (parameterNamespace.length() > 0)) {
 
-                            // https://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790
-                            parameterNamespace += UINamingContainer.getSeparatorChar(context);
+                            String parameterPrefix = parameterNamespace;
+
+                            if (requestContext.getApplicationContext().getConfig().isAtLeastJSF23()) {
+
+                                // https://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790
+                                parameterPrefix += UINamingContainer.getSeparatorChar(context);
+                            }
+
+                            Map<String, Object> params = new HashMap<String, Object>();
+                            params.put("parameterPrefix", parameterPrefix);
+                            encodeCallbackParams(params);
                         }
-                        params.put("parameterNamespace", parameterNamespace);
-                        encodeCallbackParams(params);
                     }
 
                     // dynamic resource loading
