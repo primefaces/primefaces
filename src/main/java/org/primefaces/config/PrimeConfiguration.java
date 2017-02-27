@@ -249,7 +249,7 @@ public class PrimeConfiguration {
         else {
             //fallback
             try {
-                Class.forName("javax.faces.component.UIImportConstant");
+                Class.forName("javax.faces.component.UIImportConstants");
                 return true;
             }
             catch (ClassNotFoundException ex) {
