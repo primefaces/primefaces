@@ -1406,6 +1406,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 }
                 
+                if($this.cfg.liveScroll) {
+                    // Reset Scroll Position
+                    $this.scrollOffset = 0;
+                    $this.scrollBody.scrollTop(0);
+
+                    // Reset the Ability to Livescroll
+                    $this.allLoadedLiveScroll = false;
+                    $this.shouldLiveScroll = true;
+                }                
+                
                 if($this.cfg.clientCache) {
                     $this.clearCacheMap();
                 }
