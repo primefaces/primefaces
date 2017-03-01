@@ -34,8 +34,6 @@ import org.primefaces.util.Constants;
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
     private final static Logger LOG = Logger.getLogger(StreamedContentHandler.class.getName());
-
-    private String dynamicContentEL = null;
     
     public void handle(FacesContext context) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
@@ -52,7 +50,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                 Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
 
                 if (dynamicResourcesMapping != null) {
-                    dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
+                    String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
 
                     if (dynamicContentEL != null) {
                         ELContext eLContext = context.getELContext();
