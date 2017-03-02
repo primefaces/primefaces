@@ -84,6 +84,6 @@ public class CaptchaRenderer extends CoreRenderer {
     }
 
     protected String getPublicKey(FacesContext context, Captcha captcha) {
-        return context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY);
+        return context.getApplication().evaluateExpressionGet(context, context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY), String.class);
     }
 }
