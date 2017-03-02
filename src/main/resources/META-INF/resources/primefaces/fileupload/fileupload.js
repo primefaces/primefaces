@@ -2024,13 +2024,15 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
         var params = this.form.serializeArray();
 
-        params.push({name: PrimeFaces.PARTIAL_REQUEST_PARAM, value: 'true'});
-        params.push({name: PrimeFaces.PARTIAL_PROCESS_PARAM, value: process});
-        params.push({name: PrimeFaces.PARTIAL_SOURCE_PARAM, value: this.id});
+        var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(this.form);
+
+        PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
+        PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_PROCESS_PARAM, process, parameterPrefix);
+        PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_SOURCE_PARAM, this.id, parameterPrefix);
 
         if (this.cfg.update) {
             var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.update).join(' ');
-            params.push({name: PrimeFaces.PARTIAL_UPDATE_PARAM, value: update});
+            PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
         }
 
         return params;

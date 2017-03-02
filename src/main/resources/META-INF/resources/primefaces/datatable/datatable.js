@@ -859,7 +859,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.scrollHeaderBox = this.scrollHeader.children('div.ui-datatable-scrollable-header-box');
         this.scrollFooterBox = this.scrollFooter.children('div.ui-datatable-scrollable-footer-box');
         this.headerTable = this.scrollHeaderBox.children('table');
-        this.bodyTable = this.scrollBody.children('table');
+        this.bodyTable = this.cfg.virtualScroll ? this.scrollBody.children('div').children('table') : this.scrollBody.children('table');
         this.footerTable = this.scrollFooter.children('table');
         this.footerCols = this.scrollFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
         this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
@@ -899,12 +899,38 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.allLoadedLiveScroll = $this.cfg.scrollStep >= $this.cfg.scrollLimit;      
         }
         
+        if(this.cfg.virtualScroll) {
+            var row = this.bodyTable.children('tbody').children('tr.ui-widget-content');
+            if(row) {
+                this.rowHeight = row.outerHeight();
+                this.scrollBody.children('div').css('height', parseFloat((this.cfg.scrollLimit * this.rowHeight) + 'px'));
+            }
+        }
+        
         this.scrollBody.on('scroll.dataTable', function() {
             var scrollLeft = $this.scrollBody.scrollLeft();
             $this.scrollHeaderBox.css('margin-left', -scrollLeft);
             $this.scrollFooterBox.css('margin-left', -scrollLeft);
+            
+            if($this.cfg.virtualScroll) {
+                var virtualScrollBody = this;
+                
+                clearTimeout($this.scrollTimeout);
+                $this.scrollTimeout = setTimeout(function() {
+                    var viewportHeight = $this.scrollBody.outerHeight(),
+                    tableHeight = $this.bodyTable.outerHeight(),
+                    pageHeight = $this.rowHeight * $this.cfg.scrollStep,
+                    virtualTableHeight = parseFloat(($this.cfg.scrollLimit * $this.rowHeight) + 'px'),
+                    pageCount = (virtualTableHeight / pageHeight)||1;
 
-            if($this.shouldLiveScroll) {
+                    if(virtualScrollBody.scrollTop + viewportHeight > parseFloat($this.bodyTable.css('top')) + tableHeight || virtualScrollBody.scrollTop < parseFloat($this.bodyTable.css('top'))) {
+                        var page = Math.floor((virtualScrollBody.scrollTop * pageCount) / (virtualScrollBody.scrollHeight)) + 1;
+                        $this.loadRowsWithVirtualScroll(page);
+                        $this.bodyTable.css('top',((page - 1) * pageHeight) + 'px');
+                    }
+                }, 200);
+            }
+            else if($this.shouldLiveScroll) {
                 var scrollTop = Math.ceil(this.scrollTop),
                 scrollHeight = this.scrollHeight,
                 viewportHeight = this.clientHeight;
@@ -985,7 +1011,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         paginatorsHeight = this.paginator ? this.paginator.getContainerHeight(true) : 0,
         height = (relativeHeight - (scrollersHeight + paginatorsHeight + tableHeaderHeight + tableFooterHeight));
         
-        this.scrollBody.height(height);
+        if(this.cfg.virtualScroll) { 
+            this.scrollBody.css('max-height', height);
+        }
+        else {
+            this.scrollBody.height(height);
+        }
     },
             
     adjustScrollWidth: function() {
@@ -1136,6 +1167,47 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
  
                 $this.loadingLiveScroll = false;
                 $this.allLoadedLiveScroll = ($this.scrollOffset + $this.cfg.scrollStep) >= $this.cfg.scrollLimit;
+            }
+        };
+
+        PrimeFaces.ajax.Request.handle(options);
+    },
+    
+    loadRowsWithVirtualScroll: function(page) {
+        if(this.virtualScrollActive) {
+            return;
+        }
+        
+        this.virtualScrollActive = true;
+        
+        var $this = this,
+        first = (page - 1) * this.cfg.scrollStep,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_scrolling', value: true},
+                            {name: this.id + '_skipChildren', value: true},
+                            {name: this.id + '_first', value: first},
+                            {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        //insert new rows
+                        this.updateData(content);
+ 
+                        this.virtualScrollActive = false;
+                    }
+                });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                if(args.totalRecords) {
+                    $this.cfg.scrollLimit = args.totalRecords;
+                }
             }
         };
 
@@ -1418,7 +1490,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.clearCacheMap();
                 }
                 
-                if($this.cfg.liveScroll) {
+                if($this.cfg.virtualScroll) {
+                    var row = $this.bodyTable.children('tbody').children('tr.ui-widget-content');
+                    if(row) {
+                        $this.rowHeight = row.outerHeight();
+                        $this.scrollBody.children('div').css({'height': parseFloat(($this.cfg.scrollLimit * $this.rowHeight + 1) + 'px')});
+                    }
+                }
+                else if($this.cfg.liveScroll) {
                     $this.scrollOffset = 0;
                     $this.liveScrollActive = false;
                     $this.shouldLiveScroll = true;       
@@ -3403,14 +3482,14 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.scrollFooterBox = this.scrollFooter.children('div.ui-datatable-scrollable-footer-box');
         this.scrollStateHolder = $(this.jqId + '_scrollState');
         this.scrollHeaderTable = this.scrollHeaderBox.children('table');
-        this.scrollBodyTable = this.scrollBody.children('table');
+        this.scrollBodyTable = this.cfg.virtualScroll ? this.scrollBody.children('div').children('table') : this.scrollBody.children('table');
         this.scrollThead = this.thead.eq(1);
         this.scrollTbody = this.tbody.eq(1);
         this.scrollFooterTable = this.scrollFooterBox.children('table');
         this.scrollFooterCols = this.scrollFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');  
         this.frozenHeader = this.frozenContainer.children('.ui-datatable-scrollable-header');
         this.frozenBody = this.frozenContainer.children('.ui-datatable-scrollable-body');
-        this.frozenBodyTable = this.frozenBody.children('table');
+        this.frozenBodyTable = this.cfg.virtualScroll ? this.frozenBody.children('div').children('table') : this.frozenBody.children('table');
         this.frozenThead = this.thead.eq(0);
         this.frozenTbody = this.tbody.eq(0);
         this.frozenFooter = this.frozenContainer.children('.ui-datatable-scrollable-footer');
@@ -3460,13 +3539,22 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.cloneHead();  
         
         this.restoreScrollState();
-
+        
         if(this.cfg.liveScroll) {
             this.scrollOffset = 0;
             this.cfg.liveScrollBuffer = (100 - this.cfg.liveScrollBuffer) / 100;
             this.shouldLiveScroll = true;       
             this.loadingLiveScroll = false;
             this.allLoadedLiveScroll = $this.cfg.scrollStep >= $this.cfg.scrollLimit;            
+        }
+        
+        if(this.cfg.virtualScroll) {
+            var row = this.scrollTbody.children('tr.ui-widget-content');
+            if(row) {
+                this.rowHeight = row.outerHeight();
+                this.scrollBody.children('div').css('height', parseFloat((this.cfg.scrollLimit * this.rowHeight) + 'px'));
+                this.frozenBody.children('div').css('height', parseFloat((this.cfg.scrollLimit * this.rowHeight) + 'px'));
+            }
         }
 
         this.scrollBody.scroll(function() {
@@ -3476,7 +3564,26 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             $this.scrollFooterBox.css('margin-left', -scrollLeft);
             $this.frozenBody.scrollTop(scrollTop);
 
-            if($this.shouldLiveScroll) {
+            if($this.cfg.virtualScroll) {
+                var virtualScrollBody = this;
+                
+                clearTimeout($this.scrollTimeout);
+                $this.scrollTimeout = setTimeout(function() {
+                    var viewportHeight = $this.scrollBody.outerHeight(),
+                    tableHeight = $this.scrollBodyTable.outerHeight(),
+                    pageHeight = $this.rowHeight * $this.cfg.scrollStep,
+                    virtualTableHeight = parseFloat(($this.cfg.scrollLimit * $this.rowHeight) + 'px'),
+                    pageCount = (virtualTableHeight / pageHeight)||1;
+
+                    if(virtualScrollBody.scrollTop + viewportHeight > parseFloat($this.scrollBodyTable.css('top')) + tableHeight || virtualScrollBody.scrollTop < parseFloat($this.scrollBodyTable.css('top'))) {
+                        var page = Math.floor((virtualScrollBody.scrollTop * pageCount) / (virtualScrollBody.scrollHeight)) + 1;
+                        $this.loadRowsWithVirtualScroll(page);
+                        $this.scrollBodyTable.css('top',((page - 1) * pageHeight) + 'px');
+                        $this.frozenBodyTable.css('top',((page - 1) * pageHeight) + 'px');
+                    }
+                }, 200);
+            }
+            else if($this.shouldLiveScroll) {
                 var scrollTop = Math.ceil(this.scrollTop),
                 scrollHeight = this.scrollHeight,
                 viewportHeight = this.clientHeight;
@@ -3531,8 +3638,14 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         paginatorsHeight = this.paginator ? this.paginator.getContainerHeight(true) : 0,
         height = (relativeHeight - (scrollersHeight + paginatorsHeight + tableHeaderHeight + tableFooterHeight));
         
-        this.scrollBody.height(height);
-        this.frozenBody.height(height);
+        if(this.cfg.virtualScroll) {
+            this.scrollBody.css('max-height', height);
+            this.frozenBody.css('max-height', height);
+        }
+        else {
+            this.scrollBody.height(height);
+            this.frozenBody.height(height);
+        }
     },
     
     //@Override

@@ -84,6 +84,8 @@
 .ui-fileupload-simple {
     position: relative;
     overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .ui-fileupload-simple .ui-button {
@@ -117,4 +119,8 @@
 
 .ui-fluid .ui-fileupload-content .ui-button-icon-only {
     width: 2.4em;
+}
+
+.ui-fileupload-icon-only .ui-button-text {
+    padding-left: 1em;
 }

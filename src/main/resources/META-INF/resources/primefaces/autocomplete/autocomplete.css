@@ -86,6 +86,11 @@
     width: 400px;
 }
 
+.ui-autocomplete-dd-multiple-container {
+    float: left;
+    padding-right: 2.4em !important;
+}
+
 .ui-autocomplete-multiple-container.ui-inputfield {
     padding:0;
 }

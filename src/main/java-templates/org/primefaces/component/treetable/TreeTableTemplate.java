@@ -1,4 +1,3 @@
-import org.primefaces.model.TreeTableModel;
 import org.primefaces.model.TreeNode;
 import javax.faces.model.DataModel;
 import javax.faces.event.FacesEvent;

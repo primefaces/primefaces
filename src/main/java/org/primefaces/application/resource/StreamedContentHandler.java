@@ -34,7 +34,7 @@ import org.primefaces.util.Constants;
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
     private final static Logger LOG = Logger.getLogger(StreamedContentHandler.class.getName());
-
+    
     public void handle(FacesContext context) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");
