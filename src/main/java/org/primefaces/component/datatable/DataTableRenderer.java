@@ -106,9 +106,20 @@ public class DataTableRenderer extends DataRenderer {
                 table.loadLazyData();
         }
         else {
-            boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null || table.getMultiSortMeta() != null);
+            boolean defaultSorted = (table.getSortField() != null || table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null || table.getMultiSortMeta() != null);
             if(defaultSorted) {
-                table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
+                ValueExpression sortVE;
+                String sortField = table.getSortField();
+                if (sortField != null) {
+                    sortVE = context.getApplication()
+                            .getExpressionFactory()
+                            .createValueExpression("#{'" + sortField + "'}",
+                                    String.class);
+                }
+                else {
+                    sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+                }
+                table.setDefaultSortByVE(sortVE);
                 table.setDefaultSortOrder(table.getSortOrder());
                 table.setDefaultSortFunction(table.getSortFunction());
 
@@ -128,12 +139,12 @@ public class DataTableRenderer extends DataRenderer {
                 List<FilterMeta> filterMetadata = new ArrayList<FilterMeta>();
                 for(FilterState filterState : filters) {
                     UIColumn column = table.findColumn(filterState.getColumnKey());
-                    filterMetadata.add(new FilterMeta(column, column.getValueExpression("filterBy"), filterState.getFilterValue()));
+                    filterMetadata.add(new FilterMeta(column, column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()), filterState.getFilterValue()));
                 }
                 
                 String globalFilter = table.getGlobalFilter();
                 if(globalFilter != null) {
-                    UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table, "globalFilter");
+                    UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table, DataTable.PropertyKeys.globalFilter.toString());
                     if(globalFilterComponent != null) {
                         ((ValueHolder) globalFilterComponent).setValue(globalFilter);
                     }
@@ -499,9 +510,11 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
 
+        String columnField = column.getField();
         ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
-        boolean sortable = (columnSortByVE != null && column.isSortable());
-        boolean filterable = (column.getValueExpression(Column.PropertyKeys.filterBy.toString()) != null && column.isFilterable());
+        ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
+        boolean sortable = ((columnField != null || columnSortByVE != null) && column.isSortable());
+        boolean filterable = ((columnField != null || columnFilterByVE != null) && column.isFilterable());
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
@@ -520,9 +533,10 @@ public class DataTableRenderer extends DataRenderer {
         }
         
         if(sortable) {
+            String tableSortField = table.getSortField();
             ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
-            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || table.getMultiSortMeta() != null);
+            boolean defaultSorted = (tableSortField != null || tableSortByVE != null || tableSortBy != null || table.getMultiSortMeta() != null);
                     
             if(defaultSorted) {
                 if(table.isMultiSort()) {
@@ -627,10 +641,23 @@ public class DataTableRenderer extends DataRenderer {
     }
     
     protected String resolveDefaultSortIcon(DataTable table, UIColumn column, String sortOrder) {
-        ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
-        String columnSortByExpression = columnSortByVE.getExpressionString();
-        String tableSortByExpression = tableSortByVE.getExpressionString();
+        String tableSortByExpression = table.getSortField();
+        if (tableSortByExpression == null) {
+            ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+            if (tableSortByVE != null) {
+                tableSortByExpression = tableSortByVE.getExpressionString();
+            }
+        }
+        String columnSortByExpression = null;
+        if (column.getField() != null && column.isSortable()) {
+            columnSortByExpression = column.getField();
+        }
+        if (columnSortByExpression == null) {
+            ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
+            if (columnSortByVE != null) {
+                columnSortByExpression = columnSortByVE.getExpressionString();
+            }
+        }
         String field = column.getField();
         String sortField = table.getSortField();
         String sortIcon = null;
@@ -1172,7 +1199,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnSelection(context, table, clientId, column, selected);
         }
 
-        column.encodeAll(context);       
+        column.renderChildren(context);       
 
         writer.endElement("td");
     }

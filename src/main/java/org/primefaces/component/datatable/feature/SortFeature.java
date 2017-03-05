@@ -125,11 +125,21 @@ public class SortFeature implements DataTableFeature {
         renderer.encodeTbody(context, table, true);
         
         if(table.isMultiViewState()) {
-            ValueExpression sortByVE = table.getValueExpression("sortBy");
+            ValueExpression sortVE;
+            String sortField = table.getSortField();
+            if (sortField != null) {
+                sortVE = context.getApplication()
+                        .getExpressionFactory()
+                        .createValueExpression("#{'" + sortField + "'}",
+                                String.class);
+            }
+            else {
+                sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+            }
             List<SortMeta> multiSortMeta = table.getMultiSortMeta();
-            if(sortByVE != null || multiSortMeta != null) {
+            if(sortVE != null || multiSortMeta != null) {
                 TableState ts = table.getTableState(true);
-                ts.setSortBy(sortByVE);
+                ts.setSortBy(sortVE);
                 ts.setMultiSortMeta(multiSortMeta);
                 ts.setSortOrder(table.getSortOrder());
                 ts.setSortField(table.getSortField());
@@ -148,7 +158,17 @@ public class SortFeature implements DataTableFeature {
         if(value == null)
             return;
         
-        ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());        
+        ValueExpression sortVE;
+        String sortField = table.getSortField();
+        if (sortField != null) {
+            sortVE = context.getApplication()
+                    .getExpressionFactory()
+                    .createValueExpression("#{'" + sortField + "'}",
+                            String.class);
+        }
+        else {
+            sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+        }
         SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
         MethodExpression sortFunction = table.getSortFunction();
         List list = null;
@@ -165,7 +185,7 @@ public class SortFeature implements DataTableFeature {
         else
             throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
         
-        Collections.sort(list, new BeanPropertyComparator(sortByVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort(), table.resolveDataLocale(), table.getNullSortOrder()));
+        Collections.sort(list, new BeanPropertyComparator(sortVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort(), table.resolveDataLocale(), table.getNullSortOrder()));
     
         context.getApplication().publishEvent(context, PostSortEvent.class, table);
     }

@@ -125,7 +125,7 @@ public class FilterFeature implements DataTableFeature {
             filter(context, table, table.getFilterMetadata(), globalFilterValue);
                                   
             //sort new filtered data to restore sort state
-            boolean sorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null);
+            boolean sorted = (table.getSortField() != null || table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null);
             if(sorted) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
                 
@@ -321,13 +321,22 @@ public class FilterFeature implements DataTableFeature {
                     if(headerRowChild instanceof Column) {
                         Column column = (Column) headerRowChild;
                         if(column.isRendered()) {
-                            ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
-                            if(columnFilterByVE != null) {
-                                ValueExpression filterByVE = columnFilterByVE;
+                            ValueExpression filterVE;
+                            String columnField = column.getField();
+                            if (columnField != null) {
+                                filterVE = context.getApplication()
+                                        .getExpressionFactory()
+                                        .createValueExpression("#{'" + columnField + "'}",
+                                                String.class);
+                            }
+                            else {
+                                filterVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
+                            }
+                            if (filterVE != null) {
                                 UIComponent filterFacet = column.getFacet("filter");
                                 Object filterValue = (filterFacet == null) ? params.get(column.getClientId(context) + separator + "filter") : ((ValueHolder) filterFacet).getLocalValue(); 
 
-                                filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
+                                filterMetadata.add(new FilterMeta(column, filterVE, filterValue));
                             }
                         }
                     }
@@ -338,13 +347,23 @@ public class FilterFeature implements DataTableFeature {
                         for(DynamicColumn dynaColumn : dynamicColumns) {
                             dynaColumn.applyStatelessModel();
                             if(dynaColumn.isRendered()) {
-                                ValueExpression columnFilterByVE = dynaColumn.getValueExpression(Column.PropertyKeys.filterBy.toString());
-                                if(columnFilterByVE != null) {
+                                ValueExpression filterVE;
+                                String columnField = dynaColumn.getField();
+                                if (columnField != null) {
+                                    filterVE = context.getApplication()
+                                            .getExpressionFactory()
+                                            .createValueExpression("#{'" + columnField + "'}",
+                                                    String.class);
+                                }
+                                else {
+                                    filterVE = dynaColumn.getValueExpression(Column.PropertyKeys.filterBy.toString());
+                                }
+                                if (filterVE != null) {
                                     String filterId = dynaColumn.getContainerClientId(context) + separator + "filter";
                                     UIComponent filterFacet = dynaColumn.getFacet("filter"); 
                                     Object filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
 
-                                    filterMetadata.add(new FilterMeta(dynaColumn, columnFilterByVE, filterValue));
+                                    filterMetadata.add(new FilterMeta(dynaColumn, filterVE, filterValue));
                                 }
                             }
                         }
@@ -356,13 +375,21 @@ public class FilterFeature implements DataTableFeature {
    
    private void populateFilterMetaDataWithoutColumnGroups(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, Map<String,String> params, String separator) {
        for(UIColumn column : table.getColumns()) {
-            ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
-
-            if (columnFilterByVE != null) {
-                UIComponent filterFacet = column.getFacet("filter");                    
-                ValueExpression filterByVE = columnFilterByVE;
+            ValueExpression filterVE;
+            String columnField = column.getField();
+            if (columnField != null) {
+                filterVE = context.getApplication()
+                        .getExpressionFactory()
+                        .createValueExpression("#{'" + columnField + "'}",
+                                String.class);
+            }
+            else {
+                filterVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
+            }
+            if (filterVE != null) {
+                UIComponent filterFacet = column.getFacet("filter");
                 Object filterValue = null;
-                String filterId = null;
+                String filterId;
 
                 if(column instanceof Column) {
                     filterId = column.getClientId(context) + separator + "filter";
@@ -376,7 +403,7 @@ public class FilterFeature implements DataTableFeature {
                     dynamicColumn.cleanModel();
                 }
 
-                filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
+                filterMetadata.add(new FilterMeta(column, filterVE, filterValue));
             }
         }
    }
