@@ -47,6 +47,9 @@ public class RowEditorRenderer extends CoreRenderer {
     }
     
     protected void encodeIcon(ResponseWriter writer, String type, String title) throws IOException {
+        String iconClass = "ui-icon ui-icon-" + type;
+        iconClass = (type == "pencil") ? iconClass : iconClass + " ui-c";
+        
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", "ui-row-editor-" + type, null);
@@ -55,7 +58,7 @@ public class RowEditorRenderer extends CoreRenderer {
         if(title != null) {
             writer.writeAttribute("title", title, null);
         }
-        writer.writeAttribute("class", "ui-icon ui-icon-" + type, null);
+        writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
         
         writer.endElement("a");
