@@ -49,22 +49,27 @@ public class CompositeUtils {
     }
     
     public static void invokeOnEditableValueHolder(FacesContext context, UIComponent composite,
-            ContextCallback callback) {
+            final ContextCallback callback) {
         BeanInfo info = (BeanInfo) composite.getAttributes().get(UIComponent.BEANINFO_KEY);
         List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
                 .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
 
         for (AttachedObjectTarget target : targets) {
             if (target instanceof EditableValueHolderAttachedObjectTarget) {
-                UIComponent children = composite.findComponent(target.getName());
+                final UIComponent children = composite.findComponent(target.getName());
                 if (children == null) {
                     throw new FacesException(
                             "Cannot find editableValueHolder with name: \"" + target.getName()
                                     + "\" in composite component with id: \"" + composite.getClientId() + "\"");
                 }
 
-                ComponentTraversalUtils.closestNamingContainer(composite)
-                        .invokeOnComponent(context, children.getClientId(context), callback);
+                composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback()
+                {
+                    public void invokeContextCallback(FacesContext context, UIComponent target)
+                    {
+                        callback.invokeContextCallback(context, children);
+                    }
+                });
             }
         }
     }
