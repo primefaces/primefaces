@@ -26,24 +26,6 @@ import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 
 public class CompositeUtils {
     
-    static class EditableValueHolderCallbackWrapper implements ContextCallback {
-        private final ContextCallback callback;
-        
-        public EditableValueHolderCallbackWrapper(ContextCallback callback) {
-            this.callback = callback;
-        }
-
-        @Override
-        public void invokeContextCallback(FacesContext context, UIComponent target) {
-            if (isComposite(target)) {
-                invokeOnEditableValueHolder(context, target, this);
-            }
-            else {
-                callback.invokeContextCallback(context, target);
-            }
-        }
-    }
-    
     public static boolean isComposite(UIComponent component) {
         return UIComponent.isCompositeComponent(component);
     }
@@ -63,11 +45,14 @@ public class CompositeUtils {
                                     + "\" in composite component with id: \"" + composite.getClientId() + "\"");
                 }
 
-                composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback()
-                {
-                    public void invokeContextCallback(FacesContext context, UIComponent target)
-                    {
-                        callback.invokeContextCallback(context, children);
+                composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback() {
+                    public void invokeContextCallback(FacesContext context, UIComponent target) {
+                        if (isComposite(children)) {
+                            invokeOnEditableValueHolder(context, children, callback);
+                        }
+                        else {
+                            callback.invokeContextCallback(context, children);
+                        }
                     }
                 });
             }
@@ -76,7 +61,6 @@ public class CompositeUtils {
 
     public static void invokeOnDeepestEditableValueHolder(FacesContext context, UIComponent composite,
             ContextCallback callback) {
-        EditableValueHolderCallbackWrapper callbackWrapper = new EditableValueHolderCallbackWrapper(callback);
-        invokeOnEditableValueHolder(context, composite, callbackWrapper);
+        invokeOnEditableValueHolder(context, composite, callback);
     }
 }
