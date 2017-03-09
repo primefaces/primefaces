@@ -1199,7 +1199,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnSelection(context, table, clientId, column, selected);
         }
 
-        column.renderChildren(context);       
+        column.encodeAll(context);       
 
         writer.endElement("td");
     }
