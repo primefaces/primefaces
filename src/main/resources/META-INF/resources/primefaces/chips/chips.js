@@ -69,7 +69,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         
         var closeSelector = '> li.ui-chips-token > .ui-chips-token-icon';
         this.itemContainer.off('click', closeSelector).on('click', closeSelector, null, function(event) {
-            $this.removeItem(event, $(this).parent());
+            $this.removeItem($(this).parent());
         });
     },
     
@@ -82,14 +82,55 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         this.input.val('').focus();
 
         this.hinput.append('<option value="' + value + '" selected="selected"></option>');
+        this.invokeItemSelectBehavior(value);
     },
     
-    removeItem: function(event, item) {
+    removeItem: function(item) {
         var itemIndex = this.itemContainer.children('li.ui-chips-token').index(item);
+        var itemValue = item.find('span.ui-autocomplete-token-label').html()
+        $this = this;
 
         //remove from options
         this.hinput.children('option').eq(itemIndex).remove();
-        item.remove();
-    }
+
+        item.fadeOut('fast', function() {
+            var token = $(this);
+
+            token.remove();
+
+            $this.invokeItemUnselectBehavior(event, itemValue);
+        });
+    },
     
+    invokeItemSelectBehavior: function(itemValue) {
+        if(this.cfg.behaviors) {
+            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+
+            if(itemSelectBehavior) {
+                var ext = {
+                    params : [
+                        {name: this.id + '_itemSelect', value: itemValue}
+                    ]
+                };
+
+                itemSelectBehavior.call(this, ext);
+            }
+        }
+    },
+
+    invokeItemUnselectBehavior: function(itemValue) {
+        if(this.cfg.behaviors) {
+            var itemUnselectBehavior = this.cfg.behaviors['itemUnselect'];
+
+            if(itemUnselectBehavior) {
+                var ext = {
+                    params : [
+                        {name: this.id + '_itemUnselect', value: itemValue}
+                    ]
+                };
+
+                itemUnselectBehavior.call(this, ext);
+            }
+        }
+    }
 });
