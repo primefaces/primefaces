@@ -53,7 +53,8 @@
                 form.attr('target', target);
             }
 
-            form.submit().children('input.ui-submit-param').remove();
+            form.submit();
+            form.children('input.ui-submit-param').remove();
 
             if (target) {
                 if (prevTarget !== undefined) {
