@@ -46,11 +46,22 @@
          */
         submit : function(formId, target) {
             var form = $(this.escapeClientId(formId));
-            if(target) {
+            var prevTarget;
+
+            if (target) {
+                prevTarget = form.attr('target');
                 form.attr('target', target);
             }
 
             form.submit().children('input.ui-submit-param').remove();
+
+            if (target) {
+                if (prevTarget !== undefined) {
+                    form.attr('target', prevTarget);
+                } else {
+                    form.removeAttr('target');
+                }
+            }
         },
 
         onPost : function() {
