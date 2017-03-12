@@ -17,13 +17,16 @@
     <parent>javax.faces.component.html.HtmlInputText</parent>
     <description>Chips is used to enter multiple values on an inputfield.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-		<interface>
-			<name>org.primefaces.component.api.InputHolder</name>
-		</interface>
-	</interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.InputHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.MixedClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
     <attributes>
         &input_component_attributes;
         &html_input_text_attributes;

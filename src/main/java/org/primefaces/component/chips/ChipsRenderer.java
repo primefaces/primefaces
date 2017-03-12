@@ -61,6 +61,8 @@ public class ChipsRenderer extends InputRenderer {
         else {
             chips.setSubmittedValue("");
         }
+
+        decodeBehaviors(context, chips);
     }
     
     @Override
