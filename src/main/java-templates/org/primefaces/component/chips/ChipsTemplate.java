@@ -37,7 +37,7 @@ import javax.faces.component.behavior.Behavior;
         return (String) getStateHelper().get("labelledby");
     }
 	
-	@Override
+    @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
     }
@@ -46,8 +46,8 @@ import javax.faces.component.behavior.Behavior;
     public Collection<String> getUnobstrusiveEventNames() {
         return UNOBSTRUSIVE_EVENT_NAMES;
     }
-	
-	@Override
+
+    @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();

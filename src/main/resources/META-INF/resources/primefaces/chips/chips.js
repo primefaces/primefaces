@@ -98,7 +98,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
             token.remove();
 
-            $this.invokeItemUnselectBehavior(event, itemValue);
+            $this.invokeItemUnselectBehavior(itemValue);
         });
     },
     
