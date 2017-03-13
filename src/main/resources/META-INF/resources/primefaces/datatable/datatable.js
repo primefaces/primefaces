@@ -817,7 +817,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var row = $(this);
 
             if(targetWidget.cfg.selectionMode && row.hasClass('ui-datatable-selectable')) {
-                targetWidget.onRowRightClick(e, this, targetWidget.cfg.selectionMode);
+                targetWidget.onRowRightClick(e, this, cfg.selectionMode);
 
                 menuWidget.show(e);
             }
