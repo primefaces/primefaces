@@ -2,7 +2,7 @@
 
 This is an overview page, please visit [PrimeFaces.org](http://www.primefaces.org) for more information.
 
-![PrimeFaces icon](http://blog.primefaces.org/wp-content/uploads/2011/08/bloglogo.png)
+![PrimeFaces icon](https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo.png)
 
 ### Overview
 ***
