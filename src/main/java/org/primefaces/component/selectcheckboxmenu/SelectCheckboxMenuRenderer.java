@@ -193,7 +193,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             for(int i = 0; i < length; i++) {
                 Object value = Array.get(values, i);
                 writer.startElement("li", null);
-                
                 writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_DISPLAY_CLASS, null);
                 writer.writeAttribute("data-item-value", value, null);
                 
@@ -209,12 +208,12 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 }
                 
                 if(selectedItem != null && selectedItem.getLabel() != null) {
-                    if(selectedItem.isEscape()) {
+                    if(selectedItem.isEscape())
                         writer.writeText(selectedItem.getLabel(), null);
-                    } else {
+                    else
                         writer.write(selectedItem.getLabel());
-                    }
-                } else {
+                } 
+                else {
                     writer.writeText(value, null);
                 }
                 
