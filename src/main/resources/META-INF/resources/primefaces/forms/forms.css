@@ -597,7 +597,7 @@ button.ui-button::-moz-focus-inner {
     margin:2px;
 }
 
-.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger  .ui-icon {
+.ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger  .ui-icon {
     position: relative;
     top: 50%;
     margin-top: -8px;
