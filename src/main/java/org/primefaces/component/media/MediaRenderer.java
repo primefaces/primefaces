@@ -51,8 +51,10 @@ public class MediaRenderer extends CoreRenderer {
         Object value = media.getValue();
         if(value != null && value instanceof StreamedContent && player.getType().equals("application/pdf")) {
             StreamedContent streamedContent = (StreamedContent) value;
-            int index = src.indexOf("?");
-            src = src.substring(0, index) + ";/" + streamedContent.getName() + "" + src.substring(index, src.length());
+            if(streamedContent.getName() != null) {
+                int index = src.indexOf("?");
+                src = src.substring(0, index) + ";/" + streamedContent.getName() + "" + src.substring(index, src.length());
+            }
         }
         
 		writer.startElement("object", media);

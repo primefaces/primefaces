@@ -78,13 +78,11 @@ public class ClockRenderer extends CoreRenderer {
     }
     
     protected String getValueWithTimeZone(FacesContext context, Clock clock) {
-        String pattern = clock.getPattern();
-        pattern = pattern != null ? pattern : "MM/dd/yyyy HH:mm:ss";
         Locale locale = context.getViewRoot().getLocale();
         String value = "";
         
         if(locale != null) {
-            DateFormat dateFormat = new SimpleDateFormat(pattern, locale);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", locale);
             dateFormat.setTimeZone(clock.calculateTimeZone());
             
             value = dateFormat.format(new Date());

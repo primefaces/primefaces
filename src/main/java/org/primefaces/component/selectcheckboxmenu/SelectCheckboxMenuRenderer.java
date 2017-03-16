@@ -194,10 +194,29 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 Object value = Array.get(values, i);
                 writer.startElement("li", null);
                 writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_DISPLAY_CLASS, null);
-
+                writer.writeAttribute("data-item-value", value, null);
+                
                 writer.startElement("span", null);
                 writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_LABEL_CLASS, null);
-                writer.writeText(value, null);
+                
+                SelectItem selectedItem = null;
+                for(SelectItem item : selectItems) {
+                    if(value.equals(item.getValue())) {
+                        selectedItem = item;
+                        break;
+                    }
+                }
+                
+                if(selectedItem != null && selectedItem.getLabel() != null) {
+                    if(selectedItem.isEscape())
+                        writer.writeText(selectedItem.getLabel(), null);
+                    else
+                        writer.write(selectedItem.getLabel());
+                } 
+                else {
+                    writer.writeText(value, null);
+                }
+                
                 writer.endElement("span");
 
                 writer.startElement("span", null);

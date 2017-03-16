@@ -2480,11 +2480,16 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             item.append('<div class="ui-chkbox ui-widget"><div class="ui-helper-hidden-accessible"><input type="checkbox" role="checkbox" readonly="readonly"></input></div>' +
                     '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>');
             
-            var itemLabel = $('<label></label>');
-            if(escaped)
-                itemLabel.text(label.text());
+            var itemLabel = $('<label></label>'),
+            labelHtml = label.html().trim(),
+            labelLength = labelHtml.length;
+            if (labelLength > 0 && labelHtml !== '&nbsp;')
+                if(escaped)
+                    itemLabel.text(label.text());
+                else
+                    itemLabel.html(label.html());
             else
-                itemLabel.html(label.html());
+                itemLabel.text(input.val());
             
             itemLabel.appendTo(item);
         
@@ -2493,7 +2498,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
             
             if($this.cfg.multiple) {
-                item.attr('data-item-value', label.text());
+                item.attr('data-item-value', input.val());
             }
 
             item.find('> .ui-chkbox > .ui-helper-hidden-accessible > input').prop('checked', checked).attr('aria-checked', checked);
@@ -3123,14 +3128,18 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     
     createMultipleItem: function(item) {
         var items = this.multiItemContainer.children();
-        if(items.length && items.filter("[data-item-value=" + item.data('item-value') + "]").length > 0) {
+        if(items.length && items.filter('[data-item-value="' + item.data('item-value') + '"]').length > 0) {
             return;
         }
             
         var input = this.inputs.eq(item.index()),
-        itemDisplayMarkup = '<li class="ui-selectcheckboxmenu-token ui-state-active ui-corner-all" data-item-value="' + input.next().text() +'">';
+        escaped = input.data('escaped'),
+        labelHtml = input.next().html().trim(),
+        labelLength = labelHtml.length,
+        label = labelLength > 0 && labelHtml !== '&nbsp;' ? (escaped ? input.next().text() : input.next().html()) : input.val(),
+        itemDisplayMarkup = '<li class="ui-selectcheckboxmenu-token ui-state-active ui-corner-all" data-item-value="' + input.val() +'">';
         itemDisplayMarkup += '<span class="ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close" />';
-        itemDisplayMarkup += '<span class="ui-selectcheckboxmenu-token-label">' + input.next().text() + '</span></li>';
+        itemDisplayMarkup += '<span class="ui-selectcheckboxmenu-token-label">' + label + '</span></li>';
 
         this.multiItemContainer.append(itemDisplayMarkup); 
     },
