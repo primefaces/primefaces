@@ -211,7 +211,13 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
             for(UIComponent child : menu.getChildren()) {
                 if(child instanceof Column && child.isRendered()) {
+                    String style = ((Column)child).getStyle();
+                    String styleClass = ((Column)child).getStyleClass();
+
                     writer.startElement("td", null);
+                    if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+                    if(style != null) writer.writeAttribute("style", style, "style");
+                    
                     renderChildren(context, child);
                     writer.endElement("td");
                 }
