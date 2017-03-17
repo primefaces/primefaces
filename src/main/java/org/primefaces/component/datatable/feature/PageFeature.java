@@ -31,11 +31,13 @@ public class PageFeature implements DataTableFeature {
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         table.updatePaginationData(context, table);
         
-        if(table.isLazy()) {
+        boolean isPageState = table.isPageStateRequest(context);
+        
+        if(table.isLazy() && !isPageState) {
             table.loadLazyData();
         }
 
-        if(!table.isPageStateRequest(context)) {
+        if(!isPageState) {
             renderer.encodeTbody(context, table, true);
         }
 
