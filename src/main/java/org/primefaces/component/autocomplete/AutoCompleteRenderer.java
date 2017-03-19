@@ -641,7 +641,8 @@ public class AutoCompleteRenderer extends InputRenderer {
             .attr("autoHighlight", ac.isAutoHighlight(), true)
             .attr("myPos", ac.getMy(), null)
             .attr("atPos", ac.getAt(), null)
-            .attr("active", ac.isActive(), true);
+            .attr("active", ac.isActive(), true)
+            .attr("unique", ac.isUnique(), false);
         
         if(ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());            

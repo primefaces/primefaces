@@ -404,18 +404,27 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 if($this.cfg.multiple) {
-                    var itemDisplayMarkup = '<li data-token-value="' + item.attr('data-item-value') + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
-                    itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
-                    itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + item.attr('data-item-label') + '</span></li>';
+                    var found = false;
+                    if($this.cfg.unique) {
+                        found = $this.multiItemContainer.children("li[data-token-value='" + itemValue + "']").length != 0;
+                    }
 
-                    $this.inputContainer.before(itemDisplayMarkup);
-                    $this.multiItemContainer.children('.ui-helper-hidden').fadeIn();
-                    $this.input.val('').focus();
+                    if(!found) {
+                        var itemDisplayMarkup = '<li data-token-value="' + itemValue + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
+                        itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
+                        itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + item.attr('data-item-label') + '</span></li>';
+    
+                        $this.inputContainer.before(itemDisplayMarkup);
+                        $this.multiItemContainer.children('.ui-helper-hidden').fadeIn();
+                        $this.input.val('').focus();
+    
+                        $this.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
+                        if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
+                            $this.input.css('display', 'none').blur();
+                            $this.disableDropdown();
+                        }
 
-                    $this.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
-                    if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
-                        $this.input.css('display', 'none').blur();
-                        $this.disableDropdown();
+                        $this.invokeItemSelectBehavior(event, itemValue);
                     }
                 }
                 else {
@@ -432,9 +441,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         var length = $this.input.val().length;
                         $this.input.setSelection(length,length);
                     }
-                }
 
-                $this.invokeItemSelectBehavior(event, itemValue);
+                    $this.invokeItemSelectBehavior(event, itemValue);
+                }
             }
 
             $this.hide();
