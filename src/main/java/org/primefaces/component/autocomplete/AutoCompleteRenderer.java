@@ -18,7 +18,8 @@ package org.primefaces.component.autocomplete;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -42,63 +43,61 @@ import org.primefaces.util.WidgetBuilder;
 
 public class AutoCompleteRenderer extends InputRenderer {
 
-	private static final Logger LOG = Logger.getLogger(AutoCompleteRenderer.class.getName());
-	
+    private static final Logger LOG = Logger.getLogger(AutoCompleteRenderer.class.getName());
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         AutoComplete ac = (AutoComplete) component;
         String clientId = ac.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if(ac.isDisabled() || ac.isReadonly()) {
+        if (ac.isDisabled() || ac.isReadonly()) {
             return;
         }
-        
-        if(ac.isMultiple()) {
+
+        if (ac.isMultiple()) {
             decodeMultiple(context, ac);
-        }
-        else {
+        } else {
             decodeSingle(context, ac);
         }
-        
+
         decodeBehaviors(context, ac);
-        
-        //AutoComplete event
+
+        // AutoComplete event
         String query = params.get(clientId + "_query");
-        if(query != null) {
+        if (query != null) {
             AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(ac, query);
             autoCompleteEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             ac.queueEvent(autoCompleteEvent);
         }
     }
-    
+
     protected void decodeSingle(FacesContext context, AutoComplete ac) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = ac.getClientId(context);
         String valueParam = (ac.getVar() != null) ? clientId + "_hinput" : clientId + "_input";
         String submittedValue = params.get(valueParam);
 
-        if(submittedValue != null) {
+        if (submittedValue != null) {
             ac.setSubmittedValue(submittedValue);
         }
     }
-    
+
     protected void decodeMultiple(FacesContext context, AutoComplete ac) {
         Map<String, String[]> paramValues = context.getExternalContext().getRequestParameterValuesMap();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = ac.getClientId(context);
         String[] hinputValues = paramValues.get(clientId + "_hinput");
-        String[] submittedValues = (hinputValues != null) ? hinputValues : new String[]{};
+        String[] submittedValues = (hinputValues != null) ? hinputValues : new String[] {};
         String inputValue = params.get(clientId + "_input");
-        
-        if(inputValue != null && !inputValue.trim().equals("")) {
-            submittedValues = ArrayUtils.concat(submittedValues, new String[]{inputValue});
+
+        if (inputValue != null && !inputValue.trim().equals("")) {
+            submittedValues = ArrayUtils.concat(submittedValues, new String[] { inputValue });
         }
 
-        if(submittedValues.length > 0) {
+        if (submittedValues.length > 0) {
             ac.setSubmittedValue(submittedValues);
-        }
-        else {
+        } else {
             ac.setSubmittedValue("");
         }
     }
@@ -109,10 +108,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String query = params.get(autoComplete.getClientId(context) + "_query");
 
-        if(query != null) {
+        if (query != null) {
             encodeResults(context, component, query);
-        }
-        else {
+        } else {
             encodeMarkup(context, autoComplete);
             encodeScript(context, autoComplete);
         }
@@ -123,8 +121,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         AutoComplete ac = (AutoComplete) component;
         List results = ac.getSuggestions();
         int maxResults = ac.getMaxResults();
-        
-        if(maxResults != Integer.MAX_VALUE && results != null && results.size() > maxResults) {
+
+        if (maxResults != Integer.MAX_VALUE && results != null && results.size() > maxResults) {
             results = results.subList(0, ac.getMaxResults());
         }
 
@@ -132,41 +130,41 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, AutoComplete ac) throws IOException {
-        if(ac.isMultiple())
+        if (ac.isMultiple())
             encodeMultipleMarkup(context, ac);
         else
             encodeSingleMarkup(context, ac);
     }
-    
+
     protected void encodeSingleMarkup(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.STYLE_CLASS : AutoComplete.STYLE_CLASS + " " + styleClass;
-        
+
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
 
-        if(ac.getStyle() != null) {
+        if (ac.getStyle() != null) {
             writer.writeAttribute("style", ac.getStyle(), null);
         }
 
         encodeInput(context, ac, clientId);
-        
-        if(ac.getVar() != null) {
+
+        if (ac.getVar() != null) {
             encodeHiddenInput(context, ac, clientId);
         }
-        
-        if(ac.isDropdown()) {
+
+        if (ac.isDropdown()) {
             encodeDropDown(context, ac);
         }
-        
+
         encodePanel(context, ac);
 
         writer.endElement("span");
     }
-    
+
     protected void encodeInput(FacesContext context, AutoComplete ac, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean disabled = ac.isDisabled();
@@ -177,157 +175,150 @@ public class AutoCompleteRenderer extends InputRenderer {
         styleClass = ac.isValid() ? styleClass : styleClass + " ui-state-error";
         String inputStyle = ac.getInputStyle();
         String inputStyleClass = ac.getInputStyleClass();
-        inputStyleClass = (inputStyleClass == null) ? styleClass : styleClass + " " + inputStyleClass; 
+        inputStyleClass = (inputStyleClass == null) ? styleClass : styleClass + " " + inputStyleClass;
         String labelledBy = ac.getLabelledBy();
-            
+
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("name", clientId + "_input", null);
         writer.writeAttribute("type", ac.getType(), null);
         writer.writeAttribute("class", inputStyleClass, null);
         writer.writeAttribute("autocomplete", "off", null);
-        
-        if(labelledBy != null) {
+
+        if (labelledBy != null) {
             writer.writeAttribute("aria-labelledby", labelledBy, null);
         }
-        
-        if(inputStyle != null) {
+
+        if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
         }
-        
+
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
-        
-        if(var == null) {
+
+        if (var == null) {
             itemLabel = ComponentUtils.getValueToRender(context, ac);
-            
-            if(itemLabel != null) {
-                writer.writeAttribute("value", itemLabel , null);
+
+            if (itemLabel != null) {
+                writer.writeAttribute("value", itemLabel, null);
             }
-        }
-        else {
-            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
-            
-            if(ac.isValid()) {
+        } else {
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+            if (ac.isValid()) {
                 requestMap.put(var, ac.getValue());
                 itemLabel = ac.getItemLabel();
-            }
-            else {
+            } else {
                 Object submittedValue = ac.getSubmittedValue();
-                
+
                 Object value = ac.getValue();
-                
-                if(submittedValue == null && value != null) {
+
+                if (submittedValue == null && value != null) {
                     requestMap.put(var, value);
                     itemLabel = ac.getItemLabel();
-                }
-                else if(submittedValue != null) {
+                } else if (submittedValue != null) {
                     // retrieve the actual item (pojo) from the converter
                     try {
-                        Object item = getConvertedValue(context, ac,
-                                String.valueOf(submittedValue));
+                        Object item = getConvertedValue(context, ac, String.valueOf(submittedValue));
                         requestMap.put(var, item);
                         itemLabel = ac.getItemLabel();
-                    }
-                    catch (ConverterException ce) {
+                    } catch (ConverterException ce) {
                         itemLabel = String.valueOf(submittedValue);
                     }
 
-                }
-                else {
-                	itemLabel = null;
+                } else {
+                    itemLabel = null;
                 }
 
             }
 
-            if(itemLabel != null) {
+            if (itemLabel != null) {
                 writer.writeAttribute("value", itemLabel, null);
             }
-            
+
             requestMap.remove(var);
         }
 
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(ac.isRequired()) writer.writeAttribute("aria-required", "true", null);
-        
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+
+        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, ac);
         }
 
         writer.endElement("input");
     }
-    
+
     protected void encodeHiddenInput(FacesContext context, AutoComplete ac, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String valueToRender = ComponentUtils.getValueToRender(context, ac);
-        
+
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_hinput", null);
         writer.writeAttribute("name", clientId + "_hinput", null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("autocomplete", "off", null);
-        if(valueToRender != null) {
+        if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
-        } 
+        }
         writer.endElement("input");
     }
-    
+
     protected void encodeHiddenSelect(FacesContext context, AutoComplete ac, String clientId, List<String> values) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String id = clientId + "_hinput";
-        
+
         writer.startElement("select", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("class", "ui-helper-hidden", null);
-        
-        if(ac.isDisabled()) {
+
+        if (ac.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
-        
-        for(String value : values) {
+
+        for (String value : values) {
             writer.startElement("option", null);
             writer.writeAttribute("value", value, null);
             writer.writeAttribute("selected", "selected", null);
             writer.endElement("option");
         }
-        
+
         writer.endElement("select");
     }
-    
+
     protected void encodeDropDown(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String dropdownClass = AutoComplete.DROPDOWN_CLASS;
-        boolean disabled = ac.isDisabled()||ac.isReadonly();
-        if(disabled) {
+        boolean disabled = ac.isDisabled() || ac.isReadonly();
+        if (disabled) {
             dropdownClass += " ui-state-disabled";
         }
-        
+
         writer.startElement("button", ac);
         writer.writeAttribute("class", dropdownClass, null);
         writer.writeAttribute("type", "button", null);
-        if(disabled) {
+        if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
-        if(ac.getTabindex() != null) {
+        if (ac.getTabindex() != null) {
             writer.writeAttribute("tabindex", ac.getTabindex(), null);
         }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-button-icon-primary ui-icon ui-icon-triangle-1-s", null);
         writer.endElement("span");
-        
+
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-button-text", null);
         writer.write("&nbsp;");
         writer.endElement("span");
-        
-        
+
         writer.endElement("button");
     }
-    
+
     protected void encodePanel(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = ac.getPanelStyleClass();
@@ -336,24 +327,23 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", ac.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", styleClass, null);
-        
-        if(ac.getPanelStyle() != null) {
+
+        if (ac.getPanelStyle() != null) {
             writer.writeAttribute("style", ac.getPanelStyle(), null);
         }
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeMultipleMarkup(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         String inputId = clientId + "_input";
-        
+
         List values;
-        if(ac.isValid()) {
+        if (ac.isValid()) {
             values = (List) ac.getValue();
-        }
-        else {
+        } else {
             Object submittedValue = ac.getSubmittedValue();
             try {
                 values = (List) getConvertedValue(context, ac, submittedValue);
@@ -361,53 +351,52 @@ public class AutoCompleteRenderer extends InputRenderer {
                 values = Arrays.asList((String[]) submittedValue);
             }
         }
-        
+
         List<String> stringValues = new ArrayList<String>();
         boolean disabled = ac.isDisabled();
         String title = ac.getTitle();
-        
+
         String style = ac.getStyle();
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
         String listClass = ac.isDropdown() ? AutoComplete.MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS : AutoComplete.MULTIPLE_CONTAINER_CLASS;
         listClass = disabled ? listClass + " ui-state-disabled" : listClass;
         listClass = ac.isValid() ? listClass : listClass + " ui-state-error";
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        if(title != null) {
+        if (title != null) {
             writer.writeAttribute("title", title, null);
         }
-        
+
         writer.startElement("ul", null);
         writer.writeAttribute("class", listClass, null);
-        
-        if(values != null && !values.isEmpty()) {
-        	Converter converter = ComponentUtils.getConverter(context, ac);
-        	String var = ac.getVar();
-        	boolean pojo = var != null;
 
-            for(Iterator<Object> it = values.iterator(); it.hasNext();) {
-                Object value = it.next();
+        if (values != null && !values.isEmpty()) {
+            Converter converter = ComponentUtils.getConverter(context, ac);
+            String var = ac.getVar();
+            boolean pojo = var != null;
+
+            Collection<Object> items = ac.isUnique() ? new HashSet<Object>(values) : values;
+            for (Object value : items) {
                 Object itemValue = null;
                 String itemLabel = null;
-                
-                if(pojo) {
+
+                if (pojo) {
                     context.getExternalContext().getRequestMap().put(var, value);
                     itemValue = ac.getItemValue();
                     itemLabel = ac.getItemLabel();
-                }
-                else {
+                } else {
                     itemValue = value;
                     itemLabel = String.valueOf(value);
                 }
-                
+
                 String tokenValue = converter != null ? converter.getAsString(context, ac, itemValue) : String.valueOf(itemValue);
-                
+
                 writer.startElement("li", null);
                 writer.writeAttribute("data-token-value", tokenValue, null);
                 writer.writeAttribute("class", AutoComplete.TOKEN_DISPLAY_CLASS, null);
@@ -425,11 +414,11 @@ public class AutoCompleteRenderer extends InputRenderer {
                 }
 
                 writer.endElement("li");
-                
+
                 stringValues.add(tokenValue);
             }
         }
-       
+
         writer.startElement("li", null);
         writer.writeAttribute("class", AutoComplete.TOKEN_INPUT_CLASS, null);
         writer.startElement("input", null);
@@ -441,102 +430,101 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
-        
+
         writer.endElement("input");
         writer.endElement("li");
-        
+
         writer.endElement("ul");
-        
-        if(ac.isDropdown()) {
+
+        if (ac.isDropdown()) {
             encodeDropDown(context, ac);
         }
-                        
+
         encodePanel(context, ac);
-        
+
         encodeHiddenSelect(context, ac, clientId, stringValues);
 
         writer.endElement("div");
     }
-    
+
     protected void encodeSuggestions(FacesContext context, AutoComplete ac, List items) throws IOException {
         boolean customContent = ac.getColums().size() > 0;
         Converter converter = ComponentUtils.getConverter(context, ac);
-        
-        if(customContent) {
+
+        if (customContent) {
             encodeSuggestionsAsTable(context, ac, items, converter);
-        } 
-        else {
+        } else {
             encodeSuggestionsAsList(context, ac, items, converter);
         }
     }
-    
+
     protected void encodeSuggestionsAsTable(FacesContext context, AutoComplete ac, List items, Converter converter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String var = ac.getVar();
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         boolean pojo = var != null;
         UIComponent itemtip = ac.getFacet("itemtip");
         boolean hasHeader = false;
         boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
-        
-        for(Column column : ac.getColums()) {
-            if(column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
+
+        for (Column column : ac.getColums()) {
+            if (column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
                 hasHeader = true;
                 break;
             }
         }
-        
+
         writer.startElement("table", ac);
         writer.writeAttribute("class", AutoComplete.TABLE_CLASS, null);
-        
-        if(hasHeader) { 
+
+        if (hasHeader) {
             writer.startElement("thead", ac);
-            for(Column column : ac.getColums()) {
-                if(!column.isRendered()) {
+            for (Column column : ac.getColums()) {
+                if (!column.isRendered()) {
                     continue;
                 }
 
                 String headerText = column.getHeaderText();
                 UIComponent headerFacet = column.getFacet("header");
                 String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
-                
+
                 writer.startElement("th", null);
                 writer.writeAttribute("class", styleClass, null);
-                
-                if(column.getStyle() != null) 
+
+                if (column.getStyle() != null)
                     writer.writeAttribute("style", column.getStyle(), null);
-                
-                if(headerFacet != null)
+
+                if (headerFacet != null)
                     headerFacet.encodeAll(context);
-                else if(headerText != null)
+                else if (headerText != null)
                     writer.write(headerText);
 
                 writer.endElement("th");
             }
             writer.endElement("thead");
         }
-        
+
         writer.startElement("tbody", ac);
-        
-        if(items != null) {
-            for(Object item : items) {
+
+        if (items != null) {
+            for (Object item : items) {
                 writer.startElement("tr", null);
                 writer.writeAttribute("class", AutoComplete.ROW_CLASS, null);
 
-                if(pojo) {
+                if (pojo) {
                     requestMap.put(var, item);
                     String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
                     writer.writeAttribute("data-item-value", value, null);
                     writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
-                    if(hasGroupByTooltip) {
+                    if (hasGroupByTooltip) {
                         writer.writeAttribute("data-item-group-tooltip", ac.getGroupByTooltip(), null);
                     }
                 }
 
-                for(Column column : ac.getColums()) {
-                    if(column.isRendered()) {
+                for (Column column : ac.getColums()) {
+                    if (column.isRendered()) {
                         writer.startElement("td", null);
                         if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
                         if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
@@ -547,18 +535,18 @@ public class AutoCompleteRenderer extends InputRenderer {
                     }
                 }
 
-                if(itemtip != null && itemtip.isRendered()) {
+                if (itemtip != null && itemtip.isRendered()) {
                     writer.startElement("td", null);
                     writer.writeAttribute("class", AutoComplete.ITEMTIP_CONTENT_CLASS, null);
                     itemtip.encodeAll(context);
                     writer.endElement("td");
                 }
 
-                writer.endElement("tr");     
+                writer.endElement("tr");
             }
         }
-        
-        if(ac.getSuggestions().size() > ac.getMaxResults()) {
+
+        if (ac.getSuggestions().size() > ac.getMaxResults()) {
             encodeMoreText(context, ac);
         }
 
@@ -569,33 +557,32 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeSuggestionsAsList(FacesContext context, AutoComplete ac, List items, Converter converter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String var = ac.getVar();
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         boolean pojo = var != null;
         UIComponent itemtip = ac.getFacet("itemtip");
         boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
-        
+
         writer.startElement("ul", ac);
         writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
 
-        if(items != null) {
-            for(Object item : items) {
+        if (items != null) {
+            for (Object item : items) {
                 writer.startElement("li", null);
                 writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
 
-                if(pojo) {
+                if (pojo) {
                     requestMap.put(var, item);
                     String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
                     writer.writeAttribute("data-item-value", value, null);
                     writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
-                    if(hasGroupByTooltip) {
+                    if (hasGroupByTooltip) {
                         writer.writeAttribute("data-item-group-tooltip", ac.getGroupByTooltip(), null);
                     }
 
                     writer.writeText(ac.getItemLabel(), null);
-                }
-                else {
+                } else {
                     writer.writeAttribute("data-item-label", item, null);
                     writer.writeAttribute("data-item-value", item, null);
 
@@ -604,7 +591,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
                 writer.endElement("li");
 
-                if(itemtip != null && itemtip.isRendered()) {
+                if (itemtip != null && itemtip.isRendered()) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", AutoComplete.ITEMTIP_CONTENT_CLASS, null);
                     itemtip.encodeAll(context);
@@ -612,14 +599,14 @@ public class AutoCompleteRenderer extends InputRenderer {
                 }
             }
         }
-        
-        if(ac.getSuggestions().size() > ac.getMaxResults()) {
+
+        if (ac.getSuggestions().size() > ac.getMaxResults()) {
             encodeMoreText(context, ac);
         }
-        
+
         writer.endElement("ul");
-        
-        if(pojo) {
+
+        if (pojo) {
             requestMap.remove(var);
         }
     }
@@ -628,7 +615,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String clientId = ac.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("AutoComplete", ac.resolveWidgetVar(), clientId);
-        
+
         wb.attr("minLength", ac.getMinQueryLength(), 1)
             .attr("delay", ac.getQueryDelay())
             .attr("forceSelection", ac.isForceSelection(), false)
@@ -643,9 +630,9 @@ public class AutoCompleteRenderer extends InputRenderer {
             .attr("atPos", ac.getAt(), null)
             .attr("active", ac.isActive(), true)
             .attr("unique", ac.isUnique(), false);
-        
-        if(ac.isCache()) {
-            wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());            
+
+        if (ac.isCache()) {
+            wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());
         }
 
         String effect = ac.getEffect();
@@ -663,67 +650,66 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("itemtipAtPosition", ac.getItemtipAtPosition(), null);
         }
         
-        if(ac.isMultiple()) {
+        if (ac.isMultiple()) {
             wb.attr("selectLimit", ac.getSelectLimit(), Integer.MAX_VALUE);
         }
-        
+
         encodeClientBehaviors(context, ac);
 
         wb.finish();
     }
-    
+
     @Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {        
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         AutoComplete ac = (AutoComplete) component;
-        
-        if(submittedValue == null || submittedValue.equals("") || ac.isMoreTextRequest(context)) {
+
+        if (submittedValue == null || submittedValue.equals("") || ac.isMoreTextRequest(context)) {
             return null;
         }
-        
-		Converter converter = ComponentUtils.getConverter(context, component);
 
-        if(ac.isMultiple()) {
+        Converter converter = ComponentUtils.getConverter(context, component);
+
+        if (ac.isMultiple()) {
             String[] values = (String[]) submittedValue;
             List list = new ArrayList();
 
-            for(String value : values) {
-                if(isValueBlank(value)) {
+            for (String value : values) {
+                if (isValueBlank(value)) {
                     continue;
                 }
-            
+
                 Object convertedValue = converter != null ? converter.getAsObject(context, ac, value) : value;
 
-                if(convertedValue != null) {
+                if (convertedValue != null) {
                     list.add(convertedValue);
                 }
             }
-            
+
             return list;
-        }
-        else {
-            if(converter != null)
+        } else {
+            if (converter != null)
                 return converter.getAsObject(context, component, (String) submittedValue);
             else
                 return submittedValue;
         }
-	}
-    
+    }
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //Rendering happens on encodeEnd
+        // Rendering happens on encodeEnd
     }
 
     @Override
     public boolean getRendersChildren() {
         return true;
     }
-    
+
     public void encodeMoreText(FacesContext context, AutoComplete ac) throws IOException {
         int colSize = ac.getColums().size();
         String moreText = ac.getMoreText();
         ResponseWriter writer = context.getResponseWriter();
-        
-        if(colSize > 0) {
+
+        if (colSize > 0) {
             writer.startElement("tr", null);
             writer.writeAttribute("class", AutoComplete.MORE_TEXT_TABLE_CLASS, null);
 
@@ -731,10 +717,9 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("colspan", colSize, null);
             writer.write(moreText);
             writer.endElement("td");
-            
+
             writer.endElement("tr");
-        }
-        else {
+        } else {
             writer.startElement("li", null);
             writer.writeAttribute("class", AutoComplete.MORE_TEXT_LIST_CLASS, null);
             writer.write(moreText);
