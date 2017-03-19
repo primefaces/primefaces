@@ -397,6 +397,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         })
         .on(this.cfg.filterEvent + '.dataTable', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+            if (key === keyCode.END||key === keyCode.HOME||key === keyCode.LEFT||key === keyCode.RIGHT) {
+                return;
+            }
+
             if($this.filterTimeout) {
                 clearTimeout($this.filterTimeout);
             }
