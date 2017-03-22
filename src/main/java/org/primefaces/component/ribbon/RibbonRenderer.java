@@ -22,10 +22,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class RibbonRenderer extends CoreRenderer {
-    
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        super.decode(context, component);
+
+        decodeBehaviors(context, component);
+    }
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Ribbon ribbon = (Ribbon) component;
@@ -38,7 +46,9 @@ public class RibbonRenderer extends CoreRenderer {
         String clientId = ribbon.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Ribbon", ribbon.resolveWidgetVar(), clientId);
-        
+
+        encodeClientBehaviors(context, ribbon);
+
         wb.finish();
     }
 
@@ -47,18 +57,18 @@ public class RibbonRenderer extends CoreRenderer {
         String clientId = ribbon.getClientId(context);
         String style = ribbon.getStyle();
         String styleClass = ribbon.getStyleClass();
-        styleClass = (styleClass == null) ? Ribbon.CONTAINER_CLASS: Ribbon.CONTAINER_CLASS + " " + styleClass;
-        
+        styleClass = (styleClass == null) ? Ribbon.CONTAINER_CLASS : Ribbon.CONTAINER_CLASS + " " + styleClass;
+
         writer.startElement("div", ribbon);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("class", style, "style");
         }
-        
+
         encodeTabHeaders(context, ribbon);
         encodeTabContents(context, ribbon);
-        
+
         writer.endElement("div");
     }
 
@@ -66,23 +76,23 @@ public class RibbonRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         int activeIndex = ribbon.getActiveIndex();
         int childCount = ribbon.getChildCount();
-        
+
         writer.startElement("ul", ribbon);
         writer.writeAttribute("class", Ribbon.NAVIGATOR_CLASS, null);
         writer.writeAttribute("role", "tablist", null);
 
-        if(childCount > 0) {
+        if (childCount > 0) {
             List<UIComponent> children = ribbon.getChildren();
             for (int i = 0; i < childCount; i++) {
                 UIComponent child = children.get(i);
-                
-                if(child instanceof Tab && child.isRendered()) {
+
+                if (child instanceof Tab && child.isRendered()) {
                     Tab tab = (Tab) child;
                     String title = tab.getTitle();
                     boolean active = (i == activeIndex);
                     String headerClass = (active) ? Ribbon.ACTIVE_TAB_HEADER_CLASS : Ribbon.INACTIVE_TAB_HEADER_CLASS;
 
-                    //header container
+                    // header container
                     writer.startElement("li", null);
                     writer.writeAttribute("class", headerClass, null);
                     writer.writeAttribute("role", "tab", null);
@@ -90,7 +100,7 @@ public class RibbonRenderer extends CoreRenderer {
 
                     writer.startElement("a", null);
                     writer.writeAttribute("href", tab.getClientId(context), null);
-                    if(title != null) {
+                    if (title != null) {
                         writer.writeText(title, null);
                     }
                     writer.endElement("a");
@@ -106,57 +116,57 @@ public class RibbonRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         int activeIndex = ribbon.getActiveIndex();
         int childCount = ribbon.getChildCount();
-        
+
         writer.startElement("div", ribbon);
         writer.writeAttribute("class", Ribbon.PANELS_CLASS, null);
-        
-        if(childCount > 0) {
+
+        if (childCount > 0) {
             List<UIComponent> children = ribbon.getChildren();
             for (int i = 0; i < childCount; i++) {
                 UIComponent child = children.get(i);
-                
-                if(child instanceof Tab && child.isRendered()) {
+
+                if (child instanceof Tab && child.isRendered()) {
                     Tab tab = (Tab) child;
                     encodeTabContent(context, ribbon, tab, (i == activeIndex));
                 }
             }
         }
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeTabContent(FacesContext context, Ribbon ribbon, Tab tab, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String contentClass = active ? Ribbon.ACTIVE_TAB_CONTENT_CLASS : Ribbon.INACTIVE_TAB_CONTENT_CLASS;
         int childCount = tab.getChildCount();
-        
+
         writer.startElement("div", ribbon);
         writer.writeAttribute("id", tab.getClientId(context), null);
         writer.writeAttribute("class", contentClass, null);
-        
-        if(childCount > 0) {
+
+        if (childCount > 0) {
             writer.startElement("ul", ribbon);
             writer.writeAttribute("class", Ribbon.GROUPS_CLASS, null);
-            
+
             List<UIComponent> children = tab.getChildren();
-            for(int i = 0; i < childCount;i++) {
+            for (int i = 0; i < childCount; i++) {
                 UIComponent child = children.get(i);
-                
-                if(child instanceof RibbonGroup && child.isRendered()) {
+
+                if (child instanceof RibbonGroup && child.isRendered()) {
                     RibbonGroup group = (RibbonGroup) child;
                     group.encodeAll(context);
                 }
             }
-            
+
             writer.endElement("ul");
         }
-        
+
         writer.endElement("div");
     }
-        
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //Do nothing
+        // Do nothing
     }
 
     @Override
