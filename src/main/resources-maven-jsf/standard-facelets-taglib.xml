@@ -21,37 +21,37 @@
 		<function-class>org.primefaces.util.SecurityUtils</function-class>
 		<function-signature>java.lang.Boolean ifGranted(java.lang.String)</function-signature>
 	</function>
-	
+
 	<function>
 		<function-name>ifAllGranted</function-name>
 		<function-class>org.primefaces.util.SecurityUtils</function-class>
 		<function-signature>java.lang.Boolean ifAllGranted(java.lang.String)</function-signature>
 	</function>
-	
+
 	<function>
 		<function-name>ifAnyGranted</function-name>
 		<function-class>org.primefaces.util.SecurityUtils</function-class>
 		<function-signature>java.lang.Boolean ifAnyGranted(java.lang.String)</function-signature>
 	</function>
-	
+
 	<function>
 		<function-name>ifNoneGranted</function-name>
 		<function-class>org.primefaces.util.SecurityUtils</function-class>
 		<function-signature>java.lang.Boolean ifNoneGranted(java.lang.String)</function-signature>
 	</function>
-	
+
 	<function>
 		<function-name>remoteUser</function-name>
 		<function-class>org.primefaces.util.SecurityUtils</function-class>
 		<function-signature>java.lang.String remoteUser()</function-signature>
 	</function>
-	
+
     <function>
 		<function-name>userPrincipal</function-name>
 		<function-class>org.primefaces.util.SecurityUtils</function-class>
 		<function-signature>java.security.Principal userPrincipal()</function-signature>
 	</function>
-	
+
 	<tag>
 		<tag-name>dataExporter</tag-name>
 		<handler-class>
@@ -111,8 +111,14 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
+        <attribute>
+			<description>Exports the header and cell content according to the option.</description>
+			<name>options</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
 	</tag>
-	
+
 	<tag>
 		<tag-name>fileDownload</tag-name>
 		<handler-class>
@@ -130,8 +136,14 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+        <attribute>
+			<description>Defines setting cookie key for monitorDownload method on client side.</description>
+			<name>monitorKey</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</tag>
-	
+
 	<tag>
 		<tag-name>collector</tag-name>
 		<handler-class>
@@ -243,14 +255,14 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
         <attribute>
-			<description>Client side event to trigger ajax request. 
+			<description>Client side event to trigger ajax request.
             Default value is defined by parent ClientBehaviorHolder component the behavior is attached to.</description>
 			<name>event</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
         <attribute>
-            <description>When enabled, only values related to partially processed components would be serialized for ajax 
+            <description>When enabled, only values related to partially processed components would be serialized for ajax
             instead of whole form.</description>
 			<name>partialSubmit</name>
 			<required>false</required>
@@ -280,8 +292,14 @@
 			<type>java.lang.String</type>
             <description>Form to serialize for an ajax request. Default is the enclosing form.</description>
 		</attribute>
+        <attribute>
+			<name>skipChildren</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Some components skips processing of their children in certain events, setting skipChildren as false to disables this behavior.</description>
+		</attribute>
     </tag>
-    
+
     <tag>
         <tag-name>printer</tag-name>
         <behavior>
@@ -294,7 +312,7 @@
 			<type>java.lang.String</type>
 		</attribute>
     </tag>
-    
+
     <tag>
         <tag-name>confirm</tag-name>
         <behavior>
@@ -319,8 +337,14 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+        <attribute>
+			<description>Disables confirm behavior.</description>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
     </tag>
-    
+
     <tag>
 		<tag-name>resetInput</tag-name>
 		<handler-class>
@@ -332,8 +356,14 @@
 			<required>true</required>
 			<type>java.lang.String</type>
 		</attribute>
+        <attribute>
+			<description>Whether to assign null values to bound values as well.</description>
+			<name>clearModel</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
 	</tag>
-    
+
     <tag>
         <tag-name>clientValidator</tag-name>
         <behavior>
@@ -352,7 +382,7 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
     </tag>
-    
+
     <tag>
 		<tag-name>repeat</tag-name>
         <component>
@@ -373,25 +403,75 @@
         <attribute>
             <description>Name of the exported request scoped variable for the status of the iteration. Object is a POJO with the following read-only JavaBeans properties. This scoped variable has nested visibility..</description>
             <name>varStatus</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>Read-write property setting the offset from the beginning of the collection from which to start the iteration. If not set, this offset is not considered and iteration will start at the beginning of the collection..</description>
             <name>offset</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>Iteration will only process every step items of the collection, starting with the first one..</description>
             <name>step</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
          <attribute>
             <description>Read-write property setting the size of the collection to iterate. If this value is less than the actual size of the collection, a FacesException must be thrown..</description>
             <name>size</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description><![CDATA[Util tag to import constants.]]>
+        </description>
+        <tag-name>importConstants</tag-name>
+        <handler-class>org.primefaces.component.importconstants.ImportConstantsTagHandler</handler-class>
+        <attribute>
+            <description><![CDATA[The constants class.]]>
+            </description>
+            <name>type</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The EL variable which can be used to obtain the constants. Default value: Name of the class without package.]]>
+            </description>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description><![CDATA[Util tag to import enums.]]>
+        </description>
+        <tag-name>importEnum</tag-name>
+        <handler-class>org.primefaces.component.importenum.ImportEnumTagHandler</handler-class>
+        <attribute>
+            <description><![CDATA[The enum class.]]>
+            </description>
+            <name>type</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The EL variable which can be used to obtain the enum values. Default value: Name of the class without package.]]>
+            </description>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The suffix mapping for a array with all enum values. Default value: ALL_VALUES.]]>
+            </description>
+            <name>allSuffix</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>

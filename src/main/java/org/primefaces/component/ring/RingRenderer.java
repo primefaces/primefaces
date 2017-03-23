@@ -67,7 +67,7 @@ public class RingRenderer extends CoreRenderer {
         String clientId = ring.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Ring", ring.resolveWidgetVar(), clientId, "ring")
+        wb.initWithDomReady("Ring", ring.resolveWidgetVar(), clientId)
             .attr("startingChild", ring.getFirst())
             .attr("easing", ring.getEasing(), null)
             .attr("autoplay", ring.isAutoplay(), false)

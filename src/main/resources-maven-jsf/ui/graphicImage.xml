@@ -191,5 +191,12 @@
 			<type>java.lang.String</type>
             <description>Library name of the image</description>
 		</attribute>
+		<attribute>
+			<name>stream</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>true</defaultValue>
+            <description>Defines if the image is streamed or rendered directly as data uri / base64 with ViewScoped support.</description>
+		</attribute>
 	</attributes>
 </component>

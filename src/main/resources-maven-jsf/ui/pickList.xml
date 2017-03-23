@@ -22,6 +22,9 @@
         <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&input_component_attributes;
@@ -220,10 +223,17 @@
 			<defaultValue>false</defaultValue>
             <description>In responsive mode, component adjusts itself based on screen width.</description>
 		</attribute>
+        <attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>0</defaultValue>
+            <description>Position of the element in the tabbing order.</description>
+		</attribute>
 	</attributes>
 	    <resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -232,7 +242,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
         <resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
 		</resource>
 	</resources>
 </component>

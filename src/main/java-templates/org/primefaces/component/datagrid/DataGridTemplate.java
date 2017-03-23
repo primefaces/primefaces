@@ -13,6 +13,8 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.Constants;
+import java.util.HashMap;
+import javax.faces.event.BehaviorEvent;
 
 	public static final String DATAGRID_CLASS = "ui-datagrid ui-widget";
     public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header ui-corner-top";
@@ -31,7 +33,21 @@ import org.primefaces.util.Constants;
     public static final String MOBILE_CONTENT_CLASS = "ui-datagrid-content ui-responsive";
     public static final String MOBILE_EMPTY_CONTENT_CLASS = "ui-datagrid-content ui-datagrid-content-empty";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("page", PageEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
 
     public void loadLazyData() {
         DataModel model = getDataModel();
@@ -45,7 +61,7 @@ import org.primefaces.util.Constants;
             lazyModel.setWrappedData(data);
 
             //Update paginator for callback
-            if(this.isPaginator()) {
+            if(isRequestSource(getFacesContext()) && this.isPaginator()) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {
@@ -59,12 +75,6 @@ import org.primefaces.util.Constants;
         String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
 
         return partialSource != null && this.getClientId(context).equals(partialSource);
-    }
-
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
     }
 
     @Override

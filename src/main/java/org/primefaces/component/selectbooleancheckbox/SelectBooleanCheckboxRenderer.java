@@ -66,6 +66,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         String clientId = checkbox.getClientId(context);
         boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, checkbox));
         boolean disabled = checkbox.isDisabled();
+        String title = checkbox.getTitle();
 
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
@@ -76,6 +77,9 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("class", styleClass, "styleClass");
         if(style != null) {
             writer.writeAttribute("style", style, "style");
+        }
+        if(title != null) {
+            writer.writeAttribute("title", title, "title");
         }
 
         encodeInput(context, checkbox, clientId, checked, disabled);

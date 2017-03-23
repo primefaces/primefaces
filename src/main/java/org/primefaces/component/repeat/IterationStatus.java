@@ -56,7 +56,7 @@
  * limitations under the License.
  */
 
-package com.sun.faces.facelets.tag;
+package org.primefaces.component.repeat;
 
 import java.io.Serializable;
 

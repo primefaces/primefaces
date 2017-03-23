@@ -37,9 +37,10 @@
 }
 
 .ui-treetable .ui-treetable-toggler {
-    float: left;
-    margin-top: -2px;
+    display: inline-block;
+    vertical-align: middle;
     cursor: pointer;
+    margin-top: -5px;
 }
 
 .ui-treetable .ui-treetable-data tr.ui-state-highlight,
@@ -200,3 +201,57 @@
         margin: -.4em 1em -.4em -.4em;
     }
 }
+
+/* InCell Editing */
+.ui-treetable .ui-editable-column .ui-cell-editor {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ui-treetable .ui-editable-column .ui-treetable-toggler {
+    margin-top: 0px;
+}
+
+.ui-treetable .ui-cell-editor-input {
+    display: none;
+}
+
+.ui-treetable .ui-row-editing .ui-cell-editor .ui-cell-editor-output {
+    display:none;
+}
+.ui-treetable .ui-row-editing .ui-cell-editor .ui-cell-editor-input {
+    display:block;
+}
+
+.ui-treetable .ui-row-editor span {
+    cursor: pointer;
+    float: left;
+}
+
+.ui-treetable .ui-row-editor .ui-icon-pencil {
+    display: inline-block;
+}
+.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-pencil {
+    display: none;
+}
+
+.ui-treetable .ui-row-editor .ui-icon-check,
+.ui-treetable .ui-row-editor .ui-icon-close {
+    display: none;
+}
+
+.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-check,
+.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-close {
+    display: inline-block;
+}
+
+.ui-treetable .ui-treetable-data tr.ui-row-editing td.ui-editable-column,
+.ui-treetable .ui-treetable-data td.ui-cell-editing {
+    padding:0;
+    margin:0;
+}
+
+.ui-treetable .ui-treetable-data tr.ui-row-editing td.ui-editable-column:first-child,
+.ui-treetable .ui-treetable-data td.ui-cell-editing:first-child {
+    padding-left: 10px;
+} 

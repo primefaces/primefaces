@@ -106,4 +106,8 @@ public interface UIColumn {
     public boolean isSelectRow();
     
     public String getAriaHeaderText();
+    
+    public MethodExpression getExportFunction();
+    
+    public boolean isGroupRow();
 }

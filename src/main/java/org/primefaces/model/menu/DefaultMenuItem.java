@@ -67,6 +67,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String confirmationScript;
     private String form;
     private boolean escape = true;
+    private String rel;
     
     public DefaultMenuItem() {}
     
@@ -440,4 +441,13 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public void setEscape(boolean escape) {
         this.escape = escape;
     }
+    
+    public String getRel() {
+	return rel;
+    }
+
+    public void setRel(String rel) {
+	this.rel = rel;
+    }
+    
 }

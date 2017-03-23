@@ -35,7 +35,7 @@ public class OverlayPanelRenderer extends org.primefaces.component.overlaypanel.
         writer.startElement("div", panel);
         writer.writeAttribute("id", clientId, "id");
         if(style != null) writer.writeAttribute("style", style, "style");
-        if(styleClass != null) writer.writeAttribute("class", style, "styleClass");
+        if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
         
         if(!panel.isDynamic()) {
             renderChildren(context, panel);

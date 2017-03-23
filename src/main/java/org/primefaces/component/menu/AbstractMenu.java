@@ -46,7 +46,7 @@ public abstract class AbstractMenu extends UIPanel {
     
     public static final String MOBILE_MENUITEM_LINK_CLASS = "ui-link ui-btn";
     
-    protected enum PropertyKeys {
+    public enum PropertyKeys {
         tabindex
     }
         
@@ -91,10 +91,10 @@ public abstract class AbstractMenu extends UIPanel {
                 MethodExpression noArgExpr = facesContext.getApplication().getExpressionFactory().
                                 createMethodExpression(eLContext,actionExpressionString, 
                                                             String.class, new Class[0]);
-                Object outcome = null;
+                Object invokeResult = null;
 
                 try {
-                    outcome = noArgExpr.invoke(eLContext, null);
+                    invokeResult = noArgExpr.invoke(eLContext, null);
                 } 
                 catch(MethodNotFoundException methodNotFoundException) {
                     try {
@@ -102,20 +102,20 @@ public abstract class AbstractMenu extends UIPanel {
                                 createMethodExpression(eLContext, actionExpressionString, 
                                                             String.class, new Class[]{ActionEvent.class});
                         
-                        outcome = argExpr.invoke(eLContext, new Object[]{event});
+                        invokeResult = argExpr.invoke(eLContext, new Object[]{event});
                     }
                     catch(MethodNotFoundException methodNotFoundException2) {
                         MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
                                 createMethodExpression(eLContext, actionExpressionString, 
                                                             String.class, new Class[]{MenuActionEvent.class});
                         
-                        outcome = argExpr.invoke(eLContext, new Object[]{event});
+                        invokeResult = argExpr.invoke(eLContext, new Object[]{event});
                     }
                 }
                 finally {
-                    if(outcome != null) {
-                        facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, actionExpressionString, outcome.toString());
-                    }
+                    String outcome = (invokeResult != null) ? invokeResult.toString() : null;
+
+                    facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, actionExpressionString, outcome);
                 }
             }
             

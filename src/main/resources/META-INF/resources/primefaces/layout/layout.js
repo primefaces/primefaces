@@ -5947,7 +5947,12 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
         this.jqId = PrimeFaces.escapeClientId(this.id);
 
         if(this.cfg.full) {                                                 //full
-            this.jq = $('body');
+            var dialog = $(this.cfg.center.paneSelector).parents('.ui-dialog-content');
+            if(dialog.length == 1) {                                         // full + dialog
+                this.jq = dialog;
+            } else {
+                this.jq = $('body');
+            }
         } else if(this.cfg.parent) {                                        //nested
             this.jq = $(PrimeFaces.escapeClientId(this.cfg.parent));
         } else {                                                            //element

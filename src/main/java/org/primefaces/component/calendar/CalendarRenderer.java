@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 
 import javax.faces.component.UIComponent;
@@ -98,6 +99,8 @@ public class CalendarRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String type = popup ? "text" : "hidden";
         String labelledBy = calendar.getLabelledBy();
+        String inputStyle = calendar.getInputStyle();
+        String inputStyleClass = calendar.getInputStyleClass();
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
@@ -111,12 +114,14 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         if (popup) {
-            String inputStyleClass = Calendar.INPUT_STYLE_CLASS;
+            inputStyleClass = (inputStyleClass == null) ? Calendar.INPUT_STYLE_CLASS
+                : Calendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
             if (calendar.isDisabled()) inputStyleClass = inputStyleClass + " ui-state-disabled";
             if (!calendar.isValid()) inputStyleClass = inputStyleClass + " ui-state-error";
 
             writer.writeAttribute("class", inputStyleClass, null);
 
+            if (inputStyle != null) writer.writeAttribute("style", inputStyle, null);
             if (calendar.isReadonly()||calendar.isReadonlyInput()) writer.writeAttribute("readonly", "readonly", null);
             if (calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
 
@@ -166,6 +171,7 @@ public class CalendarRenderer extends InputRenderer {
             .attr("minDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMindate()), null)
             .attr("maxDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMaxdate()), null)
             .attr("showButtonPanel", calendar.isShowButtonPanel(), false)
+            .attr("showTodayButton", calendar.isShowTodayButton(), true)
             .attr("showWeek", calendar.isShowWeek(), false)
             .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
             .attr("disabled", calendar.isDisabled(), false)
@@ -191,7 +197,7 @@ public class CalendarRenderer extends InputRenderer {
 
         String showOn = calendar.getShowOn();
         if (!showOn.equalsIgnoreCase("focus")) {
-            wb.attr("showOn", showOn);
+            wb.attr("showOn", showOn).attr("buttonTabindex", calendar.getButtonTabindex());
         }
 
         if (calendar.isShowOtherMonths()) {
@@ -199,6 +205,8 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         if (calendar.hasTime()) {
+            String timeControlType = calendar.getTimeControlType();
+            
             wb.attr("timeOnly", calendar.isTimeOnly())
                 .attr("stepHour", calendar.getStepHour())
                 .attr("stepMinute", calendar.getStepMinute())
@@ -209,7 +217,17 @@ public class CalendarRenderer extends InputRenderer {
                 .attr("minuteMax", calendar.getMaxMinute())
                 .attr("secondMin", calendar.getMinSecond())
                 .attr("secondMax", calendar.getMaxSecond())
-                .attr("controlType", calendar.getTimeControlType(), null);
+                .attr("timeInput", calendar.isTimeInput())
+                .attr("controlType", timeControlType, null)
+                .attr("showHour", calendar.getShowHour(), null)
+                .attr("showMinute", calendar.getShowMinute(), null)
+                .attr("showSecond", calendar.getShowSecond(), null)
+                .attr("showMillisec", calendar.getShowMillisec(), null);
+            
+            String timeControlObject = calendar.getTimeControlObject();
+            if (timeControlObject != null && timeControlType.equalsIgnoreCase("custom")) {
+                wb.nativeAttr("timeControlObject", timeControlObject);
+            }
         }
 
         if (mask != null && !mask.equals("false")) {
@@ -238,6 +256,25 @@ public class CalendarRenderer extends InputRenderer {
         	Converter converter = calendar.getConverter();
             if (converter != null) {
                 return converter.getAsObject(context, calendar, submittedValue);
+            }
+        }
+        catch(ConverterException e){
+            calendar.setConversionFailed(true);
+
+            throw e;
+        }
+        
+        //Delegate to global defined converter (e.g. joda or java8)
+        try {
+            ValueExpression ve = calendar.getValueExpression("value");
+            if (ve != null) {
+                Class type = ve.getType(context.getELContext());
+                if (type != null && type != Object.class && type != Date.class) {
+                    Converter converter = context.getApplication().createConverter(type);
+                    if (converter != null) {
+                        return converter.getAsObject(context, calendar, submittedValue);
+                    }
+                }
             }
         }
         catch(ConverterException e){

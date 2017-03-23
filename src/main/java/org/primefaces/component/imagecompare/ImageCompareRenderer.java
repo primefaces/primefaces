@@ -38,7 +38,7 @@ public class ImageCompareRenderer extends CoreRenderer {
 		String clientId = compare.getClientId(context);
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ImageCompare", compare.resolveWidgetVar(), clientId, "imagecompare")
+        wb.init("ImageCompare", compare.resolveWidgetVar(), clientId)
             .attr("handle", getResourceRequestPath(context, "imagecompare/handle.gif"))
             .attr("lt", getResourceRequestPath(context, "imagecompare/lt-small.png"))
             .attr("rt", getResourceRequestPath(context, "imagecompare/rt-small.png"));

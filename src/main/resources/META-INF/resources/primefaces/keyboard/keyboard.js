@@ -499,7 +499,7 @@ $.extend(Keypad.prototype, {
 	/* Handle keystrokes.
 	   @param  e  (event) the key event */
 	_doKeyDown: function(e) {
-		if (e.keyCode == 9) { // Tab out
+		if (e.which == 9) { // Tab out
 			$.keypad.mainDiv.stop(true, true);
 			$.keypad._hideKeypad(null, '');
 		}

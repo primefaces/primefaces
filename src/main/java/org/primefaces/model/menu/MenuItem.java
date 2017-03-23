@@ -70,4 +70,7 @@ public interface MenuItem extends MenuElement, Confirmable {
     public String getContainerStyleClass();
     
     public boolean isEscape();
+    
+    public String getRel();
+    
 }

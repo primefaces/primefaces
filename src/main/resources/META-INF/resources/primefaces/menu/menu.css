@@ -228,6 +228,14 @@
     width: 92%;
 }
 
+.ui-megamenu .ui-widget-header span {
+    display: block;
+    float: left;
+    font-size: 1em;
+    margin: 0 auto;
+    padding: 0.4em 0.3em;
+}
+
 /** Breadcrumb **/
 .ui-breadcrumb {
     margin: 0;

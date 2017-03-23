@@ -246,10 +246,17 @@
             <defaultValue>text</defaultValue>
             <description>Input field type. Default is text.</description>
         </attribute>
+        <attribute>
+            <name>moreText</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>...</defaultValue>
+            <description>The text shown in panel when the suggested list is greater than maxResults.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -258,7 +265,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
         <resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
 		</resource>
     </resources>
 </component>

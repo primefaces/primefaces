@@ -53,7 +53,13 @@ import org.primefaces.json.JSONObject;
                 rd.close();
             }catch(Exception exception) {
                 throw new FacesException(exception);
-            }
+            } finally {
+            	// the captcha token is valid for only one request, in case of an ajax request we have to get a new one
+	        RequestContext requestContext = RequestContext.getCurrentInstance();
+	        if(requestContext.isAjaxRequest()) {
+	            requestContext.execute("grecaptcha.reset()");
+	        }
+	    }
 
             if(!result) {
                 setValid(false);
@@ -75,15 +81,11 @@ import org.primefaces.json.JSONObject;
                 context.addMessage(getClientId(context), msg);
             }
         }
-        
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        if(requestContext.isAjaxRequest()) {
-            requestContext.execute("grecaptcha.reset()");
-        }
 	}
 
-    private String createPostParameters(FacesContext facesContext, Object value) throws UnsupportedEncodingException {
-        String privateKey = facesContext.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);
+    private String createPostParameters(FacesContext context, Object value) throws UnsupportedEncodingException {
+
+        String privateKey = context.getApplication().evaluateExpressionGet(context, context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY), String.class);
 
         if(privateKey == null) {
             throw new FacesException("Cannot find private key for catpcha, use primefaces.PRIVATE_CAPTCHA_KEY context-param to define one");

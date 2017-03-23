@@ -15,10 +15,14 @@
  */
 package org.primefaces.context;
 
+import java.util.Map;
+import javax.faces.context.FacesContext;
+import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import org.primefaces.cache.CacheProvider;
 
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
+import static org.primefaces.context.RequestContext.INSTANCE_KEY;
 
 /**
  * A {@link ApplicationContext} is a contextual store, similar to {@link RequestContext}.
@@ -31,9 +35,29 @@ import org.primefaces.config.ConfigContainer;
  */
 public abstract class ApplicationContext {
 
-	public abstract ConfigContainer getConfig();
+    public static final String INSTANCE_KEY = ApplicationContext.class.getName();
+    
+    public static ApplicationContext getCurrentInstance() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        return (ApplicationContext) facesContext.getExternalContext().getApplicationMap().get(INSTANCE_KEY);
+    }
+    
+    public static void setCurrentInstance(final ApplicationContext context, final FacesContext facesContext) {
+        facesContext.getExternalContext().getApplicationMap().put(INSTANCE_KEY, context);
+    }
+    
+	public abstract PrimeConfiguration getConfig();
 	
 	public abstract ValidatorFactory getValidatorFactory();
     
     public abstract CacheProvider getCacheProvider();
+    
+    public abstract Map<Class<?>, Map<String, Object>> getEnumCacheMap();
+    
+    public abstract Map<Class<?>, Map<String, Object>> getConstantsCacheMap();
+    
+    public abstract Validator getValidator();
+    
+    public abstract void release();
 }

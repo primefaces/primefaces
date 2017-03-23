@@ -9,10 +9,15 @@
     display: inline-block;
 }
 
+.ui-autocomplete-input.ui-autocomplete-dd-input {
+    padding-right: 2.4em;
+}
+
 .ui-autocomplete .ui-autocomplete-dropdown {
     position: absolute;
     height: 100%;
     width: 2.4em;
+    right: -2px;
 }
 
 .ui-autocomplete-query{
@@ -58,6 +63,18 @@
     padding: 0.29em;
 }
 
+.ui-autocomplete-panel .ui-autocomplete-moretext {
+    font-size: 90%;
+    font-weight: bold;
+}
+
+.ui-autocomplete-list .ui-autocomplete-moretext {
+    margin: 1px 0;
+    padding: 3px 5px;
+    text-align: left;
+    border: 0 none;
+}
+
 /* Multiple Selection */
 .ui-autocomplete-multiple-container {
     clear: left;
@@ -67,6 +84,11 @@
     min-height: 1px;
     overflow: hidden;
     width: 400px;
+}
+
+.ui-autocomplete-dd-multiple-container {
+    float: left;
+    padding-right: 2.4em !important;
 }
 
 .ui-autocomplete-multiple-container.ui-inputfield {
@@ -86,6 +108,11 @@
 .ui-autocomplete-token-label {
     display: block;
     padding: 0em 2.1em 0em 0.5em;
+}
+
+.ui-autocomplete-token-label-disabled {
+    display: block;
+    padding: 0em 0.5em 0em 0.5em;
 }
 
 .ui-autocomplete-token-icon {
@@ -128,4 +155,9 @@
 .ui-autocomplete-panel .ui-autocomplete-group {
     font-weight: bold;
     cursor: default;
+}
+
+/* fluid */
+.ui-fluid .ui-autocomplete-multiple-container {
+    width: 100%;
 }

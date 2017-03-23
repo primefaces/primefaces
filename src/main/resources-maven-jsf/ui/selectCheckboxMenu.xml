@@ -18,6 +18,9 @@
 		<interface>
 			<name>org.primefaces.component.api.Widget</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&input_component_attributes;
@@ -131,10 +134,23 @@
             <defaultValue>true</defaultValue>
             <description>When enabled, the header of panel is displayed. Default is true.</description>
 		</attribute>
+        <attribute>
+			<name>updateLabel</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, the selected items are displayed on label. Default is false.</description>
+		</attribute>
+        <attribute>
+            <name>multiple</name>
+            <required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -143,7 +159,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
         <resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+        <resource>
+			<name>components.js</name>
 		</resource>
 	</resources>
 </component>

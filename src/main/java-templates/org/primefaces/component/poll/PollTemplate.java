@@ -11,7 +11,7 @@ import org.primefaces.context.RequestContext;
 			me.invoke(facesContext.getELContext(), new Object[] {});
 		}
 
-        ValueExpression expr = getValueExpression("stop");
+        ValueExpression expr = getValueExpression(PropertyKeys.stop.toString());
         if(expr != null) {
         	Boolean stop = (Boolean) expr.getValue(facesContext.getELContext());
         	
@@ -24,11 +24,11 @@ import org.primefaces.context.RequestContext;
 	}
 
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression("partialSubmit") != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
     
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression("resetValues") != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
     
     public boolean isAjaxified() {

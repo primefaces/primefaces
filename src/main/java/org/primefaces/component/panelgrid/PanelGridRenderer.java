@@ -196,6 +196,8 @@ public class PanelGridRenderer extends CoreRenderer {
                 renderChildren(context, column);
                 
                 writer.endElement("td");
+            }else {
+                child.encodeAll(context);
             }
         }
         
@@ -240,6 +242,10 @@ public class PanelGridRenderer extends CoreRenderer {
             if(colMod == 0) {
                 writer.endElement("div");
             }
+        }
+        
+        if(i != 0 && (i % columns) != 0) {
+            writer.endElement("div");
         }
         
         writer.endElement("div");

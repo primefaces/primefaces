@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>timeline</tag>
+	<tagClass>org.primefaces.component.timeline.Timeline</tagClass>
+	<componentClass>org.primefaces.component.timeline.Timeline</componentClass>
+    <componentHandlerClass>org.primefaces.component.timeline.TimelineTagHandler</componentHandlerClass>
+	<componentType>org.primefaces.component.Timeline</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TimelineRenderer</rendererType>
+	<rendererClass>org.primefaces.component.timeline.TimelineRenderer</rendererClass>
+	<parent>javax.faces.component.UIComponentBase</parent>
+    <description>
+        Timeline is an interactive visualization chart to visualize events in time.
+    </description>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+        <interface>
+			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&standard_uicomponent_attributes;
+		&widget_var_attribute;
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Inline style of the container element.</description>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Style class of the container element.</description>
+		</attribute>
+        <attribute>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Name of the request-scoped variable for underlaying object in the TimelineEvent for each iteration.</description>
+        </attribute>
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+            <type>org.primefaces.model.timeline.TimelineModel</type>
+            <description>An instance of TimelineModel representing the backing model.</description>
+        </attribute>
+        <attribute>
+            <name>varGroup</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Name of the request-scoped variable for underlaying object in the TimelineGroup for each iteration.</description>
+        </attribute>
+        <attribute>
+            <name>locale</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>User locale for i18n messages. The attribute can be either a String or Locale object.</description>
+        </attribute>
+        <attribute>
+            <name>timeZone</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Target time zone to convert start / end dates for displaying. This time zone is the time zone the user would like to see dates in UI.
+                The attribute can be either a String or TimeZone object or null. If null, timeZone defaults to the server's time zone the application is running in.</description>
+        </attribute>
+        <attribute>
+            <name>browserTimeZone</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>Time zone the user's browser / PC is running in. This time zone allows to correct the conversion of start / end dates to the target timeZone for displaying.
+                The attribute can be either a String or TimeZone object or null. Note: browserTimeZone should be provided if the target timeZone is provided. If null, browserTimeZone defaults to the server's timeZone.</description>
+        </attribute>
+        <attribute>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>auto</defaultValue>
+            <description>The height of the timeline in pixels, as a percentage, or "auto". When the height is set to "auto", the height of the timeline is automatically adjusted to fit the contents.
+                If not, it is possible that events get stacked so high, that they are not visible in the timeline. When height is set to "auto", a minimum height can be specified with the option minHeight. Default is "auto".</description>
+        </attribute>
+        <attribute>
+            <name>minHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Specifies a minimum height for the Timeline in pixels. Useful when height is set to "auto". Default is 0.</description>
+        </attribute>
+        <attribute>
+            <name>width</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>100%</defaultValue>
+            <description>The width of the timeline in pixels or as a percentage. Default is "100%".</description>
+        </attribute>
+        <attribute>
+            <name>responsive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Check if the timeline container is resized, and if so, resize the timeline.
+                Useful when the webpage (browser window) or a layout pane / unit containing the timeline component is resized. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>axisOnTop</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>dragAreaWidth</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>10</defaultValue>
+            <description>The width of the drag areas in pixels. When an event with date range is selected, it has a drag area on the left and right side, with which the start or end dates of the event can be manipulated.
+                Default is 10.</description>
+        </attribute>
+        <attribute>
+            <name>editable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>If true, the events can be edited, changed, created and deleted. Events can only be editable when the option selectable is true (default). When editable is true, the timeline can fire AJAX events "change", "edit", "add", "delete", "drop".
+                This global setting "editable" can be overwritten for individual events by setting a value in field "editable". Default is false.
+            </description>
+        </attribute>
+        <attribute>
+            <name>selectable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>If true, events on the timeline are selectable. Selectable events can fire AJAX "select" events. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>unselectable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>If true, you can unselect an item by clicking in the empty space of the timeline. If false, you cannot unselect an item, there will be always one item selected. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>zoomable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>If true, the timeline is zoomable. When the timeline is zoomed, AJAX "rangechange" events are fired. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>moveable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>If true, the timeline is movable. When the timeline is moved, AJAX "rangechange" events are fired. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>start</name>
+            <required>false</required>
+            <type>java.util.Date</type>
+            <description>The initial start date for the axis of the timeline. If not provided, the earliest date present in the events is taken as start date. Default is null.</description>
+        </attribute>
+        <attribute>
+            <name>end</name>
+            <required>false</required>
+            <type>java.util.Date</type>
+            <description>The initial end date for the axis of the timeline. If not provided, the latest date present in the events is taken as end date. Default is null.</description>
+        </attribute>
+        <attribute>
+            <name>min</name>
+            <required>false</required>
+            <type>java.util.Date</type>
+            <description>Set a minimum Date for the visible range. It will not be possible to move beyond this minimum. Default is null.</description>
+        </attribute>
+        <attribute>
+            <name>max</name>
+            <required>false</required>
+            <type>java.util.Date</type>
+            <description>Set a maximum Date for the visible range. It will not be possible to move beyond this maximum. Default is null.</description>
+        </attribute>
+        <attribute>
+            <name>zoomMin</name>
+            <required>false</required>
+            <type>java.lang.Long</type>
+            <defaultValue>10L</defaultValue>
+            <description>
+                Set a minimum zoom interval for the visible range in milliseconds. It will not be possible to zoom in further than this minimum. Default is 10.
+            </description>
+        </attribute>
+        <attribute>
+            <name>zoomMax</name>
+            <required>false</required>
+            <type>java.lang.Long</type>
+            <defaultValue>315360000000000L</defaultValue>
+            <description>
+                Set a maximum zoom interval for the visible range in milliseconds. It will not be possible to zoom out further than this maximum. Default value equals 315360000000000 ms (about 10000 years).
+            </description>
+        </attribute>
+        <attribute>
+            <name>preloadFactor</name>
+            <required>false</required>
+            <type>java.lang.Float</type>
+            <defaultValue>0.0f</defaultValue>
+            <description>
+                Preload factor is a positive float value or 0 which can be used for lazy loading of events. When the lazy loading feature is active, the calculated time range for preloading will be multiplicated by the preload factor. The result of this multiplication specifies the additional time range which will be considered for the preloading during moving / zooming too. For example, if the calculated time range for preloading is 5 days and the preload factor is 0.2, the result is 5 * 0.2 = 1 day. That means, 1 day backwards and / or 1 day onwards will be added to the original calculated time range. The event's area to be preloaded is wider then. This helps to avoid frequently, time-consuming fetching of events. Default value is 0.
+            </description>
+        </attribute>
+        <attribute>
+            <name>eventMargin</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>10</defaultValue>
+            <description>The minimal margin in pixels between events. Default is 10.</description>
+        </attribute>
+        <attribute>
+            <name>eventMarginAxis</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>10</defaultValue>
+            <description>The minimal margin in pixels between events and the horizontal axis. Default is 10.</description>
+        </attribute>
+        <attribute>
+            <name>eventStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>box</defaultValue>
+            <description>Specifies the style for the timeline events. Choose from "dot" or "box". Default is "box".</description>
+        </attribute>
+        <attribute>
+            <name>groupsChangeable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>If true, items can be moved from one group to another. Only applicable when groups are used. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>groupsOnRight</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>
+                If false, the groups legend is drawn at the left side of the timeline. If true, the groups legend is drawn on the right side. Default is false.
+            </description>
+        </attribute>
+        <attribute>
+            <name>groupsOrder</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>
+                Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available). When false, groups will not be ordered at all.
+            </description>
+        </attribute>
+        <attribute>
+            <name>groupsWidth</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>
+                By default, the width of the groups legend is adjusted to the group names. A fixed width can be set for the groups legend by specifying the "groupsWidth" as a string, for example "200px". Default is null.
+            </description>
+        </attribute>
+        <attribute>
+            <name>groupMinHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>
+                The minimum height of each individual group even if they have no items. The group height is set as the greatest value between items height and the groupMinHeight. Default is 0.
+            </description>
+        </attribute>
+        <attribute>
+            <name>snapEvents</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>
+                If true, the start and end of an event will be snapped nice integer values when moving or resizing the event. Default is true.
+            </description>
+        </attribute>
+        <attribute>
+            <name>stackEvents</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>If true, the events are stacked above each other to prevent overlapping events. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>showCurrentTime</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>If true, the timeline shows a red, vertical line displaying the current time. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>showMajorLabels</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>By default, the timeline shows both minor and major date labels on the horizontal axis.
+                For example the minor labels show minutes and the major labels show hours. When "showMajorLabels" is false, no major labels are shown.
+                Default is true.
+            </description>
+        </attribute>
+        <attribute>
+            <name>showMinorLabels</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>By default, the timeline shows both minor and major date labels on the horizontal axis.
+                For example the minor labels show minutes and the major labels show hours. When "showMinorLabels" is false, no minor labels are shown.
+                When both "showMajorLabels" and "showMinorLabels" are false, no horizontal axis will be visible. Default is true.
+            </description>
+        </attribute>
+        <attribute>
+            <name>showButtonNew</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Show the button "Create new event" in the a navigation menu. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>showNavigation</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Show a navigation menu with buttons to move and zoom the timeline. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>timeChangeable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>If false, items can not be moved or dragged horizontally (neither start time nor end time is changable).
+                This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events).
+                Default is true.
+            </description>
+        </attribute>
+        <attribute>
+            <name>dropHoverStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class to apply when an acceptable draggable is dragged over. Default is null.</description>
+        </attribute>
+        <attribute>
+            <name>dropActiveStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class to apply when an acceptable draggable is being dragged over. Default is null.</description>
+        </attribute>
+        <attribute>
+            <name>dropAccept</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Selector to define the accepted draggables. Default is null.</description>
+        </attribute>
+        <attribute>
+            <name>dropScope</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Scope key to match draggables and droppables. Default is null.</description>
+        </attribute>
+        <attribute>
+            <name>animate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When true, events are moved animated when resizing or moving them. This is very pleasing for the eye, but does require more computational power. Default is true.</description>
+        </attribute>
+        <attribute>
+            <name>animateZoom</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When true, events are moved animated when zooming the Timeline. This looks cool, but does require more computational power. Default is true.</description>
+        </attribute>
+	</attributes>
+	<resources>
+        <resource>
+			<name>components.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
+		<resource>
+			<name>core.js</name>
+		</resource>
+        <resource>
+			<name>components.js</name>
+		</resource>
+        <resource>
+			<name>timeline/timeline.css</name>
+		</resource>
+        <resource>
+			<name>timeline/timeline.js</name>
+		</resource>
+	</resources>
+</component>

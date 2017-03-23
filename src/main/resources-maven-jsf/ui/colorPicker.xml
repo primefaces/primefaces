@@ -41,7 +41,7 @@
 	</attributes>
 	<resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
         <resource>
 			<name>colorpicker/colorpicker.css</name>
@@ -50,7 +50,10 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
 		</resource>
 		<resource>
 			<name>colorpicker/colorpicker.js</name>

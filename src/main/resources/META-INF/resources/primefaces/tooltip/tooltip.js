@@ -13,6 +13,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.showDelay = this.cfg.showDelay||150;
         this.cfg.hideDelay = this.cfg.hideDelay||0;
         this.cfg.hideEffectDuration = this.cfg.target ? 250 : 1;
+        this.cfg.position = this.cfg.position||'right';
         
         if(this.cfg.target)
             this.bindTarget();
@@ -35,7 +36,10 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindGlobal: function() {
-        this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-widget-content ui-corner-all ui-shadow" />').appendTo('body');
+        this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-tooltip-' + this.cfg.position + '"></div>')
+            .appendTo('body');
+        this.jq.append('<div class="ui-tooltip-arrow"></div><div class="ui-tooltip-text ui-shadow ui-corner-all"></div>');
+        
         this.cfg.globalSelector = this.cfg.globalSelector||'a,:input,:button';
         this.cfg.escape = (this.cfg.escape === undefined) ? true : this.cfg.escape;
         var $this = this;
@@ -57,15 +61,15 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                         }
                         
                         if(element.hasClass('ui-state-error')) {
-                            $this.jq.addClass('ui-state-error');
+                            $this.jq.children('.ui-tooltip-text').addClass('ui-state-error');
                         }
 
                         var text = element.data('tooltip');
                         if(text) {
                             if($this.cfg.escape)
-                                $this.jq.text(text);
+                                $this.jq.children('.ui-tooltip-text').text(text);
                             else
-                                $this.jq.html(text);
+                                $this.jq.children('.ui-tooltip-text').html(text);
                                 
                             $this.globalTitle = text;
                             $this.target = element;
@@ -102,8 +106,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             $this.mouseEvent = e;
                         }
                         
-                        var text = $.trim($this.jq.text());
-                        if($this.jq.children().length > 0 || text !== '') {
+                        if($.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
                             $this.show();
                         }
                     })
@@ -113,8 +116,8 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.appendTo(document.body);
 
-        if($.trim(this.jq.html()) === '') {
-            this.jq.html(this.target.attr('title'));
+        if($.trim(this.jq.children('.ui-tooltip-text').html()) === '') {
+            this.jq.children('.ui-tooltip-text').html(this.target.attr('title'));
         }
 
         this.target.removeAttr('title');
@@ -127,7 +130,28 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    alignUsing: function(position,feedback) {
+        this.jq.removeClass('ui-tooltip-left ui-tooltip-right ui-tooltip-top ui-tooltip-bottom');
+        switch (this.cfg.position) {
+        case "right":
+        case "left":
+            this.jq.addClass('ui-tooltip-'+
+                    (feedback['horizontal']=='left'?'right':'left'));
+            break;
+        case "top":
+        case "bottom":
+            this.jq.addClass('ui-tooltip-'+
+                    (feedback['vertical']=='top'?'bottom':'top'));
+            break;
+        }
+        this.jq.css({
+            left: position['left'],
+            top: position['top']
+        });      
+    },
+
     align: function() {
+        var $this = this;
          this.jq.css({
             left:'', 
             top:'',
@@ -139,17 +163,47 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 my: 'left top+15',
                 at: 'right bottom',
                 of: this.mouseEvent,
-                collision: 'flipfit'
+                collision: 'flipfit',
+                using: function(p,f) {
+                    $this.alignUsing.call($this,p,f);
+                }
             });
             
             this.mouseEvent = null;
         }
         else {
+            var _my, _at;
+            
+            switch(this.cfg.position) {
+                case 'right':
+                    _my = 'left center';
+                    _at = 'right center';
+                break;
+                        
+                case 'left':
+                    _my = 'right center';
+                    _at = 'left center';
+                break;
+                        
+                case 'top':
+                    _my = 'center bottom';
+                    _at = 'center top';
+                break;
+                        
+                case 'bottom':
+                    _my = 'center top';
+                    _at = 'center bottom';
+                break;
+            }
+    
             this.jq.position({
-                my: 'left top',
-                at: 'right bottom',
+                my: _my,
+                at: _at,
                 of: this.target,
-                collision: 'flipfit'
+                collision: 'flipfit',
+                using: function(p,f) {
+                    $this.alignUsing.call($this,p,f);
+                }
             });
         }
     },

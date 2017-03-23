@@ -15,12 +15,9 @@
  */
 package org.primefaces.context;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.component.ContextCallback;
 
 import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;

@@ -32,6 +32,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.component.datatable.TableState;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -47,7 +48,6 @@ public class DefaultRequestContext extends RequestContext {
     private final static String ATTRIBUTES_KEY = "ATTRIBUTES";
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
-    private final static String APPLICATION_CONTEXT_KEY = DefaultApplicationContext.class.getName();
 
     private Map<Object, Object> attributes;
     private WidgetBuilder widgetBuilder;
@@ -245,11 +245,10 @@ public class DefaultRequestContext extends RequestContext {
 	@Override
 	public ApplicationContext getApplicationContext() {
 		if (this.applicationContext == null) {
-	    	// get applicationContext from application map
-	    	this.applicationContext = (ApplicationContext) context.getExternalContext().getApplicationMap().get(APPLICATION_CONTEXT_KEY);
+	    	this.applicationContext = ApplicationContext.getCurrentInstance();
 	    	if (this.applicationContext == null) {
 	    		this.applicationContext = new DefaultApplicationContext(context);
-				context.getExternalContext().getApplicationMap().put(APPLICATION_CONTEXT_KEY, this.applicationContext);
+				ApplicationContext.setCurrentInstance(applicationContext, context);
 	    	}
 		}
 
@@ -313,4 +312,16 @@ public class DefaultRequestContext extends RequestContext {
 
 		return rtl;
 	}
+    
+    public void clearTableStates() {
+        this.context.getExternalContext().getSessionMap().remove(Constants.TABLE_STATE);
+    }
+    
+    public void clearTableState(String key) {
+        Map<String,Object> sessionMap = this.context.getExternalContext().getSessionMap();
+        Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
+        if(dtState != null) {
+             dtState.remove(key);
+        }
+    }
 }

@@ -23,7 +23,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
-import org.primefaces.component.menu.Menu;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.WidgetBuilder;
@@ -35,7 +34,7 @@ public class StackRenderer extends BaseMenuRenderer {
         Stack stack = (Stack) menu;
 		String clientId = stack.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Stack", stack.resolveWidgetVar(), clientId, "stack")
+        wb.initWithDomReady("Stack", stack.resolveWidgetVar(), clientId)
             .attr("openSpeed", stack.getOpenSpeed())
             .attr("closeSpeed", stack.getCloseSpeed())
             .attr("expanded", stack.isExpanded(), false);

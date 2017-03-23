@@ -24,17 +24,24 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyMenuRenderer extends SelectManyRenderer {
     
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return context.getRenderKit().getRenderer("javax.faces.SelectMany", "javax.faces.Menu").getConvertedValue(context, component, submittedValue);
+        Renderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                "javax.faces.SelectMany",
+                "javax.faces.Menu",
+                Renderer.class);
+        return renderer.getConvertedValue(context, component, submittedValue);
 	}
 
     @Override
@@ -136,7 +143,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         
         writer.startElement("div", menu);
         writer.writeAttribute("class", SelectManyMenu.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, selectItems.size()), null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
 
         if(customContent) {
             writer.startElement("table", null);
@@ -204,7 +211,13 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
             for(UIComponent child : menu.getChildren()) {
                 if(child instanceof Column && child.isRendered()) {
+                    String style = ((Column)child).getStyle();
+                    String styleClass = ((Column)child).getStyleClass();
+
                     writer.startElement("td", null);
+                    if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+                    if(style != null) writer.writeAttribute("style", style, "style");
+                    
                     renderChildren(context, child);
                     writer.endElement("td");
                 }
@@ -266,7 +279,11 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(selected) writer.writeAttribute("selected", "selected", null);
 
-        writer.write(option.getLabel());
+        if(option.isEscape()) {
+            writer.writeText(option.getLabel(), null);
+        } else {
+            writer.write(option.getLabel());
+        }
 
         writer.endElement("option");
     }

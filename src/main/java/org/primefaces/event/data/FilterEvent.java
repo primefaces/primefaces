@@ -19,28 +19,16 @@ import java.util.List;
 import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
-public class FilterEvent extends AjaxBehaviorEvent {
+public class FilterEvent extends AbstractAjaxBehaviorEvent {
 
 	private List<?> data;
     	
 	public FilterEvent(UIComponent component, Behavior behavior, List<?> data) {
 		super(component, behavior);
 		this.data = data;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 
     @Deprecated

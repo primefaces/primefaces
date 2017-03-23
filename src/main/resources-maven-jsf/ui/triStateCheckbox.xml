@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+	<tag>triStateCheckbox</tag>
+	<tagClass>org.primefaces.component.tristatecheckbox.TriStateCheckboxTag</tagClass>
+	<componentClass>org.primefaces.component.tristatecheckbox.TriStateCheckbox</componentClass>
+	<componentType>org.primefaces.component.TriStateCheckbox</componentType>
+	<componentFamily>org.primefaces.component</componentFamily>
+	<rendererType>org.primefaces.component.TriStateCheckboxRenderer</rendererType>
+	<rendererClass>org.primefaces.component.tristatecheckbox.TriStateCheckboxRenderer</rendererClass>
+	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <interfaces>
+		<interface>
+			<name>org.primefaces.component.api.Widget</name>
+		</interface>
+	</interfaces>
+	<attributes>
+		&input_component_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>stateOneIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Icon for StateOne as a css class.</description>
+        </attribute>
+        <attribute>
+            <name>stateTwoIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Icon for StateTwo as a css class.</description>
+        </attribute>
+        <attribute>
+            <name>stateThreeIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Icon for StateThree as a css class.</description>
+        </attribute>
+        <attribute>
+            <name>itemLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Label to display next to checkbox.</description>
+        </attribute>
+        <attribute>
+            <name>stateOneTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Title for StateOne.</description>
+        </attribute>
+        <attribute>
+            <name>stateTwoTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Title for StateTwo.</description>
+        </attribute>
+        <attribute>
+            <name>stateThreeTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Title for StateThree.</description>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Disables the component.</description>
+        </attribute>
+        <attribute>
+            <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>A localized user presentable name.</description>
+        </attribute>
+        <attribute>
+            <name>onchange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute on state change.</description>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Inline style of the component.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required></required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Style class of the component.</description>
+        </attribute> 
+        <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.</description>
+        </attribute>    
+	</attributes>
+    <resources>
+        <resource>
+			<name>components.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>jquery/jquery-plugins.js</name>
+		</resource>
+		<resource>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
+		</resource>
+	</resources>
+</component>

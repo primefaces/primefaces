@@ -67,12 +67,13 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         String icon = checked ? button.getOnIcon() : button.getOffIcon();
         String title = button.getTitle();
         String style = button.getStyle();
+        String styleClass = "ui-selectbooleanbutton " + button.resolveStyleClass(checked, disabled);
         
         //button        
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("class", button.resolveStyleClass(checked, disabled), null);
+		writer.writeAttribute("class",styleClass, null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
         if (title != null) writer.writeAttribute("title", title, null);
         if (style != null) writer.writeAttribute("style", style, "style");

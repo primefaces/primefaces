@@ -34,7 +34,7 @@ import org.primefaces.util.Constants;
 public class CSVExporter extends Exporter {
 
     @Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
 		ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, filename, encodingType);
         Writer writer = externalContext.getResponseOutputWriter();
@@ -62,12 +62,12 @@ public class CSVExporter extends Exporter {
 	}
     
     @Override
-    public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+    public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
     @Override
-    public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+    public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
@@ -131,7 +131,7 @@ public class CSVExporter extends Exporter {
                 }
                 
                 try {
-                    addColumnValue(writer, col.getChildren());
+                    addColumnValue(writer, col.getChildren(), col);
                 } catch (IOException ex) {
                     throw new FacesException(ex);
                 }
@@ -146,13 +146,14 @@ public class CSVExporter extends Exporter {
 		externalContext.setResponseHeader("Expires", "0");
 		externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
 		externalContext.setResponseHeader("Pragma", "public");
-		externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".csv");
+		externalContext.setResponseHeader("Content-disposition", "attachment;filename=\""+ filename + ".csv\"");
 		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
     }
     
 	protected void addColumnValues(Writer writer, List<UIColumn> columns) throws IOException {
 		for(Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
-            addColumnValue(writer, iterator.next().getChildren());
+            UIColumn col = iterator.next();
+            addColumnValue(writer, col.getChildren(), col);
 
             if (iterator.hasNext())
                 writer.write(",");
@@ -171,19 +172,30 @@ public class CSVExporter extends Exporter {
         writer.write("\"" + value + "\"");
 	}
 	
-	protected void addColumnValue(Writer writer, List<UIComponent> components) throws IOException {
+	protected void addColumnValue(Writer writer, List<UIComponent> components, UIColumn column) throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        
         writer.write("\"");
         
-		for (UIComponent component : components) {
-			if (component.isRendered()) {
-				String value = exportValue(FacesContext.getCurrentInstance(), component);
+        if(column.getExportFunction() != null) {
+            String value = exportColumnByFunction(context, column);
+            //escape double quotes
+            value = value == null ? "" : value.replaceAll("\"", "\"\"");
 
-                //escape double quotes
-                value = value == null ? "" : value.replaceAll("\"", "\"\"");
-                
-				writer.write(value);
-			}
-		}
+            writer.write(value);
+        }
+        else {
+            for (UIComponent component : components) {
+                if (component.isRendered()) {
+                    String value = exportValue(context, component);
+
+                    //escape double quotes
+                    value = value == null ? "" : value.replaceAll("\"", "\"\"");
+
+                    writer.write(value);
+                }
+            }
+        }
 
 		writer.write("\"");
 	}

@@ -1,4 +1,3 @@
-import org.primefaces.model.TreeTableModel;
 import org.primefaces.model.TreeNode;
 import javax.faces.model.DataModel;
 import javax.faces.event.FacesEvent;
@@ -7,6 +6,7 @@ import java.util.Collection;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Iterator;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
@@ -20,6 +20,8 @@ import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import javax.el.ELContext;
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -28,7 +30,13 @@ import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.data.SortEvent;
+import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
+import javax.faces.event.BehaviorEvent;
+import org.primefaces.component.api.UIData;
 
 	public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
     public final static String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
@@ -58,9 +66,30 @@ import org.primefaces.util.ComponentUtils;
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
     public static final String REFLOW_CLASS = "ui-treetable-reflow";
     
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize"));
+    public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
+    public static final String EDITING_ROW_CLASS = "ui-row-editing";
 
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("select", NodeSelectEvent.class);
+        put("unselect", NodeUnselectEvent.class);
+        put("expand", NodeExpandEvent.class);
+        put("collapse", NodeCollapseEvent.class);
+        put("colResize", ColumnResizeEvent.class);
+        put("sort", SortEvent.class);
+        put("rowEdit", RowEditEvent.class);
+        put("rowEditInit", RowEditEvent.class);
+        put("rowEditCancel", RowEditEvent.class);
+        put("cellEdit", CellEditEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    
     private List<String> selectedRowKeys = new ArrayList<String>();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
 
     @Override
     public Collection<String> getEventNames() {
@@ -78,6 +107,18 @@ import org.primefaces.util.ComponentUtils;
     public boolean isSortRequest(FacesContext context) {
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_sorting");
 	}
+
+    public boolean isPaginationRequest(FacesContext context) {
+		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_pagination");
+	}
+
+    public boolean isRowEditRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEditAction");
+    }
+
+    public boolean isCellEditRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellInfo");
+    }
 
     @Override
     public void queueEvent(FacesEvent event) {
@@ -130,6 +171,39 @@ import org.primefaces.util.ComponentUtils;
                 int height = Integer.parseInt(params.get(clientId + "_height"));
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
+            }
+            else if(eventName.equals("sort")) {
+                SortOrder order = SortOrder.valueOf(params.get(clientId + "_sortDir"));
+                UIColumn sortColumn = findColumn(params.get(clientId + "_sortKey"));
+                
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order, 0);
+            }
+            else if(eventName.equals("rowEdit")||eventName.equals("rowEditCancel")||eventName.equals("rowEditInit")) {
+                String nodeKey = params.get(clientId + "_rowEditIndex");
+                this.setRowKey(nodeKey);
+                wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            }
+            else if(eventName.equals("cellEdit")) {
+                String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
+                String rowKey = cellInfo[0];
+                int cellIndex = Integer.parseInt(cellInfo[1]);
+                int i = -1;
+                UIColumn column = null;
+             
+                for(UIColumn col : this.getColumns()) {
+                    if(col.isRendered()) {
+                        i++;
+                        
+                        if(i == cellIndex) {
+                            column = col;
+                            break;
+                        }
+                    }
+                }
+
+                wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), column, rowKey);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             
             super.queueEvent(wrapperEvent);
@@ -337,5 +411,88 @@ import org.primefaces.util.ComponentUtils;
         }
  
         super.validateSelection(context);
+    }
+
+    public int getRowCount() {
+        TreeNode root = this.getValue();
+        if (root == null) {
+            return (-1);
+        }
+        else {
+            List<TreeNode> children = root.getChildren();
+            return children == null ? -1 : children.size();
+        }
+    }
+
+    public int getPage() {
+        if(this.getRowCount() > 0) {
+            int rows = this.getRowsToRender();
+        
+            if(rows > 0) {
+                int first = this.getFirst();
+
+                return (int) (first / rows);
+            } 
+            else {
+                return 0;
+            }
+        }
+        else {
+            return 0;
+        }
+    }
+
+    public int getRowsToRender() {
+        int rows = this.getRows();
+        
+        return rows == 0 ? this.getRowCount() : rows;
+    }
+
+    public int getPageCount() {
+        return (int) Math.ceil(this.getRowCount() * 1d / this.getRowsToRender());
+    }
+
+    public UIComponent getHeader() {
+        return getFacet("header");
+
+    }
+
+    public UIComponent getFooter() {
+        return getFacet("footer");
+    }
+
+    public void calculateFirst() {
+        int rows = this.getRows();
+        
+        if(rows > 0) {
+            int first = this.getFirst();
+            int rowCount = this.getRowCount();
+            
+            if(rowCount > 0 && first >= rowCount) {
+                int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
+                
+                this.setFirst(Math.max((numberOfPages-1) * rows, 0));
+            }
+        }
+    }
+
+    public void updatePaginationData(FacesContext context) {
+        String componentClientId = this.getClientId(context);
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        ELContext elContext = context.getELContext();
+        
+		String firstParam = params.get(componentClientId + "_first");
+		String rowsParam = params.get(componentClientId + "_rows");
+
+		this.setFirst(Integer.valueOf(firstParam));
+		this.setRows(Integer.valueOf(rowsParam));
+        
+        ValueExpression firstVe = this.getValueExpression("first");
+        ValueExpression rowsVe = this.getValueExpression("rows");
+
+        if(firstVe != null && !firstVe.isReadOnly(elContext))
+            firstVe.setValue(context.getELContext(), this.getFirst());
+        if(rowsVe != null && !rowsVe.isReadOnly(elContext))
+            rowsVe.setValue(context.getELContext(), this.getRows());
     }
 

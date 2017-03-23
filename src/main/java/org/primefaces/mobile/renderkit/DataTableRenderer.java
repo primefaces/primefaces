@@ -105,6 +105,9 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
             styleClass = styleClass + " ui-table-reflow";
         }           
         
+        writer.startElement("div", null);
+        writer.writeAttribute("class", DataTable.TABLE_WRAPPER_CLASS, null);
+        
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
         writer.writeAttribute("class", styleClass, null);
@@ -116,6 +119,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         encodeTbody(context, table, false);
         
         writer.endElement("table");
+        writer.endElement("div");
     }
     
     @Override
@@ -191,7 +195,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
-        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
         int priority = column.getPriority();
         boolean sortable = (columnSortByVE != null);
         String sortIcon = null;
@@ -205,7 +209,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         }
         
         if(sortable) {
-            ValueExpression tableSortByVE = table.getValueExpression("sortBy");
+            ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             boolean defaultSorted = (tableSortByVE != null);
                     
             if(defaultSorted) {
@@ -218,6 +222,15 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
             else {
                 styleClass = styleClass + " " + DataTable.MOBILE_SORTED_COLUMN_CLASS;;
             }
+        }
+        
+        String width = column.getWidth();
+        if(width != null) {
+            String unit = width.endsWith("%") ? "" : "px";
+            if(style != null)
+                style = style + ";width:" + width + unit;
+            else
+                style = "width:" + width + unit;
         }
         
         writer.startElement("th", null);
@@ -434,8 +447,8 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
     
     @Override
     protected String resolveDefaultSortIcon(DataTable table, UIColumn column, String sortOrder) {
-        ValueExpression tableSortByVE = table.getValueExpression("sortBy");
-        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
         String columnSortByExpression = columnSortByVE.getExpressionString();
         String tableSortByExpression = tableSortByVE.getExpressionString();
         String field = column.getField();
@@ -453,7 +466,12 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
     }
     
     private PaginatorRenderer getPaginatorRenderer(FacesContext context) {
-        return (PaginatorRenderer) context.getRenderKit().getRenderer("org.primefaces.component", "org.primefaces.component.PaginatorRenderer");
+        PaginatorRenderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                "org.primefaces.component",
+                "org.primefaces.component.PaginatorRenderer",
+                PaginatorRenderer.class);
+        return renderer;
     }
     
     @Override

@@ -46,7 +46,7 @@ public class SelectOneRadioRenderer extends org.primefaces.component.selectonera
         writer.writeAttribute("id", clientId, "id");
         
         if (style != null) writer.writeAttribute("style", style, "style");
-        if (styleClass != null) writer.writeAttribute("class", style, "styleClass");
+        if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
         
         if (selectItems != null && !selectItems.isEmpty()) {
             Object value = radio.getSubmittedValue();

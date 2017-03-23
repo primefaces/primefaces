@@ -168,10 +168,31 @@
             <type>java.lang.String</type>
             <description>Displays label of the element in a custom template. Valid placeholder is {0}.</description>
         </attribute>
+        <attribute>
+			<name>onfocus</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when element receives focus.</description>
+		</attribute>
+        <attribute>
+			<name>onblur</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<ignoreInComponent>true</ignoreInComponent>
+            <description>Client side callback to execute when element loses focus.</description>
+		</attribute>
+        <attribute>
+            <name>autoWidth</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Calculates a fixed width based on the width of the maximum option label. Set to false for custom width.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -180,7 +201,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
         <resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+        <resource>
+			<name>components.js</name>
 		</resource>
 	</resources>
 </component>

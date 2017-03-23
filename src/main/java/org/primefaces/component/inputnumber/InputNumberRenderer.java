@@ -114,7 +114,19 @@ public class InputNumberRenderer extends InputRenderer {
         if (inputNumber.getOnchange() != null) {
             writer.writeAttribute("onchange", inputNumber.getOnchange(), null);
         }
+        
+        if (inputNumber.getOnkeydown() != null) {
+            writer.writeAttribute("onkeydown", inputNumber.getOnkeydown(), null);
+        }
+        
+        if (inputNumber.getOnkeyup() != null) {
+            writer.writeAttribute("onkeyup", inputNumber.getOnkeyup(), null);
+        }
 
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, inputNumber);
+        }
+        
         writer.endElement("input");
 
     }
@@ -124,9 +136,17 @@ public class InputNumberRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
-        String defaultClass = InputText.STYLE_CLASS;
-        defaultClass = inputNumber.isValid() ? defaultClass : defaultClass + " ui-state-error";
-        defaultClass = !inputNumber.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
+        String inputStyle = inputNumber.getInputStyle();
+        String inputStyleClass = inputNumber.getInputStyleClass();
+
+        String style = inputStyle;
+        
+        String styleClass = InputText.STYLE_CLASS;
+        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error";
+        styleClass = !inputNumber.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
+        if (!isValueBlank(inputStyleClass)) {
+            styleClass += " " + inputStyleClass;
+        }
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
@@ -143,7 +163,15 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        writer.writeAttribute("class", defaultClass, "");
+        if (!isValueBlank(style)) {
+            writer.writeAttribute("style", style, null);
+        }
+        
+        writer.writeAttribute("class", styleClass, null);
+
+        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, inputNumber);
+        }
 
         writer.endElement("input");
     }
@@ -168,7 +196,7 @@ public class InputNumberRenderer extends InputRenderer {
         wb.finish();
     }
 
-    private String getOptions(InputNumber inputNumber) {
+    protected String getOptions(InputNumber inputNumber) {
 
         String decimalSeparator = inputNumber.getDecimalSeparator();
         String thousandSeparator = inputNumber.getThousandSeparator();
@@ -179,6 +207,7 @@ public class InputNumberRenderer extends InputRenderer {
         String roundMethod = inputNumber.getRoundMethod();
         String decimalPlaces = inputNumber.getDecimalPlaces();
         String emptyValue = inputNumber.getEmptyValue();
+        boolean padControl = inputNumber.isPadControl();
 
         String options = "";
         options += isValueBlank(decimalSeparator) ? "" : "aDec:\"" + escapeText(decimalSeparator) + "\",";
@@ -191,6 +220,7 @@ public class InputNumberRenderer extends InputRenderer {
         options += isValueBlank(roundMethod) ? "" : "mRound:\"" + escapeText(roundMethod) + "\",";
         options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + escapeText(decimalPlaces) + "\",";
         options += "wEmpty:\"" + escapeText(emptyValue) + "\",";
+        options += "aPad:" + padControl + ",";
 
         //if all options are empty return empty
         if (options.isEmpty()) {
@@ -214,7 +244,7 @@ public class InputNumberRenderer extends InputRenderer {
         else {
             try {
                 Object objectToRender;
-                if (value instanceof BigDecimal) {
+                if (value instanceof BigDecimal || doubleValueCheck(valueToRender)) {
                     objectToRender = new BigDecimal(valueToRender);
                 } else {
                     objectToRender = new Double(valueToRender);
@@ -237,5 +267,23 @@ public class InputNumberRenderer extends InputRenderer {
             }
         }
     }
+    
+    protected boolean doubleValueCheck(String valueToRender) {
+        int counter = 0;
+        int length = valueToRender.length();
 
+        for (int i = 0; i < length; i++) {
+            if (valueToRender.charAt(i) == '9') {
+                counter++;
+            }
+        }
+
+        return (counter > 15 || length > 15);
+    }
+
+    @Override
+    protected String getHighlighter() {
+        return "inputnumber";
+    }
+    
 }

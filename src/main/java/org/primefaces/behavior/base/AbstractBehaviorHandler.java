@@ -135,7 +135,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     	}
     }
 
-    protected abstract E createBehavior(FaceletContext ctx, String eventName);
+    protected abstract E createBehavior(FaceletContext ctx, String eventName, UIComponent parent);
 
     protected void setBehaviorAttribute(FaceletContext ctx, E behavior, TagAttribute attr, Class<?> type) {
     	if (attr != null) {
@@ -179,7 +179,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
             }
         }
 
-        ClientBehaviorBase behavior = createBehavior(faceletContext, eventName);
+        ClientBehaviorBase behavior = createBehavior(faceletContext, eventName, parent);
         holder.addClientBehavior(eventName, behavior);
     }
 

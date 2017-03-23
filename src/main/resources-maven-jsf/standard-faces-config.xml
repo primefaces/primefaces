@@ -4,16 +4,25 @@
     <factory>
         <partial-view-context-factory>org.primefaces.context.PrimePartialViewContextFactory</partial-view-context-factory>
     </factory>
+    
+    <lifecycle>
+        <phase-listener>org.primefaces.application.resource.DynamicResourcesPhaseListener</phase-listener>
+    </lifecycle>
 
     <application>
         <resource-handler>org.primefaces.application.resource.PrimeResourceHandler</resource-handler>
         <system-event-listener>
             <system-event-listener-class>org.primefaces.metadata.transformer.MetadataTransformerExecutor</system-event-listener-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
             <system-event-listener-class>org.primefaces.webapp.PostConstructApplicationEventListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+            <source-class>javax.faces.application.Application</source-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.webapp.PreDestroyApplicationEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreDestroyApplicationEvent</system-event-class>
             <source-class>javax.faces.application.Application</source-class>
         </system-event-listener>
         <system-event-listener>

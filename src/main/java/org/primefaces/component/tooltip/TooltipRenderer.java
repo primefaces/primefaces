@@ -44,14 +44,22 @@ public class TooltipRenderer extends CoreRenderer {
         if(target != null) {
             String styleClass = tooltip.getStyleClass();
             styleClass = styleClass == null ? Tooltip.CONTAINER_CLASS : Tooltip.CONTAINER_CLASS + " " + styleClass;
+            styleClass = styleClass + " ui-tooltip-" + tooltip.getPosition();
 
             writer.startElement("div", tooltip);
             writer.writeAttribute("id", tooltip.getClientId(context), null);
             writer.writeAttribute("class", styleClass, "styleClass");
-
+            
             if(tooltip.getStyle() != null) 
                 writer.writeAttribute("style", tooltip.getStyle(), "style");
 
+            writer.startElement("div", tooltip);
+            writer.writeAttribute("class", "ui-tooltip-arrow", null);
+            writer.endElement("div");
+            
+            writer.startElement("div", tooltip);
+            writer.writeAttribute("class", "ui-tooltip-text ui-shadow ui-corner-all", null);
+            
             if(tooltip.getChildCount() > 0) {
                 renderChildren(context, tooltip);
             }
@@ -64,6 +72,8 @@ public class TooltipRenderer extends CoreRenderer {
                         writer.write(valueToRender);
                 }
             }
+            
+            writer.endElement("div");
 
 
             writer.endElement("div");
@@ -84,6 +94,7 @@ public class TooltipRenderer extends CoreRenderer {
             .attr("globalSelector", tooltip.getGlobalSelector(), null)
             .attr("escape", tooltip.isEscape(), true)
             .attr("trackMouse", tooltip.isTrackMouse(), false)
+            .attr("position", tooltip.getPosition(), "right")
             .returnCallback("beforeShow", "function()", tooltip.getBeforeShow())
             .callback("onShow", "function()", tooltip.getOnShow())
             .callback("onHide", "function()", tooltip.getOnHide());

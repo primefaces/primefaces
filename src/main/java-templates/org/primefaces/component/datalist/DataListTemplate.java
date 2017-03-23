@@ -15,10 +15,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import javax.faces.component.UIComponent;
 import org.primefaces.util.Constants;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.event.data.PageEvent;
+import javax.faces.event.BehaviorEvent;
 
 	public static final String DATALIST_CLASS = "ui-datalist ui-widget";
     public static final String CONTENT_CLASS = "ui-datalist-content ui-widget-content";
@@ -31,7 +34,20 @@ import org.primefaces.event.data.PageEvent;
 
     public static final String MOBILE_CONTENT_CLASS = "ui-datalist-content";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("page","swipeleft","swiperight","tap","taphold"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("page", PageEvent.class);
+        put("swipeleft", SwipeEvent.class);
+        put("swiperight", SwipeEvent.class);
+        put("tap", SelectEvent.class);
+        put("taphold", SelectEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
 
     @Override
     public Collection<String> getEventNames() {
@@ -69,7 +85,7 @@ import org.primefaces.event.data.PageEvent;
             lazyModel.setWrappedData(data);
 
             //Update paginator for callback
-            if(this.isPaginator()) {
+            if(isRequestSource(getFacesContext()) && this.isPaginator()) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {
@@ -133,3 +149,43 @@ import org.primefaces.event.data.PageEvent;
             super.queueEvent(event);
         }
     }
+
+    @Override
+    protected void processFacets(FacesContext context, PhaseId phaseId) {
+        if(this.getFacetCount() > 0) {
+            UIComponent descriptionFacet = getFacet("description");
+            for(UIComponent facet : getFacets().values()) {
+                if(facet.equals(descriptionFacet)) {
+                   continue;
+                }
+                process(context, facet, phaseId);
+            }
+        }
+    }
+    
+    @Override
+    protected void processChildren(FacesContext context, PhaseId phaseId) {
+        int first = getFirst();
+        int rows = getRows();
+        int last = rows == 0 ? getRowCount() : (first + rows);
+        
+        for(int rowIndex = first; rowIndex < last; rowIndex++) {
+            setRowIndex(rowIndex);
+
+            if(!isRowAvailable()) {
+                break;
+            }
+            
+            for(UIComponent child : this.getIterableChildren()) {
+                if(child.isRendered()) {
+                    process(context, child, phaseId);
+                }
+            }
+
+            UIComponent descriptionFacet = getFacet("description");
+            if(descriptionFacet != null && isDefinition()) {
+                process(context, descriptionFacet, phaseId);
+            }
+        }
+    }
+

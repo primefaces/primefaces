@@ -65,17 +65,17 @@ public abstract class Exporter {
     public abstract void export(FacesContext facesContext, DataTable table,
 			String outputFileName, boolean pageOnly, boolean selectionOnly,
 			String encodingType, MethodExpression preProcessor,
-			MethodExpression postProcessor) throws IOException;
+			MethodExpression postProcessor, ExporterOptions options) throws IOException;
 
     public abstract void export(FacesContext facesContext, List<String> clientIds,
 			String outputFileName, boolean pageOnly, boolean selectionOnly,
 			String encodingType, MethodExpression preProcessor,
-			MethodExpression postProcessor) throws IOException;
+			MethodExpression postProcessor, ExporterOptions options) throws IOException;
     
     public abstract void export(FacesContext facesContext,
 			String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
 			String encodingType, MethodExpression preProcessor,
-			MethodExpression postProcessor) throws IOException;
+			MethodExpression postProcessor, ExporterOptions options) throws IOException;
 	
 	protected List<UIColumn> getColumnsToExport(UIData table) {
         List<UIColumn> columns = new ArrayList<UIColumn>();
@@ -100,6 +100,16 @@ public abstract class Exporter {
         return false;
     }
 
+    protected String exportColumnByFunction(FacesContext context, org.primefaces.component.api.UIColumn column) {
+        MethodExpression exportFunction = column.getExportFunction();
+        
+        if(exportFunction != null) {
+            return (String) exportFunction.invoke(context.getELContext(), new Object[]{column});
+        }
+        
+        return "";
+    }
+    
     protected String exportValue(FacesContext context, UIComponent component) {
 
         if(component instanceof HtmlCommandLink) {  //support for PrimeFaces and standard HtmlCommandLink

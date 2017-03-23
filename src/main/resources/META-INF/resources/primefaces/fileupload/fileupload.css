@@ -27,6 +27,7 @@
 .ui-fileupload-choose {
     position: relative;
     overflow: hidden;
+    outline: none;
 }
 
 .ui-fileupload-buttonbar {
@@ -83,6 +84,8 @@
 .ui-fileupload-simple {
     position: relative;
     overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .ui-fileupload-simple .ui-button {
@@ -107,4 +110,17 @@
 
 .ui-fileupload-simple .ui-fileupload-filename {
     margin-left: 0.5em;
+}
+
+/* ui-fluid */
+.ui-fluid .ui-fileupload .ui-button {
+    width: auto;
+}
+
+.ui-fluid .ui-fileupload-content .ui-button-icon-only {
+    width: 2.4em;
+}
+
+.ui-fileupload-icon-only .ui-button-text {
+    padding-left: 1em;
 }

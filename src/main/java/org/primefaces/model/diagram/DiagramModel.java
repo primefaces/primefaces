@@ -47,4 +47,6 @@ public interface DiagramModel {
     public EndPoint findEndPoint(Element element, String id);
     
     public int getMaxConnections();
+
+    public boolean isContainment();
 }

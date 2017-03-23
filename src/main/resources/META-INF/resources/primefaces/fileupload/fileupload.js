@@ -1843,13 +1843,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if(!window.FormData) {
                     for(var i = 0; i < data.files.length; i++) {
                         var file = data.files[i];
-
-                        file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value')
-                                .addClass('ui-progressbar-value-legacy')
-                                .css({
-                                    width: '100%',
-                                    display: 'block'
-                                });
+                        if(file.row) {
+                            file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value')
+                                    .addClass('ui-progressbar-value-legacy')
+                                    .css({
+                                        width: '100%',
+                                        display: 'block'
+                                    });
+                        }
                     }
                 }
             },
@@ -1864,11 +1865,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                     for(var i = 0; i < data.files.length; i++) {
                         var file = data.files[i];
-
-                        file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value').css({
-                            width: progress + '%',
-                            display: 'block'
-                        });
+                        if(file.row) {
+                            file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value').css({
+                                width: progress + '%',
+                                display: 'block'
+                            });
+                        }
                     }
                 }
             },
@@ -1912,11 +1914,39 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-state-active').addClass('ui-state-hover');
         });
 
-        this.chooseButton.children('input').on('focus.fileupload', function() {
-            $this.chooseButton.addClass('ui-state-focus');
+        var isChooseButtonClick = false;
+        this.chooseButton.on('focus.fileupload', function() {
+            $(this).addClass('ui-state-focus');
         })
         .on('blur.fileupload', function() {
-            $this.chooseButton.removeClass('ui-state-focus');
+            $(this).removeClass('ui-state-focus');
+            isChooseButtonClick = false;
+        });
+        
+        // For JAWS support
+        this.chooseButton.on('click.fileupload', function() {  
+            $this.chooseButton.children('input').trigger('click');
+        })
+        .on('keydown.fileupload', function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+            
+            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) { 
+                $this.chooseButton.children('input').trigger('click');
+                $(this).blur();
+                e.preventDefault();
+            }
+        });
+        
+        this.chooseButton.children('input').on('click', function(e){
+            if(isChooseButtonClick) {
+                isChooseButtonClick = false;
+                e.preventDefault();
+                e.stopPropagation(); 
+            }
+            else {
+                isChooseButtonClick = true;
+            }
         });
 
         this.uploadButton.on('click.fileupload', function(e) {
@@ -1994,13 +2024,15 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
         var params = this.form.serializeArray();
 
-        params.push({name: PrimeFaces.PARTIAL_REQUEST_PARAM, value: 'true'});
-        params.push({name: PrimeFaces.PARTIAL_PROCESS_PARAM, value: process});
-        params.push({name: PrimeFaces.PARTIAL_SOURCE_PARAM, value: this.id});
+        var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(this.form);
+
+        PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
+        PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_PROCESS_PARAM, process, parameterPrefix);
+        PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_SOURCE_PARAM, this.id, parameterPrefix);
 
         if (this.cfg.update) {
             var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.update).join(' ');
-            params.push({name: PrimeFaces.PARTIAL_UPDATE_PARAM, value: update});
+            PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
         }
 
         return params;
@@ -2038,9 +2070,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
 
     removeFileRow: function(row) {
-        row.fadeOut(function() {
-            $(this).remove();
-        });
+        if(row) {
+            row.fadeOut(function() {
+                $(this).remove();
+            });
+        }
     },
 
     clear: function() {
@@ -2067,7 +2101,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
 
     renderMessages: function() {
-        var markup = '<div class="ui-messages ui-widget ui-helper-hidden"><div class="ui-messages-error ui-corner-all">' +
+        var markup = '<div class="ui-messages ui-widget ui-helper-hidden ui-fileupload-messages"><div class="ui-messages-error ui-corner-all">' +
                 '<a class="ui-messages-close" href="#"><span class="ui-icon ui-icon-close"></span></a>' +
                 '<span class="ui-messages-error-icon"></span>' +
                 '<ul></ul>' +

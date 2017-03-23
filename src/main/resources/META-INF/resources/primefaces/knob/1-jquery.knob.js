@@ -367,7 +367,7 @@
                     // Escape key cancel current change
                     "keyup.k",
                     function (e) {
-                        if (e.keyCode === 27) {
+                        if (e.which === 27) {
                             k.c.d.unbind("mouseup.k mousemove.k keyup.k");
 
                             if (s.eH && s.eH() === false)
@@ -610,11 +610,11 @@
                 .bind(
                     "keydown",
                     function (e) {
-                        var kc = e.keyCode;
+                        var kc = e.which;
 
                         // numpad support
                         if (kc >= 96 && kc <= 105) {
-                            kc = e.keyCode = kc - 48;
+                            kc = e.which = kc - 48;
                         }
 
                         kval = parseInt(String.fromCharCode(kc));

@@ -70,4 +70,5 @@
     display: none;
     color: #FFFFFF;
     padding: 0.2em 1em;
+    box-sizing: border-box;
 }

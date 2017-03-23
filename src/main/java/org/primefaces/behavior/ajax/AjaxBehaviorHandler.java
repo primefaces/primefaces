@@ -15,13 +15,17 @@
  */
 package org.primefaces.behavior.ajax;
 
+import java.util.Map;
 import javax.faces.application.Application;
+import javax.faces.component.UIComponent;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
 import javax.faces.view.facelets.BehaviorConfig;
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 
 import org.primefaces.behavior.base.AbstractBehaviorHandler;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 
 public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
 
@@ -46,6 +50,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
     private final TagAttribute timeout;
     private final TagAttribute partialSubmitFilter;
     private final TagAttribute form;
+    private final TagAttribute skipChildren;
 
     public AjaxBehaviorHandler(BehaviorConfig config) {
         super(config);
@@ -67,10 +72,11 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         this.timeout = this.getAttribute(AjaxBehavior.PropertyKeys.timeout.name());
         this.partialSubmitFilter = this.getAttribute(AjaxBehavior.PropertyKeys.partialSubmitFilter.name());
         this.form = this.getAttribute(AjaxBehavior.PropertyKeys.form.name());
+        this.skipChildren = this.getAttribute(AjaxBehavior.PropertyKeys.skipChildren.name());
     }
 
     @Override
-    protected AjaxBehavior createBehavior(FaceletContext ctx, String eventName) {
+    protected AjaxBehavior createBehavior(FaceletContext ctx, String eventName, UIComponent parent) {
         Application application = ctx.getFacesContext().getApplication();
         AjaxBehavior behavior = (AjaxBehavior)application.createBehavior(AjaxBehavior.BEHAVIOR_ID);
 
@@ -92,11 +98,30 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         setBehaviorAttribute(ctx, behavior, this.timeout, AjaxBehavior.PropertyKeys.timeout.expectedType);
         setBehaviorAttribute(ctx, behavior, this.partialSubmitFilter, AjaxBehavior.PropertyKeys.partialSubmitFilter.expectedType);
         setBehaviorAttribute(ctx, behavior, this.form, AjaxBehavior.PropertyKeys.form.expectedType);
+        setBehaviorAttribute(ctx, behavior, this.skipChildren, AjaxBehavior.PropertyKeys.skipChildren.expectedType);
         
         if (listener != null) {
-            behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
-                this.listener.getMethodExpression(ctx, Object.class, EMPTY_PARAMS) ,
-                this.listener.getMethodExpression(ctx, Object.class, ARG_PARAMS)));
+            
+            Class<? extends BehaviorEvent> eventMappingClass = null;
+            
+            if (parent instanceof PrimeClientBehaviorHolder) {
+                Map<String, Class<? extends BehaviorEvent>> mapping = ((PrimeClientBehaviorHolder) parent).getBehaviorEventMapping();
+                if (mapping != null) {
+                    eventMappingClass = mapping.get(eventName);
+                }
+            }
+            
+            if (eventMappingClass == null) {
+                behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
+                    this.listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
+                    this.listener.getMethodExpression(ctx, Void.class, ARG_PARAMS)));
+            }
+            else {
+                behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
+                    this.listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
+                    this.listener.getMethodExpression(ctx, Void.class, ARG_PARAMS),
+                    this.listener.getMethodExpression(ctx, Void.class, new Class[] { eventMappingClass } )));
+            }
         }
 
         return behavior;

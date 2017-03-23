@@ -18,16 +18,16 @@ package org.primefaces.mobile.renderkit.paginator;
 import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.Pageable;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 
 public class PageLinksRenderer implements PaginatorElementRenderer {
 
-    public void render(FacesContext context, UIData uidata) throws IOException {
+    public void render(FacesContext context, Pageable pageable) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        int currentPage = uidata.getPage();
-        int pageLinks = uidata.getPageLinks();
-        int pageCount = uidata.getPageCount();
+        int currentPage = pageable.getPage();
+        int pageLinks = pageable.getPageLinks();
+        int pageCount = pageable.getPageCount();
         int visiblePages = Math.min(pageLinks, pageCount);
         
         //calculate range, keep current in middle if necessary

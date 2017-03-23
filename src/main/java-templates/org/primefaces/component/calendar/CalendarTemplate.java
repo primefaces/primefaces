@@ -16,9 +16,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import org.primefaces.context.RequestContext;
+import org.primefaces.convert.DateTimeConverter;
 
     public final static String CONTAINER_CLASS = "ui-calendar";
     public final static String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
@@ -26,6 +29,7 @@ import javax.faces.event.PhaseId;
     public final static String MOBILE_INLINE_CONTAINER_CLASS = "ui-calendar ui-calendar-inline";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select","dateSelect","viewChange"));
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","viewChange"));
 
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
 
@@ -76,7 +80,7 @@ import javax.faces.event.PhaseId;
     public boolean hasTime() {
         String pattern = getPattern();
 
-        return (pattern != null && pattern.indexOf(":") != -1);
+        return (pattern != null && (pattern.contains("HH") || pattern.contains("mm") || pattern.contains("ss")));
     }
 
     @Override
@@ -84,8 +88,9 @@ import javax.faces.event.PhaseId;
         return EVENT_NAMES;
     }
 
+    @Override
     public Collection<String> getUnobstrusiveEventNames() {
-        return Collections.unmodifiableCollection(Arrays.asList("dateSelect","viewChange"));
+        return UNOBSTRUSIVE_EVENT_NAMES;
     }
 
     @Override
@@ -188,3 +193,21 @@ import javax.faces.event.PhaseId;
     private boolean isRequestSource(FacesContext context) {
         return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
+
+    @Override
+    public Converter getConverter() {
+        Converter converter = super.getConverter();
+        
+        if(converter == null && RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            DateTimeConverter con = new DateTimeConverter();
+            String pattern = this.isTimeOnly() ? this.calculateTimeOnlyPattern() : this.calculatePattern();
+            con.setPattern(pattern);
+            con.setTimeZone(this.calculateTimeZone());
+            con.setLocale(this.calculateLocale(getFacesContext()));
+
+            return con;
+        }
+        
+        return converter;
+    }
+

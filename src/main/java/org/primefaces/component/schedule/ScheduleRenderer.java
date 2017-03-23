@@ -36,7 +36,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ScheduleRenderer extends CoreRenderer {
 
-    private final static Logger logger = Logger.getLogger(ScheduleRenderer.class.getName());
+    private final static Logger LOG = Logger.getLogger(ScheduleRenderer.class.getName());
     
     @Override
 	public void decode(FacesContext context, UIComponent component) {
@@ -99,6 +99,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 ScheduleEvent event = iterator.next();
                 String className = event.getStyleClass();
                 String description = event.getDescription();
+                String url = event.getUrl();
                
                 writer.write("{");
                 writer.write("\"id\": \"" + event.getId() + "\"");	
@@ -112,6 +113,9 @@ public class ScheduleRenderer extends CoreRenderer {
                 }
                 if(description != null) {
                     writer.write(",\"description\":\"" + escapeText(description) + "\"");
+                }
+                if(url != null) {
+                    writer.write(",\"url\":\"" + escapeText(url) + "\"");
                 }
                 
                 writer.write("}");
@@ -128,11 +132,12 @@ public class ScheduleRenderer extends CoreRenderer {
 	protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
 		String clientId = schedule.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Schedule", schedule.resolveWidgetVar(), clientId, "schedule")
+        wb.initWithDomReady("Schedule", schedule.resolveWidgetVar(), clientId)
             .attr("defaultView", schedule.getView())
             .attr("locale", schedule.calculateLocale(context).toString())
             .attr("tooltip", schedule.isTooltip(), false)
-            .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false);
+            .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false)
+            .attr("lazyFetching", false);
         
         Object initialDate = schedule.getInitialDate();
         if(initialDate != null) {
@@ -156,21 +161,21 @@ public class ScheduleRenderer extends CoreRenderer {
         String slotDuration = schedule.getSlotDuration();
         int slotMinutes = schedule.getSlotMinutes();
         if(slotMinutes != 30) {
-            logger.warning("slotMinutes is deprecated, use slotDuration instead.");
+            LOG.warning("slotMinutes is deprecated, use slotDuration instead.");
             slotDuration = "00:" + slotMinutes + ":00";
         }
         
         String scrollTime = schedule.getScrollTime();
         int firstHour = schedule.getFirstHour();
         if(firstHour != 6) {
-            logger.warning("firstHour is deprecated, use scrollTime instead.");
+            LOG.warning("firstHour is deprecated, use scrollTime instead.");
             scrollTime = firstHour + ":00:00";
         }
         
         String clientTimezone = schedule.getClientTimeZone();
         boolean ignoreTimezone = schedule.isIgnoreTimezone();
         if(!ignoreTimezone) {
-            logger.warning("ignoreTimezone is deprecated, use clientTimezone instead with 'local' setting.");
+            LOG.warning("ignoreTimezone is deprecated, use clientTimezone instead with 'local' setting.");
             clientTimezone = "local";
         }
         
@@ -188,11 +193,13 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("eventDurationEditable", schedule.isResizable(), true)    
             .attr("axisFormat", schedule.getAxisFormat(), null)
             .attr("timeFormat", schedule.getTimeFormat(), null)
-            .attr("weekNumbers", isShowWeekNumbers, false);
+            .attr("weekNumbers", isShowWeekNumbers, false)
+            .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
+            .attr("urlTarget", schedule.getUrlTarget(), "_blank");
                 
         String columnFormat = schedule.getColumnFormat();
         if(columnFormat != null) {
-            wb.attr("columnFormat", columnFormat, null);
+            wb.append(",columnFormatOptions:{" + columnFormat + "}");
         }
         
         String displayEventEnd = schedule.getDisplayEventEnd();
@@ -210,12 +217,12 @@ public class ScheduleRenderer extends CoreRenderer {
         
         if(isShowWeekNumbers) {
             String weekNumCalculation = schedule.getWeekNumberCalculation();
-            String weekNumCalculater = schedule.getWeekNumberCalculater();
+            String weekNumCalculator = schedule.getWeekNumberCalculator();
             
             if(weekNumCalculation.equals("custom")) {
-                if(weekNumCalculater != null) {
+                if(weekNumCalculator != null) {
                     wb.append(",weekNumberCalculation: function(){ return ")
-                        .append(schedule.getWeekNumberCalculater())
+                        .append(schedule.getWeekNumberCalculator())
                         .append("}");
                 }
             }

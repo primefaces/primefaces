@@ -25,7 +25,9 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import javax.faces.render.Renderer;
 import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -33,7 +35,12 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
     
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return context.getRenderKit().getRenderer("javax.faces.SelectOne", "javax.faces.Radio").getConvertedValue(context, component, submittedValue);
+        Renderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                "javax.faces.SelectOne",
+                "javax.faces.Radio",
+                Renderer.class);
+        return renderer.getConvertedValue(context, component, submittedValue);
 	}
 
     @Override
@@ -118,8 +125,6 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("class", "ui-helper-hidden", null);
-
-        renderOnchange(context, button);
         
         if(selected) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
@@ -138,7 +143,13 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneButton button) throws IOException {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneButton", button.resolveWidgetVar(), clientId).finish();
+        wb.init("SelectOneButton", button.resolveWidgetVar(), clientId)
+            .attr("unselectable", button.isUnselectable(), true)
+            .callback("change", "function()", button.getOnchange());
+        
+        encodeClientBehaviors(context, button);
+        
+        wb.finish();
     }
     
     @Override

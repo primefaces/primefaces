@@ -163,7 +163,10 @@
             <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>primefaces.js</name>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
         </resource>
     </resources>
 </component>

@@ -48,6 +48,17 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
             }
         }
         writer.write("}");
+        
+        if(model.isShowDatatip()) {
+            writer.write(",datatip:true");
+            
+            String datatipEditor = model.getDatatipEditor();
+            if(model.getDatatipFormat() != null)
+                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
+        
+            if(datatipEditor != null)
+                writer.write(",datatipEditor:" + datatipEditor);
+        }
     }
     
     protected void encodeAxis(FacesContext context, AxisType axisType, Axis axis) throws IOException {

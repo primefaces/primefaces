@@ -23,6 +23,9 @@
         <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
@@ -214,10 +217,23 @@
             <description>Name of the request-scoped variable that'll be used to refer current treenode using EL.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>filterBy</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Property to be used for filtering.</description>
+		</attribute>
+        <attribute>
+			<name>filterMatchMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>startsWith</defaultValue>
+            <description>Match mode for filtering.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -226,7 +242,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
         <resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+        <resource>
+			<name>components.js</name>
 		</resource>
 	</resources>
 </component>

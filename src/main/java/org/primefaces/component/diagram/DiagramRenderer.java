@@ -150,7 +150,7 @@ public class DiagramRenderer extends CoreRenderer {
         String clientId = diagram.getClientId(context);
         StringBuilder sb = SharedStringBuilder.get(SB_DIAGRAM);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Diagram", diagram.resolveWidgetVar(), clientId, "diagram");
+        wb.init("Diagram", diagram.resolveWidgetVar(), clientId);
         
         DiagramModel model = (DiagramModel) diagram.getValue();
         if(model != null) {
@@ -174,6 +174,7 @@ public class DiagramRenderer extends CoreRenderer {
             String hoverPaintStyle = defaultConnector.getHoverPaintStyle();
             
             wb.append(",defaultConnector:").append(defaultConnector.toJS(sb));
+            wb.append(",containment:").append("" + model.isContainment());
 
             if(paintStyle != null) wb.append(",paintStyle:").append(paintStyle);
             if(hoverPaintStyle != null) wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
@@ -352,11 +353,13 @@ public class DiagramRenderer extends CoreRenderer {
                     String x = element.getX();
                     String y = element.getY();
                     String coords = "left:" + x + ";top:" + y;
+                    String title = element.getTitle();
                     
                     writer.startElement("div", null);
                     writer.writeAttribute("id", clientId + "-" + element.getId(), null);
                     writer.writeAttribute("class", elementClass, null);
                     writer.writeAttribute("style", coords, null);
+                    writer.writeAttribute("data-tooltip", title , null);
                     
                     if(elementFacet != null && var != null) {
                         requestMap.put(var, data);

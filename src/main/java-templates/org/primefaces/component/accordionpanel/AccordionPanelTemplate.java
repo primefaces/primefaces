@@ -1,6 +1,7 @@
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
+import org.primefaces.event.TabEvent;
 import javax.el.ValueExpression;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
@@ -19,6 +21,9 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
+import javax.faces.event.AbortProcessingException;
+import org.primefaces.context.RequestContext;
+import javax.faces.event.BehaviorEvent;
 
     public final static String CONTAINER_CLASS = "ui-accordion ui-widget ui-helper-reset ui-hidden-container";
     public final static String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top";
@@ -29,7 +34,7 @@ import javax.faces.component.visit.VisitResult;
     public final static String ACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-helper-reset ui-widget-content";
     public final static String INACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-helper-reset ui-widget-content ui-helper-hidden";
 
-    public final static String MOBILE_CONTAINER_CLASS = "ui-accordion ui-collapsible-set ui-corner-all";
+    public final static String MOBILE_CONTAINER_CLASS = "ui-accordion ui-collapsible-set ui-corner-all ui-hidden-container";
     public final static String MOBILE_INACTIVE_TAB_CONTAINER_CLASS = "ui-collapsible ui-collapsible-inset ui-corner-all ui-collapsible-themed-content ui-collapsible-collapsed";
     public final static String MOBILE_ACTIVE_TAB_CONTAINER_CLASS = "ui-collapsible ui-collapsible-inset ui-corner-all ui-collapsible-themed-content";
     public final static String MOBILE_ACTIVE_TAB_HEADER_CLASS = "ui-collapsible-heading";
@@ -41,7 +46,17 @@ import javax.faces.component.visit.VisitResult;
 
     private final static String DEFAULT_EVENT = "tabChange";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("tabChange","tabClose"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("tabChange", TabChangeEvent.class);
+        put("tabClose", TabCloseEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING ;
+    }
 
     @Override
     public Collection<String> getEventNames() {
@@ -133,7 +148,7 @@ import javax.faces.component.visit.VisitResult;
 
         super.processUpdates(context);
 
-        ValueExpression expr = this.getValueExpression("activeIndex");
+        ValueExpression expr = this.getValueExpression(PropertyKeys.activeIndex.toString());
         if(expr != null) {
             expr.setValue(getFacesContext().getELContext(), getActiveIndex());
             resetActiveIndex();
@@ -146,4 +161,17 @@ import javax.faces.component.visit.VisitResult;
 
     public boolean isRTL() {
         return this.getDir().equalsIgnoreCase("rtl");
+    }
+
+    @Override
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        super.broadcast(event);
+        
+        if(event instanceof TabEvent) {
+            MethodExpression me = this.getTabController();
+            if(me != null) {
+                boolean retVal = (Boolean) me.invoke(getFacesContext().getELContext(), new Object[]{event});
+                RequestContext.getCurrentInstance().addCallbackParam("access", retVal);
+            }
+        }
     }

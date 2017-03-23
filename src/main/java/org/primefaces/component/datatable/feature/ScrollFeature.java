@@ -29,24 +29,40 @@ public class ScrollFeature implements DataTableFeature {
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        int scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
         int scrollRows = table.getScrollRows();
         String clientId = table.getClientId(context);
-        table.setScrollOffset(scrollOffset);
+        boolean isVirtualScroll = table.isVirtualScroll();
+        boolean isLazy = table.isLazy();
+        int scrollOffset = 0;
+        
+        if(isVirtualScroll) {
+            scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_first"));
+            int rowCount = table.getRowCount();
+            int virtualScrollRows = (scrollRows * 2);
+            scrollRows = (scrollOffset + virtualScrollRows) > rowCount ? (rowCount - scrollOffset) : virtualScrollRows;
+        }
+        else {
+            scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_scrollOffset"));
+            table.setScrollOffset(scrollOffset);
+        }
 
-        if (table.isLazy()) {
+        if (isLazy) {
             table.loadLazyScrollData(scrollOffset, scrollRows);
         }
         
         if (table.isSelectionEnabled()) {
             table.findSelectedRowKeys();
         }
-
-        for (int i = scrollOffset; i < (scrollOffset + table.getScrollRows()); i++) {
+        
+        int firstIndex = (isLazy && isVirtualScroll) ? 0 : scrollOffset;
+        int lastIndex = (firstIndex + scrollRows);
+                
+        for (int i = firstIndex; i < lastIndex; i++) {
             table.setRowIndex(i);
 
             if (table.isRowAvailable()) {
-                renderer.encodeRow(context, table, clientId, i);
+                int rowIndex = (isLazy && isVirtualScroll) ? scrollOffset + i : i;
+                renderer.encodeRow(context, table, clientId, rowIndex);
             }
         }
     }

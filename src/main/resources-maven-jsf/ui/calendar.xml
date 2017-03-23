@@ -244,7 +244,8 @@
             <name>timeControlType</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Defines the type of element to use for time picker, valid values are "slider" and "select".</description>
+            <defaultValue>slider</defaultValue>
+            <description>Defines the type of element to use for time picker, valid values are "slider" , "select" and "custom"(with "timeControlObject" attribute).</description>
         </attribute>
         <attribute>
             <name>beforeShow</name>
@@ -265,10 +266,72 @@
             <defaultValue>true</defaultValue>
             <description>Clears the field on blur when incomplete input is entered.</description>
 		</attribute>
+        <attribute>
+            <name>timeControlObject</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side object to use in custom timeControlType.</description>
+        </attribute>
+        <attribute>
+            <name>timeInput</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Allows direct input in time field. Default is false.</description>
+        </attribute>
+        <attribute>
+			<name>showHour</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Whether to show the hour control, valid values are "true" and "false".</description>
+		</attribute>
+        <attribute>
+			<name>showMinute</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Whether to show the minute control, valid values are "true" and "false".</description>
+		</attribute>
+        <attribute>
+			<name>showSecond</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Whether to show the second control, valid values are "true" and "false".</description>
+		</attribute>
+        <attribute>
+			<name>showMillisec</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Whether to show the millisecond control, valid values are "true" and "false".</description>
+		</attribute>
+        <attribute>
+			<name>showTodayButton</name>
+			<required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to show the "Current Date" button if showButtonPanel is rendered. Default is "true".</description>
+		</attribute>
+        <attribute>
+            <name>buttonTabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of the button in the tabbing order.</description>
+        </attribute>
+        <attribute>
+            <name>inputStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the input element. Used when mode is popup.</description>
+        </attribute>
+        <attribute>
+            <name>inputStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the input element. Used when mode is popup.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -277,7 +340,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
 		<resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
 		</resource>
     </resources>
 </component>

@@ -1,0 +1,32 @@
+.ui-lifecycle td {
+    margin: 3px;
+}
+
+.ui-lifecycle .ui-lifecycle-name {
+    font-size: 65%;
+    text-align: center;
+}
+
+.ui-lifecycle .ui-lifecycle-result {
+    font-weight: bold;
+    text-align: center;
+    color: black;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.ui-lifecycle .ui-lifecycle-result.ui-lifecycle-score-0 {
+    background-color: red;
+}
+
+.ui-lifecycle .ui-lifecycle-result.ui-lifecycle-score-33 {
+    background-color: orange;
+}
+
+.ui-lifecycle .ui-lifecycle-result.ui-lifecycle-score-66 {
+    background-color: gold;
+}
+
+.ui-lifecycle .ui-lifecycle-result.ui-lifecycle-score-100 {
+    background-color: yellowgreen;
+}

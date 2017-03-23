@@ -46,13 +46,34 @@
          */
         submit : function(formId, target) {
             var form = $(this.escapeClientId(formId));
-            if(target) {
+            var prevTarget;
+
+            if (target) {
+                prevTarget = form.attr('target');
                 form.attr('target', target);
             }
 
-            form.submit().children('input.ui-submit-param').remove();
+            form.submit();
+            form.children('input.ui-submit-param').remove();
+
+            if (target) {
+                if (prevTarget !== undefined) {
+                    form.attr('target', prevTarget);
+                } else {
+                    form.removeAttr('target');
+                }
+            }
         },
 
+        onPost : function() {
+            this.nonAjaxPosted = true;
+            this.abortXHRs();
+        },
+        
+        abortXHRs : function() {
+            PrimeFaces.ajax.Queue.abortAll();
+        },
+        
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
                 element.bind(event, function(e) {
@@ -130,7 +151,7 @@
             }).blur(function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
             }).keydown(function(e) {
-                if(e.keyCode === $.ui.keyCode.SPACE || e.keyCode === $.ui.keyCode.ENTER || e.keyCode === $.ui.keyCode.NUMPAD_ENTER) {
+                if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER || e.which === $.ui.keyCode.NUMPAD_ENTER) {
                     $(this).addClass('ui-state-active');
                 }
             }).keyup(function() {
@@ -226,10 +247,10 @@
 
         changeTheme: function(newTheme) {
             if(newTheme && newTheme !== '') {
-                var themeLink = $('link[href*="javax.faces.resource/theme.css"]');
+                var themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '/theme.css"]');
                 // portlet
                 if (themeLink.length === 0) {
-                    themeLink = $('link[href*="javax.faces.resource=theme.css"]');
+                    themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=theme.css"]');
                 }
 
                 var themeURL = themeLink.attr('href'),
@@ -253,7 +274,7 @@
             if(window.getSelection) {
                 if(window.getSelection().empty) {
                     window.getSelection().empty();
-                } else if(window.getSelection().removeAllRanges) {
+                } else if(window.getSelection().removeAllRanges && window.getSelection().rangeCount > 0 && window.getSelection().getRangeAt(0).getClientRects().length > 0) {
                     window.getSelection().removeAllRanges();
                 }
             }
@@ -283,43 +304,32 @@
             return this.getSelection().length > 0;
         },
 
-        cw : function(widgetConstructor, widgetVar, cfg, resource) {
-            this.createWidget(widgetConstructor, widgetVar, cfg, resource);
+        cw : function(widgetName, widgetVar, cfg) {
+            this.createWidget(widgetName, widgetVar, cfg);
         },
 
-        createWidget : function(widgetConstructor, widgetVar, cfg, resource) {
+        createWidget : function(widgetName, widgetVar, cfg) {
             cfg.widgetVar = widgetVar;
 
-            if(this.widget[widgetConstructor]) {
+            if(this.widget[widgetName]) {
                 var widget = this.widgets[widgetVar];
 
                 //ajax update
-                if(widget && (widget.constructor === this.widget[widgetConstructor])) {
+                if(widget && (widget.constructor === this.widget[widgetName])) {
                     widget.refresh(cfg);
                 }
                 //page init
                 else {
-                    this.widgets[widgetVar] = new this.widget[widgetConstructor](cfg);
+                    this.widgets[widgetVar] = new this.widget[widgetName](cfg);
                     if(this.settings.legacyWidgetNamespace) {
                         window[widgetVar] = this.widgets[widgetVar];
                     }
                 }
             }
-            // widget script not loaded -> lazy load script + stylesheet
+            // widget script not loaded
             else {
-                var scriptURI = this.getFacesResource(resource + '/' + resource + '.js', 'primefaces');
-                var cssURI = this.getFacesResource(resource + '/' + resource + '.css', 'primefaces');
-
-                //load css
-                var cssResource = '<link type="text/css" rel="stylesheet" href="' + cssURI + '" />';
-                $('head').append(cssResource);
-
-                //load script and initialize widget
-                this.getScript(scriptURI, function() {
-                    setTimeout(function() {
-                        this.widgets[widgetVar] = new this.widget[widgetConstructor](cfg);
-                    }, 100);
-                });
+                // should be loaded by our dynamic resource handling, log a error
+                PrimeFaces.error("Widget not available: " + widgetName);
             }
         },
 
@@ -332,13 +342,20 @@
          * @returns {string} The resource URL.
          */
         getFacesResource : function(name, library, version) {
-            var scriptURI = $('script[src*="/javax.faces.resource/' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
+            
+            // just get sure - name shoudln't start with a slash
+            if (name.indexOf('/') === 0)
+            {
+                name = name.substring(1, name.length);
+            }
+            
+            var scriptURI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/core.js"]').attr('src');
             // portlet
             if (!scriptURI) {
-                scriptURI = $('script[src*="javax.faces.resource=' + PrimeFaces.getCoreScriptName() + '"]').attr('src');
+                scriptURI = $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=core.js"]').attr('src');
             }
 
-            scriptURI = scriptURI.replace(PrimeFaces.getCoreScriptName(), name);
+            scriptURI = scriptURI.replace('core.js', name);
             scriptURI = scriptURI.replace('ln=primefaces', 'ln=' + library);
 
             if (version) {
@@ -348,10 +365,6 @@
 
             var prefix = window.location.protocol + '//' + window.location.host;
             return scriptURI.indexOf(prefix) >= 0 ? scriptURI : prefix + scriptURI;
-        },
-
-        getCoreScriptName: function() {
-            return 'primefaces.js';
         },
 
         inArray: function(arr, item) {
@@ -374,11 +387,12 @@
                 url: url,
                 success: callback,
                 dataType: "script",
-                cache: true
+                cache: true,
+                async: false
             });
         },
 
-        focus : function(id, context) {
+        focus: function(id, context) {
             var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
 
             setTimeout(function() {
@@ -396,32 +410,44 @@
                     $(PrimeFaces.escapeClientId(context)).find(selector).eq(0).focus();
                 }
                 else {
-                    $(selector).eq(0).focus();
+                    var elements = $(selector),
+                    firstElement = elements.eq(0);
+                    if(firstElement.is(':radio')) {
+                        var checkedRadio = $(':radio[name="' + firstElement.attr('name') + '"]').filter(':checked');
+                        if(checkedRadio.length)
+                            checkedRadio.focus();
+                        else
+                            firstElement.focus();
+                    }
+                    else {
+                        firstElement.focus();
+                    }
                 }
-            }, 250);
+            }, 50);
 
             // remember that a custom focus has been rendered
             // this avoids to retain the last focus after ajax update
             PrimeFaces.customFocus = true;
         },
 
-        monitorDownload: function(start, complete) {
+        monitorDownload: function(start, complete, monitorKey) {
             if(this.cookiesEnabled()) {
                 if(start) {
                     start();
                 }
 
+                var cookieName = monitorKey ? 'primefaces.download_' + monitorKey : 'primefaces.download';
                 window.downloadMonitor = setInterval(function() {
-                    var downloadComplete = PrimeFaces.getCookie('primefaces.download');
+                    var downloadComplete = PrimeFaces.getCookie(cookieName);
 
                     if(downloadComplete === 'true') {
                         if(complete) {
                             complete();
                         }
                         clearInterval(window.downloadMonitor);
-                        PrimeFaces.setCookie('primefaces.download', null);
+                        PrimeFaces.setCookie(cookieName, null);
                     }
-                }, 250);
+                }, 1000);
             }
         },
 
@@ -508,7 +534,7 @@
         bcnu: function(ext, event, fns) {
             if(fns) {
                 for(var i = 0; i < fns.length; i++) {
-                    var retVal = fns[i].call(ext, event);
+                    var retVal = fns[i].call(this, ext, event);
                     if(retVal === false) {
                         break;
                     }
@@ -608,6 +634,8 @@
         RESET_VALUES_PARAM : "primefaces.resetvalues",
 
         IGNORE_AUTO_UPDATE_PARAM : "primefaces.ignoreautoupdate",
+        
+        SKIP_CHILDREN_PARAM : "primefaces.skipchildren",
 
         VIEW_STATE : "javax.faces.ViewState",
 
@@ -615,7 +643,11 @@
 
         VIEW_ROOT : "javax.faces.ViewRoot",
 
-        CLIENT_ID_DATA : "primefaces.clientid"
+        CLIENT_ID_DATA : "primefaces.clientid",
+
+        RESOURCE_IDENTIFIER: 'javax.faces.resource',
+
+        VERSION: '${project.version}'
     };
 
     /**
@@ -652,7 +684,7 @@
             currentText: 'Current Date',
             ampm: false,
             month: 'Month',
-            week: 'week',
+            week: 'Week',
             day: 'Day',
             allDayText: 'All Day',
             aria: {

@@ -13,7 +13,7 @@
 	<rendererClass>org.primefaces.component.schedule.ScheduleRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
     <description>
-      Schedule provides an Outlook Calendar, iCal like JSF component to manage events. 
+      Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
       Schedule is highly customizable featuring various views (month, day, week), built-in I18N, drag-drop, resize, customizable event dialog and skinning.
     </description>
      <interfaces>
@@ -22,6 +22,9 @@
 		</interface>
         <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
 	<attributes>
@@ -228,7 +231,7 @@
 			<name>displayEventEnd</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-			<description>Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for 
+			<description>Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for
             all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.</description>
 		</attribute>
         <attribute>
@@ -239,18 +242,32 @@
 			<description>The method for calculating week numbers that are displayed. Valid values are "local" (default), "ISO" and "custom".</description>
 		</attribute>
         <attribute>
-			<name>weekNumberCalculater</name>
+			<name>weekNumberCalculator</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 			<description>Client side function to use in custom weekNumberCalculation.</description>
 		</attribute>
+        <attribute>
+			<name>nextDayThreshold</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>09:00:00</defaultValue>
+            <description>When an event's end time spans into another day, the minimum time it must be in order for it to render as if it were on that day. Default is 09:00:00.</description>
+		</attribute>
+        <attribute>
+            <name>urlTarget</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>_blank</defaultValue>
+            <description>Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".</description>
+</attribute>
 	</attributes>
 	<resources>
         <resource>
 			<name>schedule/schedule.css</name>
 		</resource>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>moment/moment.js</name>
@@ -262,7 +279,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
 		<resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+        <resource>
+			<name>components.js</name>
 		</resource>
         <resource>
 			<name>schedule/schedule.js</name>

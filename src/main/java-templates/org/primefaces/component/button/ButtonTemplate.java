@@ -24,13 +24,13 @@ import org.primefaces.util.ComponentUtils;
         Object value = getValue();
         String styleClass = ""; 
     
-        if(value != null && icon == null) {
+        if(value != null && ComponentUtils.isValueBlank(icon)) {
             styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
-        else if(value != null && icon != null) {
+        else if(value != null && !ComponentUtils.isValueBlank(icon)) {
             styleClass = getIconPos().equals("left") ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         }
-        else if(value == null && icon != null) {
+        else if(value == null && !ComponentUtils.isValueBlank(icon)) {
             styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
         }
     

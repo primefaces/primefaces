@@ -59,7 +59,7 @@ public class SignatureRenderer extends CoreRenderer {
         
         encodeInputField(context, signature, clientId + "_value", signature.getValue());
         
-        if(signature.getValueExpression("base64Value") != null) {
+        if(signature.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {
             encodeInputField(context, signature, clientId + "_base64", null);
         }
         
@@ -69,7 +69,7 @@ public class SignatureRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Signature signature) throws IOException {
         String clientId = signature.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Signature", signature.resolveWidgetVar(), clientId, "signature")
+        wb.initWithDomReady("Signature", signature.resolveWidgetVar(), clientId)
             .attr("background", signature.getBackgroundColor(), null)
             .attr("color", signature.getColor(), null)
             .attr("thickness", signature.getThickness(), 2)
@@ -80,7 +80,7 @@ public class SignatureRenderer extends CoreRenderer {
             .attr("guidelineIndent", signature.getGuidelineIndent(), 10)
             .callback("onchange", "function()", signature.getOnchange());
         
-        if(signature.getValueExpression("base64Value") != null) {
+        if(signature.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {
             wb.attr("base64", true);
         }
             

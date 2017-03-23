@@ -28,7 +28,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
 
 import org.primefaces.context.RequestContext;
 
@@ -36,7 +36,11 @@ import org.primefaces.context.RequestContext;
  * Renders head content based on the following order
  * - First Facet
  * - Theme CSS
+ * - FontAwesome
+ * - Middle Facet
  * - Registered Resources
+ * - Client Validation Scripts
+ * - PF Client Side Settings
  * - Head Content
  * - Last Facet
  */
@@ -45,7 +49,7 @@ public class HeadRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        ConfigContainer cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
         ProjectStage projectStage = context.getApplication().getProjectStage();
         boolean csvEnabled = cc.isClientSideValidationEnabled();
                 
@@ -110,6 +114,10 @@ public class HeadRenderer extends Renderer {
         
         if (cc.isLegacyWidgetNamespace()) {
             writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");
+        }
+        
+        if (cc.isEarlyPostParamEvaluation()) {
+            writer.write("PrimeFaces.settings.earlyPostParamEvaluation=true;");
         }
 
         if (!projectStage.equals(ProjectStage.Production)) {

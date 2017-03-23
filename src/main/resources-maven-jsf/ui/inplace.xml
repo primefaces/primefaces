@@ -13,8 +13,8 @@
 	<rendererClass>org.primefaces.component.inplace.InplaceRenderer</rendererClass>
 	<parent>javax.faces.component.UIComponentBase</parent>
     <description>
-      Inplace provides easy inplace editing and inline content display. 
-      Inplace consists of two members, display element is the inital clickable label and inline element is the hidden content 
+      Inplace provides easy inplace editing and inline content display.
+      Inplace consists of two members, display element is the inital clickable label and inline element is the hidden content
       that'll be displayed when display element is toggled.
     </description>
     <interfaces>
@@ -23,6 +23,9 @@
 		</interface>
         <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
 	<attributes>
@@ -111,13 +114,16 @@
 	</attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
 		</resource>
 	</resources>
 </component>

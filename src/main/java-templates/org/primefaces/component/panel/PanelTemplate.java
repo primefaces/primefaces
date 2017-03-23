@@ -17,6 +17,7 @@ import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.panel.Panel;
+import javax.faces.event.BehaviorEvent;
 
 	public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content ui-corner-all";
 	public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all";
@@ -31,7 +32,22 @@ import org.primefaces.component.panel.Panel;
     public static final String MOBILE_TOGGLEICON_EXPANDED_CLASS = "ui-panel-m-titlebar-icon ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext ui-btn-right";
     public static final String MOBILE_TOGGLEICON_COLLAPSED_CLASS = "ui-panel-m-titlebar-icon ui-btn ui-shadow ui-corner-all ui-icon-plus ui-btn-icon-notext ui-btn-right";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("toggle","close"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("toggle", ToggleEvent.class);
+        put("close", CloseEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
 	
 	private Menu optionsMenu;
 	
@@ -76,11 +92,6 @@ import org.primefaces.component.panel.Panel;
     }
 
     @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
     public void processDecodes(FacesContext context) {
         if(isSelfRequest(context)) {
             this.decode(context);
@@ -106,7 +117,7 @@ import org.primefaces.component.panel.Panel;
         FacesContext facesContext = getFacesContext();
         ELContext eLContext = facesContext.getELContext();
         
-        ValueExpression collapsedVE = this.getValueExpression("collapsed");
+        ValueExpression collapsedVE = this.getValueExpression(PropertyKeys.collapsed.toString());
         if(collapsedVE != null && !collapsedVE.isReadOnly(eLContext)) {
             collapsedVE.setValue(eLContext, this.isCollapsed());
             getStateHelper().put(Panel.PropertyKeys.collapsed, null);

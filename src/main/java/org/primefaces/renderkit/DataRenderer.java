@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.paginator.CurrentPageReportRenderer;
 import org.primefaces.component.paginator.FirstPageLinkRenderer;
@@ -58,8 +59,8 @@ public class DataRenderer extends CoreRenderer {
         return PAGINATOR_ELEMENTS.remove(element);
     }
     
-    protected void encodePaginatorMarkup(FacesContext context, UIData uidata, String position) throws IOException {
-        if(!uidata.isPaginatorAlwaysVisible() && uidata.getPageCount() <= 1) {
+    protected void encodePaginatorMarkup(FacesContext context, Pageable pageable, String position) throws IOException {
+        if(!pageable.isPaginatorAlwaysVisible() && pageable.getPageCount() <= 1) {
             return;
         }
         
@@ -67,13 +68,13 @@ public class DataRenderer extends CoreRenderer {
         boolean isTop = position.equals("top");
         
         String styleClass = isTop ? UIData.PAGINATOR_TOP_CONTAINER_CLASS : UIData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
-        String id = uidata.getClientId(context) + "_paginator_" + position; 
+        String id = pageable.getClientId(context) + "_paginator_" + position; 
         
         //add corners
-        if(!isTop && uidata.getFooter() == null) {
+        if(!isTop && pageable.getFooter() == null) {
             styleClass = styleClass + " ui-corner-bottom";
         }
-        else if(isTop && uidata.getHeader() == null) {
+        else if(isTop && pageable.getHeader() == null) {
             styleClass = styleClass + " ui-corner-top";
         }
         
@@ -85,14 +86,14 @@ public class DataRenderer extends CoreRenderer {
         writer.writeAttribute("role", "navigation", null);
         writer.writeAttribute("aria-label", ariaMessage, null);
         
-        String[] elements = uidata.getPaginatorTemplate().split(" ");
+        String[] elements = pageable.getPaginatorTemplate().split(" ");
         for(String element : elements) {            
             PaginatorElementRenderer renderer = PAGINATOR_ELEMENTS.get(element);
             if(renderer != null) {
-                renderer.render(context, uidata);
+                renderer.render(context, pageable);
             } 
             else {
-                UIComponent elementFacet = uidata.getFacet(element);
+                UIComponent elementFacet = pageable.getFacet(element);
                 if(elementFacet != null)
                     elementFacet.encodeAll(context);
                 else
@@ -103,11 +104,11 @@ public class DataRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodePaginatorConfig(FacesContext context, UIData uidata, WidgetBuilder wb) throws IOException {
-        String clientId = uidata.getClientId(context);
-        String paginatorPosition = uidata.getPaginatorPosition();
+    protected void encodePaginatorConfig(FacesContext context, Pageable pageable, WidgetBuilder wb) throws IOException {
+        String clientId = pageable.getClientId(context);
+        String paginatorPosition = pageable.getPaginatorPosition();
         String paginatorContainers = null;
-        String currentPageTemplate = uidata.getCurrentPageReportTemplate();
+        String currentPageTemplate = pageable.getCurrentPageReportTemplate();
         
         if(paginatorPosition.equalsIgnoreCase("both"))
             paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
@@ -116,17 +117,19 @@ public class DataRenderer extends CoreRenderer {
 
         wb.append(",paginator:{")
             .append("id:[").append(paginatorContainers).append("]")
-            .append(",rows:").append(uidata.getRows())
-            .append(",rowCount:").append(uidata.getRowCount())
-            .append(",page:").append(uidata.getPage());
-        
-        if(currentPageTemplate != null)
-            wb.append(",currentPageTemplate:'").append(currentPageTemplate).append("'");
+            .append(",rows:").append(pageable.getRows())
+            .append(",rowCount:").append(pageable.getRowCount())
+            .append(",page:").append(pageable.getPage());
 
-        if(uidata.getPageLinks() != 10) 
-            wb.append(",pageLinks:").append(uidata.getPageLinks());
-        
-        if(!uidata.isPaginatorAlwaysVisible()) 
+        if(currentPageTemplate != null) {
+            String currentPageTemplateTmp = currentPageTemplate.replace("'", "\\'");
+            wb.append(",currentPageTemplate:'").append(currentPageTemplateTmp).append("'");
+        }
+
+        if(pageable.getPageLinks() != 10)
+            wb.append(",pageLinks:").append(pageable.getPageLinks());
+
+        if(!pageable.isPaginatorAlwaysVisible()) 
             wb.append(",alwaysVisible:false");
 
         wb.append("}");

@@ -31,7 +31,7 @@ import org.primefaces.component.api.AjaxSource;
 @ResourceDependencies({
 	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
     @ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="primefaces.js")
+	@ResourceDependency(library="primefaces", name="core.js")
 })
 public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
@@ -57,7 +57,8 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     	delay(String.class),
         timeout(Integer.class),
         partialSubmitFilter(String.class),
-        form(String.class);
+        form(String.class),
+        skipChildren(Boolean.class);
 
         final Class<?> expectedType;
 
@@ -223,6 +224,14 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     
     public void setForm(String form) {
         setLiteral(PropertyKeys.form, form);
+    }
+    
+    public boolean isSkipChildren() {
+    	return eval(PropertyKeys.skipChildren, Boolean.TRUE);
+    }
+
+    public void setSkipChildren(Boolean skipChildren) {
+    	setLiteral(PropertyKeys.skipChildren, skipChildren);
     }
     
     public boolean isImmediateSet() {

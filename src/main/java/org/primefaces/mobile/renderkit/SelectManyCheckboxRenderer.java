@@ -47,7 +47,7 @@ public class SelectManyCheckboxRenderer extends org.primefaces.component.selectm
         writer.writeAttribute("id", clientId, "id");
         
         if (style != null) writer.writeAttribute("style", style, "style");
-        if (styleClass != null) writer.writeAttribute("class", style, "styleClass");
+        if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
         
         if (selectItems != null && !selectItems.isEmpty()) {
             Converter converter = checkbox.getConverter();

@@ -39,10 +39,9 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         String _for = menu.getFor();
         if(_for != null) {
         	UIComponent target = SearchExpressionFacade.resolveComponent(context, menu, _for);
-        	
-            wb.attr("target", target.getClientId(context))
-                .attr("type", target.getClass().getSimpleName());
-            
+
+            wb.attr("target", target.getClientId(context));
+
             if(target instanceof Widget) {
                 wb.attr("targetWidgetVar", ((Widget) target).resolveWidgetVar());
             }

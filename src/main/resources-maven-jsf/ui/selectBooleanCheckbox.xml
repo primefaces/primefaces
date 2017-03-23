@@ -82,16 +82,26 @@
 			<ignoreInComponent>true</ignoreInComponent>
             <description>Client side callback to execute when checkbox loses focus.</description>
 		</attribute>
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Advisory tooltip information.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
         <resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+        <resource>
+			<name>components.js</name>
 		</resource>
 	</resources>
 </component>

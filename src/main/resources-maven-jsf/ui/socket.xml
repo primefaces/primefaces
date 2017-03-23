@@ -20,6 +20,9 @@
         <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
@@ -105,7 +108,7 @@
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
 		</resource>
         <resource>
             <name>push/push.js</name>

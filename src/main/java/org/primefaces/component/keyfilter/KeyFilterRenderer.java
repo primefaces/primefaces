@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -26,40 +27,48 @@ import org.primefaces.util.WidgetBuilder;
 
 public class KeyFilterRenderer extends CoreRenderer {
 
-	@Override
-	public void decode(FacesContext context, UIComponent component) {
-		decodeBehaviors(context, component);
-	}
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
 
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		KeyFilter keyFilter = (KeyFilter) component;
-		
-		String target = SearchExpressionFacade.resolveClientIds(context, keyFilter, keyFilter.getFor());
-		if (isValueBlank(target)) {
-			target = component.getParent().getClientId(context);
-		}
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        KeyFilter keyFilter = (KeyFilter) component;
+
+        UIComponent target;
+        if (isValueBlank(keyFilter.getFor())) {
+            target = component.getParent();
+        }
+        else {
+            target = SearchExpressionFacade.resolveComponent(context, keyFilter, keyFilter.getFor());
+        }
+
+        String targetClientId = target instanceof InputHolder ? ((InputHolder) target).getInputClientId() : target.getClientId();
 
         WidgetBuilder wb = RequestContext.getCurrentInstance().getWidgetBuilder();
         wb.initWithDomReady(KeyFilter.class.getSimpleName(), keyFilter.resolveWidgetVar(), keyFilter.getClientId(context));
-        wb.attr("target", target);
+        wb.attr("target", targetClientId);
 
-		if (keyFilter.getRegEx() != null) {
-			wb.nativeAttr("regEx", keyFilter.getRegEx());
-		} else if(keyFilter.getInputRegEx() != null) {
-			wb.nativeAttr("inputRegEx", keyFilter.getInputRegEx());
-		} else if (keyFilter.getMask() != null) {
-			wb.attr("mask", keyFilter.getMask());
-		} else if (keyFilter.getTestFunction() != null) {
-			wb.callback("testFunction", "function(c)", keyFilter.getTestFunction() + ";");
-		}
+        if (keyFilter.getRegEx() != null) {
+            wb.nativeAttr("regEx", keyFilter.getRegEx());
+        }
+        else if (keyFilter.getInputRegEx() != null) {
+            wb.nativeAttr("inputRegEx", keyFilter.getInputRegEx());
+        }
+        else if (keyFilter.getMask() != null) {
+            wb.attr("mask", keyFilter.getMask());
+        }
+        else if (keyFilter.getTestFunction() != null) {
+            wb.callback("testFunction", "function(c)", keyFilter.getTestFunction() + ";");
+        }
 
-		if (keyFilter.isPreventPaste()) {
-			wb.attr("preventPaste", keyFilter.isPreventPaste());
-		}
+        if (keyFilter.isPreventPaste()) {
+            wb.attr("preventPaste", keyFilter.isPreventPaste());
+        }
 
-		wb.finish();
-	}
-    
+        wb.finish();
+    }
+
 }

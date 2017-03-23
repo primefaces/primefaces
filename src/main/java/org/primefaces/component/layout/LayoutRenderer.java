@@ -62,7 +62,7 @@ public class LayoutRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Layout layout) throws IOException {
         String clientId = layout.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Layout", layout.resolveWidgetVar(), clientId, "layout")
+        wb.initWithDomReady("Layout", layout.resolveWidgetVar(), clientId)
             .attr("full", layout.isFullPage(), false)
             .attr("useStateCookie", layout.isStateful(), false);
         

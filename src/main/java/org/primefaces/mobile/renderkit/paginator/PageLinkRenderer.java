@@ -18,11 +18,11 @@ package org.primefaces.mobile.renderkit.paginator;
 import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.Pageable;
 
 public class PageLinkRenderer {
 
-    public void render(FacesContext context, UIData uidata, String styleClass, boolean disabled) throws IOException {
+    public void render(FacesContext context, Pageable pageable, String styleClass, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String buttonClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 

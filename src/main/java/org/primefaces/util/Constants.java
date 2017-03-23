@@ -38,6 +38,7 @@ public class Constants {
         public static final String LEGACY_WIDGET_NAMESPACE = "primefaces.LEGACY_WIDGET_NAMESPACE";
         public static final String BEAN_VALIDATION_DISABLED = "javax.faces.validator.DISABLE_DEFAULT_BEAN_VALIDATOR";
         public static final String INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES = "primefaces.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES";
+        public static final String EARLY_POST_PARAM_EVALUATION = "primefaces.EARLY_POST_PARAM_EVALUATION";
     }
 
     public static class RequestParams {
@@ -51,6 +52,7 @@ public class Constants {
         // PF request params
         public static final String RESET_VALUES_PARAM = "primefaces.resetvalues";
         public static final String IGNORE_AUTO_UPDATE_PARAM = "primefaces.ignoreautoupdate";
+        public static final String SKIP_CHILDREN_PARAM = "primefaces.skipchildren";
     }
 
     public static final String DOWNLOAD_COOKIE = "primefaces.download";
@@ -62,7 +64,10 @@ public class Constants {
     public static final String DYNAMIC_CONTENT_PARAM = "pfdrid";
     public static final String DYNAMIC_CONTENT_CACHE_PARAM = "pfdrid_c";
     public static final String DYNAMIC_CONTENT_TYPE_PARAM = "pfdrt";
-
+    public static final String DYNAMIC_RESOURCES_MAPPING = "primefaces.dynamicResourcesMapping";
+    
+    public static final String BARCODE_MAPPING = "primefaces.barcodeMapping";
+    
     public final static String FRAGMENT_ID = "primefaces.fragment";
     public final static String FRAGMENT_AUTO_RENDERED = "primefaces.fragment.autorendered";
     
@@ -86,5 +91,5 @@ public class Constants {
     
     public static final String HELPER_RENDERER = "org.primefaces.HELPER_RENDERER";
     
-    
+    public static final String TABLE_STATE = "primefaces.TABLE_STATE";
 }

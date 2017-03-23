@@ -58,6 +58,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //hide overlay on document click
+        this.itemMouseDown = false;
         var hideNS = 'mousedown.' + this.id;
         $(document.body).off(hideNS).on(hideNS, function (e) {            
             if($this.jq.is(":hidden")) {
@@ -77,7 +78,18 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 e.pageY < offset.top ||
                 e.pageY > offset.top + $this.jq.height()) {
                 
+                if(target.is('.ui-menuitem-link') || target.closest('.ui-menuitem-link').length)
+                    $this.itemMouseDown = true;
+                else
+                    $this.hide(e);
+            }
+        });
+        
+        var hideUpNS = 'mouseup.' + this.id;
+        $(document.body).off(hideUpNS).on(hideUpNS, function (e) {
+            if($this.itemMouseDown) {
                 $this.hide(e);
+                $this.itemMouseDown = false;
             }
         });
 
@@ -511,17 +523,12 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
             
             if(this.jq.is(':not(:visible)')) {
                 var hiddenParent = this.jq.closest('.ui-hidden-container'),
-                hiddenParentWidgetVar = hiddenParent.data('widget'),
                 $this = this;
 
-                if(hiddenParentWidgetVar) {
-                    var hiddenParentWidget = PF(hiddenParentWidgetVar);
-                    
-                    if(hiddenParentWidget) {
-                        hiddenParentWidget.addOnshowHandler(function() {
-                            return $this.render();
-                        });
-                    }
+                if(hiddenParent.length) {
+                    PrimeFaces.addDeferredRender(this.id, hiddenParent.attr('id'), function() {
+                        return $this.render();
+                    });
                 }
             }
             else {
@@ -668,7 +675,24 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         if(this.cfg.overlay) {
             this.menuitemLinks.click(function() {
                 $this.hide();
-            });  
+            }); 
+            
+            this.trigger.on('keydown.ui-menu', function(e) {
+                var keyCode = $.ui.keyCode;
+            
+                switch(e.which) {
+                    case keyCode.DOWN:
+                        $this.keyboardTarget.trigger('focus.menu');
+                        e.preventDefault();
+                    break;
+                    
+                    case keyCode.TAB:
+                        if($this.jq.is(':visible')) {
+                            $this.hide();
+                        }
+                    break;
+                }
+            });
         }
         
         if(this.cfg.toggleable) {
@@ -734,6 +758,14 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                         e.preventDefault();
                     break;
                     
+                    case keyCode.ESCAPE:
+                        $this.hide();
+                        
+                        if($this.cfg.overlay) {
+                            $this.trigger.focus();
+                        }
+                    break;
+                    
             }        
         });
     },
@@ -744,7 +776,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         header.attr('aria-expanded', false)
                 .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
 
-        items.hide();
+        items.filter('.ui-submenu-child').hide();
 
         if(stateful) {
             this.collapsedIds.push(header.attr('id'));
@@ -758,7 +790,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         header.attr('aria-expanded', false)
                 .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
 
-        items.show();
+        items.filter('.ui-submenu-child').show();
 
         if(stateful) {
             var id = header.attr('id');        
@@ -859,6 +891,56 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
             $this.hide();
         });
 
+        //keyboard support
+        this.button.keydown(function(e) {
+            var keyCode = $.ui.keyCode;
+
+            switch(e.which) {
+                case keyCode.UP:
+                    if($this.menu.is(':visible')) {
+                        var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
+                        prevItems = highlightedItem.length ? highlightedItem.prevAll(':not(.ui-separator)') : null;
+
+                        if(prevItems && prevItems.length) {
+                            highlightedItem.removeClass('ui-state-hover');
+                            prevItems.eq(0).addClass('ui-state-hover');
+                        }
+                    }
+                    e.preventDefault();
+                break;
+                
+                case keyCode.DOWN:
+                    if($this.menu.is(':visible')) {
+                        var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
+                        nextItems = highlightedItem.length ? highlightedItem.nextAll(':not(.ui-separator)') : $this.menuitems.eq(0);
+
+                        if(nextItems.length) {
+                            highlightedItem.removeClass('ui-state-hover');
+                            nextItems.eq(0).addClass('ui-state-hover');
+                        }
+                    }
+                    e.preventDefault();                    
+                break;
+                
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.SPACE:
+                    if($this.menu.is(':visible'))
+                        $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');
+                    else
+                        $this.show();
+                    
+                    e.preventDefault();
+                break;
+                
+
+                case keyCode.ESCAPE:
+                case keyCode.TAB:
+                    $this.hide();
+                break;
+            }
+        });
+        
         /**
         * handler for document mousedown to hide the overlay
         **/
@@ -915,6 +997,8 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
     },
     
     hide: function() {
+        this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
+        
         this.menu.fadeOut('fast');
     },
     
@@ -962,7 +1046,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         if(!this.jq.parent().is(document.body)) {
             this.jq.appendTo('body');
         }
-        
+
         //attach contextmenu
         if(documentTarget) {
             $(document).off('contextmenu.ui-contextmenu').on('contextmenu.ui-contextmenu', function(e) {
@@ -970,92 +1054,30 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             });
         }
         else {
-            if(this.cfg.type === 'DataTable') {
-                this.bindDataTable();
+            var binded = false;
+
+            if (this.cfg.targetWidgetVar) {
+                var targetWidget = PrimeFaces.widgets[this.cfg.targetWidgetVar];
+
+                if (targetWidget) {
+                    if (typeof targetWidget.bindContextMenu === 'function') {
+                        targetWidget.bindContextMenu(this, targetWidget, this.jqTargetId, this.cfg);
+                        binded = true;
+                    }
+                }
+                else {
+                    PrimeFaces.warn("ContextMenu targets a widget which is not available yet. Please place the contextMenu after the target component. targetWidgetVar: " + this.cfg.targetWidgetVar);
+                }
             }
-            else if(this.cfg.type === 'TreeTable') {
-                this.bindTreeTable();
-            }
-            else if(this.cfg.type === 'Tree') {
-                this.bindTree();
-            }
-            else {                
+            
+            if (binded === false) {
                 var event = this.cfg.event + '.ui-contextmenu';
-                
+
                 $(document).off(event, this.jqTargetId).on(event, this.jqTargetId, null, function(e) {
                     _self.show(e);
                 });
             }
-            
         }
-    },
-    
-    bindDataTable: function() {
-        var rowSelector = this.jqTargetId + ' tbody.ui-datatable-data > tr.ui-widget-content:not(.ui-datatable-empty-message)',
-        event = this.cfg.event + '.datatable',
-        $this = this;
-        
-        $(document).off(event, rowSelector)
-                    .on(event, rowSelector, null, function(e) {
-                        var widget = PrimeFaces.widgets[$this.cfg.targetWidgetVar],
-                        row = $(this);
-                
-                        if(widget.cfg.selectionMode && row.hasClass('ui-datatable-selectable')) {
-                            widget.onRowRightClick(e, this, $this.cfg.selectionMode);
-
-                            $this.show(e);
-                        }
-                        else if(widget.cfg.editMode === 'cell') {
-                            var target = $(e.target),
-                            cell = target.is('td.ui-editable-column') ? target : target.parents('td.ui-editable-column:first');
-                            
-                            if(widget.contextMenuCell) {
-                                widget.contextMenuCell.removeClass('ui-state-highlight');
-                            }
-                            
-                            widget.contextMenuClick = true;
-                            widget.contextMenuCell = cell;
-                            widget.contextMenuCell.addClass('ui-state-highlight');
-                            
-                            $this.show(e);
-                        }
-                    });
-    },
-    
-    bindTreeTable: function() {
-        var rowSelector = this.jqTargetId + ' .ui-treetable-data > ' + (this.cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + this.cfg.nodeType : 'tr.ui-treetable-selectable-node'),
-        event = this.cfg.event + '.treetable',
-        _self = this;
-        
-        $(document).off(event, rowSelector)
-                    .on(event, rowSelector, null, function(e) {
-                    	PrimeFaces.widgets[_self.cfg.targetWidgetVar].onRowRightClick(e, $(this));
-                        _self.show(e);
-                    });
-    },
-    
-    bindTree: function() {
-        var nodeContentSelector = this.jqTargetId + ' .ui-tree-selectable',
-        nodeEvent = this.cfg.nodeType ? this.cfg.event + '.treenode.' + this.cfg.nodeType : this.cfg.event + '.treenode',
-        containerEvent = this.cfg.event + '.tree',
-        $this = this;
-                
-        $(document).off(nodeEvent, nodeContentSelector)
-                    .on(nodeEvent, nodeContentSelector, null, function(e) {
-                        var nodeContent = $(this);
-                        
-                        if($this.cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === $this.cfg.nodeType) {
-                        	PrimeFaces.widgets[$this.cfg.targetWidgetVar].nodeRightClick(e, nodeContent);
-                            $this.show(e);
-                        }
-                    });
-                                    
-        $(document).off(containerEvent, this.jqTargetId)
-                    .on(containerEvent, this.jqTargetId, null, function(e) {
-                if(PrimeFaces.widgets[$this.cfg.targetWidgetVar].isEmpty()) {
-                    $this.show(e);
-                }
-        });
     },
     
     refresh: function(cfg) {
@@ -1075,7 +1097,14 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         var _self = this;
         
         //hide menu on item click
-        this.links.bind('click', function() {
+        this.links.bind('click', function(e) {
+            var target = $(e.target),
+                submenuLink = target.hasClass('ui-submenu-link') ? target : target.closest('.ui-submenu-link');
+                
+            if(submenuLink.length) {
+                return;
+            }
+            
             _self.hide();
         });
     },
@@ -1086,7 +1115,10 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         
         //hide overlay when document is clicked
         $(document.body).off(clickNS).on(clickNS, function(e) {
-            if($this.jq.is(":hidden")) {
+            var target = $(e.target),
+                link = target.hasClass('ui-menuitem-link') ? target : target.closest('.ui-menuitem-link');
+            
+            if($this.jq.is(":hidden") || link.is('.ui-menuitem-link,.ui-state-disabled')) {
                 return;
             }
                         
@@ -1102,6 +1134,13 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         //hide other contextmenus if any
         $(document.body).children('.ui-contextmenu:visible').hide();
 
+        if(this.cfg.beforeShow) {
+            var retVal = this.cfg.beforeShow.call(this, e);
+            if(retVal === false) {
+                return;
+            }
+        }
+        
         var win = $(window),
         left = e.pageX,
         top = e.pageY,
@@ -1116,13 +1155,6 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             top = top - height;
         }
         
-        if(this.cfg.beforeShow) {
-            var retVal = this.cfg.beforeShow.call(this, e);
-            if(retVal === false) {
-                return;
-            }
-        }
-
         this.jq.css({
             'left': left,
             'top': top,
@@ -1169,7 +1201,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         this.keyboardTarget = this.jq.children('.ui-helper-hidden-accessible');
         
         if(this.cfg.activeIndex !== undefined) {
-            this.rootLinks.eq(this.cfg.activeIndex).addClass('ui-state-active');
+            this.rootLinks.eq(this.cfg.activeIndex).addClass('ui-state-hover').closest('li.ui-menuitem').addClass('ui-menuitem-active');
         }
         
         this.bindEvents();
@@ -1216,6 +1248,12 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                     else {                                        
                         $this.active = true;
                         $this.activate(menuitem);
+                    }
+                }
+                else {
+                    var href = link.attr('href');
+                    if(href && href !== '#') {
+                        window.location.href = href;
                     }
                 }
                 

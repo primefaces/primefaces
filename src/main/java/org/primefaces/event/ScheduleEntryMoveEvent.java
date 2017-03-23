@@ -17,13 +17,10 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
 import org.primefaces.model.ScheduleEvent;
 
-public class ScheduleEntryMoveEvent extends AjaxBehaviorEvent {
+public class ScheduleEntryMoveEvent extends AbstractAjaxBehaviorEvent {
 
 	private ScheduleEvent scheduleEvent;
 	
@@ -36,16 +33,6 @@ public class ScheduleEntryMoveEvent extends AjaxBehaviorEvent {
 		this.scheduleEvent = scheduleEvent;
 		this.dayDelta = dayDelta;
 		this.minuteDelta = minuteDelta;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
 	}
 	
 	public ScheduleEvent getScheduleEvent() {

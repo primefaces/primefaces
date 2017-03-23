@@ -16,6 +16,7 @@
 package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.password.Password;
@@ -26,7 +27,25 @@ import org.primefaces.util.WidgetBuilder;
 
 public class PasswordRenderer extends org.primefaces.component.password.PasswordRenderer {
 
-   @Override
+    @Override
+	public void decode(FacesContext context, UIComponent component) {
+		Password password = (Password) component;
+
+        if(password.isDisabled() || password.isReadonly()) {
+            return;
+        }
+
+        decodeBehaviors(context, password);
+
+        String inputId = password.getClientId(context) + "_input";
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(inputId);
+
+        if(submittedValue != null) {
+            password.setSubmittedValue(submittedValue);
+        }
+	}
+    
+    @Override
     protected void encodeMarkup(FacesContext context, Password password) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = password.getClientId(context);
@@ -62,11 +81,12 @@ public class PasswordRenderer extends org.primefaces.component.password.Password
     protected void encodeInput(FacesContext context, Password password, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String valueToRender = ComponentUtils.getValueToRender(context, password);
+        String inputId = clientId + "_input";
         
         writer.startElement("input", password);
         writer.writeAttribute("data-role", "none", null);
-        writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("id", inputId, null);
+		writer.writeAttribute("name", inputId, null);
 		writer.writeAttribute("type", "password", null);           
       
         if(password.isDisabled()) writer.writeAttribute("disabled", "disabled", null);

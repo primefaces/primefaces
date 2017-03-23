@@ -38,8 +38,7 @@
 
     "use strict";
 
-    var version = "2.2.12-javascript",
-        atmosphere = {},
+    var atmosphere = {},
         guid,
         offline = false,
         requests = [],
@@ -48,7 +47,7 @@
         hasOwn = Object.prototype.hasOwnProperty;
 
     atmosphere = {
-
+        version: "2.3.2-javascript",
         onError: function (response) {
         },
         onClose: function (response) {
@@ -187,6 +186,7 @@
                 readResponsesHeaders: false,
                 maxReconnectOnClose: 5,
                 enableProtocol: true,
+                disableDisconnect: false,
                 pollingInterval: 0,
                 heartbeat: {
                     client: null,
@@ -195,6 +195,7 @@
                 ackInterval: 0,
                 closeAsync: false,
                 reconnectOnServerError: true,
+                handleOnlineOffline: true,
                 onError: function (response) {
                 },
                 onClose: function (response) {
@@ -426,7 +427,7 @@
              * @private
              */
             function _disconnect() {
-                if (_request.enableProtocol && !_request.firstMessage) {
+                if (_request.enableProtocol && !_request.disableDisconnect && !_request.firstMessage) {
                     var query = "X-Atmosphere-Transport=close&X-Atmosphere-tracking-id=" + _request.uuid;
 
                     atmosphere.util.each(_request.headers, function (name, value) {
@@ -1290,7 +1291,7 @@
                     _debug("sse.onmessage");
                     _timeout(_request);
 
-                    if (!_request.enableXDR && message.origin && message.origin !== window.location.protocol + "//" + window.location.host) {
+                    if (!_request.enableXDR && window.location.host && message.origin && message.origin !== window.location.protocol + "//" + window.location.host) {
                         atmosphere.util.log(_request.logLevel, ["Origin was not " + window.location.protocol + "//" + window.location.host]);
                         return;
                     }
@@ -1514,7 +1515,13 @@
                         atmosphere.util.warn("Websocket closed, reason: " + reason + ' - wasClean: ' + message.wasClean);
                     }
 
-                    if (_response.closedByClientTimeout || offline) {
+                    if (_response.closedByClientTimeout || (_request.handleOnlineOffline && offline)) {
+                        // IFF online/offline events are handled and we happen to be offline, we stop all reconnect attempts and
+                        // resume them in the "online" event (if we get here in that case, something else went wrong as the
+                        // offline handler should stop any reconnect attempt).
+                        //
+                        // On the other hand, if we DO NOT handle online/offline events, we continue as before with reconnecting
+                        // even if we are offline. Failing to do so would stop all reconnect attemps forever.
                         if (_request.reconnectId) {
                             clearTimeout(_request.reconnectId);
                             delete _request.reconnectId;
@@ -1547,7 +1554,7 @@
                                 _executeWebSocket(true);
                             }
                         } else {
-                            atmosphere.util.log(_request.logLevel, ["Websocket reconnect maximum try reached " + _request.requestCount]);
+                            atmosphere.util.log(_request.logLevel, ["Websocket reconnect maximum try reached " + _requestCount]);
                             if (_canLog('warn')) {
                                 atmosphere.util.warn("Websocket error, reason: " + message.reason);
                             }
@@ -1776,7 +1783,7 @@
 
                 url += (url.indexOf('?') !== -1) ? '&' : '?';
                 url += "X-Atmosphere-tracking-id=" + rq.uuid;
-                url += "&X-Atmosphere-Framework=" + version;
+                url += "&X-Atmosphere-Framework=" + atmosphere.version;
                 url += "&X-Atmosphere-Transport=" + rq.transport;
 
                 if (rq.trackMessageLength) {
@@ -1878,10 +1885,12 @@
 
                 var reconnectFExec = function (force) {
                     rq.lastIndex = 0;
-                    if (force || (rq.reconnect && _requestCount++ < rq.maxReconnectOnClose)) {
+                    _requestCount++; // Increase also when forcing reconnect as _open checks _requestCount
+                    if (force || (rq.reconnect && _requestCount <= rq.maxReconnectOnClose)) {
+                        var delay = force ? 0 : request.reconnectInterval; // Reconnect immediately if the server resumed the connection (timeout)
                         _response.ffTryingReconnect = true;
                         _open('re-connecting', request.transport, request);
-                        _reconnect(ajaxRequest, rq, request.reconnectInterval);
+                        _reconnect(ajaxRequest, rq, delay);
                     } else {
                         _onError(0, "maxReconnectOnClose reached");
                     }
@@ -2168,7 +2177,7 @@
                 }
 
                 if (!_request.dropHeaders) {
-                    ajaxRequest.setRequestHeader("X-Atmosphere-Framework", version);
+                    ajaxRequest.setRequestHeader("X-Atmosphere-Framework", atmosphere.version);
                     ajaxRequest.setRequestHeader("X-Atmosphere-Transport", request.transport);
 
                     if (request.heartbeat !== null && request.heartbeat.server !== null) {
@@ -2193,7 +2202,7 @@
                 }
             }
 
-            function _reconnect(ajaxRequest, request, reconnectInterval) {
+            function _reconnect(ajaxRequest, request, delay) {
 
                 if (_response.closedByClientTimeout) {
                     return;
@@ -2213,11 +2222,11 @@
                         delete request.reconnectId;
                     }
 
-                    if (reconnectInterval > 0) {
+                    if (delay > 0) {
                         // For whatever reason, never cancel a reconnect timeout as it is mandatory to reconnect.
                         _request.reconnectId = setTimeout(function () {
                             _executeRequest(request);
-                        }, reconnectInterval);
+                        }, delay);
                     } else {
                         _executeRequest(request);
                     }
@@ -3069,6 +3078,10 @@
         },
 
         getAbsoluteURL: function (url) {
+            if (typeof (document.createElement) === 'undefined') {
+                // assuming the url to be already absolute when DOM is not supported
+                return url;
+            }
             var div = document.createElement("div");
 
             // Uses an innerHTML property to obtain an absolute URL
@@ -3365,10 +3378,11 @@
                 return true;
             }
 
-            // Force Android to use CORS as some version like 2.2.3 fail otherwise
+            // Force older Android versions to use CORS as some version like 2.2.3 fail otherwise
             var ua = navigator.userAgent.toLowerCase();
-            var isAndroid = ua.indexOf("android") > -1;
-            if (isAndroid) {
+            var androidVersionMatches = ua.match(/.+android ([0-9]{1,2})/i),
+                majorVersion = parseInt((androidVersionMatches && androidVersionMatches[0]) || -1, 10);
+            if (!isNaN(majorVersion) && majorVersion > -1 && majorVersion < 3) {
                 return true;
             }
             return false;
@@ -3443,11 +3457,13 @@
             var requestsClone = [].concat(requests);
             for (var i = 0; i < requestsClone.length; i++) {
                 var rq = requestsClone[i];
-                rq.close();
-                clearTimeout(rq.response.request.id);
+                if(rq.request.handleOnlineOffline) {
+                    rq.close();
+                    clearTimeout(rq.response.request.id);
 
-                if (rq.heartbeatTimer) {
-                    clearTimeout(rq.heartbeatTimer);
+                    if (rq.heartbeatTimer) {
+                        clearTimeout(rq.heartbeatTimer);
+                    }
                 }
             }
         }
@@ -3457,8 +3473,10 @@
         atmosphere.util.debug(new Date() + " Atmosphere: online event");
         if (requests.length > 0) {
             for (var i = 0; i < requests.length; i++) {
-                requests[i].init();
-                requests[i].execute();
+                if(requests[i].request.handleOnlineOffline) {
+                    requests[i].init();
+                    requests[i].execute();
+                }
             }
         }
         offline = false;
@@ -3519,6 +3537,9 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
     },
 
     disconnect: function () {
+        // reset url and ignore appended uniquePath
+        this.cfg.request.url = this.cfg.url;
+
         this.connection.close();
     },
 

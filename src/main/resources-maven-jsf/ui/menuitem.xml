@@ -23,10 +23,13 @@
 		</interface>
         <interface>
 			<name>org.primefaces.component.api.Confirmable</name>
-		</interface> 
+		</interface>
         <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>  
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&command_component_attributes;
@@ -155,7 +158,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-            <description>When enabled, only values related to partially processed components would be serialized for ajax 
+            <description>When enabled, only values related to partially processed components would be serialized for ajax
             instead of whole form.</description>
 		</attribute>
         <attribute>
@@ -234,6 +237,12 @@
 			<type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Defines whether value would be escaped or not, defaults to true.</description>
+		</attribute>
+        <attribute>
+			<name>rel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Defines the relationship between the current document and the linked document.</description>
 		</attribute>
 	</attributes>
 </component>

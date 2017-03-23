@@ -17,16 +17,17 @@ package org.primefaces.util;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.FacesWrapper;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.application.ResourceHandler;
@@ -35,9 +36,10 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.render.Renderer;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 
@@ -73,7 +75,7 @@ public class ComponentUtils {
             if (component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
-                ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+                PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
 
                 if (config.isInterpretEmptyStringAsNull()
                         && submittedValue == null
@@ -471,4 +473,56 @@ public class ComponentUtils {
     public static UIComponent findParentForm(FacesContext context, UIComponent component) {
         return ComponentTraversalUtils.closestForm(context, component);
     }
+
+    /**
+     * Gets a {@link TimeZone} instance by the parameter "timeZone" which can be String or {@link TimeZone} or null.
+     *
+     * @param timeZone given time zone
+     * @return resolved TimeZone
+     */
+    public static TimeZone resolveTimeZone(Object timeZone) {
+        if (timeZone instanceof String) {
+            return TimeZone.getTimeZone((String) timeZone);
+        } else if (timeZone instanceof TimeZone) {
+            return (TimeZone) timeZone;
+        } else {
+            return TimeZone.getDefault();
+        }
+    }
+
+    public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType, Class<T> rendererClass) {
+        Renderer renderer = context.getRenderKit().getRenderer(family, rendererType);
+
+        while (renderer instanceof FacesWrapper) {
+            renderer = (Renderer) ((FacesWrapper) renderer).getWrapped();
+        }
+
+        return (T) renderer;
+    }
+
+    /**
+     * Calculates the current viewId - we can't get it from the ViewRoot if it's not available.
+     *
+     * @param context The {@link FacesContext}.
+     * @return The current viewId.
+     */
+    public static String calculateViewId(FacesContext context) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        String viewId = (String) requestMap.get("javax.servlet.include.path_info");
+
+        if (viewId == null) {
+            viewId = context.getExternalContext().getRequestPathInfo();
+        }
+
+        if (viewId == null) {
+            viewId = (String) requestMap.get("javax.servlet.include.servlet_path");
+        }
+
+        if (viewId == null) {
+            viewId = context.getExternalContext().getRequestServletPath();
+        }
+
+        return viewId;
+    }
+
 }

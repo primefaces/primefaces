@@ -76,12 +76,14 @@ public class CaptchaRenderer extends CoreRenderer {
         wb.attr("sitekey", publicKey)
             .attr("theme", captcha.getTheme(), "light")
             .attr("language", captcha.getLanguage(), "en")
-            .attr("tabindex", captcha.getTabindex(), 0);
+            .attr("tabindex", captcha.getTabindex(), 0)
+            .attr("callback", captcha.getCallback(), null)
+            .attr("expired", captcha.getExpired(), null);
         
         wb.finish();
     }
 
     protected String getPublicKey(FacesContext context, Captcha captcha) {
-        return context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY);
+        return context.getApplication().evaluateExpressionGet(context, context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY), String.class);
     }
 }

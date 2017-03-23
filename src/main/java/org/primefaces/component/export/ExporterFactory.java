@@ -45,6 +45,10 @@ public class ExporterFactory {
                 case XLSX:
                     exporter = new ExcelXExporter();
                 break;
+                case XLSXSTREAM:
+                    exporter = new ExcelXStreamExporter();
+                break;    
+                
             }
         }
         catch(IllegalArgumentException e) {

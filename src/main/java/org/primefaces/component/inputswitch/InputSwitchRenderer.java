@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputSwitchRenderer extends InputRenderer {
@@ -127,6 +128,7 @@ public class InputSwitchRenderer extends InputRenderer {
         }
         
         renderOnchange(context, inputSwitch);
+        renderDomEvents(context, inputSwitch, HTML.BLUR_FOCUS_EVENTS);
         
         writer.endElement("input");
 
@@ -136,7 +138,7 @@ public class InputSwitchRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, InputSwitch inputSwitch) throws IOException {
         String clientId = inputSwitch.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputSwitch", inputSwitch.resolveWidgetVar(), clientId, "inputswitch").finish();
+        wb.init("InputSwitch", inputSwitch.resolveWidgetVar(), clientId).finish();
     }
     
     protected boolean isChecked(String value) {

@@ -7,6 +7,7 @@
 	<tag>accordionPanel</tag>
 	<tagClass>org.primefaces.component.accordionpanel.AccordionPanelTag</tagClass>
 	<componentClass>org.primefaces.component.accordionpanel.AccordionPanel</componentClass>
+    <componentHandlerClass>org.primefaces.component.accordionpanel.AccordionPanelComponentHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.AccordionPanel</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.AccordionPanelRenderer</rendererType>
@@ -24,6 +25,9 @@
 		</interface>
         <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
 		</interface>
 	</interfaces>
 	<attributes>
@@ -59,6 +63,12 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>Client side callback to execute when a tab is shown.</description>
+        </attribute>
+        <attribute>
+            <name>onTabClose</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when a tab is closed.</description>
         </attribute>
         <attribute>
             <name>dynamic</name>
@@ -118,10 +128,17 @@
             <defaultValue>0</defaultValue>
             <description>Position of the headers in the tabbing order. Default is 0.</description>
 		</attribute>
+        <attribute>
+            <name>tabController</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>boolean controlTab(org.primefaces.event.TabEvent)</method-signature>
+            <description>Method providing suggestions.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -130,7 +147,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
 		<resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
 		</resource>
 	</resources>
 </component>

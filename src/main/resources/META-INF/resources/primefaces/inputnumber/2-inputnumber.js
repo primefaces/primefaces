@@ -22,35 +22,52 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             this.inputInternal.attr("disabled", "disabled");
         }
 
-        if (this.plugOptArray.vMin) {
-            this.inputExternal.attr('value', this.plugOptArray.vMin);
-        }
 
         //Visual effects
         PrimeFaces.skinInput(this.inputExternal);
 
         // copy the value from the external input to the hidden input
-        this.inputExternal.on('keyup', function(event) {
-            //filter keys
-            var keyCode = event.keyCode;
-            if (keyCode === 8 || keyCode === 13 || keyCode === 32
-                || ( keyCode >= 46 && keyCode <= 90)
-                || ( keyCode >= 96 && keyCode <= 111)
-                || ( keyCode >= 186 && keyCode <= 222)) {
-                $this.copyValueToHiddenInput();
+        var originalOnkeyup = this.inputExternal.prop('onkeyup');
+        this.inputExternal.removeProp('onkeyup').off('keyup').on('keyup', function(e) {
+            var proceed = true;
+            if (originalOnkeyup) {
+                proceed = originalOnkeyup.call(this, e);
+            }
+            if (proceed !== false) {
+                var keyCode = e.which;
+                if (keyCode === 8 || keyCode === 13 || keyCode === 32
+                    || ( keyCode >= 46 && keyCode <= 90)
+                    || ( keyCode >= 96 && keyCode <= 111)
+                    || ( keyCode >= 186 && keyCode <= 222)) {
+                    $this.copyValueToHiddenInput();
+                }
             }
         });
 
         // also copy values on onchange - see #293
         // backup onchange, should be executed after our onchange
-        var originalOnchange = this.inputExternal.attr('onchange');
-        this.inputExternal.attr('onchange', null);
-        this.inputExternal.off('change').on('change', function(event) {
-            $this.copyValueToHiddenInput();
-
+        var originalOnchange = this.inputExternal.prop('onchange');
+        this.inputExternal.removeProp('onchange').off('change').on('change', function(e) {
+            var proceed = true;
             if (originalOnchange) {
-                eval(originalOnchange);
+                proceed = originalOnchange.call(this, e);
             }
+            if (proceed !== false) {
+                $this.copyValueToHiddenInput();
+            }
+        });
+
+        var originalOnkeydown = this.inputExternal.prop('onkeydown');
+        this.inputExternal.removeProp('onkeydown').off('keydown').on('keydown', function(e) {
+            setTimeout(function(){
+                var proceed = true;
+                if (originalOnkeydown) {
+                    proceed = originalOnkeydown.call(this, e);
+                }
+                if (proceed !== false) {
+                    $this.copyValueToHiddenInput();
+                }
+            }, 1);
         });
 
         this.inputExternal.autoNumeric('init', this.plugOptArray);
@@ -64,15 +81,21 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         }else{
             $this.inputInternal.removeAttr('value');
         }
+        
+        //pfs metadata
+        this.inputExternal.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
     copyValueToHiddenInput : function() {
-        var cleanVal = this.inputExternal.autoNumeric('get');
-        if (cleanVal !== ""){
-            this.inputInternal.attr('value', cleanVal);
-        } else {
-            this.inputInternal.removeAttr('value');
-        }
+        var $this = this;
+        setTimeout(function() {
+            var cleanVal = $this.inputExternal.autoNumeric('get');
+            if (cleanVal !== ""){
+                $this.inputInternal.attr('value', cleanVal);
+            } else {
+                $this.inputInternal.removeAttr('value');
+            }
+        }, 1);
     },
 
     enable : function() {

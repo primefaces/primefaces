@@ -22,11 +22,10 @@ import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlInputSecret;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.context.RequestContext;
 
 public abstract class AbstractInputMetadataTransformer implements MetadataTransformer {
-    
-    private static final String ATTRIBUTE_REQUIRED_MARKER = "pfRequired";
     
     public void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException {
         if (component instanceof EditableValueHolder && component instanceof UIInput) {
@@ -42,6 +41,9 @@ public abstract class AbstractInputMetadataTransformer implements MetadataTransf
         }
         else if (input instanceof HtmlInputSecret) {
             ((HtmlInputSecret) input).setMaxlength(maxlength);
+        }
+        else if (input instanceof InputTextarea) {
+            ((InputTextarea) input).setMaxlength(maxlength);
         }
     }
     
@@ -59,18 +61,5 @@ public abstract class AbstractInputMetadataTransformer implements MetadataTransf
     protected boolean isMaxlenghtSet(UIInput input) {
         return getMaxlength(input) != Integer.MIN_VALUE;
     }
-    
-    protected void markAsRequired(UIInput input, boolean value) {
-        input.getAttributes().put(ATTRIBUTE_REQUIRED_MARKER, value);
-    }
-    
-    public static boolean isMarkedAsRequired(UIInput input) {
-        Object value = input.getAttributes().get(ATTRIBUTE_REQUIRED_MARKER);
-        
-        if (value == null) {
-            return false;
-        }
-        
-        return (Boolean) value;
-    }
+
 }

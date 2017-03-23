@@ -219,5 +219,19 @@
 			<type>java.lang.String</type>
             <description>Label to read by screen readers, when not specified headerText is used.</description>
 		</attribute>
+        <attribute>
+			<name>exportFunction</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+			<method-signature>java.lang.String exportValue(org.primefaces.component.api.UIColumn)</method-signature>
+            <description>Custom pluggable exportFunction.</description>
+		</attribute>
+        <attribute>
+			<name>groupRow</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Speficies whether to group rows based on the column data.</description>
+		</attribute>
     </attributes>
 </component>

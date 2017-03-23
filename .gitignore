@@ -1,6 +1,7 @@
 /target/
 .settings/
 /nbactions.xml
+.DS_STORE
 .idea/
 *.iml
 *~

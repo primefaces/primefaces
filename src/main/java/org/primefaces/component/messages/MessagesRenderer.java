@@ -28,6 +28,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.UINotificationRenderer;
 
 public class MessagesRenderer extends UINotificationRenderer {
@@ -55,7 +56,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
             // clientId / SearchExpression case
             UIComponent forComponent = SearchExpressionFacade.resolveComponent(
-            		context, uiMessages, _for, SearchExpressionFacade.Options.IGNORE_NO_RESULT | SearchExpressionFacade.Options.SKIP_UNRENDERED);
+            		context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
             if (forComponent != null) {
                 String forComponentClientId = forComponent.getClientId(context);
                 if (!_for.equals(forComponentClientId)) {

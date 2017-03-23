@@ -63,7 +63,7 @@ public class PickListRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, PickList pickList) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = pickList.getClientId(context);
-		DualListModel model = (DualListModel) pickList.getValue();
+		DualListModel model = getModelValueToRender(context, pickList);
         String styleClass = pickList.getStyleClass();
         styleClass = styleClass == null ? PickList.CONTAINER_CLASS : PickList.CONTAINER_CLASS + " " + styleClass;
         String labelDisplay = pickList.getLabelDisplay();
@@ -137,7 +137,8 @@ public class PickListRenderer extends CoreRenderer {
             .attr("filterMatchMode", pickList.getFilterMatchMode(), null)
             .nativeAttr("filterFunction", pickList.getFilterFunction(), null)
             .attr("showCheckbox", pickList.isShowCheckbox(), false)
-            .callback("onTransfer", "function(e)", pickList.getOnTransfer());
+            .callback("onTransfer", "function(e)", pickList.getOnTransfer())
+            .attr("tabindex", pickList.getTabindex(), "0");
         
         encodeClientBehaviors(context, pickList);
 
@@ -219,7 +220,6 @@ public class PickListRenderer extends CoreRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("tabindex", "0", null);
         writer.writeAttribute("role", "menu", null);
         
         encodeOptions(context, pickList, model);
@@ -267,6 +267,8 @@ public class PickListRenderer extends CoreRenderer {
             
             if(pickList.getChildCount() > 0) {
                 writer.startElement("table", null);
+                writer.writeAttribute("role", "presentation", null);
+                
                 writer.startElement("tbody", null);
                 writer.startElement("tr", null);
                 
@@ -367,5 +369,14 @@ public class PickListRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+    
+    protected DualListModel getModelValueToRender(FacesContext context, PickList pickList) {
+        Object submittedValue = pickList.getSubmittedValue();
+        if(submittedValue != null) {
+            return (DualListModel)getConvertedValue(context, pickList, submittedValue);
+        }
+        
+		return (DualListModel) pickList.getValue();
     }
 }

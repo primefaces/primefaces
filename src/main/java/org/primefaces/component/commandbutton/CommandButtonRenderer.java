@@ -65,7 +65,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         String title = button.getTitle();
         String onclick = null;
         
-        if (!button.isDisabled()) {
+        if (!button.isDisabled() || button.isRenderDisabledClick()) {
             String request = pushButton ? null : buildRequest(context, button, clientId);        
             onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
         }
@@ -87,10 +87,9 @@ public class CommandButtonRenderer extends CoreRenderer {
 		renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
 
         if(button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-        if(button.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
         
         //icon
-        if(icon != null && !icon.trim().equals("")) {
+        if(!isValueBlank(icon)) {
             String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS; 
             String iconClass = defaultIconClass + " " + icon;
             

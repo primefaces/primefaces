@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.TableState;
 import org.primefaces.event.data.PostPageEvent;
 
 public class PageFeature implements DataTableFeature {
@@ -28,19 +29,25 @@ public class PageFeature implements DataTableFeature {
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        if(table.isLazy() && table.isLazyCache() && this.isLazyCacheLoadRequest(context, table)) {
-            table.loadLazyDataToCache(table.getFirst() + table.getRows());
-        }
-        else {
-            table.updatePaginationData(context, table);
+        table.updatePaginationData(context, table);
         
-            if(table.isLazy()) {
-                table.loadLazyData();
-            }
+        boolean isPageState = table.isPageStateRequest(context);
+        
+        if(table.isLazy() && !isPageState) {
+            table.loadLazyData();
+        }
 
+        if(!isPageState) {
             renderer.encodeTbody(context, table, true);
+        }
 
-            context.getApplication().publishEvent(context, PostPageEvent.class, table);
+        context.getApplication().publishEvent(context, PostPageEvent.class, table);
+        
+        if(table.isMultiViewState()) {
+            TableState ts = table.getTableState(true);
+
+            ts.setFirst(table.getFirst());
+            ts.setRows(table.getRows());
         }
     }
 
@@ -50,10 +57,6 @@ public class PageFeature implements DataTableFeature {
 
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return table.isPaginationRequest(context);
-    }
-    
-    private boolean isLazyCacheLoadRequest(FacesContext context, DataTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_loadlazycache");
     }
     
 }

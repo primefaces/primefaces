@@ -21,21 +21,20 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
-import org.primefaces.context.RequestContext;
 import org.primefaces.util.Constants;
-import org.primefaces.util.StringEncrypter;
 
 public class QRCodeHandler extends BaseDynamicContentHandler {
     
     public void handle(FacesContext context) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String encryptedValue = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        ExternalContext externalContext = context.getExternalContext();
+        String sessionKey = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        Map<String,Object> session = externalContext.getSessionMap();
+        Map<String,String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
+        String value = barcodeMapping.get(sessionKey);
         
-        if(encryptedValue != null) {
-            boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
-            StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
-            String value = strEn.decrypt(encryptedValue);                
-            ExternalContext externalContext = context.getExternalContext();
+        if(value != null) {
+            boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));            
 
             externalContext.setResponseStatus(200);
             externalContext.setResponseContentType("image/png");

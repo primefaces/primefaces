@@ -23,8 +23,8 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
-import org.primefaces.config.ConfigContainer;
-import org.primefaces.config.StartupConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.StartupPrimeConfiguration;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
@@ -36,7 +36,7 @@ public class PostConstructApplicationEventListener implements SystemEventListene
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
     	// temp manually instantiate startup config as the default config is not available yet
-    	ConfigContainer config = new StartupConfigContainer(FacesContext.getCurrentInstance());
+    	PrimeConfiguration config = new StartupPrimeConfiguration(FacesContext.getCurrentInstance());
     	
         logger.log(Level.INFO,
         		"Running on PrimeFaces {0}", 

@@ -1,105 +1,105 @@
 PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
 	
     init: function(cfg) {
-        var that = this;
-
         this._super(cfg);
 
-        this.colorTheme = cfg.colorTheme;
-		this.input = jQuery(this.jqId+"_hidden");
-        this.min = parseInt(this.jq.data('min'),10);
-        this.max = parseInt(this.jq.data('max'),10);
-        this.step = parseInt(this.jq.data('step'),10);
-
-        this.setValue = function(value){
-            this.input.val(value);
-            this.jq.val(value).trigger('change');
-        };
-
-        this.getValue = function(){
-            return parseInt(this.jq.val());
-        };
-
-        this.increment = function(){
-            var value = this.getValue() + this.step;
-            value = value <= this.max ? value : this.max;
-            this.setValue(value);
-        };
-
-        this.decrement = function(){
-            var value = this.getValue() - this.step;
-            value = value >= this.min ? value : this.min;
-            this.setValue(value);
-        };
-
-        this.createKnob = function(){
-            this.themeObject = PrimeFaces.widget.Knob.colorThemes[this.colorTheme || 'aristo'];
-
-            this.jq.data('fgcolor',cfg.fgColor || this.themeObject.fgColor);
-            this.jq.data('bgcolor',cfg.bgColor || this.themeObject.bgColor);
-
-            this.jq.knob({
-                release : function(value) {
-                    that.input.val(value);
-
-                    if (cfg.onchange) {
-                        cfg.onchange(value);
-                    }
-
-                    if (cfg.behaviors && cfg.behaviors['change']) {
-                        var ext = {
-                            params: [
-                                {name: that.id + '_hidden', value: value}
-                            ]
-                        };
-                        
-                        cfg.behaviors['change'].call(that, ext);
-                    }
-                },
-                format : function(value) {
-                    return cfg.labelTemplate.replace('{value}', value);
-                },
-                draw : function() {
-
-                    // "tron" case
-                    if (this.$.data('skin') == 'tron') {
-
-                        this.cursorExt = 0.3;
-
-                        var a = this.arc(this.cv) // Arc
-                            , pa // Previous arc
-                            , r = 1;
-
-                        this.g.lineWidth = this.lineWidth;
-
-                        if (this.o.displayPrevious) {
-                            pa = this.arc(this.v);
-                            this.g.beginPath();
-                            this.g.strokeStyle = this.pColor;
-                            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, pa.s, pa.e, pa.d);
-                            this.g.stroke();
-                        }
-
-                        this.g.beginPath();
-                        this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
-                        this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, a.s, a.e, a.d);
-                        this.g.stroke();
-
-                        this.g.lineWidth = 2;
-                        this.g.beginPath();
-                        this.g.strokeStyle = this.o.fgColor;
-                        this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0,2 * Math.PI, false);
-                        this.g.stroke();
-
-                        return false;
-                    }
-                }
-            });
-        }
+        this.colorTheme = this.cfg.colorTheme;
+		this.input = $(this.jqId + "_hidden");
+        this.min = parseInt(this.jq.data('min'), 10);
+        this.max = parseInt(this.jq.data('max'), 10);
+        this.step = parseInt(this.jq.data('step'), 10);
 
         this.createKnob();
 
-	}
+	},
+    
+    createKnob: function() {
+        var $this = this;
+        
+        this.themeObject = PrimeFaces.widget.Knob.colorThemes[this.colorTheme || 'aristo'];
+
+        this.jq.data('fgcolor', this.cfg.fgColor || this.themeObject.fgColor);
+        this.jq.data('bgcolor', this.cfg.bgColor || this.themeObject.bgColor);
+
+        this.jq.knob({
+            release : function(value) {
+                $this.input.val(value);
+
+                if ($this.cfg.onchange) {
+                    $this.cfg.onchange(value);
+                }
+
+                if ($this.cfg.behaviors && $this.cfg.behaviors['change']) {
+                    var ext = {
+                        params: [
+                            {name: $this.id + '_hidden', value: value}
+                        ]
+                    };
+
+                    $this.cfg.behaviors['change'].call($this, ext);
+                }
+            },
+            format : function(value) {
+                return $this.cfg.labelTemplate.replace('{value}', value);
+            },
+            draw : function() {
+
+                // "tron" case
+                if (this.$.data('skin') == 'tron') {
+
+                    this.cursorExt = 0.3;
+
+                    var a = this.arc(this.cv) // Arc
+                        , pa // Previous arc
+                        , r = 1;
+
+                    this.g.lineWidth = this.lineWidth;
+
+                    if (this.o.displayPrevious) {
+                        pa = this.arc(this.v);
+                        this.g.beginPath();
+                        this.g.strokeStyle = this.pColor;
+                        this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, pa.s, pa.e, pa.d);
+                        this.g.stroke();
+                    }
+
+                    this.g.beginPath();
+                    this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
+                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, a.s, a.e, a.d);
+                    this.g.stroke();
+
+                    this.g.lineWidth = 2;
+                    this.g.beginPath();
+                    this.g.strokeStyle = this.o.fgColor;
+                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0,2 * Math.PI, false);
+                    this.g.stroke();
+
+                    return false;
+                }
+            }
+        });
+    },
+    
+    setValue: function(value) {
+        this.input.val(value);
+        this.jq.val(value).trigger('change');
+    },
+    
+    getValue: function() {
+        return parseInt(this.jq.val());
+    },
+    
+    increment: function() {
+        var value = this.getValue() + this.step;
+        value = value <= this.max ? value : this.max;
+        this.setValue(value);
+    },
+    
+    decrement: function() {
+        var value = this.getValue() - this.step;
+        value = value >= this.min ? value : this.min;
+        this.setValue(value);
+    }
 });
 
 PrimeFaces.widget.Knob.colorThemes = {

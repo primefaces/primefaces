@@ -16,6 +16,7 @@
 package org.primefaces.component.selectcheckboxmenu;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -25,15 +26,22 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import javax.faces.render.Renderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectManyRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return context.getRenderKit().getRenderer("javax.faces.SelectMany", "javax.faces.Checkbox").getConvertedValue(context, component, submittedValue);
+        Renderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                "javax.faces.SelectMany",
+                "javax.faces.Checkbox",
+                Renderer.class);
+        return renderer.getConvertedValue(context, component, submittedValue);
 	}
 
     @Override
@@ -56,6 +64,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         styleclass = styleclass == null ? SelectCheckboxMenu.STYLE_CLASS : SelectCheckboxMenu.STYLE_CLASS + " " + styleclass;
         styleclass = menu.isDisabled() ? styleclass + " ui-state-disabled" : styleclass;
         styleclass = !valid ? styleclass + " ui-state-error" : styleclass;
+        styleclass = menu.isMultiple() ? SelectCheckboxMenu.MULTIPLE_CLASS + " " + styleclass : styleclass;
         
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
@@ -65,7 +74,13 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
-        encodeLabel(context, menu, selectItems, valid);
+        if(menu.isMultiple()) {
+            encodeMultipleLabel(context, menu, selectItems, valid);
+        }
+        else {
+            encodeLabel(context, menu, selectItems, valid);
+        }
+        
         encodeMenuIcon(context, menu, valid);
 
         writer.endElement("div");
@@ -157,16 +172,62 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
         
         writer.startElement("span", null);
-        writer.writeAttribute("class", SelectCheckboxMenu.LABEL_CONTAINER_CLASS, null);
-        if(menu.getTabindex() != null) {
-            writer.writeAttribute("tabindex", menu.getTabindex(), null);
-        }
-        
+        writer.writeAttribute("class", SelectCheckboxMenu.LABEL_CONTAINER_CLASS, null);        
         writer.startElement("label", null);
         writer.writeAttribute("class", labelClass, null);
         writer.writeText(label, null);
         writer.endElement("label");
         writer.endElement("span");
+    }
+    
+    protected void encodeMultipleLabel(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, boolean valid) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Object values = getValues(menu);
+        String listClass = menu.isDisabled() ? SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS;
+        listClass = valid ? listClass : listClass + " ui-state-error";
+
+        writer.startElement("ul", null);
+        writer.writeAttribute("class", listClass, null);
+        if(values != null) {
+            int length = Array.getLength(values);
+            for(int i = 0; i < length; i++) {
+                Object value = Array.get(values, i);
+                writer.startElement("li", null);
+                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_DISPLAY_CLASS, null);
+                writer.writeAttribute("data-item-value", value, null);
+                
+                writer.startElement("span", null);
+                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_LABEL_CLASS, null);
+                
+                SelectItem selectedItem = null;
+                for(SelectItem item : selectItems) {
+                    if(value.equals(item.getValue())) {
+                        selectedItem = item;
+                        break;
+                    }
+                }
+                
+                if(selectedItem != null && selectedItem.getLabel() != null) {
+                    if(selectedItem.isEscape())
+                        writer.writeText(selectedItem.getLabel(), null);
+                    else
+                        writer.write(selectedItem.getLabel());
+                } 
+                else {
+                    writer.writeText(value, null);
+                }
+                
+                writer.endElement("span");
+
+                writer.startElement("span", null);
+                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_ICON_CLASS, null);
+                writer.endElement("span");
+
+                writer.endElement("li");
+            }
+        }
+        
+        writer.endElement("ul");
     }
     
     protected void encodeMenuIcon(FacesContext context, SelectCheckboxMenu menu, boolean valid) throws IOException {
@@ -192,6 +253,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             .callback("onHide", "function()", menu.getOnHide())
             .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
             .attr("showHeader", menu.isShowHeader(), true)
+            .attr("updateLabel", menu.isUpdateLabel(), false)
+            .attr("multiple", menu.isMultiple(), false) 
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null);
         
         if(menu.isFilter()) {

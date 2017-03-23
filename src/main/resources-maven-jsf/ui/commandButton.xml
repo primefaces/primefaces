@@ -26,6 +26,9 @@
         <interface>
 			<name>org.primefaces.component.api.Confirmable</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&command_component_attributes;
@@ -105,7 +108,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 			<defaultValue>false</defaultValue>
-            <description>When enabled, only values related to partially processed components would be serialized for ajax 
+            <description>When enabled, only values related to partially processed components would be serialized for ajax
             instead of whole form.</description>
 		</attribute>
         <attribute>
@@ -191,13 +194,6 @@
 			<type>java.lang.String</type>
 			<ignoreInComponent>true</ignoreInComponent>
             <description>Sets the behavior of the button. Default is submit.</description>
-		</attribute>
-		<attribute>
-			<name>readonly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<ignoreInComponent>true</ignoreInComponent>
-            <description>Flag indicating that this component will prevent changes by the user.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
@@ -357,10 +353,17 @@
 			<type>java.lang.String</type>
             <description>Form to serialize for an ajax request. Default is the enclosing form.</description>
 		</attribute>
+        <attribute>
+			<name>renderDisabledClick</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When enabled, click event can be added to disabled button</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -369,7 +372,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
         <resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
 		</resource>
 	</resources>
 </component>

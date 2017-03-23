@@ -20,6 +20,9 @@
         <interface>
 			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&standard_uicomponent_attributes;
@@ -70,10 +73,17 @@
             <defaultValue>0</defaultValue>
             <description>Position of the element in the tabbing order.</description>
         </attribute>
+        <attribute>
+			<name>escape</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines whether value would be escaped or not, defaults to true.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
@@ -82,7 +92,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
         <resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
 		</resource>
 	</resources>
 </component>

@@ -27,11 +27,13 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
+import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
@@ -57,7 +59,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return context.getRenderKit().getRenderer("javax.faces.SelectOne", "javax.faces.Menu").getConvertedValue(context, component, submittedValue);
+        Renderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                "javax.faces.SelectOne",
+                "javax.faces.Menu",
+                Renderer.class);
+        return renderer.getConvertedValue(context, component, submittedValue);
 	}
     
     @Override
@@ -121,6 +128,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if(menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         
+        renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
+        
         writer.endElement("input");
         
         writer.endElement("div");
@@ -133,6 +142,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute("aria-hidden", "true", null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
         if(menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
@@ -223,11 +233,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneMenu.ITEMS_WRAPPER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, selectItems.size()), null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
 
         if(customContent) {
             writer.startElement("table", menu);
             writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
+            encodeColumnsHeader(context, menu);
             writer.startElement("tbody", menu);
             encodeOptionsAsTable(context, menu, selectItems);
             writer.endElement("tbody");
@@ -244,6 +255,45 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         writer.endElement("div");
         writer.endElement("div");
+    }
+    
+    protected void encodeColumnsHeader(FacesContext context, SelectOneMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        boolean hasHeader = false;
+        
+        for(Column column : menu.getColums()) {
+            if(column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
+                hasHeader = true;
+                break;
+            }
+        }
+        
+        if(hasHeader) { 
+            writer.startElement("thead", menu);
+            for(Column column : menu.getColums()) {
+                if(!column.isRendered()) {
+                    continue;
+                }
+
+                String headerText = column.getHeaderText();
+                UIComponent headerFacet = column.getFacet("header");
+                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
+                
+                writer.startElement("th", null);
+                writer.writeAttribute("class", styleClass, null);
+                
+                if(column.getStyle() != null) 
+                    writer.writeAttribute("style", column.getStyle(), null);
+                
+                if(headerFacet != null)
+                    headerFacet.encodeAll(context);
+                else if(headerText != null)
+                    writer.write(headerText);
+
+                writer.endElement("th");
+            }
+            writer.endElement("thead");
+        }
     }
 
     protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
@@ -277,7 +327,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             } 
             else {
                 for(Column column : columns) {
+                    String style = column.getStyle();
+                    String styleClass = column.getStyleClass();
+                    
                     writer.startElement("td", null);
+                    if(style != null) writer.writeAttribute("style", style, null);
+                    if(styleClass != null) writer.writeAttribute("class", styleClass, null);
+                    
                     renderChildren(context, column);
                     writer.endElement("td");
                 }
@@ -345,7 +401,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("editable", menu.isEditable(), false)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null)
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
-                .attr("labelTemplate", menu.getLabelTemplate(), null);
+                .attr("labelTemplate", menu.getLabelTemplate(), null)
+                .attr("autoWidth", menu.isAutoWidth(), true);
         
         if(menu.isFilter()) {
             wb.attr("filter", true)

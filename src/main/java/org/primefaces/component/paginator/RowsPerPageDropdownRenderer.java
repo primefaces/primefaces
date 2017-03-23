@@ -17,8 +17,11 @@ package org.primefaces.component.paginator;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 import org.primefaces.util.MessageFactory;
 
@@ -26,21 +29,24 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
     private final static Logger logger = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
     
-    public void render(FacesContext context, UIData uidata) throws IOException {        
-        String template = uidata.getRowsPerPageTemplate();
+    public void render(FacesContext context, Pageable pageable) throws IOException {        
+        String template = pageable.getRowsPerPageTemplate();
+        UIViewRoot viewroot = context.getViewRoot();
+        char separator = UINamingContainer.getSeparatorChar(context);
         
         if(template != null) {
             ResponseWriter writer = context.getResponseWriter();
-            int actualRows = uidata.getRows();
-            String[] options = uidata.getRowsPerPageTemplate().split("[,\\s]+");
-            String label = uidata.getRowsPerPageLabel();
+            int actualRows = pageable.getRows();
+            String[] options = pageable.getRowsPerPageTemplate().split("[,\\s]+");
+            String label = pageable.getRowsPerPageLabel();
             if(label != null)
                 logger.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
             else 
                 label = MessageFactory.getMessage(UIData.ROWS_PER_PAGE_LABEL, null);
             
-            String clientId = uidata.getClientId(context);
-            String ddId = clientId + "_rppDD";
+            String clientId = pageable.getClientId(context);
+            String ddId = clientId + separator + viewroot.createUniqueId();
+            String ddName = clientId + "_rppDD";
             String labelId = null;
             
             if(label != null) {
@@ -56,12 +62,12 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                     
             writer.startElement("select", null);
             writer.writeAttribute("id", ddId, null);
-            writer.writeAttribute("name", ddId, null);
+            writer.writeAttribute("name", ddName, null);
             if(label != null) {
                 writer.writeAttribute("aria-labelledby", labelId, null);
             }
             writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
-            writer.writeAttribute("value", uidata.getRows(), null);
+            writer.writeAttribute("value", pageable.getRows(), null);
             writer.writeAttribute("autocomplete", "off", null);
 
             for( String option : options){

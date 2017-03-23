@@ -9181,7 +9181,13 @@
                 }
                 context.fillText(w, templeft, temptop);
             }
-
+            
+            if($(el).is('td.jqplot-table-legend-label') && $(el).hasClass('jqplot-series-hidden')) {
+                context.strokeStyle = $(el).css('color');
+                context.moveTo(templeft, top + (lineheight/2));
+                context.lineTo(templeft + tagwidth, top + (lineheight/2));
+                context.stroke();
+            }
         }
 
         function _jqpToImage(el, x_offset, y_offset) {
@@ -9255,7 +9261,9 @@
             }
 
             else if (tagname == 'canvas') {
-                newContext.drawImage(el, left, top);
+                if(!$(el).hasClass('jqplot-series-hidden')) { // PrimeFaces Github Issue; #1505
+                    newContext.drawImage(el, left, top);
+                }
             }
         }
         $(this).children().each(function() {
@@ -17463,7 +17471,7 @@
     $.jqplot.CanvasFontRenderer.prototype.measure = function(ctx, str)
     {
         // var fstyle = this.fontStyle+' '+this.fontVariant+' '+this.fontWeight+' '+this.fontSize+' '+this.fontFamily;
-        var fstyle = this.fontSize+' '+this.fontFamily;
+        var fstyle = this.fontWeight+' '+this.fontSize+' '+this.fontFamily;
         ctx.save();
         ctx.font = fstyle;
         var w = ctx.measureText(str).width;
@@ -17504,7 +17512,7 @@
          ctx.strokeStyle = this.fillStyle;
          ctx.fillStyle = this.fillStyle;
         // var fstyle = this.fontStyle+' '+this.fontVariant+' '+this.fontWeight+' '+this.fontSize+' '+this.fontFamily;
-        var fstyle = this.fontSize+' '+this.fontFamily;
+        var fstyle = this.fontWeight+' '+this.fontSize+' '+this.fontFamily;
          ctx.font = fstyle;
          ctx.translate(tx, ty);
          ctx.rotate(this.angle);
@@ -20966,10 +20974,10 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         var tableLegend = this.jq.find('table.jqplot-table-legend'),
             tr = tableLegend.find('tr.jqplot-table-legend');
         
-        if(tr.size() > 1) {
+        if(tr.length > 1) {
             var trFirst = tableLegend.find('tr.jqplot-table-legend:first'),
                 trLast = tableLegend.find('tr.jqplot-table-legend:last'),
-                length = trFirst.children('td').size() - trLast.children('td').size();
+                length = trFirst.children('td').length - trLast.children('td').length;
 
             for(var i = 0; i < length; i++) {
                 trLast.append('<td></td>');
@@ -20983,6 +20991,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.legend = {
                 renderer: $.jqplot.EnhancedLegendRenderer,
                 show: true,
+                escapeHtml: this.cfg.escapeHtml,
                 location: this.cfg.legendPosition,
                 placement: this.cfg.legendPlacement,
                 rendererOptions: {

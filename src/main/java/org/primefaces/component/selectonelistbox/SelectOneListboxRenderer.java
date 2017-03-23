@@ -24,16 +24,23 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneListboxRenderer extends SelectOneRenderer {
 
     @Override
 	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return context.getRenderKit().getRenderer("javax.faces.SelectOne", "javax.faces.Listbox").getConvertedValue(context, component, submittedValue);
+        Renderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                "javax.faces.SelectOne",
+                "javax.faces.Listbox",
+                Renderer.class);
+        return renderer.getConvertedValue(context, component, submittedValue);
 	}
     
     @Override
@@ -131,7 +138,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         
         writer.startElement("div", listbox);
         writer.writeAttribute("class", SelectOneListbox.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(listbox, selectItems.size()), null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(listbox, countSelectItems(selectItems)), null);
 
         if(customContent) {
             writer.startElement("table", null);
@@ -249,7 +256,11 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(selected) writer.writeAttribute("selected", "selected", null);
 
-        writer.write(option.getLabel());
+        if(option.isEscape()) {
+            writer.writeText(option.getLabel(), null);
+        } else {
+            writer.write(option.getLabel());
+        }
 
         writer.endElement("option");
     }

@@ -33,21 +33,21 @@
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>text</defaultValue>
-            <description>Input field type. Default is text.</description>
+            <description>Input field type. Valid values are "text"(default), "tel" and "hidden".</description>
         </attribute>
         <attribute>
             <name>decimalSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>.</defaultValue>
-            <description>Decimal separator char. Default is '.'.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Decimal separator char. Default is taken from the view's locale.</description>
         </attribute>
         <attribute>
             <name>thousandSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>,</defaultValue>
-            <description>Thousand separator char. Default is ','.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Thousand separator char. Default is taken from the view's locale.</description>
         </attribute>
         <attribute>
             <name>symbol</name>
@@ -98,16 +98,38 @@
             <defaultValue>empty</defaultValue>
             <description>Controls empty input display behavior, options are empty, zero, sign. Default is empty.</description>
         </attribute>
+        <attribute>
+            <name>inputStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the input element.</description>
+        </attribute>
+        <attribute>
+            <name>inputStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the input element.</description>
+        </attribute>
+        <attribute>
+			<name>padControl</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Controls padding of the decimal places. If true, always pads the decimal with zeros.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
-			<name>primefaces.css</name>
+			<name>components.css</name>
 		</resource>
 		<resource>
 			<name>jquery/jquery.js</name>
 		</resource>
 		<resource>
-			<name>primefaces.js</name>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
 		</resource>
 		<resource>
 			<name>inputnumber/inputnumber.js</name>

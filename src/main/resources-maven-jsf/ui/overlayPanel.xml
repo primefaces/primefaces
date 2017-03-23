@@ -116,10 +116,17 @@
             <defaultValue>false</defaultValue>
             <description>Displays a close icon to hide the overlay, default is false.</description>
 		</attribute>
+        <attribute>
+            <name>modal</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document. Default is false.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
-            <name>primefaces.css</name>
+            <name>components.css</name>
         </resource>
         <resource>
             <name>jquery/jquery.js</name>
@@ -128,7 +135,10 @@
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
         <resource>
-            <name>primefaces.js</name>
+            <name>core.js</name>
         </resource>
+		<resource>
+			<name>components.js</name>
+		</resource>
     </resources>
 </component>
