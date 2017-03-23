@@ -3147,7 +3147,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     removeMultipleItem: function(item) {
         var items = this.multiItemContainer.children();
         if(items.length) {
-            items.filter("[data-item-value=" + item.data('item-value') + "]").remove();
+            items.filter('[data-item-value="' + item.data('item-value') + '"]').remove();
         }  
     }
 
