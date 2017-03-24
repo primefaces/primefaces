@@ -108,17 +108,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
     fitViewport: function() {
         var winHeight = $(window).height(),
-        contentPadding = this.content.innerHeight() - this.content.height();
-
-        if(this.jq.innerHeight() > winHeight) {
-            this.content.height(winHeight - this.titlebar.innerHeight() - contentPadding);
-        }
-        
-        var winHeight = $(window).height(),
         dialogMargin = this.jq.outerHeight(true) - this.jq.outerHeight(),
-        titlebarHeight, contentPadding, footerHeight;
+        titlebarHeight, contentPadding, footerHeight; 
 
-        if (!this.isVisible()) {
+        if (!this.isVisible()) { 
             var dialogClone = this.jq.clone()
                 .attr("id", false)
                 .css({visibility:"hidden", display:"block", position:"absolute"});
@@ -131,7 +124,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             footerHeight = $footer ? $footer.innerHeight() : 0;
 
             dialogClone.remove();
-        } else {
+        } else { 
             titlebarHeight = this.titlebar.innerHeight();
             contentPadding = this.content.innerHeight() - this.content.height();
             footerHeight = (this.footer ? this.footer.innerHeight() : 0);
