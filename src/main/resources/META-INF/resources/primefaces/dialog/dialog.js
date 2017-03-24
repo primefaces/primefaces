@@ -113,6 +113,31 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.jq.innerHeight() > winHeight) {
             this.content.height(winHeight - this.titlebar.innerHeight() - contentPadding);
         }
+        
+        var winHeight = $(window).height(),
+        dialogMargin = this.jq.outerHeight(true) - this.jq.outerHeight(),
+        titlebarHeight, contentPadding, footerHeight;
+
+        if (!this.isVisible()) {
+            var dialogClone = this.jq.clone()
+                .attr("id", false)
+                .css({visibility:"hidden", display:"block", position:"absolute"});
+            $("body").append(dialogClone);
+            var $content = dialogClone.children('.ui-dialog-content'),
+                $footer = dialogClone.children('.ui-dialog-footer');
+
+            titlebarHeight = dialogClone.children('.ui-dialog-titlebar').innerHeight();
+            contentPadding = $content.innerHeight() - $content.height();
+            footerHeight = $footer ? $footer.innerHeight() : 0;
+
+            dialogClone.remove();
+        } else {
+            titlebarHeight = this.titlebar.innerHeight();
+            contentPadding = this.content.innerHeight() - this.content.height();
+            footerHeight = (this.footer ? this.footer.innerHeight() : 0);
+        }
+
+        this.content.height(winHeight - dialogMargin - titlebarHeight - contentPadding - footerHeight);
     },
 
     enableModality: function() {
@@ -622,6 +647,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     bindResizeListener: function() {
         var $this = this;
         $(window).on(this.resizeNS, function() {
+            if ($this.cfg.fitViewport) {
+                $this.fitViewport();
+            }
+
             $this.initPosition();
         });
     },
