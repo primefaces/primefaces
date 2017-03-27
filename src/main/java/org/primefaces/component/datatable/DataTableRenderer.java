@@ -131,6 +131,24 @@ public class DataTableRenderer extends DataRenderer {
                     sortFeature.singleSort(context, table);  
 
                 table.setRowIndex(-1);
+                
+                if(table.isMultiViewState()) {
+                    ValueExpression sortByVE = table.getValueExpression("sortBy");
+                    List<SortMeta> multiSortMeta = table.getMultiSortMeta();
+                    if(sortByVE != null || multiSortMeta != null) {
+                        TableState ts = table.getTableState(true);
+                        ts.setSortBy(sortByVE);
+                        ts.setMultiSortMeta(multiSortMeta);
+                        ts.setSortOrder(table.getSortOrder());
+                        ts.setSortField(table.getSortField());
+                        ts.setSortFunction(table.getSortFunction());
+
+                        if(table.isPaginator()) {
+                            ts.setFirst(table.getFirst());
+                            ts.setRows(table.getRows());
+                        }
+                    }
+                }
             }
 
             List<FilterState> filters = table.getFilterBy();
