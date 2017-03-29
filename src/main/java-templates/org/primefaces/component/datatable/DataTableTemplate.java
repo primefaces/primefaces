@@ -727,6 +727,7 @@ import org.primefaces.component.datatable.TableState;
         this.setSortByVE(null);
         this.setSortColumn(null);
         this.setSortField(null);
+        this.setDefaultSort(true);
         this.clearMultiSortMeta();
     }
 
@@ -1224,6 +1225,17 @@ import org.primefaces.component.datatable.TableState;
     public MethodExpression getDefaultSortFunction() {
         return (MethodExpression) this.getStateHelper().get("defaultSortFunction");
     }
+
+    public void setDefaultSort(boolean defaultSort) {
+		this.getStateHelper().put("defaultSort", defaultSort);
+	}
+    public boolean isDefaultSort() {
+        Object value = this.getStateHelper().get("defaultSort");
+        if(value == null)
+            return true;
+        else
+            return (java.lang.Boolean) value;
+	}
     
     public Locale resolveDataLocale() {
         FacesContext context = this.getFacesContext();
@@ -1346,6 +1358,10 @@ import org.primefaces.component.datatable.TableState;
             this.setSortOrder(ts.getSortOrder());
             this.setSortFunction(ts.getSortFunction());
             this.setSortField(ts.getSortField());
+            this.setDefaultSort(false);
+            this.setDefaultSortByVE(ts.getDefaultSortBy());
+            this.setDefaultSortOrder(ts.getDefaultSortOrder());
+            this.setDefaultSortFunction(ts.getDefaultSortFunction());
 
             if(this.isSelectionEnabled()) {
                 this.selectedRowKeys = ts.getRowKeys();

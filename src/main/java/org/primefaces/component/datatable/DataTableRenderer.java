@@ -107,7 +107,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             boolean defaultSorted = (table.getSortField() != null || table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null || table.getMultiSortMeta() != null);
-            if(defaultSorted) {
+            if(defaultSorted && table.isDefaultSort()) {
                 ValueExpression sortVE;
                 String sortField = table.getSortField();
                 if (sortField != null) {
@@ -142,6 +142,11 @@ public class DataTableRenderer extends DataRenderer {
                         ts.setSortOrder(table.getSortOrder());
                         ts.setSortField(table.getSortField());
                         ts.setSortFunction(table.getSortFunction());
+                        
+                        /* default sort */
+                        ts.setDefaultSortBy(sortByVE);
+                        ts.setDefaultSortOrder(table.getSortOrder());
+                        ts.setDefaultSortFunction(table.getSortFunction());
 
                         if(table.isPaginator()) {
                             ts.setFirst(table.getFirst());
@@ -149,6 +154,8 @@ public class DataTableRenderer extends DataRenderer {
                         }
                     }
                 }
+                
+                table.setDefaultSort(false);
             }
 
             List<FilterState> filters = table.getFilterBy();
