@@ -347,7 +347,7 @@ public class ComponentUtils {
         UIComponent component = (UIComponent) widget;
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");
 
-        if (userWidgetVar != null) {
+        if (!isValueBlank(userWidgetVar)) {
             return userWidgetVar;
         }
         else {
