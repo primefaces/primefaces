@@ -1167,7 +1167,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 return true;
             },
             oncomplete: function(xhr, status, args) {
-                if(args.totalRecords) {
+                if(typeof args.totalRecords !== 'undefined') {
                     $this.cfg.scrollLimit = args.totalRecords;
                 }
  
@@ -1211,7 +1211,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 return true;
             },
             oncomplete: function(xhr, status, args) {
-                if(args.totalRecords) {
+                if(typeof args.totalRecords !== 'undefined') {
                     $this.cfg.scrollLimit = args.totalRecords;
                 }
             }
@@ -1259,7 +1259,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             oncomplete: function(xhr, status, args) {
                 $this.paginator.cfg.page = newState.page;
-                if(args && args.totalRecords) {
+                if(args && typeof args.totalRecords !== 'undefined') {
                     $this.paginator.updateTotalRecords(args.totalRecords);
                 }
                 else {
@@ -1484,7 +1484,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             oncomplete: function(xhr, status, args) {
                 var paginator = $this.getPaginator();
-                if(args && args.totalRecords) {
+                if(args && typeof args.totalRecords !== 'undefined') {
                     $this.cfg.scrollLimit = args.totalRecords;
                     
                     if(paginator) {
