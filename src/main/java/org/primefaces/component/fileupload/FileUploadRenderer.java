@@ -206,6 +206,8 @@ public class FileUploadRenderer extends CoreRenderer {
                 writer.writeText(label, "value");
             }
 
+            writer.endElement("span");
+            
             encodeInputField(context, fileUpload, fileUpload.getClientId(context));
 
             writer.endElement("span");
