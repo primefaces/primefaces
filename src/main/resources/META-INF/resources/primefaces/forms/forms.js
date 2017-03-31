@@ -1433,7 +1433,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.SPACE:
                     if(!input.prop('checked')) {
                         $this.select(currentRadio);
-                        input.parent().next().addClass('ui-state-focus').removeClass('ui-state-active');
+                        input.trigger('focus').trigger('change');
                     }
 
                     e.preventDefault();
