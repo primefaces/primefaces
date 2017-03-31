@@ -154,11 +154,11 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
 
-        writer.startElement("table", null);
+        writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.FILES_CLASS, null);
-        writer.startElement("tbody", null);
-        writer.endElement("tbody");
-        writer.endElement("table");
+        writer.startElement("div", null);
+        writer.endElement("div");
+        writer.endElement("div");
 
         writer.endElement("div");
 

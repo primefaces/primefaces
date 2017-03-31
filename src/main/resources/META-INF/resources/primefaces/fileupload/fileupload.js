@@ -1704,7 +1704,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
         this.cancelButton = this.buttonBar.children('.ui-fileupload-cancel');
         this.content = this.jq.children('.ui-fileupload-content');
-        this.filesTbody = this.content.find('> table.ui-fileupload-files > tbody');
+        this.filesTbody = this.content.find('> div.ui-fileupload-files > div');
         this.sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
         this.files = [];
         this.fileAddIndex = 0;
@@ -1777,18 +1777,22 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             filesize: file.size
                         });
                     }
-                    else {
-                        var row = $('<tr></tr>').append('<td class="ui-fileupload-preview"></td>')
-                                .append('<td>' + file.name + '</td>')
-                                .append('<td>' + $this.formatSize(file.size) + '</td>')
-                                .append('<td class="ui-fileupload-progress"></td>')
-                                .append('<td><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></td>')
+                    else {  
+                        var row = $('<div class="ui-fileupload-row"></div>').append('<div class="ui-fileupload-preview"></td>')
+                                .append('<div>' + file.name + '</div>')
+                                .append('<div>' + $this.formatSize(file.size) + '</div>')
+                                .append('<div class="ui-fileupload-progress"></div>')
+                                .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
                                 .appendTo($this.filesTbody);
+                        
+                        if($this.filesTbody.children('.ui-fileupload-row').length > 1) {
+                            $('<div class="ui-widget-content"></div>').prependTo(row);
+                        }
 
                         //preview
                         if($this.isCanvasSupported() && window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
                             var imageCanvas = $('<canvas></canvas>')
-                                                    .appendTo(row.children('td.ui-fileupload-preview')),
+                                                    .appendTo(row.children('div.ui-fileupload-preview')),
                             context = imageCanvas.get(0).getContext('2d'),
                             winURL = window.URL||window.webkitURL,
                             url = winURL.createObjectURL(file),
@@ -1815,7 +1819,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                         }
 
                         //progress
-                        row.children('td.ui-fileupload-progress').append('<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>');
+                        row.children('div.ui-fileupload-progress').append('<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>');
 
                         file.row = row;
 
@@ -1952,7 +1956,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.uploadButton.on('click.fileupload', function(e) {
             $this.disableButton($this.uploadButton);
             $this.disableButton($this.cancelButton);
-            $this.disableButton($this.filesTbody.find('> tr > td:last-child').children('.ui-fileupload-cancel'));
+            $this.disableButton($this.filesTbody.find('> div > div:last-child').children('.ui-fileupload-cancel'));
 
             $this.upload();
 
@@ -1999,10 +2003,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     $(this).removeClass('ui-state-focus');
                 })
                 .on('click.fileupload', this.rowCancelActionSelector, null, function(e) {
-                    var row = $(this).closest('tr'),
+                    var row = $(this).closest('.ui-fileupload-row'),
                     removedFile = $this.files.splice(row.index(), 1);
                     removedFile[0].row = null;
-
+  
                     $this.removeFileRow(row);
 
                     if($this.files.length === 0) {

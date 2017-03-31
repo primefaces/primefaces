@@ -48,6 +48,7 @@
     width: 200px;
     height: 20px;
     margin: 0px;
+    top: 5px;
 }
 
 .ui-fileupload-content .ui-progressbar .ui-progressbar-value {
@@ -61,10 +62,26 @@
 .ui-fileupload-files {
     margin: 10px 0;
     border-collapse: collapse;
+    display: table;
+    border-spacing: 2px;
 }
 
-.ui-fileupload-files td {
+.ui-fileupload-files > div {
+    display: table-row-group;
+    vertical-align: middle;
+}
+
+.ui-fileupload-row {
+    display: table-row;
+}
+
+.ui-fileupload-row > div {
+    display: table-cell;
     padding: 4px 10px; 
+}
+
+.ui-fileupload-row > .ui-widget-content {
+    display: none;
 }
 
 .ui-fileupload-files img {
@@ -123,4 +140,34 @@
 
 .ui-fileupload-icon-only .ui-button-text {
     padding-left: 1em;
+}
+
+@media screen and (max-width: 40em) {
+    .ui-fileupload-content {
+        padding: 0.55em 0.4em;
+    }
+    
+    .ui-fileupload-files,
+    .ui-fileupload-files > div,
+    .ui-fileupload-row,
+    .ui-fileupload-row > div {
+        display: block;
+    }
+
+    .ui-fileupload-buttonbar .ui-button {
+        padding: .9em 1em .9em 1.2em;
+    }
+
+    .ui-fileupload-buttonbar .ui-button .ui-button-text {
+        display: none;
+    }
+
+    .ui-fileupload-row > .ui-widget-content {
+        display: block;
+        padding: 0px 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        border-bottom: 0px;
+    }
+    
 }
