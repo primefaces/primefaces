@@ -2728,7 +2728,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.reclone();
                 }
             },
-            containment: this.jq
+            containment: this.cfg.resizeMode === "expand" ? "document" : this.jq
         });
     },
     
