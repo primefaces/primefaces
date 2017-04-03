@@ -106,6 +106,20 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
                 var newValue = min + (e.touches.item(0).clientX - left) / (right-left) * (max - min);
                 $this.jq.slider('value', newValue);
             }
+
+            var ui = {};
+            ui.values = $this.getValues();
+            ui.value = $this.getValue();
+
+            $this.onSlide(event, ui);
+        });
+
+        $this.jq.children('.ui-slider-handle').bind('touchend', function(event) {
+            var ui = {};
+            ui.values = $this.getValues();
+            ui.value = $this.getValue();
+
+            $this.onSlideEnd(event, ui);
         });
     },
 
