@@ -23,6 +23,10 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
         this.jq.slider(this.cfg);
 
         this.bindEvents();
+
+        if (PrimeFaces.env.touch) {
+            this.bindTouchEvents();
+        }
     },
 
     bindEvents: function() {
@@ -75,6 +79,33 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             }
         }).on('keyup.slider', function (e) {
             $this.setValue($this.input.val());
+        });
+    },
+
+    bindTouchEvents: function() {
+        var $this = this;
+
+        var vertical = $this.jq.hasClass('ui-slider-vertical');
+        var min = $this.jq.slider('option', 'min');
+        var max = $this.jq.slider('option', 'max');
+
+        $this.jq.children('.ui-slider-handle').bind('touchmove', function(event) {
+            var e = event.originalEvent;
+
+            if (vertical) {
+                var top = $this.jq.offset().top;
+                var bottom = top + $this.jq.height();
+
+                var newValue = max - (e.touches.item(0).clientY - top) / (bottom - top) * (max - min);
+                $this.jq.slider('value', newValue);
+            }
+            else {
+                var left = $this.jq.offset().left;
+                var right = left + $this.jq.width();
+
+                var newValue = min + (e.touches.item(0).clientX - left) / (right-left) * (max - min);
+                $this.jq.slider('value', newValue);
+            }
         });
     },
 
