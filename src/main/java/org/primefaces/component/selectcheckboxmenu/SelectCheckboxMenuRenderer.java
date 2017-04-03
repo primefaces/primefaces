@@ -182,6 +182,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     
     protected void encodeMultipleLabel(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        Converter converter = menu.getConverter();
         Object values = getValues(menu);
         String listClass = menu.isDisabled() ? SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS;
         listClass = valid ? listClass : listClass + " ui-state-error";
@@ -192,9 +193,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             int length = Array.getLength(values);
             for(int i = 0; i < length; i++) {
                 Object value = Array.get(values, i);
+                String itemValueAsString = getOptionAsString(context, menu, converter, value);
                 writer.startElement("li", null);
                 writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_DISPLAY_CLASS, null);
-                writer.writeAttribute("data-item-value", value, null);
+                writer.writeAttribute("data-item-value", itemValueAsString, null);
                 
                 writer.startElement("span", null);
                 writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_LABEL_CLASS, null);
