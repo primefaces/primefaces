@@ -83,43 +83,36 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindTouchEvents: function() {
-        var $this = this;
+        var eventMapping = {
+            touchstart: 'mousedown',
+            touchmove: 'mousemove',
+            touchend: 'mouseup'
+        };
 
-        var vertical = $this.jq.hasClass('ui-slider-vertical');
-        var min = $this.jq.slider('option', 'min');
-        var max = $this.jq.slider('option', 'max');
+        this.jq.children('.ui-slider-handle').on('touchstart touchmove touchend', function(e) {
+            var touch = e.originalEvent.changedTouches[0];
+            var targetEvent = document.createEvent('MouseEvent');
 
-        $this.jq.children('.ui-slider-handle').bind('touchmove', function(event) {
-            var e = event.originalEvent;
+            targetEvent.initMouseEvent(
+                    eventMapping[e.originalEvent.type],
+                    true, // canBubble
+                    true, // cancelable
+                    window, // view
+                    1, // detail
+                    touch.screenX,
+                    touch.screenY,
+                    touch.clientX,
+                    touch.clientY,
+                    false, // ctrlKey
+                    false, // altKey
+                    false, // shiftKey
+                    false, // metaKey
+                    0, // button
+                    null // relatedTarget
+                );
 
-            if (vertical) {
-                var top = $this.jq.offset().top;
-                var bottom = top + $this.jq.height();
-
-                var newValue = max - (e.touches.item(0).clientY - top) / (bottom - top) * (max - min);
-                $this.jq.slider('value', newValue);
-            }
-            else {
-                var left = $this.jq.offset().left;
-                var right = left + $this.jq.width();
-
-                var newValue = min + (e.touches.item(0).clientX - left) / (right-left) * (max - min);
-                $this.jq.slider('value', newValue);
-            }
-
-            var ui = {};
-            ui.values = $this.getValues();
-            ui.value = $this.getValue();
-
-            $this.onSlide(event, ui);
-        });
-
-        $this.jq.children('.ui-slider-handle').bind('touchend', function(event) {
-            var ui = {};
-            ui.values = $this.getValues();
-            ui.value = $this.getValue();
-
-            $this.onSlideEnd(event, ui);
+            touch.target.dispatchEvent(targetEvent);
+            e.preventDefault();
         });
     },
 
