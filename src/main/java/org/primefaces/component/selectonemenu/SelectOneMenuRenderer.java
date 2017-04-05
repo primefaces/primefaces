@@ -199,7 +199,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("id", menu.getClientId(context) + "_label", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
             if(menu.getPlaceholder() != null) {
-               writer.writeAttribute("placeholder", menu.getPlaceholder(), null);
+               writer.writeAttribute("data-placeholder", menu.getPlaceholder(), null);
             }
             writer.write("&nbsp;");
             writer.endElement("label");

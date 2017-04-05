@@ -1162,11 +1162,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 this.label.val(displayedLabel);
         }
         else {
-            var labelText = this.label.attr('placeholder');
+            var labelText = this.label.attr('data-placeholder');
             if (labelText == null) {
                 labelText = '&nbsp;';
             }
-            
+
             if (value === '&nbsp;') {
                 this.label.addClass('ui-watermark');
                 this.label.html(labelText);
