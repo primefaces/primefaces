@@ -1162,10 +1162,19 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 this.label.val(displayedLabel);
         }
         else {
-            if(value === '&nbsp;')
-                this.label.html('&nbsp;');
-            else
+            var labelText = this.label.attr('placeholder');
+            if (labelText == null) {
+                labelText = '&nbsp;';
+            }
+            
+            if (value === '&nbsp;') {
+                this.label.addClass('ui-watermark');
+                this.label.html(labelText);
+            }
+            else {
+                this.label.removeClass('ui-watermark');
                 this.label.text(displayedLabel);
+            }
         }
     },
 
