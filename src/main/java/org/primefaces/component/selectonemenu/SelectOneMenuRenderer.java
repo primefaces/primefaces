@@ -319,7 +319,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute("title", selectItem.getDescription(), null);
             }
 
-            if(itemValue instanceof String) {
+            if(itemValue == null || itemValue instanceof String) {
                 writer.startElement("td", null);
                 writer.writeAttribute("colspan", columns.size(), null);
                 writer.writeText(selectItem.getLabel(), null);
