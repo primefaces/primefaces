@@ -1162,17 +1162,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 this.label.val(displayedLabel);
         }
         else {
-            var labelText = this.label.attr('data-placeholder');
+            var labelText = this.label.data('placeholder');
             if (labelText == null) {
                 labelText = '&nbsp;';
             }
 
             if (value === '&nbsp;') {
-                this.label.addClass('ui-watermark');
+                this.label.addClass('ui-state-disabled');
                 this.label.html(labelText);
             }
             else {
-                this.label.removeClass('ui-watermark');
+                this.label.removeClass('ui-state-disabled');
                 this.label.text(displayedLabel);
             }
         }
