@@ -108,12 +108,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
-        Object value = radio.getSubmittedValue();
         int columns = radio.getColumns();
-        if(value == null) {
-            value = radio.getValue();
-        }
-        Class type = value == null ? String.class : value.getClass();
+        String currentValue = ComponentUtils.getValueToRender(context, radio);
 
         if (columns > 0) {
             int idx = 0, colMod;
@@ -121,9 +117,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             for (SelectItem selectItem : selectItems) {
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
                 String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-                Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
-                boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
-
+                boolean selected = isSelected(context, radio, selectItem, currentValue);
                 colMod = idx % columns;
                 if (colMod == 0) {
                     writer.startElement("div", null);
@@ -134,7 +128,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
                 writer.endElement("div");
-                
+
                 idx++;
                 colMod = idx % columns;
 
@@ -142,11 +136,11 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                     writer.endElement("div");
                 }
             }
-            
+
             if(idx != 0 && (idx % columns) != 0) {
                 writer.endElement("div");
             }
-            
+
         } else {
             throw new FacesException("The value of columns attribute must be greater than zero.");
         }
@@ -162,7 +156,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String styleClass = radio.getStyleClass();
         String defaultStyleClass = radio.isPlain() ? SelectOneRadio.NATIVE_STYLE_CLASS : SelectOneRadio.STYLE_CLASS;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
-        
+
         writer.startElement("table", radio);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("role", "presentation", null);
@@ -191,20 +185,14 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected void encodeCustomLayout(FacesContext context, SelectOneRadio radio) throws IOException {
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
-        Object value = radio.getSubmittedValue();
         List<SelectItem> selectItems = getSelectItems(context, radio);
-        if (value == null) {
-            value = radio.getValue();
-        }
-        Class type = value == null ? String.class : value.getClass();
+        String currentValue = ComponentUtils.getValueToRender(context, radio);
 
         int idx = 0;
         for (SelectItem selectItem : selectItems) {
             String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-            Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
-            boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
+            boolean selected = isSelected(context, radio, selectItem, currentValue);
             String itemValueAsString = getOptionAsString(context, radio, converter, selectItem.getValue());
-
             encodeOptionInput(context, radio, id, name, selected, true, itemValueAsString);
             idx++;
         }
@@ -214,19 +202,14 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
-        Object value = radio.getSubmittedValue();
-        if (value == null) {
-            value = radio.getValue();
-        }
-        Class type = value == null ? String.class : value.getClass();
+        String currentValue = ComponentUtils.getValueToRender(context, radio);
 
         writer.startElement("tr", null);
         int idx = 0;
         for (SelectItem selectItem : selectItems) {
             boolean disabled = selectItem.isDisabled() || radio.isDisabled();
             String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-            Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
-            boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
+            boolean selected = isSelected(context, radio, selectItem, currentValue);
 
             writer.startElement("td", null);
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
@@ -240,18 +223,13 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
-        Object value = radio.getSubmittedValue();
-        if (value == null) {
-            value = radio.getValue();
-        }
-        Class type = value == null ? String.class : value.getClass();
+        String currentValue = ComponentUtils.getValueToRender(context, radio);
 
         int idx = 0;
         for (SelectItem selectItem : selectItems) {
             boolean disabled = selectItem.isDisabled() || radio.isDisabled();
             String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-            Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
-            boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
+            boolean selected = isSelected(context, radio, selectItem, currentValue);
 
             writer.startElement("tr", null);
             writer.startElement("td", null);
@@ -266,12 +244,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
-        Object value = radio.getSubmittedValue();
         int columns = radio.getColumns();
-        if (value == null) {
-            value = radio.getValue();
-        }
-        Class type = value == null ? String.class : value.getClass();
+        String currentValue = ComponentUtils.getValueToRender(context, radio);
 
         if (columns > 0) {
             int idx = 0, colMod;
@@ -279,8 +253,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             for (SelectItem selectItem : selectItems) {
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
                 String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-                Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
-                boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
+                boolean selected = isSelected(context, radio, selectItem, currentValue);
 
                 colMod = idx % columns;
                 if (colMod == 0) {
@@ -392,6 +365,13 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.endElement("span");
 
         writer.endElement("div");
+    }
+
+    protected boolean isSelected(FacesContext context, SelectOneRadio radio, SelectItem selectItem, String currentValue) {
+        String itemStrValue = getOptionAsString(context, radio, radio.getConverter(), selectItem.getValue());
+        return (itemStrValue == null || "".equals(itemStrValue))
+                ? currentValue == null || "".equals(currentValue)
+                : itemStrValue.equals(currentValue);
     }
 
     protected void encodeRadioButton(FacesContext context, SelectOneRadio radio, RadioButton button) throws IOException {
