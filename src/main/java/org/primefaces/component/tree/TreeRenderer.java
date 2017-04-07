@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -29,6 +31,7 @@ import org.primefaces.component.api.UITree;
 import org.primefaces.context.RequestContext;
 
 import org.primefaces.model.TreeNode;
+import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.ComponentUtils;
@@ -187,16 +190,49 @@ public class TreeRenderer extends CoreRenderer {
                 tree.setRowKey(null);
             }            
         }
+        else if(tree.isFilterRequest(context)) {
+            String clientId = tree.getClientId();
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String filteredValue = params.get(clientId + "_filter");
+            Locale filterLocale = context.getViewRoot().getLocale();
+            
+            tree.getFilteredRowKeys().clear();
+            encodeFilteredNodes(context, tree, (TreeNode) tree.getValue(), filteredValue, filterLocale);
+            TreeNode root = (TreeNode) tree.getValue();
+            
+            if(root != null && root.getRowKey() == null) {
+                root.setRowKey("root");
+                tree.buildRowKeys(root);
+                tree.initPreselection();
+            }
+            
+            if(root != null && (ComponentUtils.isValueBlank(filteredValue) || tree.getFilteredRowKeys().size() > 0)) {
+                encodeTreeNodeChildren(context, tree, root, clientId,  tree.isDynamic(), tree.isCheckboxSelection(), tree.isDroppable());
+            }
+        }
         else {
             encodeMarkup(context, tree);
             encodeScript(context, tree);
         }
 	}
 		
+    protected void encodeFilteredNodes(FacesContext context, Tree tree, TreeNode node, String filteredValue, Locale filterLocale) throws IOException {
+        int childCount = node.getChildCount();
+        for(int i = 0; i < childCount; i++) {
+            TreeNode childNode = node.getChildren().get(i);
+            FilterConstraint filterConstraint = this.getFilterConstraint(tree);
+            if(filterConstraint.applies(childNode.getData(), filteredValue, filterLocale)) {
+                tree.getFilteredRowKeys().add(childNode.getRowKey());
+            }
+            encodeFilteredNodes(context, tree, childNode, filteredValue, filterLocale);
+        }
+    }
+    
 	protected void encodeScript(FacesContext context, Tree tree) throws IOException {
 		String clientId = tree.getClientId(context);
         boolean dynamic = tree.isDynamic();
         String selectionMode = tree.getSelectionMode();
+        boolean filter = (tree.getValueExpression("filterBy") != null);
         String widget = tree.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -223,6 +259,10 @@ public class TreeRenderer extends CoreRenderer {
         		.attr("dropRestrict", tree.getDropRestrict());
         }
 
+        if(filter) {
+            wb.attr("filter", true);
+        }
+        
         encodeIconStates(context, tree, wb);
         encodeClientBehaviors(context, tree);
 
@@ -253,7 +293,8 @@ public class TreeRenderer extends CoreRenderer {
         boolean selectable = selectionMode != null;
         boolean multiselectable = selectable && selectionMode.equals("single");
         boolean checkbox = selectable && selectionMode.equals("checkbox");
-        boolean droppable = tree.isDroppable();     
+        boolean droppable = tree.isDroppable(); 
+        boolean filter = (tree.getValueExpression("filterBy") != null);
         
         if(root != null && root.getRowKey() == null) {
             root.setRowKey("root");
@@ -284,6 +325,10 @@ public class TreeRenderer extends CoreRenderer {
 		if(tree.getStyle() != null) {
             writer.writeAttribute("style", tree.getStyle(), null);
         }
+        
+        if(filter) {
+            encodeFilter(context, tree, clientId + "_filter");
+        }
                 
         writer.startElement("ul", null);
         writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
@@ -299,6 +344,27 @@ public class TreeRenderer extends CoreRenderer {
         }
 
 		writer.endElement("div");
+    }
+    
+    protected void encodeFilter(FacesContext context, Tree tree, String name) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Tree.FILTER_CONTAINER, null);
+        
+        writer.startElement("input", null);
+        writer.writeAttribute("id", name, null);
+        writer.writeAttribute("name", name, null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("class", Tree.FILTER_CLASS, null);
+        writer.endElement("input");
+        
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-search", null);
+        writer.endElement("span");
+        
+        writer.endElement("div");
     }
     
     protected void encodeHorizontalTree(FacesContext context, Tree tree, TreeNode root) throws IOException {
@@ -488,11 +554,30 @@ public class TreeRenderer extends CoreRenderer {
         String rowKey = node.getRowKey();
         boolean selected = node.isSelected();
         boolean partialSelected = node.isPartialSelected();
+        boolean filter = (tree.getValueExpression("filterBy") != null);
 
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
         if(!uiTreeNode.isRendered()) {
             return;
         }
+        
+        List<String> filteredRowKeys = tree.getFilteredRowKeys();
+        boolean match = false;
+        if(filter && filteredRowKeys.size() > 0) {
+            for(String rk : filteredRowKeys) {
+                if(rk.startsWith(rowKey) || rowKey.startsWith(rk)) {
+                    match = true;
+                    if(!node.isLeaf() && !rowKey.startsWith(rk)) {
+                        node.setExpanded(true);
+                    }
+                    break;
+                }
+            }
+            
+            if(!match) {
+                return;
+            }
+        }   
 
         ResponseWriter writer = context.getResponseWriter();
         tree.setRowKey(rowKey);
@@ -690,4 +775,15 @@ public class TreeRenderer extends CoreRenderer {
 	public boolean getRendersChildren() {
 		return true;
 	}
+    
+    public FilterConstraint getFilterConstraint(Tree tree) {
+        String filterMatchMode = tree.getFilterMatchMode();
+        FilterConstraint filterConstraint  = Tree.FILTER_CONSTRAINTS.get(filterMatchMode);
+        
+        if(filterConstraint == null) { 
+            throw new FacesException("Illegal filter match mode:" + filterMatchMode);
+        }
+
+        return filterConstraint;
+    }
 }

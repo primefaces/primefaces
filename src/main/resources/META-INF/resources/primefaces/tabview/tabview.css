@@ -16,12 +16,14 @@
     white-space: nowrap;
     display: inline-block;
     vertical-align: top;
+    float: none;
 }
 
 .ui-tabs .ui-tabs-nav li a {
     float: left;
     padding: .5em 1em;
     text-decoration: none;
+    outline: none;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a,

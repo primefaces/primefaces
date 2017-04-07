@@ -142,6 +142,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute("aria-hidden", "true", null);
         if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
         if(menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
@@ -187,12 +188,19 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute("maxlength", menu.getMaxlength(), null);
             }
 
+            if(menu.getPlaceholder() != null) {
+               writer.writeAttribute("placeholder", menu.getPlaceholder(), null);
+            }
+
             writer.endElement("input");
         }
         else {
             writer.startElement("label", null);
             writer.writeAttribute("id", menu.getClientId(context) + "_label", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
+            if(menu.getPlaceholder() != null) {
+               writer.writeAttribute("data-placeholder", menu.getPlaceholder(), null);
+            }
             writer.write("&nbsp;");
             writer.endElement("label");
         }
@@ -232,11 +240,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneMenu.ITEMS_WRAPPER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, selectItems.size()), null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
 
         if(customContent) {
             writer.startElement("table", menu);
             writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
+            encodeColumnsHeader(context, menu);
             writer.startElement("tbody", menu);
             encodeOptionsAsTable(context, menu, selectItems);
             writer.endElement("tbody");
@@ -253,6 +262,45 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         writer.endElement("div");
         writer.endElement("div");
+    }
+    
+    protected void encodeColumnsHeader(FacesContext context, SelectOneMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        boolean hasHeader = false;
+        
+        for(Column column : menu.getColums()) {
+            if(column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
+                hasHeader = true;
+                break;
+            }
+        }
+        
+        if(hasHeader) { 
+            writer.startElement("thead", menu);
+            for(Column column : menu.getColums()) {
+                if(!column.isRendered()) {
+                    continue;
+                }
+
+                String headerText = column.getHeaderText();
+                UIComponent headerFacet = column.getFacet("header");
+                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
+                
+                writer.startElement("th", null);
+                writer.writeAttribute("class", styleClass, null);
+                
+                if(column.getStyle() != null) 
+                    writer.writeAttribute("style", column.getStyle(), null);
+                
+                if(headerFacet != null)
+                    headerFacet.encodeAll(context);
+                else if(headerText != null)
+                    writer.write(headerText);
+
+                writer.endElement("th");
+            }
+            writer.endElement("thead");
+        }
     }
 
     protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
@@ -278,7 +326,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute("title", selectItem.getDescription(), null);
             }
 
-            if(itemValue instanceof String) {
+            if(itemValue == null || itemValue instanceof String) {
                 writer.startElement("td", null);
                 writer.writeAttribute("colspan", columns.size(), null);
                 writer.writeText(selectItem.getLabel(), null);

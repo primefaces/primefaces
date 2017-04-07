@@ -18,25 +18,26 @@ package org.primefaces.component.paginator;
 import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.Pageable;
 
 public class PageLinkRenderer {
 
-    public void render(FacesContext context, UIData uidata, String linkClass, String iconClass, boolean disabled, String ariaLabel) throws IOException {
+    public void render(FacesContext context, Pageable pageable, String linkClass, String iconClass, boolean disabled, String ariaLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = disabled ? linkClass + " ui-state-disabled" : linkClass;
+        int textIndex = iconClass.indexOf("seek-");
+        String text = String.valueOf(iconClass.charAt(textIndex + 5)).toUpperCase();
+        String tabindex = (disabled) ? "-1" : "0";
 
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("aria-label", ariaLabel, null);
-        if(!disabled) {
-            writer.writeAttribute("tabindex", 0, null);
-        }
+        writer.writeAttribute("tabindex", tabindex, null);
         
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
-        writer.writeText("p", null);
+        writer.writeText(text, null);
         writer.endElement("span");
         
         writer.endElement("a");

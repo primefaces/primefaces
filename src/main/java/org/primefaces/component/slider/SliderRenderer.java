@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.InputHolder;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -74,9 +75,10 @@ public class SliderRenderer extends CoreRenderer{
         } 
         else {
             UIComponent input = getTarget(context, slider, slider.getFor());
+            String inputClientId = input instanceof InputHolder ? ((InputHolder) input).getInputClientId() : input.getClientId(context);
             
             wb.attr("value", ComponentUtils.getValueToRender(context, input))
-               .attr("input", input.getClientId(context));
+               .attr("input", inputClientId);
         }
         
         wb.attr("min", slider.getMinValue())

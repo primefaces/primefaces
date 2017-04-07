@@ -17,6 +17,7 @@ package org.primefaces.component.autocomplete;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -213,14 +214,30 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
             else {
                 Object submittedValue = ac.getSubmittedValue();
-                itemLabel = (submittedValue == null) ? null : String.valueOf(submittedValue);
                 
                 Object value = ac.getValue();
                 
-                if(itemLabel == null && value != null) {
+                if(submittedValue == null && value != null) {
                     requestMap.put(var, value);
                     itemLabel = ac.getItemLabel();
                 }
+                else if(submittedValue != null) {
+                    // retrieve the actual item (pojo) from the converter
+                    try {
+                        Object item = getConvertedValue(context, ac,
+                                String.valueOf(submittedValue));
+                        requestMap.put(var, item);
+                        itemLabel = ac.getItemLabel();
+                    }
+                    catch (ConverterException ce) {
+                        itemLabel = String.valueOf(submittedValue);
+                    }
+
+                }
+                else {
+                	itemLabel = null;
+                }
+
             }
 
             if(itemLabel != null) {
@@ -331,7 +348,20 @@ public class AutoCompleteRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         String inputId = clientId + "_input";
-        List values = (List) ac.getValue();
+        
+        List values;
+        if(ac.isValid()) {
+            values = (List) ac.getValue();
+        }
+        else {
+            Object submittedValue = ac.getSubmittedValue();
+            try {
+                values = (List) getConvertedValue(context, ac, submittedValue);
+            } catch (ConverterException ce) {
+                values = Arrays.asList((String[]) submittedValue);
+            }
+        }
+        
         List<String> stringValues = new ArrayList<String>();
         boolean disabled = ac.isDisabled();
         String title = ac.getTitle();
@@ -339,7 +369,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         String style = ac.getStyle();
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
-        String listClass = disabled ? AutoComplete.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : AutoComplete.MULTIPLE_CONTAINER_CLASS;
+        String listClass = ac.isDropdown() ? AutoComplete.MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS : AutoComplete.MULTIPLE_CONTAINER_CLASS;
+        listClass = disabled ? listClass + " ui-state-disabled" : listClass;
         listClass = ac.isValid() ? listClass : listClass + " ui-state-error";
         
         writer.startElement("div", null);

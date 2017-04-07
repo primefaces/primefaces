@@ -329,9 +329,9 @@ jQuery.iFisheye = {
 						var pointer = jQuery.iUtil.getPointer(e);
 						var toAdd = 0;
 						if (el.fisheyeCfg.halign && el.fisheyeCfg.halign == 'center')
-							var posx = pointer.x - el.fisheyeCfg.pos.x - (el.offsetWidth - el.fisheyeCfg.itemWidth * el.fisheyeCfg.items.size())/2 - el.fisheyeCfg.itemWidth/2;
+							var posx = pointer.x - el.fisheyeCfg.pos.x - (el.offsetWidth - el.fisheyeCfg.itemWidth * el.fisheyeCfg.items.length)/2 - el.fisheyeCfg.itemWidth/2;
 						else if (el.fisheyeCfg.halign && el.fisheyeCfg.halign == 'right')
-							var posx = pointer.x - el.fisheyeCfg.pos.x - el.offsetWidth + el.fisheyeCfg.itemWidth * el.fisheyeCfg.items.size();
+							var posx = pointer.x - el.fisheyeCfg.pos.x - el.offsetWidth + el.fisheyeCfg.itemWidth * el.fisheyeCfg.items.length;
 						else
 							var posx = pointer.x - el.fisheyeCfg.pos.x;
 						var posy = Math.pow(pointer.y - el.fisheyeCfg.pos.y - el.offsetHeight/2,2);
@@ -366,12 +366,12 @@ jQuery.iFisheye = {
 	{
 		if (el.fisheyeCfg.halign)
 			if (el.fisheyeCfg.halign == 'center')
-				el.fisheyeCfg.container.get(0).style.left = (el.offsetWidth - el.fisheyeCfg.itemWidth * el.fisheyeCfg.items.size())/2 - toAdd/2 + 'px';
+				el.fisheyeCfg.container.get(0).style.left = (el.offsetWidth - el.fisheyeCfg.itemWidth * el.fisheyeCfg.items.length)/2 - toAdd/2 + 'px';
 			else if (el.fisheyeCfg.halign == 'left')
-				el.fisheyeCfg.container.get(0).style.left =  - toAdd/el.fisheyeCfg.items.size() + 'px';
+				el.fisheyeCfg.container.get(0).style.left =  - toAdd/el.fisheyeCfg.items.length + 'px';
 			else if (el.fisheyeCfg.halign == 'right')
-				el.fisheyeCfg.container.get(0).style.left =  (el.offsetWidth - el.fisheyeCfg.itemWidth * el.fisheyeCfg.items.size()) - toAdd/2 + 'px';
-		el.fisheyeCfg.container.get(0).style.width = el.fisheyeCfg.itemWidth * el.fisheyeCfg.items.size() + toAdd + 'px';
+				el.fisheyeCfg.container.get(0).style.left =  (el.offsetWidth - el.fisheyeCfg.itemWidth * el.fisheyeCfg.items.length) - toAdd/2 + 'px';
+		el.fisheyeCfg.container.get(0).style.width = el.fisheyeCfg.itemWidth * el.fisheyeCfg.items.length + toAdd + 'px';
 	},
 
 	positionItems : function(el)

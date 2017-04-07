@@ -6,6 +6,7 @@ import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.contextmenu.ContextMenu;
 import org.primefaces.component.summaryrow.SummaryRow;
+import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.context.RequestContext;
 import org.primefaces.util.Constants;
 import java.util.List;
@@ -66,6 +67,7 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.component.datatable.TableState;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
@@ -117,11 +119,16 @@ import javax.faces.event.BehaviorEvent;
     public static final String SCROLLABLE_BODY_CLASS = "ui-datatable-scrollable-body";
     public static final String SCROLLABLE_FOOTER_CLASS = "ui-widget-header ui-datatable-scrollable-footer";
     public static final String SCROLLABLE_FOOTER_BOX_CLASS = "ui-datatable-scrollable-footer-box";
+    public static final String VIRTUALSCROLL_WRAPPER_CLASS = "ui-datatable-virtualscroll-wrapper";
+    public static final String VIRTUALSCROLL_TABLE_CLASS = "ui-datatable-virtualscroll-table";
     public static final String COLUMN_RESIZER_CLASS = "ui-column-resizer";
     public static final String RESIZABLE_CONTAINER_CLASS = "ui-datatable-resizable"; 
     public static final String SUBTABLE_HEADER = "ui-datatable-subtable-header"; 
     public static final String SUBTABLE_FOOTER = "ui-datatable-subtable-footer"; 
     public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
+    public static final String HEADER_ROW_CLASS = "ui-rowgroup-header ui-datatable-headerrow ui-widget-header";
+    public static final String ROW_GROUP_TOGGLER_CLASS = "ui-rowgroup-toggler";
+    public static final String ROW_GROUP_TOGGLER_ICON_CLASS = "ui-rowgroup-toggler-icon ui-icon ui-icon-circle-triangle-s";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
     public static final String STICKY_HEADER_CLASS = "ui-datatable-sticky";
     
@@ -130,6 +137,7 @@ import javax.faces.event.BehaviorEvent;
     public static final String SORT_LABEL = "primefaces.datatable.SORT_LABEL";
     public static final String SORT_ASC = "primefaces.datatable.SORT_ASC";
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
+    public final static String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
     
     public static final String MOBILE_CONTAINER_CLASS = "ui-datatable ui-shadow";
     public static final String MOBILE_TABLE_CLASS = "ui-responsive ui-table table-stripe";
@@ -159,6 +167,7 @@ import javax.faces.event.BehaviorEvent;
         put("rowUnselectCheckbox", UnselectEvent.class);
         put("rowDblselect", SelectEvent.class);
         put("rowToggle", ToggleEvent.class);
+        put("cellEditInit", CellEditEvent.class);
         put("cellEdit", CellEditEvent.class);
         put("rowReorder", ReorderEvent.class);
         put("swipeleft", SwipeEvent.class);
@@ -202,6 +211,10 @@ import javax.faces.event.BehaviorEvent;
 
     public boolean isCellEditCancelRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellEditCancel");
+    }
+
+    public boolean isCellEditInitRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellEditInit");
     }
 
     public boolean isClientCacheRequest(FacesContext context) {
@@ -378,7 +391,7 @@ import javax.faces.event.BehaviorEvent;
                 
                 wrapperEvent = new ToggleEvent(this, behaviorEvent.getBehavior(), visibility, getRowData());
             }
-            else if(eventName.equals("cellEdit")||eventName.equals("cellEditCancel")) {
+            else if(eventName.equals("cellEdit")||eventName.equals("cellEditCancel")||eventName.equals("cellEditInit")) {
                 String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
                 int rowIndex = Integer.parseInt(cellInfo[0]);
                 int cellIndex = Integer.parseInt(cellInfo[1]);
@@ -453,6 +466,10 @@ import javax.faces.event.BehaviorEvent;
     }
     
     public UIColumn findColumnInGroup(String clientId, ColumnGroup group) {
+        if(group == null) {
+            return null;
+        }
+        
         FacesContext context = this.getFacesContext();
         
         for(UIComponent row : group.getChildren()) {
@@ -516,16 +533,24 @@ import javax.faces.event.BehaviorEvent;
             
             calculateFirst();
             
+            FacesContext context = getFacesContext();
+            int first = getFirst();
+            
+            if(this.isClientCacheRequest(context)) {
+                Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+                first = Integer.valueOf(params.get(getClientId(context) + "_first")) + getRows();
+            }           
+            
             if(this.isMultiSort())
-                data = lazyModel.load(getFirst(), getRows(), getMultiSortMeta(), getFilters());
+                data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilters());
             else
-                data = lazyModel.load(getFirst(), getRows(),  resolveSortField(), convertSortOrder(), getFilters());
+                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilters());
             
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller for callback
-            if(this.isRequestSource(getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
+            if(this.isRequestSource(context) && (this.isPaginator() || this.isLiveScroll())) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {
@@ -623,21 +648,30 @@ import javax.faces.event.BehaviorEvent;
     }
     
     public String resolveDynamicField(ValueExpression expression) {
-        if(expression != null) {
-            String expressionString = expression.getExpressionString();
-            expressionString = expressionString.substring(expressionString.indexOf("[") + 1, expressionString.indexOf("]"));            
-            expressionString = "#{" + expressionString + "}";
-            
-            FacesContext context = getFacesContext();
-            ELContext eLContext = context.getELContext();
-            ValueExpression dynaVE = context.getApplication()
-                                    .getExpressionFactory().createValueExpression(eLContext, expressionString, String.class);
-
-            return (String) dynaVE.getValue(eLContext);
-        }
-        else {
+        
+        if (expression == null){
             return null;
         }
+        
+        FacesContext context = getFacesContext();
+        ELContext elContext = context.getELContext();
+        
+        String expressionString = expression.getExpressionString();
+        
+        // old syntax compatibility
+        // #{car[column.property]}
+        // new syntax is:
+        // #{column.property} or even a method call
+        if (expressionString.startsWith("#{" + getVar() + "[")) {
+            expressionString = expressionString.substring(expressionString.indexOf("[") + 1, expressionString.indexOf("]"));            
+            expressionString = "#{" + expressionString + "}";
+
+            ValueExpression dynaVE = context.getApplication()
+                                    .getExpressionFactory().createValueExpression(elContext, expressionString, String.class);
+            return (String) dynaVE.getValue(elContext);
+        }
+
+        return (String) expression.getValue(elContext);
     }
 
     public void clearLazyCache() {
@@ -693,6 +727,7 @@ import javax.faces.event.BehaviorEvent;
         this.setSortByVE(null);
         this.setSortColumn(null);
         this.setSortField(null);
+        this.setDefaultSort(true);
         this.clearMultiSortMeta();
     }
 
@@ -862,6 +897,16 @@ import javax.faces.event.BehaviorEvent;
         for(UIComponent kid : getChildren()) {
             if(kid.isRendered() && kid instanceof SummaryRow) {
                 return (SummaryRow) kid;
+            }
+        }
+
+        return null;
+    }
+
+    public HeaderRow getHeaderRow() {
+        for(UIComponent kid : getChildren()) {
+            if(kid.isRendered() && kid instanceof HeaderRow) {
+                return (HeaderRow) kid;
             }
         }
 
@@ -1180,6 +1225,17 @@ import javax.faces.event.BehaviorEvent;
     public MethodExpression getDefaultSortFunction() {
         return (MethodExpression) this.getStateHelper().get("defaultSortFunction");
     }
+
+    public void setDefaultSort(boolean defaultSort) {
+		this.getStateHelper().put("defaultSort", defaultSort);
+	}
+    public boolean isDefaultSort() {
+        Object value = this.getStateHelper().get("defaultSort");
+        if(value == null)
+            return true;
+        else
+            return (java.lang.Boolean) value;
+	}
     
     public Locale resolveDataLocale() {
         FacesContext context = this.getFacesContext();
@@ -1287,3 +1343,79 @@ import javax.faces.event.BehaviorEvent;
             this.setColumns(null);
         }
     }
+
+    public void restoreTableState() {
+        TableState ts = this.getTableState(false);
+        if(ts != null) {
+            if(this.isPaginator()) {
+                this.setFirst(ts.getFirst());
+                int rows = (ts.getRows() == 0) ? this.getRows() : ts.getRows();
+                this.setRows(rows);
+            }
+
+            this.setMultiSortMeta(ts.getMultiSortMeta());
+            this.setValueExpression("sortBy", ts.getSortBy());
+            this.setSortOrder(ts.getSortOrder());
+            this.setSortFunction(ts.getSortFunction());
+            this.setSortField(ts.getSortField());
+            this.setDefaultSort(false);
+            this.setDefaultSortByVE(ts.getDefaultSortBy());
+            this.setDefaultSortOrder(ts.getDefaultSortOrder());
+            this.setDefaultSortFunction(ts.getDefaultSortFunction());
+
+            if(this.isSelectionEnabled()) {
+                this.selectedRowKeys = ts.getRowKeys();
+            }
+
+            this.setFilterBy(ts.getFilters());
+            this.setGlobalFilter(ts.getGlobalFilterValue());
+        }
+    }
+
+    public TableState getTableState(boolean create) {
+        FacesContext fc = this.getFacesContext();
+        Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
+        Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
+        String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
+        TableState ts;
+
+        if(dtState == null) {
+            dtState = new HashMap<String,TableState>();
+            sessionMap.put(Constants.TABLE_STATE, dtState);
+        }
+
+        ts = dtState.get(stateKey);
+        if(ts == null && create) {
+            ts = new TableState();
+            dtState.put(stateKey, ts);
+        }
+
+        return ts;
+    }
+
+    public String getGroupedColumnIndexes() {
+        List<UIColumn> columns = this.getColumns();
+        int size = columns.size();
+        boolean hasIndex = false;
+        if(size > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for(int i = 0; i < size; i++) {
+                UIColumn column = columns.get(i);
+                if(column.isGroupRow()) {
+                    if(hasIndex) {
+                       sb.append(",");
+                    }
+
+                    sb.append(i);
+                    hasIndex = true;
+                }
+            }
+            sb.append("]");
+
+            return sb.toString();
+        }
+        return null;
+    }
+
+

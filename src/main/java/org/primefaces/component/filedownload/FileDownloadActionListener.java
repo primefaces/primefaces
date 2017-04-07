@@ -39,14 +39,17 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     private ValueExpression value;
 
     private ValueExpression contentDisposition;
+    
+    private ValueExpression monitorKey;
 
     public FileDownloadActionListener() {
 
     }
 
-    public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition) {
+    public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition, ValueExpression monitorKey) {
         this.value = value;
         this.contentDisposition = contentDisposition;
+        this.monitorKey = monitorKey;
     }
 
     public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
@@ -60,13 +63,14 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
         ExternalContext externalContext = facesContext.getExternalContext();
         String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";
-
+        String monitorKeyValue = monitorKey != null ? "_" + (String) monitorKey.getValue(elContext) : "";
+        
         InputStream inputStream = null;
 
         try {
             externalContext.setResponseContentType(content.getContentType());
             externalContext.setResponseHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
-            externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+            externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE + monitorKeyValue, "true", Collections.<String, Object>emptyMap());
             
             if(content.getContentLength() != null){
             	externalContext.setResponseContentLength(content.getContentLength().intValue());
@@ -114,13 +118,15 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
         value = (ValueExpression) values[0];
         contentDisposition = (ValueExpression) values[1];
+        monitorKey = (ValueExpression) values[2];
     }
 
     public Object saveState(FacesContext facesContext) {
-        Object values[] = new Object[2];
+        Object values[] = new Object[3];
 
         values[0] = value;
         values[1] = contentDisposition;
+        values[2] = monitorKey;
 
         return ((Object[]) values);
     }

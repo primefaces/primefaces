@@ -16,6 +16,7 @@
 package org.primefaces.component.selectcheckboxmenu;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -63,6 +64,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         styleclass = styleclass == null ? SelectCheckboxMenu.STYLE_CLASS : SelectCheckboxMenu.STYLE_CLASS + " " + styleclass;
         styleclass = menu.isDisabled() ? styleclass + " ui-state-disabled" : styleclass;
         styleclass = !valid ? styleclass + " ui-state-error" : styleclass;
+        styleclass = menu.isMultiple() ? SelectCheckboxMenu.MULTIPLE_CLASS + " " + styleclass : styleclass;
         
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
@@ -72,7 +74,13 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
-        encodeLabel(context, menu, selectItems, valid);
+        if(menu.isMultiple()) {
+            encodeMultipleLabel(context, menu, selectItems, valid);
+        }
+        else {
+            encodeLabel(context, menu, selectItems, valid);
+        }
+        
         encodeMenuIcon(context, menu, valid);
 
         writer.endElement("div");
@@ -172,6 +180,58 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("span");
     }
     
+    protected void encodeMultipleLabel(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, boolean valid) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Converter converter = menu.getConverter();
+        Object values = getValues(menu);
+        String listClass = menu.isDisabled() ? SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS;
+        listClass = valid ? listClass : listClass + " ui-state-error";
+
+        writer.startElement("ul", null);
+        writer.writeAttribute("class", listClass, null);
+        if(values != null) {
+            int length = Array.getLength(values);
+            for(int i = 0; i < length; i++) {
+                Object value = Array.get(values, i);
+                String itemValueAsString = getOptionAsString(context, menu, converter, value);
+                writer.startElement("li", null);
+                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_DISPLAY_CLASS, null);
+                writer.writeAttribute("data-item-value", itemValueAsString, null);
+                
+                writer.startElement("span", null);
+                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_LABEL_CLASS, null);
+                
+                SelectItem selectedItem = null;
+                for(SelectItem item : selectItems) {
+                    if(value.equals(item.getValue())) {
+                        selectedItem = item;
+                        break;
+                    }
+                }
+                
+                if(selectedItem != null && selectedItem.getLabel() != null) {
+                    if(selectedItem.isEscape())
+                        writer.writeText(selectedItem.getLabel(), null);
+                    else
+                        writer.write(selectedItem.getLabel());
+                } 
+                else {
+                    writer.writeText(value, null);
+                }
+                
+                writer.endElement("span");
+
+                writer.startElement("span", null);
+                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_ICON_CLASS, null);
+                writer.endElement("span");
+
+                writer.endElement("li");
+            }
+        }
+        
+        writer.endElement("ul");
+    }
+    
     protected void encodeMenuIcon(FacesContext context, SelectCheckboxMenu menu, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String iconClass = valid ? SelectCheckboxMenu.TRIGGER_CLASS : SelectCheckboxMenu.TRIGGER_CLASS + " ui-state-error";
@@ -196,6 +256,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
             .attr("showHeader", menu.isShowHeader(), true)
             .attr("updateLabel", menu.isUpdateLabel(), false)
+            .attr("multiple", menu.isMultiple(), false) 
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null);
         
         if(menu.isFilter()) {

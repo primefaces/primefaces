@@ -2,17 +2,17 @@
  * PrimeFaces Accordion Panel Widget
  */
 PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.stateHolder = $(this.jqId + '_active');
         this.headers = this.jq.children('.ui-accordion-header');
         this.panels = this.jq.children('.ui-accordion-content');
         this.cfg.rtl = this.jq.hasClass('ui-accordion-rtl');
         this.cfg.expandedIcon = 'ui-icon-triangle-1-s';
         this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
-        
+
         this.initActive();
         this.bindEvents();
 
@@ -20,24 +20,26 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             this.markLoadedPanels();
         }
     },
-            
-    initActive: function() {        
+
+    initActive: function() {
         if(this.cfg.multiple) {
-            var indexes = this.stateHolder.val().split(',');
-            for(var i = 0; i < indexes.length; i++) {
-                indexes[i] = parseInt(indexes[i]);
+            this.cfg.active = [];
+
+            if (this.stateHolder.val().length > 0) {
+                var indexes = this.stateHolder.val().split(',');
+                for(var i = 0; i < indexes.length; i++) {
+                    this.cfg.active.push(parseInt(indexes[i]));
+                }
             }
-            
-            this.cfg.active = indexes;
         }
         else {
             this.cfg.active = parseInt(this.stateHolder.val());
         }
     },
-        
+
     bindEvents: function() {
         var $this = this;
-    
+
         this.headers.mouseover(function() {
             var element = $(this);
             if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
@@ -48,7 +50,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
                 element.removeClass('ui-state-hover');
             }
-        }).click(function(e) {            
+        }).click(function(e) {
             var element = $(this);
             if(!element.hasClass('ui-state-disabled')) {
                 var tabIndex = element.index() / 2;
@@ -64,11 +66,11 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
             e.preventDefault();
         });
-        
+
         this.bindKeyEvents();
     },
-    
-    bindKeyEvents: function() {        
+
+    bindKeyEvents: function() {
         this.headers.on('focus.accordion', function(){
             $(this).addClass('ui-tabs-outline');
         })
@@ -82,10 +84,10 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
                 $(this).trigger('click');
                 e.preventDefault();
-            }       
+            }
         });
     },
-            
+
     markLoadedPanels: function() {
         if(this.cfg.multiple) {
             for(var i = 0; i < this.cfg.active.length; i++) {
@@ -97,7 +99,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 this.markAsLoaded(this.panels.eq(this.cfg.active));
         }
     },
-    
+
     /**
      *  Activates a tab with given index
      */
@@ -132,17 +134,17 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 this.show(panel);
-            
+
                 if(this.hasBehavior('tabChange')) {
                     this.fireTabChangeEvent(panel);
                 }
             }
-            
+
         }
 
         return true;
     },
-    
+
     /**
      *  Deactivates a tab with given index
      */
@@ -154,13 +156,13 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             this.hide(index);
-            
+
             if(this.hasBehavior('tabClose')) {
                 this.fireTabCloseEvent(index);
             }
         }
     },
-    
+
     show: function(panel) {
         var _self = this;
 
@@ -186,7 +188,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             _self.postTabShow(panel);
         });
     },
-    
+
     hide: function(index) {
         var _self = this,
         panel = this.panels.eq(index),
@@ -203,7 +205,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         this.removeFromSelection(index);
         this.saveState();
     },
-    
+
     loadDynamicTab: function(panel) {
         var $this = this,
         options = {
@@ -223,7 +225,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
                             if(this.cfg.cache) {
                                 this.markAsLoaded(panel);
-                            }   
+                            }
                         }
                     });
 
@@ -243,7 +245,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.ajax.AjaxRequest(options);
         }
     },
-    
+
     fireTabChangeEvent : function(panel) {
         var tabChangeBehavior = this.cfg.behaviors['tabChange'],
         ext = {
@@ -252,7 +254,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
             ]
         };
-        
+
         if(this.cfg.controlled) {
             var $this = this;
             ext.oncomplete = function(xhr, status, args) {
@@ -261,7 +263,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         }
-        
+
         tabChangeBehavior.call(this, ext);
     },
 
@@ -274,7 +276,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 {name: this.id + '_tabindex', value: parseInt(index / 2)}
             ]
         };
-        
+
         if(this.cfg.controlled) {
             var $this = this;
             ext.oncomplete = function(xhr, status, args) {
@@ -283,10 +285,10 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         }
-        
+
         tabCloseBehavior.call(this, ext);
     },
-    
+
     markAsLoaded: function(panel) {
         panel.data('loaded', true);
     },
@@ -312,7 +314,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             return r != nodeId;
         });
     },
-    
+
     saveState: function() {
         if(this.cfg.multiple)
             this.stateHolder.val(this.cfg.active.join(','));
@@ -320,7 +322,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             this.stateHolder.val(this.cfg.active);
     },
 
-    postTabShow: function(newPanel) {            
+    postTabShow: function(newPanel) {
         //Call user onTabShow callback
         if(this.cfg.onTabShow) {
             this.cfg.onTabShow.call(this, newPanel);
@@ -328,5 +330,5 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.invokeDeferredRenders(this.id);
     }
-    
-});   
+
+});

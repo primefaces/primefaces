@@ -65,17 +65,17 @@ public abstract class Exporter {
     public abstract void export(FacesContext facesContext, DataTable table,
 			String outputFileName, boolean pageOnly, boolean selectionOnly,
 			String encodingType, MethodExpression preProcessor,
-			MethodExpression postProcessor) throws IOException;
+			MethodExpression postProcessor, ExporterOptions options) throws IOException;
 
     public abstract void export(FacesContext facesContext, List<String> clientIds,
 			String outputFileName, boolean pageOnly, boolean selectionOnly,
 			String encodingType, MethodExpression preProcessor,
-			MethodExpression postProcessor) throws IOException;
+			MethodExpression postProcessor, ExporterOptions options) throws IOException;
     
     public abstract void export(FacesContext facesContext,
 			String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
 			String encodingType, MethodExpression preProcessor,
-			MethodExpression postProcessor) throws IOException;
+			MethodExpression postProcessor, ExporterOptions options) throws IOException;
 	
 	protected List<UIColumn> getColumnsToExport(UIData table) {
         List<UIColumn> columns = new ArrayList<UIColumn>();

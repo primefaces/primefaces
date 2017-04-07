@@ -1,4 +1,3 @@
-import org.primefaces.model.TreeTableModel;
 import org.primefaces.model.TreeNode;
 import javax.faces.model.DataModel;
 import javax.faces.event.FacesEvent;
@@ -21,6 +20,8 @@ import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import javax.el.ELContext;
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -35,6 +36,7 @@ import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.component.api.UIData;
 
 	public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
     public final static String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
@@ -104,6 +106,10 @@ import javax.faces.event.BehaviorEvent;
 
     public boolean isSortRequest(FacesContext context) {
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_sorting");
+	}
+
+    public boolean isPaginationRequest(FacesContext context) {
+		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_pagination");
 	}
 
     public boolean isRowEditRequest(FacesContext context) {
@@ -405,5 +411,88 @@ import javax.faces.event.BehaviorEvent;
         }
  
         super.validateSelection(context);
+    }
+
+    public int getRowCount() {
+        TreeNode root = this.getValue();
+        if (root == null) {
+            return (-1);
+        }
+        else {
+            List<TreeNode> children = root.getChildren();
+            return children == null ? -1 : children.size();
+        }
+    }
+
+    public int getPage() {
+        if(this.getRowCount() > 0) {
+            int rows = this.getRowsToRender();
+        
+            if(rows > 0) {
+                int first = this.getFirst();
+
+                return (int) (first / rows);
+            } 
+            else {
+                return 0;
+            }
+        }
+        else {
+            return 0;
+        }
+    }
+
+    public int getRowsToRender() {
+        int rows = this.getRows();
+        
+        return rows == 0 ? this.getRowCount() : rows;
+    }
+
+    public int getPageCount() {
+        return (int) Math.ceil(this.getRowCount() * 1d / this.getRowsToRender());
+    }
+
+    public UIComponent getHeader() {
+        return getFacet("header");
+
+    }
+
+    public UIComponent getFooter() {
+        return getFacet("footer");
+    }
+
+    public void calculateFirst() {
+        int rows = this.getRows();
+        
+        if(rows > 0) {
+            int first = this.getFirst();
+            int rowCount = this.getRowCount();
+            
+            if(rowCount > 0 && first >= rowCount) {
+                int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
+                
+                this.setFirst(Math.max((numberOfPages-1) * rows, 0));
+            }
+        }
+    }
+
+    public void updatePaginationData(FacesContext context) {
+        String componentClientId = this.getClientId(context);
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        ELContext elContext = context.getELContext();
+        
+		String firstParam = params.get(componentClientId + "_first");
+		String rowsParam = params.get(componentClientId + "_rows");
+
+		this.setFirst(Integer.valueOf(firstParam));
+		this.setRows(Integer.valueOf(rowsParam));
+        
+        ValueExpression firstVe = this.getValueExpression("first");
+        ValueExpression rowsVe = this.getValueExpression("rows");
+
+        if(firstVe != null && !firstVe.isReadOnly(elContext))
+            firstVe.setValue(context.getELContext(), this.getFirst());
+        if(rowsVe != null && !rowsVe.isReadOnly(elContext))
+            rowsVe.setValue(context.getELContext(), this.getRows());
     }
 

@@ -15,6 +15,7 @@
  */
 package org.primefaces.component.export;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collections;
@@ -26,9 +27,16 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -42,8 +50,11 @@ import org.primefaces.util.Constants;
 
 public class ExcelExporter extends Exporter {
 
+    private CellStyle cellStyle;
+    private CellStyle facetStyle;
+
     @Override
-    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
         Workbook wb = createWorkBook();
         String sheetName = getSheetName(context, table);
         if(sheetName == null) {
@@ -60,24 +71,29 @@ public class ExcelExporter extends Exporter {
     	if(preProcessor != null) {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
-
+        
+        applyOptions(wb, table, sheet, options);
         exportTable(context, table, sheet, pageOnly, selectionOnly);
+        
+        for (int i = 0; i < table.getColumnsCount(); i++) {
+            sheet.autoSizeColumn((short) i);
+        }
             	
     	if(postProcessor != null) {
     		postProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
-    	
+        
     	writeExcelToResponse(context.getExternalContext(), wb, filename);
     }
     
     @Override
-    public void export(FacesContext context, String filename, List<DataTable> tables, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+    public void export(FacesContext context, String filename, List<DataTable> tables, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
         Workbook wb = createWorkBook();
 
     	if(preProcessor != null) {
     		preProcessor.invoke(context.getELContext(), new Object[]{wb});
     	}
-
+        
         for(int i = 0; i < tables.size(); i++) {
             DataTable table = tables.get(i);
             String sheetName = getSheetName(context, table);
@@ -91,7 +107,12 @@ public class ExcelExporter extends Exporter {
             }
             
             Sheet sheet = wb.createSheet(sheetName);
+            applyOptions(wb, table, sheet, options);
             exportTable(context, table, sheet, pageOnly, selectionOnly);
+            
+            for (int j = 0; j < table.getColumnsCount(); j++) {
+                sheet.autoSizeColumn((short) j);
+            }
         }
             	
     	if(postProcessor != null) {
@@ -102,7 +123,7 @@ public class ExcelExporter extends Exporter {
     }
 
     @Override
-	public void export(FacesContext context, List<String> clientIds, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {    	
+	public void export(FacesContext context, List<String> clientIds, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {    	
     	Workbook wb = createWorkBook();
         
         if(preProcessor != null) {
@@ -183,6 +204,10 @@ public class ExcelExporter extends Exporter {
         Cell cell = row.createCell(cellIndex);
 
         cell.setCellValue(createRichTextString(value));
+        
+        if(facetStyle != null) {
+            cell.setCellStyle(facetStyle);
+        }
     }
     
     protected void addColumnValue(Row row, List<UIComponent> components, UIColumn column) {
@@ -206,6 +231,10 @@ public class ExcelExporter extends Exporter {
         
             cell.setCellValue(createRichTextString(builder.toString()));
         }
+        
+        if(cellStyle != null) {
+            cell.setCellStyle(cellStyle);
+        }
     }
     
     protected RichTextString createRichTextString(String value) {
@@ -225,8 +254,7 @@ public class ExcelExporter extends Exporter {
     	externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
 
         OutputStream out = externalContext.getResponseOutputStream();
-        generatedExcel.write(out);
-        externalContext.responseFlushBuffer();        
+        generatedExcel.write(out);  
     }
 
     protected String getContentType() {
@@ -234,7 +262,7 @@ public class ExcelExporter extends Exporter {
     }
     
     protected String getContentDisposition(String filename) {
-        return "attachment;filename="+ filename + ".xls";
+        return "attachment;filename=\""+ filename + ".xls\"";
     }
     
     public void exportTable(FacesContext context, DataTable table, Sheet sheet, boolean pageOnly, boolean selectionOnly) {
@@ -255,5 +283,94 @@ public class ExcelExporter extends Exporter {
         }
     	
     	table.setRowIndex(-1);
+    }
+
+    protected void applyOptions(Workbook wb, DataTable table, Sheet sheet, ExporterOptions options) {
+        facetStyle = wb.createCellStyle();
+        facetStyle.setAlignment((short)CellStyle.ALIGN_CENTER);
+        facetStyle.setVerticalAlignment((short)CellStyle.VERTICAL_CENTER);
+        facetStyle.setWrapText(true);
+        applyFacetOptions(wb, options, facetStyle);
+        
+        cellStyle = wb.createCellStyle();
+        cellStyle.setAlignment((short)CellStyle.ALIGN_LEFT);
+        applyCellOptions(wb, options, cellStyle);
+
+        PrintSetup printSetup = sheet.getPrintSetup();
+        printSetup.setLandscape(true);
+        printSetup.setPaperSize(PrintSetup.A4_PAPERSIZE);
+        sheet.setPrintGridlines(true);
+    }
+
+    protected void applyFacetOptions(Workbook wb, ExporterOptions options, CellStyle facetStyle) {
+        Font facetFont = wb.createFont();
+        
+        if(options != null) {
+            String facetFontStyle = options.getFacetFontStyle();
+            if(facetFontStyle != null) {
+                if(facetFontStyle.equalsIgnoreCase("BOLD")) {
+                    facetFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                }
+                if(facetFontStyle.equalsIgnoreCase("ITALIC")) {
+                    facetFont.setItalic(true);
+                }
+            }
+
+            HSSFPalette palette = ((HSSFWorkbook)wb).getCustomPalette();
+            Color color = null;
+
+            String facetBackground = options.getFacetBgColor();
+            if (facetBackground != null) {
+                color = Color.decode(facetBackground);
+                HSSFColor backgroundColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
+                ((HSSFCellStyle) facetStyle).setFillForegroundColor(backgroundColor.getIndex());
+                facetStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            }
+
+            String facetFontColor = options.getFacetFontColor();
+            if (facetFontColor != null) {
+                color = Color.decode(facetFontColor);
+                HSSFColor facetColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
+                ((HSSFFont) facetFont).setColor(facetColor.getIndex());
+            }
+
+            String facetFontSize = options.getFacetFontSize();
+            if (facetFontSize != null) {
+                facetFont.setFontHeightInPoints(Short.valueOf(facetFontSize));
+            }
+        }
+        
+        facetStyle.setFont(facetFont);
+    }
+ 
+    protected void applyCellOptions(Workbook wb, ExporterOptions options, CellStyle cellStyle) { 
+        Font cellFont = wb.createFont();
+        
+        if(options != null) {
+            String cellFontColor = options.getCellFontColor();
+            if (cellFontColor != null) {
+                HSSFPalette palette = ((HSSFWorkbook)wb).getCustomPalette();
+                Color color = Color.decode(cellFontColor);
+                HSSFColor cellColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
+                ((HSSFFont) cellFont).setColor(cellColor.getIndex());
+            }
+
+            String cellFontSize = options.getCellFontSize();
+            if (cellFontSize != null) {
+                cellFont.setFontHeightInPoints(Short.valueOf(cellFontSize));
+            }
+
+            String cellFontStyle = options.getCellFontStyle();
+            if(cellFontStyle != null) {
+                if(cellFontStyle.equalsIgnoreCase("BOLD")) {
+                    cellFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                }
+                if(cellFontStyle.equalsIgnoreCase("ITALIC")) {
+                    cellFont.setItalic(true);
+                }
+            }
+        }
+        
+        cellStyle.setFont(cellFont);
     }
 }

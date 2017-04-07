@@ -310,6 +310,24 @@
             <defaultValue>true</defaultValue>
             <description>Whether to show the "Current Date" button if showButtonPanel is rendered. Default is "true".</description>
 		</attribute>
+        <attribute>
+            <name>buttonTabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of the button in the tabbing order.</description>
+        </attribute>
+        <attribute>
+            <name>inputStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the input element. Used when mode is popup.</description>
+        </attribute>
+        <attribute>
+            <name>inputStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the input element. Used when mode is popup.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

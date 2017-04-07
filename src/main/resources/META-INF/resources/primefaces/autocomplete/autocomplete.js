@@ -500,7 +500,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.itemtip.hide();
         }
         else {
-            var content = item.is('li') ? item.next('.ui-autocomplete-itemtip-content') : item.children('td:last');
+            var content;
+            if(item.is('li')) {
+                content = item.next('.ui-autocomplete-itemtip-content');
+            } else {
+                if(item.children('td:last').hasClass('ui-autocomplete-itemtip-content')) {
+                    content = item.children('td:last');
+                } else {
+                    this.itemtip.hide();
+                    return;
+                }
+            }
 
             this.itemtip.html(content.html())
                         .css({
@@ -575,7 +585,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
             //show itemtip if defined
-            if(this.cfg.itemtip && firstItem.length === 1) {
+            if(this.cfg.autoHighlight && this.cfg.itemtip && firstItem.length === 1) {
                 this.showItemtip(firstItem);
             }
             
@@ -761,7 +771,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             
             for(var i = 0; i < $this.currentItems.length; i++) {
-                if($this.currentItems[i] === value) {
+                var stripedItem = $this.currentItems[i].replace(/\r?\n/g, '');
+                if(stripedItem === value) {
                     valid = true;
                     break;
                 }

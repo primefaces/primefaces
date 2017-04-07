@@ -27,7 +27,7 @@ import org.primefaces.expression.SearchExpressionResolver;
  */
 public class PreviousExpressionResolver implements SearchExpressionResolver {
 
-	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
+	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
 		UIComponent parent = last.getParent();
 
 		if (parent.getChildCount() > 1) {
@@ -37,7 +37,7 @@ public class PreviousExpressionResolver implements SearchExpressionResolver {
 			if (index > 0)
 			{
 				return children.get(index - 1);
-			}			
+			}
 		}
 
 		return null;

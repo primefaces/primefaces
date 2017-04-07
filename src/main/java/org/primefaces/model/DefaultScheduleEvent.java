@@ -29,6 +29,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 	private Object data;
     private boolean editable = true;
     private String description;
+    private String url;
 
 	public DefaultScheduleEvent() {}
 	
@@ -130,7 +131,15 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

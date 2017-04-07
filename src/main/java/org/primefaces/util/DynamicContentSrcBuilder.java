@@ -18,10 +18,14 @@ package org.primefaces.util;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.URLEncoder;
-import java.util.HashMap;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
@@ -30,12 +34,13 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.xml.bind.DatatypeConverter;
 import org.primefaces.application.resource.DynamicContentType;
+import org.primefaces.context.RequestContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
 
-public class DynamicResourceBuilder {
+public class DynamicContentSrcBuilder {
     
-    private static final String SB_BUILD = DynamicResourceBuilder.class.getName() + "#build";
+    private static final String SB_BUILD = DynamicContentSrcBuilder.class.getName() + "#build";
     
     public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type, boolean stream)
             throws UnsupportedEncodingException {
@@ -55,18 +60,24 @@ public class DynamicResourceBuilder {
                 Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
                 String resourcePath = resource.getRequestPath();
 
-                ValueExpression expression = ValueExpressionAnalyzer.getExpression(context.getELContext(), component.getValueExpression("value"));
-                String sessionKey = UUID.randomUUID().toString();
                 Map<String,Object> session = context.getExternalContext().getSessionMap();
                 Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
                 if(dynamicResourcesMapping == null) {
-                    dynamicResourcesMapping = new HashMap<String, String>();
+                    dynamicResourcesMapping = new LimitedSizeHashMap<String, String>(200);
                     session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
                 }
-                dynamicResourcesMapping.put(sessionKey, expression.getExpressionString());
+                
+                ValueExpression expression = ValueExpressionAnalyzer.getExpression(
+                        context.getELContext(), component.getValueExpression("value"));
+                
+                String expressionString = expression.getExpressionString();
+                String resourceKey = md5(expressionString);
+                
+                dynamicResourcesMapping.put(resourceKey, expressionString);
+                
                 StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
-
-                builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(sessionKey, "UTF-8"))
+                builder.append(resourcePath)
+                        .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, "UTF-8"))
                         .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
 
                 for (UIComponent kid : component.getChildren()) {
@@ -123,5 +134,20 @@ public class DynamicResourceBuilder {
         catch (Exception e) {
             throw new FacesException("Could not read InputStream to byte[]", e);
         }
+    }
+    
+    private static String md5(String input) {
+
+        MessageDigest messageDigest;
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+        }
+        catch (NoSuchAlgorithmException ex) {
+            throw new FacesException(ex);
+        }
+
+        byte[] bytes = messageDigest.digest(input.getBytes());
+
+        return new BigInteger(1, bytes).toString(16);
     }
 }
