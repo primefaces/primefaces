@@ -67,7 +67,10 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
 
             if(!metaKey) {
                 element.removeClass('ui-state-hover').addClass('ui-state-highlight')
-                .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
+                .siblings('.ui-state-highlight').each(function() {
+                	$(this).removeClass('ui-state-highlight');
+                	$this.fireItemUnselectEvent($(this));
+                });
         
                 $this.fireItemSelectEvent(element, e);
             }
@@ -99,6 +102,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         ui.item.removeClass('ui-state-highlight');
         this.saveState();
         this.fireReorderEvent();
+        this.fireItemUnselectEvent(ui.item);
     },
     
     saveState: function() {
