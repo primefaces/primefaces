@@ -837,10 +837,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 case 16: //shift
                 case 17: //keyCode.CONTROL:
                 case 18: //keyCode.ALT:
+                case 19: //Pause/Break:
+                case 20: //capslock:
+                case 44: //Print Screen:
+                case 45: //Insert:
                 case 91: //left window or cmd:
                 case 92: //right window:
                 case 93: //right cmd:
-                case 20: //capslock:
+                case 144: //num lock:
+                case 145: //scroll lock:
                 break;
 
                 default:
