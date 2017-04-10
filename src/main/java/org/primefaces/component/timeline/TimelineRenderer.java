@@ -161,8 +161,8 @@ public class TimelineRenderer extends CoreRenderer {
         writer.write(",snapEvents:" + timeline.isSnapEvents());
         writer.write(",stackEvents:" + timeline.isStackEvents());
 
+        writer.write(",showCurrentTime:" + timeline.isShowCurrentTime());
         if (timeline.isShowCurrentTime()) {
-            writer.write(",showCurrentTime:" + timeline.isShowCurrentTime());
             writer.write(",currentTime:"
                     + encodeDate(browserTZ, targetTZ, Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime()));
         }
