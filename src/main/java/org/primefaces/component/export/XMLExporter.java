@@ -58,8 +58,6 @@ public class XMLExporter extends Exporter {
             	
         writer.flush();
         writer.close();
-        
-        externalContext.responseFlushBuffer();
 	}
     
     @Override
