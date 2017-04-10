@@ -57,8 +57,6 @@ public class CSVExporter extends Exporter {
             	        
         writer.flush();
         writer.close();
-        
-        externalContext.responseFlushBuffer();
 	}
     
     @Override
