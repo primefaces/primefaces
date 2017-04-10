@@ -16,13 +16,6 @@
 package org.primefaces.component.timeline;
 
 import java.io.IOException;
-import org.primefaces.context.RequestContext;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +24,14 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
+
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.util.ComponentUtils;
@@ -40,7 +41,9 @@ import org.primefaces.util.FastStringWriter;
 public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseListener {
 
 	private static final long serialVersionUID = 20130317L;
-
+	
+	private static final String PREVENT_RENDER = Boolean.TRUE.toString();
+	
 	private static final Logger LOG = Logger.getLogger(DefaultTimelineUpdater.class.getName());
 
 	private String widgetVar;
@@ -117,6 +120,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 		TimeZone browserTZ = ComponentUtils.resolveTimeZone(timeline.getBrowserTimeZone());
         
         try {
+    		boolean renderComponent = false;
             for (CrudOperationData crudOperationData : crudOperationDatas) {
                 switch (crudOperationData.getCrudOperation()) {
                     case ADD:
@@ -126,7 +130,8 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append("').addEvent(");
                         sb.append(timelineRenderer.encodeEvent(fc, fsw, fswHtml, timeline, browserTZ, targetTZ,
                                 groups, groupFacet, groupsContent, crudOperationData.getEvent()));
-                        sb.append(")");
+                        sb.append(", "+PREVENT_RENDER+")");
+                        renderComponent = true;
                         break;
 
                     case UPDATE:
@@ -138,7 +143,8 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(",");
                         sb.append(timelineRenderer.encodeEvent(fc, fsw, fswHtml, timeline, browserTZ, targetTZ,
                                 groups, groupFacet, groupsContent, crudOperationData.getEvent()));
-                        sb.append(")");
+                        sb.append(", "+PREVENT_RENDER+")");
+                        renderComponent = true;
                         break;
 
                     case DELETE:
@@ -147,7 +153,8 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(widgetVar);
                         sb.append("').deleteEvent(");
                         sb.append(crudOperationData.getIndex());
-                        sb.append(")");
+                        sb.append(", "+PREVENT_RENDER+")");
+                        renderComponent = true;
                         break;
 
                     case SELECT:
@@ -166,6 +173,12 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append("').deleteAllEvents()");
                         break;
                 }
+            }
+            
+            if(renderComponent){
+            	sb.append(";PF('");
+	            sb.append(widgetVar);
+	            sb.append("').render()");
             }
             
             // execute JS script

@@ -887,7 +887,8 @@ links.Timeline.prototype.render = function(options) {
     if (needsReflow) {
         var renderTimesLeft = options ? options.renderTimesLeft : undefined;
         if (renderTimesLeft == undefined) {
-            renderTimesLeft = 5;
+        	//renderTimesLeft = 5 No need to render 5 times the same
+            renderTimesLeft = 1;
         }
         if (renderTimesLeft > 0) {
             this.render({

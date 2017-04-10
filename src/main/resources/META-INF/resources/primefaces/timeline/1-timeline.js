@@ -555,24 +555,35 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     /**
+     * Force render the timeline component 
+     * 
+     * @param animate flag to animate the render action (optional)
+     */
+    render: function (animate) {
+        this.instance.render({'animate': animate});
+    },
+    
+    /**
      * Adds an event to the timeline. The provided parameter properties is an object, containing parameters
      * "start" (Date), "end" (Date), "content" (String), "group" (String). Parameters "end" and "group" are optional. 
      * 
      * @param properties event's properties
+     * @param preventRender flag indicating whether to preventRendering or not (optional)
      */
-    addEvent: function (properties) {
-        this.instance.addItem(properties);
+    addEvent: function (properties, preventRender) {
+        this.instance.addItem(properties, preventRender);
     },
-    
+        
     /**
      * Changes properties of an existing item in the timeline. The provided parameter properties is an object,
      * and can contain parameters "start" (Date), "end" (Date), "content" (String), "group" (String).
      * 
      * @param index index of the event. 
      * @param properties event's properties
+     * @param preventRender flag indicating whether to preventRendering or not (optional)
      */
-    changeEvent: function (index, properties) {
-        this.instance.changeItem(index, properties);
+    changeEvent: function (index, properties, preventRender) {
+        this.instance.changeItem(index, properties, preventRender);
     },
     
     /**
@@ -580,6 +591,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * 
      * @param index index of the event. 
      * @param preventRender optional boolean parameter to prevent re-render timeline immediately after delete
+     * @param preventRender flag indicating whether to preventRendering or not (optional)
      *        (for multiple deletions). Default is false.
      */
     deleteEvent: function (index, preventRender) {
