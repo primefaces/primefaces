@@ -1376,7 +1376,8 @@ import org.primefaces.component.datatable.TableState;
         FacesContext fc = this.getFacesContext();
         Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
         Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
-        String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
+        String viewId = fc.getViewRoot().getViewId().replaceFirst("^/*", "");
+        String stateKey = viewId + "_" + this.getClientId(fc);
         TableState ts;
 
         if(dtState == null) {
