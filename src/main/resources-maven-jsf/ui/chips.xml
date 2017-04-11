@@ -38,6 +38,18 @@
             <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Maximum number of entries allowed.</description>
         </attribute>
+        <attribute>
+            <name>inputStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the input control.</description>
+        </attribute>
+        <attribute>
+            <name>inputStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the input control.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
