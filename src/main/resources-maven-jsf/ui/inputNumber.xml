@@ -33,21 +33,21 @@
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>text</defaultValue>
-            <description>Input field type. Default is text.</description>
+            <description>Input field type. Valid values are "text"(default), "tel" and "hidden".</description>
         </attribute>
         <attribute>
             <name>decimalSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>.</defaultValue>
-            <description>Decimal separator char. Default is '.'.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Decimal separator char. Default is taken from the view's locale.</description>
         </attribute>
         <attribute>
             <name>thousandSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>,</defaultValue>
-            <description>Thousand separator char. Default is ','.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Thousand separator char. Default is taken from the view's locale.</description>
         </attribute>
         <attribute>
             <name>symbol</name>
@@ -110,6 +110,13 @@
             <type>java.lang.String</type>
             <description>Style class of the input element.</description>
         </attribute>
+        <attribute>
+			<name>padControl</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Controls padding of the decimal places. If true, always pads the decimal with zeros.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

@@ -223,6 +223,13 @@
 			<defaultValue>false</defaultValue>
             <description>In responsive mode, component adjusts itself based on screen width.</description>
 		</attribute>
+        <attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>0</defaultValue>
+            <description>Position of the element in the tabbing order.</description>
+		</attribute>
 	</attributes>
 	    <resources>
         <resource>

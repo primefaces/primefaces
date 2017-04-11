@@ -27,11 +27,11 @@ import org.primefaces.expression.SearchExpressionResolver;
  */
 public class RootExpressionResolver implements SearchExpressionResolver, ClientIdSearchExpressionResolver {
 
-	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
+	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         return context.getViewRoot();
 	}
 
-    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression) {
+    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         return SearchExpressionConstants.ALL_KEYWORD;
     }
 }

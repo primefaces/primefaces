@@ -37,9 +37,10 @@
 }
 
 .ui-treetable .ui-treetable-toggler {
-    float: left;
-    margin-top: -2px;
+    display: inline-block;
+    vertical-align: middle;
     cursor: pointer;
+    margin-top: -5px;
 }
 
 .ui-treetable .ui-treetable-data tr.ui-state-highlight,
@@ -202,6 +203,15 @@
 }
 
 /* InCell Editing */
+.ui-treetable .ui-editable-column .ui-cell-editor {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ui-treetable .ui-editable-column .ui-treetable-toggler {
+    margin-top: 0px;
+}
+
 .ui-treetable .ui-cell-editor-input {
     display: none;
 }

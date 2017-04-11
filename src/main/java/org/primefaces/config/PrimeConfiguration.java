@@ -61,6 +61,7 @@ public class PrimeConfiguration {
     private boolean beanValidationAvailable = false;
     private boolean stringConverterAvailable = false;
     private boolean el22Available = false;
+    private boolean jsf23 = false;
     private boolean jsf22 = false;
     private boolean jsf21 = false;
     private boolean bv11 = false;
@@ -87,14 +88,19 @@ public class PrimeConfiguration {
         el22Available = checkIfEL22IsAvailable();
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
-        jsf22 = detectJSF22();
-        if (jsf22) {
+        jsf23 = detectJSF23();
+        if (jsf23) {
+            jsf22 = true;
             jsf21 = true;
+        } else {
+            jsf22 = detectJSF22();
+            if (jsf22) {
+                jsf21 = true;
+            } else {
+                jsf21 = detectJSF21();
+            }
         }
-        else {
-            jsf21 = detectJSF21();
-        }
-        
+
         bv11 = detectBV11();
 
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
@@ -137,10 +143,10 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
         legacyWidgetNamespace = (value == null) ? false : Boolean.valueOf(value);
-    
+
         value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
         beanValidationDisabled = (value == null) ? false : Boolean.valueOf(value);
-        
+
         value = externalContext.getInitParameter(Constants.ContextParams.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES);
         interpolateClientSideValidationMessages = (value == null) ? false : Boolean.valueOf(value);
 
@@ -221,7 +227,7 @@ public class PrimeConfiguration {
 
         return available && !beanValidationDisabled && el22Available;
     }
-    
+
     private boolean checkIfEL22IsAvailable() {
     	boolean available;
 
@@ -232,6 +238,24 @@ public class PrimeConfiguration {
         }
 
         return available;
+    }
+
+    private boolean detectJSF23() {
+        String version = FacesContext.class.getPackage().getImplementationVersion();
+
+        if(version != null) {
+            return version.startsWith("2.3");
+        }
+        else {
+            //fallback
+            try {
+                Class.forName("javax.faces.component.UIImportConstants");
+                return true;
+            }
+            catch (ClassNotFoundException ex) {
+                return false;
+            }
+        }
     }
 
     private boolean detectJSF22() {
@@ -278,9 +302,9 @@ public class PrimeConfiguration {
         }
         catch (ClassNotFoundException ex) {
             return false;
-        }        
+        }
     }
-    
+
     protected void initConfigFromWebXml(FacesContext context) {
         errorPages = WebXmlParser.getErrorPages(context);
         if (errorPages == null) {
@@ -295,8 +319,8 @@ public class PrimeConfiguration {
     public boolean isBeanValidationAvailable() {
         return beanValidationAvailable;
     }
-    
-    public boolean isEL22Available() {
+
+    public boolean isAtLeastEL22() {
         return el22Available;
     }
 
@@ -314,6 +338,10 @@ public class PrimeConfiguration {
 
     public String getSecretKey() {
         return secretKey;
+    }
+
+    public boolean isAtLeastJSF23() {
+        return jsf23;
     }
 
     public boolean isAtLeastJSF22() {

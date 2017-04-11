@@ -117,7 +117,7 @@ import javax.faces.event.BehaviorEvent;
         FacesContext facesContext = getFacesContext();
         ELContext eLContext = facesContext.getELContext();
         
-        ValueExpression collapsedVE = this.getValueExpression("collapsed");
+        ValueExpression collapsedVE = this.getValueExpression(PropertyKeys.collapsed.toString());
         if(collapsedVE != null && !collapsedVE.isReadOnly(eLContext)) {
             collapsedVE.setValue(eLContext, this.isCollapsed());
             getStateHelper().put(Panel.PropertyKeys.collapsed, null);

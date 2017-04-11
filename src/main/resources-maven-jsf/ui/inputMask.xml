@@ -31,12 +31,6 @@
 			<type>java.lang.String</type>
             <description>Mask template. Required.</description>
 		</attribute>
-		<attribute>
-			<name>placeHolder</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>PlaceHolder in mask template. (Deprecated: Use slotChar insted)</description>
-		</attribute>
         <attribute>
 			<name>slotChar</name>
 			<required>false</required>

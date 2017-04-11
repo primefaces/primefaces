@@ -25,6 +25,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmDialogRenderer extends CoreRenderer {
@@ -91,6 +92,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         
         //title
         writer.startElement("span", null);
+        writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
         writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
         
         if(headerFacet != null)
@@ -101,9 +103,14 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.endElement("span");
         
         if(dialog.isClosable()){
+            String ariaLabel = MessageFactory.getMessage(Dialog.ARIA_CLOSE, null);
+            
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("class", Dialog.TITLE_BAR_CLOSE_CLASS, null);
+            if(ariaLabel != null) {
+                writer.writeAttribute("aria-label", ariaLabel, null);
+            }
 
             writer.startElement("span", null);
             writer.writeAttribute("class", Dialog.CLOSE_ICON_CLASS, null);

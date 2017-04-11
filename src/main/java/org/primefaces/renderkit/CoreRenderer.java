@@ -453,7 +453,13 @@ public abstract class CoreRenderer extends Renderer {
 
             request.append(");return false;");
         }
+        
+        if(!submit && !params.isEmpty()) {
+            request.append(";");
+        }
 
+        request.append("PrimeFaces.onPost();");
+        
 		return request.toString();
 	}
 
@@ -632,7 +638,7 @@ public abstract class CoreRenderer extends Renderer {
         Object requiredMessage = attrs.get("requiredMessage");
         Object validatorMessage = attrs.get("validatorMessage");
         Object converterMessage = attrs.get("converterMessage");
-        List<String> validatorIds = new ArrayList<String>();
+        List<String> validatorIds = null;
         String highlighter = getHighlighter();
 
         RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -663,6 +669,9 @@ public abstract class CoreRenderer extends Renderer {
                     renderValidationMetadataMap(context, beanValidationMetadata.getAttributes());
                 }
                 if (beanValidationMetadata.getValidatorIds() != null) {
+                    if (validatorIds == null) {
+                        validatorIds = new ArrayList<String>();
+                    }
                     validatorIds.addAll(beanValidationMetadata.getValidatorIds());
                 }
             }
@@ -679,6 +688,9 @@ public abstract class CoreRenderer extends Renderer {
             for (Validator validator : validators) {
                 if(validator instanceof ClientValidator) {
                     ClientValidator clientValidator = (ClientValidator) validator;
+                    if (validatorIds == null) {
+                        validatorIds = new ArrayList<String>();
+                    }
                     validatorIds.add(clientValidator.getValidatorId());
                     Map<String,Object> metadata = clientValidator.getMetadata();
 

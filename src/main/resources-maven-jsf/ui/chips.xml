@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+<!ENTITY html_input_text_attributes				SYSTEM "../entities/html_input_text_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>chips</tag>
+    <tagClass>org.primefaces.component.chips.ChipsTag</tagClass>
+    <componentClass>org.primefaces.component.chips.Chips</componentClass>
+    <componentType>org.primefaces.component.Chips</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.ChipsRenderer</rendererType>
+    <rendererClass>org.primefaces.component.chips.ChipsRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlInputText</parent>
+    <description>Chips is used to enter multiple values on an inputfield.</description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.InputHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.MixedClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &input_component_attributes;
+        &html_input_text_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>max</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Maximum number of entries allowed.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+			<name>components.css</name>
+		</resource>
+		<resource>
+			<name>jquery/jquery.js</name>
+		</resource>
+        <resource>
+			<name>core.js</name>
+		</resource>
+		<resource>
+			<name>components.js</name>
+		</resource>
+    </resources>
+</component>

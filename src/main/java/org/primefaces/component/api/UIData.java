@@ -102,7 +102,7 @@ public class UIData extends javax.faces.component.UIData {
     private Object _initialDescendantFullComponentState = null;
     private Boolean isNested = null;
     
-    protected enum PropertyKeys {
+    public enum PropertyKeys {
         paginator
 		,paginatorTemplate
 		,rowsPerPageTemplate
@@ -1131,7 +1131,17 @@ public class UIData extends javax.faces.component.UIData {
                 }
                 Object descendantState = saveDescendantInitialComponentStates(
                         facesContext, childsIterator, true);
-                Object state = child.saveState(facesContext);
+                Object state = null;
+                if (child.initialStateMarked())
+                {
+                	child.clearInitialState();
+                	state = child.saveState(facesContext);
+                	child.markInitialState();
+                }
+                else
+                {
+                	state = child.saveState(facesContext);
+                }
                 childStates.add(new Object[] { state, descendantState });
             }
         }

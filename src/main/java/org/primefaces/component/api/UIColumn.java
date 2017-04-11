@@ -108,4 +108,6 @@ public interface UIColumn {
     public String getAriaHeaderText();
     
     public MethodExpression getExportFunction();
+    
+    public boolean isGroupRow();
 }

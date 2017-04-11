@@ -15,43 +15,28 @@
  */
 package org.primefaces.mobile.event.system;
 
-import java.util.Map;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import org.primefaces.component.calendar.Calendar;
 import org.primefaces.util.Constants;
+import org.primefaces.util.ResourceUtils;
 
 public class CalendarResourceListener implements SystemEventListener {
     
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        Calendar calendar = (Calendar) event.getSource();
         FacesContext context = FacesContext.getCurrentInstance();
         UIViewRoot view = context.getViewRoot();
         String renderKitId = view.getRenderKitId();
         
-        if(renderKitId.equals(Constants.MOBILE_RENDER_KIT_ID)) {
-            view.addComponentResource(context, createResource(context, "mobile/widgets/datepicker.css", Constants.LIBRARY, "javax.faces.resource.Stylesheet"));
-            view.addComponentResource(context, createResource(context, "mobile/widgets/datepicker.js", Constants.LIBRARY, "javax.faces.resource.Script"));
+        if(Constants.MOBILE_RENDER_KIT_ID.equals(renderKitId)) {
+            ResourceUtils.addComponentResource(context, "mobile/widgets/datepicker.css", Constants.LIBRARY, "head");
+            ResourceUtils.addComponentResource(context, "mobile/widgets/datepicker.js", Constants.LIBRARY, "head");
         }
     }
 
     public boolean isListenerForSource(Object source) {
         return true;
     }
-    
-    private UIComponent createResource(FacesContext context, String name, String library, String renderer) {
-        UIComponent resource = context.getApplication().createComponent("javax.faces.Output");
-        resource.setRendererType(renderer);
-        
-        Map<String, Object> attrs = resource.getAttributes();
-        attrs.put("name", name);
-        attrs.put("library", library);
-        attrs.put("target", "head");
-       
-        return resource;
-    } 
 }

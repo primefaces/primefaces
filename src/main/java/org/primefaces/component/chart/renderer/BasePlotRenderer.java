@@ -65,6 +65,9 @@ public abstract class BasePlotRenderer {
             
             if(legendPlacement != null)
                 writer.write(",legendPlacement:\"" + legendPlacement + "\"");
+            
+            if(model.isLegendEscapeHtml())
+                writer.write(",escapeHtml:true");
         }
         
         if(!model.isMouseoverHighlight())

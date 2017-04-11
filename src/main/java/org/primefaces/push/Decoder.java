@@ -49,6 +49,6 @@ public interface Decoder<U, T> extends org.atmosphere.config.managed.Decoder<U, 
      * @param s a object of type U
      * @return a new object of type T
      */
-    //@Override
+    @Override
     T decode(U s);
 }

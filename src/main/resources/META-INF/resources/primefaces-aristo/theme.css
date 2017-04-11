@@ -1233,19 +1233,6 @@ a {
     background: #c4c4c4 -moz-linear-gradient(top, rgba(255,255,255,0.8), rgba(255,255,255,0));
 }
 
-*html .ui-menu .ui-menu-list {
-    background: none;
-}
-
-*html .ui-menubar .ui-menu-child {
-    background: #ffffff;
-}
-
-*html .ui-menu .ui-menuitem-link {
-    border-color: #c4c4c4;
-    filter: chroma(color=#c4c4c4);
-}
-
 .ui-datatable-odd {
     background: none repeat scroll 0 0 #F2F5F9;
 }

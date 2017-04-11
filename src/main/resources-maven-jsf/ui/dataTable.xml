@@ -28,6 +28,9 @@
         <interface>
 			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
 		</interface>
+         <interface>
+			<name>org.primefaces.component.api.Pageable</name>
+		</interface>
 	</interfaces>
 	<attributes>
 		&data_component_attributes;
@@ -473,6 +476,53 @@
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Saves the changes in cell editing on blur, when set to false changes are discarded.</description>
+		</attribute>
+        <attribute>
+			<name>clientCache</name>
+			<required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Caches the next page asynchronously, default is false.</description>
+		</attribute>
+        <attribute>
+			<name>multiViewState</name>
+			<required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Whether to keep table state across views, defaults to false.</description>
+		</attribute>
+        <attribute>
+			<name>filterBy</name>
+			<required>false</required>
+            <type>java.util.List</type>
+            <description>List of FilterState objects to filter table by default.</description>
+		</attribute>
+        <attribute>
+			<name>globalFilter</name>
+			<required>false</required>
+            <type>java.lang.String</type>
+            <description>Value of the global filter to use when filtering by default.</description>
+		</attribute>
+        <attribute>
+			<name>cellEditMode</name>
+			<required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>eager</defaultValue>
+            <description>Defines the cell edit behavior, valid values are "eager" (default) and "lazy".</description>
+		</attribute>
+        <attribute>
+			<name>expandableRowGroups</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Makes row groups toggleable, default is false.</description>
+		</attribute>
+        <attribute>
+			<name>virtualScroll</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<defaultValue>false</defaultValue>
+            <description>Loads data on demand as the scrollbar gets close to the bottom. Default is false.</description>
 		</attribute>
 	</attributes>
 	<resources>

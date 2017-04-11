@@ -46,7 +46,7 @@ public abstract class AbstractMenu extends UIPanel {
     
     public static final String MOBILE_MENUITEM_LINK_CLASS = "ui-link ui-btn";
     
-    protected enum PropertyKeys {
+    public enum PropertyKeys {
         tabindex
     }
         

@@ -19,6 +19,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.DataModelEvent;
 import javax.faces.model.DataModelListener;
@@ -113,10 +115,18 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     }
 
     public T getRowData(String rowKey) {
-        throw new UnsupportedOperationException("getRowData(String rowKey) must be implemented when basic rowKey algorithm is not used.");
+        throw new UnsupportedOperationException(getMessage("getRowData(String rowKey) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
     public Object getRowKey(T object) {
-        throw new UnsupportedOperationException("getRowKey(T object) must be implemented when basic rowKey algorithm is not used.");
+        throw new UnsupportedOperationException(getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+    }
+
+    private String getMessage(String format) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        String viewId = facesContext.getViewRoot().getViewId();
+        UIComponent component = UIComponent.getCurrentComponent(facesContext);
+        String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
+        return String.format(format, getClass().getName(), clientId, viewId);
     }
 }

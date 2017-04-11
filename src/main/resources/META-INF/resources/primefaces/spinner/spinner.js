@@ -172,8 +172,11 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         else {
             if(this.cfg.prefix && value.indexOf(this.cfg.prefix) === 0) {
                 value = value.substring(this.cfg.prefix.length, value.length);
-            }  else if(this.cfg.suffix && value.indexOf(this.cfg.suffix) === (value.length - this.cfg.suffix.length)) {
-                value = value.substring(0, value.length - this.cfg.suffix.length);
+            }  else {
+                var ix = value.indexOf(this.cfg.suffix);
+                if(this.cfg.suffix && ix > -1 && ix === (value.length - this.cfg.suffix.length)) {
+                    value = value.substring(0, value.length - this.cfg.suffix.length);
+                }
             }
             
             if(this.cfg.precision)

@@ -32,16 +32,16 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
 
 public class ResetInputActionListener implements ActionListener, Serializable {
-    
+
     private ValueExpression target;
-    
+
     private ValueExpression clearModel;
 
     /**
      * Don't remove - it's for serialization.
      */
     public ResetInputActionListener() {
-    	
+
     }
 
     public ResetInputActionListener(ValueExpression target, ValueExpression clearModel) {
@@ -53,15 +53,15 @@ public class ResetInputActionListener implements ActionListener, Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 		ELContext elContext = context.getELContext();
         VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-        
+
         String expressions = (String) target.getValue(elContext);
         boolean resetModel = false;
         if(clearModel != null) {
             resetModel = clearModel.isLiteralText() ? Boolean.valueOf(clearModel.getValue(context.getELContext()).toString()) : (Boolean) clearModel.getValue(context.getELContext());
         }
         UIComponent source = event.getComponent();
-        
-        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, source, expressions, SearchExpressionFacade.Options.VISIT_UNRENDERED);
+
+        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, source, expressions);
         for (UIComponent component : components) {
             component.visitTree(visitContext, new ResetInputVisitCallback(resetModel));
         }

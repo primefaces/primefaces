@@ -15,13 +15,14 @@
  */
 package org.primefaces.model.diagram;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 
-public class DefaultDiagramModel implements DiagramModel {
+public class DefaultDiagramModel implements DiagramModel, Serializable {
     
     private List<Element> elements;
     
@@ -34,6 +35,8 @@ public class DefaultDiagramModel implements DiagramModel {
     private boolean connectionsDetachable = true;
     
     private int maxConnections = 1;
+
+    private boolean containment = true;
 
     public DefaultDiagramModel() {
         elements = new ElementList();
@@ -133,5 +136,13 @@ public class DefaultDiagramModel implements DiagramModel {
         }
         
         return endPoint;
+    }
+
+    public boolean isContainment() {
+        return containment;
+    }
+
+    public void setContainment(boolean containment) {
+        this.containment = containment;
     }
 }

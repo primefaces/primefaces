@@ -16,12 +16,14 @@
     white-space: nowrap;
     display: inline-block;
     vertical-align: top;
+    float: none;
 }
 
 .ui-tabs .ui-tabs-nav li a {
     float: left;
     padding: .5em 1em;
     text-decoration: none;
+    outline: none;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a,
@@ -135,10 +137,6 @@
 /** RTL **/
 .ui-tabs-rtl {
     direction: rtl;
-}
-
-.ui-tabs-rtl .ui-tabs-nav li, .ui-tabs-rtl .ui-tabs-nav li a {
-    float: right;
 }
 
 /** Scroll **/

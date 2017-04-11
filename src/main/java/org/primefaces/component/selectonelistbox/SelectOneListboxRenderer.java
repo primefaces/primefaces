@@ -138,7 +138,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         
         writer.startElement("div", listbox);
         writer.writeAttribute("class", SelectOneListbox.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(listbox, selectItems.size()), null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(listbox, countSelectItems(selectItems)), null);
 
         if(customContent) {
             writer.startElement("table", null);

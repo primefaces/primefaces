@@ -46,13 +46,34 @@
          */
         submit : function(formId, target) {
             var form = $(this.escapeClientId(formId));
-            if(target) {
+            var prevTarget;
+
+            if (target) {
+                prevTarget = form.attr('target');
                 form.attr('target', target);
             }
 
-            form.submit().children('input.ui-submit-param').remove();
+            form.submit();
+            form.children('input.ui-submit-param').remove();
+
+            if (target) {
+                if (prevTarget !== undefined) {
+                    form.attr('target', prevTarget);
+                } else {
+                    form.removeAttr('target');
+                }
+            }
         },
 
+        onPost : function() {
+            this.nonAjaxPosted = true;
+            this.abortXHRs();
+        },
+        
+        abortXHRs : function() {
+            PrimeFaces.ajax.Queue.abortAll();
+        },
+        
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
                 element.bind(event, function(e) {
@@ -253,7 +274,7 @@
             if(window.getSelection) {
                 if(window.getSelection().empty) {
                     window.getSelection().empty();
-                } else if(window.getSelection().removeAllRanges) {
+                } else if(window.getSelection().removeAllRanges && window.getSelection().rangeCount > 0 && window.getSelection().getRangeAt(0).getClientRects().length > 0) {
                     window.getSelection().removeAllRanges();
                 }
             }
@@ -409,23 +430,24 @@
             PrimeFaces.customFocus = true;
         },
 
-        monitorDownload: function(start, complete) {
+        monitorDownload: function(start, complete, monitorKey) {
             if(this.cookiesEnabled()) {
                 if(start) {
                     start();
                 }
 
+                var cookieName = monitorKey ? 'primefaces.download_' + monitorKey : 'primefaces.download';
                 window.downloadMonitor = setInterval(function() {
-                    var downloadComplete = PrimeFaces.getCookie('primefaces.download');
+                    var downloadComplete = PrimeFaces.getCookie(cookieName);
 
                     if(downloadComplete === 'true') {
                         if(complete) {
                             complete();
                         }
                         clearInterval(window.downloadMonitor);
-                        PrimeFaces.setCookie('primefaces.download', null);
+                        PrimeFaces.setCookie(cookieName, null);
                     }
-                }, 250);
+                }, 1000);
             }
         },
 

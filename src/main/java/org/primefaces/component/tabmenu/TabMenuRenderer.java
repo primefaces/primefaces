@@ -17,9 +17,11 @@ package org.primefaces.component.tabmenu;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
@@ -41,9 +43,9 @@ public class TabMenuRenderer extends BaseMenuRenderer {
     protected void encodeMarkup(FacesContext context, AbstractMenu component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
         TabMenu menu = (TabMenu) component;
-		String clientId = menu.getClientId(context);
-		String styleClass = menu.getStyleClass();
-		styleClass = styleClass == null ? TabMenu.CONTAINER_CLASS : TabMenu.CONTAINER_CLASS + " " + styleClass;
+	String clientId = menu.getClientId(context);
+	String styleClass = menu.getStyleClass();
+	styleClass = styleClass == null ? TabMenu.CONTAINER_CLASS : TabMenu.CONTAINER_CLASS + " " + styleClass;
         int activeIndex = menu.getActiveIndex();
         List<MenuElement> elements = menu.getElements();
 
@@ -75,9 +77,15 @@ public class TabMenuRenderer extends BaseMenuRenderer {
     
     protected void encodeItem(FacesContext context, TabMenu menu, MenuItem item, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String containerStyle = item.getContainerStyle();
+        String containerStyleClass = item.getContainerStyleClass();
         String containerClass = active ? TabMenu.ACTIVE_TAB_HEADER_CLASS : TabMenu.INACTIVE_TAB_HEADER_CLASS;
         if(item.getIcon() != null) {
             containerClass += " ui-tabmenuitem-hasicon";
+        }
+        
+        if(containerStyleClass != null) {
+            containerClass = containerClass + " " + containerStyleClass;
         }
         
         //header container
@@ -87,6 +95,10 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("aria-expanded", String.valueOf(active), null);
         writer.writeAttribute("aria-selected", String.valueOf(active), null);
 
+        if(containerStyle != null) {
+            writer.writeAttribute("style", containerStyle, null);
+        }
+        
         encodeMenuItem(context, menu, item);
         
         writer.endElement("li");

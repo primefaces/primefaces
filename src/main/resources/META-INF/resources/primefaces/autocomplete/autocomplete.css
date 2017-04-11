@@ -63,13 +63,16 @@
     padding: 0.29em;
 }
 
-.ui-autocomplete-item.ui-autocomplete-moretext {
+.ui-autocomplete-panel .ui-autocomplete-moretext {
+    font-size: 90%;
+    font-weight: bold;
+}
+
+.ui-autocomplete-list .ui-autocomplete-moretext {
     margin: 1px 0;
     padding: 3px 5px;
     text-align: left;
-    font-size: 90%;
     border: 0 none;
-    font-weight: bold;
 }
 
 /* Multiple Selection */
@@ -81,6 +84,11 @@
     min-height: 1px;
     overflow: hidden;
     width: 400px;
+}
+
+.ui-autocomplete-dd-multiple-container {
+    float: left;
+    padding-right: 2.4em !important;
 }
 
 .ui-autocomplete-multiple-container.ui-inputfield {
@@ -100,6 +108,11 @@
 .ui-autocomplete-token-label {
     display: block;
     padding: 0em 2.1em 0em 0.5em;
+}
+
+.ui-autocomplete-token-label-disabled {
+    display: block;
+    padding: 0em 0.5em 0em 0.5em;
 }
 
 .ui-autocomplete-token-icon {

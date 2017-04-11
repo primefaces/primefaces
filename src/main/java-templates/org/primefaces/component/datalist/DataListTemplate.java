@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import javax.faces.component.UIComponent;
 import org.primefaces.util.Constants;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
@@ -84,7 +85,7 @@ import javax.faces.event.BehaviorEvent;
             lazyModel.setWrappedData(data);
 
             //Update paginator for callback
-            if(this.isPaginator()) {
+            if(isRequestSource(getFacesContext()) && this.isPaginator()) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {
@@ -148,3 +149,43 @@ import javax.faces.event.BehaviorEvent;
             super.queueEvent(event);
         }
     }
+
+    @Override
+    protected void processFacets(FacesContext context, PhaseId phaseId) {
+        if(this.getFacetCount() > 0) {
+            UIComponent descriptionFacet = getFacet("description");
+            for(UIComponent facet : getFacets().values()) {
+                if(facet.equals(descriptionFacet)) {
+                   continue;
+                }
+                process(context, facet, phaseId);
+            }
+        }
+    }
+    
+    @Override
+    protected void processChildren(FacesContext context, PhaseId phaseId) {
+        int first = getFirst();
+        int rows = getRows();
+        int last = rows == 0 ? getRowCount() : (first + rows);
+        
+        for(int rowIndex = first; rowIndex < last; rowIndex++) {
+            setRowIndex(rowIndex);
+
+            if(!isRowAvailable()) {
+                break;
+            }
+            
+            for(UIComponent child : this.getIterableChildren()) {
+                if(child.isRendered()) {
+                    process(context, child, phaseId);
+                }
+            }
+
+            UIComponent descriptionFacet = getFacet("description");
+            if(descriptionFacet != null && isDefinition()) {
+                process(context, descriptionFacet, phaseId);
+            }
+        }
+    }
+

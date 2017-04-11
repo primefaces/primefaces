@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
@@ -36,7 +37,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.component.columns.Columns;
+import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.SharedStringBuilder;
@@ -60,7 +63,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     
     private List<TreeNode> preselection;
             
-    protected enum PropertyKeys {
+    public enum PropertyKeys {
 		var
         ,selectionMode
         ,selection
@@ -279,7 +282,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
         
     public void initPreselection() {
-        ValueExpression ve = this.getValueExpression("selection");
+        ValueExpression ve = this.getValueExpression(UITree.PropertyKeys.selection.toString());
         if(ve != null) {
             if(preselection != null) {
                 String selectionMode = this.getSelectionMode();
@@ -494,7 +497,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     
     public void updateSelection(FacesContext context) {
         String selectionMode = this.getSelectionMode();
-        ValueExpression selectionVE = this.getValueExpression("selection");
+        ValueExpression selectionVE = this.getValueExpression(UITree.PropertyKeys.selection.toString());
 
         if(selectionMode != null && selectionVE != null) {
             Object selection = this.getLocalSelectedNodes();
@@ -786,6 +789,12 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if(rowKey == null)
             return false;
         
+        TreeNode rowNode = this.getRowNode();
+        String treeNodeType = null;
+        if (rowNode!=null) {
+            treeNodeType = rowNode.getType();
+        }
+        
         if(getChildCount() > 0) {
             for(UIComponent child : getChildren()) {
                 if(child instanceof Columns) {
@@ -803,6 +812,12 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                     uicolumns.setRowIndex(-1);
                 }
                 else if(child instanceof UIColumn) {
+                    if (child instanceof UITreeNode) {
+                        UITreeNode uiTreeNode = (UITreeNode) child;
+                        if (treeNodeType != null && !treeNodeType.equals(uiTreeNode.getType())) {
+                            continue;
+                        }
+                    }
                     if(child.visitTree(context, callback)) {
                         return true;
                     }

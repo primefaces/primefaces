@@ -177,8 +177,7 @@ public class ComponentUtils {
     	UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(
     			FacesContext.getCurrentInstance(),
     			component,
-    			expression,
-                SearchExpressionFacade.Options.VISIT_UNRENDERED);
+    			expression);
 
         if(resolvedComponent instanceof Widget) {
             return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar() + "')";
@@ -348,7 +347,7 @@ public class ComponentUtils {
         UIComponent component = (UIComponent) widget;
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");
 
-        if (userWidgetVar != null) {
+        if (!isValueBlank(userWidgetVar)) {
             return userWidgetVar;
         }
         else {
@@ -474,7 +473,7 @@ public class ComponentUtils {
     public static UIComponent findParentForm(FacesContext context, UIComponent component) {
         return ComponentTraversalUtils.closestForm(context, component);
     }
-    
+
     /**
      * Gets a {@link TimeZone} instance by the parameter "timeZone" which can be String or {@link TimeZone} or null.
      *
@@ -490,17 +489,17 @@ public class ComponentUtils {
             return TimeZone.getDefault();
         }
     }
-    
+
     public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType, Class<T> rendererClass) {
         Renderer renderer = context.getRenderKit().getRenderer(family, rendererType);
-        
+
         while (renderer instanceof FacesWrapper) {
             renderer = (Renderer) ((FacesWrapper) renderer).getWrapped();
         }
 
         return (T) renderer;
     }
-    
+
     /**
      * Calculates the current viewId - we can't get it from the ViewRoot if it's not available.
      *
@@ -525,4 +524,5 @@ public class ComponentUtils {
 
         return viewId;
     }
+
 }

@@ -32,6 +32,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.component.datatable.TableState;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -172,7 +173,7 @@ public class DefaultRequestContext extends RequestContext {
     private void reset(VisitContext visitContext, String expressions) {
         UIViewRoot root = context.getViewRoot();
 
-        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, root, expressions, SearchExpressionFacade.Options.VISIT_UNRENDERED);
+        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, root, expressions);
         for (UIComponent component : components) {
             component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
         }
@@ -311,4 +312,16 @@ public class DefaultRequestContext extends RequestContext {
 
 		return rtl;
 	}
+    
+    public void clearTableStates() {
+        this.context.getExternalContext().getSessionMap().remove(Constants.TABLE_STATE);
+    }
+    
+    public void clearTableState(String key) {
+        Map<String,Object> sessionMap = this.context.getExternalContext().getSessionMap();
+        Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
+        if(dtState != null) {
+             dtState.remove(key);
+        }
+    }
 }

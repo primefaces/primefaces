@@ -946,6 +946,12 @@
             .bind("keyup mouseup", function () {
                 refreshButtons(editor);
                 updateTextArea(editor, true);
+            })
+            .bind("paste", function() {
+                setTimeout(function() {
+                    refreshButtons(editor);
+                    updateTextArea(editor, true);
+                }, 0)
             });
 
         // Show the textarea for iPhone/iTouch/iPad or

@@ -37,11 +37,14 @@ import javax.faces.component.behavior.Behavior;
     public final static String ROW_CLASS = "ui-autocomplete-item ui-autocomplete-row ui-widget-content ui-corner-all";
     public final static String TOKEN_DISPLAY_CLASS = "ui-autocomplete-token ui-state-active ui-corner-all";
     public final static String TOKEN_LABEL_CLASS = "ui-autocomplete-token-label";
+    public final static String TOKEN_LABEL_DISABLED_CLASS = "ui-autocomplete-token-label-disabled";
     public final static String TOKEN_ICON_CLASS = "ui-autocomplete-token-icon ui-icon ui-icon-close";
     public final static String TOKEN_INPUT_CLASS = "ui-autocomplete-input-token";
     public final static String MULTIPLE_CONTAINER_CLASS = "ui-autocomplete-multiple-container ui-widget ui-inputfield ui-state-default ui-corner-all";
+    public final static String MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS = "ui-autocomplete-multiple-container ui-autocomplete-dd-multiple-container ui-widget ui-inputfield ui-state-default ui-corner-left";
     public final static String ITEMTIP_CONTENT_CLASS = "ui-autocomplete-itemtip-content";
-    public final static String MORE_TEXT_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-corner-all";
+    public final static String MORE_TEXT_LIST_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-corner-all";
+    public final static String MORE_TEXT_TABLE_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-widget-content ui-corner-all";
 
     public final static String MOBILE_INPUT_CONTAINER_CLASS = "ui-input-search ui-body-inherit ui-corner-all ui-shadow-inset ui-input-has-clear";
     public final static String MOBILE_PANEL_CLASS = "ui-controlgroup ui-controlgroup-vertical ui-corner-all ui-screen-hidden";
@@ -57,6 +60,10 @@ import javax.faces.component.behavior.Behavior;
     @Override
     public Collection<String> getUnobstrusiveEventNames() {
         return UNOBSTRUSIVE_EVENT_NAMES;
+    }
+
+    public boolean isMoreTextRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_moreText");
     }
 
     @Override

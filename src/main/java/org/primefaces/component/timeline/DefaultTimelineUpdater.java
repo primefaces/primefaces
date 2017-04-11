@@ -102,7 +102,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 		TimelineRenderer timelineRenderer = ComponentUtils.getUnwrappedRenderer(
                 fc,
                 Timeline.COMPONENT_FAMILY,
-                "org.primefaces.component.TimelineRenderer",
+                Timeline.DEFAULT_RENDERER,
                 TimelineRenderer.class);
 
         Map<String, String> groupsContent = null;

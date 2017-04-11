@@ -23,16 +23,18 @@ import javax.faces.context.FacesContext;
  */
 public interface SearchExpressionResolver {
 
-	/**
-	 * Resolves a {@link UIComponent} for the last or source {@link UIComponent} and for the given
-	 * expression string.
-	 *
+    /**
+     * Resolves a {@link UIComponent} for the last or source {@link UIComponent} and for the given
+     * expression string.
+     *
      * @param context The {@link FacesContext}.
-	 * @param source The source component. E.g. a button.
-	 * @param last The last resolved component in the chain.
-	 * 		If it's not a nested expression, it's the same as the source component.
-	 * @param expression The search expression.
-	 * @return The resolved {@link UIComponent} or <code>null</code>.
-	 */
-	UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression);
+     * @param source The source component. E.g. a button.
+     * @param last The last resolved component in the chain.
+     * If it's not a nested expression, it's the same as the source component.
+     * @param expression The search expression.
+     * @param options The options.
+     *
+     * @return The resolved {@link UIComponent} or <code>null</code>.
+     */
+    UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options);
 }

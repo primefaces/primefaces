@@ -101,11 +101,11 @@
         <resource>
 			<name>jquery/jquery-plugins.js</name>
 		</resource>
-		<resource>
-			<name>components.js</name>
+        <resource>
+			<name>core.js</name>
 		</resource>
 		<resource>
-			<name>core.js</name>
+			<name>components.js</name>
 		</resource>
 	</resources>
 </component>

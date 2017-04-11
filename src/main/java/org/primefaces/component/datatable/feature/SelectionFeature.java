@@ -27,6 +27,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.TableState;
 import org.primefaces.util.ComponentUtils;
 
 public class SelectionFeature implements DataTableFeature {
@@ -53,6 +54,12 @@ public class SelectionFeature implements DataTableFeature {
         if(isFiltered) {
             table.setValue(originalValue);
         }
+        
+        if(table.isMultiViewState()) {
+            TableState ts = table.getTableState(true);
+            table.findSelectedRowKeys();
+            ts.setRowKeys(table.getSelectedRowKeys());
+        }
     }
     
     void decodeSingleSelection(DataTable table, String selection) {
@@ -63,7 +70,7 @@ public class SelectionFeature implements DataTableFeature {
 	}
 
 	void decodeMultipleSelection(FacesContext context, DataTable table, String selection) {
-		ValueExpression selectionByVE = table.getValueExpression("selection");
+		ValueExpression selectionByVE = table.getValueExpression(DataTable.PropertyKeys.selection.toString());
 		Class<?> clazz = selectionByVE == null ? null : selectionByVE.getType(context.getELContext());
         boolean isArray = clazz == null ? false : clazz.isArray();
         

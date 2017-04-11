@@ -39,19 +39,28 @@ public class RowEditorRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeIcon(writer, "ui-icon ui-icon-pencil", rowEditor.getEditTitle());
-        encodeIcon(writer, "ui-icon ui-icon-check", rowEditor.getSaveTitle());
-        encodeIcon(writer, "ui-icon ui-icon-close", rowEditor.getCancelTitle());
+        encodeIcon(writer, "pencil", rowEditor.getEditTitle());
+        encodeIcon(writer, "check", rowEditor.getSaveTitle());
+        encodeIcon(writer, "close", rowEditor.getCancelTitle());
         
         writer.endElement("div");
     }
     
-    protected void encodeIcon(ResponseWriter writer, String styleClass, String title) throws IOException {
+    protected void encodeIcon(ResponseWriter writer, String type, String title) throws IOException {
+        String iconClass = "ui-icon ui-icon-" + type;
+        iconClass = (type == "pencil") ? iconClass : iconClass + " ui-c";
+        
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", "ui-row-editor-" + type, null);
+        
         writer.startElement("span", null);
         if(title != null) {
             writer.writeAttribute("title", title, null);
         }
-        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
+        
+        writer.endElement("a");
     }
 }
