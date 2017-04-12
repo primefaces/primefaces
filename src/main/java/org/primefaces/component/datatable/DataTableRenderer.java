@@ -107,22 +107,24 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             boolean defaultSorted = (table.getSortField() != null || table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null || table.getMultiSortMeta() != null);
-            if(defaultSorted && table.isDefaultSort()) {
-                ValueExpression sortVE;
-                String sortField = table.getSortField();
-                if (sortField != null) {
-                    sortVE = context.getApplication()
-                            .getExpressionFactory()
-                            .createValueExpression("#{'" + sortField + "'}",
-                                    String.class);
+            if(defaultSorted) {
+                if(table.isDefaultSort()) {
+                    ValueExpression sortVE;
+                    String sortField = table.getSortField();
+                    if (sortField != null) {
+                        sortVE = context.getApplication()
+                                .getExpressionFactory()
+                                .createValueExpression("#{'" + sortField + "'}",
+                                        String.class);
+                    }
+                    else {
+                        sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+                    }
+                    table.setDefaultSortByVE(sortVE);
+                    table.setDefaultSortOrder(table.getSortOrder());
+                    table.setDefaultSortFunction(table.getSortFunction());
                 }
-                else {
-                    sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-                }
-                table.setDefaultSortByVE(sortVE);
-                table.setDefaultSortOrder(table.getSortOrder());
-                table.setDefaultSortFunction(table.getSortFunction());
-
+                
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
 
                 if(table.isMultiSort())
@@ -132,7 +134,7 @@ public class DataTableRenderer extends DataRenderer {
 
                 table.setRowIndex(-1);
                 
-                if(table.isMultiViewState()) {
+                if(table.isMultiViewState() && table.isDefaultSort()) {
                     ValueExpression sortByVE = table.getValueExpression("sortBy");
                     List<SortMeta> multiSortMeta = table.getMultiSortMeta();
                     if(sortByVE != null || multiSortMeta != null) {
