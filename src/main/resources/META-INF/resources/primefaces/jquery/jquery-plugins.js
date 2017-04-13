@@ -14293,14 +14293,19 @@ $(function() {
 
             this.updateDatePickerPosition = function(inst) {
                 if (!$.datepicker._pos) { // position below input
-                        $.datepicker._pos = $.datepicker._findPos(inst.input[0]);
-                        $.datepicker._pos[1] += inst.input[0].offsetHeight; // add the height
-                    }
+                    $.datepicker._pos = $.datepicker._findPos(inst.input[0]);
+                    $.datepicker._pos[1] += inst.input[0].offsetHeight; // add the height
+                }
 
-                    var offset = {left: $.datepicker._pos[0], top: $.datepicker._pos[1]};
-                    $.datepicker._pos = null;
-                    var offset = $.datepicker._checkOffset(inst, offset, false);
-                    inst.dpDiv.css({top: offset.top + "px"});
+                var offset = {left: $.datepicker._pos[0], top: $.datepicker._pos[1]};
+                $.datepicker._pos = null;
+                var isFixed = false;
+                $(inst.input[0]).parents().each(function() {
+                    isFixed |= $(this).css("position") === "fixed";
+                    return !isFixed;
+                });
+                var checkedOffset = $.datepicker._checkOffset(inst, offset, isFixed);
+                inst.dpDiv.css({top: checkedOffset.top + "px"});
             };
         });
     };
