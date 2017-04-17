@@ -77,7 +77,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         var escapedValue = PrimeFaces.escapeHTML(value);
         var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active ui-corner-all">';
         itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close" />';
-        itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + escapedValue + '</span></li>';
+        itemDisplayMarkup += '<span class="ui-chips-token-label">' + escapedValue + '</span></li>';
 
         this.inputContainer.before(itemDisplayMarkup);
         this.input.val('').focus();
