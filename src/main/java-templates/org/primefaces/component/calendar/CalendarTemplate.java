@@ -200,8 +200,7 @@ import org.primefaces.convert.DateTimeConverter;
         
         if(converter == null && RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             DateTimeConverter con = new DateTimeConverter();
-            String pattern = this.isTimeOnly() ? this.calculateTimeOnlyPattern() : this.calculatePattern();
-            con.setPattern(pattern);
+            con.setPattern(this.calculatePattern());
             con.setTimeZone(this.calculateTimeZone());
             con.setLocale(this.calculateLocale(getFacesContext()));
 
