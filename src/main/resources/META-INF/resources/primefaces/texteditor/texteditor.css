@@ -1,5 +1,5 @@
 /*!
- * Quill Editor v1.2.2
+ * Quill Editor v1.2.4
  * https://quilljs.com/
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
@@ -72,6 +72,10 @@
 .ql-editor ul[data-checked=true],
 .ql-editor ul[data-checked=false] {
   pointer-events: none;
+}
+.ql-editor ul[data-checked=true] > li *,
+.ql-editor ul[data-checked=false] > li * {
+  pointer-events: all;
 }
 .ql-editor ul[data-checked=true] > li::before,
 .ql-editor ul[data-checked=false] > li::before {
