@@ -30,11 +30,7 @@
 
 .ui-chips-token .ui-chips-token-label {
     display: block;
-    margin-right: 2em;
-}
-
-.ui-chips > .ui-state-disabled .ui-chips-token-label {
-    margin-right: 0;
+    padding: 0em 2.1em 0em 0.5em;
 }
 
 .ui-chips-token .ui-chips-token-icon {

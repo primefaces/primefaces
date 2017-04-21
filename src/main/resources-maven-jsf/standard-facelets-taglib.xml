@@ -389,7 +389,7 @@
             <component-type>org.primefaces.component.UIRepeat</component-type>
         </component>
         <attribute>
-            <description>The name of a collection of items that this tag iterates over. The collection may be a List, array, java.sql.ResultSet, or an individual java Object. If the collection is null, this tag does nothing..</description>
+            <description>The name of a collection of items that this tag iterates over. The collection may be a List, array, java.sql.ResultSet, or an individual java Object. If the collection is null, this tag does nothing.</description>
             <name>value</name>
             <required>true</required>
             <type>java.lang.Object</type>
@@ -401,25 +401,25 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Name of the exported request scoped variable for the status of the iteration. Object is a POJO with the following read-only JavaBeans properties. This scoped variable has nested visibility..</description>
+            <description>Name of the exported request scoped variable for the status of the iteration. Object is a POJO with the following read-only JavaBeans properties. This scoped variable has nested visibility.</description>
             <name>varStatus</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Read-write property setting the offset from the beginning of the collection from which to start the iteration. If not set, this offset is not considered and iteration will start at the beginning of the collection..</description>
+            <description>Read-write property setting the offset from the beginning of the collection from which to start the iteration. If not set, this offset is not considered and iteration will start at the beginning of the collection.</description>
             <name>offset</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
         <attribute>
-            <description>Iteration will only process every step items of the collection, starting with the first one..</description>
+            <description>Iteration will only process every step items of the collection, starting with the first one.</description>
             <name>step</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
          <attribute>
-            <description>Read-write property setting the size of the collection to iterate. If this value is less than the actual size of the collection, a FacesException must be thrown..</description>
+            <description>Read-write property setting the size of the collection to iterate. If this value is less than the actual size of the collection, a FacesException must be thrown.</description>
             <name>size</name>
             <required>false</required>
             <type>java.lang.Integer</type>
