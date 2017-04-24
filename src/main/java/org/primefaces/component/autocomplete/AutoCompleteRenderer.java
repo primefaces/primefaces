@@ -57,7 +57,8 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         if (ac.isMultiple()) {
             decodeMultiple(context, ac);
-        } else {
+        }
+        else {
             decodeSingle(context, ac);
         }
 
@@ -97,7 +98,8 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         if (submittedValues.length > 0) {
             ac.setSubmittedValue(submittedValues);
-        } else {
+        }
+        else {
             ac.setSubmittedValue("");
         }
     }
@@ -110,7 +112,8 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         if (query != null) {
             encodeResults(context, component, query);
-        } else {
+        }
+        else {
             encodeMarkup(context, autoComplete);
             encodeScript(context, autoComplete);
         }
@@ -202,13 +205,15 @@ public class AutoCompleteRenderer extends InputRenderer {
             if (itemLabel != null) {
                 writer.writeAttribute("value", itemLabel, null);
             }
-        } else {
+        }
+        else {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
             if (ac.isValid()) {
                 requestMap.put(var, ac.getValue());
                 itemLabel = ac.getItemLabel();
-            } else {
+            }
+            else {
                 Object submittedValue = ac.getSubmittedValue();
 
                 Object value = ac.getValue();
@@ -216,7 +221,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 if (submittedValue == null && value != null) {
                     requestMap.put(var, value);
                     itemLabel = ac.getItemLabel();
-                } else if (submittedValue != null) {
+                }
+                else if (submittedValue != null) {
                     // retrieve the actual item (pojo) from the converter
                     try {
                         Object item = getConvertedValue(context, ac, String.valueOf(submittedValue));
@@ -226,7 +232,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                         itemLabel = String.valueOf(submittedValue);
                     }
 
-                } else {
+                }
+                else {
                     itemLabel = null;
                 }
 
@@ -343,7 +350,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         List values;
         if (ac.isValid()) {
             values = (List) ac.getValue();
-        } else {
+        }
+        else {
             Object submittedValue = ac.getSubmittedValue();
             try {
                 values = (List) getConvertedValue(context, ac, submittedValue);
@@ -390,7 +398,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                     context.getExternalContext().getRequestMap().put(var, value);
                     itemValue = ac.getItemValue();
                     itemLabel = ac.getItemLabel();
-                } else {
+                }
+                else {
                     itemValue = value;
                     itemLabel = String.valueOf(value);
                 }
@@ -453,7 +462,8 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         if (customContent) {
             encodeSuggestionsAsTable(context, ac, items, converter);
-        } else {
+        }
+        else {
             encodeSuggestionsAsList(context, ac, items, converter);
         }
     }
@@ -582,7 +592,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                     }
 
                     writer.writeText(ac.getItemLabel(), null);
-                } else {
+                }
+                else {
                     writer.writeAttribute("data-item-label", item, null);
                     writer.writeAttribute("data-item-value", item, null);
 
@@ -649,7 +660,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("itemtipMyPosition", ac.getItemtipMyPosition(), null)
                 .attr("itemtipAtPosition", ac.getItemtipAtPosition(), null);
         }
-        
+
         if (ac.isMultiple()) {
             wb.attr("selectLimit", ac.getSelectLimit(), Integer.MAX_VALUE);
         }
@@ -686,7 +697,8 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
 
             return list;
-        } else {
+        }
+        else {
             if (converter != null)
                 return converter.getAsObject(context, component, (String) submittedValue);
             else
@@ -719,7 +731,8 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.endElement("td");
 
             writer.endElement("tr");
-        } else {
+        }
+        else {
             writer.startElement("li", null);
             writer.writeAttribute("class", AutoComplete.MORE_TEXT_LIST_CLASS, null);
             writer.write(moreText);
