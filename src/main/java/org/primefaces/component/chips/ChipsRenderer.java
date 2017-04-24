@@ -85,7 +85,12 @@ public class ChipsRenderer extends InputRenderer {
         String style = chips.getStyle();
         String styleClass = chips.getStyleClass();
         styleClass = styleClass == null ? Chips.STYLE_CLASS : Chips.STYLE_CLASS + " " + styleClass;
+
+        String inputStyle = chips.getInputStyle();
+        String inputStyleClass = chips.getInputStyleClass();
+
         String listClass = disabled ? Chips.CONTAINER_CLASS + " ui-state-disabled" : Chips.CONTAINER_CLASS;
+        listClass = listClass + " " + inputStyleClass;
         listClass = chips.isValid() ? listClass : listClass + " ui-state-error";
         
         writer.startElement("div", null);
@@ -100,9 +105,12 @@ public class ChipsRenderer extends InputRenderer {
         
         writer.startElement("ul", null);
         writer.writeAttribute("class", listClass, null);
+        if(inputStyle != null) {
+            writer.writeAttribute("style", inputStyle, null);
+        }
         
         if(values != null && !values.isEmpty()) {
-        	Converter converter = ComponentUtils.getConverter(context, chips);
+            Converter converter = ComponentUtils.getConverter(context, chips);
 
             for(Iterator<Object> it = values.iterator(); it.hasNext();) {
                 Object value = it.next();
