@@ -499,7 +499,9 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         
         this.jq.off('click.tree-content', nodeContentSelector)
                         .on('click.tree-content', nodeContentSelector, null, function(e) {
-                            $this.nodeClick(e, $(this));
+                            if ($(e.target).is(':not(:input:enabled)')) {
+                                $this.nodeClick(e, $(this));
+                            }
                         });
                         
         if(this.cfg.filter) {
