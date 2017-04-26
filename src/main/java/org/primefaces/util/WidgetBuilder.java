@@ -100,7 +100,7 @@ public class WidgetBuilder {
             context.getResponseWriter().write(",");
             context.getResponseWriter().write(name);
             context.getResponseWriter().write(":\"");
-        	context.getResponseWriter().write(value);
+        	context.getResponseWriter().write(ComponentUtils.escapeEcmaScriptText(value));
             context.getResponseWriter().write("\"");
         }
 
@@ -156,7 +156,7 @@ public class WidgetBuilder {
             context.getResponseWriter().write(",");
 	        context.getResponseWriter().write(name);
 	        context.getResponseWriter().write(":\"");
-	        context.getResponseWriter().write(value);
+	        context.getResponseWriter().write(ComponentUtils.escapeEcmaScriptText(value));
 	        context.getResponseWriter().write("\"");
         }
         
