@@ -488,7 +488,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
     toggleMinimize: function() {
         var animate = true,
-        dockingZone = $(document.body).children('.ui-dialog-docking-zone');
+        dockingZone = $(document.body).children('.ui-dialog-docking-zone').css('z-index', ++PrimeFaces.zindex);
 
         if(this.maximized) {
             this.toggleMaximize();
