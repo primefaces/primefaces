@@ -95,6 +95,8 @@ public class MessageRenderer extends UINotificationRenderer {
                 }
 					
 				writer.writeAttribute("class", styleClass , null);
+				writer.writeAttribute("role", "alert", null);
+            writer.writeAttribute("aria-atomic", "true", null);
 
                 if(!display.equals("text")) {
                     encodeIcon(writer, severityKey, msg.getDetail(), iconOnly);
