@@ -256,6 +256,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.processKeyEvent(e);
             }
             
+            if(key === keyCode.BACKSPACE){
+            	var selectedItems = $this.multiItemContainer.children('li.ui-autocomplete-token');
+            	  if(selectedItems.length > 0) {
+            		  selectedItems.eq(selectedItems.length-1).remove();
+            	  }
+            }
+            
             if($this.cfg.queryEvent === 'enter' && (key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER)) {
                 if($this.itemSelectedWithEnter)
                     $this.itemSelectedWithEnter = false;
