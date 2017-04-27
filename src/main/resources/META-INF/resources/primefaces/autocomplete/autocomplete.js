@@ -42,6 +42,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 this.input.hide();
                 this.disableDropdown();
             }
+            
+            if(this.multiItemContainer.children('li.ui-autocomplete-token').length == this.cfg.selectLimit) {
+                this.input.css('display', 'none').blur();
+            }
         }
         else {
             //visuals
