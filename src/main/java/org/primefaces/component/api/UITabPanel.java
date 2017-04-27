@@ -1388,7 +1388,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             // corresponding DataModel element.
             _rowStates.clear();
         }
-        // TODO Auto-generated method stub
         super.encodeBegin(context);
     }
 
