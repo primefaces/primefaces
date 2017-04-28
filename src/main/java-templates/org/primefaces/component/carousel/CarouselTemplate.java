@@ -17,6 +17,7 @@ import java.util.logging.Logger;
     public final static String PAGE_LINK_CLASS = "ui-icon ui-carousel-page-link ui-icon-radio-off";
     public final static String DROPDOWN_CLASS = "ui-carousel-dropdown ui-widget ui-state-default ui-corner-left";
     public final static String MOBILE_DROPDOWN_CLASS = "ui-carousel-mobiledropdown ui-widget ui-state-default ui-corner-left";
+    public final static String TOGGLER_LINK_CLASS = "ui-carousel-titlebar-icon ui-corner-all ui-state-default";
 
     private final static Logger logger = Logger.getLogger(Carousel.class.getName());
     

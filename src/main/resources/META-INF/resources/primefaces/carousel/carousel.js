@@ -17,6 +17,12 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.mobileDropdown = this.header.children('.ui-carousel-mobiledropdown');
         this.stateholder = $(this.jqId + '_page');
         
+        if(this.cfg.toggleable) {
+            this.toggler = $(this.jqId + '_toggler');
+            this.toggleStateHolder = $(this.jqId + '_collapsed');
+            this.toggleableContent = this.jq.children('.ui-carousel-viewport, .ui-carousel-footer');
+        }
+        
         this.cfg.numVisible = this.cfg.numVisible||3;
         this.cfg.firstVisible = this.cfg.firstVisible||0;
         this.columns = this.cfg.numVisible;
@@ -40,6 +46,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.calculateItemWidths(this.columns);
             this.jq.width(this.jq.width());
             this.updateNavigators();
+        }
+        
+        if(this.cfg.collapsed) {
+            this.toggleableContent.hide();
         }
     },
     
@@ -141,6 +151,17 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                 $this.refreshDimensions();
             });
         }
+        
+        if(this.cfg.toggleable) {
+            this.toggler.on('mouseover.carouselToggler',function() {
+                $(this).addClass('ui-state-hover');
+            }).on('mouseout.carouselToggler',function() {
+                $(this).removeClass('ui-state-hover');
+            }).on('click.carouselToggler', function(e) {
+                $this.toggle(); 
+                e.preventDefault();
+            });
+        }
     },
     
     updateNavigators: function() {
@@ -207,6 +228,42 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     
     stopAutoplay: function() {
         clearInterval(this.interval);
+    },
+    
+    toggle: function() {
+        if(this.cfg.collapsed) {
+            this.expand();
+            PrimeFaces.invokeDeferredRenders(this.id);
+        }
+        else {
+            this.collapse();
+        }
+    },
+    
+    expand: function() {
+        this.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
+
+        this.slideDown(); 
+    },
+    
+    collapse: function() {
+        this.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
+
+        this.slideUp();
+    },
+    
+    slideUp: function() {        
+        this.toggleableContent.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc');
+    },
+    
+    slideDown: function() {        
+        this.toggleableContent.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc');
+    },
+    
+    toggleState: function(collapsed, removeIcon, addIcon) {
+        this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
+        this.cfg.collapsed = collapsed;
+        this.toggleStateHolder.val(collapsed);
     }
     
 });  

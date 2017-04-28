@@ -32,10 +32,15 @@ public class CarouselRenderer extends CoreRenderer {
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 		Carousel carousel = (Carousel) component;
 		String clientId = carousel.getClientId(context);
-		String param = clientId + "_page";
+		String pageParam = clientId + "_page";
+        String collapsedParam = clientId + "_collapsed";
 		
-		if(params.containsKey(param)) {
-			carousel.setFirstVisible(Integer.parseInt(params.get(param)) * carousel.getNumVisible());
+		if(params.containsKey(pageParam)) {
+			carousel.setFirstVisible(Integer.parseInt(params.get(pageParam)) * carousel.getNumVisible());
+		}
+        
+        if(params.containsKey(collapsedParam)) {
+			carousel.setCollapsed(Boolean.valueOf(params.get(collapsedParam)));
 		}
 	}
 
@@ -64,15 +69,23 @@ public class CarouselRenderer extends CoreRenderer {
             .attr("responsive", carousel.isResponsive(), false)
             .attr("breakpoint", carousel.getBreakpoint(), 560);
 		
+        if(carousel.isToggleable()) {
+            wb.attr("toggleable", true)
+                .attr("toggleSpeed", carousel.getToggleSpeed())
+                .attr("collapsed", carousel.isCollapsed());
+        }
+        
         wb.finish();
 	}
     
     protected void encodeMarkup(FacesContext context, Carousel carousel) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = carousel.getClientId(context);
+        boolean collapsed = carousel.isCollapsed();
         String style = carousel.getStyle();
         String styleClass = carousel.getStyleClass();
         styleClass = (styleClass == null) ? Carousel.CONTAINER_CLASS : Carousel.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (collapsed) ? styleClass + " ui-hidden-container" : styleClass;
 
         //container
 		writer.startElement("div", null);
@@ -84,8 +97,12 @@ public class CarouselRenderer extends CoreRenderer {
         encodeHeader(context, carousel);
         encodeContent(context, carousel);
         encodeFooter(context, carousel);
-
-		encodeStateField(context, carousel);
+        
+		encodeStateField(context, carousel, clientId + "_page", carousel.getPage());
+        
+        if(carousel.isToggleable()) {
+            encodeStateField(context, carousel, clientId + "_collapsed", String.valueOf(collapsed));
+        }
 		
 		writer.endElement("div");
 	}
@@ -166,6 +183,12 @@ public class CarouselRenderer extends CoreRenderer {
         
         writer.endElement("div");
         
+        //toggle icon
+        if(carousel.isToggleable()) {
+            String icon = carousel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
+            encodeIcon(context, carousel, icon, clientId + "_toggler");
+        }
+        
         //next button
         writer.startElement("span", null);
         writer.writeAttribute("class", vertical ? Carousel.VERTICAL_NEXT_BUTTON : Carousel.HORIZONTAL_NEXT_BUTTON, null);
@@ -243,18 +266,34 @@ public class CarouselRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-	protected void encodeStateField(FacesContext context, Carousel carousel) throws IOException {
+	protected void encodeStateField(FacesContext context, Carousel carousel, String id, Object value) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        String id = carousel.getClientId(context) + "_page";
 		
 		writer.startElement("input", null);
 		writer.writeAttribute("id", id, null);
 		writer.writeAttribute("name", id, null);
 		writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("autocomplete", "off", null);
-		writer.writeAttribute("value", carousel.getPage(), null);
+		writer.writeAttribute("value", value, null);
 		writer.endElement("input");
 	}
+    
+    protected void encodeIcon(FacesContext context, Carousel carousel, String iconClass, String id) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("a", null);
+        if(id != null) {
+            writer.writeAttribute("id", id, null);
+        }
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", Carousel.TOGGLER_LINK_CLASS, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon " + iconClass, null);
+        writer.endElement("span");
+
+        writer.endElement("a");
+    }
 
     @Override
 	public boolean getRendersChildren() {

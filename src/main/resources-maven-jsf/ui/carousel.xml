@@ -155,6 +155,27 @@
 			<defaultValue>640</defaultValue>
             <description>Breakpoint value in pixels to switch between small and large viewport. Default is 640</description>
 		</attribute>
+        <attribute>
+            <name>toggleable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Makes panel toggleable. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>toggleSpeed</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>500</defaultValue>
+            <description>Speed of toggling in milliseconds. Default is 500</description>
+        </attribute>
+        <attribute>
+            <name>collapsed</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Renders a toggleable panel as collapsed. Default is false.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
