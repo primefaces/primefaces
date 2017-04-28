@@ -176,6 +176,13 @@
             <defaultValue>false</defaultValue>
             <description>Renders a toggleable panel as collapsed. Default is false.</description>
         </attribute>
+        <attribute>
+			<name>stateful</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, carousel state is saved in a cookie for the session. Default is false.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

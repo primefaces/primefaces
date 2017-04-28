@@ -67,7 +67,8 @@ public class CarouselRenderer extends CoreRenderer {
             .attr("effectDuration", carousel.getEffectDuration(), Integer.MIN_VALUE)
             .attr("easing", carousel.getEasing(), null)
             .attr("responsive", carousel.isResponsive(), false)
-            .attr("breakpoint", carousel.getBreakpoint(), 560);
+            .attr("breakpoint", carousel.getBreakpoint(), 560)
+            .attr("stateful", carousel.isStateful());
 		
         if(carousel.isToggleable()) {
             wb.attr("toggleable", true)
@@ -85,7 +86,6 @@ public class CarouselRenderer extends CoreRenderer {
         String style = carousel.getStyle();
         String styleClass = carousel.getStyleClass();
         styleClass = (styleClass == null) ? Carousel.CONTAINER_CLASS : Carousel.CONTAINER_CLASS + " " + styleClass;
-        styleClass = (collapsed) ? styleClass + " ui-hidden-container" : styleClass;
 
         //container
 		writer.startElement("div", null);
@@ -115,9 +115,12 @@ public class CarouselRenderer extends CoreRenderer {
         
         writer.startElement("div", null);
         writer.writeAttribute("class", carousel.isVertical() ? Carousel.VERTICAL_VIEWPORT_CLASS : Carousel.VIEWPORT_CLASS, null);
-
+        
 		writer.startElement("ul", null);
-         writer.writeAttribute("class", Carousel.ITEMS_CLASS, null);
+        writer.writeAttribute("class", Carousel.ITEMS_CLASS, null);
+        if(carousel.isCollapsed()) {
+            writer.writeAttribute("style", "display:none", null);
+        }
 		
 		if(carousel.getVar() != null) {		
 			for(int i=0; i < carousel.getRowCount(); i++) {
@@ -169,7 +172,7 @@ public class CarouselRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.HEADER_CLASS, null);
-
+        
         //title
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.HEADER_TITLE_CLASS, null);
@@ -257,7 +260,10 @@ public class CarouselRenderer extends CoreRenderer {
         
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.FOOTER_CLASS, null);
-
+        if(carousel.isCollapsed()) {
+            writer.writeAttribute("style", "display:none", null);
+        }
+        
         if(facet != null)
             facet.encodeAll(context);
         else if(text != null)

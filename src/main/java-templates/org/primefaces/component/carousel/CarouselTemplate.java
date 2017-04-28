@@ -1,7 +1,7 @@
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-    public final static String CONTAINER_CLASS = "ui-carousel ui-widget ui-widget-content ui-corner-all";
+    public final static String CONTAINER_CLASS = "ui-carousel ui-widget ui-widget-content ui-corner-all ui-hidden-container";
     public final static String ITEM_CLASS = "ui-carousel-item ui-widget-content ui-corner-all";
     public final static String HEADER_CLASS = "ui-carousel-header ui-widget-header ui-corner-all";
     public final static String HEADER_TITLE_CLASS = "ui-carousel-header-title";

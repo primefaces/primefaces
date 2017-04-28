@@ -20,7 +20,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.toggleable) {
             this.toggler = $(this.jqId + '_toggler');
             this.toggleStateHolder = $(this.jqId + '_collapsed');
-            this.toggleableContent = this.jq.children('.ui-carousel-viewport, .ui-carousel-footer');
+            this.toggleableContent = this.jq.find(' > .ui-carousel-viewport > .ui-carousel-items, > .ui-carousel-footer');
         }
         
         this.cfg.numVisible = this.cfg.numVisible||3;
@@ -32,6 +32,13 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.breakpoint = this.cfg.breakpoint||640;
         this.page = parseInt(this.first/this.columns);
         this.totalPages = Math.ceil(this.itemsCount/this.cfg.numVisible);
+        
+        if(this.cfg.stateful) {
+            this.stateKey = 'carousel-' + this.id;
+            
+            this.restoreState();
+        }
+        
         this.renderDeferred();
     },
     
@@ -210,6 +217,9 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                     $this.first = $this.page * $this.columns;
                     $this.updateNavigators();
                     $this.stateholder.val($this.page);
+                    if($this.cfg.stateful) {
+                        $this.saveState();
+                    }
                 }
             });
         }
@@ -233,11 +243,12 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     toggle: function() {
         if(this.cfg.collapsed) {
             this.expand();
-            PrimeFaces.invokeDeferredRenders(this.id);
         }
         else {
             this.collapse();
         }
+        
+        PrimeFaces.invokeDeferredRenders(this.id);
     },
     
     expand: function() {
@@ -264,6 +275,41 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
+        
+        if(this.cfg.stateful) {
+            this.saveState();
+        }
+    },
+    
+    restoreState: function() {
+        var carouselStateAsString = PrimeFaces.getCookie(this.stateKey) || "first: null, collapsed: null";
+        this.carouselState = eval('({' + carouselStateAsString + '})');
+
+        this.first = this.carouselState.first||this.first;
+        this.page = parseInt(this.first/this.columns);
+        
+        this.stateholder.val(this.page);
+        
+        if(this.cfg.toggleable && (this.carouselState.collapsed === false || this.carouselState.collapsed === true)) {
+            this.cfg.collapsed = !this.carouselState.collapsed;
+            this.toggle();
+        }
+    },
+    
+    saveState: function() {       
+        var carouselStateAsString = "first:" + this.first; 
+        
+        if(this.cfg.toggleable) {
+            carouselStateAsString += ", collapsed: " + this.toggleStateHolder.val();
+        }
+        
+        PrimeFaces.setCookie(this.stateKey, carouselStateAsString, {path:'/'});
+    },
+    
+    clearState: function() {
+        if(this.cfg.stateful) {
+            PrimeFaces.deleteCookie(this.stateKey, {path:'/'});
+        }
     }
     
 });  
