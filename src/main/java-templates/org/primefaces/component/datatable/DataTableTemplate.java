@@ -831,10 +831,16 @@ import org.primefaces.component.datatable.TableState;
 
     public void findSelectedRowKeys() {
         Object selection = this.getSelection();
-        selectedRowKeys = new ArrayList<Object>();
         boolean hasRowKeyVe = this.getValueExpression(PropertyKeys.rowKey.toString()) != null;
         String var = this.getVar();
         Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
+
+        if(this.isMultiViewState() && this.getSelectedRowKeys() != null && this.getSelectedRowKeys().size() > 0) {
+            selectedRowKeys = this.getSelectedRowKeys();
+        }
+        else {
+            selectedRowKeys = new ArrayList<Object>();
+        }
 
         if(isSelectionEnabled() && selection != null) {
             if(this.isSingleSelectionMode()) {
