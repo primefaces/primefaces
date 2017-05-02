@@ -37,6 +37,18 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
 import javax.faces.event.BehaviorEvent;
 import org.primefaces.component.api.UIData;
+import org.primefaces.model.filter.ContainsFilterConstraint;
+import org.primefaces.model.filter.EndsWithFilterConstraint;
+import org.primefaces.model.filter.EqualsFilterConstraint;
+import org.primefaces.model.filter.ExactFilterConstraint;
+import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.GlobalFilterConstraint;
+import org.primefaces.model.filter.GreaterThanEqualsFilterConstraint;
+import org.primefaces.model.filter.GreaterThanFilterConstraint;
+import org.primefaces.model.filter.InFilterConstraint;
+import org.primefaces.model.filter.LessThanEqualsFilterConstraint;
+import org.primefaces.model.filter.LessThanFilterConstraint;
+import org.primefaces.model.filter.StartsWithFilterConstraint;
 
 	public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
     public final static String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
@@ -65,9 +77,41 @@ import org.primefaces.component.api.UIData;
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
     public static final String REFLOW_CLASS = "ui-treetable-reflow";
+    public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
+    public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
     
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
+
+    public final static String STARTS_WITH_MATCH_MODE = "startsWith";
+    public final static String ENDS_WITH_MATCH_MODE = "endsWith";
+    public final static String CONTAINS_MATCH_MODE = "contains";
+    public final static String EXACT_MATCH_MODE = "exact";
+    public final static String LESS_THAN_MODE = "lt";
+    public final static String LESS_THAN_EQUALS_MODE = "lte";
+    public final static String GREATER_THAN_MODE = "gt";
+    public final static String GREATER_THAN_EQUALS_MODE = "gte";
+    public final static String EQUALS_MODE = "equals";
+    public final static String IN_MODE = "in";
+    public final static String GLOBAL_MODE = "global";
+  
+    final static Map<String,FilterConstraint> FILTER_CONSTRAINTS;
+    
+    static {
+        FILTER_CONSTRAINTS = new HashMap<String,FilterConstraint>();
+        FILTER_CONSTRAINTS.put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
+        FILTER_CONSTRAINTS.put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
+        FILTER_CONSTRAINTS.put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
+        FILTER_CONSTRAINTS.put(EXACT_MATCH_MODE, new ExactFilterConstraint());
+        FILTER_CONSTRAINTS.put(LESS_THAN_MODE, new LessThanFilterConstraint());
+        FILTER_CONSTRAINTS.put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
+        FILTER_CONSTRAINTS.put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(EQUALS_MODE, new EqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(IN_MODE, new InFilterConstraint());
+        FILTER_CONSTRAINTS.put(GLOBAL_MODE, new GlobalFilterConstraint());
+    }
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("select", NodeSelectEvent.class);
@@ -118,6 +162,10 @@ import org.primefaces.component.api.UIData;
 
     public boolean isCellEditRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellInfo");
+    }
+
+    public boolean isFilterRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_filtering");
     }
 
     @Override
@@ -494,5 +542,42 @@ import org.primefaces.component.api.UIData;
             firstVe.setValue(context.getELContext(), this.getFirst());
         if(rowsVe != null && !rowsVe.isReadOnly(elContext))
             rowsVe.setValue(context.getELContext(), this.getRows());
+    }
+
+    public boolean isFilteringEnabled() {
+        Object value = getStateHelper().get("filtering");
+       
+        return value == null ? false : true;
+	}
+
+    public void enableFiltering() {
+		getStateHelper().put("filtering", true);
+	}
+
+    public void updateFilteredNode(FacesContext context,  TreeNode node) {
+        ValueExpression ve = this.getValueExpression("filteredNode");
+        
+        if(ve != null) {
+            ve.setValue(context.getELContext(), node);
+        }
+        else {            
+            this.setFilteredNode(node);
+        }
+    }
+
+    private List<String> filteredRowKeys = new ArrayList<String>();
+    public List<String> getFilteredRowKeys() {
+        return filteredRowKeys;
+    }
+    public void setFilteredRowKeys(List<String> filteredRowKeys) {
+        this.filteredRowKeys = filteredRowKeys;
+    }
+
+    private List filterMetadata;
+    public List getFilterMetadata() {
+        return filterMetadata;
+    }
+    public void setFilterMetadata(List filterMetadata) {
+        this.filterMetadata = filterMetadata;
     }
 
