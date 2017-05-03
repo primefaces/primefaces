@@ -120,7 +120,7 @@ public class ChipsRenderer extends InputRenderer {
                 
                 writer.startElement("span", null);
                 writer.writeAttribute("class", Chips.TOKEN_LABEL_CLASS, null);
-                writer.writeText(String.valueOf(value), null);
+                writer.writeText(tokenValue, null);
                 writer.endElement("span");
                 
                 writer.startElement("span", null);
