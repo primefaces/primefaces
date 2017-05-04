@@ -425,6 +425,37 @@ public class ComponentUtils {
 
         return sb.toString();
     }
+    
+    public static String escapeEcmaScriptText(String text) {
+        if(text == null) {
+            return null;
+        }
+
+        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE_TEXT);
+
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            switch (ch) {
+                case '"':
+                    sb.append("\\\"");
+                    break;
+                case '\'':
+                    sb.append("\\'");
+                    break;
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '/':
+                    sb.append("\\/");
+                    break;
+                default:
+                    sb.append(ch);
+                    break;
+            }
+        }
+
+        return sb.toString();
+    }
 
     /**
      * Replace special characters with XML escapes:

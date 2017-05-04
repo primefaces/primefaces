@@ -828,13 +828,21 @@ import org.primefaces.component.datatable.TableState;
     }
 
     private List<Object> selectedRowKeys = new ArrayList<Object>();
+    private boolean isRowKeyRestored = false;
 
     public void findSelectedRowKeys() {
         Object selection = this.getSelection();
-        selectedRowKeys = new ArrayList<Object>();
         boolean hasRowKeyVe = this.getValueExpression(PropertyKeys.rowKey.toString()) != null;
         String var = this.getVar();
         Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
+
+        if(this.isMultiViewState() && selection == null && this.isRowKeyRestored && this.getSelectedRowKeys() != null) {
+            this.selectedRowKeys = this.getSelectedRowKeys();
+            this.isRowKeyRestored = false;
+        }
+        else {
+            this.selectedRowKeys = new ArrayList<Object>();
+        }
 
         if(isSelectionEnabled() && selection != null) {
             if(this.isSingleSelectionMode()) {
@@ -1365,6 +1373,7 @@ import org.primefaces.component.datatable.TableState;
 
             if(this.isSelectionEnabled()) {
                 this.selectedRowKeys = ts.getRowKeys();
+                this.isRowKeyRestored = true;
             }
 
             this.setFilterBy(ts.getFilters());

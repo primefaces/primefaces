@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -42,8 +41,6 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class AutoCompleteRenderer extends InputRenderer {
-
-    private static final Logger LOG = Logger.getLogger(AutoCompleteRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -523,7 +520,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
                 if (pojo) {
                     requestMap.put(var, item);
-                    String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
+                    String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
                     writer.writeAttribute("data-item-value", value, null);
                     writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
@@ -582,7 +579,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
                 if (pojo) {
                     requestMap.put(var, item);
-                    String value = converter == null ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
+                    String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
                     writer.writeAttribute("data-item-value", value, null);
                     writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);

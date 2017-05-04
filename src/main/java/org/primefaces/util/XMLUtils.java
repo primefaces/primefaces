@@ -31,7 +31,7 @@ public class XMLUtils {
      * @return valid XML element name
      */
     public static String escapeTag(String intag) {
-        if ( XMLChar.isValidName(intag) ) {
+        if ( XMLChar.isValidName(intag) || intag == null || intag.length() == 0) {
             return intag;
         }
         

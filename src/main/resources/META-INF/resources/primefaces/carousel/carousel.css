@@ -90,3 +90,9 @@
 .ui-carousel .ui-carousel-mobiledropdown {
     display: none;
 }
+
+.ui-carousel .ui-carousel-titlebar-icon {
+    margin-left: 0.5em;
+    cursor: pointer;
+    float: right;
+}

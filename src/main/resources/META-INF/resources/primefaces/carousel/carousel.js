@@ -17,6 +17,12 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.mobileDropdown = this.header.children('.ui-carousel-mobiledropdown');
         this.stateholder = $(this.jqId + '_page');
         
+        if(this.cfg.toggleable) {
+            this.toggler = $(this.jqId + '_toggler');
+            this.toggleStateHolder = $(this.jqId + '_collapsed');
+            this.toggleableContent = this.jq.find(' > .ui-carousel-viewport > .ui-carousel-items, > .ui-carousel-footer');
+        }
+        
         this.cfg.numVisible = this.cfg.numVisible||3;
         this.cfg.firstVisible = this.cfg.firstVisible||0;
         this.columns = this.cfg.numVisible;
@@ -26,6 +32,13 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.breakpoint = this.cfg.breakpoint||640;
         this.page = parseInt(this.first/this.columns);
         this.totalPages = Math.ceil(this.itemsCount/this.cfg.numVisible);
+        
+        if(this.cfg.stateful) {
+            this.stateKey = 'carousel-' + this.id;
+            
+            this.restoreState();
+        }
+        
         this.renderDeferred();
     },
     
@@ -40,6 +53,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.calculateItemWidths(this.columns);
             this.jq.width(this.jq.width());
             this.updateNavigators();
+        }
+        
+        if(this.cfg.collapsed) {
+            this.toggleableContent.hide();
         }
     },
     
@@ -141,6 +158,17 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                 $this.refreshDimensions();
             });
         }
+        
+        if(this.cfg.toggleable) {
+            this.toggler.on('mouseover.carouselToggler',function() {
+                $(this).addClass('ui-state-hover');
+            }).on('mouseout.carouselToggler',function() {
+                $(this).removeClass('ui-state-hover');
+            }).on('click.carouselToggler', function(e) {
+                $this.toggle(); 
+                e.preventDefault();
+            });
+        }
     },
     
     updateNavigators: function() {
@@ -189,6 +217,9 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                     $this.first = $this.page * $this.columns;
                     $this.updateNavigators();
                     $this.stateholder.val($this.page);
+                    if($this.cfg.stateful) {
+                        $this.saveState();
+                    }
                 }
             });
         }
@@ -207,6 +238,78 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     
     stopAutoplay: function() {
         clearInterval(this.interval);
+    },
+    
+    toggle: function() {
+        if(this.cfg.collapsed) {
+            this.expand();
+        }
+        else {
+            this.collapse();
+        }
+        
+        PrimeFaces.invokeDeferredRenders(this.id);
+    },
+    
+    expand: function() {
+        this.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
+
+        this.slideDown(); 
+    },
+    
+    collapse: function() {
+        this.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
+
+        this.slideUp();
+    },
+    
+    slideUp: function() {        
+        this.toggleableContent.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc');
+    },
+    
+    slideDown: function() {        
+        this.toggleableContent.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc');
+    },
+    
+    toggleState: function(collapsed, removeIcon, addIcon) {
+        this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
+        this.cfg.collapsed = collapsed;
+        this.toggleStateHolder.val(collapsed);
+        
+        if(this.cfg.stateful) {
+            this.saveState();
+        }
+    },
+    
+    restoreState: function() {
+        var carouselStateAsString = PrimeFaces.getCookie(this.stateKey) || "first: null, collapsed: null";
+        this.carouselState = eval('({' + carouselStateAsString + '})');
+
+        this.first = this.carouselState.first||this.first;
+        this.page = parseInt(this.first/this.columns);
+        
+        this.stateholder.val(this.page);
+        
+        if(this.cfg.toggleable && (this.carouselState.collapsed === false || this.carouselState.collapsed === true)) {
+            this.cfg.collapsed = !this.carouselState.collapsed;
+            this.toggle();
+        }
+    },
+    
+    saveState: function() {       
+        var carouselStateAsString = "first:" + this.first; 
+        
+        if(this.cfg.toggleable) {
+            carouselStateAsString += ", collapsed: " + this.toggleStateHolder.val();
+        }
+        
+        PrimeFaces.setCookie(this.stateKey, carouselStateAsString, {path:'/'});
+    },
+    
+    clearState: function() {
+        if(this.cfg.stateful) {
+            PrimeFaces.deleteCookie(this.stateKey, {path:'/'});
+        }
     }
     
 });  

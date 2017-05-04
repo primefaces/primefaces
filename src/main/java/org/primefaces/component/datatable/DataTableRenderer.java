@@ -1226,7 +1226,12 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnSelection(context, table, clientId, column, selected);
         }
 
-        column.encodeAll(context);       
+        if(column instanceof DynamicColumn) {
+            column.encodeAll(context);
+        }
+        else {
+            column.renderChildren(context); 
+        }      
 
         writer.endElement("td");
     }
