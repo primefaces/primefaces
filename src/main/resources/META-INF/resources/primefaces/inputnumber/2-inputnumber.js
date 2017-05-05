@@ -32,7 +32,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             this.input.autoNumeric('set', this.valueToRender);
         }
 
-        this.copyValueToHiddenInput();
+        this.copyValueToHiddenInput(false);
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -57,7 +57,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
                     || (keyCode >= 96 && keyCode <= 111)
                     || (keyCode >= 186 && keyCode <= 222)) {
 
-                oldValue = $this.copyValueToHiddenInput();
+                oldValue = $this.copyValueToHiddenInput(true);
             }
 
             if (originalOnkeyup && originalOnkeyup.call(this, e) === false) {
@@ -71,7 +71,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         var originalOnchange = this.input.prop('onchange');
         this.input.removeProp('onchange').off('change').on('change', function (e) {
 
-            var oldValue = $this.copyValueToHiddenInput();
+            var oldValue = $this.copyValueToHiddenInput(true);
             if (originalOnchange && originalOnchange.call(this, e) === false) {
                 $this.setValueToHiddenInput(oldValue);
                 return false;
@@ -81,7 +81,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         var originalOnkeydown = this.input.prop('onkeydown');
         this.input.removeProp('onkeydown').off('keydown').on('keydown', function (e) {
 
-            var oldValue = $this.copyValueToHiddenInput();
+            var oldValue = $this.copyValueToHiddenInput(true);
             if (originalOnkeydown && originalOnkeydown.call(this, e) === false) {
                 $this.setValueToHiddenInput(oldValue);
                 return false;
@@ -89,22 +89,25 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
-    copyValueToHiddenInput: function () {
+    copyValueToHiddenInput: function(triggerEvent) {
         var oldVal = this.hiddenInput.val();
 
         var newVal = this.input.autoNumeric('get');
-        this.setValueToHiddenInput(newVal);
+        this.setValueToHiddenInput(newVal, triggerEvent);
 
         return oldVal;
     },
 
-    setValueToHiddenInput: function (value) {
+    setValueToHiddenInput: function(value, triggerEvent) {
         if (value !== "") {
             this.hiddenInput.attr('value', value);
         } else {
             this.hiddenInput.removeAttr('value');
         }
-        this.hiddenInput.change();
+
+        if (triggerEvent === true) {
+            this.hiddenInput.change();
+        }
     },
 
     enable: function () {
