@@ -53,6 +53,13 @@
 			<type>javax.el.MethodExpression</type>
             <description>Method to execute by passing command and the arguments.</description>
 		</attribute>
+        <attribute>
+            <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if the terminal is escaped or not.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
