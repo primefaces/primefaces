@@ -452,7 +452,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             
             this.tbody.off('click.treetable-cell', cellSelector)
                         .on('click.treetable-cell', cellSelector, null, function(e) {
-                            if(!$(e.target).is('span.ui-c')) {
+                            if(!$(e.target).is('span.ui-treetable-toggler.ui-c')) {
                                 $this.incellClick = true;
                                 
                                 var cell = $(this);
