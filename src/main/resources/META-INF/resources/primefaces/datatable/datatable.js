@@ -3416,17 +3416,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     groupRows: function() {
+        this.rows = this.tbody.children('tr');
         for(var i = 0; i < this.cfg.groupColumnIndexes.length; i++) {
             this.groupRow(this.cfg.groupColumnIndexes[i]);
         }
+        
+        this.rows.children('td.ui-duplicated-column').remove();
     },
     
     groupRow: function(colIndex) {
-        var rows = this.tbody.children('tr');
         var groupStartIndex = null, rowGroupCellData = null, rowGroupCount = null;
         
-        for(var i = 0; i < rows.length; i++) {
-            var row = rows.eq(i);
+        for(var i = 0; i < this.rows.length; i++) {
+            var row = this.rows.eq(i);
             var column = row.children('td').eq(colIndex);
             var columnData = column.text();
             if(rowGroupCellData != columnData) {                    
@@ -3435,12 +3437,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 rowGroupCount = 1;
             }
             else {
-                column.remove();
+                column.addClass('ui-duplicated-column');
                 rowGroupCount++;
             }
             
             if(groupStartIndex != null && rowGroupCount > 1) {
-                rows.eq(groupStartIndex).children('td').eq(colIndex).attr('rowspan', rowGroupCount);
+                this.rows.eq(groupStartIndex).children('td').eq(colIndex).attr('rowspan', rowGroupCount);
             }
         }
     },
