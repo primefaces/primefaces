@@ -7894,7 +7894,7 @@
         if (this.showLabels) {
             td = $(document.createElement('td'));
             td.addClass('jqplot-table-legend jqplot-table-legend-label');
-            td.css('paddingTop', '0.5 em');
+            td.css('paddingTop', rs);
             tr.append(td);
 
             // elem = $('<td class="jqplot-table-legend" style="padding-top:'+rs+';"></td>');
@@ -17471,7 +17471,7 @@
     $.jqplot.CanvasFontRenderer.prototype.measure = function(ctx, str)
     {
         // var fstyle = this.fontStyle+' '+this.fontVariant+' '+this.fontWeight+' '+this.fontSize+' '+this.fontFamily;
-        var fstyle = this.fontWeight+' '+this.fontSize+' '+this.fontFamily;
+        var fstyle = this.fontSize+' '+this.fontFamily;
         ctx.save();
         ctx.font = fstyle;
         var w = ctx.measureText(str).width;
@@ -17512,7 +17512,7 @@
          ctx.strokeStyle = this.fillStyle;
          ctx.fillStyle = this.fillStyle;
         // var fstyle = this.fontStyle+' '+this.fontVariant+' '+this.fontWeight+' '+this.fontSize+' '+this.fontFamily;
-        var fstyle = this.fontWeight+' '+this.fontSize+' '+this.fontFamily;
+        var fstyle = this.fontSize+' '+this.fontFamily;
          ctx.font = fstyle;
          ctx.translate(tx, ty);
          ctx.rotate(this.angle);
@@ -20940,7 +20940,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
-    _draw: function() {
+    _draw: function() {
         this.bindItemSelect();
         this.plot = $.jqplot(this.jqpid, this.cfg.data, this.cfg);
         this.adjustLegendTable();
@@ -20974,10 +20974,10 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         var tableLegend = this.jq.find('table.jqplot-table-legend'),
             tr = tableLegend.find('tr.jqplot-table-legend');
         
-        if(tr.length > 1) {
+        if(tr.size() > 1) {
             var trFirst = tableLegend.find('tr.jqplot-table-legend:first'),
                 trLast = tableLegend.find('tr.jqplot-table-legend:last'),
-                length = trFirst.children('td').length - trLast.children('td').length;
+                length = trFirst.children('td').size() - trLast.children('td').size();
 
             for(var i = 0; i < length; i++) {
                 trLast.append('<td></td>');
@@ -20991,7 +20991,6 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.legend = {
                 renderer: $.jqplot.EnhancedLegendRenderer,
                 show: true,
-                escapeHtml: this.cfg.escapeHtml,
                 location: this.cfg.legendPosition,
                 placement: this.cfg.legendPlacement,
                 rendererOptions: {
