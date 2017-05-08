@@ -89,7 +89,7 @@ public class MenuRenderer extends BaseMenuRenderer {
                     String containerStyleClass = menuItem.getContainerStyleClass();
                     containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS: Menu.MENUITEM_CLASS + " " + containerStyleClass; 
                             
-                    if(toggleable) {
+                    if(toggleable && menuItem instanceof UIComponent) {
                         UIComponent parent = ((UIComponent)menuItem).getParent();
                         containerStyleClass = (parent instanceof Submenu) ? containerStyleClass + " " + Menu.SUBMENU_CHILD_CLASS: containerStyleClass; 
                     }
