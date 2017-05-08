@@ -565,8 +565,8 @@ public class TreeRenderer extends CoreRenderer {
         boolean match = false;
         if(filter && filteredRowKeys.size() > 0) {
             for(String filteredRowKey : filteredRowKeys) {
-                final String rowKeyExt = rowKey + "_";
-                final String filteredRowKeyExt = filteredRowKey + "_";
+                String rowKeyExt = rowKey + "_";
+                String filteredRowKeyExt = filteredRowKey + "_";
                 if(filteredRowKey.startsWith(rowKeyExt) || rowKey.startsWith(filteredRowKeyExt) || filteredRowKey.equals(rowKey)) {
                     match = true;
                     if(!node.isLeaf() && !rowKey.startsWith(filteredRowKey)) {
