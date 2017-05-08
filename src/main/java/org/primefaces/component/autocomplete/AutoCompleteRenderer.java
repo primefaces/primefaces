@@ -225,7 +225,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                         Object item = getConvertedValue(context, ac, String.valueOf(submittedValue));
                         requestMap.put(var, item);
                         itemLabel = ac.getItemLabel();
-                    } catch (ConverterException ce) {
+                    } 
+                    catch (ConverterException ce) {
                         itemLabel = String.valueOf(submittedValue);
                     }
 
@@ -352,7 +353,8 @@ public class AutoCompleteRenderer extends InputRenderer {
             Object submittedValue = ac.getSubmittedValue();
             try {
                 values = (List) getConvertedValue(context, ac, submittedValue);
-            } catch (ConverterException ce) {
+            }
+            catch (ConverterException ce) {
                 values = Arrays.asList((String[]) submittedValue);
             }
         }
