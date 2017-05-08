@@ -253,6 +253,13 @@
             <defaultValue>...</defaultValue>
             <description>The text shown in panel when the suggested list is greater than maxResults.</description>
         </attribute>
+        <attribute>
+            <name>unique</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Ensures uniqueness of selected items.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
