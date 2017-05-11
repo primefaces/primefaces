@@ -435,6 +435,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", "disabled");
+        if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
+        if(ac.isRequired()) writer.writeAttribute("aria-required", "true", null);
 
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
