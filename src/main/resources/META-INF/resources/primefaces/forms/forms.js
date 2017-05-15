@@ -907,7 +907,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.PAGE_DOWN:
                 case keyCode.PAGE_UP:
                 case keyCode.END:
-                case keyCode.DELETE:
                 case 16: //shift
                 case 17: //keyCode.CONTROL:
                 case 18: //keyCode.ALT:
