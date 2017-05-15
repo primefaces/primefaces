@@ -32,6 +32,7 @@ import javax.faces.event.ActionListener;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
@@ -69,7 +70,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
         try {
             externalContext.setResponseContentType(content.getContentType());
-            externalContext.setResponseHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
+            externalContext.setResponseHeader("Content-Disposition", ComponentUtils.createContentDisposition(contentDispositionValue, content.getName()));
             externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE + monitorKeyValue, "true", Collections.<String, Object>emptyMap());
             
             if(content.getContentLength() != null){
