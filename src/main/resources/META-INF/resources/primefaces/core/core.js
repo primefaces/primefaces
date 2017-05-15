@@ -598,7 +598,9 @@
                 this.localeSettings = PrimeFaces.locales[localeKey];
 
                 if(!this.localeSettings) {
-                    this.localeSettings = PrimeFaces.locales[localeKey.split('_')[0]];
+                    if(localeKey) {
+                       this.localeSettings = PrimeFaces.locales[localeKey.split('_')[0]];
+                    }
 
                     if(!this.localeSettings)
                         this.localeSettings = PrimeFaces.locales['en_US'];
