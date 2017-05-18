@@ -2313,7 +2313,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         if(multi) {
                             var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
 
-                            if(focusIndex < 0 || (focusIndex === inputs.length) || input.parent().hasClass('ui-inputnumber')) {
+                            if(focusIndex < 0 || (focusIndex === inputs.length) || input.parent().hasClass('ui-inputnumber') || input.parent().hasClass('ui-helper-hidden-accessible')) {
                                 $this.tabCell(cell, !shiftKey);                                
                             } else {
                                 inputs.eq(focusIndex).focus();
