@@ -637,6 +637,7 @@
                                 <exclude>**/*.something</exclude>
                                 <exclude>**/photocam.js</exclude>
                                 <exclude>**/texteditor.js</exclude>
+                                <exclude>**/jquery.js</exclude>
                             </excludes>
                             <includes>
                                 <include>**/*.js</include>
