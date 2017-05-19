@@ -338,6 +338,10 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             writer.writeAttribute("class", "ui-state-disabled", null);
         }
 
+        if (option.getDescription() != null) {
+            writer.writeAttribute("title", option.getDescription(), null);
+        }
+        
         if (label != null) {
             if (option.isEscape()) {
                 writer.writeText(label, null);
