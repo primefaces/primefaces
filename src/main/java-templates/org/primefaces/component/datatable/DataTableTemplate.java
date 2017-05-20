@@ -67,6 +67,7 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.component.datatable.FilterState;
 import org.primefaces.component.datatable.TableState;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
@@ -541,6 +542,16 @@ import org.primefaces.component.datatable.TableState;
                 first = Integer.valueOf(params.get(getClientId(context) + "_first")) + getRows();
             }           
             
+            if(this.isMultiViewState()) {
+                List<FilterState> filters = this.getFilterBy();
+                if(filters != null) {
+                    String globalFilterParam = this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+                    FilterFeature filterFeature = (FilterFeature) this.getFeature(DataTableFeatureKey.FILTER);
+                    Map<String, Object> filterParameterMap = filterFeature.populateFilterParameterMap(context, this, this.getFilterMetadata(), globalFilterParam);
+                    this.setFilters(filterParameterMap);
+                }
+            }
+
             if(this.isMultiSort())
                 data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilters());
             else

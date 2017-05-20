@@ -116,6 +116,17 @@ public class DataTableRenderer extends DataRenderer {
             table.setDefaultSortOrder(table.getSortOrder());
             table.setDefaultSortFunction(table.getSortFunction());
         }
+        
+        List<FilterState> filters = table.getFilterBy();
+        List<FilterMeta> filterMetadata = new ArrayList<FilterMeta>();
+        if(filters != null) {
+            for(FilterState filterState : filters) {
+                UIColumn column = table.findColumn(filterState.getColumnKey());
+                filterMetadata.add(new FilterMeta(column, column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()), filterState.getFilterValue()));
+            }
+
+            table.setFilterMetadata(filterMetadata);
+        }
             
         if(table.isLazy()) {
             if(table.isLiveScroll())
@@ -135,14 +146,8 @@ public class DataTableRenderer extends DataRenderer {
                 table.setRowIndex(-1);
             }
 
-            List<FilterState> filters = table.getFilterBy();
             if(filters != null) {
                 FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
-                List<FilterMeta> filterMetadata = new ArrayList<FilterMeta>();
-                for(FilterState filterState : filters) {
-                    UIColumn column = table.findColumn(filterState.getColumnKey());
-                    filterMetadata.add(new FilterMeta(column, column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()), filterState.getFilterValue()));
-                }
                 
                 String globalFilter = table.getGlobalFilter();
                 if(globalFilter != null) {
@@ -151,8 +156,7 @@ public class DataTableRenderer extends DataRenderer {
                         ((ValueHolder) globalFilterComponent).setValue(globalFilter);
                     }
                 }
-                                
-                table.setFilterMetadata(filterMetadata);
+
                 filterFeature.filter(context, table, filterMetadata, globalFilter);
             }
         }
