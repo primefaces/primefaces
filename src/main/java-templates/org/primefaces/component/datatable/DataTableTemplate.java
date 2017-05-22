@@ -546,9 +546,12 @@ import org.primefaces.component.datatable.TableState;
                 List<FilterState> filters = this.getFilterBy();
                 if(filters != null) {
                     String globalFilterParam = this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
-                    FilterFeature filterFeature = (FilterFeature) this.getFeature(DataTableFeatureKey.FILTER);
-                    Map<String, Object> filterParameterMap = filterFeature.populateFilterParameterMap(context, this, this.getFilterMetadata(), globalFilterParam);
-                    this.setFilters(filterParameterMap);
+                    List filterMetaDataList = this.getFilterMetadata();
+                    if(filterMetaDataList != null) {
+                        FilterFeature filterFeature = (FilterFeature) this.getFeature(DataTableFeatureKey.FILTER);
+                        Map<String, Object> filterParameterMap = filterFeature.populateFilterParameterMap(context, this, filterMetaDataList, globalFilterParam);
+                        this.setFilters(filterParameterMap);
+                    }
                 }
             }
 
