@@ -1364,9 +1364,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 return true;
             },
             oncomplete: function(xhr, status, args) {
-                var paginator = $this.getPaginator();             
-                if(paginator && args && paginator.cfg.rowCount !== args.totalRecords) {
-                    paginator.setTotalRecords(args.totalRecords);
+                var paginator = $this.getPaginator();
+                if(args && args.totalRecords) {
+                    $this.cfg.scrollLimit = args.totalRecords;
+                    
+                    if(paginator && paginator.cfg.rowCount !== args.totalRecords) {
+                        paginator.setTotalRecords(args.totalRecords);
+                    }
                 }
                 
                 if(!args.validationFailed) {
@@ -1413,13 +1417,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 
                 if($this.cfg.liveScroll) {
-                    // Reset Scroll Position
                     $this.scrollOffset = 0;
-                    $this.scrollBody.scrollTop(0);
-
-                    // Reset the Ability to Livescroll
-                    $this.allLoadedLiveScroll = false;
-                    $this.shouldLiveScroll = true;
+                    $this.liveScrollActive = false;
+                    $this.shouldLiveScroll = true;       
+                    $this.loadingLiveScroll = false;
+                    $this.allLoadedLiveScroll = $this.cfg.scrollStep >= $this.cfg.scrollLimit;  
                 }                
                 
                 if($this.cfg.clientCache) {
