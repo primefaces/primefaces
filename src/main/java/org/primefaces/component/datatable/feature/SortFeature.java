@@ -98,7 +98,11 @@ public class SortFeature implements DataTableFeature {
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
 		table.setFirst(0);
         
-        if(table.isLazy()) {
+        if(table.isLazy() && table.isLiveScroll()) {
+            table.setScrollOffset(0);
+            table.loadLazyScrollData(0, table.getScrollRows());
+        }
+        else if(table.isLazy()) {
             table.loadLazyData();
         }
         else {
