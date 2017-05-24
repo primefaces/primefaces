@@ -195,6 +195,7 @@ public class ScheduleRenderer extends CoreRenderer {
             .attr("timeFormat", schedule.getTimeFormat(), null)
             .attr("weekNumbers", isShowWeekNumbers, false)
             .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
+            .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true)
             .attr("urlTarget", schedule.getUrlTarget(), "_blank");
                 
         String columnFormat = schedule.getColumnFormat();
