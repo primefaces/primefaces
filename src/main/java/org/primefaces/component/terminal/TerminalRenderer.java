@@ -65,10 +65,11 @@ public class TerminalRenderer extends CoreRenderer {
 
         if(welcomeMessage != null) {
             writer.startElement("div", null);
-            if(terminal.isEscape())
+            if(terminal.isEscape()) {
                writer.writeText(welcomeMessage, null);
-            else
+            } else {
                writer.write(welcomeMessage);
+            }
             writer.endElement("div");
         }
 
@@ -79,10 +80,11 @@ public class TerminalRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.startElement("span", null);
         writer.writeAttribute("class", Terminal.PROMPT_CLASS, null);
-        if(terminal.isEscape())
+        if(terminal.isEscape()) {
            writer.writeText(prompt, null);
-        else
+        } else {
            writer.write(prompt);
+        }
         writer.endElement("span");
 
         writer.startElement("input", null);
