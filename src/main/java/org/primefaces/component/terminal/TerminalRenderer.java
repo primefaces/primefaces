@@ -30,105 +30,116 @@ import org.primefaces.util.WidgetBuilder;
 
 public class TerminalRenderer extends CoreRenderer {
 
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		Terminal terminal = (Terminal) component;
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Terminal terminal = (Terminal) component;
 
-		if(terminal.isCommandRequest()) {
-			handleCommand(context, terminal);
-		}
-		else if(terminal.isAutoCompleteRequest()) {
-			autoCompleteCommand(context, terminal);
-		}
-		else {
-			encodeMarkup(context, terminal);
-			encodeScript(context, terminal);
-		}
-	}
+        if(terminal.isCommandRequest()) {
+            handleCommand(context, terminal);
+        }
+        else if(terminal.isAutoCompleteRequest()) {
+            autoCompleteCommand(context, terminal);
+        }
+        else {
+            encodeMarkup(context, terminal);
+            encodeScript(context, terminal);
+        }
+    }
 
-	protected void encodeMarkup(FacesContext context, Terminal terminal) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = terminal.getClientId(context);
-		String style = terminal.getStyle();
-		String styleClass = terminal.getStyleClass();
-		styleClass = (styleClass == null) ? Terminal.CONTAINER_CLASS : Terminal.CONTAINER_CLASS + " " + styleClass;
-		String welcomeMessage = terminal.getWelcomeMessage();
-		String inputId = clientId + "_input";
+    protected void encodeMarkup(FacesContext context, Terminal terminal) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = terminal.getClientId(context);
+        String style = terminal.getStyle();
+        String styleClass = terminal.getStyleClass();
+        styleClass = (styleClass == null) ? Terminal.CONTAINER_CLASS : Terminal.CONTAINER_CLASS + " " + styleClass;
+        String welcomeMessage = terminal.getWelcomeMessage();
+        String prompt = terminal.getPrompt();
+        String inputId = clientId + "_input";
+        
+        writer.startElement("div", terminal);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
 
-		writer.startElement("div", terminal);
-		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("class", styleClass, "styleClass");
-		if(style != null) {
-			writer.writeAttribute("style", style, "style");
-		}
+        if(welcomeMessage != null) {
+            writer.startElement("div", null);
+            if(terminal.isEscape()) {
+                writer.writeText(welcomeMessage, null);
+            } else {
+                writer.write(welcomeMessage);
+            }
+            writer.endElement("div");
+        }
 
-		if(welcomeMessage != null) {
-			writer.startElement("div", null);
-			writer.writeText(welcomeMessage, null);
-			writer.endElement("div");
-		}
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Terminal.CONTENT_CLASS, null);
+        writer.endElement("div");
 
-		writer.startElement("div", null);
-		writer.writeAttribute("class", Terminal.CONTENT_CLASS, null);
-		writer.endElement("div");
-
-		writer.startElement("div", null);
-		writer.startElement("span", null);
-		writer.writeAttribute("class", Terminal.PROMPT_CLASS, null);
-		writer.writeText(terminal.getPrompt(), null);
+        writer.startElement("div", null);
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Terminal.PROMPT_CLASS, null);
+        if(terminal.isEscape()) {
+            writer.writeText(prompt, null);
+        } else {
+            writer.write(prompt);
+	    }
+        
 		writer.endElement("span");
 
-		writer.startElement("input", null);
-		writer.writeAttribute("id", inputId, null);
-		writer.writeAttribute("name", inputId, null);
-		writer.writeAttribute("type", "text", null);
-		writer.writeAttribute("autocomplete", "off", null);
-		writer.writeAttribute("class", Terminal.INPUT_CLASS, null);
-		writer.endElement("input");
+        writer.startElement("input", null);
+        writer.writeAttribute("id", inputId, null);
+        writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("class", Terminal.INPUT_CLASS, null);
+        writer.endElement("input");
 
-		writer.endElement("div");
-		writer.endElement("div");
-	}
+        writer.endElement("div");
+        writer.endElement("div");
+    }
 
-	protected void encodeScript(FacesContext context, Terminal terminal) throws IOException {
-		String clientId = terminal.getClientId(context);
-		WidgetBuilder wb = getWidgetBuilder(context);
-		wb.init("Terminal", terminal.resolveWidgetVar(), clientId);
-		wb.finish();
-	}
-	
-	protected void handleCommand(FacesContext context, Terminal terminal) throws IOException {
-		String clientId = terminal.getClientId(context);
-		String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-		String tokens[] = value.trim().split(" ");
-		String command = tokens[0];
-		String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
+    protected void encodeScript(FacesContext context, Terminal terminal) throws IOException {
+        String clientId = terminal.getClientId(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("Terminal", terminal.resolveWidgetVar(), clientId);
+        wb.finish();
+    }
+    
+    protected void handleCommand(FacesContext context, Terminal terminal) throws IOException {
+        String clientId = terminal.getClientId(context);
+        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String tokens[] = value.trim().split(" ");
+        String command = tokens[0];
+        String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
-		MethodExpression commandHandler = terminal.getCommandHandler();
-		String result = (String) commandHandler.invoke(context.getELContext(), new Object[]{command, args});
+        MethodExpression commandHandler = terminal.getCommandHandler();
+        String result = (String) commandHandler.invoke(context.getELContext(), new Object[]{command, args});
 
-		ResponseWriter writer = context.getResponseWriter();
-		writer.write(result);
-	}
+        ResponseWriter writer = context.getResponseWriter();
+        writer.write(result);
+    }
 
-	protected void autoCompleteCommand(FacesContext context, Terminal terminal) throws IOException {
-		String clientId = terminal.getClientId(context);
-		String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-		String tokens[] = value.trim().split(" ");
-		String command = tokens[0];
-		String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
+    protected void autoCompleteCommand(FacesContext context, Terminal terminal) throws IOException {
+        String clientId = terminal.getClientId(context);
+        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String tokens[] = value.trim().split(" ");
+        String command = tokens[0];
+        String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
-		MethodExpression commandModelHandler = terminal.getCommandModel();
-		ResponseWriter writer = context.getResponseWriter();
+        MethodExpression commandModelHandler = terminal.getCommandModel();
+        ResponseWriter writer = context.getResponseWriter();
 		
-		if (commandModelHandler == null) {
-			writer.write("null");
-		} else {
-			TreeNode commandModel = (TreeNode) commandModelHandler.invoke(context.getELContext(), new Object[]{});
-			AutoCompleteMatches matches = terminal.traverseCommandModel(commandModel, command, args);
+        if (commandModelHandler == null) {
+            writer.write("null");
+        } else {
+            TreeNode commandModel = (TreeNode) commandModelHandler.invoke(context.getELContext(), new Object[]{});
+            AutoCompleteMatches matches = terminal.traverseCommandModel(commandModel, command, args);
 			
-			writer.write(matches.toString());
-		}
-	}
+            writer.write(matches.toString());
+        }
+    }
 
 }
+

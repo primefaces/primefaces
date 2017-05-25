@@ -58,7 +58,14 @@
 			<required>false</required>
 			<type>javax.el.MethodExpression</type>
             <description>Method that returns the command model used for autocompletion.</description>
-		</attribute>
+        </attribute>
+        <attribute>
+            <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if the terminal is escaped or not.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>
