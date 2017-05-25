@@ -38,9 +38,11 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
 
         this.list.children('.ui-orderlist-item').each(function() {
             var item = $(this),
-            itemValue = item.data('item-value');
+            itemValue = item.data('item-value'),
+            option = $('<option selected="selected"></option>');
 
-            $this.input.append('<option value="' + itemValue + '" selected="selected">' + itemValue + '</option>');
+            option.prop('value', itemValue).text(itemValue);
+            $this.input.append(option);
         });
     },
     

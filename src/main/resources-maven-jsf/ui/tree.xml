@@ -217,6 +217,19 @@
             <description>Name of the request-scoped variable that'll be used to refer current treenode using EL.</description>
             <ignoreInComponent>true</ignoreInComponent>
 		</attribute>
+        <attribute>
+			<name>filterBy</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Property to be used for filtering.</description>
+		</attribute>
+        <attribute>
+			<name>filterMatchMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>startsWith</defaultValue>
+            <description>Match mode for filtering.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

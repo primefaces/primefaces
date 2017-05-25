@@ -162,14 +162,17 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         
         tabs.on('focus.tabview', function(e) {
             var focusedTab = $(this);
-            focusedTab.addClass('ui-tabs-outline');
             
-            if($this.cfg.scrollable) {
-                if(focusedTab.position().left + focusedTab.width() > $this.navcrollerRight.position().left) {
-                    $this.navcrollerRight.trigger('click.tabview');
-                }
-                else if(focusedTab.position().left < $this.navcrollerLeft.position().left) {
-                    $this.navcrollerLeft.trigger('click.tabview');
+            if(!focusedTab.hasClass('ui-state-disabled')) {
+                focusedTab.addClass('ui-tabs-outline');
+
+                if($this.cfg.scrollable) {
+                    if(focusedTab.position().left + focusedTab.width() > $this.navcrollerRight.position().left) {
+                        $this.navcrollerRight.trigger('click.tabview');
+                    }
+                    else if(focusedTab.position().left < $this.navcrollerLeft.position().left) {
+                        $this.navcrollerLeft.trigger('click.tabview');
+                    }
                 }
             }
         })
@@ -178,10 +181,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         })
         .on('keydown.tabview', function(e) {
             var keyCode = $.ui.keyCode,
-            key = e.which;
+            key = e.which,
+            element = $(this);
 
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
-                $this.select($(this).index());
+            if((key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) && !element.hasClass('ui-state-disabled')) {
+                $this.select(element.index());
                 e.preventDefault();
             }
         });

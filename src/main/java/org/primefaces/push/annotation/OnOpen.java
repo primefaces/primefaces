@@ -20,7 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 /**
- * An annotation to use with {@link PushEndpoint} annotated classes. A method annotated with @OnOpen will be invoked
+ * An annotation to use with {@link PushEndpoint} annotated classes. A method annotated with {@link OnOpen} will be invoked
  * when a {@link org.primefaces.push.RemoteEndpoint} is connected and ready to receive push messages. An annotated method may define zero, one or two parameters. For example
  *
  * <blockquote>

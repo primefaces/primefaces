@@ -143,7 +143,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         
         writer.startElement("div", menu);
         writer.writeAttribute("class", SelectManyMenu.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, selectItems.size()), null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
 
         if(customContent) {
             writer.startElement("table", null);
@@ -211,7 +211,13 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
             for(UIComponent child : menu.getChildren()) {
                 if(child instanceof Column && child.isRendered()) {
+                    String style = ((Column)child).getStyle();
+                    String styleClass = ((Column)child).getStyleClass();
+
                     writer.startElement("td", null);
+                    if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+                    if(style != null) writer.writeAttribute("style", style, "style");
+                    
                     renderChildren(context, child);
                     writer.endElement("td");
                 }
@@ -273,7 +279,11 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(selected) writer.writeAttribute("selected", "selected", null);
 
-        writer.write(option.getLabel());
+        if(option.isEscape()) {
+            writer.writeText(option.getLabel(), null);
+        } else {
+            writer.write(option.getLabel());
+        }
 
         writer.endElement("option");
     }

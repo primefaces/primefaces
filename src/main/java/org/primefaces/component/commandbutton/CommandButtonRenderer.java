@@ -65,7 +65,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         String title = button.getTitle();
         String onclick = null;
         
-        if (!button.isDisabled()) {
+        if (!button.isDisabled() || button.isRenderDisabledClick()) {
             String request = pushButton ? null : buildRequest(context, button, clientId);        
             onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
         }

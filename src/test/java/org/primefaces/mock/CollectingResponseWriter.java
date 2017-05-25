@@ -37,13 +37,11 @@ public class CollectingResponseWriter extends ResponseWriter {
     
 	@Override
 	public ResponseWriter cloneWithWriter(Writer arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void endDocument() throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -54,25 +52,21 @@ public class CollectingResponseWriter extends ResponseWriter {
 
 	@Override
 	public void flush() throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public String getCharacterEncoding() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getContentType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void startDocument() throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -91,7 +85,6 @@ public class CollectingResponseWriter extends ResponseWriter {
 
 	@Override
 	public void writeComment(Object arg0) throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -116,13 +109,11 @@ public class CollectingResponseWriter extends ResponseWriter {
 	@Override
 	public void writeURIAttribute(String arg0, Object arg1, String arg2)
 			throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void close() throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 

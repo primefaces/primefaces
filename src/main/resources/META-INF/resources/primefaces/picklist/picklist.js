@@ -20,8 +20,21 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         var sourceCaption = this.sourceList.prev('.ui-picklist-caption'),
             targetCaption = this.targetList.prev('.ui-picklist-caption');
     
-        if(sourceCaption.length) {this.sourceList.attr('aria-label', sourceCaption.text());}
-        if(targetCaption.length) {this.targetList.attr('aria-label', targetCaption.text());}
+        if(sourceCaption.length) {
+            var captionText = sourceCaption.text();
+            
+            this.sourceList.attr('aria-label', captionText);
+            this.sourceInput.attr('title', captionText);
+        }
+        
+        if(targetCaption.length) {
+            var captionText = targetCaption.text();
+            
+            this.targetList.attr('aria-label', captionText);
+            this.targetInput.attr('title', captionText);
+        }
+        
+        this.setTabIndex();
                 
         //generate input options
         this.generateItems(this.sourceList, this.sourceInput);
@@ -331,9 +344,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             var item = $(this),
             itemValue = PrimeFaces.escapeHTML(item.attr('data-item-value')),
             itemLabel = item.attr('data-item-label'),
-            escapedItemLabel = (itemLabel) ? PrimeFaces.escapeHTML(itemLabel) : '';
-            
-            input.append('<option value="' + itemValue + '" selected="selected">' + escapedItemLabel + '</option>');
+            escapedItemLabel = (itemLabel) ? PrimeFaces.escapeHTML(itemLabel) : '',
+            option = $('<option selected="selected"></option>');
+
+            option.prop('value', itemValue).text(escapedItemLabel);
+            input.append(option);
         });
     },
     
@@ -726,11 +741,18 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     fireItemSelectEvent: function(item) {
         if(this.hasBehavior('select')) {
             var itemSelectBehavior = this.cfg.behaviors['select'],
+            listName = this.getListName(item),
+            inputContainer = (listName === "source") ? this.sourceInput : this.targetInput,
             ext = {
                 params: [
                     {name: this.id + '_itemIndex', value: item.index()},
-                    {name: this.id + '_listName', value: this.getListName(item)}
-                ]
+                    {name: this.id + '_listName', value: listName}
+                ],
+                onstart: function() {
+                    if(!inputContainer.children().length) {
+                        return false;
+                    }
+                }
             };
 
             itemSelectBehavior.call(this, ext);
@@ -759,6 +781,14 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             
     isAnimated: function() {
         return (this.cfg.effect && this.cfg.effect != 'none');
+    },
+    
+    setTabIndex: function() {
+        var tabindex = (this.cfg.disabled) ? "-1" : (this.cfg.tabindex||'0');
+        this.sourceList.attr('tabindex', tabindex);
+        this.targetList.attr('tabindex', tabindex);
+        $(this.jqId + ' button').attr('tabindex', tabindex);
+        $(this.jqId + ' .ui-picklist-filter-container > input').attr('tabindex', tabindex);
     }
 
 });

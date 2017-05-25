@@ -45,6 +45,7 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
+            ignoreAutoUpdate: true,
             formId: this.cfg.formId,
             params: [{ name: this.id + '_getlifecycleinfo', value: true }],
             oncomplete: function(xhr, status, args) {

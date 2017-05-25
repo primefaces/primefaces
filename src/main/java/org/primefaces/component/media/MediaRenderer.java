@@ -26,13 +26,14 @@ import org.primefaces.application.resource.DynamicContentType;
 
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
-import org.primefaces.util.DynamicResourceBuilder;
+import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.HTML;
 
 public class MediaRenderer extends CoreRenderer {
-    
+
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		Media media = (Media) component;
@@ -46,25 +47,34 @@ public class MediaRenderer extends CoreRenderer {
         }
         boolean isIE = AgentUtils.isIE(context);
         String sourceParam = player.getSourceParam();
-		
+
+        Object value = media.getValue();
+        if(value != null && value instanceof StreamedContent && player.getType().equals("application/pdf")) {
+            StreamedContent streamedContent = (StreamedContent) value;
+            if(streamedContent.getName() != null) {
+                int index = src.indexOf("?");
+                src = src.substring(0, index) + ";/" + streamedContent.getName() + "" + src.substring(index, src.length());
+            }
+        }
+        
 		writer.startElement("object", media);
         writer.writeAttribute("type", player.getType(), null);
         writer.writeAttribute("data", src, null);
-        
+
         if(isIE) {
             encodeIEConfig(writer, player);
         }
-		
+
 		if(media.getStyleClass() != null) {
 			writer.writeAttribute("class", media.getStyleClass(), null);
 		}
-        
+
 		renderPassThruAttributes(context, media, HTML.MEDIA_ATTRS);
-		
+
         if(sourceParam != null) {
             encodeParam(writer, player.getSourceParam(), src, false);
         }
-        
+
         for(UIComponent child : media.getChildren()) {
             if(child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
@@ -72,25 +82,25 @@ public class MediaRenderer extends CoreRenderer {
                 encodeParam(writer, param.getName(), param.getValue(), false);
             }
         }
-        
+
         renderChildren(context, media);
-        
-		
+
+
 		writer.endElement("object");
 	}
-    
+
     protected void encodeIEConfig(ResponseWriter writer, MediaPlayer player) throws IOException {
         writer.writeAttribute("classid", player.getClassId(), null);
-        
+
 		if(player.getCodebase() != null) {
 			writer.writeAttribute("codebase", player.getCodebase(), null);
 		}
     }
-     
+
     protected void encodeParam(ResponseWriter writer, String name, Object value, boolean asAttribute) throws IOException {
 		if(value == null)
 			return;
-		
+
 		if(asAttribute) {
 			writer.writeAttribute(name, value, null);
 		} else {
@@ -109,7 +119,7 @@ public class MediaRenderer extends CoreRenderer {
 			Map<String,MediaPlayer> players = MediaPlayerFactory.getPlayers();
 			String[] tokens = ((String) media.getValue()).split("\\.");
 			String type = tokens[tokens.length-1];
-			
+
 			for(MediaPlayer mp : players.values()) {
                 for(String supportedType : mp.getSupportedTypes()) {
                     if(supportedType.equalsIgnoreCase(type)) {
@@ -117,15 +127,15 @@ public class MediaRenderer extends CoreRenderer {
                     }
                 }
 			}
-        } 
-		
+        }
+
 		throw new IllegalArgumentException("Cannot resolve mediaplayer for media component '" + media.getClientId(context) + "', cannot play source:" + media.getValue());
 	}
 
 	protected String getMediaSrc(FacesContext context, Media media) throws Exception {
-        return DynamicResourceBuilder.build(context, media.getValue(), media, media.isCache(), DynamicContentType.STREAMED_CONTENT, true);
+        return DynamicContentSrcBuilder.build(context, media.getValue(), media, media.isCache(), DynamicContentType.STREAMED_CONTENT, true);
 	}
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing

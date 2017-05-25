@@ -69,6 +69,8 @@ public class TimelineTagHandler extends ComponentHandler {
 		} else {
 			root.addPhaseListener(timelineUpdater);
 		}
+        
+        timeline.setParentComponent(parent);
 	}
 
 	private UIViewRoot getViewRoot(FaceletContext ctx, UIComponent parent) {

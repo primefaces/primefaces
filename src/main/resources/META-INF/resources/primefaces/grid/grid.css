@@ -149,6 +149,7 @@
     display: -webkit-flex;
     display: flex;
     flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
 }
             
 .ui-g:after {

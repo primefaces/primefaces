@@ -21,7 +21,7 @@ public class SharedStringBuilder {
 
     /**
 	 * Get a shared {@link StringBuilder} instance.
-	 * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveComponentsForClient} calls would create 
+	 * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
 	 * 300 {@link StringBuilder} instances!
 	 *
 	 * @param context The {@link FacesContext}
@@ -44,7 +44,7 @@ public class SharedStringBuilder {
     
     /**
 	 * Get a shared {@link StringBuilder} instance.
-	 * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveComponentsForClient} calls would create 
+	 * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
 	 * 300 {@link StringBuilder} instances!
 	 *
 	 * @param key The key for the {@link FacesContext} attributes.

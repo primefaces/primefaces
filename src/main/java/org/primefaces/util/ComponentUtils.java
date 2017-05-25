@@ -15,7 +15,8 @@
  */
 package org.primefaces.util;
 
-import java.beans.BeanInfo;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
@@ -38,8 +39,6 @@ import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
-import javax.faces.view.AttachedObjectTarget;
-import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
@@ -180,8 +179,7 @@ public class ComponentUtils {
     	UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(
     			FacesContext.getCurrentInstance(),
     			component,
-    			expression,
-                SearchExpressionFacade.Options.VISIT_UNRENDERED);
+    			expression);
 
         if(resolvedComponent instanceof Widget) {
             return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar() + "')";
@@ -351,7 +349,7 @@ public class ComponentUtils {
         UIComponent component = (UIComponent) widget;
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");
 
-        if (userWidgetVar != null) {
+        if (!isValueBlank(userWidgetVar)) {
             return userWidgetVar;
         }
         else {
@@ -429,6 +427,37 @@ public class ComponentUtils {
 
         return sb.toString();
     }
+    
+    public static String escapeEcmaScriptText(String text) {
+        if(text == null) {
+            return null;
+        }
+
+        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE_TEXT);
+
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            switch (ch) {
+                case '"':
+                    sb.append("\\\"");
+                    break;
+                case '\'':
+                    sb.append("\\'");
+                    break;
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '/':
+                    sb.append("\\/");
+                    break;
+                default:
+                    sb.append(ch);
+                    break;
+            }
+        }
+
+        return sb.toString();
+    }
 
     /**
      * Replace special characters with XML escapes:
@@ -477,7 +506,7 @@ public class ComponentUtils {
     public static UIComponent findParentForm(FacesContext context, UIComponent component) {
         return ComponentTraversalUtils.closestForm(context, component);
     }
-    
+
     /**
      * Gets a {@link TimeZone} instance by the parameter "timeZone" which can be String or {@link TimeZone} or null.
      *
@@ -493,17 +522,17 @@ public class ComponentUtils {
             return TimeZone.getDefault();
         }
     }
-    
+
     public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType, Class<T> rendererClass) {
         Renderer renderer = context.getRenderKit().getRenderer(family, rendererType);
-        
+
         while (renderer instanceof FacesWrapper) {
             renderer = (Renderer) ((FacesWrapper) renderer).getWrapped();
         }
 
         return (T) renderer;
     }
-    
+
     /**
      * Calculates the current viewId - we can't get it from the ViewRoot if it's not available.
      *
@@ -529,23 +558,45 @@ public class ComponentUtils {
         return viewId;
     }
     
-    public static UIComponent extractEditableValueHolderFromComposite(UIComponent composite) {
-        BeanInfo info = (BeanInfo) composite.getAttributes().get(UIComponent.BEANINFO_KEY);
-        List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
-                .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
+    /**
+     * Duplicate code from OmniFacew project under apache license:
+     * https://github.com/omnifaces/omnifaces/blob/develop/license.txt
+     * <p>
+     * URI-encode the given string using UTF-8. URIs (paths and filenames) have different encoding rules as compared to
+     * URL query string parameters. {@link URLEncoder} is actually only for www (HTML) form based query string parameter
+     * values (as used when a webbrowser submits a HTML form). URI encoding has a lot in common with URL encoding, but
+     * the space has to be %20 and some chars doesn't necessarily need to be encoded.
+     * @param string The string to be URI-encoded using UTF-8.
+     * @return The given string, URI-encoded using UTF-8, or <code>null</code> if <code>null</code> was given.
+     * @throws UnsupportedEncodingException if UTF-8 is not supported
+     */
+    public static String encodeURI(String string) throws UnsupportedEncodingException {
+       if (string == null) {
+          return null;
+       }
 
-        for (AttachedObjectTarget target : targets) {
-            if (target instanceof EditableValueHolderAttachedObjectTarget) {
-                UIComponent children = composite.findComponent(target.getName());
-                if (children == null) {
-                    throw new FacesException(
-                            "Cannot find editableValueHolder with name: \"" + target.getName() + "\"");
-                }
-
-                return children;
-            }
-        }
-
-        return null;
+       return URLEncoder.encode(string, "UTF-8")
+          .replace("+", "%20")
+          .replace("%21", "!")
+          .replace("%27", "'")
+          .replace("%28", "(")
+          .replace("%29", ")")
+          .replace("%7E", "~");
     }
+    
+    /**
+     * Creates an RFC 6266 Content-Dispostion header following all UTF-8 conventions.
+     * <p>
+     * @param value e.g. "attachment"
+     * @param filename the name of the file
+     * @return a valid Content-Disposition header in UTF-8 format
+     */
+    public static String createContentDisposition(String value, String filename)  {
+       try {
+          return String.format("%s;filename=\"%2$s\"; filename*=UTF-8''%2$s", value, encodeURI(filename));
+       } catch (UnsupportedEncodingException e) {
+          throw new FacesException(e);
+       }
+    }
+
 }

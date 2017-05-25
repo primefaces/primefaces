@@ -27,6 +27,9 @@
         <interface>
 			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
 		</interface>
+        <interface>
+			<name>org.primefaces.component.api.Pageable</name>
+		</interface>
 	</interfaces>
     <attributes>
         &data_component_attributes;

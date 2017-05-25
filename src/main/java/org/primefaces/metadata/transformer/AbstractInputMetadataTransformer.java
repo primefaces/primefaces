@@ -22,11 +22,10 @@ import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlInputSecret;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.context.RequestContext;
 
 public abstract class AbstractInputMetadataTransformer implements MetadataTransformer {
-    
-    private static final String ATTRIBUTE_REQUIRED_MARKER = "pfRequired";
     
     public void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException {
         if (component instanceof EditableValueHolder && component instanceof UIInput) {
@@ -42,6 +41,9 @@ public abstract class AbstractInputMetadataTransformer implements MetadataTransf
         }
         else if (input instanceof HtmlInputSecret) {
             ((HtmlInputSecret) input).setMaxlength(maxlength);
+        }
+        else if (input instanceof InputTextarea) {
+            ((InputTextarea) input).setMaxlength(maxlength);
         }
     }
     

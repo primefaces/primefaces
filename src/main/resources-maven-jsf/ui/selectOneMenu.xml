@@ -169,6 +169,12 @@
             <description>Displays label of the element in a custom template. Valid placeholder is {0}.</description>
         </attribute>
         <attribute>
+            <name>placeholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Watermark displayed in the input field before the user enters a value in an HTML5 browser.</description>
+        </attribute>
+        <attribute>
 			<name>onfocus</name>
 			<required>false</required>
 			<type>java.lang.String</type>

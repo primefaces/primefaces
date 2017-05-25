@@ -133,10 +133,15 @@ public class FieldsetRenderer extends CoreRenderer {
                 writer.endElement("span");
             }
 
-            if(legend != null)
+            if(legend != null) {
                 legend.encodeAll(context);
-            else
-                writer.write(fieldset.getLegend());
+            }
+            else {
+                if(fieldset.isEscape())
+                    writer.writeText(legendText, "value");
+                else
+                    writer.write(legendText);
+            }
             
             writer.endElement("legend");
         }

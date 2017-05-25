@@ -17,16 +17,17 @@ package org.primefaces.component.paginator;
 
 import java.io.IOException;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 import org.primefaces.util.MessageFactory;
 
 public class PrevPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 
-    public void render(FacesContext context, UIData uidata) throws IOException {
-        boolean disabled = uidata.getPage() == 0;
+    public void render(FacesContext context, Pageable pageable) throws IOException {
+        boolean disabled = pageable.getPage() == 0;
        
         String ariaMessage = MessageFactory.getMessage(UIData.ARIA_PREVIOUS_PAGE_LABEL, new Object[]{});
         
-        super.render(context, uidata, UIData.PAGINATOR_PREV_PAGE_LINK_CLASS, UIData.PAGINATOR_PREV_PAGE_ICON_CLASS, disabled, ariaMessage);
+        super.render(context, pageable, UIData.PAGINATOR_PREV_PAGE_LINK_CLASS, UIData.PAGINATOR_PREV_PAGE_ICON_CLASS, disabled, ariaMessage);
     }
 }

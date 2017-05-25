@@ -144,6 +144,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectOneButton", button.resolveWidgetVar(), clientId)
+            .attr("unselectable", button.isUnselectable(), true)
             .callback("change", "function()", button.getOnchange());
         
         encodeClientBehaviors(context, button);

@@ -17,6 +17,7 @@ package org.primefaces.util;
 
 import org.primefaces.mock.CollectingResponseWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.junit.Test;
 import org.primefaces.mock.FacesContextMock;
@@ -68,7 +69,7 @@ public class WidgetBuilderTest {
     public void shouldBuildWithAttributes() throws IOException {
     	CollectingResponseWriter writer = new CollectingResponseWriter();
 
-    	WidgetBuilder builder = new WidgetBuilder(new FacesContextMock(writer));
+    	WidgetBuilder builder = new WidgetBuilder(new FacesContextMock(writer, new HashMap<Object, Object>()));
         builder.initWithDomReady("DataTable", "dt", "dt1");
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);
@@ -85,7 +86,7 @@ public class WidgetBuilderTest {
     public void shouldBuildWithCallbacks() throws IOException {
     	CollectingResponseWriter writer = new CollectingResponseWriter();
 
-        WidgetBuilder builder = new WidgetBuilder(new FacesContextMock(writer));
+        WidgetBuilder builder = new WidgetBuilder(new FacesContextMock(writer, new HashMap<Object, Object>()));
         builder.init("DataTable", "dt", "dt1");
         builder.attr("selectionMode", "single", null);
         builder.attr("lazy", true, false);

@@ -20,6 +20,10 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.logging.Logger;
+import javax.faces.FacesException;
+import javax.faces.component.UIForm;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.UniqueIdVendor;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
@@ -37,6 +41,7 @@ import org.primefaces.util.Constants;
 import org.primefaces.util.DateUtils;
 import org.primefaces.visit.UIDataContextCallback;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.util.ComponentTraversalUtils;
 
     private final static Logger logger = Logger.getLogger(Timeline.class.getName());
     
@@ -220,4 +225,82 @@ import javax.faces.event.BehaviorEvent;
                 .equals(context.getExternalContext().getRequestParameterMap().get(
                         Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
+
+    private String clientId = null;
+    private StringBuilder idBuilder = new StringBuilder();
+    private UIComponent parentComponent;
+
+    public UIComponent getParentComponent() {
+        return parentComponent;
+    }
+
+    public void setParentComponent(UIComponent parentComponent) {
+        this.parentComponent = parentComponent;
+    }
+    
+    @Override
+    public String getClientId(FacesContext context) {
+        if(this.clientId != null) {
+            return this.clientId;
+        }
+
+        String id = getId();
+        if(id == null) {
+            UniqueIdVendor parentUniqueIdVendor = ComponentTraversalUtils.closestUniqueIdVendor(this);
+            
+            if(parentUniqueIdVendor == null) {
+                UIViewRoot viewRoot = context.getViewRoot();
+                
+                if(viewRoot != null) {
+                    id = viewRoot.createUniqueId();
+                }
+                else {
+                    throw new FacesException("Cannot create clientId for " + this.getClass().getCanonicalName());
+                }
+            }
+            else {
+                id = parentUniqueIdVendor.createUniqueId(context, null);
+            }
+            
+            this.setId(id);
+        }
+
+        if(this.parentComponent != null && !(this.parentComponent instanceof UIForm)) {
+            this.setParent(this.parentComponent);
+        }
+
+        UIComponent namingContainer = ComponentTraversalUtils.closestNamingContainer(this);
+        if(namingContainer != null) {
+            String containerClientId = namingContainer.getContainerClientId(context);
+            
+            if(containerClientId != null) {                
+                this.clientId = this.idBuilder.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
+                this.idBuilder.setLength(0);
+            }
+            else
+            {
+                this.clientId = id;
+            }
+        }
+        else
+        {
+            this.clientId = id;
+        }
+
+        Renderer renderer = getRenderer(context);
+        if(renderer != null) {
+            this.clientId = renderer.convertClientId(context, this.clientId);
+        }
+
+        return this.clientId;
+    }
+    
+    @Override
+    public void setId(String id) {
+        super.setId(id);
+
+        //clear
+        this.clientId = null;
+    }
+
 

@@ -54,7 +54,7 @@ public interface PushContext {
      * @param channel a channel of communication.
      * @param t a message
      * @param time the time
-     * @param unit the {@link @TimeUnit}
+     * @param unit the {@link TimeUnit}
      * @param <T> The type of the message
      * @return a Future that can used to cancel the periodic push
      */
@@ -65,7 +65,7 @@ public interface PushContext {
      * @param channel a channel of communication.
      * @param t a message
      * @param time the time
-     * @param unit the {@link @TimeUnit}
+     * @param unit the {@link TimeUnit}
      * @param <T> The type of the message
      * @return a Future that can used to cancel the delayed push
      */

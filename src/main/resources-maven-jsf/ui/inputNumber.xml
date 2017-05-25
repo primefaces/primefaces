@@ -33,7 +33,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>text</defaultValue>
-            <description>Input field type. Default is text.</description>
+            <description>Input field type. Valid values are "text"(default), "tel" and "hidden".</description>
         </attribute>
         <attribute>
             <name>decimalSeparator</name>

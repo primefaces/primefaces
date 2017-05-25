@@ -335,7 +335,9 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
                 name: this.id + '_sync', value: true
             }],
             oncomplete: function(xhr, status, args) {
+                $this.stop();
                 $this.current = new Date(args.datetime);
+                $this.jq.text($this.cfg.dateFormat.format($this.current));
                 $this.start();
             }
         };

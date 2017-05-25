@@ -16,6 +16,10 @@
 package org.primefaces.component.clock;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -63,7 +67,7 @@ public class ClockRenderer extends CoreRenderer {
             .attr("locale", context.getViewRoot().getLocale().toString());
         
         if(mode.equals("server")) {
-            wb.attr("value", System.currentTimeMillis());
+            wb.attr("value", getValueWithTimeZone(context, clock));
             
             if(clock.isAutoSync()) {
                 wb.attr("autoSync", true).attr("syncInterval", clock.getSyncInterval());
@@ -71,5 +75,19 @@ public class ClockRenderer extends CoreRenderer {
         }
 
         wb.finish();
+    }
+    
+    protected String getValueWithTimeZone(FacesContext context, Clock clock) {
+        Locale locale = context.getViewRoot().getLocale();
+        String value = "";
+        
+        if(locale != null) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", locale);
+            dateFormat.setTimeZone(clock.calculateTimeZone());
+            
+            value = dateFormat.format(new Date());
+        }
+        
+        return value;
     }
 }

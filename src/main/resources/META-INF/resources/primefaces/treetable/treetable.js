@@ -16,7 +16,11 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.scrollable) {
             this.setupScrolling();
         }
-
+        
+        if(this.cfg.filter) {
+            this.setupFiltering();
+        }
+        
         if(this.cfg.resizableColumns) {
             this.setupResizableColumns();
         }
@@ -62,12 +66,188 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.jqSelection = $(this.jqId + '_selection');
             var selectionValue = this.jqSelection.val();
             this.selections = selectionValue === "" ? [] : selectionValue.split(',');
+            this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
 
             this.bindSelectionEvents();
         }
         
         //sorting
         this.bindSortEvents();
+        
+        if(this.cfg.paginator) {
+            this.cfg.paginator.paginate = function(newState) {
+                $this.handlePagination(newState);
+            };
+
+            this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+        }
+    },
+    
+    /**
+     * Binds filter events to standard filters
+     */
+    setupFiltering: function() {
+        var $this = this,
+        filterColumns = this.thead.find('> tr > th.ui-filter-column');
+        this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
+        this.cfg.filterDelay = this.cfg.filterDelay||300;
+
+        filterColumns.children('.ui-column-filter').each(function() {
+            var filter = $(this);
+
+            if(filter.is('input:text')) {
+                PrimeFaces.skinInput(filter);
+                $this.bindTextFilter(filter);
+            } 
+            else {
+                PrimeFaces.skinSelect(filter);
+                $this.bindChangeFilter(filter);
+            }
+        });
+    },
+    
+    bindTextFilter: function(filter) {
+        if(this.cfg.filterEvent === 'enter')
+            this.bindEnterKeyFilter(filter);
+        else
+            this.bindFilterEvent(filter);
+    },
+    
+    bindChangeFilter: function(filter) {
+        var $this = this;
+        
+        filter.change(function() {
+            $this.filter();
+        });
+    },
+    
+    bindEnterKeyFilter: function(filter) {
+        var $this = this;
+    
+        filter.bind('keydown', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                e.preventDefault();
+            }
+        }).bind('keyup', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                $this.filter();
+
+                e.preventDefault();
+            }
+        });
+    },
+    
+    bindFilterEvent: function(filter) {
+        var $this = this;
+        
+        //prevent form submit on enter key
+        filter.on('keydown.treeTable-blockenter', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                e.preventDefault();
+            }
+        })
+        .on(this.cfg.filterEvent + '.treeTable', function(e) {
+            if($this.filterTimeout) {
+                clearTimeout($this.filterTimeout);
+            }
+
+            $this.filterTimeout = setTimeout(function() {
+                $this.filter();
+                $this.filterTimeout = null;
+            },
+            $this.cfg.filterDelay);
+        });
+    },
+    
+    /**
+     * Ajax filter
+     */
+    filter: function() {
+        var $this = this,
+        options = {
+            source: this.id,
+            update: this.id,
+            process: this.id,
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_filtering', value: true},
+                     {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.tbody.html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                var paginator = $this.getPaginator();
+                if(args && args.totalRecords) {                    
+                    if(paginator) {
+                        paginator.setTotalRecords(args.totalRecords);
+                    }
+                }
+            }
+        };
+
+        if(this.hasBehavior('filter')) {
+            var filterBehavior = this.cfg.behaviors['filter'];
+
+            filterBehavior.call(this, options);
+        } 
+        else {
+            PrimeFaces.ajax.AjaxRequest(options); 
+        }
+    },
+    
+    handlePagination: function(newState) {
+        var $this = this,
+        options = {
+            source: this.id,
+            update: this.id,
+            process: this.id,
+            params: [
+                {name: this.id + '_pagination', value: true},
+                {name: this.id + '_first', value: newState.first},
+                {name: this.id + '_rows', value: newState.rows}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.tbody.html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function() {
+                $this.paginator.cfg.page = newState.page;
+                $this.paginator.updateUI();
+            }
+        };
+
+        if(this.hasBehavior('page')) {
+            var pageBehavior = this.cfg.behaviors['page'];
+            pageBehavior.call(this, options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    getPaginator: function() {
+        return this.paginator;
     },
     
     bindSelectionEvents: function() {
@@ -263,6 +443,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                             else if(element.hasClass('ui-icon-close')) {
                                 $this.cancelRowEdit(row);
                             }
+                            
+                            e.preventDefault();
                         });
         }
         else if(this.cfg.editMode === 'cell') {
@@ -270,7 +452,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             
             this.tbody.off('click.treetable-cell', cellSelector)
                         .on('click.treetable-cell', cellSelector, null, function(e) {
-                            if(!$(e.target).is('span.ui-c')) {
+                            if(!$(e.target).is('span.ui-treetable-toggler.ui-c')) {
                                 $this.incellClick = true;
                                 
                                 var cell = $(this);
@@ -451,7 +633,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
             
-            PrimeFaces.clearSelection();
+            if(this.cfg.disabledTextSelection) {
+                PrimeFaces.clearSelection();
+            }
         }
     },
             
@@ -470,7 +654,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.selectNode(node);
         }
  
-        PrimeFaces.clearSelection();        
+        if(this.cfg.disabledTextSelection) {
+            PrimeFaces.clearSelection();
+        }        
     },
     
     selectNode: function(node, silent) {
@@ -795,7 +981,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.adjustScrollHeight();
             }
         
-            var marginRight = this.getScrollbarWidth();
+            var marginRight = this.getScrollbarWidth() + 'px';
             this.scrollHeaderBox.css('margin-right', marginRight);
             this.scrollFooterBox.css('margin-right', marginRight);
             this.alignScrollBody();
@@ -1349,4 +1535,4 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             PrimeFaces.ajax.Request.handle(options);
         }
     }
-});
+});            

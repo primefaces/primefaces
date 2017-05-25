@@ -63,6 +63,7 @@ public class DataListRenderer extends DataRenderer {
         boolean empty = (list.getRowCount() == 0);
         String paginatorPosition = list.getPaginatorPosition();
         String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
+        String style = list.getStyle();
         
         if(hasPaginator) {
             list.calculateFirst();
@@ -71,6 +72,9 @@ public class DataListRenderer extends DataRenderer {
         writer.startElement("div", list);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
+        if(style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
         
         encodeFacet(context, list, "header", DataList.HEADER_CLASS);
         

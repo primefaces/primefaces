@@ -123,6 +123,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
         newPanel.show();
 
         this.postTabShow(newPanel);
+        PrimeFaces.invokeDeferredRenders(this.id);
     },
     
     fireTabChangeEvent: function(panel) {

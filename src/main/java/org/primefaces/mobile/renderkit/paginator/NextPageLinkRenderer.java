@@ -17,18 +17,18 @@ package org.primefaces.mobile.renderkit.paginator;
 
 import java.io.IOException;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.Pageable;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 
 public class NextPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 
-    public void render(FacesContext context, UIData uidata) throws IOException {
-        int currentPage = uidata.getPage();
-        int pageCount = uidata.getPageCount();
+    public void render(FacesContext context, Pageable pageable) throws IOException {
+        int currentPage = pageable.getPage();
+        int pageCount = pageable.getPageCount();
         
         boolean disabled = (currentPage == (pageCount - 1)) || (currentPage == 0 && pageCount == 0);
        
-        super.render(context, uidata, "ui-paginator-next ui-btn ui-btn-icon-notext ui-icon-forward", disabled);
+        super.render(context, pageable, "ui-paginator-next ui-btn ui-btn-icon-notext ui-icon-forward", disabled);
     }
     
 }

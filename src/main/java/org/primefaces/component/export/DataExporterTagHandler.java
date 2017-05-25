@@ -41,6 +41,7 @@ public class DataExporterTagHandler extends TagHandler {
 	private final TagAttribute postProcessor;
 	private final TagAttribute encoding;
     private final TagAttribute repeat;
+    private final TagAttribute options;
 
 	public DataExporterTagHandler(TagConfig tagConfig) {
 		super(tagConfig);
@@ -53,6 +54,7 @@ public class DataExporterTagHandler extends TagHandler {
 		this.preProcessor = getAttribute("preProcessor");
 		this.postProcessor = getAttribute("postProcessor");
         this.repeat = getAttribute("repeat");
+        this.options = getAttribute("options");
 	}
 
 	public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
@@ -66,6 +68,7 @@ public class DataExporterTagHandler extends TagHandler {
 			MethodExpression preProcessorME = null;
 			MethodExpression postProcessorME = null;
             ValueExpression repeatVE = null;
+            ValueExpression optionsVE = null;
 			
 			if(encoding != null) {
 				encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -85,9 +88,12 @@ public class DataExporterTagHandler extends TagHandler {
             if(repeat != null) {
 				repeatVE = repeat.getValueExpression(faceletContext, Object.class);
 			}
+			if(options != null) {
+				optionsVE = options.getValueExpression(faceletContext, Object.class);
+			}
 			
 			ActionSource actionSource = (ActionSource) parent;
-            DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE, encodingVE, preProcessorME, postProcessorME);
+            DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE, encodingVE, preProcessorME, postProcessorME, optionsVE);
             dataExporter.setRepeat(repeatVE);
 			actionSource.addActionListener(dataExporter);
 		}

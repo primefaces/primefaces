@@ -94,7 +94,7 @@ public class AccordionPanelRenderer extends org.primefaces.component.accordionpa
         writer.writeAttribute("role", "tabpanel", null);
         
         //header container
-        writer.startElement("h3", null);
+        writer.startElement("div", null);
         writer.writeAttribute("class", headerClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute("aria-expanded", String.valueOf(active), null);
@@ -111,7 +111,7 @@ public class AccordionPanelRenderer extends org.primefaces.component.accordionpa
         }
         writer.endElement("a");
         
-        writer.endElement("h3");
+        writer.endElement("div");
 
         //content
         writer.startElement("div", null);

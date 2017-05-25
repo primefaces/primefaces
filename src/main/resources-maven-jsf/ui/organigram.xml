@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute                           SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>organigram</tag>
+    <tagClass>org.primefaces.component.organigram.OrganigramTag</tagClass>
+    <componentClass>org.primefaces.component.organigram.Organigram</componentClass>
+    <componentType>org.primefaces.component.Organigram</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.OrganigramRenderer</rendererType>
+    <rendererClass>org.primefaces.component.organigram.OrganigramRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description></description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <type>org.primefaces.model.OrganigramNode</type>
+            <description>The model.</description>
+        </attribute>
+        <attribute>
+            <description>Name of the request-scoped variable that'll be used to refer each treenode data during rendering.</description>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>OrganigramNode to reference the selections.</description>
+            <name>selection</name>
+            <required>false</required>
+            <type>org.primefaces.model.OrganigramNode</type>
+        </attribute>
+        <attribute>
+            <description>Style of the main container element of organigram.</description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>Style class of the main container element of organigram.</description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>The height of the connector line for leaf nodes.</description>
+            <name>leafNodeConnectorHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>10</defaultValue>
+        </attribute>
+        <attribute>
+            <description>Defines if zoom controls are rendered.</description>
+            <name>zoom</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+        <attribute>
+            <description>Auto scroll to the selected node on rendering if enabled.</description>
+            <name>autoScrollToSelection</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>components.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>organigram/organigram.js</name>
+        </resource>
+        <resource>
+            <name>organigram/organigram.css</name>
+        </resource>
+    </resources>
+</component>

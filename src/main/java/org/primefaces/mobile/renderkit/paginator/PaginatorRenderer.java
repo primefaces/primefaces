@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.renderkit.CoreRenderer;
@@ -39,13 +40,13 @@ public class PaginatorRenderer extends CoreRenderer {
         ELEMENTS.put("{PageLinks}", new PageLinksRenderer());
     }
 
-    public void encodeMarkup(FacesContext context, UIData uidata, String position) throws IOException {
-        if(!uidata.isPaginatorAlwaysVisible() && uidata.getPageCount() <= 1) {
+    public void encodeMarkup(FacesContext context, Pageable pageable, String position) throws IOException {
+        if(!pageable.isPaginatorAlwaysVisible() && pageable.getPageCount() <= 1) {
             return;
         }
         
         ResponseWriter writer = context.getResponseWriter();
-        String id = uidata.getClientId(context) + "_paginator_" + position; 
+        String id = pageable.getClientId(context) + "_paginator_" + position; 
                 
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);
@@ -58,14 +59,14 @@ public class PaginatorRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-controlgroup-controls", null);
         
-        String[] elements = uidata.getPaginatorTemplate().split(" ");
+        String[] elements = pageable.getPaginatorTemplate().split(" ");
         for(String element : elements) {            
             PaginatorElementRenderer renderer = ELEMENTS.get(element);
             if(renderer != null) {
-                renderer.render(context, uidata);
+                renderer.render(context, pageable);
             } 
             else {
-                UIComponent elementFacet = uidata.getFacet(element);
+                UIComponent elementFacet = pageable.getFacet(element);
                 if(elementFacet != null)
                     elementFacet.encodeAll(context);
                 //else

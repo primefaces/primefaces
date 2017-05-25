@@ -28,6 +28,16 @@ public class CellEditorRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CellEditor editor = (CellEditor) component;
+        UIComponent parentTable = editor.getParentTable(context);
+        boolean isDataTable = (parentTable != null && parentTable instanceof DataTable);
+        boolean isLazyCellEdit = false;
+        
+        if(isDataTable) {
+            DataTable dt = (DataTable)parentTable;
+            String editMode = dt.getEditMode();
+            String cellEditMode = dt.getCellEditMode();
+            isLazyCellEdit = (editMode != null && editMode.equals("cell") && cellEditMode.equals("lazy"));
+        }
         
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);
@@ -39,8 +49,11 @@ public class CellEditorRenderer extends CoreRenderer {
         writer.endElement("div");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);
-        editor.getFacet("input").encodeAll(context);
+        writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);  
+        
+        if(!isLazyCellEdit) {
+            editor.getFacet("input").encodeAll(context);
+        }
         writer.endElement("div");
 
         writer.endElement("div");

@@ -127,7 +127,7 @@ public class UIRepeat extends UINamingContainer {
     private String initialClientId;
 
     public UIRepeat() {
-        this.setRendererType("org.primefaces.component.UIRepeatRenderer");
+        this.setRendererType(null);
     }
 
     public String getFamily() {

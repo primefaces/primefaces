@@ -22,7 +22,7 @@ import org.atmosphere.cpr.AtmosphereResource;
  *    <a href="">https://github.com/Atmosphere/atmosphere/wiki/Understanding-Broadcaster</a>Broadcaster</a>
  *    <a href="https://github.com/Atmosphere/atmosphere/wiki/Understanding-AtmosphereResource">AtmosphereResource</a>
  *
- * @deprecated With PrimeFaces 4.1 and up, it is recommended to use {@link @PushEndpoint}
+ * @deprecated With PrimeFaces 4.1 and up, it is recommended to use {@link PushEndpoint}
  */
 public interface PushRule {
     /**

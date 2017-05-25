@@ -21,17 +21,18 @@ import javax.faces.context.FacesContext;
 
 public interface MultiSearchExpressionResolver {
 
-	/**
-	 * Resolves a list of {@link UIComponent} for the last or source {@link UIComponent} and for the given
-	 * expression string.
-	 *
+    /**
+     * Resolves a list of {@link UIComponent} for the last or source {@link UIComponent} and for the given
+     * expression string.
+     *
      * @param context The {@link FacesContext}.
-	 * @param source The source component. E.g. a button.
-	 * @param last The last resolved component in the chain.
-	 * 		If it's not a nested expression, it's the same as the source component.
-	 * @param expression The search expression.
+     * @param source The source component. E.g. a button.
+     * @param last The last resolved component in the chain.
+     * If it's not a nested expression, it's the same as the source component.
+     * @param expression The search expression.
      * @param components The component list to add the resolved {@link UIComponent}s.
-	 */
-    void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components);
+     * @param options The options.
+     */
+    void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components, int options);
 
 }

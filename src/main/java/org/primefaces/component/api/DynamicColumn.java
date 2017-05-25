@@ -236,4 +236,8 @@ public class DynamicColumn implements UIColumn {
     public MethodExpression getExportFunction() {
         return this.columns.getExportFunction();
     }
+
+    public boolean isGroupRow() {
+        return this.columns.isGroupRow();
+    }
 }

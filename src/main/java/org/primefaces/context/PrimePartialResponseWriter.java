@@ -23,11 +23,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.faces.component.NamingContainer;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import org.primefaces.application.resource.DynamicResourcesPhaseListener;
-
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -153,8 +154,6 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     
     @Override
     public void redirect(String url) throws IOException {
-        startMetadataIfNecessary();
-        
         wrapped.redirect(url);
     }
 
@@ -268,35 +267,62 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             try {
                 FacesContext context = FacesContext.getCurrentInstance();
 
-                // portlet parameter namespacing
-                if (context.getViewRoot() instanceof NamingContainer) {
-                    Map<String, Object> params = new HashMap<String, Object>();
-                    params.put("parameterNamespace", context.getViewRoot().getContainerClientId(context));
-                    encodeCallbackParams(params);
-                }
+                // catch possible ViewExpired
+                UIViewRoot viewRoot = context.getViewRoot();
+                if (viewRoot != null) {
+                    // portlet parameter namespacing
+                    if (viewRoot instanceof NamingContainer) {
 
-                // dynamic resource loading
-                ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
-                ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
-                if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
-                    startEval();
+                        String parameterNamespace = viewRoot.getContainerClientId(context);
+                        if ((parameterNamespace != null) && (parameterNamespace.length() > 0)) {
 
-                    ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<ResourceUtils.ResourceInfo>(currentResources);
-                    newResources.removeAll(initialResources);
+                            String parameterPrefix = parameterNamespace;
 
-                    ArrayList<String> stylesheets = ResourceUtils.filterStylesheets(context, newResources);
-                    if (stylesheets != null && !stylesheets.isEmpty()) {
-                        String script = "PrimeFaces.ajax.Utils.loadStylesheets(['" + CollectionUtils.join(stylesheets, "','") + "']);";
-                        getWrapped().write(script);
-                    }
-                    
-                    ArrayList<String> scripts = ResourceUtils.filterScripts(context, newResources);
-                    if (scripts != null && !scripts.isEmpty()) {
-                        String script = "PrimeFaces.ajax.Utils.loadScripts(['" + CollectionUtils.join(scripts, "','") + "']);";
-                        getWrapped().write(script);
+                            if (requestContext.getApplicationContext().getConfig().isAtLeastJSF23()) {
+
+                                // https://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790
+                                parameterPrefix += UINamingContainer.getSeparatorChar(context);
+                            }
+
+                            Map<String, Object> params = new HashMap<String, Object>();
+                            params.put("parameterPrefix", parameterPrefix);
+                            encodeCallbackParams(params);
+                        }
                     }
 
-                    endEval();
+                    // dynamic resource loading
+                    // we just do it for postbacks, otherwise ajax requests without a form would reload all resources
+                    // we also skip update=@all as the head will all resources will already be rendered
+                    if (context.isPostback()
+                            && !context.getPartialViewContext().isRenderAll()
+                            && !requestContext.getApplicationContext().getConfig().isAtLeastJSF23()) {
+                        ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
+                        ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
+                        if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
+                            startEval();
+
+                            ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<ResourceUtils.ResourceInfo>(currentResources);
+                            newResources.removeAll(initialResources);
+
+                            getWrapped().write("if(window.PrimeFaces){");
+
+                            ArrayList<String> stylesheets = ResourceUtils.filterStylesheets(context, newResources);
+                            if (stylesheets != null && !stylesheets.isEmpty()) {
+                                String script = "PrimeFaces.ajax.Utils.loadStylesheets(['" + CollectionUtils.join(stylesheets, "','") + "']);";
+                                getWrapped().write(script);
+                            }
+
+                            ArrayList<String> scripts = ResourceUtils.filterScripts(context, newResources);
+                            if (scripts != null && !scripts.isEmpty()) {
+                                String script = "PrimeFaces.ajax.Utils.loadScripts(['" + CollectionUtils.join(scripts, "','") + "']);";
+                                getWrapped().write(script);
+                            }
+
+                            getWrapped().write("}");
+
+                            endEval();
+                        }
+                    }
                 }
             }
             catch (Exception e) {

@@ -22,6 +22,7 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -34,36 +35,36 @@ public class EffectRenderer extends CoreRenderer {
         String source = component.getParent().getClientId(context);
         String event = effect.getEvent();
         int delay = effect.getDelay();
-		
+
         UIComponent targetComponent = SearchExpressionFacade.resolveComponent(
-        		context, effect, effect.getFor(), SearchExpressionFacade.Options.PARENT_FALLBACK);
+        		context, effect, effect.getFor(), SearchExpressionHint.PARENT_FALLBACK);
         String target = targetComponent.getClientId(context);
-		
+
 		String animation = getEffectBuilder(effect, target).build();
-		
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Effect", effect.resolveWidgetVar(), clientId)
             .attr("source", source)
             .attr("event", event)
             .attr("delay", delay)
             .callback("fn", "function()", animation);
-        
+
         wb.finish();
 	}
-	
+
 	private EffectBuilder getEffectBuilder(Effect effect, String effectedComponentClientId) {
 		EffectBuilder effectBuilder = new EffectBuilder(effect.getType(), effectedComponentClientId, effect.isQueue());
-		
+
 		for(UIComponent child : effect.getChildren()) {
 			if(child instanceof UIParameter) {
 				UIParameter param = (UIParameter) child;
-				
+
 				effectBuilder.withOption(param.getName(), (String) param.getValue());		//TODO: Use converter
 			}
 		}
-		
+
 		effectBuilder.atSpeed(effect.getSpeed());
-		
+
 		return effectBuilder;
 	}
 }

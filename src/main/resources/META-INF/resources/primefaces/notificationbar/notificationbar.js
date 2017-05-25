@@ -22,13 +22,19 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
         });
     },
     
-    show: function() {
+    /**
+     * The up-to-three arguments will be routed to jQuery as it is.
+     * @see: http://api.jquery.com/slidedown/
+     * @see: http://api.jquery.com/fadein/
+     * @see: http://api.jquery.com/show/
+     */
+    show: function(a1, a2, a3) {
         if(this.cfg.effect === 'slide')
-            $(this.jq).slideDown(this.cfg.effect);
+            $(this.jq).slideDown(a1, a2, a3);
         else if(this.cfg.effect === 'fade')
-            $(this.jq).fadeIn(this.cfg.effect);
+            $(this.jq).fadeIn(a1, a2, a3);
         else if(this.cfg.effect === 'none')
-            $(this.jq).show();
+            $(this.jq).show(a1, a2, a3);
     },
     
     hide: function() {

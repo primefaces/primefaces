@@ -29,12 +29,13 @@ import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class CSVExporter extends Exporter {
 
     @Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
 		ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, filename, encodingType);
         Writer writer = externalContext.getResponseOutputWriter();
@@ -57,17 +58,15 @@ public class CSVExporter extends Exporter {
             	        
         writer.flush();
         writer.close();
-        
-        externalContext.responseFlushBuffer();
 	}
     
     @Override
-    public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+    public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
     @Override
-    public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
+    public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
@@ -146,7 +145,7 @@ public class CSVExporter extends Exporter {
 		externalContext.setResponseHeader("Expires", "0");
 		externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
 		externalContext.setResponseHeader("Pragma", "public");
-		externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".csv");
+		externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", filename+".csv"));
 		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
     }
     

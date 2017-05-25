@@ -38,4 +38,6 @@ public interface ScheduleEvent {
     public boolean isEditable();
         
     public String getDescription();
+    
+    public String getUrl();
 }

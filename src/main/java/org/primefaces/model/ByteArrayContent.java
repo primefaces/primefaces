@@ -31,6 +31,8 @@ public class ByteArrayContent implements StreamedContent, Serializable {
 	private String name;
     
     private String contentEncoding;
+    
+    private Integer contentLength;
 	
 	public ByteArrayContent() {}
 	
@@ -50,6 +52,17 @@ public class ByteArrayContent implements StreamedContent, Serializable {
     
     public ByteArrayContent(byte[] data, String contentType, String name, String contentEncoding) {
 		this(data, contentType, name);
+        this.contentEncoding = contentEncoding;
+	}   
+    
+	public ByteArrayContent(byte[] data, String contentType, String name, Integer contentLength) {
+		this(data, contentType, name);
+		this.contentLength = contentLength;
+	}
+
+	public ByteArrayContent(byte[] data, String contentType, String name, String contentEncoding, Integer contentLength) {
+		this(data, contentType, name);
+		this.contentLength = contentLength;
         this.contentEncoding = contentEncoding;
 	}
 
@@ -79,4 +92,8 @@ public class ByteArrayContent implements StreamedContent, Serializable {
     public String getContentEncoding() {
         return contentEncoding;
     }
+
+	public Integer getContentLength() {
+		return contentLength;
+	}
 }
