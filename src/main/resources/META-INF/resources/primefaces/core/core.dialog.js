@@ -92,7 +92,8 @@ if (!PrimeFaces.dialog) {
                         height: cfg.options.height,
                         minimizable: cfg.options.minimizable,
                         maximizable: cfg.options.maximizable,
-                        headerElement: cfg.options.headerElement
+                        headerElement: cfg.options.headerElement,
+                        responsive: cfg.options.responsive
                     });
                 }
 
