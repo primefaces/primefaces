@@ -6168,7 +6168,7 @@ $.extend(Datepicker.prototype, {
 
 		if ($.datepicker._get(inst, "constrainInput")) {
 			chars = $.datepicker._possibleChars($.datepicker._get(inst, "dateFormat"));
-			chr = String.fromCharCode(event.charCode == null ? event.keyCode : event.charCode);
+			chr = String.fromCharCode(event.which);
 			return event.ctrlKey || event.metaKey || (chr < " " || !chars || chars.indexOf(chr) > -1);
 		}
 	},
@@ -12156,7 +12156,7 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 											(tz ? tp_inst._defaults.timezoneList.join('') : '') +
 											(tp_inst._defaults.amNames.join('')) + (tp_inst._defaults.pmNames.join('')) +
 											dateChars,
-					chr = String.fromCharCode(event.charCode === undefined ? event.keyCode : event.charCode);
+					chr = String.fromCharCode(event.which);
 				return event.ctrlKey || (chr < ' ' || !dateChars || datetimeChars.indexOf(chr) > -1);
 			}
 		}
