@@ -140,10 +140,15 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.startElement("span", null);
 		writer.writeAttribute("class", ConfirmDialog.MESSAGE_CLASS, null);
         
-        if(messageFacet != null)
+        if(messageFacet != null) {
             messageFacet.encodeAll(context);
-        else if(messageText != null)
-			writer.writeText(messageText, null);
+        } else if(messageText != null) {
+            if (dialog.isEscapeMessage()) {
+               writer.writeText(messageText, null);
+            } else {
+               writer.write(messageText);
+            }
+        }
         
         writer.endElement("span");
         

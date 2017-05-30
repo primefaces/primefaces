@@ -130,6 +130,13 @@
             <defaultValue>false</defaultValue>
 			<description>In responsive mode, dialog adjusts itself based on screen width.</description>
 		</attribute>
+        <attribute>
+            <name>escapeMessage</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if message of the component is escaped or not. Default is true.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>
