@@ -16,6 +16,7 @@
 package org.primefaces.util;
 
 import java.beans.BeanInfo;
+import java.util.Iterator;
 import java.util.List;
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
@@ -25,11 +26,11 @@ import javax.faces.view.AttachedObjectTarget;
 import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 
 public class CompositeUtils {
-    
+
     public static boolean isComposite(UIComponent component) {
         return UIComponent.isCompositeComponent(component);
     }
-    
+
     public static void invokeOnEditableValueHolder(FacesContext context, UIComponent composite,
             final ContextCallback callback) {
         BeanInfo info = (BeanInfo) composite.getAttributes().get(UIComponent.BEANINFO_KEY);
@@ -38,23 +39,26 @@ public class CompositeUtils {
 
         for (AttachedObjectTarget target : targets) {
             if (target instanceof EditableValueHolderAttachedObjectTarget) {
-                final UIComponent children = composite.findComponent(target.getName());
-                if (children == null) {
+		List<UIComponent> children = target.getTargets(composite);
+                if (children.isEmpty()) {
                     throw new FacesException(
                             "Cannot find editableValueHolder with name: \"" + target.getName()
                                     + "\" in composite component with id: \"" + composite.getClientId() + "\"");
                 }
 
-                composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback() {
-                    public void invokeContextCallback(FacesContext context, UIComponent target) {
-                        if (isComposite(children)) {
-                            invokeOnEditableValueHolder(context, children, callback);
-                        }
-                        else {
-                            callback.invokeContextCallback(context, children);
-                        }
-                    }
-                });
+		for (Iterator<UIComponent> it = children.iterator(); it.hasNext();) {
+		    final UIComponent child = it.next();
+		    composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback() {
+			public void invokeContextCallback(FacesContext context, UIComponent target) {
+			    if (isComposite(child)) {
+				invokeOnEditableValueHolder(context, child, callback);
+			    }
+			    else {
+				callback.invokeContextCallback(context, child);
+			    }
+			}
+		    });
+		}
             }
         }
     }
