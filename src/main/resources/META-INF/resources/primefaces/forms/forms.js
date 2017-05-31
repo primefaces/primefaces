@@ -425,14 +425,50 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.panel = this.jq.children(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
-        this.itemsContainer = this.itemsWrapper.children('.ui-selectonemenu-items');
-        this.items = this.itemsContainer.find('.ui-selectonemenu-item');
         this.options = this.input.children('option');
         this.cfg.effect = this.cfg.effect||'fade';
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
-        this.optGroupsSize = this.itemsContainer.children('li.ui-selectonemenu-item-group').length;
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
+        this.cfg.lazy = this.cfg.lazy === true ? true : false;
+        
+        if(this.cfg.lazy) {
+            var selectedOption = this.options.filter(':selected'),
+            labelVal = this.cfg.editable ? this.label.val() : selectedOption.text();
 
+            this.setLabel(labelVal);
+        }
+        else {
+            this.initContents();
+            this.bindItemEvents();
+        }
+
+        //triggers
+        this.triggers = this.cfg.editable ? this.jq.find('.ui-selectonemenu-trigger') : this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
+
+        //mark trigger and descandants of trigger as a trigger for a primefaces overlay
+        this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+
+        if(!this.disabled) {
+            this.bindEvents();
+            this.bindConstantEvents();
+            this.appendPanel();
+        }
+
+        // see #7602
+        if (PrimeFaces.env.touch) {
+            this.focusInput.attr('readonly', true);
+        }
+
+        this.renderDeferred();
+    },
+    
+    initContents() {
+        this.input = $(this.jqId + '_input');
+        this.options = this.input.children('option');
+        this.itemsContainer = this.itemsWrapper.children('.ui-selectonemenu-items');
+        this.items = this.itemsContainer.find('.ui-selectonemenu-item');
+        this.optGroupsSize = this.itemsContainer.children('li.ui-selectonemenu-item-group').length;
+        
         var $this = this,
         selectedOption = this.options.filter(':selected'),
         highlightedItem = this.items.eq(selectedOption.index());
@@ -441,10 +477,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.options.filter(':disabled').each(function() {
             $this.items.eq($(this).index()).addClass('ui-state-disabled');
         });
-
-        //triggers
-        this.triggers = this.cfg.editable ? this.jq.find('.ui-selectonemenu-trigger') : this.jq.find('.ui-selectonemenu-trigger, .ui-selectonemenu-label');
-
+        
         //activate selected
         if(this.cfg.editable) {
             var customInputVal = this.label.val();
@@ -467,26 +500,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.syncTooltip) {
             this.syncTitle(selectedOption);
         }
-
-        //mark trigger and descandants of trigger as a trigger for a primefaces overlay
-        this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-
-        if(!this.disabled) {
-            this.bindEvents();
-            this.bindConstantEvents();
-            this.appendPanel();
-        }
-
+        
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-
-        // see #7602
-        if (PrimeFaces.env.touch) {
-            this.focusInput.attr('readonly', true);
-        }
         
         //for Screen Readers
-        for(var i = 0; i < this.items.length; i++) {
+        for(var i = 0; i < this.items.size(); i++) {
             this.items.eq(i).attr('id', this.id + '_' + i);
         }
         
@@ -497,8 +516,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             .attr('aria-describedby', highlightedItemId)
             .attr('aria-disabled', this.disabled);
         this.itemsContainer.attr('aria-activedescendant', highlightedItemId);
-        
-        this.renderDeferred();
     },
     
     _render: function() {
@@ -548,21 +565,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 },2);
             });
         }
-        
-        //Items
-        this.items.filter(':not(.ui-state-disabled)').on('mouseover.selectonemenu', function() {
-            var el = $(this);
-
-            if(!el.hasClass('ui-state-highlight'))
-                $(this).addClass('ui-state-hover');
-        })
-        .on('mouseout.selectonemenu', function() {
-            $(this).removeClass('ui-state-hover');
-        })
-        .on('click.selectonemenu', function() {
-            $this.selectItem($(this));
-            $this.changeAriaValue($(this));
-        });
 
         //Triggers
         this.triggers.mouseenter(function() {
@@ -603,12 +605,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         //onchange handler for editable input
         if(this.cfg.editable) {
-            this.label.change(function() {
+            this.label.change(function(e) {
                 $this.triggerChange(true);
-                $this.customInput = true;
-                $this.customInputVal = $(this).val();
-                $this.items.filter('.ui-state-active').removeClass('ui-state-active');
-                $this.items.eq(0).addClass('ui-state-active');
+                $this.callHandleMethod($this.handleLabelChange, e);
             });
         }
 
@@ -624,6 +623,25 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             this.bindFilterEvents();
         }
+    },
+    
+    bindItemEvents: function() {
+        var $this = this;
+        
+        //Items
+        this.items.filter(':not(.ui-state-disabled)').on('mouseover.selectonemenu', function() {
+            var el = $(this);
+
+            if(!el.hasClass('ui-state-highlight'))
+                $(this).addClass('ui-state-hover');
+        })
+        .on('mouseout.selectonemenu', function() {
+            $(this).removeClass('ui-state-hover');
+        })
+        .on('click.selectonemenu', function() {
+            $this.selectItem($(this));
+            $this.changeAriaValue($(this));
+        });
     },
 
     bindConstantEvents: function() {
@@ -789,12 +807,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             switch(key) {
                 case keyCode.UP:
                 case keyCode.LEFT:
-                    $this.highlightPrev(e);
+                    $this.callHandleMethod($this.highlightPrev, e);
                 break;
 
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
-                    $this.highlightNext(e);
+                    $this.callHandleMethod($this.highlightNext, e);
                 break;
 
                 case keyCode.ENTER:
@@ -1052,8 +1070,19 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.selectItem(this.getActiveItem());
         }
     },
+    
+    handleLabelChange: function(event) {
+        this.customInput = true;
+        this.customInputVal = $(event.target).val();
+        this.items.filter('.ui-state-active').removeClass('ui-state-active');
+        this.items.eq(0).addClass('ui-state-active');
+    },
 
     show: function() {
+        this.callHandleMethod(this._show, null);
+    },
+
+    _show: function() {
         var $this = this;
         this.alignPanel();
 
@@ -1297,7 +1326,57 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.focusInput.attr('aria-activedescendant', itemId)
                 .attr('aria-describedby', itemId);
         this.itemsContainer.attr('aria-activedescendant', itemId);
-    }         
+    },
+    
+    lazyLoad: function() {
+        var $this = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            global: false,
+            params: [{name: this.id + '_lazyload', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        var index = content.indexOf('</select>') + 9,
+                        selectTag = content.substring(0, index);
+                        $this.input.replaceWith(selectTag);
+                        $this.itemsWrapper.append(content.substring(index, content.length));
+                    }
+                });
+                
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                $this.isLazyLoaded = true;
+                $this.initContents();
+                $this.bindItemEvents();
+                
+            }
+        };
+                
+        PrimeFaces.ajax.Request.handle(options);
+    },
+    
+    callHandleMethod: function(handleMethod, event) {
+        var $this = this;
+        if(this.cfg.lazy && !this.isLazyLoaded) {
+            this.lazyLoad();
+
+            var interval = setInterval(function() {
+                if($this.isLazyLoaded) {
+                    handleMethod.call($this, event);
+                    
+                    clearInterval(interval);
+                }
+            }, 10);
+        }
+        else {
+            handleMethod.call(this, event);               
+        }
+    }
 
 });
 
