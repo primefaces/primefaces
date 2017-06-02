@@ -152,7 +152,6 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("id", name, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("value", value, null);
-        writer.writeAttribute("autocomplete", "off", null);
         writer.endElement("input");
     }
 
