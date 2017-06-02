@@ -41,7 +41,7 @@ public abstract class SelectManyRenderer extends SelectRenderer {
         if(params.containsKey(submitParam)) {
             selectMany.setSubmittedValue(params.get(submitParam));
         } else {
-            selectMany.setSubmittedValue(new String[0]);
+            selectMany.setSubmittedValue(null);
         }
     }
     

@@ -36,7 +36,7 @@ public abstract class SelectOneRenderer extends SelectRenderer {
             selectOne.setSubmittedValue(params.get(clientId));
         }
         else {
-            selectOne.setSubmittedValue("");
+            selectOne.setSubmittedValue(null);
         }
         
         decodeBehaviors(context, selectOne);
