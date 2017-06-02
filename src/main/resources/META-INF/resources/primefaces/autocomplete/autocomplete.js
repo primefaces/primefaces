@@ -410,7 +410,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     }
 
                     if(!found) {
-                        var itemDisplayMarkup = '<li data-token-value="' + itemValue + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
+                        var itemClass = item.attr('data-item-class');
+                        var itemDisplayMarkup = '<li data-token-value="' + itemValue;
+                        itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
+                        itemDisplayMarkup += (itemClass === '' ? '' : ' '+itemClass) + '">';
                         itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
                         itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + item.attr('data-item-label') + '</span></li>';
 

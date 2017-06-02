@@ -527,6 +527,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
                     writer.writeAttribute("data-item-value", value, null);
                     writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                    writer.writeAttribute("data-item-class", ac.getItemClass(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
                     if (hasGroupByTooltip) {
@@ -586,6 +587,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
                     writer.writeAttribute("data-item-value", value, null);
                     writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                    writer.writeAttribute("data-item-class", ac.getItemClass(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
                     if (hasGroupByTooltip) {
@@ -597,6 +599,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 else {
                     writer.writeAttribute("data-item-label", item, null);
                     writer.writeAttribute("data-item-value", item, null);
+                    writer.writeAttribute("data-item-class", ac.getItemClass(), null);
 
                     writer.writeText(item, null);
                 }
