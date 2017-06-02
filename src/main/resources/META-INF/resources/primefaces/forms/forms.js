@@ -1206,7 +1206,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
             else {
                 this.label.removeClass('ui-state-disabled');
-                this.label.text(displayedLabel);
+                this.label.html(displayedLabel);
             }
         }
     },
