@@ -462,7 +462,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.renderDeferred();
     },
     
-    initContents() {
+    initContents: function() {
         this.input = $(this.jqId + '_input');
         this.options = this.input.children('option');
         this.itemsContainer = this.itemsWrapper.children('.ui-selectonemenu-items');
