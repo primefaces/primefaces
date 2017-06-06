@@ -403,12 +403,12 @@ public class AutoCompleteRenderer extends InputRenderer {
                     itemLabel = String.valueOf(value);
                 }
 
-                String itemClass = ac.getItemClass();
+                String itemStyleClass = ac.getItemStyleClass();
                 String tokenValue = converter != null ? converter.getAsString(context, ac, itemValue) : String.valueOf(itemValue);
 
                 writer.startElement("li", null);
                 writer.writeAttribute("data-token-value", tokenValue, null);
-                writer.writeAttribute("class", AutoComplete.TOKEN_DISPLAY_CLASS + (itemClass != null ? " " + itemClass : ""), null);
+                writer.writeAttribute("class", AutoComplete.TOKEN_DISPLAY_CLASS + (itemStyleClass != null ? " " + itemStyleClass : ""), null);
 
                 String labelClass = disabled ? AutoComplete.TOKEN_LABEL_DISABLED_CLASS : AutoComplete.TOKEN_LABEL_CLASS;
                 writer.startElement("span", null);
@@ -528,7 +528,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
                     writer.writeAttribute("data-item-value", value, null);
                     writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
-                    writer.writeAttribute("data-item-class", ac.getItemClass(), null);
+                    writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
                     if (hasGroupByTooltip) {
@@ -588,7 +588,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
                     writer.writeAttribute("data-item-value", value, null);
                     writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
-                    writer.writeAttribute("data-item-class", ac.getItemClass(), null);
+                    writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
                     if (hasGroupByTooltip) {
@@ -600,7 +600,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 else {
                     writer.writeAttribute("data-item-label", item, null);
                     writer.writeAttribute("data-item-value", item, null);
-                    writer.writeAttribute("data-item-class", ac.getItemClass(), null);
+                    writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
 
                     writer.writeText(item, null);
                 }

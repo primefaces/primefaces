@@ -58,10 +58,10 @@
             <description>Value of the item.</description>
         </attribute>
         <attribute>
-            <name>itemClass</name>
+            <name>itemStyleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>A string to be rendered onto the class tag of the selected items (rendered inside the input container).</description>
+            <description>A string to be rendered onto the class tag of the selected items (tokens rendered inside the input container).</description>
         </attribute>
         <attribute>
             <name>maxResults</name>

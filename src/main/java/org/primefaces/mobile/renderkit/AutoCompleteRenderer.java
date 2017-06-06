@@ -138,7 +138,7 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
                 String value = (converter == null) ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
                 writer.writeAttribute("data-item-value", value, null);
                 writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
-                writer.writeAttribute("data-item-class", ac.getItemClass(), null);
+                writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                 
                 if(hasContent)
                     renderChildren(context, ac);
@@ -148,7 +148,7 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
             else {
                 writer.writeAttribute("data-item-label", item, null);
                 writer.writeAttribute("data-item-value", item, null);
-                writer.writeAttribute("data-item-class", ac.getItemClass(), null);
+                writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                 
                 writer.writeText(item, null);
             }
