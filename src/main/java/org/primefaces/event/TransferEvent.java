@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2014 PrimeTek.
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,61 @@
 package org.primefaces.event;
 
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
+/**
+ * Ajax behavior event to represent {@link PickList} transfers.
+ * <p>
+ * Used in <p:ajax event="transfer" />
+ */
 public class TransferEvent extends AbstractAjaxBehaviorEvent {
 
-    private List<?> items;
-    private boolean add;
+   /** State variable: List of objects being transferred */
+   private final List<?> items;
+   
+   /** State variable: Flag indicating adding or removing items */
+   private final boolean add;
 
-	public TransferEvent(UIComponent component, Behavior behavior, List<?> items, boolean add) {
-		super(component, behavior);
-        this.items = items;
-        this.add = add;
-	}
+   /**
+    * Constructor requireing all fields.
+    * 
+    * @param component the {@link UIComponent} that owns this event
+    * @param behavior the {@link Behavior} 
+    * @param items the items to be moved to the other list
+    * @param add true if adding items, false if removing items
+    */
+   public TransferEvent(final UIComponent component, final Behavior behavior, final List<?> items, final boolean add) {
+      super(component, behavior);
+      this.items = items;
+      this.add = add;
+   }
 
-    public boolean isAdd() {
-        return add;
-    }
-    
-    public boolean isRemove() {
-        return !add;
-    }
+   /**
+    * Is the event adding items to the {@link UIComponent}.
+    * 
+    * @return true if adding items
+    */
+   public boolean isAdd() {
+      return add;
+   }
 
-    public List<?> getItems() {
-        return items;
-    }
+   /**
+    * Is the event removing items from the {@link UIComponent}.
+    * 
+    * @return true if removing items
+    */
+   public boolean isRemove() {
+      return !add;
+   }
+
+   /**
+    * The List of Objects being transferred.
+    * 
+    * @return a List<?> of items being transferred
+    */
+   public List<?> getItems() {
+      return items;
+   }
 }
