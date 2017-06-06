@@ -533,6 +533,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/socket/1-socket.js</include>
                             </includes>
                         </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/idlemonitor.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/0-jquery.idletimer.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/1-idlemonitor.js</include>
+                            </includes>
+                        </aggregation>
                     </aggregations>
                 </configuration>
             </plugin>
