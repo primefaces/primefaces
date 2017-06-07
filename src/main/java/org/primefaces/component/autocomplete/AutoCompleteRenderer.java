@@ -329,7 +329,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String styleClass = ac.getPanelStyleClass();
         styleClass = styleClass == null ? AutoComplete.PANEL_CLASS : AutoComplete.PANEL_CLASS + " " + styleClass;
 
-        writer.startElement("div", null);
+        writer.startElement("span", null);
         writer.writeAttribute("id", ac.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", styleClass, null);
 
@@ -337,7 +337,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("style", ac.getPanelStyle(), null);
         }
 
-        writer.endElement("div");
+        writer.endElement("span");
     }
 
     protected void encodeMultipleMarkup(FacesContext context, AutoComplete ac) throws IOException {
