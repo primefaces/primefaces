@@ -13437,7 +13437,12 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var columnFormat = this.cfg.columnFormatOptions;
         if(columnFormat) {
             for (var view in views) {
-                views[view] = {columnFormat: columnFormat[view]};
+                if(view == "agendaWeek") {  // Github #2421
+                    views[view] = {columnFormat: columnFormat['week']};
+                }
+                else {
+                    views[view] = {columnFormat: columnFormat[view]};
+                }
             }
         }
 
