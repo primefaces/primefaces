@@ -1,7 +1,6 @@
 .ui-datatable table {
 	border-collapse:collapse;
     width: 100%;
-    table-layout: fixed;
 }
 
 .ui-datatable-tablewrapper {
@@ -31,7 +30,6 @@
 .ui-datatable tfoot td,
 .ui-datatable tfoot th{
     padding: 4px 10px;
-    overflow: hidden;
     border-width: 1px;
     border-style: solid;
 }
