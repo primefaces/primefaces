@@ -165,6 +165,8 @@ public class TimelineRenderer extends CoreRenderer {
         if (timeline.isShowCurrentTime()) {
             writer.write(",currentTime:"
                     + encodeDate(browserTZ, targetTZ, Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime()));
+        } else { 
+            writer.write(",showCurrentTime: false");
         }
 
         writer.write(",showMajorLabels:" + timeline.isShowMajorLabels());
