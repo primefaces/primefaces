@@ -7,7 +7,6 @@
 	<tag>timeline</tag>
 	<tagClass>org.primefaces.component.timeline.Timeline</tagClass>
 	<componentClass>org.primefaces.component.timeline.Timeline</componentClass>
-    <componentHandlerClass>org.primefaces.component.timeline.TimelineTagHandler</componentHandlerClass>
 	<componentType>org.primefaces.component.Timeline</componentType>
 	<componentFamily>org.primefaces.component</componentFamily>
 	<rendererType>org.primefaces.component.TimelineRenderer</rendererType>

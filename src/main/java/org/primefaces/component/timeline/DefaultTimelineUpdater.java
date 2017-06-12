@@ -196,6 +196,10 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 		this.widgetVar = widgetVar;
 	}
 
+        public String getWidgetVar() {
+            return widgetVar;
+        }
+
 	private void checkCrudOperationDataList() {
 		if (crudOperationDatas == null) {
 			crudOperationDatas = new ArrayList<CrudOperationData>();
