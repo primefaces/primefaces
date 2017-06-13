@@ -2563,9 +2563,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             if(grouped && currentGroupName !== input.attr('group-label')) {
             	currentGroupName = input.attr('group-label');
-            	var groupItem = $('<li class="ui-selectcheckboxmenu-group-item ui-selectcheckboxmenu-group-list-item ui-corner-all"></li>');
-            	groupItem.html(currentGroupName);
-            	$this.itemContainer.append(groupItem);
+            	var itemGroup = $('<li class="ui-selectcheckboxmenu-item-group ui-selectcheckboxmenu-group-list-item ui-corner-all"></li>');
+            	itemGroup.html(currentGroupName);
+            	$this.itemContainer.append(itemGroup);
             }
 
             if(disabled) {
@@ -3034,8 +3034,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             item.removeClass('ui-selectcheckboxmenu-unchecked').addClass('ui-selectcheckboxmenu-checked');
 
             if(updateInput) {
-            	var numOfGroupItem = item.prevAll('li.ui-selectcheckboxmenu-group-item').length;
-                var input = this.inputs.eq(item.index() - numOfGroupItem);
+            	var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group');
+                var input = this.inputs.eq(item.index() - itemGroups);
                 input.prop('checked', true).attr('aria-checked', true).change();
 
                 this.updateToggler();
@@ -3236,8 +3236,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
 
-        var numOfGroupItem = item.prevAll('li.ui-selectcheckboxmenu-group-item').length;
-        var input = this.inputs.eq(item.index() - numOfGroupItem),
+        var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group');
+        var input = this.inputs.eq(item.index() - itemGroups.length),
         escaped = input.data('escaped'),
         labelHtml = input.next().html().trim(),
         labelLength = labelHtml.length,

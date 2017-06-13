@@ -97,14 +97,12 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("class", "ui-helper-hidden", null);
 
         int idx = -1;
-        for(SelectItem selectItem : selectItems) {
-            
-                
-            if(selectItem instanceof SelectItemGroup){
+        for (SelectItem selectItem : selectItems) {
+            if (selectItem instanceof SelectItemGroup){
             	SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
             	String selectItemGroupLabel = selectItemGroup.getLabel() == null ? "" : selectItemGroup.getLabel();
-            	for (SelectItem childSelectItem : selectItemGroup.getSelectItems()){
-            		idx++;
+            	for (SelectItem childSelectItem : selectItemGroup.getSelectItems()) {
+                    idx++;
             	    encodeOption(context, menu, values, submittedValues, converter, childSelectItem, idx, selectItemGroupLabel);
             	}
             }
@@ -154,7 +152,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("data-escaped", String.valueOf(escaped), null);
         if(selectItemGroupLabel != null){
-        	writer.writeAttribute("group-label", selectItemGroupLabel, null);
+            writer.writeAttribute("group-label", selectItemGroupLabel, null);
         }
 
         if(checked) writer.writeAttribute("checked", "checked", null);
