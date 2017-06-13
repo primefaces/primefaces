@@ -2546,7 +2546,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 .appendTo(this.panel);
 
         this.itemContainer = this.itemContainerWrapper.children('ul.ui-selectcheckboxmenu-items');
-
+        
+        //check if inputs must be grouped
+        var grouped = this.inputs.find('input[group-label]');
+        
+        var currentGroupName = null;
         for(var i = 0; i < this.inputs.length; i++) {
             var input = this.inputs.eq(i),
             label = input.next(),
@@ -2557,6 +2561,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             itemClass = 'ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all',
             escaped = input.data('escaped');
 
+            if(grouped && currentGroupName != input.attr('group-label')) {
+            	currentGroupName = input.attr('group-label');
+            	var groupItem = $('<li class="ui-selectcheckboxmenu-group-item ui-selectcheckboxmenu-group-list-item ui-corner-all"></li>');
+            	groupItem.html(currentGroupName);
+            	$this.itemContainer.append(groupItem);
+            }
+            
             if(disabled) {
                 boxClass += " ui-state-disabled";
             }
@@ -3023,7 +3034,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             item.removeClass('ui-selectcheckboxmenu-unchecked').addClass('ui-selectcheckboxmenu-checked');
 
             if(updateInput) {
-                var input = this.inputs.eq(item.index());
+            	var numOfGroupItem = item.prevAll('li.ui-selectcheckboxmenu-group-item').length;
+                var input = this.inputs.eq(item.index()-numOfGroupItem);
                 input.prop('checked', true).attr('aria-checked', true).change();
 
                 this.updateToggler();
@@ -3224,7 +3236,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
 
-        var input = this.inputs.eq(item.index()),
+        var numOfGroupItem = item.prevAll('li.ui-selectcheckboxmenu-group-item').length;
+        var input = this.inputs.eq(item.index()-numOfGroupItem),
         escaped = input.data('escaped'),
         labelHtml = input.next().html().trim(),
         labelLength = labelHtml.length,
