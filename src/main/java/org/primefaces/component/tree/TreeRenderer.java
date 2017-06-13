@@ -621,6 +621,7 @@ public class TreeRenderer extends CoreRenderer {
 
             writer.startElement("span", null);
             writer.writeAttribute("class", contentClass, null);
+            writer.writeAttribute("role", "treeitem", null);
             writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
             writer.writeAttribute("aria-selected", String.valueOf(selected), null);
             if(checkbox) {

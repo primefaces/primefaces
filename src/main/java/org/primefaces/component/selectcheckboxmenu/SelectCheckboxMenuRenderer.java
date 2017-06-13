@@ -26,6 +26,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectManyRenderer;
@@ -96,16 +97,29 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("class", "ui-helper-hidden", null);
 
         int idx = -1;
-        for(SelectItem selectItem : selectItems) {
-            idx++;
-
-            encodeOption(context, menu, values, submittedValues, converter, selectItem, idx);
+        for (SelectItem selectItem : selectItems) {
+            if (selectItem instanceof SelectItemGroup){
+            	SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
+            	String selectItemGroupLabel = selectItemGroup.getLabel() == null ? "" : selectItemGroup.getLabel();
+            	for (SelectItem childSelectItem : selectItemGroup.getSelectItems()) {
+                    idx++;
+            	    encodeOption(context, menu, values, submittedValues, converter, childSelectItem, idx, selectItemGroupLabel);
+            	}
+            }
+            else{
+            	idx++;
+                encodeOption(context, menu, values, submittedValues, converter, selectItem, idx);
+            }
         }
         
         writer.endElement("div");
     }
     
-    protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, Object values, Object submittedValues, Converter converter, SelectItem option, int idx) throws IOException {
+    protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, Object values, Object submittedValues, Converter converter, SelectItem option, int idx) throws IOException{
+        encodeOption(context, menu, values, submittedValues, converter, option, idx, null);
+    }
+    
+    protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, Object values, Object submittedValues, Converter converter, SelectItem option, int idx, String selectItemGroupLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         String name = menu.getClientId(context);
@@ -137,6 +151,9 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("data-escaped", String.valueOf(escaped), null);
+        if(selectItemGroupLabel != null){
+            writer.writeAttribute("group-label", selectItemGroupLabel, null);
+        }
 
         if(checked) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
