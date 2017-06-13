@@ -1511,8 +1511,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if($this.cfg.virtualScroll) {
                     var row = $this.bodyTable.children('tbody').children('tr.ui-widget-content');
                     if(row) {
+                        var scrollLimit = row.eq(0).hasClass('ui-datatable-empty-message') ? 1 : $this.cfg.scrollLimit;
                         $this.rowHeight = row.outerHeight();
-                        $this.scrollBody.children('div').css({'height': parseFloat(($this.cfg.scrollLimit * $this.rowHeight + 1) + 'px')});
+                        $this.scrollBody.children('div').css({'height': parseFloat((scrollLimit * $this.rowHeight + 1) + 'px')});
                     }
                 }
                 else if($this.cfg.liveScroll) {

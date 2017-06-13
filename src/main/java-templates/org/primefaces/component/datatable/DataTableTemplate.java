@@ -564,7 +564,7 @@ import org.primefaces.component.datatable.TableState;
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller for callback
-            if(this.isRequestSource(context) && (this.isPaginator() || this.isLiveScroll())) {
+            if(this.isRequestSource(context) && (this.isPaginator() || this.isLiveScroll() || this.isVirtualScroll())) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {

@@ -211,7 +211,7 @@ public class FilterFeature implements DataTableFeature {
         }
 
         //Metadata for callback
-        if(table.isPaginator()) {
+        if(table.isPaginator() || table.isVirtualScroll()) {
             RequestContext requestContext = RequestContext.getCurrentInstance();
 
             if(requestContext != null) {
