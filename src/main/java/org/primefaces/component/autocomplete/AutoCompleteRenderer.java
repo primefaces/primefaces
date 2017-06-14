@@ -403,12 +403,15 @@ public class AutoCompleteRenderer extends InputRenderer {
                     itemLabel = String.valueOf(value);
                 }
 
-                String itemStyleClass = ac.getItemStyleClass();
                 String tokenValue = converter != null ? converter.getAsString(context, ac, itemValue) : String.valueOf(itemValue);
+                String itemStyleClass = AutoComplete.TOKEN_DISPLAY_CLASS;
+                if (ac.getItemStyleClass() != null) {
+                    itemStyleClass += " " + ac.getItemStyleClass();
+                }
 
                 writer.startElement("li", null);
                 writer.writeAttribute("data-token-value", tokenValue, null);
-                writer.writeAttribute("class", AutoComplete.TOKEN_DISPLAY_CLASS + (itemStyleClass != null ? " " + itemStyleClass : ""), null);
+                writer.writeAttribute("class", itemStyleClass, null);
 
                 String labelClass = disabled ? AutoComplete.TOKEN_LABEL_DISABLED_CLASS : AutoComplete.TOKEN_LABEL_CLASS;
                 writer.startElement("span", null);
