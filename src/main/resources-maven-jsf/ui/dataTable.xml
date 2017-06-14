@@ -524,6 +524,12 @@
 			<defaultValue>false</defaultValue>
             <description>Loads data on demand as the scrollbar gets close to the bottom. Default is false.</description>
 		</attribute>
+        <attribute>
+			<name>rowDragSelector</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Defines the element used to reorder rows using dragdrop. Default selector is "td,span:not(.ui-c)"</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

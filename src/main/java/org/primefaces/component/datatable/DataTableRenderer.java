@@ -257,7 +257,8 @@ public class DataTableRenderer extends DataRenderer {
             .attr("resizeMode", table.getResizeMode(), "fit");
         
         //Draggable Rows
-        wb.attr("draggableRows", table.isDraggableRows(), false);
+        wb.attr("draggableRows", table.isDraggableRows(), false)
+            .attr("rowDragSelector", table.getRowDragSelector(), null);
         
         //Editing
         if(table.isEditable()) {

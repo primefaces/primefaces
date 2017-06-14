@@ -3127,12 +3127,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     makeRowsDraggable: function() {
-        var $this = this;
+        var $this = this,
+        draggableHandle = this.cfg.rowDragSelector||'td,span:not(.ui-c)';
         
         this.tbody.sortable({
             placeholder: 'ui-datatable-rowordering ui-state-active',
             cursor: 'move',
-            handle: 'td,span:not(.ui-c)',
+            handle: draggableHandle,
             appendTo: document.body,
             start: function(event, ui) {
                 ui.helper.css('z-index', ++PrimeFaces.zindex);
