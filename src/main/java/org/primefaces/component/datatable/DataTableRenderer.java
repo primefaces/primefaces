@@ -43,6 +43,7 @@ import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
+import org.primefaces.event.data.PostRenderEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
@@ -92,6 +93,8 @@ public class DataTableRenderer extends DataRenderer {
             encodeMarkup(context, table);
             encodeScript(context, table);
         }
+        
+        context.getApplication().publishEvent(context, PostRenderEvent.class, table);
 	}
     
     protected void preRender(FacesContext context, DataTable table) {
