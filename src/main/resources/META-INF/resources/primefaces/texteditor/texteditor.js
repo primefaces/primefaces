@@ -87,14 +87,54 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         
         //initialize
         this.editor = new Quill(PrimeFaces.escapeClientId(this.id) + '_editor', this.cfg);
-        
+
+        var events = ["keyup", "keydown", "click", "dblclick", "keypress", "mousedown", "mousemove", "mouseout",
+                      "mouseover", "mouseup"];
+
+        $.each(events, function(index, value) {
+            $this._registerEvent(value);
+        });
+
         //set initial value
         this.input.val(this.getEditorValue());
         
         //update input on change
         this.editor.on('text-change', function(delta, oldDelta, source) {
             $this.input.val($this.getEditorValue());
+            if($this.cfg.behaviors) {
+                var changeBehavior = $this.cfg.behaviors['change'];
+                if(changeBehavior) {
+                    changeBehavior.call($this);
+                }
+            }
         });
+        this.editor.on('selection-change', function(range, oldRange, source) {
+           if(range && !oldRange) {
+               if($this.cfg.behaviors && $this.cfg.behaviors["focus"]) {
+                   var changeBehavior = $this.cfg.behaviors["focus"];
+                   if(changeBehavior) {
+                       changeBehavior.call($this);
+                   }
+               }
+           }
+           if(!range && oldRange) {
+               if($this.cfg.behaviors && $this.cfg.behaviors["blur"]) {
+                   var changeBehavior = $this.cfg.behaviors["blur"];
+                   if(changeBehavior) {
+                       changeBehavior.call($this);
+                   }
+               }
+           }
+           if(range && oldRange) {
+               if($this.cfg.behaviors && $this.cfg.behaviors["select"]) {
+                  var changeBehavior = $this.cfg.behaviors["select"];
+                  if(changeBehavior) {
+                      changeBehavior.call($this);
+                  }
+               }
+           }
+        });
+
     },
     
     getEditorValue: function() {
@@ -106,6 +146,18 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
     
     clear: function() {
         this.editor.setText('');
+    },
+
+    _registerEvent: function(event) {
+        var $this = this;
+        if(this.cfg.behaviors && this.cfg.behaviors[event]) {
+            this.editorContainer.on(event, function () {
+                var changeBehavior = $this.cfg.behaviors[event];
+                if(changeBehavior) {
+                    changeBehavior.call($this);
+                }
+            });
+        }
     }
     
 });
