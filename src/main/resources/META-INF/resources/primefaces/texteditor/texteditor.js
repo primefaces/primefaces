@@ -10,7 +10,7 @@
  * PrimeFaces TextEditor Widget
  */
 PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
-    
+
     toolbarTemplate: '<div class="ui-editor-toolbar">' +
                 '<span class="ql-formats">' +
                     '<select class="ql-font"></select>' +
@@ -55,15 +55,15 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
                     '<button class="ql-clean"></button>' +
                 '</span>' +
             '</div>',
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.editorContainer = $(this.jqId + '_editor');
         this.input = this.jq.children('input');
         this.renderDeferred();
     },
-    
+
     _render: function() {
         var $this = this;
 
@@ -79,12 +79,12 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.height) {
             this.editorContainer.height(this.cfg.height);
         }
-        
+
         this.cfg.theme = 'snow';
         this.cfg.modules = {
             toolbar: PrimeFaces.escapeClientId(this.id + '_toolbar')
         };
-        
+
         //initialize
         this.editor = new Quill(PrimeFaces.escapeClientId(this.id) + '_editor', this.cfg);
 
@@ -92,12 +92,12 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
                       "mouseover", "mouseup"];
 
         $.each(events, function(index, value) {
-            $this._registerEvent(value);
+            $this.registerEvent(value);
         });
 
         //set initial value
         this.input.val(this.getEditorValue());
-        
+
         //update input on change
         this.editor.on('text-change', function(delta, oldDelta, source) {
             $this.input.val($this.getEditorValue());
@@ -136,19 +136,19 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         });
 
     },
-    
+
     getEditorValue: function() {
         var html = this.editorContainer.get(0).children[0].innerHTML,
         value = (html == '<p><br></p>') ? '' : html;
-        
+
         return value;
     },
-    
+
     clear: function() {
         this.editor.setText('');
     },
 
-    _registerEvent: function(event) {
+    registerEvent: function(event) {
         var $this = this;
         if(this.cfg.behaviors && this.cfg.behaviors[event]) {
             this.editorContainer.on(event, function () {
@@ -159,5 +159,5 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
             });
         }
     }
-    
+
 });
