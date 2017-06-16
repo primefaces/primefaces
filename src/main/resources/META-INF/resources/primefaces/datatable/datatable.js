@@ -3672,7 +3672,9 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     
     //@Override
     adjustScrollWidth: function() {
-        var width = parseInt((this.scrollLayout.innerWidth() * (parseInt(this.cfg.scrollWidth) / 100)));
+        var scrollLayoutWidth = this.jq.parent().innerWidth() - this.frozenLayout.innerWidth(),
+        width = parseInt((scrollLayoutWidth * (parseInt(this.cfg.scrollWidth) / 100)));
+        
         this.setScrollWidth(width);
     },
     
