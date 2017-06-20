@@ -261,12 +261,13 @@ public class PanelGridRenderer extends CoreRenderer {
             
             if(columns > 0) {
                 writer.startElement("tr", null);
-                writer.writeAttribute("class", PanelGrid.CELL_CLASS + " ui-widget-header", null);
+                writer.writeAttribute("class", "ui-widget-header", null);
                 writer.writeAttribute("role", "row", null);
 
                 writer.startElement("td", null);
                 writer.writeAttribute("colspan", columns, null);
                 writer.writeAttribute("role", "columnheader", null);
+                writer.writeAttribute("class", PanelGrid.CELL_CLASS + " ui-widget-header", null);
                 
                 component.encodeAll(context);
                 
