@@ -45,9 +45,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                     if(value.length === 0 && $this.hinput.children('option') && $this.hinput.children('option').length > 0) {
                         var lastOption = $this.hinput.children('option:last'),
                         index = lastOption.index();
-                        
-                        $($this.itemContainer.children('li.ui-chips-token').get(index)).remove();
-                        lastOption.remove();
+                        $this.removeItem($($this.itemContainer.children('li.ui-chips-token').get(index)));
                     }
                 break;
 
