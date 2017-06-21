@@ -30,21 +30,32 @@ public class ColorPickerRenderer extends CoreRenderer {
 
     @Override
 	public void decode(FacesContext context, UIComponent component) {
-		ColorPicker colorPicker = (ColorPicker) component;
-		String paramName = colorPicker.getClientId(context) + "_input";
-		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        ColorPicker colorPicker = (ColorPicker) component;
+        String paramName = colorPicker.getClientId(context) + "_input";
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-		if(params.containsKey(paramName)) {
-			String submittedValue = params.get(paramName);
-
-			colorPicker.setSubmittedValue(submittedValue);
-		}
+        if (params.containsKey(paramName)) {
+            String submittedValue = params.get(paramName);
+            Converter converter = colorPicker.getConverter();
+            if (converter != null) {
+                colorPicker.setSubmittedValue(
+                        converter.getAsObject(context, component, submittedValue));
+            } else {
+                colorPicker.setSubmittedValue(submittedValue);
+            }
+        }
 	}
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ColorPicker colorPicker = (ColorPicker) component;
-        String value = (String) colorPicker.getValue();
+        ColorPicker colorPicker = (ColorPicker) component;
+        Converter converter = colorPicker.getConverter();
+        String value;
+        if (converter != null) {
+            value = converter.getAsString(context, component, colorPicker.getValue());
+        } else {
+            value = (String) colorPicker.getValue();
+        }
         
 		encodeMarkup(context, colorPicker, value);
 		encodeScript(context, colorPicker, value);
