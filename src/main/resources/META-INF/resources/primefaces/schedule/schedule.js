@@ -13362,7 +13362,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
     setupEventSource: function() {
         var $this = this,
-        offset = moment().zone()*60000;
+        offset = moment().utcOffset()*60000;
 
         this.cfg.events = function(start, end, timezone, callback) {
             var options = {
