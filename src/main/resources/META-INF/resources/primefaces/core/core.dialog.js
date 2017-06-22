@@ -111,10 +111,6 @@ if (!PrimeFaces.dialog) {
                     dialogFrame.attr('title', title.text());
                 }
 
-                dialogFrame.data('initialized', true);
-
-                rootWindow.PF(dialogWidgetVar).show();
-
                 //adjust height
                 var frameHeight = null;
                 if(cfg.options.contentHeight)
@@ -123,6 +119,10 @@ if (!PrimeFaces.dialog) {
                     frameHeight = $frame.get(0).contentWindow.document.body.scrollHeight + (PrimeFaces.env.browser.webkit ? 5 : 25);
 
                 $frame.css('height', frameHeight);
+                
+                // fix #1290 - dialogs are not centered vertically
+                dialogFrame.data('initialized', true);
+                rootWindow.PF(dialogWidgetVar).show();
             })
             .attr('src', frameURL);
         },
