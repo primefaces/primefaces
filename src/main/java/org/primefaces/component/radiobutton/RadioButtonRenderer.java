@@ -58,7 +58,7 @@ public class RadioButtonRenderer extends InputRenderer {
         }
 
         encodeOptionInput(context, selectOneRadio, radio, inputId, masterClientId, disabled);
-        encodeOptionOutput(context, disabled);
+        encodeOptionOutput(context, disabled, selectOneRadio.isValid());
 
         writer.endElement("div");
     }
@@ -113,10 +113,11 @@ public class RadioButtonRenderer extends InputRenderer {
         return eventBuilder.toString();
     }
 
-    protected void encodeOptionOutput(FacesContext context, boolean disabled) throws IOException {
+  protected void encodeOptionOutput(FacesContext context, boolean disabled, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
+        boxClass = valid ? boxClass + " ui-state-error" : boxClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);
