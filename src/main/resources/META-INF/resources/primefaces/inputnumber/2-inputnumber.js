@@ -99,7 +99,10 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     },
 
     setValueToHiddenInput: function(value, triggerEvent) {
-        if (value !== "") {
+    	  // TODO: is there an existing PF way to detect Edge browser?
+    		var isEdge = navigator.userAgent.match(/Edge\/\d./);
+    		// "removeAttr('value')" doesn't work with Browser Edge
+        if (value !== "" || isEdge) {
             this.hiddenInput.attr('value', value);
         } else {
             this.hiddenInput.removeAttr('value');
