@@ -73,8 +73,9 @@ public class ColorPickerRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(colorPicker.getStyle() != null)
+        if(colorPicker.getStyle() != null) {
             writer.writeAttribute("style", colorPicker.getStyle(), "style");
+        }
 
         if(isPopup) {
             encodeButton(context, clientId, value);
@@ -92,7 +93,7 @@ public class ColorPickerRenderer extends CoreRenderer {
         renderPassThruAttributes(context, colorPicker, null);
 
         if(value != null) {
-                writer.writeAttribute("value", value, null);
+            writer.writeAttribute("value", value, null);
         }
         writer.endElement("input");
 
@@ -105,7 +106,7 @@ public class ColorPickerRenderer extends CoreRenderer {
         writer.startElement("button", null);
         writer.writeAttribute("id", clientId + "_button", null);
         writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("class", HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS, null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS, null);
                 
         //text
         writer.startElement("span", null);
