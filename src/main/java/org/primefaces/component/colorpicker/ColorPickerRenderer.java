@@ -30,7 +30,7 @@ import org.primefaces.util.WidgetBuilder;
 public class ColorPickerRenderer extends CoreRenderer {
 
     @Override
-	public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         ColorPicker colorPicker = (ColorPicker) component;
         String paramName = colorPicker.getClientId(context) + "_input";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -45,10 +45,10 @@ public class ColorPickerRenderer extends CoreRenderer {
                 colorPicker.setSubmittedValue(submittedValue);
             }
         }
-	}
+    }
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ColorPicker colorPicker = (ColorPicker) component;
         Converter converter = colorPicker.getConverter();
         String value;
@@ -58,11 +58,11 @@ public class ColorPickerRenderer extends CoreRenderer {
             value = (String) colorPicker.getValue();
         }
         
-		encodeMarkup(context, colorPicker, value);
-		encodeScript(context, colorPicker, value);
-	}
+        encodeMarkup(context, colorPicker, value);
+        encodeScript(context, colorPicker, value);
+    }
 
-	protected void encodeMarkup(FacesContext context, ColorPicker colorPicker, String value) throws IOException {
+    protected void encodeMarkup(FacesContext context, ColorPicker colorPicker, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = colorPicker.getClientId(context);
         String inputId = clientId + "_input";
@@ -84,17 +84,17 @@ public class ColorPickerRenderer extends CoreRenderer {
         }
 
         //Input
-		writer.startElement("input", null);
-		writer.writeAttribute("id", inputId, null);
-		writer.writeAttribute("name", inputId, null);
-		writer.writeAttribute("type", "hidden", null);
-                
-                renderPassThruAttributes(context, colorPicker, null);
-                
-		if(value != null) {
-			writer.writeAttribute("value", value, null);
-		}
-		writer.endElement("input");
+        writer.startElement("input", null);
+        writer.writeAttribute("id", inputId, null);
+        writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("type", "hidden", null);
+
+        renderPassThruAttributes(context, colorPicker, null);
+
+        if(value != null) {
+                writer.writeAttribute("value", value, null);
+        }
+        writer.endElement("input");
 
         writer.endElement("span");
     }
@@ -120,7 +120,7 @@ public class ColorPickerRenderer extends CoreRenderer {
         writer.endElement("span");
 
         writer.endElement("button");
-	}
+    }
     
     protected void encodeInline(FacesContext context, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
