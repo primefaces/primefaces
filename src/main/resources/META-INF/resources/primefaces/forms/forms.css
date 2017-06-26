@@ -15,20 +15,20 @@
     resize:none;
 }
 
-.ui-selectonelistbox, 
+.ui-selectonelistbox,
 .ui-selectmanymenu,
 .ui-multiselectlistbox-listcontainer {
     padding: 2px;
     width: 150px;
 }
 
-.ui-selectonelistbox .ui-selectlistbox-listcontainer, 
+.ui-selectonelistbox .ui-selectlistbox-listcontainer,
 .ui-selectmanymenu .ui-selectlistbox-listcontainer,
 .ui-multiselectlistbox-listcontainer {
     overflow:auto;
 }
 
-.ui-selectonelistbox.ui-state-disabled .ui-selectlistbox-listcontainer, 
+.ui-selectonelistbox.ui-state-disabled .ui-selectlistbox-listcontainer,
 .ui-selectmanymenu.ui-state-disabled .ui-selectlistbox-listcontainer {
     overflow:hidden;
 }
@@ -36,7 +36,7 @@
 .ui-selectonelistbox .ui-selectlistbox-list,
 .ui-selectmanymenu .ui-selectlistbox-list,
 .ui-multiselectlistbox .ui-multiselectlistbox-list {
-    list-style-type: none; 
+    list-style-type: none;
     margin: 0;
     padding: 0;
 }
@@ -163,6 +163,10 @@
 
 .ui-selectmanycheckbox .ui-selectmanycheckbox-item-group{
     font-weight: bold;
+}
+
+.ui-selectmanycheckbox .ui-selectmanycheckbox-responsive-group {
+    padding: .5em .5em .5em 0px;
 }
 
 /** RadioButton **/
@@ -302,7 +306,7 @@
     border-color: inherit;
 }
 
-.ui-selectonemenu-panel .ui-selectonemenu-table th, 
+.ui-selectonemenu-panel .ui-selectonemenu-table th,
 .ui-selectonemenu-panel .ui-selectonemenu-table td {
     border-width: 1px;
     border-style: solid;
@@ -330,85 +334,85 @@
 .ui-state-disabled a{outline: none;}
 
 /* Button */
-.ui-button { 
-    display: inline-block; 
-    position: relative; 
-    padding: 0; 
-    margin-right: .1em; 
-    text-decoration: none !important; 
-    cursor: pointer; 
-    text-align: center; 
-    zoom: 1; 
+.ui-button {
+    display: inline-block;
+    position: relative;
+    padding: 0;
+    margin-right: .1em;
+    text-decoration: none !important;
+    cursor: pointer;
+    text-align: center;
+    zoom: 1;
     overflow: visible; /* the overflow property removes extra width in IE */
-} 
+}
 
-.ui-button-icon-only { 
+.ui-button-icon-only {
     width: 2.4em;
-} 
+}
 
 /*button text element */
-.ui-button .ui-button-text { 
-    display: block; 
+.ui-button .ui-button-text {
+    display: block;
     line-height: normal;
 }
 
-.ui-button-text-only .ui-button-text { 
-    padding: .3em 1em; 
+.ui-button-text-only .ui-button-text {
+    padding: .3em 1em;
 }
 
-.ui-button-icon-only .ui-button-text { 
-    padding: .3em; 
-    text-indent: -9999999px; 
+.ui-button-icon-only .ui-button-text {
+    padding: .3em;
+    text-indent: -9999999px;
 }
 
-.ui-button-text-icon-left .ui-button-text { 
-    padding: .3em 1em .3em 2.1em; 
+.ui-button-text-icon-left .ui-button-text {
+    padding: .3em 1em .3em 2.1em;
 }
 
-.ui-button-text-icon-right .ui-button-text { 
-    padding: .3em 2.1em .3em 1em; 
+.ui-button-text-icon-right .ui-button-text {
+    padding: .3em 2.1em .3em 1em;
 }
 
 /*button icon element(s) */
-.ui-button-icon-only .ui-icon, 
-.ui-button-text-icon-left .ui-icon, 
-.ui-button-text-icon-right .ui-icon { 
-    position: absolute; 
-    top: 50%; 
-    margin-top: -8px; 
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-left .ui-icon,
+.ui-button-text-icon-right .ui-icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -8px;
 }
 
 /* FontAwesome icon */
-.ui-button-icon-only .ui-icon.fa, 
-.ui-button-text-icon-left .ui-icon.fa, 
-.ui-button-text-icon-right .ui-icon.fa {  
-    margin-top: -7px; 
+.ui-button-icon-only .ui-icon.fa,
+.ui-button-text-icon-left .ui-icon.fa,
+.ui-button-text-icon-right .ui-icon.fa {
+    margin-top: -7px;
 }
 
-.ui-button-icon-only .ui-icon { 
-    left: 50%; 
-    margin-left: -8px; 
+.ui-button-icon-only .ui-icon {
+    left: 50%;
+    margin-left: -8px;
 }
 
 .ui-button-icon-left {
-    left: .5em; 
+    left: .5em;
 }
 
 .ui-button-icon-right {
-    right: .5em; 
+    right: .5em;
 }
 
 /*button sets*/
-.ui-buttonset { 
-    margin-right: 7px; 
+.ui-buttonset {
+    margin-right: 7px;
 }
-.ui-buttonset .ui-button { 
-    margin-left: 0; 
+.ui-buttonset .ui-button {
+    margin-left: 0;
     margin-right: 0;
 }
 
 /* workarounds */
-button.ui-button::-moz-focus-inner { 
+button.ui-button::-moz-focus-inner {
     border: 0; padding: 0; /* reset extra padding in Firefox */
 }
 
@@ -496,6 +500,10 @@ button.ui-button::-moz-focus-inner {
     padding-left: 2em;
 }
 
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-item-group {
+    font-weight: bold;
+}
+
 .ui-selectcheckboxmenu-header {
     margin-bottom: 0.3em;
     padding: 0.3em 0 0.3em 0.4em
@@ -517,7 +525,7 @@ button.ui-button::-moz-focus-inner {
     right: 5px;
     top: 2px;
 }
-            
+
 .ui-selectcheckboxmenu-header .ui-inputfield {
     padding: 1px 20px 1px 2px;
 }
@@ -542,6 +550,65 @@ button.ui-button::-moz-focus-inner {
 
 .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close.ui-state-hover {
     padding:0px;
+}
+
+.ui-selectcheckboxmenu-multiple-container {
+    clear: left;
+    cursor: pointer;
+    list-style-type: none;
+    margin: 0;
+    min-height: 24px;
+    overflow: hidden;
+    min-width: 100px;
+}
+
+.ui-selectcheckboxmenu-multiple-container.ui-inputfield {
+    padding:0 22px 0 0;
+    border: 0;
+}
+
+.ui-selectcheckboxmenu-token {
+    cursor: default;
+    float: left;
+    overflow: hidden;
+    padding: 1px 3px;
+    white-space: nowrap;
+    position: relative;
+    margin:2px;
+}
+
+.ui-selectcheckboxmenu-token-label {
+    display: block;
+    padding: 0em 2.1em 0em 0.5em;
+}
+
+.ui-selectcheckboxmenu-token-icon {
+    margin-top: -9px;
+    position: absolute;
+    right: 0.2em;
+    top: 50%;
+    cursor: pointer;
+}
+
+.ui-selectcheckboxmenu-input-token {
+    float: left;
+    list-style-type: none;
+    margin: 1px;
+    padding: 0;
+}
+
+.ui-selectcheckboxmenu-input-token input {
+    border: 0 none;
+    width: 140px;
+    outline: medium none;
+    background-color: transparent;
+    margin:2px;
+}
+
+.ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger  .ui-icon {
+    position: relative;
+    top: 50%;
+    margin-top: -8px;
 }
 
 .ui-splitbutton {
@@ -570,19 +637,19 @@ div.ui-button, .ui-splitbutton {
     margin-top: 2px;
 }
 
-.ui-password-panel .ui-password-meter { 
-    height: 10px; 
-    background:transparent url("#{resource['primefaces:forms/password-meter.png']}") no-repeat left top; 
+.ui-password-panel .ui-password-meter {
+    height: 10px;
+    background:transparent url("#{resource['primefaces:forms/password-meter.png']}") no-repeat left top;
     padding: 0;
     margin: 0;
 }
 
-.ui-password-info { 
+.ui-password-info {
     margin-top: 4px;
 }
 
-.ui-password-panel-overlay { 
-    position: absolute; 
+.ui-password-panel-overlay {
+    position: absolute;
 }
 
 /* OutputLabel */
@@ -598,7 +665,7 @@ div.ui-button, .ui-splitbutton {
     display: inline-block;
     padding:1px;
 }
-            
+
 .ui-selectonebutton.ui-state-error{
     padding:0px;
 }
@@ -611,7 +678,7 @@ div.ui-button, .ui-splitbutton {
     display: inline-block;
     padding:1px;
 }
-            
+
 .ui-selectmanybutton.ui-state-error{
     padding:0px;
 }

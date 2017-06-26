@@ -1,9 +1,9 @@
-// WebcamJS v1.0.12
+// WebcamJS v1.0.21
 // Webcam library for capturing JPEG/PNG images in JavaScript
 // Attempts getUserMedia, falls back to Flash
 // Author: Joseph Huckaby: http://github.com/jhuckaby
 // Based on JPEGCam: http://code.google.com/p/jpegcam/
-// Copyright (c) 2012 - 2016 Joseph Huckaby
+// Copyright (c) 2012 - 2017 Joseph Huckaby
 // Licensed under the MIT License
 
 (function(window) {
@@ -34,14 +34,16 @@ FlashError.prototype = new IntermediateInheritor();
 WebcamError.prototype = new IntermediateInheritor();
 
 var Webcam = {
-	version: '1.0.12',
+	version: '1.0.20',
 	
 	// globals
 	protocol: location.protocol.match(/https/i) ? 'https' : 'http',
 	loaded: false,   // true when webcam movie finishes loading
 	live: false,     // true when webcam is initialized and ready to snap
 	userMedia: true, // true when getUserMedia is supported natively
-	
+
+	iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
+
 	params: {
 		width: 0,
 		height: 0,
@@ -49,6 +51,7 @@ var Webcam = {
 		dest_height: 0,        // these default to width/height
 		image_format: 'jpeg',  // image format (may be jpeg or png)
 		jpeg_quality: 90,      // jpeg image quality from 0 (worst) to 100 (best)
+		enable_flash: true,    // enable flash fallback,
 		force_flash: false,    // force flash mode,
 		flip_horiz: false,     // flip image horiz (mirror mode)
 		fps: 30,               // camera frames per second
@@ -56,7 +59,11 @@ var Webcam = {
 		constraints: null,     // custom user media constraints,
 		swfURL: '',            // URI to webcam.swf movie (defaults to the js location)
 		flashNotDetectedText: 'ERROR: No Adobe Flash Player detected.  Webcam.js relies on Flash for browsers that do not support getUserMedia (like yours).',
-		unfreeze_snap: true    // Whether to unfreeze the camera after snap (defaults to true)
+		noInterfaceFoundText: 'No supported webcam interface found.',
+		unfreeze_snap: true,    // Whether to unfreeze the camera after snap (defaults to true)
+		iosPlaceholderText: 'Click here to open camera.',
+		user_callback: null,    // callback function for snapshot (used if no user_callback parameter given to snap function)
+		user_canvas: null       // user provided canvas for snapshot (used if no user_canvas parameter given to snap function)
 	},
 
 	errors: {
@@ -96,6 +103,123 @@ var Webcam = {
 				self.reset();
 			} );
 		}
+	},
+	
+	exifOrientation: function(binFile) {
+		// extract orientation information from the image provided by iOS
+		// algorithm based on exif-js
+		var dataView = new DataView(binFile);
+		if ((dataView.getUint8(0) != 0xFF) || (dataView.getUint8(1) != 0xD8)) {
+			console.log('Not a valid JPEG file');
+			return 0;
+		}
+		var offset = 2;
+		var marker = null;
+		while (offset < binFile.byteLength) {
+			// find 0xFFE1 (225 marker)
+			if (dataView.getUint8(offset) != 0xFF) {
+				console.log('Not a valid marker at offset ' + offset + ', found: ' + dataView.getUint8(offset));
+				return 0;
+			}
+			marker = dataView.getUint8(offset + 1);
+			if (marker == 225) {
+				offset += 4;
+				var str = "";
+				for (n = 0; n < 4; n++) {
+					str += String.fromCharCode(dataView.getUint8(offset+n));
+				}
+				if (str != 'Exif') {
+					console.log('Not valid EXIF data found');
+					return 0;
+				}
+				
+				offset += 6; // tiffOffset
+				var bigEnd = null;
+
+				// test for TIFF validity and endianness
+				if (dataView.getUint16(offset) == 0x4949) {
+					bigEnd = false;
+				} else if (dataView.getUint16(offset) == 0x4D4D) {
+					bigEnd = true;
+				} else {
+					console.log("Not valid TIFF data! (no 0x4949 or 0x4D4D)");
+					return 0;
+				}
+
+				if (dataView.getUint16(offset+2, !bigEnd) != 0x002A) {
+					console.log("Not valid TIFF data! (no 0x002A)");
+					return 0;
+				}
+
+				var firstIFDOffset = dataView.getUint32(offset+4, !bigEnd);
+				if (firstIFDOffset < 0x00000008) {
+					console.log("Not valid TIFF data! (First offset less than 8)", dataView.getUint32(offset+4, !bigEnd));
+					return 0;
+				}
+
+				// extract orientation data
+				var dataStart = offset + firstIFDOffset;
+				var entries = dataView.getUint16(dataStart, !bigEnd);
+				for (var i=0; i<entries; i++) {
+					var entryOffset = dataStart + i*12 + 2;
+					if (dataView.getUint16(entryOffset, !bigEnd) == 0x0112) {
+						var valueType = dataView.getUint16(entryOffset+2, !bigEnd);
+						var numValues = dataView.getUint32(entryOffset+4, !bigEnd);
+						if (valueType != 3 && numValues != 1) {
+							console.log('Invalid EXIF orientation value type ('+valueType+') or count ('+numValues+')');
+							return 0;
+						}
+						var value = dataView.getUint16(entryOffset + 8, !bigEnd);
+						if (value < 1 || value > 8) {
+							console.log('Invalid EXIF orientation value ('+value+')');
+							return 0;
+						}
+						return value;
+					}
+				}
+			} else {
+				offset += 2+dataView.getUint16(offset+2);
+			}
+		}
+		return 0;
+	},
+	
+	fixOrientation: function(origObjURL, orientation, targetImg) {
+		// fix image orientation based on exif orientation data
+		// exif orientation information
+		//    http://www.impulseadventure.com/photo/exif-orientation.html
+		//    link source wikipedia (https://en.wikipedia.org/wiki/Exif#cite_note-20)
+		var img = new Image();
+		img.addEventListener('load', function(event) {
+			var canvas = document.createElement('canvas');
+			var ctx = canvas.getContext('2d');
+			
+			// switch width height if orientation needed
+			if (orientation < 5) {
+				canvas.width = img.width;
+				canvas.height = img.height;
+			} else {
+				canvas.width = img.height;
+				canvas.height = img.width;
+			}
+
+			// transform (rotate) image - see link at beginning this method
+			switch (orientation) {
+				case 2: ctx.transform(-1, 0, 0, 1, img.width, 0); break;
+				case 3: ctx.transform(-1, 0, 0, -1, img.width, img.height); break;
+				case 4: ctx.transform(1, 0, 0, -1, 0, img.height); break;
+				case 5: ctx.transform(0, 1, 1, 0, 0, 0); break;
+				case 6: ctx.transform(0, 1, -1, 0, img.height , 0); break;
+				case 7: ctx.transform(0, -1, -1, 0, img.height, img.width); break;
+				case 8: ctx.transform(0, -1, 1, 0, 0, img.width); break;
+			}
+
+			ctx.drawImage(img, 0, 0);
+			// pass rotated image data to the target image container
+			targetImg.src = canvas.toDataURL();
+		}, false);
+		// start transformation by load event
+		img.src = origObjURL;
 	},
 	
 	attach: function(elem) {
@@ -172,10 +296,8 @@ var Webcam = {
 			this.mediaDevices.getUserMedia({
 				"audio": false,
 				"video": this.params.constraints || {
-					mandatory: {
-						minWidth: this.params.dest_width,
-						minHeight: this.params.dest_height
-					}
+					width: this.params.dest_width,
+					height: this.params.dest_height
 				}
 			})
 			.then( function(stream) {
@@ -193,7 +315,7 @@ var Webcam = {
 			.catch( function(err) {
 				// JH 2016-07-31 Instead of dispatching error, now falling back to Flash if userMedia fails (thx @john2014)
 				// JH 2016-08-07 But only if flash is actually installed -- if not, dispatch error here and now.
-				if (self.detectFlash()) {
+				if (self.params.enable_flash && self.detectFlash()) {
 					setTimeout( function() { self.params.force_flash = 1; self.attach(elem); }, 1 );
 				}
 				else {
@@ -201,12 +323,118 @@ var Webcam = {
 				}
 			});
 		}
-		else {
+		else if (this.iOS) {
+			// prepare HTML elements
+			var div = document.createElement('div');
+			div.id = this.container.id+'-ios_div';
+			div.className = 'webcamjs-ios-placeholder';
+			div.style.width = '' + this.params.width + 'px';
+			div.style.height = '' + this.params.height + 'px';
+			div.style.textAlign = 'center';
+			div.style.display = 'table-cell';
+			div.style.verticalAlign = 'middle';
+			div.style.backgroundRepeat = 'no-repeat';
+			div.style.backgroundSize = 'contain';
+			div.style.backgroundPosition = 'center';
+			var span = document.createElement('span');
+			span.className = 'webcamjs-ios-text';
+			span.innerHTML = this.params.iosPlaceholderText;
+			div.appendChild(span);
+			var img = document.createElement('img');
+			img.id = this.container.id+'-ios_img';
+			img.style.width = '' + this.params.dest_width + 'px';
+			img.style.height = '' + this.params.dest_height + 'px';
+			img.style.display = 'none';
+			div.appendChild(img);
+			var input = document.createElement('input');
+			input.id = this.container.id+'-ios_input';
+			input.setAttribute('type', 'file');
+			input.setAttribute('accept', 'image/*');
+			input.setAttribute('capture', 'camera');
+			
+			var self = this;
+			var params = this.params;
+			// add input listener to load the selected image
+			input.addEventListener('change', function(event) {
+				if (event.target.files.length > 0 && event.target.files[0].type.indexOf('image/') == 0) {
+					var objURL = URL.createObjectURL(event.target.files[0]);
+
+					// load image with auto scale and crop
+					var image = new Image();
+					image.addEventListener('load', function(event) {
+						var canvas = document.createElement('canvas');
+						canvas.width = params.dest_width;
+						canvas.height = params.dest_height;
+						var ctx = canvas.getContext('2d');
+
+						// crop and scale image for final size
+						ratio = Math.min(image.width / params.dest_width, image.height / params.dest_height);
+						var sw = params.dest_width * ratio;
+						var sh = params.dest_height * ratio;
+						var sx = (image.width - sw) / 2;
+						var sy = (image.height - sh) / 2;
+						ctx.drawImage(image, sx, sy, sw, sh, 0, 0, params.dest_width, params.dest_height);
+
+						var dataURL = canvas.toDataURL();
+						img.src = dataURL;
+						div.style.backgroundImage = "url('"+dataURL+"')";
+					}, false);
+					
+					// read EXIF data
+					var fileReader = new FileReader();
+					fileReader.addEventListener('load', function(e) {
+						var orientation = self.exifOrientation(e.target.result);
+						if (orientation > 1) {
+							// image need to rotate (see comments on fixOrientation method for more information)
+							// transform image and load to image object
+							self.fixOrientation(objURL, orientation, image);
+						} else {
+							// load image data to image object
+							image.src = objURL;
+						}
+					}, false);
+					
+					// Convert image data to blob format
+					var http = new XMLHttpRequest();
+					http.open("GET", objURL, true);
+					http.responseType = "blob";
+					http.onload = function(e) {
+						if (this.status == 200 || this.status === 0) {
+							fileReader.readAsArrayBuffer(this.response);
+						}
+					};
+					http.send();
+
+				}
+			}, false);
+			input.style.display = 'none';
+			elem.appendChild(input);
+			// make div clickable for open camera interface
+			div.addEventListener('click', function(event) {
+				if (params.user_callback) {
+					// global user_callback defined - create the snapshot
+					self.snap(params.user_callback, params.user_canvas);
+				} else {
+					// no global callback definied for snapshot, load image and wait for external snap method call
+					input.style.display = 'block';
+					input.focus();
+					input.click();
+					input.style.display = 'none';
+				}
+			}, false);
+			elem.appendChild(div);
+			this.loaded = true;
+			this.live = true;
+		}
+		else if (this.params.enable_flash && this.detectFlash()) {
 			// flash fallback
 			window.Webcam = Webcam; // needed for flash-to-js interface
 			var div = document.createElement('div');
 			div.innerHTML = this.getSWFHTML();
 			elem.appendChild( div );
+		}
+		else {
+			this.dispatch('error', new WebcamError( this.params.noInterfaceFoundText ));
 		}
 		
 		// setup final crop for live preview
@@ -251,9 +479,10 @@ var Webcam = {
 			delete this.video;
 		}
 
-		if (this.userMedia !== true) {
+		if ((this.userMedia !== true) && this.loaded && !this.iOS) {
 			// call for turn off camera in flash
-			this.getMovie()._releaseCamera();
+			var movie = this.getMovie();
+			if (movie && movie._releaseCamera) movie._releaseCamera();
 		}
 
 		if (this.container) {
@@ -563,6 +792,10 @@ var Webcam = {
 	},
 	
 	snap: function(user_callback, user_canvas) {
+		// use global callback and canvas if not defined as parameter
+		if (!user_callback) user_callback = this.params.user_callback;
+		if (!user_canvas) user_canvas = this.params.user_canvas;
+		
 		// take snapshot and return image data uri
 		var self = this;
 		var params = this.params;
@@ -640,6 +873,30 @@ var Webcam = {
 			
 			// fire callback right away
 			func();
+		}
+		else if (this.iOS) {
+			var div = document.getElementById(this.container.id+'-ios_div');
+			var img = document.getElementById(this.container.id+'-ios_img');
+			var input = document.getElementById(this.container.id+'-ios_input');
+			// function for handle snapshot event (call user_callback and reset the interface)
+			iFunc = function(event) {
+				func.call(img);
+				img.removeEventListener('load', iFunc);
+				div.style.backgroundImage = 'none';
+				img.removeAttribute('src');
+				input.value = null;
+			};
+			if (!input.value) {
+				// No image selected yet, activate input field
+				img.addEventListener('load', iFunc);
+				input.style.display = 'block';
+				input.focus();
+				input.click();
+				input.style.display = 'none';
+			} else {
+				// Image already selected
+				iFunc(null);
+			}			
 		}
 		else {
 			// flash fallback
@@ -783,7 +1040,8 @@ else {
  * PrimeFaces PhotoCam Widget
  */
 PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
-    
+    attached: false,
+
     init: function(cfg) {
         this._super(cfg);
         this.cfg.width = this.cfg.width||320;
@@ -791,37 +1049,59 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.photoWidth = this.cfg.photoWidth||this.cfg.width;
         this.cfg.photoHeight = this.cfg.photoHeight||this.cfg.height;
         this.cfg.jpegQuality = this.cfg.jpegQuality ||90;
-        
+        if (!("autoStart" in this.cfg)) {
+            this.cfg.autoStart = true;
+        }
+
         Webcam.setSWFLocation(this.cfg.camera);
 
-        Webcam.set({
-            width: this.cfg.width,
-            height: this.cfg.height,
-            dest_width: this.cfg.photoWidth,
-            dest_height: this.cfg.photoHeight,
-            image_format: this.cfg.format,
-            jpeg_quality: this.cfg.jpegQuality,
-            force_flash: this.cfg.forceFlash
-        });
-
-        Webcam.attach(this.id);
+        if (this.cfg.autoStart) {
+            this.attach();
+        }
     },
-            
+
+    attach: function() {
+        if (!this.attached) {
+            Webcam.reset();
+            var $this = this;
+            Webcam.set({
+                width: this.cfg.width,
+                height: this.cfg.height,
+                dest_width: this.cfg.photoWidth,
+                dest_height: this.cfg.photoHeight,
+                image_format: this.cfg.format,
+                jpeg_quality: this.cfg.jpegQuality,
+                force_flash: this.cfg.forceFlash,
+                user_callback: function(data) {
+                    var options = {
+                        source: $this.id,
+                        process: $this.cfg.process ? $this.id + ' ' + $this.cfg.process : $this.id,
+                        update: $this.cfg.update,
+                        params: [
+                            {name: $this.id + '_data', value: data}
+                        ]
+                    };
+                    PrimeFaces.ajax.Request.handle(options);
+                }
+            });
+
+            Webcam.attach(this.id);
+            this.attached = true;
+        }
+    },
+    dettach: function() {
+        if (this.attached) {
+            Webcam.reset();
+            this.attached = false;
+        }
+    },
+
     capture: function() {
-        var $this = this;
-        
-        Webcam.snap(function(data) {
-            var options = {
-                source: $this.id,
-                process: $this.cfg.process ? $this.id + ' ' + $this.cfg.process : $this.id,
-                update: $this.cfg.update,
-                params: [
-                    {name: $this.id + '_data', value: data}
-                ]
-            };
-            
-            PrimeFaces.ajax.Request.handle(options);
-        });
+        if (this.attached) {
+            Webcam.snap();
+        } else {
+            PrimeFaces.error('Capture error: AdvancedPhotoCam not attached to the camera');
+        }
     }
 
 });

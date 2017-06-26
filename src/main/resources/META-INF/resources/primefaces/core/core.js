@@ -46,11 +46,23 @@
          */
         submit : function(formId, target) {
             var form = $(this.escapeClientId(formId));
-            if(target) {
+            var prevTarget;
+
+            if (target) {
+                prevTarget = form.attr('target');
                 form.attr('target', target);
             }
 
-            form.submit().children('input.ui-submit-param').remove();
+            form.submit();
+            form.children('input.ui-submit-param').remove();
+
+            if (target) {
+                if (prevTarget !== undefined) {
+                    form.attr('target', prevTarget);
+                } else {
+                    form.removeAttr('target');
+                }
+            }
         },
 
         onPost : function() {
@@ -418,23 +430,24 @@
             PrimeFaces.customFocus = true;
         },
 
-        monitorDownload: function(start, complete) {
+        monitorDownload: function(start, complete, monitorKey) {
             if(this.cookiesEnabled()) {
                 if(start) {
                     start();
                 }
 
+                var cookieName = monitorKey ? 'primefaces.download_' + monitorKey : 'primefaces.download';
                 window.downloadMonitor = setInterval(function() {
-                    var downloadComplete = PrimeFaces.getCookie('primefaces.download');
+                    var downloadComplete = PrimeFaces.getCookie(cookieName);
 
                     if(downloadComplete === 'true') {
                         if(complete) {
                             complete();
                         }
                         clearInterval(window.downloadMonitor);
-                        PrimeFaces.setCookie('primefaces.download', null);
+                        PrimeFaces.setCookie(cookieName, null);
                     }
-                }, 250);
+                }, 1000);
             }
         },
 
@@ -585,7 +598,9 @@
                 this.localeSettings = PrimeFaces.locales[localeKey];
 
                 if(!this.localeSettings) {
-                    this.localeSettings = PrimeFaces.locales[localeKey.split('_')[0]];
+                    if(localeKey) {
+                       this.localeSettings = PrimeFaces.locales[localeKey.split('_')[0]];
+                    }
 
                     if(!this.localeSettings)
                         this.localeSettings = PrimeFaces.locales['en_US'];

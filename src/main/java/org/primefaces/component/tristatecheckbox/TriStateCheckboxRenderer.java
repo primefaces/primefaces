@@ -117,6 +117,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String styleClass = HTML.CHECKBOX_BOX_CLASS;
 		styleClass = (valCheck == 1 || valCheck == 2) ? styleClass + " ui-state-active" : styleClass;
+		styleClass = !checkbox.isValid() ? styleClass + " ui-state-error" : styleClass;
 		styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 
 		//if stateIcon is defined use it insted of default icons.

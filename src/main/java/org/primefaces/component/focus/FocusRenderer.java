@@ -53,12 +53,13 @@ public class FocusRenderer extends CoreRenderer {
 		writer.startElement("script", focus);
 		writer.writeAttribute("type", "text/javascript", null);
 		
-		if(focus.getFor() != null) {
-			encodeExplicitFocus(context, focus);
-		} else {
-			encodeImplicitFocus(context, focus);
-		}
-		
+                if (isValueBlank(focus.getFor())) {
+                    encodeImplicitFocus(context, focus);
+                } 
+                else {
+                    encodeExplicitFocus(context, focus);
+                }
+
 		writer.endElement("script");
 	}
 

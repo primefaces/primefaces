@@ -83,8 +83,9 @@ import org.primefaces.json.JSONObject;
         }
 	}
 
-    private String createPostParameters(FacesContext facesContext, Object value) throws UnsupportedEncodingException {
-        String privateKey = facesContext.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);
+    private String createPostParameters(FacesContext context, Object value) throws UnsupportedEncodingException {
+
+        String privateKey = context.getApplication().evaluateExpressionGet(context, context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY), String.class);
 
         if(privateKey == null) {
             throw new FacesException("Cannot find private key for catpcha, use primefaces.PRIVATE_CAPTCHA_KEY context-param to define one");

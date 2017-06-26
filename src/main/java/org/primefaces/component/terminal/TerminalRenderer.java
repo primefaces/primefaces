@@ -46,6 +46,7 @@ public class TerminalRenderer extends CoreRenderer {
         String styleClass = terminal.getStyleClass();
         styleClass = (styleClass == null) ? Terminal.CONTAINER_CLASS : Terminal.CONTAINER_CLASS + " " + styleClass;
         String welcomeMessage = terminal.getWelcomeMessage();
+        String prompt = terminal.getPrompt();
         String inputId = clientId + "_input";
         
         writer.startElement("div", terminal);
@@ -57,7 +58,10 @@ public class TerminalRenderer extends CoreRenderer {
         
         if(welcomeMessage != null) {
             writer.startElement("div", null);
-            writer.writeText(welcomeMessage, null);
+            if(terminal.isEscape())
+               writer.writeText(welcomeMessage, null);
+            else
+               writer.write(welcomeMessage);
             writer.endElement("div");
         }
         
@@ -68,7 +72,10 @@ public class TerminalRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.startElement("span", null);
         writer.writeAttribute("class", Terminal.PROMPT_CLASS, null);
-        writer.writeText(terminal.getPrompt(), null);
+        if(terminal.isEscape())
+           writer.writeText(prompt, null);
+        else
+           writer.write(prompt);
         writer.endElement("span");
         
         writer.startElement("input", null);

@@ -43,16 +43,16 @@
 		<attribute>
 			<name>minValue</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
-            <description>Minimum value of the slider. Default is 0.</description>
+			<type>java.lang.Double</type>
+			<defaultValue>0.0</defaultValue>
+            <description>Minimum value of the slider. Default is 0.0.</description>
 		</attribute>
 		<attribute>
 			<name>maxValue</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>100</defaultValue>
-            <description>Maximum value of the slider. Default is 100.</description>
+			<type>java.lang.Double</type>
+			<defaultValue>100.0</defaultValue>
+            <description>Maximum value of the slider. Default is 100.0.</description>
 		</attribute>
 		<attribute>
 			<name>style</name>
@@ -83,9 +83,9 @@
 		<attribute>
 			<name>step</name>
 			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>1</defaultValue>
-            <description>Fixed pixel increments that the slider move in. Default is 1.</description>
+			<type>java.lang.Double</type>
+			<defaultValue>1.0</defaultValue>
+            <description>Fixed pixel increments that the slider move in. Default is 1.0.</description>
 		</attribute>
 		<attribute>
 			<name>disabled</name>

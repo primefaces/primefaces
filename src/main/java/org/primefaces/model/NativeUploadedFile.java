@@ -100,4 +100,8 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     public void write(String filePath) throws Exception {
         part.write(filePath);
     }
+
+    public Part getPart() {
+        return part;
+    }
 }

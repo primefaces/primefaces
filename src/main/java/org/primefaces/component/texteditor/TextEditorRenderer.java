@@ -98,7 +98,7 @@ public class TextEditorRenderer extends CoreRenderer{
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("placeholder", editor.getPlaceholder(), null)
                 .attr("height", editor.getHeight(), Integer.MIN_VALUE);
-        
+        encodeClientBehaviors(context, editor);
         wb.finish();
 	}
     

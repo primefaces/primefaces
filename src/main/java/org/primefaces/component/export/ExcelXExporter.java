@@ -25,6 +25,7 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.util.ComponentUtils;
 
 public class ExcelXExporter extends ExcelExporter {
 
@@ -45,7 +46,7 @@ public class ExcelXExporter extends ExcelExporter {
     
     @Override
     protected String getContentDisposition(String filename) {
-        return "attachment;filename="+ filename + ".xlsx";
+        return ComponentUtils.createContentDisposition("attachment", filename+".xlsx");
     }
 
     @Override

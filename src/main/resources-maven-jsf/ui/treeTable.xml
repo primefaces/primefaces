@@ -320,6 +320,25 @@
             <defaultValue>0</defaultValue>
             <description>Index of the first data to display.</description>
         </attribute>
+        <attribute>
+			<name>filteredNode</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+            <description>Node to keep the filtered nodes if filtering is enabled.</description>
+		</attribute>
+        <attribute>
+			<name>filterEvent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side event to invoke treetable filtering for input fields. Default is keyup.</description>
+		</attribute>
+        <attribute>
+			<name>filterDelay</name>
+			<required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <description>Delay to wait in milliseconds before sending each filter query. Default is 300.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

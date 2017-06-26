@@ -675,7 +675,24 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         if(this.cfg.overlay) {
             this.menuitemLinks.click(function() {
                 $this.hide();
-            });  
+            }); 
+            
+            this.trigger.on('keydown.ui-menu', function(e) {
+                var keyCode = $.ui.keyCode;
+            
+                switch(e.which) {
+                    case keyCode.DOWN:
+                        $this.keyboardTarget.trigger('focus.menu');
+                        e.preventDefault();
+                    break;
+                    
+                    case keyCode.TAB:
+                        if($this.jq.is(':visible')) {
+                            $this.hide();
+                        }
+                    break;
+                }
+            });
         }
         
         if(this.cfg.toggleable) {
@@ -739,6 +756,14 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                         }
                         
                         e.preventDefault();
+                    break;
+                    
+                    case keyCode.ESCAPE:
+                        $this.hide();
+                        
+                        if($this.cfg.overlay) {
+                            $this.trigger.focus();
+                        }
                     break;
                     
             }        

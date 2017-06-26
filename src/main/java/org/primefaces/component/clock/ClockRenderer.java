@@ -16,6 +16,10 @@
 package org.primefaces.component.clock;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -45,11 +49,20 @@ public class ClockRenderer extends CoreRenderer {
     
     protected void encodeMarkup(FacesContext context, Clock clock) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = clock.getClientId(context);
         
-        writer.startElement("span", clock);
-        writer.writeAttribute("id", clock.getClientId(context), null);
-        writer.writeAttribute("class", Clock.STYLE_CLASS, null);
-        writer.endElement("span");
+        if(clock.getDisplayMode().equals("analog")) {
+            writer.startElement("div", clock);
+            writer.writeAttribute("id", clientId, null);
+            writer.writeAttribute("class", Clock.ANALOG_STYLE_CLASS, null);
+            writer.endElement("div");
+        }
+        else {
+            writer.startElement("span", clock);
+            writer.writeAttribute("id", clientId, null);
+            writer.writeAttribute("class", Clock.STYLE_CLASS, null);
+            writer.endElement("span");
+        }
     }
 
     protected void encodeScript(FacesContext context, Clock clock) throws IOException {
@@ -60,10 +73,11 @@ public class ClockRenderer extends CoreRenderer {
         wb.init("Clock", clock.resolveWidgetVar(), clientId);
         wb.attr("mode", mode)
             .attr("pattern", clock.getPattern(), null)
+            .attr("displayMode", clock.getDisplayMode())
             .attr("locale", context.getViewRoot().getLocale().toString());
         
         if(mode.equals("server")) {
-            wb.attr("value", System.currentTimeMillis());
+            wb.attr("value", getValueWithTimeZone(context, clock));
             
             if(clock.isAutoSync()) {
                 wb.attr("autoSync", true).attr("syncInterval", clock.getSyncInterval());
@@ -71,5 +85,19 @@ public class ClockRenderer extends CoreRenderer {
         }
 
         wb.finish();
+    }
+    
+    protected String getValueWithTimeZone(FacesContext context, Clock clock) {
+        Locale locale = context.getViewRoot().getLocale();
+        String value = "";
+        
+        if(locale != null) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", locale);
+            dateFormat.setTimeZone(clock.calculateTimeZone());
+            
+            value = dateFormat.format(new Date());
+        }
+        
+        return value;
     }
 }

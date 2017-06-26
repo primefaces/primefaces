@@ -34,6 +34,7 @@ public class SortMeta {
         this.column = column;
         this.sortField = sortField;
         this.sortOrder = sortOrder;
+        this.sortFunction = sortFunction;
     }
 
     public UIColumn getColumn() {
@@ -67,4 +68,10 @@ public class SortMeta {
     public void setSortFunction(MethodExpression sortFunction) {
         this.sortFunction = sortFunction;
     }
+
+   @Override
+   public String toString() {
+      return "SortMeta [column=" + column + ", sortField=" + sortField + ", sortOrder=" + sortOrder + ", sortFunction="
+               + sortFunction + "]";
+   }
 }

@@ -141,6 +141,12 @@
             <defaultValue>false</defaultValue>
             <description>When enabled, the selected items are displayed on label. Default is false.</description>
 		</attribute>
+        <attribute>
+            <name>multiple</name>
+            <required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+        </attribute>
 	</attributes>
     <resources>
         <resource>

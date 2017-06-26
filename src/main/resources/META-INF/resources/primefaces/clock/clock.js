@@ -287,9 +287,18 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
         });
         this.current = this.isClient() ? new Date() : new Date(this.cfg.value);
 
-        this.start();
-        
         var $this = this;
+        if(this.isAnalogClock()) {
+            this.interval = setInterval(function() {
+                $this.update();
+            }, 1000);
+            
+            this.draw();
+        }
+        else {
+            this.start();
+        }
+        
         if(!this.isClient() && this.cfg.autoSync) {
             setInterval(function() {
                 $this.sync();
@@ -323,7 +332,9 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
     },
     
     sync: function() {
-        this.stop();
+        if(!this.isAnalogClock()) {
+            this.stop();
+        }
         
         var $this = this,
         options = {
@@ -335,11 +346,118 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
                 name: this.id + '_sync', value: true
             }],
             oncomplete: function(xhr, status, args) {
-                $this.current = new Date(args.datetime);
-                $this.start();
+                if($this.isAnalogClock()) {
+                    $this.current = new Date(args.datetime);
+                }
+                else {
+                    $this.stop();
+                    $this.current = new Date(args.datetime);
+                    $this.jq.text($this.cfg.dateFormat.format($this.current));
+                    $this.start();
+                }
             }
         };
         
         PrimeFaces.ajax.AjaxRequest(options);
+    },
+    
+    draw: function() {
+
+        this.dimensions = this.getDimensions(this.jq.width());
+
+        this.canvas = new Raphael(this.id, this.dimensions.size,this.dimensions.size);
+
+        this.clock = this.canvas.circle(this.dimensions.half,this.dimensions.half, this.dimensions.clock_width);
+        
+        this.draw_hour_signs();
+
+        this.draw_hands();
+
+        this.pin = this.canvas.circle(this.dimensions.half,this.dimensions.half, this.dimensions.pin_width);
+        
+        this.clock.attr({
+            "fill": "#ffffff",
+            "stroke": "#4A4A4A",
+            "stroke-width": "3"
+        });
+
+        for (var i=0; i<this.hour_sign.length; i++) {
+            this.hour_sign[i].attr({
+                "stroke": "#000000",
+                "stroke-width": this.dimensions.hour_sign_stroke_width
+            });
+        }
+
+        this.hour_hand.attr({
+            "stroke": "#4A4A4A", 
+            "stroke-width": this.dimensions.hour_hand_stroke_width
+        });
+
+        this.minute_hand.attr({
+            "stroke": '#4A4A4A', 
+            "stroke-width": this.dimensions.minute_hand_stroke_width
+        });
+
+        this.second_hand.attr({
+            "stroke": "#4A4A4A", 
+            "stroke-width": this.dimensions.second_hand_stroke_width
+        });
+
+        this.pin.attr({
+            "fill": "#F58503"
+        });
+        
+        this.update();
+    },
+    
+    draw_hour_signs: function() {
+        this.hour_sign = [];
+
+        for (i = 0; i < 12; i++) {
+            (function (i,that){
+                var start_x = that.dimensions.half + Math.round(that.dimensions.hour_sign_min_size * Math.cos(30 * i * Math.PI / 180));
+                var start_y = that.dimensions.half + Math.round(that.dimensions.hour_sign_min_size * Math.sin(30 * i * Math.PI / 180));
+                var end_x = that.dimensions.half + Math.round(that.dimensions.hour_sign_max_size * Math.cos(30 * i * Math.PI / 180));
+                var end_y = that.dimensions.half + Math.round(that.dimensions.hour_sign_max_size * Math.sin(30 * i * Math.PI / 180));
+
+                that.hour_sign.push(that.canvas.path("M" + start_x + " " + start_y + "L" + end_x + " " + end_y));
+            })(i,this);
+        }
+    },
+
+    draw_hands: function() {
+        this.hour_hand = this.canvas.path("M" + this.dimensions.half + " " + this.dimensions.half + "L" + this.dimensions.half + " " + this.dimensions.hour_hand_start_position);
+        this.minute_hand = this.canvas.path("M" + this.dimensions.half + " " + this.dimensions.half + "L" + this.dimensions.half + " " + this.dimensions.minute_hand_start_position);
+        this.second_hand = this.canvas.path("M" + this.dimensions.half + " " + this.dimensions.half + "L" + this.dimensions.half + " " + this.dimensions.second_hand_start_position);
+    },
+
+    update: function() {
+        this.hour_hand.animate({transform: "R" + (30 * this.current.getHours() + (this.current.getMinutes() / 2.5)) + "," + this.dimensions.half + "," + this.dimensions.half}, 1);
+        this.minute_hand.animate({transform: "R" + (6 * this.current.getMinutes()) + "," + this.dimensions.half + "," + this.dimensions.half}, 1);
+        this.second_hand.animate({transform: "R" + (6 * this.current.getSeconds()) + "," + this.dimensions.half + "," + this.dimensions.half}, 1);
+
+        this.current.setSeconds(this.current.getSeconds() + 1);
+    },
+    
+    getDimensions: function(size) {
+        return {
+            'size': size,
+            'half': Math.floor(size / 2),
+            'clock_width': Math.floor(size * 47.5 / 100),
+            'hour_sign_min_size': Math.floor(size * 40 / 100),
+            'hour_sign_max_size': Math.floor(size * 45 / 100),
+            'hour_sign_stroke_width': Math.floor(size * 0.5 / 100) || 1,
+            'hour_hand_start_position': Math.floor(size / 4),
+            'hour_hand_stroke_width': Math.floor(size * 3 / 100) || 1,
+            'minute_hand_start_position': Math.floor(size / 6),
+            'minute_hand_stroke_width': Math.floor(size * 2 / 100) || 1,
+            'second_hand_start_position': Math.floor(size * 12.5 / 100),
+            'second_hand_stroke_width': Math.floor(size * 1 / 100) || 1,
+            'pin_width': Math.floor(size * 2.5 / 100)
+        };
+    },
+    
+    isAnalogClock: function() {
+        return this.cfg.displayMode === "analog";
     }
 });

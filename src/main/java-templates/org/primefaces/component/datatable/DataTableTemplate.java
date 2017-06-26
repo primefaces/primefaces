@@ -67,6 +67,7 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.component.datatable.FilterState;
 import org.primefaces.component.datatable.TableState;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
@@ -119,6 +120,8 @@ import org.primefaces.component.datatable.TableState;
     public static final String SCROLLABLE_BODY_CLASS = "ui-datatable-scrollable-body";
     public static final String SCROLLABLE_FOOTER_CLASS = "ui-widget-header ui-datatable-scrollable-footer";
     public static final String SCROLLABLE_FOOTER_BOX_CLASS = "ui-datatable-scrollable-footer-box";
+    public static final String VIRTUALSCROLL_WRAPPER_CLASS = "ui-datatable-virtualscroll-wrapper";
+    public static final String VIRTUALSCROLL_TABLE_CLASS = "ui-datatable-virtualscroll-table";
     public static final String COLUMN_RESIZER_CLASS = "ui-column-resizer";
     public static final String RESIZABLE_CONTAINER_CLASS = "ui-datatable-resizable"; 
     public static final String SUBTABLE_HEADER = "ui-datatable-subtable-header"; 
@@ -464,6 +467,10 @@ import org.primefaces.component.datatable.TableState;
     }
     
     public UIColumn findColumnInGroup(String clientId, ColumnGroup group) {
+        if(group == null) {
+            return null;
+        }
+        
         FacesContext context = this.getFacesContext();
         
         for(UIComponent row : group.getChildren()) {
@@ -527,16 +534,37 @@ import org.primefaces.component.datatable.TableState;
             
             calculateFirst();
             
+            FacesContext context = getFacesContext();
+            int first = getFirst();
+            
+            if(this.isClientCacheRequest(context)) {
+                Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+                first = Integer.valueOf(params.get(getClientId(context) + "_first")) + getRows();
+            }           
+            
+            if(this.isMultiViewState()) {
+                List<FilterState> filters = this.getFilterBy();
+                if(filters != null) {
+                    String globalFilterParam = this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+                    List filterMetaDataList = this.getFilterMetadata();
+                    if(filterMetaDataList != null) {
+                        FilterFeature filterFeature = (FilterFeature) this.getFeature(DataTableFeatureKey.FILTER);
+                        Map<String, Object> filterParameterMap = filterFeature.populateFilterParameterMap(context, this, filterMetaDataList, globalFilterParam);
+                        this.setFilters(filterParameterMap);
+                    }
+                }
+            }
+
             if(this.isMultiSort())
-                data = lazyModel.load(getFirst(), getRows(), getMultiSortMeta(), getFilters());
+                data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilters());
             else
-                data = lazyModel.load(getFirst(), getRows(),  resolveSortField(), convertSortOrder(), getFilters());
+                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilters());
             
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller for callback
-            if(this.isRequestSource(getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
+            if(this.isRequestSource(context) && (this.isPaginator() || this.isLiveScroll() || this.isVirtualScroll())) {
                 RequestContext requestContext = RequestContext.getCurrentInstance();
 
                 if(requestContext != null) {
@@ -713,6 +741,7 @@ import org.primefaces.component.datatable.TableState;
         this.setSortByVE(null);
         this.setSortColumn(null);
         this.setSortField(null);
+        this.setDefaultSort(true);
         this.clearMultiSortMeta();
     }
 
@@ -813,13 +842,21 @@ import org.primefaces.component.datatable.TableState;
     }
 
     private List<Object> selectedRowKeys = new ArrayList<Object>();
+    private boolean isRowKeyRestored = false;
 
     public void findSelectedRowKeys() {
         Object selection = this.getSelection();
-        selectedRowKeys = new ArrayList<Object>();
         boolean hasRowKeyVe = this.getValueExpression(PropertyKeys.rowKey.toString()) != null;
         String var = this.getVar();
         Map<String,Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
+
+        if(this.isMultiViewState() && selection == null && this.isRowKeyRestored && this.getSelectedRowKeys() != null) {
+            this.selectedRowKeys = this.getSelectedRowKeys();
+            this.isRowKeyRestored = false;
+        }
+        else {
+            this.selectedRowKeys = new ArrayList<Object>();
+        }
 
         if(isSelectionEnabled() && selection != null) {
             if(this.isSingleSelectionMode()) {
@@ -1210,6 +1247,17 @@ import org.primefaces.component.datatable.TableState;
     public MethodExpression getDefaultSortFunction() {
         return (MethodExpression) this.getStateHelper().get("defaultSortFunction");
     }
+
+    public void setDefaultSort(boolean defaultSort) {
+		this.getStateHelper().put("defaultSort", defaultSort);
+	}
+    public boolean isDefaultSort() {
+        Object value = this.getStateHelper().get("defaultSort");
+        if(value == null)
+            return true;
+        else
+            return (java.lang.Boolean) value;
+	}
     
     public Locale resolveDataLocale() {
         FacesContext context = this.getFacesContext();
@@ -1323,7 +1371,8 @@ import org.primefaces.component.datatable.TableState;
         if(ts != null) {
             if(this.isPaginator()) {
                 this.setFirst(ts.getFirst());
-                this.setRows(ts.getRows());
+                int rows = (ts.getRows() == 0) ? this.getRows() : ts.getRows();
+                this.setRows(rows);
             }
 
             this.setMultiSortMeta(ts.getMultiSortMeta());
@@ -1331,9 +1380,14 @@ import org.primefaces.component.datatable.TableState;
             this.setSortOrder(ts.getSortOrder());
             this.setSortFunction(ts.getSortFunction());
             this.setSortField(ts.getSortField());
+            this.setDefaultSort(false);
+            this.setDefaultSortByVE(ts.getDefaultSortBy());
+            this.setDefaultSortOrder(ts.getDefaultSortOrder());
+            this.setDefaultSortFunction(ts.getDefaultSortFunction());
 
             if(this.isSelectionEnabled()) {
                 this.selectedRowKeys = ts.getRowKeys();
+                this.isRowKeyRestored = true;
             }
 
             this.setFilterBy(ts.getFilters());
@@ -1345,7 +1399,8 @@ import org.primefaces.component.datatable.TableState;
         FacesContext fc = this.getFacesContext();
         Map<String,Object> sessionMap = fc.getExternalContext().getSessionMap();
         Map<String,TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
-        String stateKey = fc.getViewRoot().getViewId() + "_" + this.getClientId(fc);
+        String viewId = fc.getViewRoot().getViewId().replaceFirst("^/*", "");
+        String stateKey = viewId + "_" + this.getClientId(fc);
         TableState ts;
 
         if(dtState == null) {

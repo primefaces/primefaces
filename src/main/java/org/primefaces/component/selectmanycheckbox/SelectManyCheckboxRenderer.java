@@ -113,24 +113,60 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Converter converter = checkbox.getConverter();
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
-        int idx = 0, colMod;
+        int idx = 0, groupIdx = 0, colMod;
         for(SelectItem selectItem : selectItems) {
-            colMod = idx % columns;
-            if(colMod == 0) {
+            if(selectItem instanceof SelectItemGroup) {
                 writer.startElement("div", null);
-                writer.writeAttribute("class", "ui-grid-row", null);
-            }
-
-            writer.startElement("div", null);
-            writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
-            encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
-            writer.endElement("div");
-            
-            idx++;
-            colMod = idx % columns;
-
-            if(colMod == 0) {
+                writer.writeAttribute("class", "ui-selectmanycheckbox-responsive-group", null);
+                encodeGroupLabel(context, checkbox, (SelectItemGroup) selectItem);
                 writer.endElement("div");
+                
+                for (SelectItem childSelectItem : ((SelectItemGroup) selectItem).getSelectItems()) {
+                    colMod = idx % columns;
+                    if(colMod == 0) {
+                        writer.startElement("div", null);
+                        writer.writeAttribute("class", "ui-grid-row", null);
+                    }
+
+                    groupIdx++;
+                    
+                    writer.startElement("div", null);
+                    writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
+                    encodeOption(context, checkbox, values, submittedValues, converter, childSelectItem, groupIdx);
+                    writer.endElement("div");
+
+                    idx++;
+                    colMod = idx % columns;
+
+                    if(colMod == 0) {
+                        writer.endElement("div");
+                    }
+                }
+                
+                if(idx != 0 && (idx % columns) != 0) {
+                    writer.endElement("div");
+                }
+                
+                idx = 0;
+            }
+            else {
+                colMod = idx % columns;
+                if(colMod == 0) {
+                    writer.startElement("div", null);
+                    writer.writeAttribute("class", "ui-grid-row", null);
+                }
+
+                writer.startElement("div", null);
+                writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
+                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+                writer.endElement("div");
+
+                idx++;
+                colMod = idx % columns;
+
+                if(colMod == 0) {
+                    writer.endElement("div");
+                }
             }
         }
         

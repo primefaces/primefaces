@@ -37,6 +37,12 @@ public class TableState implements Serializable {
     
     private MethodExpression sortFunction;
     
+    private ValueExpression defaultSortBy;
+    
+    private String defaultSortOrder;
+    
+    private MethodExpression defaultSortFunction;
+    
     private List<Object> rowKeys;
     
     private List<FilterState> filters;
@@ -97,6 +103,30 @@ public class TableState implements Serializable {
 
     public void setSortFunction(MethodExpression sortFunction) {
         this.sortFunction = sortFunction;
+    }
+    
+    public ValueExpression getDefaultSortBy() {
+        return defaultSortBy;
+    }
+
+    public void setDefaultSortBy(ValueExpression defaultSortBy) {
+        this.defaultSortBy = defaultSortBy;
+    }
+
+    public String getDefaultSortOrder() {
+        return defaultSortOrder;
+    }
+
+    public void setDefaultSortOrder(String defaultSortOrder) {
+        this.defaultSortOrder = defaultSortOrder;
+    }
+
+    public MethodExpression getDefaultSortFunction() {
+        return defaultSortFunction;
+    }
+
+    public void setDefaultSortFunction(MethodExpression defaultSortFunction) {
+        this.defaultSortFunction = defaultSortFunction;
     }
 
     public List<Object> getRowKeys() {

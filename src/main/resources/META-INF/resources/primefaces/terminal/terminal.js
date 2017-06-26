@@ -124,7 +124,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} content
      */
     processResponse: function(content) {
-        $('<div>' + content + "</div>").appendTo(this.content.children().last());
+        $('<div></div>').text(content).appendTo(this.content.children().last());
 
         // always scroll down to the last item
         this.jq.scrollTop(this.jq[0].scrollHeight);

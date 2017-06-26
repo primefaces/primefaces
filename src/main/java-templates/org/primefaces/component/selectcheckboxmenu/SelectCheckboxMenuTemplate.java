@@ -16,6 +16,11 @@ import javax.faces.event.BehaviorEvent;
     public final static String PANEL_CLASS = "ui-selectcheckboxmenu-panel ui-widget-content ui-corner-all ui-helper-hidden";
     public final static String LIST_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
     public final static String ITEM_CLASS = "ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all ui-helper-clearfix";
+    public final static String MULTIPLE_CLASS = "ui-selectcheckboxmenu-multiple";
+    public final static String MULTIPLE_CONTAINER_CLASS = "ui-selectcheckboxmenu-multiple-container ui-widget ui-inputfield ui-state-default ui-corner-all";
+    public final static String TOKEN_DISPLAY_CLASS = "ui-selectcheckboxmenu-token ui-state-active ui-corner-all";
+    public final static String TOKEN_LABEL_CLASS = "ui-selectcheckboxmenu-token-label";
+    public final static String TOKEN_ICON_CLASS = "ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close";
 
     private final static String DEFAULT_EVENT = "change";
 

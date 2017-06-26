@@ -154,6 +154,9 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         for(FacesMessage msg : messages) {
             writer.startElement("li", null);
+            
+            writer.writeAttribute("role", "alert", null);
+            writer.writeAttribute("aria-atomic", "true", null);
 
             String summary = msg.getSummary() != null ? msg.getSummary() : "";
             String detail = msg.getDetail() != null ? msg.getDetail() : summary;

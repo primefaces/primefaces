@@ -564,10 +564,12 @@ public class TreeRenderer extends CoreRenderer {
         List<String> filteredRowKeys = tree.getFilteredRowKeys();
         boolean match = false;
         if(filter && filteredRowKeys.size() > 0) {
-            for(String rk : filteredRowKeys) {
-                if(rk.startsWith(rowKey) || rowKey.startsWith(rk)) {
+            for(String filteredRowKey : filteredRowKeys) {
+                String rowKeyExt = rowKey + "_";
+                String filteredRowKeyExt = filteredRowKey + "_";
+                if(filteredRowKey.startsWith(rowKeyExt) || rowKey.startsWith(filteredRowKeyExt) || filteredRowKey.equals(rowKey)) {
                     match = true;
-                    if(!node.isLeaf() && !rowKey.startsWith(rk)) {
+                    if(!node.isLeaf() && !rowKey.startsWith(filteredRowKey)) {
                         node.setExpanded(true);
                     }
                     break;
@@ -619,6 +621,7 @@ public class TreeRenderer extends CoreRenderer {
 
             writer.startElement("span", null);
             writer.writeAttribute("class", contentClass, null);
+            writer.writeAttribute("role", "treeitem", null);
             writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
             writer.writeAttribute("aria-selected", String.valueOf(selected), null);
             if(checkbox) {

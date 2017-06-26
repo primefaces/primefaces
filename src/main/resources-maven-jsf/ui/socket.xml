@@ -111,7 +111,7 @@
 			<name>core.js</name>
 		</resource>
         <resource>
-            <name>push/push.js</name>
+            <name>socket/socket.js</name>
         </resource>
 	</resources>
 </component>

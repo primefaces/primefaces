@@ -28,6 +28,11 @@ public class ComponentUtilsTest {
 		assertEquals("#test", ComponentUtils.escapeJQueryId(id));
 		
 		id="form:test";
-		assertEquals("#form\\\\:test", ComponentUtils.escapeJQueryId(id));
+		assertEquals("#form\\:test", ComponentUtils.escapeJQueryId(id));
 	}
+	
+	@Test
+   public void createContentDisposition() {
+	   assertEquals("attachment;filename=\"Test%20Spaces.txt\"; filename*=UTF-8''Test%20Spaces.txt", ComponentUtils.createContentDisposition("attachment", "Test Spaces.txt"));
+   }
 }

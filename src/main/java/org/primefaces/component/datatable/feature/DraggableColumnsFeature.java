@@ -27,13 +27,14 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class DraggableColumnsFeature implements DataTableFeature {
 
     public void decode(FacesContext context, DataTable table) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String columnOrderParam = params.get(table.getClientId(context) + "_columnOrder");
-        if(columnOrderParam == null) {
+        if(ComponentUtils.isValueBlank(columnOrderParam)) {
             return;
         }
         

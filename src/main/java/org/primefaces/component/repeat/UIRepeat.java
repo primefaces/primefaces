@@ -127,7 +127,7 @@ public class UIRepeat extends UINamingContainer {
     private String initialClientId;
 
     public UIRepeat() {
-        this.setRendererType("org.primefaces.component.UIRepeatRenderer");
+        this.setRendererType(null);
     }
 
     public String getFamily() {
@@ -781,8 +781,16 @@ public class UIRepeat extends UINamingContainer {
     }
 
     private boolean requiresRowIteration(VisitContext ctx) {
-
-        return !ctx.getHints().contains(VisitHint.SKIP_ITERATION);
+    	 try {
+             //JSF 2.1
+             VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
+             return !ctx.getHints().contains(skipHint);
+         }
+         catch(IllegalArgumentException e) {
+             //JSF 2.0
+             Object skipHint = ctx.getFacesContext().getAttributes().get("javax.faces.visit.SKIP_ITERATION");
+             return !Boolean.TRUE.equals(skipHint);
+         }
 
     }
 

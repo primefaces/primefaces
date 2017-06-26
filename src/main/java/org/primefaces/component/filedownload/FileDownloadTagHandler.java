@@ -33,23 +33,28 @@ public class FileDownloadTagHandler extends TagHandler {
 	
 	private final TagAttribute value;
 	private final TagAttribute contentDisposition;
+    private final TagAttribute monitorKey;
 
 	public FileDownloadTagHandler(TagConfig tagConfig) {
 		super(tagConfig);
 		this.value = getRequiredAttribute("value");
 		this.contentDisposition = getAttribute("contentDisposition");
+        this.monitorKey = getAttribute("monitorKey");
 	}
 
 	public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
 		if (ComponentHandler.isNew(parent)) {
 			ValueExpression valueVE = value.getValueExpression(faceletContext, Object.class);
 			ValueExpression contentDispositionVE = null;
+            ValueExpression monitorKeyVE = null;
 			
 			if(contentDisposition != null)
 				contentDispositionVE= contentDisposition.getValueExpression(faceletContext, String.class);
-			
+			if(monitorKey != null)
+                monitorKeyVE = monitorKey.getValueExpression(faceletContext, String.class);
+            
 			ActionSource actionSource = (ActionSource) parent;
-			actionSource.addActionListener(new FileDownloadActionListener(valueVE, contentDispositionVE));
+			actionSource.addActionListener(new FileDownloadActionListener(valueVE, contentDispositionVE, monitorKeyVE));
 		}
 	}
 }

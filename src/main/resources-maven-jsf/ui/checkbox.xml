@@ -32,6 +32,7 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <description>Index of the selectItem of the SelectManyCheckbox.</description>
+            <defaultValue>0</defaultValue>
         </attribute>
         <attribute>
             <name>onchange</name>

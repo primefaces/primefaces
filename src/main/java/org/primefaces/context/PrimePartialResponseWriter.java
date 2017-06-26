@@ -29,8 +29,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import org.primefaces.application.resource.DynamicResourcesPhaseListener;
-
-import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -156,8 +154,6 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     
     @Override
     public void redirect(String url) throws IOException {
-        startMetadataIfNecessary();
-        
         wrapped.redirect(url);
     }
 
@@ -276,22 +272,30 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 if (viewRoot != null) {
                     // portlet parameter namespacing
                     if (viewRoot instanceof NamingContainer) {
-                        Map<String, Object> params = new HashMap<String, Object>();
 
                         String parameterNamespace = viewRoot.getContainerClientId(context);
-                        if ((parameterNamespace != null) && requestContext.getApplicationContext().getConfig().isAtLeastJSF23()) {
+                        if ((parameterNamespace != null) && (parameterNamespace.length() > 0)) {
 
-                            // https://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790
-                            parameterNamespace += UINamingContainer.getSeparatorChar(context);
+                            String parameterPrefix = parameterNamespace;
+
+                            if (requestContext.getApplicationContext().getConfig().isAtLeastJSF23()) {
+
+                                // https://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790
+                                parameterPrefix += UINamingContainer.getSeparatorChar(context);
+                            }
+
+                            Map<String, Object> params = new HashMap<String, Object>();
+                            params.put("parameterPrefix", parameterPrefix);
+                            encodeCallbackParams(params);
                         }
-                        params.put("parameterNamespace", parameterNamespace);
-                        encodeCallbackParams(params);
                     }
 
                     // dynamic resource loading
                     // we just do it for postbacks, otherwise ajax requests without a form would reload all resources
                     // we also skip update=@all as the head will all resources will already be rendered
-                    if (context.isPostback() && !context.getPartialViewContext().isRenderAll()) {
+                    if (context.isPostback()
+                            && !context.getPartialViewContext().isRenderAll()
+                            && !requestContext.getApplicationContext().getConfig().isAtLeastJSF23()) {
                         ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
                         ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
                         if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {

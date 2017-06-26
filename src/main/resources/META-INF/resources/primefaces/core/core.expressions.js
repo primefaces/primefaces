@@ -1,136 +1,139 @@
-PrimeFaces.expressions = {};
+if (!PrimeFaces.expressions) {
 
-PrimeFaces.expressions.SearchExpressionFacade = {
+    PrimeFaces.expressions = {};
 
-	resolveComponentsAsSelector: function(expressions) {
+    PrimeFaces.expressions.SearchExpressionFacade = {
 
-		var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions);
-		var elements = $();
+        resolveComponentsAsSelector: function(expressions) {
 
-		if (splittedExpressions) {
-			for (var i = 0; i < splittedExpressions.length; ++i) {
-				var expression =  $.trim(splittedExpressions[i]);
-				if (expression.length > 0) {
+            var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions);
+            var elements = $();
 
-					// skip unresolvable keywords
-					if (expression == '@none' || expression == '@all') {
-						continue;
-					}
+            if (splittedExpressions) {
+                for (var i = 0; i < splittedExpressions.length; ++i) {
+                    var expression =  $.trim(splittedExpressions[i]);
+                    if (expression.length > 0) {
 
-					// just a id
-					if (expression.indexOf("@") == -1) {
-						elements = elements.add(
-								$(document.getElementById(expression)));
-					}
-					// @widget
-					else if (expression.indexOf("@widgetVar(") == 0) {
-						var widgetVar = expression.substring(11, expression.length - 1);
-						var widget = PrimeFaces.widgets[widgetVar];
+                        // skip unresolvable keywords
+                        if (expression == '@none' || expression == '@all') {
+                            continue;
+                        }
 
-						if (widget) {
-							elements = elements.add(
-									$(document.getElementById(widget.id)));
-						} else {
-							PrimeFaces.error("Widget for widgetVar \"" + widgetVar + "\" not avaiable");
-						}
-					}
-					// PFS
-					else if (expression.indexOf("@(") == 0) {
-						//converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
-						elements = elements.add(
-								$(expression.substring(2, expression.length - 1)));
-					}
-				}
-			}
-		}
+                        // just a id
+                        if (expression.indexOf("@") == -1) {
+                            elements = elements.add(
+                                    $(document.getElementById(expression)));
+                        }
+                        // @widget
+                        else if (expression.indexOf("@widgetVar(") == 0) {
+                            var widgetVar = expression.substring(11, expression.length - 1);
+                            var widget = PrimeFaces.widgets[widgetVar];
 
-		return elements;
-	},
+                            if (widget) {
+                                elements = elements.add(
+                                        $(document.getElementById(widget.id)));
+                            } else {
+                                PrimeFaces.error("Widget for widgetVar \"" + widgetVar + "\" not avaiable");
+                            }
+                        }
+                        // PFS
+                        else if (expression.indexOf("@(") == 0) {
+                            //converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
+                            elements = elements.add(
+                                    $(expression.substring(2, expression.length - 1)));
+                        }
+                    }
+                }
+            }
 
-	resolveComponents: function(expressions) {
-		var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions),
-		ids = [];
+            return elements;
+        },
 
-		if (splittedExpressions) {
-			for (var i = 0; i < splittedExpressions.length; ++i) {
-				var expression =  $.trim(splittedExpressions[i]);
-				if (expression.length > 0) {
+        resolveComponents: function(expressions) {
+            var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions),
+            ids = [];
 
-					// just a id or passtrough keywords
-					if (expression.indexOf("@") == -1 || expression == '@none' || expression == '@all') {
-						if (!PrimeFaces.inArray(ids, expression)) {
-							ids.push(expression);
-						}
-					}
-					// @widget
-					else if (expression.indexOf("@widgetVar(") == 0) {
-						var widgetVar = expression.substring(11, expression.length - 1),
-						widget = PrimeFaces.widgets[widgetVar];
+            if (splittedExpressions) {
+                for (var i = 0; i < splittedExpressions.length; ++i) {
+                    var expression =  $.trim(splittedExpressions[i]);
+                    if (expression.length > 0) {
 
-						if (widget) {
-							if (!PrimeFaces.inArray(ids, widget.id)) {
-								ids.push(widget.id);
-							}
-						} else {
-							PrimeFaces.error("Widget for widgetVar \"" + widgetVar + "\" not avaiable");
-						}
-					}
-					// PFS
-					else if (expression.indexOf("@(") == 0) {
-						//converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
-						var elements = $(expression.substring(2, expression.length - 1));
+                        // just a id or passtrough keywords
+                        if (expression.indexOf("@") == -1 || expression == '@none' || expression == '@all') {
+                            if (!PrimeFaces.inArray(ids, expression)) {
+                                ids.push(expression);
+                            }
+                        }
+                        // @widget
+                        else if (expression.indexOf("@widgetVar(") == 0) {
+                            var widgetVar = expression.substring(11, expression.length - 1),
+                            widget = PrimeFaces.widgets[widgetVar];
 
-						for (var j = 0; j < elements.length; j++) {
-							var element = $(elements[j]),
-							clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
+                            if (widget) {
+                                if (!PrimeFaces.inArray(ids, widget.id)) {
+                                    ids.push(widget.id);
+                                }
+                            } else {
+                                PrimeFaces.error("Widget for widgetVar \"" + widgetVar + "\" not avaiable");
+                            }
+                        }
+                        // PFS
+                        else if (expression.indexOf("@(") == 0) {
+                            //converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
+                            var elements = $(expression.substring(2, expression.length - 1));
 
-							if (!PrimeFaces.inArray(ids, clientId)) {
-								ids.push(clientId);
-							}
-						}
-					}
-				}
-			}
-		}
+                            for (var j = 0; j < elements.length; j++) {
+                                var element = $(elements[j]),
+                                clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
 
-		return ids;
-	},
+                                if (!PrimeFaces.inArray(ids, clientId)) {
+                                    ids.push(clientId);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-	splitExpressions: function(expression) {
+            return ids;
+        },
 
-		if (PrimeFaces.isIE(7)) {
-			expression = expression.split('');
-		}
+        splitExpressions: function(expression) {
 
-		var expressions = [];
-		var buffer = '';
+            if (PrimeFaces.isIE(7)) {
+                expression = expression.split('');
+            }
 
-		var parenthesesCounter = 0;
+            var expressions = [];
+            var buffer = '';
 
-		for (var i = 0; i < expression.length; i++) {
-			var c = expression[i];
+            var parenthesesCounter = 0;
 
-			if (c === '(') {
-				parenthesesCounter++;
-			}
+            for (var i = 0; i < expression.length; i++) {
+                var c = expression[i];
 
-			if (c === ')') {
-				parenthesesCounter--;
-			}
+                if (c === '(') {
+                    parenthesesCounter++;
+                }
 
-			if ((c === ' ' || c === ',') && parenthesesCounter === 0) {
-				// lets add token inside buffer to our tokens
-				expressions.push(buffer);
-				// now we need to clear buffer
-				buffer = '';
-			} else {
-				buffer += c;
-			}
-		}
+                if (c === ')') {
+                    parenthesesCounter--;
+                }
 
-		// lets not forget about part after the separator
-		expressions.push(buffer);
+                if ((c === ' ' || c === ',') && parenthesesCounter === 0) {
+                    // lets add token inside buffer to our tokens
+                    expressions.push(buffer);
+                    // now we need to clear buffer
+                    buffer = '';
+                } else {
+                    buffer += c;
+                }
+            }
 
-		return expressions;
-	}	
-};
+            // lets not forget about part after the separator
+            expressions.push(buffer);
+
+            return expressions;
+        }	
+    };
+}

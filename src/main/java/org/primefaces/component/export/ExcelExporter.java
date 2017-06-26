@@ -46,6 +46,7 @@ import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class ExcelExporter extends Exporter {
@@ -262,7 +263,7 @@ public class ExcelExporter extends Exporter {
     }
     
     protected String getContentDisposition(String filename) {
-        return "attachment;filename=\""+ filename + ".xls\"";
+        return ComponentUtils.createContentDisposition("attachment", filename+".xls");
     }
     
     public void exportTable(FacesContext context, DataTable table, Sheet sheet, boolean pageOnly, boolean selectionOnly) {

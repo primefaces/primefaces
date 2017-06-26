@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.primefaces.util.ComponentUtils;
 
 public class ChartSeries implements Serializable {
 
@@ -82,7 +83,7 @@ public class ChartSeries implements Serializable {
     public void encode(Writer writer) throws IOException {
         String renderer = this.getRenderer();
         writer.write("{");
-        writer.write("label:'" + label + "'");
+        writer.write("label:\"" + ComponentUtils.escapeText(label) + "\"");
 
         if(renderer != null) writer.write(",renderer: $.jqplot." + renderer);
         if(xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");

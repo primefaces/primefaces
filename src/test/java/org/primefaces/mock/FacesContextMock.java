@@ -59,6 +59,13 @@ public class FacesContextMock extends FacesContext {
             this();
             this.attributes = attributes;
 	}
+    
+    public FacesContextMock(ResponseWriter writer, Map<Object, Object> attributes) {
+		this.writer = writer;
+        this.attributes = attributes;
+
+		setCurrentInstance(this);
+	}
 
 	@Override
     public Map<Object, Object> getAttributes() {

@@ -58,6 +58,12 @@
             <description>Value of the item.</description>
         </attribute>
         <attribute>
+            <name>itemStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>A string to be rendered onto the class tag of the selected items (tokens rendered inside the input container).</description>
+        </attribute>
+        <attribute>
             <name>maxResults</name>
             <required>false</required>
             <type>java.lang.Integer</type>
@@ -252,6 +258,13 @@
             <type>java.lang.String</type>
             <defaultValue>...</defaultValue>
             <description>The text shown in panel when the suggested list is greater than maxResults.</description>
+        </attribute>
+        <attribute>
+            <name>unique</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Ensures uniqueness of selected items.</description>
         </attribute>
     </attributes>
     <resources>

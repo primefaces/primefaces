@@ -33,7 +33,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
         resizeNS = 'resize.' + this.cfg.id;
 
         win.off(scrollNS).on(scrollNS, function() {
-            if(win.scrollTop() > $this.initialState.top)
+            if(win.scrollTop() > $this.initialState.top - $this.cfg.margin)
                 $this.fix();
             else
                 $this.restore();

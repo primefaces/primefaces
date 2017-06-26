@@ -1963,8 +1963,17 @@ public class SearchExpressionFacadeTest {
 		innerContainer2.setId("myContainer2");
 		form.getChildren().add(innerContainer2);
 
+		UINamingContainer innerContainer3 = new UINamingContainer();
+		innerContainer3.setId("myContainer3-test");
+		form.getChildren().add(innerContainer3);
+        
         List<UIComponent> result = resolveComponents(form, " @id(myContainer) ");
         assertTrue(result.size() == 1);
         assertTrue(result.contains(innerContainer));
+        
+        result = resolveComponents(form, " @id(myContainer3-test) ");
+        assertTrue(result.size() == 1);
+        assertTrue(result.contains(innerContainer3));
     }
+
 }
