@@ -13269,7 +13269,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 if(dateSelectBehavior) {
                     var ext = {
                         params: [
-							{name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.zone()*60000}
+							{name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.utcOffset()*60000}
                         ]
                     };
 
