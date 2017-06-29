@@ -2297,12 +2297,15 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
         this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').prop('checked', false);
 
         button.addClass('ui-state-active').children(':radio').prop('checked', true);
+
         this.triggerChange();
     },
 
     unselect: function(button) {
         if(!this.cfg.unselectable) {
             button.removeClass('ui-state-active ui-state-hover ui-state-focus').children(':radio').prop('checked', false).change();
+
+            this.triggerChange();
         }
     },
 
