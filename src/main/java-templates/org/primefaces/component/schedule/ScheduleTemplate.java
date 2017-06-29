@@ -113,8 +113,8 @@ import javax.faces.event.BehaviorEvent;
             else if(eventName.equals("eventMove")) {
                 String movedEventId = params.get(clientId + "_movedEventId");
 				ScheduleEvent movedEvent = this.getValue().getEvent(movedEventId);
-                int dayDelta = Integer.valueOf(params.get(clientId + "_dayDelta"));
-				int minuteDelta = Integer.valueOf(params.get(clientId + "_minuteDelta"));
+                int dayDelta = (int) Double.parseDouble(params.get(clientId + "_dayDelta"));
+				int minuteDelta = (int) Double.parseDouble(params.get(clientId + "_minuteDelta"));
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(movedEvent.getStartDate());
