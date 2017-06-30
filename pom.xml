@@ -547,12 +547,17 @@
                             <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.js</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.old.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.cookie.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.mousewheel.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.rangy.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.browser.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.ui.touch-punch.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.timepicker.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.maskedinput.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.caretposition.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.autosize.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.cookie.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.mousewheel.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.rangy.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.browser.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.touch-punch.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.pfextensions.js</include>
                             </includes>
                         </aggregation>
                     </aggregations>
