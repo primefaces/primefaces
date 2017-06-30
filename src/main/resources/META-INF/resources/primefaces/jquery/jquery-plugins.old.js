@@ -6468,7 +6468,7 @@ $.extend(Datepicker.prototype, {
 		}
 		this._notifyChange(inst);
 		this._adjustDate(target);
-        
+
         if(inst.input) {
             inst.input.trigger('blur');
         }
@@ -12952,213 +12952,6 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 
 /* General Utilities */
 
-/*!
- * jQuery Cookie Plugin v1.4.1
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2006, 2014 Klaus Hartl
- * Released under the MIT license
- */
-(function (factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD (Register as an anonymous module)
-		define(['jquery'], factory);
-	} else if (typeof exports === 'object') {
-		// Node/CommonJS
-		module.exports = factory(require('jquery'));
-	} else {
-		// Browser globals
-		factory(jQuery);
-	}
-}(function ($) {
-
-	var pluses = /\+/g;
-
-	function encode(s) {
-		return config.raw ? s : encodeURIComponent(s);
-	}
-
-	function decode(s) {
-		return config.raw ? s : decodeURIComponent(s);
-	}
-
-	function stringifyCookieValue(value) {
-		return encode(config.json ? JSON.stringify(value) : String(value));
-	}
-
-	function parseCookieValue(s) {
-		if (s.indexOf('"') === 0) {
-			// This is a quoted cookie as according to RFC2068, unescape...
-			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-		}
-
-		try {
-			// Replace server-side written pluses with spaces.
-			// If we can't decode the cookie, ignore it, it's unusable.
-			// If we can't parse the cookie, ignore it, it's unusable.
-			s = decodeURIComponent(s.replace(pluses, ' '));
-			return config.json ? JSON.parse(s) : s;
-		} catch(e) {}
-	}
-
-	function read(s, converter) {
-		var value = config.raw ? s : parseCookieValue(s);
-		return $.isFunction(converter) ? converter(value) : value;
-	}
-
-	var config = $.cookie = function (key, value, options) {
-
-		// Write
-
-		if (arguments.length > 1 && !$.isFunction(value)) {
-			options = $.extend({}, config.defaults, options);
-
-			if (typeof options.expires === 'number') {
-				var days = options.expires, t = options.expires = new Date();
-				t.setMilliseconds(t.getMilliseconds() + days * 864e+5);
-			}
-
-			return (document.cookie = [
-				encode(key), '=', stringifyCookieValue(value),
-				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-				options.path    ? '; path=' + options.path : '',
-				options.domain  ? '; domain=' + options.domain : '',
-				options.secure  ? '; secure' : ''
-			].join(''));
-		}
-
-		// Read
-
-		var result = key ? undefined : {},
-			// To prevent the for loop in the first place assign an empty array
-			// in case there are no cookies at all. Also prevents odd result when
-			// calling $.cookie().
-			cookies = document.cookie ? document.cookie.split('; ') : [],
-			i = 0,
-			l = cookies.length;
-
-		for (; i < l; i++) {
-			var parts = cookies[i].split('='),
-				name = decode(parts.shift()),
-				cookie = parts.join('=');
-
-			if (key === name) {
-				// If second argument (value) is a function it's a converter...
-				result = read(cookie, value);
-				break;
-			}
-
-			// Prevent storing a cookie that we couldn't decode.
-			if (!key && (cookie = read(cookie)) !== undefined) {
-				result[name] = cookie;
-			}
-		}
-
-		return result;
-	};
-
-	config.defaults = {};
-
-	$.removeCookie = function (key, options) {
-		// Must not alter options, thus extending a fresh object...
-		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
-		return !$.cookie(key);
-	};
-
-}));
-
-/*! Copyright (c) 2011 Brandon Aaron (http://brandonaaron.net)
- * Licensed under the MIT License (LICENSE.txt).
- *
- * Thanks to: http://adomas.org/javascript-mouse-wheel/ for some pointers.
- * Thanks to: Mathias Bank(http://www.mathias-bank.de) for a scope bug fix.
- * Thanks to: Seamus Leahy for adding deltaX and deltaY
- *
- * Version: 3.0.6
- * 
- * Requires: 1.2.2+
- */
-
-(function($) {
-
-    var types = ['DOMMouseScroll', 'mousewheel'];
-
-    if ($.event.fixHooks) {
-        for ( var i=types.length; i; ) {
-            $.event.fixHooks[ types[--i] ] = $.event.mouseHooks;
-        }
-    }
-
-    $.event.special.mousewheel = {
-        setup: function() {
-            if ( this.addEventListener ) {
-                for ( var i=types.length; i; ) {
-                    this.addEventListener( types[--i], handler, false );
-                }
-            } else {
-                this.onmousewheel = handler;
-            }
-        },
-    
-        teardown: function() {
-            if ( this.removeEventListener ) {
-                for ( var i=types.length; i; ) {
-                    this.removeEventListener( types[--i], handler, false );
-                }
-            } else {
-                this.onmousewheel = null;
-            }
-        }
-    };
-
-    $.fn.extend({
-        mousewheel: function(fn) {
-            return fn ? this.bind("mousewheel", fn) : this.trigger("mousewheel");
-        },
-    
-        unmousewheel: function(fn) {
-            return this.unbind("mousewheel", fn);
-        }
-    });
-
-
-    function handler(event) {
-        var orgEvent = event || window.event, args = [].slice.call( arguments, 1 ), delta = 0, returnValue = true, deltaX = 0, deltaY = 0;
-        event = $.event.fix(orgEvent);
-        event.type = "mousewheel";
-    
-        // Old school scrollwheel delta
-        if ( orgEvent.wheelDelta ) {
-            delta = orgEvent.wheelDelta/120;
-        }
-        if ( orgEvent.detail     ) {
-            delta = -orgEvent.detail/3;
-        }
-    
-        // New school multidimensional scroll (touchpads) deltas
-        deltaY = delta;
-    
-        // Gecko
-        if ( orgEvent.axis !== undefined && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
-            deltaY = 0;
-            deltaX = -1*delta;
-        }
-    
-        // Webkit
-        if ( orgEvent.wheelDeltaY !== undefined ) {
-            deltaY = orgEvent.wheelDeltaY/120;
-        }
-        if ( orgEvent.wheelDeltaX !== undefined ) {
-            deltaX = -1*orgEvent.wheelDeltaX/120;
-        }
-    
-        // Add event and delta to the front of the arguments
-        args.unshift(event, delta, deltaX, deltaY);
-    
-        return ($.event.dispatch || $.event.handle).apply(this, args);
-    }
-})(jQuery);
-
 /*
     jQuery Masked Input Plugin
     Copyright (c) 2007 - 2015 Josh Bush (digitalbush.com)
@@ -13181,13 +12974,13 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
     }, $.fn.extend({
         caret: function(begin, end) {
             var range;
-            if (0 !== this.length && !this.is(":hidden")) return "number" == typeof begin ? (end = "number" == typeof end ? end : begin, 
+            if (0 !== this.length && !this.is(":hidden")) return "number" == typeof begin ? (end = "number" == typeof end ? end : begin,
             this.each(function() {
-                this.setSelectionRange ? this.setSelectionRange(begin, end) : this.createTextRange && (range = this.createTextRange(), 
-                range.collapse(!0), range.moveEnd("character", end), range.moveStart("character", begin), 
+                this.setSelectionRange ? this.setSelectionRange(begin, end) : this.createTextRange && (range = this.createTextRange(),
+                range.collapse(!0), range.moveEnd("character", end), range.moveStart("character", begin),
                 range.select());
-            })) : (this[0].setSelectionRange ? (begin = this[0].selectionStart, end = this[0].selectionEnd) : document.selection && document.selection.createRange && (range = document.selection.createRange(), 
-            begin = 0 - range.duplicate().moveStart("character", -1e5), end = begin + range.text.length), 
+            })) : (this[0].setSelectionRange ? (begin = this[0].selectionStart, end = this[0].selectionEnd) : document.selection && document.selection.createRange && (range = document.selection.createRange(),
+            begin = 0 - range.duplicate().moveStart("character", -1e5), end = begin + range.text.length),
             {
                 begin: begin,
                 end: end
@@ -13207,9 +13000,9 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
                 autoclear: $.mask.autoclear,
                 placeholder: $.mask.placeholder,
                 completed: null
-            }, settings), defs = $.mask.definitions, tests = [], partialPosition = len = mask.length, 
+            }, settings), defs = $.mask.definitions, tests = [], partialPosition = len = mask.length,
             firstNonMaskPos = null, $.each(mask.split(""), function(i, c) {
-                "?" == c ? (len--, partialPosition = i) : defs[c] ? (tests.push(new RegExp(defs[c])), 
+                "?" == c ? (len--, partialPosition = i) : defs[c] ? (tests.push(new RegExp(defs[c])),
                 null === firstNonMaskPos && (firstNonMaskPos = tests.length - 1), partialPosition > i && (lastRequiredNonMaskPos = tests.length - 1)) : tests.push(null);
             }), this.trigger("unmask").each(function() {
                 function tryFireCompleted() {
@@ -13264,10 +13057,10 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
                 function keydownEvent(e) {
                     if (!input.prop("readonly")) {
                         var pos, begin, end, k = e.which || e.keyCode;
-                        oldVal = input.val(), 8 === k || 46 === k || iPhone && 127 === k ? (pos = input.caret(), 
-                        begin = pos.begin, end = pos.end, end - begin === 0 && (begin = 46 !== k ? seekPrev(begin) : end = seekNext(begin - 1), 
-                        end = 46 === k ? seekNext(end) : end), clearBuffer(begin, end), shiftL(begin, end - 1), 
-                        e.preventDefault()) : 13 === k ? blurEvent.call(this, e) : 27 === k && (input.val(focusText), 
+                        oldVal = input.val(), 8 === k || 46 === k || iPhone && 127 === k ? (pos = input.caret(),
+                        begin = pos.begin, end = pos.end, end - begin === 0 && (begin = 46 !== k ? seekPrev(begin) : end = seekNext(begin - 1),
+                        end = 46 === k ? seekNext(end) : end), clearBuffer(begin, end), shiftL(begin, end - 1),
+                        e.preventDefault()) : 13 === k ? blurEvent.call(this, e) : 27 === k && (input.val(focusText),
                         input.caret(0, checkVal()), e.preventDefault());
                     }
                 }
@@ -13275,7 +13068,7 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
                     if (!input.prop("readonly")) {
                         var p, c, next, k = e.which || e.keyCode, pos = input.caret();
                         if (!(e.ctrlKey || e.altKey || e.metaKey || 32 > k || (k > 34 && k < 41)) && k && 13 !== k) {
-                            if (pos.end - pos.begin !== 0 && (clearBuffer(pos.begin, pos.end), shiftL(pos.begin, pos.end - 1)), 
+                            if (pos.end - pos.begin !== 0 && (clearBuffer(pos.begin, pos.end), shiftL(pos.begin, pos.end - 1)),
                             p = seekNext(pos.begin - 1), len > p && (c = String.fromCharCode(k), tests[p].test(c))) {
                                 if (shiftR(p), buffer[p] = c, writeBuffer(), next = seekNext(p), android) {
                                     var proxy = function() {
@@ -13299,7 +13092,7 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
                 function checkVal(allow) {
                     var i, c, pos, test = input.val(), lastMatch = -1;
                     for (i = 0, pos = 0; len > i; i++) if (tests[i]) {
-                        for (buffer[i] = getPlaceholder(i); pos++ < test.length; ) if (c = test.charAt(pos - 1), 
+                        for (buffer[i] = getPlaceholder(i); pos++ < test.length; ) if (c = test.charAt(pos - 1),
                         tests[i].test(c)) {
                             buffer[i] = c, lastMatch = i;
                             break;
@@ -13309,8 +13102,8 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
                             break;
                         }
                     } else buffer[i] === test.charAt(pos) && pos++, partialPosition > i && (lastMatch = i);
-                    return allow ? writeBuffer() : partialPosition > lastMatch + 1 ? settings.autoclear || buffer.join("") === defaultBuffer ? (input.val() && input.val(""), 
-                    clearBuffer(0, len)) : writeBuffer() : (writeBuffer(), input.val(input.val().substring(0, lastMatch + 1))), 
+                    return allow ? writeBuffer() : partialPosition > lastMatch + 1 ? settings.autoclear || buffer.join("") === defaultBuffer ? (input.val() && input.val(""),
+                    clearBuffer(0, len)) : writeBuffer() : (writeBuffer(), input.val(input.val().substring(0, lastMatch + 1))),
                     partialPosition ? i : firstNonMaskPos;
                 }
                 var input = $(this), buffer = $.map(mask.split(""), function(c, i) {
@@ -13335,252 +13128,12 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
                         var pos = checkVal(!0);
                         input.caret(pos), tryFireCompleted();
                     }, 0);
-                }), chrome && android && input.off("input.mask").on("input.mask", androidInputEvent), 
+                }), chrome && android && input.off("input.mask").on("input.mask", androidInputEvent),
                 checkVal();
             });
         }
     });
 });
-
-/**
- * @license Rangy Text Inputs, a cross-browser textarea and text input library plug-in for jQuery.
- *
- * Part of Rangy, a cross-browser JavaScript range and selection library
- * http://code.google.com/p/rangy/
- *
- * Depends on jQuery 1.0 or later.
- *
- * Copyright 2010, Tim Down
- * Licensed under the MIT license.
- * Version: 0.1.205
- * Build date: 5 November 2010
- */
-(function($) {
-    var UNDEF = "undefined";
-    var getSelection, setSelection, deleteSelectedText, deleteText, insertText;
-    var replaceSelectedText, surroundSelectedText, extractSelectedText, collapseSelection;
-
-    // Trio of isHost* functions taken from Peter Michaux's article:
-    // http://peter.michaux.ca/articles/feature-detection-state-of-the-art-browser-scripting
-    function isHostMethod(object, property) {
-        var t = typeof object[property];
-        return t === "function" || (!!(t == "object" && object[property])) || t == "unknown";
-    }
-
-    function isHostProperty(object, property) {
-        return typeof(object[property]) != UNDEF;
-    }
-
-    function isHostObject(object, property) {
-        return !!(typeof(object[property]) == "object" && object[property]);
-    }
-
-    function fail(reason) {
-        if (window.console && window.console.log) {
-            window.console.log("TextInputs module for Rangy not supported in your browser. Reason: " + reason);
-        }
-    }
-
-    function adjustOffsets(el, start, end) {
-        if (start < 0) {
-            start += el.value.length;
-        }
-        if (typeof end == UNDEF) {
-            end = start;
-        }
-        if (end < 0) {
-            end += el.value.length;
-        }
-        return { start: start, end: end };
-    }
-
-    function makeSelection(el, start, end) {
-        return {
-            start: start,
-            end: end,
-            length: end - start,
-            text: el.value.slice(start, end)
-        };
-    }
-
-    function getBody() {
-        return isHostObject(document, "body") ? document.body : document.getElementsByTagName("body")[0];
-    }
-
-    $(document).ready(function() {
-        var testTextArea = document.createElement("textarea");
-
-        getBody().appendChild(testTextArea);
-
-        if (isHostProperty(testTextArea, "selectionStart") && isHostProperty(testTextArea, "selectionEnd")) {
-            getSelection = function(el) {
-                var start = el.selectionStart, end = el.selectionEnd;
-                return makeSelection(el, start, end);
-            };
-
-            setSelection = function(el, startOffset, endOffset) {
-                var offsets = adjustOffsets(el, startOffset, endOffset);
-                el.selectionStart = offsets.start;
-                el.selectionEnd = offsets.end;
-            };
-
-            collapseSelection = function(el, toStart) {
-                if (toStart) {
-                    el.selectionEnd = el.selectionStart;
-                } else {
-                    el.selectionStart = el.selectionEnd;
-                }
-            };
-        } else if (isHostMethod(testTextArea, "createTextRange") && isHostObject(document, "selection") &&
-                   isHostMethod(document.selection, "createRange")) {
-
-            getSelection = function(el) {
-                var start = 0, end = 0, normalizedValue, textInputRange, len, endRange;
-                var range = document.selection.createRange();
-
-                if (range && range.parentElement() == el) {
-                    len = el.value.length;
-
-                    normalizedValue = el.value.replace(/\r\n/g, "\n");
-                    textInputRange = el.createTextRange();
-                    textInputRange.moveToBookmark(range.getBookmark());
-                    endRange = el.createTextRange();
-                    endRange.collapse(false);
-                    if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
-                        start = end = len;
-                    } else {
-                        start = -textInputRange.moveStart("character", -len);
-                        start += normalizedValue.slice(0, start).split("\n").length - 1;
-                        if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
-                            end = len;
-                        } else {
-                            end = -textInputRange.moveEnd("character", -len);
-                            end += normalizedValue.slice(0, end).split("\n").length - 1;
-                        }
-                    }
-                }
-
-                return makeSelection(el, start, end);
-            };
-
-            // Moving across a line break only counts as moving one character in a TextRange, whereas a line break in
-            // the textarea value is two characters. This function corrects for that by converting a text offset into a
-            // range character offset by subtracting one character for every line break in the textarea prior to the
-            // offset
-            var offsetToRangeCharacterMove = function(el, offset) {
-                return offset - (el.value.slice(0, offset).split("\r\n").length - 1);
-            };
-
-            setSelection = function(el, startOffset, endOffset) {
-                var offsets = adjustOffsets(el, startOffset, endOffset);
-                var range = el.createTextRange();
-                var startCharMove = offsetToRangeCharacterMove(el, offsets.start);
-                range.collapse(true);
-                if (offsets.start == offsets.end) {
-                    range.move("character", startCharMove);
-                } else {
-                    range.moveEnd("character", offsetToRangeCharacterMove(el, offsets.end));
-                    range.moveStart("character", startCharMove);
-                }
-                range.select();
-            };
-
-            collapseSelection = function(el, toStart) {
-                var range = document.selection.createRange();
-                range.collapse(toStart);
-                range.select();
-            };
-        } else {
-            getBody().removeChild(testTextArea);
-            fail("No means of finding text input caret position");
-            return;
-        }
-
-        // Clean up
-        getBody().removeChild(testTextArea);
-
-        deleteText = function(el, start, end, moveSelection) {
-            var val;
-            if (start != end) {
-                val = el.value;
-                el.value = val.slice(0, start) + val.slice(end);
-            }
-            if (moveSelection) {
-                setSelection(el, start, start);
-            }
-        };
-
-        deleteSelectedText = function(el) {
-            var sel = getSelection(el);
-            deleteText(el, sel.start, sel.end, true);
-        };
-
-        extractSelectedText = function(el) {
-            var sel = getSelection(el), val;
-            if (sel.start != sel.end) {
-                val = el.value;
-                el.value = val.slice(0, sel.start) + val.slice(sel.end);
-            }
-            setSelection(el, sel.start, sel.start);
-            return sel.text;
-        };
-
-        insertText = function(el, text, index, moveSelection) {
-            var val = el.value, caretIndex;
-            el.value = val.slice(0, index) + text + val.slice(index);
-            if (moveSelection) {
-                caretIndex = index + text.length;
-                setSelection(el, caretIndex, caretIndex);
-            }
-        };
-
-        replaceSelectedText = function(el, text) {
-            var sel = getSelection(el), val = el.value;
-            el.value = val.slice(0, sel.start) + text + val.slice(sel.end);
-            var caretIndex = sel.start + text.length;
-            setSelection(el, caretIndex, caretIndex);
-        };
-
-        surroundSelectedText = function(el, before, after) {
-            var sel = getSelection(el), val = el.value;
-
-            el.value = val.slice(0, sel.start) + before + sel.text + after + val.slice(sel.end);
-            var startIndex = sel.start + before.length;
-            var endIndex = startIndex + sel.length;
-            setSelection(el, startIndex, endIndex);
-        };
-
-        function jQuerify(func, returnThis) {
-            return function() {
-                var el = this.jquery ? this[0] : this;
-                var nodeName = el.nodeName.toLowerCase();
-
-                if (el.nodeType == 1 && (nodeName == "textarea" || (nodeName == "input" && el.type == "text"))) {
-                    var args = [el].concat(Array.prototype.slice.call(arguments));
-                    var result = func.apply(this, args);
-                    if (!returnThis) {
-                        return result;
-                    }
-                }
-                if (returnThis) {
-                    return this;
-                }
-            };
-        }
-
-        $.fn.extend({
-            getSelection: jQuerify(getSelection, false),
-            setSelection: jQuerify(setSelection, true),
-            collapseSelection: jQuerify(collapseSelection, true),
-            deleteSelectedText: jQuerify(deleteSelectedText, true),
-            deleteText: jQuerify(deleteText, true),
-            extractSelectedText: jQuerify(extractSelectedText, false),
-            insertText: jQuerify(insertText, true),
-            replaceSelectedText: jQuerify(replaceSelectedText, true),
-            surroundSelectedText: jQuerify(surroundSelectedText, true)
-        });
-    });
-})(jQuery);
 
 /**
  * jQuery plugin for getting position of cursor in textarea
@@ -13594,8 +13147,8 @@ $(function() {
 		primaryStyles: ['fontFamily', 'fontSize', 'fontWeight', 'fontVariant', 'fontStyle',
 			'paddingLeft', 'paddingTop', 'paddingBottom', 'paddingRight',
 			'marginLeft', 'marginTop', 'marginBottom', 'marginRight',
-			'borderLeftColor', 'borderTopColor', 'borderBottomColor', 'borderRightColor',  
-			'borderLeftStyle', 'borderTopStyle', 'borderBottomStyle', 'borderRightStyle', 
+			'borderLeftColor', 'borderTopColor', 'borderBottomColor', 'borderRightColor',
+			'borderLeftStyle', 'borderTopStyle', 'borderBottomStyle', 'borderRightStyle',
 			'borderLeftWidth', 'borderTopWidth', 'borderBottomWidth', 'borderRightWidth',
 			'line-height', 'outline'],
 
@@ -13604,7 +13157,7 @@ $(function() {
 			'overflow-x': 'hidden',
 			'overflow-y': 'auto'
 		},
-		
+
 		simulator : $('<div id="textarea_simulator"/>').css({
 				position: 'absolute',
 				top: 0,
@@ -13616,7 +13169,7 @@ $(function() {
 			return text.replace(/\n/g, '<br>')
 				.split(' ').join('<span style="white-space:prev-wrap">&nbsp;</span>');
 		},
-		// calculate position 
+		// calculate position
 		getCaretPosition: function() {
 			var cal = calculator, self = this, element = self[0], elementOffset = self.offset();
 
@@ -13624,14 +13177,14 @@ $(function() {
 			if ($.browser.msie && document.selection && document.selection.createRange) {
 				// must get focus first
 				element.focus();
-			    var range = document.selection.createRange();  
+			    var range = document.selection.createRange();
 			    $('#hskeywords').val(element.scrollTop);
-			    return {  
+			    return {
 			        left: range.boundingLeft - elementOffset.left,
-			        top: parseInt(range.boundingTop) - elementOffset.top + element.scrollTop 
-						+ document.documentElement.scrollTop + parseInt(self.getComputedStyle("fontSize")) 
-			    };  
-			}  
+			        top: parseInt(range.boundingTop) - elementOffset.top + element.scrollTop
+						+ document.documentElement.scrollTop + parseInt(self.getComputedStyle("fontSize"))
+			    };
+			}
 			cal.simulator.empty();
 			// clone primary styles to imitate textarea
 			$.each(cal.primaryStyles, function(index, styleName) {
@@ -13655,10 +13208,10 @@ $(function() {
 			cal.simulator.append(before).append(focus).append(after);
 			var focusOffset = focus.offset(), simulatorOffset = cal.simulator.offset();
 			// alert(focusOffset.left  + ',' +  simulatorOffset.left + ',' + element.scrollLeft);
-			return { 
-				top: focusOffset.top - simulatorOffset.top - element.scrollTop 
+			return {
+				top: focusOffset.top - simulatorOffset.top - element.scrollTop
 					// calculate and add the font height except Firefox
-					+ ($.browser.mozilla ? 0 : parseInt(self.getComputedStyle("fontSize"))), 
+					+ ($.browser.mozilla ? 0 : parseInt(self.getComputedStyle("fontSize"))),
 				left: focus[0].offsetLeft -  cal.simulator[0].offsetLeft - element.scrollLeft
 			};
 		}
@@ -13672,9 +13225,9 @@ $(function() {
 			result = result || ($.browser.msie ?
 				thiz.currentStyle[styleName]:
 				document.defaultView.getComputedStyle(thiz, null)[styleName]);
-			return result;			
+			return result;
 		},
-		// easy clone method 
+		// easy clone method
 		cloneStyle: function(target, styleName) {
 			var styleVal = this.getComputedStyle(styleName);
 			if (!!styleVal) {
@@ -13685,7 +13238,7 @@ $(function() {
 			var thiz = this[0];
 			for (var styleName in thiz.style) {
 				var val = thiz.style[styleName];
-				typeof val == 'string' || typeof val == 'number' 
+				typeof val == 'string' || typeof val == 'number'
 					? this.cloneStyle(target, styleName)
 					: NaN;
 			}
@@ -13720,118 +13273,6 @@ $(function() {
 		getCaretPosition: calculator.getCaretPosition
 	});
 });
-
-/*!
- * jQuery Browser Plugin v0.0.6
- * https://github.com/gabceb/jquery-browser-plugin
- *
- * Original jquery-browser code Copyright 2005, 2013 jQuery Foundation, Inc. and other contributors
- * http://jquery.org/license
- *
- * Modifications Copyright 2013 Gabriel Cebrian
- * https://github.com/gabceb
- *
- * Released under the MIT license
- *
- * Date: 2013-07-29T17:23:27-07:00
- */
-(function( jQuery, window, undefined ) {
-  "use strict";
-
-  var matched, browser;
-
-  jQuery.uaMatch = function( ua ) {
-    ua = ua.toLowerCase();
-
-  	var match = /(opr)[\/]([\w.]+)/.exec( ua ) ||
-  		/(chrome)[ \/]([\w.]+)/.exec( ua ) ||
-  		/(version)[ \/]([\w.]+).*(safari)[ \/]([\w.]+)/.exec( ua ) ||
-  		/(webkit)[ \/]([\w.]+)/.exec( ua ) ||
-  		/(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
-  		/(msie) ([\w.]+)/.exec( ua ) ||
-  		ua.indexOf("trident") >= 0 && /(rv)(?::| )([\w.]+)/.exec( ua ) ||
-  		ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
-  		[];
-
-  	var platform_match = /(ipad)/.exec( ua ) ||
-  		/(iphone)/.exec( ua ) ||
-  		/(android)/.exec( ua ) ||
-  		/(windows phone)/.exec( ua ) ||
-  		/(win)/.exec( ua ) ||
-  		/(mac)/.exec( ua ) ||
-  		/(linux)/.exec( ua ) ||
-  		/(cros)/i.exec( ua ) ||
-  		[];
-
-  	return {
-  		browser: match[ 3 ] || match[ 1 ] || "",
-  		version: match[ 2 ] || "0",
-  		platform: platform_match[ 0 ] || ""
-  	};
-  };
-
-  matched = jQuery.uaMatch( window.navigator.userAgent );
-  browser = {};
-
-  if ( matched.browser ) {
-  	browser[ matched.browser ] = true;
-  	browser.version = matched.version;
-  	browser.versionNumber = parseInt(matched.version);
-  }
-
-  if ( matched.platform ) {
-  	browser[ matched.platform ] = true;
-  }
-
-  // These are all considered mobile platforms, meaning they run a mobile browser
-  if ( browser.android || browser.ipad || browser.iphone || browser[ "windows phone" ] ) {
-  	browser.mobile = true;
-  }
-
-  // These are all considered desktop platforms, meaning they run a desktop browser
-  if ( browser.cros || browser.mac || browser.linux || browser.win ) {
-  	browser.desktop = true;
-  }
-
-  // Chrome, Opera 15+ and Safari are webkit based browsers
-  if ( browser.chrome || browser.opr || browser.safari ) {
-  	browser.webkit = true;
-  }
-
-  // IE11 has a new token so we will assign it msie to avoid breaking changes
-  if ( browser.rv )
-  {
-  	var ie = "msie";
-
-  	matched.browser = ie;
-  	browser[ie] = true;
-  }
-
-  // Opera 15+ are identified as opr
-  if ( browser.opr )
-  {
-  	var opera = "opera";
-
-  	matched.browser = opera;
-  	browser[opera] = true;
-  }
-
-  // Stock Android browsers are marked as Safari on Android.
-  if ( browser.safari && browser.android )
-  {
-  	var android = "android";
-
-  	matched.browser = android;
-  	browser[android] = true;
-  }
-
-  // Assign the name and platform variable
-  browser.name = matched.browser;
-  browser.platform = matched.platform;
-
-
-  jQuery.browser = browser;
-})( jQuery, window );
 
 /*!
 	Autosize 3.0.6
@@ -13916,7 +13357,7 @@ $(function() {
 			ta.style.height = 'auto';
 
 			var endHeight = ta.scrollHeight + heightOffset;
-            
+
             if(PrimeFaces.isIE(10) || PrimeFaces.isIE(9)) {
                 var rows = (!ta.rows ? 1 : ta.rows);
                 var lineHeight = getLineHeight(ta);
@@ -14012,7 +13453,7 @@ $(function() {
 		evt.initEvent('autosize:update', true, false);
 		ta.dispatchEvent(evt);
 	}
-    
+
     function getLineHeight(ta){
         var temp = document.createElement(ta.nodeName);
         temp.rows = 1;
@@ -14063,188 +13504,6 @@ $(function() {
 	module.exports = autosize;
 });
 
-/*!
- * jQuery UI Touch Punch 0.2.3
- *
- * Copyright 2011–2014, Dave Furfero
- * Dual licensed under the MIT or GPL Version 2 licenses.
- *
- * Depends:
- *  jquery.ui.widget.js
- *  jquery.ui.mouse.js
- */
-(function ($) {
-
-  // Detect touch support
-  $.support.touch = 'ontouchend' in document;
-
-  // Ignore browsers without touch support
-  if (!$.support.touch) {
-    return;
-  }
-
-  var mouseProto = $.ui.mouse.prototype,
-      _mouseInit = mouseProto._mouseInit,
-      _mouseDestroy = mouseProto._mouseDestroy,
-      touchHandled;
-
-  /**
-   * Simulate a mouse event based on a corresponding touch event
-   * @param {Object} event A touch event
-   * @param {String} simulatedType The corresponding mouse event
-   */
-  function simulateMouseEvent (event, simulatedType) {
-
-    // Ignore multi-touch events
-    if (event.originalEvent.touches.length > 1) {
-      return;
-    }
-
-    event.preventDefault();
-
-    var touch = event.originalEvent.changedTouches[0],
-        simulatedEvent = document.createEvent('MouseEvents');
-    
-    // Initialize the simulated mouse event using the touch event's coordinates
-    simulatedEvent.initMouseEvent(
-      simulatedType,    // type
-      true,             // bubbles                    
-      true,             // cancelable                 
-      window,           // view                       
-      1,                // detail                     
-      touch.screenX,    // screenX                    
-      touch.screenY,    // screenY                    
-      touch.clientX,    // clientX                    
-      touch.clientY,    // clientY                    
-      false,            // ctrlKey                    
-      false,            // altKey                     
-      false,            // shiftKey                   
-      false,            // metaKey                    
-      0,                // button                     
-      null              // relatedTarget              
-    );
-
-    // Dispatch the simulated event to the target element
-    event.target.dispatchEvent(simulatedEvent);
-  }
-
-  /**
-   * Handle the jQuery UI widget's touchstart events
-   * @param {Object} event The widget element's touchstart event
-   */
-  mouseProto._touchStart = function (event) {
-
-    var self = this;
-
-    // Ignore the event if another widget is already being handled
-    if (touchHandled || !self._mouseCapture(event.originalEvent.changedTouches[0])) {
-      return;
-    }
-
-    // Set the flag to prevent other widgets from inheriting the touch event
-    touchHandled = true;
-
-    // Track movement to determine if interaction was a click
-    self._touchMoved = 0;
-
-    // Simulate the mouseover event
-    simulateMouseEvent(event, 'mouseover');
-
-    // Simulate the mousemove event
-    simulateMouseEvent(event, 'mousemove');
-
-    // Simulate the mousedown event
-    simulateMouseEvent(event, 'mousedown');
-  };
-
-  /**
-   * Handle the jQuery UI widget's touchmove events
-   * @param {Object} event The document's touchmove event
-   */
-  mouseProto._touchMove = function (event) {
-
-    // Ignore event if not handled
-    if (!touchHandled) {
-      return;
-    }
-
-    // Interaction was less likely to be a click
-    this._touchMoved +=1;
-
-    // Simulate the mousemove event
-    simulateMouseEvent(event, 'mousemove');
-  };
-
-  /**
-   * Handle the jQuery UI widget's touchend events
-   * @param {Object} event The document's touchend event
-   */
-  mouseProto._touchEnd = function (event) {
-
-    // Ignore event if not handled
-    if (!touchHandled) {
-      return;
-    }
-
-    // Simulate the mouseup event
-    simulateMouseEvent(event, 'mouseup');
-
-    // Simulate the mouseout event
-    simulateMouseEvent(event, 'mouseout');
-
-    // If the touch interaction did not move (much), it should trigger a click
-    if (this._touchMoved<=5) {
-
-      // Simulate the click event
-      simulateMouseEvent(event, 'click');
-    }
-
-    // Unset the flag to allow other widgets to inherit the touch event
-    touchHandled = false;
-  };
-
-  /**
-   * A duck punch of the $.ui.mouse _mouseInit method to support touch events.
-   * This method extends the widget with bound touch event handlers that
-   * translate touch events to mouse events and pass them to the widget's
-   * original mouse event handling methods.
-   */
-  mouseProto._mouseInit = function () {
-    
-    var self = this;
-
-    // Delegate the touch handlers to the widget's element
-    self.element.bind({
-      touchstart: $.proxy(self, '_touchStart'),
-      touchmove: $.proxy(self, '_touchMove'),
-      touchend: $.proxy(self, '_touchEnd')
-    });
-
-    // Call the original $.ui.mouse init method
-    _mouseInit.call(self);
-  };
-
-  /**
-   * Remove the touch event handlers
-   */
-  mouseProto._mouseDestroy = function () {
-    
-    var self = this;
-
-    // Delegate the touch handlers to the widget's element
-    self.element.unbind({
-      touchstart: $.proxy(self, '_touchStart'),
-      touchmove: $.proxy(self, '_touchMove'),
-      touchend: $.proxy(self, '_touchEnd')
-    });
-
-    // Call the original $.ui.mouse destroy method
-    _mouseDestroy.call(self);
-  };
-
-})(jQuery);
-
-
 /* Primefaces Extensions */
 (function () {
     var original_gotoToday = $.datepicker._gotoToday;
@@ -14256,7 +13515,7 @@ $(function() {
         original_gotoToday.call(this, id);
         this._selectDate(id, this._formatDate(inst, inst.selectedDay, inst.drawMonth, inst.drawYear));
     };
-    
+
     $.datepicker._attachHandlers = function(inst) {
         var stepMonths = this._get(inst, "stepMonths"),
             id = "#" + inst.id.replace( /\\\\/g, "\\" );
@@ -14309,7 +13568,7 @@ $(function() {
             };
         });
     };
-    
+
     $.datepicker._generateMonthYearHeader = function(inst, drawMonth, drawYear, minDate, maxDate, secondary, monthNames, monthNamesShort) {
 
 		var inMinYear, inMaxYear, month, years, thisYear, determineYear, year, endYear,
@@ -14379,5 +13638,5 @@ $(function() {
 		html += "</div>"; // Close datepicker_header
 		return html;
 	};
-    
+
 })();

@@ -542,6 +542,19 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/1-idlemonitor.js</include>
                             </includes>
                         </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.old.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.cookie.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.mousewheel.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.rangy.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.browser.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.ui.touch-punch.js</include>
+                            </includes>
+                        </aggregation>
                     </aggregations>
                 </configuration>
             </plugin>
