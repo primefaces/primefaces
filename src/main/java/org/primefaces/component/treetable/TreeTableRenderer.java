@@ -914,8 +914,9 @@ public class TreeTableRenderer extends DataRenderer {
         tt.updateRowKeys(root);
         
         RequestContext requestContext = RequestContext.getCurrentInstance();
-        if (tt.getSelectedRowKeysAsString() != null) {
-            requestContext.addCallbackParam("selection", tt.getSelectedRowKeysAsString());
+        String selectedRowKeys = tt.getSelectedRowKeysAsString();
+        if (selectedRowKeys != null) {
+            requestContext.addCallbackParam("selection", selectedRowKeys);
         }
     }
 
