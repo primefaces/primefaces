@@ -817,7 +817,9 @@ public class TreeTableRenderer extends DataRenderer {
         tt.updateRowKeys(root);
         
         RequestContext requestContext = RequestContext.getCurrentInstance();
-        requestContext.addCallbackParam("selection", tt.getSelectedRowKeysAsString());
+        if (tt.getSelectedRowKeysAsString() != null) {
+            requestContext.addCallbackParam("selection", tt.getSelectedRowKeysAsString());
+        }
     }
 
     protected void renderNativeCheckbox(FacesContext context, TreeTable tt, boolean checked, boolean partialSelected) throws IOException {
