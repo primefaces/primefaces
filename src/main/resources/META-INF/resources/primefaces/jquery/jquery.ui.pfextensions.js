@@ -132,5 +132,16 @@
 		html += "</div>"; // Close datepicker_header
 		return html;
 	};
-
 })();
+
+
+
+
+
+
+
+(function () {
+    $.extend($.ui.keyCode, {
+        NUMPAD_ENTER: 108
+    });
+});
