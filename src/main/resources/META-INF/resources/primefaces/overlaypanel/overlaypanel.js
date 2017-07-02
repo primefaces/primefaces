@@ -74,7 +74,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
                 }
             })
             .on(hideEvent, function(e) {
-            	clearTimeout($this.timeout);
+            	clearTimeout($this.showTimeout);
                 if($this.isVisible()) {
                     $this.hide();
                 }
@@ -158,22 +158,25 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     },
     
     toggle: function() {
-        if(!this.isVisible())
+        if(!this.isVisible()) {
             this.show();
+        }
         else {
-			clearTimeout(this.timeout);
-			this.hide();
-		}
+            clearTimeout(this.showTimeout);
+            this.hide();
+        }
     },
     
     show: function(target) {
     	var thisPanel = this;
-		this.timeout = setTimeout(function() {
-			if (!thisPanel.loaded && thisPanel.cfg.dynamic)
-				thisPanel.loadContents(target);
-			else
-				thisPanel._show(target);
-		}, this.cfg.showDelay);
+        this.showTimeout = setTimeout(function() {
+            if (!thisPanel.loaded && thisPanel.cfg.dynamic) {
+                thisPanel.loadContents(target);
+            }
+            else {
+                thisPanel._show(target);
+            }
+        }, this.cfg.showDelay);
     },
     
     _show: function(target) {
