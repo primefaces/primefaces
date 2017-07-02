@@ -71,7 +71,13 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             writer.writeAttribute("autocomplete", "off", null);
 
             for( String option : options){
-                int rows = Integer.parseInt(option);
+            	int rows;
+                if (option.equalsIgnoreCase("*") || option.equalsIgnoreCase("All rows")) {
+                    rows = pageable.getRowCount();
+            	} else{
+                    rows = Integer.parseInt(option);
+            	}
+
                 writer.startElement("option", null);
                 writer.writeAttribute("value", rows, null);
 
