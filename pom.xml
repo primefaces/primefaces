@@ -434,7 +434,27 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dragdrop/dragdrop.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/effect/effect.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.inputtext.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.inputtextarea.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectonemenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectoneradio.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectbooleancheckbox.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectmanycheckbox.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectlistbox.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectonelistbox.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectmanymenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.commandbutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.button.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectmanybutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectonebutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectbooleanbutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectcheckboxmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.inputmask.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.password.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.defaultcommand.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.splitbutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.themeswitcher.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.multiselectlistbox.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.js</include>
