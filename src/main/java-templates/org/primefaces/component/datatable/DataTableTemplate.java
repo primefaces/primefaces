@@ -64,6 +64,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortMeta;
 import org.primefaces.component.datatable.feature.*;
 import org.primefaces.model.FilterMeta;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 import javax.faces.event.BehaviorEvent;
@@ -1442,4 +1443,40 @@ import org.primefaces.component.datatable.TableState;
         return null;
     }
 
+    public String getGroupedColumnBaseIndexes() {
+        List<UIColumn> columns = this.getColumns();
+        int size = columns.size();
+        boolean hasIndex = false;
+        if (size > 0) {
 
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for (int i = 0; i < size; i++) {
+                UIColumn column = columns.get(i);
+                if (column.isGroupRow()) {
+
+                    if (hasIndex) {
+                        sb.append(",");
+                    }
+
+                    final String groupRowBase = column.getGroupRowBase();
+                    if (groupRowBase != null) {
+                        UIComponent component = ComponentTraversalUtils.firstWithId(groupRowBase, this);
+                        if (component instanceof UIColumn) {
+                            sb.append(columns.indexOf((UIColumn) component));
+                        } else {
+                            sb.append("-1");
+                        }
+                    } else {
+                        sb.append("-1");
+                    }
+
+                    hasIndex = true;
+                }
+            }
+            sb.append("]");
+
+            return sb.toString();
+        }
+        return null;
+    }

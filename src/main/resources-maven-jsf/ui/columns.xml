@@ -233,5 +233,11 @@
             <defaultValue>false</defaultValue>
             <description>Speficies whether to group rows based on the column data.</description>
 		</attribute>
+		<attribute>
+			<name>groupRowBase</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Specifies the column on which grouping of this column is based.</description>
+		</attribute>
     </attributes>
 </component>
