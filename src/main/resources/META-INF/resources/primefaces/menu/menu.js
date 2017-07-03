@@ -23,12 +23,19 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
         /*
          * we might have two menus with same ids if an ancestor of a menu is updated,
-         * if so remove the previous one
+         * if so remove the previous one and refresh jq
          */
-        $(document.body).children("[id='" + this.id + "']").not(this.jq).remove();
-        if(this.jq.parent().is(':not(body)')) {
+        if(this.jq.length > 1){
+            $(document.body).children(this.jqId).remove();
+            this.jq = $(this.jqId);
             this.jq.appendTo(document.body);
         }
+	else {
+	    $(document.body).children("[id='" + this.id + "']").not(this.jq).remove();
+	    if(this.jq.parent().is(':not(body)')) {
+		this.jq.appendTo(document.body);
+	    }
+	}
 
         this.cfg.pos = {
             my: this.cfg.my
