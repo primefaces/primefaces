@@ -530,6 +530,13 @@
 			<type>java.lang.String</type>
             <description>Defines the element used to reorder rows using dragdrop. Default selector is "td,span:not(.ui-c)"</description>
 		</attribute>
+        <attribute>
+            <name>draggableRowsFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void draggableRowsFunction(org.primefaces.component.api.UIData)</method-signature>
+            <description>Method expression to execute after dragging row.</description>
+        </attribute>
 	</attributes>
 	<resources>
         <resource>

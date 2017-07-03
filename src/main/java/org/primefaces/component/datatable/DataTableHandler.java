@@ -19,6 +19,7 @@ import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
+import org.primefaces.component.api.UIData;
 
 import org.primefaces.facelets.MethodRule;
 
@@ -26,6 +27,9 @@ public class DataTableHandler extends ComponentHandler {
 
 	private static final MetaRule SORT_FUNCTION =
 			new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
+    
+    private static final MetaRule DRAGGABLE_ROWS_FUNCTION = 
+            new MethodRule("draggableRowsFunction", null, new Class[]{UIData.class});
 	
 	public DataTableHandler(ComponentConfig config) {
 		super(config);
@@ -36,6 +40,7 @@ public class DataTableHandler extends ComponentHandler {
 		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
 
 		metaRuleset.addRule(SORT_FUNCTION);
+        metaRuleset.addRule(DRAGGABLE_ROWS_FUNCTION);
 		
 		return metaRuleset; 
 	} 
