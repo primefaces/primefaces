@@ -240,4 +240,8 @@ public class DynamicColumn implements UIColumn {
     public boolean isGroupRow() {
         return this.columns.isGroupRow();
     }
+    
+    public String getGroupRowBase() {
+        return this.columns.getGroupRowBase();
+    }
 }

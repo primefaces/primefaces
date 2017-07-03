@@ -3432,19 +3432,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     groupRows: function() {
         this.rows = this.tbody.children('tr');
         for(var i = 0; i < this.cfg.groupColumnIndexes.length; i++) {
-            this.groupRow(this.cfg.groupColumnIndexes[i]);
+            this.groupRow(this.cfg.groupColumnIndexes[i], this.cfg.groupColumnBaseIndexes[i]);
         }
         
         this.rows.children('td.ui-duplicated-column').remove();
     },
     
-    groupRow: function(colIndex) {
+    groupRow: function(colIndex, colBaseIndex) {
         var groupStartIndex = null, rowGroupCellData = null, rowGroupCount = null;
         
         for(var i = 0; i < this.rows.length; i++) {
             var row = this.rows.eq(i);
             var column = row.children('td').eq(colIndex);
-            var columnData = column.text();
+            
+            var columnBase = colBaseIndex < 0 ? column : row.children('td').eq(colBaseIndex);
+            var columnData = columnBase.text();
             if(rowGroupCellData != columnData) {                    
                 groupStartIndex = i;
                 rowGroupCellData = columnData;
