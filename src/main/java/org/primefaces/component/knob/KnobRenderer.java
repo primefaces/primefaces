@@ -59,6 +59,7 @@ public class KnobRenderer extends CoreRenderer{
 		writer.writeAttribute("data-displayInput", Boolean.toString(knob.isShowLabel()), null);
 		writer.writeAttribute("data-readOnly", Boolean.toString(knob.isDisabled()), null);
 		writer.writeAttribute("data-cursor", Boolean.toString(knob.isCursor()), null);
+        writer.writeAttribute("data-linecap", knob.getLineCap(), "butt");
 
 		if (knob.getThickness() != null) {
 			writer.writeAttribute("data-thickness", knob.getThickness(), null);
