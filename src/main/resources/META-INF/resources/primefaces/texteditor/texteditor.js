@@ -82,7 +82,7 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
 
         this.cfg.theme = 'snow';
         this.cfg.modules = {
-            toolbar: PrimeFaces.escapeClientId(this.id + '_toolbar')
+            toolbar: this.cfg.toolbarVisible ? PrimeFaces.escapeClientId(this.id + '_toolbar') : false
         };
 
         //initialize
