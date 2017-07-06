@@ -118,6 +118,9 @@
 	</attributes>
 	<resources>
         <resource>
+            <name>components.css</name>
+        </resource>
+        <resource>
 			<name>galleria/galleria.css</name>
 		</resource>
 		<resource>
