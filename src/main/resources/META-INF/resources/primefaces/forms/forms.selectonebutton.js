@@ -89,7 +89,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
     },
 
     unselect: function(button) {
-        if(!this.cfg.unselectable) {
+        if(this.cfg.unselectable) {
             button.removeClass('ui-state-active ui-state-hover ui-state-focus').children(':radio').prop('checked', false).change();
 
             this.triggerChange();
