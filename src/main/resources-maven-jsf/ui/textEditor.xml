@@ -59,6 +59,12 @@
 			<type>java.lang.String</type>
             <description>Placeholder text to show when editor is empty..</description>
 		</attribute>
+		<attribute>
+			<name>toolbarVisible</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+			<description>toolbarVisible is set to show / hide the toolbar of the editor container</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>
