@@ -21,9 +21,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
 
         this.buttons.on('mouseover', function() {
             var button = $(this);
-            if(!button.hasClass('ui-state-active')) {
-                button.addClass('ui-state-hover');
-            }
+            button.addClass('ui-state-hover');
         })
         .on('mouseout', function() {
             $(this).removeClass('ui-state-hover');
@@ -42,13 +40,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
 
         /* For keyboard accessibility */
         this.buttons.on('focus.selectOneButton', function(){
-            var button = $(this),
-            radio = button.children(':radio');
-
-            if(radio.prop('checked')) {
-                button.removeClass('ui-state-active');
-            }
-
+            var button = $(this);
             button.addClass('ui-state-focus');
         })
         .on('blur.selectOneButton', function(){
