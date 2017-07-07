@@ -36,11 +36,9 @@ public class TerminalRenderer extends CoreRenderer {
 
         if(terminal.isCommandRequest()) {
             handleCommand(context, terminal);
-        }
-        else if(terminal.isAutoCompleteRequest()) {
+        } else if(terminal.isAutoCompleteRequest()) {
             autoCompleteCommand(context, terminal);
-        }
-        else {
+        } else {
             encodeMarkup(context, terminal);
             encodeScript(context, terminal);
         }

@@ -16,48 +16,58 @@ import org.primefaces.model.terminal.AutoCompleteMatches;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_autocomplete");
     }
 	
-	public AutoCompleteMatches traverseCommandModel(TreeNode commandModel, String command, String[] args) {
+	AutoCompleteMatches traverseCommandModel(TreeNode commandModel, String baseCommand, String[] args) {
 		AutoCompleteMatches matches = new AutoCompleteMatches();
 
 		for (TreeNode commandNode : commandModel.getChildren()) {
 			String currentCommand = (String) commandNode.getData();
-			if (currentCommand.equalsIgnoreCase(command)) {
-				if (commandNode.getChildCount() > 0) {
-					return traverseSubCommands(commandNode, command, args, 0);
-				} else {
-					matches.addMatch(currentCommand);
+			
+			if (isPartialMatch(currentCommand, baseCommand)) {
+				if (isExactMatch(currentCommand, baseCommand) && (commandNode.getChildCount() > 0)) {
+					return traverseSubCommands(commandNode, baseCommand, args);
 				}
-			} else if (currentCommand.startsWith(command)) {
+				
 				matches.addMatch(currentCommand);
 			}
 		}
 
 		return matches;
 	}
+	
+	private AutoCompleteMatches traverseSubCommands(TreeNode commandNode, String baseCommand, String[] args) {
+		return traverseSubCommands(commandNode, baseCommand, args, 0);
+	}
 
-	private AutoCompleteMatches traverseSubCommands(TreeNode commandNode, String command, String[] args, int level) {
-		AutoCompleteMatches matches = new AutoCompleteMatches();
+	private AutoCompleteMatches traverseSubCommands(TreeNode commandNode, String baseCommand, String[] args, int level) {
+		AutoCompleteMatches matches = new AutoCompleteMatches(baseCommand);
 
 		for (TreeNode subCommandNode : commandNode.getChildren()) {
-			String currentCommand = (String) subCommandNode.getData();
+			String currentSubCommand = (String) subCommandNode.getData();
 
 			if (args.length > level) {
-				if (currentCommand.equalsIgnoreCase(args[level])) {
-					if (subCommandNode.getChildCount() > 0) {
-						return traverseSubCommands(subCommandNode, command + " " + currentCommand, args, ++level);
-					} else {
-						matches.setBaseCommand(command);
-						matches.addMatch(currentCommand);
+				String currentArgument = args[level];
+				if (isPartialMatch(currentSubCommand, currentArgument)) {
+					if (isExactMatch(currentSubCommand, currentArgument) && (commandNode.getChildCount() > 0)) {
+						String baseCommandToTraverse = baseCommand + " " + currentSubCommand;
+						return traverseSubCommands(subCommandNode, baseCommandToTraverse, args, (level + 1));
 					}
-				} else if (currentCommand.startsWith(args[level])) {
-					matches.setBaseCommand(command);
-					matches.addMatch(currentCommand);
+					
+					matches.addMatch(currentSubCommand);
 				}
 			} else {
-				matches.setBaseCommand(command);
-				matches.addMatch(currentCommand);
+				matches.addMatch(currentSubCommand);
 			}
 		}
 
 		return matches;
 	}
+	
+	private boolean isPartialMatch(String command, String argument) {
+		return command.startsWith(argument);
+	}
+	
+	private boolean isExactMatch(String command, String argument) {
+		return command.equalsIgnoreCase(argument);
+	}
+	
+	

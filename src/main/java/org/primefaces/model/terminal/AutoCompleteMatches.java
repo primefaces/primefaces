@@ -2,7 +2,7 @@ package org.primefaces.model.terminal;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
@@ -33,7 +33,7 @@ public class AutoCompleteMatches extends JSONObject {
 	public Collection<String> getMatches() {
 		JSONArray arr = (JSONArray) get(MATCHES);
 
-		LinkedList<String> matches = new LinkedList<String>();
+		ArrayList<String> matches = new ArrayList<String>(arr.length());
 		Iterator<Object> i = arr.iterator();
 
 		while (i.hasNext()) {
@@ -63,4 +63,5 @@ public class AutoCompleteMatches extends JSONObject {
 
 		put(MATCHES, arr);
 	}
+	
 }
