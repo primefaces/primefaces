@@ -95,7 +95,6 @@ public class TextEditorRenderer extends CoreRenderer{
 		String clientId = editor.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("TextEditor", editor.resolveWidgetVar(), clientId)
-                .attr("toolbarVisible", editor.isToolbarVisible(), true)
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("placeholder", editor.getPlaceholder(), null)
                 .attr("height", editor.getHeight(), Integer.MIN_VALUE);
