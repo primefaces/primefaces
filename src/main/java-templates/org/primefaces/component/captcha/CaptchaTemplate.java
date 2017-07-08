@@ -93,7 +93,7 @@ import org.primefaces.json.JSONObject;
 
 		StringBuilder postParams = new StringBuilder();
 		postParams.append("secret=").append(URLEncoder.encode(privateKey, "UTF-8"));
-		postParams.append("&response=").append(URLEncoder.encode((String) value, "UTF-8"));
+		postParams.append("&response=").append(value == null ? "" : URLEncoder.encode((String) value, "UTF-8"));
 
         String params = postParams.toString();
         postParams.setLength(0);
