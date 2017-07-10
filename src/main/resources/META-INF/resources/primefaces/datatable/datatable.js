@@ -4074,6 +4074,18 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         if(!row.parent().attr('tabindex')) {
             this.frozenTbody.trigger('focus');
         }
+    },
+    
+    //@Override
+    saveColumnOrder: function() {
+        var columnIds = [],
+        columns = $(this.jqId + '_frozenThead:first th,' + this.jqId + '_scrollableThead:first th');
+
+        columns.each(function(i, item) {
+            columnIds.push($(item).attr('id'));
+        });
+
+        this.orderStateHolder.val(columnIds.join(','));
     }
     
 });
