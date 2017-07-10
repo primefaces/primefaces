@@ -3964,14 +3964,18 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                     this.frozenLayout.width(this.frozenLayout.width() + change);
                 }
                 
+                var originalTableWidth = originalTable.width(),
+                cloneTableWidth = cloneTable.width(),
+                footerTableWidth = footerTable.width();
+                
                 //header
-                originalTable.width(originalTable.width() + change);
+                originalTable.width(originalTableWidth + change);
                 
                 //body
-                cloneTable.width(cloneTable.width() + change);
+                cloneTable.width(cloneTableWidth + change);
                 
                 //footer
-                footerTable.width(footerTable.width() + change);
+                footerTable.width(footerTableWidth + change);
                 
                 setTimeout(function() {
                     columnHeader.width(newWidth);
