@@ -1628,6 +1628,16 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 checkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
             }
         });
+    },
+
+    clear: function() {
+        this.inputs
+            .removeAttr('checked');
+        this.outputs
+            .removeClass('ui-state-active')
+            .children('.ui-chkbox-icon')
+            .addClass('ui-icon-blank')
+            .removeClass('ui-icon-check');
     }
 
 });
