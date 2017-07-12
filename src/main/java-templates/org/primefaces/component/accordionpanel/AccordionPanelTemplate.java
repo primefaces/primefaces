@@ -72,10 +72,6 @@ import javax.faces.event.BehaviorEvent;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
-
 	public Tab findTab(String tabClientId) {
         for(UIComponent component : getChildren()) {
             if(component.getClientId().equals(tabClientId))
@@ -89,7 +85,7 @@ import javax.faces.event.BehaviorEvent;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+        if(ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);

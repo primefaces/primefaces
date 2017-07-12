@@ -599,4 +599,7 @@ public class ComponentUtils {
        }
     }
 
+    public static boolean isRequestSource(UIComponent component, FacesContext context) {
+        return component.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
+    }
 }

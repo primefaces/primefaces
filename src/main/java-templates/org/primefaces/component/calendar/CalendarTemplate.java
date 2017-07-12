@@ -97,7 +97,7 @@ import org.primefaces.convert.DateTimeConverter;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(this.isRequestSource(context) && (event instanceof AjaxBehaviorEvent)) {
+        if(ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
@@ -128,7 +128,7 @@ import org.primefaces.convert.DateTimeConverter;
     public void validate(FacesContext context) {
         super.validate(context);
        
-        if(isValid() && isRequestSource(context)) {
+        if(isValid() && ComponentUtils.isRequestSource(this, context)) {
             for(Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext();) {
                 AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getValue());
@@ -188,10 +188,6 @@ import org.primefaces.convert.DateTimeConverter;
     }
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
-    }
-
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
     @Override

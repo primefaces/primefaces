@@ -1018,7 +1018,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
         pushComponentToEL(context, null);
 
-        if (!this.isRequestSource(context)) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
             if (this.isRepeating()) {
                 process(context, PhaseId.APPLY_REQUEST_VALUES);
             }
@@ -1051,7 +1051,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             return;
         }
 
-        if (this.isRequestSource(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
             return;
         }
 
@@ -1089,7 +1089,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             return;
         }
 
-        if (this.isRequestSource(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
             return;
         }
 
@@ -1444,7 +1444,4 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         return loadedTabs;
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
 }

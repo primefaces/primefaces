@@ -26,6 +26,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.organigramnode.UIOrganigramNode;
 import org.primefaces.model.OrganigramNode;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 /**
@@ -50,7 +51,7 @@ public class OrganigramRenderer extends CoreRenderer {
      */
     protected void decodeSelection(FacesContext context, Organigram organigram) {
 
-        if (organigram.isRequestSource(context)) {
+        if (ComponentUtils.isRequestSource(organigram, context)) {
             boolean selectionEnabled = organigram.getValueExpression("selection") != null;
 
             if (selectionEnabled) {
