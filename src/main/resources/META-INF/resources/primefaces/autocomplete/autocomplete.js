@@ -472,12 +472,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-        // for click event on IE8
-        if(PrimeFaces.env.isIE(8) && ($this.itemClick || e.originalEvent.propertyName !== 'value')) {
-            $this.itemClick = false;
-            return;
-        }
-
         var value = $this.input.val();
 
         if($this.cfg.pojo && !$this.cfg.multiple) {
