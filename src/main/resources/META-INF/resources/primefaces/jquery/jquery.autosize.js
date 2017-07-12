@@ -82,7 +82,7 @@
 
 			var endHeight = ta.scrollHeight + heightOffset;
 
-            if(PrimeFaces.isIE(10) || PrimeFaces.isIE(9)) {
+            if(PrimeFaces.env.isIE(10) || PrimeFaces.env.isIE(9)) {
                 var rows = (!ta.rows ? 1 : ta.rows);
                 var lineHeight = getLineHeight(ta);
                 var minHeight = (lineHeight * rows) + heightOffset;

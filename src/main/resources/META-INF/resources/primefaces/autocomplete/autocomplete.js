@@ -250,7 +250,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(PrimeFaces.isIE(9) && (key === keyCode.BACKSPACE || key === keyCode.DELETE)) {
+            if(PrimeFaces.env.isIE(9) && (key === keyCode.BACKSPACE || key === keyCode.DELETE)) {
                 $this.processKeyEvent(e);
             }
 
@@ -473,7 +473,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         // for click event on IE8
-        if(PrimeFaces.isIE(8) && ($this.itemClick || e.originalEvent.propertyName !== 'value')) {
+        if(PrimeFaces.env.isIE(8) && ($this.itemClick || e.originalEvent.propertyName !== 'value')) {
             $this.itemClick = false;
             return;
         }
