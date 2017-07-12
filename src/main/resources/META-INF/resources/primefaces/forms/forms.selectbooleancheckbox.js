@@ -24,10 +24,6 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
             })
             .on('click.selectBooleanCheckbox', function() {
                 $this.input.trigger('click');
-
-                if(PrimeFaces.env.browser.msie && PrimeFaces.env.isLtIE(9)) {
-                    $this.input.trigger('change');
-                }
             });
 
             this.input.on('focus.selectBooleanCheckbox', function() {

@@ -36,10 +36,6 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
                 button.removeClass('ui-state-hover');
 
             input.trigger('click');
-
-            if(PrimeFaces.env.browser.msie && PrimeFaces.env.isLtIE(9)) {
-                input.trigger('change');
-            }
         });
 
         /* Keyboard support */
