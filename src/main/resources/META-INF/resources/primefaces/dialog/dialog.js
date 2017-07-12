@@ -604,7 +604,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.hasBehavior('loadContent')) {
+            var loadContentBehavior = this.cfg.behaviors['loadContent'];
+            loadContentBehavior.call(this, options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     applyARIA: function() {

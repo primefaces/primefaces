@@ -44,6 +44,7 @@ import javax.faces.event.BehaviorEvent;
         put("restoreMinimize", null);
         put("restoreMaximize", null);
         put("open", null);
+        put("loadContent", null);
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
