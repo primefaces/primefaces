@@ -100,10 +100,6 @@ if (!PrimeFaces.expressions) {
 
         splitExpressions: function(expression) {
 
-            if (PrimeFaces.isIE(7)) {
-                expression = expression.split('');
-            }
-
             var expressions = [];
             var buffer = '';
 
@@ -134,6 +130,6 @@ if (!PrimeFaces.expressions) {
             expressions.push(buffer);
 
             return expressions;
-        }	
+        }
     };
 }

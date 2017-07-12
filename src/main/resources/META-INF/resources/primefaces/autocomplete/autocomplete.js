@@ -132,9 +132,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         var closeSelector = '> li.ui-autocomplete-token > .ui-autocomplete-token-icon';
         this.multiItemContainer.off('click', closeSelector).on('click', closeSelector, null, function(event) {
             if($this.multiItemContainer.children('li.ui-autocomplete-token').length === $this.cfg.selectLimit) {
-                if(PrimeFaces.isIE(8)) {
-                    $this.input.val('');
-                }
                 $this.input.css('display', 'inline');
                 $this.enableDropdown();
             }
@@ -394,10 +391,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             var item = $(this),
             itemValue = item.attr('data-item-value'),
             isMoreText = item.hasClass('ui-autocomplete-moretext');
-
-            if(PrimeFaces.isIE(8)) {
-                $this.itemClick = true;
-            }
 
             if(isMoreText) {
                 $this.input.focus();
@@ -778,10 +771,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.input.blur(function() {
             var value = $(this).val(),
             valid = false;
-
-            if(PrimeFaces.isIE(8)) {
-                $this.itemClick = true;
-            }
 
             for(var i = 0; i < $this.currentItems.length; i++) {
                 var stripedItem = $this.currentItems[i];
