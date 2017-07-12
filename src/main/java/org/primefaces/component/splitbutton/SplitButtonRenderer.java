@@ -116,7 +116,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
 		
         //icon
-        if(icon != null && !icon.trim().equals("")) {
+        if(!isValueBlank(icon)) {
             String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS; 
             String iconClass = defaultIconClass + " " + icon;
             

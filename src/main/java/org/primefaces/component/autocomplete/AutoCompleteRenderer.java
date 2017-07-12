@@ -89,7 +89,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String[] submittedValues = (hinputValues != null) ? hinputValues : new String[] {};
         String inputValue = params.get(clientId + "_input");
 
-        if (inputValue != null && !inputValue.trim().equals("")) {
+        if (!isValueBlank(inputValue)) {
             submittedValues = ArrayUtils.concat(submittedValues, new String[] { inputValue });
         }
 

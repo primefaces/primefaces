@@ -69,12 +69,6 @@ public class AjaxRequestBuilder {
         return this;
     }
 
-    private boolean isValueBlank(String value) {
-		if(value == null)
-			return true;
-
-		return value.trim().equals("");
-	}
 
     public AjaxRequestBuilder process(UIComponent component, String expressions) {
         addExpressions(component, expressions, "p", SearchExpressionHint.NONE);
@@ -89,7 +83,7 @@ public class AjaxRequestBuilder {
     }
 
     private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, int options) {
-        if(!isValueBlank(expressions)) {
+        if(!ComponentUtils.isValueBlank(expressions)) {
         	String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, options);
             buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }

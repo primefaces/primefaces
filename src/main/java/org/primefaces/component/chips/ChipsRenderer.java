@@ -45,11 +45,11 @@ public class ChipsRenderer extends InputRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Map<String, String[]> paramValues = context.getExternalContext().getRequestParameterValuesMap();
         String[] hInputValues = paramValues.get(clientId + "_hinput");
-        String[] submittedValues = (hInputValues != null) ? hInputValues : new String[]{};
+        String[] submittedValues = (hInputValues != null) ? hInputValues : new String[]{ };
         String inputValue = params.get(clientId + "_input");
         
-        if(inputValue != null && !inputValue.trim().equals("")) {
-            submittedValues = ArrayUtils.concat(submittedValues, new String[]{inputValue});
+        if(!isValueBlank(inputValue)) {
+            submittedValues = ArrayUtils.concat(submittedValues, new String[]{ inputValue });
         }
 
         if(submittedValues.length > 0) {
