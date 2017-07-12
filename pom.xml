@@ -530,7 +530,6 @@
                             <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/knob/knob.js</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/excanvas/excanvas.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/1-jquery.knob.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/2-knob.js</include>
                             </includes>
@@ -689,6 +688,7 @@
                         <groupId>net.alchim31.maven</groupId>
                         <artifactId>yuicompressor-maven-plugin</artifactId>
                         <configuration>
+                            <jswarn>false</jswarn>
                             <excludes>
                                 <exclude>**/*.something</exclude>
                                 <exclude>**/photocam.js</exclude>
