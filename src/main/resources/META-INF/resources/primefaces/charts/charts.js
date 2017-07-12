@@ -20929,15 +20929,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     _render: function() {
-        if(PrimeFaces.env.isCanvasSupported()) {
-            this._draw();
-        }
-        else {
-            var $this = this;
-            $.getScript(PrimeFaces.getFacesResource("excanvas/excanvas.js", "primefaces"), function() {
-                $this._draw();
-            });
-        }
+        this._draw();
     },
 
     _draw: function() {

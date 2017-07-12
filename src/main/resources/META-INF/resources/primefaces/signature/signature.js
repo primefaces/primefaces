@@ -2,7 +2,7 @@
    Signature plugin for jQuery UI v1.1.1.
    Requires excanvas.js in IE.
    Written by Keith Wood (kbwood{at}iinet.com.au) April 2012.
-   Available under the MIT (https://github.com/jquery/jquery/blob/master/LICENSE.txt) license. 
+   Available under the MIT (https://github.com/jquery/jquery/blob/master/LICENSE.txt) license.
    Please attribute the author if you use it. */
 
 (function($) { // Hide scope, no $ conflict
@@ -250,27 +250,19 @@ $.kbw.signature.options = $.kbw.signature.prototype.options;
  * PrimeFaces Signature Widget
  */
 PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
         this.input = this.jq.children(this.jqId + '_value');
         this.base64Input = this.jq.children(this.jqId + '_base64');
         this.cfg.syncField = this.input;
-        
+
         var $this = this;
         this.cfg.change = function() {
             $this.handleChange();
         }
-        
-        if(PrimeFaces.env.isCanvasSupported()) {
-            this.render();
-        }
-        else {
-            var $this = this;
-            $.getScript(PrimeFaces.getFacesResource("excanvas/excanvas.js", "primefaces"), function() {
-                $this.render();
-            });
-        }
+
+        this.render();
     },
 
     clear: function() {
@@ -285,10 +277,10 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
             this.base64Input.val(this.canvasEL.toDataURL());
         }
     },
-    
+
     render: function() {
         this.jq.signature(this.cfg);
-        
+
         this.canvasEL = this.jq.children('canvas').get(0);
 
         var value = this.input.val();
@@ -296,12 +288,12 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
             this.draw(value);
         }
     },
-    
+
     handleChange: function() {
         if(this.cfg.base64) {
             this.base64Input.val(this.canvasEL.toDataURL());
         }
-        
+
         if(this.cfg.onchange) {
             this.cfg.onchange.call(this);
         }
