@@ -297,14 +297,6 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         return panel.data('loaded') == true;
     },
 
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-
-        return false;
-    },
-
     addToSelection: function(nodeId) {
         this.cfg.active.push(nodeId);
     },

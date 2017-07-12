@@ -215,14 +215,6 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         }
   
     },
-
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-    
-        return false;
-    },
     
     handleNodeClick: function(node) {
         if(node.dragged) {

@@ -726,14 +726,6 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         return element.parent().hasClass("ui-picklist-source") ? "source" : "target";
     },
 
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-
-        return false;
-    },
-
     fireItemSelectEvent: function(item) {
         if(this.hasBehavior('select')) {
             var itemSelectBehavior = this.cfg.behaviors['select'],

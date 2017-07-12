@@ -858,15 +858,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         
         return parent.length === 1 ? parent : null;
     },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
 
-        return false;
-    },
-            
     removeDescendantsFromSelection: function(rowKey) {
         this.selections = $.grep(this.selections, function(value) {
             return value.indexOf(rowKey + '_') !== 0;

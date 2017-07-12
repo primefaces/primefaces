@@ -270,14 +270,6 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         this.selections = newSelections;
     },
 
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-
-        return false;
-    },
-
     nodeClick: function(event, nodeContent) {
         if($(event.target).is(':not(.ui-tree-toggler)')) {
             var node = nodeContent.parent(),

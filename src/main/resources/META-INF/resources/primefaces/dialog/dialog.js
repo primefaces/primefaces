@@ -623,14 +623,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.titlebar.children('a.ui-dialog-titlebar-icon').attr('role', 'button');
     },
 
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] !== undefined;
-        }
-
-        return false;
-    },
-
     isVisible: function() {
         return this.jq.is(':visible');
     },

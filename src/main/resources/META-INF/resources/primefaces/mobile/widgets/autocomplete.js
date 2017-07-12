@@ -156,14 +156,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] !== undefined;
-        }
-    
-        return false;
-    },
-    
     showClearIcon: function() {
         this.clearIcon.removeClass('ui-input-clear-hidden');
     },

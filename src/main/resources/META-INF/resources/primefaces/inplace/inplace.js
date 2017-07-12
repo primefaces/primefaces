@@ -138,14 +138,6 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         else {
             PrimeFaces.ajax.AjaxRequest(options); 
         }
-    },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] !== undefined;
-        }
-
-        return false;
     }
     
 });
