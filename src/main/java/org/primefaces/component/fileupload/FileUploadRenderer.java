@@ -100,8 +100,10 @@ public class FileUploadRenderer extends CoreRenderer {
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
 
-            if (fileUpload.getAllowTypes() != null) {
-                wb.append(",allowTypes:").append(fileUpload.getAllowTypes());
+            String allowTypes = fileUpload.getAllowTypes();
+
+            if (allowTypes != null) {
+                wb.append(",allowTypes:").append(allowTypes);
             }
         }
         else {
