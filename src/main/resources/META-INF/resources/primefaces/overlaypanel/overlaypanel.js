@@ -25,6 +25,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             $(document.body).children(this.jqId).remove();
             this.jq = $(this.jqId);
         }
+        else {
+            $(document.body).children("[id='" + this.id + "']").not(this.jq).remove();
+        }
         
         //remove related modality if there is one
         var modal = $(this.jqId + '_modal');

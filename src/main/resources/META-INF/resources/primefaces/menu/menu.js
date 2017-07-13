@@ -30,9 +30,12 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             this.jq = $(this.jqId);
             this.jq.appendTo(document.body);
         }
-        else if(this.jq.parent().is(':not(body)')) {
-            this.jq.appendTo(document.body);
-        }
+	else {
+	    $(document.body).children("[id='" + this.id + "']").not(this.jq).remove();
+	    if(this.jq.parent().is(':not(body)')) {
+		this.jq.appendTo(document.body);
+	    }
+	}
 
         this.cfg.pos = {
             my: this.cfg.my
