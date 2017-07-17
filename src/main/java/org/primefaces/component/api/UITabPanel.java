@@ -54,6 +54,7 @@ import javax.faces.model.ScalarDataModel;
 import javax.faces.render.Renderer;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 /**
  * UITabPanel is a specialized version of UIRepeat focusing on components that
@@ -1019,7 +1020,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
         pushComponentToEL(context, null);
 
-        if (!ComponentUtils.isRequestSource(this, context)) {
+        if (!shouldSkipChildren(context)) {
             if (this.isRepeating()) {
                 process(context, PhaseId.APPLY_REQUEST_VALUES);
             }
@@ -1056,7 +1057,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             return;
         }
 
-        if (ComponentUtils.isRequestSource(this, context)) {
+        if (shouldSkipChildren(context)) {
             return;
         }
 
@@ -1099,7 +1100,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             return;
         }
 
-        if (ComponentUtils.isRequestSource(this, context)) {
+        if (shouldSkipChildren(context)) {
             return;
         }
 
@@ -1450,5 +1451,16 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 }
             }
         }
+    }
+    
+    protected boolean shouldSkipChildren(FacesContext context) {
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
+        
+        if (ComponentUtils.isValueBlank(paramValue)) {
+            return true;
+        }
+        
+        return Boolean.valueOf(paramValue);
     }
 }
