@@ -54,11 +54,11 @@ import javax.faces.model.ScalarDataModel;
 import javax.faces.render.Renderer;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 
 /**
- * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel. Most of the code is
- * copied from MyFaces.
+ * UITabPanel is a specialized version of UIRepeat focusing on components that
+ * repeat tabs like tabView and accordionPanel. Most of the code is copied from
+ * MyFaces.
  */
 public class UITabPanel extends UIPanel implements NamingContainer {
 
@@ -149,18 +149,20 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     public boolean isDynamic() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
-	}
-	public void setDynamic(boolean _dynamic) {
-		getStateHelper().put(PropertyKeys.dynamic, _dynamic);
-	}
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+    }
+
+    public void setDynamic(boolean _dynamic) {
+        getStateHelper().put(PropertyKeys.dynamic, _dynamic);
+    }
 
     public boolean isPrependId() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.prependId, true);
-	}
-	public void setPrependId(boolean _prependId) {
-		getStateHelper().put(PropertyKeys.prependId, _prependId);
-	}
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.prependId, true);
+    }
+
+    public void setPrependId(boolean _prependId) {
+        getStateHelper().put(PropertyKeys.prependId, _prependId);
+    }
 
     protected DataModel getDataModel() {
         DataModel dataModel;
@@ -572,8 +574,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * @return
      */
     public Object getIndexData() {
-        if (!getDataModel().isRowAvailable())
-        {
+        if (!getDataModel().isRowAvailable()) {
             return null;
         }
 
@@ -956,7 +957,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
                     //accept
                     default:
-                    // determine if we need to visit our children
+                        // determine if we need to visit our children
                         // Note that we need to do this check because we are a NamingContainer
                         Collection<String> subtreeIdsToVisit = context
                                 .getSubtreeIdsToVisit(this);
@@ -1024,8 +1025,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             }
             else {
                 if (this.isDynamic()) {
-                    for(Tab tab : getLoadedTabs()) {
-                        tab.processDecodes(context);
+                    for (UIComponent component : getChildren()) {
+                        if (component instanceof Tab) {
+                            Tab tab = (Tab) component;
+                            if (tab.isLoaded()) {
+                                tab.processDecodes(context);
+                            }
+                        }
                     }
                 }
                 else {
@@ -1033,7 +1039,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 }
             }
         }
-
 
         try {
             decode(context);
@@ -1065,8 +1070,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
         else {
             if (this.isDynamic()) {
-                for(Tab tab : getLoadedTabs()) {
-                    tab.processValidators(context);
+                for (UIComponent component : getChildren()) {
+                    if (component instanceof Tab) {
+                        Tab tab = (Tab) component;
+                        if (tab.isLoaded()) {
+                            tab.processValidators(context);
+                        }
+                    }
                 }
             }
             else {
@@ -1100,8 +1110,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
         else {
             if (this.isDynamic()) {
-                for(Tab tab : getLoadedTabs()) {
-                    tab.processUpdates(context);
+                for (UIComponent component : getChildren()) {
+                    if (component instanceof Tab) {
+                        Tab tab = (Tab) component;
+                        if (tab.isLoaded()) {
+                            tab.processUpdates(context);
+                        }
+                    }
                 }
             }
             else {
@@ -1424,24 +1439,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     public boolean isRepeating() {
         return (this.getVar() != null);
-    }
-
-    List<Tab> loadedTabs;
-    public List<Tab> getLoadedTabs() {
-        if(loadedTabs == null) {
-            loadedTabs = new ArrayList<Tab>();
-
-            for(UIComponent component : getChildren()) {
-                if(component instanceof Tab) {
-                    Tab tab =  (Tab) component;
-
-                    if(tab.isLoaded())
-                        loadedTabs.add(tab);
-                }
-            }
-        }
-
-        return loadedTabs;
     }
 
 }
