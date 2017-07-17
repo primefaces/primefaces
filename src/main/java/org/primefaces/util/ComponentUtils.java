@@ -335,8 +335,8 @@ public class ComponentUtils {
         }
     }
 
-    public static boolean isSkipIteration(VisitContext visitContext) {
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF21()) {
+    public static boolean isSkipIteration(VisitContext visitContext, FacesContext context) {
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF21()) {
             return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
         }
         else {

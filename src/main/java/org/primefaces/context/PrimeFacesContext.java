@@ -15,7 +15,6 @@
  */
 package org.primefaces.context;
 
-import java.util.logging.Logger;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
@@ -24,18 +23,11 @@ import javax.faces.context.FacesContextWrapper;
  * Custom {@link FacesContextWrapper} to init and release our {@link RequestContext}.
  */
 public class PrimeFacesContext extends FacesContextWrapper {
-
-    private static final Logger LOGGER = Logger.getLogger(PrimeFacesContext.class.getName());
     
     private final FacesContext wrapped;
     private PrimeExternalContext externalContext;
 	
     public PrimeFacesContext(FacesContext wrapped) {
-        
-        
-        
-        LOGGER
-        
         this.wrapped = wrapped;
 
         RequestContext.setCurrentInstance(new DefaultRequestContext(wrapped), wrapped);

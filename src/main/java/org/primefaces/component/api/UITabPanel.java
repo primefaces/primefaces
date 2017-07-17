@@ -923,7 +923,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             // override the behavior from UIComponent to visit
             // all children once per "row"
 
-            if (ComponentUtils.isSkipIteration(context)) {
+            if (ComponentUtils.isSkipIteration(context, getFacesContext())) {
                 return super.visitTree(context, callback);
             }
 
