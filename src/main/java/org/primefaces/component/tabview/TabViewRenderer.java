@@ -68,6 +68,8 @@ public class TabViewRenderer extends CoreRenderer {
             }
         } 
         else {
+            tabView.resetLoadedTabsState();
+            
             encodeMarkup(context, tabView);
             encodeScript(context, tabView);
         }

@@ -1441,4 +1441,14 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         return (this.getVar() != null);
     }
 
+    public void resetLoadedTabsState() {
+        if (!this.isRepeating() && this.isDynamic()) {
+            for (UIComponent component : getChildren()) {
+                if (component instanceof Tab) {
+                    Tab tab = (Tab) component;
+                    tab.setLoaded(false);
+                }
+            }
+        }
+    }
 }
