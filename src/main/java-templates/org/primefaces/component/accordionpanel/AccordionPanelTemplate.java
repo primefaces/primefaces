@@ -167,7 +167,7 @@ import javax.faces.event.BehaviorEvent;
             MethodExpression me = this.getTabController();
             if(me != null) {
                 boolean retVal = (Boolean) me.invoke(getFacesContext().getELContext(), new Object[]{event});
-                RequestContext.getCurrentInstance().addCallbackParam("access", retVal);
+                RequestContext.getCurrentInstance(getFacesContext()).addCallbackParam("access", retVal);
             }
         }
     }

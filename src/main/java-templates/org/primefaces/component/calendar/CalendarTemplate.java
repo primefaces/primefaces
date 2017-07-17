@@ -194,7 +194,7 @@ import org.primefaces.convert.DateTimeConverter;
     public Converter getConverter() {
         Converter converter = super.getConverter();
         
-        if(converter == null && RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(converter == null && RequestContext.getCurrentInstance(getFacesContext()).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             DateTimeConverter con = new DateTimeConverter();
             con.setPattern(this.calculatePattern());
             con.setTimeZone(this.calculateTimeZone());

@@ -133,7 +133,7 @@ public class CalendarRenderer extends InputRenderer {
             writer.writeAttribute("aria-labelledby", labelledBy, null);
         }
 
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, calendar);
         }
 

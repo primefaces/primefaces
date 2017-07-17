@@ -155,7 +155,7 @@ public class AjaxRequestBuilder {
 
     @Deprecated
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
 
     	//component can override global setting
         boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
@@ -168,7 +168,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet, String partialSubmitFilter) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
 
     	//component can override global setting
         boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
@@ -185,7 +185,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder resetValues(boolean value, boolean resetValuesSet) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
 
     	//component can override global setting
         boolean resetValues = resetValuesSet ? value : config.isResetValuesEnabled();
@@ -347,7 +347,7 @@ public class AjaxRequestBuilder {
     }
 
     private void addFragmentConfig() {
-        Map<Object,Object> attrs = RequestContext.getCurrentInstance().getAttributes();
+        Map<Object,Object> attrs = RequestContext.getCurrentInstance(context).getAttributes();
         Object fragmentId = attrs.get(Constants.FRAGMENT_ID);
         if(fragmentId != null) {
             buffer.append(",fi:\"").append(fragmentId).append("\"");

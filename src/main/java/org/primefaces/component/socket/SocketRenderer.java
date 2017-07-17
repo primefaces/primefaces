@@ -38,7 +38,7 @@ public class SocketRenderer extends CoreRenderer {
         String channel = socket.getChannel();
         String channelUrl = Constants.PUSH_PATH + channel;
         String url = getResourceURL(context, channelUrl);
-        String pushServer = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getPushServerURL();
+        String pushServer = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getPushServerURL();
         String clientId = socket.getClientId(context);
         
         if(pushServer != null) {

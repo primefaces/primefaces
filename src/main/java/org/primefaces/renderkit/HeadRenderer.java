@@ -49,7 +49,7 @@ public class HeadRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        PrimeConfiguration cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration cc = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
         ProjectStage projectStage = context.getApplication().getProjectStage();
         boolean csvEnabled = cc.isClientSideValidationEnabled();
                 
@@ -64,7 +64,7 @@ public class HeadRenderer extends Renderer {
         
         //Theme
         String theme;
-        String themeParamValue = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getTheme();
+        String themeParamValue = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getTheme();
 
         if (themeParamValue != null) {
             ELContext elContext = context.getELContext();

@@ -46,7 +46,7 @@ public class BodyRenderer extends CoreRenderer {
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        RequestContext requestContext = RequestContext.getCurrentInstance();
+        RequestContext requestContext = RequestContext.getCurrentInstance(context);
         
         encodeResources(context);
 

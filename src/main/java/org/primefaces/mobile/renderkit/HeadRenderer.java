@@ -36,7 +36,7 @@ public class HeadRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        PrimeConfiguration cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration cc = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
         ProjectStage projectStage = context.getApplication().getProjectStage();
         writer.startElement("head", component);
         writer.writeAttribute("id", component.getClientId(context), "id");
@@ -141,7 +141,7 @@ public class HeadRenderer extends Renderer {
 
     protected String resolveTheme(FacesContext context) {
         String theme = null;
-        String themeConfigValue = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getMobileTheme();
+        String themeConfigValue = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getMobileTheme();
 
         if(themeConfigValue != null) {
             ELContext elContext = context.getELContext();

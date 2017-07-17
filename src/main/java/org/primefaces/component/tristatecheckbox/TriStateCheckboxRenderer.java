@@ -186,7 +186,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
 	}
 
 	protected void encodeScript(final FacesContext context, final TriStateCheckbox checkbox) throws IOException {
-        WidgetBuilder wb = RequestContext.getCurrentInstance().getWidgetBuilder();
+        WidgetBuilder wb = RequestContext.getCurrentInstance(context).getWidgetBuilder();
         wb.initWithDomReady("TriStateCheckbox", checkbox.resolveWidgetVar(), checkbox.getClientId());
         encodeClientBehaviors(context, checkbox);
         wb.finish();

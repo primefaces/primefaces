@@ -22,7 +22,6 @@ import javax.validation.ValidatorFactory;
 import org.primefaces.cache.CacheProvider;
 
 import org.primefaces.config.PrimeConfiguration;
-import static org.primefaces.context.RequestContext.INSTANCE_KEY;
 
 /**
  * A {@link ApplicationContext} is a contextual store, similar to {@link RequestContext}.
@@ -30,7 +29,7 @@ import static org.primefaces.context.RequestContext.INSTANCE_KEY;
  *
  * It can be accessed via:
  * <blockquote>
- *  RequestContext.getCurrentInstance().getApplicationContext();
+ *  RequestContext.getCurrentInstance(context).getApplicationContext();
  * </blockquote>
  */
 public abstract class ApplicationContext {

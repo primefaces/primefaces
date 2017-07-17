@@ -54,15 +54,15 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     }
 
     public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ELContext elContext = facesContext.getELContext();
+        FacesContext context = FacesContext.getCurrentInstance();
+        ELContext elContext = context.getELContext();
         StreamedContent content = (StreamedContent) value.getValue(elContext);
 
         if(content == null) {
             return;
         }
 
-        ExternalContext externalContext = facesContext.getExternalContext();
+        ExternalContext externalContext = context.getExternalContext();
         String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";
         String monitorKeyValue = monitorKey != null ? "_" + (String) monitorKey.getValue(elContext) : "";
         
@@ -77,7 +77,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
             	externalContext.setResponseContentLength(content.getContentLength().intValue());
             }
 
-            if(RequestContext.getCurrentInstance().isSecure()) {
+            if(RequestContext.getCurrentInstance(context).isSecure()) {
                 externalContext.setResponseHeader("Cache-Control", "public");
                 externalContext.setResponseHeader("Pragma", "public");
             }
@@ -93,7 +93,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
             externalContext.setResponseStatus(200);
             externalContext.responseFlushBuffer();
-            facesContext.responseComplete();
+            context.responseComplete();
         }
         catch (IOException e) {
             throw new FacesException(e);

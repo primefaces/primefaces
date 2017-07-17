@@ -111,7 +111,7 @@ public class SortFeature implements DataTableFeature {
                 singleSort(context, table);
             
             if(table.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
+                RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
                 if(requestContext != null) {
                     requestContext.addCallbackParam("totalRecords", table.getRowCount());

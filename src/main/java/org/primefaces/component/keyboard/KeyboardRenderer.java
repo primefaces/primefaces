@@ -114,7 +114,7 @@ public class KeyboardRenderer extends InputRenderer {
         if(keyboard.getStyle() != null) writer.writeAttribute("style", keyboard.getStyle(), "style");
         if(keyboard.isRequired()) writer.writeAttribute("aria-required", "true", null);
         
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, keyboard);
         }
 

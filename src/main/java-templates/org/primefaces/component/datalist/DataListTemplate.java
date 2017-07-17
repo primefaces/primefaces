@@ -86,7 +86,7 @@ import javax.faces.event.BehaviorEvent;
 
             //Update paginator for callback
             if(ComponentUtils.isRequestSource(this, getFacesContext()) && this.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
+                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
 
                 if(requestContext != null) {
                     requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());

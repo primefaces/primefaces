@@ -565,7 +565,7 @@ import org.primefaces.component.datatable.TableState;
 
             //Update paginator/livescroller for callback
             if(ComponentUtils.isRequestSource(this, context) && (this.isPaginator() || this.isLiveScroll() || this.isVirtualScroll())) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
+                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
 
                 if(requestContext != null) {
                     requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
@@ -594,7 +594,7 @@ import org.primefaces.component.datatable.TableState;
 
             //Update paginator/livescroller  for callback
             if(ComponentUtils.isRequestSource(this, getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
+                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
 
                 if(requestContext != null) {
                     requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());

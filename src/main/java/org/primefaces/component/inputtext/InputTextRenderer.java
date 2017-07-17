@@ -83,7 +83,7 @@ public class InputTextRenderer extends InputRenderer {
         
         writer.writeAttribute("class", createStyleClass(inputText), "styleClass");
         
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputText);
         }
 

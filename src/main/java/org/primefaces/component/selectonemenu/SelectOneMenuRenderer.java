@@ -170,7 +170,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         renderOnchange(context, menu);
         
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, menu);
         }
         

@@ -34,7 +34,7 @@ public class ClockRenderer extends CoreRenderer {
         Clock clock = (Clock) component;
         
         if(clock.isSyncRequest()) {
-            RequestContext.getCurrentInstance().addCallbackParam("datetime", System.currentTimeMillis());
+            RequestContext.getCurrentInstance(context).addCallbackParam("datetime", System.currentTimeMillis());
             context.renderResponse();
         }
     }

@@ -35,7 +35,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if(params.containsKey(clientId)) {
-            RequestContext.getCurrentInstance().addCallbackParam(progressBar.getClientId(context) + "_value", progressBar.getValue());
+            RequestContext.getCurrentInstance(context).addCallbackParam(progressBar.getClientId(context) + "_value", progressBar.getValue());
         }
         
         decodeBehaviors(context, progressBar);

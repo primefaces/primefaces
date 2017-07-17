@@ -103,7 +103,7 @@ public class InputMaskRenderer extends InputRenderer {
         
         writer.writeAttribute("class", styleClass, "styleClass");
         
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputMask);
         }
 

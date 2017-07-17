@@ -32,51 +32,35 @@ import org.primefaces.util.WidgetBuilder;
  * RequestContext is thread-safe and scope is same as FacesContext.
  * Current instance can be retrieved as;
  * <blockquote>
- *  RequestContext.getCurrentInstance();
+ *  RequestContext.getCurrentInstance(context);
  * </blockquote>
  */
 public abstract class RequestContext {
 
-	private static final ThreadLocal<RequestContext> INSTANCE = new ThreadLocal<RequestContext>();
-
-    public static final String INSTANCE_KEY = RequestContext.class.getName();
-
+    private static final String INSTANCE_KEY = RequestContext.class.getName();
+    
     public static RequestContext getCurrentInstance() {
-
-        RequestContext context = INSTANCE.get();
-
-        // #6503 - it's valid that a FacesContext can be released during the request
-        // Our PrimeFacesContext therefore will only release our ThreadLocal cache
-        // The RequestContext will be destroyed automatically if the FacesContext and it's attributes will be destroyed
-        if (context == null) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            if (facesContext != null && !facesContext.isReleased()) {
-                context = (RequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
-                if (context != null) {
-                    INSTANCE.set(context);
-                }
-            }
+        return getCurrentInstance(FacesContext.getCurrentInstance());
+    }
+    
+    public static RequestContext getCurrentInstance(FacesContext facesContext) {
+        if (facesContext != null && !facesContext.isReleased()) {
+            return (RequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
         }
 
-        return INSTANCE.get();
+        return null;
     }
 
-    public static void setCurrentInstance(final RequestContext context, final FacesContext facesContext) {
+    public static void setCurrentInstance(RequestContext context, FacesContext facesContext) {
         if (context == null) {
-        	INSTANCE.remove();
-                if (facesContext != null) {
-            facesContext.getAttributes().remove(INSTANCE_KEY);
-                }
+            if (facesContext != null) {
+                facesContext.getAttributes().remove(INSTANCE_KEY);
+            }
         } else {
-        	INSTANCE.set(context);
             facesContext.getAttributes().put(INSTANCE_KEY, context);
         }
     }
-
-    public static void releaseThreadLocalCache() {
-        INSTANCE.remove();
-    }
-
+    
     /**
      * @return true if request is an ajax request, otherwise return false.
      */
@@ -191,7 +175,7 @@ public abstract class RequestContext {
     /**
      * @return StringEncrypter used to encode and decode a string.
      */
-	public abstract StringEncrypter getEncrypter();
+    public abstract StringEncrypter getEncrypter();
 
     /**
      * Clear resources.

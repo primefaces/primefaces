@@ -77,7 +77,7 @@ public class ComponentUtils {
             if (component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
-                PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+                PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
 
                 if (config.isInterpretEmptyStringAsNull()
                         && submittedValue == null
@@ -101,7 +101,7 @@ public class ComponentUtils {
                 Converter converter = valueHolder.getConverter();
                 if (converter == null) {
                     Class valueType = value.getClass();
-                    if(valueType == String.class && !RequestContext.getCurrentInstance().getApplicationContext().getConfig().isStringConverterAvailable()) {
+                    if(valueType == String.class && !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
                         return (String) value;
                     }
 
@@ -152,7 +152,7 @@ public class ComponentUtils {
     	}
 
         if (converterType == String.class
-        		&& !RequestContext.getCurrentInstance().getApplicationContext().getConfig().isStringConverterAvailable()) {
+        		&& !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
         	return null;
         }
 
@@ -237,7 +237,7 @@ public class ComponentUtils {
     }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
-        boolean globalValue = RequestContext.getCurrentInstance().isRTL();
+        boolean globalValue = RequestContext.getCurrentInstance(context).isRTL();
 
         return globalValue||component.isRTL();
     }

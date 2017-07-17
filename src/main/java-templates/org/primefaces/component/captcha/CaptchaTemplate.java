@@ -55,7 +55,7 @@ import org.primefaces.json.JSONObject;
                 throw new FacesException(exception);
             } finally {
             	// the captcha token is valid for only one request, in case of an ajax request we have to get a new one
-	        RequestContext requestContext = RequestContext.getCurrentInstance();
+	        RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
 	        if(requestContext.isAjaxRequest()) {
 	            requestContext.execute("grecaptcha.reset()");
 	        }

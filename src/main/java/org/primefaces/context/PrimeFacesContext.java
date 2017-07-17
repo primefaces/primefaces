@@ -15,6 +15,7 @@
  */
 package org.primefaces.context;
 
+import java.util.logging.Logger;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
@@ -24,14 +25,21 @@ import javax.faces.context.FacesContextWrapper;
  */
 public class PrimeFacesContext extends FacesContextWrapper {
 
-	private final FacesContext wrapped;
+    private static final Logger LOGGER = Logger.getLogger(PrimeFacesContext.class.getName());
+    
+    private final FacesContext wrapped;
     private PrimeExternalContext externalContext;
 	
-	public PrimeFacesContext(FacesContext wrapped) {
-		this.wrapped = wrapped;
-		
-		RequestContext.setCurrentInstance(new DefaultRequestContext(wrapped), wrapped);
-	}
+    public PrimeFacesContext(FacesContext wrapped) {
+        
+        
+        
+        LOGGER
+        
+        this.wrapped = wrapped;
+
+        RequestContext.setCurrentInstance(new DefaultRequestContext(wrapped), wrapped);
+    }
 
     @Override
     public ExternalContext getExternalContext() {
@@ -41,15 +49,18 @@ public class PrimeFacesContext extends FacesContextWrapper {
         return externalContext;
     }
     
-	@Override
-	public FacesContext getWrapped() {
-		return wrapped;
-	}
+    @Override
+    public FacesContext getWrapped() {
+        return wrapped;
+    }
 	
-	@Override
-	public void release() {
-		RequestContext.releaseThreadLocalCache();
+    @Override
+    public void release() {
+        RequestContext requestContext = RequestContext.getCurrentInstance(wrapped);
+        if (requestContext != null) {
+            requestContext.release();
+        }
 
-		wrapped.release();
-	}
+        super.release();
+    }
 }

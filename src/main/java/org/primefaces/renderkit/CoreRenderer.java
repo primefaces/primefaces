@@ -116,7 +116,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
             RendererUtils.renderPassThroughAttributes(context, component);
         }
     }
@@ -216,7 +216,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //dynamic attributes
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
             RendererUtils.renderPassThroughAttributes(context, component);
         }
     }
@@ -380,7 +380,7 @@ public abstract class CoreRenderer extends Renderer {
         UIComponent component = (UIComponent) source;
         String clientId = component.getClientId(context);
 
-        AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
+        AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         builder.init()
                 .source(clientId)
@@ -612,7 +612,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
-        return RequestContext.getCurrentInstance().getWidgetBuilder();
+        return RequestContext.getCurrentInstance(context).getWidgetBuilder();
     }
 
     protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
@@ -641,7 +641,7 @@ public abstract class CoreRenderer extends Renderer {
         List<String> validatorIds = null;
         String highlighter = getHighlighter();
 
-        RequestContext requestContext = RequestContext.getCurrentInstance();
+        RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
         //messages
         if(label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);

@@ -121,7 +121,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 	}
 
     protected String buildRequest(FacesContext context, CommandButton button, String clientId) throws FacesException {
-        RequestContext requestContext = RequestContext.getCurrentInstance();
+        RequestContext requestContext = RequestContext.getCurrentInstance(context);
         boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&button.isValidateClient();
         String request = null;
         boolean ajax = button.isAjax();

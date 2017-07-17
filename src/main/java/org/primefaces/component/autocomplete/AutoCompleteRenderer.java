@@ -248,7 +248,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(ac.isRequired()) writer.writeAttribute("aria-required", "true", null);
 
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, ac);
         }
 

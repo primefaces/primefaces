@@ -118,7 +118,7 @@ public class TreeRenderer extends CoreRenderer {
                 }
             }
             
-            RequestContext.getCurrentInstance().addCallbackParam("descendantRowKeys", sb.toString());
+            RequestContext.getCurrentInstance(context).addCallbackParam("descendantRowKeys", sb.toString());
             sb.setLength(0);
             descendantRowKeys = null;
         }

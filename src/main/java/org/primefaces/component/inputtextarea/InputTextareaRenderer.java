@@ -138,7 +138,7 @@ public class InputTextareaRenderer extends InputRenderer {
         
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
         
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputTextarea);
         }
 

@@ -109,7 +109,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
                             // fallback if required=false
                             if (!state.isRequired()) {
-                                PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+                                PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
                                 if (config.isBeanValidationAvailable() && isNotNullDefined(input, context)) {
                                     state.setRequired(true);
                                 }
@@ -167,13 +167,13 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         // skip @NotNull check
         // see GitHub #14
-        if (!RequestContext.getCurrentInstance().getApplicationContext().getConfig().isInterpretEmptyStringAsNull()) {
+        if (!RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isInterpretEmptyStringAsNull()) {
             return false;
         }
         
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                    context, RequestContext.getCurrentInstance(), ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
+                    context, RequestContext.getCurrentInstance(context), ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
             if (constraints != null && !constraints.isEmpty()) {
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                     if (constraintDescriptor.getAnnotation().annotationType().equals(NotNull.class)) {

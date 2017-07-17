@@ -139,7 +139,7 @@ public class TreeTableRenderer extends DataRenderer {
                 }
             }
             
-            RequestContext.getCurrentInstance().addCallbackParam("descendantRowKeys", sb.toString());
+            RequestContext.getCurrentInstance(context).addCallbackParam("descendantRowKeys", sb.toString());
             sb.setLength(0);
             descendantRowKeys = null;
         }
@@ -1057,7 +1057,7 @@ public class TreeTableRenderer extends DataRenderer {
         tt.setRowKey(null);
         
         //Metadata for callback
-        RequestContext requestContext = RequestContext.getCurrentInstance();
+        RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
         if(requestContext != null) {
             if(tt.isPaginator())

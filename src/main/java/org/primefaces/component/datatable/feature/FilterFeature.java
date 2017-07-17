@@ -212,7 +212,7 @@ public class FilterFeature implements DataTableFeature {
 
         //Metadata for callback
         if(table.isPaginator() || table.isVirtualScroll()) {
-            RequestContext requestContext = RequestContext.getCurrentInstance();
+            RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
             if(requestContext != null) {
                 requestContext.addCallbackParam("totalRecords", filteredData.size());

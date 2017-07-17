@@ -37,7 +37,7 @@ public class MobileNavigationHandler extends ConfigurableNavigationHandler {
         if(outcome != null && outcome.startsWith("pm:")) {
             String command = MobileUtils.buildNavigation(outcome);
 
-            RequestContext requestContext = RequestContext.getCurrentInstance();
+            RequestContext requestContext = RequestContext.getCurrentInstance(context);
             if(requestContext != null) {
                 requestContext.execute(command);
             }

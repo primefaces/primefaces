@@ -57,7 +57,7 @@ public class PollRenderer extends CoreRenderer {
             throw new FacesException("Poll:" + clientId + " needs to be enclosed in a form component");
         }
 
-        AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
+        AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
         
         String request = builder.init()
                 .source(clientId)
