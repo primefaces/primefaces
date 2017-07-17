@@ -21,7 +21,8 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
            var keyCode = $.ui.keyCode;
            if(e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
                 //do not proceed if event target is not in this scope or target is a textarea,button or link
-                if(($this.scope && $this.scope[0] != e.target && $this.scope.find(e.target).length == 0)||$(e.target).is('textarea,button,input[type="submit"],a')) {
+                if (($this.scope && $this.scope[0] != e.target && $this.scope.find(e.target).length == 0)
+                   || $(e.target).is('textarea,button,input[type="submit"],a')) {
                     return true;
                 }
 
