@@ -480,6 +480,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         if(!value.length) {
             $this.hide();
+            $this.deleteTimeout();
         }
 
         if(value.length >= $this.cfg.minLength) {

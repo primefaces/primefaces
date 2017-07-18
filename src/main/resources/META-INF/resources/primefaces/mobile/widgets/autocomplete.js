@@ -30,6 +30,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             if(value.length === 0) {
                 $this.hide();
+                clearTimeout($this.timeout);
             }
             else {
                 $this.showClearIcon();
