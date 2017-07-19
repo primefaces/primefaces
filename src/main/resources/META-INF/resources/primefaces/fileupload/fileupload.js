@@ -1790,7 +1790,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                         }
 
                         //preview
-                        if($this.isCanvasSupported() && window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
+                        if(window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
                             var imageCanvas = $('<canvas></canvas>')
                                                     .appendTo(row.children('div.ui-fileupload-preview')),
                             context = imageCanvas.get(0).getContext('2d'),
