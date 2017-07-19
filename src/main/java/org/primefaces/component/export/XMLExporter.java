@@ -133,8 +133,9 @@ public class XMLExporter extends Exporter {
             for (UIComponent component : components) {
                 if(component.isRendered()) {
                     String value = exportValue(context, component);
-
-                    writer.write(value);
+                    if (value !=null) {
+                        writer.write(value);
+					}
                 }
             }
         }
