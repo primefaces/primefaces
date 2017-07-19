@@ -752,6 +752,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 	            this.label.removeAttr('disabled');
 	        }
 	        this.bindEvents();
+                this.bindItemEvents();
     	}
     },
 
