@@ -751,8 +751,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 	        if(this.cfg.editable) {
 	            this.label.removeAttr('disabled');
 	        }
-	        this.bindEvents();
-                this.bindItemEvents();
+	        
+            this.bindEvents();
+            this.bindItemEvents();
     	}
     },
 
