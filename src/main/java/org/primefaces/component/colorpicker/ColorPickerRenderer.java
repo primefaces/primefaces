@@ -90,6 +90,11 @@ public class ColorPickerRenderer extends CoreRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "hidden", null);
 
+        String onchange = colorPicker.getOnchange();
+        if (!isValueBlank(onchange)) {
+            writer.writeAttribute("onchange", onchange, null);
+        }
+        
         renderPassThruAttributes(context, colorPicker, null);
 
         if(value != null) {
