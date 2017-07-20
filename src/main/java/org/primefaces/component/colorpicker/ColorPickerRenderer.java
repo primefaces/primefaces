@@ -144,6 +144,8 @@ public class ColorPickerRenderer extends CoreRenderer {
             .attr("mode", colorPicker.getMode())
             .attr("color", value, null);
 
+        encodeClientBehaviors(context, colorPicker);
+        
         wb.finish();
     }
 }

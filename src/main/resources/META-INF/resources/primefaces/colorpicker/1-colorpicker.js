@@ -32,46 +32,53 @@
     },
 
     bindCallbacks: function() {
-        var _self = this;
+        var $this = this;
 
         this.cfg.onChange = function(hsb, hex, rgb) {
-            _self.input.val(hex);
+            $this.input.val(hex);
 
 
-            if(_self.cfg.popup) {
-                _self.livePreview.css('backgroundColor', '#' + hex);
+            if($this.cfg.popup) {
+                $this.livePreview.css('backgroundColor', '#' + hex);
             }
 
-            _self.input.change();
+            $this.input.change();
+
+            if ($this.hasBehavior('change')) {
+                var changeBehavior = $this.cfg.behaviors['change'];
+                if(changeBehavior) {
+                    changeBehavior.call($this);
+                }
+            }
         };
 
         this.cfg.onShow = function() {
-            if(_self.cfg.popup) {
-                _self.overlay.css('z-index', ++PrimeFaces.zindex);
+            if($this.cfg.popup) {
+                $this.overlay.css('z-index', ++PrimeFaces.zindex);
             }
 
             var win = $(window),
-            positionOffset = _self.cfg.nestedInDialog ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
+            positionOffset = $this.cfg.nestedInDialog ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
 
-            if(_self.cfg.nestedInDialog) {
-                _self.overlay.css('position', 'fixed');
+            if($this.cfg.nestedInDialog) {
+                $this.overlay.css('position', 'fixed');
             }
 
             //position the overlay relative to the button
-            _self.overlay.css({
+            $this.overlay.css({
                         left:'',
                         top:''
                 })
                 .position({
                     my: 'left top'
                     ,at: 'left bottom'
-                    ,of: _self.jqEl,
+                    ,of: $this.jqEl,
                     offset : positionOffset
                 });
         };
 
         this.cfg.onHide = function(cp) {
-            _self.overlay.css('z-index', ++PrimeFaces.zindex);
+            $this.overlay.css('z-index', ++PrimeFaces.zindex);
             $(cp).fadeOut('fast');
             return false;
         };
@@ -82,13 +89,13 @@
      * would be orphan. We need to remove the old overlay to prevent memory leaks.
      */
     clearOrphanOverlay: function() {
-        var _self = this;
+        var $this = this;
 
         $(document.body).children('.ui-colorpicker-container').each(function(i, element) {
             var overlay = $(element),
             options = overlay.data('colorpicker');
 
-            if(options.id == _self.id) {
+            if(options.id == $this.id) {
                 overlay.remove();
                 return false;   //break;
             }
