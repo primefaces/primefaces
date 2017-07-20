@@ -537,6 +537,12 @@
             <method-signature>void draggableRowsFunction(org.primefaces.component.api.UIData)</method-signature>
             <description>Method expression to execute after dragging row.</description>
         </attribute>
+        <attribute>
+			<name>onRowClick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side callback to execute after clicking row.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

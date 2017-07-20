@@ -75,6 +75,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.stickyHeader) {
             this.setupStickyHeader();
         }
+        
+        if(this.cfg.onRowClick) {
+            this.bindRowClick();
+        }
     },
 
     getThead: function() {
@@ -792,6 +796,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
                     });
     },
+    
+    toggleRow(row) {
+        if(row && !this.isRowTogglerClicked) {
+            var toggler = row.find('> td > div.ui-row-toggler');
+            this.toggleExpansion(toggler);
+        }
+        this.isRowTogglerClicked = false;
+    },
 
     /**
      * Applies events related to row expansion in a non-obstrusive way
@@ -802,6 +814,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.tbody.off('click.datatable-expansion', togglerSelector)
             .on('click.datatable-expansion', togglerSelector, null, function() {
+                $this.isRowTogglerClicked = true;
                 $this.toggleExpansion($(this));
             })
             .on('keydown.datatable-expansion', togglerSelector, null, function(e) {
@@ -844,6 +857,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             else if(row.hasClass('ui-datatable-empty-message')) {
                 menuWidget.show(e);
             }
+        });
+    },
+    
+    bindRowClick: function() {
+        var $this = this,
+        rowSelector = '> tr.ui-widget-content:not(.ui-expanded-row-content)'; 
+        this.tbody.off('click.dataTable-rowclick', rowSelector).on('click.dataTable-rowclick', rowSelector, null, function(e) {
+            var target = $(e.target),
+            row = target.is('tr.ui-widget-content') ? target : target.closest('tr.ui-widget-content');
+
+            $this.cfg.onRowClick.call(this, row);
         });
     },
 

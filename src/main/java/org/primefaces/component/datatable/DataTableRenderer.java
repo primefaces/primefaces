@@ -282,7 +282,8 @@ public class DataTableRenderer extends DataRenderer {
             .attr("reflow", table.isReflow(), false)
             .attr("rowHover", table.isRowHover(), false)
             .attr("clientCache", table.isClientCache(), false)
-            .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null);
+            .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null)
+            .callback("onRowClick", "function(row)", table.getOnRowClick());
         
         //Behaviors
         encodeClientBehaviors(context, table);
