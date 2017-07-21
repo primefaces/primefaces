@@ -324,11 +324,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             $this.deleteTimeout();
                         }
 
-                        highlightedItem.click();
+                        if (highlightedItem.length > 0) {
+                            highlightedItem.click();
+                            $this.itemSelectedWithEnter = true;
+                        }
 
                         e.preventDefault();
                         e.stopPropagation();
-                        $this.itemSelectedWithEnter = true;
+
                         break;
 
                     case 18: //keyCode.ALT:
