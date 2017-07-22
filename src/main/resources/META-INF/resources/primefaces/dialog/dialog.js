@@ -17,6 +17,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.resizeNS = 'resize.' + this.id;
         this.cfg.absolutePositioned = this.jq.hasClass('ui-dialog-absolute');
 
+        this.positionInitialized = false;
+
         //configuration
         this.cfg.width = this.cfg.width||'auto';
         this.cfg.height = this.cfg.height||'auto';
@@ -69,9 +71,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.visible){
             this.show();
         }
+
+        if(this.cfg.responsive) {
+            this.bindResizeListener();
+        }
     },
 
-    //override
+    //@Override
     refresh: function(cfg) {
         this.positionInitialized = false;
         this.loaded = false;
@@ -88,6 +94,15 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.init(cfg);
     },
 
+    //@Override
+    destroy: function() {
+        this._super();
+
+        if (this.cfg.responsive) {
+            this.unbindResizeListener();
+        }
+    },
+
     initSize: function() {
         this.jq.css({
             'width': this.cfg.width,
@@ -99,20 +114,19 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.fitViewport) {
             this.fitViewport();
         }
-
-        //ie7 width auto width bug workaround
-        if(this.cfg.width === 'auto' && PrimeFaces.isIE(7)) {
-            this.jq.width(this.content.outerWidth());
-        }
     },
 
     fitViewport: function() {
-        var winHeight = $(window).height(),
-        contentPadding = this.content.innerHeight() - this.content.height();
+        var windowHeight = $(window).height();
 
-        if(this.jq.innerHeight() > winHeight) {
-            this.content.height(winHeight - this.titlebar.innerHeight() - contentPadding);
-        }
+        var margin = this.jq.outerHeight(true) - this.jq.outerHeight();
+        var headerHeight = this.titlebar.outerHeight(true);
+        var contentPadding = this.content.innerHeight() - this.content.height();;
+        var footerHeight = this.footer.outerHeight(true);
+
+        var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight);
+
+        this.content.css('max-height', maxHeight + 'px');
     },
 
     enableModality: function() {
@@ -187,7 +201,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.loadContents();
         }
         else {
-            if(!this.positionInitialized) {
+            if (this.cfg.fitViewport) {
+                this.fitViewport();
+            }
+
+            if (this.positionInitialized === false) {
                 this.initPosition();
             }
 
@@ -240,10 +258,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.applyFocus();
-
-        if(this.cfg.responsive) {
-            this.bindResizeListener();
-        }
     },
 
     hide: function() {
@@ -435,10 +449,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this, event, ui);
         }
-
-        if(this.cfg.responsive) {
-            this.unbindResizeListener();
-        }
     },
 
     moveToTop: function() {
@@ -594,7 +604,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.hasBehavior('loadContent')) {
+            var loadContentBehavior = this.cfg.behaviors['loadContent'];
+            loadContentBehavior.call(this, options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     applyARIA: function() {
@@ -607,14 +623,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.titlebar.children('a.ui-dialog-titlebar-icon').attr('role', 'button');
     },
 
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] !== undefined;
-        }
-
-        return false;
-    },
-
     isVisible: function() {
         return this.jq.is(':visible');
     },
@@ -622,7 +630,18 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     bindResizeListener: function() {
         var $this = this;
         $(window).on(this.resizeNS, function() {
-            $this.initPosition();
+            if ($this.cfg.fitViewport) {
+                $this.fitViewport();
+            }
+
+            if ($this.isVisible()) {
+                // instant reinit position
+                $this.initPosition();
+            }
+            else {
+                // reset, so the dialog will be positioned again when showing the dialog next time
+                $this.positionInitialized = false;
+            }
         });
     },
 
@@ -716,7 +735,7 @@ PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
             return;
         }
 
-        if(!this.positionInitialized) {
+        if(this.positionInitialized === false) {
             this.initPosition();
         }
 

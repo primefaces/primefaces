@@ -40,6 +40,9 @@ import javax.faces.render.Renderer;
         return EVENT_NAMES;    
     }
 
+    public boolean isLazyloadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_lazyload");
+    }
 
     public String getDefaultEventName() {
         return "valueChange";    
@@ -104,7 +107,7 @@ import javax.faces.render.Renderer;
                 setValid(false);
             }
 
-            PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+            PrimeConfiguration config = RequestContext.getCurrentInstance(getFacesContext()).getApplicationContext().getConfig();
             
             //other validators
             if(isValid() && (!isEmpty(value) || config.isValidateEmptyFields())) {

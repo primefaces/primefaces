@@ -103,7 +103,7 @@ public class PasswordRenderer extends InputRenderer {
         if(password.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(password.isRequired()) writer.writeAttribute("aria-required", "true", null);
         
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, password);
         }
 

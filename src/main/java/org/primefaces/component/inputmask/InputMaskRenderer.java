@@ -86,7 +86,7 @@ public class InputMaskRenderer extends InputRenderer {
 		writer.startElement("input", null);
 		writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("name", clientId, null);
-		writer.writeAttribute("type", "text", null);
+		writer.writeAttribute("type", inputMask.getType(), "text");
 		
 		String valueToRender = ComponentUtils.getValueToRender(context, inputMask);
 		if(valueToRender != null) {
@@ -103,7 +103,7 @@ public class InputMaskRenderer extends InputRenderer {
         
         writer.writeAttribute("class", styleClass, "styleClass");
         
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputMask);
         }
 

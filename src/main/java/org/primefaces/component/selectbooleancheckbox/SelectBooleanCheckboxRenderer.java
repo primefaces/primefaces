@@ -117,7 +117,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
         if(checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, checkbox);
         }
         

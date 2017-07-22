@@ -385,14 +385,5 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.draggableRows) {
             this.makeRowsDraggable();
         } 
-    },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-    
-        return false;
-    }
-    
+    }    
 });

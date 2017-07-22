@@ -1777,20 +1777,20 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             filesize: file.size
                         });
                     }
-                    else {  
+                    else {
                         var row = $('<div class="ui-fileupload-row"></div>').append('<div class="ui-fileupload-preview"></td>')
                                 .append('<div>' + PrimeFaces.escapeHTML(file.name) + '</div>')
                                 .append('<div>' + $this.formatSize(file.size) + '</div>')
                                 .append('<div class="ui-fileupload-progress"></div>')
                                 .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
                                 .appendTo($this.filesTbody);
-                        
+
                         if($this.filesTbody.children('.ui-fileupload-row').length > 1) {
                             $('<div class="ui-widget-content"></div>').prependTo(row);
                         }
 
                         //preview
-                        if($this.isCanvasSupported() && window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
+                        if(window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
                             var imageCanvas = $('<canvas></canvas>')
                                                     .appendTo(row.children('div.ui-fileupload-preview')),
                             context = imageCanvas.get(0).getContext('2d'),
@@ -1926,27 +1926,27 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-state-focus');
             isChooseButtonClick = false;
         });
-        
+
         // For JAWS support
-        this.chooseButton.on('click.fileupload', function() {  
+        this.chooseButton.on('click.fileupload', function() {
             $this.chooseButton.children('input').trigger('click');
         })
         .on('keydown.fileupload', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
-            
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) { 
+
+            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
                 $this.chooseButton.children('input').trigger('click');
                 $(this).blur();
                 e.preventDefault();
             }
         });
-        
+
         this.chooseButton.children('input').on('click', function(e){
             if(isChooseButtonClick) {
                 isChooseButtonClick = false;
                 e.preventDefault();
-                e.stopPropagation(); 
+                e.stopPropagation();
             }
             else {
                 isChooseButtonClick = true;
@@ -2006,7 +2006,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     var row = $(this).closest('.ui-fileupload-row'),
                     removedFile = $this.files.splice(row.index(), 1);
                     removedFile[0].row = null;
-  
+
                     $this.removeFileRow(row);
 
                     if($this.files.length === 0) {
@@ -2139,13 +2139,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
     enableButton: function(btn) {
         btn.prop('disabled', false).removeClass('ui-state-disabled');
-    },
-
-    isCanvasSupported: function() {
-        var elem = document.createElement('canvas');
-        return !!(elem.getContext && elem.getContext('2d'));
     }
-
 });
 
 /**

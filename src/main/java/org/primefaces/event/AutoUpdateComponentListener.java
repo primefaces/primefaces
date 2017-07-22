@@ -33,7 +33,7 @@ public class AutoUpdateComponentListener implements SystemEventListener {
 
         if(component.isAutoUpdate() && context.isPostback()) {
             
-            if (!RequestContext.getCurrentInstance().isIgnoreAutoUpdate()) {
+            if (!RequestContext.getCurrentInstance(context).isIgnoreAutoUpdate()) {
         		context.getPartialViewContext().getRenderIds().add(component.getClientId(context));
         	}
         }

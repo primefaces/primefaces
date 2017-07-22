@@ -62,14 +62,6 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
     
     getPaginator: function() {
         return this.paginator;
-    },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] !== undefined;
-        }
-    
-        return false;
     }
     
 });

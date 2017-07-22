@@ -60,7 +60,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
             throw new FacesException("RemoteCommand '" + name + "'must be inside a form.");
         }
         
-        AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
+        AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
         
         String request = builder.init()
                         .source(clientId)

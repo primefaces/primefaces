@@ -263,14 +263,6 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
     disable: function() {
         this.jqEl.datetimepicker('disable');
-    },
-
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] !== undefined;
-        }
-
-        return false;
     }
 
 });

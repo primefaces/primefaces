@@ -118,9 +118,9 @@
 
         <!-- FeedReader -->
         <dependency>
-            <groupId>rome</groupId>
+            <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
-            <version>1.0</version>
+            <version>1.7.3</version>
             <scope>provided</scope>
         </dependency>
 
@@ -371,6 +371,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dialog/dialog.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/inputgroup.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/grid/grid.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.css</include>
@@ -434,7 +435,27 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dragdrop/dragdrop.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/effect/effect.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fieldset/fieldset.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.inputtext.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.inputtextarea.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectonemenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectoneradio.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectbooleancheckbox.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectmanycheckbox.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectlistbox.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectonelistbox.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectmanymenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.commandbutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.button.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectmanybutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectonebutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectbooleanbutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectcheckboxmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.inputmask.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.password.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.defaultcommand.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.splitbutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.themeswitcher.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.multiselectlistbox.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.js</include>
@@ -510,7 +531,6 @@
                             <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/knob/knob.js</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/excanvas/excanvas.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/1-jquery.knob.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/2-knob.js</include>
                             </includes>
@@ -522,6 +542,51 @@
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/1-timeline.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/socket/socket.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/socket/0-atmosphere.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/socket/1-socket.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/idlemonitor.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/0-jquery.idletimer.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/1-idlemonitor.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.timepicker.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.maskedinput.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.caretposition.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.autosize.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.cookie.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.mousewheel.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.rangy.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.browser.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.touch-punch.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.pfextensions.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/colorpicker/colorpicker.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/colorpicker/0-jquery.colorpicker.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/colorpicker/1-colorpicker.js</include>
                             </includes>
                         </aggregation>
                     </aggregations>
@@ -633,6 +698,7 @@
                         <groupId>net.alchim31.maven</groupId>
                         <artifactId>yuicompressor-maven-plugin</artifactId>
                         <configuration>
+                            <jswarn>false</jswarn>
                             <excludes>
                                 <exclude>**/*.something</exclude>
                                 <exclude>**/photocam.js</exclude>

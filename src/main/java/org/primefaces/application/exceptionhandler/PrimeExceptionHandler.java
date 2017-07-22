@@ -325,7 +325,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         ExternalContext externalContext = context.getExternalContext();
         externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
-        Map<String, String> errorPages = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getErrorPages();
+        Map<String, String> errorPages = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getErrorPages();
         String errorPage = evaluateErrorPage(errorPages, rootCause);
 
         String url = externalContext.getRequestContextPath() + errorPage;

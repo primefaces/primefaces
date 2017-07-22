@@ -44,8 +44,15 @@
             <defaultValue>true</defaultValue>
             <description>Clears the field on blur when incomplete input is entered.</description>
 		</attribute>
+        <attribute>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>text</defaultValue>
+            <description>Input field type. Default is text.</description>
+        </attribute>
 	</attributes>
-	    <resources>
+	<resources>
         <resource>
 			<name>components.css</name>
 		</resource>

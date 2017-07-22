@@ -118,7 +118,7 @@ public class TreeRenderer extends CoreRenderer {
                 }
             }
             
-            RequestContext.getCurrentInstance().addCallbackParam("descendantRowKeys", sb.toString());
+            RequestContext.getCurrentInstance(context).addCallbackParam("descendantRowKeys", sb.toString());
             sb.setLength(0);
             descendantRowKeys = null;
         }
@@ -621,6 +621,7 @@ public class TreeRenderer extends CoreRenderer {
 
             writer.startElement("span", null);
             writer.writeAttribute("class", contentClass, null);
+            writer.writeAttribute("role", "treeitem", null);
             writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
             writer.writeAttribute("aria-selected", String.valueOf(selected), null);
             if(checkbox) {

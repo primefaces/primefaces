@@ -89,7 +89,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String[] submittedValues = (hinputValues != null) ? hinputValues : new String[] {};
         String inputValue = params.get(clientId + "_input");
 
-        if (inputValue != null && !inputValue.trim().equals("")) {
+        if (!isValueBlank(inputValue)) {
             submittedValues = ArrayUtils.concat(submittedValues, new String[] { inputValue });
         }
 
@@ -248,7 +248,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(ac.isRequired()) writer.writeAttribute("aria-required", "true", null);
 
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, ac);
         }
 
@@ -329,7 +329,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String styleClass = ac.getPanelStyleClass();
         styleClass = styleClass == null ? AutoComplete.PANEL_CLASS : AutoComplete.PANEL_CLASS + " " + styleClass;
 
-        writer.startElement("div", null);
+        writer.startElement("span", null);
         writer.writeAttribute("id", ac.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", styleClass, null);
 
@@ -337,7 +337,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("style", ac.getPanelStyle(), null);
         }
 
-        writer.endElement("div");
+        writer.endElement("span");
     }
 
     protected void encodeMultipleMarkup(FacesContext context, AutoComplete ac) throws IOException {
@@ -404,10 +404,14 @@ public class AutoCompleteRenderer extends InputRenderer {
                 }
 
                 String tokenValue = converter != null ? converter.getAsString(context, ac, itemValue) : String.valueOf(itemValue);
+                String itemStyleClass = AutoComplete.TOKEN_DISPLAY_CLASS;
+                if (ac.getItemStyleClass() != null) {
+                    itemStyleClass += " " + ac.getItemStyleClass();
+                }
 
                 writer.startElement("li", null);
                 writer.writeAttribute("data-token-value", tokenValue, null);
-                writer.writeAttribute("class", AutoComplete.TOKEN_DISPLAY_CLASS, null);
+                writer.writeAttribute("class", itemStyleClass, null);
 
                 String labelClass = disabled ? AutoComplete.TOKEN_LABEL_DISABLED_CLASS : AutoComplete.TOKEN_LABEL_CLASS;
                 writer.startElement("span", null);
@@ -527,6 +531,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
                     writer.writeAttribute("data-item-value", value, null);
                     writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                    writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
                     if (hasGroupByTooltip) {
@@ -586,6 +591,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
                     writer.writeAttribute("data-item-value", value, null);
                     writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                    writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
                     if (hasGroupByTooltip) {
@@ -597,6 +603,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 else {
                     writer.writeAttribute("data-item-label", item, null);
                     writer.writeAttribute("data-item-value", item, null);
+                    writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
 
                     writer.writeText(item, null);
                 }

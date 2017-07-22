@@ -38,7 +38,7 @@ public class GrowlRenderer extends UINotificationRenderer {
         writer.startElement("span", growl);
 		writer.writeAttribute("id", clientId, "id");
         
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("class", "ui-growl-pl", null);
             writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
             writer.writeAttribute("data-global", growl.isGlobalOnly(), null);

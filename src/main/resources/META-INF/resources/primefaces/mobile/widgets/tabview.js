@@ -194,15 +194,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] !== undefined;
-        }
 
-        return false;
-    },
-    
     markAsLoaded: function(panel) {
         panel.data('loaded', true);
     },

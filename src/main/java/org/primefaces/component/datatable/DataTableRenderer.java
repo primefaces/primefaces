@@ -43,6 +43,7 @@ import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
+import org.primefaces.event.data.PostRenderEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
@@ -92,6 +93,8 @@ public class DataTableRenderer extends DataRenderer {
             encodeMarkup(context, table);
             encodeScript(context, table);
         }
+        
+        context.getApplication().publishEvent(context, PostRenderEvent.class, table);
 	}
     
     protected void preRender(FacesContext context, DataTable table) {
@@ -162,7 +165,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         
         if(defaultSorted && table.isMultiViewState() && table.isDefaultSort()) {
-            ValueExpression sortByVE = table.getValueExpression("sortBy");
+            ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             List<SortMeta> multiSortMeta = table.getMultiSortMeta();
             if(sortByVE != null || multiSortMeta != null) {
                 TableState ts = table.getTableState(true);
@@ -254,7 +257,8 @@ public class DataTableRenderer extends DataRenderer {
             .attr("resizeMode", table.getResizeMode(), "fit");
         
         //Draggable Rows
-        wb.attr("draggableRows", table.isDraggableRows(), false);
+        wb.attr("draggableRows", table.isDraggableRows(), false)
+            .attr("rowDragSelector", table.getRowDragSelector(), null);
         
         //Editing
         if(table.isEditable()) {
@@ -278,7 +282,8 @@ public class DataTableRenderer extends DataRenderer {
             .attr("reflow", table.isReflow(), false)
             .attr("rowHover", table.isRowHover(), false)
             .attr("clientCache", table.isClientCache(), false)
-            .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null);
+            .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null)
+            .callback("onRowClick", "function(row)", table.getOnRowClick());
         
         //Behaviors
         encodeClientBehaviors(context, table);

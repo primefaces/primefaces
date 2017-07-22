@@ -41,7 +41,7 @@ public class FileUploadRenderer extends CoreRenderer {
         FileUpload fileUpload = (FileUpload) component;
 
         if (!fileUpload.isDisabled()) {
-            PrimeConfiguration cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+            PrimeConfiguration cc = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
             String uploader = cc.getUploader();
             boolean isAtLeastJSF22 = cc.isAtLeastJSF22();
             String inputToDecodeId = getSimpleInputDecodeId(fileUpload, context);
@@ -100,8 +100,10 @@ public class FileUploadRenderer extends CoreRenderer {
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
 
-            if (fileUpload.getAllowTypes() != null) {
-                wb.append(",allowTypes:").append(fileUpload.getAllowTypes());
+            String allowTypes = fileUpload.getAllowTypes();
+
+            if (allowTypes != null) {
+                wb.append(",allowTypes:").append(allowTypes);
             }
         }
         else {

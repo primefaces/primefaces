@@ -80,7 +80,7 @@ public class WizardRenderer extends CoreRenderer {
                 tabToDisplay.encodeAll(context);
             }
 
-            RequestContext.getCurrentInstance().addCallbackParam("currentStep", wizard.getStep());
+            RequestContext.getCurrentInstance(context).addCallbackParam("currentStep", wizard.getStep());
         }
     }
 

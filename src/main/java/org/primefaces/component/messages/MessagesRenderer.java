@@ -100,7 +100,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         writer.writeAttribute("aria-live", "polite", null);
 
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-global", String.valueOf(globalOnly), null);
             writer.writeAttribute("data-summary", uiMessages.isShowSummary(), null);
             writer.writeAttribute("data-detail", uiMessages.isShowDetail(), null);

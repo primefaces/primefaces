@@ -18,20 +18,12 @@ ui-overlay-visible * {
     visibility: hidden !important;;
 }
 
-/* IE7 Fixes */
-.ui-overlay-visible table {
-    *border-collapse: collapse !important;
-}
-.ui-overlay-hidden table {
-    *border-collapse: separate !important;
-}
-
 .ui-datepicker .ui-datepicker-current.ui-priority-secondary {
     opacity: 1;
 }
 
-.ui-icon-blank { 
-    background-position: 16px 16px; 
+.ui-icon-blank {
+    background-position: 16px 16px;
 }
 
 /* Column Priorities */
@@ -101,7 +93,7 @@ ui-overlay-visible * {
 }
 
 /* FontAwesome */
-.ui-widget .ui-icon.fa, 
+.ui-widget .ui-icon.fa,
 .ui-icon.fa {
     background: none repeat scroll 0 0 transparent !important;
     text-indent: 0px !important;

@@ -134,7 +134,7 @@ public class SpinnerRenderer extends InputRenderer {
         if(spinner.isRequired()) writer.writeAttribute("aria-required", "true", null);
         if(labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
         
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, spinner);
         }
 

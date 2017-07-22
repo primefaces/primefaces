@@ -78,11 +78,11 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     @Override
     public void endDocument() throws IOException {
-        RequestContext requestContext = RequestContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();
+        RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
         if (requestContext != null) {
             try {
-                FacesContext context = FacesContext.getCurrentInstance();
                 if (context.isValidationFailed()) {
                     requestContext.addCallbackParam("validationFailed", true);
                 }
@@ -261,12 +261,11 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         
         metadataRendered = true;
         
-        RequestContext requestContext = RequestContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();
+        RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
         if (requestContext != null) {
             try {
-                FacesContext context = FacesContext.getCurrentInstance();
-
                 // catch possible ViewExpired
                 UIViewRoot viewRoot = context.getViewRoot();
                 if (viewRoot != null) {

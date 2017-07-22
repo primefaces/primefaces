@@ -61,8 +61,8 @@ import javax.faces.event.BehaviorEvent;
             lazyModel.setWrappedData(data);
 
             //Update paginator for callback
-            if(isRequestSource(getFacesContext()) && this.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
+            if(ComponentUtils.isRequestSource(this, getFacesContext()) && this.isPaginator()) {
+                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
 
                 if(requestContext != null) {
                     requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
@@ -71,17 +71,11 @@ import javax.faces.event.BehaviorEvent;
         }
     }
 
-    public boolean isRequestSource(FacesContext context) {
-        String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
-
-        return partialSource != null && this.getClientId(context).equals(partialSource);
-    }
-
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+        if(ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             setRowIndex(-1);
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);

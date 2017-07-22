@@ -122,7 +122,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("tabindex", menu.getTabindex(), null);
         }
         
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, menu);
         }
         

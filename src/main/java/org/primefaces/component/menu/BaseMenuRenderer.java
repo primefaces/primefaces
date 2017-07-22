@@ -311,7 +311,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     protected String buildAjaxRequest(FacesContext context, AbstractMenu menu, AjaxSource source, UIComponent form, Map<String,List<String>> params) {
         String clientId = menu.getClientId(context);
         
-        AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
+        AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
         
         builder.init()
                 .source(clientId)

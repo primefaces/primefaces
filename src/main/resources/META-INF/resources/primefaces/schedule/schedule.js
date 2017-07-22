@@ -13269,7 +13269,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 if(dateSelectBehavior) {
                     var ext = {
                         params: [
-							{name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.zone()*60000}
+							{name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.utcOffset()*60000}
                         ]
                     };
 
@@ -13362,7 +13362,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
     setupEventSource: function() {
         var $this = this,
-        offset = moment().zone()*60000;
+        offset = moment().utcOffset()*60000;
 
         this.cfg.events = function(start, end, timezone, callback) {
             var options = {
@@ -13437,7 +13437,12 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var columnFormat = this.cfg.columnFormatOptions;
         if(columnFormat) {
             for (var view in views) {
-                views[view] = {columnFormat: columnFormat[view]};
+                if(view == "agendaWeek") {  // Github #2421
+                    views[view] = {columnFormat: columnFormat['week']};
+                }
+                else {
+                    views[view] = {columnFormat: columnFormat[view]};
+                }
             }
         }
 

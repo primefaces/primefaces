@@ -69,11 +69,11 @@
             this.nonAjaxPosted = true;
             this.abortXHRs();
         },
-        
+
         abortXHRs : function() {
             PrimeFaces.ajax.Queue.abortAll();
         },
-        
+
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
                 element.bind(event, function(e) {
@@ -182,11 +182,6 @@
             });
 
             return this;
-        },
-
-        //Deprecated, use PrimeFaces.env.isIE instead
-        isIE: function(version) {
-            return PrimeFaces.env.isIE(version);
         },
 
         info: function(log) {
@@ -342,13 +337,13 @@
          * @returns {string} The resource URL.
          */
         getFacesResource : function(name, library, version) {
-            
+
             // just get sure - name shoudln't start with a slash
             if (name.indexOf('/') === 0)
             {
                 name = name.substring(1, name.length);
             }
-            
+
             var scriptURI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/core.js"]').attr('src');
             // portlet
             if (!scriptURI) {
@@ -609,12 +604,12 @@
 
             return this.localeSettings;
         },
-        
+
         getAriaLabel: function(key) {
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
             return (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
         },
-        
+
         zindex : 1000,
 
         customFocus : false,
@@ -636,7 +631,7 @@
         RESET_VALUES_PARAM : "primefaces.resetvalues",
 
         IGNORE_AUTO_UPDATE_PARAM : "primefaces.ignoreautoupdate",
-        
+
         SKIP_CHILDREN_PARAM : "primefaces.skipchildren",
 
         VIEW_STATE : "javax.faces.ViewState",
@@ -699,7 +694,7 @@
         }
 
     };
-    
+
     PrimeFaces.locales['en'] = PrimeFaces.locales['en_US'];
 
     PF = function(widgetVar) {

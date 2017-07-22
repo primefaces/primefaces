@@ -140,10 +140,6 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
         return EVENT_NAMES;
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
-
     public boolean isSelectionRequest(FacesContext context) {
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelection");
 	}
@@ -172,7 +168,7 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && (event instanceof AjaxBehaviorEvent)) {
+        if(ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);

@@ -77,7 +77,7 @@ public class ComponentUtils {
             if (component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
-                PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+                PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
 
                 if (config.isInterpretEmptyStringAsNull()
                         && submittedValue == null
@@ -101,7 +101,7 @@ public class ComponentUtils {
                 Converter converter = valueHolder.getConverter();
                 if (converter == null) {
                     Class valueType = value.getClass();
-                    if(valueType == String.class && !RequestContext.getCurrentInstance().getApplicationContext().getConfig().isStringConverterAvailable()) {
+                    if(valueType == String.class && !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
                         return (String) value;
                     }
 
@@ -152,7 +152,7 @@ public class ComponentUtils {
     	}
 
         if (converterType == String.class
-        		&& !RequestContext.getCurrentInstance().getApplicationContext().getConfig().isStringConverterAvailable()) {
+        		&& !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
         	return null;
         }
 
@@ -168,7 +168,7 @@ public class ComponentUtils {
     }
 
     public static String escapeJQueryId(String id) {
-        return "#" + id.replaceAll(":", "\\\\\\\\:");
+        return "#" + id.replaceAll(":", "\\\\:");
     }
 
     public static String resolveWidgetVar(String expression) {
@@ -237,7 +237,7 @@ public class ComponentUtils {
     }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
-        boolean globalValue = RequestContext.getCurrentInstance().isRTL();
+        boolean globalValue = RequestContext.getCurrentInstance(context).isRTL();
 
         return globalValue||component.isRTL();
     }
@@ -335,8 +335,8 @@ public class ComponentUtils {
         }
     }
 
-    public static boolean isSkipIteration(VisitContext visitContext) {
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF21()) {
+    public static boolean isSkipIteration(VisitContext visitContext, FacesContext context) {
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF21()) {
             return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
         }
         else {
@@ -599,4 +599,7 @@ public class ComponentUtils {
        }
     }
 
+    public static boolean isRequestSource(UIComponent component, FacesContext context) {
+        return component.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
+    }
 }

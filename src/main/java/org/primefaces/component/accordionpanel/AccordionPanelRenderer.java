@@ -32,26 +32,26 @@ import org.primefaces.util.WidgetBuilder;
 
 public class AccordionPanelRenderer extends CoreRenderer {
 
-	@Override
-	public void decode(FacesContext context, UIComponent component) {
-		AccordionPanel acco = (AccordionPanel) component;
-		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        AccordionPanel acco = (AccordionPanel) component;
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String active = params.get(acco.getClientId(context) + "_active");
 		
-		if(active != null) {
+        if(active != null) {
             if(isValueBlank(active)) {                
                 acco.setActiveIndex(null);
             }
             else {
                 acco.setActiveIndex(active);
             }
-		}
+        }
         
         decodeBehaviors(context, component);
-	}
+    }
 
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		AccordionPanel acco = (AccordionPanel) component;        
 
@@ -73,14 +73,16 @@ public class AccordionPanelRenderer extends CoreRenderer {
             }
         }
         else {
+            acco.resetLoadedTabsState();
+            
             encodeMarkup(context, acco);
             encodeScript(context, acco);
         }
-	}
+    }
 	
-	protected void encodeMarkup(FacesContext context, AccordionPanel acco) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = acco.getClientId(context);
+    protected void encodeMarkup(FacesContext context, AccordionPanel acco) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = acco.getClientId(context);
         String widgetVar = acco.resolveWidgetVar();
         String styleClass = acco.getStyleClass();
         styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
@@ -89,10 +91,10 @@ public class AccordionPanelRenderer extends CoreRenderer {
             styleClass = styleClass + " ui-accordion-rtl";
         }
         
-		writer.startElement("div", null);
-		writer.writeAttribute("id", clientId, null);
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-		if(acco.getStyle() != null) {
+        if(acco.getStyle() != null) {
             writer.writeAttribute("style", acco.getStyle(), null);
         }
         
@@ -100,15 +102,15 @@ public class AccordionPanelRenderer extends CoreRenderer {
         
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-		encodeTabs(context, acco);
+        encodeTabs(context, acco);
 
         encodeStateHolder(context, acco);
 
-		writer.endElement("div");
-	}
+        writer.endElement("div");
+    }
 
-	protected void encodeScript(FacesContext context, AccordionPanel acco) throws IOException {
-		String clientId = acco.getClientId(context);
+    protected void encodeScript(FacesContext context, AccordionPanel acco) throws IOException {
+        String clientId = acco.getClientId(context);
         boolean multiple = acco.isMultiple();
         
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -132,21 +134,21 @@ public class AccordionPanelRenderer extends CoreRenderer {
         wb.finish();
 	}
 
-	protected void encodeStateHolder(FacesContext context, AccordionPanel accordionPanel) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = accordionPanel.getClientId(context);
-		String stateHolderId = clientId + "_active"; 
-		
-		writer.startElement("input", null);
-		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", stateHolderId, null);
-		writer.writeAttribute("name", stateHolderId, null);
-		writer.writeAttribute("value", accordionPanel.getActiveIndex(), null);
+    protected void encodeStateHolder(FacesContext context, AccordionPanel accordionPanel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = accordionPanel.getClientId(context);
+        String stateHolderId = clientId + "_active"; 
+
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", stateHolderId, null);
+        writer.writeAttribute("name", stateHolderId, null);
+        writer.writeAttribute("value", accordionPanel.getActiveIndex(), null);
         writer.writeAttribute("autocomplete", "off", null);
-		writer.endElement("input");
-	}
+        writer.endElement("input");
+    }
 	
-	protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
+    protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
         boolean dynamic = acco.isDynamic();
         String var = acco.getVar();
         List<String> activeIndexes = Arrays.asList(acco.getActiveIndex().split(","));
@@ -178,7 +180,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
             
             acco.setIndex(-1);
         }
-	}
+    }
  
     protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, boolean active, boolean dynamic, boolean rtl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -237,12 +239,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
     }
 
     @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Do nothing
-	}
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+            //Do nothing
+    }
 
     @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+    public boolean getRendersChildren() {
+            return true;
+    }
 }

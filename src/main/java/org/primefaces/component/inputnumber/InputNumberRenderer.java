@@ -131,7 +131,7 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("onkeyup", inputNumber.getOnkeyup(), null);
         }
 
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputNumber);
         }
         
@@ -179,7 +179,7 @@ public class InputNumberRenderer extends InputRenderer {
         
         writer.writeAttribute("class", styleClass, null);
 
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputNumber);
         }
 
@@ -188,7 +188,7 @@ public class InputNumberRenderer extends InputRenderer {
 
     protected void encodeScript(FacesContext context, InputNumber inputNumber, Object value, String valueToRender)
             throws IOException {
-        WidgetBuilder wb = RequestContext.getCurrentInstance().getWidgetBuilder();
+        WidgetBuilder wb = RequestContext.getCurrentInstance(context).getWidgetBuilder();
         wb.initWithDomReady(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(), inputNumber.getClientId());
         wb.attr("disabled", inputNumber.isDisabled())
                 .attr("valueToRender", formatForPlugin(valueToRender, inputNumber, value));
@@ -212,6 +212,7 @@ public class InputNumberRenderer extends InputRenderer {
         String roundMethod = inputNumber.getRoundMethod();
         String decimalPlaces = inputNumber.getDecimalPlaces();
         String emptyValue = inputNumber.getEmptyValue();
+        String lZero = inputNumber.getLeadingZero();
         boolean padControl = inputNumber.isPadControl();
 
         String options = "";
@@ -225,6 +226,7 @@ public class InputNumberRenderer extends InputRenderer {
         options += isValueBlank(roundMethod) ? "" : "mRound:\"" + escapeText(roundMethod) + "\",";
         options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + escapeText(decimalPlaces) + "\",";
         options += "wEmpty:\"" + escapeText(emptyValue) + "\",";
+        options += "lZero:\"" + escapeText(lZero) + "\",";
         options += "aPad:" + padControl + ",";
 
         //if all options are empty return empty

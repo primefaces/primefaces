@@ -1,6 +1,7 @@
 import java.util.Map; 
 
     public final static String STYLE_CLASS = "ui-clock ui-widget ui-widget-header ui-corner-all";
+    public final static String ANALOG_STYLE_CLASS = "ui-analog-clock ui-widget";
 
     public boolean isSyncRequest() {
         FacesContext context = getFacesContext();

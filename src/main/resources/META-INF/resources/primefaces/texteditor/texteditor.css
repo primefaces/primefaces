@@ -1,5 +1,5 @@
 /*!
- * Quill Editor v1.2.4
+ * Quill Editor v1.2.6
  * https://quilljs.com/
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
@@ -91,13 +91,15 @@
 }
 .ql-editor li::before {
   display: inline-block;
-  margin-right: 0.3em;
-  text-align: right;
   white-space: nowrap;
   width: 1.2em;
-}
-.ql-editor li:not(.ql-direction-rtl)::before {
+  text-align: right;
+  margin-right: 0.3em;
   margin-left: -1.5em;
+}
+.ql-editor li.ql-direction-rtl::before {
+  text-align: left;
+  margin-left: 0.3em;
 }
 .ql-editor ol li,
 .ql-editor ul li {
@@ -478,6 +480,24 @@
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
   stroke: #06c;
+}
+@media (pointer: coarse) {
+  .ql-snow.ql-toolbar button:hover:not(.ql-active),
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) {
+    color: #444;
+  }
+  .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-fill,
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-fill,
+  .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill,
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill {
+    fill: #444;
+  }
+  .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke,
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke,
+  .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter,
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter {
+    stroke: #444;
+  }
 }
 .ql-snow {
   box-sizing: border-box;

@@ -8,9 +8,20 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.table = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.datasource);
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.trigger);
         this.tableId = this.table.attr('id');
-        this.thead = $(PrimeFaces.escapeClientId(this.tableId) + '_head');
-        this.tbody = $(PrimeFaces.escapeClientId(this.tableId) + '_data');
-        this.tfoot = $(PrimeFaces.escapeClientId(this.tableId) + '_foot');
+        this.hasFrozenColumn = this.table.hasClass('ui-datatable-frozencolumn');
+        var clientId = PrimeFaces.escapeClientId(this.tableId);
+        
+        if(this.hasFrozenColumn) {
+            this.thead = $(clientId + '_frozenThead,' + clientId + '_scrollableThead');
+            this.tbody = $(clientId + '_frozenTbody,' + clientId + '_scrollableTbody');
+            this.tfoot = $(clientId + '_frozenTfoot,' + clientId + '_scrollableTfoot');
+            this.frozenColumnCount = this.thead.eq(0).children('tr').length;
+        }
+        else {
+            this.thead = $(clientId + '_head');
+            this.tbody = $(clientId + '_data');
+            this.tfoot = $(clientId + '_foot');
+        }
         this.visible = false;
         
         this.render();
@@ -263,33 +274,67 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     check: function(chkbox) {
         chkbox.addClass('ui-state-active').removeClass('ui-state-hover').children('.ui-chkbox-icon').addClass('ui-icon-check').removeClass('ui-icon-blank');
         
-        var index = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))).index() + 1,
-        columnHeader = this.thead.children('tr').find('th:nth-child(' + index + ')'),
+        var column = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))),
+        index = column.index() + 1,
+        thead = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.thead.eq(0) : this.thead.eq(1)) : this.thead,
+        tbody = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tbody.eq(0) : this.tbody.eq(1)) : this.tbody,
+        tfoot = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tfoot.eq(0) : this.tfoot.eq(1)) : this.tfoot;
+
+        var rowHeader = thead.children('tr'),
+        columnHeader = rowHeader.find('th:nth-child(' + index + ')'),
         checkedInput = chkbox.prev().children('input');
         
         checkedInput.prop('checked', true).attr('aria-checked', true);
         columnHeader.removeClass('ui-helper-hidden');
         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).removeClass('ui-helper-hidden');
-        this.tbody.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
-        this.tfoot.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
+        tbody.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
+        tfoot.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
         
+        if(this.hasFrozenColumn) {
+            var headers = rowHeader.children('th');
+            if(headers.length !== headers.filter('.ui-helper-hidden').length) {
+                thead.closest('td').removeClass('ui-helper-hidden');
+            }
+            
+            if(!column.hasClass('ui-frozen-column')) {
+                index += this.frozenColumnCount;
+            }
+        }
+
         this.fireToggleEvent(true, (index - 1));
         this.updateColspan();
     },
     
     uncheck: function(chkbox) {
         chkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
+
+        var column = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))),
+        index = column.index() + 1,
+        thead = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.thead.eq(0) : this.thead.eq(1)) : this.thead,
+        tbody = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tbody.eq(0) : this.tbody.eq(1)) : this.tbody,
+        tfoot = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tfoot.eq(0) : this.tfoot.eq(1)) : this.tfoot;
         
-        var index = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))).index() + 1,
-        columnHeader = this.thead.children('tr').find('th:nth-child(' + index + ')'),
+        var rowHeader = thead.children('tr'),
+        columnHeader = rowHeader.find('th:nth-child(' + index + ')'),
         uncheckedInput = chkbox.prev().children('input');
         
         uncheckedInput.prop('checked', false).attr('aria-checked', false);
         columnHeader.addClass('ui-helper-hidden');
         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).addClass('ui-helper-hidden');
-        this.tbody.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
-        this.tfoot.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
+        tbody.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
+        tfoot.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
 
+        if(this.hasFrozenColumn) {
+            var headers = rowHeader.children('th');
+            if(headers.length === headers.filter(':hidden').length) {
+                thead.closest('td').addClass('ui-helper-hidden');
+            }
+            
+            if(!column.hasClass('ui-frozen-column')) {
+                index += this.frozenColumnCount;
+            }
+        }
+            
         this.fireToggleEvent(false, (index - 1));
         this.updateColspan();
     },

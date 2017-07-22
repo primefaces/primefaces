@@ -61,7 +61,7 @@ import javax.faces.event.BehaviorEvent;
                 //if there is info window, update and show it
                 GMapInfoWindow infoWindow = getInfoWindow();
                 if(infoWindow != null) {
-                    RequestContext.getCurrentInstance().update(infoWindow.getClientId(context));
+                    RequestContext.getCurrentInstance(getFacesContext()).update(infoWindow.getClientId(context));
                 }
             }
             else if(eventName.equals("stateChange")) {

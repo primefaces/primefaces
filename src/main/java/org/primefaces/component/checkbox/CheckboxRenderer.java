@@ -58,7 +58,7 @@ public class CheckboxRenderer extends InputRenderer {
         }
 
         encodeOptionInput(context, selectManyCheckbox, checkbox, inputId, masterClientId, disabled);
-        encodeOptionOutput(context, disabled);
+        encodeOptionOutput(context, disabled, selectManyCheckbox);
 
         writer.endElement("div");
     }
@@ -113,10 +113,11 @@ public class CheckboxRenderer extends InputRenderer {
         return eventBuilder.toString();
     }
 
-    protected void encodeOptionOutput(FacesContext context, boolean disabled) throws IOException {
+    protected void encodeOptionOutput(FacesContext context, boolean disabled, SelectManyCheckbox selectManyCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = HTML.CHECKBOX_BOX_CLASS;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
+        boxClass = !selectManyCheckbox.isValid() ? boxClass + " ui-state-error" : boxClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);

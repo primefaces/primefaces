@@ -61,7 +61,7 @@ public class HotkeyRenderer extends CoreRenderer {
 				throw new FacesException("Hotkey '"+ clientId+ "' needs to be enclosed in a form when ajax mode is enabled");
 			}
             
-            AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
+            AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
         
             String request = builder.init()
             	.source(clientId)

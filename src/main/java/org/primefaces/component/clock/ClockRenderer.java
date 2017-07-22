@@ -34,7 +34,7 @@ public class ClockRenderer extends CoreRenderer {
         Clock clock = (Clock) component;
         
         if(clock.isSyncRequest()) {
-            RequestContext.getCurrentInstance().addCallbackParam("datetime", System.currentTimeMillis());
+            RequestContext.getCurrentInstance(context).addCallbackParam("datetime", System.currentTimeMillis());
             context.renderResponse();
         }
     }
@@ -49,11 +49,20 @@ public class ClockRenderer extends CoreRenderer {
     
     protected void encodeMarkup(FacesContext context, Clock clock) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = clock.getClientId(context);
         
-        writer.startElement("span", clock);
-        writer.writeAttribute("id", clock.getClientId(context), null);
-        writer.writeAttribute("class", Clock.STYLE_CLASS, null);
-        writer.endElement("span");
+        if(clock.getDisplayMode().equals("analog")) {
+            writer.startElement("div", clock);
+            writer.writeAttribute("id", clientId, null);
+            writer.writeAttribute("class", Clock.ANALOG_STYLE_CLASS, null);
+            writer.endElement("div");
+        }
+        else {
+            writer.startElement("span", clock);
+            writer.writeAttribute("id", clientId, null);
+            writer.writeAttribute("class", Clock.STYLE_CLASS, null);
+            writer.endElement("span");
+        }
     }
 
     protected void encodeScript(FacesContext context, Clock clock) throws IOException {
@@ -64,6 +73,7 @@ public class ClockRenderer extends CoreRenderer {
         wb.init("Clock", clock.resolveWidgetVar(), clientId);
         wb.attr("mode", mode)
             .attr("pattern", clock.getPattern(), null)
+            .attr("displayMode", clock.getDisplayMode())
             .attr("locale", context.getViewRoot().getLocale().toString());
         
         if(mode.equals("server")) {

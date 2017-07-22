@@ -69,12 +69,6 @@ public class AjaxRequestBuilder {
         return this;
     }
 
-    private boolean isValueBlank(String value) {
-		if(value == null)
-			return true;
-
-		return value.trim().equals("");
-	}
 
     public AjaxRequestBuilder process(UIComponent component, String expressions) {
         addExpressions(component, expressions, "p", SearchExpressionHint.NONE);
@@ -89,7 +83,7 @@ public class AjaxRequestBuilder {
     }
 
     private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, int options) {
-        if(!isValueBlank(expressions)) {
+        if(!ComponentUtils.isValueBlank(expressions)) {
         	String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, options);
             buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }
@@ -161,7 +155,7 @@ public class AjaxRequestBuilder {
 
     @Deprecated
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
 
     	//component can override global setting
         boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
@@ -174,7 +168,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet, String partialSubmitFilter) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
 
     	//component can override global setting
         boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
@@ -191,7 +185,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder resetValues(boolean value, boolean resetValuesSet) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
 
     	//component can override global setting
         boolean resetValues = resetValuesSet ? value : config.isResetValuesEnabled();
@@ -353,7 +347,7 @@ public class AjaxRequestBuilder {
     }
 
     private void addFragmentConfig() {
-        Map<Object,Object> attrs = RequestContext.getCurrentInstance().getAttributes();
+        Map<Object,Object> attrs = RequestContext.getCurrentInstance(context).getAttributes();
         Object fragmentId = attrs.get(Constants.FRAGMENT_ID);
         if(fragmentId != null) {
             buffer.append(",fi:\"").append(fragmentId).append("\"");

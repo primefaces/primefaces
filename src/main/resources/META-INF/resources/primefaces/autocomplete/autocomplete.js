@@ -132,9 +132,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         var closeSelector = '> li.ui-autocomplete-token > .ui-autocomplete-token-icon';
         this.multiItemContainer.off('click', closeSelector).on('click', closeSelector, null, function(event) {
             if($this.multiItemContainer.children('li.ui-autocomplete-token').length === $this.cfg.selectLimit) {
-                if(PrimeFaces.isIE(8)) {
-                    $this.input.val('');
-                }
                 $this.input.css('display', 'inline');
                 $this.enableDropdown();
             }
@@ -162,16 +159,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
 
-            var offset = $this.panel.offset();
-            if(e.target === $this.input.get(0)) {
-                return;
-            }
-
-            if (e.pageX < offset.left ||
-                e.pageX > offset.left + $this.panel.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.panel.height()) {
-                $this.hide();
+            // don't hide the panel when the clicked item is child of the panel or itemtip
+            var $eventTarget = $(e.target);
+            if ($this.panel.has($eventTarget).length == 0) {
+                if ($this.itemtip) {
+                    if ($this.itemtip.has($eventTarget).length == 0) {
+                        $this.hide();
+                    }
+                }
+                else {
+                    $this.hide();
+                }
             }
         });
 
@@ -252,7 +250,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(PrimeFaces.isIE(9) && (key === keyCode.BACKSPACE || key === keyCode.DELETE)) {
+            if(PrimeFaces.env.isIE(9) && (key === keyCode.BACKSPACE || key === keyCode.DELETE)) {
                 $this.processKeyEvent(e);
             }
 
@@ -326,11 +324,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             $this.deleteTimeout();
                         }
 
-                        highlightedItem.click();
+                        if (highlightedItem.length > 0) {
+                            highlightedItem.click();
+                            $this.itemSelectedWithEnter = true;
+                        }
 
                         e.preventDefault();
                         e.stopPropagation();
-                        $this.itemSelectedWithEnter = true;
+
                         break;
 
                     case 18: //keyCode.ALT:
@@ -394,10 +395,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             itemValue = item.attr('data-item-value'),
             isMoreText = item.hasClass('ui-autocomplete-moretext');
 
-            if(PrimeFaces.isIE(8)) {
-                $this.itemClick = true;
-            }
-
             if(isMoreText) {
                 $this.input.focus();
                 $this.invokeMoreTextBehavior();
@@ -410,7 +407,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     }
 
                     if(!found) {
-                        var itemDisplayMarkup = '<li data-token-value="' + itemValue + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
+                        var itemStyleClass = item.attr('data-item-class');
+                        var itemDisplayMarkup = '<li data-token-value="' + itemValue;
+                        itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
+                        itemDisplayMarkup += (itemStyleClass === '' ? '' : ' '+itemStyleClass) + '">';
                         itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
                         itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + item.attr('data-item-label') + '</span></li>';
 
@@ -475,12 +475,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-        // for click event on IE8
-        if(PrimeFaces.isIE(8) && ($this.itemClick || e.originalEvent.propertyName !== 'value')) {
-            $this.itemClick = false;
-            return;
-        }
-
         var value = $this.input.val();
 
         if($this.cfg.pojo && !$this.cfg.multiple) {
@@ -489,6 +483,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         if(!value.length) {
             $this.hide();
+            $this.deleteTimeout();
         }
 
         if(value.length >= $this.cfg.minLength) {
@@ -775,12 +770,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             var value = $(this).val(),
             valid = false;
 
-            if(PrimeFaces.isIE(8)) {
-                $this.itemClick = true;
-            }
-
             for(var i = 0; i < $this.currentItems.length; i++) {
-                var stripedItem = $this.currentItems[i].replace(/\r?\n/g, '');
+                var stripedItem = $this.currentItems[i];
+				if (stripedItem) {
+					stripedItem = stripedItem.replace(/\r?\n/g, '');
+				}
                 if(stripedItem === value) {
                     valid = true;
                     break;
@@ -822,14 +816,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     activate: function() {
         this.active = true;
-    },
-
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-
-        return false;
     },
 
     alignPanel: function() {

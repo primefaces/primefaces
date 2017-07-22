@@ -316,7 +316,7 @@ import org.primefaces.component.datatable.TableState;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+        if(ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             setRowIndex(-1);
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
@@ -564,8 +564,8 @@ import org.primefaces.component.datatable.TableState;
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller for callback
-            if(this.isRequestSource(context) && (this.isPaginator() || this.isLiveScroll())) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
+            if(ComponentUtils.isRequestSource(this, context) && (this.isPaginator() || this.isLiveScroll() || this.isVirtualScroll())) {
+                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
 
                 if(requestContext != null) {
                     requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
@@ -593,8 +593,8 @@ import org.primefaces.component.datatable.TableState;
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller  for callback
-            if(this.isRequestSource(getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
+            if(ComponentUtils.isRequestSource(this, getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
+                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
 
                 if(requestContext != null) {
                     requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
@@ -775,12 +775,6 @@ import org.primefaces.component.datatable.TableState;
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
-    }
-
-    public boolean isRequestSource(FacesContext context) {
-        String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
-
-        return partialSource != null && this.getClientId(context).equals(partialSource);
     }
 
     public boolean isBodyUpdate(FacesContext context) {

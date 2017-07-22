@@ -117,6 +117,13 @@
             <defaultValue>true</defaultValue>
             <description>Controls padding of the decimal places. If true, always pads the decimal with zeros.</description>
 		</attribute>
+        <attribute>
+			<name>leadingZero</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>allow</defaultValue>
+            <description>Controls leading zero behavior. Valid values are "allow"(default), "deny" and "keep".</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

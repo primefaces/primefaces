@@ -31,7 +31,7 @@ public class FragmentRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
         Fragment fragment = (Fragment) component;
         String clientId = fragment.getClientId(context);
-        Map<Object,Object> attrs = RequestContext.getCurrentInstance().getAttributes();
+        Map<Object,Object> attrs = RequestContext.getCurrentInstance(context).getAttributes();
         attrs.put(Constants.FRAGMENT_ID, clientId);
         
         if(fragment.isAutoUpdate()) {
@@ -46,6 +46,6 @@ public class FragmentRenderer extends CoreRenderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		context.getResponseWriter().endElement("div");
         
-        RequestContext.getCurrentInstance().getAttributes().remove(Constants.FRAGMENT_ID);
+        RequestContext.getCurrentInstance(context).getAttributes().remove(Constants.FRAGMENT_ID);
 	}
 }

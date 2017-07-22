@@ -319,7 +319,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, radio);
         }
 

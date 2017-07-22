@@ -6110,14 +6110,6 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         toggleBehavior.call(this, ext);
-    },
-
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-
-        return false;
     }
 
 });

@@ -139,7 +139,7 @@ public class TreeTableRenderer extends DataRenderer {
                 }
             }
             
-            RequestContext.getCurrentInstance().addCallbackParam("descendantRowKeys", sb.toString());
+            RequestContext.getCurrentInstance(context).addCallbackParam("descendantRowKeys", sb.toString());
             sb.setLength(0);
             descendantRowKeys = null;
         }
@@ -914,7 +914,10 @@ public class TreeTableRenderer extends DataRenderer {
         tt.updateRowKeys(root);
         
         RequestContext requestContext = RequestContext.getCurrentInstance();
-        requestContext.addCallbackParam("selection", tt.getSelectedRowKeysAsString());
+        String selectedRowKeys = tt.getSelectedRowKeysAsString();
+        if (selectedRowKeys != null) {
+            requestContext.addCallbackParam("selection", selectedRowKeys);
+        }
     }
 
     protected void renderNativeCheckbox(FacesContext context, TreeTable tt, boolean checked, boolean partialSelected) throws IOException {
@@ -1054,7 +1057,7 @@ public class TreeTableRenderer extends DataRenderer {
         tt.setRowKey(null);
         
         //Metadata for callback
-        RequestContext requestContext = RequestContext.getCurrentInstance();
+        RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
         if(requestContext != null) {
             if(tt.isPaginator())

@@ -1306,3 +1306,32 @@ a {
 .aui .jcrop-holder img {
 	max-width: none;
 }
+
+/* InputGroup */
+.ui-inputgroup .ui-inputgroup-addon,
+.ui-inputgroup .ui-inputgroup-addon-checkbox{
+    border-color: #a8a8a8;
+    background-color: #f0f0f0;
+    color: #4f4f4f;
+}
+.ui-inputgroup .ui-inputgroup-addon:first-child,
+.ui-inputgroup .ui-inputgroup-addon-checkbox:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.ui-inputgroup .ui-inputgroup-addon:last-child,
+.ui-inputgroup .ui-inputgroup-addon-checkbox:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+    
+.ui-inputgroup .ui-button:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+        
+.ui-inputgroup .ui-button:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}

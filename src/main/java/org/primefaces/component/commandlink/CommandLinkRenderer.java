@@ -57,18 +57,18 @@ public class CommandLinkRenderer extends CoreRenderer {
 	}
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		CommandLink link = (CommandLink) component;
-		String clientId = link.getClientId(context);
-        Object label = link.getValue();
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+            ResponseWriter writer = context.getResponseWriter();
+            CommandLink link = (CommandLink) component;
+            String clientId = link.getClientId(context);
+            Object label = link.getValue();
 
 		if(!link.isDisabled()) {
             String request;
             boolean ajax = link.isAjax();
             String styleClass = link.getStyleClass();
             styleClass = styleClass == null ? CommandLink.STYLE_CLASS : CommandLink.STYLE_CLASS + " " + styleClass;
-            RequestContext requestContext = RequestContext.getCurrentInstance();
+            RequestContext requestContext = RequestContext.getCurrentInstance(context);
             boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&link.isValidateClient();
         
             StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);

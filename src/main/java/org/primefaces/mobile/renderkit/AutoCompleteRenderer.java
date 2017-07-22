@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -69,7 +70,8 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         String inputId = clientId + "_input";
-        String valueToRender = ComponentUtils.getValueToRender(context, ac);
+        String var = ac.getVar();
+        String itemLabel;
             
         writer.startElement("div", null);
         writer.writeAttribute("class", AutoComplete.MOBILE_INPUT_CONTAINER_CLASS, null);
@@ -82,7 +84,55 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
         
-        if(valueToRender != null) writer.writeAttribute("value", valueToRender , null);
+        if(var == null) {
+            itemLabel = ComponentUtils.getValueToRender(context, ac);
+            
+            if(itemLabel != null) {
+                writer.writeAttribute("value", itemLabel , null);
+            }
+        }
+        else {
+            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+            
+            if(ac.isValid()) {
+                requestMap.put(var, ac.getValue());
+                itemLabel = ac.getItemLabel();
+            }
+            else {
+                Object submittedValue = ac.getSubmittedValue();
+                
+                Object value = ac.getValue();
+                
+                if(submittedValue == null && value != null) {
+                    requestMap.put(var, value);
+                    itemLabel = ac.getItemLabel();
+                }
+                else if(submittedValue != null) {
+                    // retrieve the actual item (pojo) from the converter
+                    try {
+                        Object item = getConvertedValue(context, ac,
+                                String.valueOf(submittedValue));
+                        requestMap.put(var, item);
+                        itemLabel = ac.getItemLabel();
+                    }
+                    catch (ConverterException ce) {
+                        itemLabel = String.valueOf(submittedValue);
+                    }
+
+                }
+                else {
+                	itemLabel = null;
+                }
+
+            }
+
+            if(itemLabel != null) {
+                writer.writeAttribute("value", itemLabel, null);
+            }
+            
+            requestMap.remove(var);
+        }
+        
         if(ac.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         
@@ -138,6 +188,7 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
                 String value = (converter == null) ? (String) ac.getItemValue() : converter.getAsString(context, ac, ac.getItemValue());
                 writer.writeAttribute("data-item-value", value, null);
                 writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                 
                 if(hasContent)
                     renderChildren(context, ac);
@@ -147,6 +198,7 @@ public class AutoCompleteRenderer extends org.primefaces.component.autocomplete.
             else {
                 writer.writeAttribute("data-item-label", item, null);
                 writer.writeAttribute("data-item-value", item, null);
+                writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                 
                 writer.writeText(item, null);
             }

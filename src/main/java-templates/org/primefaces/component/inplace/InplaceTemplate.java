@@ -62,9 +62,6 @@ import javax.faces.event.BehaviorEvent;
             super.processUpdates(context);
         }
     }
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
 
     private boolean shouldSkipChildren(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cancel")||this.isDisabled();

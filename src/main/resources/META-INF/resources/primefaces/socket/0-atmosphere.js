@@ -47,7 +47,7 @@
         hasOwn = Object.prototype.hasOwnProperty;
 
     atmosphere = {
-        version: "2.3.2-javascript",
+        version: "2.3.3-javascript",
         onError: function (response) {
         },
         onClose: function (response) {
@@ -674,7 +674,8 @@
 
                         var storage = window.localStorage,
                             get = function (key) {
-                                return atmosphere.util.parseJSON(storage.getItem(name + "-" + key));
+                                var item = storage.getItem(name + "-" + key);
+                                return item === null ? [] : atmosphere.util.parseJSON(item);
                             },
                             set = function (key, value) {
                                 storage.setItem(name + "-" + key, atmosphere.util.stringifyJSON(value));
@@ -1535,7 +1536,7 @@
 
                     if (_abortingConnection) {
                         atmosphere.util.log(_request.logLevel, ["Websocket closed normally"]);
-                    } else if (!webSocketOpened) {
+                    } else if (!webSocketOpened && _request.fallbackTransport !== 'websocket') {
                         _reconnectWithFallbackTransport("Websocket failed on first connection attempt. Downgrading to " + _request.fallbackTransport + " and resending");
 
                     } else if (_request.reconnect && _response.transport === 'websocket' ) {
@@ -1687,8 +1688,11 @@
                         while (messageStart !== -1) {
                             var str = message.substring(0, messageStart);
                             var messageLength = +str;
-                            if (isNaN(messageLength))
+                            if (isNaN(messageLength)) {
+                                // Discard partial message, otherwise it would never recover from this condition
+                                response.partialMessage = '';
                                 throw new Error('message length "' + str + '" is not a number');
+                            }
                             messageStart += request.messageDelimiter.length;
                             if (messageStart + messageLength > message.length) {
                                 // message not complete, so there is no trailing messageDelimiter
@@ -1736,11 +1740,12 @@
                     atmosphere.util.onTransportFailure(errorMessage, _request);
                 }
 
-                _request.transport = _request.fallbackTransport;
                 var reconnectInterval = _request.connectTimeout === -1 ? 0 : _request.connectTimeout;
                 if (_request.reconnect && _request.transport !== 'none' || _request.transport == null) {
+                	_request.transport = _request.fallbackTransport;
                     _request.method = _request.fallbackMethod;
                     _response.transport = _request.fallbackTransport;
+                    _response.state = '';
                     _request.fallbackTransport = 'none';
                     if (reconnectInterval > 0) {
                         _request.reconnectId = setTimeout(function () {
@@ -2421,6 +2426,9 @@
                                 }
 
                                 var res = cdoc.body ? cdoc.body.lastChild : cdoc;
+                                if (res.omgThisIsBroken) {
+                                    // Cause an exception when res is null, to trigger a reconnect...
+                                }
                                 var readResponse = function () {
                                     // Clones the element not to disturb the original one
                                     var clone = res.cloneNode(true);
@@ -3423,140 +3431,69 @@
         }
     })();
 
-    atmosphere.util.on(window, "unload", function (event) {
-        atmosphere.util.debug(new Date() + " Atmosphere: " + "unload event");
-        atmosphere.unsubscribe();
-    });
+    atmosphere.callbacks = {
+        unload: function() {
+            atmosphere.util.debug(new Date() + " Atmosphere: " + "unload event");
+            atmosphere.unsubscribe();
+        },
+        beforeUnload: function() {
+            atmosphere.util.debug(new Date() + " Atmosphere: " + "beforeunload event");
 
-    atmosphere.util.on(window, "beforeunload", function (event) {
-        atmosphere.util.debug(new Date() + " Atmosphere: " + "beforeunload event");
+            // ATMOSPHERE-JAVASCRIPT-143: Delay reconnect to avoid reconnect attempts before an actual unload (we don't know if an unload will happen, yet)
+            atmosphere._beforeUnloadState = true;
+            setTimeout(function () {
+                atmosphere.util.debug(new Date() + " Atmosphere: " + "beforeunload event timeout reached. Reset _beforeUnloadState flag");
+                atmosphere._beforeUnloadState = false;
+            }, 5000);
+        },
+        offline: function() {
+            atmosphere.util.debug(new Date() + " Atmosphere: offline event");
+            offline = true;
+            if (requests.length > 0) {
+                var requestsClone = [].concat(requests);
+                for (var i = 0; i < requestsClone.length; i++) {
+                    var rq = requestsClone[i];
+                    if(rq.request.handleOnlineOffline) {
+                        rq.close();
+                        clearTimeout(rq.response.request.id);
 
-        // ATMOSPHERE-JAVASCRIPT-143: Delay reconnect to avoid reconnect attempts before an actual unload (we don't know if an unload will happen, yet)
-        atmosphere._beforeUnloadState = true;
-        setTimeout(function () {
-            atmosphere.util.debug(new Date() + " Atmosphere: " + "beforeunload event timeout reached. Reset _beforeUnloadState flag");
-            atmosphere._beforeUnloadState = false;
-        }, 5000);
-    });
-
-    // Pressing ESC key in Firefox kills the connection
-    // for your information, this is fixed in Firefox 20
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=614304
-    atmosphere.util.on(window, "keypress", function (event) {
-        if (event.charCode === 27 || event.keyCode === 27) {
-            if (event.preventDefault) {
-                event.preventDefault();
-            }
-        }
-    });
-
-    atmosphere.util.on(window, "offline", function () {
-        atmosphere.util.debug(new Date() + " Atmosphere: offline event");
-        offline = true;
-        if (requests.length > 0) {
-            var requestsClone = [].concat(requests);
-            for (var i = 0; i < requestsClone.length; i++) {
-                var rq = requestsClone[i];
-                if(rq.request.handleOnlineOffline) {
-                    rq.close();
-                    clearTimeout(rq.response.request.id);
-
-                    if (rq.heartbeatTimer) {
-                        clearTimeout(rq.heartbeatTimer);
+                        if (rq.heartbeatTimer) {
+                            clearTimeout(rq.heartbeatTimer);
+                        }
                     }
                 }
             }
-        }
-    });
-
-    atmosphere.util.on(window, "online", function () {
-        atmosphere.util.debug(new Date() + " Atmosphere: online event");
-        if (requests.length > 0) {
-            for (var i = 0; i < requests.length; i++) {
-                if(requests[i].request.handleOnlineOffline) {
-                    requests[i].init();
-                    requests[i].execute();
+        },
+        online: function() {
+            atmosphere.util.debug(new Date() + " Atmosphere: online event");
+            if (requests.length > 0) {
+                for (var i = 0; i < requests.length; i++) {
+                    if(requests[i].request.handleOnlineOffline) {
+                        requests[i].init();
+                        requests[i].execute();
+                    }
                 }
             }
+            offline = false;
         }
-        offline = false;
-    });
+    };
+
+    atmosphere.bindEvents = function() {
+        atmosphere.util.on(window, "unload", atmosphere.callbacks.unload);
+        atmosphere.util.on(window, "beforeunload", atmosphere.callbacks.beforeUnload);
+        atmosphere.util.on(window, "offline", atmosphere.callbacks.offline);
+        atmosphere.util.on(window, "online", atmosphere.callbacks.online);
+    };
+
+    atmosphere.unbindEvents = function() {
+        atmosphere.util.off(window, "unload", atmosphere.callbacks.unload);
+        atmosphere.util.off(window, "beforeunload", atmosphere.callbacks.beforeUnload);
+        atmosphere.util.off(window, "offline", atmosphere.callbacks.offline);
+        atmosphere.util.off(window, "online", atmosphere.callbacks.online);
+    };
+
+    atmosphere.bindEvents();
 
     return atmosphere;
 }));
 /* jshint eqnull:true, noarg:true, noempty:true, eqeqeq:true, evil:true, laxbreak:true, undef:true, browser:true, indent:false, maxerr:50 */
-
-
-/**
- * PrimeFaces Socket Widget
- */
-PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
-
-    init: function (cfg) {
-        this.cfg = cfg;
-        var $this = this;
-
-        this.cfg.request = {
-            url: this.cfg.url,
-            transport: this.cfg.transport,
-            fallbackTransport: this.cfg.fallbackTransport,
-            enableXDR: false,
-            reconnectOnWindowLocationChange: true,
-            enableProtocol: true,
-            trackMessageLength : true,
-            onMessage: function (response) {
-                $this.onMessage(response);
-            }
-        };
-
-        this.cfg.request.onError = this.cfg.onError;
-        this.cfg.request.onClose = this.cfg.onClose;
-        this.cfg.request.onOpen = this.cfg.onOpen;
-        this.cfg.request.onReconnect = this.cfg.onReconnect;
-        this.cfg.request.onMessagePublished = this.cfg.onMessagePublished;
-        this.cfg.request.onLocalMessage = this.cfg.onLocalMessage;
-        this.cfg.request.onTransportFailure = this.cfg.onTransportFailure;
-        this.cfg.request.onClientTimeout = this.cfg.onTransportFailure;
-
-
-        if (this.cfg.autoConnect) {
-            this.connect();
-        }
-    },
-
-    connect: function (uniquePath) {
-        if (uniquePath) {
-            this.cfg.request.url += uniquePath;
-        }
-
-        this.connection = atmosphere.subscribe(this.cfg.request);
-    },
-
-    push: function (data) {
-        this.connection.push(JSON.stringify(data));
-    },
-
-    disconnect: function () {
-        // reset url and ignore appended uniquePath
-        this.cfg.request.url = this.cfg.url;
-
-        this.connection.close();
-    },
-
-    onMessage: function (response) {
-        var value = $.parseJSON(response.responseBody);
-        
-        if(value.hasOwnProperty('pfpd')) {
-            value = value['pfpd'];
-        }
-
-        if (this.cfg.onMessage) {
-            this.cfg.onMessage.call(this, value);
-        }
-
-        if (this.cfg.behaviors && this.cfg.behaviors['message']) {
-            this.cfg.behaviors['message'].call(this);
-        }
-    }
-
-});

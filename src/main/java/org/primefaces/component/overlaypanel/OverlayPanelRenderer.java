@@ -82,7 +82,8 @@ public class OverlayPanelRenderer extends CoreRenderer {
             .attr("dynamic", panel.isDynamic(), false)
             .attr("dismissable", panel.isDismissable(), true)
             .attr("showCloseIcon", panel.isShowCloseIcon(), false)
-            .attr("modal", panel.isModal(), false);
+            .attr("modal", panel.isModal(), false)
+            .attr("showDelay", panel.getShowDelay(), 0);
 
         wb.finish();
     }
