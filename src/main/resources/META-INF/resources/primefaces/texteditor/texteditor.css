@@ -1,5 +1,5 @@
 /*!
- * Quill Editor v1.2.6
+ * Quill Editor v1.3.0
  * https://quilljs.com/
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
@@ -31,7 +31,6 @@
 }
 .ql-editor {
   box-sizing: border-box;
-  cursor: text;
   line-height: 1.42;
   height: 100%;
   outline: none;
@@ -42,6 +41,9 @@
   text-align: left;
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+.ql-editor > * {
+  cursor: text;
 }
 .ql-editor p,
 .ql-editor ol,
@@ -93,24 +95,30 @@
   display: inline-block;
   white-space: nowrap;
   width: 1.2em;
-  text-align: right;
-  margin-right: 0.3em;
+}
+.ql-editor li:not(.ql-direction-rtl)::before {
   margin-left: -1.5em;
+  margin-right: 0.3em;
+  text-align: right;
 }
 .ql-editor li.ql-direction-rtl::before {
-  text-align: left;
   margin-left: 0.3em;
+  margin-right: -1.5em;
 }
-.ql-editor ol li,
-.ql-editor ul li {
+.ql-editor ol li:not(.ql-direction-rtl),
+.ql-editor ul li:not(.ql-direction-rtl) {
   padding-left: 1.5em;
+}
+.ql-editor ol li.ql-direction-rtl,
+.ql-editor ul li.ql-direction-rtl {
+  padding-right: 1.5em;
 }
 .ql-editor ol li {
   counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
-  counter-increment: list-num;
+  counter-increment: list-0;
 }
 .ql-editor ol li:before {
-  content: counter(list-num, decimal) '. ';
+  content: counter(list-0, decimal) '. ';
 }
 .ql-editor ol li.ql-indent-1 {
   counter-increment: list-1;
@@ -378,6 +386,10 @@
 .ql-editor .ql-align-right {
   text-align: right;
 }
+.ql-editor .ql-embed-selected {
+  border: 1px solid #777;
+  user-select: none;
+}
 .ql-editor.ql-blank::before {
   color: rgba(0,0,0,0.6);
   content: attr(data-placeholder);
@@ -417,6 +429,8 @@
 }
 .ql-snow.ql-toolbar button:hover,
 .ql-snow .ql-toolbar button:hover,
+.ql-snow.ql-toolbar button:focus,
+.ql-snow .ql-toolbar button:focus,
 .ql-snow.ql-toolbar button.ql-active,
 .ql-snow .ql-toolbar button.ql-active,
 .ql-snow.ql-toolbar .ql-picker-label:hover,
@@ -431,6 +445,8 @@
 }
 .ql-snow.ql-toolbar button:hover .ql-fill,
 .ql-snow .ql-toolbar button:hover .ql-fill,
+.ql-snow.ql-toolbar button:focus .ql-fill,
+.ql-snow .ql-toolbar button:focus .ql-fill,
 .ql-snow.ql-toolbar button.ql-active .ql-fill,
 .ql-snow .ql-toolbar button.ql-active .ql-fill,
 .ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill,
@@ -443,6 +459,8 @@
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-fill,
 .ql-snow.ql-toolbar button:hover .ql-stroke.ql-fill,
 .ql-snow .ql-toolbar button:hover .ql-stroke.ql-fill,
+.ql-snow.ql-toolbar button:focus .ql-stroke.ql-fill,
+.ql-snow .ql-toolbar button:focus .ql-stroke.ql-fill,
 .ql-snow.ql-toolbar button.ql-active .ql-stroke.ql-fill,
 .ql-snow .ql-toolbar button.ql-active .ql-stroke.ql-fill,
 .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
@@ -457,6 +475,8 @@
 }
 .ql-snow.ql-toolbar button:hover .ql-stroke,
 .ql-snow .ql-toolbar button:hover .ql-stroke,
+.ql-snow.ql-toolbar button:focus .ql-stroke,
+.ql-snow .ql-toolbar button:focus .ql-stroke,
 .ql-snow.ql-toolbar button.ql-active .ql-stroke,
 .ql-snow .ql-toolbar button.ql-active .ql-stroke,
 .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
@@ -469,6 +489,8 @@
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
 .ql-snow.ql-toolbar button:hover .ql-stroke-miter,
 .ql-snow .ql-toolbar button:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar button:focus .ql-stroke-miter,
+.ql-snow .ql-toolbar button:focus .ql-stroke-miter,
 .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter,
 .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter,
 .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
