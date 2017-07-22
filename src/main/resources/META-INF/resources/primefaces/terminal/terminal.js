@@ -205,7 +205,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         this.content.html('');
         this.input.val('');
     },
-    
+
     /**
      * Internally used to add the content from the ajax response to the terminal.
      * Can also be used e.g. by a websocket.
