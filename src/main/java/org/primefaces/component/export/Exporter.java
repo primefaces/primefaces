@@ -38,6 +38,7 @@ import javax.faces.convert.Converter;
 import org.primefaces.component.celleditor.CellEditor;
 
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.util.ComponentUtils;
 
 public abstract class Exporter {
@@ -194,6 +195,9 @@ public abstract class Exporter {
         }
         else if (component instanceof HtmlGraphicImage) {
             return (String) component.getAttributes().get("alt");
+        }
+        else if (component instanceof OverlayPanel) {
+            return "";
         }
         else {
 			//This would get the plain texts on UIInstructions when using Facelets
